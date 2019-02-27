@@ -19,5 +19,8 @@ LazyData: true
 Suggests: 
     testthat
 Imports: 
-    tibble
+    tibble,
+    purrr,
+    rlang,
+    dplyr
 RoxygenNote: 6.1.1
