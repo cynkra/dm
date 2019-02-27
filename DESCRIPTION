@@ -15,3 +15,5 @@ Description: Some actions and transformations that are frequently required when 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Suggests: 
+    testthat
