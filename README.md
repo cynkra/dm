@@ -62,6 +62,9 @@ check_foreign_key(data_2, a, data_1, a)
 #> Error: Foreign key constraint: Column `a` in table `data_2` contains values (see above) that are not present in column `a` in table `data_1`
 ```
 
+One should keep in mind, that `check_foreign_key()` does NOT test, if
+parameter `c_2` is a primary key of table `t_2`.
+
 To check both directions at once - basically answering the questions:
 are the unique values of `c_1` in `t_1` the same as those of `c_2` in
 `t_2`? - `dm` provides the function `check_overlap()`:
