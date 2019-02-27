@@ -1,0 +1,17 @@
+reference:
+- title: Check primary key property
+  contents:
+  - check_key
+
+- title: Check foreign key properties
+  contents:
+  - check_foreign_key
+  - check_overlap
+
+- title: Open website with overview
+  contents:
+  - browse_docs
+
+development:
+  mode: devel
+  destination: ../inst/pkgdown
