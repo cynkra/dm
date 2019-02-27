@@ -66,29 +66,51 @@
 <div id="dm" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dm" class="anchor"></a>dm</h1></div>
-<p>The goal of dm is to …</p>
+<p>The goal of <code>dm</code> is to provide functions for frequently required tasks when working with data models.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of dm from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"dm"</span>)</a></code></pre></div>
+<p>You can receive the package as a file <code>dm.tar.gz</code> from Kirill Müller, Email: <a href="mailto:kirill@cynkra.com" class="email">kirill@cynkra.com</a> .</p>
+<p>One way to install it to your R-Library is by opening R-Studio and selecting “Install Packages…” from the <code>Tools</code> menu. In the appearing window, choose the option “Install from: Package Archive File (.tgz; .tar.gz)” and browse to <code>dm.tar.gz</code>.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">## basic example code</span></a></code></pre></div>
-<p>What is special about using <code>README.Rmd</code> instead of just <code>README.md</code>? You can include R chunks like so:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(cars)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt;      speed           dist       </span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt;  Min.   : 4.0   Min.   :  2.00  </span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt;  1st Qu.:12.0   1st Qu.: 26.00  </span></a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt;  Median :15.0   Median : 36.00  </span></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="co">#&gt;  Mean   :15.4   Mean   : 42.98  </span></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="co">#&gt;  3rd Qu.:19.0   3rd Qu.: 56.00  </span></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="co">#&gt;  Max.   :25.0   Max.   :120.00</span></a></code></pre></div>
-<p>You’ll still need to render <code>README.Rmd</code> regularly, to keep <code>README.md</code> up-to-date.</p>
-<p>In that case, don’t forget to commit and push the resulting figure files, so they display on GitHub!</p>
+<p>When you have tables (data frames) that are connected by key relations, this package might help you verify the assumed key relations and/or determine existing key relations between the tables. For example, if you have tables:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">data_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>))</a>
+<a class="sourceLine" id="cb1-2" title="2">data_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a></code></pre></div>
+<p>and you want to know if <code>a</code> is a primary key for <code>data_1</code>, you can use the <code><a href="reference/check_key.html">check_key()</a></code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">1</span>, a)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; Error: (a) is not a primary key of data_1</span></a></code></pre></div>
+<p>Mind the error message when a test is not passed.</p>
+<p>In case of <code>data_2</code> the column <code>a</code> is a key:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">2</span>, a)</a></code></pre></div>
+<p>To see if a column of one table is a foreign key for another table, you can use <code><a href="reference/check_foreign_key.html">check_foreign_key()</a></code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="reference/check_foreign_key.html">check_foreign_key</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
+<p>What about the inverse relation?</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="reference/check_foreign_key.html">check_foreign_key</a></span>(data_<span class="dv">2</span>, a, data_<span class="dv">1</span>, a)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt;       a     b     c</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; 1     3     6     9</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt; Error: Foreign key constraint: Column `a` in table `data_2` contains values (see above) that are not present in column `a` in table `data_1`</span></a></code></pre></div>
+<p>To check both directions at once - basically answering the questions: are the unique values of <code>c_1</code> in <code>t_1</code> the same as those of <code>c_2</code> in <code>t_2</code>? - <code>dm</code> provides the function <code><a href="reference/check_overlap.html">check_overlap()</a></code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="reference/check_overlap.html">check_overlap</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt;       a     b     c</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt; 1     3     6     9</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt; Error in check_overlap(data_1, a, data_2, a): Foreign key constraint: Column `a` in table `data_2` contains values (see above) that are not present in column `a` in table `data_1`</span></a></code></pre></div>
+<p>Bringing one more table into the game, we can show how it looks, when the test is passed:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">data_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw"><a href="reference/check_overlap.html">check_overlap</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">3</span>, a)</a></code></pre></div>
+<p>If for any of these three functions the test is passed, the return value of the function will be the first table parameter (invisibly). This ensures, that the functions can conveniently be used in a pipe.</p>
+</div>
+<div id="package-overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#package-overview" class="anchor"></a>Package overview</h2>
+<p>To get an overview of <code>dm</code>, you can call the package’s function <code><a href="reference/browse_docs.html">browse_docs()</a></code>, which will open a .html-file in your standard web browser. You can also manually open the file, it is <code>index.html</code> in the folder <code>pkgdown</code>.</p>
 </div>
 </div>
   </div>
