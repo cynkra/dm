@@ -1,12 +1,17 @@
 Package: dm
-Title: What the Package Does (One Line, Title Case)
+Title: Assisting functions for work with data models
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com")
-Description: What the package does (one paragraph).
-License: What license it uses
+    c(person(given = "Kirill",
+             family = "Müller",
+             role = c("aut", "cre"),
+             email = "kirill@cynkra.com",
+             comment = c(ORCID = "0000-0002-1416-3412")),
+      person(given = "Tobias",
+             family = "Schieferdecker",
+             role = "aut",
+             email = "tobias@cynkra.com"))
+Description: Some actions and transformations that are frequently required when dealing with data models are covered by the functions of this package.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
