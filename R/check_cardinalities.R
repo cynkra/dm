@@ -34,17 +34,14 @@ check_cardinality_1_1 <- function(parent_table, primary_key_column, child_table,
 
   check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
-  n_pt <- pull(count(eval_tidy(pt)))
-  n_ct <- pull(count(eval_tidy(ct)))
-
-  if (n_ct > n_pt) {
-    stop(paste0("1..1 cardinality (bijectivity) is not given: Column `",
-                      as_label(fkc),
-                      "` in table `",
-                      as_label(ct),
-                      "` contains duplicate values."),
-               call. = FALSE)
-  }
+  # TODO: maybe try-catch of check_key(!!ct, !!fkc) here with a better error message?
+  # e.g.: stop(paste0("1..1 cardinality (bijectivity) is not given: Column `",
+  #   as_label(fkc),
+  #   "` in table `",
+  #   as_label(ct),
+  #   "` contains duplicate values."),
+  # call. = FALSE)
+  check_key(!!ct, !!fkc)
 
   invisible(TRUE)
 }
