@@ -3,7 +3,7 @@
 export(browse_docs)
 export(check_if_subset)
 export(check_key)
-export(check_overlap)
+export(check_set_equality)
 import(dplyr)
 import(purrr, except = c(list_along, rep_along, invoke, modify, as_function, flatten_dbl, flatten_lgl, flatten_int, flatten_raw, flatten_chr, splice, flatten, prepend, `%@%`, `%||%`))
 import(rlang)

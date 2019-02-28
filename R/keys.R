@@ -53,16 +53,16 @@ check_key <- function(.data, ...) {
 }
 
 
-#' Test foreign key properties for two tables and two columns (NOT column combinations) in both directions
+#' Test if the value sets of two different columns in two different tables are the same.
 #'
-#' @description `check_overlap()` is a wrapper of `check_foreign_key()`. It tests the foreign key property in both directions.
+#' @description `check_set_equality()` is a wrapper of `check_if_subset()`. It tests if
+#' one value set is a subset of another and vice versa, i.e., if both sets are the same.
+#' If not, it throws an error.
 #'
-#' @param t1 First data frame whose column `c1` should be tested for key properties.
-#' @param c1 Column of first data frame which should be tested for foreign key property w.r.t. the second table,
-#' i.e. if all values of `c1` are also values of `c2`.
-#' @param t2 Second data frame whose column should be tested for key properties.
-#' @param c2 Column of second data frame which should be tested for foreign key property w.r.t. the first table,
-#' i.e. if all values of `c2` are also values of `c1`.
+#' @param t1 Data frame containing the column `c1`.
+#' @param c1 Column of `t1` that should only contain values that are also in `c2` of data frame `t2`.
+#' @param t2 Data frame containing the column `c2`.
+#' @param c2 Column of `t2` that should only contain values that are also in `c1` of data frame `t1`.
 #'
 #' @export
 #' @examples
@@ -70,13 +70,13 @@ check_key <- function(.data, ...) {
 #' data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is failing:
-#' check_overlap(data_1, a, data_2, a)
+#' check_set_equality(data_1, a, data_2, a)
 #'
 #' data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
-#' check_overlap(data_1, a, data_3, a)
+#' check_set_equality(data_1, a, data_3, a)
 #' }
-check_overlap <- function(t1, c1, t2, c2) {
+check_set_equality <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   c1q <- enquo(c1)
 
@@ -84,13 +84,13 @@ check_overlap <- function(t1, c1, t2, c2) {
   c2q <- enexpr(c2)
 
   catcher_1 <- tryCatch({
-    check_foreign_key(!!t1q, !!c1q, !!t2q, !!c2q)
+    check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
     NULL},
     error = identity
   )
 
   catcher_2 <- tryCatch({
-    check_foreign_key(!!t2q, !!c2q, !!t1q, !!c1q)
+    check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)
     NULL},
     error = identity
   )
@@ -133,7 +133,7 @@ check_if_subset <- function(t1, c1, t2, c2) {
   c2q <- enexpr(c2)
 
   # Hier kann nicht t1 direkt verwendet werden, da das für den Aufruf
-  # check_overlap_uni(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
+  # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
   # Siehe eval-bang.R für ein Minimalbeispiel.
   v1 <- pull(rlang::eval_tidy(t1q), !!c1q)
