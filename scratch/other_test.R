@@ -1,0 +1,12 @@
+d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
+d2 <- tibble::tibble(a = c(1,3:6), b = letters[1:5])
+d3 <- tibble::tibble(c = 1:5)
+d4 <- tibble::tibble(c = c(1:5,5))
+
+check_cardinality_0_n(d1, a, d2, a)
+check_cardinality_0_n(d1, a, d3, c)
+check_cardinality_1_n(d1, a, d3, c)
+check_cardinality_1_1(d1, a, d3, c)
+check_cardinality_1_1(d1, a, d4, c)
+check_cardinality_1_1(d4, c, d1, a)
+check_set_equality(d1, a, d3, c)
