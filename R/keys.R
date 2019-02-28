@@ -43,10 +43,10 @@ check_key <- function(.data, ...) {
     filter(n != 1)
 
   if (nrow(duplicate_rows) != 0) {
-   stop(paste0("(",
+   stop(paste0("`",
                paste(purrr::map_chr(args, rlang::as_label), collapse = ", "),
-               ") is not a primary key of ",
-               rlang::as_label(data_q)), call. = FALSE)
+               "` is not a primary key of `",
+               rlang::as_label(data_q), "`"), call. = FALSE)
   }
 
   invisible(.data)
