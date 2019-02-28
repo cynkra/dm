@@ -1,8 +1,8 @@
-#' Test if column (combination) is primary key of table
+#' Test if column (combination) is unique key of table
 #'
 #' @description `check_key()` accepts a data frame and optionally columns and throws an error,
-#' if the given columns (or all columns if none specified) are NOT a primary key of the data frame.
-#' If the columns given in the ellipsis ARE a primary key, the data frame itself is returned silently for piping convenience.
+#' if the given columns (or all columns if none specified) are NOT a unique key of the data frame.
+#' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently for piping convenience.
 #'
 #' @param .data Data frame whose columns should be tested for key properties.
 #' @param ... Names of columns to be checked. If none specified all columns together are tested for key property.
@@ -45,7 +45,7 @@ check_key <- function(.data, ...) {
   if (nrow(duplicate_rows) != 0) {
    stop(paste0("`",
                paste(purrr::map_chr(args, as_label), collapse = ", "),
-               "` is not a primary key of `",
+               "` is not a unique key of `",
                as_label(data_q), "`"), call. = FALSE)
   }
 
