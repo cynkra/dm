@@ -7,6 +7,19 @@
 #' @param .data Data frame whose columns should be tested for key properties.
 #' @param ... Names of columns to be checked. If none specified all columns together are tested for key property.
 #'
+#' One or more unquoted expressions separated by commas. You can treat variable names like they are positions, so you
+#' can use expressions like x:y to select ranges of variables.
+#'
+#' Positive values select variables; negative values drop variables. If the first expression is negative, select() will
+#' automatically start with all variables.
+#'
+#' Use named arguments, e.g. new_name = old_name, to rename selected variables.
+#'
+#' The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
+#' unquoting and splicing. See vignette("programming") for an introduction to these concepts.
+#'
+#' See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
+#'
 #' @export
 #' @examples
 #' \dontrun{
@@ -20,16 +33,18 @@
 check_key <- function(.data, ...) {
 
   data_q <- enquo(.data)
+  .data <- eval_tidy(data_q)
+  args <- exprs(...)
 
   duplicate_rows <-
     .data %>%
     as_tibble() %>% # as_tibble works only, if as_tibble.sf()-method is available
-    count(...) %>%
+    count(!!! args) %>%
     filter(n != 1)
 
   if (nrow(duplicate_rows) != 0) {
    stop(paste0("(",
-               paste(purrr::map_chr(quos(...), rlang::as_label), collapse = ", "),
+               paste(purrr::map_chr(args, rlang::as_label), collapse = ", "),
                ") is not a primary key of ",
                rlang::as_label(data_q)), call. = FALSE)
   }
