@@ -78,9 +78,9 @@ check_key <- function(.data, ...) {
 #' }
 check_set_equality <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
-  c1q <- enquo(c1)
+  c1q <- enexpr(c1)
 
-  t2q <- enexpr(t2)
+  t2q <- enquo(t2)
   c2q <- enexpr(c2)
 
   catcher_1 <- tryCatch({
