@@ -104,15 +104,14 @@ check_overlap <- function(t1, c1, t2, c2) {
   invisible(t1)
 }
 
-#' Test foreign key property for two tables and two columns (NOT column combinations) in one direction
+#' Test if values of one column are a subset of values of another column.
 #'
-#' @description `check_foreign_key()` tests, if the chosen column `c1` of data frame `t1` is a foreign key for
-#' data frame `t2` (when checked against column `c2`).
+#' @description `check_if_subset()` tests, if the values of the chosen column `c1` of data frame `t1` are a subset of the values
+#' of column `c2` of data frame `t2`.
 #'
-#' @param t1 First data frame whose column `c1` should be tested for foreign key properties.
-#' @param c1 Column of first data frame which should be tested for foreign key property w.r.t. the second table,
-#' i.e. if all values of `c1` are also values of `c2`.
-#' @param t2 Second data frame.
+#' @param t1 Data frame containing the column `c1`.
+#' @param c1 Column of `t1` that should only contain values that are also in `c2` of data frame `t2`.
+#' @param t2 Data frame containing the column `c2`.
 #' @param c2 Column of second data frame which has to contain all values of `c1` to avoid an error.
 #'
 #' @export
@@ -121,12 +120,12 @@ check_overlap <- function(t1, c1, t2, c2) {
 #' data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
-#' check_foreign_key(data_1, a, data_2, a)
+#' check_if_subset(data_1, a, data_2, a)
 #'
 #' # this is failing:
-#' check_foreign_key(data_2, a, data_1, a)
+#' check_if_subset(data_2, a, data_1, a)
 #' }
-check_foreign_key <- function(t1, c1, t2, c2) {
+check_if_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
@@ -142,7 +141,7 @@ check_foreign_key <- function(t1, c1, t2, c2) {
 
   if (!all(v1 %in% v2)) {
     print(rlang::eval_tidy(t1q) %>% filter(!(!!v1 %in% !!v2)))
-    stop(paste0("Foreign key constraint: Column `",
+    stop(paste0("Column `",
                 rlang::as_label(c1q),
                 "` in table `",
                 rlang::as_label(t1q),
@@ -152,7 +151,6 @@ check_foreign_key <- function(t1, c1, t2, c2) {
                 rlang::as_label(t2q),
                 "`"),
          call. = FALSE)
-    #rlang::abort(paste0("Key constraint: ", rlang::as_label(t1q)))
   }
 
   invisible(rlang::eval_tidy(t1q))
