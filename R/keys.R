@@ -101,7 +101,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
     stop(paste0(map_chr(catchers, conditionMessage), collapse = "\n  "))
   }
 
-  invisible(t1)
+  invisible(rlang::eval_tidy(t1q))
 }
 
 #' Test if values of one column are a subset of values of another column.
