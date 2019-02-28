@@ -44,9 +44,9 @@ check_key <- function(.data, ...) {
 
   if (nrow(duplicate_rows) != 0) {
    stop(paste0("`",
-               paste(purrr::map_chr(args, rlang::as_label), collapse = ", "),
+               paste(purrr::map_chr(args, as_label), collapse = ", "),
                "` is not a primary key of `",
-               rlang::as_label(data_q), "`"), call. = FALSE)
+               as_label(data_q), "`"), call. = FALSE)
   }
 
   invisible(.data)
@@ -101,7 +101,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
     stop(paste0(map_chr(catchers, conditionMessage), collapse = "\n  "))
   }
 
-  invisible(rlang::eval_tidy(t1q))
+  invisible(eval_tidy(t1q))
 }
 
 #' Test if values of one column are a subset of values of another column.
@@ -136,23 +136,23 @@ check_if_subset <- function(t1, c1, t2, c2) {
   # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
   # Siehe eval-bang.R für ein Minimalbeispiel.
-  v1 <- pull(rlang::eval_tidy(t1q), !!c1q)
-  v2 <- pull(rlang::eval_tidy(t2q), !!c2q)
+  v1 <- pull(eval_tidy(t1q), !!c1q)
+  v2 <- pull(eval_tidy(t2q), !!c2q)
 
   if (!all(v1 %in% v2)) {
-    print(rlang::eval_tidy(t1q) %>% filter(!(!!v1 %in% !!v2)))
+    print(eval_tidy(t1q) %>% filter(!(!!v1 %in% !!v2)))
     stop(paste0("Column `",
-                rlang::as_label(c1q),
+                as_label(c1q),
                 "` in table `",
-                rlang::as_label(t1q),
+                as_label(t1q),
                 "` contains values (see above) that are not present in column `",
-                rlang::as_label(c2q),
+                as_label(c2q),
                 "` in table `",
-                rlang::as_label(t2q),
+                as_label(t2q),
                 "`"),
          call. = FALSE)
   }
 
-  invisible(rlang::eval_tidy(t1q))
+  invisible(eval_tidy(t1q))
 
 }

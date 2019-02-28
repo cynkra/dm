@@ -34,14 +34,14 @@ check_cardinality_1_1 <- function(parent_table, primary_key_column, child_table,
 
   check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
-  n_pt <- pull(count(rlang::eval_tidy(pt)))
-  n_ct <- pull(count(rlang::eval_tidy(ct)))
+  n_pt <- pull(count(eval_tidy(pt)))
+  n_ct <- pull(count(eval_tidy(ct)))
 
   if (n_ct > n_pt) {
     stop(paste0("1..1 cardinality (bijectivity) is not given: Column `",
-                      rlang::as_label(fkc),
+                      as_label(fkc),
                       "` in table `",
-                      rlang::as_label(ct),
+                      as_label(ct),
                       "` contains duplicate values."),
                call. = FALSE)
   }
