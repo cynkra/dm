@@ -154,5 +154,4 @@ check_if_subset <- function(t1, c1, t2, c2) {
   }
 
   invisible(eval_tidy(t1q))
-
 }
