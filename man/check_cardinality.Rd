@@ -59,7 +59,7 @@ column values have to be referred to.
 
 `1_1` means, that for each value of the `parent_key_column`, precisely
 '1' value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
-between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and
+between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns is equal and
 there are no duplicates in either of them.
 }
 \examples{
