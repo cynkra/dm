@@ -80,7 +80,13 @@ decompose_table <- function(.data, new_id_column,...) {
   return(list("child_table" = child_table, "parent_table" = parent_table))
 }
 
-
+#' Perform table fusion by combining two tables by a common (key) column and then removing this column.
+#'
+#' @description `reunite_parent_child`: After joining the two tables by the column `id_column`, this column is removed. The transformation is roughly the
+#' inverse of what `decompose_table()` does.
+#'
+#' @name reunite_parent_child
+#' @export
 reunite_parent_child <- function(child_table, parent_table, id_column) {
 
   id_col_q <- enexpr(id_column)
@@ -94,7 +100,13 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 
 }
 
-
+#' Perform table fusion by combining two tables by a common (key) column and then removing this column.
+#'
+#' @description `reunite_parent_child_from_list`: After joining the two tables by the column `id_column`, this column is removed.
+#' The function is exactly the inverse of `decompose_table()`.
+#'
+#' @rdname reunite_parent_child
+#' @export
 reunite_parent_child_from_list <- function(list_of_child_tables, id_column) {
 
   id_col_q <- enexpr(id_column)
