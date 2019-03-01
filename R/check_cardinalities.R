@@ -37,12 +37,14 @@ check_cardinality_1_1 <- function(parent_table, primary_key_column, child_table,
   tryCatch({
     check_key(!!ct, !!fkc)
     NULL},
-    error = stop(paste0("1..1 cardinality (bijectivity) is not given: Column `",
-                     as_label(fkc),
-                     "` in table `",
-                     as_label(ct),
-                     "` contains duplicate values."),
-                 call. = FALSE)
+    error = function(e) {
+      stop(paste0("1..1 cardinality (bijectivity) is not given: Column `",
+                  as_label(fkc),
+                  "` in table `",
+                  as_label(ct),
+                  "` contains duplicate values."),
+           call. = FALSE)
+    }
   )
 
 
@@ -63,12 +65,14 @@ check_cardinality_0_1 <- function(parent_table, primary_key_column, child_table,
   tryCatch({
     check_key(!!ct, !!fkc)
     NULL},
-    error = stop(paste0("0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
-                        as_label(fkc),
-                        "` in table `",
-                        as_label(ct),
-                        "` contains duplicate values."),
-                 call. = FALSE)
+    error = function(e) {
+      stop(paste0("0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
+                  as_label(fkc),
+                  "` in table `",
+                  as_label(ct),
+                  "` contains duplicate values."),
+           call. = FALSE)
+    }
   )
 
   invisible(TRUE)
