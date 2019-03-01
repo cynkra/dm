@@ -10,11 +10,6 @@
 #' One or more unquoted expressions separated by commas. You can treat variable names like they are positions, so you
 #' can use expressions like x:y to select ranges of variables.
 #'
-#' Positive values select variables; negative values drop variables. If the first expression is negative, select() will
-#' automatically start with all variables.
-#'
-#' Use named arguments, e.g. new_name = old_name, to rename selected variables.
-#'
 #' The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
 #' unquoting and splicing. See vignette("programming") for an introduction to these concepts.
 #'
