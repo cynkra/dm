@@ -8,6 +8,13 @@ reference:
   - check_if_subset
   - check_set_equality
 
+- title: Check cardinality of relation between two tables
+  contents:
+  - check_cardinality_0_n
+  - check_cardinality_1_n
+  - check_cardinality_0_1
+  - check_cardinality_1_1
+
 - title: Open website with overview
   contents:
   - browse_docs

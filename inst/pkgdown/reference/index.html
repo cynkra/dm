@@ -114,7 +114,7 @@
         <td>
           <p><code><a href="check_key.html">check_key()</a></code> </p>
         </td>
-        <td><p>Test if column (combination) is primary key of table</p></td>
+        <td><p>Test if column (combination) is unique key of table</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -126,15 +126,29 @@
       <tr>
         
         <td>
-          <p><code><a href="check_foreign_key.html">check_foreign_key()</a></code> </p>
+          <p><code><a href="check_if_subset.html">check_if_subset()</a></code> </p>
         </td>
-        <td><p>Test foreign key property for two tables and two columns (NOT column combinations) in one direction</p></td>
+        <td><p>Test if values of one column are a subset of values of another column.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="check_overlap.html">check_overlap()</a></code> </p>
+          <p><code><a href="check_set_equality.html">check_set_equality()</a></code> </p>
         </td>
-        <td><p>Test foreign key properties for two tables and two columns (NOT column combinations) in both directions</p></td>
+        <td><p>Test if the value sets of two different columns in two different tables are the same.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-check-cardinality-of-relation-between-two-tables" class="hasAnchor"><a href="#section-check-cardinality-of-relation-between-two-tables" class="anchor"></a>Check cardinality of relation between two tables</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="check_cardinality.html">check_cardinality_0_n()</a></code> <code><a href="check_cardinality.html">check_cardinality_1_n()</a></code> <code><a href="check_cardinality.html">check_cardinality_1_1()</a></code> <code><a href="check_cardinality.html">check_cardinality_0_1()</a></code> </p>
+        </td>
+        <td><p>Test if the relation between two tables of a data model meet the requirements.</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -159,6 +173,7 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-check-primary-key-property">Check primary key property</a></li>
       <li><a href="#section-check-foreign-key-properties">Check foreign key properties</a></li>
+      <li><a href="#section-check-cardinality-of-relation-between-two-tables">Check cardinality of relation between two tables</a></li>
       <li><a href="#section-open-website-with-overview">Open website with overview</a></li>
     </ul>
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if column (combination) is unique key of table — check_key • dm</title>
+<title>Test if values of one column are a subset of values of another column. — check_if_subset • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,10 @@
 
 
 
-<meta property="og:title" content="Test if column (combination) is unique key of table — check_key" />
+<meta property="og:title" content="Test if values of one column are a subset of values of another column. — check_if_subset" />
 
-<meta property="og:description" content="`check_key()` accepts a data frame and optionally columns and throws an error,
-if the given columns (or all columns if none specified) are NOT a unique key of the data frame.
-If the columns given in the ellipsis ARE a key, the data frame itself is returned silently for piping convenience." />
+<meta property="og:description" content="`check_if_subset()` tests, if the values of the chosen column `c1` of data frame `t1` are a subset of the values
+of column `c2` of data frame `t2`." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -96,48 +95,51 @@ If the columns given in the ellipsis ARE a key, the data frame itself is returne
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if column (combination) is unique key of table</h1>
+    <h1>Test if values of one column are a subset of values of another column.</h1>
     
-    <div class="hidden name"><code>check_key.Rd</code></div>
+    <div class="hidden name"><code>check_if_subset.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>`check_key()` accepts a data frame and optionally columns and throws an error,
-if the given columns (or all columns if none specified) are NOT a unique key of the data frame.
-If the columns given in the ellipsis ARE a key, the data frame itself is returned silently for piping convenience.</p>
+    <p>`check_if_subset()` tests, if the values of the chosen column `c1` of data frame `t1` are a subset of the values
+of column `c2` of data frame `t2`.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>check_key</span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>check_if_subset</span>(<span class='no'>t1</span>, <span class='no'>c1</span>, <span class='no'>t2</span>, <span class='no'>c2</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
-      <td><p>Data frame whose columns should be tested for key properties.</p></td>
+      <th>t1</th>
+      <td><p>Data frame containing the column `c1`.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Names of columns to be checked. If none specified all columns together are tested for key property.</p>
-<p>One or more unquoted expressions separated by commas. You can treat variable names like they are positions, so you
-can use expressions like x:y to select ranges of variables.</p>
-<p>The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
-unquoting and splicing. See vignette("programming") for an introduction to these concepts.</p>
-<p>See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...</p></td>
+      <th>c1</th>
+      <td><p>Column of `t1` that should only contain values that are also in `c2` of data frame `t2`.</p></td>
+    </tr>
+    <tr>
+      <th>t2</th>
+      <td><p>Data frame containing the column `c2`.</p></td>
+    </tr>
+    <tr>
+      <th>c2</th>
+      <td><p>Column of second data frame which has to contain all values of `c1` to avoid an error.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'>tibble</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>1</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>))
-<span class='co'># this is failing:</span>
-<span class='fu'>check_key</span>(<span class='no'>data</span>, <span class='no'>a</span>, <span class='no'>b</span>)
-
+<span class='no'>data_1</span> <span class='kw'>&lt;-</span> <span class='fu'>tibble</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>1</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>))
+<span class='no'>data_2</span> <span class='kw'>&lt;-</span> <span class='fu'>tibble</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>))
 <span class='co'># this is passing:</span>
-<span class='fu'>check_key</span>(<span class='no'>data</span>, <span class='no'>a</span>, <span class='no'>c</span>)
+<span class='fu'>check_if_subset</span>(<span class='no'>data_1</span>, <span class='no'>a</span>, <span class='no'>data_2</span>, <span class='no'>a</span>)
+
+<span class='co'># this is failing:</span>
+<span class='fu'>check_if_subset</span>(<span class='no'>data_2</span>, <span class='no'>a</span>, <span class='no'>data_1</span>, <span class='no'>a</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
