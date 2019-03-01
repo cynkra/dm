@@ -43,7 +43,8 @@ decompose_table <- function(.data, new_id_column,...) {
     left_join(
       parent_table, by = cols_chr
     ) %>%
-    select( 1, !!id_col_q, non_key_names)
+    select(!!id_col_q, non_key_names) %>%
+    select(2, everything()) # 2 was originally first column in ".data" after extracting child table. It is therefore assumed to be key to table ".data"
 
   return(list("child_table" = child_table, "parent_table" = parent_table))
 }
