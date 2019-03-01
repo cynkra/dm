@@ -1,4 +1,7 @@
-
+#' Perform table surgery by extracting a 'parent table' from a table, returning both and linking them by a key
+#'
+#'
+#' @export
 decompose_table <- function(.data, new_id_column,...) {
 
 
