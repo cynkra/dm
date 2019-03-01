@@ -80,12 +80,34 @@ decompose_table <- function(.data, new_id_column,...) {
   return(list("child_table" = child_table, "parent_table" = parent_table))
 }
 
+
 reunite_parent_child <- function(child_table, parent_table, id_column) {
 
   id_col_q <- enexpr(id_column)
 
   id_col_chr <-
     as_name(id_col_q)
+
+  child_table %>%
+    left_join(parent_table, by = id_col_chr) %>%
+    select(-!!id_col_q)
+
+}
+
+
+reunite_parent_child_from_list <- function(list_of_child_tables, id_column) {
+
+  id_col_q <- enexpr(id_column)
+
+  id_col_chr <-
+    as_name(id_col_q)
+
+  child_table <- list_of_child_tables %>%
+      extract("child_table") %>%
+      flatten_dfr()
+    parent_table <- list_of_child_tables %>%
+      magrittr::extract("parent_table") %>%
+      flatten_dfr()
 
   child_table %>%
     left_join(parent_table, by = id_col_chr) %>%
