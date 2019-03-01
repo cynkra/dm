@@ -1,6 +1,27 @@
-#' Perform table surgery by extracting a 'parent table' from a table, returning both and linking them by a key
+#' Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.
 #'
+#' @description `decompose_table()` accepts a data frame, a name for an 'ID column' that will be newly created, and the names
+#' of the columns which will be extracted into the new data frame.
 #'
+#' It creates the 'parent table', consisting of the columns specified in the ellipsis and the new 'ID column'. Then it removes the
+#' said columns from the now called 'child table' (the original table) and also adds the 'ID column' here appropriately.
+#'
+#' @param .data Data frame from which columns `...` are to be extracted.
+#' @param new_id_column Name of the identifier column (primary key column) for the parent table. A column of this name is also added in 'child table'.
+#' @param ... The columns to be extracted from the `.data`.
+#'
+#' One or more unquoted expressions separated by commas. You can treat variable names like they are positions, so you
+#' can use expressions like x:y to select ranges of variables.
+#'
+#' The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
+#' unquoting and splicing. See vignette("programming") for an introduction to these concepts.
+#'
+#' See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
+#'
+#' @examples
+#' \dontrun{
+#' decompose_table(mtcars, new_id, am, gear, carb)
+#' }
 #' @export
 decompose_table <- function(.data, new_id_column,...) {
 
@@ -46,8 +67,9 @@ decompose_table <- function(.data, new_id_column,...) {
     left_join(
       parent_table, by = cols_chr
     ) %>%
-    select(!!id_col_q, non_key_names) %>%
-    select(2, everything()) # 2 was originally first column in ".data" after extracting child table. It is therefore assumed to be key to table ".data"
+    select(non_key_names, !!id_col_q) %>%
+    select(1, !!id_col_q, everything())
+  # 1 was originally first column in ".data" after extracting child table. It is therefore assumed to be a key to table ".data"
 
   return(list("child_table" = child_table, "parent_table" = parent_table))
 }

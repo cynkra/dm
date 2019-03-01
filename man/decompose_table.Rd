@@ -2,10 +2,34 @@
 % Please edit documentation in R/table_surgery.R
 \name{decompose_table}
 \alias{decompose_table}
-\title{Perform table surgery by extracting a 'parent table' from a table, returning both and linking them by a key}
+\title{Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.}
 \usage{
 decompose_table(.data, new_id_column, ...)
 }
+\arguments{
+\item{.data}{Data frame from which columns `...` are to be extracted.}
+
+\item{new_id_column}{Name of the identifier column (primary key column) for the parent table. A column of this name is also added in 'child table'.}
+
+\item{...}{The columns to be extracted from the `.data`.
+
+One or more unquoted expressions separated by commas. You can treat variable names like they are positions, so you
+can use expressions like x:y to select ranges of variables.
+
+The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
+unquoting and splicing. See vignette("programming") for an introduction to these concepts.
+
+See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...}
+}
 \description{
-Perform table surgery by extracting a 'parent table' from a table, returning both and linking them by a key
+`decompose_table()` accepts a data frame, a name for an 'ID column' that will be newly created, and the names
+of the columns which will be extracted into the new data frame.
+
+It creates the 'parent table', consisting of the columns specified in the ellipsis and the new 'ID column'. Then it removes the
+said columns from the now called 'child table' (the original table) and also adds the 'ID column' here appropriately.
+}
+\examples{
+\dontrun{
+decompose_table(mtcars, new_id, am, gear, carb)
+}
 }
