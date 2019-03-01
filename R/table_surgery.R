@@ -38,7 +38,7 @@ decompose_table <- function(.data, new_id_column,...) {
 
   cols_chr <-
     cols_q %>%
-    map_chr(~ paste(.))
+    map_chr(~ as_name(.))
 
   if (as_label(id_col_q) %in% names(eval_tidy(.data_q))) stop(
     paste0("`new_id_column` can not have an identical name as one of the columns of ", as_label(.data_q))
