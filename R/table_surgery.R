@@ -20,7 +20,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' decompose_table(mtcars, new_id, am, gear, carb)
+#' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
+#' child_table <- decomposed_table %>%
+#'   magrittr::extract("child_table") %>%
+#'   purrr::flatten_dfr()
+#' parent_table <- decomposed_table %>%
+#'   magrittr::extract("parent_table") %>%
+#'   purrr::flatten_dfr()
 #' }
 #' @export
 decompose_table <- function(.data, new_id_column,...) {

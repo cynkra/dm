@@ -21,6 +21,7 @@ Suggests:
 Imports: 
     tibble,
     purrr,
+    magrittr,
     rlang,
     dplyr
 RoxygenNote: 6.1.1
