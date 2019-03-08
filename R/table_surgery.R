@@ -70,7 +70,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 
   names_data <-
     eval_tidy(.data_q) %>%
-    names()
+    colnames()
 
   non_key_names <-
     setdiff(names_data, cols_chr)
@@ -109,22 +109,23 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 #' Perform table fusion by combining two tables by a common (key) column and then removing this column.
 #'
 #' @description `reunite_parent_child_from_list`: After joining the two tables by the column `id_column`, this column is removed.
-#' The function is exactly the inverse of `decompose_table()`.
+#' The function is almost exactly the inverse of `decompose_table()`.
 #'
 #' @rdname reunite_parent_child
 #' @export
-reunite_parent_child_from_list <- function(list_of_child_tables, id_column) {
+reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_column) {
   id_col_q <- enexpr(id_column)
 
   id_col_chr <-
     as_name(id_col_q)
 
-  child_table <- list_of_child_tables %>%
-    extract("child_table") %>%
-    flatten_dfr()
-  parent_table <- list_of_child_tables %>%
-    magrittr::extract("parent_table") %>%
-    flatten_dfr()
+  child_table <- list_of_parent_child_tables %>%
+    extract2("child_table") %>%
+    as_tibble()
+
+  parent_table <- list_of_parent_child_tables %>%
+    extract2("parent_table") %>%
+    as_tibble()
 
   child_table %>%
     left_join(parent_table, by = id_col_chr) %>%
