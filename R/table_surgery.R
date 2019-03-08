@@ -120,11 +120,12 @@ reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_colum
     as_name(id_col_q)
 
   child_table <- list_of_parent_child_tables %>%
-    extract("child_table") %>%
-    flatten_dfr()
+    extract2("child_table") %>%
+    as_tibble()
+
   parent_table <- list_of_parent_child_tables %>%
-    magrittr::extract("parent_table") %>%
-    flatten_dfr()
+    extract2("parent_table") %>%
+    as_tibble()
 
   child_table %>%
     left_join(parent_table, by = id_col_chr) %>%
