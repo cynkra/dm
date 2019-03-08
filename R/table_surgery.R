@@ -38,21 +38,21 @@ decompose_table <- function(.data, new_id_column, ...) {
     cols_q %>%
     map_chr(~ as_name(.))
 
-  if (as_label(id_col_q) %in% names(eval_tidy(.data_q))) {
+  if (as_label(id_col_q) %in% colnames(eval_tidy(.data_q))) {
     stop(
       paste0("`new_id_column` can not have an identical name as one of the columns of ", as_label(.data_q))
     )
   }
   if (!(length(cols_q))) stop(paste0("Columns of ", as_label(.data_q), " need to be specified in ellipsis"))
-  if (!all(cols_q %in% names(eval_tidy(.data_q)))) {
+  if (!all(cols_q %in% colnames(eval_tidy(.data_q)))) {
     stop(
       paste0(
         "Not all specified variables `", paste(cols_chr, collapse = ", "), "` are columns of ", as_label(.data_q),
-        ". These columns are: `", paste(names(eval_tidy(.data_q)), collapse = ", "), "`."
+        ". These columns are: `", paste(colnames(eval_tidy(.data_q)), collapse = ", "), "`."
       )
     )
   }
-  if (length(cols_q) == length(eval_tidy(.data_q))) {
+  if (length(cols_q) == length(colnames(eval_tidy(.data_q)))) {
     stop(
       paste0("Number of columns to be extracted has to be less than total number of columns of ", as_label(.data_q))
     )
@@ -85,7 +85,7 @@ decompose_table <- function(.data, new_id_column, ...) {
     select(1, !!id_col_q, everything())
   # 1 was originally first column in ".data" after extracting child table. It is therefore assumed to be a key to table ".data"
 
-  return(list("child_table" = child_table, "parent_table" = parent_table))
+  list("child_table" = child_table, "parent_table" = parent_table)
 }
 
 #' Perform table fusion by combining two tables by a common (key) column and then removing this column.
