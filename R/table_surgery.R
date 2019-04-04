@@ -1,6 +1,8 @@
-#' Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.
+#' Decompose a table into two linked tables.
 #'
-#' @description `decompose_table()` accepts a data frame, a name for an 'ID column' that will be newly created, and the names
+#' @description Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.
+#'
+#' `decompose_table()` accepts a data frame, a name for an 'ID column' that will be newly created, and the names
 #' of the columns which will be extracted into the new data frame.
 #'
 #' It creates the 'parent table', consisting of the columns specified in the ellipsis and the new 'ID column'. Then it removes the

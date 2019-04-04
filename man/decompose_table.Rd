@@ -2,7 +2,7 @@
 % Please edit documentation in R/table_surgery.R
 \name{decompose_table}
 \alias{decompose_table}
-\title{Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.}
+\title{Decompose a table into two linked tables.}
 \usage{
 decompose_table(.data, new_id_column, ...)
 }
@@ -22,6 +22,8 @@ unquoting and splicing. See vignette("programming") for an introduction to these
 See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...}
 }
 \description{
+Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.
+
 `decompose_table()` accepts a data frame, a name for an 'ID column' that will be newly created, and the names
 of the columns which will be extracted into the new data frame.
 
