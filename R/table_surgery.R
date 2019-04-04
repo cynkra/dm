@@ -54,7 +54,7 @@ decompose_table <- function(.data, new_id_column, ...) {
       )
     )
   }
-  if (length(cols_q) == length(colnames(eval_tidy(.data_q)))) {
+  if (length(cols_q) >= length(colnames(eval_tidy(.data_q)))) {
     abort(
       paste0("Number of columns to be extracted has to be less than total number of columns of ", as_label(.data_q))
     )
