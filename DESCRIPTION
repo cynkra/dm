@@ -23,5 +23,7 @@ Imports:
     purrr,
     magrittr,
     rlang,
-    dplyr
+    dplyr,
+    shiny,
+    DT (>= 0.5),
 RoxygenNote: 6.1.1
