@@ -3,16 +3,18 @@
 \name{reunite_parent_child}
 \alias{reunite_parent_child}
 \alias{reunite_parent_child_from_list}
-\title{Perform table fusion by combining two tables by a common (key) column and then removing this column.}
+\title{Merge two tables linked by a foreign key relation.}
 \usage{
 reunite_parent_child(child_table, parent_table, id_column)
 
 reunite_parent_child_from_list(list_of_parent_child_tables, id_column)
 }
 \description{
-`reunite_parent_child`: After joining the two tables by the column `id_column`, this column is removed. The transformation is roughly the
+Perform table fusion by combining two tables by a common (key) column and then removing this column.
+
+`reunite_parent_child()`: After joining the two tables by the column `id_column`, this column is removed. The transformation is roughly the
 inverse of what `decompose_table()` does.
 
-`reunite_parent_child_from_list`: After joining the two tables by the column `id_column`, this column is removed.
-The function is almost exactly the inverse of `decompose_table()`.
+`reunite_parent_child_from_list()`: After joining the two tables by the column `id_column`, this column is removed.
+The function is almost exactly the inverse of `decompose_table()` (the order of the columns is not retained).
 }

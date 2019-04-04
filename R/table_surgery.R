@@ -90,9 +90,11 @@ decompose_table <- function(.data, new_id_column, ...) {
   list("child_table" = child_table, "parent_table" = parent_table)
 }
 
-#' Perform table fusion by combining two tables by a common (key) column and then removing this column.
+#' Merge two tables linked by a foreign key relation.
 #'
-#' @description `reunite_parent_child`: After joining the two tables by the column `id_column`, this column is removed. The transformation is roughly the
+#' @description Perform table fusion by combining two tables by a common (key) column and then removing this column.
+#'
+#' `reunite_parent_child()`: After joining the two tables by the column `id_column`, this column is removed. The transformation is roughly the
 #' inverse of what `decompose_table()` does.
 #'
 #' @name reunite_parent_child
@@ -108,10 +110,10 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
     select(-!!id_col_q)
 }
 
-#' Perform table fusion by combining two tables by a common (key) column and then removing this column.
+#' Merge two tables linked by a foreign key relation.
 #'
-#' @description `reunite_parent_child_from_list`: After joining the two tables by the column `id_column`, this column is removed.
-#' The function is almost exactly the inverse of `decompose_table()`.
+#' @description `reunite_parent_child_from_list()`: After joining the two tables by the column `id_column`, this column is removed.
+#' The function is almost exactly the inverse of `decompose_table()` (the order of the columns is not retained).
 #'
 #' @rdname reunite_parent_child
 #' @export
