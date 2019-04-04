@@ -101,7 +101,7 @@ check_cardinality_1_1 <- function(parent_table, primary_key_column, child_table,
     check_key(!!ct, !!fkc)
     NULL},
     error = function(e) {
-      stop(paste0("1..1 cardinality (bijectivity) is not given: Column `",
+      abort(paste0("1..1 cardinality (bijectivity) is not given: Column `",
                   as_label(fkc),
                   "` in table `",
                   as_label(ct),
@@ -130,7 +130,7 @@ check_cardinality_0_1 <- function(parent_table, primary_key_column, child_table,
     check_key(!!ct, !!fkc)
     NULL},
     error = function(e) {
-      stop(paste0("0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
+      abort(paste0("0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
                   as_label(fkc),
                   "` in table `",
                   as_label(ct),

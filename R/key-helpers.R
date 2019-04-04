@@ -38,7 +38,7 @@ check_key <- function(.data, ...) {
     filter(n != 1)
 
   if (nrow(duplicate_rows) != 0) {
-   stop(paste0("`",
+   abort(paste0("`",
                paste(purrr::map_chr(args, as_label), collapse = ", "),
                "` is not a unique key of `",
                as_label(data_q), "`"), call. = FALSE)
@@ -93,7 +93,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
   catchers <- compact(list(catcher_1, catcher_2))
 
   if (length(catchers) > 0) {
-    stop(paste0(map_chr(catchers, conditionMessage), collapse = "\n  "))
+    abort(paste0(map_chr(catchers, conditionMessage), collapse = "\n  "))
   }
 
   invisible(eval_tidy(t1q))
@@ -136,7 +136,7 @@ check_if_subset <- function(t1, c1, t2, c2) {
 
   if (!all(v1 %in% v2)) {
     print(eval_tidy(t1q) %>% filter(!(!!v1 %in% !!v2)))
-    stop(paste0("Column `",
+    abort(paste0("Column `",
                 as_label(c1q),
                 "` in table `",
                 as_label(t1q),
