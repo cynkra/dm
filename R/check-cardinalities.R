@@ -1,4 +1,4 @@
-#' Test if the relation between two tables of a data model meet the requirements.
+#' Test if the relation between two tables of a data model meet the requirements
 #'
 #' @description All `check_cardinality()` functions test, if the `parent_table_column` is a unique key for `parent_table` and if
 #' the set of values of `foreign_key_column` of `child_table` is a subset of the set of values of `parent_table_column`.
@@ -28,7 +28,7 @@
 #'
 #' `1_1` means, that for each value of the `parent_key_column`, precisely
 #' '1' value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
-#' between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and
+#' between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 #' there are no duplicates in either of them.
 #'
 #' @param parent_table Data frame
@@ -101,12 +101,12 @@ check_cardinality_1_1 <- function(parent_table, primary_key_column, child_table,
     check_key(!!ct, !!fkc)
     NULL},
     error = function(e) {
-      stop(paste0("1..1 cardinality (bijectivity) is not given: Column `",
+      abort(paste0("1..1 cardinality (bijectivity) is not given: Column `",
                   as_label(fkc),
                   "` in table `",
                   as_label(ct),
-                  "` contains duplicate values."),
-           call. = FALSE)
+                  "` contains duplicate values.")
+            )
     }
   )
 
@@ -130,12 +130,12 @@ check_cardinality_0_1 <- function(parent_table, primary_key_column, child_table,
     check_key(!!ct, !!fkc)
     NULL},
     error = function(e) {
-      stop(paste0("0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
+      abort(paste0("0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
                   as_label(fkc),
                   "` in table `",
                   as_label(ct),
-                  "` contains duplicate values."),
-           call. = FALSE)
+                  "` contains duplicate values.")
+            )
     }
   )
 

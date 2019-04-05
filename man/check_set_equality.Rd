@@ -2,7 +2,7 @@
 % Please edit documentation in R/key-helpers.R
 \name{check_set_equality}
 \alias{check_set_equality}
-\title{Test if the value sets of two different columns in two different tables are the same.}
+\title{Test if the value sets of two different columns in two different tables are the same}
 \usage{
 check_set_equality(t1, c1, t2, c2)
 }
