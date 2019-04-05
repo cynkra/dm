@@ -1,4 +1,14 @@
 
+# for check_cardinality...() ----------------------------------------------
+d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
+d2 <- tibble::tibble(a = c(1,3:6), b = letters[1:5])
+d3 <- tibble::tibble(c = 1:5)
+d4 <- tibble::tibble(c = c(1:5,5))
+d5 <- tibble::tibble(a = 1:5)
+d6 <- tibble::tibble(c = 1:4)
+
+
+# for check_key() ---------------------------------------------------------
 data <-
   tribble(
     ~c1, ~c2, ~c3,
@@ -7,10 +17,14 @@ data <-
     1, 2, 4
   )
 
+
+# for check_foreign_key() and check_set_equality() -------------------------
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
+
+# for table-surgery functions ---------------------------------------------
 data_4 <- tibble(
   a = as_integer(c(1, 2, 1)),
   b = c(1.1, 4.2, 1.1),
