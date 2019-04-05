@@ -1,4 +1,4 @@
-#' Test if the relation between two tables of a data model meet the requirements.
+#' Test if the relation between two tables of a data model meet the requirements
 #'
 #' @description All `check_cardinality()` functions test, if the `parent_table_column` is a unique key for `parent_table` and if
 #' the set of values of `foreign_key_column` of `child_table` is a subset of the set of values of `parent_table_column`.

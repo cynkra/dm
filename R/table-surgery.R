@@ -1,4 +1,4 @@
-#' Decompose a table into two linked tables.
+#' Decompose a table into two linked tables
 #'
 #' @description Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.
 #'
@@ -90,7 +90,7 @@ decompose_table <- function(.data, new_id_column, ...) {
   list("child_table" = child_table, "parent_table" = parent_table)
 }
 
-#' Merge two tables linked by a foreign key relation.
+#' Merge two tables linked by a foreign key relation
 #'
 #' @description Perform table fusion by combining two tables by a common (key) column and then removing this column.
 #'
@@ -110,7 +110,7 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
     select(-!!id_col_q)
 }
 
-#' Merge two tables linked by a foreign key relation.
+#' Merge two tables linked by a foreign key relation
 #'
 #' @description `reunite_parent_child_from_list()`: After joining the two tables by the column `id_column`, this column is removed.
 #' The function is almost exactly the inverse of `decompose_table()` (the order of the columns is not retained).

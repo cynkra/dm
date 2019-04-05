@@ -49,7 +49,7 @@ check_key <- function(.data, ...) {
 }
 
 
-#' Test if the value sets of two different columns in two different tables are the same.
+#' Test if the value sets of two different columns in two different tables are the same
 #'
 #' @description `check_set_equality()` is a wrapper of `check_if_subset()`. It tests if
 #' one value set is a subset of another and vice versa, i.e., if both sets are the same.
@@ -100,7 +100,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
   invisible(eval_tidy(t1q))
 }
 
-#' Test if values of one column are a subset of values of another column.
+#' Test if values of one column are a subset of values of another column
 #'
 #' @description `check_if_subset()` tests, if the values of the chosen column `c1` of data frame `t1` are a subset of the values
 #' of column `c2` of data frame `t2`.
