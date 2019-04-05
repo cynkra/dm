@@ -113,7 +113,7 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 #' Merge two tables linked by a foreign key relation
 #'
 #' @description `reunite_parent_child_from_list()`: After joining the two tables by the column `id_column`, this column is removed.
-#' The function is almost exactly the inverse of `decompose_table()` (the order of the columns is not retained).
+#' The function is almost exactly the inverse of `decompose_table()` (the order of the columns is not retained and original rownames are lost).
 #'
 #' @rdname reunite_parent_child
 #' @export
@@ -124,12 +124,10 @@ reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_colum
     as_name(id_col_q)
 
   child_table <- list_of_parent_child_tables %>%
-    extract2("child_table") %>%
-    as_tibble()
+    extract2("child_table")
 
   parent_table <- list_of_parent_child_tables %>%
-    extract2("parent_table") %>%
-    as_tibble()
+    extract2("parent_table")
 
   child_table %>%
     left_join(parent_table, by = id_col_chr) %>%
