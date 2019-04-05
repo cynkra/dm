@@ -77,3 +77,130 @@ rowSelector <- function(input, output, session, app_data, avail) {
     data = reactive(app_data)
   )
 }
+
+
+selectable <- function(input, output, session, data) {
+  dt <-
+    datatable(
+      isolate(data()[0, ]),
+      extensions = "Scroller",
+      options = list(
+        deferRender = TRUE, # Elements will be created only when the are required
+        scrollX = TRUE,
+        scrollY = 200, # height of displayed table
+        scroller = TRUE
+      )
+    ) %>%
+    formatStyle(
+      ".available",
+      target = "row",
+      color = styleEqual(c(0, 1), c("gray", "black"))
+    )
+
+  sorted_data <- reactive({
+    unsorted_data <- data()
+    order <- order(!unsorted_data$.available)
+
+    list(
+      order = order,
+      data = unsorted_data[order, ]
+    )
+  })
+
+  output$tb <- DT::renderDataTable(dt, server = TRUE)
+
+  dtp <- dataTableProxy("tb")
+
+  observe({
+    # Dieser Observer wird bei der Initialisierung gefeurt.
+    # Das Befüllen funktioniert aus irgendeinem Grund aber nur,
+    # wenn das DT-Control zum Zeitpunkt der Initialisierung auch sichtbar ist.
+    # Aus diesem Grund werden die tabItems verzögert initialisiert.
+    dtpp <- dtp
+
+    # https://github.com/rstudio/DT/issues/357#issuecomment-465073059
+    dtpp$rawId <- dtpp$id
+
+    new_data <- sorted_data()$data
+
+    selected <- integer()
+    if (".selected" %in% names(new_data)) {
+      selected <- which(new_data[[".selected"]])
+      new_data[[".selected"]] <- NULL
+    }
+
+    dtpp %>%
+      replaceData(new_data)
+
+    if (rlang::has_length(selected)) {
+      dtp %>%
+        selectRows(selected)
+    }
+  })
+
+  observeEvent(input$sel_all_vis, {
+
+    rs <- input$tb_rows_selected # rows selected
+
+    dtp %>%
+      selectRows(union(rs, input$tb_rows_all))
+  })
+
+  observeEvent(input$desel_all_vis, {
+
+    rs <- input$tb_rows_selected # rows selected
+    avr <- input$tb_rows_all # all visible rows
+
+    dtp %>%
+      selectRows(union(rs, avr) %>% setdiff(avr)) # only rows that are not visible should be kept in selection
+  })
+
+  observeEvent(input$sel_non_vis, {
+
+    rs <- input$tb_rows_selected # rows selected
+
+    ar <- 1:nrow(data()) # all rows
+    avr <- input$tb_rows_all # all visible rows
+
+    dtp %>%
+      selectRows(union(rs, setdiff(ar, avr))) # all rows that are not visible should be selected
+  })
+
+  observeEvent(input$toggle_vis, {
+
+    rs <- input$tb_rows_selected # rows selected
+    avr <- input$tb_rows_all # all visible rows
+
+    dtp %>%
+      selectRows(setdiff(avr, intersect(rs, avr))) # all rows that are visible but not selected should be selected
+  })
+
+  observeEvent(input$sel_all, {
+
+    ar <- 1:nrow(data()) # rows selected
+
+    dtp %>%
+      selectRows(ar) # all rows that are not visible should be selected
+  })
+
+  observeEvent(input$desel_all, {
+
+    dtp %>%
+      selectRows(numeric()) # all rows that are not visible should be selected
+  })
+
+  observeEvent(input$clear_search, {
+
+    dtp %>%
+      clearSearch()
+
+  })
+
+  list(
+    all = reactive(sorted_data()$order[input$tb_rows_all]),
+    selected = reactive(sorted_data()$order[input$tb_rows_selected]),
+    state = reactive(input$tb_state),
+    move = reactive(input$move),
+    data = data
+  )
+}
