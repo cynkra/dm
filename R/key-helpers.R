@@ -21,12 +21,11 @@
 #' data <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' # this is failing:
 #' check_key(data, a, b)
-#'
+#' 
 #' # this is passing:
 #' check_key(data, a, c)
 #' }
 check_key <- function(.data, ...) {
-
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
   args <- exprs(...)
@@ -34,15 +33,16 @@ check_key <- function(.data, ...) {
   duplicate_rows <-
     .data %>%
     as_tibble() %>% # as_tibble works only, if as_tibble.sf()-method is available
-    count(!!! args) %>%
+    count(!!!args) %>%
     filter(n != 1)
 
   if (nrow(duplicate_rows) != 0) {
-   abort(paste0("`",
-               paste(purrr::map_chr(args, as_label), collapse = ", "),
-               "` is not a unique key of `",
-               as_label(data_q), "`")
-         )
+    abort(paste0(
+      "`",
+      paste(purrr::map_chr(args, as_label), collapse = ", "),
+      "` is not a unique key of `",
+      as_label(data_q), "`"
+    ))
   }
 
   invisible(.data)
@@ -67,7 +67,7 @@ check_key <- function(.data, ...) {
 #' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is failing:
 #' check_set_equality(data_1, a, data_2, a)
-#'
+#' 
 #' data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_set_equality(data_1, a, data_3, a)
@@ -81,14 +81,16 @@ check_set_equality <- function(t1, c1, t2, c2) {
 
   catcher_1 <- tryCatch({
     check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
-    NULL},
-    error = identity
+    NULL
+  },
+  error = identity
   )
 
   catcher_2 <- tryCatch({
     check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)
-    NULL},
-    error = identity
+    NULL
+  },
+  error = identity
   )
 
   catchers <- compact(list(catcher_1, catcher_2))
@@ -117,7 +119,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_if_subset(data_1, a, data_2, a)
-#'
+#' 
 #' # this is failing:
 #' check_if_subset(data_2, a, data_1, a)
 #' }
@@ -137,16 +139,17 @@ check_if_subset <- function(t1, c1, t2, c2) {
 
   if (!all(v1 %in% v2)) {
     print(eval_tidy(t1q) %>% filter(!(!!v1 %in% !!v2)))
-    abort(paste0("Column `",
-                as_label(c1q),
-                "` in table `",
-                as_label(t1q),
-                "` contains values (see above) that are not present in column `",
-                as_label(c2q),
-                "` in table `",
-                as_label(t2q),
-                "`")
-          )
+    abort(paste0(
+      "Column `",
+      as_label(c1q),
+      "` in table `",
+      as_label(t1q),
+      "` contains values (see above) that are not present in column `",
+      as_label(c2q),
+      "` in table `",
+      as_label(t2q),
+      "`"
+    ))
   }
 
   invisible(eval_tidy(t1q))
