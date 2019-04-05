@@ -1,3 +1,4 @@
+#' @export
 rowSelectorUI <- function(id) {
   ns <- NS(id)
 
@@ -15,6 +16,7 @@ rowSelectorUI <- function(id) {
   )
 }
 
+#' @export
 selectableUI <- function(id, move_caption) {
   ns <- NS(id)
 
@@ -33,6 +35,7 @@ selectableUI <- function(id, move_caption) {
   )
 }
 
+#' @export
 rowSelector <- function(input, output, session, app_data, avail) {
 
   selected <- reactiveVal(rep(FALSE, nrow(app_data)))
@@ -78,7 +81,7 @@ rowSelector <- function(input, output, session, app_data, avail) {
   )
 }
 
-
+#' @export
 selectable <- function(input, output, session, data) {
   dt <-
     datatable(
