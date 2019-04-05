@@ -17,7 +17,10 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-    testthat
+    testthat,
+    dbplyr,
+    RPostgres,
+    bit64
 Imports: 
     tibble,
     purrr,
