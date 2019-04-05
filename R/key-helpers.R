@@ -41,7 +41,8 @@ check_key <- function(.data, ...) {
    abort(paste0("`",
                paste(purrr::map_chr(args, as_label), collapse = ", "),
                "` is not a unique key of `",
-               as_label(data_q), "`"), call. = FALSE)
+               as_label(data_q), "`")
+         )
   }
 
   invisible(.data)
@@ -144,8 +145,8 @@ check_if_subset <- function(t1, c1, t2, c2) {
                 as_label(c2q),
                 "` in table `",
                 as_label(t2q),
-                "`"),
-         call. = FALSE)
+                "`")
+          )
   }
 
   invisible(eval_tidy(t1q))
