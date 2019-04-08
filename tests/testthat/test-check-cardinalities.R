@@ -51,13 +51,35 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     )
   )
 
-  # expecting errors:
+  # FIXME: this should work, but there is still an issue with DB compatibility (both in Postgres and in SQLite)
+  # map2(
+  #   .x = d1_src,
+  #   .y = d2_src,
+  #   ~ expect_known_output(
+  #     expect_error(
+  #       check_cardinality_0_n(
+  #         parent_table = .x,
+  #         primary_key_column = a,
+  #         child_table = .y,
+  #         foreign_key_column = a
+  #       )
+  #     ),
+  #     "out/card-0-n-d1-d2.txt"
+  #   )
+  # )
+
   expect_known_output(
     expect_error(
-      check_cardinality_0_n(parent_table = d1, primary_key_column = a, child_table = d2, foreign_key_column = a)
-      ),
+      check_cardinality_0_n(
+        parent_table = d1,
+        primary_key_column = a,
+        child_table = d2,
+        foreign_key_column = a
+      )
+    ),
     "out/card-0-n-d1-d2.txt"
   )
+
 
   expect_known_output(
     expect_error(
