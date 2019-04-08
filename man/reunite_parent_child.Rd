@@ -12,9 +12,9 @@ reunite_parent_child_from_list(list_of_parent_child_tables, id_column)
 \description{
 Perform table fusion by combining two tables by a common (key) column and then removing this column.
 
-`reunite_parent_child()`: After joining the two tables by the column `id_column`, this column is removed. The transformation is roughly the
-inverse of what `decompose_table()` does.
+\code{reunite_parent_child()}: After joining the two tables by the column \code{id_column}, this column is removed. The transformation is roughly the
+inverse of what \code{decompose_table()} does.
 
-`reunite_parent_child_from_list()`: After joining the two tables by the column `id_column`, this column is removed.
-The function is almost exactly the inverse of `decompose_table()` (the order of the columns is not retained and original rownames are lost).
+\code{reunite_parent_child_from_list()}: After joining the two tables by the column \code{id_column}, this column is removed.
+The function is almost exactly the inverse of \code{decompose_table()} (the order of the columns is not retained and original rownames are lost).
 }

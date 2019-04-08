@@ -7,16 +7,16 @@
 check_set_equality(t1, c1, t2, c2)
 }
 \arguments{
-\item{t1}{Data frame containing the column `c1`.}
+\item{t1}{Data frame containing the column \code{c1}.}
 
-\item{c1}{Column of `t1` that should only contain values that are also in `c2` of data frame `t2`.}
+\item{c1}{Column of \code{t1} that should only contain values that are also in \code{c2} of data frame \code{t2}.}
 
-\item{t2}{Data frame containing the column `c2`.}
+\item{t2}{Data frame containing the column \code{c2}.}
 
-\item{c2}{Column of `t2` that should only contain values that are also in `c1` of data frame `t1`.}
+\item{c2}{Column of \code{t2} that should only contain values that are also in \code{c1} of data frame \code{t1}.}
 }
 \description{
-`check_set_equality()` is a wrapper of `check_if_subset()`. It tests if
+\code{check_set_equality()} is a wrapper of \code{check_if_subset()}. It tests if
 one value set is a subset of another and vice versa, i.e., if both sets are the same.
 If not, it throws an error.
 }
