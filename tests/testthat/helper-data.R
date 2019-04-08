@@ -59,7 +59,7 @@ list_of_data_4_parent_and_child_db_sqlite <- list("child_table" = data_4_child_d
 
 # localhost postgres DB
 drv <- Postgres()
-conn <- dbConnect(drv, host = "localhost", port = 5432)
+conn <- dbConnect(drv, host = "localhost", port = 5432, bigint = "integer")
 data_4_db_pg <- copy_to(conn, data_4, name = "data_4_db_pg", overwrite = TRUE)
 data_4_child_db_pg <- copy_to(conn, data_4_child, name = "data_4_child_db_pg", overwrite = TRUE)
 data_4_parent_db_pg <- copy_to(conn, data_4_parent, name = "data_4_parent_db_pg", overwrite = TRUE)

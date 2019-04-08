@@ -19,8 +19,7 @@ LazyData: true
 Suggests: 
     testthat,
     dbplyr,
-    RPostgres,
-    bit64
+    RPostgres
 Imports: 
     tibble,
     purrr,
