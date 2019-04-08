@@ -11,6 +11,8 @@
 #'
 #' @export
 dm <- function(src, data_model = NULL) {
+  # TODO: add keys argument, if both data_model and keys are missing,
+  # create surrogate keys
   if (is.null(data_model)) {
     tbl_names <- src_tbls(src)
     tbls <- map(set_names(tbl_names), tbl, src = src)
@@ -52,6 +54,13 @@ new_dm <- function(src, data_model) {
 #' @export
 validate_dm <- function(x) {
   # TODO: check consistency
+  # - tables in data_model must be a subset of tables in src
+  # - all tables in src must exist in data model
+  # - class membership
+  # - DO NOT check primary and foreign key constraints here by default,
+  #   perhaps optionally or in a different verb
+  #
+  #
   invisible(x)
 }
 
@@ -115,7 +124,7 @@ as_dm.src <- function(x) {
 
 #' @export
 format.dm <- function(x, ...) {
-  stop("NYI")
+  abort("NYI")
 }
 
 #' @export
