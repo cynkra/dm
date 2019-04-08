@@ -23,41 +23,41 @@ check_cardinality_0_1(parent_table, primary_key_column, child_table,
 \arguments{
 \item{parent_table}{Data frame}
 
-\item{primary_key_column}{Column of `parent_table` that has to be one of its unique keys.}
+\item{primary_key_column}{Column of \code{parent_table} that has to be one of its unique keys.}
 
 \item{child_table}{Data frame}
 
-\item{foreign_key_column}{Column of `child_table` that has to be a foreign key to `primary_key_column` in `parent_table`}
+\item{foreign_key_column}{Column of \code{child_table} that has to be a foreign key to \code{primary_key_column} in \code{parent_table}}
 }
 \description{
-All `check_cardinality()` functions test, if the `parent_table_column` is a unique key for `parent_table` and if
-the set of values of `foreign_key_column` of `child_table` is a subset of the set of values of `parent_table_column`.
+All \code{check_cardinality()} functions test, if the \code{parent_table_column} is a unique key for \code{parent_table} and if
+the set of values of \code{foreign_key_column} of \code{child_table} is a subset of the set of values of \code{parent_table_column}.
 Furthermore the cardinality of the relation is tested, see below for details.
 }
 \details{
-All `check_cardinality` functions accept a 'parent table' (data frame), a column name of this table,
+All \code{check_cardinality} functions accept a 'parent table' (data frame), a column name of this table,
 a 'child table', and a column name of the child table. The given column of the 'parent table' has to be one of its
 unique keys (no duplicates allowed).
 Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
 the parent table's column.
 
-The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the expected relation, that the child table has with the parent table.
+The cardinality specifications \code{0_n}, \code{1_n}, \code{0_1}, \code{1_1} refer to the expected relation, that the child table has with the parent table.
 The numbers '0', '1' and 'n' refer to the number of values in the child table's column that correspond to each value of the
 parent table's column. 'n' means more than one in this context, with no upper limit.
 
-`0_n` means, that for each value of the `parent_key_column`, minimally '0' and maximally
+\code{0_n} means, that for each value of the \code{parent_key_column}, minimally '0' and maximally
 'n' values have to correspond to it in the child table's column (which translates to no further restriction).
 
-`1_n` means, that for each value of the `parent_key_column`, minimally '1' and maximally
+\code{1_n} means, that for each value of the \code{parent_key_column}, minimally '1' and maximally
 'n' values have to correspond to it in the child table's column. This means that there is a "surjective" relation from the child table
 to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 
-`0_1` means, that for each value of the `parent_key_column`, minimally '0' and maximally
+\code{0_1} means, that for each value of the \code{parent_key_column}, minimally '0' and maximally
 '1' value has to correspond to it in the child table's column. This means that there is a "injective" relation from the child table
 to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table
 column values have to be referred to.
 
-`1_1` means, that for each value of the `parent_key_column`, precisely
+\code{1_1} means, that for each value of the \code{parent_key_column}, precisely
 '1' value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
 between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 there are no duplicates in either of them.

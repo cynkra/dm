@@ -26,4 +26,5 @@ Imports:
     dplyr,
     shiny,
     DT (>= 0.5),
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
 RoxygenNote: 6.1.1
