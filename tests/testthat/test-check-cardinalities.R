@@ -2,12 +2,54 @@ context("test-check-cardinalities")
 
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
   # expecting silent:
-  expect_silent(check_cardinality_0_n(parent_table = d1, primary_key_column = a, child_table = d3, foreign_key_column = c))
-  expect_silent(check_cardinality_1_n(d1, a, d3, c))
-  expect_silent(check_cardinality_1_1(d1, a, d3, c))
-  expect_silent(check_set_equality(d1, a, d3, c))
-  expect_silent(check_cardinality_0_n(d5, a, d4, c))
-  expect_silent(check_cardinality_0_1(d5, a, d6, c))
+
+  expect_silent(
+    map2(
+      .x = d1_src,
+      .y = d3_src,
+      ~ check_cardinality_0_n(parent_table = .x, primary_key_column = a, child_table = .y, foreign_key_column = c)
+      )
+    )
+
+  expect_silent(
+    map2(
+      .x = d1_src,
+      .y = d3_src,
+      ~ check_cardinality_1_n(.x, a, .y, c)
+      )
+    )
+
+  expect_silent(
+    map2(
+      .x = d1_src,
+      .y = d3_src,
+      ~ check_cardinality_1_1(.x, a, .y, c)
+    )
+  )
+
+  expect_silent(
+    map2(
+      .x = d1_src,
+      .y = d3_src,
+      ~ check_set_equality(.x, a, .y, c)
+    )
+  )
+
+  expect_silent(
+    map2(
+      .x = d5_src,
+      .y = d4_src,
+      ~ check_cardinality_0_n(.x, a, .y, c)
+    )
+  )
+
+  expect_silent(
+    map2(
+      .x = d5_src,
+      .y = d6_src,
+      ~ check_cardinality_0_1(.x, a, .y, c)
+    )
+  )
 
   # expecting errors:
   expect_known_output(
