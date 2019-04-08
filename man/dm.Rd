@@ -27,28 +27,28 @@ as_dm(x)
 \arguments{
 \item{src}{A \pkg{dplyr} table source object.}
 
-\item{data_model}{A \pkg{datamodelr} data model object, or `NULL`.}
+\item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
 
 \item{x}{An object.}
 }
 \description{
-The `dm` class wraps [dplyr::src] and adds a description of table relationships
-based on [datamodelr::datamodelr-package].
+The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships
+based on \link[datamodelr:datamodelr-package]{datamodelr::datamodelr-package}.
 
-`dm()` coerces its inputs.
+\code{dm()} coerces its inputs.
 
-`new_dm()` only checks if the inputs are of the correct class.
+\code{new_dm()} only checks if the inputs are of the correct class.
 
-`validate_dm()` checks consistency between the \pkg{dplyr} source
+\code{validate_dm()} checks consistency between the \pkg{dplyr} source
 and the \pkg{datamodelr} based specification of table relationships.
 
-`dm_get_src()` returns the \pkg{dplyr} source component of a `dm`.
+\code{dm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}.
 object.
 
-`dm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`.
+\code{dm_get_data_model()} returns the \pkg{datamodelr} data model component of a \code{dm}.
 object.
 
-`is_dm()` returns `TRUE` if the input is of class `dm`.
+\code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
-`as_dm()` coerces objects to the `dm` class
+\code{as_dm()} coerces objects to the \code{dm} class
 }
