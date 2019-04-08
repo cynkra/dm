@@ -139,7 +139,7 @@ print.dm <- function(x, ...) {
 
 #' @export
 tbl.dm <- function(src, ...) {
-  tbl(dm_get_src(src))
+  tbl(dm_get_src(src), ...)
 }
 
 #' @export
