@@ -35,11 +35,16 @@ data <-
 data_check_key_src <- test_load(data, name = "data_check_key")
 
 # # for check_foreign_key() and check_set_equality() -------------------------
-# data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-# data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
-# data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
-#
-#
+data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
+data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
+
+data_1_src <- test_load(data_1, name = "data_1")
+data_2_src <- test_load(data_2, name = "data_2")
+data_3_src <- test_load(data_3, name = "data_3")
+
+check_if_subset_2a_1a_names <- here(paste0("tests/testthat/out/check-if-subset-2a-1a-", src_names, ".txt"))
+
 # # for table-surgery functions ---------------------------------------------
 # data_4 <- tibble(
 #   a = as_integer(c(1, 2, 1)),
