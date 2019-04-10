@@ -21,7 +21,7 @@
 #' data <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' # this is failing:
 #' check_key(data, a, b)
-#' 
+#'
 #' # this is passing:
 #' check_key(data, a, c)
 #' }
@@ -67,7 +67,7 @@ check_key <- function(.data, ...) {
 #' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is failing:
 #' check_set_equality(data_1, a, data_2, a)
-#' 
+#'
 #' data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_set_equality(data_1, a, data_3, a)
@@ -119,7 +119,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_if_subset(data_1, a, data_2, a)
-#' 
+#'
 #' # this is failing:
 #' check_if_subset(data_2, a, data_1, a)
 #' }
@@ -139,7 +139,7 @@ check_if_subset <- function(t1, c1, t2, c2) {
 
   if (!all(v1 %in% v2)) {
     setdiff_v1_v2 <- setdiff(v1, v2)
-    print(eval_tidy(t1q) %>% filter(!!c1q == setdiff_v1_v2))
+    print(eval_tidy(t1q) %>% filter(!!c1q %in% setdiff_v1_v2))
     abort(paste0(
       "Column `",
       as_label(c1q),
