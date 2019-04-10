@@ -52,6 +52,7 @@ data_2_src <- test_load(data_2, name = "data_2")
 data_3_src <- test_load(data_3, name = "data_3")
 
 check_if_subset_2a_1a_names <- here(paste0("tests/testthat/out/check-if-subset-2a-1a-", src_names, ".txt"))
+check_set_equality_1a_2a_names <- here(paste0("tests/testthat/out/check-set-equality-1a-2a-", src_names, ".txt"))
 
 # for table-surgery functions ---------------------------------------------
 data_ts <- tibble(
