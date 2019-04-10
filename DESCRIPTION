@@ -18,7 +18,8 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     testthat,
-    dbplyr
+    dbplyr,
+    here
 Imports: 
     tibble,
     purrr,

@@ -7,5 +7,6 @@ search_lib_and_load <- function(pkg) {
 
 search_lib_and_load("testthat")
 search_lib_and_load("dbplyr")
+search_lib_and_load("here")
 
 test_check("dm")
