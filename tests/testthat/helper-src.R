@@ -24,15 +24,16 @@ card_0_n_d1_d2_names <- here::here(paste0("tests/testthat/out/card-0-n-d1-d2-", 
 card_0_1_d1_d2_names <- here::here(paste0("tests/testthat/out/card-0-1-d1-d2-", src_names, ".txt"))
 
 # # for check_key() ---------------------------------------------------------
-# data <-
-#   tribble(
-#     ~c1, ~c2, ~c3,
-#     1, 2, 3,
-#     4, 5, 3,
-#     1, 2, 4
-#   )
-#
-#
+data <-
+  tribble(
+    ~c1, ~c2, ~c3,
+    1, 2, 3,
+    4, 5, 3,
+    1, 2, 4
+  )
+
+data_check_key_src <- test_load(data, name = "data_check_key")
+
 # # for check_foreign_key() and check_set_equality() -------------------------
 # data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 # data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
