@@ -1,7 +1,9 @@
 context("test-check-cardinalities")
 
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
-  # expecting silent:
+
+
+#  expecting silent: ------------------------------------------------------
 
   expect_silent(
     map2(
@@ -51,47 +53,100 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     )
   )
 
-  # FIXME: this should work, but there is still an issue with DB compatibility (both in Postgres and in SQLite)
-  # map2(
-  #   .x = d1_src,
-  #   .y = d2_src,
-  #   ~ expect_known_output(
-  #     expect_error(
-  #       check_cardinality_0_n(
-  #         parent_table = .x,
-  #         primary_key_column = a,
-  #         child_table = .y,
-  #         foreign_key_column = a
-  #       )
-  #     ),
-  #     "out/card-0-n-d1-d2.txt"
-  #   )
-  # )
 
-  expect_known_output(
-    expect_error(
-      check_cardinality_0_n(
-        parent_table = d1,
-        primary_key_column = a,
-        child_table = d2,
-        foreign_key_column = a
+  # expect specific errors and sometimes specific output due to errors ---------------
+
+  pmap(
+    list(d1_src,
+         d2_src,
+         card_0_n_d1_d2_names),
+    ~ expect_known_output(
+      expect_error(
+        check_cardinality_0_n(
+          parent_table = ..1,
+          primary_key_column = a,
+          child_table = ..2,
+          foreign_key_column = a
+          ),
+        "Column `a` in table `..2` contains values \\(see above\\) that are not present in column `a` in table `..1`"
+        ),
+      ..3
       )
-    ),
-    "out/card-0-n-d1-d2.txt"
   )
 
 
-  expect_known_output(
-    expect_error(
-      check_cardinality_0_1(d1, a, d2, a)
-    ),
-    "out/card-0-1-d1-d2.txt"
+  pmap(
+    list(d1_src,
+         d2_src,
+         card_0_1_d1_d2_names),
+    ~ expect_known_output(
+      expect_error(
+        check_cardinality_0_1(
+          parent_table = ..1,
+          primary_key_column = a,
+          child_table = ..2,
+          foreign_key_column = a
+        ),
+        "Column `a` in table `..2` contains values \\(see above\\) that are not present in column `a` in table `..1`"
+      ),
+      ..3
+    )
   )
 
-  expect_error(check_cardinality_1_1(d5, a, d4, c))
-  expect_error(check_cardinality_0_n(d4, c, d5, a))
-  expect_error(check_cardinality_0_1(d4, c, d1, a))
-  expect_error(check_cardinality_0_1(d1, a, d4, c))
-  expect_error(check_cardinality_1_1(d4, c, d1, a))
-  expect_error(check_cardinality_1_1(d1, a, d4, c))
+  map2(.x = d5_src,
+       .y = d4_src,
+       ~ expect_error(
+         check_cardinality_1_1(.x, a, .y, c),
+         "1..1 cardinality \\(bijectivity\\) is not given: Column `c` in table `.y` contains duplicate values."
+         )
+       )
+
+  map2(.x = d4_src,
+       .y = d5_src,
+       ~ expect_error(
+         check_cardinality_1_1(.x, c, .y, a),
+         "`c` is not a unique key of `.x`"
+       )
+  )
+
+  map2(.x = d4_src,
+       .y = d1_src,
+       ~ expect_error(
+         check_cardinality_1_1(.x, c, .y, a),
+         "`c` is not a unique key of `.x`"
+       )
+  )
+
+  map2(.x = d1_src,
+       .y = d4_src,
+       ~ expect_error(
+         check_cardinality_0_1(.x, a, .y, c),
+         "0..1 cardinality \\(injectivity from child table to parent table\\) is not given: Column `c` in table `.y` contains duplicate values."
+       )
+  )
+
+  map2(.x = d4_src,
+       .y = d1_src,
+       ~ expect_error(
+         check_cardinality_0_n(.x, c, .y, a),
+         "`c` is not a unique key of `.x`"
+       )
+  )
+
+  map2(.x = d4_src,
+       .y = d1_src,
+       ~ expect_error(
+         check_cardinality_1_1(.x, c, .y, a),
+         "`c` is not a unique key of `.x`"
+       )
+  )
+
+  map2(.x = d1_src,
+       .y = d4_src,
+       ~ expect_error(
+         check_cardinality_1_1(.x, a, .y, c),
+         "1..1 cardinality \\(bijectivity\\) is not given: Column `c` in table `.y` contains duplicate values."
+       )
+  )
+
 })
