@@ -1,0 +1,26 @@
+$df
+# A tibble: 3 x 6
+      b     c d         a e     f    
+  <dbl> <int> <chr> <int> <chr> <lgl>
+1   1.1     5 a         1 c     TRUE 
+2   4.2     6 b         2 b     FALSE
+3   1.1     7 c         1 c     TRUE 
+
+$sqlite
+# Source:   lazy query [?? x 6]
+# Database: sqlite 3.25.3 [:memory:]
+      b     c d         a e         f
+  <dbl> <int> <chr> <int> <chr> <int>
+1   1.1     5 a         1 c         1
+2   4.2     6 b         2 b         0
+3   1.1     7 c         1 c         1
+
+$postgres
+# Source:   lazy query [?? x 6]
+# Database: postgres 11.2.0 [postgres@localhost:5432/postgres]
+      b     c d         a e     f    
+  <dbl> <int> <chr> <int> <chr> <lgl>
+1   1.1     5 a         1 c     TRUE 
+2   4.2     6 b         2 b     FALSE
+3   1.1     7 c         1 c     TRUE 
+

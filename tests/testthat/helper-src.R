@@ -53,28 +53,36 @@ data_3_src <- test_load(data_3, name = "data_3")
 
 check_if_subset_2a_1a_names <- here(paste0("tests/testthat/out/check-if-subset-2a-1a-", src_names, ".txt"))
 
-# # for table-surgery functions ---------------------------------------------
-# data_4 <- tibble(
-#   a = as_integer(c(1, 2, 1)),
-#   b = c(1.1, 4.2, 1.1),
-#   c = as_integer(c(5, 6, 7)),
-#   d = c("a", "b", "c"),
-#   e = c("c", "b", "c"),
-#   f = c(TRUE, FALSE, TRUE)
-# )
-#
-# data_4_child <- tibble(
-#   b = c(1.1, 4.2, 1.1),
-#   aef_id = as_integer(c(1, 2, 1)),
-#   c = as_integer(c(5, 6, 7)),
-#   d = c("a", "b", "c"),
-# )
-#
-# data_4_parent <- tibble(
-#   aef_id = as_integer(c(1, 2)),
-#   a = as_integer(c(1, 2)),
-#   e = c("c", "b"),
-#   f = c(TRUE, FALSE)
-# )
-#
-# list_of_data_4_parent_and_child <- list("child_table" = data_4_child, "parent_table" = data_4_parent)
+# for table-surgery functions ---------------------------------------------
+data_ts <- tibble(
+  a = as_integer(c(1, 2, 1)),
+  b = c(1.1, 4.2, 1.1),
+  c = as_integer(c(5, 6, 7)),
+  d = c("a", "b", "c"),
+  e = c("c", "b", "c"),
+  f = c(TRUE, FALSE, TRUE)
+)
+
+data_ts_child <- tibble(
+  b = c(1.1, 4.2, 1.1),
+  aef_id = as_integer(c(1, 2, 1)),
+  c = as_integer(c(5, 6, 7)),
+  d = c("a", "b", "c"),
+)
+
+data_ts_parent <- tibble(
+  aef_id = as_integer(c(1, 2)),
+  a = as_integer(c(1, 2)),
+  e = c("c", "b"),
+  f = c(TRUE, FALSE)
+)
+
+data_ts_src <- test_load(data_ts)
+data_ts_child_src <- test_load(data_ts_child)
+data_ts_parent_src <- test_load(data_ts_parent)
+
+list_of_data_ts_parent_and_child_src <- map2(
+    .x = data_ts_child_src,
+    .y = data_ts_parent_src,
+  ~ list("child_table" = .x, "parent_table" = .y)
+  )
