@@ -1,7 +1,15 @@
+search_lib_and_load <- function(pkg) {
+  if (!is_installed(pkg)) abort(paste0("Testing package {dm} requires package {", pkg, "}. Please install e.g. from CRAN."))
+  library(pkg, character.only = TRUE)
+}
+
+search_lib_and_load("testthat")
+search_lib_and_load("dbplyr")
+search_lib_and_load("here")
+
 test_register_src("df", src_df(env = new.env()))
 test_register_src("sqlite", src_sqlite(":memory:", create = TRUE))
 test_register_src("postgres", src_postgres(dbname = 'postgres', host = "localhost", port = 5432, user = "postgres"))
-
 
 # for check_cardinality...() ----------------------------------------------
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
