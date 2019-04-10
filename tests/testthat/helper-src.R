@@ -1,6 +1,6 @@
 test_register_src("df", src_df(env = new.env()))
 test_register_src("sqlite", src_sqlite(":memory:", create = TRUE))
-test_register_src("postgres", src_postgres(host = "localhost", port = 5432))
+test_register_src("postgres", src_postgres(dbname = 'postgres', host = "localhost", port = 5432, user = "postgres"))
 
 
 # for check_cardinality...() ----------------------------------------------
