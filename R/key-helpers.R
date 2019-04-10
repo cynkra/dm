@@ -138,7 +138,8 @@ check_if_subset <- function(t1, c1, t2, c2) {
   v2 <- pull(eval_tidy(t2q), !!c2q)
 
   if (!all(v1 %in% v2)) {
-    print(eval_tidy(t1q) %>% filter(!(!!v1 %in% !!v2)))
+    setdiff_v1_v2 <- setdiff(v1, v2)
+    print(eval_tidy(t1q) %>% filter(!!c1q == setdiff_v1_v2))
     abort(paste0(
       "Column `",
       as_label(c1q),
