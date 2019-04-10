@@ -18,8 +18,7 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     testthat,
-    dbplyr,
-    RPostgres
+    dbplyr
 Imports: 
     tibble,
     purrr,
