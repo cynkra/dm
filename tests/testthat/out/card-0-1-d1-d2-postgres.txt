@@ -1,0 +1,5 @@
+# Source:   lazy query [?? x 2]
+# Database: postgres 11.2.0 [postgres@localhost:5432/postgres]
+      a b    
+  <dbl> <chr>
+1     6 e    

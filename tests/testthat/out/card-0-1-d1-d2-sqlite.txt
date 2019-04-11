@@ -1,0 +1,5 @@
+# Source:   lazy query [?? x 2]
+# Database: sqlite 3.25.3 [:memory:]
+      a b    
+  <dbl> <chr>
+1     6 e    

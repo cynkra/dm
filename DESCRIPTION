@@ -27,13 +27,13 @@ Imports:
     shiny,
     tibble
 Suggests: 
-    bit64,
     dbplyr,
-    RPostgres,
+    rprojroot,
     testthat
 Remotes: 
     bergant/datamodelr
 Encoding: UTF-8
 LazyData: true
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
+Roxygen: list(markdown = TRUE, roclets = c("collate",
+    "namespace", "rd"))
 RoxygenNote: 6.1.1
