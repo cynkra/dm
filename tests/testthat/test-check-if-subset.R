@@ -21,7 +21,8 @@ test_that("check_if_subset() checks if t1$c1 column values are subset of t2$c2 p
     ~ expect_known_output(
       expect_error(
         check_if_subset(..1, a, ..2, a),
-        "Column `a` in table `..1` contains values \\(see above\\) that are not present in column `a` in table `..2`"
+        "Column `a` in table `..1` contains values (see above) that are not present in column `a` in table `..2`",
+        fixed = TRUE
       ),
       ..3
     )

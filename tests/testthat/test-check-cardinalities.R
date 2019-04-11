@@ -70,7 +70,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
           child_table = ..2,
           foreign_key_column = a
           ),
-        "Column `a` in table `..2` contains values \\(see above\\) that are not present in column `a` in table `..1`"
+        "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
+        fixed = TRUE
         ),
       ..3
       )
@@ -89,7 +90,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
           child_table = ..2,
           foreign_key_column = a
         ),
-        "Column `a` in table `..2` contains values \\(see above\\) that are not present in column `a` in table `..1`"
+        "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
+        fixed = TRUE
       ),
       ..3
     )
@@ -99,7 +101,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
        .y = d4_src,
        ~ expect_error(
          check_cardinality_1_1(.x, a, .y, c),
-         "1..1 cardinality \\(bijectivity\\) is not given: Column `c` in table `.y` contains duplicate values."
+         "1..1 cardinality (bijectivity) is not given: Column `c` in table `.y` contains duplicate values.",
+         fixed = TRUE
          )
        )
 
@@ -123,7 +126,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
        .y = d4_src,
        ~ expect_error(
          check_cardinality_0_1(.x, a, .y, c),
-         "0..1 cardinality \\(injectivity from child table to parent table\\) is not given: Column `c` in table `.y` contains duplicate values."
+         "0..1 cardinality (injectivity from child table to parent table) is not given: Column `c` in table `.y` contains duplicate values.",
+         fixed = TRUE
        )
   )
 
@@ -147,7 +151,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
        .y = d4_src,
        ~ expect_error(
          check_cardinality_1_1(.x, a, .y, c),
-         "1..1 cardinality \\(bijectivity\\) is not given: Column `c` in table `.y` contains duplicate values."
+         "1..1 cardinality (bijectivity) is not given: Column `c` in table `.y` contains duplicate values.",
+         fixed = TRUE
        )
   )
 

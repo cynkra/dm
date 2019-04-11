@@ -21,7 +21,8 @@ test_that("check_set_equality() checks properly if 2 sets of values are equal?",
     ~ expect_known_output(
       expect_error(
         check_set_equality(..1, a, ..2, a),
-        "Column `a` in table `..2` contains values \\(see above\\) that are not present in column `a` in table `..1`"
+        "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
+        fixed = TRUE
         ),
       ..3
       )

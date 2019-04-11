@@ -5,7 +5,8 @@ test_that("check_key() checks primary key properly?", {
     .x = data_check_key_src,
     ~ expect_error(
       check_key(.x, c1, c2),
-      "`c1, c2` is not a unique key of `.x`"
+      "`c1, c2` is not a unique key of `.x`",
+      fixed = TRUE
     )
   )
 
