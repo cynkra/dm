@@ -113,7 +113,13 @@ as_dm.default <- function(x) {
     abort(paste0("Can't coerce <", class(x)[[1]], "> to <dm>."))
   }
 
-  src <- src_df(env = as.environment(x))
+  xl <- map(x, list)
+  names(xl)[names2(xl) == ""] <- ""
+
+  # Automatic name repair
+  names(x) <- names(as_tibble(xl, .name_repair = ~ make.names(., unique = TRUE)))
+
+  src <- src_df(env = new_environment(x))
   dm(src = src)
 }
 
