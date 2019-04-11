@@ -27,6 +27,7 @@ Imports:
     shiny,
     tibble
 Suggests: 
+    nycflights13,
     dbplyr,
     rprojroot,
     testthat

@@ -9,19 +9,16 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' iris_mtcars_dm_obj <- as_dm(
-#'     list(iris = iris %>%
-#'              mutate(id_column = row_number()) %>%
-#'              select(id_column, everything()),
-#'          mtcars = mtcars, iris_2 = iris)
-#'      )
+#' library(nycflights13)
+#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#'
 #' # the following works
-#' dm_add_primary_key(iris_mtcars_dm_obj, "iris", "id_column")
-#' dm_add_primary_key(iris_mtcars_dm_obj, "iris", id_column)
-#' dm_add_primary_key(iris_mtcars_dm_obj, "iris", "Sepal.Width", check_if_unique_key = FALSE)
+#' dm_add_primary_key(nycflights_dm, "planes", "tailnum")
+#' dm_add_primary_key(nycflights_dm, "airports", faa)
+#' dm_add_primary_key(nycflights_dm, "planes", "manufacturer", check_if_unique_key = FALSE)
 #'
 #' # the following does not work
-#' dm_add_primary_key(iris_mtcars_dm_obj, "iris", "Sepal.Width")
+#' dm_add_primary_key(nycflights_dm, "planes", "manufacturer")
 #' }
 dm_add_primary_key <- function(dm, table, column, check_if_unique_key = TRUE) {
 
