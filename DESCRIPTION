@@ -28,7 +28,7 @@ Imports:
     tibble
 Suggests: 
     dbplyr,
-    here,
+    rprojroot,
     testthat
 Remotes: 
     bergant/datamodelr

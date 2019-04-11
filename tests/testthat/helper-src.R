@@ -5,7 +5,7 @@ search_lib_and_load <- function(pkg) {
 
 search_lib_and_load("testthat")
 search_lib_and_load("dbplyr")
-suppressMessages(search_lib_and_load("here"))
+search_lib_and_load("rprojroot")
 
 test_register_src("df", src_df(env = new.env()))
 test_register_src("sqlite", src_sqlite(":memory:", create = TRUE))
