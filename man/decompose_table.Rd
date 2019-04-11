@@ -7,11 +7,11 @@
 decompose_table(.data, new_id_column, ...)
 }
 \arguments{
-\item{.data}{Data frame from which columns `...` are to be extracted.}
+\item{.data}{Data frame from which columns \code{...} are to be extracted.}
 
 \item{new_id_column}{Name of the identifier column (primary key column) for the parent table. A column of this name is also added in 'child table'.}
 
-\item{...}{The columns to be extracted from the `.data`.
+\item{...}{The columns to be extracted from the \code{.data}.
 
 One or more unquoted expressions separated by commas. You can treat variable names like they are positions, so you
 can use expressions like x:y to select ranges of variables.
@@ -24,7 +24,7 @@ See select helpers for more details and examples about tidyselect helpers such a
 \description{
 Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.
 
-`decompose_table()` accepts a data frame, a name for an 'ID column' that will be newly created, and the names
+\code{decompose_table()} accepts a data frame, a name for an 'ID column' that will be newly created, and the names
 of the columns which will be extracted into the new data frame.
 
 It creates the 'parent table', consisting of the columns specified in the ellipsis and the new 'ID column'. Then it removes the

@@ -1,7 +1,7 @@
 Package: dm
-Date: 2019-04-05
 Title: Assisting functions for work with data models
 Version: 0.0.0.9001
+Date: 2019-04-05
 Authors@R: 
     c(person(given = "Kirill",
              family = "Müller",
@@ -12,20 +12,28 @@ Authors@R:
              family = "Schieferdecker",
              role = "aut",
              email = "tobias@cynkra.com"))
-Description: Some actions and transformations that are frequently required when dealing with data models are covered by the functions of this package.
+Description: Some actions and transformations that are
+    frequently required when dealing with data models are covered by the
+    functions of this package.
 License: MIT + file LICENSE
+Imports: 
+    cli,
+    datamodelr,
+    dplyr,
+    DT (>= 0.5),
+    magrittr,
+    purrr,
+    rlang,
+    shiny,
+    tibble
+Suggests: 
+    dbplyr,
+    here,
+    testthat
+Remotes: 
+    bergant/datamodelr
 Encoding: UTF-8
 LazyData: true
-Suggests: 
-    testthat,
-    dbplyr,
-    here
-Imports: 
-    tibble,
-    purrr,
-    magrittr,
-    rlang,
-    dplyr,
-    shiny,
-    DT (>= 0.5),
+Roxygen: list(markdown = TRUE, roclets = c("collate",
+    "namespace", "rd"))
 RoxygenNote: 6.1.1

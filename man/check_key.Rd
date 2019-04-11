@@ -20,7 +20,7 @@ unquoting and splicing. See vignette("programming") for an introduction to these
 See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...}
 }
 \description{
-`check_key()` accepts a data frame and optionally columns and throws an error,
+\code{check_key()} accepts a data frame and optionally columns and throws an error,
 if the given columns (or all columns if none specified) are NOT a unique key of the data frame.
 If the columns given in the ellipsis ARE a key, the data frame itself is returned silently for piping convenience.
 }
