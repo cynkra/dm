@@ -2,6 +2,8 @@ context("test-check-cardinalities")
 
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
 
+  card_0_n_d1_d2_names <- here(paste0("tests/testthat/out/card-0-n-d1-d2-", src_names, ".txt"))
+  card_0_1_d1_d2_names <- here(paste0("tests/testthat/out/card-0-1-d1-d2-", src_names, ".txt"))
 
 #  expecting silent: ------------------------------------------------------
 

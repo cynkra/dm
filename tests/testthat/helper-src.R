@@ -26,10 +26,8 @@ d4_src <- test_load(d4, name = "d4")
 d5_src <- test_load(d5, name = "d5")
 d6_src <- test_load(d6, name = "d6")
 
-# files for mismatch-comparison; 1 name for each src needs to be given
+# names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
 src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
-card_0_n_d1_d2_names <- here(paste0("tests/testthat/out/card-0-n-d1-d2-", src_names, ".txt"))
-card_0_1_d1_d2_names <- here(paste0("tests/testthat/out/card-0-1-d1-d2-", src_names, ".txt"))
 
 # # for check_key() ---------------------------------------------------------
 data <-
@@ -51,8 +49,7 @@ data_1_src <- test_load(data_1, name = "data_1")
 data_2_src <- test_load(data_2, name = "data_2")
 data_3_src <- test_load(data_3, name = "data_3")
 
-check_if_subset_2a_1a_names <- here(paste0("tests/testthat/out/check-if-subset-2a-1a-", src_names, ".txt"))
-check_set_equality_1a_2a_names <- here(paste0("tests/testthat/out/check-set-equality-1a-2a-", src_names, ".txt"))
+
 
 # for table-surgery functions ---------------------------------------------
 data_ts <- tibble(

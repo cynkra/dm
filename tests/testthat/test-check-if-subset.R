@@ -1,6 +1,9 @@
 context("test-check_if_subset")
 
 test_that("check_if_subset() checks if t1$c1 column values are subset of t2$c2 properly?", {
+
+  check_if_subset_2a_1a_names <- here(paste0("tests/testthat/out/check-if-subset-2a-1a-", src_names, ".txt"))
+
   map2(
     .x = data_1_src,
     .y = data_2_src,
