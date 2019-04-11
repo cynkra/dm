@@ -2,8 +2,9 @@
 
 #' Mark a column of a table in a `dm`-object as its primary key
 #'
-#'
-#'
+#' @description `dm_add_primary_key()` first checks , if the given column
+#' is a unique key of the given table in the `dm`-object. If yes, it then marks
+#' that column as the table's primary key in the `data_model`-part of the `dm`-object.
 #'
 #' @export
 #' @examples

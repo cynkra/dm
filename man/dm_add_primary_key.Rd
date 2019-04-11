@@ -7,7 +7,9 @@
 dm_add_primary_key(dm, table, column, check_if_unique_key = TRUE)
 }
 \description{
-Mark a column of a table in a \code{dm}-object as its primary key
+\code{dm_add_primary_key()} first checks , if the given column
+is a unique key of the given table in the \code{dm}-object. If yes, it then marks
+that column as the table's primary key in the \code{data_model}-part of the \code{dm}-object.
 }
 \examples{
 \dontrun{
