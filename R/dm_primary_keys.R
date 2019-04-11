@@ -1,5 +1,27 @@
 # for external users: also checks if really is primary key
+
+#' Mark a column of a table in a `dm`-object as its primary key
+#'
+#'
+#'
+#'
 #' @export
+#' @examples
+#' \dontrun{
+#' iris_mtcars_dm_obj <- as_dm(
+#'     list(iris = iris %>%
+#'              mutate(id_column = row_number()) %>%
+#'              select(id_column, everything()),
+#'          mtcars = mtcars, iris_2 = iris)
+#'      )
+#' # the following works
+#' dm_add_primary_key(iris_mtcars_dm_obj, "iris", "id_column")
+#' dm_add_primary_key(iris_mtcars_dm_obj, "iris", id_column)
+#' dm_add_primary_key(iris_mtcars_dm_obj, "iris", "Sepal.Width", check_if_unique_key = FALSE)
+#'
+#' # the following does not work
+#' dm_add_primary_key(iris_mtcars_dm_obj, "iris", "Sepal.Width")
+#' }
 dm_add_primary_key <- function(dm, table, column, check_if_unique_key = TRUE) {
 
   if (!is_dm(dm)) abort("'dm' has to be of class 'dm'")
