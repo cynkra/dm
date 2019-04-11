@@ -45,16 +45,16 @@ dm_add_primary_key <- function(dm, table, column, check_if_unique_key = TRUE) {
     check_key(table_from_dm, !! col_expr)
   }
 
-  dm_add_key(dm, table, col_name)
+  cdm_add_key(dm, table, col_name)
 }
 
 # "table" and "column" has to be character
 # in {datamodelr} a primary key can also consists of more than one column
 # only adds key, independent if it is unique key or not; not to be exported
-dm_add_key <- function(dm, table, column) {
+cdm_add_key <- function(dm, table, column) {
 
   new_data_model <- dm_get_data_model(dm) %>%
     dm_set_key(table, column)
 
-  dm(dm_get_src(dm), new_data_model)
+  new_dm(dm_get_src(dm), new_data_model)
 }
