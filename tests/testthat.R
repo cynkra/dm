@@ -1,2 +1,1 @@
-
-test_check("dm")
+try(test_check("dm"))
