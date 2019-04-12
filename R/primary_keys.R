@@ -48,6 +48,7 @@ dm_add_primary_key <- function(dm, table, column, check_if_unique_key = TRUE) {
 # "table" and "column" has to be character
 # in {datamodelr} a primary key can also consists of more than one column
 # only adds key, independent if it is unique key or not; not to be exported
+# the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
 cdm_add_key <- function(dm, table, column) {
 
   new_data_model <- dm_get_data_model(dm) %>%
