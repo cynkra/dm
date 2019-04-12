@@ -35,3 +35,21 @@ copy_list_of_tables_to <-
   function(src, list_of_tables, name_vector = names(list_of_tables), overwrite = FALSE, ...) {
     map2(list_of_tables, name_vector, ~ copy_to(dest = src, df = .x, name = .y, overwrite = overwrite))
   }
+
+# internal helper function:
+# validates, that object `dm` is of class `dm` and that `table` is character and is part of the `dm`-object
+check_correct_input <- function(dm, table) {
+  if (!is_dm(dm)) abort("'dm' has to be of class 'dm'")
+  if (!is_bare_character(table) || length(table) > 1) {
+    abort("Argument 'table' has to be given as 1 element character variable")
+  }
+  dm_table_names <- src_tbls(dm)
+  if (!table %in% dm_table_names) abort(
+    paste0(
+      "Table: ",
+      table,
+      " not in `dm`-object. Available table names are: ",
+      paste0(dm_table_names, collapse = ", ")
+    )
+  )
+}
