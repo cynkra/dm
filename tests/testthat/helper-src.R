@@ -83,3 +83,9 @@ list_of_data_ts_parent_and_child_src <- map2(
     .y = data_ts_parent_src,
   ~ list("child_table" = .x, "parent_table" = .y)
   )
+
+
+# for `dm`-object tests: cdm_add_key(), dm_add_primary_key() --------------------------------
+
+dm_test_obj <- as_dm(list(dm_table_1 = d2, dm_table_2 = d4, dm_table_3 = d2))
+dm_test_obj_src <- dm_test_load(dm_test_obj)
