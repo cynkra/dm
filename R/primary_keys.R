@@ -37,14 +37,18 @@ dm_add_primary_key <- function(
     abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
   }
 
+    if (!replace_old_key) {
+    old_key <- dm_get_primary_key_column_from_table(dm, table)
+    if (old_key == col_name) {
+      return(dm)
+    } else {
+      abort("If you want to change the existing primary key for a table, set `replace_old_key` == TRUE.")
+    }
+  }
+
   if (check_if_unique_key) {
     table_from_dm <- tbl(dm, table)
     check_key(table_from_dm, !! col_expr)
-  }
-
-  if (!replace_old_key) {
-    old_key <- dm_get_primary_key_column_from_table(dm, table)
-    if (old_key != col_name) abort("If you want to change the existing primary key for a table, set `replace_old_key` == TRUE.")
   }
 
   dm_remove_primary_key(dm, table) %>% cdm_add_key(table, col_name)
