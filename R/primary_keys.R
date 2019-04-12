@@ -94,10 +94,9 @@ dm_check_if_table_has_primary_key <- function(dm, table) {
 dm_remove_primary_key <- function(dm, table) {
   check_correct_input(dm, table)
 
-  if (dm_check_if_table_has_primary_key(dm, table)) {
-    update_cols <- dm$data_model$columns$table == table
-    dm$data_model$columns$key[update_cols] <- 0
-  }
+  update_cols <- dm$data_model$columns$table == table
+  dm$data_model$columns$key[update_cols] <- 0
+
   dm
 
 }
