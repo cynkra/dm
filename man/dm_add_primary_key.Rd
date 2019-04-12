@@ -4,7 +4,8 @@
 \alias{dm_add_primary_key}
 \title{Mark a column of a table in a \code{dm}-object as its primary key}
 \usage{
-dm_add_primary_key(dm, table, column, check_if_unique_key = TRUE)
+dm_add_primary_key(dm, table, column, check_if_unique_key = TRUE,
+  replace_old_key = TRUE)
 }
 \description{
 \code{dm_add_primary_key()} first checks , if the given column
