@@ -14,6 +14,8 @@ that column as the table's primary key in the \code{data_model}-part of the \cod
 \examples{
 \dontrun{
 library(nycflights13)
+library(dplyr)
+
 nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 
 # the following works
