@@ -56,3 +56,23 @@ cdm_add_key <- function(dm, table, column) {
 
   new_dm(dm_get_src(dm), new_data_model)
 }
+
+#' @export
+dm_check_if_table_has_primary_key <- function(dm, table) {
+  if (!is_dm(dm)) abort("'dm' has to be of class 'dm'")
+  if (!is_bare_character(table) || length(table) > 1) {
+    abort("Argument 'table' has to be given as 1 element character variable")
+  }
+  dm_table_names <- src_tbls(dm)
+  if (!table %in% dm_table_names) abort(
+    paste0(
+      "Table: ",
+      table,
+      " not in `dm`-object. Available table names are: ",
+      paste0(dm_table_names, collapse = ", ")
+      )
+    )
+
+  cols_from_table <- dm_get_data_model(dm)$columns$table == table
+  !all(dm_get_data_model(dm)$columns$key[cols_from_table] == 0)
+}
