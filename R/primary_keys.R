@@ -61,3 +61,41 @@ dm_check_if_table_has_primary_key <- function(dm, table) {
   cols_from_table <- dm_get_data_model(dm)$columns$table == table
   !all(dm_get_data_model(dm)$columns$key[cols_from_table] == 0)
 }
+
+
+#' Remove primary key from a table in a `dm`-object
+#'
+#' @description `dm_remove_primary_key()` removes a potentially set primary key from a table in the
+#' underlying `data_model`-object and otherwise leaves the `dm`-object untouched.
+#'
+#' @examples
+#' \dontrun{
+#' library(nycflights13)
+#' library(dplyr)
+#'
+#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#'
+#' # the following works
+#' dm_obj_with_keys <- dm_add_primary_key(nycflights_dm, "planes", "tailnum") %>%
+#'   dm_add_primary_key("airports", faa)
+#'
+#' dm_obj_with_keys %>%
+#'   dm_remove_primary_key("airports") %>%
+#'   dm_check_if_table_has_primary_key("planes")
+#'
+#' dm_obj_with_keys %>%
+#'   dm_remove_primary_key("planes") %>%
+#'   dm_check_if_table_has_primary_key("planes")
+#' }
+#'
+#' @export
+dm_remove_primary_key <- function(dm, table) {
+  check_correct_input(dm, table)
+
+  if (dm_check_if_table_has_primary_key(dm, table)) {
+    update_cols <- dm$data_model$columns$table == table
+    dm$data_model$columns$key[update_cols] <- 0
+  }
+  dm
+
+}
