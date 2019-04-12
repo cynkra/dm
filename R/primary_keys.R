@@ -10,6 +10,8 @@
 #' @examples
 #' \dontrun{
 #' library(nycflights13)
+#' library(dplyr)
+#'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
