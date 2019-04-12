@@ -22,10 +22,7 @@
 #' }
 dm_add_primary_key <- function(dm, table, column, check_if_unique_key = TRUE) {
 
-  if (!is_dm(dm)) abort("'dm' has to be of class 'dm'")
-  if (!is_bare_character(table) || length(table) > 1) {
-    abort("Argument 'table' has to be given as 1 element character variable")
-  }
+  check_correct_input(dm, table)
 
   if (is_symbol(enexpr(column))) {
     col_expr <- enexpr(column)
@@ -34,7 +31,7 @@ dm_add_primary_key <- function(dm, table, column, check_if_unique_key = TRUE) {
     col_name <- column
     col_expr <- ensym(column)
   } else {
-    abort("Argument 'column' has to be given as 1 element character variable or unquoted")
+    abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
   }
 
   if (check_if_unique_key) {
@@ -59,19 +56,7 @@ cdm_add_key <- function(dm, table, column) {
 
 #' @export
 dm_check_if_table_has_primary_key <- function(dm, table) {
-  if (!is_dm(dm)) abort("'dm' has to be of class 'dm'")
-  if (!is_bare_character(table) || length(table) > 1) {
-    abort("Argument 'table' has to be given as 1 element character variable")
-  }
-  dm_table_names <- src_tbls(dm)
-  if (!table %in% dm_table_names) abort(
-    paste0(
-      "Table: ",
-      table,
-      " not in `dm`-object. Available table names are: ",
-      paste0(dm_table_names, collapse = ", ")
-      )
-    )
+  check_correct_input(dm, table)
 
   cols_from_table <- dm_get_data_model(dm)$columns$table == table
   !all(dm_get_data_model(dm)$columns$key[cols_from_table] == 0)
