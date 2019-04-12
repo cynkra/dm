@@ -22,7 +22,8 @@
 #' # the following does not work
 #' dm_add_primary_key(nycflights_dm, "planes", "manufacturer")
 #' }
-dm_add_primary_key <- function(dm, table, column, check_if_unique_key = TRUE) {
+dm_add_primary_key <- function(
+  dm, table, column, check_if_unique_key = TRUE, replace_old_key = TRUE) {
 
   check_correct_input(dm, table)
 
@@ -41,7 +42,12 @@ dm_add_primary_key <- function(dm, table, column, check_if_unique_key = TRUE) {
     check_key(table_from_dm, !! col_expr)
   }
 
-  cdm_add_key(dm, table, col_name)
+  if (!replace_old_key) {
+    old_key <- dm_get_primary_key_column_from_table(dm, table)
+    if (old_key != col_name) abort("If you want to change the existing primary key for a table, set `replace_old_key` == TRUE.")
+  }
+
+  dm_remove_primary_key(dm, table) %>% cdm_add_key(table, col_name)
 }
 
 # "table" and "column" has to be character
