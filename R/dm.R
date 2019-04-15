@@ -70,7 +70,7 @@ validate_dm <- function(x) {
 
 #' Get source component
 #'
-#' `dm_get_src()` returns the \pkg{dplyr} source component of a `dm`.
+#' `dm_get_src()` returns the \pkg{dplyr} source component of a `dm`
 #' object.
 #'
 #' @rdname dm
@@ -79,9 +79,20 @@ dm_get_src <- function(x) {
   x$src
 }
 
+#' Get tables component
+#'
+#' `dm_get_tables()` returns a named list with \pkg{dplyr} [tbl] objects
+#' of a `dm` object.
+#'
+#' @rdname dm
+#' @export
+dm_get_tables <- function(x) {
+  x$tables
+}
+
 #' Get data_model component
 #'
-#' `dm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`.
+#' `dm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
 #' object.
 #'
 #' @rdname dm

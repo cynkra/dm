@@ -5,6 +5,7 @@
 \alias{new_dm}
 \alias{validate_dm}
 \alias{dm_get_src}
+\alias{dm_get_tables}
 \alias{dm_get_data_model}
 \alias{is_dm}
 \alias{as_dm}
@@ -17,6 +18,8 @@ new_dm(src, data_model)
 validate_dm(x)
 
 dm_get_src(x)
+
+dm_get_tables(x)
 
 dm_get_data_model(x)
 
@@ -42,10 +45,13 @@ based on \link[datamodelr:datamodelr-package]{datamodelr::datamodelr-package}.
 \code{validate_dm()} checks consistency between the \pkg{dplyr} source
 and the \pkg{datamodelr} based specification of table relationships.
 
-\code{dm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}.
+\code{dm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}
 object.
 
-\code{dm_get_data_model()} returns the \pkg{datamodelr} data model component of a \code{dm}.
+\code{dm_get_tables()} returns a named list with \pkg{dplyr} \link{tbl} objects
+of a \code{dm} object.
+
+\code{dm_get_data_model()} returns the \pkg{datamodelr} data model component of a \code{dm}
 object.
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
