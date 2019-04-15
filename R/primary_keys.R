@@ -88,6 +88,13 @@ dm_check_if_table_has_primary_key <- function(dm, table) {
   check_correct_input(dm, table)
 
   cols_from_table <- dm_get_data_model(dm)$columns$table == table
+  if (sum(dm_get_data_model(dm)$columns$key[cols_from_table] > 0) > 1) {
+    abort(
+      paste0(
+        "Please use dm_remove_primary_key() on ", table, ", more than 1 primary key is currently set for it."
+        )
+      )
+  }
   !all(dm_get_data_model(dm)$columns$key[cols_from_table] == 0)
 }
 
