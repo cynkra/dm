@@ -194,6 +194,7 @@ dm_check_for_primary_key_candidates <- function(dm, table) {
   map(tbl_colnames, ~ is_unique_key(tbl, eval_tidy(.x))) %>%
     set_names(tbl_colnames) %>%
     as_tibble() %>%
+    collect() %>%
     gather(
       key = "column",
       value = "candidate"
