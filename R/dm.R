@@ -22,7 +22,10 @@ dm <- function(src, data_model = NULL) {
     data_model <- datamodelr::dm_from_data_frames(tbl_structures)
   }
 
-  new_dm(src, data_model)
+  table_names <- set_names(data_model$tables$table)
+  tables <- map(table_names, tbl, src = src)
+
+  new_dm(src, tables, data_model)
 }
 
 #' Low-level constructor
@@ -31,12 +34,9 @@ dm <- function(src, data_model = NULL) {
 #'
 #' @rdname dm
 #' @export
-new_dm <- function(src, data_model) {
+new_dm <- function(src, tables, data_model) {
   stopifnot(dplyr::is.src(src))
   stopifnot(datamodelr::is.data_model(data_model))
-
-  table_names <- set_names(data_model$tables$table)
-  tables <- map(table_names, tbl, src = src)
 
   structure(
     list(
