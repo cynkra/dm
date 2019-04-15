@@ -66,6 +66,23 @@ cdm_add_key <- function(dm, table, column) {
   new_dm(dm_get_src(dm), new_data_model)
 }
 
+#' Does a table of a `dm`-object have a column set as primary key?
+#'
+#' @description `dm_check_if_table_has_primary_key()` checks in the `data_model` part
+#' of the `dm`-object if a given table has a column marked as primary key.
+#'
+#' @examples
+#' \dontrun{
+#' library(nycflights13)
+#' library(dplyr)
+#'
+#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#' dm_obj_with_keys <- dm_add_primary_key(nycflights_dm, "planes", "tailnum")
+#'
+#' dm_obj_with_keys %>%
+#'   dm_check_if_table_has_primary_key("planes")
+#' }
+#'
 #' @export
 dm_check_if_table_has_primary_key <- function(dm, table) {
   check_correct_input(dm, table)
@@ -74,6 +91,24 @@ dm_check_if_table_has_primary_key <- function(dm, table) {
   !all(dm_get_data_model(dm)$columns$key[cols_from_table] == 0)
 }
 
+#' Retrieve the name of the column marked as primary key of a table of a `dm`-object
+#'
+#' @description `dm_get_primary_key_column_from_table()` returns the name of the
+#' column marked as primary key of a table of a `dm`-object. If no primary key is
+#' set for the table, an empty character variable is returned.
+#'
+#' @examples
+#' \dontrun{
+#' library(nycflights13)
+#' library(dplyr)
+#'
+#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#' dm_obj_with_keys <- dm_add_primary_key(nycflights_dm, "planes", "tailnum")
+#'
+#' dm_obj_with_keys %>%
+#'   dm_get_primary_key_column_from_table("planes")
+#' }
+#'
 #' @export
 dm_get_primary_key_column_from_table <- function(dm, table) {
   check_correct_input(dm, table)
