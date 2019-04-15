@@ -210,7 +210,7 @@ dm_create_surrogate_key_for_table <- function(dm, table, new_id_column = paste0(
   }
 
   new_table <- find_new_name(dm, table)
-  browser()
+
   tbl <- tbl(dm_get_src(dm), table)
 
   tbl_extended <-
