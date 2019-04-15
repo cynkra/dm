@@ -153,7 +153,7 @@ format.dm <- function(x, ...) {
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
 
-  db_info <- strsplit(format(src_memdb()), "\n")[[1]][[1]]
+  db_info <- strsplit(format(x$src), "\n")[[1]][[1]]
   cat_line(db_info)
 
   cat_rule("Data model", col = "violet")
