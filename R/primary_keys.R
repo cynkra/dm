@@ -201,7 +201,7 @@ dm_check_for_primary_key_candidates <- function(dm, table) {
       )
 }
 
-dm_create_surrogate_key_for_table <- function(dm, table, new_id_column) {
+dm_create_surrogate_key_for_table <- function(dm, table, new_id_column = paste0(table, "_id")) {
   check_correct_input(dm, table)
   if (dm_check_if_table_has_primary_key(dm, table)) {
     abort(paste0("Table `", table, "` already has a primary key. If you really want to",
@@ -209,31 +209,37 @@ dm_create_surrogate_key_for_table <- function(dm, table, new_id_column) {
                  "`dm_remove_primary_key()` first."))
   }
 
-  id_col_q <- enexpr(new_id_column)
-
-  tbl <- tbl(dm$src, table)
+  new_table <- find_new_name(dm, table)
+  browser()
+  tbl <- tbl(dm_get_src(dm), table)
 
   tbl_extended <-
     tbl %>%
-    mutate(!! id_col_q := row_number()) %>%
-    select(!! id_col_q, everything())
+    mutate(!! new_id_column := row_number()) %>%
+    select(!! new_id_column, everything())
 
-  copy_to(dm$src, tbl_extended, name = table, overwrite = TRUE) # FIXME: temporary = ?; it could be that a user wants to permanently change a table
+  copy_to(dm_get_src(dm), tbl_extended, name = new_table) # FIXME: temporary = ?; it could be that a user wants to permanently change a table
 
   old_dm <- dm_get_data_model(dm)
 
   ind_cols_from_table <- old_dm$columns$table == table
   temp_dm_columns <- old_dm$columns[!ind_cols_from_table,]
 
-  dm_cols_table <- old_dm$columns[ind_cols_from_table,] %>%
-    bind_rows(c("column" = eval_tidy(id_col_q),
-                "type" = "integer",
-                "table" = table,
-                "ref" = "<NA>")
-              )
+  dm_cols_table <- bind_rows(
+    c("column" = new_id_column,
+    "type" = "integer",
+    "table" = new_table,
+    "ref" = "<NA>"),
+    old_dm$columns[ind_cols_from_table,]
+    )
+
+  dm_cols_table$table <- new_table
 
   new_dm_columns <- temp_dm_columns %>% bind_rows(dm_cols_table)
   dm$data_model$columns <- new_dm_columns
 
-  dm_add_primary_key(dm, table, eval_tidy(new_id_column))
+  ind_dm_table <- dm$data_model$tables$table == table
+  dm$data_model$tables$table[ind_dm_table] <- new_table
+
+  dm_add_primary_key(dm, new_table, eval_tidy(new_id_column))
 }
