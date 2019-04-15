@@ -164,3 +164,38 @@ dm_remove_primary_key <- function(dm, table) {
   dm
 
 }
+
+
+#' Which columns are candidates for a primary key column of a `dm`-object's table?
+#'
+#' @description `dm_check_for_primary_key_candidates()` checks for each column of a
+#' table of a `dm`-object if this column contains only unique values and is therefore
+#' a unique key of this table.
+#'
+#' @examples
+#' \dontrun{
+#' library(nycflights13)
+#' library(dplyr)
+#'
+#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#'
+#' nycflights_dm %>% dm_check_for_primary_key_candidates("flights")
+#' nycflights_dm %>% dm_check_for_primary_key_candidates("airports")
+#' }
+#'
+#' @export
+dm_check_for_primary_key_candidates <- function(dm, table) {
+  check_correct_input(dm, table)
+
+  tbl <- tbl(dm$src, table)
+  tbl_colnames <- colnames(tbl)
+
+  # list of ayes and noes:
+  map(tbl_colnames, ~ is_unique_key(tbl, eval_tidy(.x))) %>%
+    set_names(tbl_colnames) %>%
+    as_tibble() %>%
+    gather(
+      key = "column",
+      value = "candidate"
+      )
+}
