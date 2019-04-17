@@ -13,7 +13,7 @@
 \usage{
 dm(src, data_model = NULL)
 
-new_dm(src, data_model)
+new_dm(src, tables, data_model)
 
 validate_dm(x)
 

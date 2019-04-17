@@ -4,13 +4,13 @@
 \alias{dm_add_primary_key}
 \title{Mark a column of a table in a \code{dm}-object as its primary key}
 \usage{
-dm_add_primary_key(dm, table, column, check_if_unique_key = TRUE,
-  replace_old_key = TRUE)
+dm_add_primary_key(dm, table, column, check = TRUE, force = TRUE)
 }
 \description{
-\code{dm_add_primary_key()} first checks , if the given column
-is a unique key of the given table in the \code{dm}-object. If yes, it then marks
-that column as the table's primary key in the \code{data_model}-part of the \code{dm}-object.
+\code{dm_add_primary_key()} marks the given column as the given table's primary key
+in the \code{data_model}-part of the \code{dm}-object. If \code{check == TRUE}, it also first checks if
+the given column is a unique key of the table. If \code{force == TRUE}, it replaces an already
+set key.
 }
 \examples{
 \dontrun{
@@ -22,7 +22,7 @@ nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 # the following works
 dm_add_primary_key(nycflights_dm, "planes", "tailnum")
 dm_add_primary_key(nycflights_dm, "airports", faa)
-dm_add_primary_key(nycflights_dm, "planes", "manufacturer", check_if_unique_key = FALSE)
+dm_add_primary_key(nycflights_dm, "planes", "manufacturer", check = FALSE)
 
 # the following does not work
 dm_add_primary_key(nycflights_dm, "planes", "manufacturer")
