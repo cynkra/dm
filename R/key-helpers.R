@@ -39,13 +39,34 @@ check_key <- function(.data, ...) {
   if (nrow(duplicate_rows) != 0) {
     abort(paste0(
       "`",
-      paste(purrr::map_chr(args, as_label), collapse = ", "),
+      paste(map_chr(args, as_label), collapse = ", "),
       "` is not a unique key of `",
       as_label(data_q), "`"
     ))
   }
 
   invisible(.data)
+}
+
+# internal function to check if a column is a unique key of a table
+is_unique_key <- function(.data, column) {
+  if (is_symbol(enexpr(column))) {
+    col_expr <- enexpr(column)
+    col_name <- as_name(col_expr)
+  } else if (is_character(column)) {
+    col_name <- column
+    col_expr <- ensym(column)
+  } else {
+    abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
+  }
+
+  duplicate_rows <-
+    .data %>%
+    as_tibble() %>%
+    count(!! col_expr) %>%
+    filter(n != 1)
+
+  nrow(duplicate_rows) == 0
 }
 
 

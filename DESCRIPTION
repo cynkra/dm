@@ -25,9 +25,11 @@ Imports:
     purrr,
     rlang,
     shiny,
-    tibble
+    tibble,
+    tidyr
 Suggests: 
     dbplyr,
+    nycflights13,
     rprojroot,
     testthat
 Remotes: 
