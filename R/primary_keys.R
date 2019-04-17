@@ -37,7 +37,7 @@ dm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
   }
 
   if (!force) {
-    old_key <- dm_get_pk_column_from_table(dm, table)
+    old_key <- dm_get_pk(dm, table)
     if (old_key == col_name) {
       return(dm)
     } else {
@@ -50,14 +50,14 @@ dm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
     check_key(table_from_dm, !!col_expr)
   }
 
-  dm_remove_pk(dm, table) %>% cdm_add_key(table, col_name)
+  dm_remove_pk(dm, table) %>% cdm_add_pk(table, col_name)
 }
 
 # "table" and "column" has to be character
 # in {datamodelr} a primary key can also consists of more than one column
 # only adds key, independent if it is unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
-cdm_add_key <- function(dm, table, column) {
+cdm_add_pk <- function(dm, table, column) {
   new_data_model <- dm_get_data_model(dm) %>%
     dm_set_key(table, column)
 
@@ -66,7 +66,7 @@ cdm_add_key <- function(dm, table, column) {
 
 #' Does a table of a `dm`-object have a column set as primary key?
 #'
-#' @description `dm_check_if_table_has_pk()` checks in the `data_model` part
+#' @description `dm_has_pk()` checks in the `data_model` part
 #' of the `dm`-object if a given table has a column marked as primary key.
 #'
 #' @examples
@@ -78,11 +78,11 @@ cdm_add_key <- function(dm, table, column) {
 #' dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum")
 #' 
 #' dm_obj_with_keys %>%
-#'   dm_check_if_table_has_pk("planes")
+#'   dm_has_pk("planes")
 #' }
 #' 
 #' @export
-dm_check_if_table_has_pk <- function(dm, table) {
+dm_has_pk <- function(dm, table) {
   check_correct_input(dm, table)
   dm_data_model <- dm_get_data_model(dm)
 
@@ -99,7 +99,7 @@ dm_check_if_table_has_pk <- function(dm, table) {
 
 #' Retrieve the name of the column marked as primary key of a table of a `dm`-object
 #'
-#' @description `dm_get_pk_column_from_table()` returns the name of the
+#' @description `dm_get_pk()` returns the name of the
 #' column marked as primary key of a table of a `dm`-object. If no primary key is
 #' set for the table, an empty character variable is returned.
 #'
@@ -112,11 +112,11 @@ dm_check_if_table_has_pk <- function(dm, table) {
 #' dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum")
 #' 
 #' dm_obj_with_keys %>%
-#'   dm_get_pk_column_from_table("planes")
+#'   dm_get_pk("planes")
 #' }
 #' 
 #' @export
-dm_get_pk_column_from_table <- function(dm, table) {
+dm_get_pk <- function(dm, table) {
   check_correct_input(dm, table)
   dm_data_model <- dm_get_data_model(dm)
 
@@ -149,11 +149,11 @@ dm_get_pk_column_from_table <- function(dm, table) {
 #' 
 #' dm_obj_with_keys %>%
 #'   dm_remove_pk("airports") %>%
-#'   dm_check_if_table_has_pk("planes")
+#'   dm_has_pk("planes")
 #' 
 #' dm_obj_with_keys %>%
 #'   dm_remove_pk("planes") %>%
-#'   dm_check_if_table_has_pk("planes")
+#'   dm_has_pk("planes")
 #' }
 #' 
 #' @export

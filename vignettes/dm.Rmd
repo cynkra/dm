@@ -1,0 +1,107 @@
+---
+title: "Introduction to dm"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The goal of both the package dm and the class `dm` - which comes along with it - is to make your life easier when you have to deal with data models the data therein.
+
+Let's first have a look at the new class:
+
+## Class `dm`
+
+The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. You can have your `dm`-object on different data sources, such as a local environment or a database. In the latter use case you need to have the package dbplyr installed. 
+
+`dm` is a wrapper around two classes, which are independent from each other:
+
+1. part of the object is a [`src`-object](https://dplyr.tidyverse.org/reference/src.html) from dplyr
+2. the other part is a class `data_model` object
+ from the package [datamodelr](https://github.com/bergant/datamodelr)^[Use: `devtools::install_github("https://github.com/bergant/datamodelr")` to install it]
+
+The `src`-object contains the information, where the tables of your data model live. And in the `data_model` object the meta-information is stored:
+
+- what are the primary keys in your schema?
+- how are the tables related to each other, i.e. what are the foreign key relations?
+
+Last but not least, a third part of the object is a named list containing the tables on the `src`.
+
+So much to the theory, let's see how to construct such an object and how it looks in `R`:
+
+## Examples of `dm`-objects {#ex_dm}
+
+Relevant functions are:
+
+1. `dm()`
+2. `as_dm()`
+
+We can use the tables from the famous package {nycflights13}:
+```{r message=FALSE}
+library(dm)
+library(dplyr)
+flights_dm <- dm(src_df(pkg = "nycflights13"))
+flights_dm
+```
+
+Here we make use of the fact, that the function `dm(src, data_model = NULL)` includes all available tables on a source in the `dm`-object, should the `data_model`-argument be left `NULL`. 
+Thus you can use this for example on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm`-object with all the tables on the database.
+
+Another way of creating a `dm`-object is calling `as_dm()` on a list of `tbls`:
+```{r}
+iris_dm <- as_dm(list("iris1" = iris, "iris2" = iris))
+iris_dm
+```
+
+But how can we use dm-functions to manage primary keys of the tables in a `dm`-object?
+
+## Primary keys of `dm`-objects
+
+Useful functions are:
+
+1. `dm_add_pk()`
+2. `dm_has_pk()`
+3. `dm_get_pk()`
+4. `dm_remove_pk()`
+
+As of yet `dm`-objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
+If you created a `dm`-object according to the examples in ["Examples of `dm`-objects"](#ex_dm), your object does not yet have any primary keys set.
+So let's add one.
+By default `dm_add_pk()` checks if the column of the table given by the user is a unique key.
+Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`:
+
+```{r}
+dm_has_pk(flights_dm, "airports")
+```
+```{r}
+flights_dm_with_key <- dm_add_pk(flights_dm, "airports", faa)
+flights_dm_with_key
+```
+Still looks exactly the same as before... let's check:
+```{r}
+dm_has_pk(flights_dm_with_key, "airports")
+```
+Get the name of the column that is marked as primary key of the table:
+```{r}
+dm_get_pk(flights_dm_with_key, "airports")
+```
+Remove a primary key by:
+```{r}
+dm_remove_pk(flights_dm_with_key, "airports") %>% 
+  dm_has_pk("airports")
+```
+
+## Foreign keys
+
+## Joining tables
+
+## Filtering a `dm` object

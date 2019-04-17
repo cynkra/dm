@@ -23,11 +23,11 @@ dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum") \%>\%
 
 dm_obj_with_keys \%>\%
   dm_remove_pk("airports") \%>\%
-  dm_check_if_table_has_pk("planes")
+  dm_has_pk("planes")
 
 dm_obj_with_keys \%>\%
   dm_remove_pk("planes") \%>\%
-  dm_check_if_table_has_pk("planes")
+  dm_has_pk("planes")
 }
 
 }
