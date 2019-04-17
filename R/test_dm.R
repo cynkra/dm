@@ -28,12 +28,10 @@ dm_test_load <-
     map(srcs, ~ dm(.x, current_data_model))
   }
 
-# FIXME: when passing on the ... to `copy_to()` an error is thrown during copying tables to DBs: "temporary is not a flag (a length one logical vector)."
-# when checking `temporary`, it shows seems to be the name of one of the tables that are being copied. If the function would be exported, we might
-# want to have a look at it.
+# FIXME: should this be exported?
 copy_list_of_tables_to <-
   function(src, list_of_tables, name_vector = names(list_of_tables), overwrite = FALSE, ...) {
-    map2(list_of_tables, name_vector, ~ copy_to(dest = src, df = .x, name = .y, overwrite = overwrite))
+    map2(list_of_tables, name_vector, copy_to, dest = src, overwrite = overwrite, ...)
   }
 
 # internal helper function:
