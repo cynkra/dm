@@ -1,146 +1,146 @@
 context("test-primary-key-functions")
 
-test_that("dm_add_pk() works as intentended?", {
+test_that("cdm_add_pk() works as intentended?", {
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_silent(
-      dm_add_pk(.x, "dm_table_1", a)
+      cdm_add_pk(.x, "cdm_table_1", a)
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_silent(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_add_pk("dm_table_1", b)
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_add_pk("cdm_table_1", b)
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_error(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_add_pk("dm_table_1", b, force = FALSE),
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_add_pk("cdm_table_1", b, force = FALSE),
       "If you want to change the existing primary key for a table, set `force` == TRUE."
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_error(
-      dm_add_pk(.x, "dm_table_2", c),
+      cdm_add_pk(.x, "cdm_table_2", c),
       "`c` is not a unique key of `table_from_dm`"
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_silent(
-      dm_add_pk(.x, "dm_table_2", c, check = FALSE)
+      cdm_add_pk(.x, "cdm_table_2", c, check = FALSE)
     )
   )
 })
 
 
 
-test_that("dm_remove_pk() works as intentended?", {
+test_that("cdm_remove_pk() works as intentended?", {
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_silent(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_remove_pk("dm_table_1")
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_remove_pk("cdm_table_1")
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_silent(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_remove_pk("dm_table_2") # still does its job, even if there was no key in the first place :)
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_remove_pk("cdm_table_2") # still does its job, even if there was no key in the first place :)
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_error(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_remove_pk("dm_table_4"),
-      "dm_table_4 not in `dm`-object. Available table names are: dm_table_1, dm_table_2, dm_table_3"
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_remove_pk("cdm_table_4"),
+      "cdm_table_4 not in `dm`-object. Available table names are: cdm_table_1, cdm_table_2, cdm_table_3"
     )
   )
 })
 
 
 
-test_that("dm_remove_pk() works as intentended?", {
+test_that("cdm_remove_pk() works as intentended?", {
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_silent(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_remove_pk("dm_table_1")
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_remove_pk("cdm_table_1")
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_silent(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_remove_pk("dm_table_2") # still does its job, even if there was no key in the first place :)
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_remove_pk("cdm_table_2") # still does its job, even if there was no key in the first place :)
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_error(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_remove_pk("dm_table_4"),
-      "dm_table_4 not in `dm`-object. Available table names are: dm_table_1, dm_table_2, dm_table_3"
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_remove_pk("cdm_table_4"),
+      "cdm_table_4 not in `dm`-object. Available table names are: cdm_table_1, cdm_table_2, cdm_table_3"
     )
   )
 })
 
-test_that("dm_has_pk() works as intentended?", {
+test_that("cdm_has_pk() works as intentended?", {
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_false(
-      dm_has_pk(.x, "dm_table_2")
+      cdm_has_pk(.x, "cdm_table_2")
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_true(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_has_pk("dm_table_1")
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_has_pk("cdm_table_1")
     )
   )
 })
 
-test_that("dm_get_pk() works as intentended?", {
+test_that("cdm_get_pk() works as intentended?", {
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_identical(
-      dm_get_pk(.x, "dm_table_1"),
+      cdm_get_pk(.x, "cdm_table_1"),
       character(0)
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_identical(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_get_pk("dm_table_1"),
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_get_pk("cdm_table_1"),
       "a"
     )
   )
 
   map(
-    .x = dm_test_obj_src,
+    .x = cdm_test_obj_src,
     ~ expect_error(
-      dm_add_pk(.x, "dm_table_1", a) %>%
-        cdm_add_pk("dm_table_1", "b") %>%
-        dm_get_pk("dm_table_1"),
-      "Please use dm_remove_pk() on dm_table_1, more than 1 primary key is currently set for it.",
+      cdm_add_pk(.x, "cdm_table_1", a) %>%
+        cdm_add_pk("cdm_table_1", "b") %>%
+        cdm_get_pk("cdm_table_1"),
+      "Please use cdm_remove_pk() on cdm_table_1, more than 1 primary key is currently set for it.",
       fixed = TRUE
     )
   )

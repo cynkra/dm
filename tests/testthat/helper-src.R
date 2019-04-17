@@ -85,7 +85,7 @@ list_of_data_ts_parent_and_child_src <- map2(
 )
 
 
-# for `dm`-object tests: cdm_add_pk(), dm_add_pk() --------------------------------
+# for `dm`-object tests: cdm_add_pk(), cdm_add_pk() --------------------------------
 
-dm_test_obj <- as_dm(list(dm_table_1 = d2, dm_table_2 = d4, dm_table_3 = d2))
-dm_test_obj_src <- dm_test_load(dm_test_obj)
+cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d2))
+cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
