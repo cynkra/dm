@@ -20,8 +20,8 @@ test_that("dm_add_pk() works as intentended?", {
     .x = dm_test_obj_src,
     ~ expect_error(
       dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_add_pk("dm_table_1", b, replace_old_key = FALSE),
-      "If you want to change the existing primary key for a table, set `replace_old_key` == TRUE."
+        dm_add_pk("dm_table_1", b, force = FALSE),
+      "If you want to change the existing primary key for a table, set `force` == TRUE."
     )
   )
 
@@ -36,7 +36,7 @@ test_that("dm_add_pk() works as intentended?", {
   map(
     .x = dm_test_obj_src,
     ~ expect_silent(
-      dm_add_pk(.x, "dm_table_2", c, check_if_unique_key = FALSE)
+      dm_add_pk(.x, "dm_table_2", c, check = FALSE)
     )
   )
 })
