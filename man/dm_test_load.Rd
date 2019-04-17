@@ -16,5 +16,4 @@ dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE)
 
 dm_test_obj <- dm(dplyr::src_df(pkg = "nycflights13"))
 dm_test_obj_srcs <- dm_test_load(dm_test_obj)
-
 }

@@ -1,7 +1,7 @@
 # TODO: Rethink when #30 is available
 dm_create_surrogate_key_for_table <- function(dm, table, new_id_column = paste0(table, "_id")) {
   check_correct_input(dm, table)
-  if (dm_check_if_table_has_pk(dm, table)) {
+  if (dm_has_pk(dm, table)) {
     abort(paste0(
       "Table `", table, "` already has a primary key. If you really want to",
       " add a surrogate key column and set it as primary key, please use ",

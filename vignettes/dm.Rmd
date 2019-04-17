@@ -38,7 +38,7 @@ Last but not least, a third part of the object is a named list containing the ta
 
 So much to the theory, let's see how to construct such an object and how it looks in `R`:
 
-### Examples of `dm`-objects {#ex_dm}
+## Examples of `dm`-objects {#ex_dm}
 
 Relevant functions are:
 
@@ -64,23 +64,23 @@ iris_dm
 
 But how can we use dm-functions to manage primary keys of the tables in a `dm`-object?
 
-### Primary keys of `dm`-objects
+## Primary keys of `dm`-objects
 
 Useful functions are:
 
-1. `dm_add_key()`
-2. `dm_check_if_table_has_pk()`
-3. `dm_get_pk_column_from_table()`
+1. `dm_add_pk()`
+2. `dm_has_pk()`
+3. `dm_get_pk()`
 4. `dm_remove_pk()`
 
 As of yet `dm`-objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
 If you created a `dm`-object according to the examples in ["Examples of `dm`-objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
-By default `dm_add_key()` checks if the column of the table given by the user is a unique key.
+By default `dm_add_pk()` checks if the column of the table given by the user is a unique key.
 Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`:
 
 ```{r}
-dm_check_if_table_has_pk(flights_dm, "airports")
+dm_has_pk(flights_dm, "airports")
 ```
 ```{r}
 flights_dm_with_key <- dm_add_pk(flights_dm, "airports", faa)
@@ -88,14 +88,20 @@ flights_dm_with_key
 ```
 Still looks exactly the same as before... let's check:
 ```{r}
-dm_check_if_table_has_pk(flights_dm_with_key, "airports")
+dm_has_pk(flights_dm_with_key, "airports")
 ```
 Get the name of the column that is marked as primary key of the table:
 ```{r}
-dm_get_pk_column_from_table(flights_dm_with_key, "airports")
+dm_get_pk(flights_dm_with_key, "airports")
 ```
 Remove a primary key by:
 ```{r}
 dm_remove_pk(flights_dm_with_key, "airports") %>% 
-  dm_check_if_table_has_pk("airports")
+  dm_has_pk("airports")
 ```
+
+## Foreign keys
+
+## Joining tables
+
+## Filtering a `dm` object

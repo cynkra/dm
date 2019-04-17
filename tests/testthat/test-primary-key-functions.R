@@ -99,11 +99,11 @@ test_that("dm_remove_pk() works as intentended?", {
   )
 })
 
-test_that("dm_check_if_table_has_pk() works as intentended?", {
+test_that("dm_has_pk() works as intentended?", {
   map(
     .x = dm_test_obj_src,
     ~ expect_false(
-      dm_check_if_table_has_pk(.x, "dm_table_2")
+      dm_has_pk(.x, "dm_table_2")
     )
   )
 
@@ -111,16 +111,16 @@ test_that("dm_check_if_table_has_pk() works as intentended?", {
     .x = dm_test_obj_src,
     ~ expect_true(
       dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_check_if_table_has_pk("dm_table_1")
+        dm_has_pk("dm_table_1")
     )
   )
 })
 
-test_that("dm_get_pk_column_from_table() works as intentended?", {
+test_that("dm_get_pk() works as intentended?", {
   map(
     .x = dm_test_obj_src,
     ~ expect_identical(
-      dm_get_pk_column_from_table(.x, "dm_table_1"),
+      dm_get_pk(.x, "dm_table_1"),
       character(0)
     )
   )
@@ -129,7 +129,7 @@ test_that("dm_get_pk_column_from_table() works as intentended?", {
     .x = dm_test_obj_src,
     ~ expect_identical(
       dm_add_pk(.x, "dm_table_1", a) %>%
-        dm_get_pk_column_from_table("dm_table_1"),
+        dm_get_pk("dm_table_1"),
       "a"
     )
   )
@@ -138,8 +138,8 @@ test_that("dm_get_pk_column_from_table() works as intentended?", {
     .x = dm_test_obj_src,
     ~ expect_error(
       dm_add_pk(.x, "dm_table_1", a) %>%
-        cdm_add_key("dm_table_1", "b") %>%
-        dm_get_pk_column_from_table("dm_table_1"),
+        cdm_add_pk("dm_table_1", "b") %>%
+        dm_get_pk("dm_table_1"),
       "Please use dm_remove_pk() on dm_table_1, more than 1 primary key is currently set for it.",
       fixed = TRUE
     )
