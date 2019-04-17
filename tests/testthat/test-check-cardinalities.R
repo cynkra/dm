@@ -10,7 +10,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     map2(
       .x = d1_src,
       .y = d3_src,
-      ~ check_cardinality_0_n(parent_table = .x, primary_key_column = a, child_table = .y, foreign_key_column = c)
+      ~ check_cardinality_0_n(parent_table = .x, pk_column = a, child_table = .y, fk_column = c)
     )
   )
 
@@ -67,9 +67,9 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
       expect_error(
         check_cardinality_0_n(
           parent_table = ..1,
-          primary_key_column = a,
+          pk_column = a,
           child_table = ..2,
-          foreign_key_column = a
+          fk_column = a
         ),
         "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
         fixed = TRUE
@@ -89,9 +89,9 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
       expect_error(
         check_cardinality_0_1(
           parent_table = ..1,
-          primary_key_column = a,
+          pk_column = a,
           child_table = ..2,
-          foreign_key_column = a
+          fk_column = a
         ),
         "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
         fixed = TRUE

@@ -41,7 +41,7 @@ data <-
 
 data_check_key_src <- test_load(data, name = "data_check_key")
 
-# for check_foreign_key() and check_set_equality() -------------------------
+# for check_fk() and check_set_equality() -------------------------
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
@@ -85,7 +85,7 @@ list_of_data_ts_parent_and_child_src <- map2(
 )
 
 
-# for `dm`-object tests: cdm_add_key(), dm_add_primary_key() --------------------------------
+# for `dm`-object tests: cdm_add_key(), dm_add_pk() --------------------------------
 
 dm_test_obj <- as_dm(list(dm_table_1 = d2, dm_table_2 = d4, dm_table_3 = d2))
 dm_test_obj_src <- dm_test_load(dm_test_obj)
