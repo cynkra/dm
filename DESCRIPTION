@@ -31,7 +31,9 @@ Suggests:
     dbplyr,
     nycflights13,
     rprojroot,
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 Remotes: 
     bergant/datamodelr
 Encoding: UTF-8
@@ -39,3 +41,4 @@ LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr
