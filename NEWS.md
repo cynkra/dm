@@ -1,3 +1,8 @@
+# dm 0.0.0.9005
+
+- Update documentation, bugfixes.
+
+
 # dm 0.0.0.9004
 
 - Rename `dm_*` to `cdm_*` (#28).
