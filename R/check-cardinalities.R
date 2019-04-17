@@ -1,7 +1,7 @@
 #' Test if the relation between two tables of a data model meet the requirements
 #'
 #' @description All `check_cardinality()` functions test, if the `parent_table_column` is a unique key for `parent_table` and if
-#' the set of values of `foreign_key_column` of `child_table` is a subset of the set of values of `parent_table_column`.
+#' the set of values of `fk_column` of `child_table` is a subset of the set of values of `parent_table_column`.
 #' Furthermore the cardinality of the relation is tested, see below for details.
 #'
 #' @details All `check_cardinality` functions accept a 'parent table' (data frame), a column name of this table,
@@ -32,9 +32,9 @@
 #' there are no duplicates in either of them.
 #'
 #' @param parent_table Data frame
-#' @param primary_key_column Column of `parent_table` that has to be one of its unique keys.
+#' @param pk_column Column of `parent_table` that has to be one of its unique keys.
 #' @param child_table Data frame
-#' @param foreign_key_column Column of `child_table` that has to be a foreign key to `primary_key_column` in `parent_table`
+#' @param fk_column Column of `child_table` that has to be a foreign key to `pk_column` in `parent_table`
 #'
 #' @name check_cardinality
 #'
@@ -57,11 +57,11 @@
 #' This passes:
 #' check_cardinality_0_1(d1, a, d3, c)
 #' }
-check_cardinality_0_n <- function(parent_table, primary_key_column, child_table, foreign_key_column) {
+check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(primary_key_column)
+  pkc <- enexpr(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(foreign_key_column)
+  fkc <- enexpr(fk_column)
 
   check_key(!!pt, !!pkc)
 
@@ -72,11 +72,11 @@ check_cardinality_0_n <- function(parent_table, primary_key_column, child_table,
 
 #' @rdname check_cardinality
 #' @export
-check_cardinality_1_n <- function(parent_table, primary_key_column, child_table, foreign_key_column) {
+check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(primary_key_column)
+  pkc <- enexpr(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(foreign_key_column)
+  fkc <- enexpr(fk_column)
 
   check_key(!!pt, !!pkc)
 
@@ -87,11 +87,11 @@ check_cardinality_1_n <- function(parent_table, primary_key_column, child_table,
 
 #' @rdname check_cardinality
 #' @export
-check_cardinality_1_1 <- function(parent_table, primary_key_column, child_table, foreign_key_column) {
+check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(primary_key_column)
+  pkc <- enexpr(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(foreign_key_column)
+  fkc <- enexpr(fk_column)
 
   check_key(!!pt, !!pkc)
 
@@ -116,11 +116,11 @@ check_cardinality_1_1 <- function(parent_table, primary_key_column, child_table,
 
 #' @rdname check_cardinality
 #' @export
-check_cardinality_0_1 <- function(parent_table, primary_key_column, child_table, foreign_key_column) {
+check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(primary_key_column)
+  pkc <- enexpr(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(foreign_key_column)
+  fkc <- enexpr(fk_column)
 
   check_key(!!pt, !!pkc)
 

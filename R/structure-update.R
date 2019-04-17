@@ -1,10 +1,10 @@
 # TODO: Rethink when #30 is available
 dm_create_surrogate_key_for_table <- function(dm, table, new_id_column = paste0(table, "_id")) {
   check_correct_input(dm, table)
-  if (dm_check_if_table_has_primary_key(dm, table)) {
+  if (dm_check_if_table_has_pk(dm, table)) {
     abort(paste0("Table `", table, "` already has a primary key. If you really want to",
                  " add a surrogate key column and set it as primary key, please use ",
-                 "`dm_remove_primary_key()` first."))
+                 "`dm_remove_pk()` first."))
   }
 
   new_tbl <-
@@ -31,5 +31,5 @@ dm_create_surrogate_key_for_table <- function(dm, table, new_id_column = paste0(
   new_dm_columns <-  bind_rows(temp_dm_columns, dm_cols_table)
   dm$data_model$columns <- new_dm_columns
 
-  dm_add_primary_key(dm, table, eval_tidy(new_id_column))
+  dm_add_pk(dm, table, eval_tidy(new_id_column))
 }

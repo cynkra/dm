@@ -2,7 +2,7 @@
 
 #' Mark a column of a table in a `dm`-object as its primary key
 #'
-#' @description `dm_add_primary_key()` marks the given column as the given table's primary key
+#' @description `dm_add_pk()` marks the given column as the given table's primary key
 #' in the `data_model`-part of the `dm`-object. If `check == TRUE`, it also first checks if
 #' the given column is a unique key of the table. If `force == TRUE`, it replaces an already
 #' set key.
@@ -16,14 +16,14 @@
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
-#' dm_add_primary_key(nycflights_dm, "planes", "tailnum")
-#' dm_add_primary_key(nycflights_dm, "airports", faa)
-#' dm_add_primary_key(nycflights_dm, "planes", "manufacturer", check = FALSE)
+#' dm_add_pk(nycflights_dm, "planes", "tailnum")
+#' dm_add_pk(nycflights_dm, "airports", faa)
+#' dm_add_pk(nycflights_dm, "planes", "manufacturer", check = FALSE)
 #'
 #' # the following does not work
-#' dm_add_primary_key(nycflights_dm, "planes", "manufacturer")
+#' dm_add_pk(nycflights_dm, "planes", "manufacturer")
 #' }
-dm_add_primary_key <- function(
+dm_add_pk <- function(
   dm, table, column, check = TRUE, force = TRUE) {
 
   check_correct_input(dm, table)
@@ -39,7 +39,7 @@ dm_add_primary_key <- function(
   }
 
   if (!force) {
-    old_key <- dm_get_primary_key_column_from_table(dm, table)
+    old_key <- dm_get_pk_column_from_table(dm, table)
     if (old_key == col_name) {
       return(dm)
     } else {
@@ -52,7 +52,7 @@ dm_add_primary_key <- function(
     check_key(table_from_dm, !! col_expr)
   }
 
-  dm_remove_primary_key(dm, table) %>% cdm_add_key(table, col_name)
+  dm_remove_pk(dm, table) %>% cdm_add_key(table, col_name)
 }
 
 # "table" and "column" has to be character
@@ -69,7 +69,7 @@ cdm_add_key <- function(dm, table, column) {
 
 #' Does a table of a `dm`-object have a column set as primary key?
 #'
-#' @description `dm_check_if_table_has_primary_key()` checks in the `data_model` part
+#' @description `dm_check_if_table_has_pk()` checks in the `data_model` part
 #' of the `dm`-object if a given table has a column marked as primary key.
 #'
 #' @examples
@@ -78,14 +78,14 @@ cdm_add_key <- function(dm, table, column) {
 #' library(dplyr)
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' dm_obj_with_keys <- dm_add_primary_key(nycflights_dm, "planes", "tailnum")
+#' dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum")
 #'
 #' dm_obj_with_keys %>%
-#'   dm_check_if_table_has_primary_key("planes")
+#'   dm_check_if_table_has_pk("planes")
 #' }
 #'
 #' @export
-dm_check_if_table_has_primary_key <- function(dm, table) {
+dm_check_if_table_has_pk <- function(dm, table) {
   check_correct_input(dm, table)
   dm_data_model <- dm_get_data_model(dm)
 
@@ -93,7 +93,7 @@ dm_check_if_table_has_primary_key <- function(dm, table) {
   if (sum(dm_data_model$columns$key[cols_from_table] > 0) > 1) {
     abort(
       paste0(
-        "Please use dm_remove_primary_key() on ", table, ", more than 1 primary key is currently set for it."
+        "Please use dm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
         )
       )
   }
@@ -102,7 +102,7 @@ dm_check_if_table_has_primary_key <- function(dm, table) {
 
 #' Retrieve the name of the column marked as primary key of a table of a `dm`-object
 #'
-#' @description `dm_get_primary_key_column_from_table()` returns the name of the
+#' @description `dm_get_pk_column_from_table()` returns the name of the
 #' column marked as primary key of a table of a `dm`-object. If no primary key is
 #' set for the table, an empty character variable is returned.
 #'
@@ -112,21 +112,21 @@ dm_check_if_table_has_primary_key <- function(dm, table) {
 #' library(dplyr)
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' dm_obj_with_keys <- dm_add_primary_key(nycflights_dm, "planes", "tailnum")
+#' dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum")
 #'
 #' dm_obj_with_keys %>%
-#'   dm_get_primary_key_column_from_table("planes")
+#'   dm_get_pk_column_from_table("planes")
 #' }
 #'
 #' @export
-dm_get_primary_key_column_from_table <- function(dm, table) {
+dm_get_pk_column_from_table <- function(dm, table) {
   check_correct_input(dm, table)
   dm_data_model <- dm_get_data_model(dm)
 
   index_key_from_table <- dm_data_model$columns$table == table & dm_data_model$columns$key != 0
   if (sum(index_key_from_table) > 1) abort(
     paste0(
-      "Please use dm_remove_primary_key() on ", table, ", more than 1 primary key is currently set for it."
+      "Please use dm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
       )
     )
   dm_data_model$columns$column[index_key_from_table]
@@ -134,7 +134,7 @@ dm_get_primary_key_column_from_table <- function(dm, table) {
 
 #' Remove primary key from a table in a `dm`-object
 #'
-#' @description `dm_remove_primary_key()` removes a potentially set primary key from a table in the
+#' @description `dm_remove_pk()` removes a potentially set primary key from a table in the
 #' underlying `data_model`-object and otherwise leaves the `dm`-object untouched.
 #'
 #' @examples
@@ -145,20 +145,20 @@ dm_get_primary_key_column_from_table <- function(dm, table) {
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
-#' dm_obj_with_keys <- dm_add_primary_key(nycflights_dm, "planes", "tailnum") %>%
-#'   dm_add_primary_key("airports", faa)
+#' dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum") %>%
+#'   dm_add_pk("airports", faa)
 #'
 #' dm_obj_with_keys %>%
-#'   dm_remove_primary_key("airports") %>%
-#'   dm_check_if_table_has_primary_key("planes")
+#'   dm_remove_pk("airports") %>%
+#'   dm_check_if_table_has_pk("planes")
 #'
 #' dm_obj_with_keys %>%
-#'   dm_remove_primary_key("planes") %>%
-#'   dm_check_if_table_has_primary_key("planes")
+#'   dm_remove_pk("planes") %>%
+#'   dm_check_if_table_has_pk("planes")
 #' }
 #'
 #' @export
-dm_remove_primary_key <- function(dm, table) {
+dm_remove_pk <- function(dm, table) {
   check_correct_input(dm, table)
 
   update_cols <- dm$data_model$columns$table == table
@@ -171,7 +171,7 @@ dm_remove_primary_key <- function(dm, table) {
 
 #' Which columns are candidates for a primary key column of a `dm`-object's table?
 #'
-#' @description `dm_check_for_primary_key_candidates()` checks for each column of a
+#' @description `dm_check_for_pk_candidates()` checks for each column of a
 #' table of a `dm`-object if this column contains only unique values and is therefore
 #' a unique key of this table.
 #'
@@ -182,12 +182,12 @@ dm_remove_primary_key <- function(dm, table) {
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
-#' nycflights_dm %>% dm_check_for_primary_key_candidates("flights")
-#' nycflights_dm %>% dm_check_for_primary_key_candidates("airports")
+#' nycflights_dm %>% dm_check_for_pk_candidates("flights")
+#' nycflights_dm %>% dm_check_for_pk_candidates("airports")
 #' }
 #'
 #' @export
-dm_check_for_primary_key_candidates <- function(dm, table) {
+dm_check_for_pk_candidates <- function(dm, table) {
   check_correct_input(dm, table)
 
   tbl <- tbl(dm$src, table)

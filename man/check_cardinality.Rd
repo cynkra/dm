@@ -8,30 +8,26 @@
 \alias{check_cardinality_0_1}
 \title{Test if the relation between two tables of a data model meet the requirements}
 \usage{
-check_cardinality_0_n(parent_table, primary_key_column, child_table,
-  foreign_key_column)
+check_cardinality_0_n(parent_table, pk_column, child_table, fk_column)
 
-check_cardinality_1_n(parent_table, primary_key_column, child_table,
-  foreign_key_column)
+check_cardinality_1_n(parent_table, pk_column, child_table, fk_column)
 
-check_cardinality_1_1(parent_table, primary_key_column, child_table,
-  foreign_key_column)
+check_cardinality_1_1(parent_table, pk_column, child_table, fk_column)
 
-check_cardinality_0_1(parent_table, primary_key_column, child_table,
-  foreign_key_column)
+check_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
 }
 \arguments{
 \item{parent_table}{Data frame}
 
-\item{primary_key_column}{Column of \code{parent_table} that has to be one of its unique keys.}
+\item{pk_column}{Column of \code{parent_table} that has to be one of its unique keys.}
 
 \item{child_table}{Data frame}
 
-\item{foreign_key_column}{Column of \code{child_table} that has to be a foreign key to \code{primary_key_column} in \code{parent_table}}
+\item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}}
 }
 \description{
 All \code{check_cardinality()} functions test, if the \code{parent_table_column} is a unique key for \code{parent_table} and if
-the set of values of \code{foreign_key_column} of \code{child_table} is a subset of the set of values of \code{parent_table_column}.
+the set of values of \code{fk_column} of \code{child_table} is a subset of the set of values of \code{parent_table_column}.
 Furthermore the cardinality of the relation is tested, see below for details.
 }
 \details{
