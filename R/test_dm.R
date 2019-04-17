@@ -24,7 +24,7 @@ dm_test_load <-
     current_data_model <- dm_get_data_model(x)
     tables <- map(dm_table_names, ~ tbl(dm_get_src(x), .x)) %>% set_names(dm_table_names) # FIXME: should be replaced by `dm_select_tables()` once it exists
 
-    map(srcs, ~ copy_list_of_tables_to(src = .x, list_of_tables = tables, overwrite = TRUE))
+    walk(srcs, ~ copy_list_of_tables_to(src = .x, list_of_tables = tables, overwrite = TRUE))
     map(srcs, ~ dm(.x, current_data_model))
   }
 
