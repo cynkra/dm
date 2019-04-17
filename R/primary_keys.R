@@ -2,9 +2,10 @@
 
 #' Mark a column of a table in a `dm`-object as its primary key
 #'
-#' @description `dm_add_primary_key()` first checks , if the given column
-#' is a unique key of the given table in the `dm`-object. If yes, it then marks
-#' that column as the table's primary key in the `data_model`-part of the `dm`-object.
+#' @description `dm_add_primary_key()` marks the given column as the given table's primary key
+#' in the `data_model`-part of the `dm`-object. If `check == TRUE`, it also first checks if
+#' the given column is a unique key of the table. If `force == TRUE`, it replaces an already
+#' set key.
 #'
 #' @export
 #' @examples
@@ -17,13 +18,13 @@
 #' # the following works
 #' dm_add_primary_key(nycflights_dm, "planes", "tailnum")
 #' dm_add_primary_key(nycflights_dm, "airports", faa)
-#' dm_add_primary_key(nycflights_dm, "planes", "manufacturer", check_if_unique_key = FALSE)
+#' dm_add_primary_key(nycflights_dm, "planes", "manufacturer", check = FALSE)
 #'
 #' # the following does not work
 #' dm_add_primary_key(nycflights_dm, "planes", "manufacturer")
 #' }
 dm_add_primary_key <- function(
-  dm, table, column, check_if_unique_key = TRUE, replace_old_key = TRUE) {
+  dm, table, column, check = TRUE, force = TRUE) {
 
   check_correct_input(dm, table)
 
@@ -37,16 +38,16 @@ dm_add_primary_key <- function(
     abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
   }
 
-    if (!replace_old_key) {
+  if (!force) {
     old_key <- dm_get_primary_key_column_from_table(dm, table)
     if (old_key == col_name) {
       return(dm)
     } else {
-      abort("If you want to change the existing primary key for a table, set `replace_old_key` == TRUE.")
+      abort("If you want to change the existing primary key for a table, set `force` == TRUE.")
     }
   }
 
-  if (check_if_unique_key) {
+  if (check) {
     table_from_dm <- tbl(dm, table)
     check_key(table_from_dm, !! col_expr)
   }
