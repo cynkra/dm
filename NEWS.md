@@ -1,3 +1,8 @@
+# dm 0.0.0.9003
+
+- Rename `primary_key` to `pk` and `foreign_key` to `fk`.
+
+
 # dm 0.0.0.9002
 
 - Facilities to manage primary keys in a `dm` object: `dm_add_primary_key()`, `dm_remove_primary_key()`, `dm_check_*()`, `dm_get_primary_key_column_from_table()` (#17).
