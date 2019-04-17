@@ -21,7 +21,7 @@
 #' data <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' # this is failing:
 #' check_key(data, a, b)
-#'
+#' 
 #' # this is passing:
 #' check_key(data, a, c)
 #' }
@@ -63,7 +63,7 @@ is_unique_key <- function(.data, column) {
   duplicate_rows <-
     .data %>%
     as_tibble() %>%
-    count(!! col_expr) %>%
+    count(!!col_expr) %>%
     filter(n != 1)
 
   nrow(duplicate_rows) == 0
@@ -88,7 +88,7 @@ is_unique_key <- function(.data, column) {
 #' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is failing:
 #' check_set_equality(data_1, a, data_2, a)
-#'
+#' 
 #' data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_set_equality(data_1, a, data_3, a)
@@ -140,7 +140,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_if_subset(data_1, a, data_2, a)
-#'
+#' 
 #' # this is failing:
 #' check_if_subset(data_2, a, data_1, a)
 #' }

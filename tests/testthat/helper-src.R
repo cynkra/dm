@@ -6,7 +6,7 @@ try({
 
 src_df <- src_df(env = new.env())
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
-src_postgres <- src_postgres(dbname = 'postgres', host = "localhost", port = 5432, user = "postgres")
+src_postgres <- src_postgres(dbname = "postgres", host = "localhost", port = 5432, user = "postgres")
 
 test_register_src("df", src_df)
 test_register_src("sqlite", src_sqlite)
@@ -14,9 +14,9 @@ test_register_src("postgres", src_postgres)
 
 # for check_cardinality...() ----------------------------------------------
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
-d2 <- tibble::tibble(a = c(1,3:6), b = letters[1:5])
+d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 d3 <- tibble::tibble(c = 1:5)
-d4 <- tibble::tibble(c = c(1:5,5))
+d4 <- tibble::tibble(c = c(1:5, 5))
 d5 <- tibble::tibble(a = 1:5)
 d6 <- tibble::tibble(c = 1:4)
 
@@ -79,10 +79,10 @@ data_ts_child_src <- test_load(data_ts_child, name = "data_ts_child")
 data_ts_parent_src <- test_load(data_ts_parent, name = "data_ts_parent")
 
 list_of_data_ts_parent_and_child_src <- map2(
-    .x = data_ts_child_src,
-    .y = data_ts_parent_src,
+  .x = data_ts_child_src,
+  .y = data_ts_parent_src,
   ~ list("child_table" = .x, "parent_table" = .y)
-  )
+)
 
 
 # for `dm`-object tests: cdm_add_key(), dm_add_primary_key() --------------------------------

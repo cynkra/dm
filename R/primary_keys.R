@@ -12,20 +12,18 @@
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#'
+#' 
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#'
+#' 
 #' # the following works
 #' dm_add_pk(nycflights_dm, "planes", "tailnum")
 #' dm_add_pk(nycflights_dm, "airports", faa)
 #' dm_add_pk(nycflights_dm, "planes", "manufacturer", check = FALSE)
-#'
+#' 
 #' # the following does not work
 #' dm_add_pk(nycflights_dm, "planes", "manufacturer")
 #' }
-dm_add_pk <- function(
-  dm, table, column, check = TRUE, force = TRUE) {
-
+dm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
   check_correct_input(dm, table)
 
   if (is_symbol(enexpr(column))) {
@@ -49,7 +47,7 @@ dm_add_pk <- function(
 
   if (check) {
     table_from_dm <- tbl(dm, table)
-    check_key(table_from_dm, !! col_expr)
+    check_key(table_from_dm, !!col_expr)
   }
 
   dm_remove_pk(dm, table) %>% cdm_add_key(table, col_name)
@@ -60,7 +58,6 @@ dm_add_pk <- function(
 # only adds key, independent if it is unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
 cdm_add_key <- function(dm, table, column) {
-
   new_data_model <- dm_get_data_model(dm) %>%
     dm_set_key(table, column)
 
@@ -76,14 +73,14 @@ cdm_add_key <- function(dm, table, column) {
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#'
+#' 
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #' dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum")
-#'
+#' 
 #' dm_obj_with_keys %>%
 #'   dm_check_if_table_has_pk("planes")
 #' }
-#'
+#' 
 #' @export
 dm_check_if_table_has_pk <- function(dm, table) {
   check_correct_input(dm, table)
@@ -94,8 +91,8 @@ dm_check_if_table_has_pk <- function(dm, table) {
     abort(
       paste0(
         "Please use dm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
-        )
       )
+    )
   }
   !all(dm_data_model$columns$key[cols_from_table] == 0)
 }
@@ -110,25 +107,27 @@ dm_check_if_table_has_pk <- function(dm, table) {
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#'
+#' 
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #' dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum")
-#'
+#' 
 #' dm_obj_with_keys %>%
 #'   dm_get_pk_column_from_table("planes")
 #' }
-#'
+#' 
 #' @export
 dm_get_pk_column_from_table <- function(dm, table) {
   check_correct_input(dm, table)
   dm_data_model <- dm_get_data_model(dm)
 
   index_key_from_table <- dm_data_model$columns$table == table & dm_data_model$columns$key != 0
-  if (sum(index_key_from_table) > 1) abort(
-    paste0(
-      "Please use dm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
+  if (sum(index_key_from_table) > 1) {
+    abort(
+      paste0(
+        "Please use dm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
       )
     )
+  }
   dm_data_model$columns$column[index_key_from_table]
 }
 
@@ -141,22 +140,22 @@ dm_get_pk_column_from_table <- function(dm, table) {
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#'
+#' 
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#'
+#' 
 #' # the following works
 #' dm_obj_with_keys <- dm_add_pk(nycflights_dm, "planes", "tailnum") %>%
 #'   dm_add_pk("airports", faa)
-#'
+#' 
 #' dm_obj_with_keys %>%
 #'   dm_remove_pk("airports") %>%
 #'   dm_check_if_table_has_pk("planes")
-#'
+#' 
 #' dm_obj_with_keys %>%
 #'   dm_remove_pk("planes") %>%
 #'   dm_check_if_table_has_pk("planes")
 #' }
-#'
+#' 
 #' @export
 dm_remove_pk <- function(dm, table) {
   check_correct_input(dm, table)
@@ -165,7 +164,6 @@ dm_remove_pk <- function(dm, table) {
   dm$data_model$columns$key[update_cols] <- 0
 
   dm
-
 }
 
 
@@ -179,13 +177,13 @@ dm_remove_pk <- function(dm, table) {
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#'
+#' 
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#'
+#' 
 #' nycflights_dm %>% dm_check_for_pk_candidates("flights")
 #' nycflights_dm %>% dm_check_for_pk_candidates("airports")
 #' }
-#'
+#' 
 #' @export
 dm_check_for_pk_candidates <- function(dm, table) {
   check_correct_input(dm, table)
@@ -201,5 +199,5 @@ dm_check_for_pk_candidates <- function(dm, table) {
     gather(
       key = "column",
       value = "candidate"
-      )
+    )
 }

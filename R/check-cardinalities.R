@@ -40,23 +40,21 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{
 #' d1 <- tibble::tibble(a = 1:5)
-#' d2 <- tibble::tibble(c = c(1:5,5))
+#' d2 <- tibble::tibble(c = c(1:5, 5))
 #' d3 <- tibble::tibble(c = 1:4)
-#'
-#' This does not pass, `c` is not unique key of d2:
+#' 
+#' # This does not pass, `c` is not unique key of d2:
 #' check_cardinality_0_n(d2, c, d1, a)
-#'
-#' This passes, multiple values in d2$c are allowed:
+#' 
+#' # This passes, multiple values in d2$c are allowed:
 #' check_cardinality_0_n(d1, a, d2, c)
-#'
-#' This does not pass, injectivity is violated:
+#' 
+#' # This does not pass, injectivity is violated:
 #' check_cardinality_1_1(d1, a, d2, c)
-#'
-#' This passes:
+#' 
+#' # This passes:
 #' check_cardinality_0_1(d1, a, d3, c)
-#' }
 check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
   pkc <- enexpr(pk_column)
@@ -99,15 +97,17 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   tryCatch({
     check_key(!!ct, !!fkc)
-    NULL},
-    error = function(e) {
-      abort(paste0("1..1 cardinality (bijectivity) is not given: Column `",
-                  as_label(fkc),
-                  "` in table `",
-                  as_label(ct),
-                  "` contains duplicate values.")
-            )
-    }
+    NULL
+  },
+  error = function(e) {
+    abort(paste0(
+      "1..1 cardinality (bijectivity) is not given: Column `",
+      as_label(fkc),
+      "` in table `",
+      as_label(ct),
+      "` contains duplicate values."
+    ))
+  }
   )
 
 
@@ -128,15 +128,17 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   tryCatch({
     check_key(!!ct, !!fkc)
-    NULL},
-    error = function(e) {
-      abort(paste0("0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
-                  as_label(fkc),
-                  "` in table `",
-                  as_label(ct),
-                  "` contains duplicate values.")
-            )
-    }
+    NULL
+  },
+  error = function(e) {
+    abort(paste0(
+      "0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
+      as_label(fkc),
+      "` in table `",
+      as_label(ct),
+      "` contains duplicate values."
+    ))
+  }
   )
 
   invisible(TRUE)

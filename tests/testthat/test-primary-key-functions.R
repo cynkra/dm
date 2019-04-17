@@ -39,7 +39,6 @@ test_that("dm_add_primary_key() works as intentended?", {
       dm_add_primary_key(.x, "dm_table_2", c, check_if_unique_key = FALSE)
     )
   )
-
 })
 
 
@@ -146,5 +145,3 @@ test_that("dm_get_primary_key_column_from_table() works as intentended?", {
     )
   )
 })
-
-
