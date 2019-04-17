@@ -53,15 +53,3 @@ check_correct_input <- function(dm, table) {
     )
   )
 }
-
-# internal helper function for finding a new suitable table name based on an old, existing table name
-find_new_name <- function(dm, table) {
-  tables <- src_tbls(dm_get_src(dm))
-  i <-  1L
-  new_name <-  paste0(table, "_", toString(i))
-  while(new_name %in% tables) {
-    i  <- i + 1L
-    new_name <- paste0(table, "_", toString(i))
-  }
-  new_name
-}
