@@ -86,16 +86,17 @@ cdm_add_key <- function(dm, table, column) {
 #' @export
 dm_check_if_table_has_primary_key <- function(dm, table) {
   check_correct_input(dm, table)
+  dm_data_model <- dm_get_data_model(dm)
 
-  cols_from_table <- dm_get_data_model(dm)$columns$table == table
-  if (sum(dm_get_data_model(dm)$columns$key[cols_from_table] > 0) > 1) {
+  cols_from_table <- dm_data_model$columns$table == table
+  if (sum(dm_data_model$columns$key[cols_from_table] > 0) > 1) {
     abort(
       paste0(
         "Please use dm_remove_primary_key() on ", table, ", more than 1 primary key is currently set for it."
         )
       )
   }
-  !all(dm_get_data_model(dm)$columns$key[cols_from_table] == 0)
+  !all(dm_data_model$columns$key[cols_from_table] == 0)
 }
 
 #' Retrieve the name of the column marked as primary key of a table of a `dm`-object
@@ -119,14 +120,15 @@ dm_check_if_table_has_primary_key <- function(dm, table) {
 #' @export
 dm_get_primary_key_column_from_table <- function(dm, table) {
   check_correct_input(dm, table)
+  dm_data_model <- dm_get_data_model(dm)
 
-  index_key_from_table <- dm_get_data_model(dm)$columns$table == table & dm_get_data_model(dm)$columns$key != 0
+  index_key_from_table <- dm_data_model$columns$table == table & dm_data_model$columns$key != 0
   if (sum(index_key_from_table) > 1) abort(
     paste0(
       "Please use dm_remove_primary_key() on ", table, ", more than 1 primary key is currently set for it."
       )
     )
-  dm_get_data_model(dm)$columns$column[index_key_from_table]
+  dm_data_model$columns$column[index_key_from_table]
 }
 
 #' Remove primary key from a table in a `dm`-object
