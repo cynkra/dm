@@ -41,6 +41,7 @@ So much to the theory, let's see how to construct such an object and how it look
 ### Examples of `dm`-objects {#ex_dm}
 
 Relevant functions are:
+
 1. `dm()`
 2. `as_dm()`
 
