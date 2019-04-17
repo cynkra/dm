@@ -1,3 +1,10 @@
+# dm 0.0.0.9004
+
+- Rename `dm_*` to `cdm_*` (#28).
+- Tests are independent of database versions (#26).
+- Stub for "Getting started" vignette (#27).
+
+
 # dm 0.0.0.9003
 
 - Rename `primary_key` to `pk` and `foreign_key` to `fk`.
