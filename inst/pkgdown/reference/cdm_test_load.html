@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if values of one column are a subset of values of another column — check_if_subset • dm</title>
+<title>Loads <code>dm</code>-objects into one or more registered sources — cdm_test_load • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Test if values of one column are a subset of values of another column — check_if_subset" />
+<meta property="og:title" content="Loads <code>dm</code>-objects into one or more registered sources — cdm_test_load" />
 
-<meta property="og:description" content="check_if_subset() tests, if the values of the chosen column c1 of data frame t1 are a subset of the values
-of column c2 of data frame t2." />
+<meta property="og:description" content="Works like dbplyr::test_load(), just for dm_objects." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -101,57 +100,29 @@ of column c2 of data frame t2." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if values of one column are a subset of values of another column</h1>
+    <h1>Loads <code>dm</code>-objects into one or more registered sources</h1>
     
-    <div class="hidden name"><code>check_if_subset.Rd</code></div>
+    <div class="hidden name"><code>cdm_test_load.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>check_if_subset()</code> tests, if the values of the chosen column <code>c1</code> of data frame <code>t1</code> are a subset of the values
-of column <code>c2</code> of data frame <code>t2</code>.</p>
+    <p>Works like <code><a href='https://www.rdocumentation.org/packages/dbplyr/topics/testing'>dbplyr::test_load()</a></code>, just for <code>dm</code>_objects.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>check_if_subset</span>(<span class='no'>t1</span>, <span class='no'>c1</span>, <span class='no'>t2</span>, <span class='no'>c2</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>t1</th>
-      <td><p>Data frame containing the column <code>c1</code>.</p></td>
-    </tr>
-    <tr>
-      <th>c1</th>
-      <td><p>Column of <code>t1</code> that should only contain values that are also in <code>c2</code> of data frame <code>t2</code>.</p></td>
-    </tr>
-    <tr>
-      <th>t2</th>
-      <td><p>Data frame containing the column <code>c2</code>.</p></td>
-    </tr>
-    <tr>
-      <th>c2</th>
-      <td><p>Column of second data frame which has to contain all values of <code>c1</code> to avoid an error.</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>cdm_test_load</span>(<span class='no'>x</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>srcs</span> <span class='kw'>=</span> <span class='kw pkg'>dbplyr</span><span class='kw ns'>:::</span><span class='no'>test_srcs</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(),
+  <span class='kw'>ignore</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>())</pre>
+        
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>data_1</span> <span class='kw'>&lt;-</span> <span class='fu'>tibble</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>1</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>))
-<span class='no'>data_2</span> <span class='kw'>&lt;-</span> <span class='fu'>tibble</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>))
-<span class='co'># this is passing:</span>
-<span class='fu'>check_if_subset</span>(<span class='no'>data_1</span>, <span class='no'>a</span>, <span class='no'>data_2</span>, <span class='no'>a</span>)
-
-<span class='co'># this is failing:</span>
-<span class='fu'>check_if_subset</span>(<span class='no'>data_2</span>, <span class='no'>a</span>, <span class='no'>data_1</span>, <span class='no'>a</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/dbplyr/topics/testing'>test_register_src</a></span>(<span class='st'>"df"</span>, <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/environment'>new.env</a></span>()))</div><div class='output co'>#&gt; <span class='message'>Registering testing src: df </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='input'><span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/dbplyr/topics/testing'>test_register_src</a></span>(<span class='st'>"sqlite"</span>, <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_dbi.html'>src_sqlite</a></span>(<span class='st'>":memory:"</span>, <span class='kw'>create</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>Registering testing src: sqlite </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='input'>
+<span class='no'>cdm_test_obj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
+<span class='no'>cdm_test_obj_srcs</span> <span class='kw'>&lt;-</span> <span class='fu'>cdm_test_load</span>(<span class='no'>cdm_test_obj</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
             
       <li><a href="#examples">Examples</a></li>
     </ul>
