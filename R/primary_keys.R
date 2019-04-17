@@ -12,14 +12,14 @@
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#' 
+#'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' 
+#'
 #' # the following works
 #' cdm_add_pk(nycflights_dm, "planes", "tailnum")
 #' cdm_add_pk(nycflights_dm, "airports", faa)
 #' cdm_add_pk(nycflights_dm, "planes", "manufacturer", check = FALSE)
-#' 
+#'
 #' # the following does not work
 #' cdm_add_pk(nycflights_dm, "planes", "manufacturer")
 #' }
@@ -50,14 +50,14 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
     check_key(table_from_dm, !!col_expr)
   }
 
-  cdm_remove_pk(dm, table) %>% cdm_add_pk(table, col_name)
+  cdm_remove_pk(dm, table) %>% cdm_add_pk_impl(table, col_name)
 }
 
 # "table" and "column" has to be character
 # in {datamodelr} a primary key can also consists of more than one column
 # only adds key, independent if it is unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
-cdm_add_pk <- function(dm, table, column) {
+cdm_add_pk_impl <- function(dm, table, column) {
   new_data_model <- cdm_get_data_model(dm) %>%
     datamodelr::dm_set_key(table, column)
 
@@ -73,14 +73,14 @@ cdm_add_pk <- function(dm, table, column) {
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#' 
+#'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum")
-#' 
+#'
 #' cdm_obj_with_keys %>%
 #'   cdm_has_pk("planes")
 #' }
-#' 
+#'
 #' @export
 cdm_has_pk <- function(dm, table) {
   check_correct_input(dm, table)
@@ -107,14 +107,14 @@ cdm_has_pk <- function(dm, table) {
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#' 
+#'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum")
-#' 
+#'
 #' cdm_obj_with_keys %>%
 #'   cdm_get_pk("planes")
 #' }
-#' 
+#'
 #' @export
 cdm_get_pk <- function(dm, table) {
   check_correct_input(dm, table)
@@ -140,22 +140,22 @@ cdm_get_pk <- function(dm, table) {
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#' 
+#'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' 
+#'
 #' # the following works
 #' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum") %>%
 #'   cdm_add_pk("airports", faa)
-#' 
+#'
 #' cdm_obj_with_keys %>%
 #'   cdm_remove_pk("airports") %>%
 #'   cdm_has_pk("planes")
-#' 
+#'
 #' cdm_obj_with_keys %>%
 #'   cdm_remove_pk("planes") %>%
 #'   cdm_has_pk("planes")
 #' }
-#' 
+#'
 #' @export
 cdm_remove_pk <- function(dm, table) {
   check_correct_input(dm, table)
@@ -177,13 +177,13 @@ cdm_remove_pk <- function(dm, table) {
 #' \dontrun{
 #' library(nycflights13)
 #' library(dplyr)
-#' 
+#'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' 
+#'
 #' nycflights_dm %>% cdm_check_for_pk_candidates("flights")
 #' nycflights_dm %>% cdm_check_for_pk_candidates("airports")
 #' }
-#' 
+#'
 #' @export
 cdm_check_for_pk_candidates <- function(dm, table) {
   check_correct_input(dm, table)

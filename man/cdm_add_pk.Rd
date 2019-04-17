@@ -4,7 +4,7 @@
 \alias{cdm_add_pk}
 \title{Mark a column of a table in a \code{dm}-object as its primary key}
 \usage{
-cdm_add_pk(dm, table, column)
+cdm_add_pk(dm, table, column, check = TRUE, force = TRUE)
 }
 \description{
 \code{cdm_add_pk()} marks the given column as the given table's primary key
