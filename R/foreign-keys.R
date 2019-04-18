@@ -56,3 +56,19 @@ cdm_has_fk <- function(dm, table, ref_table) {
   dm_data_model <- cdm_get_data_model(dm)
   any(dm_data_model$references$table == table_name & dm_data_model$references$ref == ref_table_name)
 }
+
+#' Get foreign key columns pointing from one table of a `dm` to another
+#'
+#' @export
+cdm_get_fk <- function(dm, table, ref_table) {
+  table_name <- as_name(enquo(table))
+  ref_table_name <- as_name(enquo(ref_table))
+
+  check_correct_input(dm, table_name)
+  check_correct_input(dm, ref_table_name)
+
+  dm_data_model <- cdm_get_data_model(dm)
+  fk_ind <- dm_data_model$references$table == table_name & dm_data_model$references$ref == ref_table_name
+
+  as.character(dm_data_model$references$column[fk_ind]) # FIXME: maybe something nicer?
+}
