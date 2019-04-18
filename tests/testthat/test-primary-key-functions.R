@@ -67,8 +67,8 @@ test_that("cdm_remove_pk() works as intentended?", {
     .x = cdm_test_obj_src,
     ~ expect_error(
       cdm_add_pk(.x, "cdm_table_1", a) %>%
-        cdm_remove_pk("cdm_table_4"),
-      "cdm_table_4 not in `dm`-object. Available table names are: cdm_table_1, cdm_table_2, cdm_table_3"
+        cdm_remove_pk("cdm_table_5"),
+      "cdm_table_5 not in `dm`-object. Available table names are: cdm_table_1, cdm_table_2, cdm_table_3, cdm_table_4"
     )
   )
 })

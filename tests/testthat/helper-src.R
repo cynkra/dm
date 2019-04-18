@@ -20,6 +20,7 @@ d4 <- tibble::tibble(c = c(1:5, 5))
 d5 <- tibble::tibble(a = 1:5)
 d6 <- tibble::tibble(c = 1:4)
 d7 <- tibble::tibble(c = c(1:5, 5, 6))
+d8 <- tibble::tibble(c = c(1:6))
 
 d1_src <- test_load(d1, name = "d1")
 d2_src <- test_load(d2, name = "d2")
@@ -88,5 +89,5 @@ list_of_data_ts_parent_and_child_src <- map2(
 
 # for `dm`-object tests: cdm_add_pk(), cdm_add_pk() --------------------------------
 
-cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7))
+cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7, cdm_table_4 = d8))
 cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
