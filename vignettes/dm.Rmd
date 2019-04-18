@@ -102,6 +102,27 @@ cdm_remove_pk(flights_dm_with_key, "airports") %>%
 
 ## Foreign keys
 
+Useful functions are:
+
+1. `cdm_add_fk()`
+
+Now it gets interesting: we want to define relations between different tables.
+With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
+
+When dealing with data models, a foreign key from one table has to always point to a primary key of another table.
+So it has to be made sure, that the primary key of the referred table is set.
+You can either do that directly using `cdm_add_pk()`, or make use of the flag parameter `set_ref_pk` of the function `cdm_add_fk()`. 
+If `set_ref_pk` is set to `TRUE` (default is `FALSE`), the column `ref_column` of the table `ref_table` will become primary key, in addition to the foreign key relation being established.
+
+```{r}
+flights_dm_with_key %>% cdm_add_fk(flights, origin, airports, faa)
+```
+This on the other hand will throw an error:
+```{r error=TRUE}
+flights_dm %>% cdm_add_fk(flights, origin, airports, faa)
+```
+
+
 ## Joining tables
 
 ## Filtering a `dm` object
