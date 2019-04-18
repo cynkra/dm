@@ -1,4 +1,5 @@
 #' Add a reference from one table of a `dm` to another
+#'
 #' @export
 cdm_add_fk <- function(dm, table, column, ref_table, ref_column, set_ref_pk = FALSE) {
   table_name <- as_name(enquo(table))
@@ -19,8 +20,8 @@ cdm_add_fk <- function(dm, table, column, ref_table, ref_column, set_ref_pk = FA
         !(cdm_get_pk(dm, table_name) == ref_column_name)) {
       abort(paste0(
         "'", ref_column_name, "' needs to be primary key of '", ref_table_name,
-        "' but isn't. You can use function cdm_add_pk() to set it as primary key, ",
-        "or set 'set_ref_pk = TRUE'")
+        "' but isn't. You can set parameter 'set_ref_pk = TRUE', or use function",
+        " cdm_add_pk() to set it as primary key.")
       )
     }
   } else {
