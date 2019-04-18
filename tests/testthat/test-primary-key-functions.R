@@ -138,7 +138,7 @@ test_that("cdm_get_pk() works as intentended?", {
     .x = cdm_test_obj_src,
     ~ expect_error(
       cdm_add_pk(.x, "cdm_table_1", a) %>%
-        cdm_add_pk("cdm_table_1", "b") %>%
+        cdm_add_pk_impl("cdm_table_1", "b") %>%
         cdm_get_pk("cdm_table_1"),
       "Please use cdm_remove_pk() on cdm_table_1, more than 1 primary key is currently set for it.",
       fixed = TRUE
