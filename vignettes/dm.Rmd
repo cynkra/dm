@@ -80,10 +80,10 @@ By default `cdm_add_pk()` checks if the column of the table given by the user is
 Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`:
 
 ```{r}
-cdm_has_pk(flights_dm, "airports")
+cdm_has_pk(flights_dm, airports)
 ```
 ```{r}
-flights_dm_with_key <- cdm_add_pk(flights_dm, "airports", faa)
+flights_dm_with_key <- cdm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
 Still looks exactly the same as before... let's check:
@@ -92,12 +92,12 @@ cdm_has_pk(flights_dm_with_key, "airports")
 ```
 Get the name of the column that is marked as primary key of the table:
 ```{r}
-cdm_get_pk(flights_dm_with_key, "airports")
+cdm_get_pk(flights_dm_with_key, airports)
 ```
 Remove a primary key by:
 ```{r}
-cdm_remove_pk(flights_dm_with_key, "airports") %>% 
-  cdm_has_pk("airports")
+cdm_remove_pk(flights_dm_with_key, airports) %>% 
+  cdm_has_pk(airports)
 ```
 
 ## Foreign keys

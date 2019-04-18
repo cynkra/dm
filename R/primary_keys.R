@@ -24,7 +24,10 @@
 #' cdm_add_pk(nycflights_dm, "planes", "manufacturer")
 #' }
 cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
-  check_correct_input(dm, table)
+
+  table_name <- as_name(enquo(table))
+
+  check_correct_input(dm, table_name)
 
   if (is_symbol(enexpr(column))) {
     col_expr <- enexpr(column)
@@ -37,7 +40,7 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
   }
 
   if (!force) {
-    old_key <- cdm_get_pk(dm, table)
+    old_key <- cdm_get_pk(dm, !!table_name)
     if (old_key == col_name) {
       return(dm)
     } else {
@@ -46,11 +49,11 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
   }
 
   if (check) {
-    table_from_dm <- tbl(dm, table)
+    table_from_dm <- tbl(dm, table_name)
     check_key(table_from_dm, !!col_expr)
   }
 
-  cdm_remove_pk(dm, table) %>% cdm_add_pk_impl(table, col_name)
+  cdm_remove_pk(dm, !!table_name) %>% cdm_add_pk_impl(table_name, col_name)
 }
 
 # "table" and "column" has to be character
@@ -83,14 +86,17 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #'
 #' @export
 cdm_has_pk <- function(dm, table) {
-  check_correct_input(dm, table)
+  table_name <- as_name(enquo(table))
+
+  check_correct_input(dm, table_name)
+
   cdm_data_model <- cdm_get_data_model(dm)
 
-  cols_from_table <- cdm_data_model$columns$table == table
+  cols_from_table <- cdm_data_model$columns$table == table_name
   if (sum(cdm_data_model$columns$key[cols_from_table] > 0) > 1) {
     abort(
       paste0(
-        "Please use cdm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
+        "Please use cdm_remove_pk() on ", table_name, ", more than 1 primary key is currently set for it."
       )
     )
   }
@@ -117,14 +123,17 @@ cdm_has_pk <- function(dm, table) {
 #'
 #' @export
 cdm_get_pk <- function(dm, table) {
-  check_correct_input(dm, table)
+
+  table_name <- as_name(enquo(table))
+
+  check_correct_input(dm, table_name)
   cdm_data_model <- cdm_get_data_model(dm)
 
-  index_key_from_table <- cdm_data_model$columns$table == table & cdm_data_model$columns$key != 0
+  index_key_from_table <- cdm_data_model$columns$table == table_name & cdm_data_model$columns$key != 0
   if (sum(index_key_from_table) > 1) {
     abort(
       paste0(
-        "Please use cdm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
+        "Please use cdm_remove_pk() on ", table_name, ", more than 1 primary key is currently set for it."
       )
     )
   }
@@ -158,9 +167,11 @@ cdm_get_pk <- function(dm, table) {
 #'
 #' @export
 cdm_remove_pk <- function(dm, table) {
-  check_correct_input(dm, table)
+  table_name <- as_name(enquo(table))
 
-  update_cols <- dm$data_model$columns$table == table
+  check_correct_input(dm, table_name)
+
+  update_cols <- dm$data_model$columns$table == table_name
   dm$data_model$columns$key[update_cols] <- 0
 
   dm
@@ -186,9 +197,11 @@ cdm_remove_pk <- function(dm, table) {
 #'
 #' @export
 cdm_check_for_pk_candidates <- function(dm, table) {
-  check_correct_input(dm, table)
+  table_name <- as_name(enquo(table))
 
-  tbl <- tbl(dm$src, table)
+  check_correct_input(dm, table_name)
+
+  tbl <- tbl(dm$src, table_name)
   tbl_colnames <- colnames(tbl)
 
   # list of ayes and noes:

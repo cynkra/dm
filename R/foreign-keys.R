@@ -16,8 +16,8 @@ cdm_add_fk <- function(dm, table, column, ref_table, ref_column, set_ref_pk = FA
 
   # ref_column has to be primary key of ref_table
   if (!set_ref_pk) {
-    if (is_empty(cdm_get_pk(dm, ref_table_name)) ||
-        !(cdm_get_pk(dm, ref_table_name) == ref_column_name)) {
+    if (is_empty(cdm_get_pk(dm, !!ref_table_name)) ||
+        !(cdm_get_pk(dm, !!ref_table_name) == ref_column_name)) {
       abort(paste0(
         "'", ref_column_name, "' needs to be primary key of '", ref_table_name,
         "' but isn't. You can set parameter 'set_ref_pk = TRUE', or use function",
@@ -25,9 +25,9 @@ cdm_add_fk <- function(dm, table, column, ref_table, ref_column, set_ref_pk = FA
       )
     }
   } else {
-    if (is_empty(cdm_get_pk(dm, table_name)) ||
-        !(cdm_get_pk(dm, table_name) == ref_column_name)) {
-      dm <- cdm_add_pk(dm, ref_table_name, eval_tidy(ref_column_name))
+    if (is_empty(cdm_get_pk(dm, !!table_name)) ||
+        !(cdm_get_pk(dm, !!table_name) == ref_column_name)) {
+      dm <- cdm_add_pk(dm, !!ref_table_name, eval_tidy(ref_column_name))
     }
   }
 
