@@ -4,6 +4,7 @@ upd_data_model_reference <- function(data_model, table, column, ref_table, ref_c
   upd_columns_reference(temp_data_model, table, column, ref_table, ref_column)
 }
 
+# updates only the $references part of the data model with a reference
 upd_references_reference <- function(data_model, table, column, ref_table, ref_column) {
   references <- data_model$references
 
@@ -33,6 +34,7 @@ upd_references_reference <- function(data_model, table, column, ref_table, ref_c
   data_model
 }
 
+# updates only the $columns part of the data model with a reference
 upd_columns_reference <- function(data_model, table, column, ref_table, ref_column) {
   if (is_null(data_model$columns$ref_col)) data_model$columns$ref_col <- NA
   ind_columns_upd <- data_model$columns$column == column & data_model$columns$table == table
