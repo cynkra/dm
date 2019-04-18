@@ -42,3 +42,17 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
 
   new_dm(cdm_get_src(dm), cdm_get_tables(dm), new_data_model)
 }
+
+#' Does a reference from one table of a `dm` to another exist?
+#'
+#' @export
+cdm_has_fk <- function(dm, table, ref_table) {
+  table_name <- as_name(enquo(table))
+  ref_table_name <- as_name(enquo(ref_table))
+
+  check_correct_input(dm, table_name)
+  check_correct_input(dm, ref_table_name)
+
+  dm_data_model <- cdm_get_data_model(dm)
+  any(dm_data_model$references$table == table_name & dm_data_model$references$ref == ref_table_name)
+}
