@@ -57,7 +57,7 @@ cdm_has_fk <- function(dm, table, ref_table) {
   any(dm_data_model$references$table == table_name & dm_data_model$references$ref == ref_table_name)
 }
 
-#' Get foreign key columns pointing from one table of a `dm` to another
+#' Retrieve the name of the column marked as foreign key, pointing from one table of a `dm` to another
 #'
 #' @export
 cdm_get_fk <- function(dm, table, ref_table) {
