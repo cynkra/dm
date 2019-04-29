@@ -40,7 +40,7 @@ So much to the theory, let's see how to construct such an object and how it look
 
 ## Examples of `dm`-objects {#ex_dm}
 
-Relevant functions are:
+Relevant functions for creating `dm`-objects are:
 
 1. `dm()`
 2. `as_dm()`
@@ -66,7 +66,7 @@ But how can we use dm-functions to manage primary keys of the tables in a `dm`-o
 
 ## Primary keys of `dm`-objects
 
-Useful functions are:
+Useful functions for managing primary key settings are:
 
 1. `cdm_add_pk()`
 2. `cdm_has_pk()`
@@ -102,11 +102,11 @@ cdm_remove_pk(flights_dm_with_key, "airports") %>%
 
 ## Foreign keys
 
-Useful functions are:
+Useful functions for managing foreign key relations are:
 
 1. `cdm_add_fk()`
 
-Now it gets interesting: we want to define relations between different tables.
+Now it gets (even more) interesting: we want to define relations between different tables.
 With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
 
 When dealing with data models, a foreign key from one table has to always point to a primary key of another table.
