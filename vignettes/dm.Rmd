@@ -105,6 +105,8 @@ cdm_remove_pk(flights_dm_with_key, "airports") %>%
 Useful functions for managing foreign key relations are:
 
 1. `cdm_add_fk()`
+2. `cdm_has_fk()`
+3. `cdm_get_fk()`
 
 Now it gets (even more) interesting: we want to define relations between different tables.
 With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
@@ -121,6 +123,23 @@ This on the other hand will throw an error:
 ```{r error=TRUE}
 flights_dm %>% cdm_add_fk(flights, origin, airports, faa)
 ```
+
+Use `cdm_has_fk()` for checking if a foreign key exists, which is pointing from one table to another:
+```{r}
+flights_dm_with_key %>% cdm_add_fk(flights, origin, airports, faa) %>% cdm_has_fk(flights, planes)
+```
+```{r}
+flights_dm_with_key %>% cdm_add_fk(flights, origin, airports, faa) %>% cdm_has_fk(flights, airports)
+```
+
+If you want to access the name of the column, which acts as a foreign key of one table to another tables's column, use `cdm_get_fk()`:
+```{r}
+flights_dm_with_key %>% cdm_add_fk(flights, origin, airports, faa) %>% cdm_get_fk(flights, planes)
+```
+```{r}
+flights_dm_with_key %>% cdm_add_fk(flights, origin, airports, faa) %>% cdm_get_fk(flights, airports)
+```
+
 
 
 ## Joining tables
