@@ -43,3 +43,44 @@ upd_columns_reference <- function(data_model, table, column, ref_table, ref_colu
   data_model$columns$ref_col[ind_columns_upd] <- ref_column
   data_model
 }
+
+
+# helper function for removing one or more references from one table to another in the data model
+rm_data_model_reference <- function(data_model, table, cols, ref_table) {
+  temp_data_model <- rm_references_reference(data_model, table, cols, ref_table)
+  rm_columns_reference(temp_data_model, table, cols, ref_table)
+}
+
+
+# removes one or more references only from the $references part of the data model
+rm_references_reference <- function(data_model, table, cols, ref_table) {
+  references <- data_model$references
+
+  lines_to_keep <- references$table != table |
+    !(references$column %in% cols) |
+    references$ref != ref_table
+
+  if (sum(lines_to_keep) == 0) {
+    new_references <- NULL
+  } else {
+    new_references <- references[lines_to_keep,]
+  }
+
+  data_model$references <- new_references
+  data_model
+}
+
+# removes one or more references only from the $columns part of the data model
+rm_columns_reference <- function(data_model, table, cols, ref_table) {
+  cols_data_model <- data_model$columns
+
+  lines_to_modify <- cols_data_model$column %in% cols &
+    cols_data_model$table == table &
+    cols_data_model$ref == ref_table
+
+  cols_data_model[lines_to_modify,]$ref <- NA
+  cols_data_model[lines_to_modify,]$ref_col <- NA
+
+  data_model$columns <- cols_data_model
+  data_model
+}
