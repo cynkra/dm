@@ -1,5 +1,5 @@
 reference:
-- title: Creating `dm` objects and basic functions
+- title: Creating `dm`-objects and basic functions
   contents:
   - dm
   - new_dm

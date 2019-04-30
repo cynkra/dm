@@ -122,10 +122,10 @@ of the <code>dm</code>-object if a given table has a column marked as primary ke
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
 
 <span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
-<span class='no'>cdm_obj_with_keys</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_add_pk.html'>cdm_add_pk</a></span>(<span class='no'>nycflights_dm</span>, <span class='st'>"planes"</span>, <span class='st'>"tailnum"</span>)
+<span class='no'>cdm_obj_with_keys</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_add_pk.html'>cdm_add_pk</a></span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>tailnum</span>)
 
 <span class='no'>cdm_obj_with_keys</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_has_pk</span>(<span class='st'>"planes"</span>)
+  <span class='fu'>cdm_has_pk</span>(<span class='no'>planes</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

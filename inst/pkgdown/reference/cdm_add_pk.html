@@ -128,12 +128,12 @@ set key.</p>
 <span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
 
 <span class='co'># the following works</span>
-<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='st'>"planes"</span>, <span class='st'>"tailnum"</span>)
-<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='st'>"airports"</span>, <span class='no'>faa</span>)
-<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='st'>"planes"</span>, <span class='st'>"manufacturer"</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>tailnum</span>)
+<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>airports</span>, <span class='no'>faa</span>)
+<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># the following does not work</span>
-<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='st'>"planes"</span>, <span class='st'>"manufacturer"</span>)
+<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

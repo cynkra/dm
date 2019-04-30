@@ -123,17 +123,16 @@ underlying <code>data_model</code>-object and otherwise leaves the <code>dm</cod
 
 <span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
 
-<span class='co'># the following works</span>
-<span class='no'>cdm_obj_with_keys</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_add_pk.html'>cdm_add_pk</a></span>(<span class='no'>nycflights_dm</span>, <span class='st'>"planes"</span>, <span class='st'>"tailnum"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_add_pk.html'>cdm_add_pk</a></span>(<span class='st'>"airports"</span>, <span class='no'>faa</span>)
+<span class='no'>cdm_obj_with_keys</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_add_pk.html'>cdm_add_pk</a></span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>tailnum</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='cdm_add_pk.html'>cdm_add_pk</a></span>(<span class='no'>airports</span>, <span class='no'>faa</span>)
 
 <span class='no'>cdm_obj_with_keys</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_rm_pk</span>(<span class='st'>"airports"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_has_pk.html'>cdm_has_pk</a></span>(<span class='st'>"planes"</span>)
+  <span class='fu'>cdm_rm_pk</span>(<span class='no'>airports</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='cdm_has_pk.html'>cdm_has_pk</a></span>(<span class='no'>planes</span>)
 
 <span class='no'>cdm_obj_with_keys</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_rm_pk</span>(<span class='st'>"planes"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_has_pk.html'>cdm_has_pk</a></span>(<span class='st'>"planes"</span>)
+  <span class='fu'>cdm_rm_pk</span>(<span class='no'>planes</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='cdm_has_pk.html'>cdm_has_pk</a></span>(<span class='no'>planes</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
