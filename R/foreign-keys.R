@@ -40,7 +40,7 @@ cdm_add_fk <- function(dm, table, column, ref_table, ref_column, set_ref_pk = FA
       column_name,
       "` in table `",
       table_name,
-      "` contains values (see above) that are not present in column `",
+      "` contains values that are not present in column `",
       ref_column_name,
       "` in table `",
       ref_table_name,
