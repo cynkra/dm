@@ -139,3 +139,53 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 
   dm
 }
+
+cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
+
+  table_name <- as_name(enquo(table))
+  ref_table_name <- as_name(enquo(ref_table))
+
+  check_correct_input(dm, table_name)
+  check_correct_input(dm, ref_table_name)
+
+  if (!cdm_has_pk(dm, !! ref_table_name)) {
+    abort(
+      paste0("ref_table '", ref_table_name, "' needs a primary key first.",
+             " Candidates are: '",
+             paste0(
+               cdm_check_for_pk_candidates(dm, !! ref_table_name) %>%
+                 filter(candidate == TRUE) %>%
+                 pull(column),
+               collapse = ", "
+               ),
+             "'. Use 'cdm_add_pk()' to set it.")
+    )
+  }
+
+  tbl <- cdm_get_tables(dm)[[table_name]]
+  tbl_colnames <- colnames(tbl)
+
+  ref_tbl <- cdm_get_tables(dm)[[ref_table_name]]
+  ref_tbl_pk <- cdm_get_pk(dm, !! ref_table_name)
+
+  map_dfr(tbl_colnames,
+          ~ {
+            if (is_subset(tbl,!!.x, ref_tbl,!!ref_tbl_pk)) {
+              tibble(
+                column = .x,
+                candidate = TRUE,
+                table = table_name,
+                ref_table = ref_table_name,
+                ref_table_pk = ref_tbl_pk
+              )
+            } else {
+              tibble(
+                column = .x,
+                candidate = FALSE,
+                table = table_name,
+                ref_table = ref_table_name,
+                ref_table_pk = ref_tbl_pk
+              )
+            }
+          })
+}
