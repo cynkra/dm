@@ -71,7 +71,7 @@ Useful functions for managing primary key settings are:
 1. `cdm_add_pk()`
 2. `cdm_has_pk()`
 3. `cdm_get_pk()`
-4. `cdm_remove_pk()`
+4. `cdm_rm_pk()`
 
 As of yet `dm`-objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
 If you created a `dm`-object according to the examples in ["Examples of `dm`-objects"](#ex_dm), your object does not yet have any primary keys set.
@@ -96,7 +96,7 @@ cdm_get_pk(flights_dm_with_key, "airports")
 ```
 Remove a primary key by:
 ```{r}
-cdm_remove_pk(flights_dm_with_key, "airports") %>% 
+cdm_rm_pk(flights_dm_with_key, "airports") %>% 
   cdm_has_pk("airports")
 ```
 
