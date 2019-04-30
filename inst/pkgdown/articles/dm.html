@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9004</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9005</span>
       </span>
     </div>
 
@@ -67,7 +67,7 @@
     <div class="page-header toc-ignore">
       <h1>Introduction to dm</h1>
             
-            <h4 class="date">2019-04-17</h4>
+            <h4 class="date">2019-04-30</h4>
       
       
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -100,72 +100,166 @@
 <div id="ex_dm" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ex_dm" class="anchor"></a>Examples of <code>dm</code>-objects</h2>
-<p>Relevant functions are:</p>
+<p>Relevant functions for creating <code>dm</code>-objects are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm.html">dm()</a></code></li>
 <li><code><a href="../reference/dm.html">as_dm()</a></code></li>
 </ol>
 <p>We can use the tables from the famous package {nycflights13}:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dm)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">dm</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_local.html">src_df</a></span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">flights_dm</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; ── Table source ─────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; src:  &lt;package: nycflights13&gt;</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; ── Data model ───────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; Data model object:</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;   5 tables:  airlines, airports, flights, planes ... </span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;   53 columns</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;   no references</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dm)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-3" title="3">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">dm</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_local.html">src_df</a></span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
+<a class="sourceLine" id="cb1-4" title="4">flights_dm</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">#&gt; ── Table source ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">#&gt; src:  &lt;package: nycflights13&gt;</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co">#&gt; ── Data model ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co">#&gt; Data model object:</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">#&gt;   5 tables:  airlines, airports, flights, planes ... </span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="co">#&gt;   53 columns</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="co">#&gt;   no references</span></a></code></pre></div>
 <p>Here we make use of the fact, that the function <code><a href="../reference/dm.html">dm(src, data_model = NULL)</a></code> includes all available tables on a source in the <code>dm</code>-object, should the <code>data_model</code>-argument be left <code>NULL</code>. Thus you can use this for example on a postgres database that you access via <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_postgres()</a></code> (with the appropriate arguments <code>dbname</code>, <code>host</code>, <code>port</code>, …), to produce a <code>dm</code>-object with all the tables on the database.</p>
 <p>Another way of creating a <code>dm</code>-object is calling <code><a href="../reference/dm.html">as_dm()</a></code> on a list of <code>tbls</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">iris_dm</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ── Table source ─────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; src:  &lt;environment: 0x558250489638&gt;</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; ── Data model ───────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; Data model object:</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;   2 tables:  iris1, iris2 </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;   10 columns</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;   no references</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
+<a class="sourceLine" id="cb2-2" title="2">iris_dm</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co">#&gt; ── Table source ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt; src:  &lt;environment: 0x7fc1c268d758&gt;</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt; ── Data model ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co">#&gt; Data model object:</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="co">#&gt;   2 tables:  iris1, iris2 </span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co">#&gt;   10 columns</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co">#&gt;   no references</span></a></code></pre></div>
 <p>But how can we use dm-functions to manage primary keys of the tables in a <code>dm</code>-object?</p>
 </div>
-<div id="primary-keys-of-dm-objects" class="section level2">
+<div id="pk" class="section level2">
 <h2 class="hasAnchor">
-<a href="#primary-keys-of-dm-objects" class="anchor"></a>Primary keys of <code>dm</code>-objects</h2>
-<p>Useful functions are:</p>
+<a href="#pk" class="anchor"></a>Primary keys of <code>dm</code>-objects</h2>
+<p>Useful functions for managing primary key settings are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code></li>
 <li><code><a href="../reference/cdm_has_pk.html">cdm_has_pk()</a></code></li>
 <li><code><a href="../reference/cdm_get_pk.html">cdm_get_pk()</a></code></li>
-<li><code><a href="../reference/cdm_remove_pk.html">cdm_remove_pk()</a></code></li>
+<li><code><a href="../reference/cdm_rm_pk.html">cdm_rm_pk()</a></code></li>
+<li><code><a href="../reference/cdm_check_for_pk_candidates.html">cdm_check_for_pk_candidates()</a></code></li>
 </ol>
-<p>As of yet <code>dm</code>-objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. If you created a <code>dm</code>-object according to the examples in <a href="#ex_dm">“Examples of <code>dm</code>-objects”</a>, your object does not yet have any primary keys set. So let’s add one. By default <code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code> checks if the column of the table given by the user is a unique key. Since the <code>iris</code> dataset does not have any unique one-column keys, we will use the <code>nycflights13</code> tables, i.e. <code>flights_dm</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(flights_dm, <span class="st">"airports"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">flights_dm_with_key &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(flights_dm, <span class="st">"airports"</span>, faa)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">flights_dm_with_key</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; ── Table source ─────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; src:  &lt;package: nycflights13&gt;</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; ── Data model ───────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; Data model object:</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;   5 tables:  airlines, airports, flights, planes ... </span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;   53 columns</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;   no references</span></a></code></pre></div>
+<p>As of yet <code>dm</code>-objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. If you created a <code>dm</code>-object according to the examples in <a href="#ex_dm">“Examples of <code>dm</code>-objects”</a>, your object does not yet have any primary keys set. So let’s add one. By default <code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code> checks if the column of the table given by the user is a unique key. Since the <code>iris</code> dataset does not have any unique one-column keys, we will use the <code>nycflights13</code> tables, i.e. <code>flights_dm</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(flights_dm, airports)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">flights_dm_with_key &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(flights_dm, airports, faa)</a>
+<a class="sourceLine" id="cb4-2" title="2">flights_dm_with_key</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt; ── Table source ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt; src:  &lt;package: nycflights13&gt;</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; ── Data model ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; Data model object:</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt;   5 tables:  airlines, airports, flights, planes ... </span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt;   53 columns</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt;   no references</span></a></code></pre></div>
 <p>Still looks exactly the same as before… let’s check:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(flights_dm_with_key, <span class="st">"airports"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(flights_dm_with_key, <span class="st">"airports"</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
 <p>Get the name of the column that is marked as primary key of the table:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_pk.html">cdm_get_pk</a></span>(flights_dm_with_key, <span class="st">"airports"</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] "faa"</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="../reference/cdm_get_pk.html">cdm_get_pk</a></span>(flights_dm_with_key, airports)</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; [1] "faa"</span></a></code></pre></div>
 <p>Remove a primary key by:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_remove_pk.html">cdm_remove_pk</a></span>(flights_dm_with_key, <span class="st">"airports"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(<span class="st">"airports"</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="../reference/cdm_rm_pk.html">cdm_rm_pk</a></span>(flights_dm_with_key, airports) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(airports)</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
+<p>If you still need to get to know your data better, and it is already available in the form of a <code>dm</code>-object, you can use the function <code><a href="../reference/cdm_check_for_pk_candidates.html">cdm_check_for_pk_candidates()</a></code> in order to get information, which columns of a table are unique keys:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="../reference/cdm_check_for_pk_candidates.html">cdm_check_for_pk_candidates</a></span>(flights_dm_with_key, airports)</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; # A tibble: 8 x 2</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt;   candidate column</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt;   &lt;lgl&gt;     &lt;chr&gt; </span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; 1 TRUE      faa   </span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; 2 FALSE     name  </span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; 3 FALSE     lat   </span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt; 4 TRUE      lon   </span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt; 5 FALSE     alt   </span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt; 6 FALSE     tz    </span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt; 7 FALSE     dst   </span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt; 8 FALSE     tzone</span></a></code></pre></div>
+<p>Table <code>flights</code> does not have one column candidates:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../reference/cdm_check_for_pk_candidates.html">cdm_check_for_pk_candidates</a></span>(flights_dm_with_key, flights) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tally.html">count</a></span>(candidate)</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt;   candidate     n</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">#&gt;   &lt;lgl&gt;     &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt; 1 FALSE        19</span></a></code></pre></div>
 </div>
 <div id="foreign-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#foreign-keys" class="anchor"></a>Foreign keys</h2>
+<p>Useful functions for managing foreign key relations are:</p>
+<ol style="list-style-type: decimal">
+<li><code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code></li>
+<li><code><a href="../reference/cdm_has_fk.html">cdm_has_fk()</a></code></li>
+<li><code><a href="../reference/cdm_get_fk.html">cdm_get_fk()</a></code></li>
+<li><code><a href="../reference/cdm_rm_fk.html">cdm_rm_fk()</a></code></li>
+<li><code><a href="../reference/cdm_check_for_fk_candidates.html">cdm_check_for_fk_candidates()</a></code></li>
+</ol>
+<p>Now it gets (even more) interesting: we want to define relations between different tables. With the function <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> you can define, which column of which table points to another table’s column.</p>
+<p>When dealing with data models, a foreign key from one table has to always point to a primary key of another table. So it has to be made sure, that the primary key of the referred table is set. You can either do that directly using <code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code>, or make use of the flag parameter <code>set_ref_pk</code> of the function <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code>. If <code>set_ref_pk</code> is set to <code>TRUE</code> (default is <code>FALSE</code>), the column <code>ref_column</code> of the table <code>ref_table</code> will become primary key, in addition to the foreign key relation being established.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">flights_dm_with_key <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports, faa)</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="co">#&gt; ── Table source ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; src:  &lt;package: nycflights13&gt;</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt; ── Data model ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt; Data model object:</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">#&gt;   5 tables:  airlines, airports, flights, planes ... </span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">#&gt;   53 columns</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="co">#&gt;   6 references</span></a></code></pre></div>
+<p>This on the other hand will throw an error:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">flights_dm <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports, faa)</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt; 'faa' needs to be primary key of 'airports' but isn't. You can set</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">#&gt; parameter 'set_ref_pk = TRUE', or use function cdm_add_pk() to set it as</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt; primary key.</span></a></code></pre></div>
+<p>Let’s create an <code>dm</code>-object with a foreign key relation to work with later on:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">flights_dm_with_fk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights_dm, flights, origin, airports, faa, <span class="dt">set_ref_pk =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>What if we try to add another foreign key relation from <code>flights</code> to <code>airports</code> to the object? Column <code>dest</code> might work, also pointing to <code>faa</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, dest, airports, faa)</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="co">#&gt; Column `dest` in table `flights` contains values that are not present in</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="co">#&gt; column `faa` in table `airports`</span></a></code></pre></div>
+<p>As you can see, behind the scenes, checks are executed automatically by the functions of <code>dm</code> to prevent steps that do not comply with the logic of data models.</p>
+<p>Use <code><a href="../reference/cdm_has_fk.html">cdm_has_fk()</a></code> for checking if a foreign key exists, which is pointing from one table to another:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_has_fk.html">cdm_has_fk</a></span>(flights, planes)</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_has_fk.html">cdm_has_fk</a></span>(flights, airports)</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
+<p>If you want to access the name of the column, which acts as a foreign key of one table to another table’s column, use <code><a href="../reference/cdm_get_fk.html">cdm_get_fk()</a></code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_get_fk.html">cdm_get_fk</a></span>(flights, planes)</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="co">#&gt; character(0)</span></a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_get_fk.html">cdm_get_fk</a></span>(flights, airports)</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="co">#&gt; [1] "origin"</span></a></code></pre></div>
+<p>Remove foreign key relations with <code><a href="../reference/cdm_rm_fk.html">cdm_rm_fk()</a></code> (parameter <code>column = NULL</code> means removal of all relations):</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_rm_fk.html">cdm_rm_fk</a></span>(<span class="dt">table =</span> flights, <span class="dt">column =</span> dest, <span class="dt">ref_table =</span> airports) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_get_fk.html">cdm_get_fk</a></span>(flights, airports)</a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="co">#&gt; The given column 'dest' is not a foreign key column of table 'flights' with</span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="co">#&gt; regards to ref_table 'airports'. Foreign key columns are: 'origin'.</span></a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_rm_fk.html">cdm_rm_fk</a></span>(flights, origin, airports) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_get_fk.html">cdm_get_fk</a></span>(flights, airports)</a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="co">#&gt; character(0)</span></a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_rm_fk.html">cdm_rm_fk</a></span>(flights, <span class="ot">NULL</span>, airports) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_get_fk.html">cdm_get_fk</a></span>(flights, airports)</a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="co">#&gt; character(0)</span></a></code></pre></div>
+<p>Another function for getting to know your data better (cf. <code><a href="../reference/cdm_check_for_pk_candidates.html">cdm_check_for_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code>-objects”</a>) is <code><a href="../reference/cdm_check_for_fk_candidates.html">cdm_check_for_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates pointing from one table to another:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw"><a href="../reference/cdm_check_for_fk_candidates.html">cdm_check_for_fk_candidates</a></span>(flights_dm_with_key, weather, airports)</a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="co">#&gt; # A tibble: 15 x 5</span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="co">#&gt;    candidate column     table   ref_table ref_table_pk</span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="co">#&gt;    &lt;lgl&gt;     &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;       </span></a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="co">#&gt;  1 TRUE      origin     weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-6" title="6"><span class="co">#&gt;  2 FALSE     year       weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-7" title="7"><span class="co">#&gt;  3 FALSE     month      weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-8" title="8"><span class="co">#&gt;  4 FALSE     day        weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-9" title="9"><span class="co">#&gt;  5 FALSE     hour       weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-10" title="10"><span class="co">#&gt;  6 FALSE     temp       weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-11" title="11"><span class="co">#&gt;  7 FALSE     dewp       weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-12" title="12"><span class="co">#&gt;  8 FALSE     humid      weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-13" title="13"><span class="co">#&gt;  9 FALSE     wind_dir   weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-14" title="14"><span class="co">#&gt; 10 FALSE     wind_speed weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-15" title="15"><span class="co">#&gt; 11 FALSE     wind_gust  weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-16" title="16"><span class="co">#&gt; 12 FALSE     precip     weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-17" title="17"><span class="co">#&gt; 13 FALSE     pressure   weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-18" title="18"><span class="co">#&gt; 14 FALSE     visib      weather airports  faa         </span></a>
+<a class="sourceLine" id="cb21-19" title="19"><span class="co">#&gt; 15 FALSE     time_hour  weather airports  faa</span></a></code></pre></div>
 </div>
 <div id="joining-tables" class="section level2">
 <h2 class="hasAnchor">
@@ -190,7 +284,7 @@
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#class-dm">Class <code>dm</code></a></li>
       <li><a href="#ex_dm">Examples of <code>dm</code>-objects</a></li>
-      <li><a href="#primary-keys-of-dm-objects">Primary keys of <code>dm</code>-objects</a></li>
+      <li><a href="#pk">Primary keys of <code>dm</code>-objects</a></li>
       <li><a href="#foreign-keys">Foreign keys</a></li>
       <li><a href="#joining-tables">Joining tables</a></li>
       <li><a href="#filtering-a-dm-object">Filtering a <code>dm</code> object</a></li>
