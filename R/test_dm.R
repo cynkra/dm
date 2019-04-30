@@ -53,7 +53,7 @@ check_correct_input <- function(dm, table) {
 
 # validates, that the given column is indeed part of the table of the `dm` object.
 check_col_input <- function(dm, table, column) {
-  tbl_colnames <- cdm_get_tables(dm) %>% extract2(table) %>% names()
+  tbl_colnames <- cdm_get_tables(dm) %>% extract2(table) %>% colnames()
   if (!column %in% tbl_colnames) abort(
     paste0("'", column, "' is not a column of '", table, "'. Its columns are: \n'", paste0(tbl_colnames, collapse = "', '"), "'"))
 }
