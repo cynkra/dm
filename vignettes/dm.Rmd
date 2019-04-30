@@ -82,8 +82,6 @@ Since the `iris` dataset does not have any unique one-column keys, we will use t
 
 ```{r}
 cdm_has_pk(flights_dm, airports)
-```
-```{r}
 flights_dm_with_key <- cdm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
@@ -105,7 +103,7 @@ If you still need to get to know your data better, and it is already available i
 ```{r}
 cdm_check_for_pk_candidates(flights_dm_with_key, airports)
 ```
-Table `flights` does not have one column candidates:
+Table `flights` does not have any one-column primary key candidates:
 ```{r}
 cdm_check_for_pk_candidates(flights_dm_with_key, flights) %>% count(candidate)
 ```
@@ -148,16 +146,12 @@ As you can see, behind the scenes, checks are executed automatically by the func
 Use `cdm_has_fk()` for checking if a foreign key exists, which is pointing from one table to another:
 ```{r}
 flights_dm_with_fk %>% cdm_has_fk(flights, planes)
-```
-```{r}
 flights_dm_with_fk %>% cdm_has_fk(flights, airports)
 ```
 
 If you want to access the name of the column, which acts as a foreign key of one table to another table's column, use `cdm_get_fk()`:
 ```{r}
 flights_dm_with_fk %>% cdm_get_fk(flights, planes)
-```
-```{r}
 flights_dm_with_fk %>% cdm_get_fk(flights, airports)
 ```
 
@@ -166,13 +160,9 @@ Remove foreign key relations with `cdm_rm_fk()` (parameter `column = NULL` means
 flights_dm_with_fk %>% 
   cdm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
   cdm_get_fk(flights, airports)
-```
-```{r}
 flights_dm_with_fk %>% 
   cdm_rm_fk(flights, origin, airports) %>% 
   cdm_get_fk(flights, airports)
-```
-```{r}
 flights_dm_with_fk %>% 
   cdm_rm_fk(flights, NULL, airports) %>% 
   cdm_get_fk(flights, airports)
