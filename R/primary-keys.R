@@ -166,7 +166,6 @@ cdm_get_pk <- function(dm, table) {
 #' }
 #'
 #' @export
-<<<<<<< R/primary-keys.R
 cdm_rm_pk <- function(dm, table) {
   table_name <- as_name(enquo(table))
 
