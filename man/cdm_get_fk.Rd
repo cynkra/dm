@@ -2,10 +2,10 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_get_fk}
 \alias{cdm_get_fk}
-\title{Get foreign key columns pointing from one table of a \code{dm} to another}
+\title{Retrieve the name of the column marked as foreign key, pointing from one table of a \code{dm} to another}
 \usage{
 cdm_get_fk(dm, table, ref_table)
 }
 \description{
-Get foreign key columns pointing from one table of a \code{dm} to another
+Retrieve the name of the column marked as foreign key, pointing from one table of a \code{dm} to another
 }
