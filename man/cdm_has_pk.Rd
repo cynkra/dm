@@ -16,10 +16,10 @@ library(nycflights13)
 library(dplyr)
 
 nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum")
+cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum)
 
 cdm_obj_with_keys \%>\%
-  cdm_has_pk("planes")
+  cdm_has_pk(planes)
 }
 
 }

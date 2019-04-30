@@ -20,11 +20,11 @@ library(dplyr)
 nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 
 # the following works
-cdm_add_pk(nycflights_dm, "planes", "tailnum")
-cdm_add_pk(nycflights_dm, "airports", faa)
-cdm_add_pk(nycflights_dm, "planes", "manufacturer", check = FALSE)
+cdm_add_pk(nycflights_dm, planes, tailnum)
+cdm_add_pk(nycflights_dm, airports, faa)
+cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 
 # the following does not work
-cdm_add_pk(nycflights_dm, "planes", "manufacturer")
+cdm_add_pk(nycflights_dm, planes, manufacturer)
 }
 }

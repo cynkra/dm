@@ -18,8 +18,8 @@ library(dplyr)
 
 nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 
-nycflights_dm \%>\% cdm_check_for_pk_candidates("flights")
-nycflights_dm \%>\% cdm_check_for_pk_candidates("airports")
+nycflights_dm \%>\% cdm_check_for_pk_candidates(flights)
+nycflights_dm \%>\% cdm_check_for_pk_candidates(airports)
 }
 
 }

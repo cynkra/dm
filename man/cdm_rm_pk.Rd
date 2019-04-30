@@ -17,17 +17,16 @@ library(dplyr)
 
 nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 
-# the following works
-cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum") \%>\%
-  cdm_add_pk("airports", faa)
+cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum) \%>\%
+  cdm_add_pk(airports, faa)
 
 cdm_obj_with_keys \%>\%
-  cdm_rm_pk("airports") \%>\%
-  cdm_has_pk("planes")
+  cdm_rm_pk(airports) \%>\%
+  cdm_has_pk(planes)
 
 cdm_obj_with_keys \%>\%
-  cdm_rm_pk("planes") \%>\%
-  cdm_has_pk("planes")
+  cdm_rm_pk(planes) \%>\%
+  cdm_has_pk(planes)
 }
 
 }
