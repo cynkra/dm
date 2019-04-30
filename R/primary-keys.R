@@ -16,12 +16,12 @@
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
-#' cdm_add_pk(nycflights_dm, "planes", "tailnum")
-#' cdm_add_pk(nycflights_dm, "airports", faa)
-#' cdm_add_pk(nycflights_dm, "planes", "manufacturer", check = FALSE)
+#' cdm_add_pk(nycflights_dm, planes, tailnum)
+#' cdm_add_pk(nycflights_dm, airports, faa)
+#' cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 #'
 #' # the following does not work
-#' cdm_add_pk(nycflights_dm, "planes", "manufacturer")
+#' cdm_add_pk(nycflights_dm, planes, manufacturer)
 #' }
 cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
 
@@ -78,10 +78,10 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #' library(dplyr)
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum")
+#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_has_pk("planes")
+#'   cdm_has_pk(planes)
 #' }
 #'
 #' @export
@@ -115,10 +115,10 @@ cdm_has_pk <- function(dm, table) {
 #' library(dplyr)
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum")
+#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_get_pk("planes")
+#'   cdm_get_pk(planes)
 #' }
 #'
 #' @export
@@ -152,17 +152,16 @@ cdm_get_pk <- function(dm, table) {
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
-#' # the following works
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum") %>%
-#'   cdm_add_pk("airports", faa)
+#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum) %>%
+#'   cdm_add_pk(airports, faa)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_rm_pk("airports") %>%
-#'   cdm_has_pk("planes")
+#'   cdm_rm_pk(airports) %>%
+#'   cdm_has_pk(planes)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_rm_pk("planes") %>%
-#'   cdm_has_pk("planes")
+#'   cdm_rm_pk(planes) %>%
+#'   cdm_has_pk(planes)
 #' }
 #'
 #' @export
@@ -191,8 +190,8 @@ cdm_rm_pk <- function(dm, table) {
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
-#' nycflights_dm %>% cdm_check_for_pk_candidates("flights")
-#' nycflights_dm %>% cdm_check_for_pk_candidates("airports")
+#' nycflights_dm %>% cdm_check_for_pk_candidates(flights)
+#' nycflights_dm %>% cdm_check_for_pk_candidates(airports)
 #' }
 #'
 #' @export
