@@ -201,7 +201,7 @@ cdm_check_for_pk_candidates <- function(dm, table) {
 
   check_correct_input(dm, table_name)
 
-  tbl <- tbl(dm$src, table_name)
+  tbl <- cdm_get_tables(dm)[[table_name]]
   tbl_colnames <- colnames(tbl)
 
   # list of ayes and noes:
