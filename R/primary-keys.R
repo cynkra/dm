@@ -212,5 +212,6 @@ cdm_check_for_pk_candidates <- function(dm, table) {
     gather(
       key = "column",
       value = "candidate"
-    )
+    ) %>%
+    select(candidate, column)
 }
