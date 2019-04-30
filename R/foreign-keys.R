@@ -140,6 +140,26 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   dm
 }
 
+#' Find foreign key candidates in a table
+#'
+#' @description Which columns are foreign candidates of a table, referencing the primary key column of another `dm`-object's table?
+#' `cdm_check_for_fk_candidates()` checks first, if `ref_table` has a primary key set. Then it determines
+#' for each column of `table`, if this column contains only a subset of values of the primary key column of
+#' `ref_table` and is therefore a candidate for a foreign key from `table` to `ref_table`.
+#'
+#' @examples
+#' \dontrun{
+#' library(nycflights13)
+#' library(dplyr)
+#'
+#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#'
+#' nycflights_dm %>%
+#'   cdm_add_pk(airports, faa) %>%
+#'   cdm_check_for_fk_candidates(flights, airports)
+#' }
+#'
+#' @export
 cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
 
   table_name <- as_name(enquo(table))
