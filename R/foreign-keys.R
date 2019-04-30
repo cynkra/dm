@@ -31,6 +31,23 @@ cdm_add_fk <- function(dm, table, column, ref_table, ref_column, set_ref_pk = FA
     }
   }
 
+  tbl_obj <- cdm_get_tables(dm)[[table_name]]
+  ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
+
+  if (!is_subset(tbl_obj, !! column_name, ref_tbl_obj, !! ref_column_name)) {
+    abort(paste0(
+      "Column `",
+      column_name,
+      "` in table `",
+      table_name,
+      "` contains values (see above) that are not present in column `",
+      ref_column_name,
+      "` in table `",
+      ref_table_name,
+      "`")
+      )
+  }
+
   cdm_add_fk_impl(dm, table_name, column_name, ref_table_name, ref_column_name)
 }
 
