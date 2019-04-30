@@ -192,16 +192,16 @@ cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
           ~ {
             if (is_subset(tbl,!!.x, ref_tbl,!!ref_tbl_pk)) {
               tibble(
-                column = .x,
                 candidate = TRUE,
+                column = .x,
                 table = table_name,
                 ref_table = ref_table_name,
                 ref_table_pk = ref_tbl_pk
               )
             } else {
               tibble(
-                column = .x,
                 candidate = FALSE,
+                column = .x,
                 table = table_name,
                 ref_table = ref_table_name,
                 ref_table_pk = ref_tbl_pk
