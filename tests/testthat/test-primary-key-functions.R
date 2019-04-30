@@ -45,12 +45,12 @@ test_that("cdm_add_pk() works as intentended?", {
 })
 
 
-test_that("cdm_remove_pk() works as intentended?", {
+test_that("cdm_rm_pk() works as intentended?", {
   map(
     .x = cdm_test_obj_src,
     ~ expect_silent(
       cdm_add_pk(.x, "cdm_table_1", a) %>%
-        cdm_remove_pk("cdm_table_1")
+        cdm_rm_pk("cdm_table_1")
     )
   )
 
@@ -58,7 +58,7 @@ test_that("cdm_remove_pk() works as intentended?", {
     .x = cdm_test_obj_src,
     ~ expect_true(
       cdm_add_pk(.x, "cdm_table_1", a) %>%
-        cdm_remove_pk("cdm_table_2") %>% # still does its job, even if there was no key in the first place :)
+        cdm_rm_pk("cdm_table_2") %>% # still does its job, even if there was no key in the first place :)
         cdm_has_pk("cdm_table_1")
     )
   )
@@ -67,7 +67,7 @@ test_that("cdm_remove_pk() works as intentended?", {
     .x = cdm_test_obj_src,
     ~ expect_error(
       cdm_add_pk(.x, "cdm_table_1", a) %>%
-        cdm_remove_pk("cdm_table_5"),
+        cdm_rm_pk("cdm_table_5"),
       "cdm_table_5 not in `dm`-object. Available table names are: cdm_table_1, cdm_table_2, cdm_table_3, cdm_table_4"
     )
   )
@@ -114,7 +114,7 @@ test_that("cdm_get_pk() works as intentended?", {
       cdm_add_pk(.x, "cdm_table_1", a) %>%
         cdm_add_pk_impl("cdm_table_1", "b") %>%
         cdm_get_pk("cdm_table_1"),
-      "Please use cdm_remove_pk() on cdm_table_1, more than 1 primary key is currently set for it.",
+      "Please use cdm_rm_pk() on cdm_table_1, more than 1 primary key is currently set for it.",
       fixed = TRUE
     )
   )

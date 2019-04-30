@@ -53,7 +53,7 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
     check_key(table_from_dm, !!col_expr)
   }
 
-  cdm_remove_pk(dm, !!table_name) %>% cdm_add_pk_impl(table_name, col_name)
+  cdm_rm_pk(dm, !!table_name) %>% cdm_add_pk_impl(table_name, col_name)
 }
 
 # "table" and "column" has to be character
@@ -96,7 +96,7 @@ cdm_has_pk <- function(dm, table) {
   if (sum(cdm_data_model$columns$key[cols_from_table] > 0) > 1) {
     abort(
       paste0(
-        "Please use cdm_remove_pk() on ", table_name, ", more than 1 primary key is currently set for it."
+        "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
       )
     )
   }
@@ -133,7 +133,7 @@ cdm_get_pk <- function(dm, table) {
   if (sum(index_key_from_table) > 1) {
     abort(
       paste0(
-        "Please use cdm_remove_pk() on ", table_name, ", more than 1 primary key is currently set for it."
+        "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
       )
     )
   }
@@ -142,7 +142,7 @@ cdm_get_pk <- function(dm, table) {
 
 #' Remove primary key from a table in a `dm`-object
 #'
-#' @description `cdm_remove_pk()` removes a potentially set primary key from a table in the
+#' @description `cdm_rm_pk()` removes a potentially set primary key from a table in the
 #' underlying `data_model`-object and otherwise leaves the `dm`-object untouched.
 #'
 #' @examples
@@ -157,16 +157,17 @@ cdm_get_pk <- function(dm, table) {
 #'   cdm_add_pk("airports", faa)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_remove_pk("airports") %>%
+#'   cdm_rm_pk("airports") %>%
 #'   cdm_has_pk("planes")
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_remove_pk("planes") %>%
+#'   cdm_rm_pk("planes") %>%
 #'   cdm_has_pk("planes")
 #' }
 #'
 #' @export
-cdm_remove_pk <- function(dm, table) {
+<<<<<<< R/primary-keys.R
+cdm_rm_pk <- function(dm, table) {
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)
