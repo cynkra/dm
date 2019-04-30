@@ -139,3 +139,33 @@ test_that("cdm_rm_fk() works as intended?", {
     )
   )
 })
+
+
+test_that("cdm_check_for_fk_candidates() works as intended?", {
+
+  tbl_fk_candidates_t1_t4 <- tribble(
+    ~column, ~candidate, ~table,        ~ref_table,    ~ref_table_pk,
+    "a",     TRUE,       "cdm_table_1", "cdm_table_4", "c",
+    "b",     FALSE,      "cdm_table_1", "cdm_table_4", "c"
+  )
+
+  map(
+    .x = cdm_test_obj_src,
+    ~ expect_identical(
+      cdm_add_pk(.x, cdm_table_4, c) %>%
+        cdm_check_for_fk_candidates(cdm_table_1, cdm_table_4),
+      tbl_fk_candidates_t1_t4
+    )
+  )
+
+  map(.x = cdm_test_obj_src,
+      ~ expect_error(
+        cdm_check_for_fk_candidates(.x, cdm_table_1, cdm_table_4),
+        paste0(
+          "ref_table 'cdm_table_4' needs a primary key first.",
+          " Candidates are: 'c'. Use 'cdm_add_pk()' to set it."
+          ),
+        fixed = TRUE
+        )
+      )
+})
