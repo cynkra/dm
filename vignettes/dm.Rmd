@@ -139,7 +139,7 @@ flights_dm_with_fk %>% cdm_has_fk(flights, planes)
 flights_dm_with_fk %>% cdm_has_fk(flights, airports)
 ```
 
-If you want to access the name of the column, which acts as a foreign key of one table to another tables's column, use `cdm_get_fk()`:
+If you want to access the name of the column, which acts as a foreign key of one table to another table's column, use `cdm_get_fk()`:
 ```{r}
 flights_dm_with_fk %>% cdm_get_fk(flights, planes)
 ```
