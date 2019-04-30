@@ -77,7 +77,7 @@ As of yet `dm`-objects only support one-column primary keys. If your tables have
 If you created a `dm`-object according to the examples in ["Examples of `dm`-objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 By default `cdm_add_pk()` checks if the column of the table given by the user is a unique key.
-Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`:
+Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`.
 
 ```{r}
 cdm_has_pk(flights_dm, "airports")
@@ -107,6 +107,7 @@ Useful functions for managing foreign key relations are:
 1. `cdm_add_fk()`
 2. `cdm_has_fk()`
 3. `cdm_get_fk()`
+4. `cdm_rm_fk()`
 
 Now it gets (even more) interesting: we want to define relations between different tables.
 With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
@@ -146,6 +147,17 @@ flights_dm_with_fk %>% cdm_get_fk(flights, planes)
 flights_dm_with_fk %>% cdm_get_fk(flights, airports)
 ```
 
+Remove foreign key relations with `cdm_rm_fk()` (parameter `column = NULL` means removal of all relations):
+```{r}
+flights_dm_with_fk %>% 
+  cdm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
+  cdm_get_fk(flights, airports)
+```
+```{r}
+flights_dm_with_fk %>% 
+  cdm_rm_fk(flights, NULL, airports) %>% 
+  cdm_get_fk(flights, airports)
+```
 
 
 ## Joining tables
