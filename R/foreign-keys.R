@@ -91,7 +91,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
     return(dm)
   }
 
-  if (is_null(eval_tidy(enexprs(column)) %>% extract2(1))) { # FIXME: there must be a nicer way of checking if NULL, without running into problems, when column is a symbol (I tried is_symbol() without success)
+  if (quo_is_null(enquo(column))) {
       col_names <- cdm_get_fk(dm, !! table_name, !! ref_table_name)
   } else {
     col_names <- as_name(enexpr(column))
