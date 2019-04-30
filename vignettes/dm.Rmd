@@ -124,12 +124,15 @@ This on the other hand will throw an error:
 ```{r error=TRUE}
 flights_dm %>% cdm_add_fk(flights, origin, airports, faa)
 ```
-Now we create and store an object with two foreign key relations (both pointing from table `flights` to table `airports`):
+Let's create an `dm`-object with a foreign key relation to work with later on:
 ```{r}
-flights_dm_with_fk <- 
-  cdm_add_fk(flights_dm, flights, origin, airports, faa, set_ref_pk = TRUE) %>% 
-  cdm_add_fk(flights, dest, airports, faa)
+flights_dm_with_fk <- cdm_add_fk(flights_dm, flights, origin, airports, faa, set_ref_pk = TRUE)
 ```
+What if we try to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, also pointing to `faa`:
+```{r error=TRUE}
+flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports, faa)
+```
+As you can see, behind the scenes, checks are executed automatically by the functions of `dm` to prevent steps that do not comply with the logic of data models.
 
 Use `cdm_has_fk()` for checking if a foreign key exists, which is pointing from one table to another:
 ```{r}
@@ -148,9 +151,14 @@ flights_dm_with_fk %>% cdm_get_fk(flights, airports)
 ```
 
 Remove foreign key relations with `cdm_rm_fk()` (parameter `column = NULL` means removal of all relations):
-```{r}
+```{r error=TRUE}
 flights_dm_with_fk %>% 
   cdm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
+  cdm_get_fk(flights, airports)
+```
+```{r}
+flights_dm_with_fk %>% 
+  cdm_rm_fk(flights, origin, airports) %>% 
   cdm_get_fk(flights, airports)
 ```
 ```{r}
