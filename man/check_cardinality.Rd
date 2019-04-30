@@ -26,8 +26,8 @@ check_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
 \item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}}
 }
 \description{
-All \code{check_cardinality()} functions test, if the \code{parent_table_column} is a unique key for \code{parent_table} and if
-the set of values of \code{fk_column} of \code{child_table} is a subset of the set of values of \code{parent_table_column}.
+All \code{check_cardinality()} functions test, if the \code{pk_column} is a unique key for \code{parent_table} and if
+the set of values of \code{fk_column} of \code{child_table} is a subset of the set of values of \code{pk_column}.
 Furthermore the cardinality of the relation is tested, see below for details.
 }
 \details{
@@ -41,19 +41,19 @@ The cardinality specifications \code{0_n}, \code{1_n}, \code{0_1}, \code{1_1} re
 The numbers '0', '1' and 'n' refer to the number of values in the child table's column that correspond to each value of the
 parent table's column. 'n' means more than one in this context, with no upper limit.
 
-\code{0_n} means, that for each value of the \code{parent_key_column}, minimally '0' and maximally
+\code{0_n} means, that for each value of the \code{pk_column}, minimally '0' and maximally
 'n' values have to correspond to it in the child table's column (which translates to no further restriction).
 
-\code{1_n} means, that for each value of the \code{parent_key_column}, minimally '1' and maximally
+\code{1_n} means, that for each value of the \code{pk_column}, minimally '1' and maximally
 'n' values have to correspond to it in the child table's column. This means that there is a "surjective" relation from the child table
 to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 
-\code{0_1} means, that for each value of the \code{parent_key_column}, minimally '0' and maximally
+\code{0_1} means, that for each value of the \code{pk_column}, minimally '0' and maximally
 '1' value has to correspond to it in the child table's column. This means that there is a "injective" relation from the child table
 to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table
 column values have to be referred to.
 
-\code{1_1} means, that for each value of the \code{parent_key_column}, precisely
+\code{1_1} means, that for each value of the \code{pk_column}, precisely
 '1' value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
 between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 there are no duplicates in either of them.
