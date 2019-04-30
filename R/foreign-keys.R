@@ -79,7 +79,7 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' All parameters can be provided unquoted or quoted.'
 #'
 #' @export
-cdm_remove_fk <- function(dm, table, column, ref_table) {
+cdm_rm_fk <- function(dm, table, column, ref_table) {
 
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
