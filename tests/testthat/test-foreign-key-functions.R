@@ -144,9 +144,9 @@ test_that("cdm_rm_fk() works as intended?", {
 test_that("cdm_check_for_fk_candidates() works as intended?", {
 
   tbl_fk_candidates_t1_t4 <- tribble(
-    ~column, ~candidate, ~table,        ~ref_table,    ~ref_table_pk,
-    "a",     TRUE,       "cdm_table_1", "cdm_table_4", "c",
-    "b",     FALSE,      "cdm_table_1", "cdm_table_4", "c"
+    ~candidate, ~column, ~table,        ~ref_table,    ~ref_table_pk,
+    TRUE,       "a",     "cdm_table_1", "cdm_table_4", "c",
+    FALSE,      "b",     "cdm_table_1", "cdm_table_4", "c"
   )
 
   map(

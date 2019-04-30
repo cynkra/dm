@@ -1,8 +1,5 @@
 context("test-primary-key-functions")
 
-candidates_table_1 <- tibble(column = c("a", "b"), candidate = c(TRUE, TRUE))
-candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE))
-
 test_that("cdm_add_pk() works as intended?", {
   map(
     .x = cdm_test_obj_src,
@@ -121,6 +118,10 @@ test_that("cdm_get_pk() works as intended?", {
 })
 
 test_that("cdm_check_for_pk_candidates() works properly?", {
+
+  candidates_table_1 <- tibble(candidate = c(TRUE, TRUE), column = c("a", "b"))
+  candidates_table_2 <- tibble(candidate = c(FALSE), column = c("c"))
+
   map(
     cdm_test_obj_src,
     ~ expect_identical(
