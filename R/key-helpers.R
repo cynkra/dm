@@ -151,6 +151,10 @@ check_if_subset <- function(t1, c1, t2, c2) {
   c1q <- enexpr(c1)
   c2q <- enexpr(c2)
 
+  if (is_subset(eval_tidy(t1q), !!c1q, eval_tidy(t2q), !!c2q)) {
+    return(invisible(eval_tidy(t1q)))
+  }
+
   # Hier kann nicht t1 direkt verwendet werden, da das für den Aufruf
   # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
@@ -158,23 +162,19 @@ check_if_subset <- function(t1, c1, t2, c2) {
   v1 <- pull(eval_tidy(t1q), !! ensym(c1q))
   v2 <- pull(eval_tidy(t2q), !! ensym(c2q))
 
-  if (!all(v1 %in% v2)) {
-    setdiff_v1_v2 <- setdiff(v1, v2)
-    print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
-    abort(paste0(
-      "Column `",
-      as_label(c1q),
-      "` in table `",
-      as_label(t1q),
-      "` contains values (see above) that are not present in column `",
-      as_label(c2q),
-      "` in table `",
-      as_label(t2q),
-      "`"
-    ))
-  }
-
-  invisible(eval_tidy(t1q))
+  setdiff_v1_v2 <- setdiff(v1, v2)
+  print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
+  abort(paste0(
+    "Column `",
+    as_label(c1q),
+    "` in table `",
+    as_label(t1q),
+    "` contains values (see above) that are not present in column `",
+    as_label(c2q),
+    "` in table `",
+    as_label(t2q),
+    "`"
+  ))
 }
 
 # similar to `check_if_subset()`, but evaluates to a boolean
