@@ -87,7 +87,7 @@ flights_dm_with_key
 ```
 Still looks exactly the same as before... let's check:
 ```{r}
-cdm_has_pk(flights_dm_with_key, "airports")
+cdm_has_pk(flights_dm_with_key, airports)
 ```
 Get the name of the column that is marked as primary key of the table:
 ```{r}
