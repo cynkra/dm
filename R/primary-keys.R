@@ -23,7 +23,7 @@
 #' # the following does not work
 #' cdm_add_pk(nycflights_dm, planes, manufacturer)
 #' }
-cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
+cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
 
   table_name <- as_name(enquo(table))
 
@@ -39,11 +39,12 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
     abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
   }
 
-  if (!force) {
-    old_key <- cdm_get_pk(dm, !!table_name)
-    if (old_key == col_name) {
-      return(dm)
-    } else {
+  if (cdm_has_pk(dm, !!table_name)) {
+    if (!force) {
+      old_key <- cdm_get_pk(dm, !!table_name)
+      if (old_key == col_name) {
+        return(dm)
+      }
       abort("If you want to change the existing primary key for a table, set `force` == TRUE.")
     }
   }

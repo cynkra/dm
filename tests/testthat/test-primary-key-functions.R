@@ -4,7 +4,7 @@ test_that("cdm_add_pk() works as intended?", {
   map(
     .x = cdm_test_obj_src,
     ~ expect_silent(
-      cdm_add_pk(.x, "cdm_table_1", a)
+      cdm_add_pk(.x, cdm_table_1, a)
     )
   )
 
@@ -12,7 +12,7 @@ test_that("cdm_add_pk() works as intended?", {
     .x = cdm_test_obj_src,
     ~ expect_silent(
       cdm_add_pk(.x, "cdm_table_1", a) %>%
-        cdm_add_pk("cdm_table_1", b)
+        cdm_add_pk("cdm_table_1", b, force = TRUE)
     )
   )
 
@@ -20,7 +20,7 @@ test_that("cdm_add_pk() works as intended?", {
     .x = cdm_test_obj_src,
     ~ expect_error(
       cdm_add_pk(.x, "cdm_table_1", a) %>%
-        cdm_add_pk("cdm_table_1", b, force = FALSE),
+        cdm_add_pk("cdm_table_1", b),
       "If you want to change the existing primary key for a table, set `force` == TRUE."
     )
   )
