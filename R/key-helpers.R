@@ -166,13 +166,13 @@ check_if_subset <- function(t1, c1, t2, c2) {
   print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
   abort(paste0(
     "Column `",
-    as_label(c1q),
+    as_name(c1q),
     "` in table `",
-    as_label(t1q),
+    as_name(t1q),
     "` contains values (see above) that are not present in column `",
-    as_label(c2q),
+    as_name(c2q),
     "` in table `",
-    as_label(t2q),
+    as_name(t2q),
     "`"
   ))
 }
