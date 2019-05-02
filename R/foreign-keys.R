@@ -1,7 +1,7 @@
 #' Add a reference from one table of a `dm` to another
 #'
 #' @export
-cdm_add_fk <- function(dm, table, column, ref_table, ref_column, set_ref_pk = FALSE) {
+cdm_add_fk <- function(dm, table, column, ref_table, ref_column, check = TRUE, set_ref_pk = FALSE) {
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
 
@@ -34,7 +34,7 @@ cdm_add_fk <- function(dm, table, column, ref_table, ref_column, set_ref_pk = FA
   tbl_obj <- cdm_get_tables(dm)[[table_name]]
   ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
 
-  if (!is_subset(tbl_obj, !! column_name, ref_tbl_obj, !! ref_column_name)) {
+  if (check && !is_subset(tbl_obj, !! column_name, ref_tbl_obj, !! ref_column_name)) {
     abort(paste0(
       "Column `",
       column_name,
