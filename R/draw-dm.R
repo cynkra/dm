@@ -3,8 +3,21 @@
 #' @description `cdm_draw_data_model()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`)
 #' @name cdm_draw_data_model
 #' @export
-cdm_draw_data_model <- function(dm, rankdir = "LR", col_attr = "column", view_type = "keys_only", columnArrows = TRUE, ...) {
+cdm_draw_data_model <- function(dm, table_names = NULL, rankdir = "LR", col_attr = "column", view_type = "keys_only", columnArrows = TRUE, ...) {
   data_model <- cdm_get_data_model(dm)
+
+  if (!is_null(table_names)) {
+    walk(
+      table_names,
+      ~ check_correct_input(dm, .x)
+      )
+
+    all_table_names <- names(cdm_get_tables(dm))
+    if (!(length(table_names) == length(all_table_names))) {
+      unwanted_tables <- setdiff(all_table_names, table_names)
+      data_model <- rm_table_from_data_model(data_model, unwanted_tables)
+    }
+  }
   graph <- dm_create_graph(data_model,
                            rankdir = rankdir,
                            col_attr = col_attr,
