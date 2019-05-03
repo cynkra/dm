@@ -8,9 +8,7 @@ upd_data_model_reference <- function(data_model, table, column, ref_table, ref_c
 upd_references_reference <- function(data_model, table, column, ref_table, ref_column) {
   references <- data_model$references
 
-  tbl_from_data_model_cols <- data_model$columns[data_model$columns$table == table,]
-  new_ref_col_num <- which(tbl_from_data_model_cols$column == column)
-
+  # ref_col_num needs to be always 1, otherwise drawing the schema of the data model will not show connecting arrows of the fk-relations
   if (!is_null(references)) {
     new_references <- add_row(
       references,
@@ -19,7 +17,7 @@ upd_references_reference <- function(data_model, table, column, ref_table, ref_c
       ref = ref_table,
       ref_col = ref_column,
       ref_id = nrow(references) + 1,
-      ref_col_num = new_ref_col_num)
+      ref_col_num = 1)
   } else {
     new_references <- data.frame(
       table = table,
@@ -27,7 +25,7 @@ upd_references_reference <- function(data_model, table, column, ref_table, ref_c
       ref = ref_table,
       ref_col = ref_column,
       ref_id = 1,
-      ref_col_num = new_ref_col_num)
+      ref_col_num = 1)
   }
 
   data_model$references <- new_references
