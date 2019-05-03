@@ -52,10 +52,14 @@ cdm_draw_data_model <- function(
 cdm_draw_data_model_set_colors <- function(dm, list_of_table_colors) {
 
   names <- names(list_of_table_colors)
-  if (!all(names %in% available)) {
-    abort(paste0("Available color names are only: ",
-                 paste0(available, " (= ", color, ")", collapse = ",\n")))
+  if (!all(names %in% available_dm)) {
+    abort(paste0("Available color names are only: \n",
+                 paste0("'", available_dm, "' ", nb, collapse = ",\n")
+                 )
+          )
   }
+  new_names <- available_datamodelr[map_int(names, ~ which(available_dm == .x))]
+  names(list_of_table_colors) <- new_names
 
   data_model <- cdm_get_data_model(dm)
   data_model <- dm_set_display(data_model, list_of_table_colors)
@@ -68,10 +72,26 @@ cdm_draw_data_model_set_colors <- function(dm, list_of_table_colors) {
 #' @rdname cdm_draw_data_model
 #' @export
 cdm_draw_data_model_print_colors <- function() {
-  cat(paste0("'", available, "'", " (= ", color, ")"), sep = ",\n")
+  cat(paste0("'", available_dm, "' ", nb), sep = ",\n")
 }
 
-available <- c("default",
+available_dm <- c("default",
+                  "blue_nb",
+                  "orange_nb",
+                  "yellow_nb",
+                  "green_nb",
+                  "dark_blue_nb",
+                  "light_grey_nb",
+                  "grey_nb",
+                  "blue",
+                  "orange",
+                  "yellow",
+                  "green",
+                  "dark_blue",
+                  "light_grey",
+                  "grey")
+
+available_datamodelr <- c("default",
                "accent1nb",
                "accent2nb",
                "accent3nb",
@@ -87,19 +107,19 @@ available <- c("default",
                "accent6",
                "accent7")
 
-color <- c("greyish yellow",
-           "blue, no border",
-           "orange, no border",
-           "yellow, no border",
-           "green, no border",
-           "dark blue, no border",
-           "light grey, no border",
-           "grey, no border",
-           "blue",
-           "orange",
-           "yellow",
-           "green",
-           "dark blue",
-           "light grey",
-           "grey")
+nb <- c("(border)",
+           "(no border)",
+           "(no border)",
+           "(no border)",
+           "(no border)",
+           "(no border)",
+           "(no border)",
+           "(no border)",
+           "(border)",
+           "(border)",
+           "(border)",
+           "(border)",
+           "(border)",
+           "(border)",
+           "(border)")
 
