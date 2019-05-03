@@ -3,7 +3,19 @@
 #' @description `cdm_draw_data_model()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`)
 #' @name cdm_draw_data_model
 #' @export
-cdm_draw_data_model <- function(dm, table_names = NULL, rankdir = "LR", col_attr = "column", view_type = "keys_only", columnArrows = TRUE, ...) {
+cdm_draw_data_model <- function(
+  dm,
+  table_names = NULL,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model") {
+
   data_model <- cdm_get_data_model(dm)
 
   if (!is_null(table_names)) {
@@ -18,13 +30,18 @@ cdm_draw_data_model <- function(dm, table_names = NULL, rankdir = "LR", col_attr
       data_model <- rm_table_from_data_model(data_model, unwanted_tables)
     }
   }
-  graph <- dm_create_graph(data_model,
-                           rankdir = rankdir,
-                           col_attr = col_attr,
-                           view_type = view_type,
-                           columnArrows = columnArrows,
-                           ...)
-
+  graph <- dm_create_graph(
+    data_model,
+    rankdir = rankdir,
+    col_attr = col_attr,
+    view_type = view_type,
+    columnArrows = columnArrows,
+    graph_attrs = graph_attrs,
+    node_attrs = node_attrs,
+    edge_attrs = edge_attrs,
+    focus = focus,
+    graph_name = graph_name
+  )
   dm_render_graph(graph)
 }
 
