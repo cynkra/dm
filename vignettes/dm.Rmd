@@ -181,7 +181,7 @@ Relevant functions for visualising the data model:^[The functions in this sectio
 2. `cdm_draw_data_model_print_colors()`
 3. `cdm_draw_data_model()`
 
-Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation your data model.
+Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation of your data model.
 
 Let's first create a slightly more interconnected `dm`-object from the {nycflights13} package tables:
 ```{r}
