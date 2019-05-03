@@ -196,7 +196,7 @@ flights_dm_w_many_keys <-
   cdm_add_fk(flights, dest, airports, faa, check = FALSE)
 flights_dm_w_many_keys
 ```
-You probably realised the option `check = FALSE` in the last two function calls when adding foreign keys.
+You probably realized the option `check = FALSE` in the last two function calls when adding foreign keys.
 The check normally ensures, that the set of values of the column of the first table is a subset of the set of values of the primary key column of the referenced table.
 Since in our case this isn't the case, but we want complexity, we turned the check off.
 It is recommended not to do this, since you might run into errors or other unwanted effects, mainly when working on databases.
@@ -226,7 +226,7 @@ Draw the schema with `cdm_draw_data_model()`.
 cdm_draw_data_model(flights_dm_w_many_keys_and_colors)
 ```
 
-There are quite a few options for customisation available. 
+There are quite a few options for customization available. 
 Please read the documentation to find out more.
 One argument of the function we'd like to draw your attention to, though, is `table_names`.
 This argument accepts a character vector with the table names which are to be printed, in case you would like to only see a subset of the whole data model.
