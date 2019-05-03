@@ -173,7 +173,66 @@ Another function for getting to know your data better (cf. `cdm_check_for_pk_can
 cdm_check_for_fk_candidates(flights_dm_with_key, weather, airports)
 ```
 
+## Visualising the data model
 
+Relevant functions for visualising the data model:^[The functions in this section rely heavily on related functions of {datamodelr}.]
+
+1. `cdm_draw_data_model_set_colors()`
+2. `cdm_draw_data_model_print_colors()`
+3. `cdm_draw_data_model()`
+
+Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation your data model.
+
+Let's first create a slightly more interconnected `dm`-object from the {nycflights13} package tables:
+```{r}
+flights_dm_w_many_keys <- 
+  flights_dm %>% 
+  cdm_add_pk(planes, tailnum) %>% 
+  cdm_add_pk(airports, faa) %>% 
+  cdm_add_pk(airlines, carrier) %>% 
+  cdm_add_fk(flights, origin, airports, faa) %>% 
+  cdm_add_fk(flights, carrier, airlines, carrier) %>% 
+  cdm_add_fk(flights, tailnum, planes, tailnum, check = FALSE) %>% 
+  cdm_add_fk(flights, dest, airports, faa, check = FALSE)
+flights_dm_w_many_keys
+```
+You probably realised the option `check = FALSE` in the last two function calls when adding foreign keys.
+The check normally ensures, that the set of values of the column of the first table is a subset of the set of values of the primary key column of the referenced table.
+Since in our case this isn't the case, but we want complexity, we turned the check off.
+It is recommended not to do this, since you might run into errors or other unwanted effects, mainly when working on databases.
+
+You can use colors to visually group your tables into families (which could reflect their logical grouping).
+Currently, there are only eight different colors available (plus the option of having borders displayed around the tables or not).
+To find out which colors they are, use `cdm_draw_data_model_print_colors()`:
+```{r}
+cdm_draw_data_model_print_colors()
+```
+
+The assignment needs a named list. Its names are the names of the colors, the values are the table names.
+```{r}
+list_of_table_colors <- list(accent1 = "flights", accent2 = c("airports", "airlines"), accent3nb = "planes")
+```
+Any table you don't specifically assign will be displayed in the default color.
+
+Use `cdm_draw_data_model_set_colors()` to assign the respective colors. 
+The result of `cdm_draw_data_model_set_colors()` is a `dm`-object.
+The information about the color is stored in its `data_model`-part.
+```{r}
+flights_dm_w_many_keys_and_colors <- cdm_draw_data_model_set_colors(flights_dm_w_many_keys, list_of_table_colors)
+```
+
+Draw the schema with `cdm_draw_data_model()`. 
+```{r}
+cdm_draw_data_model(flights_dm_w_many_keys_and_colors)
+```
+
+There are quite a few options for customisation available. 
+Please read the documentation to find out more.
+One argument of the function we'd like to draw your attention to, though, is `table_names`.
+This argument accepts a character vector with the table names which are to be printed, in case you would like to only see a subset of the whole data model.
+```{r}
+cdm_draw_data_model(flights_dm_w_many_keys_and_colors, table_names = c("flights", "airports", "planes"))
+```
 
 ## Joining tables
 
