@@ -210,7 +210,7 @@ cdm_draw_data_model_print_colors()
 
 The assignment needs a named list. Its names are the names of the colors, the values are the table names.
 ```{r}
-list_of_table_colors <- list(accent1 = "flights", accent2 = c("airports", "airlines"), accent3nb = "planes")
+list_of_table_colors <- list(blue = "flights", orange = c("airports", "airlines"), green_nb = "planes")
 ```
 Any table you don't specifically assign will be displayed in the default color.
 
