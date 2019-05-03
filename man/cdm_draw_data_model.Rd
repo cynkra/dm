@@ -6,8 +6,10 @@
 \alias{cdm_draw_data_model_print_colors}
 \title{Draw schema of a 'dm'-object's data model}
 \usage{
-cdm_draw_data_model(dm, rankdir = "LR", col_attr = "column",
-  view_type = "keys_only", columnArrows = TRUE, ...)
+cdm_draw_data_model(dm, table_names = NULL, rankdir = "LR",
+  col_attr = "column", view_type = "keys_only", columnArrows = TRUE,
+  graph_attrs = "", node_attrs = "", edge_attrs = "", focus = NULL,
+  graph_name = "Data Model")
 
 cdm_draw_data_model_set_colors(dm, list_of_table_colors)
 
