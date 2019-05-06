@@ -24,3 +24,19 @@ cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
 
   join(lhs_obj, rhs_obj, by = by)
 }
+
+#' @export
+cdm_is_referenced <- function(dm, table_name) {
+  data_model <- cdm_get_data_model(dm)
+  references <- data_model$references
+  which_ind <- references$ref == table_name
+  any(which_ind)
+}
+
+#' @export
+cdm_get_referencing_tables <- function(dm, table_name) {
+  data_model <- cdm_get_data_model(dm)
+  references <- data_model$references
+  which_ind <- references$ref == table_name
+  as.character(references$table[which_ind])
+}
