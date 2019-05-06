@@ -39,7 +39,7 @@ the `check_key()` function:
 
 ``` r
 check_key(data_1, a)
-#> Error: `a` is not a unique key of `data_1`
+#> `a` is not a unique key of `data_1`
 ```
 
 Mind the error message when a test is not passed.
@@ -67,7 +67,8 @@ check_if_subset(data_2, a, data_1, a)
 #>       a     b     c
 #>   <dbl> <dbl> <dbl>
 #> 1     3     6     9
-#> Error: Column `a` in table `data_2` contains values (see above) that are not present in column `a` in table `data_1`
+#> Column `a` in table `data_2` contains values (see above) that are not
+#> present in column `a` in table `data_1`
 ```
 
 One should keep in mind, that `check_if_subset()` does NOT test, if
@@ -83,15 +84,11 @@ check_if_subset(t1, c1, t2, c2)
 
 To check both directions at once - basically answering the questions:
 are the unique values of `c_1` in `t_1` the same as those of `c_2` in
-`t_2`? - `dm` provides the function `check_set_equality()`:
+`t_2`? - `dm` provides the function `check_set_equality()` (this would
+fail with a longer error message and is therefore not evaluated):
 
 ``` r
 check_set_equality(data_1, a, data_2, a)
-#> # A tibble: 1 x 3
-#>       a     b     c
-#>   <dbl> <dbl> <dbl>
-#> 1     3     6     9
-#> Error in check_set_equality(data_1, a, data_2, a): Column `a` in table `data_2` contains values (see above) that are not present in column `a` in table `data_1`
 ```
 
 Bringing one more table into the game, we can show how it looks, when
@@ -177,14 +174,15 @@ Here are some examples for the usage of the functions:
 ``` r
 # This does not pass, `c` is not unique key of d2:
 check_cardinality_0_n(d2, c, d1, a)
-#> Error: `c` is not a unique key of `d2`
+#> `c` is not a unique key of `d2`
 
 # This passes, multiple values in d2$c are allowed:
 check_cardinality_0_n(d1, a, d2, c)
 
 # This does not pass, injectivity is violated:
 check_cardinality_1_1(d1, a, d2, c)
-#> Error: 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.
+#> 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2`
+#> contains duplicate values.
 
 # This passes:
 check_cardinality_0_1(d1, a, d3, c)

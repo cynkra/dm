@@ -16,15 +16,18 @@
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
-#' cdm_add_pk(nycflights_dm, "planes", "tailnum")
-#' cdm_add_pk(nycflights_dm, "airports", faa)
-#' cdm_add_pk(nycflights_dm, "planes", "manufacturer", check = FALSE)
+#' cdm_add_pk(nycflights_dm, planes, tailnum)
+#' cdm_add_pk(nycflights_dm, airports, faa)
+#' cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 #'
 #' # the following does not work
-#' cdm_add_pk(nycflights_dm, "planes", "manufacturer")
+#' cdm_add_pk(nycflights_dm, planes, manufacturer)
 #' }
-cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
-  check_correct_input(dm, table)
+cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
+
+  table_name <- as_name(enquo(table))
+
+  check_correct_input(dm, table_name)
 
   if (is_symbol(enexpr(column))) {
     col_expr <- enexpr(column)
@@ -36,21 +39,22 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = TRUE) {
     abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
   }
 
-  if (!force) {
-    old_key <- cdm_get_pk(dm, table)
-    if (old_key == col_name) {
-      return(dm)
-    } else {
+  if (cdm_has_pk(dm, !!table_name)) {
+    if (!force) {
+      old_key <- cdm_get_pk(dm, !!table_name)
+      if (old_key == col_name) {
+        return(dm)
+      }
       abort("If you want to change the existing primary key for a table, set `force` == TRUE.")
     }
   }
 
   if (check) {
-    table_from_dm <- tbl(dm, table)
+    table_from_dm <- tbl(dm, table_name)
     check_key(table_from_dm, !!col_expr)
   }
 
-  cdm_remove_pk(dm, table) %>% cdm_add_pk_impl(table, col_name)
+  cdm_rm_pk(dm, !!table_name) %>% cdm_add_pk_impl(table_name, col_name)
 }
 
 # "table" and "column" has to be character
@@ -75,22 +79,25 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #' library(dplyr)
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum")
+#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_has_pk("planes")
+#'   cdm_has_pk(planes)
 #' }
 #'
 #' @export
 cdm_has_pk <- function(dm, table) {
-  check_correct_input(dm, table)
+  table_name <- as_name(enquo(table))
+
+  check_correct_input(dm, table_name)
+
   cdm_data_model <- cdm_get_data_model(dm)
 
-  cols_from_table <- cdm_data_model$columns$table == table
+  cols_from_table <- cdm_data_model$columns$table == table_name
   if (sum(cdm_data_model$columns$key[cols_from_table] > 0) > 1) {
     abort(
       paste0(
-        "Please use cdm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
+        "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
       )
     )
   }
@@ -109,22 +116,25 @@ cdm_has_pk <- function(dm, table) {
 #' library(dplyr)
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum")
+#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_get_pk("planes")
+#'   cdm_get_pk(planes)
 #' }
 #'
 #' @export
 cdm_get_pk <- function(dm, table) {
-  check_correct_input(dm, table)
+
+  table_name <- as_name(enquo(table))
+
+  check_correct_input(dm, table_name)
   cdm_data_model <- cdm_get_data_model(dm)
 
-  index_key_from_table <- cdm_data_model$columns$table == table & cdm_data_model$columns$key != 0
+  index_key_from_table <- cdm_data_model$columns$table == table_name & cdm_data_model$columns$key != 0
   if (sum(index_key_from_table) > 1) {
     abort(
       paste0(
-        "Please use cdm_remove_pk() on ", table, ", more than 1 primary key is currently set for it."
+        "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
       )
     )
   }
@@ -133,7 +143,7 @@ cdm_get_pk <- function(dm, table) {
 
 #' Remove primary key from a table in a `dm`-object
 #'
-#' @description `cdm_remove_pk()` removes a potentially set primary key from a table in the
+#' @description `cdm_rm_pk()` removes a potentially set primary key from a table in the
 #' underlying `data_model`-object and otherwise leaves the `dm`-object untouched.
 #'
 #' @examples
@@ -143,24 +153,25 @@ cdm_get_pk <- function(dm, table) {
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
-#' # the following works
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, "planes", "tailnum") %>%
-#'   cdm_add_pk("airports", faa)
+#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum) %>%
+#'   cdm_add_pk(airports, faa)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_remove_pk("airports") %>%
-#'   cdm_has_pk("planes")
+#'   cdm_rm_pk(airports) %>%
+#'   cdm_has_pk(planes)
 #'
 #' cdm_obj_with_keys %>%
-#'   cdm_remove_pk("planes") %>%
-#'   cdm_has_pk("planes")
+#'   cdm_rm_pk(planes) %>%
+#'   cdm_has_pk(planes)
 #' }
 #'
 #' @export
-cdm_remove_pk <- function(dm, table) {
-  check_correct_input(dm, table)
+cdm_rm_pk <- function(dm, table) {
+  table_name <- as_name(enquo(table))
 
-  update_cols <- dm$data_model$columns$table == table
+  check_correct_input(dm, table_name)
+
+  update_cols <- dm$data_model$columns$table == table_name
   dm$data_model$columns$key[update_cols] <- 0
 
   dm
@@ -180,15 +191,17 @@ cdm_remove_pk <- function(dm, table) {
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
-#' nycflights_dm %>% cdm_check_for_pk_candidates("flights")
-#' nycflights_dm %>% cdm_check_for_pk_candidates("airports")
+#' nycflights_dm %>% cdm_check_for_pk_candidates(flights)
+#' nycflights_dm %>% cdm_check_for_pk_candidates(airports)
 #' }
 #'
 #' @export
 cdm_check_for_pk_candidates <- function(dm, table) {
-  check_correct_input(dm, table)
+  table_name <- as_name(enquo(table))
 
-  tbl <- tbl(dm$src, table)
+  check_correct_input(dm, table_name)
+
+  tbl <- cdm_get_tables(dm)[[table_name]]
   tbl_colnames <- colnames(tbl)
 
   # list of ayes and noes:
@@ -199,5 +212,6 @@ cdm_check_for_pk_candidates <- function(dm, table) {
     gather(
       key = "column",
       value = "candidate"
-    )
+    ) %>%
+    select(candidate, column)
 }

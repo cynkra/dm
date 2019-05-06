@@ -81,9 +81,9 @@ check_if_subset(t1, c1, t2, c2)
 ```
 
 To check both directions at once - basically answering the questions: are the unique values of `c_1` in `t_1` the same as those of `c_2` in `t_2`? -
-`dm` provides the function `check_set_equality()`:
+`dm` provides the function `check_set_equality()` (this would fail with a longer error message and is therefore not evaluated):
 
-```{r}
+```{r eval=FALSE}
 check_set_equality(data_1, a, data_2, a)
 ```
 

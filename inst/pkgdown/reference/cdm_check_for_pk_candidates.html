@@ -65,7 +65,7 @@ a unique key of this table." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9004</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9005</span>
       </span>
     </div>
 
@@ -125,8 +125,8 @@ a unique key of this table.</p>
 
 <span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
 
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_check_for_pk_candidates</span>(<span class='st'>"flights"</span>)
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_check_for_pk_candidates</span>(<span class='st'>"airports"</span>)
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_check_for_pk_candidates</span>(<span class='no'>flights</span>)
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_check_for_pk_candidates</span>(<span class='no'>airports</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

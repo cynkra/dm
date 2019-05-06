@@ -5,7 +5,7 @@ cdm_create_surrogate_key_for_table <- function(dm, table, new_id_column = paste0
     abort(paste0(
       "Table `", table, "` already has a primary key. If you really want to",
       " add a surrogate key column and set it as primary key, please use ",
-      "`cdm_remove_pk()` first."
+      "`cdm_rm_pk()` first."
     ))
   }
 

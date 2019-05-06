@@ -1,4 +1,36 @@
 reference:
+- title: Creating `dm`-objects and basic functions
+  contents:
+  - dm
+  - new_dm
+  - is_dm
+  - as_dm
+  - cdm_get_src
+  - cdm_get_tables
+  - cdm_get_data_model
+
+- title: Managing primary keys in `dm`-objects
+  contents:
+  - cdm_add_pk
+  - cdm_has_pk
+  - cdm_get_pk
+  - cdm_rm_pk
+  - cdm_check_for_pk_candidates
+
+- title: Managing foreign keys in `dm`-objects
+  contents:
+  - cdm_add_fk
+  - cdm_has_fk
+  - cdm_get_fk
+  - cdm_rm_fk
+  - cdm_check_for_fk_candidates
+
+- title: Table surgery functions
+  contents:
+  - decompose_table
+  - reunite_parent_child
+  - reunite_parent_child_from_list
+
 - title: Check primary key property
   contents:
   - check_key
@@ -14,6 +46,10 @@ reference:
   - check_cardinality_1_n
   - check_cardinality_0_1
   - check_cardinality_1_1
+
+- title: Testing packages using `dm`-objects on different databases
+  contents:
+  - cdm_test_load
 
 - title: Open website with overview
   contents:

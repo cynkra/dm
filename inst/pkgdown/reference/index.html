@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9004</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9005</span>
       </span>
     </div>
 
@@ -111,6 +111,116 @@
     <tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-creating-dm-objects-and-basic-functions" class="hasAnchor"><a href="#section-creating-dm-objects-and-basic-functions" class="anchor"></a>Creating `dm`-objects and basic functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="dm.html">dm()</a></code> <code><a href="dm.html">new_dm()</a></code> <code><a href="dm.html">validate_dm()</a></code> <code><a href="dm.html">cdm_get_src()</a></code> <code><a href="dm.html">cdm_get_tables()</a></code> <code><a href="dm.html">cdm_get_data_model()</a></code> <code><a href="dm.html">is_dm()</a></code> <code><a href="dm.html">as_dm()</a></code> </p>
+        </td>
+        <td><p>Data model class</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-managing-primary-keys-in-dm-objects" class="hasAnchor"><a href="#section-managing-primary-keys-in-dm-objects" class="anchor"></a>Managing primary keys in `dm`-objects</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_add_pk.html">cdm_add_pk()</a></code> </p>
+        </td>
+        <td><p>Mark a column of a table in a <code>dm</code>-object as its primary key</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_has_pk.html">cdm_has_pk()</a></code> </p>
+        </td>
+        <td><p>Does a table of a <code>dm</code>-object have a column set as primary key?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_get_pk.html">cdm_get_pk()</a></code> </p>
+        </td>
+        <td><p>Retrieve the name of the column marked as primary key of a table of a <code>dm</code>-object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_rm_pk.html">cdm_rm_pk()</a></code> </p>
+        </td>
+        <td><p>Remove primary key from a table in a <code>dm</code>-object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_check_for_pk_candidates.html">cdm_check_for_pk_candidates()</a></code> </p>
+        </td>
+        <td><p>Which columns are candidates for a primary key column of a <code>dm</code>-object's table?</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-managing-foreign-keys-in-dm-objects" class="hasAnchor"><a href="#section-managing-foreign-keys-in-dm-objects" class="anchor"></a>Managing foreign keys in `dm`-objects</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_add_fk.html">cdm_add_fk()</a></code> </p>
+        </td>
+        <td><p>Add a reference from one table of a <code>dm</code> to another</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_has_fk.html">cdm_has_fk()</a></code> </p>
+        </td>
+        <td><p>Does a reference from one table of a <code>dm</code> to another exist?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_get_fk.html">cdm_get_fk()</a></code> </p>
+        </td>
+        <td><p>Retrieve the name of the column marked as foreign key, pointing from one table of a <code>dm</code> to another</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_rm_fk.html">cdm_rm_fk()</a></code> </p>
+        </td>
+        <td><p>Remove reference(s) from one table of a <code>dm</code> to another</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_check_for_fk_candidates.html">cdm_check_for_fk_candidates()</a></code> </p>
+        </td>
+        <td><p>Find foreign key candidates in a table</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-table-surgery-functions" class="hasAnchor"><a href="#section-table-surgery-functions" class="anchor"></a>Table surgery functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="decompose_table.html">decompose_table()</a></code> </p>
+        </td>
+        <td><p>Decompose a table into two linked tables</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reunite_parent_child.html">reunite_parent_child()</a></code> <code><a href="reunite_parent_child.html">reunite_parent_child_from_list()</a></code> </p>
+        </td>
+        <td><p>Merge two tables linked by a foreign key relation</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-check-primary-key-property" class="hasAnchor"><a href="#section-check-primary-key-property" class="anchor"></a>Check primary key property</h2>
           <p class="section-desc"></p>
         </th>
@@ -159,6 +269,20 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-testing-packages-using-dm-objects-on-different-databases" class="hasAnchor"><a href="#section-testing-packages-using-dm-objects-on-different-databases" class="anchor"></a>Testing packages using `dm`-objects on different databases</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_test_load.html">cdm_test_load()</a></code> </p>
+        </td>
+        <td><p>Loads <code>dm</code>-objects into one or more registered sources</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-open-website-with-overview" class="hasAnchor"><a href="#section-open-website-with-overview" class="anchor"></a>Open website with overview</h2>
           <p class="section-desc"></p>
         </th>
@@ -177,9 +301,14 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#section-creating-dm-objects-and-basic-functions">Creating `dm`-objects and basic functions</a></li>
+      <li><a href="#section-managing-primary-keys-in-dm-objects">Managing primary keys in `dm`-objects</a></li>
+      <li><a href="#section-managing-foreign-keys-in-dm-objects">Managing foreign keys in `dm`-objects</a></li>
+      <li><a href="#section-table-surgery-functions">Table surgery functions</a></li>
       <li><a href="#section-check-primary-key-property">Check primary key property</a></li>
       <li><a href="#section-check-foreign-key-properties">Check foreign key properties</a></li>
       <li><a href="#section-check-cardinality-of-relation-between-two-tables">Check cardinality of relation between two tables</a></li>
+      <li><a href="#section-testing-packages-using-dm-objects-on-different-databases">Testing packages using `dm`-objects on different databases</a></li>
       <li><a href="#section-open-website-with-overview">Open website with overview</a></li>
     </ul>
   </div>

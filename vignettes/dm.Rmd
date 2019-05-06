@@ -40,7 +40,7 @@ So much to the theory, let's see how to construct such an object and how it look
 
 ## Examples of `dm`-objects {#ex_dm}
 
-Relevant functions are:
+Relevant functions for creating `dm`-objects are:
 
 1. `dm()`
 2. `as_dm()`
@@ -64,43 +64,116 @@ iris_dm
 
 But how can we use dm-functions to manage primary keys of the tables in a `dm`-object?
 
-## Primary keys of `dm`-objects
+## Primary keys of `dm`-objects {#pk}
 
-Useful functions are:
+Useful functions for managing primary key settings are:
 
 1. `cdm_add_pk()`
 2. `cdm_has_pk()`
 3. `cdm_get_pk()`
-4. `cdm_remove_pk()`
+4. `cdm_rm_pk()`
+5. `cdm_check_for_pk_candidates()`
 
 As of yet `dm`-objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
 If you created a `dm`-object according to the examples in ["Examples of `dm`-objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 By default `cdm_add_pk()` checks if the column of the table given by the user is a unique key.
-Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`:
+Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`.
 
 ```{r}
-cdm_has_pk(flights_dm, "airports")
-```
-```{r}
-flights_dm_with_key <- cdm_add_pk(flights_dm, "airports", faa)
+cdm_has_pk(flights_dm, airports)
+flights_dm_with_key <- cdm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
 Still looks exactly the same as before... let's check:
 ```{r}
-cdm_has_pk(flights_dm_with_key, "airports")
+cdm_has_pk(flights_dm_with_key, airports)
 ```
 Get the name of the column that is marked as primary key of the table:
 ```{r}
-cdm_get_pk(flights_dm_with_key, "airports")
+cdm_get_pk(flights_dm_with_key, airports)
 ```
 Remove a primary key by:
 ```{r}
-cdm_remove_pk(flights_dm_with_key, "airports") %>% 
-  cdm_has_pk("airports")
+cdm_rm_pk(flights_dm_with_key, airports) %>% 
+  cdm_has_pk(airports)
+```
+
+If you still need to get to know your data better, and it is already available in the form of a `dm`-object, you can use the function `cdm_check_for_pk_candidates()` in order to get information, which columns of a table are unique keys:
+```{r}
+cdm_check_for_pk_candidates(flights_dm_with_key, airports)
+```
+Table `flights` does not have any one-column primary key candidates:
+```{r}
+cdm_check_for_pk_candidates(flights_dm_with_key, flights) %>% count(candidate)
 ```
 
 ## Foreign keys
+
+Useful functions for managing foreign key relations are:
+
+1. `cdm_add_fk()`
+2. `cdm_has_fk()`
+3. `cdm_get_fk()`
+4. `cdm_rm_fk()`
+5. `cdm_check_for_fk_candidates()`
+
+Now it gets (even more) interesting: we want to define relations between different tables.
+With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
+
+When dealing with data models, a foreign key from one table has to always point to a primary key of another table.
+So it has to be made sure, that the primary key of the referred table is set.
+You can either do that directly using `cdm_add_pk()`, or make use of the flag parameter `set_ref_pk` of the function `cdm_add_fk()`. 
+If `set_ref_pk` is set to `TRUE` (default is `FALSE`), the column `ref_column` of the table `ref_table` will become primary key, in addition to the foreign key relation being established.
+
+```{r}
+flights_dm_with_key %>% cdm_add_fk(flights, origin, airports, faa)
+```
+This on the other hand will throw an error:
+```{r error=TRUE}
+flights_dm %>% cdm_add_fk(flights, origin, airports, faa)
+```
+Let's create an `dm`-object with a foreign key relation to work with later on:
+```{r}
+flights_dm_with_fk <- cdm_add_fk(flights_dm, flights, origin, airports, faa, set_ref_pk = TRUE)
+```
+What if we try to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, also pointing to `faa`:
+```{r error=TRUE}
+flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports, faa)
+```
+As you can see, behind the scenes, checks are executed automatically by the functions of `dm` to prevent steps that do not comply with the logic of data models.
+
+Use `cdm_has_fk()` for checking if a foreign key exists, which is pointing from one table to another:
+```{r}
+flights_dm_with_fk %>% cdm_has_fk(flights, planes)
+flights_dm_with_fk %>% cdm_has_fk(flights, airports)
+```
+
+If you want to access the name of the column, which acts as a foreign key of one table to another table's column, use `cdm_get_fk()`:
+```{r}
+flights_dm_with_fk %>% cdm_get_fk(flights, planes)
+flights_dm_with_fk %>% cdm_get_fk(flights, airports)
+```
+
+Remove foreign key relations with `cdm_rm_fk()` (parameter `column = NULL` means removal of all relations):
+```{r error=TRUE}
+flights_dm_with_fk %>% 
+  cdm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
+  cdm_get_fk(flights, airports)
+flights_dm_with_fk %>% 
+  cdm_rm_fk(flights, origin, airports) %>% 
+  cdm_get_fk(flights, airports)
+flights_dm_with_fk %>% 
+  cdm_rm_fk(flights, NULL, airports) %>% 
+  cdm_get_fk(flights, airports)
+```
+
+Another function for getting to know your data better (cf. `cdm_check_for_pk_candidates()` in ["Primary keys of `dm`-objects"](#pk)) is `cdm_check_for_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
+```{r}
+cdm_check_for_fk_candidates(flights_dm_with_key, weather, airports)
+```
+
+
 
 ## Joining tables
 

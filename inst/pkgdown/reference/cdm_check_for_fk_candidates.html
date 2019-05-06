@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Browse package documentation — browse_docs • dm</title>
+<title>Find foreign key candidates in a table — cdm_check_for_fk_candidates • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Browse package documentation — browse_docs" />
+<meta property="og:title" content="Find foreign key candidates in a table — cdm_check_for_fk_candidates" />
 
-<meta property="og:description" content="Opens the documentation website in a browser." />
+<meta property="og:description" content="Which columns are foreign candidates of a table, referencing the primary key column of another dm-object's table?
+cdm_check_for_fk_candidates() checks first, if ref_table has a primary key set. Then it determines
+for each column of table, if this column contains only a subset of values of the primary key column of
+ref_table and is therefore a candidate for a foreign key from table to ref_table." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -100,25 +103,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Browse package documentation</h1>
+    <h1>Find foreign key candidates in a table</h1>
     
-    <div class="hidden name"><code>browse_docs.Rd</code></div>
+    <div class="hidden name"><code>cdm_check_for_fk_candidates.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Opens the documentation website in a browser.</p>
+    <p>Which columns are foreign candidates of a table, referencing the primary key column of another <code>dm</code>-object's table?
+<code>cdm_check_for_fk_candidates()</code> checks first, if <code>ref_table</code> has a primary key set. Then it determines
+for each column of <code>table</code>, if this column contains only a subset of values of the primary key column of
+<code>ref_table</code> and is therefore a candidate for a foreign key from <code>table</code> to <code>ref_table</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>browse_docs</span>()</pre>
+    <pre class="usage"><span class='fu'>cdm_check_for_fk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)</pre>
         
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>nycflights13</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+
+<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
+
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='cdm_add_pk.html'>cdm_add_pk</a></span>(<span class='no'>airports</span>, <span class='no'>faa</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>cdm_check_for_fk_candidates</span>(<span class='no'>flights</span>, <span class='no'>airports</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
