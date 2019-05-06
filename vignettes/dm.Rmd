@@ -62,6 +62,10 @@ iris_dm <- as_dm(list("iris1" = iris, "iris2" = iris))
 iris_dm
 ```
 
+## Methods for `dm`-objects
+
+tbl(dm, "table_name") etc. (copy_to...) FIXME: complete
+
 But how can we use dm-functions to manage primary keys of the tables in a `dm`-object?
 
 ## Primary keys of `dm`-objects {#pk}
