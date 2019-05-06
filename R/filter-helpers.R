@@ -40,3 +40,32 @@ cdm_get_referencing_tables <- function(dm, table_name) {
   which_ind <- references$ref == table_name
   as.character(references$table[which_ind])
 }
+
+find_next_connection <- function(data_model, table_name, fk_or_pk) {
+  references <- data_model$references
+
+  if (fk_or_pk == "pk") {
+    which_ind <- references$ref == table_name
+    if (!any(which_ind)) return(NULL)
+    referenced_table <- table_name
+    referenced_column <- as.character(references$ref_col[which_ind][1])
+    referencing_table <- as.character(references$table[which_ind][1])
+    referencing_column <- as.character(references$column[which_ind][1])
+  } else if (fk_or_pk == "fk") {
+    which_ind <- references$table == table_name
+    if (!any(which_ind)) return(NULL)
+    referencing_table <- table_name
+    referencing_column <- as.character(references$column[which_ind][1])
+    referenced_table <- as.character(references$ref[which_ind][1])
+    referenced_column <- as.character(references$ref_col[which_ind][1])
+  }
+  list("thinned_data_model" = rm_data_model_reference(
+    data_model,
+    referencing_table,
+    referencing_column,
+    referenced_table),
+       "referencing_table" = referencing_table,
+       "referencing_column" = referencing_column,
+       "referenced_table" = referenced_table,
+       "referenced_column" = referenced_column)
+}
