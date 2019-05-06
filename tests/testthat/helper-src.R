@@ -91,3 +91,6 @@ list_of_data_ts_parent_and_child_src <- map2(
 
 cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7, cdm_table_4 = d8))
 cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
+
+cdm_test_obj_filter <- cdm_test_obj %>% cdm_add_pk(cdm_table_4, c)
+cdm_test_obj_filter_src <- cdm_test_load(cdm_test_obj_filter)
