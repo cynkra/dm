@@ -82,3 +82,24 @@ rm_columns_reference <- function(data_model, table, cols, ref_table) {
   data_model$columns <- cols_data_model
   data_model
 }
+
+# removes one or more tables from a data model, taking key relations into consideration
+rm_table_from_data_model <- function(data_model, tables) {
+  ind_keep_tables <- !(data_model$tables$table %in% tables)
+  data_model$tables <- data_model$tables[ind_keep_tables,]
+
+  ind_keep_columns <- !(data_model$columns$table %in% tables)
+  data_model$columns <- data_model$columns[ind_keep_columns,]
+
+  ind_alter_columns <- !is.na(data_model$columns$ref) & data_model$columns$ref %in% tables
+  if (any(ind_alter_columns)) {
+    data_model$columns[ind_alter_columns,]$ref <- NA
+    data_model$columns[ind_alter_columns,]$ref_col <- NA
+  }
+
+  ind_keep_references <-
+    !(data_model$references$table %in% tables) &
+    !(data_model$references$ref %in% tables)
+  data_model$references <- data_model$references[ind_keep_references,]
+  data_model
+}

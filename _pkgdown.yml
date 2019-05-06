@@ -25,6 +25,12 @@ reference:
   - cdm_rm_fk
   - cdm_check_for_fk_candidates
 
+- title: Drawing a schema of a `dm`-object's data model
+  contents:
+  - cdm_draw_data_model
+  - cdm_draw_data_model_set_colors
+  - cdm_draw_data_model_print_colors
+
 - title: Table surgery functions
   contents:
   - decompose_table
