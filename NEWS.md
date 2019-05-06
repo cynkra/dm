@@ -1,3 +1,9 @@
+# dm 0.0.0.9006
+
+- Functions for drawing a data model and defining colors (!7).
+- Track foreign keys (!6).
+
+
 # dm 0.0.0.9005
 
 - Update documentation, bugfixes.
