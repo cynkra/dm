@@ -75,51 +75,25 @@ cdm_draw_data_model_print_colors <- function() {
   cat(paste0("'", available_dm, "' ", nb), sep = ",\n")
 }
 
-available_dm <- c("default",
-                  "blue_nb",
-                  "orange_nb",
-                  "yellow_nb",
-                  "green_nb",
-                  "dark_blue_nb",
-                  "light_grey_nb",
-                  "grey_nb",
-                  "blue",
-                  "orange",
-                  "yellow",
-                  "green",
-                  "dark_blue",
-                  "light_grey",
-                  "grey")
+colors <- tibble::tribble(
+              ~dm, ~datamodelr,           ~nb,
+        "default",   "default",    "(border)",
+        "blue_nb", "accent1nb", "(no border)",
+      "orange_nb", "accent2nb", "(no border)",
+      "yellow_nb", "accent3nb", "(no border)",
+       "green_nb", "accent4nb", "(no border)",
+   "dark_blue_nb", "accent5nb", "(no border)",
+  "light_grey_nb", "accent6nb", "(no border)",
+        "grey_nb", "accent7nb", "(no border)",
+           "blue",   "accent1",    "(border)",
+         "orange",   "accent2",    "(border)",
+         "yellow",   "accent3",    "(border)",
+          "green",   "accent4",    "(border)",
+      "dark_blue",   "accent5",    "(border)",
+     "light_grey",   "accent6",    "(border)",
+           "grey",   "accent7",    "(border)"
+)
 
-available_datamodelr <- c("default",
-               "accent1nb",
-               "accent2nb",
-               "accent3nb",
-               "accent4nb",
-               "accent5nb",
-               "accent6nb",
-               "accent7nb",
-               "accent1",
-               "accent2",
-               "accent3",
-               "accent4",
-               "accent5",
-               "accent6",
-               "accent7")
-
-nb <- c("(border)",
-           "(no border)",
-           "(no border)",
-           "(no border)",
-           "(no border)",
-           "(no border)",
-           "(no border)",
-           "(no border)",
-           "(border)",
-           "(border)",
-           "(border)",
-           "(border)",
-           "(border)",
-           "(border)",
-           "(border)")
-
+available_dm <- colors$dm
+available_datamodelr <- colors$datamodelr
+nb <- colors$nb
