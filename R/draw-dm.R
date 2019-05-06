@@ -1,9 +1,9 @@
 #' Draw schema of a 'dm'-object's data model
 #'
-#' @description `cdm_draw_data_model()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`)
-#' @name cdm_draw_data_model
+#' @description `cdm_draw()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`)
+#' @name cdm_draw
 #' @export
-cdm_draw_data_model <- function(
+cdm_draw <- function(
   dm,
   table_names = NULL,
   rankdir = "LR",
@@ -46,33 +46,89 @@ cdm_draw_data_model <- function(
 }
 
 
-#' @description `cdm_draw_data_model_set_colors()` allows to define the colors in which to display the tables of the data model
-#' @rdname cdm_draw_data_model
+#' cdm_set_colors()
+#'
+#' `cdm_set_colors()` allows to define the colors in which to display the tables of the data model.
+#'
+#' @param ... Colors to set in the form `table = "<color>"` . Fall-through syntax similarly to
+#'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
+#'   and `table2` .
+#' @return For `cdm_set_colors()`: the updated data model.
+#'
+#' @rdname cdm_draw
 #' @export
-cdm_draw_data_model_set_colors <- function(dm, list_of_table_colors) {
+cdm_set_colors <- function(dm, ...) {
 
-  names <- names(list_of_table_colors)
-  if (!all(names %in% available_dm)) {
-    abort(paste0("Available color names are only: \n",
-                 paste0("'", available_dm, "' ", nb, collapse = ",\n")
-                 )
-          )
-  }
-  new_names <- available_datamodelr[map_int(names, ~ which(available_dm == .x))]
-  names(list_of_table_colors) <- new_names
+  quos <- enquos(..., .named = TRUE,  .ignore_empty = "none", .homonyms = "error")
 
   data_model <- cdm_get_data_model(dm)
-  data_model <- dm_set_display(data_model, list_of_table_colors)
+  display <- color_quos_to_display(quos)
 
-  dm$data_model <- data_model
-  dm
+  new_dm(
+    dm$src,
+    dm$tables,
+    dm_set_display(data_model, display)
+  )
 }
 
-#' @description `cdm_draw_data_model_print_colors()` prints an overview of the available colors and their names
-#' @rdname cdm_draw_data_model
+color_quos_to_display <- function(quos) {
+  missing <- map_lgl(quos, quo_is_missing)
+  if (has_length(missing) && missing[[length(missing)]]) {
+    abort("The last color cannot be missing.")
+  }
+
+  avail <- !missing
+  idx <- rev(cumsum(rev(avail)))
+  values <- map_chr(quos[avail], eval_tidy)
+
+  if (!all(values %in% colors$dm)) {
+    abort(paste0("Available color names are only: \n",
+                 paste0("'", colors$dm, "' ", colors$nb, collapse = ",\n")
+    ))
+  }
+  new_values <- colors$datamodelr[match(values, colors$dm)]
+
+  tibble(tables = names(quos), colors = new_values[idx]) %>%
+    nest(-colors) %>%
+    deframe() %>%
+    map(pull)
+}
+
+#' cdm_get_colors()
+#'
+#' `cdm_get_colors()` returns the colors define for a data model.
+#'
+#' @param ... Colors to set in the form `table = "<color>"` . Fall-through syntax similarly to
+#'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
+#'   and `table2` .
+#'
+#' @return For `cdm_get_colors()`, a two-column tibble with one row per table.
+#'
+#' @rdname cdm_draw
 #' @export
-cdm_draw_data_model_print_colors <- function() {
-  cat(paste0("'", available_dm, "' ", nb), sep = ",\n")
+cdm_get_colors <- function(dm) {
+
+  data_model <- cdm_get_data_model(dm)
+  data_model$tables %>%
+    select(table, display) %>%
+    as_tibble() %>%
+    mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
+    select(-display)
+}
+
+#' cdm_get_available_colors()
+#'
+#' `cdm_get_available_colors()` returns an overview of the available colors and their names
+#' as a tibble.
+
+#'
+#' @return For `cdm_get_available_colors()`, a tibble with the color in the first
+#'   column and auxiliary information in other columns.
+#'
+#' @rdname cdm_draw
+#' @export
+cdm_get_available_colors <- function() {
+  colors
 }
 
 colors <- tibble::tribble(
@@ -93,7 +149,3 @@ colors <- tibble::tribble(
      "light_grey",   "accent6",    "(border)",
            "grey",   "accent7",    "(border)"
 )
-
-available_dm <- colors$dm
-available_datamodelr <- colors$datamodelr
-nb <- colors$nb
