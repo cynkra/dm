@@ -16,6 +16,8 @@ cdm_filter <- function(dm, table, ...) {
     select(!!pk_name_orig) %>%
     compute()
 
+  if (nrow(filtered_tbl_pk_obj) == nrow(orig_tbl)) return(dm)
+
   by = pk_name_orig
 
   filtered_tbl <- left_join(
