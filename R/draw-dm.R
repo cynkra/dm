@@ -59,10 +59,8 @@ cdm_draw <- function(
 #' @export
 cdm_set_colors <- function(dm, ...) {
 
-  quos <- enquos(..., .named = TRUE,  .ignore_empty = "none", .homonyms = "error")
-
   data_model <- cdm_get_data_model(dm)
-  display <- color_quos_to_display(quos)
+  display <- color_quos_to_display(...)
 
   new_dm(
     dm$src,
@@ -71,7 +69,9 @@ cdm_set_colors <- function(dm, ...) {
   )
 }
 
-color_quos_to_display <- function(quos) {
+color_quos_to_display <- function(...) {
+  quos <- enquos(..., .named = TRUE,  .ignore_empty = "none", .homonyms = "error")
+
   missing <- map_lgl(quos, quo_is_missing)
   if (has_length(missing) && missing[[length(missing)]]) {
     abort("The last color cannot be missing.")
@@ -97,10 +97,6 @@ color_quos_to_display <- function(quos) {
 #' cdm_get_colors()
 #'
 #' `cdm_get_colors()` returns the colors define for a data model.
-#'
-#' @param ... Colors to set in the form `table = "<color>"` . Fall-through syntax similarly to
-#'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
-#'   and `table2` .
 #'
 #' @return For `cdm_get_colors()`, a two-column tibble with one row per table.
 #'

@@ -22,10 +22,6 @@ cdm_get_available_colors()
 \item{...}{Colors to set in the form \code{table = "<color>"} . Fall-through syntax similarly to
 \code{\link[=switch]{switch()}} is supported: \code{table1 = , table2 = "<color>"} sets the color for both \code{table1}
 and \code{table2} .}
-
-\item{...}{Colors to set in the form \code{table = "<color>"} . Fall-through syntax similarly to
-\code{\link[=switch]{switch()}} is supported: \code{table1 = , table2 = "<color>"} sets the color for both \code{table1}
-and \code{table2} .}
 }
 \value{
 For \code{cdm_set_colors()}: the updated data model.
