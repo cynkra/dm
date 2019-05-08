@@ -28,8 +28,18 @@ cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
 #' @export
 cdm_is_referenced <- function(dm, table_name) {
   data_model <- cdm_get_data_model(dm)
+  is_referenced_data_model(data_model, table_name)
+}
+
+is_referenced_data_model <- function(data_model, table_name) {
   references <- data_model$references
   which_ind <- references$ref == table_name
+  any(which_ind)
+}
+
+is_referencing_data_model <- function(data_model, table_name) {
+  references <- data_model$references
+  which_ind <- references$table == table_name
   any(which_ind)
 }
 
