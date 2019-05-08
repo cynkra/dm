@@ -31,10 +31,7 @@ perform_joins_of_join_list <- function(
   join_list,
   join = semi_join) {
 
-  if (is_empty(join_list)) return(tables)
-  tables <- perform_join(tables, join_list[[1]], join = join)
-  join_list[[1]] <- NULL
-  perform_joins_of_join_list(tables, join_list)
+  reduce(join_list, perform_join, join = join, .init = tables)
 }
 
 perform_join <- function(tables, join_item, join) {
