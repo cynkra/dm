@@ -24,7 +24,6 @@ cdm_get_referencing_tables <- function(dm, table_name) {
 
 # assumes that the natural order works (fork-less)
 # FIXME #16: implement for arbitrary graph of connections
-#' @export
 calculate_join_list <- function(dm, table_name) {
   tables <- src_tbls(dm)
 
