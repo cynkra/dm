@@ -28,7 +28,7 @@ cdm_filter <- function(dm, table, ...) {
     by = by
     )
 
-  join_list <- calculate_join_list(cdm_get_data_model(dm), table_name)
+  join_list <- calculate_join_list(dm, table_name)
 
   filtered_dm <- cdm_update_table(dm, table_name, filtered_tbl)
 

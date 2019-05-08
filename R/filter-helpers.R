@@ -67,52 +67,10 @@ cdm_get_referencing_tables <- function(dm, table_name) {
 
 # works only for circle free (FIXME: ordered, fork-less) graph of connections
 #' @export
-calculate_join_list <- function(data_model, table_name, join_list = list()) {
-  references <- data_model$references
-  if (is_referenced_data_model(data_model, table_name)) {
-    which_ind <- references$ref == table_name
-    if (sum(which_ind) != 1) {
-      abort("more than 1 foreign key relation per table is (so far) not supported")
-    }
-    rhs_table <- table_name
-    rhs_column <- as.character(references$ref_col[which_ind])
-    lhs_table <- as.character(references$table[which_ind])
-    lhs_column <- as.character(references$column[which_ind])
-    new_data_model <- rm_data_model_reference(
-      data_model,
-      lhs_table,
-      lhs_column,
-      rhs_table)
-    } else if (is_referencing_data_model(data_model, table_name)) {
-    which_ind <- references$table == table_name
-    if (sum(which_ind) != 1) {
-      abort("more than 1 foreign key relation per table is (so far) not supported")
-    }
-    rhs_table <- table_name
-    rhs_column <- as.character(references$column[which_ind])
-    lhs_table <- as.character(references$ref[which_ind])
-    lhs_column <- as.character(references$ref_col[which_ind])
-    new_data_model <- rm_data_model_reference(
-      data_model,
-      rhs_table,
-      rhs_column,
-      lhs_table)
-  } else {
-    return(join_list) # this is where the recursive function call ends, when no further references are found for `table_name`
-  }
+calculate_join_list <- function(dm, table_name) {
+  tables <- src_tbls(dm)
 
-  next_list_entry <- list(
-    "lhs_table" = lhs_table,
-    "rhs_table" = rhs_table
-    )
-
-  if (is_empty(join_list)) {
-    join_list[[letters[1]]] <- next_list_entry
-  } else {
-    join_list[[letters[length(join_list) + 1]]] <- next_list_entry
-  }
-
-  calculate_join_list(new_data_model, lhs_table, join_list) # function recursively calls itself until no "path" exists from `new_table` onwards
+  map2(tables, lag(tables), ~ list(lhs_table = .x, rhs_table = .y))[-1]
 }
 
 cdm_update_table <- function(dm, name, table) {
