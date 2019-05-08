@@ -30,12 +30,10 @@ perform_joins <- function(
   join_list,
   join = semi_join) {
 
-  reduce(join_list, perform_join, join = join, .init = dm)
+  reduce2(join_list$lhs, join_list$rhs, perform_join, join = join, .init = dm)
 }
 
-perform_join <- function(dm, join_item, join) {
-  lhs <- join_item[["lhs_table"]]
-  rhs <- join_item[["rhs_table"]]
+perform_join <- function(dm, lhs, rhs, join) {
   joined_tbl <- cdm_join_tbl(dm, !!lhs, !!rhs, join = join)
 
   cdm_update_table(dm, lhs, joined_tbl)
