@@ -30,15 +30,7 @@ cdm_filter <- function(dm, table, ...) {
 
   join_list <- calculate_join_list(cdm_get_data_model(dm), table_name)
 
-  # perform joins of `join_list`
-  tables_list <- cdm_get_tables(dm)
-  tables_list[[table_name]] <- filtered_tbl
-  tables_list <- perform_joins_of_join_list(tables_list, join_list)
+  filtered_dm <- cdm_update_table(dm, table_name, filtered_tbl)
 
-  # update $tables part of `dm`-object
-  new_dm(
-    src = cdm_get_src(dm),
-    tables = tables_list,
-    data_model = cdm_get_data_model(dm)
-  )
+  perform_joins(filtered_dm, join_list)
 }

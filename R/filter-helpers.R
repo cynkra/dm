@@ -25,22 +25,20 @@ cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
   join(lhs_obj, rhs_obj, by = by)
 }
 
-#' @export
-perform_joins_of_join_list <- function(
-  tables, # function should be called with 1 already filtered table which needs to be in first entry of join_list
+perform_joins <- function(
+  dm, # function should be called with 1 already filtered table which needs to be in first entry of join_list
   join_list,
   join = semi_join) {
 
-  reduce(join_list, perform_join, join = join, .init = tables)
+  reduce(join_list, perform_join, join = join, .init = dm)
 }
 
-perform_join <- function(tables, join_item, join) {
-  joined_tbl <- join(tables[[join_item[["lhs_table"]]]],
-                     tables[[join_item[["rhs_table"]]]],
-                     join_item[["by"]])
+perform_join <- function(dm, join_item, join) {
+  lhs <- join_item[["lhs_table"]]
+  rhs <- join_item[["rhs_table"]]
+  joined_tbl <- join(tbl(dm, lhs), tbl(dm, rhs), by = join_item[["by"]])
 
-  tables[[join_item[["lhs_table"]]]] <- joined_tbl
-  tables
+  cdm_update_table(dm, lhs, joined_tbl)
 }
 
 #' @export
@@ -119,4 +117,17 @@ calculate_join_list <- function(data_model, table_name, join_list = list()) {
   }
 
   calculate_join_list(new_data_model, lhs_table, join_list) # function recursively calls itself until no "path" exists from `new_table` onwards
+}
+
+cdm_update_table <- function(dm, name, table) {
+  stopifnot(identical(colnames(table), colnames(tbl(dm, name))))
+
+  tables_list <- cdm_get_tables(dm)
+  tables_list[[name]] <- table
+
+  new_dm(
+    src = cdm_get_src(dm),
+    tables = tables_list,
+    data_model = cdm_get_data_model(dm)
+  )
 }
