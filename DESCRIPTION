@@ -32,7 +32,7 @@ Suggests:
     dbplyr,
     nycflights13,
     rprojroot,
-    testthat,
+    testthat (>= 2.1.0),
     knitr,
     rmarkdown
 Remotes: 
