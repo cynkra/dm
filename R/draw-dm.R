@@ -86,7 +86,7 @@ color_quos_to_display <- function(...) {
                  paste0("'", colors$dm, "' ", colors$nb, collapse = ",\n")
     ))
   }
-  new_values <- colors$datamodelr[match(values, colors$dm)]
+  new_values <- rev(colors$datamodelr[match(values, colors$dm)])
 
   tibble(tables = names(quos), colors = new_values[idx]) %>%
     nest(-colors) %>%
