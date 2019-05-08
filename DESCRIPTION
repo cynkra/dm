@@ -21,6 +21,7 @@ Imports:
     datamodelr,
     dplyr,
     DT (>= 0.5),
+    igraph,
     magrittr,
     purrr,
     rlang,
