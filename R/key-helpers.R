@@ -30,11 +30,13 @@ check_key <- function(.data, ...) {
   .data <- eval_tidy(data_q)
   args <- exprs(...)
 
+  if (any(!!args %in% "n")) count_col <- "nn" else count_col <- "n"
+
   duplicate_rows <-
     .data %>%
     as_tibble() %>% # as_tibble works only, if as_tibble.sf()-method is available
     count(!!!args) %>%
-    filter(n != 1)
+    filter(!!sym(count_col) != 1)
 
   if (nrow(duplicate_rows) != 0) {
     abort(paste0(
