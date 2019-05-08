@@ -86,11 +86,43 @@ list_of_data_ts_parent_and_child_src <- map2(
   ~ list("child_table" = .x, "parent_table" = .y)
 )
 
+# the following is for testing the filtering functionality:
+t1 <- tibble(a = 1:10,
+             b = LETTERS[1:10])
+
+t2 <- tibble(c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
+             d = 2:7,
+             e = c(LETTERS[4:7], LETTERS[5:6]))
+
+t3 <- tibble(f = LETTERS[2:11],
+             g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"))
+
+t4 <- tibble(h = letters[1:5],
+             i = c("three", "four", "five", "six", "seven"),
+             j = c(LETTERS[3:6], LETTERS[6]))
+
+t5 <- tibble(k = 1:4,
+             l = letters[2:5],
+             m = c("house", "tree", "streetlamp", "streetlamp"))
+
+t6 <- tibble(n = c("house", "tree", "hill", "streetlamp", "garden"),
+             o = letters[5:9])
+
+dm_for_filter <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)) %>%
+  cdm_add_pk(t1, a) %>%
+  cdm_add_pk(t2, c) %>%
+  cdm_add_pk(t3, f) %>%
+  cdm_add_pk(t4, h) %>%
+  cdm_add_pk(t5, k) %>%
+  cdm_add_pk(t6, n) %>%
+  cdm_add_fk(t2, d, t1, a) %>%
+  cdm_add_fk(t2, e, t3, f) %>%
+  cdm_add_fk(t4, j, t3, f) %>%
+  cdm_add_fk(t5, l, t4, h) %>%
+  cdm_add_fk(t5, m, t6, n)
 
 # for `dm`-object tests: cdm_add_pk(), cdm_add_pk() --------------------------------
 
 cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7, cdm_table_4 = d8))
 cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
-
-cdm_test_obj_filter <- cdm_test_obj %>% cdm_add_pk(cdm_table_4, c)
-cdm_test_obj_filter_src <- cdm_test_load(cdm_test_obj_filter)
+dm_for_filter_src <- cdm_test_load(dm_for_filter)
