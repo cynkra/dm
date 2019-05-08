@@ -36,7 +36,7 @@ perform_joins <- function(
 perform_join <- function(dm, join_item, join) {
   lhs <- join_item[["lhs_table"]]
   rhs <- join_item[["rhs_table"]]
-  joined_tbl <- join(tbl(dm, lhs), tbl(dm, rhs), by = join_item[["by"]])
+  joined_tbl <- cdm_join_tbl(dm, !!lhs, !!rhs, join = join)
 
   cdm_update_table(dm, lhs, joined_tbl)
 }
@@ -101,13 +101,9 @@ calculate_join_list <- function(data_model, table_name, join_list = list()) {
     return(join_list) # this is where the recursive function call ends, when no further references are found for `table_name`
   }
 
-  by = rhs_column
-  names(by) <- lhs_column
-
   next_list_entry <- list(
     "lhs_table" = lhs_table,
-    "rhs_table" = rhs_table,
-    "by" = by
+    "rhs_table" = rhs_table
     )
 
   if (is_empty(join_list)) {
