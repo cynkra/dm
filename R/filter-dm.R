@@ -19,18 +19,15 @@ cdm_filter <- function(dm, table, ...) {
 
   if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) return(dm) # early return if no filtering was done
 
-  by = pk_name_orig
-
   # filter original table by performing join with own pk-values
-  filtered_tbl <- left_join(
-    filtered_tbl_pk_obj,
+  filtered_tbl <- semi_join(
     orig_tbl,
-    by = by
-    )
-
-  join_list <- calculate_join_list(dm, table_name)
+    filtered_tbl_pk_obj,
+    by = pk_name_orig
+  )
 
   filtered_dm <- cdm_update_table(dm, table_name, filtered_tbl)
 
+  join_list <- calculate_join_list(dm, table_name)
   perform_joins(filtered_dm, join_list)
 }
