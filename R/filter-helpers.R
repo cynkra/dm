@@ -26,6 +26,22 @@ cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
 }
 
 #' @export
+perform_joins_of_join_list <- function( # FIXME: jumbles up order in $tables part of `dm`-object; does it matter?
+  tables, # function should be called with 1 already filtered table which needs to be in first entry of join_list
+  join_list,
+  join = semi_join) {
+
+  if (is_empty(join_list)) return(tables)
+  joined_tbl <- join(tables[[join_list[[1]][["lhs_table"]]]],
+               tables[[join_list[[1]][["rhs_table"]]]],
+               join_list[[1]][["by"]])
+
+  tables[[join_list[[1]][["lhs_table"]]]] <- joined_tbl
+  join_list[[1]] <- NULL
+  perform_joins_of_join_list(tables, join_list)
+}
+
+#' @export
 cdm_is_referenced <- function(dm, table_name) {
   data_model <- cdm_get_data_model(dm)
   is_referenced_data_model(data_model, table_name)
