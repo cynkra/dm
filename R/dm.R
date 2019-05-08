@@ -153,23 +153,34 @@ format.dm <- function(x, ...) {
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
 
-  db_info <- strsplit(format(x$src), "\n")[[1]][[1]]
+  db_info <- strsplit(format(cdm_get_src(x)), "\n")[[1]][[1]]
   cat_line(db_info)
 
   cat_rule("Data model", col = "violet")
 
-  print(x$data_model)
+  print(cdm_get_data_model(x))
+
+  cat_rule("Rows", col = "orange")
+
+  nrows <- x %>% cdm_get_tables() %>% map_int(nrow)
+  cat_line(paste0("Total: "), sum(nrows))
+  cat_line(paste0(names(nrows), ": ", nrows, collapse = ", "))
+
   invisible(x)
 }
 
 #' @export
 tbl.dm <- function(src, from, ...) {
-  src$tables[[from]]
+  # The src argument here is a dm object
+  dm <- src
+  dm$tables[[from]]
 }
 
 #' @export
 src_tbls.dm <- function(src, ...) {
-  names(src$tables)
+  # The src argument here is a dm object
+  dm <- src
+  names(dm$tables)
 }
 
 #' @export
