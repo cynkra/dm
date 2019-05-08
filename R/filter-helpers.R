@@ -26,7 +26,7 @@ cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
 }
 
 #' @export
-perform_joins_of_join_list <- function( # FIXME: jumbles up order in $tables part of `dm`-object; does it matter?
+perform_joins_of_join_list <- function(
   tables, # function should be called with 1 already filtered table which needs to be in first entry of join_list
   join_list,
   join = semi_join) {
