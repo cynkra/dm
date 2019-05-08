@@ -164,12 +164,16 @@ print.dm <- function(x, ...) {
 
 #' @export
 tbl.dm <- function(src, from, ...) {
-  src$tables[[from]]
+  # The src argument here is a dm object
+  dm <- src
+  dm$tables[[from]]
 }
 
 #' @export
 src_tbls.dm <- function(src, ...) {
-  names(src$tables)
+  # The src argument here is a dm object
+  dm <- src
+  names(dm$tables)
 }
 
 #' @export
