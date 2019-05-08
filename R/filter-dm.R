@@ -11,13 +11,13 @@ cdm_filter <- function(dm, table, ...) {
       "Please set one using cdm_add_pk()."))
   }
 
-  # get local tibble of pk-values after filtering
+  # get remote tibble of pk-values after filtering
   pk_name_orig <- cdm_get_pk(dm, !!table_name)
   filtered_tbl_pk_obj <- filter(orig_tbl, ...) %>%
     select(!!pk_name_orig) %>%
-    compute()
+    compute( unique_indexes = pk_name_orig)
 
-  if (nrow(filtered_tbl_pk_obj) == nrow(orig_tbl)) return(dm) # early return if no filtering was done
+  if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) return(dm) # early return if no filtering was done
 
   by = pk_name_orig
 
@@ -28,17 +28,17 @@ cdm_filter <- function(dm, table, ...) {
     by = by
     )
 
-  # FIXME: missing:
-  #   1. produce ordered list of filtering joins
-  #   2. perform joins
-  #   (3. adapt the following part of updating the $tables part)
+  join_list <- calculate_join_list(cdm_get_data_model(dm), table_name)
+
+  # perform joins of `join_list` and update $tables part of `dm`-object
+  tables_list <- cdm_get_tables(dm)
+  tables_list[[table_name]] <- filtered_tbl
+  tables_list <- perform_joins_of_join_list(tables_list, join_list)
 
   # update $tables part of `dm`-object
-  tables_obj <- cdm_get_tables(dm)
-  tables_obj[[table_name]] <- filtered_tbl
   new_dm(
     src = cdm_get_src(dm),
-    tables = tables_obj,
+    tables = tables_list,
     data_model = cdm_get_data_model(dm)
   )
 }
