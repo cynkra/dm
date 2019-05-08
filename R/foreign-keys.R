@@ -1,33 +1,43 @@
 #' Add a reference from one table of a `dm` to another
 #'
 #' @export
-cdm_add_fk <- function(dm, table, column, ref_table, ref_column, check = TRUE, set_ref_pk = FALSE) {
+cdm_add_fk <- function(dm, table, column, ref_table, ref_column = NULL, check = TRUE, set_ref_pk = FALSE) {
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
 
   column_name <- as_name(enexpr(column))
-  ref_column_name <- as_name(enexpr(ref_column))
 
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
 
   check_col_input(dm, table_name, column_name)
-  check_col_input(dm, ref_table_name, ref_column_name)
 
-  # ref_column has to be primary key of ref_table
-  if (!set_ref_pk) {
-    if (is_empty(cdm_get_pk(dm, !!ref_table_name)) ||
-        !(cdm_get_pk(dm, !!ref_table_name) == ref_column_name)) {
-      abort(paste0(
-        "'", ref_column_name, "' needs to be primary key of '", ref_table_name,
-        "' but isn't. You can set parameter 'set_ref_pk = TRUE', or use function",
-        " cdm_add_pk() to set it as primary key.")
-      )
-    }
-  } else {
-    if (is_empty(cdm_get_pk(dm, !!table_name)) ||
-        !(cdm_get_pk(dm, !!table_name) == ref_column_name)) {
-      dm <- cdm_add_pk(dm, !!ref_table_name, eval_tidy(ref_column_name))
+  if (quo_is_null(enquo(ref_column))) { # standard case: ref_column is already pk of ref_table
+    ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
+  } else { # all following checks and logic only needs to take place if user wants to provide ref_column
+    ref_column_name <- as_name(enexpr(ref_column))
+    check_col_input(dm, ref_table_name, ref_column_name)
+
+    # ref_column has to be primary key of ref_table
+    if (!set_ref_pk) {
+      if (is_empty(cdm_get_pk(dm,!!ref_table_name)) ||
+          !(cdm_get_pk(dm,!!ref_table_name) == ref_column_name)) {
+        abort(
+          paste0(
+            "'",
+            ref_column_name,
+            "' needs to be primary key of '",
+            ref_table_name,
+            "' but isn't. You can set parameter 'set_ref_pk = TRUE', or use function",
+            " cdm_add_pk() to set it as primary key."
+          )
+        )
+      }
+    } else {
+      if (is_empty(cdm_get_pk(dm,!!table_name)) ||
+          !(cdm_get_pk(dm,!!table_name) == ref_column_name)) {
+        dm <- cdm_add_pk(dm,!!ref_table_name, eval_tidy(ref_column_name))
+      }
     }
   }
 
