@@ -32,13 +32,18 @@ perform_joins_of_join_list <- function(
   join = semi_join) {
 
   if (is_empty(join_list)) return(tables)
-  joined_tbl <- join(tables[[join_list[[1]][["lhs_table"]]]],
-               tables[[join_list[[1]][["rhs_table"]]]],
-               join_list[[1]][["by"]])
-
-  tables[[join_list[[1]][["lhs_table"]]]] <- joined_tbl
+  tables <- perform_join(tables, join_list[[1]], join = join)
   join_list[[1]] <- NULL
   perform_joins_of_join_list(tables, join_list)
+}
+
+perform_join <- function(tables, join_item, join) {
+  joined_tbl <- join(tables[[join_item[["lhs_table"]]]],
+                     tables[[join_item[["rhs_table"]]]],
+                     join_item[["by"]])
+
+  tables[[join_item[["lhs_table"]]]] <- joined_tbl
+  tables
 }
 
 #' @export
