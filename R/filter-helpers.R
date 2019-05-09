@@ -51,3 +51,17 @@ cdm_update_table <- function(dm, name, table) {
     data_model = cdm_get_data_model(dm)
   )
 }
+
+#' Number of rows of a table or of the whole `dm`-object
+#'
+#' @export
+cdm_nrow <- function(dm, table = NULL) {
+  if (!quo_is_null(enquo(table))) {
+    table_name <- as_name(enexpr(table))
+    check_correct_input(dm, table_name)
+
+    tbl_obj <- tbl(dm, table_name)
+    return(as_integer(pull(count(tbl_obj))))
+  }
+  return(sum(map_int(cdm_get_tables(dm), ~ as_integer(pull(count(.))))))
+}
