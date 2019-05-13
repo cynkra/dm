@@ -130,3 +130,10 @@ cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7,
 cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
 dm_for_filter_src <- cdm_test_load(dm_for_filter)
 dm_for_filter_rev_src <- cdm_test_load(dm_for_filter_rev)
+
+
+# for `dm_nrow()` ---------------------------------------------------------
+
+rows_t1_w_name <- 5L %>% set_names("cdm_table_1")
+
+rows_dm_obj <- 24L
