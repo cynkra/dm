@@ -67,7 +67,7 @@ cdm_nrow <- function(dm, table = NULL) {
   }
 
   nrows <- sum(map_int(cdm_get_tables(dm), ~ as_integer(pull(count(.)))))
-  dm_name <- as_name(substitute(dm))
+  dm_name <- as_label(substitute(dm))
   if (dm_name != ".") {
     names(nrows) <- dm_name
   } else {
