@@ -6,7 +6,7 @@ test_that("API", {
       airports = "orange",
       planes = "green_nb"
     ),
-    list(accent4nb = "flights", accent2 = c("airlines", "airports"), accent1 = "planes")
+    list(accent1 = "flights", accent2 = c("airlines", "airports"), accent4nb = "planes")
   )
 })
 
