@@ -24,6 +24,20 @@ cdm_filter <- function(dm, table, ...) {
 
 #' @export
 cdm_semi_join <- function(dm, table, filter) {
+  table_name <- as_name(enexpr(table))
+  check_correct_input(dm, table_name)
+
+  orig_tbl <- tbl(dm, table_name)
+
+  if (!cdm_has_pk(dm, !!table_name)) {
+    abort(paste0(
+      "Table '", table_name, "' needs primary key for the filtering to work. ",
+      "Please set one using cdm_add_pk()."))
+  }
+
+  # get remote tibble of pk-values after filtering
+  pk_name_orig <- cdm_get_pk(dm, !!table_name)
+
   # filter original table by performing join with own pk-values
   filtered_tbl <- semi_join(orig_tbl, filter, by = pk_name_orig)
 
