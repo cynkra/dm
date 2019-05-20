@@ -1,4 +1,4 @@
-# Only run if the top level call is devtools::test()
+# Only run if the top level call is devtools::test() or testthat::test_check()
 
 calls <-
   sys.calls() %>%
