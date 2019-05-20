@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Which columns are candidates for a primary key column of a <code>dm</code>-object's table? — cdm_check_for_pk_candidates • dm</title>
+<title>Draw schema of a 'dm'-object's data model — cdm_draw • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,13 @@
 
 
 
-<meta property="og:title" content="Which columns are candidates for a primary key column of a <code>dm</code>-object's table? — cdm_check_for_pk_candidates" />
+<meta property="og:title" content="Draw schema of a 'dm'-object's data model — cdm_draw" />
 
-<meta property="og:description" content="cdm_check_for_pk_candidates() checks for each column of a
-table of a dm-object if this column contains only unique values and is therefore
-a unique key of this table." />
+<meta property="og:description" content="cdm_draw() draws a schema of the data model using datamodelr (which in turn uses DiagrammeR)
+cdm_set_colors() allows to define the colors in which to display the tables of the data model.
+cdm_get_colors() returns the colors define for a data model.
+cdm_get_available_colors() returns an overview of the available colors and their names
+as a tibble." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -102,40 +104,59 @@ a unique key of this table." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Which columns are candidates for a primary key column of a <code>dm</code>-object's table?</h1>
+    <h1>Draw schema of a 'dm'-object's data model</h1>
     
-    <div class="hidden name"><code>cdm_check_for_pk_candidates.Rd</code></div>
+    <div class="hidden name"><code>cdm_draw.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>cdm_check_for_pk_candidates()</code> checks for each column of a
-table of a <code>dm</code>-object if this column contains only unique values and is therefore
-a unique key of this table.</p>
+    <p><code>cdm_draw()</code> draws a schema of the data model using <code>datamodelr</code> (which in turn uses <code>DiagrammeR</code>)</p>
+<p><code>cdm_set_colors()</code> allows to define the colors in which to display the tables of the data model.</p>
+<p><code>cdm_get_colors()</code> returns the colors define for a data model.</p>
+<p><code>cdm_get_available_colors()</code> returns an overview of the available colors and their names
+as a tibble.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_check_for_pk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
-        
+    <pre class="usage"><span class='fu'>cdm_draw</span>(<span class='no'>dm</span>, <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rankdir</span> <span class='kw'>=</span> <span class='st'>"LR"</span>, <span class='kw'>col_attr</span> <span class='kw'>=</span> <span class='st'>"column"</span>,
+  <span class='kw'>view_type</span> <span class='kw'>=</span> <span class='st'>"keys_only"</span>, <span class='kw'>columnArrows</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>graph_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>node_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>edge_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>focus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>graph_name</span> <span class='kw'>=</span> <span class='st'>"Data Model"</span>)
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>nycflights13</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='fu'>cdm_set_colors</span>(<span class='no'>dm</span>, <span class='no'>...</span>)
 
-<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
+<span class='fu'>cdm_get_colors</span>(<span class='no'>dm</span>)
 
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_check_for_pk_candidates</span>(<span class='no'>flights</span>)
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_check_for_pk_candidates</span>(<span class='no'>airports</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+<span class='fu'>cdm_get_available_colors</span>()</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>Colors to set in the form <code>table = "&lt;color&gt;"</code> . Fall-through syntax similarly to
+<code><a href='https://www.rdocumentation.org/packages/base/topics/switch'>switch()</a></code> is supported: <code>table1 = , table2 = "&lt;color&gt;"</code> sets the color for both <code>table1</code>
+and <code>table2</code> .</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>For <code>cdm_set_colors()</code>: the updated data model.</p>
+<p>For <code>cdm_get_colors()</code>, a two-column tibble with one row per table.</p>
+<p>For <code>cdm_get_available_colors()</code>, a tibble with the color in the first
+column and auxiliary information in other columns.</p>
+    
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

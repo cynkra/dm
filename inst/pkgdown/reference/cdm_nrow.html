@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Draw schema of a 'dm'-object's data model — cdm_draw_data_model • dm</title>
+<title>Number of rows of a table or of the whole <code>dm</code>-object — cdm_nrow • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="Draw schema of a 'dm'-object's data model — cdm_draw_data_model" />
+<meta property="og:title" content="Number of rows of a table or of the whole <code>dm</code>-object — cdm_nrow" />
 
-<meta property="og:description" content="cdm_draw_data_model() draws a schema of the data model using datamodelr (which in turn uses DiagrammeR)
-cdm_draw_data_model_set_colors() allows to define the colors in which to display the tables of the data model
-cdm_draw_data_model_print_colors() prints an overview of the available colors and their names" />
+<meta property="og:description" content="Number of rows of a table or of the whole dm-object" />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -65,7 +63,7 @@ cdm_draw_data_model_print_colors() prints an overview of the available colors an
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9005</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
       </span>
     </div>
 
@@ -102,27 +100,18 @@ cdm_draw_data_model_print_colors() prints an overview of the available colors an
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Draw schema of a 'dm'-object's data model</h1>
+    <h1>Number of rows of a table or of the whole <code>dm</code>-object</h1>
     
-    <div class="hidden name"><code>cdm_draw_data_model.Rd</code></div>
+    <div class="hidden name"><code>cdm_nrow.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>cdm_draw_data_model()</code> draws a schema of the data model using <code>datamodelr</code> (which in turn uses <code>DiagrammeR</code>)</p>
-<p><code>cdm_draw_data_model_set_colors()</code> allows to define the colors in which to display the tables of the data model</p>
-<p><code>cdm_draw_data_model_print_colors()</code> prints an overview of the available colors and their names</p>
+    <p>Number of rows of a table or of the whole <code>dm</code>-object</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_draw_data_model</span>(<span class='no'>dm</span>, <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rankdir</span> <span class='kw'>=</span> <span class='st'>"LR"</span>,
-  <span class='kw'>col_attr</span> <span class='kw'>=</span> <span class='st'>"column"</span>, <span class='kw'>view_type</span> <span class='kw'>=</span> <span class='st'>"keys_only"</span>, <span class='kw'>columnArrows</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>graph_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>node_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>edge_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>focus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>graph_name</span> <span class='kw'>=</span> <span class='st'>"Data Model"</span>)
-
-<span class='fu'>cdm_draw_data_model_set_colors</span>(<span class='no'>dm</span>, <span class='no'>list_of_table_colors</span>)
-
-<span class='fu'>cdm_draw_data_model_print_colors</span>()</pre>
+    <pre class="usage"><span class='fu'>cdm_nrow</span>(<span class='no'>dm</span>, <span class='kw'>table</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
         
 
   </div>

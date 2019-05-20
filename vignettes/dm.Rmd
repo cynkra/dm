@@ -4,8 +4,10 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
@@ -181,9 +183,10 @@ cdm_check_for_fk_candidates(flights_dm_with_key, weather, airports)
 
 Relevant functions for visualising the data model:^[The functions in this section rely heavily on related functions of {datamodelr}.]
 
-1. `cdm_draw_data_model_set_colors()`
-2. `cdm_draw_data_model_print_colors()`
-3. `cdm_draw_data_model()`
+1. `cdm_set_colors()`
+1. `cdm_get_colors()`
+1. `cdm_get_available_colors()`
+1. `cdm_draw()`
 
 Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation of your data model.
 
@@ -207,27 +210,36 @@ It is recommended not to do this, since you might run into errors or other unwan
 
 You can use colors to visually group your tables into families (which could reflect their logical grouping).
 Currently, there are only eight different colors available (plus the option of having borders displayed around the tables or not).
-To find out which colors they are, use `cdm_draw_data_model_print_colors()`:
+To find out which colors exist, use `cdm_get_available_colors()`:
 ```{r}
-cdm_draw_data_model_print_colors()
+cdm_get_available_colors()
 ```
 
-The assignment needs a named list. Its names are the names of the colors, the values are the table names.
-```{r}
-list_of_table_colors <- list(blue = "flights", orange = c("airports", "airlines"), green_nb = "planes")
-```
+The assignment is carried out with `cdm_set_colors()`, using a syntax similar to `switch()`.
 Any table you don't specifically assign will be displayed in the default color.
 
-Use `cdm_draw_data_model_set_colors()` to assign the respective colors. 
-The result of `cdm_draw_data_model_set_colors()` is a `dm`-object.
+Use `cdm_set_colors()` to assign the respective colors. 
+The result of `cdm_set_colors()` is a `dm`-object.
 The information about the color is stored in its `data_model`-part.
 ```{r}
-flights_dm_w_many_keys_and_colors <- cdm_draw_data_model_set_colors(flights_dm_w_many_keys, list_of_table_colors)
+flights_dm_w_many_keys_and_colors <-
+  flights_dm_w_many_keys %>% 
+  cdm_set_colors(
+    flights = "blue",
+    airlines = ,
+    airports = "orange",
+    planes = "green_nb"
+  )
 ```
 
-Draw the schema with `cdm_draw_data_model()`. 
+Draw the schema with `cdm_draw()`. 
 ```{r}
-cdm_draw_data_model(flights_dm_w_many_keys_and_colors)
+cdm_draw(flights_dm_w_many_keys_and_colors)
+```
+
+The colors can be queried with `cdm_get_colors()`. 
+```{r}
+cdm_get_colors(flights_dm_w_many_keys_and_colors)
 ```
 
 There are quite a few options for customization available. 
@@ -235,7 +247,7 @@ Please read the documentation to find out more.
 One argument of the function we'd like to draw your attention to, though, is `table_names`.
 This argument accepts a character vector with the table names which are to be printed, in case you would like to only see a subset of the whole data model.
 ```{r}
-cdm_draw_data_model(flights_dm_w_many_keys_and_colors, table_names = c("flights", "airports", "planes"))
+cdm_draw(flights_dm_w_many_keys_and_colors, table_names = c("flights", "airports", "planes"))
 ```
 
 ## Joining tables

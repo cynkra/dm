@@ -27,9 +27,10 @@ reference:
 
 - title: Drawing a schema of a `dm`-object's data model
   contents:
-  - cdm_draw_data_model
-  - cdm_draw_data_model_set_colors
-  - cdm_draw_data_model_print_colors
+  - cdm_draw
+  - cdm_set_colors
+  - cdm_get_colors
+  - cdm_get_available_colors
 
 - title: Table surgery functions
   contents:

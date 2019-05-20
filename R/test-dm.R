@@ -17,11 +17,11 @@ cdm_test_load <- function(x,
   srcs <- srcs[setdiff(names(srcs), ignore)]
   cdm_table_names <- src_tbls(x)
   if (is_null(name)) name <- cdm_table_names
-  current_data_model <- cdm_get_data_model(x)
+
   tables <- map(cdm_table_names, ~ tbl(cdm_get_src(x), .x)) %>% set_names(cdm_table_names) # FIXME: should be replaced by `cdm_select_tables()` once it exists
 
-  walk(srcs, ~ copy_list_of_tables_to(src = .x, list_of_tables = tables, overwrite = TRUE))
-  map(srcs, ~ dm(.x, current_data_model))
+  tbls <- map(srcs, ~ copy_list_of_tables_to(src = .x, list_of_tables = tables, overwrite = TRUE))
+  map2(srcs, tbls, ~ new_dm(.x, .y, cdm_get_data_model(x)))
 }
 
 # FIXME: should this be exported?
