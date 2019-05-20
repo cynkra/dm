@@ -1,1 +1,3 @@
-try(test_check("dm"))
+library(testthat)
+
+test_check("dm")
