@@ -63,9 +63,8 @@ decompose_table <- function(.data, new_id_column, ...) {
   parent_table <-
     select(eval_tidy(.data_q), !!!cols_q) %>%
     distinct() %>%
-    mutate(!!id_col_q := row_number()) %>%
-    select(!!id_col_q, everything()) %>%
-    mutate_if(is.integer64, as.integer) # FIXME: this is because Postgres turns my column new_id_column to an integer64; do we want this?
+    mutate(!!id_col_q := as.integer(row_number())) %>%
+    select(!!id_col_q, everything())
 
   cols_chr <-
     cols_q %>%
@@ -85,8 +84,7 @@ decompose_table <- function(.data, new_id_column, ...) {
       by = cols_chr
     ) %>%
     select(non_key_names, !!id_col_q) %>%
-    select(1, !!id_col_q, everything())  %>% # 1 was originally first column in ".data" after extracting child table. It is therefore assumed to be a key to table ".data"
-    mutate_if(is.integer64, as.integer) # FIXME: this is because Postgres turns my column new_id_column to an integer64; do we want this?
+    select(1, !!id_col_q, everything()) # 1 was originally first column in ".data" after extracting child table. It is therefore assumed to be a key to table ".data"
 
   list("child_table" = child_table, "parent_table" = parent_table)
 }
