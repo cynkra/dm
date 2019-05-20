@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if the value sets of two different columns in two different tables are the same. — check_set_equality • dm</title>
+<title>Test if the value sets of two different columns in two different tables are the same — check_set_equality • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Test if the value sets of two different columns in two different tables are the same. — check_set_equality" />
+<meta property="og:title" content="Test if the value sets of two different columns in two different tables are the same — check_set_equality" />
 
-<meta property="og:description" content="`check_set_equality()` is a wrapper of `check_if_subset()`. It tests if
+<meta property="og:description" content="check_set_equality() is a wrapper of check_if_subset(). It tests if
 one value set is a subset of another and vice versa, i.e., if both sets are the same.
 If not, it throws an error." />
 <meta name="twitter:card" content="summary" />
@@ -65,7 +65,7 @@ If not, it throws an error." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
       </span>
     </div>
 
@@ -78,7 +78,13 @@ If not, it throws an error." />
   </a>
 </li>
 <li>
+  <a href="../articles/dm.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -96,14 +102,14 @@ If not, it throws an error." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if the value sets of two different columns in two different tables are the same.</h1>
+    <h1>Test if the value sets of two different columns in two different tables are the same</h1>
     
     <div class="hidden name"><code>check_set_equality.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>`check_set_equality()` is a wrapper of `check_if_subset()`. It tests if
+    <p><code>check_set_equality()</code> is a wrapper of <code><a href='check_if_subset.html'>check_if_subset()</a></code>. It tests if
 one value set is a subset of another and vice versa, i.e., if both sets are the same.
 If not, it throws an error.</p>
     
@@ -116,19 +122,19 @@ If not, it throws an error.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>t1</th>
-      <td><p>Data frame containing the column `c1`.</p></td>
+      <td><p>Data frame containing the column <code>c1</code>.</p></td>
     </tr>
     <tr>
       <th>c1</th>
-      <td><p>Column of `t1` that should only contain values that are also in `c2` of data frame `t2`.</p></td>
+      <td><p>Column of <code>t1</code> that should only contain values that are also in <code>c2</code> of data frame <code>t2</code>.</p></td>
     </tr>
     <tr>
       <th>t2</th>
-      <td><p>Data frame containing the column `c2`.</p></td>
+      <td><p>Data frame containing the column <code>c2</code>.</p></td>
     </tr>
     <tr>
       <th>c2</th>
-      <td><p>Column of `t2` that should only contain values that are also in `c1` of data frame `t1`.</p></td>
+      <td><p>Column of <code>t2</code> that should only contain values that are also in <code>c1</code> of data frame <code>t1</code>.</p></td>
     </tr>
     </table>
     

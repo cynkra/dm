@@ -17,8 +17,6 @@ $df$parent_table
 
 $sqlite
 $sqlite$child_table
-# Source:   lazy query [?? x 4]
-# Database: sqlite 3.25.3 [:memory:]
       b aef_id     c d    
   <dbl>  <int> <int> <chr>
 1   1.1      1     5 a    
@@ -26,8 +24,6 @@ $sqlite$child_table
 3   1.1      1     7 c    
 
 $sqlite$parent_table
-# Source:   lazy query [?? x 4]
-# Database: sqlite 3.25.3 [:memory:]
   aef_id     a e         f
    <int> <int> <chr> <int>
 1      1     1 c         1
@@ -36,8 +32,6 @@ $sqlite$parent_table
 
 $postgres
 $postgres$child_table
-# Source:   lazy query [?? x 4]
-# Database: postgres 11.2.0 [postgres@localhost:5432/postgres]
       b aef_id     c d    
   <dbl>  <dbl> <int> <chr>
 1   1.1      1     5 a    
@@ -45,8 +39,6 @@ $postgres$child_table
 3   1.1      1     7 c    
 
 $postgres$parent_table
-# Source:   lazy query [?? x 4]
-# Database: postgres 11.2.0 [postgres@localhost:5432/postgres]
   aef_id     a e     f    
    <dbl> <int> <chr> <lgl>
 1      1     1 c     TRUE 

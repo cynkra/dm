@@ -22,7 +22,10 @@ dm <- function(src, data_model = NULL) {
     data_model <- datamodelr::dm_from_data_frames(tbl_structures)
   }
 
-  new_dm(src, data_model)
+  table_names <- set_names(data_model$tables$table)
+  tables <- map(table_names, tbl, src = src)
+
+  new_dm(src, tables, data_model)
 }
 
 #' Low-level constructor
@@ -31,13 +34,14 @@ dm <- function(src, data_model = NULL) {
 #'
 #' @rdname dm
 #' @export
-new_dm <- function(src, data_model) {
+new_dm <- function(src, tables, data_model) {
   stopifnot(dplyr::is.src(src))
   stopifnot(datamodelr::is.data_model(data_model))
 
   structure(
     list(
       src = src,
+      tables = tables,
       data_model = data_model
     ),
     class = "dm"
@@ -66,23 +70,34 @@ validate_dm <- function(x) {
 
 #' Get source component
 #'
-#' `dm_get_src()` returns the \pkg{dplyr} source component of a `dm`.
+#' `cdm_get_src()` returns the \pkg{dplyr} source component of a `dm`
 #' object.
 #'
 #' @rdname dm
 #' @export
-dm_get_src <- function(x) {
+cdm_get_src <- function(x) {
   x$src
+}
+
+#' Get tables component
+#'
+#' `cdm_get_tables()` returns a named list with \pkg{dplyr} [tbl] objects
+#' of a `dm` object.
+#'
+#' @rdname dm
+#' @export
+cdm_get_tables <- function(x) {
+  x$tables
 }
 
 #' Get data_model component
 #'
-#' `dm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`.
+#' `cdm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
 #' object.
 #'
 #' @rdname dm
 #' @export
-dm_get_data_model <- function(x) {
+cdm_get_data_model <- function(x) {
   x$data_model
 }
 
@@ -137,24 +152,40 @@ format.dm <- function(x, ...) {
 #' @import cli
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
-  print(x$src)
+
+  db_info <- strsplit(format(cdm_get_src(x)), "\n")[[1]][[1]]
+  cat_line(db_info)
+
   cat_rule("Data model", col = "violet")
-  print(x$data_model)
+
+  print(cdm_get_data_model(x))
+
+  cat_rule("Rows", col = "orange")
+
+  tbl_names <- names(cdm_get_tables(x))
+  nrows <- map(tbl_names, ~ cdm_nrow(x, !!.)) %>% flatten_int()
+  cat_line(paste0("Total: "), sum(nrows))
+  cat_line(paste0(names(nrows), ": ", nrows, collapse = ", "))
+
   invisible(x)
 }
 
 #' @export
-tbl.dm <- function(src, ...) {
-  tbl(dm_get_src(src), ...)
+tbl.dm <- function(src, from, ...) {
+  # The src argument here is a dm object
+  dm <- src
+  dm$tables[[from]]
 }
 
 #' @export
 src_tbls.dm <- function(src, ...) {
-  dm_get_data_model(src)$tables$table
+  # The src argument here is a dm object
+  dm <- src
+  names(dm$tables)
 }
 
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
-  # TODO: Add table to data model, update dest$data_model
-  abort("NYI")
+  # TODO: How to add a table to a dm?
+  abort("`dm` objects are immutable, please use ...")
 }

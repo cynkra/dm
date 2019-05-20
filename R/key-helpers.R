@@ -30,22 +30,45 @@ check_key <- function(.data, ...) {
   .data <- eval_tidy(data_q)
   args <- exprs(...)
 
+  if (any(!!args %in% "n")) count_col <- "nn" else count_col <- "n"
+
   duplicate_rows <-
     .data %>%
     as_tibble() %>% # as_tibble works only, if as_tibble.sf()-method is available
     count(!!!args) %>%
-    filter(n != 1)
+    filter(!!sym(count_col) != 1)
 
   if (nrow(duplicate_rows) != 0) {
     abort(paste0(
       "`",
-      paste(purrr::map_chr(args, as_label), collapse = ", "),
+      paste(map_chr(args, as_label), collapse = ", "),
       "` is not a unique key of `",
       as_label(data_q), "`"
     ))
   }
 
   invisible(.data)
+}
+
+# internal function to check if a column is a unique key of a table
+is_unique_key <- function(.data, column) {
+  if (is_symbol(enexpr(column))) {
+    col_expr <- enexpr(column)
+    col_name <- as_name(col_expr)
+  } else if (is_character(column)) {
+    col_name <- column
+    col_expr <- ensym(column)
+  } else {
+    abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
+  }
+
+  duplicate_rows <-
+    .data %>%
+    as_tibble() %>%
+    count(!!col_expr) %>%
+    filter(n != 1)
+
+  nrow(duplicate_rows) == 0
 }
 
 
@@ -130,28 +153,46 @@ check_if_subset <- function(t1, c1, t2, c2) {
   c1q <- enexpr(c1)
   c2q <- enexpr(c2)
 
+  if (is_subset(eval_tidy(t1q), !!c1q, eval_tidy(t2q), !!c2q)) {
+    return(invisible(eval_tidy(t1q)))
+  }
+
   # Hier kann nicht t1 direkt verwendet werden, da das für den Aufruf
   # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
   # Siehe eval-bang.R für ein Minimalbeispiel.
-  v1 <- pull(eval_tidy(t1q), !!c1q)
-  v2 <- pull(eval_tidy(t2q), !!c2q)
+  v1 <- pull(eval_tidy(t1q), !! ensym(c1q))
+  v2 <- pull(eval_tidy(t2q), !! ensym(c2q))
 
-  if (!all(v1 %in% v2)) {
-    setdiff_v1_v2 <- setdiff(v1, v2)
-    print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
-    abort(paste0(
-      "Column `",
-      as_label(c1q),
-      "` in table `",
-      as_label(t1q),
-      "` contains values (see above) that are not present in column `",
-      as_label(c2q),
-      "` in table `",
-      as_label(t2q),
-      "`"
-    ))
-  }
+  setdiff_v1_v2 <- setdiff(v1, v2)
+  print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
+  abort(paste0(
+    "Column `",
+    as_name(c1q),
+    "` in table `",
+    as_name(t1q),
+    "` contains values (see above) that are not present in column `",
+    as_name(c2q),
+    "` in table `",
+    as_name(t2q),
+    "`"
+  ))
+}
 
-  invisible(eval_tidy(t1q))
+# similar to `check_if_subset()`, but evaluates to a boolean
+is_subset <- function(t1, c1, t2, c2) {
+  t1q <- enquo(t1)
+  t2q <- enquo(t2)
+
+  c1q <- enexpr(c1)
+  c2q <- enexpr(c2)
+
+  # Hier kann nicht t1 direkt verwendet werden, da das für den Aufruf
+  # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
+  # entsprechen würde; dies ist nicht erlaubt.
+  # Siehe eval-bang.R für ein Minimalbeispiel.
+  v1 <- pull(eval_tidy(t1q), !! ensym(c1q))
+  v2 <- pull(eval_tidy(t2q), !! ensym(c2q))
+
+  if (!all(v1 %in% v2)) FALSE else TRUE
 }

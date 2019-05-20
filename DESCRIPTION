@@ -1,7 +1,7 @@
 Package: dm
 Title: Assisting functions for work with data models
-Version: 0.0.0.9001
-Date: 2019-04-05
+Version: 0.0.0.9008
+Date: 2019-05-08
 Authors@R: 
     c(person(given = "Kirill",
              family = "Müller",
@@ -21,15 +21,20 @@ Imports:
     datamodelr,
     dplyr,
     DT (>= 0.5),
+    igraph,
     magrittr,
     purrr,
     rlang,
     shiny,
-    tibble
+    tibble,
+    tidyr
 Suggests: 
     dbplyr,
+    nycflights13,
     rprojroot,
-    testthat
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown
 Remotes: 
     bergant/datamodelr
 Encoding: UTF-8
@@ -37,3 +42,4 @@ LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr

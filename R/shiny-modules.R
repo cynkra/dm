@@ -37,7 +37,6 @@ selectableUI <- function(id, move_caption) {
 
 #' @export
 rowSelector <- function(input, output, session, app_data, avail) {
-
   selected <- reactiveVal(rep(FALSE, nrow(app_data)))
 
   avail_data <- reactive({
@@ -142,7 +141,6 @@ selectable <- function(input, output, session, data) {
   })
 
   observeEvent(input$sel_all_vis, {
-
     rs <- input$tb_rows_selected # rows selected
 
     dtp %>%
@@ -150,7 +148,6 @@ selectable <- function(input, output, session, data) {
   })
 
   observeEvent(input$desel_all_vis, {
-
     rs <- input$tb_rows_selected # rows selected
     avr <- input$tb_rows_all # all visible rows
 
@@ -159,7 +156,6 @@ selectable <- function(input, output, session, data) {
   })
 
   observeEvent(input$sel_non_vis, {
-
     rs <- input$tb_rows_selected # rows selected
 
     ar <- 1:nrow(data()) # all rows
@@ -170,7 +166,6 @@ selectable <- function(input, output, session, data) {
   })
 
   observeEvent(input$toggle_vis, {
-
     rs <- input$tb_rows_selected # rows selected
     avr <- input$tb_rows_all # all visible rows
 
@@ -179,7 +174,6 @@ selectable <- function(input, output, session, data) {
   })
 
   observeEvent(input$sel_all, {
-
     ar <- 1:nrow(data()) # rows selected
 
     dtp %>%
@@ -187,16 +181,13 @@ selectable <- function(input, output, session, data) {
   })
 
   observeEvent(input$desel_all, {
-
     dtp %>%
       selectRows(numeric()) # all rows that are not visible should be selected
   })
 
   observeEvent(input$clear_search, {
-
     dtp %>%
       clearSearch()
-
   })
 
   list(

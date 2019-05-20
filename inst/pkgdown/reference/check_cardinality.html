@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if the relation between two tables of a data model meet the requirements. — check_cardinality • dm</title>
+<title>Test if the relation between two tables of a data model meet the requirements — check_cardinality • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Test if the relation between two tables of a data model meet the requirements. — check_cardinality" />
+<meta property="og:title" content="Test if the relation between two tables of a data model meet the requirements — check_cardinality" />
 
-<meta property="og:description" content="All `check_cardinality()` functions test, if the `parent_table_column` is a unique key for `parent_table` and if
-the set of values of `foreign_key_column` of `child_table` is a subset of the set of values of `parent_table_column`.
+<meta property="og:description" content="All check_cardinality() functions test, if the pk_column is a unique key for parent_table and if
+the set of values of fk_column of child_table is a subset of the set of values of pk_column.
 Furthermore the cardinality of the relation is tested, see below for details." />
 <meta name="twitter:card" content="summary" />
 
@@ -65,7 +65,7 @@ Furthermore the cardinality of the relation is tested, see below for details." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
       </span>
     </div>
 
@@ -78,7 +78,13 @@ Furthermore the cardinality of the relation is tested, see below for details." /
   </a>
 </li>
 <li>
+  <a href="../articles/dm.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -96,30 +102,26 @@ Furthermore the cardinality of the relation is tested, see below for details." /
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if the relation between two tables of a data model meet the requirements.</h1>
+    <h1>Test if the relation between two tables of a data model meet the requirements</h1>
     
     <div class="hidden name"><code>check_cardinality.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>All `check_cardinality()` functions test, if the `parent_table_column` is a unique key for `parent_table` and if
-the set of values of `foreign_key_column` of `child_table` is a subset of the set of values of `parent_table_column`.
+    <p>All <code>check_cardinality()</code> functions test, if the <code>pk_column</code> is a unique key for <code>parent_table</code> and if
+the set of values of <code>fk_column</code> of <code>child_table</code> is a subset of the set of values of <code>pk_column</code>.
 Furthermore the cardinality of the relation is tested, see below for details.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>check_cardinality_0_n</span>(<span class='no'>parent_table</span>, <span class='no'>primary_key_column</span>, <span class='no'>child_table</span>,
-  <span class='no'>foreign_key_column</span>)
+    <pre class="usage"><span class='fu'>check_cardinality_0_n</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
 
-<span class='fu'>check_cardinality_1_n</span>(<span class='no'>parent_table</span>, <span class='no'>primary_key_column</span>, <span class='no'>child_table</span>,
-  <span class='no'>foreign_key_column</span>)
+<span class='fu'>check_cardinality_1_n</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
 
-<span class='fu'>check_cardinality_1_1</span>(<span class='no'>parent_table</span>, <span class='no'>primary_key_column</span>, <span class='no'>child_table</span>,
-  <span class='no'>foreign_key_column</span>)
+<span class='fu'>check_cardinality_1_1</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
 
-<span class='fu'>check_cardinality_0_1</span>(<span class='no'>parent_table</span>, <span class='no'>primary_key_column</span>, <span class='no'>child_table</span>,
-  <span class='no'>foreign_key_column</span>)</pre>
+<span class='fu'>check_cardinality_0_1</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,63 +131,58 @@ Furthermore the cardinality of the relation is tested, see below for details.</p
       <td><p>Data frame</p></td>
     </tr>
     <tr>
-      <th>primary_key_column</th>
-      <td><p>Column of `parent_table` that has to be one of its unique keys.</p></td>
+      <th>pk_column</th>
+      <td><p>Column of <code>parent_table</code> that has to be one of its unique keys.</p></td>
     </tr>
     <tr>
       <th>child_table</th>
       <td><p>Data frame</p></td>
     </tr>
     <tr>
-      <th>foreign_key_column</th>
-      <td><p>Column of `child_table` that has to be a foreign key to `primary_key_column` in `parent_table`</p></td>
+      <th>fk_column</th>
+      <td><p>Column of <code>child_table</code> that has to be a foreign key to <code>pk_column</code> in <code>parent_table</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>All `check_cardinality` functions accept a 'parent table' (data frame), a column name of this table,
+    <p>All <code>check_cardinality</code> functions accept a 'parent table' (data frame), a column name of this table,
 a 'child table', and a column name of the child table. The given column of the 'parent table' has to be one of its
 unique keys (no duplicates allowed).
 Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
 the parent table's column.</p>
-<p>The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the expected relation, that the child table has with the parent table.
+<p>The cardinality specifications <code>0_n</code>, <code>1_n</code>, <code>0_1</code>, <code>1_1</code> refer to the expected relation that the child table has with the parent table.
 The numbers '0', '1' and 'n' refer to the number of values in the child table's column that correspond to each value of the
 parent table's column. 'n' means more than one in this context, with no upper limit.</p>
-<p>`0_n` means, that for each value of the `parent_key_column`, minimally '0' and maximally
+<p><code>0_n</code> means, that for each value of the <code>pk_column</code>, minimally '0' and maximally
 'n' values have to correspond to it in the child table's column (which translates to no further restriction).</p>
-<p>`1_n` means, that for each value of the `parent_key_column`, minimally '1' and maximally
+<p><code>1_n</code> means, that for each value of the <code>pk_column</code>, minimally '1' and maximally
 'n' values have to correspond to it in the child table's column. This means that there is a "surjective" relation from the child table
 to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.</p>
-<p>`0_1` means, that for each value of the `parent_key_column`, minimally '0' and maximally
+<p><code>0_1</code> means, that for each value of the <code>pk_column</code>, minimally '0' and maximally
 '1' value has to correspond to it in the child table's column. This means that there is a "injective" relation from the child table
 to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table
 column values have to be referred to.</p>
-<p>`1_1` means, that for each value of the `parent_key_column`, precisely
+<p><code>1_1</code> means, that for each value of the <code>pk_column</code>, precisely
 '1' value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
-between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and
+between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 there are no duplicates in either of them.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"># NOT RUN {
-d1 <- tibble::tibble(a = 1:5)
-d2 <- tibble::tibble(c = c(1:5,5))
-d3 <- tibble::tibble(c = 1:4)
+    <pre class="examples"><div class='input'><span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>)
+<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>5</span>))
+<span class='no'>d3</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>)
 
-This does not pass, `c` is not unique key of d2:
-check_cardinality_0_n(d2, c, d1, a)
+<span class='co'># This does not pass, `c` is not unique key of d2:</span>
+<span class='fu'>check_cardinality_0_n</span>(<span class='no'>d2</span>, <span class='no'>c</span>, <span class='no'>d1</span>, <span class='no'>a</span>)</div><div class='output co'>#&gt; <span class='error'>Error: `c` is not a unique key of `d2`</span></div><div class='input'>
+<span class='co'># This passes, multiple values in d2$c are allowed:</span>
+<span class='fu'>check_cardinality_0_n</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)
 
-This passes, multiple values in d4$c are allowed:
-check_cardinality_0_n(d1, a, d2, c)
-
-This does not pass, injectivity is violated:
-check_cardinality_1_1(d1, a, d2, c)
-
-This passes:
-check_cardinality_0_1(d1, a, d3, c)
-# }
-</pre>
+<span class='co'># This does not pass, injectivity is violated:</span>
+<span class='fu'>check_cardinality_1_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)</div><div class='output co'>#&gt; <span class='error'>Error: 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.</span></div><div class='input'>
+<span class='co'># This passes:</span>
+<span class='fu'>check_cardinality_0_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d3</span>, <span class='no'>c</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
