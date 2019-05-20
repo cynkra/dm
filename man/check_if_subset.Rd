@@ -7,17 +7,17 @@
 check_if_subset(t1, c1, t2, c2)
 }
 \arguments{
-\item{t1}{Data frame containing the column `c1`.}
+\item{t1}{Data frame containing the column \code{c1}.}
 
-\item{c1}{Column of `t1` that should only contain values that are also in `c2` of data frame `t2`.}
+\item{c1}{Column of \code{t1} that should only contain values that are also in \code{c2} of data frame \code{t2}.}
 
-\item{t2}{Data frame containing the column `c2`.}
+\item{t2}{Data frame containing the column \code{c2}.}
 
-\item{c2}{Column of second data frame which has to contain all values of `c1` to avoid an error.}
+\item{c2}{Column of second data frame which has to contain all values of \code{c1} to avoid an error.}
 }
 \description{
-`check_if_subset()` tests, if the values of the chosen column `c1` of data frame `t1` are a subset of the values
-of column `c2` of data frame `t2`.
+\code{check_if_subset()} tests, if the values of the chosen column \code{c1} of data frame \code{t1} are a subset of the values
+of column \code{c2} of data frame \code{t2}.
 }
 \examples{
 \dontrun{
