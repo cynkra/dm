@@ -1,7 +1,7 @@
 #' Add a reference from one table of a `dm` to another
 #'
 #' @export
-cdm_add_fk <- function(dm, table, column, ref_table, ref_column = NULL, check = TRUE, set_ref_pk = FALSE) {
+cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) {
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
 
@@ -11,35 +11,10 @@ cdm_add_fk <- function(dm, table, column, ref_table, ref_column = NULL, check = 
   check_correct_input(dm, ref_table_name)
 
   check_col_input(dm, table_name, column_name)
-
-  if (quo_is_null(enquo(ref_column))) { # standard case: ref_column is already pk of ref_table
-    ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
-  } else { # all following checks and logic only needs to take place if user wants to provide ref_column
-    ref_column_name <- as_name(enexpr(ref_column))
-    check_col_input(dm, ref_table_name, ref_column_name)
-
-    # ref_column has to be primary key of ref_table
-    if (!set_ref_pk) {
-      if (is_empty(cdm_get_pk(dm,!!ref_table_name)) ||
-          !(cdm_get_pk(dm,!!ref_table_name) == ref_column_name)) {
-        abort(
-          paste0(
-            "'",
-            ref_column_name,
-            "' needs to be primary key of '",
-            ref_table_name,
-            "' but isn't. You can set parameter 'set_ref_pk = TRUE', or use function",
-            " cdm_add_pk() to set it as primary key."
-          )
-        )
-      }
-    } else {
-      if (is_empty(cdm_get_pk(dm,!!table_name)) ||
-          !(cdm_get_pk(dm,!!table_name) == ref_column_name)) {
-        dm <- cdm_add_pk(dm,!!ref_table_name, eval_tidy(ref_column_name))
-      }
-    }
+  if (!cdm_has_pk(dm, !!ref_table_name)) {
+    error_ref_tbl_has_no_pk(dm, ref_table_name)
   }
+  ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
 
   tbl_obj <- cdm_get_tables(dm)[[table_name]]
   ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
@@ -179,17 +154,7 @@ cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
   check_correct_input(dm, ref_table_name)
 
   if (!cdm_has_pk(dm, !! ref_table_name)) {
-    abort(
-      paste0("ref_table '", ref_table_name, "' needs a primary key first.",
-             " Candidates are: '",
-             paste0(
-               cdm_check_for_pk_candidates(dm, !! ref_table_name) %>%
-                 filter(candidate == TRUE) %>%
-                 pull(column),
-               collapse = ", "
-               ),
-             "'. Use 'cdm_add_pk()' to set it.")
-    )
+    error_ref_tbl_has_no_pk(dm, ref_table_name)
   }
 
   tbl <- cdm_get_tables(dm)[[table_name]]
@@ -218,4 +183,18 @@ cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
               )
             }
           })
+}
+
+error_ref_tbl_has_no_pk <- function(dm, ref_table_name) {
+  abort(
+    paste0("ref_table '", ref_table_name, "' needs a primary key first.",
+           " Candidates are: '",
+           paste0(
+             cdm_check_for_pk_candidates(dm, !! ref_table_name) %>%
+               filter(candidate == TRUE) %>%
+               pull(column),
+             collapse = ", "
+           ),
+           "'. Use 'cdm_add_pk()' to set it.")
+  )
 }
