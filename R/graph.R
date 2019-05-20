@@ -25,13 +25,7 @@ cdm_get_referencing_tables <- function(dm, table_name) {
 # assumes that the natural order works (fork-less)
 # FIXME #16: implement for arbitrary graph of connections
 calculate_join_list <- function(dm, table_name) {
-  tables <- src_tbls(dm)
-  ref_tables <- map(tables, ~ cdm_get_referencing_tables(dm, .))
-
-  g <-
-    tibble(tables, ref_tables) %>%
-    unnest() %>%
-    igraph::graph_from_data_frame(directed = FALSE)
+  g <- create_graph_from_dm(dm)
 
   bfs <- igraph::bfs(g, table_name, father = TRUE, rank = TRUE, unreachable = FALSE)
 
@@ -51,4 +45,14 @@ calculate_join_list <- function(dm, table_name) {
   }
 
   res
+}
+
+create_graph_from_dm <- function(dm) {
+  tables <- src_tbls(dm)
+  ref_tables <- map(tables, ~ cdm_get_referencing_tables(dm, .))
+
+  tibble(tables, ref_tables) %>%
+    unnest() %>%
+    igraph::graph_from_data_frame(directed = FALSE)
+
 }
