@@ -1,3 +1,4 @@
 library(testthat)
 
-test_check("dm")
+# Need to use qualified call, this is checked in helper-print.R
+testthat::test_check("dm")
