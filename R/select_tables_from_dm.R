@@ -4,6 +4,8 @@ cdm_select_conn_tbls <- function(dm, ...) {
   g <- create_graph_from_dm(dm)
   V <- names(igraph::V(g))
 
+  all_table_names <- src_tbls(dm)
+
   table_names <- map_chr(enquos(...), as_name)
   walk(table_names, ~ check_correct_input(dm, .))
 
@@ -16,14 +18,17 @@ cdm_select_conn_tbls <- function(dm, ...) {
   ids_vec <- pull(all_comb, V_ids)
   names_vec <- pull(all_comb, table_names)
 
-  result_table_names <-
+  result_table_names_unordered <-
     map2(
       ids_vec, names_vec, ~ igraph::shortest_paths(g, .x, .y) %>% pluck("vpath", 1) %>% names()
       ) %>%
     flatten_chr() %>%
     unique()
 
-  if (identical(sort(result_table_names), sort(src_tbls(dm)))) {
+  result_table_names <-
+    all_table_names[all_table_names %in% result_table_names_unordered]
+
+  if (identical(result_table_names, src_tbls(dm))) {
     return(dm)
   }
 
