@@ -4,9 +4,15 @@ cdm_select_conn_tbls <- function(dm, ...) {
   g <- create_graph_from_dm(dm)
   V <- names(igraph::V(g))
 
-  all_table_names <- src_tbls(dm)
-
+  if (missing(...)) {
+    return(dm)
+    # FIXME:
+    # first alternative would be to throw an error, but maybe this might be more flexible in an automatic setup?
+    # second alternative would be to only return the part of the `dm`-object, which is connected. But what if two+ distinct parts are intraconnected?
+  }
   table_names <- map_chr(enquos(...), as_name)
+
+  all_table_names <- src_tbls(dm)
   walk(table_names, ~ check_correct_input(dm, .))
 
   if (!all(table_names %in% V)) {
