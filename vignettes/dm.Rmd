@@ -128,7 +128,7 @@ Now it gets (even more) interesting: we want to define relations between differe
 With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
 
 When dealing with data models, a foreign key from one table has to always point to a primary key of another table.
-So it has to be made sure, that the primary key of the referred table is set by making use of `cdm_add_pk()`.
+The primary key of the referred table must be set with `cdm_add_pk()`.
 `cdm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
 
 ```{r}
