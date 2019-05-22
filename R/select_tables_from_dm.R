@@ -4,10 +4,11 @@ cdm_select_conn_tbls <- function(dm, ...) {
   g <- create_graph_from_dm(dm)
   V <- names(igraph::V(g))
 
-  if (missing(...)) {
+  quos <- enquos(...)
+  if (!length(quos)) {
     return(dm)
   }
-  table_names <- map_chr(enquos(...), as_name)
+  table_names <- map_chr(quos, as_name)
 
   all_table_names <- src_tbls(dm)
   walk(table_names, ~ check_correct_input(dm, .))
