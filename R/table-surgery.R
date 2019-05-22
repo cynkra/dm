@@ -63,6 +63,7 @@ decompose_table <- function(.data, new_id_column, ...) {
   parent_table <-
     select(eval_tidy(.data_q), !!!cols_q) %>%
     distinct() %>%
+    # Without as.integer(), RPostgres creates integer64 column (#15)
     mutate(!!id_col_q := as.integer(row_number())) %>%
     select(!!id_col_q, everything())
 
