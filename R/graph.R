@@ -62,5 +62,8 @@ are_all_vertices_connected <- function(g, vertex_names) {
 
   vertex_names[1] %in% V &&
     igraph::bfs(g, vertex_names[1], father = TRUE, rank = TRUE, unreachable = FALSE) %>%
-    extract2("order") %>% names() %>% is_in(vertex_names, .) %>% all()
+    extract2("order") %>%
+    names() %>%
+    is_in(vertex_names, .) %>%
+    all()
 }
