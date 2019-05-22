@@ -162,7 +162,7 @@ print.dm <- function(x, ...) {
 
   cat_rule("Rows", col = "orange")
 
-  tbl_names <- names(cdm_get_tables(x))
+  tbl_names <- src_tbls(x)
   nrows <- map(tbl_names, ~ cdm_nrow(x, !!.)) %>% flatten_int()
   cat_line(paste0("Total: "), sum(nrows))
   cat_line(paste0(names(nrows), ": ", nrows, collapse = ", "))
