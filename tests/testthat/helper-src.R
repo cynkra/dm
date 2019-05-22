@@ -121,6 +121,14 @@ dm_for_filter <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6
   cdm_add_fk(t5, l, t4) %>%
   cdm_add_fk(t5, m, t6)
 
+dm_for_filter_smaller <- as_dm(list(t3 = t3, t4 = t4, t5 = t5)) %>%
+  cdm_add_pk(t3, f) %>%
+  cdm_add_pk(t4, h) %>%
+  cdm_add_pk(t5, k) %>%
+  cdm_add_fk(t4, j, t3) %>%
+  cdm_add_fk(t5, l, t4)
+
+
 dm_for_filter_rev <- dm_for_filter
 dm_for_filter_rev$tables <- rev(dm_for_filter_rev$tables)
 
@@ -130,7 +138,7 @@ cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7,
 cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
 dm_for_filter_src <- cdm_test_load(dm_for_filter)
 dm_for_filter_rev_src <- cdm_test_load(dm_for_filter_rev)
-
+dm_for_filter_smaller_src <- cdm_test_load(dm_for_filter_smaller)
 
 # for `dm_nrow()` ---------------------------------------------------------
 
