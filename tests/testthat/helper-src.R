@@ -125,8 +125,8 @@ dm_for_filter_smaller <- as_dm(list(t3 = t3, t4 = t4, t5 = t5)) %>%
   cdm_add_pk(t3, f) %>%
   cdm_add_pk(t4, h) %>%
   cdm_add_pk(t5, k) %>%
-  cdm_add_fk(t4, j, t3, f) %>%
-  cdm_add_fk(t5, l, t4, h)
+  cdm_add_fk(t4, j, t3) %>%
+  cdm_add_fk(t5, l, t4)
 
 
 dm_for_filter_rev <- dm_for_filter
