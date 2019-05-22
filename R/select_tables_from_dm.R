@@ -2,7 +2,7 @@
 cdm_select <- function(dm, ..., all_connected = FALSE) {
 
   quos <- enquos(...)
-  if (!length(quos)) return(dm)
+  if (is_empty(quos)) return(dm)
 
   table_names <- map_chr(quos, as_name)
   walk(table_names, ~ check_correct_input(dm, .))
