@@ -40,7 +40,9 @@ perform_join <- function(dm, lhs, rhs, join) {
 }
 
 cdm_update_table <- function(dm, name, table) {
-  stopifnot(identical(colnames(table), colnames(tbl(dm, name))))
+  if (!identical(colnames(table), colnames(tbl(dm, name)))) {
+    abort(paste0("The table you passed to `cdm_semi_join()` needs to have same the columns as table '", name, "'."), .subclass = cdm_error("different_cols"))
+  }
 
   tables_list <- cdm_get_tables(dm)
   tables_list[[name]] <- table
