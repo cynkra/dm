@@ -37,10 +37,8 @@ cdm_find_conn_tbls <- function(dm, ...) {
   table_names <- map_chr(quos, as_name)
   walk(table_names, ~ check_correct_input(dm, .))
 
-  all_table_names <- src_tbls(dm)
-
-  if (!all(table_names %in% V)) {
-    abort("Not all tables in your 'dm'-object are connected. 'dm_select_table()' currently only works for connected tables.")
+  if (!are_all_vertices_connected(g, table_names)) {
+    abort("Not all of the selected tables of the 'dm'-object are connected.")
   }
 
   V_ids <- map_int(table_names, ~ which(V == .x))
@@ -55,5 +53,6 @@ cdm_find_conn_tbls <- function(dm, ...) {
     flatten_chr() %>%
     unique()
 
+  all_table_names <- src_tbls(dm)
   all_table_names[all_table_names %in% result_table_names_unordered]
 }
