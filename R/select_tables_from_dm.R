@@ -1,5 +1,5 @@
 #' @export
-cdm_select <- function(dm, ..., all_connected = FALSE) {
+cdm_select <- function(dm, ..., all_connected = TRUE) {
 
   quos <- enquos(...)
   if (is_empty(quos)) return(dm)
