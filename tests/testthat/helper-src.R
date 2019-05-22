@@ -115,11 +115,11 @@ dm_for_filter <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6
   cdm_add_pk(t4, h) %>%
   cdm_add_pk(t5, k) %>%
   cdm_add_pk(t6, n) %>%
-  cdm_add_fk(t2, d, t1, a) %>%
-  cdm_add_fk(t2, e, t3, f) %>%
-  cdm_add_fk(t4, j, t3, f) %>%
-  cdm_add_fk(t5, l, t4, h) %>%
-  cdm_add_fk(t5, m, t6, n)
+  cdm_add_fk(t2, d, t1) %>%
+  cdm_add_fk(t2, e, t3) %>%
+  cdm_add_fk(t4, j, t3) %>%
+  cdm_add_fk(t5, l, t4) %>%
+  cdm_add_fk(t5, m, t6)
 
 dm_for_filter_smaller <- as_dm(list(t3 = t3, t4 = t4, t5 = t5)) %>%
   cdm_add_pk(t3, f) %>%

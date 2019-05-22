@@ -128,24 +128,23 @@ Now it gets (even more) interesting: we want to define relations between differe
 With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
 
 When dealing with data models, a foreign key from one table has to always point to a primary key of another table.
-So it has to be made sure, that the primary key of the referred table is set.
-You can either do that directly using `cdm_add_pk()`, or make use of the flag parameter `set_ref_pk` of the function `cdm_add_fk()`. 
-If `set_ref_pk` is set to `TRUE` (default is `FALSE`), the column `ref_column` of the table `ref_table` will become primary key, in addition to the foreign key relation being established.
+The primary key of the referred table must be set with `cdm_add_pk()`.
+`cdm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
 
 ```{r}
-flights_dm_with_key %>% cdm_add_fk(flights, origin, airports, faa)
+flights_dm_with_key %>% cdm_add_fk(flights, origin, airports)
 ```
-This on the other hand will throw an error:
+This will throw an error:
 ```{r error=TRUE}
-flights_dm %>% cdm_add_fk(flights, origin, airports, faa)
+flights_dm %>% cdm_add_fk(flights, origin, airports)
 ```
-Let's create an `dm`-object with a foreign key relation to work with later on:
+Let's create a `dm`-object with a foreign key relation to work with later on:
 ```{r}
-flights_dm_with_fk <- cdm_add_fk(flights_dm, flights, origin, airports, faa, set_ref_pk = TRUE)
+flights_dm_with_fk <- cdm_add_fk(flights_dm_with_key, flights, origin, airports)
 ```
-What if we try to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, also pointing to `faa`:
+What if we try to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, since it also contains airport codes:
 ```{r error=TRUE}
-flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports, faa)
+flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports)
 ```
 As you can see, behind the scenes, checks are executed automatically by the functions of `dm` to prevent steps that do not comply with the logic of data models.
 
@@ -197,10 +196,10 @@ flights_dm_w_many_keys <-
   cdm_add_pk(planes, tailnum) %>% 
   cdm_add_pk(airports, faa) %>% 
   cdm_add_pk(airlines, carrier) %>% 
-  cdm_add_fk(flights, origin, airports, faa) %>% 
-  cdm_add_fk(flights, carrier, airlines, carrier) %>% 
-  cdm_add_fk(flights, tailnum, planes, tailnum, check = FALSE) %>% 
-  cdm_add_fk(flights, dest, airports, faa, check = FALSE)
+  cdm_add_fk(flights, origin, airports) %>% 
+  cdm_add_fk(flights, carrier, airlines) %>% 
+  cdm_add_fk(flights, tailnum, planes, check = FALSE) %>% 
+  cdm_add_fk(flights, dest, airports, check = FALSE)
 flights_dm_w_many_keys
 ```
 You probably realized the option `check = FALSE` in the last two function calls when adding foreign keys.
