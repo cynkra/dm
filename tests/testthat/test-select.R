@@ -5,7 +5,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     dm_for_filter_src,
     dm_for_filter_smaller_src,
     ~ expect_equal(
-      cdm_select(.x, t3, t5, all_connected = TRUE) %>% cdm_get_tables(),
+      cdm_select(.x, t3, t5) %>% cdm_get_tables(),
       cdm_get_tables(.y))
   )
 
@@ -13,7 +13,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     dm_for_filter_src,
     dm_for_filter_smaller_src,
     ~ expect_equivalent( # row indices differ after removal of references in data_model$references -> expect_equal() fails
-      cdm_select(.x, t3, t5, all_connected = TRUE) %>% cdm_get_data_model(),
+      cdm_select(.x, t3, t5) %>% cdm_get_data_model(),
       cdm_get_data_model(.y))
   )
 
@@ -28,7 +28,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
   map(
     dm_for_filter_src,
     ~ expect_equal(
-      cdm_select(.x, t1, t6, all_connected = TRUE),
+      cdm_select(.x, t1, t6),
       .x
     )
   )
@@ -37,7 +37,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     dm_for_filter_src,
     ~ expect_error(
       cdm_rm_fk(.x, t2, d, t1) %>%
-        cdm_select(t1, t6, all_connected = TRUE),
+        cdm_select(t1, t6),
       "Not all of the selected tables of the 'dm'-object are connected.",
       fixed = TRUE
     )
