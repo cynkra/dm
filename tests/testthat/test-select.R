@@ -1,6 +1,6 @@
 
 
-test_that("cdm_select_conn_tbls() selects a part of a larger `dm` as a reduced `dm`?", {
+test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
   map2(
     dm_for_filter_src,
     dm_for_filter_smaller_src,
