@@ -6,9 +6,6 @@ cdm_select_conn_tbls <- function(dm, ...) {
 
   if (missing(...)) {
     return(dm)
-    # FIXME:
-    # first alternative would be to throw an error, but maybe this might be more flexible in an automatic setup?
-    # second alternative would be to only return the part of the `dm`-object, which is connected. But what if two+ distinct parts are intraconnected?
   }
   table_names <- map_chr(enquos(...), as_name)
 
@@ -16,7 +13,7 @@ cdm_select_conn_tbls <- function(dm, ...) {
   walk(table_names, ~ check_correct_input(dm, .))
 
   if (!all(table_names %in% V)) {
-    abort(paste0("Not all tables in your 'dm'-object are connected. 'dm_select_table()' currently only works for connected tables."))
+    abort("Not all tables in your 'dm'-object are connected. 'dm_select_table()' currently only works for connected tables.")
   }
 
   V_ids <- map_int(table_names, ~ which(V == .x))
