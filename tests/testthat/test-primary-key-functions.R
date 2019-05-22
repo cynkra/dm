@@ -21,7 +21,8 @@ test_that("cdm_add_pk() works as intended?", {
     ~ expect_error(
       cdm_add_pk(.x, cdm_table_1, a) %>%
         cdm_add_pk(cdm_table_1, b),
-      "If you want to change the existing primary key for a table, set `force` == TRUE."
+      class = cdm_error("key_set_force_false"),
+      error_txt_key_set_force_false()
     )
   )
 
@@ -111,7 +112,8 @@ test_that("cdm_get_pk() works as intended?", {
       cdm_add_pk(.x, cdm_table_1, a) %>%
         cdm_add_pk_impl("cdm_table_1", "b") %>%
         cdm_get_pk(cdm_table_1),
-      "Please use cdm_rm_pk() on cdm_table_1, more than 1 primary key is currently set for it.",
+      class = cdm_error("multiple_pks"),
+      error_txt_multiple_pks("cdm_table_1"),
       fixed = TRUE
     )
   )
