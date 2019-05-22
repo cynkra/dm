@@ -1,17 +1,43 @@
 #' @export
-cdm_select_conn_tbls <- function(dm, ...) {
+cdm_select <- function(dm, ..., all_connected = FALSE) {
+
+  quos <- enquos(...)
+  if (!length(quos)) return(dm)
+
+  table_names <- map_chr(quos, as_name)
+  walk(table_names, ~ check_correct_input(dm, .))
+
+  all_table_names <- src_tbls(dm)
+
+  if (all_connected) {
+    tables_keep <- cdm_find_conn_tbls(dm, ...)
+  } else tables_keep <- all_table_names[all_table_names %in% table_names]
+
+  list_of_removed_tables <- setdiff(all_table_names, tables_keep)
+
+  new_data_model <- rm_table_from_data_model(cdm_get_data_model(dm), list_of_removed_tables)
+  table_objs <- map(tables_keep, ~ tbl(dm, .)) %>% set_names(tables_keep)
+
+  new_dm(
+    src = cdm_get_src(dm),
+    tables = table_objs,
+    data_model = new_data_model
+  )
+}
+
+#' @export
+cdm_find_conn_tbls <- function(dm, ...) {
   if (!is_dm(dm)) abort("'dm' has to be of class 'dm'")
   g <- create_graph_from_dm(dm)
   V <- names(igraph::V(g))
 
   quos <- enquos(...)
-  if (!length(quos)) {
-    return(dm)
-  }
+  if (!length(quos)) return(src_tbls(dm))
+
   table_names <- map_chr(quos, as_name)
+  walk(table_names, ~ check_correct_input(dm, .))
 
   all_table_names <- src_tbls(dm)
-  walk(table_names, ~ check_correct_input(dm, .))
 
   if (!all(table_names %in% V)) {
     abort("Not all tables in your 'dm'-object are connected. 'dm_select_table()' currently only works for connected tables.")
@@ -29,21 +55,5 @@ cdm_select_conn_tbls <- function(dm, ...) {
     flatten_chr() %>%
     unique()
 
-  result_table_names <-
-    all_table_names[all_table_names %in% result_table_names_unordered]
-
-  if (identical(result_table_names, src_tbls(dm))) {
-    return(dm)
-  }
-
-  list_of_removed_tables <- setdiff(src_tbls(dm), result_table_names)
-
-  new_data_model <- rm_table_from_data_model(cdm_get_data_model(dm), list_of_removed_tables)
-  table_objs <- map(result_table_names, ~ tbl(dm, .)) %>% set_names(result_table_names)
-
-  new_dm(
-    src = cdm_get_src(dm),
-    tables = table_objs,
-    data_model = new_data_model
-  )
+  all_table_names[all_table_names %in% result_table_names_unordered]
 }
