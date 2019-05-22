@@ -101,6 +101,6 @@ rm_table_from_data_model <- function(data_model, tables) {
     !(data_model$references$table %in% tables) &
     !(data_model$references$ref %in% tables)
   data_model$references <- data_model$references[ind_keep_references,]
-  if (length(data_model$references$ref_id > 0)) data_model$references$ref_id <- 1:length(data_model$references$ref_id)
+  data_model$references$ref_id <- seq_along(data_model$references$ref_id)
   data_model
 }
