@@ -6,9 +6,7 @@ cdm_filter <- function(dm, table, ...) {
   orig_tbl <- tbl(dm, table_name)
 
   if (!cdm_has_pk(dm, !!table_name)) {
-    abort(paste0(
-      "Table '", table_name, "' needs primary key for the filtering to work. ",
-      "Please set one using cdm_add_pk()."))
+    abort_pk_for_filter_missing(table_name)
   }
 
   # get remote tibble of pk-values after filtering
