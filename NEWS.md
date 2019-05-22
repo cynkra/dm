@@ -1,3 +1,13 @@
+# dm 0.0.0.9009
+
+- New `cdm_semi_join()`, expecting the `filter` as complete reduced table.
+- New function `cdm_select()` to focus on part of `dm`-object or chose unconnected tables from it.
+- Remove arguments `ref_column` and `set_ref_pk` in function `cdm_add_fk()`.
+- Avoid  creating integer64 columns in Postgres.
+- New `cdm_nrow()`.
+- Fix color order with `dm_set_color()`.
+
+
 # dm 0.0.0.9008
 
 - Compute joins correctly for arbitrary cycle-free relationships (#16).
