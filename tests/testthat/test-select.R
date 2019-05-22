@@ -38,8 +38,63 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     ~ expect_error(
       cdm_rm_fk(.x, t2, d, t1) %>%
         cdm_select(t1, t6, all_connected = TRUE),
-      "Not all tables in your 'dm'-object are connected. 'dm_select_table()' currently only works for connected tables.",
+      "Not all of the selected tables of the 'dm'-object are connected.",
       fixed = TRUE
     )
   )
+
+  map(
+    dm_for_filter_src,
+    ~ expect_equal(
+      cdm_select(.x, t1, t6, all_connected = FALSE),
+      new_dm(
+        src = cdm_get_src(.x),
+        tables = list("t1" = tbl(.x, "t1"), "t6" = tbl(.x, "t6")),
+        data_model = cdm_get_data_model(.x) %>%
+          rm_table_from_data_model(c("t2", "t3", "t4", "t5"))
+      )
+    )
+  )
+
+  map(
+    dm_for_filter_src,
+    ~ expect_equal(
+      cdm_rm_fk(.x, t2, d, t1) %>%
+        cdm_select(t1, t6, all_connected = FALSE),
+      new_dm(
+        src = cdm_get_src(.x),
+        tables = list("t1" = tbl(.x, "t1"), "t6" = tbl(.x, "t6")),
+        data_model = cdm_get_data_model(.x) %>%
+          rm_table_from_data_model(c("t2", "t3", "t4", "t5"))
+      )
+    )
+  )
+})
+
+test_that("cdm_find_conn_tbls() finds the connected tables of a `dm`?", {
+  map(
+    dm_for_filter_src,
+    ~ expect_identical(
+      cdm_find_conn_tbls(.x, t2, t6),
+      c("t2", "t3", "t4", "t5", "t6")
+      )
+    )
+
+  map(
+    dm_for_filter_src,
+    ~ expect_identical(
+      cdm_find_conn_tbls(.x, t2, t4, t6),
+      c("t2", "t3", "t4", "t5", "t6")
+    )
+  )
+
+  map(
+    dm_for_filter_src,
+    ~ expect_error(
+      cdm_rm_fk(.x, t4, j, t3) %>%
+        cdm_find_conn_tbls(t2, t4, t6),
+      "Not all of the selected tables of the 'dm'-object are connected."
+    )
+  )
+
 })
