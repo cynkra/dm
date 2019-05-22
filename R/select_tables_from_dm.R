@@ -11,7 +11,9 @@ cdm_select <- function(dm, ..., all_connected = FALSE) {
 
   if (all_connected) {
     tables_keep <- cdm_find_conn_tbls(dm, ...)
-  } else tables_keep <- all_table_names[all_table_names %in% table_names]
+  } else {
+    tables_keep <- intersect(all_table_names, table_names)
+  }
 
   list_of_removed_tables <- setdiff(all_table_names, tables_keep)
 
