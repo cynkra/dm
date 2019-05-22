@@ -20,3 +20,16 @@ error_txt_pk_filter_missing <- function(table_name) {
          "Please set one using cdm_add_pk()."
   )
 }
+
+
+# abort and text for cdm_semi_join() errors -------------------------------
+
+abort_wrong_table_cols_semi_join <- function(table_name) {
+  abort(error_txt_wrong_table_cols_semi_join(table_name),
+        .subclass = cdm_error("wrong_table_cols_semi_join")
+  )
+}
+
+error_txt_wrong_table_cols_semi_join <- function(table_name) {
+  paste0("The table you passed to `cdm_semi_join()` needs to have same the columns as table '", table_name, "'.")
+}
