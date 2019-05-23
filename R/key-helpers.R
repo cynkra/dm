@@ -38,14 +38,7 @@ check_key <- function(.data, ...) {
     count(!!!args) %>%
     filter(!!sym(count_col) != 1)
 
-  if (nrow(duplicate_rows) != 0) {
-    abort(paste0(
-      "`",
-      paste(map_chr(args, as_label), collapse = ", "),
-      "` is not a unique key of `",
-      as_label(data_q), "`"
-    ))
-  }
+  if (nrow(duplicate_rows) != 0) abort_not_unique_key(as_label(data_q), map_chr(args, as_label))
 
   invisible(.data)
 }

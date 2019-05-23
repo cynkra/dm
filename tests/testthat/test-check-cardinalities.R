@@ -115,7 +115,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d5_src,
     ~ expect_error(
       check_cardinality_1_1(.x, c, .y, a),
-      "`c` is not a unique key of `.x`"
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", "c")
     )
   )
 
@@ -124,7 +125,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d1_src,
     ~ expect_error(
       check_cardinality_1_1(.x, c, .y, a),
-      "`c` is not a unique key of `.x`"
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", "c")
     )
   )
 
@@ -143,7 +145,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d1_src,
     ~ expect_error(
       check_cardinality_0_n(.x, c, .y, a),
-      "`c` is not a unique key of `.x`"
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", "c")
     )
   )
 
@@ -152,7 +155,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d1_src,
     ~ expect_error(
       check_cardinality_1_1(.x, c, .y, a),
-      "`c` is not a unique key of `.x`"
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", "c")
     )
   )
 
