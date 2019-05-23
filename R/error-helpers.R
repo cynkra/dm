@@ -123,6 +123,17 @@ error_txt_not_subset_of <- function(
 }
 
 
+# error sets not equal ----------------------------------------------------
+
+abort_sets_not_equal <- function(error_msgs) {
+  abort(error_txt_sets_not_equal(error_msgs), .subclass = cdm_error("sets_not_equal"))
+}
+
+error_txt_sets_not_equal <- function(error_msgs) {
+  paste0(error_msgs, collapse = "\n  ")
+}
+
+
 # cardinality check errors ------------------------------------------------
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {

@@ -112,7 +112,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
   catchers <- compact(list(catcher_1, catcher_2))
 
   if (length(catchers) > 0) {
-    abort(paste0(map_chr(catchers, conditionMessage), collapse = "\n  "))
+    abort_sets_not_equal(map_chr(catchers, conditionMessage))
   }
 
   invisible(eval_tidy(t1q))
