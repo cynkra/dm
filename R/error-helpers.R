@@ -62,3 +62,19 @@ error_txt_multiple_pks <- function(table_name) {
     "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
   )
 }
+
+
+# abort and text for key-helper functions ---------------------------------
+
+abort_not_unique_key <- function(table_name, column_names) {
+  abort(error_txt_not_unique_key(table_name, column_names), .subclass = cdm_error("not_unique_key"))
+}
+
+error_txt_not_unique_key <- function(table_name, column_names) {
+  paste0(
+    "`",
+    paste(column_names, collapse = ", "),
+    "` not a unique key of `",
+    table_name, "`."
+  )
+}
