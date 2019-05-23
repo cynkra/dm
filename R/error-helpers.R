@@ -154,3 +154,47 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
     "` contains duplicate values."
   )
 }
+
+
+# errors in fk handling --------------------------------------------------
+
+abort_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
+  abort(error_txt_ref_tbl_has_no_pk(ref_table_name, pk_candidates),
+        .subclass = cdm_error("ref_tbl_has_no_pk"))
+}
+
+error_txt_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
+    paste0("ref_table '", ref_table_name, "' needs a primary key first.",
+           " Candidates are: '",
+           paste0(pk_candidates, collapse = ", "),
+           "'. Use 'cdm_add_pk()' to set it.")
+}
+
+abort_is_not_fkc <- function(
+  child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
+  abort(error_txt_is_not_fk(
+    child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames),
+    .subclass = cdm_error("is_not_fk")
+    )
+}
+
+error_txt_is_not_fk <- function(
+  child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
+  paste0("The given combination of columns '",
+         paste0(wrong_fk_colnames, collapse = ", "),
+         "' is not a foreign key of table '",
+         child_table_name,
+         "' with regards to ref_table '",
+         parent_table_name,
+         "'. Foreign key columns are: '",
+         paste0(actual_fk_colnames,
+                collapse = ", "), "'.")
+}
+
+abort_rm_fk_col_missing <- function() {
+  abort(error_txt_rm_fk_col_missing(), .subclass = cdm_error("rm_fk_col_missing"))
+}
+
+error_txt_rm_fk_col_missing <- function() {
+  "Parameter 'column' has to be set. 'NULL' for removing all references."
+}

@@ -5,10 +5,8 @@ test_that("cdm_add_fk() works as intended?", {
     .x = cdm_test_obj_src,
     ~ expect_error(
       cdm_add_fk(.x, cdm_table_1, a, cdm_table_4),
-      paste0(
-        "ref_table 'cdm_table_4' needs a primary key first.",
-        " Candidates are: 'c'. Use 'cdm_add_pk()' to set it."
-      ),
+      class = cdm_error("ref_tbl_has_no_pk"),
+      error_txt_ref_tbl_has_no_pk("cdm_table_4", "c"),
       fixed = TRUE
     )
   )
@@ -133,7 +131,8 @@ test_that("cdm_rm_fk() works as intended?", {
         cdm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         cdm_add_fk(cdm_table_2, c, cdm_table_4) %>%
         cdm_rm_fk(table = cdm_table_2, ref_table = cdm_table_4),
-      "Parameter 'column' has to be set. 'NULL' for removing all references."
+      class = cdm_error("rm_fk_col_missing"),
+      error_txt_rm_fk_col_missing()
     )
   )
 
@@ -144,9 +143,8 @@ test_that("cdm_rm_fk() works as intended?", {
         cdm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         cdm_add_fk(cdm_table_2, c, cdm_table_4) %>%
         cdm_rm_fk(cdm_table_2, z, cdm_table_4),
-      paste0("The given column 'z' is not a foreign key column of table ",
-             "'cdm_table_2' with regards to ref_table 'cdm_table_4'. ",
-             "Foreign key columns are: 'c'")
+      class = cdm_error("is_not_fkc"),
+      error_txt_is_not_fk("cdm_table_2", "z", "cdm_table_4", "c")
     )
   )
 })
@@ -172,10 +170,8 @@ test_that("cdm_check_for_fk_candidates() works as intended?", {
   map(.x = cdm_test_obj_src,
       ~ expect_error(
         cdm_check_for_fk_candidates(.x, cdm_table_1, cdm_table_4),
-        paste0(
-          "ref_table 'cdm_table_4' needs a primary key first.",
-          " Candidates are: 'c'. Use 'cdm_add_pk()' to set it."
-          ),
+        class = cdm_error("ref_tbl_has_no_pk"),
+        error_txt_ref_tbl_has_no_pk("cdm_table_4", "c"),
         fixed = TRUE
         )
       )
