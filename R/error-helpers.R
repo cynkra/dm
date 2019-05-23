@@ -209,3 +209,24 @@ abort_rm_fk_col_missing <- function() {
 error_txt_rm_fk_col_missing <- function() {
   "Parameter 'column' has to be set. 'NULL' for removing all references."
 }
+
+
+# error helpers for draw_dm -----------------------------------------------
+
+abort_last_col_missing <- function() {
+  abort(error_txt_last_col_missing(), .subclass = cdm_error("last_col_missing"))
+}
+
+error_txt_last_col_missing <- function() {
+  "The last color cannot be missing."
+}
+
+abort_wrong_color <- function(avail_color_names) {
+  abort(error_txt_wrong_color(avail_color_names), .subclass = cdm_error("wrong_color"))
+}
+
+error_txt_wrong_color <- function(avail_color_names) {
+  paste0("Available color names are only: \n",
+         paste0(avail_color_names, collapse = ",\n")
+  )
+}
