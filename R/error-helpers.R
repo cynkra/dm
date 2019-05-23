@@ -230,3 +230,14 @@ error_txt_wrong_color <- function(avail_color_names) {
          paste0(avail_color_names, collapse = ",\n")
   )
 }
+
+
+# errors in graph-functions -----------------------------------------------
+
+abort_no_cycles <- function() {
+  abort(error_txt_no_cycles(), .subclass = cdm_error("no_cycles"))
+}
+
+error_txt_no_cycles <- function() {
+  "Cycles not yet supported"
+}

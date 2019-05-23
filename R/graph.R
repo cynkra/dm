@@ -41,7 +41,7 @@ calculate_join_list <- function(dm, table_name) {
   subgraph_nodes <- union(res$lhs, res$rhs)
   subgraph <- igraph::induced_subgraph(g, subgraph_nodes)
   if (length(igraph::V(subgraph)) - 1 < length(igraph::E(subgraph))) {
-    abort("Cycles not yet supported")
+    abort_no_cycles()
   }
 
   res
