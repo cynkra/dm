@@ -88,7 +88,7 @@ abort_table_not_in_dm <- function(table_name, tables_in_dm) {
 }
 
 error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
-  if (str_length(table_name) == 0) {
+  if (table_name == "") {
     "Table argument is missing."
   } else {
     paste0(
