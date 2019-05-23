@@ -34,7 +34,7 @@ cdm_find_conn_tbls <- function(dm, ...) {
   V <- names(igraph::V(g))
 
   quos <- enquos(...)
-  if (!length(quos)) return(src_tbls(dm))
+  if (is_empty(quos)) return(src_tbls(dm))
 
   table_names <- map_chr(quos, as_name)
   walk(table_names, ~ check_correct_input(dm, .))
