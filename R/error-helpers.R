@@ -78,3 +78,22 @@ error_txt_not_unique_key <- function(table_name, column_names) {
     table_name, "`."
   )
 }
+
+
+# general error: table not part of 'dm' -----------------------------------
+
+
+abort_table_not_in_dm <- function(table_name, tables_in_dm) {
+  abort(error_txt_table_not_in_dm(table_name, tables_in_dm), .subclass = cdm_error("table_not_in_dm"))
+}
+
+error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
+  paste0(
+    "Table: ",
+    table_name,
+    " not in `dm`-object. Available table names are: ",
+    paste0(tables_in_dm, collapse = ", ")
+    )
+}
+
+

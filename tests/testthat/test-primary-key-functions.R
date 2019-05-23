@@ -67,7 +67,8 @@ test_that("cdm_rm_pk() works as intended?", {
     ~ expect_error(
       cdm_add_pk(.x, cdm_table_1, a) %>%
         cdm_rm_pk(cdm_table_5),
-      "cdm_table_5 not in `dm`-object. Available table names are: cdm_table_1, cdm_table_2, cdm_table_3, cdm_table_4"
+      class = cdm_error("table_not_in_dm"),
+      error_txt_table_not_in_dm("cdm_table_5", c("cdm_table_1", "cdm_table_2", "cdm_table_3", "cdm_table_4"))
     )
   )
 })

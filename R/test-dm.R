@@ -39,16 +39,7 @@ check_correct_input <- function(dm, table) {
     abort("Argument 'table' has to be given as 1 element character variable")
   }
   cdm_table_names <- src_tbls(dm)
-  if (!table %in% cdm_table_names) {
-    abort(
-      paste0(
-        "Table: ",
-        table,
-        " not in `dm`-object. Available table names are: ",
-        paste0(cdm_table_names, collapse = ", ")
-      )
-    )
-  }
+  if (!table %in% cdm_table_names) abort_table_not_in_dm(table, cdm_table_names)
 }
 
 # validates, that the given column is indeed part of the table of the `dm` object.
