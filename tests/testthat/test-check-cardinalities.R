@@ -71,7 +71,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
           child_table = ..2,
           fk_column = a
         ),
-        "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
+        class = cdm_error("not_subset_of"),
+        error_txt_not_subset_of("..2", "a", "..1", "a"),
         fixed = TRUE
       ),
       ..3
@@ -93,7 +94,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
           child_table = ..2,
           fk_column = a
         ),
-        "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
+        class = cdm_error("not_subset_of"),
+        error_txt_not_subset_of("..2", "a", "..1", "a"),
         fixed = TRUE
       ),
       ..3

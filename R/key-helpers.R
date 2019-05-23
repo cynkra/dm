@@ -52,7 +52,7 @@ is_unique_key <- function(.data, column) {
     col_name <- column
     col_expr <- ensym(column)
   } else {
-    abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
+    abort_wrong_col_args()
   }
 
   duplicate_rows <-
@@ -159,17 +159,7 @@ check_if_subset <- function(t1, c1, t2, c2) {
 
   setdiff_v1_v2 <- setdiff(v1, v2)
   print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
-  abort(paste0(
-    "Column `",
-    as_name(c1q),
-    "` in table `",
-    as_name(t1q),
-    "` contains values (see above) that are not present in column `",
-    as_name(c2q),
-    "` in table `",
-    as_name(t2q),
-    "`"
-  ))
+  abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q))
 }
 
 # similar to `check_if_subset()`, but evaluates to a boolean
