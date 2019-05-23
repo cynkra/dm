@@ -40,25 +40,17 @@ decompose_table <- function(.data, new_id_column, ...) {
     cols_q %>%
     map_chr(~ as_name(.))
 
+  table_name <- as_label(.data_q)
+
   if (as_label(id_col_q) %in% colnames(eval_tidy(.data_q))) {
-    abort(
-      paste0("`new_id_column` can not have an identical name as one of the columns of ", as_label(.data_q))
-    )
+    abort_dupl_new_id_col_name(table_name)
   }
-  if (!(length(cols_q))) abort(paste0("Columns of ", as_label(.data_q), " need to be specified in ellipsis"))
+  if (!(length(cols_q))) abort(paste0("Columns of ", table_name, " need to be specified in ellipsis"))
   if (!all(cols_q %in% colnames(eval_tidy(.data_q)))) {
-    abort(
-      paste0(
-        "Not all specified variables `", paste(cols_chr, collapse = ", "), "` are columns of ", as_label(.data_q),
-        ". These columns are: `", paste(colnames(eval_tidy(.data_q)), collapse = ", "), "`."
-      )
-    )
+    abort_wrong_col_names(as_label(.data_q), colnames(eval_tidy(.data_q)), cols_chr)
   }
-  if (length(cols_q) >= length(colnames(eval_tidy(.data_q)))) {
-    abort(
-      paste0("Number of columns to be extracted has to be less than total number of columns of ", as_label(.data_q))
-    )
-  }
+
+  if (length(cols_q) >= length(colnames(eval_tidy(.data_q)))) abort_too_many_cols(table_name)
 
   parent_table <-
     select(eval_tidy(.data_q), !!!cols_q) %>%

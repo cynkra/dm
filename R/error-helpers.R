@@ -252,3 +252,37 @@ abort_vertices_not_connected <- function() {
 error_txt_vertices_not_connected <- function() {
   "Not all of the selected tables of the 'dm'-object are connected."
 }
+
+
+
+# errors in table surgery -------------------------------------------------
+
+abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
+  abort(error_txt_wrong_col_names(table_name, actual_colnames, wrong_colnames),
+        .subclass = cdm_error("wrong_col_names"))
+}
+
+error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
+  paste0(
+    "Not all specified variables `", paste(wrong_colnames, collapse = ", "),
+    "` are columns of `", table_name,
+    "`. Its columns are: `", paste(actual_colnames, collapse = ", "), "`."
+  )
+}
+
+
+abort_dupl_new_id_col_name <- function(table_name) {
+  abort(error_txt_dupl_new_id_col_name(table_name), .subclass = cdm_error("dupl_new_id_col_name"))
+}
+
+error_txt_dupl_new_id_col_name <- function(table_name) {
+  paste0("`new_id_column` can not have an identical name as one of the columns of `", table_name, "`.")
+}
+
+abort_too_many_cols <- function(table_name) {
+  abort(error_txt_too_many_cols(table_name), .subclass = cdm_error("too_many_cols"))
+}
+
+error_txt_too_many_cols <- function(table_name) {
+  paste0("Number of columns to be extracted has to be less than total number of columns of ", table_name)
+}
