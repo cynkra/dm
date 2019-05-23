@@ -40,7 +40,7 @@ cdm_find_conn_tbls <- function(dm, ...) {
   walk(table_names, ~ check_correct_input(dm, .))
 
   if (!are_all_vertices_connected(g, table_names)) {
-    abort("Not all of the selected tables of the 'dm'-object are connected.")
+    abort_vertices_not_connected()
   }
 
   V_ids <- map_int(table_names, ~ which(V == .x))

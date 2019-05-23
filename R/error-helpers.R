@@ -241,3 +241,14 @@ abort_no_cycles <- function() {
 error_txt_no_cycles <- function() {
   "Cycles not yet supported"
 }
+
+
+# errors in cdm_select() --------------------------------------------------
+
+abort_vertices_not_connected <- function() {
+  abort(error_txt_vertices_not_connected(), .subclass = cdm_error("vertices_not_connected"))
+}
+
+error_txt_vertices_not_connected <- function() {
+  "Not all of the selected tables of the 'dm'-object are connected."
+}

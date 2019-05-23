@@ -38,7 +38,8 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     ~ expect_error(
       cdm_rm_fk(.x, t2, d, t1) %>%
         cdm_select(t1, t6),
-      "Not all of the selected tables of the 'dm'-object are connected.",
+      class = cdm_error("vertices_not_connected"),
+      error_txt_vertices_not_connected(),
       fixed = TRUE
     )
   )
@@ -93,7 +94,8 @@ test_that("cdm_find_conn_tbls() finds the connected tables of a `dm`?", {
     ~ expect_error(
       cdm_rm_fk(.x, t4, j, t3) %>%
         cdm_find_conn_tbls(t2, t4, t6),
-      "Not all of the selected tables of the 'dm'-object are connected."
+      class = cdm_error("vertices_not_connected"),
+      error_txt_vertices_not_connected()
     )
   )
 
