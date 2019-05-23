@@ -107,7 +107,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d4_src,
     ~ expect_error(
       check_cardinality_1_1(.x, a, .y, c),
-      "1..1 cardinality (bijectivity) is not given: Column `c` in table `.y` contains duplicate values.",
+      class = cdm_error("not_bijective"),
+      error_txt_not_bijective(".y", "c"),
       fixed = TRUE
     )
   )
@@ -137,7 +138,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d4_src,
     ~ expect_error(
       check_cardinality_0_1(.x, a, .y, c),
-      "0..1 cardinality (injectivity from child table to parent table) is not given: Column `c` in table `.y` contains duplicate values.",
+      class = cdm_error("not_injective"),
+      error_txt_not_injective(".y", "c"),
       fixed = TRUE
     )
   )
@@ -167,7 +169,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d4_src,
     ~ expect_error(
       check_cardinality_1_1(.x, a, .y, c),
-      "1..1 cardinality (bijectivity) is not given: Column `c` in table `.y` contains duplicate values.",
+      class = cdm_error("not_bijective"),
+      error_txt_not_bijective(".y", "c"),
       fixed = TRUE
     )
   )

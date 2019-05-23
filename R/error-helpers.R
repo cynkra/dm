@@ -121,3 +121,36 @@ error_txt_not_subset_of <- function(
     "`"
   )
 }
+
+
+# cardinality check errors ------------------------------------------------
+
+abort_not_bijective <- function(child_table_name, fk_col_name) {
+  abort(error_txt_not_bijective(child_table_name, fk_col_name),
+        .subclass = cdm_error("not_bijective"))
+}
+
+error_txt_not_bijective <- function(child_table_name, fk_col_name) {
+  paste0(
+    "1..1 cardinality (bijectivity) is not given: Column `",
+    fk_col_name,
+    "` in table `",
+    child_table_name,
+    "` contains duplicate values."
+  )
+}
+
+abort_not_injective <- function(child_table_name, fk_col_name) {
+  abort(error_txt_not_injective(child_table_name, fk_col_name),
+        .subclass = cdm_error("not_injective"))
+}
+
+error_txt_not_injective <- function(child_table_name, fk_col_name) {
+  paste0(
+    "0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
+    fk_col_name,
+    "` in table `",
+    child_table_name,
+    "` contains duplicate values."
+  )
+}

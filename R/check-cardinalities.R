@@ -99,17 +99,8 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
     check_key(!!ct, !!fkc)
     NULL
   },
-  error = function(e) {
-    abort(paste0(
-      "1..1 cardinality (bijectivity) is not given: Column `",
-      as_label(fkc),
-      "` in table `",
-      as_label(ct),
-      "` contains duplicate values."
-    ))
-  }
+  error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
   )
-
 
   invisible(TRUE)
 }
@@ -130,15 +121,7 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
     check_key(!!ct, !!fkc)
     NULL
   },
-  error = function(e) {
-    abort(paste0(
-      "0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
-      as_label(fkc),
-      "` in table `",
-      as_label(ct),
-      "` contains duplicate values."
-    ))
-  }
+  error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
   )
 
   invisible(TRUE)
