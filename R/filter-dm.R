@@ -1,12 +1,9 @@
 #' @export
 cdm_filter <- function(dm, table, ...) {
-  quos <- enquos(...)
-
-  if (quo_is_missing(enquo(table)) && is_empty(quos)) return(dm) # no table and empty ellipsis provided
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  if (is_empty(quos)) return(dm) # valid table and empty ellipsis provided
+  if (!...length()) return(dm) # valid table and empty ellipsis provided
 
   orig_tbl <- tbl(dm, table_name)
 
