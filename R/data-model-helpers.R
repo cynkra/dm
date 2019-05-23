@@ -1,3 +1,17 @@
+new_data_model <- function(tables, columns, references) {
+  stopifnot(nrow(tables) > 0)
+  stopifnot(nrow(columns) > 0)
+
+  structure(
+    list(
+      tables = tables,
+      columns = columns,
+      references = references
+    ),
+    class = "data_model"
+  )
+}
+
 # helper function for updating the data model when adding a reference from one table to another
 upd_data_model_reference <- function(data_model, table, column, ref_table, ref_column) {
   new_data_model(
@@ -115,16 +129,28 @@ rm_table_from_data_model <- function(data_model, tables) {
   )
 }
 
-new_data_model <- function(tables, columns, references) {
-  stopifnot(nrow(tables) > 0)
-  stopifnot(nrow(columns) > 0)
+add_table_to_data_model <- function(data_model, table_name, col_names, col_types) {
+  stopifnot(!(table_name %in% data_model$tables$table)) # FIXME: need proper abort_...()
 
-  structure(
-    list(
-      tables = tables,
-      columns = columns,
-      references = references
-    ),
-    class = "data_model"
+  new_data_model(
+    tables = add_table_to_tables(data_model, table_name),
+    columns = add_table_to_columns(data_model, table_name, col_names, col_types),
+    references = data_model$references
   )
+}
+
+add_table_to_tables <- function(data_model, table_name) {
+  data_model$tables %>%
+    add_row(table = table_name, segment = NA, display = NA)
+}
+
+add_table_to_columns <- function(data_model, table_name, col_names, col_types) {
+  reduce2(col_names,
+         col_types,
+         add_column_row, table_name = table_name,
+         .init = data_model$columns)
+}
+
+add_column_row <- function(.data, col_name, col_type, table_name) {
+  add_row(.data, column = col_name, type = col_type, table = table_name, key = FALSE, ref = NA)
 }
