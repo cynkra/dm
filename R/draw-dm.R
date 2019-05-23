@@ -74,7 +74,7 @@ color_quos_to_display <- function(...) {
 
   missing <- map_lgl(quos, quo_is_missing)
   if (has_length(missing) && missing[[length(missing)]]) {
-    abort("The last color cannot be missing.")
+    abort_last_col_missing()
   }
 
   avail <- !missing
@@ -82,9 +82,7 @@ color_quos_to_display <- function(...) {
   values <- map_chr(quos[avail], eval_tidy)
 
   if (!all(values %in% colors$dm)) {
-    abort(paste0("Available color names are only: \n",
-                 paste0("'", colors$dm, "' ", colors$nb, collapse = ",\n")
-    ))
+    abort_wrong_color(paste0("'", colors$dm, "' ", colors$nb))
   }
   new_values <- rev(colors$datamodelr[match(values, colors$dm)])
 

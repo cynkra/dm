@@ -12,7 +12,12 @@ cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) {
 
   check_col_input(dm, table_name, column_name)
   if (!cdm_has_pk(dm, !!ref_table_name)) {
-    error_ref_tbl_has_no_pk(dm, ref_table_name)
+    abort_ref_tbl_has_no_pk(
+      ref_table_name,
+      cdm_check_for_pk_candidates(dm, !!ref_table_name) %>%
+        filter(candidate == TRUE) %>%
+        pull(column)
+      )
   }
   ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
 
@@ -20,17 +25,7 @@ cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) {
   ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
 
   if (check && !is_subset(tbl_obj, !! column_name, ref_tbl_obj, !! ref_column_name)) {
-    abort(paste0(
-      "Column `",
-      column_name,
-      "` in table `",
-      table_name,
-      "` contains values that are not present in column `",
-      ref_column_name,
-      "` in table `",
-      ref_table_name,
-      "`")
-      )
+    abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
   }
 
   cdm_add_fk_impl(dm, table_name, column_name, ref_table_name, ref_column_name)
@@ -98,20 +93,14 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   } else {
     col_names <- as_name(enexpr(column))
     if (col_names == "") {
-      abort("Parameter 'column' has to be set. 'NULL' for removing all references.")
+      abort_rm_fk_col_missing()
     }
   }
 
   if (!(all(col_names %in% cdm_get_fk(dm, !! table_name, !! ref_table_name)))) {
-    abort(paste0("The given column '",
-                 paste0(col_names, collapse = ", "),
-                 "' is not a foreign key column of table '",
-                 table_name,
-                 "' with regards to ref_table '",
-                 ref_table_name,
-                 "'. Foreign key columns are: '",
-                 paste0(cdm_get_fk(dm, !! table_name, !! ref_table_name), collapse = ", "), "'.")
-          )
+    abort_is_not_fkc(
+      table_name, col_names, ref_table_name, cdm_get_fk(dm, !!table_name, !!ref_table_name)
+      )
   }
 
   dm$data_model <-
@@ -154,7 +143,12 @@ cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
   check_correct_input(dm, ref_table_name)
 
   if (!cdm_has_pk(dm, !! ref_table_name)) {
-    error_ref_tbl_has_no_pk(dm, ref_table_name)
+    abort_ref_tbl_has_no_pk(
+      ref_table_name,
+      cdm_check_for_pk_candidates(dm, !!ref_table_name) %>%
+        filter(candidate == TRUE) %>%
+        pull(column)
+      )
   }
 
   tbl <- cdm_get_tables(dm)[[table_name]]
@@ -183,18 +177,4 @@ cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
               )
             }
           })
-}
-
-error_ref_tbl_has_no_pk <- function(dm, ref_table_name) {
-  abort(
-    paste0("ref_table '", ref_table_name, "' needs a primary key first.",
-           " Candidates are: '",
-           paste0(
-             cdm_check_for_pk_candidates(dm, !! ref_table_name) %>%
-               filter(candidate == TRUE) %>%
-               pull(column),
-             collapse = ", "
-           ),
-           "'. Use 'cdm_add_pk()' to set it.")
-  )
 }

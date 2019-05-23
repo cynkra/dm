@@ -24,6 +24,9 @@ test_that("cdm_semi_join() does the right thing?", {
     t3_src,
     ~ expect_error(
       cdm_semi_join(.x, t3, filter(.y, g == "five") %>% select(f)),
-      class = "dm_error_different_cols")
-  ) # FIXME: test of wording of error is still missing, see #21
+      class = cdm_error("wrong_table_cols_semi_join"),
+      error_txt_wrong_table_cols_semi_join("t3"),
+      fixed = TRUE
+      )
+  )
 })

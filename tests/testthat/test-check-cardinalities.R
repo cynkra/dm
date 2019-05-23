@@ -71,7 +71,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
           child_table = ..2,
           fk_column = a
         ),
-        "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
+        class = cdm_error("not_subset_of"),
+        error_txt_not_subset_of("..2", "a", "..1", "a"),
         fixed = TRUE
       ),
       ..3
@@ -93,7 +94,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
           child_table = ..2,
           fk_column = a
         ),
-        "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
+        class = cdm_error("not_subset_of"),
+        error_txt_not_subset_of("..2", "a", "..1", "a"),
         fixed = TRUE
       ),
       ..3
@@ -105,7 +107,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d4_src,
     ~ expect_error(
       check_cardinality_1_1(.x, a, .y, c),
-      "1..1 cardinality (bijectivity) is not given: Column `c` in table `.y` contains duplicate values.",
+      class = cdm_error("not_bijective"),
+      error_txt_not_bijective(".y", "c"),
       fixed = TRUE
     )
   )
@@ -115,7 +118,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d5_src,
     ~ expect_error(
       check_cardinality_1_1(.x, c, .y, a),
-      "`c` is not a unique key of `.x`"
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", "c")
     )
   )
 
@@ -124,7 +128,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d1_src,
     ~ expect_error(
       check_cardinality_1_1(.x, c, .y, a),
-      "`c` is not a unique key of `.x`"
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", "c")
     )
   )
 
@@ -133,7 +138,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d4_src,
     ~ expect_error(
       check_cardinality_0_1(.x, a, .y, c),
-      "0..1 cardinality (injectivity from child table to parent table) is not given: Column `c` in table `.y` contains duplicate values.",
+      class = cdm_error("not_injective"),
+      error_txt_not_injective(".y", "c"),
       fixed = TRUE
     )
   )
@@ -143,7 +149,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d1_src,
     ~ expect_error(
       check_cardinality_0_n(.x, c, .y, a),
-      "`c` is not a unique key of `.x`"
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", "c")
     )
   )
 
@@ -152,7 +159,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d1_src,
     ~ expect_error(
       check_cardinality_1_1(.x, c, .y, a),
-      "`c` is not a unique key of `.x`"
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", "c")
     )
   )
 
@@ -161,7 +169,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     .y = d4_src,
     ~ expect_error(
       check_cardinality_1_1(.x, a, .y, c),
-      "1..1 cardinality (bijectivity) is not given: Column `c` in table `.y` contains duplicate values.",
+      class = cdm_error("not_bijective"),
+      error_txt_not_bijective(".y", "c"),
       fixed = TRUE
     )
   )

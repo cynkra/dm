@@ -5,8 +5,8 @@ test_that("check_key() checks primary key properly?", {
     .x = data_check_key_src,
     ~ expect_error(
       check_key(.x, c1, c2),
-      "`c1, c2` is not a unique key of `.x`",
-      fixed = TRUE
+      class = cdm_error("not_unique_key"),
+      error_txt_not_unique_key(".x", c("c1", "c2"))
     )
   )
 

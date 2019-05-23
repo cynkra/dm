@@ -20,7 +20,8 @@ test_that("check_set_equality() checks properly if 2 sets of values are equal?",
     ~ expect_known_output(
       expect_error(
         check_set_equality(..1, a, ..2, a),
-        "Column `a` in table `..2` contains values (see above) that are not present in column `a` in table `..1`",
+        class = cdm_error("sets_not_equal"),
+        error_txt_not_subset_of("..2", "a", "..1", "a"),
         fixed = TRUE
       ),
       ..3

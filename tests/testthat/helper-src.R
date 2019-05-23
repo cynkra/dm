@@ -111,6 +111,45 @@ t5 <- tibble(k = 1:4,
 t6 <- tibble(n = c("house", "tree", "hill", "streetlamp", "garden"),
              o = letters[5:9])
 
+dm_for_filter <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)) %>%
+  cdm_add_pk(t1, a) %>%
+  cdm_add_pk(t2, c) %>%
+  cdm_add_pk(t3, f) %>%
+  cdm_add_pk(t4, h) %>%
+  cdm_add_pk(t5, k) %>%
+  cdm_add_pk(t6, n) %>%
+  cdm_add_fk(t2, d, t1) %>%
+  cdm_add_fk(t2, e, t3) %>%
+  cdm_add_fk(t4, j, t3) %>%
+  cdm_add_fk(t5, l, t4) %>%
+  cdm_add_fk(t5, m, t6)
+
+dm_for_filter_smaller <- as_dm(list(t3 = t3, t4 = t4, t5 = t5)) %>%
+  cdm_add_pk(t3, f) %>%
+  cdm_add_pk(t4, h) %>%
+  cdm_add_pk(t5, k) %>%
+  cdm_add_fk(t4, j, t3) %>%
+  cdm_add_fk(t5, l, t4)
+
+t7 <- tibble(p = letters[4:9],
+             q = c("elephant", "lion", "seal", "worm", "dog", "cat"))
+
+dm_for_filter_w_cycle <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7)) %>%
+  cdm_add_pk(t1, a) %>%
+  cdm_add_pk(t2, c) %>%
+  cdm_add_pk(t3, f) %>%
+  cdm_add_pk(t4, h) %>%
+  cdm_add_pk(t5, k) %>%
+  cdm_add_pk(t6, n) %>%
+  cdm_add_pk(t7, p) %>%
+  cdm_add_fk(t2, d, t1) %>%
+  cdm_add_fk(t2, e, t3) %>%
+  cdm_add_fk(t4, j, t3) %>%
+  cdm_add_fk(t5, l, t4) %>%
+  cdm_add_fk(t5, m, t6) %>%
+  cdm_add_fk(t6, o, t7) %>%
+  cdm_add_fk(t7, q, t2)
+
 output_1 <- list(
   t1 = tibble(a = c(4:7), b = LETTERS[4:7]),
   t2 = tibble(c = c("seal", "worm", "dog", "cat"), d = 4:7, e = c("F", "G", "E", "F")),
@@ -159,27 +198,6 @@ output_3 <- list(
   )
 )
 
-dm_for_filter <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)) %>%
-  cdm_add_pk(t1, a) %>%
-  cdm_add_pk(t2, c) %>%
-  cdm_add_pk(t3, f) %>%
-  cdm_add_pk(t4, h) %>%
-  cdm_add_pk(t5, k) %>%
-  cdm_add_pk(t6, n) %>%
-  cdm_add_fk(t2, d, t1) %>%
-  cdm_add_fk(t2, e, t3) %>%
-  cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t5, l, t4) %>%
-  cdm_add_fk(t5, m, t6)
-
-dm_for_filter_smaller <- as_dm(list(t3 = t3, t4 = t4, t5 = t5)) %>%
-  cdm_add_pk(t3, f) %>%
-  cdm_add_pk(t4, h) %>%
-  cdm_add_pk(t5, k) %>%
-  cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t5, l, t4)
-
-
 dm_for_filter_rev <- dm_for_filter
 dm_for_filter_rev$tables <- rev(dm_for_filter_rev$tables)
 
@@ -193,6 +211,7 @@ cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
 dm_for_filter_src <- cdm_test_load(dm_for_filter)
 dm_for_filter_rev_src <- cdm_test_load(dm_for_filter_rev)
 dm_for_filter_smaller_src <- cdm_test_load(dm_for_filter_smaller)
+dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
 
 # for `dm_nrow()` ---------------------------------------------------------
 

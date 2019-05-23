@@ -20,7 +20,8 @@ test_that("check_if_subset() checks if t1$c1 column values are subset of t2$c2 p
     ~ expect_known_output(
       expect_error(
         check_if_subset(..1, a, ..2, a),
-        "Column `a` in table `..1` contains values (see above) that are not present in column `a` in table `..2`",
+        class = cdm_error("not_subset_of"),
+        error_txt_not_subset_of("..1", "a", "..2", "a"),
         fixed = TRUE
       ),
       ..3

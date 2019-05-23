@@ -36,7 +36,7 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
     col_name <- column
     col_expr <- ensym(column)
   } else {
-    abort("Argument 'column' has to be given as character variable or unquoted and may only contain 1 element.")
+    abort_wrong_col_args()
   }
 
   if (cdm_has_pk(dm, !!table_name)) {
@@ -45,7 +45,7 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
       if (old_key == col_name) {
         return(dm)
       }
-      abort("If you want to change the existing primary key for a table, set `force` == TRUE.")
+      abort_key_set_force_false()
     }
   }
 
@@ -95,11 +95,7 @@ cdm_has_pk <- function(dm, table) {
 
   cols_from_table <- cdm_data_model$columns$table == table_name
   if (sum(cdm_data_model$columns$key[cols_from_table] > 0) > 1) {
-    abort(
-      paste0(
-        "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
-      )
-    )
+    abort_multiple_pks(table_name)
   }
   !all(cdm_data_model$columns$key[cols_from_table] == 0)
 }
@@ -132,11 +128,7 @@ cdm_get_pk <- function(dm, table) {
 
   index_key_from_table <- cdm_data_model$columns$table == table_name & cdm_data_model$columns$key != 0
   if (sum(index_key_from_table) > 1) {
-    abort(
-      paste0(
-        "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
-      )
-    )
+    abort_multiple_pks(table_name)
   }
   cdm_data_model$columns$column[index_key_from_table]
 }
