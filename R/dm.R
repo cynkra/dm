@@ -185,19 +185,7 @@ src_tbls.dm <- function(src, ...) {
 }
 
 #' @export
-copy_to.dm <- function(dest, dm, name = deparse(substitute(df))) {
-  # for now focusing on MSSQL
-  # we want to
-  #   1. change `dm$src` to `dest`
-  #   2. copy the tables to `dest`
-  #   3. implement the key situation within our `dm` on the DB
-
-  new_tables <- copy_list_of_tables_to(dest, list_of_tables = cdm_get_tables(dm), overwrite = TRUE)
-
-  invisible(
-    new_dm(
-      src = dest,
-      tables = new_tables,
-      data_model = cdm_get_data_model(dm)
-  ))
+copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
+  # TODO: How to add a table to a dm?
+  abort("`dm` objects are immutable, please use ...")
 }
