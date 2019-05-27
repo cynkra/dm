@@ -22,11 +22,13 @@ Imports:
     datamodelr,
     dplyr,
     DT (>= 0.5),
+    glue,
     igraph,
     magrittr,
     purrr,
     rlang,
     shiny,
+    stringr,
     tibble,
     tidyr
 Suggests: 
