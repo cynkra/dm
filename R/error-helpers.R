@@ -88,12 +88,16 @@ abort_table_not_in_dm <- function(table_name, tables_in_dm) {
 }
 
 error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
-  paste0(
-    "Table: ",
-    table_name,
-    " not in `dm`-object. Available table names are: ",
-    paste0(tables_in_dm, collapse = ", ")
+  if (table_name == "") {
+    "Table argument is missing."
+  } else {
+    paste0(
+      "Table: ",
+      table_name,
+      " not in `dm`-object. Available table names are: ",
+      paste0(tables_in_dm, collapse = ", ")
     )
+  }
 }
 
 

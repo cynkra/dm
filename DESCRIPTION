@@ -16,7 +16,8 @@ Description: Some actions and transformations that are
     frequently required when dealing with data models are covered by the
     functions of this package.
 License: MIT + file LICENSE
-Imports: 
+Imports:
+    backports,
     cli,
     datamodelr,
     dplyr,

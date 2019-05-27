@@ -3,6 +3,8 @@ cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
+  if (!...length()) return(dm) # valid table and empty ellipsis provided
+
   orig_tbl <- tbl(dm, table_name)
 
   if (!cdm_has_pk(dm, !!table_name)) {
