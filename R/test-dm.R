@@ -24,12 +24,6 @@ cdm_test_load <- function(x,
   map2(srcs, tbls, ~ new_dm(.x, .y, cdm_get_data_model(x)))
 }
 
-# FIXME: should this be exported?
-copy_list_of_tables_to <- function(src, list_of_tables,
-                                   name_vector = names(list_of_tables),
-                                   overwrite = FALSE, ...) {
-  map2(list_of_tables, name_vector, copy_to, dest = src, overwrite = overwrite, ...)
-}
 
 # internal helper functions:
 # validates, that object `dm` is of class `dm` and that `table` is character and is part of the `dm`-object
