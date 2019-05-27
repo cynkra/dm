@@ -34,3 +34,20 @@ test_that("cdm_filter() fails when intended in the right way?", {
           )
     )
 })
+
+test_that("cdm_filter() returns original `dm` object when ellipsis empty", {
+  map(dm_for_filter_src,
+      ~expect_equal(
+        cdm_filter(.x, t3),
+        .x
+      ))
+})
+
+test_that("cdm_filter() fails when no table name is provided", {
+  map(dm_for_filter_src,
+      ~expect_error(
+        cdm_filter(.x),
+        class = cdm_error("table_not_in_dm"),
+        error_txt_table_not_in_dm("")
+      ))
+})
