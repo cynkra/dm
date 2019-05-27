@@ -7,5 +7,5 @@
 #' @rawNamespace import(magrittr, except = c(set_names))
 #' @import datamodelr
 #' @import stringr
-#' @import glue
+#' @rawNamespace import(glue, except = c(collapse))
 NULL
