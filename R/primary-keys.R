@@ -133,6 +133,16 @@ cdm_get_pk <- function(dm, table) {
   cdm_data_model$columns$column[index_key_from_table]
 }
 
+# FIXME: export?
+cdm_get_all_pks <- function(dm) {
+
+  all_table_names <- src_tbls(dm)
+  tables_w_pk <- all_table_names[map_lgl(all_table_names, ~cdm_has_pk(dm, !!.))]
+
+  pk_names <- map_chr(tables_w_pk, ~cdm_get_pk(dm, !!.x))
+  tibble(table = tables_w_pk, pk_col = pk_names)
+}
+
 #' Remove primary key from a table in a `dm`-object
 #'
 #' @description `cdm_rm_pk()` removes a potentially set primary key from a table in the
