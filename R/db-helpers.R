@@ -28,9 +28,10 @@ create_queries <- function(
   ) {
   q_not_nullable <- queries_not_nullable(dest, pk_information, temporary)
   q_set_pk_cols <- queries_set_pk_cols(dest, pk_information, temporary)
+  q_adapt_fk_col_classes <- queries_adapt_fk_col_classes(dest, fk_information, temporary)
   q_set_fk_relations <- queries_set_fk_relations(dest, fk_information, temporary)
 
-  queries <- c(q_not_nullable, q_set_pk_cols, q_set_fk_relations)
+  queries <- c(q_not_nullable, q_set_pk_cols, q_adapt_fk_col_classes, q_set_fk_relations)
   queries[queries != ""]
 }
 
@@ -64,6 +65,23 @@ queries_set_pk_cols <- function(dest, pk_information, temporary) {
       ~ glue("ALTER TABLE {.x} ADD CONSTRAINT pk_{.x} PRIMARY KEY ({.y})")
       )
     } else return("")
+}
+
+queries_adapt_fk_col_classes <- function(dest, fk_information, temporary) {
+  db_child_tables <- fk_information$db_child_table
+  cols_to_adapt <- fk_information$child_fk_col
+  child_col_classes <- fk_information$col_class
+
+  if (inherits(dest, "Microsoft SQL Server")) {
+    cols_db_classes <- class_to_db_class(dest, child_col_classes)
+    if (temporary) db_child_tables <- paste0("##", db_child_tables)
+    pmap_chr(
+      list(db_child_tables,
+           cols_to_adapt,
+           cols_db_classes),
+      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3}")
+    )
+  } else return("")
 }
 
 queries_set_fk_relations <- function(dest, fk_information, temporary) {

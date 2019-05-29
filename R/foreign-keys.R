@@ -82,8 +82,17 @@ cdm_get_all_fks <- function(dm) {
   child_table <- vec_1[has_fk]
   parent_table <- vec_2[has_fk]
   child_fk_col <- map2_chr(child_table, parent_table, ~cdm_get_fk(dm, !!.x, !!.y))
+  child_fk_col_class <-
+    map2_chr(
+      child_table,
+      child_fk_col,
+      ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y)
+    )
 
-  tibble(child_table = child_table, child_fk_col = child_fk_col, parent_table = parent_table)
+  tibble(child_table = child_table,
+         child_fk_col = child_fk_col,
+         col_class = child_fk_col_class,
+         parent_table = parent_table)
 }
 
 

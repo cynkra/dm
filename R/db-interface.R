@@ -12,14 +12,13 @@ if (is_null(table_names)) {
   list_of_unique_names <- tibble(table_names = src_tbls(dm),
                                  unique_names = map_chr(src_tbls(dm), unique_db_table_name)
   )
-  name_vector <- pull(list_of_unique_names, unique_names)
 } else {
   stopifnot(length(table_names) == length(src_tbls(dm)))
   list_of_unique_names <- tibble(table_names = src_tbls(dm),
                                  unique_names = table_names
   )
-  name_vector <- pull(list_of_unique_names, unique_names)
 }
+name_vector <- pull(list_of_unique_names, unique_names)
 
 new_tables <- copy_list_of_tables_to(
   dest,
