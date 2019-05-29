@@ -1,4 +1,4 @@
-unique_table_name <- local({
+unique_db_table_name <- local({
   i <- 0
 
   function(table_name) {

@@ -8,7 +8,7 @@ cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, temporary = TRUE, 
 #   3. implement the key situation within our `dm` on the DB
 
 list_of_unique_names <- tibble(table_names = src_tbls(dm),
-                               unique_names = map_chr(src_tbls(dm), unique_table_name)
+                               unique_names = map_chr(src_tbls(dm), unique_db_table_name)
                                )
 
 new_tables <- copy_list_of_tables_to(
