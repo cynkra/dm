@@ -1,5 +1,6 @@
 #' @import rlang
 #' @import dplyr
+#' @import DBI
 #' @rawNamespace import(dbplyr, except = c(ident, sql))
 #' @import tibble
 #' @rawNamespace import(tidyr, except = c(extract))

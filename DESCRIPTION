@@ -20,6 +20,7 @@ Imports:
     backports,
     cli,
     datamodelr,
+    DBI,
     dplyr,
     DT (>= 0.5),
     glue,
