@@ -35,7 +35,7 @@ dm <- function(src, data_model = NULL) {
 #' @rdname dm
 #' @export
 new_dm <- function(src, tables, data_model) {
-  stopifnot(dplyr::is.src(src))
+  stopifnot(dplyr::is.src(src) || inherits(src, "DBIConnection"))
   stopifnot(datamodelr::is.data_model(data_model))
 
   structure(
