@@ -30,7 +30,8 @@ create_queries <- function(
   q_set_pk_cols <- queries_set_pk_cols(dest, pk_information, temporary)
   q_set_fk_relations <- queries_set_fk_relations(dest, fk_information, temporary)
 
-  c(q_not_nullable, q_set_pk_cols, q_set_fk_relations)
+  queries <- c(q_not_nullable, q_set_pk_cols, q_set_fk_relations)
+  queries[queries != ""]
 }
 
 queries_not_nullable <- function(dest, pk_information, temporary) {
