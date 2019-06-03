@@ -81,18 +81,20 @@ cdm_get_all_fks <- function(dm) {
   has_fk <- map2_lgl(vec_1, vec_2, ~cdm_has_fk(dm, !!.x, !!.y))
   child_table <- vec_1[has_fk]
   parent_table <- vec_2[has_fk]
-  child_fk_col <- map2_chr(child_table, parent_table, ~cdm_get_fk(dm, !!.x, !!.y))
-  child_fk_col_class <-
-    map2_chr(
-      child_table,
-      child_fk_col,
-      ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y)
-    )
+  child_fk_col <- map2(child_table, parent_table, ~cdm_get_fk(dm, !!.x, !!.y))
+  # map2_chr() does not work in cases when there is more than 1 FK from one table to another
 
   tibble(child_table = child_table,
          child_fk_col = child_fk_col,
-         col_class = child_fk_col_class,
-         parent_table = parent_table)
+         # col_class = child_fk_col_class,
+         parent_table = parent_table) %>%
+    unnest(child_fk_col) %>%
+    mutate(col_class = map2_chr(
+      child_table,
+      child_fk_col,
+      ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y))) %>%
+    select(child_table, child_fk_col, col_class, parent_table)
+
 }
 
 
