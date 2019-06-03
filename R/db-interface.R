@@ -29,6 +29,7 @@ new_tables <- copy_list_of_tables_to(
 
 
 if (set_key_constraints) {
+  # FIXME: all of the if() {...} content should probably be in a function like `cdm_set_key_constraints()`
   tables_w_pk <- cdm_get_all_pks(dm)
   pk_info <- tables_w_pk %>%
     left_join(list_of_unique_names, by = c("table" = "table_names"))
@@ -45,7 +46,7 @@ if (set_key_constraints) {
   walk(queries, ~dbExecute(dest, .))
   }
 
-new_src <- if (is.src(dest)) dest else src_dbi(dest)
+new_src <- if (is.src(dest)) dest else src_dbi(dest) # FIXME: with MR !23 not necessary anymore
 
 invisible(
   new_dm(
