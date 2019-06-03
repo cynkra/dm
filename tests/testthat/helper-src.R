@@ -8,13 +8,18 @@ try({
 src_df <- src_df(env = new.env())
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_postgres <- src_postgres(dbname = "postgres", host = "localhost", port = 5432, user = "postgres")
-con_sql <- mssql_con()
-src_sql <- src_dbi(con_sql)
 
 test_register_src("df", src_df)
 test_register_src("sqlite", src_sqlite)
 test_register_src("postgres", src_postgres)
-test_register_src("mssql", src_sql)
+
+# Only run if the top level call is devtools::test() or testthat::test_check()
+if (is_this_a_test()) {
+  con_sql <- mssql_con()
+  src_sql <- src_dbi(con_sql)
+  test_register_src("mssql", src_sql)
+}
+
 
 # for check_cardinality...() ----------------------------------------------
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
@@ -45,7 +50,7 @@ data <-
     1, 2, 4
   )
 
-data_check_key_src <- test_load(data, name = "data_check_key")
+data_check_key_src <- test_load(data)
 
 # for check_fk() and check_set_equality() -------------------------
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
