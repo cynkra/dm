@@ -160,7 +160,9 @@ cdm_get_all_pks <- function(dm) {
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum) %>%
+#' cdm_obj_with_keys <-
+#'   nycflights_dm %>%
+#'   cdm_add_pk(planes, tailnum) %>%
 #'   cdm_add_pk(airports, faa)
 #'
 #' cdm_obj_with_keys %>%
