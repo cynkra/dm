@@ -34,9 +34,12 @@ new_tables <- copy_list_of_tables_to(
 if (set_key_constraints) {
   # FIXME: all of the if() {...} content should probably be in a function like `cdm_set_key_constraints()`
   tables_w_pk <- cdm_get_all_pks(dm)
-  pk_info <- tables_w_pk %>%
-    left_join(list_of_unique_names, by = c("table" = "table_names"))
+  if (nrow(tables_w_pk) > 0) {
+    pk_info <- tables_w_pk %>%
+      left_join(list_of_unique_names, by = c("table" = "table_names"))
+  } else pk_info <- NULL
 
+  if (!is_null(cdm_get_all_fks(dm))) {
   fk_info <-
     cdm_get_all_fks(dm) %>%
     left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
@@ -44,9 +47,11 @@ if (set_key_constraints) {
     rename(db_child_table = unique_names) %>%
     left_join(list_of_unique_names, by = c("parent_table" = "table_names")) %>%
     rename(db_parent_table = unique_names)
+  } else fk_info <- NULL
 
   queries <- create_queries(dest, pk_info, fk_info, temporary)
-  walk(queries, ~dbExecute(dest, .))
+
+  if (!is_empty(queries)) walk(queries, ~dbExecute(dest, .))
   }
 
 new_src <- if (is.src(dest)) dest else src_dbi(dest) # FIXME: with MR !23 not necessary anymore

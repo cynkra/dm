@@ -26,10 +26,21 @@ create_queries <- function(
   fk_information,
   temporary
   ) {
-  q_not_nullable <- queries_not_nullable(dest, pk_information, temporary)
-  q_set_pk_cols <- queries_set_pk_cols(dest, pk_information, temporary)
-  q_adapt_fk_col_classes <- queries_adapt_fk_col_classes(dest, fk_information, temporary)
-  q_set_fk_relations <- queries_set_fk_relations(dest, fk_information, temporary)
+  if (!is_null(pk_information)) {
+    q_not_nullable <- queries_not_nullable(dest, pk_information, temporary)
+    q_set_pk_cols <- queries_set_pk_cols(dest, pk_information, temporary)
+  } else {
+    q_not_nullable <- ""
+    q_set_pk_cols <- ""
+  }
+
+  if (!is_null(fk_information)) {
+    q_adapt_fk_col_classes <- queries_adapt_fk_col_classes(dest, fk_information, temporary)
+    q_set_fk_relations <- queries_set_fk_relations(dest, fk_information, temporary)
+  } else {
+    q_adapt_fk_col_classes <- ""
+    q_set_fk_relations <- ""
+  }
 
   queries <- c(q_not_nullable, q_set_pk_cols, q_adapt_fk_col_classes, q_set_fk_relations)
   queries[queries != ""]

@@ -79,6 +79,7 @@ cdm_get_all_fks <- function(dm) {
   vec_1 <- all_table_pairings %>% pull(1)
   vec_2 <- all_table_pairings %>% pull(2)
   has_fk <- map2_lgl(vec_1, vec_2, ~cdm_has_fk(dm, !!.x, !!.y))
+  if (all(has_fk == FALSE)) return(NULL)
   child_table <- vec_1[has_fk]
   parent_table <- vec_2[has_fk]
   child_fk_col <- map2(child_table, parent_table, ~cdm_get_fk(dm, !!.x, !!.y))
