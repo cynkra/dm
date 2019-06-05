@@ -8,7 +8,7 @@ cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL
 #   3. implement the key situation within our `dm` on the DB
 
 if (is_true(list(...)$overwrite)) {
-  abort("'cdm_copy_to()' does not support 'overwrite = TRUE'.") # FIXME: abort_...() needs to be used.
+  abort_no_overwrite()
 }
 
 if (is_null(table_names)) {

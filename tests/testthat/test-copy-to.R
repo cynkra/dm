@@ -26,4 +26,14 @@ test_that("cdm_copy_to() works as it is intended?", {
     )
   )
 
+  map(
+    dbplyr:::test_srcs$get(),
+    ~ expect_error(
+      cdm_copy_to(., dm_for_filter, overwrite = TRUE),
+      class = cdm_error("no_overwrite"),
+      error_txt_no_overwrite(),
+      fixed = TRUE
+    )
+  )
+
 })

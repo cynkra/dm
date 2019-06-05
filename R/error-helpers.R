@@ -297,3 +297,12 @@ abort_too_many_cols <- function(table_name) {
 error_txt_too_many_cols <- function(table_name) {
   paste0("Number of columns to be extracted has to be less than total number of columns of ", table_name)
 }
+
+abort_no_overwrite <- function() {
+  abort(error_txt_no_overwrite(), .subclass = cdm_error("no_overwrite"))
+}
+
+error_txt_no_overwrite <- function(table_name) {
+  paste0("'cdm_copy_to()' does not support 'overwrite = TRUE'.")
+}
+
