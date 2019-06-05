@@ -129,6 +129,12 @@ rm_table_from_data_model <- function(data_model, tables) {
   )
 }
 
+get_class_of_table_col <- function(data_model, table_name, col_name) {
+  stopifnot(table_name %in% data_model$tables$table) # FIXME: need proper abort_...()
+  stopifnot(col_name %in% data_model$columns[data_model$columns["table"] == table_name,]$column) # FIXME: need proper abort_...()
+  data_model$columns[data_model$columns["table"] == table_name & data_model$columns["column"] == col_name,]$type
+}
+
 add_table_to_data_model <- function(data_model, table_name, col_names, col_types) {
   stopifnot(!(table_name %in% data_model$tables$table)) # FIXME: need proper abort_...()
 

@@ -10,26 +10,20 @@
 #' cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
 #' @export
 cdm_test_load <- function(x,
-                         name = NULL, # NULL results in the same name on the src for each table as the current table name in the `dm`-object
+                         db_names = NULL, # NULL results in the same name on the src for each table as the current table name in the `dm`-object
                          srcs = dbplyr:::test_srcs$get(), # FIXME: nto exported from {dplyr}... could also "borrow" source code as new function here!?
                          ignore = character()) {
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
   cdm_table_names <- src_tbls(x)
-  if (is_null(name)) name <- cdm_table_names
+  if (is_null(db_names)) db_names <- map(cdm_table_names, unique_db_table_name)
 
   tables <- map(cdm_table_names, ~ tbl(cdm_get_src(x), .x)) %>% set_names(cdm_table_names) # FIXME: should be replaced by `cdm_select_tables()` once it exists
 
-  tbls <- map(srcs, ~ copy_list_of_tables_to(src = .x, list_of_tables = tables, overwrite = TRUE))
-  map2(srcs, tbls, ~ new_dm(.x, .y, cdm_get_data_model(x)))
+  remote_tbls <- map(srcs, ~ copy_list_of_tables_to(src = .x, list_of_tables = tables, name_vector = db_names))
+  map2(srcs, remote_tbls, ~ new_dm(.x, .y, cdm_get_data_model(x)))
 }
 
-# FIXME: should this be exported?
-copy_list_of_tables_to <- function(src, list_of_tables,
-                                   name_vector = names(list_of_tables),
-                                   overwrite = FALSE, ...) {
-  map2(list_of_tables, name_vector, copy_to, dest = src, overwrite = overwrite, ...)
-}
 
 # internal helper functions:
 # validates, that object `dm` is of class `dm` and that `table` is character and is part of the `dm`-object
