@@ -117,8 +117,6 @@ queries_set_fk_relations <- function(dest, fk_information, temporary) {
   } else return("")
 }
 
-
-
 class_to_db_class <- function(dest, class_vector) {
   if (inherits(dest, "Microsoft SQL Server")) {
     case_when(
@@ -128,3 +126,17 @@ class_to_db_class <- function(dest, class_vector) {
     )
   } else return(class_vector)
 }
+
+get_db_table_names <- function(dm) {
+  if (!is_src_db(dm)) {
+    return(tibble(table_name = src_tbls(dm), remote_name = src_tbls(dm)))
+  }
+  tibble(
+    table_name = src_tbls(dm),
+    remote_name = map_chr(cdm_get_tables(dm), list("ops", "x")))
+}
+
+is_src_db <- function(dm) {
+  inherits(cdm_get_src(dm), "src_sql")
+}
+
