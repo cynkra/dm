@@ -156,9 +156,15 @@ print.dm <- function(x, ...) {
   if (is.src(cdm_get_src(x))) {
     db_info <- strsplit(format(cdm_get_src(x)), "\n")[[1]][[1]]
   } else if (inherits(cdm_get_src(x), "DBIConnection")) {
+    db_complete_info <- dbGetInfo(cdm_get_src(con_dm))
     db_info <- paste0(
-      DBI::dbGetInfo(cdm_get_src(x))$dbms.name, ", Server name: ",
-      DBI::dbGetInfo(cdm_get_src(x))$servername)
+      if_else(is_empty(db_complete_info$dbms.name),
+              paste0("DB-name: ", db_complete_info$dbname),
+              paste0("DBMS-name: ", db_complete_info$dbms.name)),
+      if_else(is_empty(db_complete_info$servername),
+              paste0(", Server version: ", db_complete_info$serverVersion),
+              paste0(", Server name: ", db_complete_info$servername))
+      )
   }
 
   cat_line(db_info)
