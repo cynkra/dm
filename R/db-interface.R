@@ -49,9 +49,9 @@ if (set_key_constraints) {
     rename(db_parent_table = unique_names)
   } else fk_info <- NULL
 
+  if (is.src(dest)) con <- dest$con else con <- dest
   queries <- create_queries(dest, pk_info, fk_info, temporary)
-
-  if (!is_empty(queries)) walk(queries, ~dbExecute(dest, .))
+  if (!is_empty(queries)) walk(queries, ~dbExecute(con, .))
   }
 
 new_src <- if (is.src(dest)) dest else src_dbi(dest) # FIXME: with MR !23 not necessary anymore
