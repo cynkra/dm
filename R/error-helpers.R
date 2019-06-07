@@ -103,16 +103,17 @@ error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
 
 # error: is not subset of -------------------------------------------------
 
-abort_not_subset_of <- function(
-  table_name_1, colname_1, table_name_2, colname_2
-  ) {
+abort_not_subset_of <- function(table_name_1, colname_1,
+                                table_name_2, colname_2)
+{
+
   abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
         .subclass = cdm_error("not_subset_of"))
 }
 
-error_txt_not_subset_of <- function(
-  table_name_1, colname_1, table_name_2, colname_2
-  ) {
+error_txt_not_subset_of <- function(table_name_1, colname_1,
+                                    table_name_2, colname_2) {
+
   paste0(
     "Column `",
     colname_1,
