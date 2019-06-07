@@ -1,3 +1,11 @@
+# dm 0.0.0.9010
+
+- Handling `data_model` part more systematically (#49).
+- New `cdm_nycflights13()` and `cdm_with()` (!22).
+- Classed errors.
+- New `copy_to()` to transfer entire data models to another source (#38).
+
+
 # dm 0.0.0.9009
 
 - New `cdm_semi_join()`, expecting the `filter` as complete reduced table.
