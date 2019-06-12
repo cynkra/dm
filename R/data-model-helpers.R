@@ -237,4 +237,10 @@ datamodel_rename_table <- function(data_model, old_name, new_name) {
   )
 }
 
+data_model_db_types_to_R_types <- function(data_model) {
+  type <- data_model$columns$type
+  new_type <- if_else(str_detect(type, "char"), "character", type)
+  new_type <- if_else(str_detect(new_type, "int"), "integer", new_type)
+  data_model$columns$type <- new_type
+  data_model
 }
