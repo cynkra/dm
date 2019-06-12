@@ -2,11 +2,14 @@ new_data_model <- function(tables, columns, references) {
   stopifnot(nrow(tables) > 0)
   stopifnot(nrow(columns) > 0)
 
+  new_references <- mutate_if(references, is.factor, as.character) %>%
+    as.data.frame()
+
   structure(
     list(
       tables = tables,
       columns = columns,
-      references = references
+      references = new_references
     ),
     class = "data_model"
   )
