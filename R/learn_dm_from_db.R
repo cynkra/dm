@@ -45,9 +45,3 @@ mssql_learn_query <- function() { # taken directly from {datamodelr}
     tabs.create_date,
     cols.column_id"
 }
-
-
-# primary keys:
-# SELECT name PrimaryKey, object_id ObjectID
-# FROM sys.objects
-# WHERE SCHEMA_NAME(schema_id) = 'dbo' AND type = 'PK'
