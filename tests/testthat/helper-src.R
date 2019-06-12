@@ -2,6 +2,8 @@ try({
   library(rprojroot)
   library(testthat)
   library(dbplyr)
+  library(DBI)
+  library(stringr)
   source(here::here(".Rprofile"))
 })
 
@@ -15,9 +17,9 @@ test_register_src("postgres", src_postgres)
 
 # Only run if the top level call is devtools::test() or testthat::test_check()
 if (is_this_a_test()) {
-  con_sql <- mssql_con()
-  src_sql <- src_dbi(con_sql)
-  test_register_src("mssql", src_sql)
+  con_mssql <- mssql_con()
+  src_mssql <- src_dbi(con_mssql)
+  test_register_src("mssql", src_mssql)
 }
 
 
