@@ -166,3 +166,27 @@ cdm_colnames <- function(dm) { # maybe better as dm-method for function `colname
   data_model %>% extract2("columns") %>% pull("column")
 }
 
+get_datamodel_from_overview <- function(overview) {
+  new_data_model(
+    tables = datamodel_tables_from_overview(overview),
+    columns = datamodel_columns_from_overview(overview),
+    references = datamodel_references_from_overview(overview)
+  )
+}
+
+datamodel_tables_from_overview <- function(overview) {
+  distinct(overview, table) %>% add_column(segment = NA, display = NA)
+}
+
+datamodel_columns_from_overview <- function(overview) {
+  overview %>%
+    select(column, type, table, key, ref, ref_col)
+}
+
+datamodel_references_from_overview <- function(overview) {
+  overview %>%
+    filter(!is.na(ref)) %>%
+    select(table, column, ref, ref_col) %>%
+    mutate(ref_id = row_number()) %>%
+    add_column(ref_col_num = 1)
+}
