@@ -156,7 +156,7 @@ print.dm <- function(x, ...) {
   if (is.src(cdm_get_src(x))) {
     db_info <- strsplit(format(cdm_get_src(x)), "\n")[[1]][[1]]
   } else if (inherits(cdm_get_src(x), "DBIConnection")) {
-    db_complete_info <- dbGetInfo(cdm_get_src(con_dm))
+    db_complete_info <- dbGetInfo(cdm_get_src(x))
     db_info <- paste0(
       if_else(is_empty(db_complete_info$dbms.name),
               paste0("DB-name: ", db_complete_info$dbname),
