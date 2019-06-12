@@ -217,7 +217,7 @@ cdm_rename_table <- function(dm, old_name, new_name) {
   new_dm(
     src = cdm_get_src(dm),
     tables = new_tables,
-    data_model = datamodel_replace_table_name(
+    data_model = datamodel_rename_table(
       cdm_get_data_model(dm), old_name_q, new_name_q)
   )
 }
