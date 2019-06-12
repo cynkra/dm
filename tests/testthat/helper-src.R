@@ -2,7 +2,7 @@ try({
   library(rprojroot)
   library(testthat)
   library(dbplyr)
-  source(here::here("../devops/sandbox/db/.Rprofile"))
+  source(here::here(".Rprofile"))
 })
 
 src_df <- src_df(env = new.env())
