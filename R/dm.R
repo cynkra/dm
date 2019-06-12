@@ -202,3 +202,34 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
   # TODO: How to add a table to a dm?
   abort("`dm` objects are immutable, please use ...")
 }
+
+#' @export
+cdm_rename_table <- function(dm, old_name, new_name) {
+  old_name_q <- as_name(enexpr(old_name))
+  check_correct_input(dm, old_name_q)
+
+  new_name_q <- as_name(enexpr(new_name))
+  tables <- cdm_get_tables(dm)
+  table_names <- names(tables)
+  table_names[table_names == old_name_q] <- new_name_q
+  new_tables <- set_names(tables, table_names)
+
+  new_dm(
+    src = cdm_get_src(dm),
+    tables = new_tables,
+    data_model = datamodel_replace_table_name(
+      cdm_get_data_model(dm), old_name_q, new_name_q)
+  )
+}
+
+#' @export
+cdm_rename_tables <- function(dm, old_table_names, new_table_names) {
+  if (length(old_table_names) != length(new_table_names)) abort("Length of 'new_table_names' does not match that of 'old_table_names'")
+    #abort_rename_table_fail(old_names, new_names)
+  reduce2(
+    old_table_names,
+    new_table_names,
+    cdm_rename_table,
+    .init = dm
+    )
+}
