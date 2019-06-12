@@ -178,18 +178,25 @@ get_datamodel_from_overview <- function(overview) {
 }
 
 datamodel_tables_from_overview <- function(overview) {
-  distinct(overview, table) %>% add_column(segment = NA, display = NA)
+  distinct(overview, table) %>%
+    add_column(segment = NA, display = NA) %>%
+    as.data.frame()
 }
 
 datamodel_columns_from_overview <- function(overview) {
   overview %>%
-    select(column, type, table, key, ref, ref_col)
+    select(column, type, table, key, ref, ref_col) %>%
+    mutate(key = as.numeric(key)) %>%
+    as.data.frame()
 }
 
 datamodel_references_from_overview <- function(overview) {
   overview %>%
     filter(!is.na(ref)) %>%
     select(table, column, ref, ref_col) %>%
-    mutate(ref_id = row_number()) %>%
-    add_column(ref_col_num = 1)
+    mutate(ref_id = as.numeric(row_number())) %>%
+    add_column(ref_col_num = 1) %>%
+    as.data.frame()
+}
+
 }
