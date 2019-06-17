@@ -302,7 +302,14 @@ abort_no_overwrite <- function() {
   abort(error_txt_no_overwrite(), .subclass = cdm_error("no_overwrite"))
 }
 
-error_txt_no_overwrite <- function(table_name) {
+error_txt_no_overwrite <- function() {
   paste0("'cdm_copy_to()' does not support 'overwrite = TRUE'.")
 }
 
+abort_src_not_db <- function() {
+  abort(error_src_not_db(), .subclass = cdm_error("src_not_db"))
+}
+
+error_src_not_db <- function() {
+  paste0("This does not work if 'cdm_get_src(dm)' is not on a database.")
+}
