@@ -39,7 +39,7 @@ if (set_key_constraints) {
       left_join(list_of_unique_names, by = c("table" = "table_names"))
   } else pk_info <- NULL
 
-  if (!is_null(cdm_get_all_fks(dm))) {
+  if (nrow(cdm_get_all_fks(dm)) > 0) {
   fk_info <-
     cdm_get_all_fks(dm) %>%
     left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
