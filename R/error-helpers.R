@@ -303,7 +303,25 @@ abort_no_overwrite <- function() {
   abort(error_txt_no_overwrite(), .subclass = cdm_error("no_overwrite"))
 }
 
-error_txt_no_overwrite <- function(table_name) {
+error_txt_no_overwrite <- function() {
   paste0("'cdm_copy_to()' does not support 'overwrite = TRUE'.")
 }
 
+abort_src_not_db <- function() {
+  abort(error_src_not_db(), .subclass = cdm_error("src_not_db"))
+}
+
+error_src_not_db <- function() {
+  paste0("This does not work if 'cdm_get_src(dm)' is not on a database.")
+}
+
+abort_first_rm_fks <- function(fks) {
+  abort(error_first_rm_fks(fks), .subclass = cdm_error("first_rm_fks"))
+}
+
+error_first_rm_fks <- function(fks) {
+  child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
+  parent_tbl <- paste0(unique(pull(fks, parent_table)))
+
+  glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
+}

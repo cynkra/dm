@@ -42,7 +42,8 @@ upd_references_reference <- function(data_model, table, column, ref_table, ref_c
       ref = ref_table,
       ref_col = ref_column,
       ref_id = 1,
-      ref_col_num = 1)
+      ref_col_num = 1,
+      stringsAsFactors = FALSE)
   }
 
     new_references
@@ -159,4 +160,75 @@ add_table_to_columns <- function(data_model, table_name, col_names, col_types) {
 
 add_column_row <- function(.data, col_name, col_type, table_name) {
   add_row(.data, column = col_name, type = col_type, table = table_name, key = FALSE, ref = NA)
+}
+
+cdm_colnames <- function(dm) { # maybe better as dm-method for function `colnames()`
+  data_model <- cdm_get_data_model(dm)
+  data_model %>% extract2("columns") %>% pull("column")
+}
+
+get_datamodel_from_overview <- function(overview) {
+  new_data_model(
+    tables = datamodel_tables_from_overview(overview),
+    columns = datamodel_columns_from_overview(overview),
+    references = datamodel_references_from_overview(overview)
+  )
+}
+
+datamodel_tables_from_overview <- function(overview) {
+  distinct(overview, table) %>%
+    add_column(segment = NA, display = NA) %>%
+    as.data.frame(stringsAsFactors = FALSE)
+}
+
+datamodel_columns_from_overview <- function(overview) {
+  overview %>%
+    select(column, type, table, key, ref, ref_col) %>%
+    mutate(key = as.numeric(key)) %>%
+    as.data.frame(stringsAsFactors = FALSE)
+}
+
+datamodel_references_from_overview <- function(overview) {
+  overview %>%
+    filter(!is.na(ref)) %>%
+    select(table, column, ref, ref_col) %>%
+    mutate(ref_id = as.numeric(row_number())) %>%
+    add_column(ref_col_num = 1) %>%
+    as.data.frame(stringsAsFactors = FALSE)
+}
+
+datamodel_rename_table <- function(data_model, old_name, new_name) {
+  tables <- data_model$tables
+  ind_tables <- tables$table == old_name
+  tables$table[ind_tables] <- new_name
+
+  columns <- data_model$columns
+  ind_columns_table <- columns$table == old_name
+  columns$table[ind_columns_table] <- new_name
+
+  ind_columns_ref <-
+    if_else(are_na(columns$ref == old_name), FALSE, columns$ref == old_name)
+  columns$ref[ind_columns_ref] <- new_name
+
+  references <- data_model$references %>% mutate(ref = as.character(ref))
+  ind_references_table <- references$table == old_name
+  references$table[ind_references_table] <- new_name
+
+  ind_references_ref <- references$ref == old_name
+  references$ref[ind_references_ref] <- new_name
+
+  new_data_model(
+    tables = tables,
+    columns = columns,
+    references = references
+  )
+}
+
+data_model_db_types_to_R_types <- function(data_model) {
+  type <- data_model$columns$type
+  new_type <- if_else(str_detect(type, "char"), "character", type)
+  new_type <- if_else(str_detect(new_type, "int"), "integer", new_type)
+  new_type <- if_else(str_detect(new_type, "text"), "character", new_type)
+  data_model$columns$type <- new_type
+  data_model
 }

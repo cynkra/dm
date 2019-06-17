@@ -2,12 +2,42 @@ try({
   library(rprojroot)
   library(testthat)
   library(dbplyr)
-  source(here::here("../devops/sandbox/db/.Rprofile"))
+  library(DBI)
+  library(stringr)
+  source(here::here(".Rprofile"))
 })
 
 src_df <- src_df(env = new.env())
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_postgres <- src_postgres(dbname = "postgres", host = "localhost", port = 5432, user = "postgres")
+con_postgres <- src_postgres$con
+
+
+# postgres needs to be cleaned of t1_2019_* tables for learn-test ---------
+
+get_test_tables_from_postgres <- function(con_postgres) {
+  dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
+    as_tibble() %>%
+    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
+}
+
+is_postgres_empty <- function(con_postgres) {
+  nrow(get_test_tables_from_postgres(con_postgres)) == 0
+}
+
+clear_postgres <- function(con_postgres) {
+  if (!is_postgres_empty(con_postgres)) {
+    walk(get_test_tables_from_postgres(con_postgres) %>%
+           pull(),
+         ~dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
+         )
+  }
+}
+
+clear_postgres(con_postgres)
+
+
+# register srcs -----------------------------------------------------------
 
 test_register_src("df", src_df)
 test_register_src("sqlite", src_sqlite)
@@ -15,9 +45,9 @@ test_register_src("postgres", src_postgres)
 
 # Only run if the top level call is devtools::test() or testthat::test_check()
 if (is_this_a_test()) {
-  con_sql <- mssql_con()
-  src_sql <- src_dbi(con_sql)
-  test_register_src("mssql", src_sql)
+  con_mssql <- mssql_con()
+  src_mssql <- src_dbi(con_mssql)
+  test_register_src("mssql", src_mssql)
 }
 
 

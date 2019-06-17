@@ -4,7 +4,7 @@
 \alias{cdm_test_load}
 \title{Loads \code{dm}-objects into one or more registered sources}
 \usage{
-cdm_test_load(x, name = NULL, srcs = dbplyr:::test_srcs$get(),
+cdm_test_load(x, db_names = NULL, srcs = dbplyr:::test_srcs$get(),
   ignore = character())
 }
 \description{

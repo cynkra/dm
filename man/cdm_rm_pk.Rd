@@ -4,11 +4,13 @@
 \alias{cdm_rm_pk}
 \title{Remove primary key from a table in a \code{dm}-object}
 \usage{
-cdm_rm_pk(dm, table)
+cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 }
 \description{
 \code{cdm_rm_pk()} removes a potentially set primary key from a table in the
 underlying \code{data_model}-object and otherwise leaves the \code{dm}-object untouched.
+
+Foreign keys pointing to the table from other tables can optionally be removed as well.
 }
 \examples{
 \dontrun{
