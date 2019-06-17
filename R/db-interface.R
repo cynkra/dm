@@ -61,6 +61,21 @@ if (set_key_constraints) cdm_set_key_constraints(remote_dm)
 invisible(remote_dm)
 }
 
+#' Set key constraints on a DB for a `dm`-obj with keys.
+#'
+#' @description `cdm_set_key_constraints()` takes a `dm`-object that lives on a DB (so far
+#' it works exclusively for MSSQL and Postgres) and mirrors the `dm` key constraints
+#' on the database.
+#'
+#' @inheritParams cdm_copy_to
+#'
+#' @examples
+#' \dontrun{
+#' src_postgres <- dplyr::src_postgres()
+#' iris_dm <- cdm_copy_to(src_postgres, as_dm(list(iris = iris)), set_key_constraints = FALSE)
+#' # there are no key constraints in `as_dm(list(iris = iris))`, but if there were, this would do something:
+#' cdm_set_key_constraints(iris_dm)
+#' }
 #' @export
 cdm_set_key_constraints <- function(dm) {
 
