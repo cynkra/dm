@@ -1,3 +1,21 @@
+#' Copy a 'dm'-object to a 'src'/'con'
+#'
+#' @description `cdm_copy_to()` takes a `src`- or `con`-object as a first argument,
+#' and a `dm`-object as a second. The latter is copied to the former. By default
+#' the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
+#' By default temporary tables will be created.
+#'
+#' @param dest A `src` or `con` object like e.g. a database.
+#' @param dm A `dm` object.
+#' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
+#' @param table_names Character vector containing the names for the DB-tables.
+#' @param temporary Boolean variable, if `TRUE` will only create temporary tables, which will vanish when connection is interrupted.
+#'
+#' @examples
+#' \dontrun{
+#' src_postgres <- dplyr::src_postgres()
+#' cdm_copy_to(src_postgres, as_dm(list(iris = iris)))
+#' }
 #' @export
 cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL, temporary = TRUE, ...) {
 # for now focusing on MSSQL
