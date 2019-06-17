@@ -9,7 +9,7 @@ test_that("cdm_learn_from_*() works?", {
     cdm_copy_to(con_mssql, dm_for_filter, temporary = FALSE)
   }
 
-  dm_for_filter_mssql_learned <- cdm_learn_from_mssql(con_mssql)
+  dm_for_filter_mssql_learned <- cdm_learn_from_db(con_mssql)
 
   data_model_mssql_learned_renamed_reclassed <-
     cdm_rename_tables(
@@ -38,7 +38,7 @@ test_that("cdm_learn_from_*() works?", {
     cdm_copy_to(con_postgres, dm_for_filter, temporary = FALSE)
   }
 
-  dm_for_filter_postgres_learned <- cdm_learn_from_postgres(con_postgres)
+  dm_for_filter_postgres_learned <- cdm_learn_from_db(con_postgres)
 
   data_model_postgres_learned_renamed_reclassed <-
     cdm_rename_tables(
