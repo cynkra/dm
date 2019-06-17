@@ -313,3 +313,14 @@ abort_src_not_db <- function() {
 error_src_not_db <- function() {
   paste0("This does not work if 'cdm_get_src(dm)' is not on a database.")
 }
+
+abort_first_rm_fks <- function(fks) {
+  abort(error_first_rm_fks(fks), .subclass = cdm_error("first_rm_fks"))
+}
+
+error_first_rm_fks <- function(fks) {
+  child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
+  parent_tbl <- paste0(unique(pull(fks, parent_table)))
+
+  glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
+}

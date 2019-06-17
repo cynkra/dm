@@ -175,15 +175,36 @@ cdm_get_all_pks <- function(dm) {
 #' }
 #'
 #' @export
-cdm_rm_pk <- function(dm, table) {
+cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)
+  data_model <- cdm_get_data_model(dm)
 
-  update_cols <- dm$data_model$columns$table == table_name
-  dm$data_model$columns$key[update_cols] <- 0
+  update_cols <- data_model$columns$table == table_name
+  data_model$columns$key[update_cols] <- 0
 
-  dm
+  fks <- cdm_get_all_fks(dm) %>%
+    filter(parent_table == table_name)
+
+  if (nrow(fks)) {
+    if (rm_referencing_fks) {
+      child_tables <- pull(fks, child_table)
+      fk_cols <- pull(fks, child_fk_col)
+      data_model <- reduce2(
+        child_tables,
+        fk_cols,
+        rm_data_model_reference,
+        table_name,
+        .init = data_model)
+    } else abort_first_rm_fks(fks)
+  }
+
+  new_dm(
+    cdm_get_src(dm),
+    cdm_get_tables(dm),
+    data_model
+  )
 }
 
 
