@@ -50,11 +50,9 @@ queries_not_nullable <- function(dest, pk_information, temporary) {
   db_tables <- pk_information$unique_names
   cols_to_set_not_null <- pk_information$pk_col
   cols_classes <- pk_information$pk_class
+  cols_db_classes <- class_to_db_class(dest, cols_classes)
 
-  if (inherits(dest, "Microsoft SQL Server") ||
-      inherits(dest, "src_Microsoft SQL Server")
-      ) {
-    cols_db_classes <- class_to_db_class(dest, cols_classes)
+  if (is_mssql(dest)) {
     if (temporary) db_tables <- paste0("##", db_tables)
     pmap_chr(
       list(
@@ -63,42 +61,51 @@ queries_not_nullable <- function(dest, pk_information, temporary) {
         cols_db_classes),
       ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3} NOT NULL")
       )
-  } else return("")
+    } else if (is_postgres(dest)) {
+      pmap_chr(
+        list(
+          db_tables,
+          cols_to_set_not_null,
+          cols_db_classes),
+        ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}, ALTER COLUMN {..2} SET NOT NULL"))
+      } else return("")
 }
 
 queries_set_pk_cols <- function(dest, pk_information, temporary) {
   db_tables <- pk_information$unique_names
   cols_to_set_as_pk <- pk_information$pk_col
-
-  if (inherits(dest, "Microsoft SQL Server") ||
-      inherits(dest, "src_Microsoft SQL Server")
-  ) {
-    if (temporary) db_tables <- paste0("##", db_tables)
+  if (is_mssql(dest) || is_postgres(dest)) {
+    if (temporary && is_mssql(dest))
+      db_tables <- paste0("##", db_tables)
     map2_chr(
       db_tables,
       cols_to_set_as_pk,
       ~ glue("ALTER TABLE {.x} ADD CONSTRAINT pk_{.x} PRIMARY KEY ({.y})")
-      )
-    } else return("")
+    )
+  } else
+    return("")
 }
 
 queries_adapt_fk_col_classes <- function(dest, fk_information, temporary) {
   db_child_tables <- fk_information$db_child_table
   cols_to_adapt <- fk_information$child_fk_col
   child_col_classes <- fk_information$col_class
-
-  if (inherits(dest, "Microsoft SQL Server") ||
-      inherits(dest, "src_Microsoft SQL Server")
-  ) {
-    cols_db_classes <- class_to_db_class(dest, child_col_classes)
+  cols_db_classes <- class_to_db_class(dest, child_col_classes)
+  if (is_mssql(dest)) {
     if (temporary) db_child_tables <- paste0("##", db_child_tables)
     pmap_chr(
       list(db_child_tables,
            cols_to_adapt,
            cols_db_classes),
       ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3}")
-    )
-  } else return("")
+    )} else if (is_postgres(dest)) {
+      pmap_chr(
+        list(db_child_tables,
+             cols_to_adapt,
+             cols_db_classes),
+        ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}")
+      )
+    } else return("")
 }
 
 queries_set_fk_relations <- function(dest, fk_information, temporary) {
@@ -107,10 +114,8 @@ queries_set_fk_relations <- function(dest, fk_information, temporary) {
   db_parent_tables <- fk_information$db_parent_table
   parent_pk_col <- fk_information$pk_col
 
-  if (inherits(dest, "Microsoft SQL Server") ||
-      inherits(dest, "src_Microsoft SQL Server")
-  ) {
-    if (temporary) {
+  if (is_mssql(dest) || is_postgres(dest)) {
+    if (temporary && is_mssql(dest)) {
       db_child_tables <- paste0("##", db_child_tables)
       db_parent_tables <- paste0("##", db_parent_tables)
       }
@@ -126,9 +131,7 @@ queries_set_fk_relations <- function(dest, fk_information, temporary) {
 }
 
 class_to_db_class <- function(dest, class_vector) {
-  if (inherits(dest, "Microsoft SQL Server") ||
-      inherits(dest, "src_Microsoft SQL Server")
-  ) {
+  if (is_mssql(dest) || is_postgres(dest)) {
     case_when(
       class_vector == "character" ~ "VARCHAR(100)",
       class_vector == "integer" ~ "INT",
@@ -154,3 +157,12 @@ is_src_db <- function(dm) {
   }
 }
 
+is_mssql <- function(dest) {
+  inherits(dest, "Microsoft SQL Server") ||
+    inherits(dest, "src_Microsoft SQL Server")
+}
+
+is_postgres <- function(dest) {
+  inherits(dest, "src_PostgreSQLConnection") ||
+    inherits(dest, "PostgreSQLConnection")
+}
