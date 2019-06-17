@@ -2,14 +2,11 @@ new_data_model <- function(tables, columns, references) {
   stopifnot(nrow(tables) > 0)
   stopifnot(nrow(columns) > 0)
 
-  new_references <- mutate_if(references, is.factor, as.character) %>%
-    as.data.frame()
-
   structure(
     list(
       tables = tables,
       columns = columns,
-      references = new_references
+      references = references
     ),
     class = "data_model"
   )
@@ -45,7 +42,8 @@ upd_references_reference <- function(data_model, table, column, ref_table, ref_c
       ref = ref_table,
       ref_col = ref_column,
       ref_id = 1,
-      ref_col_num = 1)
+      ref_col_num = 1,
+      stringsAsFactors = FALSE)
   }
 
     new_references
