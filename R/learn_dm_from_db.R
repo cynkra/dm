@@ -2,7 +2,7 @@
 cdm_learn_from_db <- function(dest) {
   # assuming we do not try to learn from temporary tables (which do not appear in sys.table (at least not the globally temporary ones))
 
-  if (is.src(dest)) con <- dest$con else con <- dest
+  con <- con_from_src_or_con(dest)
   overview <-
     dbGetQuery(con, db_learn_query(con)) %>%
     as_tibble()
