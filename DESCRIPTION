@@ -1,7 +1,7 @@
 Package: dm
 Title: Assisting functions for work with data models
-Version: 0.0.0.9010
-Date: 2019-06-07
+Version: 0.0.0.9011
+Date: 2019-06-17
 Authors@R: 
     c(person(given = "Kirill",
              family = "Müller",

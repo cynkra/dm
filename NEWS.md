@@ -1,3 +1,8 @@
+# dm 0.0.0.9011
+
+- Learn 'dm'-objects from MSSQL and Postgres databases (!24).
+
+
 # dm 0.0.0.9010
 
 - Handling `data_model` part more systematically (#49).
