@@ -58,4 +58,7 @@ test_that("cdm_learn_from_*() works?", {
   expect_identical(data_model_postgres_learned_renamed_reclassed,
                    data_model_original
   )
+
+  # clean up Postgres-DB
+  clear_postgres(con_postgres)
 })
