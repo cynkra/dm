@@ -200,32 +200,22 @@ datamodel_references_from_overview <- function(overview) {
 datamodel_rename_table <- function(data_model, old_name, new_name) {
   tables <- data_model$tables
   ind_tables <- tables$table == old_name
-  if (any(ind_tables)) {
-    tables$table[ind_tables] <- new_name
-  }
+  tables$table[ind_tables] <- new_name
 
   columns <- data_model$columns
   ind_columns_table <- columns$table == old_name
-  if (any(ind_columns_table)) {
-    columns$table[ind_columns_table] <- new_name
-  }
+  columns$table[ind_columns_table] <- new_name
 
   ind_columns_ref <-
     if_else(are_na(columns$ref == old_name), FALSE, columns$ref == old_name)
-  if (any(ind_columns_ref)) {
-    columns$ref[ind_columns_ref] <- new_name
-  }
+  columns$ref[ind_columns_ref] <- new_name
 
   references <- data_model$references %>% mutate(ref = as.character(ref))
   ind_references_table <- references$table == old_name
-  if (any(ind_references_table)) {
-    references$table[ind_references_table] <- new_name
-  }
+  references$table[ind_references_table] <- new_name
 
   ind_references_ref <- references$ref == old_name
-  if (any(ind_references_ref)) {
-    references$ref[ind_references_ref] <- new_name
-  }
+  references$ref[ind_references_ref] <- new_name
 
   new_data_model(
     tables = tables,
