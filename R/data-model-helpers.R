@@ -2,14 +2,11 @@ new_data_model <- function(tables, columns, references) {
   stopifnot(nrow(tables) > 0)
   stopifnot(nrow(columns) > 0)
 
-  new_references <- mutate_if(references, is.factor, as.character) %>%
-    as.data.frame()
-
   structure(
     list(
       tables = tables,
       columns = columns,
-      references = new_references
+      references = references
     ),
     class = "data_model"
   )
@@ -45,7 +42,8 @@ upd_references_reference <- function(data_model, table, column, ref_table, ref_c
       ref = ref_table,
       ref_col = ref_column,
       ref_id = 1,
-      ref_col_num = 1)
+      ref_col_num = 1,
+      stringsAsFactors = FALSE)
   }
 
     new_references
@@ -180,14 +178,14 @@ get_datamodel_from_overview <- function(overview) {
 datamodel_tables_from_overview <- function(overview) {
   distinct(overview, table) %>%
     add_column(segment = NA, display = NA) %>%
-    as.data.frame()
+    as.data.frame(stringsAsFactors = FALSE)
 }
 
 datamodel_columns_from_overview <- function(overview) {
   overview %>%
     select(column, type, table, key, ref, ref_col) %>%
     mutate(key = as.numeric(key)) %>%
-    as.data.frame()
+    as.data.frame(stringsAsFactors = FALSE)
 }
 
 datamodel_references_from_overview <- function(overview) {
@@ -196,7 +194,7 @@ datamodel_references_from_overview <- function(overview) {
     select(table, column, ref, ref_col) %>%
     mutate(ref_id = as.numeric(row_number())) %>%
     add_column(ref_col_num = 1) %>%
-    as.data.frame()
+    as.data.frame(stringsAsFactors = FALSE)
 }
 
 datamodel_rename_table <- function(data_model, old_name, new_name) {
