@@ -1,11 +1,18 @@
+# FIXME: there should probably be a 'cdm_learn_from_db()', which decides what type of DBMS it is and does the right thing
+
 #' @export
-cdm_learn_from_mssql <- function(con) {
+cdm_learn_from_mssql <- function(dest_mssql) {
   # assuming we do not try to learn from temporary tables (which do not appear in sys.table (at least not the globally temporary ones))
+
+  if (is.src(dest_mssql)) con <- dest_mssql$con else con <- dest_mssql
   overview <-
     dbGetQuery(con, mssql_learn_query()) %>%
     as_tibble()
+  if (nrow(overview) == 0) return(NULL) else overview <- arrange(overview, table, column)
 
-  table_names <- distinct(overview, table) %>% pull()
+  table_names <- overview %>%
+    distinct(table) %>%
+    pull()
 
   new_dm(
     src = con,
@@ -14,13 +21,17 @@ cdm_learn_from_mssql <- function(con) {
 }
 
 #' @export
-cdm_learn_from_postgres <- function(con) {
+cdm_learn_from_postgres <- function(dest_postgres) {
   # assuming we do not try to learn from temporary tables (which do not appear in sys.table (at least not the globally temporary ones))
+  if (is.src(dest_postgres)) con <- dest_postgres$con else con <- dest_postgres
   overview <-
     dbGetQuery(con, postgres_learn_query()) %>%
     as_tibble()
+  if (nrow(overview) == 0) return(NULL) else overview <- arrange(overview, table, column)
 
-  table_names <- distinct(overview, table) %>% pull()
+  table_names <- overview %>%
+    distinct(table) %>%
+    pull()
 
   new_dm(
     src = con,
