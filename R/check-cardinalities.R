@@ -40,10 +40,10 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' d1 <- tibble::tibble(a = 1:5)
 #' d2 <- tibble::tibble(c = c(1:5, 5))
 #' d3 <- tibble::tibble(c = 1:4)
-#'
 #' # This does not pass, `c` is not unique key of d2:
 #' check_cardinality_0_n(d2, c, d1, a)
 #'
@@ -55,6 +55,7 @@
 #'
 #' # This passes:
 #' check_cardinality_0_1(d1, a, d3, c)
+#' }
 check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
   pkc <- enexpr(pk_column)
