@@ -178,14 +178,14 @@ get_datamodel_from_overview <- function(overview) {
 datamodel_tables_from_overview <- function(overview) {
   distinct(overview, table) %>%
     add_column(segment = NA, display = NA) %>%
-    as.data.frame()
+    as.data.frame(stringsAsFactors = FALSE)
 }
 
 datamodel_columns_from_overview <- function(overview) {
   overview %>%
     select(column, type, table, key, ref, ref_col) %>%
     mutate(key = as.numeric(key)) %>%
-    as.data.frame()
+    as.data.frame(stringsAsFactors = FALSE)
 }
 
 datamodel_references_from_overview <- function(overview) {
@@ -194,7 +194,7 @@ datamodel_references_from_overview <- function(overview) {
     select(table, column, ref, ref_col) %>%
     mutate(ref_id = as.numeric(row_number())) %>%
     add_column(ref_col_num = 1) %>%
-    as.data.frame()
+    as.data.frame(stringsAsFactors = FALSE)
 }
 
 datamodel_rename_table <- function(data_model, old_name, new_name) {
