@@ -157,3 +157,11 @@ is_postgres <- function(dest) {
   inherits(dest, "src_PostgreSQLConnection") ||
     inherits(dest, "PostgreSQLConnection")
 }
+
+src_from_src_or_con <- function(dest) {
+  if (is.src(dest)) dest else src_dbi(dest)
+}
+
+con_from_src_or_con <- function(dest) {
+  if (is.src(dest)) dest$con else dest
+}
