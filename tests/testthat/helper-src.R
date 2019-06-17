@@ -4,7 +4,7 @@ try({
   library(dbplyr)
   library(DBI)
   library(stringr)
-  source(here::here(".Rprofile"))
+  source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
 })
 
 src_df <- src_df(env = new.env())
