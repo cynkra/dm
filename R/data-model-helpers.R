@@ -228,7 +228,6 @@ datamodel_rename_table <- function(data_model, old_name, new_name) {
   if (any(ind_references_ref)) {
     references$ref[ind_references_ref] <- new_name
   }
-  references <- mutate(references, ref = as.factor(ref)) # FIXME: why is it a factor in the first place?
 
   new_data_model(
     tables = tables,
