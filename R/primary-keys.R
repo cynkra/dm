@@ -153,6 +153,8 @@ cdm_get_all_pks <- function(dm) {
 #' @description `cdm_rm_pk()` removes a potentially set primary key from a table in the
 #' underlying `data_model`-object and otherwise leaves the `dm`-object untouched.
 #'
+#' Foreign keys pointing to the table from other tables can optionally be removed as well.
+#'
 #' @examples
 #' \dontrun{
 #' library(nycflights13)
