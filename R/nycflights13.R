@@ -1,3 +1,10 @@
+#' Creates a test `dm`-object from \pkg{nycflights13}
+#'
+#' @description Creates an exemplary `dm`-object from the tables in \pkg{nycflights13}
+#' along with key relations (two foreign key relations are violated, but we accept this,
+#' since this should only be seen as a quick way of getting a `dm` with known tables to
+#' play around with).
+#'
 #' @export
 cdm_nycflights13 <- function() {
   dm(
