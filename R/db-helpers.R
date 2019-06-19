@@ -144,7 +144,7 @@ is_src_db <- function(dm) {
   if (is.src(cdm_get_src(dm))) {
     inherits(cdm_get_src(dm), "src_sql")
   } else {
-    inherits(cdm_get_src(dm) %>% src_dbi(), "src_sql")
+    inherits(cdm_get_src(dm) %>% dbplyr::src_dbi(), "src_sql")
   }
 }
 
@@ -159,7 +159,7 @@ is_postgres <- function(dest) {
 }
 
 src_from_src_or_con <- function(dest) {
-  if (is.src(dest)) dest else src_dbi(dest)
+  if (is.src(dest)) dest else dbplyr::src_dbi(dest)
 }
 
 con_from_src_or_con <- function(dest) {
