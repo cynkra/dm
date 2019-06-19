@@ -2,9 +2,12 @@
 % Please edit documentation in R/filter-dm.R
 \name{cdm_filter}
 \alias{cdm_filter}
+\alias{cdm_semi_join}
 \title{Cascading filter of a \code{dm}-object}
 \usage{
 cdm_filter(dm, table, ...)
+
+cdm_semi_join(dm, table, reduced_table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -18,10 +21,17 @@ to TRUE are kept.
 The arguments in ... are automatically quoted and evaluated in the context of
 the data frame. They support unquoting and splicing. See vignette("programming")
 for an introduction to these concepts.}
+
+\item{reduced_table}{}
 }
 \description{
-'cdm_filter()' allows you to set a filter condition for one table
-of a \code{dm}-objhect. If the \code{dm}'s tables are connected via key constrains, the
+'cdm_filter()' allows you to set one or more filter conditions for one table
+of a \code{dm}-object. If the \code{dm}'s tables are connected via key constrains, the
 filtering will affect all other connected tables, leaving only the rows with
 the corresponding key values.
+
+'cdm_semi_join()' performs a cascading "row reduction" of a \code{dm}-object
+by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
+key constraints are used to compute the remainders of the other tables of the \code{dm}-object and
+a new \code{dm}-object is returned.
 }

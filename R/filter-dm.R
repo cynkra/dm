@@ -39,12 +39,24 @@ cdm_filter <- function(dm, table, ...) {
   cdm_semi_join(dm, !!table_name, filtered_tbl_pk_obj)
 }
 
+#' Semi-join a `dm`-object with one of its reduced tables
+#'
+#' @description 'cdm_semi_join()' performs a cascading "row reduction" of a `dm`-object
+#' by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
+#' key constraints are used to compute the remainders of the other tables of the `dm`-object and
+#' a new `dm`-object is returned.
+#'
+#' @rdname cdm_filter
+#'
+#' @inheritParams cdm_add_pk
+#' @param reduced_table
+#'
 #' @export
-cdm_semi_join <- function(dm, table, filter) {
+cdm_semi_join <- function(dm, table, reduced_table) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  filtered_dm <- cdm_update_table(dm, table_name, filter)
+  filtered_dm <- cdm_update_table(dm, table_name, reduced_table)
 
   join_list <- calculate_join_list(dm, table_name)
   perform_joins(filtered_dm, join_list)
