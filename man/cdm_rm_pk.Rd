@@ -10,6 +10,11 @@ cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}}
+
+\item{rm_referencing_fks}{Boolean: if \code{FALSE} (default), will throw an error, if
+there are foreign keys addressing the primary key to be removed. If \code{TRUE}, will
+in addition to the primary key of parameter \code{table}, also remove all foreign key constraints
+that are pointing to it.}
 }
 \description{
 \code{cdm_rm_pk()} removes a potentially set primary key from a table in the

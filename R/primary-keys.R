@@ -175,6 +175,10 @@ cdm_get_all_pks <- function(dm) {
 #' Foreign keys pointing to the table from other tables can optionally be removed as well.
 #'
 #' @inheritParams cdm_add_pk
+#' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error, if
+#' there are foreign keys addressing the primary key to be removed. If `TRUE`, will
+#' in addition to the primary key of parameter `table`, also remove all foreign key constraints
+#' that are pointing to it.
 #'
 #' @examples
 #' \dontrun{
