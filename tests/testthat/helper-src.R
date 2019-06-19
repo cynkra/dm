@@ -13,7 +13,7 @@ src_postgres <- src_postgres(dbname = "postgres", host = "localhost", port = 543
 con_postgres <- src_postgres$con
 
 
-# postgres needs to be cleaned of t1_2019_* tables for learn-test ---------
+# postgres needs to be cleaned of t?_2019_* tables for learn-test ---------
 
 get_test_tables_from_postgres <- function(con_postgres) {
   dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
