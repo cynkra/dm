@@ -17,6 +17,8 @@ cdm_copy_to(dest, dm, set_key_constraints = TRUE, table_names = NULL,
 \item{table_names}{Character vector containing the names for the DB-tables.}
 
 \item{temporary}{Boolean variable, if \code{TRUE} will only create temporary tables, which will vanish when connection is interrupted.}
+
+\item{...}{Possible further arguments passed to \code{dplyr::copy_to()} (which is used on each table)}
 }
 \description{
 \code{cdm_copy_to()} takes a \code{src}- or \code{con}-object as a first argument,
