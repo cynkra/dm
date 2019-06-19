@@ -6,6 +6,18 @@
 \usage{
 cdm_add_pk(dm, table, column, check = TRUE, force = FALSE)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+
+\item{column}{A column of that table}
+
+\item{check}{Boolean, if \code{TRUE} (default), a check is made if the column is a unique key of the table.}
+
+\item{force}{Boolean, if \code{FALSE} (default), an error will be thrown, if there is
+already a primary key set for this table. If \code{TRUE} a potential old \code{pk} is deleted before setting the new one.}
+}
 \description{
 \code{cdm_add_pk()} marks the given column as the given table's primary key
 in the \code{data_model}-part of the \code{dm}-object. If \code{check == TRUE}, it also first checks if

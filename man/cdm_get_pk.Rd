@@ -6,6 +6,11 @@
 \usage{
 cdm_get_pk(dm, table)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+}
 \description{
 \code{cdm_get_pk()} returns the name of the
 column marked as primary key of a table of a \code{dm}-object. If no primary key is

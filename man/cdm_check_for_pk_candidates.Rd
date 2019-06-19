@@ -6,6 +6,11 @@
 \usage{
 cdm_check_for_pk_candidates(dm, table)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+}
 \description{
 \code{cdm_check_for_pk_candidates()} checks for each column of a
 table of a \code{dm}-object if this column contains only unique values and is therefore

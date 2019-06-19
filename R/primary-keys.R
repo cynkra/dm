@@ -7,6 +7,13 @@
 #' the given column is a unique key of the table. If `force == TRUE`, it replaces an already
 #' set key.
 #'
+#' @param dm A `dm` object.
+#' @param table A table in the `dm`
+#' @param column A column of that table
+#' @param check Boolean, if `TRUE` (default), a check is made if the column is a unique key of the table.
+#' @param force Boolean, if `FALSE` (default), an error will be thrown, if there is
+#' already a primary key set for this table. If `TRUE` a potential old `pk` is deleted before setting the new one.
+#'
 #' @export
 #' @examples
 #' \dontrun{
@@ -73,6 +80,8 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #' @description `cdm_has_pk()` checks in the `data_model` part
 #' of the `dm`-object if a given table has a column marked as primary key.
 #'
+#' @inheritParams cdm_add_pk
+#'
 #' @examples
 #' \dontrun{
 #' library(nycflights13)
@@ -106,6 +115,8 @@ cdm_has_pk <- function(dm, table) {
 #' column marked as primary key of a table of a `dm`-object. If no primary key is
 #' set for the table, an empty character variable is returned.
 #'
+#' @inheritParams cdm_add_pk
+#'
 #' @examples
 #' \dontrun{
 #' library(nycflights13)
@@ -134,6 +145,14 @@ cdm_get_pk <- function(dm, table) {
 }
 
 # FIXME: export?
+#' Get all primary keys of a `dm`-object
+#'
+#' @description `cdm_get_all_pks()` checks the `dm`-object for set primary keys and
+#' returns the tables, the respective primary key columns and their classes.
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @export
 cdm_get_all_pks <- function(dm) {
 
   all_table_names <- src_tbls(dm)
@@ -154,6 +173,8 @@ cdm_get_all_pks <- function(dm) {
 #' underlying `data_model`-object and otherwise leaves the `dm`-object untouched.
 #'
 #' Foreign keys pointing to the table from other tables can optionally be removed as well.
+#'
+#' @inheritParams cdm_add_pk
 #'
 #' @examples
 #' \dontrun{
@@ -215,6 +236,8 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' @description `cdm_check_for_pk_candidates()` checks for each column of a
 #' table of a `dm`-object if this column contains only unique values and is therefore
 #' a unique key of this table.
+#'
+#' @inheritParams cdm_add_pk
 #'
 #' @examples
 #' \dontrun{

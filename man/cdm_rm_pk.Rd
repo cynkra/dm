@@ -6,6 +6,11 @@
 \usage{
 cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+}
 \description{
 \code{cdm_rm_pk()} removes a potentially set primary key from a table in the
 underlying \code{data_model}-object and otherwise leaves the \code{dm}-object untouched.
