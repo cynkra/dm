@@ -71,17 +71,16 @@ invisible(remote_dm)
 #' @inheritParams cdm_copy_to
 #'
 #' @examples
-#' \dontrun{
-#' src_postgres <- dplyr::src_postgres()
+#' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
 #' iris_dm <- cdm_copy_to(
-#'   src_postgres,
+#'   src_sqlite,
 #'   as_dm(list(iris = iris)),
 #'   set_key_constraints = FALSE)
 #'
 #' # there are no key constraints in `as_dm(list(iris = iris))`,
-#' # but if there were, this would do something:
+#' # but if there were, and if we had already implemented setting key
+#' # constraints for SQLite, this would do something:
 #' cdm_set_key_constraints(iris_dm)
-#' }
 #' @export
 cdm_set_key_constraints <- function(dm) {
 
