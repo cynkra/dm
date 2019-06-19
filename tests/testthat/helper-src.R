@@ -4,7 +4,6 @@ try({
   library(dbplyr)
   library(DBI)
   library(stringr)
-  source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
 })
 
 src_df <- src_df(env = new.env())
@@ -44,10 +43,15 @@ test_register_src("sqlite", src_sqlite)
 test_register_src("postgres", src_postgres)
 
 # Only run if the top level call is devtools::test() or testthat::test_check()
+# In addition: this will only work, if run on TS's laptop
 if (is_this_a_test()) {
-  con_mssql <- mssql_con()
-  src_mssql <- src_dbi(con_mssql)
-  test_register_src("mssql", src_mssql)
+  try(
+    {source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
+    con_mssql <- mssql_con()
+    src_mssql <- src_dbi(con_mssql)
+    test_register_src("mssql", src_mssql)},
+    silent = TRUE
+    )
 }
 
 
