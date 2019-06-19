@@ -1,3 +1,13 @@
+#' Perform a join between two tables of a `dm`
+#'
+#' @description A join of desired type is performed between table `lhs` and
+#' table `rhs`.
+#'
+#' @param dm A `dm`-object
+#' @param lhs The table on the left hand side of the join
+#' @param rhs The table on the right hand side of the join
+#' @param join The type of join to be performed, see \code{\link[dplyr]{join}}
+#'
 #' @export
 cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
   lhs_name <- as_name(enexpr(lhs))
