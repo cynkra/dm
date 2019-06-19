@@ -204,6 +204,14 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
   abort("`dm` objects are immutable, please use ...")
 }
 
+#' Rename tables of a `dm`
+#'
+#' @description `cdm_rename_table()` changes the name of one of a `dm`'s tables.
+#'
+#' @param dm A `dm`-object
+#' @param old_name The original name of the table
+#' @param new_name The new name of the table
+#'
 #' @export
 cdm_rename_table <- function(dm, old_name, new_name) {
   old_name_q <- as_name(enexpr(old_name))
@@ -223,6 +231,14 @@ cdm_rename_table <- function(dm, old_name, new_name) {
   )
 }
 
+#' @description `cdm_rename_tables()` changes the names one or more tables of a `dm`.
+#'
+#' @rdname cdm_rename_table
+#'
+#' @inheritParams cdm_rename_table
+#' @param old_table_names Character vector or list of the original names of the tables which are to change
+#' @param new_table_names Character vector or list of the new names of the tables
+#'
 #' @export
 cdm_rename_tables <- function(dm, old_table_names, new_table_names) {
   if (length(old_table_names) != length(new_table_names)) {
