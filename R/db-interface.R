@@ -10,7 +10,7 @@
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
 #' @param table_names Character vector containing the names for the DB-tables.
 #' @param temporary Boolean variable, if `TRUE` will only create temporary tables, which will vanish when connection is interrupted.
-#' @param ... Possible further arguments passed to `dplyr::copy_to()` (which is used on each table)
+#' @param ... Possible further arguments passed to [dplyr::copy_to()] (which is used on each table)
 #'
 #' @examples
 #' \dontrun{
