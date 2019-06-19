@@ -1,14 +1,15 @@
-#' Loads `dm`-objects into one or more registered sources
-#'
-#' @description Works like `dbplyr::test_load()`, just for `dm`_objects.
-#'
-#' @examples
-#' dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
-#' dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE))
-#'
-#' cdm_test_obj <- dm(dplyr::src_df(pkg = "nycflights13"))
-#' cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
-#' @export
+# Loads `dm`-objects into one or more registered sources
+#
+# @description Works like `dbplyr::test_load()`, just for `dm`_objects.
+#
+# @param x
+#
+# @examples
+# dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
+# dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE))
+#
+# cdm_test_obj <- dm(dplyr::src_df(pkg = "nycflights13"))
+# cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
 cdm_test_load <- function(x,
                          db_names = NULL, # NULL results in the same name on the src for each table as the current table name in the `dm`-object
                          srcs = dbplyr:::test_srcs$get(), # FIXME: nto exported from {dplyr}... could also "borrow" source code as new function here!?
