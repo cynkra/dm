@@ -31,6 +31,7 @@ dm <- function(src, data_model = NULL) {
 #' Low-level constructor
 #'
 #' `new_dm()` only checks if the inputs are of the correct class.
+#' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm`-object
 #'
 #' @rdname dm
 #' @export
