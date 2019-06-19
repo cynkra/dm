@@ -197,7 +197,7 @@ datamodel_references_from_overview <- function(overview) h(~{
     as.data.frame(stringsAsFactors = FALSE)
 })
 
-datamodel_rename_table <- function(data_model, old_name, new_name) {
+datamodel_rename_table <- function(data_model, old_name, new_name) h(~{
   tables <- data_model$tables
   ind_tables <- tables$table == old_name
   tables$table[ind_tables] <- new_name
@@ -222,7 +222,7 @@ datamodel_rename_table <- function(data_model, old_name, new_name) {
     columns = columns,
     references = references
   )
-}
+})
 
 data_model_db_types_to_R_types <- function(data_model) {
   type <- data_model$columns$type
