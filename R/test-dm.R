@@ -8,7 +8,7 @@
 # dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
 # dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE))
 #
-# cdm_test_obj <- dm(dplyr::src_df(pkg = "nycflights13"))
+# cdm_test_obj <- cdm_nycflights13()
 # cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
 cdm_test_load <- function(x,
                          db_names = NULL, # NULL results in the same name on the src for each table as the current table name in the `dm`-object
