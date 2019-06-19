@@ -1,5 +1,6 @@
 # Only run if the top level call is devtools::test() or testthat::test_check()
 if (is_this_a_test()) {
+  library(dbplyr)
   tbl_sum.tbl_sql <- function(x, ...) c()
   vctrs::s3_register("tibble::tbl_sum", "tbl_sql")
 }
