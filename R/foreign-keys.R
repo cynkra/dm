@@ -100,7 +100,7 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @inheritParams cdm_has_fk
 #'
 #' @export
-cdm_get_all_fks <- function(dm) {
+cdm_get_all_fks <- function(dm) h(~{
   all_table_names <- src_tbls(dm)
   all_table_pairings <- crossing(all_table_names, dito = all_table_names) %>%
     filter(all_table_names != dito)
@@ -108,32 +108,36 @@ cdm_get_all_fks <- function(dm) {
   vec_1 <- all_table_pairings %>% pull(1)
   vec_2 <- all_table_pairings %>% pull(2)
   has_fk <- map2_lgl(vec_1, vec_2, ~cdm_has_fk(dm, !!.x, !!.y))
-  if (all(has_fk == FALSE)) return(
+  if (all(has_fk == FALSE)) {
     tibble(
       child_table = character(0),
       child_fk_col = character(0),
       col_class = character(0),
       parent_table = character(0)
       )
-    )
+    } else {
 
-  child_table <- vec_1[has_fk]
-  parent_table <- vec_2[has_fk]
-  child_fk_col <- map2(child_table, parent_table, ~cdm_get_fk(dm, !!.x, !!.y))
-  # map2_chr() does not work in cases when there is more than 1 FK from one table to another
+      child_table <- vec_1[has_fk]
+      parent_table <- vec_2[has_fk]
+      child_fk_col <-
+        map2(child_table, parent_table, ~ cdm_get_fk(dm,!!.x,!!.y))
+      # map2_chr() does not work in cases when there is more than 1 FK from one table to another
 
-  tibble(child_table = child_table,
-         child_fk_col = child_fk_col,
-         # col_class = child_fk_col_class,
-         parent_table = parent_table) %>%
-    unnest(child_fk_col) %>%
-    mutate(col_class = map2_chr(
-      child_table,
-      child_fk_col,
-      ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y))) %>%
-    select(child_table, child_fk_col, col_class, parent_table)
-
-}
+      tibble(
+        child_table = child_table,
+        child_fk_col = child_fk_col,
+        # col_class = child_fk_col_class,
+        parent_table = parent_table
+      ) %>%
+        unnest(child_fk_col) %>%
+        mutate(col_class = map2_chr(
+          child_table,
+          child_fk_col,
+          ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y)
+        )) %>%
+        select(child_table, child_fk_col, col_class, parent_table)
+    }
+})
 
 
 #' Remove reference(s) from one table of a `dm` to another
