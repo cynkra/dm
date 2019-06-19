@@ -54,6 +54,9 @@ cdm_update_table <- function(dm, name, table) {
 
 #' Number of rows of a table or of the whole `dm`-object
 #'
+#' @param dm A `dm`-object
+#' @param table If `NULL` (default), the sum of the number of rows of all tables is returned.
+#' If a table is specified, the number of the rows of this table is returned.
 #' @export
 cdm_nrow <- function(dm, table = NULL) {
   if (!quo_is_null(enquo(table))) {
