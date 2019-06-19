@@ -1,3 +1,5 @@
+#' Among others: address table by their unquoted name
+#' @description FIXME: missing description
 #' @export
 #' @examples
 #' cdm_with(cdm_nycflights13(), airports)
