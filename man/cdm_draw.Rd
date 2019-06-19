@@ -36,7 +36,7 @@ column and auxiliary information in other columns.
 
 \code{cdm_set_colors()} allows to define the colors in which to display the tables of the data model.
 
-\code{cdm_get_colors()} returns the colors define for a data model.
+\code{cdm_get_colors()} returns the colors defined for a data model.
 
 \code{cdm_get_available_colors()} returns an overview of the available colors and their names
 as a tibble.

@@ -94,7 +94,7 @@ color_quos_to_display <- function(...) {
 
 #' cdm_get_colors()
 #'
-#' `cdm_get_colors()` returns the colors define for a data model.
+#' `cdm_get_colors()` returns the colors defined for a data model.
 #'
 #' @return For `cdm_get_colors()`, a two-column tibble with one row per table.
 #'
