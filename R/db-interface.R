@@ -13,10 +13,12 @@
 #' @param ... Possible further arguments passed to [dplyr::copy_to()] (which is used on each table)
 #'
 #' @examples
-#' \dontrun{
-#' src_postgres <- dplyr::src_postgres()
-#' cdm_copy_to(src_postgres, as_dm(list(iris = iris)))
-#' }
+#' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
+#' iris_dm <- cdm_copy_to(
+#'   src_sqlite,
+#'   as_dm(list(iris = iris)),
+#'   set_key_constraints = FALSE)
+#'
 #' @export
 cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL, temporary = TRUE, ...) h(~{
 # for now focusing on MSSQL

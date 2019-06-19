@@ -197,16 +197,12 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' `ref_table` and is therefore a candidate for a foreign key from `table` to `ref_table`.
 #'
 #' @examples
-#' \dontrun{
-#' library(nycflights13)
 #' library(dplyr)
 #'
-#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#' nycflights_dm <- cdm_nycflights13()
 #'
 #' nycflights_dm %>%
-#'   cdm_add_pk(airports, faa) %>%
 #'   cdm_check_for_fk_candidates(flights, airports)
-#' }
 #'
 #' @export
 cdm_check_for_fk_candidates <- function(dm, table, ref_table) h(~{

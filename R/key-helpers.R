@@ -17,14 +17,12 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{
-#' data <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
+#' data <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' # this is failing:
-#' check_key(data, a, b)
+#' try(check_key(data, a, b))
 #'
 #' # this is passing:
 #' check_key(data, a, c)
-#' }
 check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
@@ -78,16 +76,14 @@ is_unique_key <- function(.data, column) {
 #'
 #' @export
 #' @examples
-#' \dontrun{
-#' data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-#' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+#' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
+#' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is failing:
-#' check_set_equality(data_1, a, data_2, a)
+#' try(check_set_equality(data_1, a, data_2, a))
 #'
-#' data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
+#' data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_set_equality(data_1, a, data_3, a)
-#' }
 check_set_equality <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   c1q <- enexpr(c1)
@@ -130,15 +126,13 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #'
 #' @export
 #' @examples
-#' \dontrun{
-#' data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-#' data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+#' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
+#' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_if_subset(data_1, a, data_2, a)
 #'
 #' # this is failing:
-#' check_if_subset(data_2, a, data_1, a)
-#' }
+#' try(check_if_subset(data_2, a, data_1, a))
 check_if_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)

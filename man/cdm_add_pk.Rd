@@ -25,8 +25,6 @@ the given column is a unique key of the table. If \code{force == TRUE}, it repla
 set key.
 }
 \examples{
-\dontrun{
-library(nycflights13)
 library(dplyr)
 
 nycflights_dm <- dm(src_df(pkg = "nycflights13"))
@@ -37,6 +35,5 @@ cdm_add_pk(nycflights_dm, airports, faa)
 cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 
 # the following does not work
-cdm_add_pk(nycflights_dm, planes, manufacturer)
-}
+try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 }

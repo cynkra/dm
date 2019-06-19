@@ -27,8 +27,10 @@ the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
 By default temporary tables will be created.
 }
 \examples{
-\dontrun{
-src_postgres <- dplyr::src_postgres()
-cdm_copy_to(src_postgres, as_dm(list(iris = iris)))
-}
+src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
+iris_dm <- cdm_copy_to(
+  src_sqlite,
+  as_dm(list(iris = iris)),
+  set_key_constraints = FALSE)
+
 }

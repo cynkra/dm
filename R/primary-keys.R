@@ -16,8 +16,6 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{
-#' library(nycflights13)
 #' library(dplyr)
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
@@ -28,8 +26,7 @@
 #' cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 #'
 #' # the following does not work
-#' cdm_add_pk(nycflights_dm, planes, manufacturer)
-#' }
+#' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
 
   table_name <- as_name(enquo(table))
@@ -83,16 +80,11 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #' @inheritParams cdm_add_pk
 #'
 #' @examples
-#' \dontrun{
-#' library(nycflights13)
 #' library(dplyr)
+#' nycflights_dm <- cdm_nycflights13()
 #'
-#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum)
-#'
-#' cdm_obj_with_keys %>%
+#' nycflights_dm %>%
 #'   cdm_has_pk(planes)
-#' }
 #'
 #' @export
 cdm_has_pk <- function(dm, table) {
@@ -118,16 +110,11 @@ cdm_has_pk <- function(dm, table) {
 #' @inheritParams cdm_add_pk
 #'
 #' @examples
-#' \dontrun{
-#' library(nycflights13)
 #' library(dplyr)
+#' nycflights_dm <- cdm_nycflights13()
 #'
-#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#' cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum)
-#'
-#' cdm_obj_with_keys %>%
+#' nycflights_dm %>%
 #'   cdm_get_pk(planes)
-#' }
 #'
 #' @export
 cdm_get_pk <- function(dm, table) {
@@ -181,25 +168,16 @@ cdm_get_all_pks <- function(dm) {
 #' that are pointing to it.
 #'
 #' @examples
-#' \dontrun{
-#' library(nycflights13)
 #' library(dplyr)
+#' nycflights_dm <- cdm_nycflights13()
 #'
-#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-#'
-#' cdm_obj_with_keys <-
-#'   nycflights_dm %>%
-#'   cdm_add_pk(planes, tailnum) %>%
-#'   cdm_add_pk(airports, faa)
-#'
-#' cdm_obj_with_keys %>%
-#'   cdm_rm_pk(airports) %>%
+#' nycflights_dm %>%
+#'   cdm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   cdm_has_pk(planes)
 #'
-#' cdm_obj_with_keys %>%
-#'   cdm_rm_pk(planes) %>%
+#' nycflights_dm %>%
+#'   cdm_rm_pk(planes, rm_referencing_fks = TRUE) %>%
 #'   cdm_has_pk(planes)
-#' }
 #'
 #' @export
 cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~{
@@ -244,15 +222,11 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~{
 #' @inheritParams cdm_add_pk
 #'
 #' @examples
-#' \dontrun{
-#' library(nycflights13)
 #' library(dplyr)
-#'
-#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#' nycflights_dm <- cdm_nycflights13()
 #'
 #' nycflights_dm %>% cdm_check_for_pk_candidates(flights)
 #' nycflights_dm %>% cdm_check_for_pk_candidates(airports)
-#' }
 #'
 #' @export
 cdm_check_for_pk_candidates <- function(dm, table) h(~{

@@ -17,14 +17,10 @@ table of a \code{dm}-object if this column contains only unique values and is th
 a unique key of this table.
 }
 \examples{
-\dontrun{
-library(nycflights13)
 library(dplyr)
-
-nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+nycflights_dm <- cdm_nycflights13()
 
 nycflights_dm \%>\% cdm_check_for_pk_candidates(flights)
 nycflights_dm \%>\% cdm_check_for_pk_candidates(airports)
-}
 
 }
