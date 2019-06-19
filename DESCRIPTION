@@ -21,7 +21,6 @@ Imports:
     cli,
     datamodelr,
     DBI,
-    dbplyr,
     dplyr,
     DT (>= 0.5),
     glue,
@@ -34,6 +33,7 @@ Imports:
     tibble,
     tidyr
 Suggests: 
+    dbplyr,
     nycflights13,
     rprojroot,
     testthat (>= 2.1.0),
