@@ -6,7 +6,7 @@
 #' play around with).
 #'
 #' @export
-cdm_nycflights13 <- function() {
+cdm_nycflights13 <- function() h(~{
   dm(
     src_df("nycflights13")
   ) %>%
@@ -17,4 +17,4 @@ cdm_nycflights13 <- function() {
     cdm_add_fk(flights, carrier, airlines) %>%
     cdm_add_fk(flights, origin, airports) %>%
     cdm_add_fk(flights, dest, airports, check = FALSE)
-}
+})

@@ -77,7 +77,7 @@ create_graph_from_dm <- function(dm) {
 
 }
 
-are_all_vertices_connected <- function(g, vertex_names) {
+are_all_vertices_connected <- function(g, vertex_names) h(~{
   V <- names(igraph::V(g))
 
   vertex_names[1] %in% V &&
@@ -86,4 +86,4 @@ are_all_vertices_connected <- function(g, vertex_names) {
     names() %>%
     is_in(vertex_names, .) %>%
     all()
-}
+})

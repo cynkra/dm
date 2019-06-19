@@ -202,7 +202,7 @@ cdm_get_all_pks <- function(dm) {
 #' }
 #'
 #' @export
-cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
+cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~{
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)
@@ -232,7 +232,7 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
     cdm_get_tables(dm),
     data_model
   )
-}
+})
 
 
 #' Which columns are candidates for a primary key column of a `dm`-object's table?
@@ -255,7 +255,7 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' }
 #'
 #' @export
-cdm_check_for_pk_candidates <- function(dm, table) {
+cdm_check_for_pk_candidates <- function(dm, table) h(~{
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)
@@ -273,4 +273,4 @@ cdm_check_for_pk_candidates <- function(dm, table) {
       value = "candidate"
     ) %>%
     select(candidate, column)
-}
+})

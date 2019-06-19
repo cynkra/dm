@@ -10,7 +10,7 @@
 #' @param data_model A \pkg{datamodelr} data model object, or `NULL`.
 #'
 #' @export
-dm <- function(src, data_model = NULL) {
+dm <- function(src, data_model = NULL) h(~{
   # TODO: add keys argument, if both data_model and keys are missing,
   # create surrogate keys
   if (is.null(data_model)) {
@@ -26,7 +26,7 @@ dm <- function(src, data_model = NULL) {
   tables <- map(table_names, tbl, src = src)
 
   new_dm(src, tables, data_model)
-}
+})
 
 #' Low-level constructor
 #'

@@ -105,7 +105,7 @@ color_quos_to_display <- function(...) {
 #'
 #' @rdname cdm_draw
 #' @export
-cdm_get_colors <- function(dm) {
+cdm_get_colors <- function(dm) h(~{
 
   data_model <- cdm_get_data_model(dm)
   data_model$tables %>%
@@ -113,7 +113,7 @@ cdm_get_colors <- function(dm) {
     as_tibble() %>%
     mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
     select(-display)
-}
+})
 
 #' cdm_get_available_colors()
 #'

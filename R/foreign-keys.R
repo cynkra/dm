@@ -9,7 +9,7 @@
 #' `column` are a subset of the values of the primary key column of `ref_table`.
 #'
 #' @export
-cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) {
+cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) h(~{
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
 
@@ -37,7 +37,7 @@ cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) {
   }
 
   cdm_add_fk_impl(dm, table_name, column_name, ref_table_name, ref_column_name)
-}
+})
 
 
 cdm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
@@ -116,6 +116,7 @@ cdm_get_all_fks <- function(dm) {
       parent_table = character(0)
       )
     )
+
   child_table <- vec_1[has_fk]
   parent_table <- vec_2[has_fk]
   child_fk_col <- map2(child_table, parent_table, ~cdm_get_fk(dm, !!.x, !!.y))
@@ -208,7 +209,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' }
 #'
 #' @export
-cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
+cdm_check_for_fk_candidates <- function(dm, table, ref_table) h(~{
 
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
@@ -251,4 +252,4 @@ cdm_check_for_fk_candidates <- function(dm, table, ref_table) {
               )
             }
           })
-}
+})

@@ -18,7 +18,7 @@
 #' cdm_copy_to(src_postgres, as_dm(list(iris = iris)))
 #' }
 #' @export
-cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL, temporary = TRUE, ...) {
+cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL, temporary = TRUE, ...) h(~{
 # for now focusing on MSSQL
 # we expect the src (dest) to already point to the correct schema
 # we want to
@@ -60,7 +60,7 @@ remote_dm <- new_dm(
 if (set_key_constraints) cdm_set_key_constraints(remote_dm)
 
 invisible(remote_dm)
-}
+})
 
 #' Set key constraints on a DB for a `dm`-obj with keys.
 #'
@@ -82,7 +82,7 @@ invisible(remote_dm)
 #' # constraints for SQLite, this would do something:
 #' cdm_set_key_constraints(iris_dm)
 #' @export
-cdm_set_key_constraints <- function(dm) {
+cdm_set_key_constraints <- function(dm) h(~{
 
   if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
   db_table_names <- get_db_table_names(dm)
@@ -108,4 +108,4 @@ cdm_set_key_constraints <- function(dm) {
   if (!is_empty(queries)) walk(queries, ~dbExecute(con, .))
 
   invisible(dm)
-}
+})
