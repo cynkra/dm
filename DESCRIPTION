@@ -38,7 +38,8 @@ Suggests:
     rprojroot,
     testthat (>= 2.1.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    vctrs
 Remotes: 
     bergant/datamodelr
 Encoding: UTF-8
