@@ -22,7 +22,7 @@ The arguments in ... are automatically quoted and evaluated in the context of
 the data frame. They support unquoting and splicing. See vignette("programming")
 for an introduction to these concepts.}
 
-\item{reduced_table}{}
+\item{reduced_table}{The table indicated in argument \code{table}, but in a filtered state (cf, \code{dplyr::filter()}).}
 }
 \description{
 'cdm_filter()' allows you to set one or more filter conditions for one table

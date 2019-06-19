@@ -49,7 +49,7 @@ cdm_filter <- function(dm, table, ...) {
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
-#' @param reduced_table
+#' @param reduced_table The table indicated in argument `table`, but in a filtered state (cf, `dplyr::filter()`).
 #'
 #' @export
 cdm_semi_join <- function(dm, table, reduced_table) {
