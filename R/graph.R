@@ -1,5 +1,15 @@
+#' Is a `dm`'s table referenced by another table?
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @return `TRUE`, if at least one foreign key exists, pointing to the primary
+#' key of parameter `table`, `FALSE` otherwise.
+#'
 #' @export
-cdm_is_referenced <- function(dm, table_name) {
+cdm_is_referenced <- function(dm, table) {
+  table_name <- as_name(enexpr(table))
+  check_correct_input(dm, table_name)
+
   data_model <- cdm_get_data_model(dm)
   is_referenced_data_model(data_model, table_name)
 }
@@ -13,6 +23,7 @@ is_referencing_data_model <- function(data_model, table_name) {
   which_ind <- data_model$references$table == table_name
   any(which_ind)
 }
+
 
 #' @export
 cdm_get_referencing_tables <- function(dm, table_name) {
