@@ -6,10 +6,17 @@
 \usage{
 cdm_rm_fk(dm, table, column, ref_table)
 }
-\description{
-Remove reference(s) from one table of a \code{dm} to another
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+
+\item{column}{The column of \code{table} which should no longer be referencing the primary
+key of \code{ref_table}.}
+
+\item{ref_table}{The table which \code{table} was referencing.}
 }
-\details{
+\description{
 Can either remove one reference between the two tables or all at once if parameter \code{column = NULL}.
-All parameters can be provided unquoted or quoted.'
+All parameters can be provided unquoted or quoted.
 }

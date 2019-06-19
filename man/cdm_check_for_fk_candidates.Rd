@@ -6,6 +6,13 @@
 \usage{
 cdm_check_for_fk_candidates(dm, table, ref_table)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{The table whose columns should be tested for foreign key candidate potential}
+
+\item{ref_table}{A table with a primary key.}
+}
 \description{
 Which columns are foreign candidates of a table, referencing the primary key column of another \code{dm}-object's table?
 \code{cdm_check_for_fk_candidates()} checks first, if \code{ref_table} has a primary key set. Then it determines
