@@ -24,9 +24,18 @@ is_referencing_data_model <- function(data_model, table_name) {
   any(which_ind)
 }
 
-
+#' Get the names of a `dm`'s tables referencing a given table.
+#'
+#' @inheritParams cdm_is_referenced
+#'
+#' @return Character vector of the names of the tables pointing to the primary
+#' key of parameter `table`.
+#'
 #' @export
-cdm_get_referencing_tables <- function(dm, table_name) {
+cdm_get_referencing_tables <- function(dm, table) {
+  table_name <- as_name(enexpr(table))
+  check_correct_input(dm, table_name)
+
   data_model <- cdm_get_data_model(dm)
   references <- data_model$references
   which_ind <- references$ref == table_name
