@@ -6,7 +6,8 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     dm_for_filter_smaller_src,
     ~ expect_equal(
       cdm_select(.x, t3, t5) %>% cdm_get_tables() %>% map(collect),
-      cdm_get_tables(.y) %>% map(collect))
+      cdm_get_tables(.y) %>% map(collect)
+    )
   )
 
   map2(
@@ -14,7 +15,8 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     dm_for_filter_smaller_src,
     ~ expect_equivalent( # row indices differ after removal of references in data_model$references -> expect_equal() fails
       cdm_select(.x, t3, t5) %>% cdm_get_data_model(),
-      cdm_get_data_model(.y))
+      cdm_get_data_model(.y)
+    )
   )
 
   map(
@@ -22,8 +24,8 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     ~ expect_equal(
       cdm_select(.x),
       .x
-      )
     )
+  )
 
   map(
     dm_for_filter_src,
@@ -78,8 +80,8 @@ test_that("cdm_find_conn_tbls() finds the connected tables of a `dm`?", {
     ~ expect_identical(
       cdm_find_conn_tbls(.x, t2, t6),
       c("t2", "t3", "t4", "t5", "t6")
-      )
     )
+  )
 
   map(
     dm_for_filter_src,
@@ -98,5 +100,4 @@ test_that("cdm_find_conn_tbls() finds the connected tables of a `dm`?", {
       error_txt_vertices_not_connected()
     )
   )
-
 })

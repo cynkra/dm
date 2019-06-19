@@ -26,5 +26,4 @@ nycflights_dm <- cdm_nycflights13()
 
 nycflights_dm \%>\%
   cdm_check_for_fk_candidates(flights, airports)
-
 }

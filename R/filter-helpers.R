@@ -14,9 +14,11 @@ cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
   rhs_name <- as_name(enexpr(rhs))
 
   if (!(cdm_has_fk(dm, !!lhs_name, !!rhs_name) |
-        cdm_has_fk(dm, !!rhs_name, !!lhs_name))) {
-    abort(paste0("No foreign key relation exists between table '", lhs_name,
-                 "' and table ", rhs_name, ", joining not possible."))
+    cdm_has_fk(dm, !!rhs_name, !!lhs_name))) {
+    abort(paste0(
+      "No foreign key relation exists between table '", lhs_name,
+      "' and table ", rhs_name, ", joining not possible."
+    ))
   }
 
   if (cdm_has_fk(dm, !!lhs_name, !!rhs_name)) {
@@ -36,10 +38,9 @@ cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
 }
 
 perform_joins <- function(
-  dm, # function should be called with 1 already filtered table which needs to be in first entry of join_list
-  join_list,
-  join = semi_join) {
-
+                          dm, # function should be called with 1 already filtered table which needs to be in first entry of join_list
+                          join_list,
+                          join = semi_join) {
   reduce2(join_list$lhs, join_list$rhs, perform_join, join = join, .init = dm)
 }
 

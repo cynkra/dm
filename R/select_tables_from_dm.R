@@ -73,8 +73,10 @@ cdm_find_conn_tbls <- function(dm, ...) {
 
   result_table_names_unordered <-
     map2(
-      ids_vec, names_vec, ~ igraph::shortest_paths(g, .x, .y) %>% pluck("vpath", 1) %>% names()
-      ) %>%
+      ids_vec, names_vec, ~ igraph::shortest_paths(g, .x, .y) %>%
+        pluck("vpath", 1) %>%
+        names()
+    ) %>%
     flatten_chr() %>%
     unique()
 

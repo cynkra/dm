@@ -9,25 +9,24 @@
 #' @name cdm_draw
 #' @export
 cdm_draw <- function(
-  dm,
-  table_names = NULL,
-  rankdir = "LR",
-  col_attr = "column",
-  view_type = "keys_only",
-  columnArrows = TRUE,
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  focus = NULL,
-  graph_name = "Data Model") {
-
+                     dm,
+                     table_names = NULL,
+                     rankdir = "LR",
+                     col_attr = "column",
+                     view_type = "keys_only",
+                     columnArrows = TRUE,
+                     graph_attrs = "",
+                     node_attrs = "",
+                     edge_attrs = "",
+                     focus = NULL,
+                     graph_name = "Data Model") {
   data_model <- cdm_get_data_model(dm)
 
   if (!is_null(table_names)) {
     walk(
       table_names,
       ~ check_correct_input(dm, .x)
-      )
+    )
 
     all_table_names <- names(cdm_get_tables(dm))
     if (!(length(table_names) == length(all_table_names))) {
@@ -63,7 +62,6 @@ cdm_draw <- function(
 #' @rdname cdm_draw
 #' @export
 cdm_set_colors <- function(dm, ...) {
-
   data_model <- cdm_get_data_model(dm)
   display <- color_quos_to_display(...)
 
@@ -75,7 +73,7 @@ cdm_set_colors <- function(dm, ...) {
 }
 
 color_quos_to_display <- function(...) {
-  quos <- enquos(..., .named = TRUE,  .ignore_empty = "none", .homonyms = "error")
+  quos <- enquos(..., .named = TRUE, .ignore_empty = "none", .homonyms = "error")
 
   missing <- map_lgl(quos, quo_is_missing)
   if (has_length(missing) && missing[[length(missing)]]) {
@@ -105,15 +103,14 @@ color_quos_to_display <- function(...) {
 #'
 #' @rdname cdm_draw
 #' @export
-cdm_get_colors <- function(dm) h(~{
-
-  data_model <- cdm_get_data_model(dm)
-  data_model$tables %>%
-    select(table, display) %>%
-    as_tibble() %>%
-    mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
-    select(-display)
-})
+cdm_get_colors <- function(dm) h(~ {
+    data_model <- cdm_get_data_model(dm)
+    data_model$tables %>%
+      select(table, display) %>%
+      as_tibble() %>%
+      mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
+      select(-display)
+  })
 
 #' cdm_get_available_colors()
 #'
@@ -131,20 +128,20 @@ cdm_get_available_colors <- function() {
 }
 
 colors <- tibble::tribble(
-              ~dm, ~datamodelr,           ~nb,
-        "default",   "default",    "(border)",
-        "blue_nb", "accent1nb", "(no border)",
-      "orange_nb", "accent2nb", "(no border)",
-      "yellow_nb", "accent3nb", "(no border)",
-       "green_nb", "accent4nb", "(no border)",
-   "dark_blue_nb", "accent5nb", "(no border)",
+  ~dm, ~datamodelr, ~nb,
+  "default", "default", "(border)",
+  "blue_nb", "accent1nb", "(no border)",
+  "orange_nb", "accent2nb", "(no border)",
+  "yellow_nb", "accent3nb", "(no border)",
+  "green_nb", "accent4nb", "(no border)",
+  "dark_blue_nb", "accent5nb", "(no border)",
   "light_grey_nb", "accent6nb", "(no border)",
-        "grey_nb", "accent7nb", "(no border)",
-           "blue",   "accent1",    "(border)",
-         "orange",   "accent2",    "(border)",
-         "yellow",   "accent3",    "(border)",
-          "green",   "accent4",    "(border)",
-      "dark_blue",   "accent5",    "(border)",
-     "light_grey",   "accent6",    "(border)",
-           "grey",   "accent7",    "(border)"
+  "grey_nb", "accent7nb", "(no border)",
+  "blue", "accent1", "(border)",
+  "orange", "accent2", "(border)",
+  "yellow", "accent3", "(border)",
+  "green", "accent4", "(border)",
+  "dark_blue", "accent5", "(border)",
+  "light_grey", "accent6", "(border)",
+  "grey", "accent7", "(border)"
 )

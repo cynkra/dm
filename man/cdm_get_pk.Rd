@@ -22,5 +22,4 @@ nycflights_dm <- cdm_nycflights13()
 
 nycflights_dm \%>\%
   cdm_get_pk(planes)
-
 }

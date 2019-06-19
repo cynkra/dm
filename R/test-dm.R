@@ -11,9 +11,9 @@
 # cdm_test_obj <- cdm_nycflights13()
 # cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
 cdm_test_load <- function(x,
-                         db_names = NULL, # NULL results in the same name on the src for each table as the current table name in the `dm`-object
-                         srcs = dbplyr:::test_srcs$get(), # FIXME: nto exported from {dplyr}... could also "borrow" source code as new function here!?
-                         ignore = character()) {
+                          db_names = NULL, # NULL results in the same name on the src for each table as the current table name in the `dm`-object
+                          srcs = dbplyr:::test_srcs$get(), # FIXME: nto exported from {dplyr}... could also "borrow" source code as new function here!?
+                          ignore = character()) {
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
   cdm_table_names <- src_tbls(x)
@@ -39,7 +39,9 @@ check_correct_input <- function(dm, table) {
 
 # validates, that the given column is indeed part of the table of the `dm` object.
 check_col_input <- function(dm, table, column) {
-  tbl_colnames <- cdm_get_tables(dm) %>% extract2(table) %>% colnames()
+  tbl_colnames <- cdm_get_tables(dm) %>%
+    extract2(table) %>%
+    colnames()
   if (!column %in% tbl_colnames) abort_wrong_col_names(table, tbl_colnames, column)
 }
 
@@ -59,7 +61,6 @@ is_this_a_test <- function() {
   is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
 
   is_test_call || is_testing
-
 }
 
 h <- function(formula, env = rlang::caller_env()) {

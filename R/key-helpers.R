@@ -148,8 +148,8 @@ check_if_subset <- function(t1, c1, t2, c2) {
   # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
   # Siehe eval-bang.R für ein Minimalbeispiel.
-  v1 <- pull(eval_tidy(t1q), !! ensym(c1q))
-  v2 <- pull(eval_tidy(t2q), !! ensym(c2q))
+  v1 <- pull(eval_tidy(t1q), !!ensym(c1q))
+  v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
 
   setdiff_v1_v2 <- setdiff(v1, v2)
   print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
@@ -168,8 +168,8 @@ is_subset <- function(t1, c1, t2, c2) {
   # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
   # Siehe eval-bang.R für ein Minimalbeispiel.
-  v1 <- pull(eval_tidy(t1q), !! ensym(c1q))
-  v2 <- pull(eval_tidy(t2q), !! ensym(c2q))
+  v1 <- pull(eval_tidy(t1q), !!ensym(c1q))
+  v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
 
   if (!all(v1 %in% v2)) FALSE else TRUE
 }

@@ -15,9 +15,10 @@ abort_pk_for_filter_missing <- function(table_name) {
 }
 
 error_txt_pk_filter_missing <- function(table_name) {
-  paste0("Table '", table_name,
-         "' needs primary key for the filtering to work. ",
-         "Please set one using cdm_add_pk()."
+  paste0(
+    "Table '", table_name,
+    "' needs primary key for the filtering to work. ",
+    "Please set one using cdm_add_pk()."
   )
 }
 
@@ -26,7 +27,7 @@ error_txt_pk_filter_missing <- function(table_name) {
 
 abort_wrong_table_cols_semi_join <- function(table_name) {
   abort(error_txt_wrong_table_cols_semi_join(table_name),
-        .subclass = cdm_error("wrong_table_cols_semi_join")
+    .subclass = cdm_error("wrong_table_cols_semi_join")
   )
 }
 
@@ -54,7 +55,6 @@ error_txt_key_set_force_false <- function() {
 
 abort_multiple_pks <- function(table_name) {
   abort(error_txt_multiple_pks(table_name), .subclass = cdm_error("multiple_pks"))
-
 }
 
 error_txt_multiple_pks <- function(table_name) {
@@ -104,16 +104,14 @@ error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
 # error: is not subset of -------------------------------------------------
 
 abort_not_subset_of <- function(table_name_1, colname_1,
-                                table_name_2, colname_2)
-{
-
+                                table_name_2, colname_2) {
   abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
-        .subclass = cdm_error("not_subset_of"))
+    .subclass = cdm_error("not_subset_of")
+  )
 }
 
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
-
   paste0(
     "Column `",
     colname_1,
@@ -143,7 +141,8 @@ error_txt_sets_not_equal <- function(error_msgs) {
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
   abort(error_txt_not_bijective(child_table_name, fk_col_name),
-        .subclass = cdm_error("not_bijective"))
+    .subclass = cdm_error("not_bijective")
+  )
 }
 
 error_txt_not_bijective <- function(child_table_name, fk_col_name) {
@@ -158,7 +157,8 @@ error_txt_not_bijective <- function(child_table_name, fk_col_name) {
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
   abort(error_txt_not_injective(child_table_name, fk_col_name),
-        .subclass = cdm_error("not_injective"))
+    .subclass = cdm_error("not_injective")
+  )
 }
 
 error_txt_not_injective <- function(child_table_name, fk_col_name) {
@@ -176,35 +176,42 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
 
 abort_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
   abort(error_txt_ref_tbl_has_no_pk(ref_table_name, pk_candidates),
-        .subclass = cdm_error("ref_tbl_has_no_pk"))
+    .subclass = cdm_error("ref_tbl_has_no_pk")
+  )
 }
 
 error_txt_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
-    paste0("ref_table '", ref_table_name, "' needs a primary key first.",
-           " Candidates are: '",
-           paste0(pk_candidates, collapse = ", "),
-           "'. Use 'cdm_add_pk()' to set it.")
+  paste0(
+    "ref_table '", ref_table_name, "' needs a primary key first.",
+    " Candidates are: '",
+    paste0(pk_candidates, collapse = ", "),
+    "'. Use 'cdm_add_pk()' to set it."
+  )
 }
 
 abort_is_not_fkc <- function(
-  child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
+                             child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
   abort(error_txt_is_not_fk(
-    child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames),
-    .subclass = cdm_error("is_not_fk")
-    )
+    child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
+  ),
+  .subclass = cdm_error("is_not_fk")
+  )
 }
 
 error_txt_is_not_fk <- function(
-  child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
-  paste0("The given combination of columns '",
-         paste0(wrong_fk_colnames, collapse = ", "),
-         "' is not a foreign key of table '",
-         child_table_name,
-         "' with regards to ref_table '",
-         parent_table_name,
-         "'. Foreign key columns are: '",
-         paste0(actual_fk_colnames,
-                collapse = ", "), "'.")
+                                child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
+  paste0(
+    "The given combination of columns '",
+    paste0(wrong_fk_colnames, collapse = ", "),
+    "' is not a foreign key of table '",
+    child_table_name,
+    "' with regards to ref_table '",
+    parent_table_name,
+    "'. Foreign key columns are: '",
+    paste0(actual_fk_colnames,
+      collapse = ", "
+    ), "'."
+  )
 }
 
 abort_rm_fk_col_missing <- function() {
@@ -231,8 +238,9 @@ abort_wrong_color <- function(avail_color_names) {
 }
 
 error_txt_wrong_color <- function(avail_color_names) {
-  paste0("Available color names are only: \n",
-         paste0(avail_color_names, collapse = ",\n")
+  paste0(
+    "Available color names are only: \n",
+    paste0(avail_color_names, collapse = ",\n")
   )
 }
 
@@ -264,7 +272,8 @@ error_txt_vertices_not_connected <- function() {
 
 abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   abort(error_txt_wrong_col_names(table_name, actual_colnames, wrong_colnames),
-        .subclass = cdm_error("wrong_col_names"))
+    .subclass = cdm_error("wrong_col_names")
+  )
 }
 
 error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
@@ -278,7 +287,8 @@ error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colname
     paste0(
       "'", wrong_colnames, "' is not a column of '",
       table_name, "'. Its columns are: \n'",
-      paste0(actual_colnames, collapse = "', '"), "'")
+      paste0(actual_colnames, collapse = "', '"), "'"
+    )
   }
 }
 
@@ -319,9 +329,9 @@ abort_first_rm_fks <- function(fks) {
   abort(error_first_rm_fks(fks), .subclass = cdm_error("first_rm_fks"))
 }
 
-error_first_rm_fks <- function(fks) h(~{
-  child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
-  parent_tbl <- paste0(unique(pull(fks, parent_table)))
+error_first_rm_fks <- function(fks) h(~ {
+    child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
+    parent_tbl <- paste0(unique(pull(fks, parent_table)))
 
-  glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
-})
+    glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
+  })

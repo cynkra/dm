@@ -28,7 +28,6 @@
 #' # the following does not work
 #' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
-
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)
@@ -85,7 +84,6 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #'
 #' nycflights_dm %>%
 #'   cdm_has_pk(planes)
-#'
 #' @export
 cdm_has_pk <- function(dm, table) {
   table_name <- as_name(enquo(table))
@@ -115,10 +113,8 @@ cdm_has_pk <- function(dm, table) {
 #'
 #' nycflights_dm %>%
 #'   cdm_get_pk(planes)
-#'
 #' @export
 cdm_get_pk <- function(dm, table) {
-
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)
@@ -141,15 +137,14 @@ cdm_get_pk <- function(dm, table) {
 #'
 #' @export
 cdm_get_all_pks <- function(dm) {
-
   all_table_names <- src_tbls(dm)
-  tables_w_pk <- all_table_names[map_lgl(all_table_names, ~cdm_has_pk(dm, !!.))]
-  pk_names <- map_chr(tables_w_pk, ~cdm_get_pk(dm, !!.x))
+  tables_w_pk <- all_table_names[map_lgl(all_table_names, ~ cdm_has_pk(dm, !!.))]
+  pk_names <- map_chr(tables_w_pk, ~ cdm_get_pk(dm, !!.x))
   pk_classes <- map2_chr(
     tables_w_pk,
     pk_names,
-    ~get_class_of_table_col(cdm_get_data_model(dm), .x, .y)
-    )
+    ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y)
+  )
 
   tibble(table = tables_w_pk, pk_col = pk_names, pk_class = pk_classes)
 }
@@ -178,39 +173,41 @@ cdm_get_all_pks <- function(dm) {
 #' nycflights_dm %>%
 #'   cdm_rm_pk(planes, rm_referencing_fks = TRUE) %>%
 #'   cdm_has_pk(planes)
-#'
 #' @export
-cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~{
-  table_name <- as_name(enquo(table))
+cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
+    table_name <- as_name(enquo(table))
 
-  check_correct_input(dm, table_name)
-  data_model <- cdm_get_data_model(dm)
+    check_correct_input(dm, table_name)
+    data_model <- cdm_get_data_model(dm)
 
-  update_cols <- data_model$columns$table == table_name
-  data_model$columns$key[update_cols] <- 0
+    update_cols <- data_model$columns$table == table_name
+    data_model$columns$key[update_cols] <- 0
 
-  fks <- cdm_get_all_fks(dm) %>%
-    filter(parent_table == table_name)
+    fks <- cdm_get_all_fks(dm) %>%
+      filter(parent_table == table_name)
 
-  if (nrow(fks)) {
-    if (rm_referencing_fks) {
-      child_tables <- pull(fks, child_table)
-      fk_cols <- pull(fks, child_fk_col)
-      data_model <- reduce2(
-        child_tables,
-        fk_cols,
-        rm_data_model_reference,
-        table_name,
-        .init = data_model)
-    } else abort_first_rm_fks(fks)
-  }
+    if (nrow(fks)) {
+      if (rm_referencing_fks) {
+        child_tables <- pull(fks, child_table)
+        fk_cols <- pull(fks, child_fk_col)
+        data_model <- reduce2(
+          child_tables,
+          fk_cols,
+          rm_data_model_reference,
+          table_name,
+          .init = data_model
+        )
+      } else {
+        abort_first_rm_fks(fks)
+      }
+    }
 
-  new_dm(
-    cdm_get_src(dm),
-    cdm_get_tables(dm),
-    data_model
-  )
-})
+    new_dm(
+      cdm_get_src(dm),
+      cdm_get_tables(dm),
+      data_model
+    )
+  })
 
 
 #' Which columns are candidates for a primary key column of a `dm`-object's table?
@@ -227,24 +224,23 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~{
 #'
 #' nycflights_dm %>% cdm_check_for_pk_candidates(flights)
 #' nycflights_dm %>% cdm_check_for_pk_candidates(airports)
-#'
 #' @export
-cdm_check_for_pk_candidates <- function(dm, table) h(~{
-  table_name <- as_name(enquo(table))
+cdm_check_for_pk_candidates <- function(dm, table) h(~ {
+    table_name <- as_name(enquo(table))
 
-  check_correct_input(dm, table_name)
+    check_correct_input(dm, table_name)
 
-  tbl <- cdm_get_tables(dm)[[table_name]]
-  tbl_colnames <- colnames(tbl)
+    tbl <- cdm_get_tables(dm)[[table_name]]
+    tbl_colnames <- colnames(tbl)
 
-  # list of ayes and noes:
-  map(tbl_colnames, ~ is_unique_key(tbl, eval_tidy(.x))) %>%
-    set_names(tbl_colnames) %>%
-    as_tibble() %>%
-    collect() %>%
-    gather(
-      key = "column",
-      value = "candidate"
-    ) %>%
-    select(candidate, column)
-})
+    # list of ayes and noes:
+    map(tbl_colnames, ~ is_unique_key(tbl, eval_tidy(.x))) %>%
+      set_names(tbl_colnames) %>%
+      as_tibble() %>%
+      collect() %>%
+      gather(
+        key = "column",
+        value = "candidate"
+      ) %>%
+      select(candidate, column)
+  })

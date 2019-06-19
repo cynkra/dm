@@ -25,10 +25,11 @@ is_postgres_empty <- function(con_postgres) {
 
 clear_postgres <- function(con_postgres) {
   if (!is_postgres_empty(con_postgres)) {
-    walk(get_test_tables_from_postgres(con_postgres) %>%
-           pull(),
-         ~dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
-         )
+    walk(
+      get_test_tables_from_postgres(con_postgres) %>%
+        pull(),
+      ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
+    )
   }
 }
 
@@ -44,13 +45,14 @@ dbplyr::test_register_src("postgres", src_postgres)
 # Only run if the top level call is devtools::test() or testthat::test_check()
 # In addition: this will only work, if run on TS's laptop
 if (is_this_a_test()) {
-  try(
-    {source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
+  try({
+    source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
     con_mssql <- mssql_con()
     src_mssql <- dbplyr::src_dbi(con_mssql)
-    dbplyr::test_register_src("mssql", src_mssql)},
-    silent = TRUE
-    )
+    dbplyr::test_register_src("mssql", src_mssql)
+  },
+  silent = TRUE
+  )
 }
 
 
@@ -132,26 +134,38 @@ list_of_data_ts_parent_and_child_src <- map2(
 # for testing filter and semi_join ----------------------------------------
 
 # the following is for testing the filtering functionality:
-t1 <- tibble(a = 1:10,
-             b = LETTERS[1:10])
+t1 <- tibble(
+  a = 1:10,
+  b = LETTERS[1:10]
+)
 
-t2 <- tibble(c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
-             d = 2:7,
-             e = c(LETTERS[4:7], LETTERS[5:6]))
+t2 <- tibble(
+  c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
+  d = 2:7,
+  e = c(LETTERS[4:7], LETTERS[5:6])
+)
 
-t3 <- tibble(f = LETTERS[2:11],
-             g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"))
+t3 <- tibble(
+  f = LETTERS[2:11],
+  g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+)
 
-t4 <- tibble(h = letters[1:5],
-             i = c("three", "four", "five", "six", "seven"),
-             j = c(LETTERS[3:6], LETTERS[6]))
+t4 <- tibble(
+  h = letters[1:5],
+  i = c("three", "four", "five", "six", "seven"),
+  j = c(LETTERS[3:6], LETTERS[6])
+)
 
-t5 <- tibble(k = 1:4,
-             l = letters[2:5],
-             m = c("house", "tree", "streetlamp", "streetlamp"))
+t5 <- tibble(
+  k = 1:4,
+  l = letters[2:5],
+  m = c("house", "tree", "streetlamp", "streetlamp")
+)
 
-t6 <- tibble(n = c("house", "tree", "hill", "streetlamp", "garden"),
-             o = letters[5:9])
+t6 <- tibble(
+  n = c("house", "tree", "hill", "streetlamp", "garden"),
+  o = letters[5:9]
+)
 
 dm_for_filter <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)) %>%
   cdm_add_pk(t1, a) %>%
@@ -173,8 +187,10 @@ dm_for_filter_smaller <- as_dm(list(t3 = t3, t4 = t4, t5 = t5)) %>%
   cdm_add_fk(t4, j, t3) %>%
   cdm_add_fk(t5, l, t4)
 
-t7 <- tibble(p = letters[4:9],
-             q = c("elephant", "lion", "seal", "worm", "dog", "cat"))
+t7 <- tibble(
+  p = letters[4:9],
+  q = c("elephant", "lion", "seal", "worm", "dog", "cat")
+)
 
 dm_for_filter_w_cycle <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7)) %>%
   cdm_add_pk(t1, a) %>%
@@ -197,45 +213,44 @@ output_1 <- list(
   t2 = tibble(c = c("seal", "worm", "dog", "cat"), d = 4:7, e = c("F", "G", "E", "F")),
   t3 = tibble(f = LETTERS[5:7], g = c("four", "five", "six")),
   t4 = tibble(h = letters[3:5], i = c("five", "six", "seven"), j = c("E", "F", "F")),
-  t5 = tibble(k = 2:4,
-              l = letters[3:5],
-              m = c("tree", "streetlamp", "streetlamp")),
-  t6 = tibble(n = c("tree", "streetlamp"),
-              o = c("f", "h"))
+  t5 = tibble(
+    k = 2:4,
+    l = letters[3:5],
+    m = c("tree", "streetlamp", "streetlamp")
+  ),
+  t6 = tibble(
+    n = c("tree", "streetlamp"),
+    o = c("f", "h")
+  )
 )
 
 output_3 <- list(
   t1 = tibble::tribble(
-    ~a,  ~b,
+    ~a, ~b,
     4L, "D",
     7L, "G"
-  )
-  ,
+  ),
   t2 = tibble::tribble(
-    ~c, ~d,  ~e,
+    ~c, ~d, ~e,
     "seal", 4L, "F",
-    "cat",  7L, "F"
-  )
-  ,
+    "cat", 7L, "F"
+  ),
   t3 = tibble::tribble(
-    ~f,     ~g,
+    ~f, ~g,
     "F", "five"
-  )
-  ,
+  ),
   t4 = tibble::tribble(
-    ~h,      ~i,  ~j,
-    "d",   "six", "F",
+    ~h, ~i, ~j,
+    "d", "six", "F",
     "e", "seven", "F"
-  )
-  ,
+  ),
   t5 = tibble::tribble(
-    ~k,  ~l,           ~m,
+    ~k, ~l, ~m,
     3L, "d", "streetlamp",
     4L, "e", "streetlamp"
-  )
-  ,
+  ),
   t6 = tibble::tribble(
-    ~n,  ~o,
+    ~n, ~o,
     "streetlamp", "h"
   )
 )

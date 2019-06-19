@@ -122,7 +122,6 @@ test_that("cdm_get_pk() works as intended?", {
 })
 
 test_that("cdm_check_for_pk_candidates() works properly?", {
-
   candidates_table_1 <- tibble(candidate = c(TRUE, TRUE), column = c("a", "b"))
   candidates_table_2 <- tibble(candidate = c(FALSE), column = c("c"))
 
@@ -142,4 +141,3 @@ test_that("cdm_check_for_pk_candidates() works properly?", {
     )
   )
 })
-

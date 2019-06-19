@@ -21,7 +21,9 @@ cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  if (!...length()) return(dm) # valid table and empty ellipsis provided
+  if (!...length()) {
+    return(dm)
+  } # valid table and empty ellipsis provided
 
   orig_tbl <- tbl(dm, table_name)
 
@@ -32,9 +34,11 @@ cdm_filter <- function(dm, table, ...) {
   # get remote tibble of pk-values after filtering
   pk_name_orig <- cdm_get_pk(dm, !!table_name)
   filtered_tbl_pk_obj <- filter(orig_tbl, ...) %>%
-    compute( unique_indexes = pk_name_orig)
+    compute(unique_indexes = pk_name_orig)
 
-  if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) return(dm) # early return if no filtering was done
+  if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) {
+    return(dm)
+  } # early return if no filtering was done
 
   cdm_semi_join(dm, !!table_name, filtered_tbl_pk_obj)
 }

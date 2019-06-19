@@ -33,5 +33,4 @@ nycflights_dm \%>\%
 nycflights_dm \%>\%
   cdm_rm_pk(planes, rm_referencing_fks = TRUE) \%>\%
   cdm_has_pk(planes)
-
 }
