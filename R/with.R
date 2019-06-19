@@ -1,4 +1,8 @@
 #' Among others: address table by their unquoted name
+#'
+#' @param dm A `dm`-object.
+#' @param code An expression to evaluate in the context of the `dm`-object.
+#'
 #' @description FIXME: missing description
 #' @export
 #' @examples
