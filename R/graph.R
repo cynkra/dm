@@ -69,7 +69,7 @@ calculate_join_list <- function(dm, table_name) {
 
 create_graph_from_dm <- function(dm) {
   tables <- src_tbls(dm)
-  ref_tables <- map(tables, ~ cdm_get_referencing_tables(dm, .))
+  ref_tables <- map(tables, ~ cdm_get_referencing_tables(dm, !!.x))
 
   tibble(tables, ref_tables) %>%
     unnest() %>%
