@@ -73,8 +73,13 @@ invisible(remote_dm)
 #' @examples
 #' \dontrun{
 #' src_postgres <- dplyr::src_postgres()
-#' iris_dm <- cdm_copy_to(src_postgres, as_dm(list(iris = iris)), set_key_constraints = FALSE)
-#' # there are no key constraints in `as_dm(list(iris = iris))`, but if there were, this would do something:
+#' iris_dm <- cdm_copy_to(
+#'   src_postgres,
+#'   as_dm(list(iris = iris)),
+#'   set_key_constraints = FALSE)
+#'
+#' # there are no key constraints in `as_dm(list(iris = iris))`,
+#' # but if there were, this would do something:
 #' cdm_set_key_constraints(iris_dm)
 #' }
 #' @export
