@@ -1,3 +1,14 @@
+#' Get a `dm` only containing the indicated tables and the connecting ones
+#'
+#' @description Is a wrapper around `cdm_find_conn_tbls()`. It returns a reduced `dm`-object,
+#' containing only the indicated tables plus the ones in between them (unless `all_connected = FALSE`).
+#'
+#' @param dm A `dm`-object
+#' @param ... Two or more table names of the `dm`-object's tables.
+#' @param all_connected Boolean, if `TRUE` (default), all the connecting tables will
+#' be part of the resulting `dm` in addition to the indicated tables. If `FALSE`,
+#' exclusively the indicated tables will be selected.
+#'
 #' @export
 cdm_select <- function(dm, ..., all_connected = TRUE) {
 
