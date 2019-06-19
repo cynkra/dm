@@ -27,6 +27,18 @@ cdm_select <- function(dm, ..., all_connected = TRUE) {
   )
 }
 
+
+#' Find the tables connecting two or more tables in a `dm`
+#'
+#' @description Find all tables that need to be passed when traversing the `dm`-object
+#' between the indicated tables along the foreign
+#' key relations. Result includes the given tables.
+#'
+#' @param dm A `dm`-object
+#' @param ... Two or more table names of the `dm`-object's tables.
+#'
+#' @return Character vector with the names of the connecting tables.
+#'
 #' @export
 cdm_find_conn_tbls <- function(dm, ...) {
   if (!is_dm(dm)) abort("'dm' has to be of class 'dm'")
