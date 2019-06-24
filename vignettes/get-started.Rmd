@@ -26,10 +26,10 @@ An object of the `dm`-class contains all relevant information about the tables i
 
 Let's first have a brief look at how to create a `dm`-class object:
 
-## Creating `dm`-objects:
+## Creating `dm` objects:
 
 A quite nice example for interconnected tables are those in the {nycflights13}-package.
-The most straightforward way of squeezing them into a `dm`-object is:
+The most straightforward way of squeezing them into a `dm` object is:
 
 ```{r message=FALSE}
 library(dm)
@@ -44,7 +44,7 @@ Many verbs, used on a `dm` object, return a new `dm` object.
 This also allows to compose sequences of operations using the `%>%` pipe operator.
 
 
-## Handling keys of `dm`-objects {#kr}
+## Handling keys of `dm` objects {#kr}
 
 As you can see in the "Data model" part of the output above, so far no keys are set.
 We use `cdm_add_pk()` to add one:
@@ -64,7 +64,7 @@ flights_dm_with_keys <-
 flights_dm_with_keys
 ```
 
-Further functions that are helpful in organizing the keys of a `dm`-object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
+Further functions that are helpful in organizing the keys of a `dm` object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
 More details can be found in the documentation of the relevant functions.
 
 ## Visualizing the data model
@@ -79,7 +79,7 @@ flights_dm_with_keys  %>%
 There are a few options of customizing the way, the data model is displayed, e.g. add different colors to subsets of the tables or arrange the tables in a different way.
 You can find details about this in the documentation or in the vignette "Visualizing 'dm'-objects".
 
-## Filtering a table of a `dm`-object {#filter}
+## Filtering a table of a `dm` object {#filter}
 
 Let's first explain the idea of a filter on a `dm` object:
 1. You filter one table of your `dm`, just like with a normal `dplyr::filter()`-call
