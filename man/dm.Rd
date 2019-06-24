@@ -60,3 +60,9 @@ object.
 
 \code{as_dm()} coerces objects to the \code{dm} class
 }
+\seealso{
+\itemize{
+\item \code{\link[=cdm_add_pk]{cdm_add_pk()}} and \code{\link[=cdm_add_fk]{cdm_add_fk()}} add primary and foreign keys
+\item FIXME
+}
+}

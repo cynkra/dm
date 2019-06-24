@@ -3,6 +3,7 @@
 #' Opens the documentation website in a browser.
 #'
 #' @importFrom utils browseURL packageName head
+#' @keywords internal
 #' @export
 browse_docs <- function() {
   path <- get_docs_path()

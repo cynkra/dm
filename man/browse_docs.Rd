@@ -9,3 +9,4 @@ browse_docs()
 \description{
 Opens the documentation website in a browser.
 }
+\keyword{internal}

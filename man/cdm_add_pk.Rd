@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_add_pk}
 \alias{cdm_add_pk}
-\title{Mark a column of a table in a \code{dm} object as its primary key}
+\title{Mark a column of a table in a \code{\link{dm}} object as its primary key}
 \usage{
 cdm_add_pk(dm, table, column, check = TRUE, force = FALSE)
 }
@@ -27,8 +27,6 @@ set key.
 \examples{
 library(dplyr)
 
-}
-\concept{Primary keys
 
 nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 
@@ -38,4 +36,11 @@ cdm_add_pk(nycflights_dm, airports, faa)
 cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 
 # the following does not work
-try(cdm_add_pk(nycflights_dm, planes, manufacturer))}
+try(cdm_add_pk(nycflights_dm, planes, manufacturer))
+}
+\seealso{
+Other Primary keys: \code{\link{cdm_check_for_pk_candidates}},
+  \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
+  \code{\link{cdm_has_pk}}, \code{\link{cdm_rm_pk}}
+}
+\concept{Primary keys}

@@ -9,6 +9,11 @@
 #' @param src A \pkg{dplyr} table source object.
 #' @param data_model A \pkg{datamodelr} data model object, or `NULL`.
 #'
+#' @seealso
+#'
+#' - [cdm_add_pk()] and [cdm_add_fk()] add primary and foreign keys
+#' - FIXME
+#'
 #' @export
 dm <- function(src, data_model = NULL) h(~ {
     # TODO: add keys argument, if both data_model and keys are missing,

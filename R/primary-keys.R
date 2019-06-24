@@ -1,6 +1,6 @@
 # for external users: also checks if really is primary key
 
-#' Mark a column of a table in a `dm` object as its primary key
+#' Mark a column of a table in a [`dm`] object as its primary key
 #'
 #' @description `cdm_add_pk()` marks the given column as the given table's primary key
 #' in the `data_model`-part of the `dm` object. If `check == TRUE`, it also first checks if
@@ -14,11 +14,11 @@
 #' @param force Boolean, if `FALSE` (default), an error will be thrown, if there is
 #' already a primary key set for this table. If `TRUE` a potential old `pk` is deleted before setting the new one.
 #'
+#' @family Primary keys
 #' @export
 #' @examples
 #' library(dplyr)
 #'
-#' @family Primary keys
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
