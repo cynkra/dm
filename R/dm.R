@@ -31,7 +31,7 @@ dm <- function(src, data_model = NULL) h(~ {
 #' Low-level constructor
 #'
 #' `new_dm()` only checks if the inputs are of the correct class.
-#' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm`-object
+#' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm` object
 #'
 #' @rdname dm
 #' @export
@@ -210,7 +210,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 #'
 #' @description `cdm_rename_table()` changes the name of one of a `dm`'s tables.
 #'
-#' @param dm A `dm`-object
+#' @param dm A `dm` object
 #' @param old_name The original name of the table
 #' @param new_name The new name of the table
 #'

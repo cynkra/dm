@@ -1,7 +1,7 @@
 #' Copy a 'dm'-object to a 'src'/'con'
 #'
 #' @description `cdm_copy_to()` takes a `src`- or `con`-object as a first argument,
-#' and a `dm`-object as a second. The latter is copied to the former. By default
+#' and a `dm` object as a second. The latter is copied to the former. By default
 #' the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
 #' By default temporary tables will be created.
 #'
@@ -69,7 +69,7 @@ cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL
 
 #' Set key constraints on a DB for a `dm`-obj with keys.
 #'
-#' @description `cdm_set_key_constraints()` takes a `dm`-object that lives on a DB (so far
+#' @description `cdm_set_key_constraints()` takes a `dm` object that lives on a DB (so far
 #' it works exclusively for MSSQL and Postgres) and mirrors the `dm` key constraints
 #' on the database.
 #'
