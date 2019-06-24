@@ -90,6 +90,7 @@ You can find details about this in the documentation or in the vignette "Visuali
 ## Filtering a table of a `dm` object {#filter}
 
 Let's first explain the idea of a filter on a `dm` object:
+
 1. You filter one table of your `dm`, just like with a normal `dplyr::filter()`-call
 2. A cascade of joins is performed along the fk relations, resulting in a new `dm` containing only rows corresponding to the -- potentially -- reduced values in the key columns of the filtered table
 
