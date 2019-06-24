@@ -4,3 +4,5 @@
 ^LICENSE\.md$
 ^dm\.Rproj$
 ^\.Rproj\.user$
+^scratch$
+^inst/pkgdown$

@@ -35,5 +35,4 @@ test_that("cdm_copy_to() works as it is intended?", {
       fixed = TRUE
     )
   )
-
 })

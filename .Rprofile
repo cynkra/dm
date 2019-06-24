@@ -1,1 +1,1 @@
-source(here::here("../devops/sandbox/db/.Rprofile"))
+source("/Users/tobiasschieferdecker/git/cynkra/devops/sandbox/db/.Rprofile")

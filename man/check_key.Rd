@@ -25,12 +25,10 @@ if the given columns (or all columns if none specified) are NOT a unique key of 
 If the columns given in the ellipsis ARE a key, the data frame itself is returned silently for piping convenience.
 }
 \examples{
-\dontrun{
-data <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
+data <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 # this is failing:
-check_key(data, a, b)
+try(check_key(data, a, b))
 
 # this is passing:
 check_key(data, a, c)
-}
 }

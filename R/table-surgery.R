@@ -21,15 +21,15 @@
 #' See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
 #'
 #' @examples
-#' \dontrun{
+#' library(magrittr)
+#'
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
 #' child_table <- decomposed_table %>%
-#'   magrittr::extract("child_table") %>%
+#'   extract("child_table") %>%
 #'   purrr::flatten_dfr()
 #' parent_table <- decomposed_table %>%
-#'   magrittr::extract("parent_table") %>%
+#'   extract("parent_table") %>%
 #'   purrr::flatten_dfr()
-#' }
 #' @export
 decompose_table <- function(.data, new_id_column, ...) {
   .data_q <- enquo(.data)
@@ -90,6 +90,10 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' `reunite_parent_child()`: After joining the two tables by the column `id_column`, this column is removed. The transformation is roughly the
 #' inverse of what `decompose_table()` does.
 #'
+#' @param child_table Table (possibly created by `decompose_table()`) that references `parent_table`
+#' @param parent_table Table (possibly created by `decompose_table()`).
+#' @param id_column Identical name of referencing/referenced column in `child_table`/`parent_table`
+#'
 #' @name reunite_parent_child
 #' @export
 reunite_parent_child <- function(child_table, parent_table, id_column) {
@@ -105,8 +109,15 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 
 #' Merge two tables linked by a foreign key relation
 #'
-#' @description `reunite_parent_child_from_list()`: After joining the two tables by the column `id_column`, this column is removed.
-#' The function is almost exactly the inverse of `decompose_table()` (the order of the columns is not retained and original rownames are lost).
+#' @description `reunite_parent_child_from_list()`: After joining the two tables
+#' by the column `id_column`, this column is removed.
+#'
+#' The function is almost exactly the inverse of `decompose_table()` (the order
+#' of the columns is not retained and original rownames are lost).
+#'
+#' @inheritParams reunite_parent_child
+#' @param list_of_parent_child_tables Cf arguments `child_table` and `parent_table` from
+#' `reunite_parent_child()`, but both in a named list (as created by `decompose_table()`).
 #'
 #' @rdname reunite_parent_child
 #' @export

@@ -1,3 +1,15 @@
+#' Learn a `dm`-object from a database (DB)
+#'
+#' @description Assuming, there are permament tables on a DB, you can turn these
+#' into a `dm`-object. The key constraints are also learned from the DB and taken into
+#' account.
+#'
+#' So far this only works for MSSQL and Postgres. Also, you can not specify a schema to learn from.
+#'
+#' @param dest A `src`-object on a DB or a connection to a DB.
+#'
+#' @return A `dm`-object with the tables from the DB and the respective key relations.
+#'
 #' @export
 cdm_learn_from_db <- function(dest) {
   # assuming we do not try to learn from temporary tables (which do not appear in sys.table (at least not the globally temporary ones))
@@ -6,7 +18,11 @@ cdm_learn_from_db <- function(dest) {
   overview <-
     dbGetQuery(con, db_learn_query(con)) %>%
     as_tibble()
-  if (nrow(overview) == 0) return(NULL) else overview <- arrange(overview, table)
+  if (nrow(overview) == 0) {
+    return(NULL)
+  } else {
+    overview <- arrange(overview, table)
+  }
 
   table_names <- overview %>%
     distinct(table) %>%
@@ -14,13 +30,18 @@ cdm_learn_from_db <- function(dest) {
 
   new_dm(
     src = con,
-    tables = map(table_names, ~tbl(con, .)) %>% set_names(table_names),
-    data_model = get_datamodel_from_overview(overview))
+    tables = map(table_names, ~ tbl(con, .)) %>% set_names(table_names),
+    data_model = get_datamodel_from_overview(overview)
+  )
 }
 
 db_learn_query <- function(dest) {
-  if (is_mssql(dest)) return(mssql_learn_query())
-  if (is_postgres(dest)) return(postgres_learn_query())
+  if (is_mssql(dest)) {
+    return(mssql_learn_query())
+  }
+  if (is_postgres(dest)) {
+    return(postgres_learn_query())
+  }
 }
 
 mssql_learn_query <- function() { # taken directly from {datamodelr}

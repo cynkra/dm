@@ -6,8 +6,9 @@ test_that("cdm_semi_join() does the right thing?", {
       cdm_semi_join(.x, t1, filter(.y, a < 8, a > 3)) %>%
         cdm_get_tables() %>%
         map(collect),
-      output_1)
+      output_1
     )
+  )
 
   map2(
     dm_for_filter_src,
@@ -16,7 +17,8 @@ test_that("cdm_semi_join() does the right thing?", {
       cdm_semi_join(.x, t3, filter(.y, g == "five")) %>%
         cdm_get_tables() %>%
         map(collect),
-      output_3)
+      output_3
+    )
   )
 
   map2(
@@ -27,6 +29,6 @@ test_that("cdm_semi_join() does the right thing?", {
       class = cdm_error("wrong_table_cols_semi_join"),
       error_txt_wrong_table_cols_semi_join("t3"),
       fixed = TRUE
-      )
+    )
   )
 })

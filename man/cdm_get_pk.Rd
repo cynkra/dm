@@ -6,21 +6,20 @@
 \usage{
 cdm_get_pk(dm, table)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+}
 \description{
 \code{cdm_get_pk()} returns the name of the
 column marked as primary key of a table of a \code{dm}-object. If no primary key is
 set for the table, an empty character variable is returned.
 }
 \examples{
-\dontrun{
-library(nycflights13)
 library(dplyr)
+nycflights_dm <- cdm_nycflights13()
 
-nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-cdm_obj_with_keys <- cdm_add_pk(nycflights_dm, planes, tailnum)
-
-cdm_obj_with_keys \%>\%
+nycflights_dm \%>\%
   cdm_get_pk(planes)
-}
-
 }

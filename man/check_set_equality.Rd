@@ -21,14 +21,12 @@ one value set is a subset of another and vice versa, i.e., if both sets are the 
 If not, it throws an error.
 }
 \examples{
-\dontrun{
-data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
+data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 # this is failing:
-check_set_equality(data_1, a, data_2, a)
+try(check_set_equality(data_1, a, data_2, a))
 
-data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
+data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 # this is passing:
 check_set_equality(data_1, a, data_3, a)
-}
 }

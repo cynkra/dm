@@ -6,6 +6,16 @@
 \usage{
 cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+
+\item{rm_referencing_fks}{Boolean: if \code{FALSE} (default), will throw an error, if
+there are foreign keys addressing the primary key to be removed. If \code{TRUE}, will
+in addition to the primary key of parameter \code{table}, also remove all foreign key constraints
+that are pointing to it.}
+}
 \description{
 \code{cdm_rm_pk()} removes a potentially set primary key from a table in the
 underlying \code{data_model}-object and otherwise leaves the \code{dm}-object untouched.
@@ -13,24 +23,14 @@ underlying \code{data_model}-object and otherwise leaves the \code{dm}-object un
 Foreign keys pointing to the table from other tables can optionally be removed as well.
 }
 \examples{
-\dontrun{
-library(nycflights13)
 library(dplyr)
+nycflights_dm <- cdm_nycflights13()
 
-nycflights_dm <- dm(src_df(pkg = "nycflights13"))
-
-cdm_obj_with_keys <-
-  nycflights_dm \%>\%
-  cdm_add_pk(planes, tailnum) \%>\%
-  cdm_add_pk(airports, faa)
-
-cdm_obj_with_keys \%>\%
-  cdm_rm_pk(airports) \%>\%
+nycflights_dm \%>\%
+  cdm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
   cdm_has_pk(planes)
 
-cdm_obj_with_keys \%>\%
-  cdm_rm_pk(planes) \%>\%
+nycflights_dm \%>\%
+  cdm_rm_pk(planes, rm_referencing_fks = TRUE) \%>\%
   cdm_has_pk(planes)
-}
-
 }

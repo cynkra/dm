@@ -15,7 +15,7 @@ test_that("last", {
     color_quos_to_display(
       flights = "blue",
       airlines =
-    ),
+      ),
     class = cdm_error("last_col_missing"),
     error_txt_last_col_missing()
   )

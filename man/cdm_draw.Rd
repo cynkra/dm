@@ -19,6 +19,32 @@ cdm_get_colors(dm)
 cdm_get_available_colors()
 }
 \arguments{
+\item{dm}{A \code{dm} object}
+
+\item{table_names}{Tables to consider in the model visualisation.
+If \code{NULL} (default), there is no constraint.}
+
+\item{rankdir}{Graph attribute for direction (eg. 'BT' = bottom --> top)}
+
+\item{col_attr}{Column atributes to display.
+Only column name (\code{column}) is included by default.}
+
+\item{view_type}{Can be "all" (by default), "keys_only" or "title_only".
+It defines the level of details for the table rendering
+(all columns, only primary and foreign keys or no columns)}
+
+\item{columnArrows}{Edges from column to column (default: FALSE)}
+
+\item{graph_attrs}{Additional graph attributes}
+
+\item{node_attrs}{Additional node attributes}
+
+\item{edge_attrs}{Additional edge attributes}
+
+\item{focus}{A list of parameters for rendering (table filter)}
+
+\item{graph_name}{A graph name}
+
 \item{...}{Colors to set in the form \code{table = "<color>"} . Fall-through syntax similarly to
 \code{\link[=switch]{switch()}} is supported: \code{table1 = , table2 = "<color>"} sets the color for both \code{table1}
 and \code{table2} .}
@@ -36,7 +62,7 @@ column and auxiliary information in other columns.
 
 \code{cdm_set_colors()} allows to define the colors in which to display the tables of the data model.
 
-\code{cdm_get_colors()} returns the colors define for a data model.
+\code{cdm_get_colors()} returns the colors defined for a data model.
 
 \code{cdm_get_available_colors()} returns an overview of the available colors and their names
 as a tibble.

@@ -21,10 +21,9 @@ copy_list_of_tables_to <- function(src, list_of_tables,
 }
 
 create_queries <- function(
-  dest,
-  pk_information,
-  fk_information
-  ) {
+                           dest,
+                           pk_information,
+                           fk_information) {
   if (!is_null(pk_information)) {
     q_not_nullable <- queries_not_nullable(dest, pk_information)
     q_set_pk_cols <- queries_set_pk_cols(dest, pk_information)
@@ -56,17 +55,22 @@ queries_not_nullable <- function(dest, pk_information) {
       list(
         db_tables,
         cols_to_set_not_null,
-        cols_db_classes),
+        cols_db_classes
+      ),
       ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3} NOT NULL")
-      )
-    } else if (is_postgres(dest)) {
-      pmap_chr(
-        list(
-          db_tables,
-          cols_to_set_not_null,
-          cols_db_classes),
-        ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}, ALTER COLUMN {..2} SET NOT NULL"))
-      } else return("")
+    )
+  } else if (is_postgres(dest)) {
+    pmap_chr(
+      list(
+        db_tables,
+        cols_to_set_not_null,
+        cols_db_classes
+      ),
+      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}, ALTER COLUMN {..2} SET NOT NULL")
+    )
+  } else {
+    return("")
+  }
 }
 
 queries_set_pk_cols <- function(dest, pk_information) {
@@ -78,8 +82,9 @@ queries_set_pk_cols <- function(dest, pk_information) {
       cols_to_set_as_pk,
       ~ glue("ALTER TABLE {.x} ADD CONSTRAINT pk_{.x} PRIMARY KEY ({.y})")
     )
-  } else
+  } else {
     return("")
+  }
 }
 
 queries_adapt_fk_col_classes <- function(dest, fk_information) {
@@ -89,18 +94,25 @@ queries_adapt_fk_col_classes <- function(dest, fk_information) {
   cols_db_classes <- class_to_db_class(dest, child_col_classes)
   if (is_mssql(dest)) {
     pmap_chr(
-      list(db_child_tables,
-           cols_to_adapt,
-           cols_db_classes),
+      list(
+        db_child_tables,
+        cols_to_adapt,
+        cols_db_classes
+      ),
       ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3}")
-    )} else if (is_postgres(dest)) {
-      pmap_chr(
-        list(db_child_tables,
-             cols_to_adapt,
-             cols_db_classes),
-        ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}")
-      )
-    } else return("")
+    )
+  } else if (is_postgres(dest)) {
+    pmap_chr(
+      list(
+        db_child_tables,
+        cols_to_adapt,
+        cols_db_classes
+      ),
+      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}")
+    )
+  } else {
+    return("")
+  }
 }
 
 queries_set_fk_relations <- function(dest, fk_information) {
@@ -115,10 +127,13 @@ queries_set_fk_relations <- function(dest, fk_information) {
         db_child_tables,
         child_fk_cols,
         db_parent_tables,
-        parent_pk_col),
+        parent_pk_col
+      ),
       ~ glue("ALTER TABLE {..1} ADD FOREIGN KEY ({..2}) REFERENCES {..3}({..4}) ON DELETE CASCADE ON UPDATE CASCADE")
     )
-  } else return("")
+  } else {
+    return("")
+  }
 }
 
 class_to_db_class <- function(dest, class_vector) {
@@ -128,7 +143,9 @@ class_to_db_class <- function(dest, class_vector) {
       class_vector == "integer" ~ "INT",
       TRUE ~ class_vector
     )
-  } else return(class_vector)
+  } else {
+    return(class_vector)
+  }
 }
 
 get_db_table_names <- function(dm) {
@@ -137,14 +154,15 @@ get_db_table_names <- function(dm) {
   }
   tibble(
     table_name = src_tbls(dm),
-    remote_name = map_chr(cdm_get_tables(dm), list("ops", "x")))
+    remote_name = map_chr(cdm_get_tables(dm), list("ops", "x"))
+  )
 }
 
 is_src_db <- function(dm) {
   if (is.src(cdm_get_src(dm))) {
     inherits(cdm_get_src(dm), "src_sql")
   } else {
-    inherits(cdm_get_src(dm) %>% src_dbi(), "src_sql")
+    inherits(cdm_get_src(dm) %>% dbplyr::src_dbi(), "src_sql")
   }
 }
 
@@ -159,7 +177,7 @@ is_postgres <- function(dest) {
 }
 
 src_from_src_or_con <- function(dest) {
-  if (is.src(dest)) dest else src_dbi(dest)
+  if (is.src(dest)) dest else dbplyr::src_dbi(dest)
 }
 
 con_from_src_or_con <- function(dest) {

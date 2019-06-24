@@ -6,6 +6,13 @@
 \usage{
 cdm_get_fk(dm, table, ref_table)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+
+\item{ref_table}{The table which is referenced from \code{table}.}
+}
 \description{
 Retrieve the name of the column marked as foreign key, pointing from one table of a \code{dm} to another
 }

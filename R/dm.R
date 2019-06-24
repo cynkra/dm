@@ -10,27 +10,28 @@
 #' @param data_model A \pkg{datamodelr} data model object, or `NULL`.
 #'
 #' @export
-dm <- function(src, data_model = NULL) {
-  # TODO: add keys argument, if both data_model and keys are missing,
-  # create surrogate keys
-  if (is.null(data_model)) {
-    tbl_names <- src_tbls(src)
-    tbls <- map(set_names(tbl_names), tbl, src = src)
-    tbl_heads <- map(tbls, head, 0)
-    tbl_structures <- map(tbl_heads, collect)
+dm <- function(src, data_model = NULL) h(~ {
+    # TODO: add keys argument, if both data_model and keys are missing,
+    # create surrogate keys
+    if (is.null(data_model)) {
+      tbl_names <- src_tbls(src)
+      tbls <- map(set_names(tbl_names), tbl, src = src)
+      tbl_heads <- map(tbls, head, 0)
+      tbl_structures <- map(tbl_heads, collect)
 
-    data_model <- datamodelr::dm_from_data_frames(tbl_structures)
-  }
+      data_model <- datamodelr::dm_from_data_frames(tbl_structures)
+    }
 
-  table_names <- set_names(data_model$tables$table)
-  tables <- map(table_names, tbl, src = src)
+    table_names <- set_names(data_model$tables$table)
+    tables <- map(table_names, tbl, src = src)
 
-  new_dm(src, tables, data_model)
-}
+    new_dm(src, tables, data_model)
+  })
 
 #' Low-level constructor
 #'
 #' `new_dm()` only checks if the inputs are of the correct class.
+#' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm`-object
 #'
 #' @rdname dm
 #' @export
@@ -159,12 +160,14 @@ print.dm <- function(x, ...) {
     db_complete_info <- dbGetInfo(cdm_get_src(x))
     db_info <- paste0(
       if_else(is_empty(db_complete_info$dbms.name),
-              paste0("DB-name: ", db_complete_info$dbname),
-              paste0("DBMS-name: ", db_complete_info$dbms.name)),
+        paste0("DB-name: ", db_complete_info$dbname),
+        paste0("DBMS-name: ", db_complete_info$dbms.name)
+      ),
       if_else(is_empty(db_complete_info$servername),
-              paste0(", Server version: ", db_complete_info$serverVersion),
-              paste0(", Server name: ", db_complete_info$servername))
+        paste0(", Server version: ", db_complete_info$serverVersion),
+        paste0(", Server name: ", db_complete_info$servername)
       )
+    )
   }
 
   cat_line(db_info)
@@ -203,6 +206,14 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
   abort("`dm` objects are immutable, please use ...")
 }
 
+#' Rename tables of a `dm`
+#'
+#' @description `cdm_rename_table()` changes the name of one of a `dm`'s tables.
+#'
+#' @param dm A `dm`-object
+#' @param old_name The original name of the table
+#' @param new_name The new name of the table
+#'
 #' @export
 cdm_rename_table <- function(dm, old_name, new_name) {
   old_name_q <- as_name(enexpr(old_name))
@@ -218,20 +229,29 @@ cdm_rename_table <- function(dm, old_name, new_name) {
     src = cdm_get_src(dm),
     tables = new_tables,
     data_model = datamodel_rename_table(
-      cdm_get_data_model(dm), old_name_q, new_name_q)
+      cdm_get_data_model(dm), old_name_q, new_name_q
+    )
   )
 }
 
+#' @description `cdm_rename_tables()` changes the names one or more tables of a `dm`.
+#'
+#' @rdname cdm_rename_table
+#'
+#' @inheritParams cdm_rename_table
+#' @param old_table_names Character vector or list of the original names of the tables which are to change
+#' @param new_table_names Character vector or list of the new names of the tables
+#'
 #' @export
 cdm_rename_tables <- function(dm, old_table_names, new_table_names) {
   if (length(old_table_names) != length(new_table_names)) {
     abort("Length of 'new_table_names' does not match that of 'old_table_names'")
   }
-    #abort_rename_table_fail(old_names, new_names)
+  # abort_rename_table_fail(old_names, new_names)
   reduce2(
     old_table_names,
     new_table_names,
     cdm_rename_table,
     .init = dm
-    )
+  )
 }

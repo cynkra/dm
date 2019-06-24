@@ -1,11 +1,11 @@
-test_that("cdm_learn_from_*() works?", {
+test_that("Learning from MSSQL works?", {
 
 
-# cdm_learn_from_mssql() --------------------------------------------------
-
+  # cdm_learn_from_mssql() --------------------------------------------------
+  testthat::skip_if_not(exists("con_mssql"))
   # create an object on the MSSQL-DB that can be learned
   if (!any(src_tbls(src_mssql) %>%
-           str_detect(., "^t1_"))) {
+    str_detect(., "^t1_"))) {
     cdm_copy_to(con_mssql, dm_for_filter, temporary = FALSE)
   }
 
@@ -29,9 +29,12 @@ test_that("cdm_learn_from_*() works?", {
   expect_identical(
     data_model_mssql_learned_renamed_reclassed,
     data_model_original
-    )
+  )
+})
 
 # cdm_learn_from_postgres() --------------------------------------------------
+test_that("Learning from Postgres works?", {
+
 
   # create an object on the Postgres-DB that can be learned
   if (is_postgres_empty(con_postgres)) {
@@ -55,8 +58,9 @@ test_that("cdm_learn_from_*() works?", {
   data_model_original$columns <-
     set_rownames(data_model_original$columns, 1:15) # for some reason the rownames are the column names...
 
-  expect_identical(data_model_postgres_learned_renamed_reclassed,
-                   data_model_original
+  expect_identical(
+    data_model_postgres_learned_renamed_reclassed,
+    data_model_original
   )
 
   # clean up Postgres-DB

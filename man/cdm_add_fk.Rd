@@ -6,6 +6,20 @@
 \usage{
 cdm_add_fk(dm, table, column, ref_table, check = TRUE)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}}
+
+\item{column}{The column of \code{table} which is to become the foreign key column
+referencing the primary key of \code{ref_table}.}
+
+\item{ref_table}{The table which \code{table} is referencing. This table needs to have
+a primary key set.}
+
+\item{check}{Boolean, if \code{TRUE} (default), a check is performed, if the values of
+\code{column} are a subset of the values of the primary key column of \code{ref_table}.}
+}
 \description{
 Add a reference from one table of a \code{dm} to another
 }
