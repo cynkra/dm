@@ -23,8 +23,8 @@ The goal of both the package {dm} and its `dm` class is to facilitate work with 
 An object of the `dm`-class contains all relevant information about the tables in a data model:
 
 1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
-1. the meta-data from the data model: the key constraints
-1. the tables themselves, i.e., the data
+1. the meta-data from the data model: the tables, columns, and key constraints
+1. the data in the tables
 
 This package follows several of the "tidyverse" rules:
 
@@ -36,7 +36,6 @@ We will showcase here some of the features of {dm}:
 
 1. [Creation of `dm` objects](#create)
 1. [Setting keys and drawing](#keys)
-1. FIXME: `cdm_nycflights13() %>% cdm_join_tbl(airlines, flights, join = left_join)`
 1. [Filtering](#filter)
 1. [Copying and discovery](#copy)
 
@@ -101,15 +100,16 @@ flights_dm_with_keys %>%
 
 The idea of a filter on a `dm` object:
 
-1. You filter one table of your `dm`, just like with a normal `dplyr::filter()`-call
+1. You filter one table of your `dm`, just like with a normal `dplyr::filter()` call
 2. A cascade of joins is performed along the fk relations, resulting in a new `dm` containing only rows related to the filter operation
 
 Currently, this only works if the graph induced by the fk relations is cycle free.
-Our helper has an option for this:
+Our `cdm_nycflights13()` helper has an option for this:
 
 ```{r}
 flights_dm_acyclic <- cdm_nycflights13(cycle = FALSE)
-flights_dm_acyclic
+flights_dm_acyclic %>% 
+  cdm_draw()
 ```
 
 Let's see it in action:
@@ -140,8 +140,7 @@ tbl(us_flights_from_jfk, "planes") %>%
 
 For comparison, let's review the equivalent manual query in {dplyr} syntax:
 
-```{r}
-library(nycflights13)
+```{r eval=FALSE}
 flights %>% 
   left_join(airports, by = c("origin" = "faa")) %>% 
   filter(name == "John F Kennedy Intl") %>%
@@ -189,7 +188,6 @@ More details can be found in the documentation of the relevant functions.
 There are a few options of customizing the way, the data model is displayed, e.g. add different colors to subsets of the tables or arrange the tables in a different way.
 You can find details about this in the documentation or in the vignette "Visualizing 'dm'-objects".
 
-
 It will copy the individual tables from the former to the new `src`, potentially set key constraints -- if on a DB (so far only MSSQL and Postgres are supported for this feature) -- and subsequently invisibly return the new `dm` object.
 
 Here we show an example using the in-memory SQLite-DB (so no key constraints are established):
@@ -197,3 +195,24 @@ Here we show an example using the in-memory SQLite-DB (so no key constraints are
 it is not possible to execute the corresponding code in this vignette, since -- just like with the transfer to a DB -- only MSSQL and Postgres are so far supported, and there are no generally accessible DBs of this type available.
 
 But anyhow, we can show, how the code looks like
+
+
+### Joining two tables {#join}
+
+The `cdm_join_tbl()` function joins two immediately related tables in a data model.
+The definition of the primary and foreign key constraints is used to define the relationship.
+
+```{r}
+flights_dm_with_keys %>%
+  cdm_join_tbl(airlines, flights, join = left_join)
+```
+
+The same operation using {dplyr} syntax looks like this:
+
+```{r eval=FALSE}
+library(nycflights13)
+airlines %>% 
+  left_join(flights, by = "carrier")
+```
+
+Omitting the `by` argument leads to a warning
