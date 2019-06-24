@@ -129,16 +129,16 @@ play around with).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_nycflights13</span>(<span class='kw'>cycle_free</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_nycflights13</span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cycle_free</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), only one foreign key relation
+      <th>cycle</th>
+      <td><p>Boolean, if <code>FALSE</code>, only one foreign key relation
 (from <code>flights$origin</code> to <code>airports$faa</code>) between <code>flights</code> and <code>airports</code> is
-established. If <code>FALSE</code>, a <code>dm</code> object with a double reference
+established. If <code>TRUE</code> (default), a <code>dm</code> object with a double reference
 between those tables will be produced.</p></td>
     </tr>
     </table>

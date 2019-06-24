@@ -157,6 +157,12 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other Primary keys: <code><a href='cdm_check_for_pk_candidates.html'>cdm_check_for_pk_candidates</a></code>,
+  <code><a href='cdm_get_all_pks.html'>cdm_get_all_pks</a></code>, <code><a href='cdm_get_pk.html'>cdm_get_pk</a></code>,
+  <code><a href='cdm_has_pk.html'>cdm_has_pk</a></code>, <code><a href='cdm_rm_pk.html'>cdm_rm_pk</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
@@ -167,38 +173,39 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
+
 <span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
 
 <span class='co'># the following works</span>
-<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>tailnum</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>tailnum</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
 #&gt;   53 columns
 #&gt;   1 primary keys
 #&gt;   no references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>airports</span>, <span class='no'>faa</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>airports</span>, <span class='no'>faa</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
 #&gt;   53 columns
 #&gt;   1 primary keys
 #&gt;   no references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
 #&gt;   53 columns
 #&gt;   1 primary keys
 #&gt;   no references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Total: 367687
 #&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'>
 <span class='co'># the following does not work</span>
@@ -248,14 +255,16 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt; </span><span style='color: #555555;'> 41. </span><span>                            │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; </span><span style='color: #555555;'> 42. </span><span>                            │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
 #&gt; </span><span style='color: #555555;'> 43. </span><span>                            └─dm::cdm_add_pk(nycflights_dm, planes, manufacturer)
-#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─dm::check_key(table_from_dm, !!col_expr) </span><span style='color: #555555;'>/Users/tobiasschieferdecker/git/cynkra/dm/R/primary-keys.R:57:4</span><span>
-#&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─dm:::abort_not_unique_key(as_label(data_q), map_chr(args, as_label)) </span><span style='color: #555555;'>/Users/tobiasschieferdecker/git/cynkra/dm/R/key-helpers.R:39:2</span><span></div></span></pre>
+#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─dm::check_key(table_from_dm, !!col_expr) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/primary-keys.R:59:4</span><span>
+#&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─dm:::abort_not_unique_key(as_label(data_q), map_chr(args, as_label)) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/key-helpers.R:39:2</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
