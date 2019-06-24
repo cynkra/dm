@@ -50,7 +50,7 @@ It is important to mention, that we tried following the `tidyverse`-approach of 
 This means, that there are no functions, that will overwrite `dm`-objects.
 Each verb, used on a `dm`-object, produces a new `dm`-object.
 
-## Handling key relations of `dm`-objects {#kr}
+## Handling keys of `dm`-objects {#kr}
 
 As you can see in the print-output above, so far no keys are set in the `data_model`-part of the `dm`.
 This can be done in a -- hopefully -- rather intuitive way:
@@ -67,3 +67,8 @@ The following function provides a shortcut for the creation of a `dm`-object con
 flights_dm_with_keys <- 
   cdm_nycflights13()
 ```
+
+Further functions that are helpful in organizing the keys of a `dm`-object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
+More details can be found in the documentation of the relevant functions.
+
+
