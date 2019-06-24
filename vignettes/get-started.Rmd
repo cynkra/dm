@@ -22,7 +22,7 @@ An object of the `dm`-class contains all relevant information about the tables i
 
 1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
 2. the tables themselves, i.e., the data
-3. the meta-data from the data model: the key relations
+3. the meta-data from the data model: the key constraints
 
 This package follows several of the "tidyverse" rules:
 - `dm` objects are immutable (your data will never be overwritten in place)
