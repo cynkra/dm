@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add a reference from one table of a <code>dm</code> to another — cdm_add_fk • dm</title>
+<title>Get a <code>dm</code> only containing the indicated tables and the connecting ones — cdm_select • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Add a reference from one table of a <code>dm</code> to another — cdm_add_fk" />
+<meta property="og:title" content="Get a <code>dm</code> only containing the indicated tables and the connecting ones — cdm_select" />
 
-<meta property="og:description" content="Add a reference from one table of a dm to another" />
+<meta property="og:description" content="Is a wrapper around cdm_find_conn_tbls(). It returns a reduced dm object,
+containing only the indicated tables plus the ones in between them (unless all_connected = FALSE)." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -112,44 +113,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add a reference from one table of a <code>dm</code> to another</h1>
+    <h1>Get a <code>dm</code> only containing the indicated tables and the connecting ones</h1>
     
-    <div class="hidden name"><code>cdm_add_fk.Rd</code></div>
+    <div class="hidden name"><code>cdm_select.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Add a reference from one table of a <code>dm</code> to another</p>
+    <p>Is a wrapper around <code><a href='cdm_find_conn_tbls.html'>cdm_find_conn_tbls()</a></code>. It returns a reduced <code>dm</code> object,
+containing only the indicated tables plus the ones in between them (unless <code>all_connected = FALSE</code>).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_select</span>(<span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>all_connected</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
+      <td><p>A <code>dm</code> object</p></td>
     </tr>
     <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
+      <th>...</th>
+      <td><p>Two or more table names of the <code>dm</code> object's tables.</p></td>
     </tr>
     <tr>
-      <th>column</th>
-      <td><p>The column of <code>table</code> which is to become the foreign key column
-referencing the primary key of <code>ref_table</code>.</p></td>
-    </tr>
-    <tr>
-      <th>ref_table</th>
-      <td><p>The table which <code>table</code> is referencing. This table needs to have
-a primary key set.</p></td>
-    </tr>
-    <tr>
-      <th>check</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), a check is performed, if the values of
-<code>column</code> are a subset of the values of the primary key column of <code>ref_table</code>.</p></td>
+      <th>all_connected</th>
+      <td><p>Boolean, if <code>TRUE</code> (default), all the connecting tables will
+be part of the resulting <code>dm</code> in addition to the indicated tables. If <code>FALSE</code>,
+exclusively the indicated tables will be selected.</p></td>
     </tr>
     </table>
     

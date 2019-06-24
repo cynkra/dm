@@ -34,7 +34,7 @@
 
 <meta property="og:description" content="cdm_draw() draws a schema of the data model using datamodelr (which in turn uses DiagrammeR)
 cdm_set_colors() allows to define the colors in which to display the tables of the data model.
-cdm_get_colors() returns the colors define for a data model.
+cdm_get_colors() returns the colors defined for a data model.
 cdm_get_available_colors() returns an overview of the available colors and their names
 as a tibble." />
 <meta name="twitter:card" content="summary" />
@@ -67,7 +67,7 @@ as a tibble." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9011</span>
       </span>
     </div>
 
@@ -84,6 +84,18 @@ as a tibble." />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/dm-overview.html">Introduction to dm</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -113,7 +125,7 @@ as a tibble." />
     
     <p><code>cdm_draw()</code> draws a schema of the data model using <code>datamodelr</code> (which in turn uses <code>DiagrammeR</code>)</p>
 <p><code>cdm_set_colors()</code> allows to define the colors in which to display the tables of the data model.</p>
-<p><code>cdm_get_colors()</code> returns the colors define for a data model.</p>
+<p><code>cdm_get_colors()</code> returns the colors defined for a data model.</p>
 <p><code>cdm_get_available_colors()</code> returns an overview of the available colors and their names
 as a tibble.</p>
     
@@ -133,6 +145,54 @@ as a tibble.</p>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object</p></td>
+    </tr>
+    <tr>
+      <th>table_names</th>
+      <td><p>Tables to consider in the model visualisation.
+If <code>NULL</code> (default), there is no constraint.</p></td>
+    </tr>
+    <tr>
+      <th>rankdir</th>
+      <td><p>Graph attribute for direction (eg. 'BT' = bottom --&gt; top)</p></td>
+    </tr>
+    <tr>
+      <th>col_attr</th>
+      <td><p>Column atributes to display.
+Only column name (<code>column</code>) is included by default.</p></td>
+    </tr>
+    <tr>
+      <th>view_type</th>
+      <td><p>Can be "all" (by default), "keys_only" or "title_only".
+It defines the level of details for the table rendering
+(all columns, only primary and foreign keys or no columns)</p></td>
+    </tr>
+    <tr>
+      <th>columnArrows</th>
+      <td><p>Edges from column to column (default: FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>graph_attrs</th>
+      <td><p>Additional graph attributes</p></td>
+    </tr>
+    <tr>
+      <th>node_attrs</th>
+      <td><p>Additional node attributes</p></td>
+    </tr>
+    <tr>
+      <th>edge_attrs</th>
+      <td><p>Additional edge attributes</p></td>
+    </tr>
+    <tr>
+      <th>focus</th>
+      <td><p>A list of parameters for rendering (table filter)</p></td>
+    </tr>
+    <tr>
+      <th>graph_name</th>
+      <td><p>A graph name</p></td>
+    </tr>
     <tr>
       <th>...</th>
       <td><p>Colors to set in the form <code>table = "&lt;color&gt;"</code> . Fall-through syntax similarly to

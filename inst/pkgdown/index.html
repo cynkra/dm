@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9011</span>
       </span>
     </div>
 
@@ -50,6 +50,18 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/dm-overview.html">Introduction to dm</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="news/index.html">Changelog</a>
@@ -95,7 +107,7 @@
 <a class="sourceLine" id="cb1-2" title="2">data_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a></code></pre></div>
 <p>and you want to know if <code>a</code> is a primary key for <code>data_1</code>, you can use the <code><a href="reference/check_key.html">check_key()</a></code> function:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">1</span>, a)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; `a` is not a unique key of `data_1`</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; `a` not a unique key of `data_1`.</span></a></code></pre></div>
 <p>Mind the error message when a test is not passed.</p>
 <p>In case of <code>data_2</code> column <code>a</code> is a key:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">2</span>, a)</a></code></pre></div>
@@ -151,7 +163,7 @@
 <p>Here are some examples for the usage of the functions:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># This does not pass, `c` is not unique key of d2:</span></a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_n</a></span>(d2, c, d1, a)</a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; `c` is not a unique key of `d2`</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; `c` not a unique key of `d2`.</span></a>
 <a class="sourceLine" id="cb10-4" title="4"></a>
 <a class="sourceLine" id="cb10-5" title="5"><span class="co"># This passes, multiple values in d2$c are allowed:</span></a>
 <a class="sourceLine" id="cb10-6" title="6"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_n</a></span>(d1, a, d2, c)</a>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Does a table of a <code>dm</code>-object have a column set as primary key? — cdm_has_pk • dm</title>
+<title>Does a table of a <code>dm</code> object have a column set as primary key? — cdm_has_pk • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Does a table of a <code>dm</code>-object have a column set as primary key? — cdm_has_pk" />
+<meta property="og:title" content="Does a table of a <code>dm</code> object have a column set as primary key? — cdm_has_pk" />
 
 <meta property="og:description" content="cdm_has_pk() checks in the data_model part
-of the dm-object if a given table has a column marked as primary key." />
+of the dm object if a given table has a column marked as primary key." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -64,7 +64,7 @@ of the dm-object if a given table has a column marked as primary key." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9011</span>
       </span>
     </div>
 
@@ -81,6 +81,18 @@ of the dm-object if a given table has a column marked as primary key." />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/dm-overview.html">Introduction to dm</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -101,7 +113,7 @@ of the dm-object if a given table has a column marked as primary key." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Does a table of a <code>dm</code>-object have a column set as primary key?</h1>
+    <h1>Does a table of a <code>dm</code> object have a column set as primary key?</h1>
     
     <div class="hidden name"><code>cdm_has_pk.Rd</code></div>
     </div>
@@ -109,29 +121,37 @@ of the dm-object if a given table has a column marked as primary key." />
     <div class="ref-description">
     
     <p><code>cdm_has_pk()</code> checks in the <code>data_model</code> part
-of the <code>dm</code>-object if a given table has a column marked as primary key.</p>
+of the <code>dm</code> object if a given table has a column marked as primary key.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>cdm_has_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>table</th>
+      <td><p>A table in the <code>dm</code></p></td>
+    </tr>
+    </table>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>nycflights13</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>()
 
-<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
-<span class='no'>cdm_obj_with_keys</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_add_pk.html'>cdm_add_pk</a></span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>tailnum</span>)
-
-<span class='no'>cdm_obj_with_keys</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_has_pk</span>(<span class='no'>planes</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>cdm_has_pk</span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
             
       <li><a href="#examples">Examples</a></li>
     </ul>

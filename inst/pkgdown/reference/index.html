@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9011</span>
       </span>
     </div>
 
@@ -77,6 +77,18 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/dm-overview.html">Introduction to dm</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -111,7 +123,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-creating-dm-objects-and-basic-functions" class="hasAnchor"><a href="#section-creating-dm-objects-and-basic-functions" class="anchor"></a>Creating `dm`-objects and basic functions</h2>
+          <h2 id="section-creating-dm-objects-and-basic-functions" class="hasAnchor"><a href="#section-creating-dm-objects-and-basic-functions" class="anchor"></a>Creating `dm` objects and basic functions</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -121,11 +133,17 @@
           <p><code><a href="dm.html">dm()</a></code> <code><a href="dm.html">new_dm()</a></code> <code><a href="dm.html">validate_dm()</a></code> <code><a href="dm.html">cdm_get_src()</a></code> <code><a href="dm.html">cdm_get_tables()</a></code> <code><a href="dm.html">cdm_get_data_model()</a></code> <code><a href="dm.html">is_dm()</a></code> <code><a href="dm.html">as_dm()</a></code> </p>
         </td>
         <td><p>Data model class</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_rename_table.html">cdm_rename_table()</a></code> <code><a href="cdm_rename_table.html">cdm_rename_tables()</a></code> </p>
+        </td>
+        <td><p>Rename tables of a <code>dm</code></p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-managing-primary-keys-in-dm-objects" class="hasAnchor"><a href="#section-managing-primary-keys-in-dm-objects" class="anchor"></a>Managing primary keys in `dm`-objects</h2>
+          <h2 id="section-managing-primary-keys-in-dm-objects" class="hasAnchor"><a href="#section-managing-primary-keys-in-dm-objects" class="anchor"></a>Managing primary keys in `dm` objects</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -134,36 +152,42 @@
         <td>
           <p><code><a href="cdm_add_pk.html">cdm_add_pk()</a></code> </p>
         </td>
-        <td><p>Mark a column of a table in a <code>dm</code>-object as its primary key</p></td>
+        <td><p>Mark a column of a table in a <code>dm</code> object as its primary key</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="cdm_has_pk.html">cdm_has_pk()</a></code> </p>
         </td>
-        <td><p>Does a table of a <code>dm</code>-object have a column set as primary key?</p></td>
+        <td><p>Does a table of a <code>dm</code> object have a column set as primary key?</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="cdm_get_pk.html">cdm_get_pk()</a></code> </p>
         </td>
-        <td><p>Retrieve the name of the column marked as primary key of a table of a <code>dm</code>-object</p></td>
+        <td><p>Retrieve the name of the column marked as primary key of a table of a <code>dm</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_get_all_pks.html">cdm_get_all_pks()</a></code> </p>
+        </td>
+        <td><p>Get all primary keys of a <code>dm</code> object</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="cdm_rm_pk.html">cdm_rm_pk()</a></code> </p>
         </td>
-        <td><p>Remove primary key from a table in a <code>dm</code>-object</p></td>
+        <td><p>Remove primary key from a table in a <code>dm</code> object</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="cdm_check_for_pk_candidates.html">cdm_check_for_pk_candidates()</a></code> </p>
         </td>
-        <td><p>Which columns are candidates for a primary key column of a <code>dm</code>-object's table?</p></td>
+        <td><p>Which columns are candidates for a primary key column of a <code>dm</code> object's table?</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-managing-foreign-keys-in-dm-objects" class="hasAnchor"><a href="#section-managing-foreign-keys-in-dm-objects" class="anchor"></a>Managing foreign keys in `dm`-objects</h2>
+          <h2 id="section-managing-foreign-keys-in-dm-objects" class="hasAnchor"><a href="#section-managing-foreign-keys-in-dm-objects" class="anchor"></a>Managing foreign keys in `dm` objects</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -188,6 +212,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="cdm_get_all_fks.html">cdm_get_all_fks()</a></code> </p>
+        </td>
+        <td><p>Retrieve all foreign key constraints in a <code>dm</code></p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="cdm_rm_fk.html">cdm_rm_fk()</a></code> </p>
         </td>
         <td><p>Remove reference(s) from one table of a <code>dm</code> to another</p></td>
@@ -201,7 +231,7 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-drawing-a-schema-of-a-dm-object-s-data-model" class="hasAnchor"><a href="#section-drawing-a-schema-of-a-dm-object-s-data-model" class="anchor"></a>Drawing a schema of a `dm`-object's data model</h2>
+          <h2 id="section-drawing-a-schema-of-a-dm-object-s-data-model" class="hasAnchor"><a href="#section-drawing-a-schema-of-a-dm-object-s-data-model" class="anchor"></a>Drawing a schema of a `dm` object's data model</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -283,16 +313,122 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-testing-packages-using-dm-objects-on-different-databases" class="hasAnchor"><a href="#section-testing-packages-using-dm-objects-on-different-databases" class="anchor"></a>Testing packages using `dm`-objects on different databases</h2>
+          <h2 id="section-interaction-with-dbs" class="hasAnchor"><a href="#section-interaction-with-dbs" class="anchor"></a>Interaction with DBs</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="cdm_test_load.html">cdm_test_load()</a></code> </p>
+          <p><code><a href="cdm_copy_to.html">cdm_copy_to()</a></code> </p>
         </td>
-        <td><p>Loads <code>dm</code>-objects into one or more registered sources</p></td>
+        <td><p>Copy a 'dm'-object to a 'src'/'con'</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_set_key_constraints.html">cdm_set_key_constraints()</a></code> </p>
+        </td>
+        <td><p>Set key constraints on a DB for a <code>dm</code>-obj with keys.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_learn_from_db.html">cdm_learn_from_db()</a></code> </p>
+        </td>
+        <td><p>Learn a <code>dm</code> object from a database (DB)</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-filtering-a-dm-object" class="hasAnchor"><a href="#section-filtering-a-dm-object" class="anchor"></a>Filtering a `dm` object</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_filter.html">cdm_filter()</a></code> <code><a href="cdm_filter.html">cdm_semi_join()</a></code> </p>
+        </td>
+        <td><p>Cascading filter of a <code>dm</code> object</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-utilizing-foreign-key-relations" class="hasAnchor"><a href="#section-utilizing-foreign-key-relations" class="anchor"></a>Utilizing foreign key relations</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_join_tbl.html">cdm_join_tbl()</a></code> </p>
+        </td>
+        <td><p>Perform a join between two tables of a <code>dm</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_is_referenced.html">cdm_is_referenced()</a></code> </p>
+        </td>
+        <td><p>Is a <code>dm</code>'s table referenced by another table?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_get_referencing_tables.html">cdm_get_referencing_tables()</a></code> </p>
+        </td>
+        <td><p>Get the names of a <code>dm</code>'s tables referencing a given table.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_select.html">cdm_select()</a></code> </p>
+        </td>
+        <td><p>Get a <code>dm</code> only containing the indicated tables and the connecting ones</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_find_conn_tbls.html">cdm_find_conn_tbls()</a></code> </p>
+        </td>
+        <td><p>Find the tables connecting two or more tables in a <code>dm</code></p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-row-information" class="hasAnchor"><a href="#section-row-information" class="anchor"></a>Row-information</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_nrow.html">cdm_nrow()</a></code> </p>
+        </td>
+        <td><p>Number of rows of a table or of the whole <code>dm</code> object</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-create-example-dm-" class="hasAnchor"><a href="#section-create-example-dm-" class="anchor"></a>Create example `dm`</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_nycflights13.html">cdm_nycflights13()</a></code> </p>
+        </td>
+        <td><p>Creates a test <code>dm</code> object from <span class="pkg">nycflights13</span></p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_with.html">cdm_with()</a></code> </p>
+        </td>
+        <td><p>Among others: address table by their unquoted name</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -315,15 +451,20 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-creating-dm-objects-and-basic-functions">Creating `dm`-objects and basic functions</a></li>
-      <li><a href="#section-managing-primary-keys-in-dm-objects">Managing primary keys in `dm`-objects</a></li>
-      <li><a href="#section-managing-foreign-keys-in-dm-objects">Managing foreign keys in `dm`-objects</a></li>
-      <li><a href="#section-drawing-a-schema-of-a-dm-object-s-data-model">Drawing a schema of a `dm`-object's data model</a></li>
+      <li><a href="#section-creating-dm-objects-and-basic-functions">Creating `dm` objects and basic functions</a></li>
+      <li><a href="#section-managing-primary-keys-in-dm-objects">Managing primary keys in `dm` objects</a></li>
+      <li><a href="#section-managing-foreign-keys-in-dm-objects">Managing foreign keys in `dm` objects</a></li>
+      <li><a href="#section-drawing-a-schema-of-a-dm-object-s-data-model">Drawing a schema of a `dm` object's data model</a></li>
       <li><a href="#section-table-surgery-functions">Table surgery functions</a></li>
       <li><a href="#section-check-primary-key-property">Check primary key property</a></li>
       <li><a href="#section-check-foreign-key-properties">Check foreign key properties</a></li>
       <li><a href="#section-check-cardinality-of-relation-between-two-tables">Check cardinality of relation between two tables</a></li>
-      <li><a href="#section-testing-packages-using-dm-objects-on-different-databases">Testing packages using `dm`-objects on different databases</a></li>
+      <li><a href="#section-interaction-with-dbs">Interaction with DBs</a></li>
+      <li><a href="#section-filtering-a-dm-object">Filtering a `dm` object</a></li>
+      <li><a href="#section-utilizing-foreign-key-relations">Utilizing foreign key relations</a></li>
+      <li><a href="#section-row-information">Row-information</a></li>
+      <li><a href="#section-create-example-dm-">Create example `dm`</a></li>
+      <li><a href="#section-miscellaneous">Miscellaneous</a></li>
       <li><a href="#section-open-website-with-overview">Open website with overview</a></li>
     </ul>
   </div>

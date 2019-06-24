@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add a reference from one table of a <code>dm</code> to another — cdm_add_fk • dm</title>
+<title>Get the names of a <code>dm</code>'s tables referencing a given table. — cdm_get_referencing_tables • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Add a reference from one table of a <code>dm</code> to another — cdm_add_fk" />
+<meta property="og:title" content="Get the names of a <code>dm</code>'s tables referencing a given table. — cdm_get_referencing_tables" />
 
-<meta property="og:description" content="Add a reference from one table of a dm to another" />
+<meta property="og:description" content="Get the names of a dm's tables referencing a given table." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -112,18 +112,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add a reference from one table of a <code>dm</code> to another</h1>
+    <h1>Get the names of a <code>dm</code>'s tables referencing a given table.</h1>
     
-    <div class="hidden name"><code>cdm_add_fk.Rd</code></div>
+    <div class="hidden name"><code>cdm_get_referencing_tables.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Add a reference from one table of a <code>dm</code> to another</p>
+    <p>Get the names of a <code>dm</code>'s tables referencing a given table.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_get_referencing_tables</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -136,22 +136,12 @@
       <th>table</th>
       <td><p>A table in the <code>dm</code></p></td>
     </tr>
-    <tr>
-      <th>column</th>
-      <td><p>The column of <code>table</code> which is to become the foreign key column
-referencing the primary key of <code>ref_table</code>.</p></td>
-    </tr>
-    <tr>
-      <th>ref_table</th>
-      <td><p>The table which <code>table</code> is referencing. This table needs to have
-a primary key set.</p></td>
-    </tr>
-    <tr>
-      <th>check</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), a check is performed, if the values of
-<code>column</code> are a subset of the values of the primary key column of <code>ref_table</code>.</p></td>
-    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Character vector of the names of the tables pointing to the primary
+key of parameter <code>table</code>.</p>
     
 
   </div>
@@ -159,7 +149,9 @@ a primary key set.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

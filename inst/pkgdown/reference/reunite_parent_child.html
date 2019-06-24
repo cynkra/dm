@@ -35,8 +35,10 @@
 <meta property="og:description" content="Perform table fusion by combining two tables by a common (key) column and then removing this column.
 reunite_parent_child(): After joining the two tables by the column id_column, this column is removed. The transformation is roughly the
 inverse of what decompose_table() does.
-reunite_parent_child_from_list(): After joining the two tables by the column id_column, this column is removed.
-The function is almost exactly the inverse of decompose_table() (the order of the columns is not retained and original rownames are lost)." />
+reunite_parent_child_from_list(): After joining the two tables
+by the column id_column, this column is removed.
+The function is almost exactly the inverse of decompose_table() (the order
+of the columns is not retained and original rownames are lost)." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -67,7 +69,7 @@ The function is almost exactly the inverse of decompose_table() (the order of th
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9011</span>
       </span>
     </div>
 
@@ -84,6 +86,18 @@ The function is almost exactly the inverse of decompose_table() (the order of th
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/dm-overview.html">Introduction to dm</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -114,20 +128,45 @@ The function is almost exactly the inverse of decompose_table() (the order of th
     <p>Perform table fusion by combining two tables by a common (key) column and then removing this column.</p>
 <p><code>reunite_parent_child()</code>: After joining the two tables by the column <code>id_column</code>, this column is removed. The transformation is roughly the
 inverse of what <code><a href='decompose_table.html'>decompose_table()</a></code> does.</p>
-<p><code>reunite_parent_child_from_list()</code>: After joining the two tables by the column <code>id_column</code>, this column is removed.
-The function is almost exactly the inverse of <code><a href='decompose_table.html'>decompose_table()</a></code> (the order of the columns is not retained and original rownames are lost).</p>
+<p><code>reunite_parent_child_from_list()</code>: After joining the two tables
+by the column <code>id_column</code>, this column is removed.</p>
+<p>The function is almost exactly the inverse of <code><a href='decompose_table.html'>decompose_table()</a></code> (the order
+of the columns is not retained and original rownames are lost).</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>reunite_parent_child</span>(<span class='no'>child_table</span>, <span class='no'>parent_table</span>, <span class='no'>id_column</span>)
 
 <span class='fu'>reunite_parent_child_from_list</span>(<span class='no'>list_of_parent_child_tables</span>, <span class='no'>id_column</span>)</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>child_table</th>
+      <td><p>Table (possibly created by <code><a href='decompose_table.html'>decompose_table()</a></code>) that references <code>parent_table</code></p></td>
+    </tr>
+    <tr>
+      <th>parent_table</th>
+      <td><p>Table (possibly created by <code><a href='decompose_table.html'>decompose_table()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>id_column</th>
+      <td><p>Identical name of referencing/referenced column in <code>child_table</code>/<code>parent_table</code></p></td>
+    </tr>
+    <tr>
+      <th>list_of_parent_child_tables</th>
+      <td><p>Cf arguments <code>child_table</code> and <code>parent_table</code> from
+<code>reunite_parent_child()</code>, but both in a named list (as created by <code><a href='decompose_table.html'>decompose_table()</a></code>).</p></td>
+    </tr>
+    </table>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
                 </ul>
 
   </div>

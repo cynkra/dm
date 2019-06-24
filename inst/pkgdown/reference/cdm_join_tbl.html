@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add a reference from one table of a <code>dm</code> to another — cdm_add_fk • dm</title>
+<title>Perform a join between two tables of a <code>dm</code> — cdm_join_tbl • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Add a reference from one table of a <code>dm</code> to another — cdm_add_fk" />
+<meta property="og:title" content="Perform a join between two tables of a <code>dm</code> — cdm_join_tbl" />
 
-<meta property="og:description" content="Add a reference from one table of a dm to another" />
+<meta property="og:description" content="A join of desired type is performed between table lhs and
+table rhs." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -112,46 +113,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add a reference from one table of a <code>dm</code> to another</h1>
+    <h1>Perform a join between two tables of a <code>dm</code></h1>
     
-    <div class="hidden name"><code>cdm_add_fk.Rd</code></div>
+    <div class="hidden name"><code>cdm_join_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Add a reference from one table of a <code>dm</code> to another</p>
+    <p>A join of desired type is performed between table <code>lhs</code> and
+table <code>rhs</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_join_tbl</span>(<span class='no'>dm</span>, <span class='no'>lhs</span>, <span class='no'>rhs</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>semi_join</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
+      <td><p>A <code>dm</code> object</p></td>
     </tr>
     <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
+      <th>lhs</th>
+      <td><p>The table on the left hand side of the join</p></td>
     </tr>
     <tr>
-      <th>column</th>
-      <td><p>The column of <code>table</code> which is to become the foreign key column
-referencing the primary key of <code>ref_table</code>.</p></td>
+      <th>rhs</th>
+      <td><p>The table on the right hand side of the join</p></td>
     </tr>
     <tr>
-      <th>ref_table</th>
-      <td><p>The table which <code>table</code> is referencing. This table needs to have
-a primary key set.</p></td>
-    </tr>
-    <tr>
-      <th>check</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), a check is performed, if the values of
-<code>column</code> are a subset of the values of the primary key column of <code>ref_table</code>.</p></td>
+      <th>join</th>
+      <td><p>The type of join to be performed, see <code><a href='https://dplyr.tidyverse.org/reference/join.html'>join</a></code></p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The resulting table of the join</p>
     
 
   </div>
@@ -159,7 +158,9 @@ a primary key set.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

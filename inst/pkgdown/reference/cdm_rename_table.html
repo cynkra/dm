@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add a reference from one table of a <code>dm</code> to another — cdm_add_fk • dm</title>
+<title>Rename tables of a <code>dm</code> — cdm_rename_table • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Add a reference from one table of a <code>dm</code> to another — cdm_add_fk" />
+<meta property="og:title" content="Rename tables of a <code>dm</code> — cdm_rename_table" />
 
-<meta property="og:description" content="Add a reference from one table of a dm to another" />
+<meta property="og:description" content="cdm_rename_table() changes the name of one of a dm's tables.
+cdm_rename_tables() changes the names one or more tables of a dm." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -112,44 +113,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add a reference from one table of a <code>dm</code> to another</h1>
+    <h1>Rename tables of a <code>dm</code></h1>
     
-    <div class="hidden name"><code>cdm_add_fk.Rd</code></div>
+    <div class="hidden name"><code>cdm_rename_table.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Add a reference from one table of a <code>dm</code> to another</p>
+    <p><code>cdm_rename_table()</code> changes the name of one of a <code>dm</code>'s tables.</p>
+<p><code>cdm_rename_tables()</code> changes the names one or more tables of a <code>dm</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_rename_table</span>(<span class='no'>dm</span>, <span class='no'>old_name</span>, <span class='no'>new_name</span>)
+
+<span class='fu'>cdm_rename_tables</span>(<span class='no'>dm</span>, <span class='no'>old_table_names</span>, <span class='no'>new_table_names</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
+      <td><p>A <code>dm</code> object</p></td>
     </tr>
     <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
+      <th>old_name</th>
+      <td><p>The original name of the table</p></td>
     </tr>
     <tr>
-      <th>column</th>
-      <td><p>The column of <code>table</code> which is to become the foreign key column
-referencing the primary key of <code>ref_table</code>.</p></td>
+      <th>new_name</th>
+      <td><p>The new name of the table</p></td>
     </tr>
     <tr>
-      <th>ref_table</th>
-      <td><p>The table which <code>table</code> is referencing. This table needs to have
-a primary key set.</p></td>
+      <th>old_table_names</th>
+      <td><p>Character vector or list of the original names of the tables which are to change</p></td>
     </tr>
     <tr>
-      <th>check</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), a check is performed, if the values of
-<code>column</code> are a subset of the values of the primary key column of <code>ref_table</code>.</p></td>
+      <th>new_table_names</th>
+      <td><p>Character vector or list of the new names of the tables</p></td>
     </tr>
     </table>
     

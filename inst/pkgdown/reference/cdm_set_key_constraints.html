@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add a reference from one table of a <code>dm</code> to another — cdm_add_fk • dm</title>
+<title>Set key constraints on a DB for a <code>dm</code>-obj with keys. — cdm_set_key_constraints • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Add a reference from one table of a <code>dm</code> to another — cdm_add_fk" />
+<meta property="og:title" content="Set key constraints on a DB for a <code>dm</code>-obj with keys. — cdm_set_key_constraints" />
 
-<meta property="og:description" content="Add a reference from one table of a dm to another" />
+<meta property="og:description" content="cdm_set_key_constraints() takes a dm object that lives on a DB (so far
+it works exclusively for MSSQL and Postgres) and mirrors the dm key constraints
+on the database." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -112,18 +114,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add a reference from one table of a <code>dm</code> to another</h1>
+    <h1>Set key constraints on a DB for a <code>dm</code>-obj with keys.</h1>
     
-    <div class="hidden name"><code>cdm_add_fk.Rd</code></div>
+    <div class="hidden name"><code>cdm_set_key_constraints.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Add a reference from one table of a <code>dm</code> to another</p>
+    <p><code>cdm_set_key_constraints()</code> takes a <code>dm</code> object that lives on a DB (so far
+it works exclusively for MSSQL and Postgres) and mirrors the <code>dm</code> key constraints
+on the database.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_set_key_constraints</span>(<span class='no'>dm</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,34 +136,39 @@
       <th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr>
-    <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
-    </tr>
-    <tr>
-      <th>column</th>
-      <td><p>The column of <code>table</code> which is to become the foreign key column
-referencing the primary key of <code>ref_table</code>.</p></td>
-    </tr>
-    <tr>
-      <th>ref_table</th>
-      <td><p>The table which <code>table</code> is referencing. This table needs to have
-a primary key set.</p></td>
-    </tr>
-    <tr>
-      <th>check</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), a check is performed, if the values of
-<code>column</code> are a subset of the values of the primary key column of <code>ref_table</code>.</p></td>
-    </tr>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>src_sqlite</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_dbi.html'>src_sqlite</a></span>(<span class='st'>":memory:"</span>, <span class='kw'>create</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>iris_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_copy_to.html'>cdm_copy_to</a></span>(
+  <span class='no'>src_sqlite</span>,
+  <span class='fu'><a href='dm.html'>as_dm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>)),
+  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
+
+<span class='co'># there are no key constraints in `as_dm(list(iris = iris))`,</span>
+<span class='co'># but if there were, and if we had already implemented setting key</span>
+<span class='co'># constraints for SQLite, this would do something:</span>
+<span class='fu'>cdm_set_key_constraints</span>(<span class='no'>iris_dm</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.25.3 [:memory:]
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   1 tables:  iris 
+#&gt;   5 columns
+#&gt;   0 primary keys
+#&gt;   no references
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 150
+#&gt; iris: 150</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

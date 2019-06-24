@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add a reference from one table of a <code>dm</code> to another — cdm_add_fk • dm</title>
+<title>Copy a 'dm'-object to a 'src'/'con' — cdm_copy_to • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Add a reference from one table of a <code>dm</code> to another — cdm_add_fk" />
+<meta property="og:title" content="Copy a 'dm'-object to a 'src'/'con' — cdm_copy_to" />
 
-<meta property="og:description" content="Add a reference from one table of a dm to another" />
+<meta property="og:description" content="cdm_copy_to() takes a src- or con-object as a first argument,
+and a dm object as a second. The latter is copied to the former. By default
+the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
+By default temporary tables will be created." />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -112,54 +115,68 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add a reference from one table of a <code>dm</code> to another</h1>
+    <h1>Copy a 'dm'-object to a 'src'/'con'</h1>
     
-    <div class="hidden name"><code>cdm_add_fk.Rd</code></div>
+    <div class="hidden name"><code>cdm_copy_to.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Add a reference from one table of a <code>dm</code> to another</p>
+    <p><code>cdm_copy_to()</code> takes a <code>src</code>- or <code>con</code>-object as a first argument,
+and a <code>dm</code> object as a second. The latter is copied to the former. By default
+the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
+By default temporary tables will be created.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_copy_to</span>(<span class='no'>dest</span>, <span class='no'>dm</span>, <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>dest</th>
+      <td><p>A <code>src</code> or <code>con</code> object like e.g. a database.</p></td>
+    </tr>
+    <tr>
       <th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr>
     <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
+      <th>set_key_constraints</th>
+      <td><p>Boolean variable, if <code>TRUE</code> will mirror <code>dm</code> key constraints on a database.</p></td>
     </tr>
     <tr>
-      <th>column</th>
-      <td><p>The column of <code>table</code> which is to become the foreign key column
-referencing the primary key of <code>ref_table</code>.</p></td>
+      <th>table_names</th>
+      <td><p>Character vector containing the names for the DB-tables.</p></td>
     </tr>
     <tr>
-      <th>ref_table</th>
-      <td><p>The table which <code>table</code> is referencing. This table needs to have
-a primary key set.</p></td>
+      <th>temporary</th>
+      <td><p>Boolean variable, if <code>TRUE</code> will only create temporary tables, which will vanish when connection is interrupted.</p></td>
     </tr>
     <tr>
-      <th>check</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), a check is performed, if the values of
-<code>column</code> are a subset of the values of the primary key column of <code>ref_table</code>.</p></td>
+      <th>...</th>
+      <td><p>Possible further arguments passed to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code> (which is used on each table)</p></td>
     </tr>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>src_sqlite</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_dbi.html'>src_sqlite</a></span>(<span class='st'>":memory:"</span>, <span class='kw'>create</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>iris_dm</span> <span class='kw'>&lt;-</span> <span class='fu'>cdm_copy_to</span>(
+  <span class='no'>src_sqlite</span>,
+  <span class='fu'><a href='dm.html'>as_dm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>)),
+  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
