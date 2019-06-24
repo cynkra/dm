@@ -23,10 +23,11 @@ The goal of both the package {dm} and its `dm` class is to facilitate work with 
 An object of the `dm`-class contains all relevant information about the tables in a data model:
 
 1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
-2. the tables themselves, i.e., the data
-3. the meta-data from the data model: the key constraints
+1. the meta-data from the data model: the key constraints
+1. the tables themselves, i.e., the data
 
 This package follows several of the "tidyverse" rules:
+
 - `dm` objects are immutable (your data will never be overwritten in place)
 - many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
 - tidy evaluation is used (unquoted function parameters are supported)
@@ -35,6 +36,7 @@ We will showcase here some of the features of {dm}:
 
 1. [Creation of `dm` objects](#create)
 1. [Setting keys and drawing](#keys)
+1. FIXME: `cdm_nycflights13() %>% cdm_join_tbl(airlines, flights, join = left_join)`
 1. [Filtering](#filter)
 1. [Copying and discovery](#copy)
 
@@ -56,32 +58,44 @@ flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
+The fairly verbose output shows the three components of a `dm` object: the table source, the metadata, and row counts.
+FIXME: `cdm_get_xxx()`.
+Individual tables can be accessed with `tbl()`.
+
+```{r}
+src_tbls(flights_dm)
+tbl(flights_dm, "airports")
+```
+
 
 ## Keys and visualization {#keys}
 
 As you can see in the "Data model" part of the output above, so far no keys are set.
-We use `cdm_add_pk()` to add a primary key (pk):
+We use `cdm_add_pk()` and `cdm_add_fk()` to add primary keys (pk) and foreign keys (fk):
 
 ```{r}
-cdm_add_pk(flights_dm, airports, faa)
+flights_dm_with_one_key <- 
+  flights_dm %>% 
+  cdm_add_pk(airlines, carrier) %>% 
+  cdm_add_fk(flights, carrier, airlines)
 ```
 
-The foreign key (fk) relations are established in a similar way with `cdm_add_fk()`.
+Once you set the pk's and established fk relations, you can graphically represent your data model in the following way:
+
+```{r}
+flights_dm_with_one_key %>% 
+  cdm_draw()
+```
 
 The `cdm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables and defines all primary and foreign keys.
 We will be using the `dm` object created by this function from here on.
 
 ```{r}
 flights_dm_with_keys <- cdm_nycflights13()
-flights_dm_with_keys
-```
-
-Once you set the pk's and established fk relations, you can graphically represent your data model in the following way:
-
-```{r}
 flights_dm_with_keys %>% 
   cdm_draw()
 ```
+
 
 ## Filtering a table of a `dm` object {#filter}
 
@@ -167,7 +181,7 @@ flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
 
 ## Further reading
 
-FIXME:
+FIXME Kirill:
 
 Further functions that are helpful in organizing the keys of a `dm` object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
 More details can be found in the documentation of the relevant functions.
