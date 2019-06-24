@@ -34,11 +34,13 @@ Imports:
     tidyr
 Suggests: 
     dbplyr,
+    fansi,
     nycflights13,
     rprojroot,
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
+    tidyverse,
     vctrs
 Remotes: 
     bergant/datamodelr
