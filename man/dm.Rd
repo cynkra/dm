@@ -63,6 +63,14 @@ object.
 \seealso{
 \itemize{
 \item \code{\link[=cdm_add_pk]{cdm_add_pk()}} and \code{\link[=cdm_add_fk]{cdm_add_fk()}} add primary and foreign keys
-\item FIXME
+\item \code{\link[=cdm_copy_to]{cdm_copy_to()}} and \code{\link[=cdm_learn_from_db]{cdm_learn_from_db()}} for DB interaction
+\item \code{\link[=cdm_draw]{cdm_draw()}} for visualization
+\item \code{\link[=cdm_join_tbl]{cdm_join_tbl()}} for flattening
+\item \code{\link[=cdm_filter]{cdm_filter()}} for filtering
+\item \code{\link[=cdm_select]{cdm_select()}} for creating a \code{dm} with only a subset of the tables
+\item \code{\link[=decompose_table]{decompose_table()}} as one example of the table surgery family
+\item \code{\link[=check_key]{check_key()}} and \code{\link[=check_if_subset]{check_if_subset()}} for checking for key properties
+\item \code{\link[=check_cardinality]{check_cardinality()}} for checking the cardinality of the relation between two tables
+\item \code{\link[=cdm_nycflights13]{cdm_nycflights13()}}  for creating an example \code{dm} object
 }
 }
