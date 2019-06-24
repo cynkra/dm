@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 ```
 
 The goal of both the package {dm} and its `dm` class is to facilitate work with multiple related tables.
@@ -164,6 +166,8 @@ flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
 ```
 
 ## Further reading
+
+FIXME:
 
 Further functions that are helpful in organizing the keys of a `dm` object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
 More details can be found in the documentation of the relevant functions.
