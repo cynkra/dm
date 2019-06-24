@@ -89,17 +89,15 @@ You can find details about this in the documentation or in the vignette "Visuali
 
 ## Filtering a table of a `dm` object {#filter}
 
-Let's first explain the idea of a filter on a `dm` object:
+The idea of a filter on a `dm` object:
 
 1. You filter one table of your `dm`, just like with a normal `dplyr::filter()`-call
 2. A cascade of joins is performed along the fk relations, resulting in a new `dm` containing only rows corresponding to the -- potentially -- reduced values in the key columns of the filtered table
 
-For this to work, for the moment we do not allow cycles in the fk relations between the tables, since then -- without further definitions -- no well-defined result exists.
-Up to now, a multiple reference from one table to another also counts as a "cycle" (this will be resolved in a future update), so before we can filter our {nycflights13}-`dm`, we have to first remove one of the fk relations pointing from `flights` to `airports`:
+Let's see it in action:
 
 ```{r}
 flights_dm_with_keys %>% 
-  cdm_rm_fk(flights, dest, airports) %>% 
   cdm_filter(airports, name == "John F Kennedy Intl") %>% 
   cdm_filter(airlines, carrier == "US")
 ```

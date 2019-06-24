@@ -7,8 +7,8 @@
 #'
 #' @param cycle_free Boolean, if `TRUE` (default), only one foreign key relation
 #' (from `flights$origin` to `airports$faa`) between `flights` and `airports` is
-#' established. If `FALSE`, it will produce a `dm` object with a double reference
-#' between those tables.
+#' established. If `FALSE`, a `dm` object with a double reference
+#' between those tables will be produced.
 #'
 #' @export
 cdm_nycflights13 <- function(cycle_free = TRUE) h(~ {

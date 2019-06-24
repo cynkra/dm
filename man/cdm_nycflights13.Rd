@@ -9,8 +9,8 @@ cdm_nycflights13(cycle_free = TRUE)
 \arguments{
 \item{cycle_free}{Boolean, if \code{TRUE} (default), only one foreign key relation
 (from \code{flights$origin} to \code{airports$faa}) between \code{flights} and \code{airports} is
-established. If \code{FALSE}, it will produce a \code{dm} object with a double reference
-between those tables.}
+established. If \code{FALSE}, a \code{dm} object with a double reference
+between those tables will be produced.}
 }
 \description{
 Creates an exemplary \code{dm} object from the tables in \pkg{nycflights13}
