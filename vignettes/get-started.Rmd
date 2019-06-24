@@ -97,3 +97,4 @@ flights_dm_with_keys %>%
 
 In the "Rows" part of the print-output, you can observe the reduction in the numbers of rows for all tables (apart from the -- disconnected -- `weather` table), corresponding to  US Airways flights having started from JFK airport.
 
+## Copy to database, learn from it
