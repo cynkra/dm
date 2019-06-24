@@ -29,11 +29,17 @@ This package follows several of the "tidyverse" rules:
 - many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
 - tidy evaluation is used (unquoted function parameters are supported)
 
-FIXME: Summarize contents of vignette.
+We will showcase here some of the features of {dm}:
+
+1. [How to create a `dm` object](#create)
+2. [Setting primary and foreign keys](#keys)
+3. [Graphically represent a `dm` object](#vis)
+4. [Filtering a `dm` object](#filter)
+5. [Transfer to and learning from a DB](#copy)
 
 Let's first have a brief look at how to create a `dm`-class object:
 
-## Creating `dm` objects:
+## Creating `dm` objects: {#create}
 
 A quite nice example for interconnected tables are those in the {nycflights13}-package.
 The most straightforward way of squeezing them into a `dm` object is:
@@ -46,7 +52,7 @@ flights_dm
 ```
 
 
-## Handling keys of `dm` objects {#kr}
+## Handling keys of `dm` objects {#keys}
 
 As you can see in the "Data model" part of the output above, so far no keys are set.
 We use `cdm_add_pk()` to add one:
@@ -69,7 +75,7 @@ flights_dm_with_keys
 Further functions that are helpful in organizing the keys of a `dm` object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
 More details can be found in the documentation of the relevant functions.
 
-## Visualizing the data model
+## Visualizing the data model {#vis}
 
 Once you set the pk's and established fk relations, you can graphically represent your data model in the following way:
 
@@ -99,4 +105,5 @@ flights_dm_with_keys %>%
 
 In the "Rows" part of the print-output, you can observe the reduction in the numbers of rows for all tables (apart from the -- disconnected -- `weather` table), corresponding to  US Airways flights having started from JFK airport.
 
-## Copy to database, learn from it
+## Copy to database, learn from it {#copy}
+
