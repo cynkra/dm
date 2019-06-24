@@ -15,6 +15,9 @@ cdm_join_tbl(dm, lhs, rhs, join = semi_join)
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
 }
+\value{
+The resulting table of the join
+}
 \description{
 A join of desired type is performed between table \code{lhs} and
 table \code{rhs}.
