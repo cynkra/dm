@@ -24,12 +24,10 @@ An object of the `dm`-class contains all relevant information about the tables i
 2. the tables themselves, i.e., the data
 3. the meta-data from the data model: the key relations
 
-This package follows the "tidyverse" approach of immutable objects.
-Your data will never be overwritten in place.
-Many verbs, used on a `dm` object, return a new `dm` object.
-This also allows to compose sequences of operations using the `%>%` pipe operator.
-
-FIXME: bullet points: immutable, pipe, tidy evaluation
+This package follows several of the "tidyverse" rules:
+- `dm` objects are immutable (your data will never be overwritten in place)
+- many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
+- tidy evaluation is used (unquoted function parameters are supported)
 
 FIXME: Summarize contents of vignette.
 
