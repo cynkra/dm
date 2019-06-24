@@ -4,12 +4,13 @@
 \alias{cdm_nycflights13}
 \title{Creates a test \code{dm} object from \pkg{nycflights13}}
 \usage{
-cdm_nycflights13(cycle_free = FALSE)
+cdm_nycflights13(cycle_free = TRUE)
 }
 \arguments{
-\item{cycle_free}{Boolean, if \code{FALSE} (default), will produce a \code{dm} object with
-a double reference between tables \code{flights} and \code{airports}. If \code{TRUE}, only the
-foreign key relation from \code{flights$origin} to \code{airports$faa} is established.}
+\item{cycle_free}{Boolean, if \code{TRUE} (default), only one foreign key relation
+(from \code{flights$origin} to \code{airports$faa}) between \code{flights} and \code{airports} is
+established. If \code{FALSE}, it will produce a \code{dm} object with a double reference
+between those tables.}
 }
 \description{
 Creates an exemplary \code{dm} object from the tables in \pkg{nycflights13}

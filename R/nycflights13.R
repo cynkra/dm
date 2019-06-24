@@ -5,12 +5,13 @@
 #' since this should only be seen as a quick way of getting a `dm` with known tables to
 #' play around with).
 #'
-#' @param cycle_free Boolean, if `FALSE` (default), will produce a `dm` object with
-#' a double reference between tables `flights` and `airports`. If `TRUE`, only the
-#' foreign key relation from `flights$origin` to `airports$faa` is established.
+#' @param cycle_free Boolean, if `TRUE` (default), only one foreign key relation
+#' (from `flights$origin` to `airports$faa`) between `flights` and `airports` is
+#' established. If `FALSE`, it will produce a `dm` object with a double reference
+#' between those tables.
 #'
 #' @export
-cdm_nycflights13 <- function(cycle_free = FALSE) h(~ {
+cdm_nycflights13 <- function(cycle_free = TRUE) h(~ {
     dm <-
       dm(
         src_df("nycflights13")
