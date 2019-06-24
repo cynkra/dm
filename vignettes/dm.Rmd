@@ -110,7 +110,7 @@ In the "Rows" part of the print-output, you can observe the reduction in the num
 The relevant verb is `cdm_copy_to()`.
 It will copy the individual tables from the former to the new `src`, potentially set key constraints -- if on a DB (so far only MSSQL and Postgres are supported for this feature) -- and subsequently invisibly return the new `dm` object.
 
-Here we show an example with in-memory SQLite-DB (so no key constraints are established):
+Here we show an example using the in-memory SQLite-DB (so no key constraints are established):
 
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
