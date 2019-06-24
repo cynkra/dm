@@ -18,3 +18,9 @@ key of parameter \code{table}.
 \description{
 Get the names of a \code{dm}'s tables referencing a given table.
 }
+\seealso{
+Other Utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
+  \code{\link{cdm_is_referenced}},
+  \code{\link{cdm_join_tbl}}, \code{\link{cdm_select}}
+}
+\concept{Utilizing foreign key relations}

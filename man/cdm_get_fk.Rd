@@ -16,3 +16,10 @@ cdm_get_fk(dm, table, ref_table)
 \description{
 Retrieve the name of the column marked as foreign key, pointing from one table of a \code{dm} to another
 }
+\seealso{
+Other Foreign keys: \code{\link{cdm_add_fk}},
+  \code{\link{cdm_check_for_fk_candidates}},
+  \code{\link{cdm_get_all_fks}}, \code{\link{cdm_has_fk}},
+  \code{\link{cdm_rm_fk}}
+}
+\concept{Foreign keys}

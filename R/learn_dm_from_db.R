@@ -8,6 +8,8 @@
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #'
+#' @family DB interaction
+#'
 #' @return A `dm` object with the tables from the DB and the respective key relations.
 #'
 #' @export

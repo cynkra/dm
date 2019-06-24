@@ -10,6 +10,8 @@
 #'
 #' @return The resulting table of the join
 #'
+#' @family Utilizing foreign key relations
+#'
 #' @export
 cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
   lhs_name <- as_name(enexpr(lhs))

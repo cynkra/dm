@@ -18,3 +18,9 @@ key of parameter \code{table}, \code{FALSE} otherwise.
 \description{
 Is a \code{dm}'s table referenced by another table?
 }
+\seealso{
+Other Utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
+  \code{\link{cdm_get_referencing_tables}},
+  \code{\link{cdm_join_tbl}}, \code{\link{cdm_select}}
+}
+\concept{Utilizing foreign key relations}

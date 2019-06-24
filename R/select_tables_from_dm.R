@@ -9,6 +9,8 @@
 #' be part of the resulting `dm` in addition to the indicated tables. If `FALSE`,
 #' exclusively the indicated tables will be selected.
 #'
+#' @family Utilizing foreign key relations
+#'
 #' @export
 cdm_select <- function(dm, ..., all_connected = TRUE) {
 
@@ -47,6 +49,8 @@ cdm_select <- function(dm, ..., all_connected = TRUE) {
 #'
 #' @param dm A `dm` object
 #' @param ... Two or more table names of the `dm` object's tables.
+#'
+#' @family Utilizing foreign key relations
 #'
 #' @return Character vector with the names of the connecting tables.
 #'

@@ -18,6 +18,8 @@
 #' @examples
 #' library(dplyr)
 #'
+#' @family Primary keys
+#'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
@@ -78,6 +80,8 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #'
 #' @inheritParams cdm_add_pk
 #'
+#' @family Primary keys
+#'
 #' @examples
 #' library(dplyr)
 #' nycflights_dm <- cdm_nycflights13()
@@ -104,6 +108,8 @@ cdm_has_pk <- function(dm, table) {
 #' @description `cdm_get_pk()` returns the name of the
 #' column marked as primary key of a table of a `dm` object. If no primary key is
 #' set for the table, an empty character variable is returned.
+#'
+#' @family Primary keys
 #'
 #' @inheritParams cdm_add_pk
 #'
@@ -133,6 +139,8 @@ cdm_get_pk <- function(dm, table) {
 #' @description `cdm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
+#' @family Primary keys
+#'
 #' @inheritParams cdm_add_pk
 #'
 #' @export
@@ -155,6 +163,8 @@ cdm_get_all_pks <- function(dm) {
 #' underlying `data_model`-object and otherwise leaves the `dm` object untouched.
 #'
 #' Foreign keys pointing to the table from other tables can optionally be removed as well.
+#'
+#' @family Primary keys
 #'
 #' @inheritParams cdm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error, if
@@ -215,6 +225,8 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
 #' @description `cdm_check_for_pk_candidates()` checks for each column of a
 #' table of a `dm` object if this column contains only unique values and is therefore
 #' a unique key of this table.
+#'
+#' @family Primary keys
 #'
 #' @inheritParams cdm_add_pk
 #'

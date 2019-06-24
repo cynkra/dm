@@ -19,3 +19,10 @@ exclusively the indicated tables will be selected.}
 Is a wrapper around \code{cdm_find_conn_tbls()}. It returns a reduced \code{dm} object,
 containing only the indicated tables plus the ones in between them (unless \code{all_connected = FALSE}).
 }
+\seealso{
+Other Utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
+  \code{\link{cdm_get_referencing_tables}},
+  \code{\link{cdm_is_referenced}},
+  \code{\link{cdm_join_tbl}}
+}
+\concept{Utilizing foreign key relations}

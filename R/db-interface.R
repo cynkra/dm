@@ -12,6 +12,8 @@
 #' @param temporary Boolean variable, if `TRUE` will only create temporary tables, which will vanish when connection is interrupted.
 #' @param ... Possible further arguments passed to [dplyr::copy_to()] (which is used on each table)
 #'
+#' @family DB interaction
+#'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
 #' iris_dm <- cdm_copy_to(
@@ -74,6 +76,8 @@ cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL
 #' on the database.
 #'
 #' @inheritParams cdm_copy_to
+#'
+#' @family DB interaction
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)

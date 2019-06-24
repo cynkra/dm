@@ -13,3 +13,9 @@ cdm_get_all_pks(dm)
 \code{cdm_get_all_pks()} checks the \code{dm} object for set primary keys and
 returns the tables, the respective primary key columns and their classes.
 }
+\seealso{
+Other Primary keys: \code{\link{cdm_check_for_pk_candidates}},
+  \code{\link{cdm_get_pk}}, \code{\link{cdm_has_pk}},
+  \code{\link{cdm_rm_pk}}
+}
+\concept{Primary keys}

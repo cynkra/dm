@@ -22,3 +22,9 @@ The resulting table of the join
 A join of desired type is performed between table \code{lhs} and
 table \code{rhs}.
 }
+\seealso{
+Other Utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
+  \code{\link{cdm_get_referencing_tables}},
+  \code{\link{cdm_is_referenced}}, \code{\link{cdm_select}}
+}
+\concept{Utilizing foreign key relations}

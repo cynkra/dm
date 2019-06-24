@@ -5,6 +5,8 @@
 #' @return `TRUE`, if at least one foreign key exists, pointing to the primary
 #' key of parameter `table`, `FALSE` otherwise.
 #'
+#' @family Utilizing foreign key relations
+#'
 #' @export
 cdm_is_referenced <- function(dm, table) {
   table_name <- as_name(enexpr(table))
@@ -30,6 +32,8 @@ is_referencing_data_model <- function(data_model, table_name) {
 #'
 #' @return Character vector of the names of the tables pointing to the primary
 #' key of parameter `table`.
+#'
+#' @family Utilizing foreign key relations
 #'
 #' @export
 cdm_get_referencing_tables <- function(dm, table) {

@@ -23,3 +23,9 @@ nycflights_dm <- cdm_nycflights13()
 nycflights_dm \%>\%
   cdm_get_pk(planes)
 }
+\seealso{
+Other Primary keys: \code{\link{cdm_check_for_pk_candidates}},
+  \code{\link{cdm_get_all_pks}}, \code{\link{cdm_has_pk}},
+  \code{\link{cdm_rm_pk}}
+}
+\concept{Primary keys}

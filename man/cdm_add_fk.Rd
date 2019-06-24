@@ -23,3 +23,9 @@ a primary key set.}
 \description{
 Add a reference from one table of a \code{dm} to another
 }
+\seealso{
+Other Foreign keys: \code{\link{cdm_check_for_fk_candidates}},
+  \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
+  \code{\link{cdm_has_fk}}, \code{\link{cdm_rm_fk}}
+}
+\concept{Foreign keys}

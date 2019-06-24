@@ -41,3 +41,7 @@ parent_table <- decomposed_table \%>\%
   extract("parent_table") \%>\%
   purrr::flatten_dfr()
 }
+\seealso{
+Other Table surgery functions: \code{\link{reunite_parent_child}}
+}
+\concept{Table surgery functions}

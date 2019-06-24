@@ -20,3 +20,10 @@ A tibble with columns:
 \description{
 Get an overview about all foreign key relations in a \code{dm}
 }
+\seealso{
+Other Foreign keys: \code{\link{cdm_add_fk}},
+  \code{\link{cdm_check_for_fk_candidates}},
+  \code{\link{cdm_get_fk}}, \code{\link{cdm_has_fk}},
+  \code{\link{cdm_rm_fk}}
+}
+\concept{Foreign keys}

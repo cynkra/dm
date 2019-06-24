@@ -34,3 +34,8 @@ iris_dm <- cdm_copy_to(
   set_key_constraints = FALSE
 )
 }
+\seealso{
+Other DB interaction: \code{\link{cdm_learn_from_db}},
+  \code{\link{cdm_set_key_constraints}}
+}
+\concept{DB interaction}

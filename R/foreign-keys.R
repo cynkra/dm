@@ -8,6 +8,8 @@
 #' @param check Boolean, if `TRUE` (default), a check is performed, if the values of
 #' `column` are a subset of the values of the primary key column of `ref_table`.
 #'
+#' @family Foreign keys
+#'
 #' @export
 cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) h(~ {
     table_name <- as_name(enquo(table))
@@ -55,6 +57,8 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
 #'
 #' @return A boolean value: `TRUE`, if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
 #'
+#' @family Foreign keys
+#'
 #' @export
 cdm_has_fk <- function(dm, table, ref_table) {
   table_name <- as_name(enquo(table))
@@ -71,6 +75,8 @@ cdm_has_fk <- function(dm, table, ref_table) {
 #'
 #' @inheritParams cdm_has_fk
 #' @param ref_table The table which is referenced from `table`.
+#'
+#' @family Foreign keys
 #'
 #' @export
 cdm_get_fk <- function(dm, table, ref_table) {
@@ -98,6 +104,8 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' "parent_table": parent table,
 #'
 #' @inheritParams cdm_has_fk
+#'
+#' @family Foreign keys
 #'
 #' @export
 cdm_get_all_fks <- function(dm) h(~ {
@@ -149,6 +157,8 @@ cdm_get_all_fks <- function(dm) h(~ {
 #' key of `ref_table`.
 #' @param ref_table The table which `table` was referencing.
 #'
+#' @family Foreign keys
+#'
 #' @export
 cdm_rm_fk <- function(dm, table, column, ref_table) {
   table_name <- as_name(enquo(table))
@@ -197,6 +207,8 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' `cdm_check_for_fk_candidates()` checks first, if `ref_table` has a primary key set. Then it determines
 #' for each column of `table`, if this column contains only a subset of values of the primary key column of
 #' `ref_table` and is therefore a candidate for a foreign key from `table` to `ref_table`.
+#'
+#' @family Foreign keys
 #'
 #' @examples
 #' library(dplyr)

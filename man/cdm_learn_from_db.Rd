@@ -19,3 +19,8 @@ account.
 
 So far this only works for MSSQL and Postgres. Also, you can not specify a schema to learn from.
 }
+\seealso{
+Other DB interaction: \code{\link{cdm_copy_to}},
+  \code{\link{cdm_set_key_constraints}}
+}
+\concept{DB interaction}

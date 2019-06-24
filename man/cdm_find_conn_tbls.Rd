@@ -19,3 +19,9 @@ Find all tables that need to be passed when traversing the \code{dm} object
 between the indicated tables along the foreign
 key relations. Result includes the given tables.
 }
+\seealso{
+Other Utilizing foreign key relations: \code{\link{cdm_get_referencing_tables}},
+  \code{\link{cdm_is_referenced}},
+  \code{\link{cdm_join_tbl}}, \code{\link{cdm_select}}
+}
+\concept{Utilizing foreign key relations}

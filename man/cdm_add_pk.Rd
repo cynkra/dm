@@ -27,6 +27,9 @@ set key.
 \examples{
 library(dplyr)
 
+}
+\concept{Primary keys
+
 nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 
 # the following works
@@ -35,5 +38,4 @@ cdm_add_pk(nycflights_dm, airports, faa)
 cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 
 # the following does not work
-try(cdm_add_pk(nycflights_dm, planes, manufacturer))
-}
+try(cdm_add_pk(nycflights_dm, planes, manufacturer))}
