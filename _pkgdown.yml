@@ -8,8 +8,6 @@ reference:
   - cdm_get_src
   - cdm_get_tables
   - cdm_get_data_model
-  - cdm_rename_table
-  - cdm_rename_tables
 
 - title: Managing primary keys in `dm` objects
   contents:
@@ -29,34 +27,16 @@ reference:
   - cdm_rm_fk
   - cdm_check_for_fk_candidates
 
+- title: Create example `dm`
+  contents:
+  - cdm_nycflights13
+
 - title: Drawing a schema of a `dm` object's data model
   contents:
   - cdm_draw
   - cdm_set_colors
   - cdm_get_colors
   - cdm_get_available_colors
-
-- title: Table surgery functions
-  contents:
-  - decompose_table
-  - reunite_parent_child
-  - reunite_parent_child_from_list
-
-- title: Check primary key property
-  contents:
-  - check_key
-
-- title: Check foreign key properties
-  contents:
-  - check_if_subset
-  - check_set_equality
-
-- title: Check cardinality of relation between two tables
-  contents:
-  - check_cardinality_0_n
-  - check_cardinality_1_n
-  - check_cardinality_0_1
-  - check_cardinality_1_1
 
 - title: Interaction with DBs
   contents:
@@ -81,13 +61,30 @@ reference:
   contents:
   - cdm_nrow
 
-- title: Create example `dm`
+- title: Table surgery functions
   contents:
-  - cdm_nycflights13
+  - decompose_table
+  - reunite_parent_child
+  - reunite_parent_child_from_list
+
+- title: Check key properties
+  contents:
+  - check_key
+  - check_if_subset
+  - check_set_equality
+
+- title: Check cardinality of relation between two tables
+  contents:
+  - check_cardinality_0_n
+  - check_cardinality_1_n
+  - check_cardinality_0_1
+  - check_cardinality_1_1
 
 - title: Miscellaneous
   contents:
   - cdm_with
+  - cdm_rename_table
+  - cdm_rename_tables
 
 - title: Open website with overview
   contents:

@@ -133,12 +133,6 @@
           <p><code><a href="dm.html">dm()</a></code> <code><a href="dm.html">new_dm()</a></code> <code><a href="dm.html">validate_dm()</a></code> <code><a href="dm.html">cdm_get_src()</a></code> <code><a href="dm.html">cdm_get_tables()</a></code> <code><a href="dm.html">cdm_get_data_model()</a></code> <code><a href="dm.html">is_dm()</a></code> <code><a href="dm.html">as_dm()</a></code> </p>
         </td>
         <td><p>Data model class</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cdm_rename_table.html">cdm_rename_table()</a></code> <code><a href="cdm_rename_table.html">cdm_rename_tables()</a></code> </p>
-        </td>
-        <td><p>Rename tables of a <code>dm</code></p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -231,6 +225,20 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-create-example-dm-" class="hasAnchor"><a href="#section-create-example-dm-" class="anchor"></a>Create example `dm`</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cdm_nycflights13.html">cdm_nycflights13()</a></code> </p>
+        </td>
+        <td><p>Creates a test <code>dm</code> object from <span class="pkg">nycflights13</span></p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-drawing-a-schema-of-a-dm-object-s-data-model" class="hasAnchor"><a href="#section-drawing-a-schema-of-a-dm-object-s-data-model" class="anchor"></a>Drawing a schema of a `dm` object's data model</h2>
           <p class="section-desc"></p>
         </th>
@@ -241,74 +249,6 @@
           <p><code><a href="cdm_draw.html">cdm_draw()</a></code> <code><a href="cdm_draw.html">cdm_set_colors()</a></code> <code><a href="cdm_draw.html">cdm_get_colors()</a></code> <code><a href="cdm_draw.html">cdm_get_available_colors()</a></code> </p>
         </td>
         <td><p>Draw schema of a 'dm'-object's data model</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-table-surgery-functions" class="hasAnchor"><a href="#section-table-surgery-functions" class="anchor"></a>Table surgery functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="decompose_table.html">decompose_table()</a></code> </p>
-        </td>
-        <td><p>Decompose a table into two linked tables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="reunite_parent_child.html">reunite_parent_child()</a></code> <code><a href="reunite_parent_child.html">reunite_parent_child_from_list()</a></code> </p>
-        </td>
-        <td><p>Merge two tables linked by a foreign key relation</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-check-primary-key-property" class="hasAnchor"><a href="#section-check-primary-key-property" class="anchor"></a>Check primary key property</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="check_key.html">check_key()</a></code> </p>
-        </td>
-        <td><p>Test if column (combination) is unique key of table</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-check-foreign-key-properties" class="hasAnchor"><a href="#section-check-foreign-key-properties" class="anchor"></a>Check foreign key properties</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="check_if_subset.html">check_if_subset()</a></code> </p>
-        </td>
-        <td><p>Test if values of one column are a subset of values of another column</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="check_set_equality.html">check_set_equality()</a></code> </p>
-        </td>
-        <td><p>Test if the value sets of two different columns in two different tables are the same</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-check-cardinality-of-relation-between-two-tables" class="hasAnchor"><a href="#section-check-cardinality-of-relation-between-two-tables" class="anchor"></a>Check cardinality of relation between two tables</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="check_cardinality.html">check_cardinality_0_n()</a></code> <code><a href="check_cardinality.html">check_cardinality_1_n()</a></code> <code><a href="check_cardinality.html">check_cardinality_1_1()</a></code> <code><a href="check_cardinality.html">check_cardinality_0_1()</a></code> </p>
-        </td>
-        <td><p>Test if the relation between two tables of a data model meet the requirements</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -405,16 +345,62 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-create-example-dm-" class="hasAnchor"><a href="#section-create-example-dm-" class="anchor"></a>Create example `dm`</h2>
+          <h2 id="section-table-surgery-functions" class="hasAnchor"><a href="#section-table-surgery-functions" class="anchor"></a>Table surgery functions</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="cdm_nycflights13.html">cdm_nycflights13()</a></code> </p>
+          <p><code><a href="decompose_table.html">decompose_table()</a></code> </p>
         </td>
-        <td><p>Creates a test <code>dm</code> object from <span class="pkg">nycflights13</span></p></td>
+        <td><p>Decompose a table into two linked tables</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reunite_parent_child.html">reunite_parent_child()</a></code> <code><a href="reunite_parent_child.html">reunite_parent_child_from_list()</a></code> </p>
+        </td>
+        <td><p>Merge two tables linked by a foreign key relation</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-check-key-properties" class="hasAnchor"><a href="#section-check-key-properties" class="anchor"></a>Check key properties</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="check_key.html">check_key()</a></code> </p>
+        </td>
+        <td><p>Test if column (combination) is unique key of table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="check_if_subset.html">check_if_subset()</a></code> </p>
+        </td>
+        <td><p>Test if values of one column are a subset of values of another column</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="check_set_equality.html">check_set_equality()</a></code> </p>
+        </td>
+        <td><p>Test if the value sets of two different columns in two different tables are the same</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-check-cardinality-of-relation-between-two-tables" class="hasAnchor"><a href="#section-check-cardinality-of-relation-between-two-tables" class="anchor"></a>Check cardinality of relation between two tables</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="check_cardinality.html">check_cardinality_0_n()</a></code> <code><a href="check_cardinality.html">check_cardinality_1_n()</a></code> <code><a href="check_cardinality.html">check_cardinality_1_1()</a></code> <code><a href="check_cardinality.html">check_cardinality_0_1()</a></code> </p>
+        </td>
+        <td><p>Test if the relation between two tables of a data model meet the requirements</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -429,6 +415,12 @@
           <p><code><a href="cdm_with.html">cdm_with()</a></code> </p>
         </td>
         <td><p>Among others: address table by their unquoted name</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cdm_rename_table.html">cdm_rename_table()</a></code> <code><a href="cdm_rename_table.html">cdm_rename_tables()</a></code> </p>
+        </td>
+        <td><p>Rename tables of a <code>dm</code></p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -454,16 +446,15 @@
       <li><a href="#section-creating-dm-objects-and-basic-functions">Creating `dm` objects and basic functions</a></li>
       <li><a href="#section-managing-primary-keys-in-dm-objects">Managing primary keys in `dm` objects</a></li>
       <li><a href="#section-managing-foreign-keys-in-dm-objects">Managing foreign keys in `dm` objects</a></li>
+      <li><a href="#section-create-example-dm-">Create example `dm`</a></li>
       <li><a href="#section-drawing-a-schema-of-a-dm-object-s-data-model">Drawing a schema of a `dm` object's data model</a></li>
-      <li><a href="#section-table-surgery-functions">Table surgery functions</a></li>
-      <li><a href="#section-check-primary-key-property">Check primary key property</a></li>
-      <li><a href="#section-check-foreign-key-properties">Check foreign key properties</a></li>
-      <li><a href="#section-check-cardinality-of-relation-between-two-tables">Check cardinality of relation between two tables</a></li>
       <li><a href="#section-interaction-with-dbs">Interaction with DBs</a></li>
       <li><a href="#section-filtering-a-dm-object">Filtering a `dm` object</a></li>
       <li><a href="#section-utilizing-foreign-key-relations">Utilizing foreign key relations</a></li>
       <li><a href="#section-row-information">Row-information</a></li>
-      <li><a href="#section-create-example-dm-">Create example `dm`</a></li>
+      <li><a href="#section-table-surgery-functions">Table surgery functions</a></li>
+      <li><a href="#section-check-key-properties">Check key properties</a></li>
+      <li><a href="#section-check-cardinality-of-relation-between-two-tables">Check cardinality of relation between two tables</a></li>
       <li><a href="#section-miscellaneous">Miscellaneous</a></li>
       <li><a href="#section-open-website-with-overview">Open website with overview</a></li>
     </ul>
