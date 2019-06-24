@@ -22,7 +22,7 @@ cdm_copy_to(dest, dm, set_key_constraints = TRUE, table_names = NULL,
 }
 \description{
 \code{cdm_copy_to()} takes a \code{src}- or \code{con}-object as a first argument,
-and a \code{dm}-object as a second. The latter is copied to the former. By default
+and a \code{dm} object as a second. The latter is copied to the former. By default
 the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
 By default temporary tables will be created.
 }

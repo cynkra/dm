@@ -7,7 +7,7 @@
 cdm_join_tbl(dm, lhs, rhs, join = semi_join)
 }
 \arguments{
-\item{dm}{A \code{dm}-object}
+\item{dm}{A \code{dm} object}
 
 \item{lhs}{The table on the left hand side of the join}
 

@@ -10,7 +10,7 @@ cdm_set_key_constraints(dm)
 \item{dm}{A \code{dm} object.}
 }
 \description{
-\code{cdm_set_key_constraints()} takes a \code{dm}-object that lives on a DB (so far
+\code{cdm_set_key_constraints()} takes a \code{dm} object that lives on a DB (so far
 it works exclusively for MSSQL and Postgres) and mirrors the \code{dm} key constraints
 on the database.
 }

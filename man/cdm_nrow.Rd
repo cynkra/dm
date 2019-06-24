@@ -2,16 +2,16 @@
 % Please edit documentation in R/filter-helpers.R
 \name{cdm_nrow}
 \alias{cdm_nrow}
-\title{Number of rows of a table or of the whole \code{dm}-object}
+\title{Number of rows of a table or of the whole \code{dm} object}
 \usage{
 cdm_nrow(dm, table = NULL)
 }
 \arguments{
-\item{dm}{A \code{dm}-object}
+\item{dm}{A \code{dm} object}
 
 \item{table}{If \code{NULL} (default), the sum of the number of rows of all tables is returned.
 If a table is specified, the number of the rows of this table is returned.}
 }
 \description{
-Number of rows of a table or of the whole \code{dm}-object
+Number of rows of a table or of the whole \code{dm} object
 }

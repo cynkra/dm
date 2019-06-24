@@ -2,12 +2,17 @@
 % Please edit documentation in R/nycflights13.R
 \name{cdm_nycflights13}
 \alias{cdm_nycflights13}
-\title{Creates a test \code{dm}-object from \pkg{nycflights13}}
+\title{Creates a test \code{dm} object from \pkg{nycflights13}}
 \usage{
-cdm_nycflights13()
+cdm_nycflights13(cycle_free = FALSE)
+}
+\arguments{
+\item{cycle_free}{Boolean, if \code{FALSE} (default), will produce a \code{dm} object with
+a double reference between tables \code{flights} and \code{airports}. If \code{TRUE}, only the
+foreign key relation from \code{flights$origin} to \code{airports$faa} is established.}
 }
 \description{
-Creates an exemplary \code{dm}-object from the tables in \pkg{nycflights13}
+Creates an exemplary \code{dm} object from the tables in \pkg{nycflights13}
 along with key relations (two foreign key relations are violated, but we accept this,
 since this should only be seen as a quick way of getting a \code{dm} with known tables to
 play around with).

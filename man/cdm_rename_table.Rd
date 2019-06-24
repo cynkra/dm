@@ -10,7 +10,7 @@ cdm_rename_table(dm, old_name, new_name)
 cdm_rename_tables(dm, old_table_names, new_table_names)
 }
 \arguments{
-\item{dm}{A \code{dm}-object}
+\item{dm}{A \code{dm} object}
 
 \item{old_name}{The original name of the table}
 

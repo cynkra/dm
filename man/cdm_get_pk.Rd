@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_get_pk}
 \alias{cdm_get_pk}
-\title{Retrieve the name of the column marked as primary key of a table of a \code{dm}-object}
+\title{Retrieve the name of the column marked as primary key of a table of a \code{dm} object}
 \usage{
 cdm_get_pk(dm, table)
 }
@@ -13,7 +13,7 @@ cdm_get_pk(dm, table)
 }
 \description{
 \code{cdm_get_pk()} returns the name of the
-column marked as primary key of a table of a \code{dm}-object. If no primary key is
+column marked as primary key of a table of a \code{dm} object. If no primary key is
 set for the table, an empty character variable is returned.
 }
 \examples{

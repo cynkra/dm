@@ -7,15 +7,15 @@
 cdm_find_conn_tbls(dm, ...)
 }
 \arguments{
-\item{dm}{A \code{dm}-object}
+\item{dm}{A \code{dm} object}
 
-\item{...}{Two or more table names of the \code{dm}-object's tables.}
+\item{...}{Two or more table names of the \code{dm} object's tables.}
 }
 \value{
 Character vector with the names of the connecting tables.
 }
 \description{
-Find all tables that need to be passed when traversing the \code{dm}-object
+Find all tables that need to be passed when traversing the \code{dm} object
 between the indicated tables along the foreign
 key relations. Result includes the given tables.
 }
