@@ -71,4 +71,15 @@ flights_dm_with_keys <-
 Further functions that are helpful in organizing the keys of a `dm`-object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
 More details can be found in the documentation of the relevant functions.
 
+## Visualizing the data model
+
+Once you set the pk's and established fk relations, you can graphically represent your data model in the following way:
+
+```{r}
+flights_dm_with_keys  %>% 
+  cdm_draw()
+```
+
+There are a few options of customizing the way, the data model is displayed, e.g. add different colors to subsets of the tables or arrange the tables in a different way.
+You can find details about this in the documentation or in the vignette "Visualizing 'dm'-objects".
 
