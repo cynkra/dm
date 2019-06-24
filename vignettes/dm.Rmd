@@ -106,3 +106,23 @@ In the "Rows" part of the print-output, you can observe the reduction in the num
 
 ## Copy a `dm` object to a DB or learn from it {#copy}
 
+`dm` objects can be transferred from one `src` to another.
+The relevant verb is `cdm_copy_to()`.
+It will copy the individual tables from the former to the new `src`, potentially set key constraints -- if on a DB (so far only MSSQL and Postgres are supported for this feature) -- and subsequently invisibly return the new `dm` object.
+
+Here we show an example with in-memory SQLite-DB (so no key constraints are established):
+
+```{r}
+src_sqlite <- src_sqlite(":memory:", create = TRUE)
+flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
+flights_dm_with_keys_remote
+```
+
+In the opposite direction, `dm` objects can also be "learned" from a DB, including the key constraints, by utilizing the DB's meta-information tables.
+Unfortunately, it is not possible to execute the corresponding code in this vignette, since -- just like with the transfer to a DB -- only MSSQL and Postgres are so far supported, and there are no generally accessible DBs of this type available.
+
+But anyhow, we can show, how the code looks like:
+
+```{r eval=FALSE}
+flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
+```
