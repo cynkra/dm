@@ -232,8 +232,8 @@ there are no duplicates in either of them.</p>
 #&gt; </span><span style='color: #555555;'> 41. </span><span>                            │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; </span><span style='color: #555555;'> 42. </span><span>                            │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
 #&gt; </span><span style='color: #555555;'> 43. </span><span>                            └─dm::check_cardinality_0_n(d2, c, d1, a)
-#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─dm::check_key(!!pt, !!pkc) </span><span style='color: #555555;'>/Users/tobiasschieferdecker/git/cynkra/dm/R/check-cardinalities.R:63:2</span><span>
-#&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─dm:::abort_not_unique_key(as_label(data_q), map_chr(args, as_label)) </span><span style='color: #555555;'>/Users/tobiasschieferdecker/git/cynkra/dm/R/key-helpers.R:39:2</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─dm::check_key(!!pt, !!pkc) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/check-cardinalities.R:63:2</span><span>
+#&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─dm:::abort_not_unique_key(as_label(data_q), map_chr(args, as_label)) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/key-helpers.R:39:2</span><span></div><div class='input'>
 <span class='co'># This passes, multiple values in d2$c are allowed:</span>
 <span class='fu'>check_cardinality_0_n</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)
 
@@ -284,11 +284,11 @@ there are no duplicates in either of them.</p>
 #&gt; </span><span style='color: #555555;'> 41. </span><span>                            │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; </span><span style='color: #555555;'> 42. </span><span>                            │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
 #&gt; </span><span style='color: #555555;'> 43. </span><span>                            └─dm::check_cardinality_1_1(d1, a, d2, c)
-#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─base::tryCatch(...) </span><span style='color: #555555;'>/Users/tobiasschieferdecker/git/cynkra/dm/R/check-cardinalities.R:97:2</span><span>
+#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─base::tryCatch(...) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/check-cardinalities.R:97:2</span><span>
 #&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─base:::tryCatchList(expr, classes, parentenv, handlers)
 #&gt; </span><span style='color: #555555;'> 46. </span><span>                                  └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; </span><span style='color: #555555;'> 47. </span><span>                                    └─value[[3L]](cond)
-#&gt; </span><span style='color: #555555;'> 48. </span><span>                                      └─dm:::abort_not_bijective(as_label(ct), as_label(fkc)) </span><span style='color: #555555;'>/Users/tobiasschieferdecker/git/cynkra/dm/R/check-cardinalities.R:101:10</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'> 48. </span><span>                                      └─dm:::abort_not_bijective(as_label(ct), as_label(fkc)) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/check-cardinalities.R:101:10</span><span></div><div class='input'>
 <span class='co'># This passes:</span>
 <span class='fu'>check_cardinality_0_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d3</span>, <span class='no'>c</span>)</div></span></pre>
   </div>
