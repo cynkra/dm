@@ -24,6 +24,15 @@ An object of the `dm`-class contains all relevant information about the tables i
 2. the tables themselves, i.e., the data
 3. the meta-data from the data model: the key relations
 
+This package follows the "tidyverse" approach of immutable objects.
+Your data will never be overwritten in place.
+Many verbs, used on a `dm` object, return a new `dm` object.
+This also allows to compose sequences of operations using the `%>%` pipe operator.
+
+FIXME: bullet points: immutable, pipe, tidy evaluation
+
+FIXME: Summarize contents of vignette.
+
 Let's first have a brief look at how to create a `dm`-class object:
 
 ## Creating `dm` objects:
@@ -37,11 +46,6 @@ library(dplyr)
 flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
 ```
-
-This package follows the "tidyverse" approach of immutable objects.
-Your data will never be overwritten in place.
-Many verbs, used on a `dm` object, return a new `dm` object.
-This also allows to compose sequences of operations using the `%>%` pipe operator.
 
 
 ## Handling keys of `dm` objects {#kr}
