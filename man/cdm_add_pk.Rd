@@ -20,7 +20,7 @@ already a primary key set for this table. If \code{TRUE} a potential old \code{p
 }
 \description{
 \code{cdm_add_pk()} marks the given column as the given table's primary key
-in the \code{data_model}-part of the \code{dm} object. If \code{check == TRUE}, it also first checks if
+in the \code{data_model}-part of the \code{\link{dm}} object. If \code{check == TRUE}, it also first checks if
 the given column is a unique key of the table. If \code{force == TRUE}, it replaces an already
 set key.
 }
@@ -39,8 +39,8 @@ cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 }
 \seealso{
-Other Primary keys: \code{\link{cdm_check_for_pk_candidates}},
+Other Primary key functions: \code{\link{cdm_check_for_pk_candidates}},
   \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
   \code{\link{cdm_has_pk}}, \code{\link{cdm_rm_pk}}
 }
-\concept{Primary keys}
+\concept{Primary key functions}

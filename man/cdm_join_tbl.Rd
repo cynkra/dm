@@ -2,12 +2,12 @@
 % Please edit documentation in R/filter-helpers.R
 \name{cdm_join_tbl}
 \alias{cdm_join_tbl}
-\title{Perform a join between two tables of a \code{dm}}
+\title{Perform a join between two tables of a \code{\link{dm}}}
 \usage{
 cdm_join_tbl(dm, lhs, rhs, join = semi_join)
 }
 \arguments{
-\item{dm}{A \code{dm} object}
+\item{dm}{A \code{\link{dm}} object}
 
 \item{lhs}{The table on the left hand side of the join}
 
@@ -22,9 +22,4 @@ The resulting table of the join
 A join of desired type is performed between table \code{lhs} and
 table \code{rhs}.
 }
-\seealso{
-Other Utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
-  \code{\link{cdm_get_referencing_tables}},
-  \code{\link{cdm_is_referenced}}, \code{\link{cdm_select}}
-}
-\concept{Utilizing foreign key relations}
+\concept{Flattening functions}

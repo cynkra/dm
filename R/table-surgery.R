@@ -123,6 +123,8 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 #' @param list_of_parent_child_tables Cf arguments `child_table` and `parent_table` from
 #' `reunite_parent_child()`, but both in a named list (as created by `decompose_table()`).
 #'
+#' @family Table surgery functions
+#'
 #' @rdname reunite_parent_child
 #' @export
 reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_column) {

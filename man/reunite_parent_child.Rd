@@ -33,5 +33,7 @@ of the columns is not retained and original rownames are lost).
 }
 \seealso{
 Other Table surgery functions: \code{\link{decompose_table}}
+
+Other Table surgery functions: \code{\link{decompose_table}}
 }
 \concept{Table surgery functions}

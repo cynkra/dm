@@ -1,6 +1,6 @@
-#' Draw schema of a 'dm'-object's data model
+#' Draw schema of a [`dm`]-object's data model
 #'
-#' @param dm A `dm` object
+#' @param dm A [`dm`] object
 #' @param table_names Tables to consider in the model visualisation.
 #' If `NULL` (default), there is no constraint.
 #' @inheritParams datamodelr::dm_create_graph

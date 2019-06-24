@@ -5,7 +5,7 @@
 \alias{cdm_set_colors}
 \alias{cdm_get_colors}
 \alias{cdm_get_available_colors}
-\title{Draw schema of a 'dm'-object's data model}
+\title{Draw schema of a \code{\link{dm}}-object's data model}
 \usage{
 cdm_draw(dm, table_names = NULL, rankdir = "LR", col_attr = "column",
   view_type = "keys_only", columnArrows = TRUE, graph_attrs = "",
@@ -19,7 +19,7 @@ cdm_get_colors(dm)
 cdm_get_available_colors()
 }
 \arguments{
-\item{dm}{A \code{dm} object}
+\item{dm}{A \code{\link{dm}} object}
 
 \item{table_names}{Tables to consider in the model visualisation.
 If \code{NULL} (default), there is no constraint.}

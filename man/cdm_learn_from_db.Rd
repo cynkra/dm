@@ -2,7 +2,7 @@
 % Please edit documentation in R/learn_dm_from_db.R
 \name{cdm_learn_from_db}
 \alias{cdm_learn_from_db}
-\title{Learn a \code{dm} object from a database (DB)}
+\title{Learn a \code{\link{dm}} object from a database (DB)}
 \usage{
 cdm_learn_from_db(dest)
 }
@@ -10,17 +10,17 @@ cdm_learn_from_db(dest)
 \item{dest}{A \code{src}-object on a DB or a connection to a DB.}
 }
 \value{
-A \code{dm} object with the tables from the DB and the respective key relations.
+A \code{\link{dm}} object with the tables from the DB and the respective key relations.
 }
 \description{
 Assuming, there are permament tables on a DB, you can turn these
-into a \code{dm} object. The key constraints are also learned from the DB and taken into
+into a \code{\link{dm}} object. The key constraints are also learned from the DB and taken into
 account.
 
 So far this only works for MSSQL and Postgres. Also, you can not specify a schema to learn from.
 }
 \seealso{
-Other DB interaction: \code{\link{cdm_copy_to}},
+Other DB interaction functions: \code{\link{cdm_copy_to}},
   \code{\link{cdm_set_key_constraints}}
 }
-\concept{DB interaction}
+\concept{DB interaction functions}

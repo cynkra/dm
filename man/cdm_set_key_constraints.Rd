@@ -28,7 +28,7 @@ iris_dm <- cdm_copy_to(
 cdm_set_key_constraints(iris_dm)
 }
 \seealso{
-Other DB interaction: \code{\link{cdm_copy_to}},
+Other DB interaction functions: \code{\link{cdm_copy_to}},
   \code{\link{cdm_learn_from_db}}
 }
-\concept{DB interaction}
+\concept{DB interaction functions}

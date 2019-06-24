@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph.R
 \name{cdm_get_referencing_tables}
 \alias{cdm_get_referencing_tables}
-\title{Get the names of a \code{dm}'s tables referencing a given table.}
+\title{Get the names of a \code{\link{dm}}'s tables referencing a given table.}
 \usage{
 cdm_get_referencing_tables(dm, table)
 }
@@ -16,11 +16,10 @@ Character vector of the names of the tables pointing to the primary
 key of parameter \code{table}.
 }
 \description{
-Get the names of a \code{dm}'s tables referencing a given table.
+Get the names of a \code{\link{dm}}'s tables referencing a given table.
 }
 \seealso{
-Other Utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
-  \code{\link{cdm_is_referenced}},
-  \code{\link{cdm_join_tbl}}, \code{\link{cdm_select}}
+Other Functions utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
+  \code{\link{cdm_is_referenced}}, \code{\link{cdm_select}}
 }
-\concept{Utilizing foreign key relations}
+\concept{Functions utilizing foreign key relations}

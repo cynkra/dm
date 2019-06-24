@@ -14,7 +14,7 @@ cdm_check_for_fk_candidates(dm, table, ref_table)
 \item{ref_table}{A table with a primary key.}
 }
 \description{
-Which columns are foreign candidates of a table, referencing the primary key column of another \code{dm} object's table?
+Which columns are foreign candidates of a table, referencing the primary key column of another \code{\link{dm}} object's table?
 \code{cdm_check_for_fk_candidates()} checks first, if \code{ref_table} has a primary key set. Then it determines
 for each column of \code{table}, if this column contains only a subset of values of the primary key column of
 \code{ref_table} and is therefore a candidate for a foreign key from \code{table} to \code{ref_table}.
@@ -28,8 +28,8 @@ nycflights_dm \%>\%
   cdm_check_for_fk_candidates(flights, airports)
 }
 \seealso{
-Other Foreign keys: \code{\link{cdm_add_fk}},
+Other Foreign key functions: \code{\link{cdm_add_fk}},
   \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
   \code{\link{cdm_has_fk}}, \code{\link{cdm_rm_fk}}
 }
-\concept{Foreign keys}
+\concept{Foreign key functions}

@@ -1,7 +1,7 @@
 #' Copy a 'dm'-object to a 'src'/'con'
 #'
 #' @description `cdm_copy_to()` takes a `src`- or `con`-object as a first argument,
-#' and a `dm` object as a second. The latter is copied to the former. By default
+#' and a [`dm`] object as a second. The latter is copied to the former. By default
 #' the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
 #' By default temporary tables will be created.
 #'
@@ -12,7 +12,7 @@
 #' @param temporary Boolean variable, if `TRUE` will only create temporary tables, which will vanish when connection is interrupted.
 #' @param ... Possible further arguments passed to [dplyr::copy_to()] (which is used on each table)
 #'
-#' @family DB interaction
+#' @family DB interaction functions
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
@@ -77,7 +77,7 @@ cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL
 #'
 #' @inheritParams cdm_copy_to
 #'
-#' @family DB interaction
+#' @family DB interaction functions
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)

@@ -1,15 +1,15 @@
-#' Get a `dm` only containing the indicated tables and the connecting ones
+#' Get a [`dm`] only containing the indicated tables and the connecting ones
 #'
-#' @description Is a wrapper around `cdm_find_conn_tbls()`. It returns a reduced `dm` object,
+#' @description Is a wrapper around `cdm_find_conn_tbls()`. It returns a reduced [`dm`] object,
 #' containing only the indicated tables plus the ones in between them (unless `all_connected = FALSE`).
 #'
-#' @param dm A `dm` object
-#' @param ... Two or more table names of the `dm` object's tables.
+#' @param dm A [`dm`] object
+#' @param ... Two or more table names of the [`dm`] object's tables.
 #' @param all_connected Boolean, if `TRUE` (default), all the connecting tables will
-#' be part of the resulting `dm` in addition to the indicated tables. If `FALSE`,
+#' be part of the resulting [`dm`] in addition to the indicated tables. If `FALSE`,
 #' exclusively the indicated tables will be selected.
 #'
-#' @family Utilizing foreign key relations
+#' @family Functions utilizing foreign key relations
 #'
 #' @export
 cdm_select <- function(dm, ..., all_connected = TRUE) {
@@ -41,16 +41,16 @@ cdm_select <- function(dm, ..., all_connected = TRUE) {
 }
 
 
-#' Find the tables connecting two or more tables in a `dm`
+#' Find the tables connecting two or more tables in a [`dm`]
 #'
-#' @description Find all tables that need to be passed when traversing the `dm` object
+#' @description Find all tables that need to be passed when traversing the [`dm`] object
 #' between the indicated tables along the foreign
 #' key relations. Result includes the given tables.
 #'
-#' @param dm A `dm` object
-#' @param ... Two or more table names of the `dm` object's tables.
+#' @param dm A [`dm`] object
+#' @param ... Two or more table names of the [`dm`] object's tables.
 #'
-#' @family Utilizing foreign key relations
+#' @family Functions utilizing foreign key relations
 #'
 #' @return Character vector with the names of the connecting tables.
 #'

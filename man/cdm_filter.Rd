@@ -3,7 +3,7 @@
 \name{cdm_filter}
 \alias{cdm_filter}
 \alias{cdm_semi_join}
-\title{Cascading filter of a \code{dm} object}
+\title{Cascading filter of a \code{\link{dm}} object}
 \usage{
 cdm_filter(dm, table, ...)
 
@@ -26,12 +26,12 @@ for an introduction to these concepts.}
 }
 \description{
 'cdm_filter()' allows you to set one or more filter conditions for one table
-of a \code{dm} object. If the \code{dm}'s tables are connected via key constrains, the
+of a \code{\link{dm}} object. If the \code{\link{dm}}'s tables are connected via key constrains, the
 filtering will affect all other connected tables, leaving only the rows with
 the corresponding key values.
 
-'cdm_semi_join()' performs a cascading "row reduction" of a \code{dm} object
+'cdm_semi_join()' performs a cascading "row reduction" of a \code{\link{dm}} object
 by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
-key constraints are used to compute the remainders of the other tables of the \code{dm} object and
-a new \code{dm} object is returned.
+key constraints are used to compute the remainders of the other tables of the \code{\link{dm}} object and
+a new \code{\link{dm}} object is returned.
 }

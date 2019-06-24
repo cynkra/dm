@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_check_for_pk_candidates}
 \alias{cdm_check_for_pk_candidates}
-\title{Which columns are candidates for a primary key column of a \code{dm} object's table?}
+\title{Which columns are candidates for a primary key column of a \code{\link{dm}} object's table?}
 \usage{
 cdm_check_for_pk_candidates(dm, table)
 }
@@ -13,7 +13,7 @@ cdm_check_for_pk_candidates(dm, table)
 }
 \description{
 \code{cdm_check_for_pk_candidates()} checks for each column of a
-table of a \code{dm} object if this column contains only unique values and is therefore
+table of a \code{\link{dm}} object if this column contains only unique values and is therefore
 a unique key of this table.
 }
 \examples{
@@ -24,8 +24,8 @@ nycflights_dm \%>\% cdm_check_for_pk_candidates(flights)
 nycflights_dm \%>\% cdm_check_for_pk_candidates(airports)
 }
 \seealso{
-Other Primary keys: \code{\link{cdm_add_pk}},
+Other Primary key functions: \code{\link{cdm_add_pk}},
   \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
   \code{\link{cdm_has_pk}}, \code{\link{cdm_rm_pk}}
 }
-\concept{Primary keys}
+\concept{Primary key functions}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_get_fk}
 \alias{cdm_get_fk}
-\title{Retrieve the name of the column marked as foreign key, pointing from one table of a \code{dm} to another}
+\title{Retrieve the name of the column marked as foreign key, pointing from one table of a \code{\link{dm}} to another}
 \usage{
 cdm_get_fk(dm, table, ref_table)
 }
@@ -14,12 +14,12 @@ cdm_get_fk(dm, table, ref_table)
 \item{ref_table}{The table which is referenced from \code{table}.}
 }
 \description{
-Retrieve the name of the column marked as foreign key, pointing from one table of a \code{dm} to another
+Retrieve the name of the column marked as foreign key, pointing from one table of a \code{\link{dm}} to another
 }
 \seealso{
-Other Foreign keys: \code{\link{cdm_add_fk}},
+Other Foreign key functions: \code{\link{cdm_add_fk}},
   \code{\link{cdm_check_for_fk_candidates}},
   \code{\link{cdm_get_all_fks}}, \code{\link{cdm_has_fk}},
   \code{\link{cdm_rm_fk}}
 }
-\concept{Foreign keys}
+\concept{Foreign key functions}

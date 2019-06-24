@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_get_pk}
 \alias{cdm_get_pk}
-\title{Retrieve the name of the column marked as primary key of a table of a \code{dm} object}
+\title{Retrieve the name of the column marked as primary key of a table of a \code{\link{dm}} object}
 \usage{
 cdm_get_pk(dm, table)
 }
@@ -13,7 +13,7 @@ cdm_get_pk(dm, table)
 }
 \description{
 \code{cdm_get_pk()} returns the name of the
-column marked as primary key of a table of a \code{dm} object. If no primary key is
+column marked as primary key of a table of a \code{\link{dm}} object. If no primary key is
 set for the table, an empty character variable is returned.
 }
 \examples{
@@ -24,9 +24,9 @@ nycflights_dm \%>\%
   cdm_get_pk(planes)
 }
 \seealso{
-Other Primary keys: \code{\link{cdm_add_pk}},
+Other Primary key functions: \code{\link{cdm_add_pk}},
   \code{\link{cdm_check_for_pk_candidates}},
   \code{\link{cdm_get_all_pks}}, \code{\link{cdm_has_pk}},
   \code{\link{cdm_rm_pk}}
 }
-\concept{Primary keys}
+\concept{Primary key functions}
