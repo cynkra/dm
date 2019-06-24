@@ -7,15 +7,15 @@
 cdm_select(dm, ..., all_connected = TRUE)
 }
 \arguments{
-\item{dm}{A \code{dm}-object}
+\item{dm}{A \code{dm} object}
 
-\item{...}{Two or more table names of the \code{dm}-object's tables.}
+\item{...}{Two or more table names of the \code{dm} object's tables.}
 
 \item{all_connected}{Boolean, if \code{TRUE} (default), all the connecting tables will
 be part of the resulting \code{dm} in addition to the indicated tables. If \code{FALSE},
 exclusively the indicated tables will be selected.}
 }
 \description{
-Is a wrapper around \code{cdm_find_conn_tbls()}. It returns a reduced \code{dm}-object,
+Is a wrapper around \code{cdm_find_conn_tbls()}. It returns a reduced \code{dm} object,
 containing only the indicated tables plus the ones in between them (unless \code{all_connected = FALSE}).
 }

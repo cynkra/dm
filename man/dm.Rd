@@ -32,7 +32,7 @@ as_dm(x)
 
 \item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
 
-\item{tables}{A list of the tables (tibble-objects, not names) to be included in the \code{dm}-object}
+\item{tables}{A list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
 
 \item{x}{An object.}
 }

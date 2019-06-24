@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_add_pk}
 \alias{cdm_add_pk}
-\title{Mark a column of a table in a \code{dm}-object as its primary key}
+\title{Mark a column of a table in a \code{dm} object as its primary key}
 \usage{
 cdm_add_pk(dm, table, column, check = TRUE, force = FALSE)
 }
@@ -20,7 +20,7 @@ already a primary key set for this table. If \code{TRUE} a potential old \code{p
 }
 \description{
 \code{cdm_add_pk()} marks the given column as the given table's primary key
-in the \code{data_model}-part of the \code{dm}-object. If \code{check == TRUE}, it also first checks if
+in the \code{data_model}-part of the \code{dm} object. If \code{check == TRUE}, it also first checks if
 the given column is a unique key of the table. If \code{force == TRUE}, it replaces an already
 set key.
 }

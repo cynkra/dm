@@ -1,9 +1,9 @@
 ---
-title: "Introduction to dm"
+title: "Getting Started"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Getting Started}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -15,240 +15,171 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 ```
 
-The goal of both the package dm and the class `dm` - which comes along with it - is to make your life easier when you have to deal with data models the data therein.
+The goal of both the package {dm} and its `dm` class is to facilitate work with multiple related tables.
+An object of the `dm`-class contains all relevant information about the tables in a data model:
 
-Let's first have a look at the new class:
+1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
+2. the tables themselves, i.e., the data
+3. the meta-data from the data model: the key constraints
 
-## Class `dm`
+This package follows several of the "tidyverse" rules:
+- `dm` objects are immutable (your data will never be overwritten in place)
+- many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
+- tidy evaluation is used (unquoted function parameters are supported)
 
-The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. You can have your `dm` object on different data sources, such as a local environment or a database. In the latter use case you need to have the package dbplyr installed. 
+We will showcase here some of the features of {dm}:
 
-`dm` is a wrapper around two classes, which are independent from each other:
+1. [Creation of `dm` objects](#create)
+1. [Setting keys and drawing](#keys)
+1. [Filtering](#filter)
+1. [Copying and discovery](#copy)
 
-1. part of the object is a [`src`-object](https://dplyr.tidyverse.org/reference/src.html) from dplyr
-2. the other part is a class `data_model` object
- from the package [datamodelr](https://github.com/bergant/datamodelr)^[Use: `devtools::install_github("https://github.com/bergant/datamodelr")` to install it]
+Let's first have a brief look at how to create a `dm`-class object.
 
-The `src`-object contains the information, where the tables of your data model live. And in the `data_model` object the meta-information is stored:
-
-- what are the primary keys in your schema?
-- how are the tables related to each other, i.e. what are the foreign key relations?
-
-Last but not least, a third part of the object is a named list containing the tables on the `src`.
-
-So much to the theory, let's see how to construct such an object and how it looks in `R`:
-
-## Examples of `dm` objects {#ex_dm}
-
-Relevant functions for creating `dm` objects are:
-
-1. `dm()`
-2. `as_dm()`
-
-We can use the tables from the famous package {nycflights13}:
 ```{r message=FALSE}
 library(dm)
-library(dplyr)
+library(tidyverse)
+```
+
+
+## Creating `dm` objects: {#create}
+
+The {nycflights13}-package offers a nice example for interconnected tables.
+The most straightforward way of squeezing them into a `dm` object is:
+
+```{r message=FALSE}
 flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
-Here we make use of the fact, that the function `dm(src, data_model = NULL)` includes all available tables on a source in the `dm` object, should the `data_model`-argument be left `NULL`. 
-Thus you can use this for example on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
 
-Another way of creating a `dm` object is calling `as_dm()` on a list of `tbls`:
-```{r}
-iris_dm <- as_dm(list("iris1" = iris, "iris2" = iris))
-iris_dm
-```
+## Keys and visualization {#keys}
 
-## Methods for `dm` objects
-
-tbl(dm, "table_name") etc. (copy_to...) FIXME: complete
-
-But how can we use dm-functions to manage primary keys of the tables in a `dm` object?
-
-## Primary keys of `dm` objects {#pk}
-
-Useful functions for managing primary key settings are:
-
-1. `cdm_add_pk()`
-2. `cdm_has_pk()`
-3. `cdm_get_pk()`
-4. `cdm_rm_pk()`
-5. `cdm_check_for_pk_candidates()`
-
-As of yet `dm` objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
-If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
-So let's add one.
-By default `cdm_add_pk()` checks if the column of the table given by the user is a unique key.
-Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`.
+As you can see in the "Data model" part of the output above, so far no keys are set.
+We use `cdm_add_pk()` to add a primary key (pk):
 
 ```{r}
-cdm_has_pk(flights_dm, airports)
-flights_dm_with_key <- cdm_add_pk(flights_dm, airports, faa)
-flights_dm_with_key
-```
-Still looks exactly the same as before... let's check:
-```{r}
-cdm_has_pk(flights_dm_with_key, airports)
-```
-Get the name of the column that is marked as primary key of the table:
-```{r}
-cdm_get_pk(flights_dm_with_key, airports)
-```
-Remove a primary key by:
-```{r}
-cdm_rm_pk(flights_dm_with_key, airports) %>% 
-  cdm_has_pk(airports)
+cdm_add_pk(flights_dm, airports, faa)
 ```
 
-If you still need to get to know your data better, and it is already available in the form of a `dm` object, you can use the function `cdm_check_for_pk_candidates()` in order to get information, which columns of a table are unique keys:
-```{r}
-cdm_check_for_pk_candidates(flights_dm_with_key, airports)
-```
-Table `flights` does not have any one-column primary key candidates:
-```{r}
-cdm_check_for_pk_candidates(flights_dm_with_key, flights) %>% count(candidate)
-```
+The foreign key (fk) relations are established in a similar way with `cdm_add_fk()`.
 
-## Foreign keys
-
-Useful functions for managing foreign key relations are:
-
-1. `cdm_add_fk()`
-2. `cdm_has_fk()`
-3. `cdm_get_fk()`
-4. `cdm_rm_fk()`
-5. `cdm_check_for_fk_candidates()`
-
-Now it gets (even more) interesting: we want to define relations between different tables.
-With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
-
-When dealing with data models, a foreign key from one table has to always point to a primary key of another table.
-The primary key of the referred table must be set with `cdm_add_pk()`.
-`cdm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
+The `cdm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables and defines all primary and foreign keys.
+We will be using the `dm` object created by this function from here on.
 
 ```{r}
-flights_dm_with_key %>% cdm_add_fk(flights, origin, airports)
+flights_dm_with_keys <- cdm_nycflights13()
+flights_dm_with_keys
 ```
-This will throw an error:
-```{r error=TRUE}
-flights_dm %>% cdm_add_fk(flights, origin, airports)
-```
-Let's create a `dm` object with a foreign key relation to work with later on:
+
+Once you set the pk's and established fk relations, you can graphically represent your data model in the following way:
+
 ```{r}
-flights_dm_with_fk <- cdm_add_fk(flights_dm_with_key, flights, origin, airports)
+flights_dm_with_keys %>% 
+  cdm_draw()
 ```
-What if we try to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, since it also contains airport codes:
-```{r error=TRUE}
-flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports)
-```
-As you can see, behind the scenes, checks are executed automatically by the functions of `dm` to prevent steps that do not comply with the logic of data models.
 
-Use `cdm_has_fk()` for checking if a foreign key exists, which is pointing from one table to another:
+## Filtering a table of a `dm` object {#filter}
+
+The idea of a filter on a `dm` object:
+
+1. You filter one table of your `dm`, just like with a normal `dplyr::filter()`-call
+2. A cascade of joins is performed along the fk relations, resulting in a new `dm` containing only rows related to the filter operation
+
+Currently, this only works if the graph induced by the fk relations is cycle free.
+Our helper has an option for this:
+
 ```{r}
-flights_dm_with_fk %>% cdm_has_fk(flights, planes)
-flights_dm_with_fk %>% cdm_has_fk(flights, airports)
+flights_dm_acyclic <- cdm_nycflights13(cycle = FALSE)
+flights_dm_acyclic
 ```
 
-If you want to access the name of the column, which acts as a foreign key of one table to another table's column, use `cdm_get_fk()`:
+Let's see it in action:
+
 ```{r}
-flights_dm_with_fk %>% cdm_get_fk(flights, planes)
-flights_dm_with_fk %>% cdm_get_fk(flights, airports)
+us_flights_from_jfk <- 
+  flights_dm_acyclic %>%
+  cdm_filter(airports, name == "John F Kennedy Intl") %>% 
+  cdm_filter(airlines, name == "US Airways Inc.")
+us_flights_from_jfk
 ```
 
-Remove foreign key relations with `cdm_rm_fk()` (parameter `column = NULL` means removal of all relations):
-```{r error=TRUE}
-flights_dm_with_fk %>% 
-  cdm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
-  cdm_get_fk(flights, airports)
-flights_dm_with_fk %>% 
-  cdm_rm_fk(flights, origin, airports) %>% 
-  cdm_get_fk(flights, airports)
-flights_dm_with_fk %>% 
-  cdm_rm_fk(flights, NULL, airports) %>% 
-  cdm_get_fk(flights, airports)
-```
+In the "Rows" part of the print-output, you can observe the reduction in the numbers of rows for all tables (apart from the -- disconnected -- `weather` table), corresponding to US Airways flights having started from JFK airport.
 
-Another function for getting to know your data better (cf. `cdm_check_for_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `cdm_check_for_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
+Which planes were used to service these flights?
+
 ```{r}
-cdm_check_for_fk_candidates(flights_dm_with_key, weather, airports)
+tbl(us_flights_from_jfk, "planes")
 ```
 
-## Visualising the data model
+Each of the planes in the result set above was part in at least one United flight departing from JFK.
+Do they have common characteristics?
 
-Relevant functions for visualising the data model:^[The functions in this section rely heavily on related functions of {datamodelr}.]
-
-1. `cdm_set_colors()`
-1. `cdm_get_colors()`
-1. `cdm_get_available_colors()`
-1. `cdm_draw()`
-
-Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation of your data model.
-
-Let's first create a slightly more interconnected `dm` object from the {nycflights13} package tables:
 ```{r}
-flights_dm_w_many_keys <- 
-  flights_dm %>% 
-  cdm_add_pk(planes, tailnum) %>% 
-  cdm_add_pk(airports, faa) %>% 
-  cdm_add_pk(airlines, carrier) %>% 
-  cdm_add_fk(flights, origin, airports) %>% 
-  cdm_add_fk(flights, carrier, airlines) %>% 
-  cdm_add_fk(flights, tailnum, planes, check = FALSE) %>% 
-  cdm_add_fk(flights, dest, airports, check = FALSE)
-flights_dm_w_many_keys
+tbl(us_flights_from_jfk, "planes") %>% 
+  count(model)
 ```
-You probably realized the option `check = FALSE` in the last two function calls when adding foreign keys.
-The check normally ensures, that the set of values of the column of the first table is a subset of the set of values of the primary key column of the referenced table.
-Since in our case this isn't the case, but we want complexity, we turned the check off.
-It is recommended not to do this, since you might run into errors or other unwanted effects, mainly when working on databases.
 
-You can use colors to visually group your tables into families (which could reflect their logical grouping).
-Currently, there are only eight different colors available (plus the option of having borders displayed around the tables or not).
-To find out which colors exist, use `cdm_get_available_colors()`:
+For comparison, let's review the equivalent manual query in {dplyr} syntax:
+
 ```{r}
-cdm_get_available_colors()
+library(nycflights13)
+flights %>% 
+  left_join(airports, by = c("origin" = "faa")) %>% 
+  filter(name == "John F Kennedy Intl") %>%
+  left_join(airlines, by = "carrier") %>% 
+  filter(name.y == "US Airways Inc.") %>%
+  semi_join(planes, ., by = "tailnum") %>% 
+  count(model)
 ```
 
-The assignment is carried out with `cdm_set_colors()`, using a syntax similar to `switch()`.
-Any table you don't specifically assign will be displayed in the default color.
+The {dm} code is leaner, because the fk information is encoded in the object.
 
-Use `cdm_set_colors()` to assign the respective colors. 
-The result of `cdm_set_colors()` is a `dm` object.
-The information about the color is stored in its `data_model`-part.
+
+## Copy a `dm` object to a DB or learn from it {#copy}
+
+`dm` objects can be transferred from one `src` to another.
+The relevant verb is `cdm_copy_to()`, which will copy both data and key constraints.
+
 ```{r}
-flights_dm_w_many_keys_and_colors <-
-  flights_dm_w_many_keys %>% 
-  cdm_set_colors(
-    flights = "blue",
-    airlines = ,
-    airports = "orange",
-    planes = "green_nb"
-  )
+src_sqlite <- src_sqlite(":memory:", create = TRUE)
+src_sqlite
+flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
 ```
 
-Draw the schema with `cdm_draw()`. 
+As a result, the tables are transferred to the target data source, and the returned data model contains all keys.
+
 ```{r}
-cdm_draw(flights_dm_w_many_keys_and_colors)
+src_sqlite
+flights_dm_with_keys_remote
 ```
 
-The colors can be queried with `cdm_get_colors()`. 
-```{r}
-cdm_get_colors(flights_dm_w_many_keys_and_colors)
+In the opposite direction, `dm` objects can also be "learned" from a DB, including the key constraints, by utilizing the DB's meta-information tables.
+Unfortunately, this currently works only for MSSQL and Postgres, we cannot show the results here yet:
+
+```{r eval=FALSE}
+flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
 ```
 
-There are quite a few options for customization available. 
-Please read the documentation to find out more.
-One argument of the function we'd like to draw your attention to, though, is `table_names`.
-This argument accepts a character vector with the table names which are to be printed, in case you would like to only see a subset of the whole data model.
-```{r}
-cdm_draw(flights_dm_w_many_keys_and_colors, table_names = c("flights", "airports", "planes"))
-```
+## Further reading
 
-## Joining tables
+FIXME:
 
-## Filtering a `dm` object
+Further functions that are helpful in organizing the keys of a `dm` object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
+More details can be found in the documentation of the relevant functions.
+
+There are a few options of customizing the way, the data model is displayed, e.g. add different colors to subsets of the tables or arrange the tables in a different way.
+You can find details about this in the documentation or in the vignette "Visualizing 'dm'-objects".
+
+
+It will copy the individual tables from the former to the new `src`, potentially set key constraints -- if on a DB (so far only MSSQL and Postgres are supported for this feature) -- and subsequently invisibly return the new `dm` object.
+
+Here we show an example using the in-memory SQLite-DB (so no key constraints are established):
+
+it is not possible to execute the corresponding code in this vignette, since -- just like with the transfer to a DB -- only MSSQL and Postgres are so far supported, and there are no generally accessible DBs of this type available.
+
+But anyhow, we can show, how the code looks like

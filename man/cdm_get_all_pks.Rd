@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_get_all_pks}
 \alias{cdm_get_all_pks}
-\title{Get all primary keys of a \code{dm}-object}
+\title{Get all primary keys of a \code{dm} object}
 \usage{
 cdm_get_all_pks(dm)
 }
@@ -10,6 +10,6 @@ cdm_get_all_pks(dm)
 \item{dm}{A \code{dm} object.}
 }
 \description{
-\code{cdm_get_all_pks()} checks the \code{dm}-object for set primary keys and
+\code{cdm_get_all_pks()} checks the \code{dm} object for set primary keys and
 returns the tables, the respective primary key columns and their classes.
 }

@@ -7,13 +7,16 @@
 cdm_join_tbl(dm, lhs, rhs, join = semi_join)
 }
 \arguments{
-\item{dm}{A \code{dm}-object}
+\item{dm}{A \code{dm} object}
 
 \item{lhs}{The table on the left hand side of the join}
 
 \item{rhs}{The table on the right hand side of the join}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
+}
+\value{
+The resulting table of the join
 }
 \description{
 A join of desired type is performed between table \code{lhs} and

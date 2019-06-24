@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_has_pk}
 \alias{cdm_has_pk}
-\title{Does a table of a \code{dm}-object have a column set as primary key?}
+\title{Does a table of a \code{dm} object have a column set as primary key?}
 \usage{
 cdm_has_pk(dm, table)
 }
@@ -13,7 +13,7 @@ cdm_has_pk(dm, table)
 }
 \description{
 \code{cdm_has_pk()} checks in the \code{data_model} part
-of the \code{dm}-object if a given table has a column marked as primary key.
+of the \code{dm} object if a given table has a column marked as primary key.
 }
 \examples{
 library(dplyr)

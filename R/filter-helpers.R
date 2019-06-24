@@ -8,6 +8,8 @@
 #' @param rhs The table on the right hand side of the join
 #' @param join The type of join to be performed, see \code{\link[dplyr]{join}}
 #'
+#' @return The resulting table of the join
+#'
 #' @export
 cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
   lhs_name <- as_name(enexpr(lhs))

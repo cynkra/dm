@@ -7,9 +7,9 @@
 cdm_with(dm, code)
 }
 \arguments{
-\item{dm}{A \code{dm}-object.}
+\item{dm}{A \code{dm} object.}
 
-\item{code}{An expression to evaluate in the context of the \code{dm}-object.}
+\item{code}{An expression to evaluate in the context of the \code{dm} object.}
 }
 \description{
 FIXME: missing description
