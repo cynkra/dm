@@ -9,7 +9,7 @@ reference:
   - cdm_get_tables
   - cdm_get_data_model
 
-- title: Managing primary keys in `dm` objects
+- title: Primary keys
   contents:
   - cdm_add_pk
   - cdm_has_pk
@@ -18,7 +18,7 @@ reference:
   - cdm_rm_pk
   - cdm_check_for_pk_candidates
 
-- title: Managing foreign keys in `dm` objects
+- title: Foreign keys
   contents:
   - cdm_add_fk
   - cdm_has_fk
@@ -27,16 +27,22 @@ reference:
   - cdm_rm_fk
   - cdm_check_for_fk_candidates
 
-- title: Create example `dm`
-  contents:
-  - cdm_nycflights13
-
-- title: Drawing a schema of a `dm` object's data model
+- title: Visualization
   contents:
   - cdm_draw
   - cdm_set_colors
   - cdm_get_colors
   - cdm_get_available_colors
+
+- title: Flattening
+  contents:
+  - cdm_join_tbl
+
+- title: Filtering
+  contents:
+  - cdm_filter
+  - cdm_semi_join
+  - cdm_nrow
 
 - title: Interaction with DBs
   contents:
@@ -44,37 +50,24 @@ reference:
   - cdm_set_key_constraints
   - cdm_learn_from_db
 
-- title: Filtering a `dm` object
-  contents:
-  - cdm_filter
-  - cdm_semi_join
-
 - title: Utilizing foreign key relations
   contents:
-  - cdm_join_tbl
   - cdm_is_referenced
   - cdm_get_referencing_tables
   - cdm_select
   - cdm_find_conn_tbls
 
-- title: Row-information
-  contents:
-  - cdm_nrow
-
-- title: Table surgery functions
+- title: Table surgery
   contents:
   - decompose_table
   - reunite_parent_child
   - reunite_parent_child_from_list
 
-- title: Check key properties
+- title: Check keys and cardinalities
   contents:
   - check_key
   - check_if_subset
   - check_set_equality
-
-- title: Check cardinality of relation between two tables
-  contents:
   - check_cardinality_0_n
   - check_cardinality_1_n
   - check_cardinality_0_1
@@ -82,13 +75,10 @@ reference:
 
 - title: Miscellaneous
   contents:
+  - cdm_nycflights13
   - cdm_with
   - cdm_rename_table
   - cdm_rename_tables
-
-- title: Open website with overview
-  contents:
-  - browse_docs
 
 development:
   mode: devel
