@@ -1,0 +1,30 @@
+---
+title: "Get started"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The goal of both the package {dm} and the class `dm` - which comes along with it - is to facilitate your life when you are dealing with data that comes in a data model schema.
+An object of the `dm`-class contains all relevant information about the tables in a data model:
+
+1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
+2. the tables themselves, i.e., the data
+3. the meta-data from the data model: the key relations
+
+The functions of {dm} are designed to work both locally and on DBs. 
+It is possible to transfer `dm`-objects from one `src` to another and furthermore, you can even "learn" a `dm`-object from a DB, including the key relations.
+ 
+Let's first have a brief look at the `dm`-class:
