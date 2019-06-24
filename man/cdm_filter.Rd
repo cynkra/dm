@@ -35,3 +35,9 @@ by an inital semi-join of one of its tables with the same, but filtered table. S
 key constraints are used to compute the remainders of the other tables of the \code{\link{dm}} object and
 a new \code{\link{dm}} object is returned.
 }
+\examples{
+library(magrittr)
+cdm_nycflights13(cycle = FALSE) \%>\%
+  cdm_filter(airports, name == "John F Kennedy Intl")
+
+}

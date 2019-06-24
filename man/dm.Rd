@@ -60,6 +60,24 @@ object.
 
 \code{as_dm()} coerces objects to the \code{dm} class
 }
+\examples{
+library(dplyr)
+dm(dplyr::src_df(pkg = "nycflights13"))
+as_dm(list(iris = iris, mtcars = mtcars))
+
+cdm_nycflights13() \%>\% tbl("airports")
+cdm_nycflights13() \%>\% src_tbls()
+cdm_nycflights13() \%>\% cdm_get_src()
+cdm_nycflights13() \%>\% cdm_get_tables()
+cdm_nycflights13() \%>\% cdm_get_data_model()
+
+cdm_nycflights13() \%>\%
+  cdm_rename_table(airports, ap)
+cdm_nycflights13() \%>\%
+  cdm_rename_tables(c("airports", "flights"), c("ap", "fl"))
+
+
+}
 \seealso{
 \itemize{
 \item \code{\link[=cdm_add_pk]{cdm_add_pk()}} and \code{\link[=cdm_add_fk]{cdm_add_fk()}} add primary and foreign keys

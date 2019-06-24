@@ -67,3 +67,17 @@ column and auxiliary information in other columns.
 \code{cdm_get_available_colors()} returns an overview of the available colors and their names
 as a tibble.
 }
+\examples{
+library(dplyr)
+cdm_draw(cdm_nycflights13())
+
+cdm_nycflights13() \%>\%
+  cdm_set_colors(
+    flights = "blue",
+    airports = ,
+    airlines = "orange",
+    weather = "green",
+    planes = "yellow") \%>\%
+    cdm_draw()
+
+}

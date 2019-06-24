@@ -22,6 +22,23 @@
 #' - [check_cardinality()] for checking the cardinality of the relation between two tables
 #' - [cdm_nycflights13()]  for creating an example `dm` object
 #'
+#' @examples
+#' library(dplyr)
+#' dm(dplyr::src_df(pkg = "nycflights13"))
+#' as_dm(list(iris = iris, mtcars = mtcars))
+#'
+#' cdm_nycflights13() %>% tbl("airports")
+#' cdm_nycflights13() %>% src_tbls()
+#' cdm_nycflights13() %>% cdm_get_src()
+#' cdm_nycflights13() %>% cdm_get_tables()
+#' cdm_nycflights13() %>% cdm_get_data_model()
+#'
+#' cdm_nycflights13() %>%
+#'   cdm_rename_table(airports, ap)
+#' cdm_nycflights13() %>%
+#'   cdm_rename_tables(c("airports", "flights"), c("ap", "fl"))
+#'
+#'
 #' @export
 dm <- function(src, data_model = NULL) h(~ {
     # TODO: add keys argument, if both data_model and keys are missing,
@@ -88,6 +105,7 @@ validate_dm <- function(x) {
 #' object.
 #'
 #' @rdname dm
+#'
 #' @export
 cdm_get_src <- function(x) {
   x$src
@@ -99,6 +117,7 @@ cdm_get_src <- function(x) {
 #' of a `dm` object.
 #'
 #' @rdname dm
+#'
 #' @export
 cdm_get_tables <- function(x) {
   x$tables
@@ -110,6 +129,7 @@ cdm_get_tables <- function(x) {
 #' object.
 #'
 #' @rdname dm
+#'
 #' @export
 cdm_get_data_model <- function(x) {
   x$data_model
@@ -199,12 +219,15 @@ print.dm <- function(x, ...) {
   invisible(x)
 }
 
+
+
 #' @export
 tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
   dm$tables[[from]]
 }
+
 
 #' @export
 src_tbls.dm <- function(src, ...) {
@@ -226,6 +249,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 #' @param dm A `dm` object
 #' @param old_name The original name of the table
 #' @param new_name The new name of the table
+#'
 #'
 #' @export
 cdm_rename_table <- function(dm, old_name, new_name) {

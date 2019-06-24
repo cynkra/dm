@@ -16,6 +16,11 @@
 #' the data frame. They support unquoting and splicing. See vignette("programming")
 #' for an introduction to these concepts.
 #'
+#' @examples
+#' library(magrittr)
+#' cdm_nycflights13(cycle = FALSE) %>%
+#'   cdm_filter(airports, name == "John F Kennedy Intl")
+#'
 #' @export
 cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
