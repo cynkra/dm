@@ -24,11 +24,6 @@ An object of the `dm`-class contains all relevant information about the tables i
 2. the tables themselves, i.e., the data
 3. the meta-data from the data model: the key relations
 
-The 3rd point is implemented using the `data_model`-class from the package [{datamodelr}](https://github.com/bergant/datamodelr)^[Use: `devtools::install_github("https://github.com/bergant/datamodelr")` to install it].
-
-The functions of {dm} are designed to work both locally and on DBs. 
-It is possible to transfer `dm`-objects from one `src` to another and furthermore, you can even "learn" a `dm`-object from a DB, including the key relations.
-
 Let's first have a brief look at how to create a `dm`-class object:
 
 ## Creating `dm`-objects:
@@ -43,17 +38,16 @@ flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
-Alternative ways of creating `dm`-objects are the functions `new_dm()` and `as_dm()`.
-See their documentation for instructions how to use them.
+This package follows the "tidyverse" approach of immutable objects.
+Your data will never be overwritten in place.
+Many verbs, used on a `dm` object, return a new `dm` object.
+This also allows to compose sequences of operations using the `%>%` pipe operator.
 
-It is important to mention, that we tried following the `tidyverse`-approach of immutable objects.
-This means, that there are no functions, that will overwrite `dm`-objects.
-Each verb, used on a `dm`-object, produces a new `dm`-object.
 
 ## Handling keys of `dm`-objects {#kr}
 
-As you can see in the print-output above, so far no keys are set in the `data_model`-part of the `dm`.
-This can be done in a -- hopefully -- rather intuitive way:
+As you can see in the "Data model" part of the output above, so far no keys are set.
+We use `cdm_add_pk()` to add one:
 
 ```{r}
 cdm_add_pk(flights_dm, airports, faa)
@@ -61,11 +55,13 @@ cdm_add_pk(flights_dm, airports, faa)
 
 The foreign key (fk) relations are established in a similar way (see documentation of `cdm_add_fk()` for details) to the setting of the primary keys (pk).
 
-The following function provides a shortcut for the creation of a `dm`-object containing the {nycflights13}-tables with all primary keys (pk) and foreign key (fk) relations set:
+The `cdm_nycflights13()` function provides a shortcut for the creation of a `dm` object containing the tables from the {nycflights13} package with all primary keys (pk) and foreign key (fk) relations set.
+We will be using the `dm` object created by this function from here on.
 
 ```{r}
 flights_dm_with_keys <- 
   cdm_nycflights13()
+flights_dm_with_keys
 ```
 
 Further functions that are helpful in organizing the keys of a `dm`-object are able to e.g. show you, which columns are set as key columns, remove key constraints, etc.
