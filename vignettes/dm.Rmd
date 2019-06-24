@@ -23,7 +23,7 @@ Let's first have a look at the new class:
 
 ## Class `dm`
 
-The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. You can have your `dm`-object on different data sources, such as a local environment or a database. In the latter use case you need to have the package dbplyr installed. 
+The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. You can have your `dm` object on different data sources, such as a local environment or a database. In the latter use case you need to have the package dbplyr installed. 
 
 `dm` is a wrapper around two classes, which are independent from each other:
 
@@ -40,9 +40,9 @@ Last but not least, a third part of the object is a named list containing the ta
 
 So much to the theory, let's see how to construct such an object and how it looks in `R`:
 
-## Examples of `dm`-objects {#ex_dm}
+## Examples of `dm` objects {#ex_dm}
 
-Relevant functions for creating `dm`-objects are:
+Relevant functions for creating `dm` objects are:
 
 1. `dm()`
 2. `as_dm()`
@@ -55,22 +55,22 @@ flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
-Here we make use of the fact, that the function `dm(src, data_model = NULL)` includes all available tables on a source in the `dm`-object, should the `data_model`-argument be left `NULL`. 
-Thus you can use this for example on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm`-object with all the tables on the database.
+Here we make use of the fact, that the function `dm(src, data_model = NULL)` includes all available tables on a source in the `dm` object, should the `data_model`-argument be left `NULL`. 
+Thus you can use this for example on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
 
-Another way of creating a `dm`-object is calling `as_dm()` on a list of `tbls`:
+Another way of creating a `dm` object is calling `as_dm()` on a list of `tbls`:
 ```{r}
 iris_dm <- as_dm(list("iris1" = iris, "iris2" = iris))
 iris_dm
 ```
 
-## Methods for `dm`-objects
+## Methods for `dm` objects
 
 tbl(dm, "table_name") etc. (copy_to...) FIXME: complete
 
-But how can we use dm-functions to manage primary keys of the tables in a `dm`-object?
+But how can we use dm-functions to manage primary keys of the tables in a `dm` object?
 
-## Primary keys of `dm`-objects {#pk}
+## Primary keys of `dm` objects {#pk}
 
 Useful functions for managing primary key settings are:
 
@@ -80,8 +80,8 @@ Useful functions for managing primary key settings are:
 4. `cdm_rm_pk()`
 5. `cdm_check_for_pk_candidates()`
 
-As of yet `dm`-objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
-If you created a `dm`-object according to the examples in ["Examples of `dm`-objects"](#ex_dm), your object does not yet have any primary keys set.
+As of yet `dm` objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
+If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 By default `cdm_add_pk()` checks if the column of the table given by the user is a unique key.
 Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`.
@@ -105,7 +105,7 @@ cdm_rm_pk(flights_dm_with_key, airports) %>%
   cdm_has_pk(airports)
 ```
 
-If you still need to get to know your data better, and it is already available in the form of a `dm`-object, you can use the function `cdm_check_for_pk_candidates()` in order to get information, which columns of a table are unique keys:
+If you still need to get to know your data better, and it is already available in the form of a `dm` object, you can use the function `cdm_check_for_pk_candidates()` in order to get information, which columns of a table are unique keys:
 ```{r}
 cdm_check_for_pk_candidates(flights_dm_with_key, airports)
 ```
@@ -138,7 +138,7 @@ This will throw an error:
 ```{r error=TRUE}
 flights_dm %>% cdm_add_fk(flights, origin, airports)
 ```
-Let's create a `dm`-object with a foreign key relation to work with later on:
+Let's create a `dm` object with a foreign key relation to work with later on:
 ```{r}
 flights_dm_with_fk <- cdm_add_fk(flights_dm_with_key, flights, origin, airports)
 ```
@@ -173,7 +173,7 @@ flights_dm_with_fk %>%
   cdm_get_fk(flights, airports)
 ```
 
-Another function for getting to know your data better (cf. `cdm_check_for_pk_candidates()` in ["Primary keys of `dm`-objects"](#pk)) is `cdm_check_for_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
+Another function for getting to know your data better (cf. `cdm_check_for_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `cdm_check_for_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
 ```{r}
 cdm_check_for_fk_candidates(flights_dm_with_key, weather, airports)
 ```
@@ -189,7 +189,7 @@ Relevant functions for visualising the data model:^[The functions in this sectio
 
 Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation of your data model.
 
-Let's first create a slightly more interconnected `dm`-object from the {nycflights13} package tables:
+Let's first create a slightly more interconnected `dm` object from the {nycflights13} package tables:
 ```{r}
 flights_dm_w_many_keys <- 
   flights_dm %>% 
@@ -218,7 +218,7 @@ The assignment is carried out with `cdm_set_colors()`, using a syntax similar to
 Any table you don't specifically assign will be displayed in the default color.
 
 Use `cdm_set_colors()` to assign the respective colors. 
-The result of `cdm_set_colors()` is a `dm`-object.
+The result of `cdm_set_colors()` is a `dm` object.
 The information about the color is stored in its `data_model`-part.
 ```{r}
 flights_dm_w_many_keys_and_colors <-
