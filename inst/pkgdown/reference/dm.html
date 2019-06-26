@@ -76,7 +76,7 @@ as_dm() coerces objects to the dm class" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9011</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9012</span>
       </span>
     </div>
 
@@ -204,25 +204,25 @@ object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'>dm</span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+<span class='fu'>dm</span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>──────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
 #&gt;   53 columns
 #&gt;   0 primary keys
 #&gt;   no references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>──────────────────────────────────────────────────────────────────</span><span>
 #&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x5589db9e5da8&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>──────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;environment: 0x5600f6b27500&gt;
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris, mtcars 
 #&gt;   16 columns
 #&gt;   0 primary keys
 #&gt;   no references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>──────────────────────────────────────────────────────────────────</span><span>
 #&gt; Total: 182
 #&gt; iris: 150, mtcars: 32</div><div class='input'>
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span>(<span class='st'>"airports"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
@@ -332,26 +332,26 @@ object.</p>
 #&gt;   3 primary keys
 #&gt;   4 references</div><div class='input'>
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_rename_table.html'>cdm_rename_table</a></span>(<span class='no'>airports</span>, <span class='no'>ap</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+  <span class='fu'><a href='cdm_rename_table.html'>cdm_rename_table</a></span>(<span class='no'>airports</span>, <span class='no'>ap</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>──────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, ap, flights, planes ... 
 #&gt;   53 columns
 #&gt;   3 primary keys
 #&gt;   4 references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>──────────────────────────────────────────────────────────────────</span><span>
 #&gt; Total: 367687
 #&gt; airlines: 16, ap: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_rename_table.html'>cdm_rename_tables</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"airports"</span>, <span class='st'>"flights"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ap"</span>, <span class='st'>"fl"</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+  <span class='fu'><a href='cdm_rename_table.html'>cdm_rename_tables</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"airports"</span>, <span class='st'>"flights"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ap"</span>, <span class='st'>"fl"</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>──────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, ap, fl, planes ... 
 #&gt;   53 columns
 #&gt;   3 primary keys
 #&gt;   4 references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>─────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>──────────────────────────────────────────────────────────────────</span><span>
 #&gt; Total: 367687
 #&gt; airlines: 16, ap: 1458, fl: 336776, planes: 3322, weather: 26115</div><div class='input'>
 
