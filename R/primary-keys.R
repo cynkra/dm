@@ -1,9 +1,9 @@
 # for external users: also checks if really is primary key
 
-#' Mark a column of a table in a `dm` object as its primary key
+#' Mark a column of a table in a [`dm`] object as its primary key
 #'
 #' @description `cdm_add_pk()` marks the given column as the given table's primary key
-#' in the `data_model`-part of the `dm` object. If `check == TRUE`, it also first checks if
+#' in the `data_model`-part of the [`dm`] object. If `check == TRUE`, it also first checks if
 #' the given column is a unique key of the table. If `force == TRUE`, it replaces an already
 #' set key.
 #'
@@ -14,9 +14,11 @@
 #' @param force Boolean, if `FALSE` (default), an error will be thrown, if there is
 #' already a primary key set for this table. If `TRUE` a potential old `pk` is deleted before setting the new one.
 #'
+#' @family Primary key functions
 #' @export
 #' @examples
 #' library(dplyr)
+#'
 #'
 #' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
 #'
@@ -71,12 +73,14 @@ cdm_add_pk_impl <- function(dm, table, column) {
   new_dm(cdm_get_src(dm), cdm_get_tables(dm), new_data_model)
 }
 
-#' Does a table of a `dm` object have a column set as primary key?
+#' Does a table of a [`dm`] object have a column set as primary key?
 #'
 #' @description `cdm_has_pk()` checks in the `data_model` part
-#' of the `dm` object if a given table has a column marked as primary key.
+#' of the [`dm`] object if a given table has a column marked as primary key.
 #'
 #' @inheritParams cdm_add_pk
+#'
+#' @family Primary key functions
 #'
 #' @examples
 #' library(dplyr)
@@ -99,11 +103,13 @@ cdm_has_pk <- function(dm, table) {
   !all(cdm_data_model$columns$key[cols_from_table] == 0)
 }
 
-#' Retrieve the name of the column marked as primary key of a table of a `dm` object
+#' Retrieve the name of the column marked as primary key of a table of a [`dm`] object
 #'
 #' @description `cdm_get_pk()` returns the name of the
-#' column marked as primary key of a table of a `dm` object. If no primary key is
+#' column marked as primary key of a table of a [`dm`] object. If no primary key is
 #' set for the table, an empty character variable is returned.
+#'
+#' @family Primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #'
@@ -128,10 +134,12 @@ cdm_get_pk <- function(dm, table) {
 }
 
 # FIXME: export?
-#' Get all primary keys of a `dm` object
+#' Get all primary keys of a [`dm`] object
 #'
 #' @description `cdm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
+#'
+#' @family Primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #'
@@ -149,12 +157,14 @@ cdm_get_all_pks <- function(dm) {
   tibble(table = tables_w_pk, pk_col = pk_names, pk_class = pk_classes)
 }
 
-#' Remove primary key from a table in a `dm` object
+#' Remove primary key from a table in a [`dm`] object
 #'
 #' @description `cdm_rm_pk()` removes a potentially set primary key from a table in the
-#' underlying `data_model`-object and otherwise leaves the `dm` object untouched.
+#' underlying `data_model`-object and otherwise leaves the [`dm`] object untouched.
 #'
 #' Foreign keys pointing to the table from other tables can optionally be removed as well.
+#'
+#' @family Primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error, if
@@ -210,11 +220,13 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
   })
 
 
-#' Which columns are candidates for a primary key column of a `dm` object's table?
+#' Which columns are candidates for a primary key column of a [`dm`] object's table?
 #'
 #' @description `cdm_check_for_pk_candidates()` checks for each column of a
-#' table of a `dm` object if this column contains only unique values and is therefore
+#' table of a [`dm`] object if this column contains only unique values and is therefore
 #' a unique key of this table.
+#'
+#' @family Primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #'

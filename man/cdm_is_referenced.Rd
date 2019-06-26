@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph.R
 \name{cdm_is_referenced}
 \alias{cdm_is_referenced}
-\title{Is a \code{dm}'s table referenced by another table?}
+\title{Is a \code{\link{dm}}'s table referenced by another table?}
 \usage{
 cdm_is_referenced(dm, table)
 }
@@ -16,5 +16,11 @@ cdm_is_referenced(dm, table)
 key of parameter \code{table}, \code{FALSE} otherwise.
 }
 \description{
-Is a \code{dm}'s table referenced by another table?
+Is a \code{\link{dm}}'s table referenced by another table?
 }
+\seealso{
+Other Functions utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
+  \code{\link{cdm_get_referencing_tables}},
+  \code{\link{cdm_select}}
+}
+\concept{Functions utilizing foreign key relations}

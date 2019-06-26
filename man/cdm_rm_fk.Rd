@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_rm_fk}
 \alias{cdm_rm_fk}
-\title{Remove reference(s) from one table of a \code{dm} to another}
+\title{Remove reference(s) from one table of a \code{\link{dm}} to another}
 \usage{
 cdm_rm_fk(dm, table, column, ref_table)
 }
@@ -20,3 +20,10 @@ key of \code{ref_table}.}
 Can either remove one reference between the two tables or all at once if parameter \code{column = NULL}.
 All parameters can be provided unquoted or quoted.
 }
+\seealso{
+Other Foreign key functions: \code{\link{cdm_add_fk}},
+  \code{\link{cdm_check_for_fk_candidates}},
+  \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
+  \code{\link{cdm_has_fk}}
+}
+\concept{Foreign key functions}

@@ -1,12 +1,17 @@
-#' Draw schema of a 'dm'-object's data model
+#' Draw schema of a [`dm`]-object's data model
 #'
-#' @param dm A `dm` object
+#' @param dm A [`dm`] object
 #' @param table_names Tables to consider in the model visualisation.
 #' If `NULL` (default), there is no constraint.
 #' @inheritParams datamodelr::dm_create_graph
 #'
 #' @description `cdm_draw()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`)
 #' @name cdm_draw
+#'
+#' @examples
+#' library(dplyr)
+#' cdm_draw(cdm_nycflights13())
+#'
 #' @export
 cdm_draw <- function(
                      dm,
@@ -60,6 +65,16 @@ cdm_draw <- function(
 #' @return For `cdm_set_colors()`: the updated data model.
 #'
 #' @rdname cdm_draw
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_set_colors(
+#'     flights = "blue",
+#'     airports = ,
+#'     airlines = "orange",
+#'     weather = "green",
+#'     planes = "yellow") %>%
+#'     cdm_draw()
+#'
 #' @export
 cdm_set_colors <- function(dm, ...) {
   data_model <- cdm_get_data_model(dm)

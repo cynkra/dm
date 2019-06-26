@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_rm_pk}
 \alias{cdm_rm_pk}
-\title{Remove primary key from a table in a \code{dm} object}
+\title{Remove primary key from a table in a \code{\link{dm}} object}
 \usage{
 cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 }
@@ -18,7 +18,7 @@ that are pointing to it.}
 }
 \description{
 \code{cdm_rm_pk()} removes a potentially set primary key from a table in the
-underlying \code{data_model}-object and otherwise leaves the \code{dm} object untouched.
+underlying \code{data_model}-object and otherwise leaves the \code{\link{dm}} object untouched.
 
 Foreign keys pointing to the table from other tables can optionally be removed as well.
 }
@@ -34,3 +34,10 @@ nycflights_dm \%>\%
   cdm_rm_pk(planes, rm_referencing_fks = TRUE) \%>\%
   cdm_has_pk(planes)
 }
+\seealso{
+Other Primary key functions: \code{\link{cdm_add_pk}},
+  \code{\link{cdm_check_for_pk_candidates}},
+  \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
+  \code{\link{cdm_has_pk}}
+}
+\concept{Primary key functions}

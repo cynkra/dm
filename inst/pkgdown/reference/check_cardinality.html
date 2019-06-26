@@ -65,7 +65,7 @@ Furthermore the cardinality of the relation is tested, see below for details." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9011</span>
       </span>
     </div>
 
@@ -82,6 +82,18 @@ Furthermore the cardinality of the relation is tested, see below for details." /
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/dm-overview.html">Introduction to dm</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -173,16 +185,112 @@ there are no duplicates in either of them.</p>
     <pre class="examples"><div class='input'><span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>)
 <span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>5</span>))
 <span class='no'>d3</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>)
-
 <span class='co'># This does not pass, `c` is not unique key of d2:</span>
-<span class='fu'>check_cardinality_0_n</span>(<span class='no'>d2</span>, <span class='no'>c</span>, <span class='no'>d1</span>, <span class='no'>a</span>)</div><div class='output co'>#&gt; <span class='error'>Error: `c` is not a unique key of `d2`</span></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>check_cardinality_0_n</span>(<span class='no'>d2</span>, <span class='no'>c</span>, <span class='no'>d1</span>, <span class='no'>a</span>))</div><div class='output co'>#&gt; Error : `c` not a unique key of `d2`.
+#&gt; Backtrace:
+#&gt; <span style='color: #555555;'>     </span><span>█
+#&gt; </span><span style='color: #555555;'>  1. </span><span>├─base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'>  2. </span><span>│ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'>  3. </span><span>│   ├─base:::tryCatchOne(...)
+#&gt; </span><span style='color: #555555;'>  4. </span><span>│   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'>  5. </span><span>│   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
+#&gt; </span><span style='color: #555555;'>  6. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'>  7. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'>  8. </span><span>├─base::withCallingHandlers(...)
+#&gt; </span><span style='color: #555555;'>  9. </span><span>├─base::saveRDS(...)
+#&gt; </span><span style='color: #555555;'> 10. </span><span>├─base::do.call(...)
+#&gt; </span><span style='color: #555555;'> 11. </span><span>├─(function (what, args, quote = FALSE, envir = parent.frame()) ...
+#&gt; </span><span style='color: #555555;'> 12. </span><span>└─(function (..., crayon_enabled, crayon_colors, pkgdown_internet) ...
+#&gt; </span><span style='color: #555555;'> 13. </span><span>  └─pkgdown::build_site(...)
+#&gt; </span><span style='color: #555555;'> 14. </span><span>    └─pkgdown:::build_site_local(...)
+#&gt; </span><span style='color: #555555;'> 15. </span><span>      └─pkgdown::build_reference(...)
+#&gt; </span><span style='color: #555555;'> 16. </span><span>        └─purrr::map(...)
+#&gt; </span><span style='color: #555555;'> 17. </span><span>          └─pkgdown:::.f(.x[[i]], ...)
+#&gt; </span><span style='color: #555555;'> 18. </span><span>            └─pkgdown:::data_reference_topic(...)
+#&gt; </span><span style='color: #555555;'> 19. </span><span>              ├─pkgdown:::as_data(...)
+#&gt; </span><span style='color: #555555;'> 20. </span><span>              └─pkgdown:::as_data.tag_examples(...)
+#&gt; </span><span style='color: #555555;'> 21. </span><span>                └─purrr::pmap_chr(...)
+#&gt; </span><span style='color: #555555;'> 22. </span><span>                  └─pkgdown:::.f(...)
+#&gt; </span><span style='color: #555555;'> 23. </span><span>                    ├─withr::with_options(...)
+#&gt; </span><span style='color: #555555;'> 24. </span><span>                    │ └─base::force(code)
+#&gt; </span><span style='color: #555555;'> 25. </span><span>                    └─evaluate::evaluate(code, env, new_device = TRUE)
+#&gt; </span><span style='color: #555555;'> 26. </span><span>                      └─evaluate:::evaluate_call(...)
+#&gt; </span><span style='color: #555555;'> 27. </span><span>                        ├─evaluate:::timing_fn(...)
+#&gt; </span><span style='color: #555555;'> 28. </span><span>                        ├─evaluate:::handle(...)
+#&gt; </span><span style='color: #555555;'> 29. </span><span>                        │ └─base::try(f, silent = TRUE)
+#&gt; </span><span style='color: #555555;'> 30. </span><span>                        │   └─base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'> 31. </span><span>                        │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'> 32. </span><span>                        │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'> 33. </span><span>                        │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'> 34. </span><span>                        ├─base::withCallingHandlers(...)
+#&gt; </span><span style='color: #555555;'> 35. </span><span>                        ├─base::withVisible(eval(expr, envir, enclos))
+#&gt; </span><span style='color: #555555;'> 36. </span><span>                        └─base::eval(expr, envir, enclos)
+#&gt; </span><span style='color: #555555;'> 37. </span><span>                          └─base::eval(expr, envir, enclos)
+#&gt; </span><span style='color: #555555;'> 38. </span><span>                            ├─base::try(check_cardinality_0_n(d2, c, d1, a))
+#&gt; </span><span style='color: #555555;'> 39. </span><span>                            │ └─base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'> 40. </span><span>                            │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'> 41. </span><span>                            │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'> 42. </span><span>                            │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'> 43. </span><span>                            └─dm::check_cardinality_0_n(d2, c, d1, a)
+#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─dm::check_key(!!pt, !!pkc) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/check-cardinalities.R:63:2</span><span>
+#&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─dm:::abort_not_unique_key(as_label(data_q), map_chr(args, as_label)) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/key-helpers.R:39:2</span><span></div><div class='input'>
 <span class='co'># This passes, multiple values in d2$c are allowed:</span>
 <span class='fu'>check_cardinality_0_n</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)
 
 <span class='co'># This does not pass, injectivity is violated:</span>
-<span class='fu'>check_cardinality_1_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)</div><div class='output co'>#&gt; <span class='error'>Error: 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.</span></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>check_cardinality_1_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>))</div><div class='output co'>#&gt; Error : 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.
+#&gt; Backtrace:
+#&gt; </span><span style='color: #555555;'>     </span><span>█
+#&gt; </span><span style='color: #555555;'>  1. </span><span>├─base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'>  2. </span><span>│ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'>  3. </span><span>│   ├─base:::tryCatchOne(...)
+#&gt; </span><span style='color: #555555;'>  4. </span><span>│   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'>  5. </span><span>│   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
+#&gt; </span><span style='color: #555555;'>  6. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'>  7. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'>  8. </span><span>├─base::withCallingHandlers(...)
+#&gt; </span><span style='color: #555555;'>  9. </span><span>├─base::saveRDS(...)
+#&gt; </span><span style='color: #555555;'> 10. </span><span>├─base::do.call(...)
+#&gt; </span><span style='color: #555555;'> 11. </span><span>├─(function (what, args, quote = FALSE, envir = parent.frame()) ...
+#&gt; </span><span style='color: #555555;'> 12. </span><span>└─(function (..., crayon_enabled, crayon_colors, pkgdown_internet) ...
+#&gt; </span><span style='color: #555555;'> 13. </span><span>  └─pkgdown::build_site(...)
+#&gt; </span><span style='color: #555555;'> 14. </span><span>    └─pkgdown:::build_site_local(...)
+#&gt; </span><span style='color: #555555;'> 15. </span><span>      └─pkgdown::build_reference(...)
+#&gt; </span><span style='color: #555555;'> 16. </span><span>        └─purrr::map(...)
+#&gt; </span><span style='color: #555555;'> 17. </span><span>          └─pkgdown:::.f(.x[[i]], ...)
+#&gt; </span><span style='color: #555555;'> 18. </span><span>            └─pkgdown:::data_reference_topic(...)
+#&gt; </span><span style='color: #555555;'> 19. </span><span>              ├─pkgdown:::as_data(...)
+#&gt; </span><span style='color: #555555;'> 20. </span><span>              └─pkgdown:::as_data.tag_examples(...)
+#&gt; </span><span style='color: #555555;'> 21. </span><span>                └─purrr::pmap_chr(...)
+#&gt; </span><span style='color: #555555;'> 22. </span><span>                  └─pkgdown:::.f(...)
+#&gt; </span><span style='color: #555555;'> 23. </span><span>                    ├─withr::with_options(...)
+#&gt; </span><span style='color: #555555;'> 24. </span><span>                    │ └─base::force(code)
+#&gt; </span><span style='color: #555555;'> 25. </span><span>                    └─evaluate::evaluate(code, env, new_device = TRUE)
+#&gt; </span><span style='color: #555555;'> 26. </span><span>                      └─evaluate:::evaluate_call(...)
+#&gt; </span><span style='color: #555555;'> 27. </span><span>                        ├─evaluate:::timing_fn(...)
+#&gt; </span><span style='color: #555555;'> 28. </span><span>                        ├─evaluate:::handle(...)
+#&gt; </span><span style='color: #555555;'> 29. </span><span>                        │ └─base::try(f, silent = TRUE)
+#&gt; </span><span style='color: #555555;'> 30. </span><span>                        │   └─base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'> 31. </span><span>                        │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'> 32. </span><span>                        │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'> 33. </span><span>                        │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'> 34. </span><span>                        ├─base::withCallingHandlers(...)
+#&gt; </span><span style='color: #555555;'> 35. </span><span>                        ├─base::withVisible(eval(expr, envir, enclos))
+#&gt; </span><span style='color: #555555;'> 36. </span><span>                        └─base::eval(expr, envir, enclos)
+#&gt; </span><span style='color: #555555;'> 37. </span><span>                          └─base::eval(expr, envir, enclos)
+#&gt; </span><span style='color: #555555;'> 38. </span><span>                            ├─base::try(check_cardinality_1_1(d1, a, d2, c))
+#&gt; </span><span style='color: #555555;'> 39. </span><span>                            │ └─base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'> 40. </span><span>                            │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'> 41. </span><span>                            │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'> 42. </span><span>                            │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'> 43. </span><span>                            └─dm::check_cardinality_1_1(d1, a, d2, c)
+#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─base::tryCatch(...) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/check-cardinalities.R:97:2</span><span>
+#&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'> 46. </span><span>                                  └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'> 47. </span><span>                                    └─value[[3L]](cond)
+#&gt; </span><span style='color: #555555;'> 48. </span><span>                                      └─dm:::abort_not_bijective(as_label(ct), as_label(fkc)) </span><span style='color: #555555;'>/home/kirill/git/cynkra/cynkra/public/dm/R/check-cardinalities.R:101:10</span><span></div><div class='input'>
 <span class='co'># This passes:</span>
-<span class='fu'>check_cardinality_0_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d3</span>, <span class='no'>c</span>)</div></pre>
+<span class='fu'>check_cardinality_0_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d3</span>, <span class='no'>c</span>)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

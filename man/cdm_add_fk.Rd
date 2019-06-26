@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_add_fk}
 \alias{cdm_add_fk}
-\title{Add a reference from one table of a \code{dm} to another}
+\title{Add a reference from one table of a \code{\link{dm}} to another}
 \usage{
 cdm_add_fk(dm, table, column, ref_table, check = TRUE)
 }
@@ -21,5 +21,11 @@ a primary key set.}
 \code{column} are a subset of the values of the primary key column of \code{ref_table}.}
 }
 \description{
-Add a reference from one table of a \code{dm} to another
+Add a reference from one table of a \code{\link{dm}} to another
 }
+\seealso{
+Other Foreign key functions: \code{\link{cdm_check_for_fk_candidates}},
+  \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
+  \code{\link{cdm_has_fk}}, \code{\link{cdm_rm_fk}}
+}
+\concept{Foreign key functions}

@@ -1,7 +1,7 @@
-#' Cascading filter of a `dm` object
+#' Cascading filter of a [`dm`] object
 #'
 #' @description 'cdm_filter()' allows you to set one or more filter conditions for one table
-#' of a `dm` object. If the `dm`'s tables are connected via key constrains, the
+#' of a [`dm`] object. If the [`dm`]'s tables are connected via key constrains, the
 #' filtering will affect all other connected tables, leaving only the rows with
 #' the corresponding key values.
 #'
@@ -15,6 +15,11 @@
 #' The arguments in ... are automatically quoted and evaluated in the context of
 #' the data frame. They support unquoting and splicing. See vignette("programming")
 #' for an introduction to these concepts.
+#'
+#' @examples
+#' library(magrittr)
+#' cdm_nycflights13(cycle = FALSE) %>%
+#'   cdm_filter(airports, name == "John F Kennedy Intl")
 #'
 #' @export
 cdm_filter <- function(dm, table, ...) {
@@ -43,12 +48,12 @@ cdm_filter <- function(dm, table, ...) {
   cdm_semi_join(dm, !!table_name, filtered_tbl_pk_obj)
 }
 
-#' Semi-join a `dm` object with one of its reduced tables
+#' Semi-join a [`dm`] object with one of its reduced tables
 #'
-#' @description 'cdm_semi_join()' performs a cascading "row reduction" of a `dm` object
+#' @description 'cdm_semi_join()' performs a cascading "row reduction" of a [`dm`] object
 #' by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
-#' key constraints are used to compute the remainders of the other tables of the `dm` object and
-#' a new `dm` object is returned.
+#' key constraints are used to compute the remainders of the other tables of the [`dm`] object and
+#' a new [`dm`] object is returned.
 #'
 #' @rdname cdm_filter
 #'

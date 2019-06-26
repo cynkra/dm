@@ -31,3 +31,9 @@ by the column \code{id_column}, this column is removed.
 The function is almost exactly the inverse of \code{decompose_table()} (the order
 of the columns is not retained and original rownames are lost).
 }
+\seealso{
+Other Table surgery functions: \code{\link{decompose_table}}
+
+Other Table surgery functions: \code{\link{decompose_table}}
+}
+\concept{Table surgery functions}

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.0.9011</span>
       </span>
     </div>
 
@@ -50,6 +50,18 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/dm-overview.html">Introduction to dm</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="news/index.html">Changelog</a>
@@ -91,33 +103,33 @@
 <li><code><a href="reference/check_set_equality.html">check_set_equality(t1, c1, t2, c2)</a></code></li>
 </ol>
 <p>When you have tables (data frames) that are connected by key relations, this package might help you verify the assumed key relations and/or determine existing key relations between the tables. For example, if you have tables:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">data_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>))</a>
-<a class="sourceLine" id="cb1-2" title="2">data_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">data_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>))</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">data_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a></code></pre></div>
 <p>and you want to know if <code>a</code> is a primary key for <code>data_1</code>, you can use the <code><a href="reference/check_key.html">check_key()</a></code> function:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">1</span>, a)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; `a` is not a unique key of `data_1`</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">1</span>, a)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; `a` not a unique key of `data_1`.</span></a></code></pre></div>
 <p>Mind the error message when a test is not passed.</p>
 <p>In case of <code>data_2</code> column <code>a</code> is a key:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">2</span>, a)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">2</span>, a)</a></code></pre></div>
 <p>To see if a column of one table contains only values, that are also in another column of another table (one of the two criteria of it being a foreign key to this other table, the other being if this other table’s column is one of its unique keys), you can use <code><a href="reference/check_if_subset.html">check_if_subset()</a></code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
 <p>What about the inverse relation?</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">2</span>, a, data_<span class="dv">1</span>, a)</a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt;       a     b     c</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; 1     3     6     9</span></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt; Column `a` in table `data_2` contains values (see above) that are not</span></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; present in column `a` in table `data_1`</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">2</span>, a, data_<span class="dv">1</span>, a)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;       a     b     c</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1     3     6     9</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; Column `a` in table `data_2` contains values (see above) that are not</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; present in column `a` in table `data_1`</span></a></code></pre></div>
 <p>One should keep in mind, that <code><a href="reference/check_if_subset.html">check_if_subset()</a></code> does NOT test, if parameter <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, one would use the following approach:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(t2, c2)</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(t1, c1, t2, c2)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(t2, c2)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(t1, c1, t2, c2)</a></code></pre></div>
 <p>To check both directions at once - basically answering the questions: are the unique values of <code>c_1</code> in <code>t_1</code> the same as those of <code>c_2</code> in <code>t_2</code>? - <code>dm</code> provides the function <code><a href="reference/check_set_equality.html">check_set_equality()</a></code> (this would fail with a longer error message and is therefore not evaluated):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
 <p>Bringing one more table into the game, we can show how it looks, when the test is passed:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">data_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a>
-<a class="sourceLine" id="cb8-2" title="2"></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="kw"><a href="reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">3</span>, a)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">data_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">3</span>, a)</a></code></pre></div>
 <p>If for any of these three functions the test is passed, the return value of the function will be the first table parameter (invisibly). This ensures, that the functions can conveniently be used in a pipe.</p>
 </div>
 <div id="examples-for-testing-the-cardinalities-of-relations-between-two-tables" class="section level2">
@@ -145,24 +157,24 @@
 <p><code>1_1</code> means, that for each value of the <code>parent_key_column</code>, precisely ‘1’ value has to correspond to it in the child table’s column. This means that there is a “bijective” (“injective” AND “surjective”) relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.</p>
 <p>Examples:</p>
 <p>Given the following three data frames:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">d1 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">a =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb9-2" title="2">d2 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb9-3" title="3">d3 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">c =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">d1 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">a =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">d2 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">d3 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">c =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</a></code></pre></div>
 <p>Here are some examples for the usage of the functions:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># This does not pass, `c` is not unique key of d2:</span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_n</a></span>(d2, c, d1, a)</a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; `c` is not a unique key of `d2`</span></a>
-<a class="sourceLine" id="cb10-4" title="4"></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="co"># This passes, multiple values in d2$c are allowed:</span></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_n</a></span>(d1, a, d2, c)</a>
-<a class="sourceLine" id="cb10-7" title="7"></a>
-<a class="sourceLine" id="cb10-8" title="8"><span class="co"># This does not pass, injectivity is violated:</span></a>
-<a class="sourceLine" id="cb10-9" title="9"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_1_1</a></span>(d1, a, d2, c)</a>
-<a class="sourceLine" id="cb10-10" title="10"><span class="co">#&gt; 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2`</span></a>
-<a class="sourceLine" id="cb10-11" title="11"><span class="co">#&gt; contains duplicate values.</span></a>
-<a class="sourceLine" id="cb10-12" title="12"></a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="co"># This passes:</span></a>
-<a class="sourceLine" id="cb10-14" title="14"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_1</a></span>(d1, a, d3, c)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># This does not pass, `c` is not unique key of d2:</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_n</a></span>(d2, c, d1, a)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; `c` not a unique key of `d2`.</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># This passes, multiple values in d2$c are allowed:</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_n</a></span>(d1, a, d2, c)</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co"># This does not pass, injectivity is violated:</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_1_1</a></span>(d1, a, d2, c)</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2`</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; contains duplicate values.</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co"># This passes:</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_1</a></span>(d1, a, d3, c)</a></code></pre></div>
 </div>
 <div id="package-overview" class="section level2">
 <h2 class="hasAnchor">

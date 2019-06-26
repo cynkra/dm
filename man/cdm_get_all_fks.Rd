@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_get_all_fks}
 \alias{cdm_get_all_fks}
-\title{Retrieve all foreign key constraints in a \code{dm}}
+\title{Retrieve all foreign key constraints in a \code{\link{dm}}}
 \usage{
 cdm_get_all_fks(dm)
 }
@@ -18,5 +18,12 @@ A tibble with columns:
 "parent_table": parent table,
 }
 \description{
-Get an overview about all foreign key relations in a \code{dm}
+Get an overview about all foreign key relations in a \code{\link{dm}}
 }
+\seealso{
+Other Foreign key functions: \code{\link{cdm_add_fk}},
+  \code{\link{cdm_check_for_fk_candidates}},
+  \code{\link{cdm_get_fk}}, \code{\link{cdm_has_fk}},
+  \code{\link{cdm_rm_fk}}
+}
+\concept{Foreign key functions}
