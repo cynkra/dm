@@ -1,3 +1,10 @@
+# dm 0.0.0.9012
+
+- Updates in the pkgdown documentation.
+- New "Get started" vignette.
+- Repair package so the R CMD check passes.
+
+
 # dm 0.0.0.9011
 
 - Learn 'dm'-objects from MSSQL and Postgres databases (!24).
