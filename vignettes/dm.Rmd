@@ -65,12 +65,13 @@ flights_dm
 ```
 
 The fairly verbose output shows the three components of a `dm` object: the table source, the metadata, and row counts.
-FIXME: `cdm_get_xxx()`.
-Individual tables can be accessed with `tbl()`.
+These components can be accessed with `cdm_get_src()`, `cdm_get_tables()` and `cdm_get_data_model()`.
 
 ```{r}
-src_tbls(flights_dm)
-tbl(flights_dm, "airports")
+cdm_get_src(flights_dm)
+# Quering nrow() for each table, to suppress otherwise huge output
+map_int(cdm_get_tables(flights_dm), nrow)
+cdm_get_data_model(flights_dm)
 ```
 
 
