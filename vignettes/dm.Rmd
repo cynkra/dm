@@ -87,7 +87,7 @@ flights_dm_with_one_key <-
   cdm_add_fk(flights, carrier, airlines)
 ```
 
-Once you set the pk's and established fk relations, you can graphically represent your data model in the following way:
+Once you set the keys and established relations, you can show a graphical representation of your data model with `cdm_draw()`:
 
 ```{r}
 flights_dm_with_one_key %>% 
