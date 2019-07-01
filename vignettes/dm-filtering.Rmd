@@ -26,4 +26,12 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
-Filtering...
+
+FIXME: 
+This vignette is not yet written, but will be available in a future update.
+
+Relevant functions for filtering `dm` objects:
+
+- `cdm_filter()`
+- `cdm_semi_join()`
+- `cdm_nrow()`
