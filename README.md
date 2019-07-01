@@ -9,6 +9,7 @@ are living.
 
 You can receive the package as a file `dm.tar.gz` from Kirill Müller,
 Email: <kirill@cynkra.com> .
+<!-- FIXME: almost outdated, needs to be github-link  -->
 
 One way to install it to your R-Library is by opening R-Studio and
 selecting “Install Packages…” from the `Tools` menu. In the appearing
