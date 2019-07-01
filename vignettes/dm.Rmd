@@ -167,6 +167,25 @@ flights %>%
 
 The {dm} code is leaner, because the fk information is encoded in the object.
 
+### Joining two tables {#join}
+
+The `cdm_join_tbl()` function joins two immediately related tables in a data model.
+The definition of the primary and foreign key constraints is used to define the relationship.
+
+```{r}
+flights_dm_with_keys %>%
+  cdm_join_tbl(airlines, flights, join = left_join)
+```
+
+The same operation using {dplyr} syntax looks like this:
+
+```{r eval=FALSE}
+library(nycflights13)
+airlines %>% 
+  left_join(flights, by = "carrier")
+```
+
+Omitting the `by` argument leads to a warning
 
 ## Copy a `dm` object to a DB or learn from it {#copy}
 
@@ -202,22 +221,3 @@ flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
 - {dm} and {dynafilter}, a match made in {shiny}-heaven: vignette "shiny with {dynafilter}"
 - Further useful tools: vignette "Tips and tricks"
 
-### Joining two tables {#join}
-
-The `cdm_join_tbl()` function joins two immediately related tables in a data model.
-The definition of the primary and foreign key constraints is used to define the relationship.
-
-```{r}
-flights_dm_with_keys %>%
-  cdm_join_tbl(airlines, flights, join = left_join)
-```
-
-The same operation using {dplyr} syntax looks like this:
-
-```{r eval=FALSE}
-library(nycflights13)
-airlines %>% 
-  left_join(flights, by = "carrier")
-```
-
-Omitting the `by` argument leads to a warning
