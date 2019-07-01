@@ -1,0 +1,31 @@
+---
+title: "Tips and tricks"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tips and tricks}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+
+knit_print.grViz <- function(x, ...) {
+  x %>% 
+    DiagrammeRsvg::export_svg() %>% 
+    c("`````{=html}\n", ., "\n`````\n") %>% 
+    knitr::asis_output()
+}
+```
+
+
+FIXME: 
+This vignette is not yet written, but will be available in a future update.

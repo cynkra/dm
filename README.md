@@ -1,192 +1,186 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # dm
 
-The goal of `dm` is to provide functions for frequently required tasks
-when working with data models.
-
-## Installation
-
-You can receive the package as a file `dm.tar.gz` from Kirill Müller,
-Email: <kirill@cynkra.com> .
-
-One way to install it to your R-Library is by opening R-Studio and
-selecting “Install Packages…” from the `Tools` menu. In the appearing
-window, choose the option “Install from: Package Archive File (.tgz;
-.tar.gz)” and browse to `dm.tar.gz`.
-
-## Examples for employing helper functions to test for key constraints
-
-This section contains information and examples for the functions:
-
-1.  `check_key(.data, ...)`
-2.  `check_if_subset(t1, c1, t2, c2)`
-3.  `check_set_equality(t1, c1, t2, c2)`
-
-When you have tables (data frames) that are connected by key relations,
-this package might help you verify the assumed key relations and/or
-determine existing key relations between the tables. For example, if you
-have tables:
+The goal of `dm` is to provide tools for frequently required tasks when
+working with a set of related tables. This package works with all data
+sources that provide a {dplyr} interface: local data frames, relational
+databases, and many more.
 
 ``` r
-data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+library(tidyverse)
+library(dm)
 ```
 
-and you want to know if `a` is a primary key for `data_1`, you can use
-the `check_key()` function:
+The new class `dm` is essentially a list containing all the important
+information about a set of related tables, its components being:
+
+  - `src` object: location of tables (database (DB), locally, …)
+  - a so-called `data_model` object: meta-info about data model (keys,
+    table & columns names, …)
+  - the data: the tables itself
+
+This package augments {dplyr}/{dbplyr} workflows:
+
+  - multiple related tables are kept in a single compound object,
+  - joins across multiple tables are available by stating the tables
+    involved, no need to memoize column names or relationships
+
+In addition, a battery of utilities is provided that helps with creating
+a tidy data model.
+
+This package follows several of the “tidyverse” rules:
+
+  - `dm` objects are immutable (your data will never be overwritten in
+    place)
+  - many functions used on `dm` objects are pipeable (i.e., return new
+    `dm` objects)
+  - tidy evaluation is used (unquoted function parameters are supported)
+
+A readymade `dm` object with preset keys is included in the package:
 
 ``` r
-check_key(data_1, a)
-#> `a` is not a unique key of `data_1`
+flights_dm_with_keys <- cdm_nycflights13()
+flights_dm_with_keys
 ```
 
-Mind the error message when a test is not passed.
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   3 primary keys
+#&gt;   4 references
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 367687
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+</span></CODE></PRE>
 
-In case of `data_2` column `a` is a key:
+For more information about the `dm` class and how to establish and
+display key constraints we would like to refer you to vignette “class
+‘dm’ and basic operations”.
+<!-- FIXME: vignette missing; once there, needs to be linked -->
+
+## Visualization
+
+A basic graphic representation of the entity relationship model can be
+generated with:
 
 ``` r
-check_key(data_2, a)
+flights_dm_with_keys %>% 
+  cdm_draw()
 ```
 
-To see if a column of one table contains only values, that are also in
-another column of another table (one of the two criteria of it being a
-foreign key to this other table, the other being if this other table’s
-column is one of its unique keys), you can use `check_if_subset()`:
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+The different colors of the tables were assigned in
+`cdm_nycflights13()`. For how to add colors to subsets of the tables and
+further customization please see vignette “Visualizing ‘dm’ objects”
+<!-- FIXME: vignette missing; once there, needs to be linked -->
+
+## Filtering `dm` object and joining its tables
+
+Similar to `dplyr::filter()`, a filtering function `cdm_filter()` is
+available for `dm` objects. You need to provide the `dm` object, the
+table whose rows you want to filter and the filter expression. A `dm`
+object is returned whose tables only contain rows that are related to
+the reduced rows in the filtered table. This currently only works for
+cycle-free relationships between the tables, since otherwise no
+well-defined solution can be calculated. Thus, we need a slightly
+different `dm` object from before to show the functionality of
+`cdm_filter()`:
 
 ``` r
-check_if_subset(data_1, a, data_2, a)
+cdm_nycflights13(cycle = FALSE) %>%
+  cdm_get_tables() %>%
+  map_int(nrow)
+#> airlines airports  flights   planes  weather 
+#>       16     1458   336776     3322    26115
+
+cdm_nycflights13(cycle = FALSE) %>% 
+  cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
+  cdm_get_tables() %>%
+  map_int(nrow)
+#> airlines airports  flights   planes  weather 
+#>        4        3     7301      134    26115
 ```
 
-What about the inverse relation?
+If you want to join 2 tables of a `dm`, making use of their foreign key
+relation, you can use `cdm_join_tbl()`:
 
 ``` r
-check_if_subset(data_2, a, data_1, a)
-#> # A tibble: 1 x 3
-#>       a     b     c
-#>   <dbl> <dbl> <dbl>
-#> 1     3     6     9
-#> Column `a` in table `data_2` contains values (see above) that are not
-#> present in column `a` in table `data_1`
+cdm_nycflights13(cycle = FALSE) %>%
+  cdm_join_tbl(airports, flights, join = semi_join)
 ```
 
-One should keep in mind, that `check_if_subset()` does NOT test, if
-parameter `c2` is a unique key of table `t2`. In order to find out if a
-(child) table `t1` contains a column `c1` that is a foreign key to a
-(parent) table `t2` with the corresponding column `c2`, one would use
-the following approach:
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 3 x 8</span><span>
+#&gt;   </span><span style='font-weight: bold;'>faa</span><span>   </span><span style='font-weight: bold;'>name</span><span>                  </span><span style='font-weight: bold;'>lat</span><span>   </span><span style='font-weight: bold;'>lon</span><span>   </span><span style='font-weight: bold;'>alt</span><span>    </span><span style='font-weight: bold;'>tz</span><span> </span><span style='font-weight: bold;'>dst</span><span>   </span><span style='font-weight: bold;'>tzone</span><span>           
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           
+#&gt; </span><span style='color: #555555;'>1</span><span> EWR   Newark Liberty Intl  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
+#&gt; </span><span style='color: #555555;'>2</span><span> JFK   John F Kennedy Intl  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
+#&gt; </span><span style='color: #555555;'>3</span><span> LGA   La Guardia           40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
+</span></CODE></PRE>
+
+In our `dm`, column `origin` of table `flights` points to table
+`airports`. Since all `nycflights13`-flights take off from New York,
+only the NY airports are left after the semi-join.
+
+## From and to DBs
+
+In order to transfer an existing `dm` object to a DB, you just need to
+provide the `src` object with the connection to the target DB and the
+`dm` object:
 
 ``` r
-check_key(t2, c2)
-check_if_subset(t1, c1, t2, c2)
+src_sqlite <- src_sqlite(":memory:", create = TRUE)
+src_sqlite
+#> src:  sqlite 3.25.3 [:memory:]
+#> tbls:
+flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
+flights_dm_with_keys_remote
 ```
 
-To check both directions at once - basically answering the questions:
-are the unique values of `c_1` in `t_1` the same as those of `c_2` in
-`t_2`? - `dm` provides the function `check_set_equality()` (this would
-fail with a longer error message and is therefore not evaluated):
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.25.3 [:memory:]
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   3 primary keys
+#&gt;   4 references
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 367687
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+</span></CODE></PRE>
+
+With the default setting `set_key_constraints = TRUE` for
+`cdm_copy_to()`, key constraints are established on the target DB, based
+on the constraints in the `data_model` part of the `dm`. Currently this
+feature is only supported for MSSQL and Postgres database management
+systems (DBMS).
+
+It is also possible to automatically create a `dm` object from the
+permanent tables of a DB. Again, for now just MSSQL and Postgres are
+supported for this feature, so the next chunk is not evaluated. The
+support for other DBMS will be implemented in a future update.
 
 ``` r
-check_set_equality(data_1, a, data_2, a)
+flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
 ```
 
-Bringing one more table into the game, we can show how it looks, when
-the test is passed:
+## More information
 
-``` r
-data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
+If you would like to learn more about the possibilities of {dm}, please
+see the function documentation or the vignettes:
 
-check_set_equality(data_1, a, data_3, a)
-```
-
-If for any of these three functions the test is passed, the return value
-of the function will be the first table parameter (invisibly). This
-ensures, that the functions can conveniently be used in a
-pipe.
-
-## Examples for testing the cardinalities of relations between two tables
-
-This section contains information and examples for the functions:
-
-1.  `check_cardinality_0_n(parent_table, primary_key_column,
-    child_table, foreign_key_column)`
-2.  `check_cardinality_1_n(parent_table, primary_key_column,
-    child_table, foreign_key_column)`
-3.  `check_cardinality_0_1(parent_table, primary_key_column,
-    child_table, foreign_key_column)`
-4.  `check_cardinality_1_1(parent_table, primary_key_column,
-    child_table, foreign_key_column)`
-
-The four functions for testing for a specific kind of cardinality of the
-relation all require there to be a parent table and a child table. All
-these functions first test, if this requirement is fulfilled by checking
-if:
-
-1.  `primary_key_column` is a unique key for `parent_table`
-2.  The set of values of `foreign_key_column` is a subset of the set of
-    values of `primary_key_column`
-
-The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the
-expected relation, that the child table has with the parent table. The
-numbers ‘0’, ‘1’ and ‘n’ refer to the number of values in the child
-table’s column (`foreign_key_column`) that correspond to each value of
-the parent table’s column (`primary_key_column`). ‘n’ means more than
-one in this context, with no upper limit.
-
-`0_n` means, that for each value of the `parent_key_column`, minimally
-‘0’ and maximally ‘n’ values have to correspond to it in the child
-table’s column (which translates to no further restriction).
-
-`1_n` means, that for each value of the `parent_key_column`, minimally
-‘1’ and maximally ‘n’ values have to correspond to it in the child
-table’s column. This means that there is a “surjective” relation from
-the child table to the parent table w.r.t. the specified columns,
-i.e. for each parent table column value there exists at least one equal
-child table column value.
-
-`0_1` means, that for each value of the `parent_key_column`, minimally
-‘0’ and maximally ‘1’ value has to correspond to it in the child
-table’s column. This means that there is a “injective” relation from
-the child table to the parent table w.r.t. the specified columns,
-i.e. no parent table column value is addressed multiple times. But not
-all of the parent table column values have to be referred to.
-
-`1_1` means, that for each value of the `parent_key_column`, precisely
-‘1’ value has to correspond to it in the child table’s column. This
-means that there is a “bijective” (“injective” AND “surjective”)
-relation between the child table and the parent table w.r.t. the
-specified columns, i.e. the set of values of the two columns is equal
-and there are no duplicates in either of them.
-
-Examples:
-
-Given the following three data frames:
-
-``` r
-d1 <- tibble::tibble(a = 1:5)
-d2 <- tibble::tibble(c = c(1:5,5))
-d3 <- tibble::tibble(c = 1:4)
-```
-
-Here are some examples for the usage of the functions:
-
-``` r
-# This does not pass, `c` is not unique key of d2:
-check_cardinality_0_n(d2, c, d1, a)
-#> `c` is not a unique key of `d2`
-
-# This passes, multiple values in d2$c are allowed:
-check_cardinality_0_n(d1, a, d2, c)
-
-# This does not pass, injectivity is violated:
-check_cardinality_1_1(d1, a, d2, c)
-#> 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2`
-#> contains duplicate values.
-
-# This passes:
-check_cardinality_0_1(d1, a, d3, c)
-```
+  - Getting started
+  - Class ‘dm’ and basic operations
+  - Visualizing ‘dm’ objects
+  - Filtering
+  - {dm} and databases
+  - shiny with {dynafilter}
+  - Tips and tricks
+    <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
 ## Package overview
 
@@ -194,3 +188,18 @@ To get an overview of `dm`, you can call the package’s function
 `browse_docs()`, which will open a .html-file in your standard web
 browser. You can also manually open the file, it is `index.html` in the
 folder `pkgdown`.
+
+## Installation
+
+You can receive the package as a file `dm.tar.gz` from Kirill Müller,
+Email: <kirill@cynkra.com> .
+<!-- FIXME: almost outdated, needs to be github-link  -->
+
+One way to install it to your R-Library is by opening R-Studio and
+selecting “Install Packages…” from the `Tools` menu. In the appearing
+window, choose the option “Install from: Package Archive File (.tgz;
+.tar.gz)” and browse to `dm.tar.gz`.
+
+-----
+
+FIXME: funder, copyright holder, code of conduct

@@ -9,9 +9,11 @@
 #'   (from `flights$origin` to `airports$faa`) between `flights` and `airports` is
 #'   established. If `TRUE` (default), a `dm` object with a double reference
 #'   between those tables will be produced.
+#' @param color Boolean, if `TRUE` (default), the resulting `dm` object will have
+#'   colors assigned to different tables for visualization with `cdm_draw()`
 #'
 #' @export
-cdm_nycflights13 <- function(cycle = TRUE) h(~ {
+cdm_nycflights13 <- function(cycle = TRUE, color = TRUE) h(~ {
     dm <-
       dm(
         src_df("nycflights13")
@@ -22,6 +24,18 @@ cdm_nycflights13 <- function(cycle = TRUE) h(~ {
       cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
       cdm_add_fk(flights, carrier, airlines) %>%
       cdm_add_fk(flights, origin, airports)
+
+    if (color) {
+      dm <-
+        dm %>%
+        cdm_set_colors(
+          flights = "blue",
+          airports = ,
+          planes = ,
+          airlines = "orange",
+          weather = "green"
+        )
+    }
 
     if (cycle) {
       dm %>%
