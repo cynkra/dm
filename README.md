@@ -26,64 +26,29 @@ information about a set of related tables, its components being:
     table & columns names, …)
   - the data: the tables itself
 
-One way to create a `dm` object is the following (using
-{nycflights13}-data here as a fitting example):
-
-``` r
-flights_dm <- dm(src_df(pkg = "nycflights13"))
-flights_dm
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
-#&gt; Data model object:
-#&gt;   5 tables:  airlines, airports, flights, planes ... 
-#&gt;   53 columns
-#&gt;   0 primary keys
-#&gt;   no references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
-</span></CODE></PRE>
-
-## Handling key constraints
-
-The information about the key constraints is stored in the `data_model`
-part of the `dm`. You can access or change the key settings with the
-primary (‘pk’) and foreign (‘fk’) key functions (see documentation),
-e.g.:
-
-``` r
-flights_dm_with_one_key <- 
-  flights_dm %>% 
-  cdm_add_pk(airlines, carrier) %>% 
-  cdm_add_fk(flights, carrier, airlines)
-flights_dm_with_one_key
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
-#&gt; Data model object:
-#&gt;   5 tables:  airlines, airports, flights, planes ... 
-#&gt;   53 columns
-#&gt;   1 primary keys
-#&gt;   1 references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
-</span></CODE></PRE>
-
 A readymade `dm` object with preset keys is included in the package:
 
 ``` r
 flights_dm_with_keys <- cdm_nycflights13()
+flights_dm_with_keys
 ```
 
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   3 primary keys
+#&gt;   4 references
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 367687
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+</span></CODE></PRE>
+
 For more information about the `dm` class and how to establish and
-display key constraints we would like to refer you to vignette “class dm
-and basic operations”.
+display key constraints we would like to refer you to vignette “class
+‘dm’ and basic operations”.
 <!-- FIXME: vignette missing; once there, needs to be linked -->
 
 ## Visualization
@@ -96,7 +61,7 @@ flights_dm_with_keys %>%
   cdm_draw()
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 For how to add colors to subsets of the tables and further customization
 please see vignette “Visualizing ‘dm’ objects”

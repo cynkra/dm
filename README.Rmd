@@ -47,31 +47,13 @@ The new class `dm` is essentially a list containing all the important informatio
 - a so-called `data_model` object: meta-info about data model (keys, table & columns names, ...)
 - the data: the tables itself
 
-One way to create a `dm` object is the following (using {nycflights13}-data here as a fitting example):
-```{r message=FALSE}
-flights_dm <- dm(src_df(pkg = "nycflights13"))
-flights_dm
-```
-
-## Handling key constraints
-
-The information about the key constraints is stored in the `data_model` part of the `dm`.
-You can access or change the key settings with the primary ('pk') and foreign ('fk') key functions (see documentation), e.g.:
-
-```{r}
-flights_dm_with_one_key <- 
-  flights_dm %>% 
-  cdm_add_pk(airlines, carrier) %>% 
-  cdm_add_fk(flights, carrier, airlines)
-flights_dm_with_one_key
-```
-
 A readymade `dm` object with preset keys is included in the package:
 ```{r}
 flights_dm_with_keys <- cdm_nycflights13()
+flights_dm_with_keys
 ```
 
-For more information about the `dm` class and how to establish and display key constraints we would like to refer you to vignette "class dm and basic operations".
+For more information about the `dm` class and how to establish and display key constraints we would like to refer you to vignette "class 'dm' and basic operations".
 <!-- FIXME: vignette missing; once there, needs to be linked -->
 
 ## Visualization
