@@ -168,12 +168,12 @@ If you would like to learn more about the possibilities of {dm}, please
 see the function documentation or the vignettes:
 
   - Getting started
-  - class ‘dm’ and basic operations
+  - Class ‘dm’ and basic operations
   - Visualizing ‘dm’ objects (missing as of yet)
   - Filtering (missing as of yet)
   - {dm} and databases (missing as of yet)
-  - Further operations (missing as of yet)
-  - Shiny with {dynafilter} (missing as of yet)
+  - shiny with {dynafilter} (missing as of yet)
+  - Miscellaneous (missing as of yet)
     <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
 ## Package overview

@@ -188,7 +188,7 @@ flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
 
 ## Further reading
 
-- Learn other ways of creating `dm` objects and basic operations on them, like handling key constraints in vignette "class 'dm' and basic operations"
+- Learn other ways of creating `dm` objects and basic operations on them, like handling key constraints in vignette "Class 'dm' and basic operations"
 - All about the possibilities of graphic representations of `dm` objects: vignette "Visualizing 'dm' objects (missing as of yet)"
 - More on filtering `dm` objects, its limitations and its benefits: vignette "Filtering"
 - On {dm}'s intuitive interaction with DBs: vignette "{dm} and databases"
