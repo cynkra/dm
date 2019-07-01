@@ -342,5 +342,5 @@ abort_no_src_or_con <- function() {
 }
 
 error_no_src_or_con <- function() {
-  paste0("'src' needs to be a 'src' or a 'con' object.")
+  paste0('`src` needs to be a "src" or a "con" object.')
 }
