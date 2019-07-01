@@ -37,11 +37,11 @@ You can have your `dm` object on different data sources, such as a local environ
 
 `dm` is a wrapper around two classes, which are independent from each other:
 
-1. part of the object is a [`src`-object](https://dplyr.tidyverse.org/reference/src.html) from {dplyr}
+1. part of the object is a [`src` object](https://dplyr.tidyverse.org/reference/src.html) from {dplyr}
 2. the other part is a class `data_model` object
  from the package [{datamodelr}](https://github.com/bergant/datamodelr)^[Use: `devtools::install_github("https://github.com/bergant/datamodelr")` to install it]
 
-The `src`-object contains the information, where the tables of your data model live. And in the `data_model` object the meta-information is stored:
+The `src` object contains the information, where the tables of your data model live. And in the `data_model` object the meta-information is stored:
 
 - what are the primary keys in your schema?
 - how are the tables related to each other, i.e. what are the foreign key relations?
