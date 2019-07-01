@@ -335,3 +335,12 @@ error_first_rm_fks <- function(fks) h(~ {
 
     glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
   })
+
+
+abort_no_src_or_con <- function() {
+  abort(error_no_src_or_con(), .subclass = cdm_error("no_src_or_con"))
+}
+
+error_no_src_or_con <- function() {
+  paste0('`src` needs to be a "src" or a "con" object.')
+}

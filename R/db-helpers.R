@@ -159,11 +159,7 @@ get_db_table_names <- function(dm) {
 }
 
 is_src_db <- function(dm) {
-  if (is.src(cdm_get_src(dm))) {
-    inherits(cdm_get_src(dm), "src_sql")
-  } else {
-    inherits(cdm_get_src(dm) %>% dbplyr::src_dbi(), "src_sql")
-  }
+  inherits(cdm_get_src(dm), "src_sql")
 }
 
 is_mssql <- function(dest) {
