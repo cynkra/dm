@@ -21,7 +21,14 @@ cdm_nycflights13 <- function(cycle = TRUE) h(~ {
       cdm_add_pk(airports, faa) %>%
       cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
       cdm_add_fk(flights, carrier, airlines) %>%
-      cdm_add_fk(flights, origin, airports)
+      cdm_add_fk(flights, origin, airports) %>%
+      cdm_set_colors(
+        flights = "blue",
+        airports = ,
+        planes = ,
+        airlines = "orange",
+        weather = "green"
+        )
 
     if (cycle) {
       dm %>%
