@@ -16,8 +16,7 @@ con_postgres <- src_postgres$con
 get_test_tables_from_postgres <- function(con_postgres) {
   dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
     as_tibble() %>%
-    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+") ||
-             str_detect(table_name, "^t[0-9]{1}"))
+    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
 }
 
 is_postgres_empty <- function(con_postgres) {
