@@ -163,6 +163,7 @@ Useful functions for managing foreign key relations are:
 3. `cdm_get_fk()`
 4. `cdm_rm_fk()`
 5. `cdm_check_for_fk_candidates()`
+6. `cdm_get_all_fks()`
 
 Now it gets (even more) interesting: we want to define relations between different tables.
 With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
@@ -213,7 +214,17 @@ flights_dm_with_fk %>%
   cdm_get_fk(flights, airports)
 ```
 
+Since the primary keys are defined in the `dm` object, you don't need to provide the referenced column name of `ref_table`.
+This is always the table's primary key column.
+
 Another function for getting to know your data better (cf. `cdm_check_for_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `cdm_check_for_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
+
 ```{r}
 cdm_check_for_fk_candidates(flights_dm_with_key, weather, airports)
+```
+
+Get an overview over all foreign key relations in your data model with`cdm_get_all_fks()`:
+
+```{r}
+cdm_get_all_fks(cdm_nycflights13())
 ```
