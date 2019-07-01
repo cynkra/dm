@@ -21,7 +21,7 @@ test_that("cdm_copy_to() works as it is intended?", {
   map(
     dbplyr:::test_srcs$get(),
     ~ expect_error(
-      cdm_copy_to(., dm_for_filter),
+      cdm_copy_to(., dm_for_filter, unique_table_names = TRUE),
       NA
     )
   )
