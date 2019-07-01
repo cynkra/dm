@@ -3,8 +3,8 @@ output: github_document
 ---
 
 ```{r setup, include = FALSE}
-library(dplyr)
-library(dm)
+library(tidyverse)
+pkgload::load_all()
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -26,26 +26,33 @@ knit_print.grViz <- function(x, ...) {
 
 # dm
 
-The goal of `dm` is to provide tools for frequently required tasks when working with a set of related tables, independent of where the tables are living.
+The goal of `dm` is to provide tools for frequently required tasks when working with a set of related tables.
+This package works with all data sources that provide a {dplyr} interface: local data frames, relational databases, and many more.
 
-## Installation
+```{r}
+library(tidyverse)
+library(dm)
+```
 
-You can receive the package as a file `dm.tar.gz` from
-Kirill Müller, Email: <kirill@cynkra.com> .
-<!-- FIXME: almost outdated, needs to be github-link  -->
-
-One way to install it to your R-Library is by opening R-Studio and
-selecting “Install Packages…” from the `Tools` menu. In the appearing
-window, choose the option “Install from: Package Archive File (.tgz;
-.tar.gz)” and browse to `dm.tar.gz`.
-
-## Class `dm`
 
 The new class `dm` is essentially a list containing all the important information about a set of related tables, its components being:
 
 - `src` object: location of tables (database (DB), locally, ...)
 - a so-called `data_model` object: meta-info about data model (keys, table & columns names, ...)
 - the data: the tables itself
+
+This package augments {dplyr}/{dbplyr} workflows:
+
+- multiple related tables are kept in a single compound object,
+- joins across multiple tables are available by stating the tables involved, no need to memoize column names or relationships
+
+In addition, a battery of utilities is provided that helps with creating a tidy data model.
+
+This package follows several of the "tidyverse" rules:
+
+- `dm` objects are immutable (your data will never be overwritten in place)
+- many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
+- tidy evaluation is used (unquoted function parameters are supported)
 
 A readymade `dm` object with preset keys is included in the package:
 ```{r}
@@ -78,15 +85,20 @@ This currently only works for cycle-free relationships between the tables, since
 Thus, we need a slightly different `dm` object from before to show the functionality of `cdm_filter()`:
 
 ```{r}
-flights_dm_acyclic <- cdm_nycflights13(cycle = FALSE)
-flights_dm_acyclic %>% 
-  cdm_filter(planes, year == 2000, manufacturer == "BOEING")
+cdm_nycflights13(cycle = FALSE) %>%
+  cdm_get_tables() %>%
+  map_int(nrow)
+
+cdm_nycflights13(cycle = FALSE) %>% 
+  cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
+  cdm_get_tables() %>%
+  map_int(nrow)
 ```
 
 If you want to join 2 tables of a `dm`, making use of their foreign key relation, you can use `cdm_join_tbl()`:
 
 ```{r}
-flights_dm_acyclic %>% 
+cdm_nycflights13(cycle = FALSE) %>%
   cdm_join_tbl(airports, flights, join = semi_join)
 ```
 
@@ -103,7 +115,8 @@ flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
 flights_dm_with_keys_remote
 ```
 
-With the default setting `set_key_constraints = TRUE` for `cdm_copy_to()`, key constraints are established on the target DB, based on the constraints in the `data_model` part of the `dm`.
+The key constraints from the original object are also copied to the newly created object.
+With the default setting `set_key_constraints = TRUE` for `cdm_copy_to()`, key constraints are also established on the target DB.
 Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).
 
 It is also possible to automatically create a `dm` object from the permanent tables of a DB.
@@ -111,7 +124,8 @@ Again, for now just MSSQL and Postgres are supported for this feature, so the ne
 The support for other DBMS will be implemented in a future update.
 
 ```{r eval=FALSE}
-flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
+src_postgres <- src_postgres()
+flights_dm_from_remote <- cdm_learn_from_db(src_postgres)
 ```
 
 ## More information
@@ -127,9 +141,17 @@ If you would like to learn more about the possibilities of {dm}, please see the 
 - Tips and tricks
 <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
-## Package overview
+## Installation
 
-To get an overview of `dm`, you can call the package’s
-function `browse_docs()`, which will open a .html-file in your standard
-web browser. You can also manually open the file, it is `index.html` in
-the folder `pkgdown`.
+You can receive the package as a file `dm.tar.gz` from
+Kirill Müller, Email: <kirill@cynkra.com> .
+<!-- FIXME: almost outdated, needs to be github-link  -->
+
+One way to install it to your R-Library is by opening R-Studio and
+selecting “Install Packages…” from the `Tools` menu. In the appearing
+window, choose the option “Install from: Package Archive File (.tgz;
+.tar.gz)” and browse to `dm.tar.gz`.
+
+---
+
+FIXME: funder, copyright holder, code of conduct

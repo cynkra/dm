@@ -2,21 +2,14 @@
 # dm
 
 The goal of `dm` is to provide tools for frequently required tasks when
-working with a set of related tables, independent of where the tables
-are living.
+working with a set of related tables. This package works with all data
+sources that provide a {dplyr} interface: local data frames, relational
+databases, and many more.
 
-## Installation
-
-You can receive the package as a file `dm.tar.gz` from Kirill Müller,
-Email: <kirill@cynkra.com> .
-<!-- FIXME: almost outdated, needs to be github-link  -->
-
-One way to install it to your R-Library is by opening R-Studio and
-selecting “Install Packages…” from the `Tools` menu. In the appearing
-window, choose the option “Install from: Package Archive File (.tgz;
-.tar.gz)” and browse to `dm.tar.gz`.
-
-## Class `dm`
+``` r
+library(tidyverse)
+library(dm)
+```
 
 The new class `dm` is essentially a list containing all the important
 information about a set of related tables, its components being:
@@ -25,6 +18,23 @@ information about a set of related tables, its components being:
   - a so-called `data_model` object: meta-info about data model (keys,
     table & columns names, …)
   - the data: the tables itself
+
+This package augments {dplyr}/{dbplyr} workflows:
+
+  - multiple related tables are kept in a single compound object,
+  - joins across multiple tables are available by stating the tables
+    involved, no need to memoize column names or relationships
+
+In addition, a battery of utilities is provided that helps with creating
+a tidy data model.
+
+This package follows several of the “tidyverse” rules:
+
+  - `dm` objects are immutable (your data will never be overwritten in
+    place)
+  - many functions used on `dm` objects are pipeable (i.e., return new
+    `dm` objects)
+  - tidy evaluation is used (unquoted function parameters are supported)
 
 A readymade `dm` object with preset keys is included in the package:
 
@@ -61,7 +71,7 @@ flights_dm_with_keys %>%
   cdm_draw()
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 The different colors of the tables were assigned in
 `cdm_nycflights13()`. For how to add colors to subsets of the tables and
@@ -81,34 +91,30 @@ different `dm` object from before to show the functionality of
 `cdm_filter()`:
 
 ``` r
-flights_dm_acyclic <- cdm_nycflights13(cycle = FALSE)
-flights_dm_acyclic %>% 
-  cdm_filter(planes, year == 2000, manufacturer == "BOEING")
-```
+cdm_nycflights13(cycle = FALSE) %>%
+  cdm_get_tables() %>%
+  map_int(nrow)
+#> airlines airports  flights   planes  weather 
+#>       16     1458   336776     3322    26115
 
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
-#&gt; Data model object:
-#&gt;   5 tables:  airlines, airports, flights, planes ... 
-#&gt;   53 columns
-#&gt;   3 primary keys
-#&gt;   3 references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 33557
-#&gt; airlines: 4, airports: 3, flights: 7301, planes: 134, weather: 26115
-</span></CODE></PRE>
+cdm_nycflights13(cycle = FALSE) %>% 
+  cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
+  cdm_get_tables() %>%
+  map_int(nrow)
+#> airlines airports  flights   planes  weather 
+#>        4        3     7301      134    26115
+```
 
 If you want to join 2 tables of a `dm`, making use of their foreign key
 relation, you can use `cdm_join_tbl()`:
 
 ``` r
-flights_dm_acyclic %>% 
+cdm_nycflights13(cycle = FALSE) %>%
   cdm_join_tbl(airports, flights, join = semi_join)
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 3 x 8</span><span>
-#&gt;   faa   name                  lat   lon   alt    tz dst   tzone           
+#&gt;   </span><span style='font-weight: bold;'>faa</span><span>   </span><span style='font-weight: bold;'>name</span><span>                  </span><span style='font-weight: bold;'>lat</span><span>   </span><span style='font-weight: bold;'>lon</span><span>   </span><span style='font-weight: bold;'>alt</span><span>    </span><span style='font-weight: bold;'>tz</span><span> </span><span style='font-weight: bold;'>dst</span><span>   </span><span style='font-weight: bold;'>tzone</span><span>           
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           
 #&gt; </span><span style='color: #555555;'>1</span><span> EWR   Newark Liberty Intl  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
 #&gt; </span><span style='color: #555555;'>2</span><span> JFK   John F Kennedy Intl  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
@@ -182,3 +188,18 @@ To get an overview of `dm`, you can call the package’s function
 `browse_docs()`, which will open a .html-file in your standard web
 browser. You can also manually open the file, it is `index.html` in the
 folder `pkgdown`.
+
+## Installation
+
+You can receive the package as a file `dm.tar.gz` from Kirill Müller,
+Email: <kirill@cynkra.com> .
+<!-- FIXME: almost outdated, needs to be github-link  -->
+
+One way to install it to your R-Library is by opening R-Studio and
+selecting “Install Packages…” from the `Tools` menu. In the appearing
+window, choose the option “Install from: Package Archive File (.tgz;
+.tar.gz)” and browse to `dm.tar.gz`.
+
+-----
+
+FIXME: funder, copyright holder, code of conduct
