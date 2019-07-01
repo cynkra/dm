@@ -27,11 +27,18 @@ knit_print.grViz <- function(x, ...) {
 ```
 
 The goal of both the package {dm} and its `dm` class is to facilitate work with multiple related tables.
-An object of the `dm`-class contains all relevant information about the tables in a data model:
+An object of the `dm` class contains all relevant information about the tables in a data model:
 
 1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
 1. the meta-data from the data model: the tables, columns, and key constraints
 1. the data in the tables
+
+This package augments {dplyr}/{dbplyr} workflows:
+
+- multiple related tables are kept in a single compound object,
+- joins across multiple tables are available by stating the tables involved, no need to memoize column names or relationships
+
+In addition, a battery of utilities is provided that helps with creating a tidy data model.
 
 This package follows several of the "tidyverse" rules:
 
@@ -87,7 +94,7 @@ flights_dm_with_one_key <-
   cdm_add_fk(flights, carrier, airlines)
 ```
 
-Once you set the pk's and established fk relations, you can graphically represent your data model in the following way:
+Once you set the keys and established relations, you can show a graphical representation of your data model with `cdm_draw()`:
 
 ```{r}
 flights_dm_with_one_key %>% 
