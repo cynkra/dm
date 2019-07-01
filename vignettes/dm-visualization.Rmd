@@ -36,15 +36,12 @@ Relevant functions for visualising the `dm` object's data model:^[The functions 
 
 Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation of your data model.
 
-Let's first create a slightly more interconnected `dm` object from the {nycflights13} package tables:
+We can just take here the prepared example `dm` object `cdm_nycflights13()`:
 ```{r}
+library(dm)
 flights_dm_w_many_keys <- cdm_nycflights13(color = FALSE)
 flights_dm_w_many_keys
 ```
-You probably realized the option `check = FALSE` in the last two function calls when adding foreign keys.
-The check normally ensures, that the set of values of the column of the first table is a subset of the set of values of the primary key column of the referenced table.
-Since in our case this isn't the case, but we want complexity, we turned the check off.
-It is recommended not to do this, since you might run into errors or other unwanted effects, mainly when working on databases.
 
 You can use colors to visually group your tables into families (which could reflect their logical grouping).
 Currently, there are only eight different colors available (plus the option of having borders displayed around the tables or not).
@@ -54,9 +51,7 @@ cdm_get_available_colors()
 ```
 
 The assignment is carried out with `cdm_set_colors()`, using a syntax similar to `switch()`.
-Any table you don't specifically assign will be displayed in the default color.
-
-Use `cdm_set_colors()` to assign the respective colors. 
+Any table you don't specifically assign will be displayed in the default color. 
 The result of `cdm_set_colors()` is a `dm` object.
 The information about the color is stored in its `data_model`-part.
 ```{r}
