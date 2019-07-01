@@ -27,9 +27,7 @@ knit_print.grViz <- function(x, ...) {
 ```
 
 
-## Visualising the data model
-
-Relevant functions for visualising the data model:^[The functions in this section rely heavily on related functions of {datamodelr}.]
+Relevant functions for visualising the `dm` object's data model:^[The functions in this section rely heavily on related functions of {datamodelr}.]
 
 1. `cdm_set_colors()`
 1. `cdm_get_colors()`
