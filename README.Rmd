@@ -69,6 +69,30 @@ The different colors of the tables were assigned in `cdm_nycflights13()`.
 For how to add colors to subsets of the tables and further customization please see vignette "Visualizing 'dm' objects"
 <!-- FIXME: vignette missing; once there, needs to be linked -->
 
+## Filtering `dm` object and joining its tables {#filter}
+
+Similar to `dplyr::filter()`, a filtering function `cdm_filter()` is available for `dm` objects.
+You need to provide the `dm` object, the table whose rows you want to filter and the filter expression.
+A `dm` object is returned whose tables only contain rows that are related to the reduced rows in the filtered table.
+This currently only works for cycle-free relationships between the tables, since otherwise no well-defined solution can be calculated.
+Thus, we need a slightly different `dm` object from before to show the functionality of `cdm_filter()`:
+
+```{r}
+flights_dm_acyclic <- cdm_nycflights13(cycle = FALSE)
+flights_dm_acyclic %>% 
+  cdm_filter(planes, year == 2000, manufacturer == "BOEING")
+```
+
+If you want to join 2 tables of a `dm`, making use of their foreign key relation, you can use `cdm_join_tbl()`:
+
+```{r}
+flights_dm_acyclic %>% 
+  cdm_join_tbl(airports, flights, join = semi_join)
+```
+
+In our `dm`, column `origin` of table `flights` points to table `airports`.
+Since all `nycflights13`-flights take off from New York, only the NY airports are left after the semi-join.
+
 ## From and to DBs
 
 In order to transfer an existing `dm` object to a DB, you just need to provide the `src` object with the connection to the target DB and the `dm` object:

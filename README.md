@@ -68,6 +68,57 @@ The different colors of the tables were assigned in
 further customization please see vignette “Visualizing ‘dm’ objects”
 <!-- FIXME: vignette missing; once there, needs to be linked -->
 
+## Filtering `dm` object and joining its tables
+
+Similar to `dplyr::filter()`, a filtering function `cdm_filter()` is
+available for `dm` objects. You need to provide the `dm` object, the
+table whose rows you want to filter and the filter expression. A `dm`
+object is returned whose tables only contain rows that are related to
+the reduced rows in the filtered table. This currently only works for
+cycle-free relationships between the tables, since otherwise no
+well-defined solution can be calculated. Thus, we need a slightly
+different `dm` object from before to show the functionality of
+`cdm_filter()`:
+
+``` r
+flights_dm_acyclic <- cdm_nycflights13(cycle = FALSE)
+flights_dm_acyclic %>% 
+  cdm_filter(planes, year == 2000, manufacturer == "BOEING")
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   3 primary keys
+#&gt;   3 references
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 33557
+#&gt; airlines: 4, airports: 3, flights: 7301, planes: 134, weather: 26115
+</span></CODE></PRE>
+
+If you want to join 2 tables of a `dm`, making use of their foreign key
+relation, you can use `cdm_join_tbl()`:
+
+``` r
+flights_dm_acyclic %>% 
+  cdm_join_tbl(airports, flights, join = semi_join)
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 3 x 8</span><span>
+#&gt;   faa   name                  lat   lon   alt    tz dst   tzone           
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           
+#&gt; </span><span style='color: #555555;'>1</span><span> EWR   Newark Liberty Intl  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
+#&gt; </span><span style='color: #555555;'>2</span><span> JFK   John F Kennedy Intl  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
+#&gt; </span><span style='color: #555555;'>3</span><span> LGA   La Guardia           40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
+</span></CODE></PRE>
+
+In our `dm`, column `origin` of table `flights` points to table
+`airports`. Since all `nycflights13`-flights take off from New York,
+only the NY airports are left after the semi-join.
+
 ## From and to DBs
 
 In order to transfer an existing `dm` object to a DB, you just need to
