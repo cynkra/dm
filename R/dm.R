@@ -66,7 +66,7 @@ dm <- function(src, data_model = NULL) h(~ {
 #' @rdname dm
 #' @export
 new_dm <- function(src, tables, data_model) {
-  stopifnot(dplyr::is.src(src) || inherits(src, "DBIConnection"))
+  stopifnot(dplyr::is.src(src))
   stopifnot(datamodelr::is.data_model(data_model))
 
   structure(
@@ -187,21 +187,7 @@ format.dm <- function(x, ...) {
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
 
-  if (is.src(cdm_get_src(x))) {
-    db_info <- strsplit(format(cdm_get_src(x)), "\n")[[1]][[1]]
-  } else if (inherits(cdm_get_src(x), "DBIConnection")) {
-    db_complete_info <- dbGetInfo(cdm_get_src(x))
-    db_info <- paste0(
-      if_else(is_empty(db_complete_info$dbms.name),
-        paste0("DB-name: ", db_complete_info$dbname),
-        paste0("DBMS-name: ", db_complete_info$dbms.name)
-      ),
-      if_else(is_empty(db_complete_info$servername),
-        paste0(", Server version: ", db_complete_info$serverVersion),
-        paste0(", Server name: ", db_complete_info$servername)
-      )
-    )
-  }
+  db_info <- strsplit(format(cdm_get_src(x)), "\n")[[1]][[1]]
 
   cat_line(db_info)
 
