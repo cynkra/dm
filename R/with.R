@@ -4,7 +4,7 @@
 #' @param code An expression to evaluate in the context of the [`dm`] object.
 #'
 #' @description FIXME: missing description
-#' @export
+#' @noRd
 #' @examples
 #' cdm_with(cdm_nycflights13(), airports)
 cdm_with <- function(dm, code) {
