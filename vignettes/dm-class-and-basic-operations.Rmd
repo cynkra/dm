@@ -95,10 +95,10 @@ Similarly, we can get the list of tables with `cdm_get_tables()` and the `src` o
 
 In order to pull a specific table from a `dm`, use:
 ```{r}
-tbl(another_iris_dm, "iris2")
+tbl(flights_dm, "airports")
 ``` 
 
-But how can we use dm-functions to manage primary keys of the tables in a `dm` object?
+But how can we use {dm}-functions to manage primary keys of the tables in a `dm` object?
 
 ## Primary keys of `dm` objects {#pk}
 
