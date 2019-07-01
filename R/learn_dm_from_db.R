@@ -17,6 +17,8 @@ cdm_learn_from_db <- function(dest) {
   # assuming we do not try to learn from temporary tables (which do not appear in sys.table (at least not the globally temporary ones))
 
   con <- con_from_src_or_con(dest)
+  src <- src_from_src_or_con(dest)
+
   overview <-
     dbGetQuery(con, db_learn_query(con)) %>%
     as_tibble()
@@ -31,7 +33,7 @@ cdm_learn_from_db <- function(dest) {
     pull()
 
   new_dm(
-    src = con,
+    src = src,
     tables = map(table_names, ~ tbl(con, .)) %>% set_names(table_names),
     data_model = get_datamodel_from_overview(overview)
   )
