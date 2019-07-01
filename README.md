@@ -169,11 +169,11 @@ see the function documentation or the vignettes:
 
   - Getting started
   - Class ‘dm’ and basic operations
-  - Visualizing ‘dm’ objects (missing as of yet)
-  - Filtering (missing as of yet)
-  - {dm} and databases (missing as of yet)
-  - shiny with {dynafilter} (missing as of yet)
-  - Miscellaneous (missing as of yet)
+  - Visualizing ‘dm’ objects
+  - Filtering
+  - {dm} and databases
+  - shiny with {dynafilter}
+  - Miscellaneous
     <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
 ## Package overview

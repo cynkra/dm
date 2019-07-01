@@ -120,11 +120,11 @@ If you would like to learn more about the possibilities of {dm}, please see the 
 
 - Getting started
 - Class 'dm' and basic operations
-- Visualizing 'dm' objects (missing as of yet)
-- Filtering (missing as of yet)
-- {dm} and databases (missing as of yet)
-- shiny with {dynafilter} (missing as of yet)
-- Miscellaneous (missing as of yet)
+- Visualizing 'dm' objects
+- Filtering
+- {dm} and databases
+- shiny with {dynafilter}
+- Miscellaneous
 <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
 ## Package overview
