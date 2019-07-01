@@ -63,8 +63,10 @@ flights_dm_with_keys %>%
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-For how to add colors to subsets of the tables and further customization
-please see vignette “Visualizing ‘dm’ objects”
+The different colors of the tables were assigned in
+`cdm_nycflights13()`. For how to add colors to subsets of the tables and
+further customization please see vignette “Visualizing ‘dm’ objects”
+<!-- FIXME: vignette missing; once there, needs to be linked -->
 
 ## From and to DBs
 

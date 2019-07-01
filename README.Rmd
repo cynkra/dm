@@ -65,7 +65,9 @@ flights_dm_with_keys %>%
   cdm_draw()
 ```
 
+The different colors of the tables were assigned in `cdm_nycflights13()`. 
 For how to add colors to subsets of the tables and further customization please see vignette "Visualizing 'dm' objects"
+<!-- FIXME: vignette missing; once there, needs to be linked -->
 
 ## From and to DBs
 
