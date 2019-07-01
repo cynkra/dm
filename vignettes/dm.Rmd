@@ -138,7 +138,7 @@ Which planes were used to service these flights?
 tbl(us_flights_from_jfk, "planes")
 ```
 
-Each of the planes in the result set above was part in at least one United flight departing from JFK.
+Each of the planes in the result set above was part in at least one US Airways flight departing from JFK.
 Do they have common characteristics?
 
 ```{r}
