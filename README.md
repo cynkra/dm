@@ -173,7 +173,7 @@ see the function documentation or the vignettes:
   - Filtering
   - {dm} and databases
   - shiny with {dynafilter}
-  - Miscellaneous
+  - Tips and tricks
     <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
 ## Package overview
