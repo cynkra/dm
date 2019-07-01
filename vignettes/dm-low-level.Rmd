@@ -1,5 +1,13 @@
 ---
-output: github_document
+title: "Low level operations"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Low level operations}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -16,30 +24,20 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# dm
 
-The goal of `dm` is to provide functions for frequently required tasks when working with data models.
-
-## Installation
-
-You can receive the package as a file `dm.tar.gz` from
-Kirill Müller, Email: <kirill@cynkra.com> .
-
-One way to install it to your R-Library is by opening R-Studio and
-selecting “Install Packages…” from the `Tools` menu. In the appearing
-window, choose the option “Install from: Package Archive File (.tgz;
-.tar.gz)” and browse to `dm.tar.gz`.
+Here we want to present some specialised functions for conducting some basic tests regarding key conditions and generally the relations between tables.
+Additionally we will show some functions for splitting and uniting tables.
 
 ## Examples for employing helper functions to test for key constraints
 
 This section contains information and examples for the functions:
 
 1. `check_key(.data, ...)`
-2. `check_if_subset(t1, c1, t2, c2)`
-3. `check_set_equality(t1, c1, t2, c2)`
+1. `check_if_subset(t1, c1, t2, c2)`
+1. `check_set_equality(t1, c1, t2, c2)`
 
-When you have tables (data frames) that are connected by key relations, this package might help you verify the assumed key relations 
-and/or determine existing key relations between the tables. For example, if you have tables:
+When you have tables (data frames) that are connected by key relations, this package might help you verify the assumed key relations and/or determine existing key relations between the tables. 
+For example, if you have tables:
 
 ```{r}
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
@@ -60,7 +58,7 @@ In case of `data_2` column `a` is a key:
 check_key(data_2, a)
 ```
 
-To see if a column of one table contains only values, that are also in another column of another table (one of the two criteria of it being a foreign key to this other table, the other being if this other table's column is one of its unique keys), you can use `check_if_subset()`:
+To see if a column of one table contains only values, that are also present in another column of another table (one of the two criteria of it being a foreign key to this other table, the other being if this other table's column is one of its unique keys), you can use `check_if_subset()`:
 
 ```{r}
 check_if_subset(data_1, a, data_2, a)
@@ -80,8 +78,7 @@ check_key(t2, c2)
 check_if_subset(t1, c1, t2, c2)
 ```
 
-To check both directions at once - basically answering the questions: are the unique values of `c_1` in `t_1` the same as those of `c_2` in `t_2`? -
-`dm` provides the function `check_set_equality()` (this would fail with a longer error message and is therefore not evaluated):
+To check both directions at once - basically answering the questions: are the unique values of `c_1` in `t_1` the same as those of `c_2` in `t_2`? - {dm} provides the function `check_set_equality()` (this would fail with a longer error message and is therefore not evaluated):
 
 ```{r eval=FALSE}
 check_set_equality(data_1, a, data_2, a)
@@ -96,30 +93,28 @@ check_set_equality(data_1, a, data_3, a)
 ```
 
 If for any of these three functions the test is passed, the return value of the function will be the first table parameter (invisibly).
-This ensures, that the functions can conveniently be used in a pipe.
+This ensures, that the functions can be used in a pipe conveniently.
 
 ## Examples for testing the cardinalities of relations between two tables
 
 This section contains information and examples for the functions:
 
 1. `check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)`
-2. `check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)`
-3. `check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)`
-4. `check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)`
 
-The four functions for testing for a specific kind of cardinality of the relation all require there to be a parent table and a child table.
+The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as input.
 All these functions first test, if this requirement is fulfilled by checking if: 
 
 1. `primary_key_column` is a unique key for `parent_table`
 2. The set of values of `foreign_key_column` is a subset of the set of values of `primary_key_column`
 
 The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the expected relation, that the child table has with the parent table.
-The numbers '0', '1' and 'n' refer to the number of values in the child table's column (`foreign_key_column`) that correspond to each value of the
-parent table's column (`primary_key_column`). 
+The numbers '0', '1' and 'n' refer to the number of values in the child table's column (`foreign_key_column`) that correspond to each value of the parent table's column (`primary_key_column`). 
 'n' means more than one in this context, with no upper limit.
 
-`0_n` means, that for each value of the `parent_key_column`, minimally '0' and maximally
-'n' values have to correspond to it in the child table's column (which translates to no further restriction).
+`0_n` means, that for each value of the `parent_key_column`, minimally '0' and maximally 'n' values have to correspond to it in the child table's column (which translates to no further restriction).
 
 `1_n` means, that for each value of the `parent_key_column`, minimally '1' and maximally 'n' values have to correspond to it in the child table's column. 
 This means that there is a "surjective" relation from the child table to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
@@ -156,10 +151,32 @@ check_cardinality_1_1(d1, a, d2, c)
 check_cardinality_0_1(d1, a, d3, c)
 ```
 
-## Package overview
+## Examples for functions of the 'table_surgery' family
 
-To get an overview of `dm`, you can call the package’s
-function `browse_docs()`, which will open a .html-file in your standard
-web browser. You can also manually open the file, it is `index.html` in
-the folder `pkgdown`.
+Relevant functions are:
 
+1. `decompose_table(.data, new_id_column, ...)`
+1. `reunite_parent_child(child_table, parent_table, id_column)`
+1. `reunite_parent_child_from_list(list_of_parent_child_tables, id_column)`
+
+It might sometimes be helpful, to be able to split a table in a way, that a parent table (i.e. a lookup table) and a child table (containing the observations) are created, including a column (here: `new_id_column`) for mapping the child table observations to the parent table lookup rows.
+Basically, a foreign key relation would be created, pointing from the child table's `new_id_column` to the parent table's corresponding column, which can be seen as the parent table's primary key column.
+The function `decompose_table()` does this, as you can see in the following example:
+```{r}
+mtcars_tibble <- as_tibble(mtcars)
+mtcars_tibble
+decomposed_table <- decompose_table(mtcars_tibble, am_gear_carb_id, am, gear, carb)
+decomposed_table
+```
+
+A new column is created, with which the two tables can be joined by again, essentially creating the original table.
+
+The functions which do the inverse operation, i.e. joining a parent and a child table and subsequently dropping the `new_id_column`, are `reunite_parent_child()` and `reunite_parent_child_from_list()`.
+The former takes as arguments two tables and the unquoted name of the ID column, and the latter takes as arguments a list of two tables plus the unquoted name of the ID column:
+
+```{r}
+parent_table <- decomposed_table$parent_table
+child_table <- decomposed_table$child_table
+reunite_parent_child(child_table, parent_table, id_column = am_gear_carb_id)
+reunite_parent_child_from_list(decomposed_table, id_column = am_gear_carb_id)
+```
