@@ -27,11 +27,18 @@ knit_print.grViz <- function(x, ...) {
 ```
 
 The goal of both the package {dm} and its `dm` class is to facilitate work with multiple related tables.
-An object of the `dm`-class contains all relevant information about the tables in a data model:
+An object of the `dm` class contains all relevant information about the tables in a data model:
 
 1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
 1. the meta-data from the data model: the tables, columns, and key constraints
 1. the data in the tables
+
+This package augments {dplyr}/{dbplyr} workflows:
+
+- multiple related tables are kept in a single compound object,
+- joins across multiple tables are available by stating the tables involved, no need to memoize column names or relationships
+
+In addition, a battery of utilities is provided that helps with creating a tidy data model.
 
 This package follows several of the "tidyverse" rules:
 
