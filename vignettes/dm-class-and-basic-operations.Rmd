@@ -32,7 +32,7 @@ Let's first have a look at the new class:
 
 ## Class `dm`
 
-The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. You can have your `dm` object on different data sources, such as a local environment or a database. In the latter use case you need to have the package dbplyr installed. 
+The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. You can have your `dm` object on different data sources, such as a local environment or a database.
 
 `dm` is a wrapper around two classes, which are independent from each other:
 
