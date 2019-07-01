@@ -57,6 +57,7 @@ Relevant functions for creating `dm` objects are:
 
 1. `dm()`
 2. `as_dm()`
+3. `new_dm()`
 
 We can use the tables from the famous package {nycflights13}:
 ```{r message=FALSE}
@@ -75,9 +76,27 @@ iris_dm <- as_dm(list("iris1" = iris, "iris2" = iris))
 iris_dm
 ```
 
-## Methods for `dm` objects
+And lastly, with `new_dm()` you can create a `dm` by providing the three individual parts it consists of:
+```{r}
+local_src <- src_df(env = new.env())
+tables <- list("iris1" = iris, "iris2" = iris)
+data_model <- cdm_get_data_model(iris_dm)
+another_iris_dm <- 
+  new_dm(
+    src = local_src,
+    tables = tables,
+    data_model = data_model
+    )
+another_iris_dm
+```
 
-tbl(dm, "table_name") etc. (copy_to...) FIXME: complete
+You saw, that with `cdm_get_data_model()` we access the `data_model` part of a `dm`.
+Similarly, we can get the list of tables with `cdm_get_tables()` and the `src` object with `cdm_get_src()`.
+
+In order to pull a specific table from a `dm`, use:
+```{r}
+tbl(another_iris_dm, "iris2")
+``` 
 
 But how can we use dm-functions to manage primary keys of the tables in a `dm` object?
 
