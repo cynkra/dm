@@ -12,7 +12,18 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+
+knit_print.grViz <- function(x, ...) {
+  x %>% 
+    DiagrammeRsvg::export_svg() %>% 
+    c("`````{=html}\n", ., "\n`````\n") %>% 
+    knitr::asis_output()
+}
 ```
+
 # dm
 
 The goal of `dm` is to provide tools for frequently required tasks when working with a set of related tables, independent of where the tables are living.

@@ -31,18 +31,20 @@ One way to create a `dm` object is the following (using
 ``` r
 flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
-#> ── Table source ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> src:  <package: nycflights13>
-#> ── Data model ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> Data model object:
-#>   5 tables:  airlines, airports, flights, planes ... 
-#>   53 columns
-#>   0 primary keys
-#>   no references
-#> ── Rows ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> Total: 367687
-#> airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
 ```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   0 primary keys
+#&gt;   no references
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 367687
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+</span></CODE></PRE>
 
 ## Handling key constraints
 
@@ -57,18 +59,20 @@ flights_dm_with_one_key <-
   cdm_add_pk(airlines, carrier) %>% 
   cdm_add_fk(flights, carrier, airlines)
 flights_dm_with_one_key
-#> ── Table source ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> src:  <package: nycflights13>
-#> ── Data model ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> Data model object:
-#>   5 tables:  airlines, airports, flights, planes ... 
-#>   53 columns
-#>   1 primary keys
-#>   1 references
-#> ── Rows ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> Total: 367687
-#> airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
 ```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   1 primary keys
+#&gt;   1 references
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 367687
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+</span></CODE></PRE>
 
 A readymade `dm` object with preset keys is included in the package:
 
@@ -109,18 +113,20 @@ src_sqlite
 #> tbls:
 flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
 flights_dm_with_keys_remote
-#> ── Table source ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> src:  sqlite 3.25.3 [:memory:]
-#> ── Data model ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> Data model object:
-#>   5 tables:  airlines, airports, flights, planes ... 
-#>   53 columns
-#>   3 primary keys
-#>   4 references
-#> ── Rows ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#> Total: 367687
-#> airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
 ```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.25.3 [:memory:]
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   3 primary keys
+#&gt;   4 references
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 367687
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+</span></CODE></PRE>
 
 With the default setting `set_key_constraints = TRUE` for
 `cdm_copy_to()`, key constraints are established on the target DB, based
