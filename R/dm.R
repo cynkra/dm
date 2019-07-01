@@ -66,7 +66,7 @@ dm <- function(src, data_model = NULL) h(~ {
 #' @rdname dm
 #' @export
 new_dm <- function(src, tables, data_model) {
-  if (!is.src(src) && !is(con_postgres, "DBIConnection")) abort_no_src_or_con()
+  if (!is.src(src) && !is(src, "DBIConnection")) abort_no_src_or_con()
   stopifnot(datamodelr::is.data_model(data_model))
   src <- src_from_src_or_con(src)
 
