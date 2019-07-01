@@ -3,7 +3,7 @@ title: "Filtering"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{dm overview}
+  %\VignetteIndexEntry{Filtering}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

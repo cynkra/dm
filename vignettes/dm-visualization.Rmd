@@ -3,7 +3,7 @@ title: "Visualizing 'dm' objects"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{dm overview}
+  %\VignetteIndexEntry{Visualizing 'dm' objects}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

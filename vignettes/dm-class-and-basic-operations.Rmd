@@ -3,7 +3,7 @@ title: "Class 'dm' and basic operations"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{dm overview}
+  %\VignetteIndexEntry{Class 'dm' and basic operations}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

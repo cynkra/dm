@@ -3,7 +3,7 @@ title: "Tips and tricks"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{dm overview}
+  %\VignetteIndexEntry{Tips and tricks}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

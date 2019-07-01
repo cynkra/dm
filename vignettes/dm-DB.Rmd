@@ -3,7 +3,7 @@ title: "{dm} and databases"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{dm overview}
+  %\VignetteIndexEntry{{dm} and databases}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
