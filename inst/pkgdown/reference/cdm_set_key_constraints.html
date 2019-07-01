@@ -91,7 +91,25 @@ on the database." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-overview.html">Introduction to dm</a>
+      <a href="../articles/dm-DB.html">{dm} and databases</a>
+    </li>
+    <li>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering</a>
+    </li>
+    <li>
+      <a href="../articles/dm-low-level.html">Low level operations</a>
+    </li>
+    <li>
+      <a href="../articles/dm-shiny-dynafilter.html">shiny with {dynafilter}</a>
+    </li>
+    <li>
+      <a href="../articles/dm-tips-and-tricks.html">Tips and tricks</a>
+    </li>
+    <li>
+      <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
   </ul>
 </li>
@@ -155,15 +173,15 @@ on the database.</p>
 <span class='co'># there are no key constraints in `as_dm(list(iris = iris))`,</span>
 <span class='co'># but if there were, and if we had already implemented setting key</span>
 <span class='co'># constraints for SQLite, this would do something:</span>
-<span class='fu'>cdm_set_key_constraints</span>(<span class='no'>iris_dm</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>──────────────────────────────────────────────────────────</span><span>
+<span class='fu'>cdm_set_key_constraints</span>(<span class='no'>iris_dm</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  sqlite 3.25.3 [:memory:]
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   1 tables:  iris 
 #&gt;   5 columns
 #&gt;   0 primary keys
 #&gt;   no references
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>──────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Rows</span><span> </span><span style='color: #BBBB00;'>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Total: 150
 #&gt; iris: 150</div></span></pre>
   </div>
