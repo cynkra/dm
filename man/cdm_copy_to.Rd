@@ -5,7 +5,7 @@
 \title{Copy a 'dm'-object to a 'src'/'con'}
 \usage{
 cdm_copy_to(dest, dm, ..., set_key_constraints = TRUE,
-  table_names = NULL, temporary = TRUE)
+  unique_table_names = FALSE, temporary = TRUE)
 }
 \arguments{
 \item{dest}{A \code{src} or \code{con} object like e.g. a database.}
@@ -16,7 +16,8 @@ cdm_copy_to(dest, dm, ..., set_key_constraints = TRUE,
 
 \item{set_key_constraints}{Boolean variable, if \code{TRUE} will mirror \code{dm} key constraints on a database.}
 
-\item{table_names}{Character vector containing the names for the DB-tables.}
+\item{unique_table_names}{Boolean, if \code{FALSE} (default), original table names will be used, if \code{TRUE},
+unique table names will be created based on the original table names.}
 
 \item{temporary}{Boolean variable, if \code{TRUE} will only create temporary tables, which will vanish when connection is interrupted.}
 }

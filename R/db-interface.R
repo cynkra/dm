@@ -8,7 +8,8 @@
 #' @param dest A `src` or `con` object like e.g. a database.
 #' @param dm A `dm` object.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
-#' @param table_names Character vector containing the names for the DB-tables.
+#' @param unique_table_names Boolean, if `FALSE` (default), original table names will be used, if `TRUE`,
+#'   unique table names will be created based on the original table names.
 #' @param temporary Boolean variable, if `TRUE` will only create temporary tables, which will vanish when connection is interrupted.
 #' @param ... Possible further arguments passed to [dplyr::copy_to()] (which is used on each table)
 #'
