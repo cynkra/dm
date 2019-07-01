@@ -26,7 +26,7 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
-The goal of both the package dm and the class `dm` - which comes along with it - is to make your life easier when you have to deal with data models the data therein.
+The goal of both the package dm and the class `dm` - which comes along with it - is to make your life easier when you are dealing with data models and its corresponding data.
 
 Let's first have a look at the new class:
 
