@@ -26,6 +26,7 @@ Imports:
     glue,
     igraph,
     magrittr,
+    methods,
     purrr,
     rlang,
     shiny,
