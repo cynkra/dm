@@ -168,6 +168,7 @@ If you would like to learn more about the possibilities of {dm}, please
 see the function documentation or the vignettes:
 
   - Getting started
+  - class ‘dm’ and basic operations
   - Visualizing ‘dm’ objects (missing as of yet)
   - Filtering (missing as of yet)
   - {dm} and databases (missing as of yet)
