@@ -4,21 +4,21 @@
 \alias{cdm_copy_to}
 \title{Copy a 'dm'-object to a 'src'/'con'}
 \usage{
-cdm_copy_to(dest, dm, set_key_constraints = TRUE, table_names = NULL,
-  temporary = TRUE, ...)
+cdm_copy_to(dest, dm, ..., set_key_constraints = TRUE,
+  table_names = NULL, temporary = TRUE)
 }
 \arguments{
 \item{dest}{A \code{src} or \code{con} object like e.g. a database.}
 
 \item{dm}{A \code{dm} object.}
 
+\item{...}{Possible further arguments passed to \code{\link[dplyr:copy_to]{dplyr::copy_to()}} (which is used on each table)}
+
 \item{set_key_constraints}{Boolean variable, if \code{TRUE} will mirror \code{dm} key constraints on a database.}
 
 \item{table_names}{Character vector containing the names for the DB-tables.}
 
 \item{temporary}{Boolean variable, if \code{TRUE} will only create temporary tables, which will vanish when connection is interrupted.}
-
-\item{...}{Possible further arguments passed to \code{\link[dplyr:copy_to]{dplyr::copy_to()}} (which is used on each table)}
 }
 \description{
 \code{cdm_copy_to()} takes a \code{src}- or \code{con}-object as a first argument,

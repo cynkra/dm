@@ -22,7 +22,7 @@
 #'   set_key_constraints = FALSE
 #' )
 #' @export
-cdm_copy_to <- function(dest, dm, set_key_constraints = TRUE, table_names = NULL, temporary = TRUE, ...) h(~ {
+cdm_copy_to <- function(dest, dm, ..., set_key_constraints = TRUE, table_names = NULL, temporary = TRUE) h(~ {
     # for now focusing on MSSQL
     # we expect the src (dest) to already point to the correct schema
     # we want to
