@@ -76,8 +76,17 @@ These components can be accessed with `cdm_get_src()`, `cdm_get_tables()` and `c
 
 ```{r}
 cdm_get_src(flights_dm)
+```
+
+
+```{r}
 # Quering nrow() for each table, to suppress otherwise huge output
-map_int(cdm_get_tables(flights_dm), nrow)
+cdm_get_tables(flights_dm) %>% 
+  map_int(nrow)
+```
+
+
+```{r}
 cdm_get_data_model(flights_dm)
 ```
 
@@ -137,7 +146,7 @@ us_flights_from_jfk <-
 us_flights_from_jfk
 ```
 
-In the "Rows" part of the print-output, you can observe the reduction in the numbers of rows for all tables (apart from the -- disconnected -- `weather` table), corresponding to US Airways flights having started from JFK airport.
+In the "Rows" part of the print-output, you can observe the reduction in the numbers of rows for all tables (apart from the disconnected `weather` table), corresponding to US Airways flights having started from JFK airport.
 
 Which planes were used to service these flights?
 
