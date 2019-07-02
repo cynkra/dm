@@ -10,4 +10,7 @@ articles:
   dm-tips-and-tricks: dm-tips-and-tricks.html
   dm-visualization: dm-visualization.html
   dm: dm.html
+urls:
+  reference: https://krlmlr.github.io/dm/reference
+  article: https://krlmlr.github.io/dm/articles
 
