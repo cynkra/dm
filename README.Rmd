@@ -35,7 +35,7 @@ library(dm)
 ```
 
 
-The new class `dm` is contains all the important information about a set of related tables:
+The new class `dm` contains all the important information about a set of related tables:
 
 - a `src` object: location of tables (database, in-memory, ...)
 - a `data_model` object: metadata about data model (keys, table & columns names, ...)

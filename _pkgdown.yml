@@ -4,6 +4,15 @@ template:
   assets:
   - pkgdown/assets
 
+articles:
+- title: All vignettes
+  desc: ~
+  class: ~
+  contents:
+  - dm-class-and-basic-operations
+  - dm-visualization
+  - dm-low-level
+
 reference:
 - title: Creating `dm` objects and basic functions
   contents:

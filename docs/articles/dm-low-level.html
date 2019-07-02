@@ -57,25 +57,25 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-DB.html">{dm} and databases</a>
-    </li>
-    <li>
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/dm-filtering.html">Filtering</a>
     </li>
     <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
     </li>
     <li>
-      <a href="../articles/dm-shiny-dynafilter.html">shiny with {dynafilter}</a>
-    </li>
-    <li>
-      <a href="../articles/dm-tips-and-tricks.html">Tips and tricks</a>
-    </li>
-    <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+    </li>
+    <li>
+      <a href="../articles/wip/dm-db.html">{dm} and databases</a>
+    </li>
+    <li>
+      <a href="../articles/wip/dm-filtering.html">Filtering</a>
+    </li>
+    <li>
+      <a href="../articles/wip/dm-shiny-dynafilter.html">shiny with {dynafilter}</a>
+    </li>
+    <li>
+      <a href="../articles/wip/dm-tips-and-tricks.html">Tips and tricks</a>
     </li>
   </ul>
 </li>
@@ -109,9 +109,9 @@
     
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <p>Here we want to present some specialised functions for conducting some basic tests regarding key conditions and generally the relations between tables. Additionally we will show some functions for splitting and uniting tables.</p>
-<div id="examples-for-employing-helper-functions-to-test-for-key-constraints" class="section level2">
+<div id="testing-key-constraints" class="section level2">
 <h2 class="hasAnchor">
-<a href="#examples-for-employing-helper-functions-to-test-for-key-constraints" class="anchor"></a>Examples for employing helper functions to test for key constraints</h2>
+<a href="#testing-key-constraints" class="anchor"></a>Testing key constraints</h2>
 <p>This section contains information and examples for the functions:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/check_key.html">check_key(.data, ...)</a></code></li>
@@ -125,11 +125,11 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/check_key.html">check_key</a></span>(data_<span class="dv">1</span>, a)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; `a` not a unique key of `data_1`.</span></a></code></pre></div>
 <p>Mind the error message when a test is not passed.</p>
-<p>In case of <code>data_2</code> column <code>a</code> is a key:</p>
+<p>For <code>data_2</code>, column <code>a</code> is a key:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/check_key.html">check_key</a></span>(data_<span class="dv">2</span>, a)</a></code></pre></div>
-<p>To see if a column of one table contains only values, that are also present in another column of another table (one of the two criteria of it being a foreign key to this other table, the other being if this other table’s column is one of its unique keys), you can use <code><a href="../reference/check_if_subset.html">check_if_subset()</a></code>:</p>
+<p>To see if a column of one table contains only values that are also present in another column of another table, you can use <code><a href="../reference/check_if_subset.html">check_if_subset()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
-<p>What about the inverse relation?</p>
+<p>This is important to understand if this column is a foreign key to the other table. What about the inverse relation?</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">2</span>, a, data_<span class="dv">1</span>, a)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;       a     b     c</span></a>
@@ -137,20 +137,69 @@
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1     3     6     9</span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; Column `a` in table `data_2` contains values (see above) that are not</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; present in column `a` in table `data_1`</span></a></code></pre></div>
-<p>One should keep in mind, that <code><a href="../reference/check_if_subset.html">check_if_subset()</a></code> does NOT test, if parameter <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, one would use the following approach:</p>
+<p>One should keep in mind, that <code><a href="../reference/check_if_subset.html">check_if_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, one would use the following approach:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/check_key.html">check_key</a></span>(t2, c2)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/check_if_subset.html">check_if_subset</a></span>(t1, c1, t2, c2)</a></code></pre></div>
-<p>To check both directions at once - basically answering the questions: are the unique values of <code>c_1</code> in <code>t_1</code> the same as those of <code>c_2</code> in <code>t_2</code>? - {dm} provides the function <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code> (this would fail with a longer error message and is therefore not evaluated):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
+<p>To check both directions at once - basically answering the questions: are the unique values of <code>c_1</code> in <code>t_1</code> the same as those of <code>c_2</code> in <code>t_2</code>? - {dm} provides the function <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;       a     b     c</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1     3     6     9</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Column `a` in table `data_2` contains values (see above) that are not present in column `a` in table `data_1`</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; Backtrace:</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;      █</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;   1. ├─base::tryCatch(...)</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;   2. │ └─base:::tryCatchList(expr, classes, parentenv, handlers)</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;   3. │   ├─base:::tryCatchOne(...)</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;   4. │   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;   5. │   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;   6. │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;   7. │       └─base:::doTryCatch(return(expr), name, parentenv, handler)</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;   8. ├─base::withCallingHandlers(...)</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt;   9. ├─base::saveRDS(...)</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;  10. ├─base::do.call(...)</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;  11. ├─(function (what, args, quote = FALSE, envir = parent.frame()) ...</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  12. ├─(function (...) ...</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;  13. │ └─rmarkdown::render(...)</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt;  14. │   └─knitr::knit(...)</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt;  15. │     └─knitr:::process_file(text, output)</span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt;  16. │       ├─base::withCallingHandlers(...)</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt;  17. │       ├─knitr:::process_group(group)</span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt;  18. │       └─knitr:::process_group.block(group)</span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt;  19. │         └─knitr:::call_block(x)</span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt;  20. │           └─knitr:::block_exec(params)</span></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt;  21. │             ├─knitr:::in_dir(...)</span></a>
+<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt;  22. │             └─knitr:::evaluate(...)</span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt;  23. │               └─evaluate::evaluate(...)</span></a>
+<a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt;  24. │                 └─evaluate:::evaluate_call(...)</span></a>
+<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt;  25. │                   ├─evaluate:::timing_fn(...)</span></a>
+<a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#&gt;  26. │                   ├─evaluate:::handle(...)</span></a>
+<a class="sourceLine" id="cb7-35" data-line-number="35"><span class="co">#&gt;  27. │                   │ └─base::try(f, silent = TRUE)</span></a>
+<a class="sourceLine" id="cb7-36" data-line-number="36"><span class="co">#&gt;  28. │                   │   └─base::tryCatch(...)</span></a>
+<a class="sourceLine" id="cb7-37" data-line-number="37"><span class="co">#&gt;  29. │                   │     └─base:::tryCatchList(expr, classes, parentenv, handlers)</span></a>
+<a class="sourceLine" id="cb7-38" data-line-number="38"><span class="co">#&gt;  30. │                   │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])</span></a>
+<a class="sourceLine" id="cb7-39" data-line-number="39"><span class="co">#&gt;  31. │                   │         └─base:::doTryCatch(return(expr), name, parentenv, handler)</span></a>
+<a class="sourceLine" id="cb7-40" data-line-number="40"><span class="co">#&gt;  32. │                   ├─base::withCallingHandlers(...)</span></a>
+<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="co">#&gt;  33. │                   ├─base::withVisible(eval(expr, envir, enclos))</span></a>
+<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co">#&gt;  34. │                   └─base::eval(expr, envir, enclos)</span></a>
+<a class="sourceLine" id="cb7-43" data-line-number="43"><span class="co">#&gt;  35. │                     └─base::eval(expr, envir, enclos)</span></a>
+<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co">#&gt;  36. └─dm::check_set_equality(data_1, a, data_2, a)</span></a>
+<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt;  37.   ├─base::tryCatch(...)</span></a>
+<a class="sourceLine" id="cb7-46" data-line-number="46"><span class="co">#&gt;  38.   │ └─base:::tryCatchList(expr, classes, parentenv, handlers)</span></a>
+<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="co">#&gt;  39.   │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])</span></a>
+<a class="sourceLine" id="cb7-48" data-line-number="48"><span class="co">#&gt;  40.   │     └─base:::doTryCatch(return(expr), name, parentenv, handler)</span></a>
+<a class="sourceLine" id="cb7-49" data-line-number="49"><span class="co">#&gt;  41.   └─dm::check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)</span></a>
+<a class="sourceLine" id="cb7-50" data-line-number="50"><span class="co">#&gt;  42.     └─dm:::abort_not_subset_of(...)</span></a></code></pre></div>
 <p>Bringing one more table into the game, we can show how it looks, when the test is passed:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">data_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">b =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="../reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">3</span>, a)</a></code></pre></div>
-<p>If for any of these three functions the test is passed, the return value of the function will be the first table parameter (invisibly). This ensures, that the functions can be used in a pipe conveniently.</p>
+<p>If the test is passed, the return value of the function will be the first table parameter (invisibly). This ensures that the functions can be used in a pipe conveniently.</p>
 </div>
-<div id="examples-for-testing-the-cardinalities-of-relations-between-two-tables" class="section level2">
+<div id="testing-cardinalities-between-two-tables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#examples-for-testing-the-cardinalities-of-relations-between-two-tables" class="anchor"></a>Examples for testing the cardinalities of relations between two tables</h2>
+<a href="#testing-cardinalities-between-two-tables" class="anchor"></a>Testing cardinalities between two tables</h2>
 <p>This section contains information and examples for the functions:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/check_cardinality.html">check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
@@ -158,7 +207,7 @@
 <li><code><a href="../reference/check_cardinality.html">check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
 <li><code><a href="../reference/check_cardinality.html">check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
 </ol>
-<p>The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as input. All these functions first test, if this requirement is fulfilled by checking if:</p>
+<p>The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as input. All these functions first test if this requirement is fulfilled by checking if:</p>
 <ol style="list-style-type: decimal">
 <li>
 <code>primary_key_column</code> is a unique key for <code>parent_table</code>
@@ -167,11 +216,12 @@
 </li>
 </ol>
 <p>The cardinality specifications <code>0_n</code>, <code>1_n</code>, <code>0_1</code>, <code>1_1</code> refer to the expected relation, that the child table has with the parent table. The numbers ‘0’, ‘1’ and ‘n’ refer to the number of values in the child table’s column (<code>foreign_key_column</code>) that correspond to each value of the parent table’s column (<code>primary_key_column</code>). ‘n’ means more than one in this context, with no upper limit.</p>
-<p><code>0_n</code> means, that for each value of the <code>parent_key_column</code>, minimally ‘0’ and maximally ‘n’ values have to correspond to it in the child table’s column (which translates to no further restriction).</p>
-<p><code>1_n</code> means, that for each value of the <code>parent_key_column</code>, minimally ‘1’ and maximally ‘n’ values have to correspond to it in the child table’s column. This means that there is a “surjective” relation from the child table to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.</p>
+<p><code>0_n</code> means, that for each value of the <code>parent_key_column</code>, the number of corresponding records in the child table is unrestricted. <code>1_n</code> means, that for each value of the <code>parent_key_column</code> there is at least one coresponding record in the child table. This means that there is a “surjective” relation from the child table to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.</p>
 <p><code>0_1</code> means, that for each value of the <code>parent_key_column</code>, minimally ‘0’ and maximally ‘1’ value has to correspond to it in the child table’s column. This means that there is a “injective” relation from the child table to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table column values have to be referred to.</p>
 <p><code>1_1</code> means, that for each value of the <code>parent_key_column</code>, precisely ‘1’ value has to correspond to it in the child table’s column. This means that there is a “bijective” (“injective” AND “surjective”) relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.</p>
-<p>Examples:</p>
+<div id="examples" class="section level3">
+<h3 class="hasAnchor">
+<a href="#examples" class="anchor"></a>Examples</h3>
 <p>Given the following three data frames:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">d1 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">a =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">d2 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">c =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">5</span>))</a>
@@ -179,114 +229,100 @@
 <p>Here are some examples for the usage of the functions:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># This does not pass, `c` is not unique key of d2:</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_0_n</a></span>(d2, c, d1, a)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; `c` not a unique key of `d2`.</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># This passes, multiple values in d2$c are allowed:</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_0_n</a></span>(d1, a, d2, c)</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co"># This does not pass, injectivity is violated:</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_1_1</a></span>(d1, a, d2, c)</a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2`</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; contains duplicate values.</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co"># This passes:</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_0_1</a></span>(d1, a, d3, c)</a></code></pre></div>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; `c` not a unique key of `d2`.</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># This passes, multiple values in d2$c are allowed:</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_0_n</a></span>(d1, a, d2, c)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># This does not pass, injectivity is violated:</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_1_1</a></span>(d1, a, d2, c)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2`</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; contains duplicate values.</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># This passes:</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_0_1</a></span>(d1, a, d3, c)</a></code></pre></div>
 </div>
-<div id="examples-for-functions-of-the-table_surgery-family" class="section level2">
+</div>
+<div id="table-surgery" class="section level2">
 <h2 class="hasAnchor">
-<a href="#examples-for-functions-of-the-table_surgery-family" class="anchor"></a>Examples for functions of the ‘table_surgery’ family</h2>
+<a href="#table-surgery" class="anchor"></a>Table surgery</h2>
 <p>Relevant functions are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/decompose_table.html">decompose_table(.data, new_id_column, ...)</a></code></li>
 <li><code><a href="../reference/reunite_parent_child.html">reunite_parent_child(child_table, parent_table, id_column)</a></code></li>
 <li><code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list(list_of_parent_child_tables, id_column)</a></code></li>
 </ol>
-<p>It might sometimes be helpful, to be able to split a table in a way, that a parent table (i.e. a lookup table) and a child table (containing the observations) are created, including a column (here: <code>new_id_column</code>) for mapping the child table observations to the parent table lookup rows. Basically, a foreign key relation would be created, pointing from the child table’s <code>new_id_column</code> to the parent table’s corresponding column, which can be seen as the parent table’s primary key column. The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> does this, as you can see in the following example:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">mtcars_tibble &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(mtcars)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">mtcars_tibble</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; # A tibble: 32 x 11</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span></a>
-<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></a>
-<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt; # … with 22 more rows</span></a>
-<a class="sourceLine" id="cb11-17" data-line-number="17">decomposed_table &lt;-<span class="st"> </span><span class="kw"><a href="../reference/decompose_table.html">decompose_table</a></span>(mtcars_tibble, am_gear_carb_id, am, gear, carb)</a>
-<a class="sourceLine" id="cb11-18" data-line-number="18">decomposed_table</a>
-<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; $child_table</span></a>
-<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="co">#&gt; # A tibble: 32 x 9</span></a>
-<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="co">#&gt;      mpg am_gear_carb_id   cyl  disp    hp  drat    wt  qsec    vs</span></a>
-<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="co">#&gt;    &lt;dbl&gt;           &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb11-23" data-line-number="23"><span class="co">#&gt;  1  21                 9     6  160    110  3.9   2.62  16.5     0</span></a>
-<a class="sourceLine" id="cb11-24" data-line-number="24"><span class="co">#&gt;  2  21                 9     6  160    110  3.9   2.88  17.0     0</span></a>
-<a class="sourceLine" id="cb11-25" data-line-number="25"><span class="co">#&gt;  3  22.8               7     4  108     93  3.85  2.32  18.6     1</span></a>
-<a class="sourceLine" id="cb11-26" data-line-number="26"><span class="co">#&gt;  4  21.4               1     6  258    110  3.08  3.22  19.4     1</span></a>
-<a class="sourceLine" id="cb11-27" data-line-number="27"><span class="co">#&gt;  5  18.7               2     8  360    175  3.15  3.44  17.0     0</span></a>
-<a class="sourceLine" id="cb11-28" data-line-number="28"><span class="co">#&gt;  6  18.1               1     6  225    105  2.76  3.46  20.2     1</span></a>
-<a class="sourceLine" id="cb11-29" data-line-number="29"><span class="co">#&gt;  7  14.3               4     8  360    245  3.21  3.57  15.8     0</span></a>
-<a class="sourceLine" id="cb11-30" data-line-number="30"><span class="co">#&gt;  8  24.4               5     4  147.    62  3.69  3.19  20       1</span></a>
-<a class="sourceLine" id="cb11-31" data-line-number="31"><span class="co">#&gt;  9  22.8               5     4  141.    95  3.92  3.15  22.9     1</span></a>
-<a class="sourceLine" id="cb11-32" data-line-number="32"><span class="co">#&gt; 10  19.2               6     6  168.   123  3.92  3.44  18.3     1</span></a>
-<a class="sourceLine" id="cb11-33" data-line-number="33"><span class="co">#&gt; # … with 22 more rows</span></a>
-<a class="sourceLine" id="cb11-34" data-line-number="34"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb11-35" data-line-number="35"><span class="co">#&gt; $parent_table</span></a>
-<a class="sourceLine" id="cb11-36" data-line-number="36"><span class="co">#&gt; # A tibble: 13 x 4</span></a>
-<a class="sourceLine" id="cb11-37" data-line-number="37"><span class="co">#&gt;    am_gear_carb_id    am  gear  carb</span></a>
-<a class="sourceLine" id="cb11-38" data-line-number="38"><span class="co">#&gt;              &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb11-39" data-line-number="39"><span class="co">#&gt;  1               1     0     3     1</span></a>
-<a class="sourceLine" id="cb11-40" data-line-number="40"><span class="co">#&gt;  2               2     0     3     2</span></a>
-<a class="sourceLine" id="cb11-41" data-line-number="41"><span class="co">#&gt;  3               3     0     3     3</span></a>
-<a class="sourceLine" id="cb11-42" data-line-number="42"><span class="co">#&gt;  4               4     0     3     4</span></a>
-<a class="sourceLine" id="cb11-43" data-line-number="43"><span class="co">#&gt;  5               5     0     4     2</span></a>
-<a class="sourceLine" id="cb11-44" data-line-number="44"><span class="co">#&gt;  6               6     0     4     4</span></a>
-<a class="sourceLine" id="cb11-45" data-line-number="45"><span class="co">#&gt;  7               7     1     4     1</span></a>
-<a class="sourceLine" id="cb11-46" data-line-number="46"><span class="co">#&gt;  8               8     1     4     2</span></a>
-<a class="sourceLine" id="cb11-47" data-line-number="47"><span class="co">#&gt;  9               9     1     4     4</span></a>
-<a class="sourceLine" id="cb11-48" data-line-number="48"><span class="co">#&gt; 10              10     1     5     2</span></a>
-<a class="sourceLine" id="cb11-49" data-line-number="49"><span class="co">#&gt; 11              11     1     5     4</span></a>
-<a class="sourceLine" id="cb11-50" data-line-number="50"><span class="co">#&gt; 12              12     1     5     6</span></a>
-<a class="sourceLine" id="cb11-51" data-line-number="51"><span class="co">#&gt; 13              13     1     5     8</span></a></code></pre></div>
+<p>The first function implements table normalization. An existing table is split into a parent table (i.e. a lookup table) and a child table (containing the observations), linked by a key column (here: <code>new_id_column</code>). Basically, a foreign key relation would be created, pointing from the child table’s <code>new_id_column</code> to the parent table’s corresponding column, which can be seen as the parent table’s primary key column. The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> does this, as you can see in the following example:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">mtcars_tibble &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(mtcars)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">mtcars_tibble</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; # A tibble: 32 x 11</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt; # … with 22 more rows</span></a>
+<a class="sourceLine" id="cb14-17" data-line-number="17">decomposed_table &lt;-<span class="st"> </span><span class="kw"><a href="../reference/decompose_table.html">decompose_table</a></span>(mtcars_tibble, am_gear_carb_id, am, gear, carb)</a>
+<a class="sourceLine" id="cb14-18" data-line-number="18">decomposed_table</a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt; $child_table</span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt; # A tibble: 32 x 9</span></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt;      mpg am_gear_carb_id   cyl  disp    hp  drat    wt  qsec    vs</span></a>
+<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="co">#&gt;    &lt;dbl&gt;           &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb14-23" data-line-number="23"><span class="co">#&gt;  1  21                 9     6  160    110  3.9   2.62  16.5     0</span></a>
+<a class="sourceLine" id="cb14-24" data-line-number="24"><span class="co">#&gt;  2  21                 9     6  160    110  3.9   2.88  17.0     0</span></a>
+<a class="sourceLine" id="cb14-25" data-line-number="25"><span class="co">#&gt;  3  22.8               7     4  108     93  3.85  2.32  18.6     1</span></a>
+<a class="sourceLine" id="cb14-26" data-line-number="26"><span class="co">#&gt;  4  21.4               1     6  258    110  3.08  3.22  19.4     1</span></a>
+<a class="sourceLine" id="cb14-27" data-line-number="27"><span class="co">#&gt;  5  18.7               2     8  360    175  3.15  3.44  17.0     0</span></a>
+<a class="sourceLine" id="cb14-28" data-line-number="28"><span class="co">#&gt;  6  18.1               1     6  225    105  2.76  3.46  20.2     1</span></a>
+<a class="sourceLine" id="cb14-29" data-line-number="29"><span class="co">#&gt;  7  14.3               4     8  360    245  3.21  3.57  15.8     0</span></a>
+<a class="sourceLine" id="cb14-30" data-line-number="30"><span class="co">#&gt;  8  24.4               5     4  147.    62  3.69  3.19  20       1</span></a>
+<a class="sourceLine" id="cb14-31" data-line-number="31"><span class="co">#&gt;  9  22.8               5     4  141.    95  3.92  3.15  22.9     1</span></a>
+<a class="sourceLine" id="cb14-32" data-line-number="32"><span class="co">#&gt; 10  19.2               6     6  168.   123  3.92  3.44  18.3     1</span></a>
+<a class="sourceLine" id="cb14-33" data-line-number="33"><span class="co">#&gt; # … with 22 more rows</span></a>
+<a class="sourceLine" id="cb14-34" data-line-number="34"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb14-35" data-line-number="35"><span class="co">#&gt; $parent_table</span></a>
+<a class="sourceLine" id="cb14-36" data-line-number="36"><span class="co">#&gt; # A tibble: 13 x 4</span></a>
+<a class="sourceLine" id="cb14-37" data-line-number="37"><span class="co">#&gt;    am_gear_carb_id    am  gear  carb</span></a>
+<a class="sourceLine" id="cb14-38" data-line-number="38"><span class="co">#&gt;              &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb14-39" data-line-number="39"><span class="co">#&gt;  1               1     0     3     1</span></a>
+<a class="sourceLine" id="cb14-40" data-line-number="40"><span class="co">#&gt;  2               2     0     3     2</span></a>
+<a class="sourceLine" id="cb14-41" data-line-number="41"><span class="co">#&gt;  3               3     0     3     3</span></a>
+<a class="sourceLine" id="cb14-42" data-line-number="42"><span class="co">#&gt;  4               4     0     3     4</span></a>
+<a class="sourceLine" id="cb14-43" data-line-number="43"><span class="co">#&gt;  5               5     0     4     2</span></a>
+<a class="sourceLine" id="cb14-44" data-line-number="44"><span class="co">#&gt;  6               6     0     4     4</span></a>
+<a class="sourceLine" id="cb14-45" data-line-number="45"><span class="co">#&gt;  7               7     1     4     1</span></a>
+<a class="sourceLine" id="cb14-46" data-line-number="46"><span class="co">#&gt;  8               8     1     4     2</span></a>
+<a class="sourceLine" id="cb14-47" data-line-number="47"><span class="co">#&gt;  9               9     1     4     4</span></a>
+<a class="sourceLine" id="cb14-48" data-line-number="48"><span class="co">#&gt; 10              10     1     5     2</span></a>
+<a class="sourceLine" id="cb14-49" data-line-number="49"><span class="co">#&gt; 11              11     1     5     4</span></a>
+<a class="sourceLine" id="cb14-50" data-line-number="50"><span class="co">#&gt; 12              12     1     5     6</span></a>
+<a class="sourceLine" id="cb14-51" data-line-number="51"><span class="co">#&gt; 13              13     1     5     8</span></a></code></pre></div>
 <p>A new column is created, with which the two tables can be joined by again, essentially creating the original table.</p>
 <p>The functions which do the inverse operation, i.e. joining a parent and a child table and subsequently dropping the <code>new_id_column</code>, are <code><a href="../reference/reunite_parent_child.html">reunite_parent_child()</a></code> and <code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list()</a></code>. The former takes as arguments two tables and the unquoted name of the ID column, and the latter takes as arguments a list of two tables plus the unquoted name of the ID column:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">parent_table &lt;-<span class="st"> </span>decomposed_table<span class="op">$</span>parent_table</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">child_table &lt;-<span class="st"> </span>decomposed_table<span class="op">$</span>child_table</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw"><a href="../reference/reunite_parent_child.html">reunite_parent_child</a></span>(child_table, parent_table, <span class="dt">id_column =</span> am_gear_carb_id)</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; # A tibble: 32 x 11</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; # … with 22 more rows</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="kw"><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list</a></span>(decomposed_table, <span class="dt">id_column =</span> am_gear_carb_id)</a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; # A tibble: 32 x 11</span></a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></a>
-<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></a>
-<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span></a>
-<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span></a>
-<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span></a>
-<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span></a>
-<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span></a>
-<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span></a>
-<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span></a>
-<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span></a>
-<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></a>
-<a class="sourceLine" id="cb12-32" data-line-number="32"><span class="co">#&gt; # … with 22 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">parent_table &lt;-<span class="st"> </span>decomposed_table<span class="op">$</span>parent_table</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">child_table &lt;-<span class="st"> </span>decomposed_table<span class="op">$</span>child_table</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw"><a href="../reference/reunite_parent_child.html">reunite_parent_child</a></span>(child_table, parent_table, <span class="dt">id_column =</span> am_gear_carb_id)</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; # A tibble: 32 x 11</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span></a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span></a>
+<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></a>
+<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">#&gt; # … with 22 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Shortcut:</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw"><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list</a></span>(decomposed_table, <span class="dt">id_column =</span> am_gear_carb_id)</a></code></pre></div>
+<p>Currently these functions exist only as a low-level operation on tables. We plan to extend this operation to <code>dm</code> objects.</p>
 </div>
   </div>
 
@@ -295,9 +331,9 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#examples-for-employing-helper-functions-to-test-for-key-constraints">Examples for employing helper functions to test for key constraints</a></li>
-      <li><a href="#examples-for-testing-the-cardinalities-of-relations-between-two-tables">Examples for testing the cardinalities of relations between two tables</a></li>
-      <li><a href="#examples-for-functions-of-the-table_surgery-family">Examples for functions of the ‘table_surgery’ family</a></li>
+<li><a href="#testing-key-constraints">Testing key constraints</a></li>
+      <li><a href="#testing-cardinalities-between-two-tables">Testing cardinalities between two tables</a></li>
+      <li><a href="#table-surgery">Table surgery</a></li>
       </ul>
 </div>
       </div>

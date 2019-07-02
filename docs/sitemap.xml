@@ -106,27 +106,27 @@
     <loc>https://krlmlr.github.io/dm/reference/reunite_parent_child.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-DB.html</loc>
-  </url>
-  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-filtering.html</loc>
-  </url>
-  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-low-level.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-shiny-dynafilter.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-tips-and-tricks.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-visualization.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/wip/dm-db.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/wip/dm-filtering.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/wip/dm-shiny-dynafilter.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/wip/dm-tips-and-tricks.html</loc>
   </url>
 </urlset>

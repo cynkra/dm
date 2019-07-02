@@ -57,25 +57,25 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-DB.html">{dm} and databases</a>
-    </li>
-    <li>
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/dm-filtering.html">Filtering</a>
     </li>
     <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
     </li>
     <li>
-      <a href="../articles/dm-shiny-dynafilter.html">shiny with {dynafilter}</a>
-    </li>
-    <li>
-      <a href="../articles/dm-tips-and-tricks.html">Tips and tricks</a>
-    </li>
-    <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+    </li>
+    <li>
+      <a href="../articles/wip/dm-db.html">{dm} and databases</a>
+    </li>
+    <li>
+      <a href="../articles/wip/dm-filtering.html">Filtering</a>
+    </li>
+    <li>
+      <a href="../articles/wip/dm-shiny-dynafilter.html">shiny with {dynafilter}</a>
+    </li>
+    <li>
+      <a href="../articles/wip/dm-tips-and-tricks.html">Tips and tricks</a>
     </li>
   </ul>
 </li>
@@ -117,7 +117,7 @@
 <p><code>dm</code> is a wrapper around two classes, which are independent from each other:</p>
 <ol style="list-style-type: decimal">
 <li>part of the object is a <a href="https://dplyr.tidyverse.org/reference/src.html"><code>src</code> object</a> from {dplyr}</li>
-<li>the other part is a class <code>data_model</code> object from the package <a href="https://github.com/bergant/datamodelr">{datamodelr}</a><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
+<li>the other part is a class <code>data_model</code> object from the package <a href="https://github.com/bergant/datamodelr">{datamodelr}</a>
 </li>
 </ol>
 <p>The <code>src</code> object contains the information, where the tables of your data model are physically stored. In the <code>data_model</code> object the meta-information is about your data is kept, among others:</p>
@@ -159,7 +159,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x561b8b18d580&gt;
+#&gt; src:  &lt;environment: 0x563ccb163970&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -182,7 +182,7 @@
 <a class="sourceLine" id="cb3-9" data-line-number="9">    )</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">another_iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x561b8f212538&gt;
+#&gt; src:  &lt;environment: 0x563cced7bfa8&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -242,7 +242,7 @@
 #&gt; Total: 367687
 #&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
 </span></code></pre>
-<p>Still looks exactly the same as before… let’s check:</p>
+<p>The <code>dm</code> model now has a primary key. Let’s check:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(flights_dm_with_key, airports)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
 <p>Get the name of the column that is marked as primary key of the table:</p>
@@ -282,7 +282,7 @@
 #&gt; </span><span style="color: #555555;">2</span><span> airports faa     character
 #&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum character
 </span></code></pre>
-<p>We used here the prepared <code>dm</code> object <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> as an example. This object comes already with set keys and is part of {dm}.</p>
+<p>We used here the prepared <code>dm</code> object <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> as an example. This object already has all keys pre-set.</p>
 </div>
 <div id="foreign-keys" class="section level2">
 <h2 class="hasAnchor">
@@ -379,12 +379,6 @@
 #&gt; </span><span style="color: #555555;">3</span><span> flights     dest         character airports    
 #&gt; </span><span style="color: #555555;">4</span><span> flights     tailnum      character planes
 </span></code></pre>
-</div>
-<div class="footnotes">
-<hr>
-<ol>
-<li id="fn1"><p>Use: <code><a href="https://rdrr.io/pkg/devtools/man/reexports.html">devtools::install_github("https://github.com/bergant/datamodelr")</a></code> to install it<a href="#fnref1" class="footnote-back">↩</a></p></li>
-</ol>
 </div>
   </div>
 
