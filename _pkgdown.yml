@@ -84,12 +84,12 @@ reference:
   - cdm_rename_tables
 
 development:
-  mode: off
+  mode: unreleased
 
 authors:
   Kirill Müller:
     href: http://krlmlr.info
   energie360° AG:
-    html: '<a href="https://www.energie360.ch"><img src="reference/figures/energie-18.png"/></a>'
+    html: '<a href="https://www.energie360.ch"><img src="/reference/figures/energie-18.png"/></a>'
   cynkra GmbH:
-    html: '<a href="https://www.cynkra.com"><img src="reference/figures/cynkra-18.png"/></a>'
+    html: '<a href="https://www.cynkra.com"><img src="/reference/figures/cynkra-18.png"/></a>'
