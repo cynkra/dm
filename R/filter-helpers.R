@@ -79,12 +79,12 @@ cdm_nrow <- function(dm, table = NULL) {
     check_correct_input(dm, table_name)
 
     tbl_obj <- tbl(dm, table_name)
-    nrows <- as_integer(pull(count(tbl_obj)))
+    nrows <- pull(collect(count(tbl_obj)))
     names(nrows) <- table_name
     return(nrows)
   }
 
-  nrows <- sum(map_int(cdm_get_tables(dm), ~ as_integer(pull(count(.)))))
+  nrows <- sum(map_int(cdm_get_tables(dm), ~ pull(collect(count(.)))))
   dm_name <- as_label(substitute(dm))
   if (dm_name != ".") {
     names(nrows) <- dm_name
