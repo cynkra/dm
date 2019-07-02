@@ -94,6 +94,28 @@ reference:
   - cdm_rename_table
   - cdm_rename_tables
 
+navbar:
+  title: ~
+  type: default
+  left:
+  - text: Intro
+    href: articles/dm.html
+  - text: Reference
+    href: reference/index.html
+  - text: Articles
+    menu:
+    - text: Class 'dm' and basic operations
+      href: articles/dm-class-and-basic-operations.html
+    - text: Visualizing 'dm' objects
+      href: articles/dm-visualization.html
+    - text: Low level operations
+      href: articles/dm-low-level.html
+  - text: News
+    href: news/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/krlmlr/dm
+
 development:
   mode: unreleased
 

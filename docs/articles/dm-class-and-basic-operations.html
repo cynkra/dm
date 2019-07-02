@@ -38,13 +38,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../articles/dm.html">Get started</a>
+  <a href="../articles/dm.html">Intro</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -60,30 +54,25 @@
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-low-level.html">Low level operations</a>
-    </li>
-    <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
-      <a href="../articles/wip/dm-db.html">{dm} and databases</a>
-    </li>
-    <li>
-      <a href="../articles/wip/dm-filtering.html">Filtering</a>
-    </li>
-    <li>
-      <a href="../articles/wip/dm-shiny-dynafilter.html">shiny with {dynafilter}</a>
-    </li>
-    <li>
-      <a href="../articles/wip/dm-tips-and-tricks.html">Tips and tricks</a>
+      <a href="../articles/dm-low-level.html">Low level operations</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/krlmlr/dm">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -159,7 +148,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x563ccb163970&gt;
+#&gt; src:  &lt;environment: 0x556da6697c40&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -182,7 +171,7 @@
 <a class="sourceLine" id="cb3-9" data-line-number="9">    )</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">another_iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x563cced7bfa8&gt;
+#&gt; src:  &lt;environment: 0x556daa2fa2f0&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
