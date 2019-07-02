@@ -26,8 +26,6 @@ knit_print.grViz <- function(x, ...) {
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
-[![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/package=dm)
 <!-- badges: end -->
 
 # dm
