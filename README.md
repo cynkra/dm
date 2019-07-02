@@ -1,4 +1,14 @@
 
+<!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build
+status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/package=dm)
+<!-- badges: end -->
+
 # dm
 
 The goal of `dm` is to provide tools for frequently required tasks when
@@ -11,8 +21,8 @@ library(tidyverse)
 library(dm)
 ```
 
-The new class `dm` is contains all the important information about a set
-of related tables:
+The new class `dm` contains all the important information about a set of
+related tables:
 
   - a `src` object: location of tables (database, in-memory, …)
   - a `data_model` object: metadata about data model (keys, table &
@@ -188,10 +198,9 @@ devtools::install_github("krlmlr/dm")
 
 License: MIT © cynkra GmbH.
 
-Funded
-by:
+Funded by:
 
-[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/private/)
+[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch)
 <span style="padding-right:50px"> </span>
 [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
 
