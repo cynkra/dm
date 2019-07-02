@@ -168,15 +168,17 @@ nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
 ## More information
 
 If you would like to learn more about the possibilities of {dm}, please
-see the function documentation or the vignettes:
+see the [function
+reference](https://krlmlr.github.io/dm/reference/index.html) or the
+articles:
 
-  - Getting started
-  - Class ‘dm’ and basic operations
-  - Visualizing ‘dm’ objects
-  - Filtering
-  - {dm} and databases
-  - shiny with {dynafilter}
-  - Tips and tricks
+  - [Getting started](https://krlmlr.github.io/dm/articles/dm.html)
+  - [Class ‘dm’ and basic
+    operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html)
+  - [Visualizing ‘dm’
+    objects](https://krlmlr.github.io/dm/articles/dm-visualization.html)
+  - [Low-level
+    operations](https://krlmlr.github.io/dm/articles/dm-low-level.html)
     <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
 ## Installation
