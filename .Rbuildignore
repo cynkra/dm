@@ -6,3 +6,5 @@
 ^\.Rproj\.user$
 ^scratch$
 ^inst/pkgdown$
+^CODE_OF_CONDUCT\.md$
+^pkgdown$

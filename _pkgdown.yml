@@ -1,3 +1,7 @@
+template:
+  assets:
+  - pkgdown/assets
+
 reference:
 - title: Creating `dm` objects and basic functions
   contents:
