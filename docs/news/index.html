@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9012</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1</span>
       </span>
     </div>
 
@@ -122,116 +122,124 @@
       
     </div>
 
-    <div id="dm-0-0-0-9012" class="section level1">
+    <div id="dm-0-0-1" class="section level1">
 <h1 class="page-header">
-<a href="#dm-0-0-0-9012" class="anchor"></a>dm 0.0.0.9012</h1>
+<a href="#dm-0-0-1" class="anchor"></a>dm 0.0.1</h1>
+<p>Initial GitHub release.</p>
+<div id="creating-dm-objects-and-basic-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#creating-dm-objects-and-basic-functions" class="anchor"></a>Creating <code>dm</code> objects and basic functions:</h2>
 <ul>
-<li>Updates in the pkgdown documentation.</li>
-<li>New “Get started” vignette.</li>
-<li>Repair package so the R CMD check passes.</li>
+<li><code><a href="../reference/dm.html">dm()</a></code></li>
+<li><code><a href="../reference/dm.html">new_dm()</a></code></li>
+<li><code><a href="../reference/dm.html">validate_dm()</a></code></li>
+<li><code><a href="../reference/dm.html">cdm_get_src()</a></code></li>
+<li><code><a href="../reference/dm.html">cdm_get_tables()</a></code></li>
+<li><code><a href="../reference/dm.html">cdm_get_data_model()</a></code></li>
+<li><code><a href="../reference/dm.html">is_dm()</a></code></li>
+<li><code><a href="../reference/dm.html">as_dm()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9011" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9011" class="anchor"></a>dm 0.0.0.9011</h1>
+<div id="primary-keys" class="section level2">
+<h2 class="hasAnchor">
+<a href="#primary-keys" class="anchor"></a>Primary keys</h2>
 <ul>
-<li>Learn ‘dm’-objects from MSSQL and Postgres databases (!24).</li>
+<li><code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code></li>
+<li><code><a href="../reference/cdm_has_pk.html">cdm_has_pk()</a></code></li>
+<li><code><a href="../reference/cdm_get_pk.html">cdm_get_pk()</a></code></li>
+<li><code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code></li>
+<li><code><a href="../reference/cdm_rm_pk.html">cdm_rm_pk()</a></code></li>
+<li><code><a href="../reference/cdm_check_for_pk_candidates.html">cdm_check_for_pk_candidates()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9010" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9010" class="anchor"></a>dm 0.0.0.9010</h1>
+<div id="foreign-keys" class="section level2">
+<h2 class="hasAnchor">
+<a href="#foreign-keys" class="anchor"></a>Foreign keys</h2>
 <ul>
-<li>Handling <code>data_model</code> part more systematically (#49).</li>
-<li>New <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> and <code>cdm_with()</code> (!22).</li>
-<li>Classed errors.</li>
-<li>New <code>copy_to()</code> to transfer entire data models to another source (#38).</li>
+<li><code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code></li>
+<li><code><a href="../reference/cdm_has_fk.html">cdm_has_fk()</a></code></li>
+<li><code><a href="../reference/cdm_get_fk.html">cdm_get_fk()</a></code></li>
+<li><code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code></li>
+<li><code><a href="../reference/cdm_rm_fk.html">cdm_rm_fk()</a></code></li>
+<li><code><a href="../reference/cdm_check_for_fk_candidates.html">cdm_check_for_fk_candidates()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9009" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9009" class="anchor"></a>dm 0.0.0.9009</h1>
+<div id="visualization" class="section level2">
+<h2 class="hasAnchor">
+<a href="#visualization" class="anchor"></a>Visualization</h2>
 <ul>
-<li>New <code><a href="../reference/cdm_filter.html">cdm_semi_join()</a></code>, expecting the <code>filter</code> as complete reduced table.</li>
-<li>New function <code><a href="../reference/cdm_select.html">cdm_select()</a></code> to focus on part of <code>dm</code>-object or chose unconnected tables from it.</li>
-<li>Remove arguments <code>ref_column</code> and <code>set_ref_pk</code> in function <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code>.</li>
-<li>Avoid creating integer64 columns in Postgres.</li>
-<li>New <code><a href="../reference/cdm_nrow.html">cdm_nrow()</a></code>.</li>
-<li>Fix color order with <code>dm_set_color()</code>.</li>
+<li><code><a href="../reference/cdm_draw.html">cdm_draw()</a></code></li>
+<li><code><a href="../reference/cdm_draw.html">cdm_set_colors()</a></code></li>
+<li><code><a href="../reference/cdm_draw.html">cdm_get_colors()</a></code></li>
+<li><code><a href="../reference/cdm_draw.html">cdm_get_available_colors()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9008" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9008" class="anchor"></a>dm 0.0.0.9008</h1>
+<div id="flattening" class="section level2">
+<h2 class="hasAnchor">
+<a href="#flattening" class="anchor"></a>Flattening</h2>
 <ul>
-<li>Compute joins correctly for arbitrary cycle-free relationships (#16).</li>
-<li>Tweak drawing API: <code><a href="../reference/cdm_draw.html">cdm_draw()</a></code>, <code><a href="../reference/cdm_draw.html">cdm_get_colors()</a></code>, <code><a href="../reference/cdm_draw.html">cdm_set_colors()</a></code> and <code>cdm_available_colors()</code> (!8).</li>
-<li>Print number of rows.</li>
+<li><code><a href="../reference/cdm_join_tbl.html">cdm_join_tbl()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9007" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9007" class="anchor"></a>dm 0.0.0.9007</h1>
+<div id="filtering" class="section level2">
+<h2 class="hasAnchor">
+<a href="#filtering" class="anchor"></a>Filtering</h2>
 <ul>
-<li>New <code><a href="../reference/cdm_filter.html">cdm_filter()</a></code>, works only for natural ordering of tables for now (#16).</li>
-<li>New <code><a href="../reference/cdm_join_tbl.html">cdm_join_tbl()</a></code> (#19).</li>
+<li><code><a href="../reference/cdm_filter.html">cdm_filter()</a></code></li>
+<li><code><a href="../reference/cdm_filter.html">cdm_semi_join()</a></code></li>
+<li><code><a href="../reference/cdm_nrow.html">cdm_nrow()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9006" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9006" class="anchor"></a>dm 0.0.0.9006</h1>
+<div id="interaction-with-dbs" class="section level2">
+<h2 class="hasAnchor">
+<a href="#interaction-with-dbs" class="anchor"></a>Interaction with DBs</h2>
 <ul>
-<li>Functions for drawing a data model and defining colors (!7).</li>
-<li>Track foreign keys (!6).</li>
+<li><code><a href="../reference/cdm_copy_to.html">cdm_copy_to()</a></code></li>
+<li><code><a href="../reference/cdm_set_key_constraints.html">cdm_set_key_constraints()</a></code></li>
+<li><code><a href="../reference/cdm_learn_from_db.html">cdm_learn_from_db()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9005" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9005" class="anchor"></a>dm 0.0.0.9005</h1>
+<div id="utilizing-foreign-key-relations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#utilizing-foreign-key-relations" class="anchor"></a>Utilizing foreign key relations</h2>
 <ul>
-<li>Update documentation, bugfixes.</li>
+<li><code><a href="../reference/cdm_is_referenced.html">cdm_is_referenced()</a></code></li>
+<li><code><a href="../reference/cdm_get_referencing_tables.html">cdm_get_referencing_tables()</a></code></li>
+<li><code><a href="../reference/cdm_select.html">cdm_select()</a></code></li>
+<li><code><a href="../reference/cdm_find_conn_tbls.html">cdm_find_conn_tbls()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9004" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9004" class="anchor"></a>dm 0.0.0.9004</h1>
+<div id="table-surgery" class="section level2">
+<h2 class="hasAnchor">
+<a href="#table-surgery" class="anchor"></a>Table surgery</h2>
 <ul>
-<li>Rename <code>dm_*</code> to <code>cdm_*</code> (#28).</li>
-<li>Tests are independent of database versions (#26).</li>
-<li>Stub for “Getting started” vignette (#27).</li>
+<li><code><a href="../reference/decompose_table.html">decompose_table()</a></code></li>
+<li><code><a href="../reference/reunite_parent_child.html">reunite_parent_child()</a></code></li>
+<li><code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9003" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9003" class="anchor"></a>dm 0.0.0.9003</h1>
+<div id="check-keys-and-cardinalities" class="section level2">
+<h2 class="hasAnchor">
+<a href="#check-keys-and-cardinalities" class="anchor"></a>Check keys and cardinalities</h2>
 <ul>
-<li>Rename <code>primary_key</code> to <code>pk</code> and <code>foreign_key</code> to <code>fk</code>.</li>
+<li><code><a href="../reference/check_key.html">check_key()</a></code></li>
+<li><code><a href="../reference/check_if_subset.html">check_if_subset()</a></code></li>
+<li><code><a href="../reference/check_set_equality.html">check_set_equality()</a></code></li>
+<li><code><a href="../reference/check_cardinality.html">check_cardinality_0_n()</a></code></li>
+<li><code><a href="../reference/check_cardinality.html">check_cardinality_1_n()</a></code></li>
+<li><code><a href="../reference/check_cardinality.html">check_cardinality_1_1()</a></code></li>
+<li><code><a href="../reference/check_cardinality.html">check_cardinality_0_1()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9002" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9002" class="anchor"></a>dm 0.0.0.9002</h1>
+<div id="miscellaneous" class="section level2">
+<h2 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
 <ul>
-<li>Facilities to manage primary keys in a <code>dm</code> object: <code>dm_add_primary_key()</code>, <code>dm_remove_primary_key()</code>, <code>dm_check_*()</code>, <code>dm_get_primary_key_column_from_table()</code> (#17).</li>
-<li>Draft for <code>dm</code> class with constructor, validator etc., incomplete (#10).</li>
+<li><code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code></li>
+<li><code><a href="../reference/cdm_rename_table.html">cdm_rename_table()</a></code></li>
+<li><code><a href="../reference/cdm_rename_table.html">cdm_rename_tables()</a></code></li>
 </ul>
 </div>
-    <div id="dm-0-0-0-9001" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-0-9001" class="anchor"></a>dm 0.0.0.9001</h1>
-<p>Initial version.</p>
-<ul>
-<li>
-<code>rowSelector()</code> and <code>selectable()</code> modules, with corresponding <code>...UI()</code> functions.</li>
-<li>
-<code><a href="../reference/decompose_table.html">decompose_table()</a></code> to split a table in two.</li>
-<li>
-<code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list()</a></code>, inverse to <code><a href="../reference/decompose_table.html">decompose_table()</a></code>.</li>
-<li>
-<code><a href="../reference/reunite_parent_child.html">reunite_parent_child()</a></code>, as a shortcut for <code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list()</a></code>.</li>
-<li>
-<code><a href="../reference/check_cardinality.html">check_cardinality_0_1()</a></code>, <code><a href="../reference/check_cardinality.html">check_cardinality_0_n()</a></code>, <code><a href="../reference/check_cardinality.html">check_cardinality_1_1()</a></code> and <code><a href="../reference/check_cardinality.html">check_cardinality_1_n()</a></code> to check relationships between tables, powered by <code><a href="../reference/check_if_subset.html">check_if_subset()</a></code>, <code><a href="../reference/check_key.html">check_key()</a></code> and <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>.</li>
-</ul>
 </div>
   </div>
 
@@ -239,18 +247,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#dm-0-0-0-9012">0.0.0.9012</a></li>
-        <li><a href="#dm-0-0-0-9011">0.0.0.9011</a></li>
-        <li><a href="#dm-0-0-0-9010">0.0.0.9010</a></li>
-        <li><a href="#dm-0-0-0-9009">0.0.0.9009</a></li>
-        <li><a href="#dm-0-0-0-9008">0.0.0.9008</a></li>
-        <li><a href="#dm-0-0-0-9007">0.0.0.9007</a></li>
-        <li><a href="#dm-0-0-0-9006">0.0.0.9006</a></li>
-        <li><a href="#dm-0-0-0-9005">0.0.0.9005</a></li>
-        <li><a href="#dm-0-0-0-9004">0.0.0.9004</a></li>
-        <li><a href="#dm-0-0-0-9003">0.0.0.9003</a></li>
-        <li><a href="#dm-0-0-0-9002">0.0.0.9002</a></li>
-        <li><a href="#dm-0-0-0-9001">0.0.0.9001</a></li>
+        <li><a href="#dm-0-0-1">0.0.1</a></li>
       </ul>
     </div>
   </div>
