@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Assisting functions for work with data models • dm</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Assisting functions for work with data models">
 <meta property="og:description" content="Some actions and transformations that are
     frequently required when dealing with data models are covered by the
@@ -41,7 +42,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -59,7 +60,25 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/dm-overview.html">Introduction to dm</a>
+      <a href="articles/dm-DB.html">{dm} and databases</a>
+    </li>
+    <li>
+      <a href="articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
+    </li>
+    <li>
+      <a href="articles/dm-filtering.html">Filtering</a>
+    </li>
+    <li>
+      <a href="articles/dm-low-level.html">Low level operations</a>
+    </li>
+    <li>
+      <a href="articles/dm-shiny-dynafilter.html">shiny with {dynafilter}</a>
+    </li>
+    <li>
+      <a href="articles/dm-tips-and-tricks.html">Tips and tricks</a>
+    </li>
+    <li>
+      <a href="articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
   </ul>
 </li>
@@ -76,110 +95,157 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     
 
     
     
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="dm" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dm" class="anchor"></a>dm</h1></div>
-<p>The goal of <code>dm</code> is to provide functions for frequently required tasks when working with data models.</p>
+<p>The goal of <code>dm</code> is to provide tools for frequently required tasks when working with a set of related tables. This package works with all data sources that provide a {dplyr} interface: local data frames, relational databases, and more.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dm)</a></code></pre></div>
+<p>The new class <code>dm</code> is contains all the important information about a set of related tables:</p>
+<ul>
+<li>a <code>src</code> object: location of tables (database, in-memory, …)</li>
+<li>a <code>data_model</code> object: metadata about data model (keys, table &amp; columns names, …)</li>
+<li>the data: the tables itself</li>
+</ul>
+<p>This package augments {dplyr}/{dbplyr} workflows:</p>
+<ul>
+<li>multiple related tables are kept in a single compound object,</li>
+<li>joins across multiple tables are available by stating the tables involved, no need to memoize column names or relationships</li>
+</ul>
+<p>In addition, a battery of utilities is provided that helps with creating a tidy data model.</p>
+<p>This package follows the tidyverse principles:</p>
+<ul>
+<li>
+<code>dm</code> objects are immutable (your data will never be overwritten in place)</li>
+<li>many functions used on <code>dm</code> objects are pipeable (i.e., return new <code>dm</code> objects)</li>
+<li>tidy evaluation is used (unquoted function parameters are supported)</li>
+</ul>
+<div id="example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h2>
+<p>A readymade <code>dm</code> object with preset keys is included in the package:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>()</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   3 primary keys
+#&gt;   4 references
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 367687
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+</span></code></pre>
+<p>The <code><a href="reference/cdm_draw.html">cdm_draw()</a></code> function creates a visualization of the entity relationship model:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/cdm_draw.html">cdm_draw</a></span>()</a></code></pre></div>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="174pt" viewbox="0.00 0.00 152.00 174.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 170)"><title>%0</title>
+<g id="a_graph0"><a xlink:title="Data Model">
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-170 148,-170 148,4 -4,4"></polygon></a>
+</g><!-- airlines --><g id="node1" class="node"><title>airlines</title>
+<polygon fill="#ed7d31" stroke="transparent" points="95,-141 95,-161 140,-161 140,-141 95,-141"></polygon><text text-anchor="start" x="96.8969" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airlines</text><polygon fill="#f9dbd2" stroke="transparent" points="95,-121 95,-141 140,-141 140,-121 95,-121"></polygon><text text-anchor="start" x="97" y="-127.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text><polygon fill="none" stroke="#ae5a21" points="93.5,-120 93.5,-162 140.5,-162 140.5,-120 93.5,-120"></polygon></g><!-- airports --><g id="node2" class="node"><title>airports</title>
+<polygon fill="#ed7d31" stroke="transparent" points="94,-21 94,-41 140,-41 140,-21 94,-21"></polygon><text text-anchor="start" x="95.6192" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airports</text><polygon fill="#f9dbd2" stroke="transparent" points="94,-1 94,-21 140,-21 140,-1 94,-1"></polygon><text text-anchor="start" x="96" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text><polygon fill="none" stroke="#ae5a21" points="93,0 93,-42 141,-42 141,0 93,0"></polygon></g><!-- flights --><g id="node3" class="node"><title>flights</title>
+<polygon fill="#5b9bd5" stroke="transparent" points="4,-91 4,-111 50,-111 50,-91 4,-91"></polygon><text text-anchor="start" x="9.1115" y="-96.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">flights</text><polygon fill="#d6e1f1" stroke="transparent" points="4,-71 4,-91 50,-91 50,-71 4,-71"></polygon><text text-anchor="start" x="6" y="-76.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text><polygon fill="#d6e1f1" stroke="transparent" points="4,-51 4,-71 50,-71 50,-51 4,-51"></polygon><text text-anchor="start" x="5.6115" y="-56.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text><polygon fill="#d6e1f1" stroke="transparent" points="4,-31 4,-51 50,-51 50,-31 4,-31"></polygon><text text-anchor="start" x="6" y="-36.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text><polygon fill="#d6e1f1" stroke="transparent" points="4,-11 4,-31 50,-31 50,-11 4,-11"></polygon><text text-anchor="start" x="6" y="-16.4" font-family="Times,serif" font-size="14.00" fill="#444444">dest</text><polygon fill="none" stroke="#41719c" points="3,-10 3,-112 51,-112 51,-10 3,-10"></polygon></g><!-- flights&#45;&gt;airlines --><g id="edge2" class="edge"><title>flights:carrier-&gt;airlines:carrier</title>
+<path fill="none" stroke="#555555" d="M50,-81C75.9263,-81 68.2444,-118.6007 85.2435,-128.5884"></path><polygon fill="#555555" stroke="#555555" points="84.4523,-131.9981 95,-131 86.132,-125.2026 84.4523,-131.9981"></polygon></g><!-- flights&#45;&gt;airports --><g id="edge3" class="edge"><title>flights:origin-&gt;airports:faa</title>
+<path fill="none" stroke="#555555" d="M50,-41C69.6005,-41 70.6808,-20.4263 83.915,-13.354"></path><polygon fill="#555555" stroke="#555555" points="85.0574,-16.6816 94,-11 83.4662,-9.8648 85.0574,-16.6816"></polygon></g><!-- flights&#45;&gt;airports --><g id="edge4" class="edge"><title>flights:dest-&gt;airports:faa</title>
+<path fill="none" stroke="#555555" d="M50,-21C66.1374,-21 71.8091,-14.5248 83.8583,-11.9954"></path><polygon fill="#555555" stroke="#555555" points="84.3897,-15.4601 94,-11 83.7059,-8.4936 84.3897,-15.4601"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
+<polygon fill="#ed7d31" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#f9dbd2" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#ae5a21" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge1" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
+<path fill="none" stroke="#555555" d="M50,-61C66.1374,-61 71.8091,-67.4752 83.8583,-70.0046"></path><polygon fill="#555555" stroke="#555555" points="83.7059,-73.5064 94,-71 84.3897,-66.5399 83.7059,-73.5064"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
+<polygon fill="#70ad47" stroke="transparent" points="3,-138 3,-158 51,-158 51,-138 3,-138"></polygon><text text-anchor="start" x="4.8492" y="-143.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#507e32" points="2,-137 2,-159 52,-159 52,-137 2,-137"></polygon></g></g></svg>
+</div>
+<div id="filter" class="section level2">
+<h2 class="hasAnchor">
+<a href="#filter" class="anchor"></a>Filtering and joining</h2>
+<p>Similarly to <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code>, a filtering function <code><a href="reference/cdm_filter.html">cdm_filter()</a></code> is available for <code>dm</code> objects. You need to provide the <code>dm</code> object, the table whose rows you want to filter, and the filter expression. A <code>dm</code> object is returned whose tables only contain rows that are related to the reduced rows in the filtered table. This currently only works for cycle-free relationships between the tables.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/dm.html">cdm_get_tables</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">map_int</span>(nrow)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;       16     1458   336776     3322    26115</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="reference/cdm_filter.html">cdm_filter</a></span>(planes, year <span class="op">==</span><span class="st"> </span><span class="dv">2000</span>, manufacturer <span class="op">==</span><span class="st"> "BOEING"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="reference/dm.html">cdm_get_tables</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span><span class="kw">map_int</span>(nrow)</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;        4        3     7301      134    26115</span></a></code></pre></div>
+<p>For joining two tables using their relationship defined in the <code>dm</code>, you can use <code><a href="reference/cdm_join_tbl.html">cdm_join_tbl()</a></code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/cdm_join_tbl.html">cdm_join_tbl</a></span>(airports, flights, <span class="dt">join =</span> semi_join)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 8</span><span>
+#&gt;   faa   name                  lat   lon   alt    tz dst   tzone           
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>               </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           
+#&gt; </span><span style="color: #555555;">1</span><span> EWR   Newark Liberty Intl  40.7 -</span><span style="color: #BB0000;">74.2</span><span>    18    -</span><span style="color: #BB0000;">5</span><span> A     America/New_York
+#&gt; </span><span style="color: #555555;">2</span><span> JFK   John F Kennedy Intl  40.6 -</span><span style="color: #BB0000;">73.8</span><span>    13    -</span><span style="color: #BB0000;">5</span><span> A     America/New_York
+#&gt; </span><span style="color: #555555;">3</span><span> LGA   La Guardia           40.8 -</span><span style="color: #BB0000;">73.9</span><span>    22    -</span><span style="color: #BB0000;">5</span><span> A     America/New_York
+</span></code></pre>
+<p>In our <code>dm</code>, the <code>origin</code> column of the <code>flights</code> table points to the <code>airports</code> table. Since all <code>nycflights13</code>-flights depart from New York, only these airports are included in the semi-join.</p>
+</div>
+<div id="from-and-to-databases" class="section level2">
+<h2 class="hasAnchor">
+<a href="#from-and-to-databases" class="anchor"></a>From and to databases</h2>
+<p>In order to transfer an existing <code>dm</code> object to a DB, you can call <code><a href="reference/cdm_copy_to.html">cdm_copy_to()</a></code> with the target DB and the <code>dm</code> object:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">src_sqlite &lt;-<span class="st"> </span><span class="kw">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="dt">create =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">src_sqlite</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.25.3 [:memory:]</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; tbls:</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">nycflights13_remote &lt;-<span class="st"> </span><span class="kw"><a href="reference/cdm_copy_to.html">cdm_copy_to</a></span>(src_sqlite, <span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>())</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">nycflights13_remote</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.25.3 [:memory:]
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   3 primary keys
+#&gt;   4 references
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
+#&gt; Total: 367687
+#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+</span></code></pre>
+<p>The key constraints from the original object are also copied to the newly created object. With the default setting <code>set_key_constraints = TRUE</code> for <code><a href="reference/cdm_copy_to.html">cdm_copy_to()</a></code>, key constraints are also established on the target DB. Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).</p>
+<p>It is also possible to automatically create a <code>dm</code> object from the permanent tables of a DB. Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated. The support for other DBMS will be implemented in a future update.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">src_postgres &lt;-<span class="st"> </span><span class="kw">src_postgres</span>()</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">nycflights13_from_remote &lt;-<span class="st"> </span><span class="kw"><a href="reference/cdm_learn_from_db.html">cdm_learn_from_db</a></span>(src_postgres)</a></code></pre></div>
+</div>
+<div id="more-information" class="section level2">
+<h2 class="hasAnchor">
+<a href="#more-information" class="anchor"></a>More information</h2>
+<p>If you would like to learn more about the possibilities of {dm}, please see the function documentation or the vignettes:</p>
+<ul>
+<li>Getting started</li>
+<li>Class ‘dm’ and basic operations</li>
+<li>Visualizing ‘dm’ objects</li>
+<li>Filtering</li>
+<li>{dm} and databases</li>
+<li>shiny with {dynafilter}</li>
+<li>Tips and tricks <!-- FIXME: vignettes missing; once there, needs to be linked -->
+</li>
+</ul>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can receive the package as a file <code>dm.tar.gz</code> from Kirill Müller, Email: <a href="mailto:kirill@cynkra.com" class="email">kirill@cynkra.com</a> .</p>
-<p>One way to install it to your R-Library is by opening R-Studio and selecting “Install Packages…” from the <code>Tools</code> menu. In the appearing window, choose the option “Install from: Package Archive File (.tgz; .tar.gz)” and browse to <code>dm.tar.gz</code>.</p>
-</div>
-<div id="examples-for-employing-helper-functions-to-test-for-key-constraints" class="section level2">
-<h2 class="hasAnchor">
-<a href="#examples-for-employing-helper-functions-to-test-for-key-constraints" class="anchor"></a>Examples for employing helper functions to test for key constraints</h2>
-<p>This section contains information and examples for the functions:</p>
-<ol style="list-style-type: decimal">
-<li><code><a href="reference/check_key.html">check_key(.data, ...)</a></code></li>
-<li><code><a href="reference/check_if_subset.html">check_if_subset(t1, c1, t2, c2)</a></code></li>
-<li><code><a href="reference/check_set_equality.html">check_set_equality(t1, c1, t2, c2)</a></code></li>
-</ol>
-<p>When you have tables (data frames) that are connected by key relations, this package might help you verify the assumed key relations and/or determine existing key relations between the tables. For example, if you have tables:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">data_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>))</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">data_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a></code></pre></div>
-<p>and you want to know if <code>a</code> is a primary key for <code>data_1</code>, you can use the <code><a href="reference/check_key.html">check_key()</a></code> function:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">1</span>, a)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; `a` not a unique key of `data_1`.</span></a></code></pre></div>
-<p>Mind the error message when a test is not passed.</p>
-<p>In case of <code>data_2</code> column <code>a</code> is a key:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(data_<span class="dv">2</span>, a)</a></code></pre></div>
-<p>To see if a column of one table contains only values, that are also in another column of another table (one of the two criteria of it being a foreign key to this other table, the other being if this other table’s column is one of its unique keys), you can use <code><a href="reference/check_if_subset.html">check_if_subset()</a></code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
-<p>What about the inverse relation?</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">2</span>, a, data_<span class="dv">1</span>, a)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;       a     b     c</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1     3     6     9</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; Column `a` in table `data_2` contains values (see above) that are not</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; present in column `a` in table `data_1`</span></a></code></pre></div>
-<p>One should keep in mind, that <code><a href="reference/check_if_subset.html">check_if_subset()</a></code> does NOT test, if parameter <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, one would use the following approach:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/check_key.html">check_key</a></span>(t2, c2)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="reference/check_if_subset.html">check_if_subset</a></span>(t1, c1, t2, c2)</a></code></pre></div>
-<p>To check both directions at once - basically answering the questions: are the unique values of <code>c_1</code> in <code>t_1</code> the same as those of <code>c_2</code> in <code>t_2</code>? - <code>dm</code> provides the function <code><a href="reference/check_set_equality.html">check_set_equality()</a></code> (this would fail with a longer error message and is therefore not evaluated):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
-<p>Bringing one more table into the game, we can show how it looks, when the test is passed:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">data_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">3</span>, a)</a></code></pre></div>
-<p>If for any of these three functions the test is passed, the return value of the function will be the first table parameter (invisibly). This ensures, that the functions can conveniently be used in a pipe.</p>
-</div>
-<div id="examples-for-testing-the-cardinalities-of-relations-between-two-tables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#examples-for-testing-the-cardinalities-of-relations-between-two-tables" class="anchor"></a>Examples for testing the cardinalities of relations between two tables</h2>
-<p>This section contains information and examples for the functions:</p>
-<ol style="list-style-type: decimal">
-<li><code><a href="reference/check_cardinality.html">check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="reference/check_cardinality.html">check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="reference/check_cardinality.html">check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="reference/check_cardinality.html">check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-</ol>
-<p>The four functions for testing for a specific kind of cardinality of the relation all require there to be a parent table and a child table. All these functions first test, if this requirement is fulfilled by checking if:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code>primary_key_column</code> is a unique key for <code>parent_table</code>
-</li>
-<li>The set of values of <code>foreign_key_column</code> is a subset of the set of values of <code>primary_key_column</code>
-</li>
-</ol>
-<p>The cardinality specifications <code>0_n</code>, <code>1_n</code>, <code>0_1</code>, <code>1_1</code> refer to the expected relation, that the child table has with the parent table. The numbers ‘0’, ‘1’ and ‘n’ refer to the number of values in the child table’s column (<code>foreign_key_column</code>) that correspond to each value of the parent table’s column (<code>primary_key_column</code>). ‘n’ means more than one in this context, with no upper limit.</p>
-<p><code>0_n</code> means, that for each value of the <code>parent_key_column</code>, minimally ‘0’ and maximally ‘n’ values have to correspond to it in the child table’s column (which translates to no further restriction).</p>
-<p><code>1_n</code> means, that for each value of the <code>parent_key_column</code>, minimally ‘1’ and maximally ‘n’ values have to correspond to it in the child table’s column. This means that there is a “surjective” relation from the child table to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.</p>
-<p><code>0_1</code> means, that for each value of the <code>parent_key_column</code>, minimally ‘0’ and maximally ‘1’ value has to correspond to it in the child table’s column. This means that there is a “injective” relation from the child table to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table column values have to be referred to.</p>
-<p><code>1_1</code> means, that for each value of the <code>parent_key_column</code>, precisely ‘1’ value has to correspond to it in the child table’s column. This means that there is a “bijective” (“injective” AND “surjective”) relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.</p>
-<p>Examples:</p>
-<p>Given the following three data frames:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">d1 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">a =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">d2 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">c =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">d3 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="dt">c =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</a></code></pre></div>
-<p>Here are some examples for the usage of the functions:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># This does not pass, `c` is not unique key of d2:</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_n</a></span>(d2, c, d1, a)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; `c` not a unique key of `d2`.</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># This passes, multiple values in d2$c are allowed:</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_n</a></span>(d1, a, d2, c)</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co"># This does not pass, injectivity is violated:</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_1_1</a></span>(d1, a, d2, c)</a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2`</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; contains duplicate values.</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co"># This passes:</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="kw"><a href="reference/check_cardinality.html">check_cardinality_0_1</a></span>(d1, a, d3, c)</a></code></pre></div>
-</div>
-<div id="package-overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#package-overview" class="anchor"></a>Package overview</h2>
-<p>To get an overview of <code>dm</code>, you can call the package’s function <code><a href="reference/browse_docs.html">browse_docs()</a></code>, which will open a .html-file in your standard web browser. You can also manually open the file, it is <code>index.html</code> in the folder <code>pkgdown</code>.</p>
+<p>Once on CRAN, the package can be installed with</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"dm"</span>)</a></code></pre></div>
+<p>Install the latest development version with</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"krlmlr/dm"</span>)</a></code></pre></div>
+<hr>
+<p>License: MIT © cynkra GmbH.</p>
+<p>Funded by:</p>
+<p><a href="https://www.energie360.ch"><img src="reference/figures/energie-72.png" alt="energie360°"></a> <span style="padding-right:50px"> </span> <a href="https://www.cynkra.com/"><img src="reference/figures/cynkra-72.png" alt="cynkra"></a></p>
+<hr>
+<p>Please note that the ‘dm’ project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
@@ -192,11 +258,22 @@
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+<div class="community">
+<h2>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
+</ul>
+</div>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Kirill Müller <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-1416-3412" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>
+<a href="http://krlmlr.info">Kirill Müller</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-1416-3412" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
 <li>Tobias Schieferdecker <br><small class="roles"> Author </small>  </li>
+<li>
+<a href="https://www.energie360.ch"><img src="reference/figures/energie-18.png"></a> <br><small class="roles"> Funder </small>  </li>
+<li>
+<a href="https://www.cynkra.com"><img src="reference/figures/cynkra-18.png"></a> <br><small class="roles"> Funder </small>  </li>
 </ul>
 </div>
 
@@ -205,17 +282,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
-  <p>Developed by Kirill Müller, Tobias Schieferdecker.</p>
+  <p>Developed by <a href="http://krlmlr.info">Kirill Müller</a>, Tobias Schieferdecker, <a href="https://www.energie360.ch"><img src="reference/figures/energie-18.png"></a>, <a href="https://www.cynkra.com"><img src="reference/figures/cynkra-18.png"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

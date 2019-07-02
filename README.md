@@ -4,19 +4,19 @@
 The goal of `dm` is to provide tools for frequently required tasks when
 working with a set of related tables. This package works with all data
 sources that provide a {dplyr} interface: local data frames, relational
-databases, and many more.
+databases, and more.
 
 ``` r
 library(tidyverse)
 library(dm)
 ```
 
-The new class `dm` is essentially a list containing all the important
-information about a set of related tables, its components being:
+The new class `dm` is contains all the important information about a set
+of related tables:
 
-  - `src` object: location of tables (database (DB), locally, …)
-  - a so-called `data_model` object: meta-info about data model (keys,
-    table & columns names, …)
+  - a `src` object: location of tables (database, in-memory, …)
+  - a `data_model` object: metadata about data model (keys, table &
+    columns names, …)
   - the data: the tables itself
 
 This package augments {dplyr}/{dbplyr} workflows:
@@ -28,7 +28,7 @@ This package augments {dplyr}/{dbplyr} workflows:
 In addition, a battery of utilities is provided that helps with creating
 a tidy data model.
 
-This package follows several of the “tidyverse” rules:
+This package follows the tidyverse principles:
 
   - `dm` objects are immutable (your data will never be overwritten in
     place)
@@ -36,11 +36,13 @@ This package follows several of the “tidyverse” rules:
     `dm` objects)
   - tidy evaluation is used (unquoted function parameters are supported)
 
-A readymade `dm` object with preset keys is included in the package:
+## Example
+
+A readymade `dm` object with preset keys is included in the
+package:
 
 ``` r
-flights_dm_with_keys <- cdm_nycflights13()
-flights_dm_with_keys
+cdm_nycflights13()
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
@@ -56,39 +58,24 @@ flights_dm_with_keys
 #&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
 </span></CODE></PRE>
 
-For more information about the `dm` class and how to establish and
-display key constraints we would like to refer you to vignette “class
-‘dm’ and basic operations”.
-<!-- FIXME: vignette missing; once there, needs to be linked -->
-
-## Visualization
-
-A basic graphic representation of the entity relationship model can be
-generated with:
+The `cdm_draw()` function creates a visualization of the entity
+relationship model:
 
 ``` r
-flights_dm_with_keys %>% 
+cdm_nycflights13() %>% 
   cdm_draw()
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-draw-1.png" width="100%" />
 
-The different colors of the tables were assigned in
-`cdm_nycflights13()`. For how to add colors to subsets of the tables and
-further customization please see vignette “Visualizing ‘dm’ objects”
-<!-- FIXME: vignette missing; once there, needs to be linked -->
+## Filtering and joining
 
-## Filtering `dm` object and joining its tables
-
-Similar to `dplyr::filter()`, a filtering function `cdm_filter()` is
+Similarly to `dplyr::filter()`, a filtering function `cdm_filter()` is
 available for `dm` objects. You need to provide the `dm` object, the
-table whose rows you want to filter and the filter expression. A `dm`
+table whose rows you want to filter, and the filter expression. A `dm`
 object is returned whose tables only contain rows that are related to
 the reduced rows in the filtered table. This currently only works for
-cycle-free relationships between the tables, since otherwise no
-well-defined solution can be calculated. Thus, we need a slightly
-different `dm` object from before to show the functionality of
-`cdm_filter()`:
+cycle-free relationships between the tables.
 
 ``` r
 cdm_nycflights13(cycle = FALSE) %>%
@@ -105,8 +92,8 @@ cdm_nycflights13(cycle = FALSE) %>%
 #>        4        3     7301      134    26115
 ```
 
-If you want to join 2 tables of a `dm`, making use of their foreign key
-relation, you can use `cdm_join_tbl()`:
+For joining two tables using their relationship defined in the `dm`, you
+can use `cdm_join_tbl()`:
 
 ``` r
 cdm_nycflights13(cycle = FALSE) %>%
@@ -121,23 +108,22 @@ cdm_nycflights13(cycle = FALSE) %>%
 #&gt; </span><span style='color: #555555;'>3</span><span> LGA   La Guardia           40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_York
 </span></CODE></PRE>
 
-In our `dm`, column `origin` of table `flights` points to table
-`airports`. Since all `nycflights13`-flights take off from New York,
-only the NY airports are left after the semi-join.
+In our `dm`, the `origin` column of the `flights` table points to the
+`airports` table. Since all `nycflights13`-flights depart from New York,
+only these airports are included in the semi-join.
 
-## From and to DBs
+## From and to databases
 
-In order to transfer an existing `dm` object to a DB, you just need to
-provide the `src` object with the connection to the target DB and the
-`dm` object:
+In order to transfer an existing `dm` object to a DB, you can call
+`cdm_copy_to()` with the target DB and the `dm` object:
 
 ``` r
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
 #> src:  sqlite 3.25.3 [:memory:]
 #> tbls:
-flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
-flights_dm_with_keys_remote
+nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13())
+nycflights13_remote
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
@@ -153,11 +139,11 @@ flights_dm_with_keys_remote
 #&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
 </span></CODE></PRE>
 
-With the default setting `set_key_constraints = TRUE` for
-`cdm_copy_to()`, key constraints are established on the target DB, based
-on the constraints in the `data_model` part of the `dm`. Currently this
-feature is only supported for MSSQL and Postgres database management
-systems (DBMS).
+The key constraints from the original object are also copied to the
+newly created object. With the default setting `set_key_constraints =
+TRUE` for `cdm_copy_to()`, key constraints are also established on the
+target DB. Currently this feature is only supported for MSSQL and
+Postgres database management systems (DBMS).
 
 It is also possible to automatically create a `dm` object from the
 permanent tables of a DB. Again, for now just MSSQL and Postgres are
@@ -165,7 +151,8 @@ supported for this feature, so the next chunk is not evaluated. The
 support for other DBMS will be implemented in a future update.
 
 ``` r
-flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
+src_postgres <- src_postgres()
+nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
 ```
 
 ## More information
@@ -182,24 +169,34 @@ see the function documentation or the vignettes:
   - Tips and tricks
     <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
-## Package overview
-
-To get an overview of `dm`, you can call the package’s function
-`browse_docs()`, which will open a .html-file in your standard web
-browser. You can also manually open the file, it is `index.html` in the
-folder `pkgdown`.
-
 ## Installation
 
-You can receive the package as a file `dm.tar.gz` from Kirill Müller,
-Email: <kirill@cynkra.com> .
-<!-- FIXME: almost outdated, needs to be github-link  -->
+Once on CRAN, the package can be installed with
 
-One way to install it to your R-Library is by opening R-Studio and
-selecting “Install Packages…” from the `Tools` menu. In the appearing
-window, choose the option “Install from: Package Archive File (.tgz;
-.tar.gz)” and browse to `dm.tar.gz`.
+``` r
+install.packages("dm")
+```
+
+Install the latest development version with
+
+``` r
+# install.packages("devtools")
+devtools::install_github("krlmlr/dm")
+```
 
 -----
 
-FIXME: funder, copyright holder, code of conduct
+License: MIT © cynkra GmbH.
+
+Funded
+by:
+
+[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/private/)
+<span style="padding-right:50px"> </span>
+[![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
+
+-----
+
+Please note that the ‘dm’ project is released with a [Contributor Code
+of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you
+agree to abide by its terms.

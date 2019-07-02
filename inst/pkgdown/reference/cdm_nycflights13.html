@@ -92,7 +92,25 @@ play around with)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-overview.html">Introduction to dm</a>
+      <a href="../articles/dm-DB.html">{dm} and databases</a>
+    </li>
+    <li>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering</a>
+    </li>
+    <li>
+      <a href="../articles/dm-low-level.html">Low level operations</a>
+    </li>
+    <li>
+      <a href="../articles/dm-shiny-dynafilter.html">shiny with {dynafilter}</a>
+    </li>
+    <li>
+      <a href="../articles/dm-tips-and-tricks.html">Tips and tricks</a>
+    </li>
+    <li>
+      <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
   </ul>
 </li>
@@ -129,7 +147,7 @@ play around with).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_nycflights13</span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_nycflights13</span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,6 +158,11 @@ play around with).</p>
 (from <code>flights$origin</code> to <code>airports$faa</code>) between <code>flights</code> and <code>airports</code> is
 established. If <code>TRUE</code> (default), a <code>dm</code> object with a double reference
 between those tables will be produced.</p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
+colors assigned to different tables for visualization with <code><a href='cdm_draw.html'>cdm_draw()</a></code></p></td>
     </tr>
     </table>
     

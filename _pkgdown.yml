@@ -1,3 +1,7 @@
+template:
+  assets:
+  - pkgdown/assets
+
 reference:
 - title: Creating `dm` objects and basic functions
   contents:
@@ -82,3 +86,11 @@ reference:
 development:
   mode: devel
   destination: ../inst/pkgdown
+
+authors:
+  Kirill Müller:
+    href: http://krlmlr.info
+  energie360° AG:
+    html: '<a href="https://www.energie360.ch"><img src="reference/figures/energie-18.png"/></a>'
+  cynkra GmbH:
+    html: '<a href="https://www.cynkra.com"><img src="reference/figures/cynkra-18.png"/></a>'
