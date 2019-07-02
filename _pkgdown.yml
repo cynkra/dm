@@ -84,8 +84,7 @@ reference:
   - cdm_rename_tables
 
 development:
-  mode: devel
-  destination: ../inst/pkgdown
+  mode: off
 
 authors:
   Kirill Müller:
