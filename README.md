@@ -46,6 +46,11 @@ This package follows the tidyverse principles:
     `dm` objects)
   - tidy evaluation is used (unquoted function parameters are supported)
 
+The {dm} package builds heavily upon the [{datamodelr}
+package](https://github.com/bergant/datamodelr), and upon the
+[tidyverse](https://www.tidyverse.org/). We’re looking forward to a good
+collaboration\!
+
 ## Example
 
 A readymade `dm` object with preset keys is included in the

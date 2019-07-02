@@ -46,6 +46,9 @@ This package follows several of the "tidyverse" rules:
 - many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
 - tidy evaluation is used (unquoted function parameters are supported)
 
+The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
+We're looking forward to a good collaboration!
+
 We will showcase here some of the features of {dm}:
 
 1. [Creation of `dm` objects](#create)
