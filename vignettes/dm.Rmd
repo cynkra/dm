@@ -226,10 +226,6 @@ flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
 
 ## Further reading
 
-- Learn other ways of creating `dm` objects and basic operations on them, like handling key constraints in vignette "Class 'dm' and basic operations"
-- All about the possibilities of graphic representations of `dm` objects: vignette "Visualizing 'dm' objects"
-- More on filtering `dm` objects, its limitations and its benefits: vignette "Filtering"
-- On {dm}'s intuitive interaction with DBs: vignette "{dm} and databases"
-- {dm} and {dynafilter}, a match made in {shiny}-heaven: vignette "shiny with {dynafilter}"
-- Further useful tools: vignette "Tips and tricks"
-
+- Learn other ways of creating `dm` objects and basic operations on them, like handling key constraints in the ["Class 'dm' and basic operations"](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html) article
+- All about the possibilities of graphic representations of `dm` objects: the ["Visualizing 'dm' objects"](https://krlmlr.github.io/dm/articles/dm-visualization.html) article
+- Constraints, cardinalities, and normalization: the ["Low level operations"](https://krlmlr.github.io/dm/articles/dm-low-level.html) article
