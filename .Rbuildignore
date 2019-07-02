@@ -6,3 +6,6 @@
 ^scratch$
 ^CODE_OF_CONDUCT\.md$
 ^pkgdown$
+^\.travis\.yml$
+^appveyor\.yml$
+^tic\.R$
