@@ -42,6 +42,7 @@ Imports:
     tidyr
 Suggests: 
     dbplyr,
+    DiagrammeR,
     DiagrammeRsvg,
     fansi,
     nycflights13,
