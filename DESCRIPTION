@@ -3,15 +3,15 @@ Title: Relational data models
 Version: 0.0.0.9012
 Date: 2019-06-26
 Authors@R: 
-    c(person(given = "Kirill",
+    c(person(given = "Tobias",
+             family = "Schieferdecker",
+             role = "aut",
+             email = "tobias@cynkra.com"),
+      person(given = "Kirill",
              family = "Müller",
              role = c("aut", "cre"),
              email = "kirill@cynkra.com",
              comment = c(ORCID = "0000-0002-1416-3412")),
-      person(given = "Tobias",
-             family = "Schieferdecker",
-             role = "aut",
-             email = "tobias@cynkra.com"),
       person(given = "energie360° AG",
              role = "fnd",
              email = "info@energie360.ch"),
