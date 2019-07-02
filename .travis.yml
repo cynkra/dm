@@ -39,5 +39,10 @@ env:
   global:
   - MAKEFLAGS="-j 2"
 
+addons:
+  apt:
+    packages:
+      - libv8-dev
+
 #services
 services:
