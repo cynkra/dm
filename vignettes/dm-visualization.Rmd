@@ -27,31 +27,35 @@ knit_print.grViz <- function(x, ...) {
 ```
 
 
-Relevant functions for visualising the `dm` object's data model:^[The functions in this section rely heavily on related functions of {datamodelr}.]
+Once you have all primary keys set and all foreign key relations defined, a graphical representation of your data model offers a condensed view over the tables and relationships.
+Relevant functions for visualising the `dm` object's data model are:^[The functions in this section rely heavily on related functions of {datamodelr}.]
 
+1. `cdm_draw()`
 1. `cdm_set_colors()`
 1. `cdm_get_colors()`
 1. `cdm_get_available_colors()`
-1. `cdm_draw()`
 
-Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation of your data model.
-
-We can just take here the prepared example `dm` object `cdm_nycflights13()`:
+We use the prepared example `dm` object `cdm_nycflights13()`:
 ```{r}
 library(dm)
 flights_dm_w_many_keys <- cdm_nycflights13(color = FALSE)
 flights_dm_w_many_keys
 ```
 
+The schema is drawn with `cdm_draw()`. 
+```{r}
+cdm_draw(flights_dm_w_many_keys)
+```
+
 You can use colors to visually group your tables into families (which could reflect their logical grouping).
-Currently, there are only eight different colors available (plus the option of having borders displayed around the tables or not).
+Currently, there are only eight different colors available (plus optional borders around the tables).
 To find out which colors exist, use `cdm_get_available_colors()`:
 ```{r}
 cdm_get_available_colors()
 ```
 
 The assignment is carried out with `cdm_set_colors()`, using a syntax similar to `switch()`.
-Any table you don't specifically assign will be displayed in the default color. 
+Any table you don't specifically assign will not be altered. 
 The result of `cdm_set_colors()` is a `dm` object.
 The information about the color is stored in its `data_model`-part.
 ```{r}
@@ -75,10 +79,10 @@ The colors can be queried with `cdm_get_colors()`.
 cdm_get_colors(flights_dm_w_many_keys_and_colors)
 ```
 
-There are quite a few options for customization available. 
-Please read the documentation to find out more.
-One argument of the function we'd like to draw your attention to, though, is `table_names`.
-This argument accepts a character vector with the table names which are to be printed, in case you would like to only see a subset of the whole data model.
+See the documentation for `cdm_draw()` for further options.
+One important argument is `table_names`.
+It accepts a character vector with the table names which are to be printed, in case you would like to only see a subset of the whole data model.
 ```{r}
-cdm_draw(flights_dm_w_many_keys_and_colors, table_names = c("flights", "airports", "planes"))
+flights_dm_w_many_keys_and_colors %>% 
+  cdm_draw(table_names = c("flights", "airports", "planes"))
 ```

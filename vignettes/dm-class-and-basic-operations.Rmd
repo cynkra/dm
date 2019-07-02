@@ -39,7 +39,7 @@ You can have your `dm` object on different data sources, such as a local environ
 
 1. part of the object is a [`src` object](https://dplyr.tidyverse.org/reference/src.html) from {dplyr}
 2. the other part is a class `data_model` object
- from the package [{datamodelr}](https://github.com/bergant/datamodelr)^[Use: `devtools::install_github("https://github.com/bergant/datamodelr")` to install it]
+ from the package [{datamodelr}](https://github.com/bergant/datamodelr)
 
 The `src` object contains the information, where the tables of your data model are physically stored. 
 In the `data_model` object the meta-information is about your data is kept, among others:
@@ -122,7 +122,7 @@ cdm_has_pk(flights_dm, airports)
 flights_dm_with_key <- cdm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
-Still looks exactly the same as before... let's check:
+The `dm` model now has a primary key. Let's check:
 ```{r}
 cdm_has_pk(flights_dm_with_key, airports)
 ```
@@ -152,7 +152,7 @@ cdm_get_all_pks(cdm_nycflights13())
 ```
 
 We used here the prepared `dm` object `cdm_nycflights13()` as an example. 
-This object comes already with set keys and is part of {dm}.
+This object already has all keys pre-set.
 
 ## Foreign keys
 
