@@ -11,7 +11,14 @@ Authors@R:
       person(given = "Tobias",
              family = "Schieferdecker",
              role = "aut",
-             email = "tobias@cynkra.com"))
+             email = "tobias@cynkra.com"),
+      person(given = "energie360° AG",
+             role = "fnd",
+             email = "info@energie360.ch"),
+      person(given = "cynkra GmbH",
+             role = "fnd",
+             email = "mail@cynkra.com")
+             )
 Description: Some actions and transformations that are
     frequently required when dealing with data models are covered by the
     functions of this package.
