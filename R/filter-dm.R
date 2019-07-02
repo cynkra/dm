@@ -38,8 +38,7 @@ cdm_filter <- function(dm, table, ...) {
 
   # get remote tibble of pk-values after filtering
   pk_name_orig <- cdm_get_pk(dm, !!table_name)
-  filtered_tbl_pk_obj <- filter(orig_tbl, ...) %>%
-    compute(unique_indexes = pk_name_orig)
+  filtered_tbl_pk_obj <- filter(orig_tbl, ...)
 
   if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) {
     return(dm)
