@@ -50,6 +50,7 @@ Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
+    RSQLite,
     tidyverse,
     vctrs
 Remotes: 
