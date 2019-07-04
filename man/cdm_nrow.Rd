@@ -4,7 +4,7 @@
 \alias{cdm_nrow}
 \title{Number of rows}
 \usage{
-cdm_nrow(dm, table = NULL)
+cdm_nrow(dm)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
