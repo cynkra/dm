@@ -2,7 +2,8 @@ test_that("Learning from MSSQL works?", {
 
 
   # cdm_learn_from_mssql() --------------------------------------------------
-  testthat::skip_if_not(exists("con_mssql"))
+  con_mssql <- skip_if_error(src_test("mssql"))
+
   # create an object on the MSSQL-DB that can be learned
   if (!any(src_tbls(src_mssql) %>%
     str_detect(., "^t1_"))) {
@@ -35,9 +36,11 @@ test_that("Learning from MSSQL works?", {
 # cdm_learn_from_postgres() --------------------------------------------------
 test_that("Learning from Postgres works?", {
 
+  src_postgres <- skip_if_error(src_test("postgres"))
+  con_postgres <- src_postgres$con
 
   # create an object on the Postgres-DB that can be learned
-  if (is_postgres_empty(con_postgres)) {
+  if (is_postgres_empty()) {
     cdm_copy_to(con_postgres, dm_for_filter, unique_table_names = TRUE, temporary = FALSE)
   }
 
@@ -64,5 +67,5 @@ test_that("Learning from Postgres works?", {
   )
 
   # clean up Postgres-DB
-  clear_postgres(con_postgres)
+  clear_postgres()
 })

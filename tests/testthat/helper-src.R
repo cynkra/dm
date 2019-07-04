@@ -1,49 +1,45 @@
-try({
-  library(rprojroot)
-  library(testthat)
-  library(DBI)
-  library(stringr)
-})
-
-src_df <- src_df(env = new.env())
-src_sqlite <- src_sqlite(":memory:", create = TRUE)
-src_postgres <- src_postgres(dbname = "postgres", host = "localhost", port = 5432, user = "postgres")
-con_postgres <- src_postgres$con
-
+try(library(dbplyr), silent = TRUE)
+library(rprojroot)
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test ---------
 
-get_test_tables_from_postgres <- function(con_postgres) {
+get_test_tables_from_postgres <- function() {
+  src_postgres <- src_test("postgres")
+  con_postgres <- src_postgres$con
+
   dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
     as_tibble() %>%
     filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
 }
 
-is_postgres_empty <- function(con_postgres) {
-  nrow(get_test_tables_from_postgres(con_postgres)) == 0
+is_postgres_empty <- function() {
+  nrow(get_test_tables_from_postgres()) == 0
 }
 
-clear_postgres <- function(con_postgres) {
-  if (!is_postgres_empty(con_postgres)) {
-    walk(
-      get_test_tables_from_postgres(con_postgres) %>%
-        pull(),
-      ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
-    )
-  }
+clear_postgres <- function() {
+  walk(
+    get_test_tables_from_postgres() %>%
+      pull(),
+    ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
+  )
 }
-
-clear_postgres(con_postgres)
 
 
 # register srcs -----------------------------------------------------------
 
-dbplyr::test_register_src("df", src_df)
-dbplyr::test_register_src("sqlite", src_sqlite)
-try(
-  dbplyr::test_register_src("postgres", src_postgres),
+test_register_src("df", src_df(env = new_environment()))
+
+try(test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
+
+local(try(
+  {
+    src <- src_postgres(dbname = "postgres", host = "localhost", port = 5432, user = "postgres")
+    test_register_src("postgres", src)
+    clear_postgres()
+  },
   silent = TRUE
-)
+))
+
 
 # Only run if the top level call is devtools::test() or testthat::test_check()
 # In addition: this will only work, if run on TS's laptop
@@ -52,8 +48,8 @@ if (is_this_a_test()) {
     {
       source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
       con_mssql <- mssql_con()
-      src_mssql <- dbplyr::src_dbi(con_mssql)
-      dbplyr::test_register_src("mssql", src_mssql)
+      src_mssql <- src_dbi(con_mssql)
+      test_register_src("mssql", src_mssql)
     },
     silent = TRUE
   )
@@ -70,12 +66,12 @@ d6 <- tibble::tibble(c = 1:4)
 d7 <- tibble::tibble(c = c(1:5, 5, 6))
 d8 <- tibble::tibble(c = c(1:6))
 
-d1_src <- dbplyr::test_load(d1)
-d2_src <- dbplyr::test_load(d2)
-d3_src <- dbplyr::test_load(d3)
-d4_src <- dbplyr::test_load(d4)
-d5_src <- dbplyr::test_load(d5)
-d6_src <- dbplyr::test_load(d6)
+d1_src <- test_load(d1)
+d2_src <- test_load(d2)
+d3_src <- test_load(d3)
+d4_src <- test_load(d4)
+d5_src <- test_load(d5)
+d6_src <- test_load(d6)
 
 # names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
 src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
@@ -89,16 +85,16 @@ data <-
     1, 2, 4
   )
 
-data_check_key_src <- dbplyr::test_load(data)
+data_check_key_src <- test_load(data)
 
 # for check_fk() and check_set_equality() -------------------------
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
-data_1_src <- dbplyr::test_load(data_1)
-data_2_src <- dbplyr::test_load(data_2)
-data_3_src <- dbplyr::test_load(data_3)
+data_1_src <- test_load(data_1)
+data_2_src <- test_load(data_2)
+data_3_src <- test_load(data_3)
 
 # for table-surgery functions ---------------------------------------------
 data_ts <- tibble(
@@ -124,9 +120,9 @@ data_ts_parent <- tibble(
   f = c(TRUE, FALSE)
 )
 
-data_ts_src <- dbplyr::test_load(data_ts)
-data_ts_child_src <- dbplyr::test_load(data_ts_child)
-data_ts_parent_src <- dbplyr::test_load(data_ts_parent)
+data_ts_src <- test_load(data_ts)
+data_ts_child_src <- test_load(data_ts_child)
+data_ts_parent_src <- test_load(data_ts_parent)
 
 list_of_data_ts_parent_and_child_src <- map2(
   .x = data_ts_child_src,
@@ -262,8 +258,8 @@ output_3 <- list(
 dm_for_filter_rev <- dm_for_filter
 dm_for_filter_rev$tables <- rev(dm_for_filter_rev$tables)
 
-t1_src <- dbplyr::test_load(t1)
-t3_src <- dbplyr::test_load(t3)
+t1_src <- test_load(t1)
+t3_src <- test_load(t3)
 
 # for tests on `dm` objects: cdm_add_pk(), cdm_add_pk() ------------------------
 
