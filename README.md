@@ -13,52 +13,34 @@ status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/pac
 
 # dm
 
-The goal of `dm` is to provide tools for frequently required tasks when
-working with a set of related tables. This package works with all data
-sources that provide a {dplyr} interface: local data frames, relational
-databases, and more.
+The goal of `dm` is to provide tools for reoccurring tasks when working
+with a set of related tables. The `dm` class stores properties of a set
+of related tables in a compound object:
 
-``` r
-library(tidyverse)
-library(dm)
-```
-
-The new class `dm` contains all the important information about a set of
-related tables:
-
-  - a `src` object: location of tables (database, in-memory, …)
-  - a `data_model` object: metadata about data model (keys, table &
-    columns names, …)
+  - a `src`: location of tables (database, in-memory, …)
+  - a `data_model`: metadata about data model (keys, table & columns
+    names, …)
   - the data: the tables itself
 
-This package augments {dplyr}/{dbplyr} workflows:
+This concept augments {dplyr}/{dbplyr} workflows:
 
   - multiple related tables are kept in a single compound object,
   - joins across multiple tables are available by stating the tables
     involved, no need to memoize column names or relationships
+  - works with all data sources that provide a {dplyr} interface: local
+    data frames, relational databases, and more.
 
 In addition, a battery of utilities is provided that helps with creating
 a tidy data model.
 
-This package follows the tidyverse principles:
-
-  - `dm` objects are immutable (your data will never be overwritten in
-    place)
-  - many functions used on `dm` objects are pipeable (i.e., return new
-    `dm` objects)
-  - tidy evaluation is used (unquoted function parameters are supported)
-
-The {dm} package builds heavily upon the [{datamodelr}
-package](https://github.com/bergant/datamodelr), and upon the
-[tidyverse](https://www.tidyverse.org/). We’re looking forward to a good
-collaboration\!
-
 ## Example
 
-A readymade `dm` object with preset keys is included in the
-package:
+A readymade `dm` object with preset keys is included in the package:
 
 ``` r
+library(tidyverse)
+library(dm)
+
 cdm_nycflights13()
 ```
 
@@ -85,7 +67,7 @@ cdm_nycflights13() %>%
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
-## Filtering and joining
+### Filtering and joining
 
 Similarly to `dplyr::filter()`, a filtering function `cdm_filter()` is
 available for `dm` objects. You need to provide the `dm` object, the
@@ -129,7 +111,7 @@ In our `dm`, the `origin` column of the `flights` table points to the
 `airports` table. Since all `nycflights13`-flights depart from New York,
 only these airports are included in the semi-join.
 
-## From and to databases
+### From and to databases
 
 In order to transfer an existing `dm` object to a DB, you can call
 `cdm_copy_to()` with the target DB and the `dm` object:
@@ -187,6 +169,21 @@ articles:
   - [Low-level
     operations](https://krlmlr.github.io/dm/articles/dm-low-level.html)
     <!-- FIXME: vignettes missing; once there, needs to be linked -->
+
+## Standing on the shoulders of giants
+
+This package follows the tidyverse principles:
+
+  - `dm` objects are immutable (your data will never be overwritten in
+    place)
+  - many functions used on `dm` objects are pipeable (i.e., return new
+    `dm` objects)
+  - tidy evaluation is used (unquoted function parameters are supported)
+
+The {dm} package builds heavily upon the [{datamodelr}
+package](https://github.com/bergant/datamodelr), and upon the
+[tidyverse](https://www.tidyverse.org/). We’re looking forward to a good
+collaboration\!
 
 ## Installation
 
