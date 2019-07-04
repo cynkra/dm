@@ -13,7 +13,7 @@ status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/pac
 
 # dm
 
-The goal of `dm` is to provide tools for reoccurring tasks when working
+The goal of {dm} is to provide tools for reoccurring tasks when working
 with a set of related tables. The `dm` class stores properties of a set
 of related tables in a compound object:
 
@@ -24,7 +24,7 @@ of related tables in a compound object:
 
 This concept augments {dplyr}/{dbplyr} workflows:
 
-  - multiple related tables are kept in a single compound object,
+  - multiple related tables are kept in a single object,
   - joins across multiple tables are available by stating the tables
     involved, no need to memoize column names or relationships
   - works with all data sources that provide a {dplyr} interface: local
