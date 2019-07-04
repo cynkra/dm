@@ -53,6 +53,8 @@ Suggests:
     RSQLite,
     tidyverse,
     vctrs
+Enhances: 
+    RPostgres
 Remotes: 
     bergant/datamodelr
 Encoding: UTF-8

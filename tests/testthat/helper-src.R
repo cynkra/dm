@@ -40,18 +40,22 @@ clear_postgres(con_postgres)
 
 dbplyr::test_register_src("df", src_df)
 dbplyr::test_register_src("sqlite", src_sqlite)
-dbplyr::test_register_src("postgres", src_postgres)
+try(
+  dbplyr::test_register_src("postgres", src_postgres),
+  silent = TRUE
+)
 
 # Only run if the top level call is devtools::test() or testthat::test_check()
 # In addition: this will only work, if run on TS's laptop
 if (is_this_a_test()) {
-  try({
-    source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
-    con_mssql <- mssql_con()
-    src_mssql <- dbplyr::src_dbi(con_mssql)
-    dbplyr::test_register_src("mssql", src_mssql)
-  },
-  silent = TRUE
+  try(
+    {
+      source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
+      con_mssql <- mssql_con()
+      src_mssql <- dbplyr::src_dbi(con_mssql)
+      dbplyr::test_register_src("mssql", src_mssql)
+    },
+    silent = TRUE
   )
 }
 
