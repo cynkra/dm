@@ -276,6 +276,4 @@ dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
 
 # for `dm_nrow()` ---------------------------------------------------------
 
-rows_t1_w_name <- 5L %>% set_names("cdm_table_1")
-
 rows_dm_obj <- 24L

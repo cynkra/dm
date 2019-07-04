@@ -67,30 +67,12 @@ cdm_update_table <- function(dm, name, table) {
   )
 }
 
-#' Number of rows of a table or of the whole [`dm`] object
+#' Number of rows
+#'
+#' Returns a named vector with the number of rows for each table.
 #'
 #' @param dm A [`dm`] object
-#' @param table If `NULL` (default), the sum of the number of rows of all tables is returned.
-#' If a table is specified, the number of the rows of this table is returned.
 #' @export
-cdm_nrow <- function(dm, table = NULL) {
-  if (!quo_is_null(enquo(table))) {
-    table_name <- as_name(enexpr(table))
-    check_correct_input(dm, table_name)
-
-    tbl_obj <- tbl(dm, table_name)
-    nrows <- pull(collect(count(tbl_obj)))
-    names(nrows) <- table_name
-    return(nrows)
-  }
-
-  nrows <- sum(map_int(cdm_get_tables(dm), ~ pull(collect(count(.)))))
-  dm_name <- as_label(substitute(dm))
-  if (dm_name != ".") {
-    names(nrows) <- dm_name
-  } else {
-    names(nrows) <- "dm"
-  }
-
-  return(nrows)
+cdm_nrow <- function(dm) {
+  sum(map_dbl(cdm_get_tables(dm), ~ as_double(pull(collect(count(.))))))
 }
