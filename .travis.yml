@@ -38,6 +38,7 @@ latex: false
 env:
   global:
   - MAKEFLAGS="-j 2"
+  - _R_CHECK_PACKAGE_DEPENDS_IGNORE_MISSING_ENHANCES_="true"
 
 addons:
   apt:
