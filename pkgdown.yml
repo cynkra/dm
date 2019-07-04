@@ -1,0 +1,16 @@
+pandoc: '2.2'
+pkgdown: 1.3.0.9100
+pkgdown_sha: 75c3954d45c73f31750ae14fb08502d86adf3e2b
+articles:
+  dm-class-and-basic-operations: dm-class-and-basic-operations.html
+  dm-low-level: dm-low-level.html
+  dm-visualization: dm-visualization.html
+  dm: dm.html
+  dm-db: wip/dm-db.html
+  dm-filtering: wip/dm-filtering.html
+  dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
+  dm-tips-and-tricks: wip/dm-tips-and-tricks.html
+urls:
+  reference: https://krlmlr.github.io/dm/reference
+  article: https://krlmlr.github.io/dm/articles
+
