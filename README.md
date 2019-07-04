@@ -185,6 +185,9 @@ package](https://github.com/bergant/datamodelr), and upon the
 [tidyverse](https://www.tidyverse.org/). We’re looking forward to a good
 collaboration\!
 
+The [{polyply} package](https://github.com/russHyde/polyply) has a
+similar intent with a slightly different interface.
+
 ## Installation
 
 Once on CRAN, the package can be installed with
