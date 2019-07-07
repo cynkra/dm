@@ -17,6 +17,9 @@ is_postgres_empty <- function() {
 }
 
 clear_postgres <- function() {
+  src_postgres <- src_test("postgres")
+  con_postgres <- src_postgres$con
+
   walk(
     get_test_tables_from_postgres() %>%
       pull(),
