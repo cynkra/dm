@@ -143,6 +143,8 @@ We're looking forward to a good collaboration!
 
 The [{polyply} package](https://github.com/russHyde/polyply) has a similar intent with a slightly different interface.
 
+Articles in the [{rquery} package](https://github.com/WinVector/rquery) discuss [join controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md) and [join dependency sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md), with the intent to move the declaration of table relationships from code to data.
+
 ## Installation
 
 Once on CRAN, the package can be installed with
