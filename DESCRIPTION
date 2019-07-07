@@ -39,7 +39,7 @@ Imports:
     shiny,
     stringr,
     tibble,
-    tidyr
+    tidyr (>= 0.8.3)
 Suggests: 
     dbplyr,
     DiagrammeR,
