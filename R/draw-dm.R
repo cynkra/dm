@@ -105,7 +105,7 @@ color_quos_to_display <- function(...) {
   new_values <- rev(colors$datamodelr[match(values, colors$dm)])
 
   tibble(tables = names(quos), colors = new_values[idx]) %>%
-    nest(data = -colors) %>%
+    nest(-colors) %>%
     deframe() %>%
     map(pull)
 }
