@@ -14,31 +14,111 @@ status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/pac
 # dm
 
 The goal of {dm} is to provide tools for reoccurring tasks when working
-with a set of related tables. The `dm` class stores properties of a set
-of related tables in a compound object:
+with multiple tables.
+
+## Why?
+
+As an example, we consider the [nycflights13]() dataset. This dataset
+contains five tables: the main `flights` table with links into the
+`airlines`, `planes` and `airports` tables, and a `weather` table
+without an explicit link.
+
+<img src="man/figures/README-draw-1.png" width="100%" />
+
+The separation into multiple tables achieves several goals:
+
+  - Avoid repetition, conserve memory: the facts about each airline,
+    airport, and airplane are stored only once
+      - name of each airline
+      - name, location, altitude of each airport
+      - manufacturerm number of seats for each airplane
+  - Improve consistency: if facts (e.g. the name of an airport) need to
+    be updated, they need to be updated in only one place
+  - Segmentation: facts are organized by topic, individual tables are
+    smaller and easier to handle
+
+The links are established through *primary* and *foreign keys*: a
+primary key identify rows/tuples/observations of *this* table, foreign
+keys link to a row/tuple/observation in *another* table. See the
+[database
+normalization](https://simple.wikipedia.org/wiki/Database_normalisation)
+for more detail.
+
+### Joining
+
+The separation into multiple tables helps data quality but poses a
+different challenge: for each flight, the location of the origin
+airport, or the details on the airplane, are not available immediately
+but must be *joined*/merged:
+
+``` r
+library(tidyverse)
+library(nycflights13)
+
+flights %>% 
+  select(month, day, origin, tailnum) %>% 
+  left_join(airports, by = c("origin" = "faa")) %>% 
+  left_join(planes, by = "tailnum")
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 19</span><span>
+#&gt;    </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>origin</span><span> </span><span style='font-weight: bold;'>tailnum</span><span> </span><span style='font-weight: bold;'>name</span><span>    </span><span style='font-weight: bold;'>lat</span><span>   </span><span style='font-weight: bold;'>lon</span><span>   </span><span style='font-weight: bold;'>alt</span><span>    </span><span style='font-weight: bold;'>tz</span><span> </span><span style='font-weight: bold;'>dst</span><span>   </span><span style='font-weight: bold;'>tzone</span><span>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>     1     1 EWR    N14228  Newa…  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'> 2</span><span>     1     1 LGA    N24211  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'> 3</span><span>     1     1 JFK    N619AA  John…  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'> 4</span><span>     1     1 JFK    N804JB  John…  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'> 5</span><span>     1     1 LGA    N668DN  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'> 6</span><span>     1     1 EWR    N39463  Newa…  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'> 7</span><span>     1     1 EWR    N516JB  Newa…  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'> 8</span><span>     1     1 LGA    N829AS  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'> 9</span><span>     1     1 JFK    N593JB  John…  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'>10</span><span>     1     1 LGA    N3ALAA  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
+#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 8 more variables: </span><span style='color: #555555;font-weight: bold;'>year</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>type</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>manufacturer</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>model</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engines</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>seats</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>speed</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engine</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+</span></CODE></PRE>
+
+## Features
+
+This package helps with many challenges that arise when working with
+relational data models.
+
+### Compound object
+
+The `dm` class stores properties of a set of related tables in a
+compound object:
 
   - a `src`: location of tables (database, in-memory, …)
   - a `data_model`: metadata about data model (keys, table & columns
     names, …)
   - the data: the tables itself
 
-This concept augments {dplyr}/{dbplyr} workflows:
+This concept helps separating the join logic from the code: declare your
+relationships once, as part of your data, then use them in your code
+without repeating yourself.
 
-  - multiple related tables are kept in a single object,
-  - joins across multiple tables are available by stating the tables
-    involved, no need to memoize column names or relationships
-  - works with all data sources that provide a {dplyr} interface: local
-    data frames, relational databases, and more.
+### Storage agnostic
 
-In addition, a battery of utilities is provided that helps with creating
-a tidy data model.
+The {dm} package augments
+[{dplyr}](https://dplyr.tidyverse.org/)/[{dbplyr}](https://dbplyr.tidyverse.org/)
+workflows. Generally, if you can use {dplyr} on your data, it’s likely
+that you can use {dm} too. This includes local data frames, relational
+database systems, and many more.
+
+### Data preparation
+
+A battery of utilities helps with creating a tidy relational data model.
+
+  - Splitting and rejoining tables
+  - Determining key candidates
+  - Checking keys and cardinalities
 
 ## Example
 
 A readymade `dm` object with preset keys is included in the package:
 
 ``` r
-library(tidyverse)
 library(dm)
 
 cdm_nycflights13()

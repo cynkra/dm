@@ -35,27 +35,81 @@ knit_print.grViz <- function(x, ...) {
 
 # dm
 
-The goal of {dm} is to provide tools for reoccurring tasks when working with a set of related tables.
+The goal of {dm} is to provide tools for reoccurring tasks when working with multiple tables.
+
+## Why?
+
+As an example, we consider the [nycflights13]() dataset.
+This dataset contains five tables: the main `flights` table with links into the `airlines`, `planes` and `airports` tables, and a `weather` table without an explicit link.
+
+```{r draw, echo = FALSE}
+cdm_nycflights13() %>% 
+  cdm_draw()
+```
+
+The separation into multiple tables achieves several goals:
+
+- Avoid repetition, conserve memory: the facts about each airline, airport, and airplane are stored only once
+    - name of each airline
+    - name, location, altitude of each airport
+    - manufacturerm number of seats for each airplane
+- Improve consistency: if facts (e.g. the name of an airport) need to be updated, they need to be updated in only one place
+- Segmentation: facts are organized by topic, individual tables are smaller and easier to handle
+
+The links are established through *primary* and *foreign keys*: a primary key identify rows/tuples/observations of *this* table, foreign keys link to a row/tuple/observation in *another* table.
+See the [database normalization](https://simple.wikipedia.org/wiki/Database_normalisation) for more detail.
+
+### Joining
+
+The separation into multiple tables helps data quality but poses a different challenge:
+for each flight, the location of the origin airport, or the details on the airplane, are not available immediately but must be *joined*/merged:
+
+```{r join}
+library(tidyverse)
+library(nycflights13)
+
+flights %>% 
+  select(month, day, origin, tailnum) %>% 
+  left_join(airports, by = c("origin" = "faa")) %>% 
+  left_join(planes, by = "tailnum")
+```
+
+## Features
+
+This package helps with many challenges that arise when working with relational data models.
+
+### Compound object
+
 The `dm` class stores properties of a set of related tables in a compound object:
 
 - a `src`: location of tables (database, in-memory, ...)
 - a `data_model`: metadata about data model (keys, table & columns names, ...)
 - the data: the tables itself
 
-This concept augments {dplyr}/{dbplyr} workflows:
+This concept helps separating the join logic from the code: declare your relationships once, as part of your data, then use them in your code without repeating yourself.
 
-- multiple related tables are kept in a single object,
-- joins across multiple tables are available by stating the tables involved, no need to memoize column names or relationships
-- works with all data sources that provide a {dplyr} interface: local data frames, relational databases, and more.
 
-In addition, a battery of utilities is provided that helps with creating a tidy data model.
+### Storage agnostic
+
+The {dm} package augments [{dplyr}](https://dplyr.tidyverse.org/)/[{dbplyr}](https://dbplyr.tidyverse.org/) workflows.
+Generally, if you can use {dplyr} on your data, it's likely that you can use {dm} too.
+This includes local data frames, relational database systems, and many more.
+
+
+### Data preparation
+
+A battery of utilities helps with creating a tidy relational data model.
+
+- Splitting and rejoining tables
+- Determining key candidates
+- Checking keys and cardinalities
+
 
 ## Example
 
 A readymade `dm` object with preset keys is included in the package:
 
-```{r}
-library(tidyverse)
+```{r dm}
 library(dm)
 
 cdm_nycflights13()
@@ -63,9 +117,7 @@ cdm_nycflights13()
 
 The `cdm_draw()` function creates a visualization of the entity relationship model:
 
-```{r draw}
-cdm_nycflights13() %>% 
-  cdm_draw()
+```{r draw, echo = TRUE}
 ```
 
 ### Filtering and joining {#filter}
