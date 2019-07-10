@@ -42,8 +42,8 @@ The separation into multiple tables achieves several goals:
   - **Avoid repetition, conserve memory**: the facts about each airline,
     airport, and airplane are stored only once
       - name of each airline
-      - name, location, altitude of each airport
-      - manufacturerm number of seats for each airplane
+      - name, location and altitude of each airport
+      - manufacturer and number of seats for each airplane
   - **Improve consistency**: if facts (e.g. the name of an airport) need
     to be updated, they need to be updated in only one place
   - **Segmentation**: facts are organized by topic, individual tables
