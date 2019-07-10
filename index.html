@@ -95,7 +95,21 @@
 <div id="dm" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dm" class="anchor"></a>dm</h1></div>
-<p>The goal of {dm} is to provide tools for reoccurring tasks when working with multiple tables. Skip to the <a href="#features">Features section</a> if you are familiar with relational data models.</p>
+<p>The goal of {dm} is to provide tools for working with multiple tables. Skip to the <a href="#features">Features section</a> if you are familiar with relational data models.</p>
+<ul>
+<li>
+<a href="#why">Why?</a> gives a short motivation</li>
+<li>
+<a href="#features">Features</a> gives a one-page overview over the scope of this package</li>
+<li>
+<a href="#example">Example</a> outlines some of the features in a short example</li>
+<li>
+<a href="#more-information">More information</a> offers links to more detailed articles</li>
+<li>
+<a href="#standing-on-the-shoulders-of-giants">Standing on the shoulders of giants</a> shows related work</li>
+<li>
+<a href="#installation">Installation</a> describes how to install the package</li>
+</ul>
 <div id="why" class="section level2">
 <h2 class="hasAnchor">
 <a href="#why" class="anchor"></a>Why?</h2>
@@ -115,17 +129,20 @@
 <path fill="none" stroke="#555555" d="M50,-61C66.1374,-61 71.8091,-67.4752 83.8583,-70.0046"></path><polygon fill="#555555" stroke="#555555" points="83.7059,-73.5064 94,-71 84.3897,-66.5399 83.7059,-73.5064"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="3,-138 3,-158 51,-158 51,-138 3,-138"></polygon><text text-anchor="start" x="4.8492" y="-143.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#507e32" points="2,-137 2,-159 52,-159 52,-137 2,-137"></polygon></g></g></svg><p>The separation into multiple tables achieves several goals:</p>
 <ul>
-<li>Avoid repetition, conserve memory: the facts about each airline, airport, and airplane are stored only once
+<li>
+<strong>Avoid repetition, conserve memory</strong>: the facts about each airline, airport, and airplane are stored only once
 <ul>
 <li>name of each airline</li>
 <li>name, location, altitude of each airport</li>
 <li>manufacturerm number of seats for each airplane</li>
 </ul>
 </li>
-<li>Improve consistency: if facts (e.g. the name of an airport) need to be updated, they need to be updated in only one place</li>
-<li>Segmentation: facts are organized by topic, individual tables are smaller and easier to handle</li>
+<li>
+<strong>Improve consistency</strong>: if facts (e.g. the name of an airport) need to be updated, they need to be updated in only one place</li>
+<li>
+<strong>Segmentation</strong>: facts are organized by topic, individual tables are smaller and easier to handle</li>
 </ul>
-<p>The links are established through <em>primary</em> and <em>foreign keys</em>: a primary key identify rows/tuples/observations of <em>this</em> table, foreign keys link to a row/tuple/observation in <em>another</em> table. See the <a href="https://simple.wikipedia.org/wiki/Database_normalisation">Simple English Wikipedia article on database normalization</a> for more detail.</p>
+<p>The links are established through <em>primary</em> and <em>foreign keys</em>: a primary key identifies rows/tuples/observations of <em>this</em> table, foreign keys link to a row/tuple/observation in <em>another</em> table. See the <a href="https://simple.wikipedia.org/wiki/Database_normalisation">Simple English Wikipedia article on database normalization</a> for more detail.</p>
 <div id="joining" class="section level3">
 <h3 class="hasAnchor">
 <a href="#joining" class="anchor"></a>Joining</h3>
@@ -163,11 +180,10 @@
 <div id="compound-object" class="section level3">
 <h3 class="hasAnchor">
 <a href="#compound-object" class="anchor"></a>Compound object</h3>
-<p>The <code>dm</code> class stores properties of a set of related tables in a compound object:</p>
+<p>The <code>dm</code> class manages several related tables. It stores both the <strong>data</strong> and the <strong>metadata</strong> in a compound object, and defines operations on that object. These operations either affect the data (e.g., a filter), or the metadata (e.g., definition of keys or creation of a new table), or both.</p>
 <ul>
-<li>a <code>src</code>: location of tables (database, in-memory, …)</li>
-<li>a <code>data_model</code>: metadata about data model (keys, table &amp; columns names, …)</li>
-<li>the data: the tables itself</li>
+<li>data: a table source storing all tables</li>
+<li>metadata: table names, column names, primary and foreign keys</li>
 </ul>
 <p>This concept helps separating the join logic from the code: declare your relationships once, as part of your data, then use them in your code without repeating yourself.</p>
 </div>
@@ -281,13 +297,15 @@
 <div id="more-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#more-information" class="anchor"></a>More information</h2>
-<p>If you would like to learn more about the possibilities of {dm}, please see the <a href="https://krlmlr.github.io/dm/reference/index.html">function reference</a> or the articles:</p>
+<p>If you would like to learn more about {dm}, the <a href="https://krlmlr.github.io/dm/articles/dm.html">Intro article</a> is a good place to start. Further resources:</p>
 <ul>
-<li><a href="https://krlmlr.github.io/dm/articles/dm.html">Getting started</a></li>
-<li><a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html">Class ‘dm’ and basic operations</a></li>
-<li><a href="https://krlmlr.github.io/dm/articles/dm-visualization.html">Visualizing ‘dm’ objects</a></li>
+<li><a href="https://krlmlr.github.io/dm/reference/index.html">Function reference</a></li>
 <li>
-<a href="https://krlmlr.github.io/dm/articles/dm-low-level.html">Low-level operations</a> <!-- FIXME: vignettes missing; once there, needs to be linked -->
+<a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html">Class ‘dm’ and basic operations</a> article</li>
+<li>
+<a href="https://krlmlr.github.io/dm/articles/dm-visualization.html">Visualizing ‘dm’ objects</a> article</li>
+<li>
+<a href="https://krlmlr.github.io/dm/articles/dm-low-level.html">Low-level operations</a> article <!-- FIXME: vignettes missing; once there, needs to be linked -->
 </li>
 </ul>
 </div>
@@ -304,6 +322,8 @@
 <p>The {dm} package builds heavily upon the <a href="https://github.com/bergant/datamodelr">{datamodelr} package</a>, and upon the <a href="https://www.tidyverse.org/">tidyverse</a>. We’re looking forward to a good collaboration!</p>
 <p>The <a href="https://github.com/russHyde/polyply">{polyply} package</a> has a similar intent with a slightly different interface.</p>
 <p>Articles in the <a href="https://github.com/WinVector/rquery">{rquery} package</a> discuss <a href="https://github.com/WinVector/rquery/blob/master/extras/JoinController.md">join controllers</a> and <a href="https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md">join dependency sorting</a>, with the intent to move the declaration of table relationships from code to data.</p>
+<p>The <a href="https://github.com/thomasp85/tidygraph">{tidygraph} package</a> stores a network as two related tables of <code>nodes</code> and <code>edges</code>, compatible with {dplyr} workflows.</p>
+<p>In object-oriented programming languages, <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">object-relational mapping</a> is a similar concept that attempts to map a set of related tables to a class hierarchy.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
