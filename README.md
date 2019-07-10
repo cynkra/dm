@@ -18,9 +18,10 @@ with multiple tables.
 
 ## Why?
 
-As an example, we consider the [nycflights13]() dataset. This dataset
-contains five tables: the main `flights` table with links into the
-`airlines`, `planes` and `airports` tables, and a `weather` table
+As an example, we consider the
+[nycflights13](https://github.com/hadley/nycflights13) dataset. This
+dataset contains five tables: the main `flights` table with links into
+the `airlines`, `planes` and `airports` tables, and a `weather` table
 without an explicit link.
 
 <img src="man/figures/README-draw-1.png" width="100%" />
