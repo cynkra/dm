@@ -13,9 +13,19 @@ status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/pac
 
 # dm
 
-The goal of {dm} is to provide tools for reoccurring tasks when working
-with multiple tables. Skip to the [Features section](#features) if you
-are familiar with relational data models.
+The goal of {dm} is to provide tools for working with multiple tables.
+Skip to the [Features section](#features) if you are familiar with
+relational data models.
+
+  - [Why?](#why) gives a short motivation
+  - [Features](#features) gives a one-page overview over the scope of
+    this package
+  - [Example](#example) outlines some of the features in a short example
+  - [More information](#more-information) offers links to more detailed
+    articles
+  - [Standing on the shoulders of
+    giants](#standing-on-the-shoulders-of-giants) shows related work
+  - [Installation](#installation) describes how to install the package
 
 ## Why?
 
@@ -29,18 +39,18 @@ without an explicit link.
 
 The separation into multiple tables achieves several goals:
 
-  - Avoid repetition, conserve memory: the facts about each airline,
+  - **Avoid repetition, conserve memory**: the facts about each airline,
     airport, and airplane are stored only once
       - name of each airline
       - name, location, altitude of each airport
       - manufacturerm number of seats for each airplane
-  - Improve consistency: if facts (e.g. the name of an airport) need to
-    be updated, they need to be updated in only one place
-  - Segmentation: facts are organized by topic, individual tables are
-    smaller and easier to handle
+  - **Improve consistency**: if facts (e.g. the name of an airport) need
+    to be updated, they need to be updated in only one place
+  - **Segmentation**: facts are organized by topic, individual tables
+    are smaller and easier to handle
 
 The links are established through *primary* and *foreign keys*: a
-primary key identify rows/tuples/observations of *this* table, foreign
+primary key identifies rows/tuples/observations of *this* table, foreign
 keys link to a row/tuple/observation in *another* table. See the [Simple
 English Wikipedia article on database
 normalization](https://simple.wikipedia.org/wiki/Database_normalisation)
@@ -88,13 +98,14 @@ relational data models.
 
 ### Compound object
 
-The `dm` class stores properties of a set of related tables in a
-compound object:
+The `dm` class manages several related tables. It stores both the
+**data** and the **metadata** in a compound object, and defines
+operations on that object. These operations either affect the data
+(e.g., a filter), or the metadata (e.g., definition of keys or creation
+of a new table), or both.
 
-  - a `src`: location of tables (database, in-memory, …)
-  - a `data_model`: metadata about data model (keys, table & columns
-    names, …)
-  - the data: the tables itself
+  - data: a table source storing all tables
+  - metadata: table names, column names, primary and foreign keys
 
 This concept helps separating the join logic from the code: declare your
 relationships once, as part of your data, then use them in your code
@@ -238,18 +249,21 @@ nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
 
 ## More information
 
-If you would like to learn more about the possibilities of {dm}, please
-see the [function
-reference](https://krlmlr.github.io/dm/reference/index.html) or the
-articles:
+If you would like to learn more about {dm}, the [Intro
+article](https://krlmlr.github.io/dm/articles/dm.html) is a good place
+to start. Further resources:
 
-  - [Getting started](https://krlmlr.github.io/dm/articles/dm.html)
+  - [Function
+    reference](https://krlmlr.github.io/dm/reference/index.html)
   - [Class ‘dm’ and basic
     operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html)
+    article
   - [Visualizing ‘dm’
     objects](https://krlmlr.github.io/dm/articles/dm-visualization.html)
+    article
   - [Low-level
     operations](https://krlmlr.github.io/dm/articles/dm-low-level.html)
+    article
     <!-- FIXME: vignettes missing; once there, needs to be linked -->
 
 ## Standing on the shoulders of giants
@@ -277,6 +291,15 @@ and [join dependency
 sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md),
 with the intent to move the declaration of table relationships from code
 to data.
+
+The [{tidygraph} package](https://github.com/thomasp85/tidygraph) stores
+a network as two related tables of `nodes` and `edges`, compatible with
+{dplyr} workflows.
+
+In object-oriented programming languages, [object-relational
+mapping](https://en.wikipedia.org/wiki/Object-relational_mapping) is a
+similar concept that attempts to map a set of related tables to a class
+hierarchy.
 
 ## Installation
 
