@@ -14,7 +14,8 @@ status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/pac
 # dm
 
 The goal of {dm} is to provide tools for reoccurring tasks when working
-with multiple tables.
+with multiple tables. Skip to the [Features section](#features) if you
+are familiar with relational data models.
 
 ## Why?
 
@@ -40,8 +41,8 @@ The separation into multiple tables achieves several goals:
 
 The links are established through *primary* and *foreign keys*: a
 primary key identify rows/tuples/observations of *this* table, foreign
-keys link to a row/tuple/observation in *another* table. See the
-[database
+keys link to a row/tuple/observation in *another* table. See the [Simple
+English Wikipedia article on database
 normalization](https://simple.wikipedia.org/wiki/Database_normalisation)
 for more detail.
 
