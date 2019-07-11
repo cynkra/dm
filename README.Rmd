@@ -1,10 +1,10 @@
 ---
-output: 
+  output: 
   github_document:
-    html_preview: false
+  html_preview: false
 ---
-
-```{r setup, include = FALSE}
+  
+  ```{r setup, include = FALSE}
 library(tidyverse)
 pkgload::load_all()
 
@@ -27,119 +27,119 @@ knit_print.grViz <- function(x, ...) {
 ```
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
-[![Codecov test coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
-[![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/package=dm)
-<!-- badges: end -->
-
-# dm
-
-The goal of {dm} is to provide tools for reoccurring tasks when working with a set of related tables.
-The `dm` class stores properties of a set of related tables in a compound object:
-
-- a `src`: location of tables (database, in-memory, ...)
-- a `data_model`: metadata about data model (keys, table & columns names, ...)
-- the data: the tables itself
-
-This concept augments {dplyr}/{dbplyr} workflows:
-
-- multiple related tables are kept in a single object,
-- joins across multiple tables are available by stating the tables involved, no need to memoize column names or relationships
-- works with all data sources that provide a {dplyr} interface: local data frames, relational databases, and more.
-
-In addition, a battery of utilities is provided that helps with creating a tidy data model.
-
-## Example
-
-A readymade `dm` object with preset keys is included in the package:
-
-```{r}
-library(tidyverse)
-library(dm)
-
-cdm_nycflights13()
-```
-
-The `cdm_draw()` function creates a visualization of the entity relationship model:
-
-```{r draw}
-cdm_nycflights13() %>% 
-  cdm_draw()
-```
-
-### Filtering and joining {#filter}
-
-Similarly to `dplyr::filter()`, a filtering function `cdm_filter()` is available for `dm` objects.
-You need to provide the `dm` object, the table whose rows you want to filter, and the filter expression.
-A `dm` object is returned whose tables only contain rows that are related to the reduced rows in the filtered table.
-This currently only works for cycle-free relationships between the tables.
-
-```{r}
-cdm_nycflights13(cycle = FALSE) %>%
-  cdm_get_tables() %>%
-  map_int(nrow)
-
-cdm_nycflights13(cycle = FALSE) %>% 
-  cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
-  cdm_get_tables() %>%
-  map_int(nrow)
-```
-
-For joining two tables using their relationship defined in the `dm`, you can use `cdm_join_tbl()`:
-
-```{r}
-cdm_nycflights13(cycle = FALSE) %>%
-  cdm_join_tbl(airports, flights, join = semi_join)
-```
-
-In our `dm`, the `origin` column of the `flights` table points to the `airports` table.
-Since all `nycflights13`-flights depart from New York, only these airports are included in the semi-join.
-
-### From and to databases
-
-In order to transfer an existing `dm` object to a DB, you can call `cdm_copy_to()` with the target DB and the `dm` object:
-
-```{r}
-src_sqlite <- src_sqlite(":memory:", create = TRUE)
-src_sqlite
-nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13())
-nycflights13_remote
-```
-
-The key constraints from the original object are also copied to the newly created object.
-With the default setting `set_key_constraints = TRUE` for `cdm_copy_to()`, key constraints are also established on the target DB.
-Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).
-
-It is also possible to automatically create a `dm` object from the permanent tables of a DB.
-Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated.
-The support for other DBMS will be implemented in a future update.
-
-```{r eval=FALSE}
-src_postgres <- src_postgres()
-nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
-```
-
-## More information
-
-If you would like to learn more about the possibilities of {dm}, please see the [function reference](https://krlmlr.github.io/dm/reference/index.html) or the articles:
-
-- [Getting started](https://krlmlr.github.io/dm/articles/dm.html)
-- [Class 'dm' and basic operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html)
-- [Visualizing 'dm' objects](https://krlmlr.github.io/dm/articles/dm-visualization.html)
-- [Low-level operations](https://krlmlr.github.io/dm/articles/dm-low-level.html)
-<!-- FIXME: vignettes missing; once there, needs to be linked -->
-
-## Standing on the shoulders of giants
-
-This package follows the tidyverse principles:
-
-- `dm` objects are immutable (your data will never be overwritten in place)
-- many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
-- tidy evaluation is used (unquoted function parameters are supported)
-
-The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
-We're looking forward to a good collaboration!
+  [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+                                                                                                 [![Travis build status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
+                                                                                               [![Codecov test coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
+                                                                                               [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/package=dm)
+                                                                                               <!-- badges: end -->
+                                                                                                 
+                                                                                                 # dm
+                                                                                                 
+                                                                                                 The goal of {dm} is to provide tools for recurring tasks when working with a set of related tables.
+                                                                                               The `dm` class stores properties of a set of related tables in a compound object:
+                                                                                                 
+                                                                                                 - a `src`: location of tables (database, in-memory, ...)
+                                                                                               - a `data_model`: metadata about data model (keys, table & columns names, ...)
+                                                                                               - the data: the tables itself
+                                                                                               
+                                                                                               This concept augments {dplyr}/{dbplyr} workflows:
+                                                                                                 
+                                                                                                 - multiple related tables are kept in a single object,
+                                                                                               - joins across multiple tables are available by stating the tables involved, no need to memorize column names or relationships
+                                                                                               - works with all data sources that provide a {dplyr} interface: local data frames, relational databases, and more.
+                                                                                               
+                                                                                               In addition, a battery of utilities is provided that helps with creating a tidy data model.
+                                                                                               
+                                                                                               ## Example
+                                                                                               
+                                                                                               A readymade `dm` object with preset keys is included in the package:
+                                                                                                 
+                                                                                                 ```{r}
+                                                                                               library(tidyverse)
+                                                                                               library(dm)
+                                                                                               
+                                                                                               cdm_nycflights13()
+                                                                                               ```
+                                                                                               
+                                                                                               The `cdm_draw()` function creates a visualization of the entity relationship model:
+                                                                                                 
+                                                                                                 ```{r draw}
+                                                                                               cdm_nycflights13() %>% 
+                                                                                                 cdm_draw()
+                                                                                               ```
+                                                                                               
+                                                                                               ### Filtering and joining {#filter}
+                                                                                               
+                                                                                               Similarly to `dplyr::filter()`, a filtering function `cdm_filter()` is available for `dm` objects.
+                                                                                               You need to provide the `dm` object, the table whose rows you want to filter, and the filter expression.
+                                                                                               A `dm` object is returned whose tables only contain rows that are related to the reduced rows in the filtered table.
+                                                                                               This currently only works for cycle-free relationships between the tables.
+                                                                                               
+                                                                                               ```{r}
+                                                                                               cdm_nycflights13(cycle = FALSE) %>%
+                                                                                                 cdm_get_tables() %>%
+                                                                                                 map_int(nrow)
+                                                                                               
+                                                                                               cdm_nycflights13(cycle = FALSE) %>% 
+                                                                                                 cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
+                                                                                                 cdm_get_tables() %>%
+                                                                                                 map_int(nrow)
+                                                                                               ```
+                                                                                               
+                                                                                               For joining two tables using their relationship defined in the `dm`, you can use `cdm_join_tbl()`:
+                                                                                                 
+                                                                                                 ```{r}
+                                                                                               cdm_nycflights13(cycle = FALSE) %>%
+                                                                                                 cdm_join_tbl(airports, flights, join = semi_join)
+                                                                                               ```
+                                                                                               
+                                                                                               In our `dm`, the `origin` column of the `flights` table points to the `airports` table.
+                                                                                               Since all `nycflights13`-flights depart from New York, only these airports are included in the semi-join.
+                                                                                               
+                                                                                               ### From and to databases
+                                                                                               
+                                                                                               In order to transfer an existing `dm` object to a DB, you can call `cdm_copy_to()` with the target DB and the `dm` object:
+                                                                                                 
+                                                                                                 ```{r}
+                                                                                               src_sqlite <- src_sqlite(":memory:", create = TRUE)
+                                                                                               src_sqlite
+                                                                                               nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13())
+                                                                                               nycflights13_remote
+                                                                                               ```
+                                                                                               
+                                                                                               The key constraints from the original object are also copied to the newly created object.
+                                                                                               With the default setting `set_key_constraints = TRUE` for `cdm_copy_to()`, key constraints are also established on the target DB.
+                                                                                               Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).
+                                                                                               
+                                                                                               It is also possible to automatically create a `dm` object from the permanent tables of a DB.
+                                                                                               Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated.
+                                                                                               The support for other DBMS will be implemented in a future update.
+                                                                                               
+                                                                                               ```{r eval=FALSE}
+                                                                                               src_postgres <- src_postgres()
+                                                                                               nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
+                                                                                               ```
+                                                                                               
+                                                                                               ## More information
+                                                                                               
+                                                                                               If you would like to learn more about the possibilities of {dm}, please see the [function reference](https://krlmlr.github.io/dm/reference/index.html) or the articles:
+                                                                                                 
+                                                                                                 - [Getting started](https://krlmlr.github.io/dm/articles/dm.html)
+                                                                                               - [Class 'dm' and basic operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html)
+                                                                                               - [Visualizing 'dm' objects](https://krlmlr.github.io/dm/articles/dm-visualization.html)
+                                                                                               - [Low-level operations](https://krlmlr.github.io/dm/articles/dm-low-level.html)
+                                                                                               <!-- FIXME: vignettes missing; once there, needs to be linked -->
+                                                                                                 
+                                                                                                 ## Standing on the shoulders of giants
+                                                                                                 
+                                                                                                 This package follows the tidyverse principles:
+                                                                                                 
+                                                                                                 - `dm` objects are immutable (your data will never be overwritten in place)
+                                                                                               - many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)
+                                                                                               - tidy evaluation is used (unquoted function parameters are supported)
+                                                                                               
+                                                                                               The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
+                                                                                               We're looking forward to a good collaboration!
 
 The [{polyply} package](https://github.com/russHyde/polyply) has a similar intent with a slightly different interface.
 
