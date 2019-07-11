@@ -66,7 +66,7 @@ The separation into multiple tables achieves several goals:
 - **Segmentation**: facts are organized by topic, individual tables are smaller and easier to handle
 
 The links are established through *primary* and *foreign keys*: a primary key identifies rows/tuples/observations of *this* table, foreign keys link to a row/tuple/observation in *another* table.
-See the [Simple English Wikipedia article on database normalization](https://simple.wikipedia.org/wiki/Database_normalisation) for more detail.
+If you would like to read more about relational data models, you can find a nicely structured site with information about them [here](https://www.guru99.com/relational-data-model-dbms.html).
 
 ### Joining
 
