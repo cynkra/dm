@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find foreign key candidates in a table — cdm_check_for_fk_candidates • dm</title>
+<title>Which columns are candidates for a primary key column? — cdm_enum_pk_candidates • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,12 +32,14 @@
 
 
 
-<meta property="og:title" content="Find foreign key candidates in a table — cdm_check_for_fk_candidates" />
+<meta property="og:title" content="Which columns are candidates for a primary key column? — cdm_enum_pk_candidates" />
 
-<meta property="og:description" content="Which columns are foreign candidates of a table, referencing the primary key column of another dm object's table?
-cdm_check_for_fk_candidates() checks first, if ref_table has a primary key set. Then it determines
-for each column of table, if this column contains only a subset of values of the primary key column of
-ref_table and is therefore a candidate for a foreign key from table to ref_table." />
+<meta property="og:description" content="cdm_enum_pk_candidates() checks for each column of a
+table of a dm object if this column contains only unique values and is therefore
+a unique key of this table.
+enum_pk_candidates() checks for each column of a
+table if this column contains only unique values and is therefore
+a candidate for a unique key of this table." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -124,21 +126,25 @@ ref_table and is therefore a candidate for a foreign key from table to ref_table
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find foreign key candidates in a table</h1>
+    <h1>Which columns are candidates for a primary key column?</h1>
     
-    <div class="hidden name"><code>cdm_check_for_fk_candidates.Rd</code></div>
+    <div class="hidden name"><code>enum_pk_candidates.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Which columns are foreign candidates of a table, referencing the primary key column of another <code><a href='dm.html'>dm</a></code> object's table?
-<code>cdm_check_for_fk_candidates()</code> checks first, if <code>ref_table</code> has a primary key set. Then it determines
-for each column of <code>table</code>, if this column contains only a subset of values of the primary key column of
-<code>ref_table</code> and is therefore a candidate for a foreign key from <code>table</code> to <code>ref_table</code>.</p>
+    <p><code>cdm_enum_pk_candidates()</code> checks for each column of a
+table of a <code><a href='dm.html'>dm</a></code> object if this column contains only unique values and is therefore
+a unique key of this table.</p>
+<p><code>enum_pk_candidates()</code> checks for each column of a
+table if this column contains only unique values and is therefore
+a candidate for a unique key of this table.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_check_for_fk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+
+<span class='fu'>enum_pk_candidates</span>(<span class='no'>table</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,49 +155,53 @@ for each column of <code>table</code>, if this column contains only a subset of 
     </tr>
     <tr>
       <th>table</th>
-      <td><p>The table whose columns should be tested for foreign key candidate potential</p></td>
-    </tr>
-    <tr>
-      <th>ref_table</th>
-      <td><p>A table with a primary key.</p></td>
+      <td><p>A table in the <code>dm</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Foreign key functions: <code><a href='cdm_add_fk.html'>cdm_add_fk</a></code>,
-  <code><a href='cdm_get_all_fks.html'>cdm_get_all_fks</a></code>, <code><a href='cdm_get_fk.html'>cdm_get_fk</a></code>,
-  <code><a href='cdm_has_fk.html'>cdm_has_fk</a></code>, <code><a href='cdm_rm_fk.html'>cdm_rm_fk</a></code></p></div>
+    <div class='dont-index'><p>Other Primary key functions: <code><a href='cdm_add_pk.html'>cdm_add_pk</a></code>,
+  <code><a href='cdm_get_all_pks.html'>cdm_get_all_pks</a></code>, <code><a href='cdm_get_pk.html'>cdm_get_pk</a></code>,
+  <code><a href='cdm_has_pk.html'>cdm_has_pk</a></code>, <code><a href='cdm_rm_pk.html'>cdm_rm_pk</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-
 <span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>()
 
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_check_for_fk_candidates</span>(<span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 5
-#&gt;    candidate column         table   ref_table ref_table_pk
-#&gt;    &lt;lgl&gt;     &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;       
-#&gt;  1 FALSE     year           flights airports  faa         
-#&gt;  2 FALSE     month          flights airports  faa         
-#&gt;  3 FALSE     day            flights airports  faa         
-#&gt;  4 FALSE     dep_time       flights airports  faa         
-#&gt;  5 FALSE     sched_dep_time flights airports  faa         
-#&gt;  6 FALSE     dep_delay      flights airports  faa         
-#&gt;  7 FALSE     arr_time       flights airports  faa         
-#&gt;  8 FALSE     sched_arr_time flights airports  faa         
-#&gt;  9 FALSE     arr_delay      flights airports  faa         
-#&gt; 10 FALSE     carrier        flights airports  faa         
-#&gt; 11 FALSE     flight         flights airports  faa         
-#&gt; 12 FALSE     tailnum        flights airports  faa         
-#&gt; 13 TRUE      origin         flights airports  faa         
-#&gt; 14 FALSE     dest           flights airports  faa         
-#&gt; 15 FALSE     air_time       flights airports  faa         
-#&gt; 16 FALSE     distance       flights airports  faa         
-#&gt; 17 FALSE     hour           flights airports  faa         
-#&gt; 18 FALSE     minute         flights airports  faa         
-#&gt; 19 FALSE     time_hour      flights airports  faa         </div></pre>
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 2
+#&gt;    column         candidate
+#&gt;    &lt;chr&gt;          &lt;lgl&gt;    
+#&gt;  1 year           FALSE    
+#&gt;  2 month          FALSE    
+#&gt;  3 day            FALSE    
+#&gt;  4 dep_time       FALSE    
+#&gt;  5 sched_dep_time FALSE    
+#&gt;  6 dep_delay      FALSE    
+#&gt;  7 arr_time       FALSE    
+#&gt;  8 sched_arr_time FALSE    
+#&gt;  9 arr_delay      FALSE    
+#&gt; 10 carrier        FALSE    
+#&gt; 11 flight         FALSE    
+#&gt; 12 tailnum        FALSE    
+#&gt; 13 origin         FALSE    
+#&gt; 14 dest           FALSE    
+#&gt; 15 air_time       FALSE    
+#&gt; 16 distance       FALSE    
+#&gt; 17 hour           FALSE    
+#&gt; 18 minute         FALSE    
+#&gt; 19 time_hour      FALSE    </div><div class='input'><span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 2
+#&gt;   column candidate
+#&gt;   &lt;chr&gt;  &lt;lgl&gt;    
+#&gt; 1 faa    TRUE     
+#&gt; 2 name   FALSE    
+#&gt; 3 lat    FALSE    
+#&gt; 4 lon    TRUE     
+#&gt; 5 alt    FALSE    
+#&gt; 6 tz     FALSE    
+#&gt; 7 dst    FALSE    
+#&gt; 8 tzone  FALSE    </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

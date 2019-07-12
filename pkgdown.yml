@@ -1,6 +1,6 @@
 pandoc: '2.2'
 pkgdown: 1.3.0.9100
-pkgdown_sha: eba908cf407fba41b5fbee57a0d0863c521eee3c
+pkgdown_sha: fe0c4065132f9f8ed800db276d0ba8b799222cd3
 articles:
   dm-class-and-basic-operations: dm-class-and-basic-operations.html
   dm-low-level: dm-low-level.html
