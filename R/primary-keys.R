@@ -243,16 +243,20 @@ cdm_check_for_pk_candidates <- function(dm, table) h(~ {
     check_correct_input(dm, table_name)
 
     tbl <- cdm_get_tables(dm)[[table_name]]
-    tbl_colnames <- colnames(tbl)
-
-    # list of ayes and noes:
-    map(tbl_colnames, ~ is_unique_key(tbl, eval_tidy(.x))) %>%
-      set_names(tbl_colnames) %>%
-      as_tibble() %>%
-      collect() %>%
-      gather(
-        key = "column",
-        value = "candidate"
-      ) %>%
-      select(candidate, column)
+    pk_candidates(tbl)
   })
+
+pk_candidates <- function(table) {
+  tbl_colnames <- colnames(tbl)
+
+  # list of ayes and noes:
+  map(tbl_colnames, ~ is_unique_key(tbl, eval_tidy(.x))) %>%
+    set_names(tbl_colnames) %>%
+    as_tibble() %>%
+    collect() %>%
+    gather(
+      key = "column",
+      value = "candidate"
+    ) %>%
+    select(candidate, column)
+}
