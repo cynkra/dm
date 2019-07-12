@@ -2,9 +2,12 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_enum_pk_candidates}
 \alias{cdm_enum_pk_candidates}
-\title{Which columns are candidates for a primary key column of a \code{\link{dm}} object's table?}
+\alias{enum_pk_candidates}
+\title{Which columns are candidates for a primary key column?}
 \usage{
 cdm_enum_pk_candidates(dm, table)
+
+enum_pk_candidates(table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -15,6 +18,10 @@ cdm_enum_pk_candidates(dm, table)
 \code{cdm_enum_pk_candidates()} checks for each column of a
 table of a \code{\link{dm}} object if this column contains only unique values and is therefore
 a unique key of this table.
+
+\code{enum_pk_candidates()} checks for each column of a
+table if this column contains only unique values and is therefore
+a candidate for a unique key of this table.
 }
 \examples{
 library(dplyr)

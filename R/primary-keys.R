@@ -220,43 +220,43 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
   })
 
 
-#' Which columns are candidates for a primary key column of a [`dm`] object's table?
+#' Which columns are candidates for a primary key column?
 #'
-#' @description `cdm_enum_pk_candidates()` checks for each column of a
-#' table of a [`dm`] object if this column contains only unique values and is therefore
-#' a unique key of this table.
+#' @description `enum_pk_candidates()` checks for each column of a
+#' table if this column contains only unique values and is therefore
+#' a candidate for a primary key of this table.
+#'
+#' @export
+#' @examples
+#' nycflights13::flights %>% enum_pk_candidates()
+enum_pk_candidates <- function(table) h(~ {
+  tbl_colnames <- colnames(table)
+
+  # list of ayes and noes:
+  map_lgl(tbl_colnames, ~ is_unique_key(table, {{.x}})) %>%
+    set_names(tbl_colnames) %>%
+    enframe(name = "column", value = "candidate")
+})
+
+
+#' @description `cdm_enum_pk_candidates()` performs these checks
+#' for a table in a [dm] object.
 #'
 #' @family Primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #'
-#' @examples
-#' library(dplyr)
-#' nycflights_dm <- cdm_nycflights13()
-#'
-#' nycflights_dm %>% cdm_enum_pk_candidates(flights)
-#' nycflights_dm %>% cdm_enum_pk_candidates(airports)
+#' @rdname enum_pk_candidates
 #' @export
+#' @examples
+#'
+#' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
+#' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
 cdm_enum_pk_candidates <- function(dm, table) h(~ {
-    table_name <- as_name(enquo(table))
+  table_name <- as_name(enquo(table))
 
-    check_correct_input(dm, table_name)
+  check_correct_input(dm, table_name)
 
-    tbl <- cdm_get_tables(dm)[[table_name]]
-    pk_candidates(tbl)
-  })
-
-pk_candidates <- function(table) {
-  tbl_colnames <- colnames(tbl)
-
-  # list of ayes and noes:
-  map(tbl_colnames, ~ is_unique_key(tbl, eval_tidy(.x))) %>%
-    set_names(tbl_colnames) %>%
-    as_tibble() %>%
-    collect() %>%
-    gather(
-      key = "column",
-      value = "candidate"
-    ) %>%
-    select(candidate, column)
-}
+  tbl <- cdm_get_tables(dm)[[table_name]]
+  enum_pk_candidates(tbl)
+})

@@ -56,8 +56,10 @@ is_unique_key <- function(.data, column) {
   duplicate_rows <-
     .data %>%
     count(!!col_expr) %>%
+    select(n) %>%
     filter(n != 1) %>%
-    head()
+    head(1) %>%
+    collect()
 
   nrow(duplicate_rows) == 0
 }

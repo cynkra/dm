@@ -153,7 +153,8 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
     ~candidate, ~column, ~table,        ~ref_table,    ~ref_table_pk,
     TRUE,       "a",     "cdm_table_1", "cdm_table_4", "c",
     FALSE,      "b",     "cdm_table_1", "cdm_table_4", "c"
-  )
+  ) %>%
+    select(ref_table, ref_table_pk, table, column, candidate)
 
   map(
     .x = cdm_test_obj_src,
