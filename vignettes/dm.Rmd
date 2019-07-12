@@ -36,7 +36,7 @@ An object of the `dm` class contains all relevant information about the tables i
 This package augments {dplyr}/{dbplyr} workflows:
 
 - multiple related tables are kept in a single compound object,
-- joins across multiple tables are available by stating the tables involved, no need to memoize column names or relationships
+- joins across multiple tables are available by stating the tables involved, no need to memorize column names or relationships
 
 In addition, a battery of utilities is provided that helps with creating a tidy data model.
 
