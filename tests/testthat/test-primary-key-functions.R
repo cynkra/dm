@@ -134,7 +134,7 @@ test_that("cdm_enum_pk_candidates() works properly?", {
     )
   )
 
-  map(
+  iwalk(
     cdm_test_obj_src,
     ~ expect_identical(
       cdm_enum_pk_candidates(.x, cdm_table_2),

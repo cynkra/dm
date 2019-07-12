@@ -219,47 +219,37 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #'   cdm_enum_fk_candidates(flights, airports)
 #' @export
 cdm_enum_fk_candidates <- function(dm, table, ref_table) h(~ {
-    table_name <- as_name(enquo(table))
-    ref_table_name <- as_name(enquo(ref_table))
+  table_name <- as_name(enquo(table))
+  ref_table_name <- as_name(enquo(ref_table))
 
-    check_correct_input(dm, table_name)
-    check_correct_input(dm, ref_table_name)
+  check_correct_input(dm, table_name)
+  check_correct_input(dm, ref_table_name)
 
-    if (!cdm_has_pk(dm, !!ref_table_name)) {
-      abort_ref_tbl_has_no_pk(
-        ref_table_name,
-        cdm_enum_pk_candidates(dm, !!ref_table_name) %>%
-          filter(candidate == TRUE) %>%
-          pull(column)
-      )
-    }
-
-    tbl <- cdm_get_tables(dm)[[table_name]]
-    tbl_colnames <- colnames(tbl)
-
-    ref_tbl <- cdm_get_tables(dm)[[ref_table_name]]
-    ref_tbl_pk <- cdm_get_pk(dm, !!ref_table_name)
-
-    map_dfr(
-      tbl_colnames,
-      ~ {
-        if (is_subset(tbl, !!.x, ref_tbl, !!ref_tbl_pk)) {
-          tibble(
-            candidate = TRUE,
-            column = .x,
-            table = table_name,
-            ref_table = ref_table_name,
-            ref_table_pk = ref_tbl_pk
-          )
-        } else {
-          tibble(
-            candidate = FALSE,
-            column = .x,
-            table = table_name,
-            ref_table = ref_table_name,
-            ref_table_pk = ref_tbl_pk
-          )
-        }
-      }
+  if (!cdm_has_pk(dm, !!ref_table_name)) {
+    abort_ref_tbl_has_no_pk(
+      ref_table_name,
+      cdm_enum_pk_candidates(dm, !!ref_table_name) %>%
+        filter(candidate == TRUE) %>%
+        pull(column)
     )
-  })
+  }
+
+  tbl <- cdm_get_tables(dm)[[table_name]]
+  tbl_colnames <- colnames(tbl)
+
+  ref_tbl <- cdm_get_tables(dm)[[ref_table_name]]
+  ref_tbl_pk <- cdm_get_pk(dm, !!ref_table_name)
+
+  subsets <- map_lgl(
+    tbl_colnames,
+    ~ is_subset(tbl, !!.x, ref_tbl, !!ref_tbl_pk)
+  )
+
+  tibble(
+    ref_table = ref_table_name,
+    ref_table_pk = ref_tbl_pk,
+    table = table_name,
+    column = tbl_colnames,
+    candidate = subsets
+  )
+})
