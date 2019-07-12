@@ -147,7 +147,7 @@ test_that("cdm_rm_fk() works as intended?", {
 })
 
 
-test_that("cdm_check_for_fk_candidates() works as intended?", {
+test_that("cdm_enum_fk_candidates() works as intended?", {
 
   tbl_fk_candidates_t1_t4 <- tribble(
     ~candidate, ~column, ~table,        ~ref_table,    ~ref_table_pk,
@@ -159,7 +159,7 @@ test_that("cdm_check_for_fk_candidates() works as intended?", {
     .x = cdm_test_obj_src,
     ~ expect_identical(
       cdm_add_pk(.x, cdm_table_4, c) %>%
-        cdm_check_for_fk_candidates(cdm_table_1, cdm_table_4),
+        cdm_enum_fk_candidates(cdm_table_1, cdm_table_4),
       tbl_fk_candidates_t1_t4
     )
   )
@@ -167,7 +167,7 @@ test_that("cdm_check_for_fk_candidates() works as intended?", {
   map(
     .x = cdm_test_obj_src,
     ~ expect_error(
-      cdm_check_for_fk_candidates(.x, cdm_table_1, cdm_table_4),
+      cdm_enum_fk_candidates(.x, cdm_table_1, cdm_table_4),
       class = cdm_error("ref_tbl_has_no_pk"),
       error_txt_ref_tbl_has_no_pk("cdm_table_4", "c"),
       fixed = TRUE

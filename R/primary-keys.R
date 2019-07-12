@@ -222,7 +222,7 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
 
 #' Which columns are candidates for a primary key column of a [`dm`] object's table?
 #'
-#' @description `cdm_check_for_pk_candidates()` checks for each column of a
+#' @description `cdm_enum_pk_candidates()` checks for each column of a
 #' table of a [`dm`] object if this column contains only unique values and is therefore
 #' a unique key of this table.
 #'
@@ -234,10 +234,10 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
 #' library(dplyr)
 #' nycflights_dm <- cdm_nycflights13()
 #'
-#' nycflights_dm %>% cdm_check_for_pk_candidates(flights)
-#' nycflights_dm %>% cdm_check_for_pk_candidates(airports)
+#' nycflights_dm %>% cdm_enum_pk_candidates(flights)
+#' nycflights_dm %>% cdm_enum_pk_candidates(airports)
 #' @export
-cdm_check_for_pk_candidates <- function(dm, table) h(~ {
+cdm_enum_pk_candidates <- function(dm, table) h(~ {
     table_name <- as_name(enquo(table))
 
     check_correct_input(dm, table_name)

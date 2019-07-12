@@ -31,7 +31,7 @@ reference:
   - cdm_get_pk
   - cdm_get_all_pks
   - cdm_rm_pk
-  - cdm_check_for_pk_candidates
+  - cdm_enum_pk_candidates
 
 - title: Foreign keys
   contents:
@@ -40,7 +40,7 @@ reference:
   - cdm_get_fk
   - cdm_get_all_fks
   - cdm_rm_fk
-  - cdm_check_for_fk_candidates
+  - cdm_enum_fk_candidates
 
 - title: Visualization
   contents:

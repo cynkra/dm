@@ -24,7 +24,7 @@ cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) h(~ {
     if (!cdm_has_pk(dm, !!ref_table_name)) {
       abort_ref_tbl_has_no_pk(
         ref_table_name,
-        cdm_check_for_pk_candidates(dm, !!ref_table_name) %>%
+        cdm_enum_pk_candidates(dm, !!ref_table_name) %>%
           filter(candidate == TRUE) %>%
           pull(column)
       )
@@ -204,7 +204,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' @param ref_table A table with a primary key.
 #'
 #' @description Which columns are foreign candidates of a table, referencing the primary key column of another [`dm`] object's table?
-#' `cdm_check_for_fk_candidates()` checks first, if `ref_table` has a primary key set. Then it determines
+#' `cdm_enum_fk_candidates()` checks first, if `ref_table` has a primary key set. Then it determines
 #' for each column of `table`, if this column contains only a subset of values of the primary key column of
 #' `ref_table` and is therefore a candidate for a foreign key from `table` to `ref_table`.
 #'
@@ -216,9 +216,9 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' nycflights_dm <- cdm_nycflights13()
 #'
 #' nycflights_dm %>%
-#'   cdm_check_for_fk_candidates(flights, airports)
+#'   cdm_enum_fk_candidates(flights, airports)
 #' @export
-cdm_check_for_fk_candidates <- function(dm, table, ref_table) h(~ {
+cdm_enum_fk_candidates <- function(dm, table, ref_table) h(~ {
     table_name <- as_name(enquo(table))
     ref_table_name <- as_name(enquo(ref_table))
 
@@ -228,7 +228,7 @@ cdm_check_for_fk_candidates <- function(dm, table, ref_table) h(~ {
     if (!cdm_has_pk(dm, !!ref_table_name)) {
       abort_ref_tbl_has_no_pk(
         ref_table_name,
-        cdm_check_for_pk_candidates(dm, !!ref_table_name) %>%
+        cdm_enum_pk_candidates(dm, !!ref_table_name) %>%
           filter(candidate == TRUE) %>%
           pull(column)
       )

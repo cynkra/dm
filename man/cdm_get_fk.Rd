@@ -18,7 +18,7 @@ Retrieve the name of the column marked as foreign key, pointing from one table o
 }
 \seealso{
 Other Foreign key functions: \code{\link{cdm_add_fk}},
-  \code{\link{cdm_check_for_fk_candidates}},
+  \code{\link{cdm_enum_fk_candidates}},
   \code{\link{cdm_get_all_fks}}, \code{\link{cdm_has_fk}},
   \code{\link{cdm_rm_fk}}
 }
