@@ -1,13 +1,14 @@
 context("test-foreign-key-functions")
 
 test_that("cdm_add_fk() works as intended?", {
-  map(
+  iwalk(
     .x = cdm_test_obj_src,
     ~ expect_error(
       cdm_add_fk(.x, cdm_table_1, a, cdm_table_4),
       class = cdm_error("ref_tbl_has_no_pk"),
       error_txt_ref_tbl_has_no_pk("cdm_table_4", "c"),
-      fixed = TRUE
+      fixed = TRUE,
+      label = .y
     )
   )
 

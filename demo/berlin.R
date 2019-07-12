@@ -79,7 +79,7 @@ airports %>%
 
 # Determine key candidates
 airports %>%
-  dm::pk_candidates(faa)
+  dm::enum_pk_candidates()
 
 # cleanup
 rm(airlines)
