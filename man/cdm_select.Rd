@@ -9,7 +9,8 @@ cdm_select(dm, ..., all_connected = TRUE)
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
 
-\item{...}{Two or more table names of the \code{\link{dm}} object's tables.}
+\item{...}{Two or more table names of the \code{\link{dm}} object's tables.
+See \code{\link[tidyselect:vars_select]{tidyselect::vars_select()}} for details on the semantics.}
 
 \item{all_connected}{Boolean, if \code{TRUE} (default), all the connecting tables will
 be part of the resulting \code{\link{dm}} in addition to the indicated tables. If \code{FALSE},

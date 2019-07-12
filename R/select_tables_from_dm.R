@@ -5,6 +5,8 @@
 #'
 #' @param dm A [`dm`] object
 #' @param ... Two or more table names of the [`dm`] object's tables.
+#'   See [tidyselect::vars_select()] for details on the semantics.
+#'
 #' @param all_connected Boolean, if `TRUE` (default), all the connecting tables will
 #' be part of the resulting [`dm`] in addition to the indicated tables. If `FALSE`,
 #' exclusively the indicated tables will be selected.
@@ -14,18 +16,18 @@
 #' @export
 cdm_select <- function(dm, ..., all_connected = TRUE) {
 
-  quos <- enquos(...)
-  if (is_empty(quos)) return(dm)
+  all_table_names <- structure(
+    src_tbls(dm),
+    type = c("table", "tables")
+  )
 
-  table_names <- map_chr(quos, as_name)
+  table_names <- tidyselect::vars_select(all_table_names, ...)
   walk(table_names, ~ check_correct_input(dm, .))
 
-  all_table_names <- src_tbls(dm)
-
   if (all_connected) {
-    tables_keep <- cdm_find_conn_tbls(dm, ...)
+    tables_keep <- cdm_find_conn_tbls(dm, !!!table_names)
   } else {
-    tables_keep <- intersect(all_table_names, table_names)
+    tables_keep <- table_names
   }
 
   list_of_removed_tables <- setdiff(all_table_names, tables_keep)
