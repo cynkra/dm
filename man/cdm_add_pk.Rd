@@ -39,8 +39,8 @@ cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 }
 \seealso{
-Other Primary key functions: \code{\link{cdm_enum_pk_candidates}},
-  \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
-  \code{\link{cdm_has_pk}}, \code{\link{cdm_rm_pk}}
+Other Primary key functions: \code{\link{cdm_get_all_pks}},
+  \code{\link{cdm_get_pk}}, \code{\link{cdm_has_pk}},
+  \code{\link{cdm_rm_pk}}, \code{\link{enum_pk_candidates}}
 }
 \concept{Primary key functions}
