@@ -48,12 +48,30 @@ try(
     left_join(airports)
 )
 
-# Need to specify join variables
+# Need to specify join variables!
 flights %>%
   select(year, month, day, carrier, tailnum, origin, dest) %>%
   left_join(airports, by = c("origin" = "faa"))
 
-# Ensure uniqueness
+# cleanup
+rm(airlines)
+
+## Keys
+## --------------------------------------------------------------------
+
+# Row identifiers
+t1 <- tibble(a = 1, b = letters[1:3])
+t1
+t2 <- tibble(a = 1, c = 1:2)
+t2
+
+# What happens here?
+left_join(t1, t2)
+
+# When joining, the column(s) must be unique in at least one
+# participating table!
+
+# Ensure uniqueness:
 airlines %>%
   count(carrier)
 
@@ -65,7 +83,7 @@ planes %>%
   count(tailnum) %>%
   count(n)
 
-# dm shortcut
+# dm shortcut:
 planes %>%
   dm::check_key(tailnum)
 
@@ -81,6 +99,46 @@ airports %>%
 airports %>%
   dm::enum_pk_candidates()
 
-# cleanup
-rm(airlines)
+# Why is name not a key?
+airports %>%
+  add_count(name) %>%
+  filter(n > 1) %>%
+  arrange(name)
 
+## Data model
+## --------------------------------------------------------------------
+
+# Compound object: tables, relationships, data
+dm::cdm_nycflights13(cycle = TRUE)
+
+dm::cdm_nycflights13(cycle = TRUE) %>%
+  dm::cdm_draw()
+
+# Selection of tables
+dm::cdm_nycflights13(cycle = TRUE) %>%
+  dm::cdm_select(flights, airlines) %>%
+  dm::cdm_draw()
+
+dm::cdm_nycflights13(cycle = TRUE) %>%
+  dm::cdm_select(airports, airlines) %>%
+  dm::cdm_draw()
+
+try(
+  dm::cdm_nycflights13() %>%
+    dm::cdm_select(bogus)
+)
+
+# Accessing tables
+dm::cdm_nycflights13() %>% tbl("airlines")
+
+try(
+  dm::cdm_nycflights13() %>% tbl("x")
+)
+
+# Shortcut
+dm::cdm_nycflights13()$airlines
+
+# Table names
+src_tbls(dm::cdm_nycflights13())
+
+names(dm::cdm_nycflights13())
