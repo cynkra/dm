@@ -109,7 +109,7 @@ validate_dm <- function(x) {
 #'
 #' @export
 cdm_get_src <- function(x) {
-  x$src
+  unclass(x)$src
 }
 
 #' Get tables component
@@ -121,7 +121,7 @@ cdm_get_src <- function(x) {
 #'
 #' @export
 cdm_get_tables <- function(x) {
-  x$tables
+  unclass(x)$tables
 }
 
 #' Get data_model component
@@ -133,7 +133,7 @@ cdm_get_tables <- function(x) {
 #'
 #' @export
 cdm_get_data_model <- function(x) {
-  x$data_model
+  unclass(x)$data_model
 }
 
 #' Check class
@@ -206,6 +206,56 @@ print.dm <- function(x, ...) {
   invisible(x)
 }
 
+
+#' @export
+`$.dm` <- function(x, name) {
+  table <- as_string(name)
+  tbl(x, table)
+}
+
+
+#' @export
+`$<-.dm` <- function(x, name, value) {
+  abort_update_not_supported()
+}
+
+
+#' @export
+`[[.dm` <- function(x, name) {
+  table <- as_string(name)
+  tbl(x, table)
+}
+
+
+#' @export
+`[[<-.dm` <- function(x, name, value) {
+  abort_update_not_supported()
+}
+
+
+#' @export
+`[.dm` <- function(x, name) {
+  tables <- as_character(name)
+  cdm_select(x, !!!tables)
+}
+
+
+#' @export
+`[<-.dm` <- function(x, name, value) {
+  abort_update_not_supported()
+}
+
+
+#' @export
+names.dm <- function(x) {
+  src_tbls(x)
+}
+
+
+#' @export
+`names<-.dm` <- function(x, value) {
+  abort_update_not_supported()
+}
 
 
 #' @export

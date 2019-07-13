@@ -348,3 +348,12 @@ abort_no_src_or_con <- function() {
 error_no_src_or_con <- function() {
   paste0('`src` needs to be a "src" or a "con" object.')
 }
+
+
+abort_update_not_supported <- function() {
+  abort(error_update_not_supported(), .subclass = cdm_error_full("update_not_supported"))
+}
+
+error_update_not_supported <- function() {
+  paste0('Updating "dm" objects not supported.')
+}
