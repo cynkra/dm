@@ -186,15 +186,16 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
     )
   }
 
-  dm$data_model <-
+  new_dm(
+    cdm_get_src(dm),
+    cdm_get_tables(dm),
     rm_data_model_reference(
       cdm_get_data_model(dm),
       table_name,
       col_names,
       ref_table_name
     )
-
-  dm
+  )
 }
 
 #' Find foreign key candidates in a table

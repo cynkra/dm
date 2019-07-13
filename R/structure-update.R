@@ -15,7 +15,7 @@ cdm_create_surrogate_key_for_table <- function(dm, table, new_id_column = paste0
     mutate(!!new_id_column := row_number()) %>%
     select(!!new_id_column, everything())
 
-  dm$tables[[table]] <- new_tbl
+  cdm_get_tables(dm)[[table]] <- new_tbl
 
   old_dm <- cdm_get_data_model(dm)
 

@@ -27,7 +27,7 @@ cdm_copy_to <- function(dest, dm, ..., set_key_constraints = TRUE, unique_table_
     # for now focusing on MSSQL
     # we expect the src (dest) to already point to the correct schema
     # we want to
-    #   1. change `dm$src` to `dest`
+    #   1. change `cdm_get_src(dm)` to `dest`
     #   2. copy the tables to `dest`
     #   3. implement the key situation within our `dm` on the DB
 

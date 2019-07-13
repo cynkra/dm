@@ -81,8 +81,8 @@ cdm_set_colors <- function(dm, ...) {
   display <- color_quos_to_display(...)
 
   new_dm(
-    dm$src,
-    dm$tables,
+    cdm_get_src(dm),
+    cdm_get_tables(dm),
     dm_set_display(data_model, display)
   )
 }
@@ -120,7 +120,7 @@ color_quos_to_display <- function(...) {
 #' @export
 cdm_get_colors <- function(dm) h(~ {
     data_model <- cdm_get_data_model(dm)
-    data_model$tables %>%
+    cdm_get_tables(data_model) %>%
       select(table, display) %>%
       as_tibble() %>%
       mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%

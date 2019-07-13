@@ -264,7 +264,7 @@ tbl.dm <- function(src, from, ...) {
   dm <- src
   check_correct_input(dm, from)
 
-  dm$tables[[from]]
+  cdm_get_tables(dm)[[from]]
 }
 
 
@@ -272,7 +272,7 @@ tbl.dm <- function(src, from, ...) {
 src_tbls.dm <- function(src, ...) {
   # The src argument here is a dm object
   dm <- src
-  names(dm$tables)
+  names(cdm_get_tables(dm))
 }
 
 #' @export
