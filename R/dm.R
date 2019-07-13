@@ -212,6 +212,8 @@ print.dm <- function(x, ...) {
 tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
+  check_correct_input(dm, from)
+
   dm$tables[[from]]
 }
 
