@@ -2,7 +2,11 @@
 # error class generator ---------------------------------------------------
 
 cdm_error <- function(x) {
-  c(paste0("dm_error_", x), "dm_error")
+  paste0("dm_error_", x)
+}
+
+cdm_error_full <- function(x) {
+  c(cdm_error(x), "dm_error")
 }
 
 
@@ -10,7 +14,7 @@ cdm_error <- function(x) {
 
 abort_pk_for_filter_missing <- function(table_name) {
   abort(error_txt_pk_filter_missing(table_name),
-    .subclass = cdm_error("no_pk_filter")
+    .subclass = cdm_error_full("no_pk_filter")
   )
 }
 
@@ -27,7 +31,7 @@ error_txt_pk_filter_missing <- function(table_name) {
 
 abort_wrong_table_cols_semi_join <- function(table_name) {
   abort(error_txt_wrong_table_cols_semi_join(table_name),
-    .subclass = cdm_error("wrong_table_cols_semi_join")
+    .subclass = cdm_error_full("wrong_table_cols_semi_join")
   )
 }
 
@@ -38,7 +42,7 @@ error_txt_wrong_table_cols_semi_join <- function(table_name) {
 # abort and text for primary key handling errors --------------------------
 
 abort_wrong_col_args <- function() {
-  abort(error_txt_wrong_col_args(), .subclass = cdm_error("wrong_cols_args"))
+  abort(error_txt_wrong_col_args(), .subclass = cdm_error_full("wrong_cols_args"))
 }
 
 error_txt_wrong_col_args <- function() {
@@ -46,7 +50,7 @@ error_txt_wrong_col_args <- function() {
 }
 
 abort_key_set_force_false <- function() {
-  abort(error_txt_key_set_force_false(), .subclass = cdm_error("key_set_force_false"))
+  abort(error_txt_key_set_force_false(), .subclass = cdm_error_full("key_set_force_false"))
 }
 
 error_txt_key_set_force_false <- function() {
@@ -54,7 +58,7 @@ error_txt_key_set_force_false <- function() {
 }
 
 abort_multiple_pks <- function(table_name) {
-  abort(error_txt_multiple_pks(table_name), .subclass = cdm_error("multiple_pks"))
+  abort(error_txt_multiple_pks(table_name), .subclass = cdm_error_full("multiple_pks"))
 }
 
 error_txt_multiple_pks <- function(table_name) {
@@ -67,7 +71,7 @@ error_txt_multiple_pks <- function(table_name) {
 # abort and text for key-helper functions ---------------------------------
 
 abort_not_unique_key <- function(table_name, column_names) {
-  abort(error_txt_not_unique_key(table_name, column_names), .subclass = cdm_error("not_unique_key"))
+  abort(error_txt_not_unique_key(table_name, column_names), .subclass = cdm_error_full("not_unique_key"))
 }
 
 error_txt_not_unique_key <- function(table_name, column_names) {
@@ -84,7 +88,7 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 
 
 abort_table_not_in_dm <- function(table_name, tables_in_dm) {
-  abort(error_txt_table_not_in_dm(table_name, tables_in_dm), .subclass = cdm_error("table_not_in_dm"))
+  abort(error_txt_table_not_in_dm(table_name, tables_in_dm), .subclass = cdm_error_full("table_not_in_dm"))
 }
 
 error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
@@ -106,7 +110,7 @@ error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
 abort_not_subset_of <- function(table_name_1, colname_1,
                                 table_name_2, colname_2) {
   abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
-    .subclass = cdm_error("not_subset_of")
+    .subclass = cdm_error_full("not_subset_of")
   )
 }
 
@@ -129,7 +133,7 @@ error_txt_not_subset_of <- function(table_name_1, colname_1,
 # error sets not equal ----------------------------------------------------
 
 abort_sets_not_equal <- function(error_msgs) {
-  abort(error_txt_sets_not_equal(error_msgs), .subclass = cdm_error("sets_not_equal"))
+  abort(error_txt_sets_not_equal(error_msgs), .subclass = cdm_error_full("sets_not_equal"))
 }
 
 error_txt_sets_not_equal <- function(error_msgs) {
@@ -141,7 +145,7 @@ error_txt_sets_not_equal <- function(error_msgs) {
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
   abort(error_txt_not_bijective(child_table_name, fk_col_name),
-    .subclass = cdm_error("not_bijective")
+    .subclass = cdm_error_full("not_bijective")
   )
 }
 
@@ -157,7 +161,7 @@ error_txt_not_bijective <- function(child_table_name, fk_col_name) {
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
   abort(error_txt_not_injective(child_table_name, fk_col_name),
-    .subclass = cdm_error("not_injective")
+    .subclass = cdm_error_full("not_injective")
   )
 }
 
@@ -176,7 +180,7 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
 
 abort_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
   abort(error_txt_ref_tbl_has_no_pk(ref_table_name, pk_candidates),
-    .subclass = cdm_error("ref_tbl_has_no_pk")
+    .subclass = cdm_error_full("ref_tbl_has_no_pk")
   )
 }
 
@@ -194,7 +198,7 @@ abort_is_not_fkc <- function(
   abort(error_txt_is_not_fk(
     child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
   ),
-  .subclass = cdm_error("is_not_fk")
+  .subclass = cdm_error_full("is_not_fkc")
   )
 }
 
@@ -215,7 +219,7 @@ error_txt_is_not_fk <- function(
 }
 
 abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = cdm_error("rm_fk_col_missing"))
+  abort(error_txt_rm_fk_col_missing(), .subclass = cdm_error_full("rm_fk_col_missing"))
 }
 
 error_txt_rm_fk_col_missing <- function() {
@@ -226,7 +230,7 @@ error_txt_rm_fk_col_missing <- function() {
 # error helpers for draw_dm -----------------------------------------------
 
 abort_last_col_missing <- function() {
-  abort(error_txt_last_col_missing(), .subclass = cdm_error("last_col_missing"))
+  abort(error_txt_last_col_missing(), .subclass = cdm_error_full("last_col_missing"))
 }
 
 error_txt_last_col_missing <- function() {
@@ -234,7 +238,7 @@ error_txt_last_col_missing <- function() {
 }
 
 abort_wrong_color <- function(avail_color_names) {
-  abort(error_txt_wrong_color(avail_color_names), .subclass = cdm_error("wrong_color"))
+  abort(error_txt_wrong_color(avail_color_names), .subclass = cdm_error_full("wrong_color"))
 }
 
 error_txt_wrong_color <- function(avail_color_names) {
@@ -248,7 +252,7 @@ error_txt_wrong_color <- function(avail_color_names) {
 # errors in graph-functions -----------------------------------------------
 
 abort_no_cycles <- function() {
-  abort(error_txt_no_cycles(), .subclass = cdm_error("no_cycles"))
+  abort(error_txt_no_cycles(), .subclass = cdm_error_full("no_cycles"))
 }
 
 error_txt_no_cycles <- function() {
@@ -259,7 +263,7 @@ error_txt_no_cycles <- function() {
 # errors in cdm_select() --------------------------------------------------
 
 abort_vertices_not_connected <- function() {
-  abort(error_txt_vertices_not_connected(), .subclass = cdm_error("vertices_not_connected"))
+  abort(error_txt_vertices_not_connected(), .subclass = cdm_error_full("vertices_not_connected"))
 }
 
 error_txt_vertices_not_connected <- function() {
@@ -272,7 +276,7 @@ error_txt_vertices_not_connected <- function() {
 
 abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   abort(error_txt_wrong_col_names(table_name, actual_colnames, wrong_colnames),
-    .subclass = cdm_error("wrong_col_names")
+    .subclass = cdm_error_full("wrong_col_names")
   )
 }
 
@@ -294,7 +298,7 @@ error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colname
 
 
 abort_dupl_new_id_col_name <- function(table_name) {
-  abort(error_txt_dupl_new_id_col_name(table_name), .subclass = cdm_error("dupl_new_id_col_name"))
+  abort(error_txt_dupl_new_id_col_name(table_name), .subclass = cdm_error_full("dupl_new_id_col_name"))
 }
 
 error_txt_dupl_new_id_col_name <- function(table_name) {
@@ -302,7 +306,7 @@ error_txt_dupl_new_id_col_name <- function(table_name) {
 }
 
 abort_too_many_cols <- function(table_name) {
-  abort(error_txt_too_many_cols(table_name), .subclass = cdm_error("too_many_cols"))
+  abort(error_txt_too_many_cols(table_name), .subclass = cdm_error_full("too_many_cols"))
 }
 
 error_txt_too_many_cols <- function(table_name) {
@@ -310,7 +314,7 @@ error_txt_too_many_cols <- function(table_name) {
 }
 
 abort_no_overwrite <- function() {
-  abort(error_txt_no_overwrite(), .subclass = cdm_error("no_overwrite"))
+  abort(error_txt_no_overwrite(), .subclass = cdm_error_full("no_overwrite"))
 }
 
 error_txt_no_overwrite <- function() {
@@ -318,7 +322,7 @@ error_txt_no_overwrite <- function() {
 }
 
 abort_src_not_db <- function() {
-  abort(error_src_not_db(), .subclass = cdm_error("src_not_db"))
+  abort(error_src_not_db(), .subclass = cdm_error_full("src_not_db"))
 }
 
 error_src_not_db <- function() {
@@ -326,7 +330,7 @@ error_src_not_db <- function() {
 }
 
 abort_first_rm_fks <- function(fks) {
-  abort(error_first_rm_fks(fks), .subclass = cdm_error("first_rm_fks"))
+  abort(error_first_rm_fks(fks), .subclass = cdm_error_full("first_rm_fks"))
 }
 
 error_first_rm_fks <- function(fks) h(~ {
@@ -338,7 +342,7 @@ error_first_rm_fks <- function(fks) h(~ {
 
 
 abort_no_src_or_con <- function() {
-  abort(error_no_src_or_con(), .subclass = cdm_error("no_src_or_con"))
+  abort(error_no_src_or_con(), .subclass = cdm_error_full("no_src_or_con"))
 }
 
 error_no_src_or_con <- function() {
