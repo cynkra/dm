@@ -32,17 +32,13 @@ cdm_filter <- function(dm, table, ...) {
 
   orig_tbl <- tbl(dm, table_name)
 
-  if (!cdm_has_pk(dm, !!table_name)) {
-    abort_pk_for_filter_missing(table_name)
-  }
-
-  # get remote tibble of pk-values after filtering
-  pk_name_orig <- cdm_get_pk(dm, !!table_name)
+  # filter data
   filtered_tbl_pk_obj <- filter(orig_tbl, ...)
 
+  # early return if no filtering was done
   if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) {
     return(dm)
-  } # early return if no filtering was done
+  }
 
   cdm_semi_join(dm, !!table_name, filtered_tbl_pk_obj)
 }
