@@ -138,28 +138,60 @@ tibble(x = 1:5) %>%
   mutate(z = x * y) %>%
   mutate(w = vctrs::list_of(!!!map(z, ~ runif(.))))
 
-## Operations on the data model
+## Filtering for data models
 ## --------------------------------------------------------------------
 
 cdm_nycflights13()
 
+# Filtering on a table returns a dm object
 cdm_nycflights13() %>%
   cdm_filter(airlines, carrier == "AA")
 
+# ... which then can be filtered on another table
 cdm_nycflights13() %>%
   cdm_filter(airlines, carrier == "AA") %>%
   cdm_filter(airports, faa != "JFK")
 
-cdm_nycflights13() %>%
+aa_non_jfk_january <-
+  cdm_nycflights13() %>%
   cdm_filter(airlines, carrier == "AA") %>%
   cdm_filter(airports, faa != "JFK") %>%
   cdm_filter(flights, month == 1)
 
-cdm_nycflights13() %>%
+# ... and processed further
+aa_non_jfk_january %>%
+  tbl("planes")
+
+## Copy to database
+## --------------------------------------------------------------------
+
+# All operations are designed to work locally and on the database
+nycflights13_pq <-
+  cdm_nycflights13() %>%
+  cdm_select_tbl(-planes, all_connected = FALSE) %>%
+  cdm_filter(flights, month == 1, day <= 10) %>%
+  cdm_copy_to(src_postgres(), .)
+
+nycflights13_pq
+
+nycflights13_pq %>%
+  cdm_get_tables() %>%
+  map(dbplyr::sql_render)
+
+# Filtering on the database
+nycflights13_pq %>%
+  cdm_filter(airlines, carrier == "AA") %>%
+  cdm_filter(airports, faa != "JFK") %>%
+  cdm_filter(flights, day == 1) %>%
+  tbl("flights")
+
+# ... and the corresponding SQL statement
+nycflights13_pq %>%
   cdm_filter(airlines, carrier == "AA") %>%
   cdm_filter(airports, faa != "JFK") %>%
   cdm_filter(flights, month == 1) %>%
-  tbl("planes")
+  tbl("flights") %>%
+  dbplyr::sql_render()
 
 # - cdm_join_tbl()
 
@@ -183,7 +215,3 @@ airports %>%
 ## --------------------------------------------------------------------
 
 # time_hour is a key to the time_slots table, how to decompose?
-
-## Copy to database
-## --------------------------------------------------------------------
-
