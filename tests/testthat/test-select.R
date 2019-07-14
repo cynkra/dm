@@ -1,11 +1,11 @@
 
 
-test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
+test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
   map2(
     dm_for_filter_src,
     dm_for_filter_smaller_src,
     ~ expect_equal(
-      cdm_select(.x, t3, t5) %>% cdm_get_tables() %>% map(collect),
+      cdm_select_tbl(.x, t3, t5) %>% cdm_get_tables() %>% map(collect),
       cdm_get_tables(.y) %>% map(collect)
     )
   )
@@ -14,7 +14,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     dm_for_filter_src,
     dm_for_filter_smaller_src,
     ~ expect_equivalent( # row indices differ after removal of references in data_model$references -> expect_equal() fails
-      cdm_select(.x, t3, t5) %>% cdm_get_data_model(),
+      cdm_select_tbl(.x, t3, t5) %>% cdm_get_data_model(),
       cdm_get_data_model(.y)
     )
   )
@@ -22,7 +22,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
   map(
     dm_for_filter_src,
     ~ expect_equal(
-      cdm_select(.x),
+      cdm_select_tbl(.x),
       .x
     )
   )
@@ -30,7 +30,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
   map(
     dm_for_filter_src,
     ~ expect_equal(
-      cdm_select(.x, t1, t6),
+      cdm_select_tbl(.x, t1, t6),
       .x
     )
   )
@@ -39,7 +39,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     dm_for_filter_src,
     ~ expect_error(
       cdm_rm_fk(.x, t2, d, t1) %>%
-        cdm_select(t1, t6),
+        cdm_select_tbl(t1, t6),
       class = cdm_error("vertices_not_connected"),
       error_txt_vertices_not_connected(),
       fixed = TRUE
@@ -49,7 +49,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
   map(
     dm_for_filter_src,
     ~ expect_equal(
-      cdm_select(.x, t1, t6, all_connected = FALSE),
+      cdm_select_tbl(.x, t1, t6, all_connected = FALSE),
       new_dm(
         src = cdm_get_src(.x),
         tables = list("t1" = tbl(.x, "t1"), "t6" = tbl(.x, "t6")),
@@ -63,7 +63,7 @@ test_that("cdm_select() selects a part of a larger `dm` as a reduced `dm`?", {
     dm_for_filter_src,
     ~ expect_equal(
       cdm_rm_fk(.x, t2, d, t1) %>%
-        cdm_select(t1, t6, all_connected = FALSE),
+        cdm_select_tbl(t1, t6, all_connected = FALSE),
       new_dm(
         src = cdm_get_src(.x),
         tables = list("t1" = tbl(.x, "t1"), "t6" = tbl(.x, "t6")),

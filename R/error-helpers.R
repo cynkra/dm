@@ -260,7 +260,7 @@ error_txt_no_cycles <- function() {
 }
 
 
-# errors in cdm_select() --------------------------------------------------
+# errors in cdm_select_tbl() ----------------------------------------------
 
 abort_vertices_not_connected <- function() {
   abort(error_txt_vertices_not_connected(), .subclass = cdm_error_full("vertices_not_connected"))

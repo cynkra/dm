@@ -14,7 +14,7 @@
 #' @family Functions utilizing foreign key relations
 #'
 #' @export
-cdm_select <- function(dm, ..., all_connected = TRUE) {
+cdm_select_tbl <- function(dm, ..., all_connected = TRUE) {
 
   all_table_names <- structure(
     src_tbls(dm),

@@ -20,6 +20,7 @@ Get the names of a \code{\link{dm}}'s tables referencing a given table.
 }
 \seealso{
 Other Functions utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
-  \code{\link{cdm_is_referenced}}, \code{\link{cdm_select}}
+  \code{\link{cdm_is_referenced}},
+  \code{\link{cdm_select_tbl}}
 }
 \concept{Functions utilizing foreign key relations}

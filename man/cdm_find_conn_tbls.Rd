@@ -21,6 +21,7 @@ key relations. Result includes the given tables.
 }
 \seealso{
 Other Functions utilizing foreign key relations: \code{\link{cdm_get_referencing_tables}},
-  \code{\link{cdm_is_referenced}}, \code{\link{cdm_select}}
+  \code{\link{cdm_is_referenced}},
+  \code{\link{cdm_select_tbl}}
 }
 \concept{Functions utilizing foreign key relations}

@@ -16,7 +16,7 @@
 #' - [cdm_draw()] for visualization
 #' - [cdm_join_tbl()] for flattening
 #' - [cdm_filter()] for filtering
-#' - [cdm_select()] for creating a `dm` with only a subset of the tables
+#' - [cdm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [decompose_table()] as one example of the table surgery family
 #' - [check_key()] and [check_if_subset()] for checking for key properties
 #' - [check_cardinality()] for checking the cardinality of the relation between two tables
@@ -236,7 +236,7 @@ print.dm <- function(x, ...) {
 #' @export
 `[.dm` <- function(x, name) {
   tables <- as_character(name)
-  cdm_select(x, !!!tables)
+  cdm_select_tbl(x, !!!tables)
 }
 
 
