@@ -98,32 +98,34 @@ airports %>%
 ## Data model
 ## --------------------------------------------------------------------
 
-# Compound object: tables, relationships, data
-dm::cdm_nycflights13(cycle = TRUE)
+library(dm)
 
-dm::cdm_nycflights13(cycle = TRUE) %>%
-  dm::cdm_draw()
+# Compound object: tables, relationships, data
+cdm_nycflights13(cycle = TRUE)
+
+cdm_nycflights13(cycle = TRUE) %>%
+  cdm_draw()
 
 # Selection of tables
-dm::cdm_nycflights13(cycle = TRUE) %>%
-  dm::cdm_select(flights, airlines) %>%
-  dm::cdm_draw()
+cdm_nycflights13(cycle = TRUE) %>%
+  cdm_select(flights, airlines) %>%
+  cdm_draw()
 
-dm::cdm_nycflights13(cycle = TRUE) %>%
-  dm::cdm_select(airports, airlines) %>%
-  dm::cdm_draw()
+cdm_nycflights13(cycle = TRUE) %>%
+  cdm_select(airports, airlines) %>%
+  cdm_draw()
 
 try(
-  dm::cdm_nycflights13() %>%
-    dm::cdm_select(bogus)
+  cdm_nycflights13() %>%
+    cdm_select(bogus)
 )
 
 # Accessing tables
-dm::cdm_nycflights13() %>%
+cdm_nycflights13() %>%
   tbl("airlines")
 
 # Table names
-dm::cdm_nycflights13() %>%
+cdm_nycflights13() %>%
   src_tbls()
 
 # NB: [, $, [[ and names() also work
@@ -132,11 +134,13 @@ dm::cdm_nycflights13() %>%
 x <- 1:5
 y <- x + 1
 z <- x * y
-tibble(x, y, z)
+w <- map(z, ~ runif(.))
+tibble(x, y, z, w)
 
 tibble(x = 1:5) %>%
   mutate(y = x + 1) %>%
-  mutate(z = x * y)
+  mutate(z = x * y) %>%
+  mutate(w = vctrs::list_of(!!!map(z, ~ runif(.))))
 
 ## Operations on the data model
 ## --------------------------------------------------------------------
@@ -152,7 +156,7 @@ tibble(x = 1:5) %>%
 
 # Determine key candidates
 airports %>%
-  dm::enum_pk_candidates()
+  enum_pk_candidates()
 
 # Why is name not a key?
 airports %>%
