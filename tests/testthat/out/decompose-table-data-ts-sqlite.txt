@@ -1,9 +1,9 @@
 $child_table
-      b aef_id     c d    
-  <dbl>  <int> <int> <chr>
-1   1.1      1     5 a    
-2   4.2      2     6 b    
-3   1.1      1     7 c    
+      b     c d     aef_id
+  <dbl> <int> <chr>  <int>
+1   1.1     5 a          1
+2   4.2     6 b          2
+3   1.1     7 c          1
 
 $parent_table
   aef_id     a e         f

@@ -26,12 +26,8 @@
 #' library(magrittr)
 #'
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
-#' child_table <- decomposed_table %>%
-#'   extract("child_table") %>%
-#'   purrr::flatten_dfr()
-#' parent_table <- decomposed_table %>%
-#'   extract("parent_table") %>%
-#'   purrr::flatten_dfr()
+#' decomposed_table$child_table
+#' decomposed_table$parent_table
 #' @export
 decompose_table <- function(.data, new_id_column, ...) {
   .data_q <- enquo(.data)
@@ -79,8 +75,9 @@ decompose_table <- function(.data, new_id_column, ...) {
       parent_table,
       by = cols_chr
     ) %>%
-    select(non_key_names, !!id_col_q) %>%
-    select(1, !!id_col_q, everything()) # 1 was originally first column in ".data" after extracting child table. It is therefore assumed to be a key to table ".data"
+    select(non_key_names, !!id_col_q)
+    # FIXME: Think about a good place for the target column,
+    # perhaps if this operation is run in a data model?
 
   list("child_table" = child_table, "parent_table" = parent_table)
 }

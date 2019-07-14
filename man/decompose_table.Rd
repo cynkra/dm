@@ -34,12 +34,8 @@ said columns from the now called 'child table' (the original table) and also add
 library(magrittr)
 
 decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
-child_table <- decomposed_table \%>\%
-  extract("child_table") \%>\%
-  purrr::flatten_dfr()
-parent_table <- decomposed_table \%>\%
-  extract("parent_table") \%>\%
-  purrr::flatten_dfr()
+decomposed_table$child_table
+decomposed_table$parent_table
 }
 \seealso{
 Other Table surgery functions: \code{\link{reunite_parent_child}}
