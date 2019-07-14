@@ -11,6 +11,7 @@
 #' @examples
 #' library(dplyr)
 #' cdm_draw(cdm_nycflights13())
+#' cdm_draw(cdm_nycflights13(cycle = TRUE))
 #'
 #' @export
 cdm_draw <- function(

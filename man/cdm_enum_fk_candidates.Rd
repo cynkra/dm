@@ -22,7 +22,7 @@ for each column of \code{table}, if this column contains only a subset of values
 \examples{
 library(dplyr)
 
-nycflights_dm <- cdm_nycflights13()
+nycflights_dm <- cdm_nycflights13(cycle = TRUE)
 
 nycflights_dm \%>\%
   cdm_enum_fk_candidates(flights, airports)

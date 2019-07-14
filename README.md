@@ -154,7 +154,7 @@ The `cdm_draw()` function creates a visualization of the entity
 relationship model:
 
 ``` r
-cdm_nycflights13() %>% 
+cdm_nycflights13(cycle = TRUE) %>% 
   cdm_draw()
 ```
 
@@ -214,7 +214,7 @@ src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
 #> src:  sqlite 3.25.3 [:memory:]
 #> tbls:
-nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13())
+nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13(cycle = TRUE))
 nycflights13_remote
 ```
 

@@ -52,7 +52,7 @@ As an example, we consider the [nycflights13](https://github.com/hadley/nycfligh
 This dataset contains five tables: the main `flights` table with links into the `airlines`, `planes` and `airports` tables, and a `weather` table without an explicit link.
 
 ```{r draw, echo = FALSE}
-cdm_nycflights13() %>% 
+cdm_nycflights13(cycle = TRUE) %>% 
   cdm_draw()
 ```
 
@@ -165,7 +165,7 @@ In order to transfer an existing `dm` object to a DB, you can call `cdm_copy_to(
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13())
+nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13(cycle = TRUE))
 nycflights13_remote
 ```
 

@@ -35,7 +35,7 @@ Relevant functions for visualising the `dm` object's data model are:^[The functi
 1. `cdm_get_colors()`
 1. `cdm_get_available_colors()`
 
-We use the prepared example `dm` object `cdm_nycflights13()`:
+We use the prepared example `dm` object `cdm_nycflights13(cycle = TRUE)`:
 ```{r}
 library(dm)
 flights_dm_w_many_keys <- cdm_nycflights13(color = FALSE)

@@ -214,7 +214,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' @examples
 #' library(dplyr)
 #'
-#' nycflights_dm <- cdm_nycflights13()
+#' nycflights_dm <- cdm_nycflights13(cycle = TRUE)
 #'
 #' nycflights_dm %>%
 #'   cdm_enum_fk_candidates(flights, airports)

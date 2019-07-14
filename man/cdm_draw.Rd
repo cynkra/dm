@@ -70,6 +70,7 @@ as a tibble.
 \examples{
 library(dplyr)
 cdm_draw(cdm_nycflights13())
+cdm_draw(cdm_nycflights13(cycle = TRUE))
 
 cdm_nycflights13() \%>\%
   cdm_set_colors(

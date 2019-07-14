@@ -117,7 +117,7 @@ The `cdm_nycflights13()` function provides a shortcut: the `dm` object returned 
 We will be using the `dm` object created by this function from here on.
 
 ```{r}
-flights_dm_with_keys <- cdm_nycflights13()
+flights_dm_with_keys <- cdm_nycflights13(cycle = TRUE)
 flights_dm_with_keys %>% 
   cdm_draw()
 ```
@@ -130,11 +130,10 @@ The idea of a filter on a `dm` object:
 1. You filter one table of your `dm`, just like with a normal `dplyr::filter()` call
 2. A cascade of joins is performed along the fk relations, resulting in a new `dm` containing only rows related to the filter operation
 
-Currently, this only works if the graph induced by the fk relations is cycle free.
-Our `cdm_nycflights13()` helper has an option for this:
+Currently, this only works if the graph induced by the fk relations is cycle free, the default for `cdm_nycflights13()`:
 
 ```{r}
-flights_dm_acyclic <- cdm_nycflights13(cycle = FALSE)
+flights_dm_acyclic <- cdm_nycflights13()
 flights_dm_acyclic %>% 
   cdm_draw()
 ```
