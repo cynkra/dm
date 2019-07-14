@@ -111,7 +111,7 @@ cdm_set_key_constraints <- function(dm) h(~ {
 
     con <- con_from_src_or_con(cdm_get_src(dm))
     queries <- create_queries(con, pk_info, fk_info)
-    if (!is_empty(queries)) walk(queries, ~ dbExecute(con, .))
+    walk(queries, ~ dbExecute(con, .))
 
     invisible(dm)
   })
