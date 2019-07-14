@@ -4,7 +4,7 @@
 \alias{cdm_nycflights13}
 \title{Creates a test \code{\link{dm}} object from \pkg{nycflights13}}
 \usage{
-cdm_nycflights13(cycle = TRUE, color = TRUE)
+cdm_nycflights13(cycle = FALSE, color = TRUE)
 }
 \arguments{
 \item{cycle}{Boolean, if \code{FALSE}, only one foreign key relation
