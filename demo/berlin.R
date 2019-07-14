@@ -129,16 +129,21 @@ try(
 )
 
 # Accessing tables
-dm::cdm_nycflights13() %>% tbl("airlines")
-
-try(
-  dm::cdm_nycflights13() %>% tbl("x")
-)
-
-# Shortcut
-dm::cdm_nycflights13()$airlines
+dm::cdm_nycflights13() %>%
+  tbl("airlines")
 
 # Table names
-src_tbls(dm::cdm_nycflights13())
+dm::cdm_nycflights13() %>%
+  src_tbls()
 
-names(dm::cdm_nycflights13())
+# NB: [, $, [[ and names() also work
+
+# Analogy: parallel vectors in the global environment
+x <- 1:5
+y <- x + 1
+z <- x * y
+tibble(x, y, z)
+
+tibble(x = 1:5) %>%
+  mutate(y = x + 1) %>%
+  mutate(z = x * y)
