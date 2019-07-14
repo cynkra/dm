@@ -104,16 +104,16 @@ cdm_nycflights13(cycle = TRUE) %>%
 
 # Selection of tables
 cdm_nycflights13(cycle = TRUE) %>%
-  cdm_select(flights, airlines) %>%
+  cdm_select_tbl(flights, airlines) %>%
   cdm_draw()
 
 cdm_nycflights13(cycle = TRUE) %>%
-  cdm_select(airports, airlines) %>%
+  cdm_select_tbl(airports, airlines) %>%
   cdm_draw()
 
 try(
   cdm_nycflights13() %>%
-    cdm_select(bogus)
+    cdm_select_tbl(bogus)
 )
 
 # Accessing tables
