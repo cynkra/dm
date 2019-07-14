@@ -95,16 +95,6 @@ try(
 airports %>%
   dm::check_key(faa)
 
-# Determine key candidates
-airports %>%
-  dm::enum_pk_candidates()
-
-# Why is name not a key?
-airports %>%
-  add_count(name) %>%
-  filter(n > 1) %>%
-  arrange(name)
-
 ## Data model
 ## --------------------------------------------------------------------
 
@@ -147,3 +137,33 @@ tibble(x, y, z)
 tibble(x = 1:5) %>%
   mutate(y = x + 1) %>%
   mutate(z = x * y)
+
+## Operations on the data model
+## --------------------------------------------------------------------
+
+# - cdm_filter()
+# - cdm_join_tbl()
+
+## Build up data model from scratch
+## --------------------------------------------------------------------
+
+# - cdm_add_pk()
+# - cdm_add_fk()
+
+# Determine key candidates
+airports %>%
+  dm::enum_pk_candidates()
+
+# Why is name not a key?
+airports %>%
+  add_count(name) %>%
+  filter(n > 1) %>%
+  arrange(name)
+
+## Link weather table
+## --------------------------------------------------------------------
+
+
+## Copy to database
+## --------------------------------------------------------------------
+
