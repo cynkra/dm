@@ -145,7 +145,26 @@ tibble(x = 1:5) %>%
 ## Operations on the data model
 ## --------------------------------------------------------------------
 
-# - cdm_filter()
+cdm_nycflights13()
+
+cdm_nycflights13() %>%
+  cdm_filter(airlines, carrier == "AA")
+
+cdm_nycflights13() %>%
+  cdm_filter(airlines, carrier == "AA") %>%
+  cdm_filter(airports, faa != "JFK")
+
+cdm_nycflights13() %>%
+  cdm_filter(airlines, carrier == "AA") %>%
+  cdm_filter(airports, faa != "JFK") %>%
+  cdm_filter(flights, month == 1)
+
+cdm_nycflights13() %>%
+  cdm_filter(airlines, carrier == "AA") %>%
+  cdm_filter(airports, faa != "JFK") %>%
+  cdm_filter(flights, month == 1) %>%
+  tbl("planes")
+
 # - cdm_join_tbl()
 
 ## Build up data model from scratch
@@ -167,6 +186,7 @@ airports %>%
 ## Link weather table
 ## --------------------------------------------------------------------
 
+# time_hour is a key to the time_slots table, how to decompose?
 
 ## Copy to database
 ## --------------------------------------------------------------------
