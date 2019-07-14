@@ -47,7 +47,7 @@ It defines the level of details for the table rendering
 
 \item{...}{Colors to set in the form \code{table = "<color>"} . Fall-through syntax similarly to
 \code{\link[=switch]{switch()}} is supported: \code{table1 = , table2 = "<color>"} sets the color for both \code{table1}
-and \code{table2} .}
+and \code{table2} . This argument supports splicing.}
 }
 \value{
 For \code{cdm_set_colors()}: the updated data model.
@@ -72,13 +72,20 @@ library(dplyr)
 cdm_draw(cdm_nycflights13())
 cdm_draw(cdm_nycflights13(cycle = TRUE))
 
-cdm_nycflights13() \%>\%
+cdm_nycflights13(color = FALSE) \%>\%
   cdm_set_colors(
-    flights = "blue",
     airports = ,
-    airlines = "orange",
-    weather = "green",
-    planes = "yellow") \%>\%
+    airlines = ,
+    planes = "yellow",
+    weather = "dark_blue") \%>\%
     cdm_draw()
 
+# Splicing is supported:
+new_colors <- c(
+  airports = "yellow", airlines = "yellow", planes = "yellow",
+  weather = "dark_blue"
+)
+cdm_nycflights13(color = FALSE) \%>\%
+  cdm_set_colors(!!!new_colors) \%>\%
+  cdm_draw()
 }

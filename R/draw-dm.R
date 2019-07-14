@@ -62,20 +62,27 @@ cdm_draw <- function(
 #'
 #' @param ... Colors to set in the form `table = "<color>"` . Fall-through syntax similarly to
 #'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
-#'   and `table2` .
+#'   and `table2` . This argument supports splicing.
 #' @return For `cdm_set_colors()`: the updated data model.
 #'
 #' @rdname cdm_draw
 #' @examples
-#' cdm_nycflights13() %>%
+#' cdm_nycflights13(color = FALSE) %>%
 #'   cdm_set_colors(
-#'     flights = "blue",
 #'     airports = ,
-#'     airlines = "orange",
-#'     weather = "green",
-#'     planes = "yellow") %>%
+#'     airlines = ,
+#'     planes = "yellow",
+#'     weather = "dark_blue") %>%
 #'     cdm_draw()
 #'
+#' # Splicing is supported:
+#' new_colors <- c(
+#'   airports = "yellow", airlines = "yellow", planes = "yellow",
+#'   weather = "dark_blue"
+#' )
+#' cdm_nycflights13(color = FALSE) %>%
+#'   cdm_set_colors(!!!new_colors) %>%
+#'   cdm_draw()
 #' @export
 cdm_set_colors <- function(dm, ...) {
   data_model <- cdm_get_data_model(dm)
