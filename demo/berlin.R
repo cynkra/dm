@@ -13,44 +13,40 @@ library(nycflights13)
 ?airlines
 
 library(tidyverse)
-flights %>%
+flights_base <-
+  flights %>%
   select(year, month, day, carrier, tailnum, origin, dest)
 
 # carrier column also present in `airlines`, this table contains
 # additional information
 airlines
 
-flights %>%
-  select(year, month, day, carrier, tailnum, origin, dest) %>%
+flights_base %>%
   left_join(airlines)
 
 # single source of truth: updating in one single location
 airlines[airlines$carrier == "UA", "name"] <- "United broke my guitar"
 
 # ...propagates to related records
-flights %>%
-  select(year, month, day, carrier, tailnum, origin, dest) %>%
+flights_base %>%
   left_join(airlines)
 
 # Same for airplanes
 planes
 
-flights %>%
-  select(year, month, day, carrier, tailnum, origin, dest) %>%
+flights_base %>%
   left_join(planes)
 
 # Same for airports?
 airports
 
 try(
-  flights %>%
-    select(year, month, day, carrier, tailnum, origin, dest) %>%
+  flights_base %>%
     left_join(airports)
 )
 
 # Need to specify join variables!
-flights %>%
-  select(year, month, day, carrier, tailnum, origin, dest) %>%
+flights_base %>%
   left_join(airports, by = c("origin" = "faa"))
 
 # cleanup
