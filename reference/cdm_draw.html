@@ -70,7 +70,7 @@ as a tibble." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9000</span>
       </span>
     </div>
 
@@ -206,7 +206,7 @@ It defines the level of details for the table rendering
       <th>...</th>
       <td><p>Colors to set in the form <code>table = "&lt;color&gt;"</code> . Fall-through syntax similarly to
 <code><a href='https://rdrr.io/r/base/switch.html'>switch()</a></code> is supported: <code>table1 = , table2 = "&lt;color&gt;"</code> sets the color for both <code>table1</code>
-and <code>table2</code> .</p></td>
+and <code>table2</code> . This argument supports splicing.</p></td>
     </tr>
     </table>
     
@@ -221,15 +221,24 @@ column and auxiliary information in other columns.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'>cdm_draw</span>(<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>())
+<span class='fu'>cdm_draw</span>(<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 
-<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_set_colors</span>(
-    <span class='kw'>flights</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
     <span class='kw'>airports</span> <span class='kw'>=</span> ,
-    <span class='kw'>airlines</span> <span class='kw'>=</span> <span class='st'>"orange"</span>,
-    <span class='kw'>weather</span> <span class='kw'>=</span> <span class='st'>"green"</span>,
-    <span class='kw'>planes</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>cdm_draw</span>()</div></pre>
+    <span class='kw'>airlines</span> <span class='kw'>=</span> ,
+    <span class='kw'>planes</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>,
+    <span class='kw'>weather</span> <span class='kw'>=</span> <span class='st'>"dark_blue"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>cdm_draw</span>()
+
+<span class='co'># Splicing is supported:</span>
+<span class='no'>new_colors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+  <span class='kw'>airports</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>, <span class='kw'>airlines</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>, <span class='kw'>planes</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>,
+  <span class='kw'>weather</span> <span class='kw'>=</span> <span class='st'>"dark_blue"</span>
+)
+<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>cdm_set_colors</span>(!!!<span class='no'>new_colors</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>cdm_draw</span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

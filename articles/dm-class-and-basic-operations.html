@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9000</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1>Class ‘dm’ and basic operations</h1>
             
-            <h4 class="date">2019-07-12</h4>
+            <h4 class="date">2019-07-15</h4>
       
       
       <div class="hidden name"><code>dm-class-and-basic-operations.Rmd</code></div>
@@ -148,7 +148,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x3855558&gt;
+#&gt; src:  &lt;environment: 0x3b5b218&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -171,7 +171,7 @@
 <a class="sourceLine" id="cb3-9" data-line-number="9">    )</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">another_iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x6667058&gt;
+#&gt; src:  &lt;environment: 0x72965e0&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -263,7 +263,7 @@
 #&gt; </span><span style="color: #555555;">1</span><span> FALSE        19
 </span></code></pre>
 <p>Get an overview over all tables with primary keys, use <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(<span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(<span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span><span>
 #&gt;   table    pk_col  pk_class 
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    
@@ -271,7 +271,7 @@
 #&gt; </span><span style="color: #555555;">2</span><span> airports faa     character
 #&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum character
 </span></code></pre>
-<p>We used here the prepared <code>dm</code> object <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> as an example. This object already has all keys pre-set.</p>
+<p>We used here the prepared <code>dm</code> object <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13(cycle = TRUE)</a></code> as an example. This object already has all keys pre-set.</p>
 </div>
 <div id="foreign-keys" class="section level2">
 <h2 class="hasAnchor">
@@ -359,7 +359,7 @@
 #&gt; </span><span style="color: #555555;">15</span><span> airports  faa          weather time_hour  FALSE
 </span></code></pre>
 <p>Get an overview over all foreign key relations in your data model with<code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code>:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks</a></span>(<span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks</a></span>(<span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 4</span><span>
 #&gt;   child_table child_fk_col col_class parent_table
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       

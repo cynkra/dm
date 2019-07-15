@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Which columns are candidates for a primary key column? — cdm_enum_pk_candidates • dm</title>
+<title>Which columns are candidates for a primary key column? — enum_pk_candidates • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,14 +32,13 @@
 
 
 
-<meta property="og:title" content="Which columns are candidates for a primary key column? — cdm_enum_pk_candidates" />
+<meta property="og:title" content="Which columns are candidates for a primary key column? — enum_pk_candidates" />
 
-<meta property="og:description" content="cdm_enum_pk_candidates() checks for each column of a
-table of a dm object if this column contains only unique values and is therefore
-a unique key of this table.
-enum_pk_candidates() checks for each column of a
+<meta property="og:description" content="enum_pk_candidates() checks for each column of a
 table if this column contains only unique values and is therefore
-a candidate for a unique key of this table." />
+a candidate for a primary key of this table.
+cdm_enum_pk_candidates() performs these checks
+for a table in a dm object." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +70,7 @@ a candidate for a unique key of this table." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9000</span>
       </span>
     </div>
 
@@ -133,29 +132,28 @@ a candidate for a unique key of this table." />
 
     <div class="ref-description">
     
-    <p><code>cdm_enum_pk_candidates()</code> checks for each column of a
-table of a <code><a href='dm.html'>dm</a></code> object if this column contains only unique values and is therefore
-a unique key of this table.</p>
-<p><code>enum_pk_candidates()</code> checks for each column of a
+    <p><code>enum_pk_candidates()</code> checks for each column of a
 table if this column contains only unique values and is therefore
-a candidate for a unique key of this table.</p>
+a candidate for a primary key of this table.</p>
+<p><code>cdm_enum_pk_candidates()</code> performs these checks
+for a table in a <a href='dm.html'>dm</a> object.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+    <pre class="usage"><span class='fu'>enum_pk_candidates</span>(<span class='no'>table</span>)
 
-<span class='fu'>enum_pk_candidates</span>(<span class='no'>table</span>)</pre>
+<span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr>
-    <tr>
       <th>table</th>
       <td><p>A table in the <code>dm</code></p></td>
+    </tr>
+    <tr>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object.</p></td>
     </tr>
     </table>
     
@@ -167,10 +165,7 @@ a candidate for a unique key of this table.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>()
-
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 2
+    <pre class="examples"><div class='input'><span class='kw pkg'>nycflights13</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>flights</a></span> <span class='kw'>%&gt;%</span> <span class='fu'>enum_pk_candidates</span>()</div><div class='output co'>#&gt; # A tibble: 19 x 2
 #&gt;    column         candidate
 #&gt;    &lt;chr&gt;          &lt;lgl&gt;    
 #&gt;  1 year           FALSE    
@@ -191,7 +186,29 @@ a candidate for a unique key of this table.</p>
 #&gt; 16 distance       FALSE    
 #&gt; 17 hour           FALSE    
 #&gt; 18 minute         FALSE    
-#&gt; 19 time_hour      FALSE    </div><div class='input'><span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span> <span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 2
+#&gt; 19 time_hour      FALSE    </div><div class='input'>
+<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 2
+#&gt;    column         candidate
+#&gt;    &lt;chr&gt;          &lt;lgl&gt;    
+#&gt;  1 year           FALSE    
+#&gt;  2 month          FALSE    
+#&gt;  3 day            FALSE    
+#&gt;  4 dep_time       FALSE    
+#&gt;  5 sched_dep_time FALSE    
+#&gt;  6 dep_delay      FALSE    
+#&gt;  7 arr_time       FALSE    
+#&gt;  8 sched_arr_time FALSE    
+#&gt;  9 arr_delay      FALSE    
+#&gt; 10 carrier        FALSE    
+#&gt; 11 flight         FALSE    
+#&gt; 12 tailnum        FALSE    
+#&gt; 13 origin         FALSE    
+#&gt; 14 dest           FALSE    
+#&gt; 15 air_time       FALSE    
+#&gt; 16 distance       FALSE    
+#&gt; 17 hour           FALSE    
+#&gt; 18 minute         FALSE    
+#&gt; 19 time_hour      FALSE    </div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 2
 #&gt;   column candidate
 #&gt;   &lt;chr&gt;  &lt;lgl&gt;    
 #&gt; 1 faa    TRUE     

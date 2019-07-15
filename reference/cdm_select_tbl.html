@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get a <code><a href='dm.html'>dm</a></code> only containing the indicated tables and the connecting ones — cdm_select • dm</title>
+<title>Get a <code><a href='dm.html'>dm</a></code> only containing the indicated tables and the connecting ones — cdm_select_tbl • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
 
 
-<meta property="og:title" content="Get a <code><a href='dm.html'>dm</a></code> only containing the indicated tables and the connecting ones — cdm_select" />
+<meta property="og:title" content="Get a <code><a href='dm.html'>dm</a></code> only containing the indicated tables and the connecting ones — cdm_select_tbl" />
 
 <meta property="og:description" content="Is a wrapper around cdm_find_conn_tbls(). It returns a reduced dm object,
 containing only the indicated tables plus the ones in between them (unless all_connected = FALSE)." />
@@ -67,7 +67,7 @@ containing only the indicated tables plus the ones in between them (unless all_c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9000</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ containing only the indicated tables plus the ones in between them (unless all_c
     <div class="page-header">
     <h1>Get a <code><a href='dm.html'>dm</a></code> only containing the indicated tables and the connecting ones</h1>
     
-    <div class="hidden name"><code>cdm_select.Rd</code></div>
+    <div class="hidden name"><code>cdm_select_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -134,7 +134,7 @@ containing only the indicated tables plus the ones in between them (unless <code
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_select</span>(<span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>all_connected</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_select_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>all_connected</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,7 +145,8 @@ containing only the indicated tables plus the ones in between them (unless <code
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Two or more table names of the <code><a href='dm.html'>dm</a></code> object's tables.</p></td>
+      <td><p>Two or more table names of the <code><a href='dm.html'>dm</a></code> object's tables.
+See <code><a href='https://rdrr.io/pkg/tidyselect/man/vars_select.html'>tidyselect::vars_select()</a></code> for details on the semantics.</p></td>
     </tr>
     <tr>
       <th>all_connected</th>

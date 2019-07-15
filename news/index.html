@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9000</span>
       </span>
     </div>
 
@@ -122,6 +122,28 @@
       
     </div>
 
+    <div id="dm-0-0-1-9000" class="section level1">
+<h1 class="page-header">
+<a href="#dm-0-0-1-9000" class="anchor"></a>dm 0.0.1.9000</h1>
+<ul>
+<li>Only suggest {RSQLite}.</li>
+<li>
+<code><a href="../reference/cdm_filter.html">cdm_filter()</a></code> no longer requires a primary key.</li>
+<li>
+<code><a href="../reference/decompose_table.html">decompose_table()</a></code> adds the new column in the table to the end.</li>
+<li>Rename <code>cdm_select()</code> to <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code>.</li>
+<li>
+<code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> now has <code>cycle = FALSE</code> as default.</li>
+<li>
+<code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, and <code><a href="https://rdrr.io/r/base/names.html">names()</a></code> now implemented for dm objects (read-only).</li>
+<li>
+<code>tbl()</code> now fails if the table is not part of the data model.</li>
+<li>
+<code>cdm_select()</code> uses tidyselect.</li>
+<li>New <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code>.</li>
+<li>Rename <code>cdm_check_for_*()</code> to <code>cdm_enum_*()</code>.</li>
+</ul>
+</div>
     <div id="dm-0-0-1" class="section level1">
 <h1 class="page-header">
 <a href="#dm-0-0-1" class="anchor"></a>dm 0.0.1</h1>
@@ -205,7 +227,7 @@
 <ul>
 <li><code><a href="../reference/cdm_is_referenced.html">cdm_is_referenced()</a></code></li>
 <li><code><a href="../reference/cdm_get_referencing_tables.html">cdm_get_referencing_tables()</a></code></li>
-<li><code><a href="../reference/cdm_select.html">cdm_select()</a></code></li>
+<li><code>cdm_select()</code></li>
 <li><code><a href="../reference/cdm_find_conn_tbls.html">cdm_find_conn_tbls()</a></code></li>
 </ul>
 </div>
@@ -247,6 +269,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dm-0-0-1-9000">0.0.1.9000</a></li>
         <li><a href="#dm-0-0-1">0.0.1</a></li>
       </ul>
     </div>
