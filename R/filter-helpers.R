@@ -20,8 +20,8 @@ cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
   if (!(cdm_has_fk(dm, !!lhs_name, !!rhs_name) |
     cdm_has_fk(dm, !!rhs_name, !!lhs_name))) {
     abort(paste0(
-      "No foreign key relation exists between table '", lhs_name,
-      "' and table ", rhs_name, ", joining not possible."
+      "No foreign key relation exists between table `", lhs_name, "` ",
+      "and table `", rhs_name, "`, joining not possible."
     ))
   }
 
