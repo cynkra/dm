@@ -1,3 +1,17 @@
+# dm 0.0.1.9000
+
+- Only suggest {RSQLite}.
+- `cdm_filter()` no longer requires a primary key.
+- `decompose_table()` adds the new column in the table to the end.
+- Rename `cdm_select()` to `cdm_select_tbl()`.
+- `cdm_nycflights13()` now has `cycle = FALSE` as default.
+- `$`, `[[`, `[`, and `names()` now implemented for dm objects (read-only).
+- `tbl()` now fails if the table is not part of the data model.
+- `cdm_select()` uses tidyselect.
+- New `enum_pk_candidates()`.
+- Rename `cdm_check_for_*()` to `cdm_enum_*()`.
+
+
 # dm 0.0.1
 
 Initial GitHub release.
