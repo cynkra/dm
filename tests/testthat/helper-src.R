@@ -32,7 +32,9 @@ clear_postgres <- function() {
 
 test_register_src("df", src_df(env = new_environment()))
 
-try(test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
+if (packageVersion("RSQLite") >= "2.1.1.9003") {
+  try(test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
+}
 
 local(try(
   {
