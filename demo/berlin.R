@@ -136,7 +136,7 @@ tibble(x, y, z, w)
 tibble(x = 1:5) %>%
   mutate(y = x + 1) %>%
   mutate(z = x * y) %>%
-  mutate(w = vctrs::list_of(!!!map(z, ~ runif(.))))
+  mutate(w = map(z, ~ runif(.)))
 
 ## Filtering for data models
 ## --------------------------------------------------------------------
@@ -166,9 +166,11 @@ aa_non_jfk_january %>%
 ## Copy to database
 ## --------------------------------------------------------------------
 
-# FIXME: SQLite
+# FIXME: SQLite with many rows
 
 # FIXME: Make work with planes table
+
+# FIXME: remove all_connected = TRUE for now, redo example above
 
 # All operations are designed to work locally and on the database
 nycflights13_sqlite <-
@@ -225,20 +227,98 @@ try(
 ## Build up data model from scratch
 ## --------------------------------------------------------------------
 
-# - cdm_add_pk()
-# - cdm_add_fk()
+# Linking the weather table
 
 # Determine key candidates
-airports %>%
+weather %>%
   enum_pk_candidates()
 
-# Why is name not a key?
-airports %>%
-  add_count(name) %>%
-  filter(n > 1) %>%
-  arrange(name)
+# It's tricky:
+weather %>%
+  unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
+  count(slot_id) %>%
+  filter(n > 1)
 
-## Link weather table
-## --------------------------------------------------------------------
+weather %>%
+  count(origin, time_hour) %>%
+  filter(n > 1)
 
-# time_hour is a key to the time_slots table, how to decompose?
+weather %>%
+  count(origin, format(time_hour)) %>%
+  filter(n > 1)
+
+# This looks like a good candidate:
+weather %>%
+  count(origin, format(time_hour, tz = "UTC")) %>%
+  filter(n > 1)
+
+# FIXME: Support compound keys (#3)
+
+# Currently, we need to create surrogate keys:
+weather_link <-
+  weather %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
+
+flights_link <-
+  flights %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
+
+# FIXME: Nicer way to construct dm
+
+# Copy to this environment
+airlines_global <- airlines
+airports_global <- airports
+planes_global <- planes
+
+global <-
+  dm(src_df(env = .GlobalEnv))
+
+# FIXME: Consistent rename() syntax
+
+nycflights13_tbl <-
+  global %>%
+  cdm_rename_table(airlines_global, airlines) %>%
+  cdm_rename_table(airports_global, airports) %>%
+  cdm_rename_table(planes_global, planes) %>%
+  cdm_rename_table(flights_link, flights) %>%
+  cdm_rename_table(weather_link, weather) %>%
+  cdm_select_tbl(airlines, airports, planes, flights, weather, all_connected = FALSE)
+
+nycflights13_tbl
+
+nycflights13_tbl %>%
+  cdm_draw()
+
+# Adding primary keys
+nycflights13_pk <-
+  nycflights13_tbl %>%
+  cdm_add_pk(weather, origin_slot_id) %>%
+  cdm_add_pk(planes, tailnum) %>%
+  cdm_add_pk(airports, faa) %>%
+  cdm_add_pk(airlines, carrier)
+
+nycflights13_pk %>%
+  cdm_draw()
+
+# FIXME: Model weak constraints, show differently in diagram (#4)
+
+# Adding foreign keys
+nycflights13_fk <-
+  nycflights13_pk %>%
+  cdm_add_fk(flights, origin_slot_id, weather, check = FALSE) %>%
+  cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+  cdm_add_fk(flights, origin, airports) %>%
+  cdm_add_fk(flights, dest, airports, check = FALSE) %>%
+  cdm_add_fk(flights, carrier, airlines)
+
+nycflights13_fk %>%
+  cdm_draw()
+
+# Color it!
+cdm_get_available_colors()
+
+nycflights13_fk %>%
+  cdm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
+  cdm_draw()
