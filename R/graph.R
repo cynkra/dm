@@ -46,8 +46,6 @@ cdm_get_referencing_tables <- function(dm, table) {
   as.character(references$table[which_ind])
 }
 
-# assumes that the natural order works (fork-less)
-# FIXME #16: implement for arbitrary graph of connections
 calculate_join_list <- function(dm, table_name) {
   g <- create_graph_from_dm(dm)
 
