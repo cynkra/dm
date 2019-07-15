@@ -119,11 +119,16 @@ rm_table_from_data_model <- function(data_model, tables) {
     new_columns[ind_alter_columns, ]$ref_col <- NA
   }
 
-  ind_keep_references <-
-    !(data_model$references$table %in% tables) &
-      !(data_model$references$ref %in% tables)
-  new_references <- data_model$references[ind_keep_references, ]
-  new_references$ref_id <- seq_along(new_references$ref_id)
+  references <- data_model$references
+  if (!is.null(references)) {
+    ind_keep_references <-
+      !(references$table %in% tables) &
+      !(references$ref %in% tables)
+    new_references <- references[ind_keep_references, ]
+    new_references$ref_id <- seq_along(new_references$ref_id)
+  } else {
+    new_references <- NULL
+  }
 
   new_data_model(
     tables = new_tables,
@@ -204,31 +209,33 @@ datamodel_references_from_overview <- function(overview) h(~ {
   })
 
 datamodel_rename_table <- function(data_model, old_name, new_name) h(~ {
-    tables <- data_model$tables
-    ind_tables <- tables$table == old_name
-    tables$table[ind_tables] <- new_name
+  tables <- data_model$tables
+  ind_tables <- tables$table == old_name
+  tables$table[ind_tables] <- new_name
 
-    columns <- data_model$columns
-    ind_columns_table <- columns$table == old_name
-    columns$table[ind_columns_table] <- new_name
+  columns <- data_model$columns
+  ind_columns_table <- columns$table == old_name
+  columns$table[ind_columns_table] <- new_name
 
-    ind_columns_ref <-
-      if_else(are_na(columns$ref == old_name), FALSE, columns$ref == old_name)
-    columns$ref[ind_columns_ref] <- new_name
+  ind_columns_ref <-
+    if_else(are_na(columns$ref == old_name), FALSE, columns$ref == old_name)
+  columns$ref[ind_columns_ref] <- new_name
 
-    references <- data_model$references %>% mutate(ref = as.character(ref))
+  references <- data_model$references
+  if (!is.null(references)) {
     ind_references_table <- references$table == old_name
     references$table[ind_references_table] <- new_name
 
     ind_references_ref <- references$ref == old_name
     references$ref[ind_references_ref] <- new_name
+  }
 
-    new_data_model(
-      tables = tables,
-      columns = columns,
-      references = references
-    )
-  })
+  new_data_model(
+    tables = tables,
+    columns = columns,
+    references = references
+  )
+})
 
 data_model_db_types_to_R_types <- function(data_model) {
   type <- data_model$columns$type
