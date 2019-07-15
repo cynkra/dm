@@ -157,6 +157,7 @@ aa_non_jfk_january <-
   cdm_filter(airlines, carrier == "AA") %>%
   cdm_filter(airports, faa != "JFK") %>%
   cdm_filter(flights, month == 1)
+aa_non_jfk_january
 
 # ... and processed further
 aa_non_jfk_january %>%
@@ -165,31 +166,35 @@ aa_non_jfk_january %>%
 ## Copy to database
 ## --------------------------------------------------------------------
 
+# FIXME: SQLite
+
+# FIXME: Make work with planes table
+
 # All operations are designed to work locally and on the database
-nycflights13_pq <-
+nycflights13_sqlite <-
   cdm_nycflights13() %>%
   cdm_select_tbl(-planes, all_connected = FALSE) %>%
-  cdm_filter(flights, month == 1, day <= 10) %>%
-  cdm_copy_to(src_postgres(), .)
+  cdm_filter(flights, month == 1) %>%
+  cdm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
 
-nycflights13_pq
+nycflights13_sqlite
 
-nycflights13_pq %>%
+nycflights13_sqlite %>%
   cdm_get_tables() %>%
   map(dbplyr::sql_render)
 
 # Filtering on the database
-nycflights13_pq %>%
+nycflights13_sqlite %>%
   cdm_filter(airlines, carrier == "AA") %>%
   cdm_filter(airports, faa != "JFK") %>%
   cdm_filter(flights, day == 1) %>%
   tbl("flights")
 
 # ... and the corresponding SQL statement
-nycflights13_pq %>%
+nycflights13_sqlite %>%
   cdm_filter(airlines, carrier == "AA") %>%
   cdm_filter(airports, faa != "JFK") %>%
-  cdm_filter(flights, month == 1) %>%
+  cdm_filter(flights, day == 1) %>%
   tbl("flights") %>%
   dbplyr::sql_render()
 
