@@ -74,7 +74,9 @@ new_dm <- function(src, tables, data_model) {
     list(
       src = src,
       tables = tables,
-      data_model = data_model
+      data_model_tables = data_model$tables,
+      data_model_columns = data_model$columns,
+      data_model_references = data_model$references
     ),
     class = "dm"
   )
@@ -134,7 +136,13 @@ cdm_get_tables <- function(x) {
 #'
 #' @export
 cdm_get_data_model <- function(x) {
-  unclass(x)$data_model
+  x <- unclass(x)
+
+  new_data_model(
+    x$data_model_tables,
+    x$data_model_columns,
+    x$data_model_references
+  )
 }
 
 #' Check class
