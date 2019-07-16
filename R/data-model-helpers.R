@@ -15,7 +15,7 @@ new_data_model <- function(tables, columns, references) {
 # helper function for updating the data model when adding a reference from one table to another
 upd_data_model_reference <- function(data_model, table, column, ref_table, ref_column) {
   new_data_model(
-    tables = cdm_get_tables(data_model),
+    tables = data_model$tables,
     columns = upd_columns_reference(data_model, table, column, ref_table, ref_column),
     references = upd_references_reference(data_model, table, column, ref_table, ref_column)
   )
