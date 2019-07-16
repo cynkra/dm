@@ -138,10 +138,34 @@ cdm_get_tables <- function(x) {
 cdm_get_data_model <- function(x) {
   x <- unclass(x)
 
+  references <-
+    x$data_model_references
+
+  if (is.null(references)) {
+    references <- data.frame(
+      table = character(),
+      column = character(),
+      ref = character(),
+      ref_col = character(),
+      ref_id = integer(),
+      ref_col_num = integer(),
+      stringsAsFactors = FALSE
+    )
+  }
+
+  references_for_columns <-
+    references %>%
+    select(table, column, ref, ref_col)
+
+  columns <-
+    x$data_model_columns %>%
+    mutate(ref = NULL, ref_col = NULL) %>%
+    left_join(references_for_columns, by = c("table", "column"))
+
   new_data_model(
     x$data_model_tables,
-    x$data_model_columns,
-    x$data_model_references
+    columns,
+    references
   )
 }
 
