@@ -20,6 +20,8 @@ library(nycflights13)
 ?flights
 ?airports
 ?airlines
+?planes
+?weather
 
 library(tidyverse)
 flights_base <-
