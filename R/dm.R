@@ -84,6 +84,7 @@ new_dm <- function(src, tables, data_model) {
 #'
 #' `validate_dm()` checks consistency between the \pkg{dplyr} source
 #' and the \pkg{datamodelr} based specification of table relationships.
+#' This function is currently a no-op.
 #'
 #' @param x An object.
 #' @rdname dm

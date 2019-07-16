@@ -46,6 +46,7 @@ based on \link[datamodelr:datamodelr-package]{datamodelr::datamodelr-package}.
 
 \code{validate_dm()} checks consistency between the \pkg{dplyr} source
 and the \pkg{datamodelr} based specification of table relationships.
+This function is currently a no-op.
 
 \code{cdm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}
 object.
