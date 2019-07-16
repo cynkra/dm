@@ -21,7 +21,7 @@ The five tables we are working with contain information on flights from airports
 - `airlines` includes 
   - transport organizations' names (`name`) 
   - their shortcuts (`carrier`)
-- `airports` details the arrival and departure stations
+- `airports` indicates the ports of departure (`origin`) and of destination (`dest`)
 - `weater` the meterological context at each hour
 - `planes` describes aircrafts' characteristics
 
@@ -36,14 +36,11 @@ library(nycflights13)
 
 First, we will tell `dm` what tables we want to work with and how they're connected. 
 For this, we can use `dm` or `as_dm()`. 
-
 `as_dm()` accepts lists of objects. 
 You must explicitly name the objects if you use `list()` (f.e. `list("airlines" = airlines, "flights" = flights)`) — here we use `tibble::lst()` which automatically names the list components.
 
 ```{r}
-flights_dm_no_keys <- tibble::lst( airlines, airports, 
-  flights, planes, weather
-  ) %>%
+flights_dm_no_keys <- tibble::lst(airlines, airports, flights, planes, weather) %>%
   as_dm()
 ```
 
@@ -58,18 +55,18 @@ How your five tables are connected the foreign keys) and which column(s) uniquel
 
 ```{r}
 cdm_enum_pk_candidates(
-  dm = flights_dm_no_keys, 
+  dm = flights_dm_no_keys,
   table = planes
-  )
+)
 ```
 
 Now, add any primary keys you may have identified:
 
 ```{r}
 flights_dm_only_pks <- flights_dm_no_keys %>%
-  cdm_add_pk(table = airlines, column = carrier) %>% 
-  cdm_add_pk(table = airports, column = faa) %>% 
-  cdm_add_pk(table = planes, column = tailnum)
+  cdm_add_pk(table = airlines, column = carrier) %>%
+  cdm_add_pk(airports, faa) %>%
+  cdm_add_pk(planes, tailnum)
 flights_dm_only_pks
 ```
 
@@ -89,17 +86,16 @@ cdm_enum_fk_candidates(
 )
 ```
 
-
 You define how your tables relate using `cdm_add_fk()`. 
 First, define the tables you wish to connect to another using the function's options `table` and `ref_table`. 
 Then indicate in `column` which column of `table` refers to `ref_table`'s primary key, which you've defined above. 
-Use `check = FALSE` to coerce a key. 
+Use `check = FALSE` to omit consistency checks.
 
 ```{r}
 flights_dm_all_keys <- flights_dm_only_pks %>%
-  cdm_add_fk(table = flights, column = tailnum, ref_table = planes, check = FALSE) %>% 
-  cdm_add_fk(table = flights, column = carrier, ref_table = airlines) %>%
-  cdm_add_fk(table = flights, column = origin, ref_table = airports)
+  cdm_add_fk(table = flights, column = tailnum, ref_table = planes, check = FALSE) %>%
+  cdm_add_fk(flights, carrier, airlines) %>%
+  cdm_add_fk(flights, origin, airports)
 flights_dm_all_keys
 ```
 
@@ -110,7 +106,6 @@ To retrieve your keys later on, use `cdm_get_all_fks()` or `cdm_get_fk()` for it
 ```{r}
 cdm_get_all_pks(flights_dm_all_keys)
 ```
-
 
 Voilà, here's your `dm` object that you can work with:
 
