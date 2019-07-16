@@ -70,12 +70,20 @@ new_dm <- function(src, tables, data_model) {
   stopifnot(datamodelr::is.data_model(data_model))
   src <- src_from_src_or_con(src)
 
+  columns <- data_model$columns
+
+  keys <- columns %>%
+    select(column, table, key) %>%
+    filter(key > 0) %>%
+    select(-key)
+
   structure(
     list(
       src = src,
       tables = tables,
       data_model_tables = data_model$tables,
-      data_model_columns = data_model$columns,
+      data_model_keys = keys,
+      data_model_columns = columns %>% mutate(key = NULL, ref = NULL, ref_col = NULL),
       data_model_references = data_model$references
     ),
     class = "dm"
@@ -157,9 +165,14 @@ cdm_get_data_model <- function(x) {
     references %>%
     select(table, column, ref, ref_col)
 
+  keys <-
+    x$data_model_keys %>%
+    mutate(key = 1L)
+
   columns <-
     x$data_model_columns %>%
-    mutate(ref = NULL, ref_col = NULL) %>%
+    left_join(keys, by = c("table", "column")) %>%
+    mutate(key = coalesce(key, 0L)) %>%
     left_join(references_for_columns, by = c("table", "column"))
 
   new_data_model(
