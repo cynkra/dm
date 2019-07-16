@@ -40,6 +40,7 @@ dm() coerces its inputs.
 new_dm() only checks if the inputs are of the correct class.
 validate_dm() checks consistency between the dplyr source
 and the datamodelr based specification of table relationships.
+This function is currently a no-op.
 cdm_get_src() returns the dplyr source component of a dm
 object.
 cdm_get_tables() returns a named list with dplyr tbl objects
@@ -146,7 +147,8 @@ based on <a href='https://rdrr.io/pkg/datamodelr/man/datamodelr-package.html'>da
 <p><code>dm()</code> coerces its inputs.</p>
 <p><code>new_dm()</code> only checks if the inputs are of the correct class.</p>
 <p><code>validate_dm()</code> checks consistency between the <span class="pkg">dplyr</span> source
-and the <span class="pkg">datamodelr</span> based specification of table relationships.</p>
+and the <span class="pkg">datamodelr</span> based specification of table relationships.
+This function is currently a no-op.</p>
 <p><code>cdm_get_src()</code> returns the <span class="pkg">dplyr</span> source component of a <code>dm</code>
 object.</p>
 <p><code>cdm_get_tables()</code> returns a named list with <span class="pkg">dplyr</span> tbl objects
@@ -226,7 +228,7 @@ object.</p>
 #&gt; ── Rows ────────────────────────────────────────────────────────────────────────
 #&gt; Total: 367687
 #&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: 0x67daa40&gt;
+#&gt; src:  &lt;environment: 0x5c969e0&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   2 tables:  iris, mtcars 
