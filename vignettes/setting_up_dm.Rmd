@@ -1,9 +1,16 @@
 ---
 title: "Preparing Your Data"
-output:
-  html_document:
-  theme: cerulean
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Preparing your data}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 This document describes how you can get your data into a `dm` object. Though this example is also built in already — just run `cdm_nycflights13()` — here, we'll go through the process step by step.
 
@@ -18,7 +25,7 @@ library(nycflights13)
 
 First, we will tell `dm` what tables we want to work with and how they're connected. For this, we can use `dm` or `as_dm()`. 
 
-`as_dm()` accepts lists of objects — as of version `0.0.1`, you must explicitly name the objects.
+`as_dm()` accepts lists of objects — as of this version, you must explicitly name the objects.
 
 ```{r}
 flights_dm_no_keys <- as_dm(
