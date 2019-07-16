@@ -2,8 +2,14 @@
 
 # {dm} facilitates working with multiple tables
 
+##
+##
+##
 ## Why?
 ## --------------------------------------------------------------------
+##
+##
+##
 
 library(nycflights13)
 
@@ -16,6 +22,7 @@ library(tidyverse)
 flights_base <-
   flights %>%
   select(year, month, day, carrier, tailnum, origin, dest)
+flights_base
 
 # carrier column also present in `airlines`, this table contains
 # additional information
@@ -31,11 +38,19 @@ airlines[airlines$carrier == "UA", "name"] <- "United broke my guitar"
 flights_base %>%
   left_join(airlines)
 
-# Same for airplanes
+# Same for airplanes?
 planes
 
 flights_base %>%
   left_join(planes)
+
+flights_base %>%
+  left_join(planes) %>%
+  count(is.na(type))
+
+# Take a closer look at the join
+flights_base %>%
+  left_join(planes, by = "tailnum")
 
 # Same for airports?
 airports
@@ -52,8 +67,14 @@ flights_base %>%
 # cleanup
 rm(airlines)
 
+##
+##
+##
 ## Keys
 ## --------------------------------------------------------------------
+##
+##
+##
 
 # Row identifiers
 t1 <- tibble(a = 1, b = letters[1:3])
@@ -91,8 +112,28 @@ try(
 airports %>%
   dm::check_key(faa)
 
+# Why is name not a key candidate for airports?
+try(
+  airports %>%
+    dm::check_key(name)
+)
+
+airports %>%
+  add_count(name) %>%
+  filter(n > 1) %>%
+  arrange(name)
+
+# Cleanup
+rm(t1, t2)
+
+##
+##
+##
 ## Data model
 ## --------------------------------------------------------------------
+##
+##
+##
 
 library(dm)
 
@@ -138,8 +179,14 @@ tibble(x = 1:5) %>%
   mutate(z = x * y) %>%
   mutate(w = map(z, ~ runif(.)))
 
+##
+##
+##
 ## Filtering for data models
 ## --------------------------------------------------------------------
+##
+##
+##
 
 cdm_nycflights13()
 
@@ -163,8 +210,14 @@ aa_non_jfk_january
 aa_non_jfk_january %>%
   tbl("planes")
 
+##
+##
+##
 ## Copy to database
 ## --------------------------------------------------------------------
+##
+##
+##
 
 # FIXME: SQLite with many rows
 
@@ -200,8 +253,14 @@ nycflights13_sqlite %>%
   tbl("flights") %>%
   dbplyr::sql_render()
 
+##
+##
+##
 ## Joining tables
 ## --------------------------------------------------------------------
+##
+##
+##
 
 cdm_nycflights13() %>%
   cdm_join_tbl(airlines, flights, join = left_join)
@@ -224,8 +283,14 @@ try(
     cdm_join_tbl(flights, airports, airlines, join = left_join)
 )
 
+##
+##
+##
 ## Build up data model from scratch
 ## --------------------------------------------------------------------
+##
+##
+##
 
 # Linking the weather table
 
