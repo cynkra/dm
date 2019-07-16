@@ -12,36 +12,45 @@ editor_options:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-This document describes how you can get your data into a `dm` object. Though this example is also built in already — just run `cdm_nycflights13()` — here, we'll go through the process step by step.
+This document describes how you can get your data into a `dm` object. 
+Though this example is also built in already — just run `cdm_nycflights13()` — here, we'll go through the process step by step.
 
-The five tables we are working with contain information on flights from airports of the North-American city of New York to other destinations in the United States in 2013 and are available through the package [`nycflights13`](https://github.com/hadley/nycflights13)). `flights` represents the journeys taken by planes, `airlines` includes transport organizations' names (`name`) and their shortcuts (`carrier`), `airports` details the arrival and departure stations, `weater` the meterological context at each hour, while `planes` describes aircrafts' characteristics. Once we've loaded `nycflights13`, the aforementioned tables are all in our work environment, ready for being accessed.
+The five tables we are working with contain information on flights from airports of the North-American city of New York to other destinations in the United States in 2013 and are available through the package [`nycflights13`](https://github.com/hadley/nycflights13)). 
 
-```{r}
+- `flights` represents the journeys taken by planes, 
+- `airlines` includes 
+  - transport organizations' names (`name`) 
+  - their shortcuts (`carrier`)
+- `airports` details the arrival and departure stations
+- `weater` the meterological context at each hour
+- `planes` describes aircrafts' characteristics
+
+Once we've loaded `nycflights13`, the aforementioned tables are all in our work environment, ready for being accessed.
+
+```{r setup message=FALSE}
 library(dm)
 library(nycflights13)
 ```
 
 # Adding Tables
 
-First, we will tell `dm` what tables we want to work with and how they're connected. For this, we can use `dm` or `as_dm()`. 
+First, we will tell `dm` what tables we want to work with and how they're connected. 
+For this, we can use `dm` or `as_dm()`. 
 
-`as_dm()` accepts lists of objects — as of this version, you must explicitly name the objects.
+`as_dm()` accepts lists of objects. 
+You must explicitly name the objects if you use `list()` (f.e. `list("airlines" = airlines, "flights" = flights)`) — here we use `tibble::lst()` which automatically names the list components.
 
 ```{r}
-flights_dm_no_keys <- as_dm(
-  list(
-    "airlines" = airlines,
-    "airports" = airports,
-    "flights" = flights,
-    "planes" = planes,
-    "weather" = weather
-  )
-)
+flights_dm_no_keys <- tibble::lst( airlines, airports, 
+  flights, planes, weather
+  ) %>%
+  as_dm()
 ```
 
 # Defining Keys
 
-Though you now have a new `dm` object, containing all your data, a key detail is missing still: How your five tables are connected the foreign keys) and which column(s) uniquely identify observation (the primary keys).
+Though you now have a new `dm` object, containing all your data, a key detail is missing still: 
+How your five tables are connected the foreign keys) and which column(s) uniquely identify observation (the primary keys).
 
 ## Primary Keys
 
@@ -81,7 +90,10 @@ cdm_enum_fk_candidates(
 ```
 
 
-You define how your tables relate using `cdm_add_fk()`. First, define the tables you wish to connect to another using the function's options `table` and `ref_table`. Then indicate in `column` which column of `table` refers to `ref_table`'s primary key, which you've defined above. Use `check = FALSE` to coerce a key. 
+You define how your tables relate using `cdm_add_fk()`. 
+First, define the tables you wish to connect to another using the function's options `table` and `ref_table`. 
+Then indicate in `column` which column of `table` refers to `ref_table`'s primary key, which you've defined above. 
+Use `check = FALSE` to coerce a key. 
 
 ```{r}
 flights_dm_all_keys <- flights_dm_only_pks %>%
