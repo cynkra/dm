@@ -2,6 +2,9 @@
 
 # {dm} facilitates working with multiple tables
 
+options(tibble.print_min = 6)
+options(tibble.print_max = 6)
+
 ##
 ##
 ##
