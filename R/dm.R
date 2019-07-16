@@ -83,7 +83,6 @@ new_dm <- function(src, tables, data_model) {
       tables = tables,
       data_model_tables = data_model$tables,
       data_model_keys = keys,
-      data_model_columns = columns %>% mutate(key = NULL, ref = NULL, ref_col = NULL),
       data_model_references = data_model$references
     ),
     class = "dm"
@@ -170,7 +169,12 @@ cdm_get_data_model <- function(x) {
     mutate(key = 1L)
 
   columns <-
-    x$data_model_columns %>%
+    x$tables %>%
+    map(colnames) %>%
+    map(~ enframe(., "id", "column")) %>%
+    enframe("table") %>%
+    unnest() %>%
+    mutate(type = "integer") %>%
     left_join(keys, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
     left_join(references_for_columns, by = c("table", "column"))

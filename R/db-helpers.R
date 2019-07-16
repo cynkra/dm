@@ -47,26 +47,22 @@ create_queries <- function(
 queries_not_nullable <- function(dest, pk_information) {
   db_tables <- pk_information$remote_name
   cols_to_set_not_null <- pk_information$pk_col
-  cols_classes <- pk_information$pk_class
-  cols_db_classes <- class_to_db_class(dest, cols_classes)
 
   if (is_mssql(dest)) {
     pmap_chr(
       list(
         db_tables,
-        cols_to_set_not_null,
-        cols_db_classes
+        cols_to_set_not_null
       ),
-      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3} NOT NULL")
+      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} NOT NULL")
     )
   } else if (is_postgres(dest)) {
     pmap_chr(
       list(
         db_tables,
-        cols_to_set_not_null,
-        cols_db_classes
+        cols_to_set_not_null
       ),
-      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}, ALTER COLUMN {..2} SET NOT NULL")
+      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} SET NOT NULL")
     )
   } else {
     return("")
@@ -88,31 +84,7 @@ queries_set_pk_cols <- function(dest, pk_information) {
 }
 
 queries_adapt_fk_col_classes <- function(dest, fk_information) {
-  db_child_tables <- fk_information$db_child_table
-  cols_to_adapt <- fk_information$child_fk_col
-  child_col_classes <- fk_information$col_class
-  cols_db_classes <- class_to_db_class(dest, child_col_classes)
-  if (is_mssql(dest)) {
-    pmap_chr(
-      list(
-        db_child_tables,
-        cols_to_adapt,
-        cols_db_classes
-      ),
-      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3}")
-    )
-  } else if (is_postgres(dest)) {
-    pmap_chr(
-      list(
-        db_child_tables,
-        cols_to_adapt,
-        cols_db_classes
-      ),
-      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}")
-    )
-  } else {
-    return("")
-  }
+  ""
 }
 
 queries_set_fk_relations <- function(dest, fk_information) {
