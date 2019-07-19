@@ -117,6 +117,8 @@ try(
 airports %>%
   dm::check_key(faa)
 
+# FIXME: add dm function that explains why not key candidate
+
 # Why is name not a key candidate for airports?
 try(
   airports %>%
@@ -199,15 +201,23 @@ cdm_nycflights13()
 cdm_nycflights13() %>%
   cdm_filter(airlines, carrier == "AA")
 
+try(
+  cdm_nycflights13() %>%
+    cdm_filter(airports, origin == "EWR")
+)
+
+cdm_nycflights13() %>%
+  cdm_filter(flights, origin == "EWR")
+
 # ... which then can be filtered on another table
 cdm_nycflights13() %>%
-  cdm_filter(airlines, carrier == "AA") %>%
-  cdm_filter(airports, faa != "JFK")
+  cdm_filter(airlines, name == "American Airlines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl")
 
 aa_non_jfk_january <-
   cdm_nycflights13() %>%
-  cdm_filter(airlines, carrier == "AA") %>%
-  cdm_filter(airports, faa != "JFK") %>%
+  cdm_filter(airlines, name == "American Airlines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_filter(flights, month == 1)
 aa_non_jfk_january
 
@@ -240,20 +250,23 @@ nycflights13_sqlite <-
 nycflights13_sqlite
 
 nycflights13_sqlite %>%
+  cdm_draw()
+
+nycflights13_sqlite %>%
   cdm_get_tables() %>%
   map(dbplyr::sql_render)
 
 # Filtering on the database
 nycflights13_sqlite %>%
-  cdm_filter(airlines, carrier == "AA") %>%
-  cdm_filter(airports, faa != "JFK") %>%
+  cdm_filter(airlines, name == "American Airlines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl")
   cdm_filter(flights, day == 1) %>%
   tbl("flights")
 
 # ... and the corresponding SQL statement
 nycflights13_sqlite %>%
-  cdm_filter(airlines, carrier == "AA") %>%
-  cdm_filter(airports, faa != "JFK") %>%
+  cdm_filter(airlines, name == "American Airlines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl")
   cdm_filter(flights, day == 1) %>%
   tbl("flights") %>%
   dbplyr::sql_render()
@@ -272,6 +285,9 @@ cdm_nycflights13() %>%
 
 cdm_nycflights13() %>%
   cdm_join_tbl(flights, airlines, join = left_join)
+
+nycflights13_sqlite %>%
+  cdm_join_tbl(airlines, flights, join = left_join)
 
 aa_non_jfk_january %>%
   cdm_join_tbl(flights, airlines, join = left_join)
@@ -302,6 +318,10 @@ try(
 # Determine key candidates
 weather %>%
   enum_pk_candidates()
+
+weather %>%
+  enum_pk_candidates() %>%
+  count(candidate)
 
 # It's tricky:
 weather %>%
@@ -344,6 +364,7 @@ planes_global <- planes
 
 global <-
   dm(src_df(env = .GlobalEnv))
+global
 
 # FIXME: Consistent rename() syntax
 
@@ -392,3 +413,24 @@ cdm_get_available_colors()
 nycflights13_fk %>%
   cdm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
   cdm_draw()
+
+##
+##
+##
+## Import a dm from a database, including key constraints
+## --------------------------------------------------------------------
+##
+##
+##
+
+try({
+  # Import
+  dm_pq <-
+    cdm_nycflights13() %>%
+    cdm_select_tbl(-planes, all_connected = FALSE) %>%
+    cdm_filter(flights, month == 1) %>%
+    cdm_copy_to(src_postgres(), ., temporary = FALSE, overwrite = TRUE)
+
+  dm_from_pq <-
+    cdm_learn_from_db(src_postgres())
+})
