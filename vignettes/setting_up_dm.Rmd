@@ -1,0 +1,114 @@
+---
+title: "Preparing Your Data"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Preparing your data}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+This document describes how you can get your data into a `dm` object. 
+Though this example is also built in already — just run `cdm_nycflights13()` — here, we'll go through the process step by step.
+
+The five tables we are working with contain information on flights from airports of the North-American city of New York to other destinations in the United States in 2013 and are available through the package [`nycflights13`](https://github.com/hadley/nycflights13)). 
+
+- `flights` represents the journeys taken by planes, 
+- `airlines` includes 
+  - transport organizations' names (`name`) 
+  - their shortcuts (`carrier`)
+- `airports` indicates the ports of departure (`origin`) and of destination (`dest`)
+- `weater` the meterological context at each hour
+- `planes` describes aircrafts' characteristics
+
+Once we've loaded `nycflights13`, the aforementioned tables are all in our work environment, ready for being accessed.
+
+```{r setup message=FALSE}
+library(dm)
+library(nycflights13)
+```
+
+# Adding Tables
+
+First, we will tell `dm` what tables we want to work with and how they're connected. 
+For this, we can use `dm` or `as_dm()`. 
+`as_dm()` accepts lists of objects. 
+You must explicitly name the objects if you use `list()` (f.e. `list("airlines" = airlines, "flights" = flights)`) — here we use `tibble::lst()` which automatically names the list components.
+
+```{r}
+flights_dm_no_keys <- tibble::lst(airlines, airports, flights, planes, weather) %>%
+  as_dm()
+```
+
+# Defining Keys
+
+Though you now have a new `dm` object, containing all your data, a key detail is missing still: 
+How your five tables are connected the foreign keys) and which column(s) uniquely identify observation (the primary keys).
+
+## Primary Keys
+
+`dm` offers `cdm_enum_pk_candidates()` to identify primary keys and `cdm_add_pk()` to add them. 
+
+```{r}
+cdm_enum_pk_candidates(
+  dm = flights_dm_no_keys,
+  table = planes
+)
+```
+
+Now, add any primary keys you may have identified:
+
+```{r}
+flights_dm_only_pks <- flights_dm_no_keys %>%
+  cdm_add_pk(table = airlines, column = carrier) %>%
+  cdm_add_pk(airports, faa) %>%
+  cdm_add_pk(planes, tailnum)
+flights_dm_only_pks
+```
+
+To get an overview of the primary keys after setting them, call `cdm_get_all_pks()`.
+
+```{r}
+cdm_get_all_pks(flights_dm_only_pks)
+```
+
+## Foreign Keys
+
+```{r}
+cdm_enum_fk_candidates(
+  dm = flights_dm_only_pks,
+  table = flights,
+  ref_table = airlines
+)
+```
+
+You define how your tables relate using `cdm_add_fk()`. 
+First, define the tables you wish to connect to another using the function's options `table` and `ref_table`. 
+Then indicate in `column` which column of `table` refers to `ref_table`'s primary key, which you've defined above. 
+Use `check = FALSE` to omit consistency checks.
+
+```{r}
+flights_dm_all_keys <- flights_dm_only_pks %>%
+  cdm_add_fk(table = flights, column = tailnum, ref_table = planes, check = FALSE) %>%
+  cdm_add_fk(flights, carrier, airlines) %>%
+  cdm_add_fk(flights, origin, airports)
+flights_dm_all_keys
+```
+
+## Retrieving Keys
+
+To retrieve your keys later on, use `cdm_get_all_fks()` or `cdm_get_fk()` for its singular version. 
+
+```{r}
+cdm_get_all_pks(flights_dm_all_keys)
+```
+
+Voilà, here's your `dm` object that you can work with:
+
+```{r}
+flights_dm_all_keys
+```
