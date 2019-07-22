@@ -72,17 +72,18 @@ cdm_find_conn_tbls <- function(dm, ...) {
     abort_vertices_not_connected()
   }
 
-  V_ids <- map_int(table_names, ~ which(V == .x))
-  all_comb <- crossing(table_names, V_ids)
-  ids_vec <- pull(all_comb, V_ids)
-  names_vec <- pull(all_comb, table_names)
+  all_comb <- crossing(first = table_names, names_vec = table_names) %>%
+    filter(first < names_vec)
+
+  ids_vec <- pull(all_comb, first) %>% map(~(V == .)) %>% map_int(which)
+  names_vec <- pull(all_comb, names_vec)
 
   result_table_names_unordered <-
+    # all_simple_paths() returns all paths that do not visit any node multiple times
     map2(
-      ids_vec, names_vec, ~ igraph::shortest_paths(g, .x, .y) %>%
-        pluck("vpath", 1) %>%
-        names()
+      ids_vec, names_vec, ~ igraph::all_simple_paths(g, .x, .y)
     ) %>%
+    map(., ~ map(., ~names(.))) %>%
     flatten_chr() %>%
     unique()
 
