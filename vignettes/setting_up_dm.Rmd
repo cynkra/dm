@@ -10,12 +10,10 @@ editor_options:
   chunk_output_type: console
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 This document describes how you can get your data into a `dm` object. 
 Though this example is also built in already — just run `cdm_nycflights13()` — here, we'll go through the process step by step.
 
-The five tables we are working with contain information on flights from airports of the North-American city of New York to other destinations in the United States in 2013 and are available through the package [`nycflights13`](https://github.com/hadley/nycflights13)). 
+The five tables we are working with contain information on flights from airports of the North-American city of New York to other destinations in the United States in 2013 and are available through the package [`nycflights13`](https://github.com/hadley/nycflights13). 
 
 - `flights` represents the journeys taken by planes, 
 - `airlines` includes 
@@ -27,7 +25,7 @@ The five tables we are working with contain information on flights from airports
 
 Once we've loaded `nycflights13`, the aforementioned tables are all in our work environment, ready for being accessed.
 
-```{r setup message=FALSE}
+```{r setup, message=FALSE}
 library(dm)
 library(nycflights13)
 ```
