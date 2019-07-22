@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1>Getting Started</h1>
             
-            <h4 class="date">2019-07-16</h4>
+            <h4 class="date">2019-07-22</h4>
       
       
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -321,17 +321,17 @@
 <p><code>dm</code> objects can be transferred from one <code>src</code> to another. The relevant verb is <code><a href="../reference/cdm_copy_to.html">cdm_copy_to()</a></code>, which will copy both data and key constraints.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">src_sqlite &lt;-<span class="st"> </span><span class="kw">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="dt">create =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">src_sqlite</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.28.0 [:memory:]</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.22.0 [:memory:]</span></a>
 <a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; tbls:</span></a>
 <a class="sourceLine" id="cb16-5" data-line-number="5">flights_dm_with_keys_remote &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_copy_to.html">cdm_copy_to</a></span>(src_sqlite, flights_dm_with_keys)</a></code></pre></div>
 <p>As a result, the tables are transferred to the target data source, and the returned data model contains all keys.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">src_sqlite</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co">#&gt; src:  sqlite 3.28.0 [:memory:]</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co">#&gt; src:  sqlite 3.22.0 [:memory:]</span></a>
 <a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; tbls: airlines, airports, flights, planes, sqlite_stat1, sqlite_stat4,</span></a>
 <a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt;   weather</span></a>
 <a class="sourceLine" id="cb17-5" data-line-number="5">flights_dm_with_keys_remote</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.28.0 [:memory:]
+#&gt; src:  sqlite 3.22.0 [:memory:]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
