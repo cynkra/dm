@@ -74,7 +74,7 @@ create_graph_from_dm <- function(dm) {
   ref_tables <- map(tables, ~ cdm_get_referencing_tables(dm, !!.x))
 
   tibble(tables, ref_tables) %>%
-    unnest(cols = c(ref_tables)) %>%
+    unnest() %>%
     igraph::graph_from_data_frame(directed = FALSE)
 }
 
