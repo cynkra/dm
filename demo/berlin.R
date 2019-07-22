@@ -429,7 +429,7 @@ try({
     cdm_nycflights13() %>%
     cdm_select_tbl(-planes, all_connected = FALSE) %>%
     cdm_filter(flights, month == 1) %>%
-    cdm_copy_to(src_postgres(), ., temporary = FALSE, overwrite = TRUE)
+    cdm_copy_to(src_postgres(), ., temporary = FALSE)
 
   dm_from_pq <-
     cdm_learn_from_db(src_postgres())
