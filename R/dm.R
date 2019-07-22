@@ -77,13 +77,27 @@ new_dm <- function(src, tables, data_model) {
     filter(key > 0) %>%
     select(-key)
 
+  if (is.null(data_model$references)) {
+    references <- data.frame(
+      table = character(),
+      column = character(),
+      ref = character(),
+      ref_col = character(),
+      stringsAsFactors = FALSE
+    )
+  } else {
+    references <-
+      data_model$references %>%
+      select(table, column, ref, ref_col)
+  }
+
   structure(
     list(
       src = src,
       tables = tables,
       data_model_tables = data_model$tables,
       data_model_keys = keys,
-      data_model_references = data_model$references
+      data_model_references = references
     ),
     class = "dm"
   )
@@ -145,24 +159,12 @@ cdm_get_tables <- function(x) {
 cdm_get_data_model <- function(x) {
   x <- unclass(x)
 
-  references <-
+  references_for_columns <-
     x$data_model_references
 
-  if (is.null(references)) {
-    references <- data.frame(
-      table = character(),
-      column = character(),
-      ref = character(),
-      ref_col = character(),
-      ref_id = integer(),
-      ref_col_num = integer(),
-      stringsAsFactors = FALSE
-    )
-  }
-
-  references_for_columns <-
-    references %>%
-    select(table, column, ref, ref_col)
+  references <-
+    references_for_columns %>%
+    mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys <-
     x$data_model_keys %>%
