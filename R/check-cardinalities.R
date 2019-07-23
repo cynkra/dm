@@ -35,6 +35,7 @@
 #' @param pk_column Column of `parent_table` that has to be one of its unique keys.
 #' @param child_table Data frame
 #' @param fk_column Column of `child_table` that has to be a foreign key to `pk_column` in `parent_table`
+#' @inheritParams check_set_equality
 #'
 #' @name check_cardinality
 #'
@@ -54,7 +55,7 @@
 #'
 #' # This passes:
 #' check_cardinality_0_1(d1, a, d3, c)
-check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
+check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column, verbose = TRUE) {
   pt <- enquo(parent_table)
   pkc <- ensym(pk_column)
   ct <- enquo(child_table)
@@ -62,14 +63,14 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 
   check_key(!!pt, !!pkc)
 
-  check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+  check_if_subset(!!ct, !!fkc, !!pt, !!pkc, verbose = verbose)
 
   invisible(TRUE)
 }
 
 #' @rdname check_cardinality
 #' @export
-check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_column) {
+check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_column, verbose = TRUE) {
   pt <- enquo(parent_table)
   pkc <- ensym(pk_column)
   ct <- enquo(child_table)
@@ -77,14 +78,14 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 
   check_key(!!pt, !!pkc)
 
-  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  check_set_equality(!!ct, !!fkc, !!pt, !!pkc, verbose = verbose)
 
   invisible(TRUE)
 }
 
 #' @rdname check_cardinality
 #' @export
-check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_column) {
+check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_column, verbose = TRUE) {
   pt <- enquo(parent_table)
   pkc <- ensym(pk_column)
   ct <- enquo(child_table)
@@ -92,7 +93,7 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   check_key(!!pt, !!pkc)
 
-  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  check_set_equality(!!ct, !!fkc, !!pt, !!pkc, verbose = verbose)
 
   tryCatch({
     check_key(!!ct, !!fkc)
@@ -106,7 +107,7 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 
 #' @rdname check_cardinality
 #' @export
-check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_column) {
+check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_column, verbose = TRUE) {
   pt <- enquo(parent_table)
   pkc <- ensym(pk_column)
   ct <- enquo(child_table)
@@ -114,7 +115,7 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   check_key(!!pt, !!pkc)
 
-  check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+  check_if_subset(!!ct, !!fkc, !!pt, !!pkc, verbose = verbose)
 
   tryCatch({
     check_key(!!ct, !!fkc)

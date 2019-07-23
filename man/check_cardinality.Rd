@@ -8,13 +8,17 @@
 \alias{check_cardinality_0_1}
 \title{Test if the relation between two tables of a data model meet the requirements}
 \usage{
-check_cardinality_0_n(parent_table, pk_column, child_table, fk_column)
+check_cardinality_0_n(parent_table, pk_column, child_table, fk_column,
+  verbose = TRUE)
 
-check_cardinality_1_n(parent_table, pk_column, child_table, fk_column)
+check_cardinality_1_n(parent_table, pk_column, child_table, fk_column,
+  verbose = TRUE)
 
-check_cardinality_1_1(parent_table, pk_column, child_table, fk_column)
+check_cardinality_1_1(parent_table, pk_column, child_table, fk_column,
+  verbose = TRUE)
 
-check_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
+check_cardinality_0_1(parent_table, pk_column, child_table, fk_column,
+  verbose = TRUE)
 }
 \arguments{
 \item{parent_table}{Data frame}
@@ -24,6 +28,8 @@ check_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
 \item{child_table}{Data frame}
 
 \item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}}
+
+\item{verbose}{Boolean, if \code{TRUE} (default), the lines with missing column entries will be printed before an error is thrown.}
 }
 \description{
 All \code{check_cardinality()} functions test, if the \code{pk_column} is a unique key for \code{parent_table} and if
