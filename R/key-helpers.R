@@ -102,6 +102,7 @@ is_unique_key <- nse_function(c(.data, column), ~ {
 #' @param c1 Column of `t1` that should only contain values that are also in `c2` of data frame `t2`.
 #' @param t2 Data frame containing the column `c2`.
 #' @param c2 Column of `t2` that should only contain values that are also in `c1` of data frame `t1`.
+#' @param verbose Boolean, if `TRUE` (default), the lines with missing column entries will be printed before an error is thrown.
 #'
 #' @export
 #' @examples
@@ -113,7 +114,7 @@ is_unique_key <- nse_function(c(.data, column), ~ {
 #' data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
 #' check_set_equality(data_1, a, data_3, a)
-check_set_equality <- function(t1, c1, t2, c2) {
+check_set_equality <- function(t1, c1, t2, c2, verbose = TRUE) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
@@ -121,14 +122,14 @@ check_set_equality <- function(t1, c1, t2, c2) {
   c2q <- ensym(c2)
 
   catcher_1 <- tryCatch({
-    check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
+    check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q, verbose = verbose)
     NULL
   },
   error = identity
   )
 
   catcher_2 <- tryCatch({
-    check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)
+    check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q, verbose = verbose)
     NULL
   },
   error = identity
@@ -152,6 +153,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' @param c1 Column of `t1` that should only contain values that are also in `c2` of data frame `t2`.
 #' @param t2 Data frame containing the column `c2`.
 #' @param c2 Column of second data frame which has to contain all values of `c1` to avoid an error.
+#' @inheritParams check_set_equality
 #'
 #' @export
 #' @examples
@@ -162,7 +164,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #'
 #' # this is failing:
 #' try(check_if_subset(data_2, a, data_1, a))
-check_if_subset <- function(t1, c1, t2, c2) {
+check_if_subset <- function(t1, c1, t2, c2, verbose = TRUE) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
@@ -181,7 +183,7 @@ check_if_subset <- function(t1, c1, t2, c2) {
   v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
 
   setdiff_v1_v2 <- setdiff(v1, v2)
-  print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
+  if (verbose) print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
   abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q))
 }
 

@@ -4,7 +4,7 @@
 \alias{check_set_equality}
 \title{Test if the value sets of two different columns in two different tables are the same}
 \usage{
-check_set_equality(t1, c1, t2, c2)
+check_set_equality(t1, c1, t2, c2, verbose = TRUE)
 }
 \arguments{
 \item{t1}{Data frame containing the column \code{c1}.}
@@ -14,6 +14,8 @@ check_set_equality(t1, c1, t2, c2)
 \item{t2}{Data frame containing the column \code{c2}.}
 
 \item{c2}{Column of \code{t2} that should only contain values that are also in \code{c1} of data frame \code{t1}.}
+
+\item{verbose}{Boolean, if \code{TRUE} (default), the lines with missing column entries will be printed before an error is thrown.}
 }
 \description{
 \code{check_set_equality()} is a wrapper of \code{check_if_subset()}. It tests if

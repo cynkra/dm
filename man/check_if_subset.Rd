@@ -4,7 +4,7 @@
 \alias{check_if_subset}
 \title{Test if values of one column are a subset of values of another column}
 \usage{
-check_if_subset(t1, c1, t2, c2)
+check_if_subset(t1, c1, t2, c2, verbose = TRUE)
 }
 \arguments{
 \item{t1}{Data frame containing the column \code{c1}.}
@@ -14,6 +14,8 @@ check_if_subset(t1, c1, t2, c2)
 \item{t2}{Data frame containing the column \code{c2}.}
 
 \item{c2}{Column of second data frame which has to contain all values of \code{c1} to avoid an error.}
+
+\item{verbose}{Boolean, if \code{TRUE} (default), the lines with missing column entries will be printed before an error is thrown.}
 }
 \description{
 \code{check_if_subset()} tests, if the values of the chosen column \code{c1} of data frame \code{t1} are a subset of the values
