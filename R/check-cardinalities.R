@@ -31,6 +31,8 @@
 #' between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 #' there are no duplicates in either of them.
 #'
+#' Finally, `check_cardinality()` is a wrapper around the `check_cardinality_?_?()` functions, and returns the nature of the relationship between the two columns.
+#'
 #' @param parent_table Data frame
 #' @param pk_column Column of `parent_table` that has to be one of its unique keys.
 #' @param child_table Data frame
@@ -125,4 +127,30 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
   )
 
   invisible(TRUE)
+}
+
+#' @rdname check_cardinality
+#' @export
+check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
+  pt <- enquo(parent_table)
+  pkc <- enexpr(pk_column)
+  ct <- enquo(child_table)
+  fkc <- enexpr(fk_column)
+
+  check_key(!!pt, !!pkc)
+  check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+
+  if (tryCatch(check_cardinality_1_1(!!pt, !!pkc, !!ct, !!fkc, verbose = FALSE),
+               silent = TRUE,
+               error = function(e) FALSE)
+      ) return("bijective relationship (parent: 1 -> child: 1)")
+  if (tryCatch(check_cardinality_0_1(!!pt, !!pkc, !!ct, !!fkc, verbose = FALSE),
+               silent = TRUE,
+               error = function(e) FALSE)
+      ) return("injective relationship (parent: 1 -> child: 0 or 1)")
+  if (tryCatch(check_cardinality_1_n(!!pt, !!pkc, !!ct, !!fkc, verbose = FALSE),
+               silent = TRUE,
+               error = function(e) FALSE)
+      ) return("surjective relationship (parent: 1 -> child: 1 to n)")
+  "no special relationship (parent: 1 -> child: 0 to n)"
 }
