@@ -179,12 +179,15 @@ check_if_subset <- function(t1, c1, t2, c2, verbose = TRUE) {
   # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
   # Siehe eval-bang.R für ein Minimalbeispiel.
-  v1 <- pull(eval_tidy(t1q), !!ensym(c1q))
-  v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
+  if (verbose) {
+    v1 <- pull(eval_tidy(t1q), !!ensym(c1q))
+    v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
 
-  setdiff_v1_v2 <- setdiff(v1, v2)
-  if (verbose) print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
-  abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q))
+    setdiff_v1_v2 <- setdiff(v1, v2)
+    print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
+  }
+  abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q), verbose)
+
 }
 
 # similar to `check_if_subset()`, but evaluates to a boolean

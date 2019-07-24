@@ -65,25 +65,20 @@ error_txt_table_not_in_dm <- function(table_name, dm) {
 # error: is not subset of -------------------------------------------------
 
 abort_not_subset_of <- function(table_name_1, colname_1,
-                                table_name_2, colname_2) {
-  abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
+                                table_name_2, colname_2,
+                                verbose) {
+  abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2, verbose),
     .subclass = cdm_error_full("not_subset_of")
   )
 }
 
 error_txt_not_subset_of <- function(table_name_1, colname_1,
-                                    table_name_2, colname_2) {
-  paste0(
-    "Column `",
-    colname_1,
-    "` in table `",
-    table_name_1,
-    "` contains values (see above) that are not present in column `",
-    colname_2,
-    "` in table `",
-    table_name_2,
-    "`"
-  )
+                                    table_name_2, colname_2,
+                                    verbose = TRUE) {
+  additional <- if (verbose) "(see above)" else ""
+  glue("Column `{colname_1}` in table `{table_name_1}`",
+       " contains values {additional} that are not present in",
+       " column `{colname_2}`  in table `{table_name_2}`")
 }
 
 
