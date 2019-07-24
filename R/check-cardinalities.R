@@ -148,9 +148,9 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
            silent = TRUE,
            error = function(e) FALSE)
 
-  if (min_1 && max_1) return("bijective relationship (parent: 1 -> child: 1)") else
-    if (min_1) return("surjective relationship (parent: 1 -> child: 1 to n)") else
-    if (max_1) return("injective relationship (parent: 1 -> child: 0 or 1)")
-  "no special relationship (parent: 1 -> child: 0 to n)"
+  if (min_1 && max_1) return("bijective relationship (child: 1 -> parent: 1)") else
+    if (min_1) return("surjective relationship (child: 1 to n -> parent: 1)") else
+    if (max_1) return("injective relationship ( child: 0 or 1 -> parent: 1)")
+  "no special relationship (child: 0 to n -> parent: 1)"
 
 }
