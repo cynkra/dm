@@ -19,6 +19,8 @@ check_cardinality_1_1(parent_table, pk_column, child_table, fk_column,
 
 check_cardinality_0_1(parent_table, pk_column, child_table, fk_column,
   verbose = TRUE)
+
+check_cardinality(parent_table, pk_column, child_table, fk_column)
 }
 \arguments{
 \item{parent_table}{Data frame}
@@ -63,6 +65,8 @@ column values have to be referred to.
 \code{1} value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
 between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 there are no duplicates in either of them.
+
+Finally, \code{check_cardinality()} tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these) between the two given columns.
 }
 \examples{
 d1 <- tibble::tibble(a = 1:5)
