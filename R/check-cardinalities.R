@@ -140,17 +140,17 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   check_key(!!pt, !!pkc)
   check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
-  if (tryCatch(check_cardinality_1_1(!!pt, !!pkc, !!ct, !!fkc, verbose = FALSE),
-               silent = TRUE,
-               error = function(e) FALSE)
-      ) return("bijective relationship (parent: 1 -> child: 1)")
-  if (tryCatch(check_cardinality_0_1(!!pt, !!pkc, !!ct, !!fkc, verbose = FALSE),
-               silent = TRUE,
-               error = function(e) FALSE)
-      ) return("injective relationship (parent: 1 -> child: 0 or 1)")
-  if (tryCatch(check_cardinality_1_n(!!pt, !!pkc, !!ct, !!fkc, verbose = FALSE),
-               silent = TRUE,
-               error = function(e) FALSE)
-      ) return("surjective relationship (parent: 1 -> child: 1 to n)")
+  min_1 <- tryCatch(!is_empty(check_set_equality(!!ct, !!fkc, !!pt, !!pkc, verbose = FALSE)),
+                    silent = TRUE,
+                    error = function(e) FALSE)
+
+  max_1 <- tryCatch(!is_empty(check_key(!!ct, !!fkc)),
+           silent = TRUE,
+           error = function(e) FALSE)
+
+  if (min_1 && max_1) return("bijective relationship (parent: 1 -> child: 1)") else
+    if (min_1) return("surjective relationship (parent: 1 -> child: 1 to n)") else
+    if (max_1) return("injective relationship (parent: 1 -> child: 0 or 1)")
   "no special relationship (parent: 1 -> child: 0 to n)"
+
 }
