@@ -84,6 +84,7 @@ reference:
   - check_key
   - check_if_subset
   - check_set_equality
+  - check_cardinality
   - check_cardinality_0_n
   - check_cardinality_1_n
   - check_cardinality_0_1
