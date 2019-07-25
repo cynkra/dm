@@ -26,14 +26,15 @@ cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  if (!...length()) {
+  quos <- enquos(...)
+  if (is_empty(quos)) {
     return(dm)
   } # valid table and empty ellipsis provided
 
   orig_tbl <- tbl(dm, table_name)
 
   # filter data
-  filtered_tbl_pk_obj <- filter(orig_tbl, ...)
+  filtered_tbl_pk_obj <- filter(orig_tbl, !!!quos)
 
   # early return if no filtering was done
   if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) {
