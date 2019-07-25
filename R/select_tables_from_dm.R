@@ -74,7 +74,7 @@ cdm_find_conn_tbls <- function(dm, ...) {
 
   all_comb <- crossing(from = table_names, to = table_names) %>%
     filter(from < to)
-  ids_vec <- pull(all_comb, from) %>% map(~(V == .)) %>% map_int(which)
+  ids_vec <- pull(all_comb, from) %>% map_int(~which(V == .))
   names_vec <- pull(all_comb, to)
 
   result_table_names_unordered <-
