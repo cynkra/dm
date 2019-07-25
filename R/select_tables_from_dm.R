@@ -72,10 +72,10 @@ cdm_find_conn_tbls <- function(dm, ...) {
     abort_vertices_not_connected()
   }
 
-  V_ids <- map_int(table_names, ~ which(V == .x))
-  all_comb <- crossing(table_names, V_ids)
-  ids_vec <- pull(all_comb, V_ids)
-  names_vec <- pull(all_comb, table_names)
+  all_comb <- crossing(from = table_names, to = table_names) %>%
+    filter(from < to)
+  ids_vec <- pull(all_comb, from) %>% map(~(V == .)) %>% map_int(which)
+  names_vec <- pull(all_comb, to)
 
   result_table_names_unordered <-
     map2(
