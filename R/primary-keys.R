@@ -235,7 +235,8 @@ enum_pk_candidates <- function(table) h(~ {
   # list of ayes and noes:
   map_lgl(tbl_colnames, ~ is_unique_key(table, {{.x}})) %>%
     set_names(tbl_colnames) %>%
-    enframe(name = "column", value = "candidate")
+    enframe(name = "column", value = "candidate") %>%
+    mutate(why = if_else(candidate, "", "has duplicate values"))
 })
 
 
