@@ -29,9 +29,8 @@ If \code{NULL} (default), there is no constraint.}
 \item{col_attr}{Column atributes to display.
 Only column name (\code{column}) is included by default.}
 
-\item{view_type}{Can be "all" (by default), "keys_only" or "title_only".
-It defines the level of details for the table rendering
-(all columns, only primary and foreign keys or no columns)}
+\item{view_type}{Can be "keys_only" (default), "all" or "title_only". It defines
+the level of details for the table rendering (only primary and foreign keys, all columns or no columns)}
 
 \item{columnArrows}{Edges from column to column (default: FALSE)}
 
