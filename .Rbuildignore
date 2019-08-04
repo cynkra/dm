@@ -10,4 +10,3 @@
 ^appveyor\.yml$
 ^tic\.R$
 ^codecov\.yml$
-^deploy\.Rmd$
