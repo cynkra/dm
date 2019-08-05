@@ -40,18 +40,15 @@ test_that("functions working with graphs do the right thing?", {
 
   map(
     dm_for_filter_w_cycle_src,
-    ~ expect_identical(
+    ~ expect_identical_graph(
       igraph::graph_from_data_frame(
         tibble(
           tables = c("t1", "t2", "t3", "t3", "t4", "t6", "t7"),
           ref_tables = c("t2", "t7", "t2", "t4", "t5", "t5", "t6")
         ),
         directed = FALSE
-      ) %>%
-        unclass() %>%
-        pluck(9) %>%
-        pluck(3, "name"),
-      create_graph_from_dm(.x) %>% unclass() %>% pluck(9) %>% pluck(3, "name")
+      ),
+      create_graph_from_dm(.x)
     )
   )
 })
