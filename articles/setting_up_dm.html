@@ -137,18 +137,18 @@
 <a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">dm =</span> flights_dm_no_keys,</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">table =</span> planes</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">)</a></code></pre></div>
-<pre><code>## # A tibble: 9 x 2
-##   column       candidate
-##   &lt;chr&gt;        &lt;lgl&gt;    
-## 1 tailnum      TRUE     
-## 2 year         FALSE    
-## 3 type         FALSE    
-## 4 manufacturer FALSE    
-## 5 model        FALSE    
-## 6 engines      FALSE    
-## 7 seats        FALSE    
-## 8 speed        FALSE    
-## 9 engine       FALSE</code></pre>
+<pre><code>## # A tibble: 9 x 3
+##   column      candidate why                                                
+##   &lt;chr&gt;       &lt;lgl&gt;     &lt;chr&gt;                                              
+## 1 tailnum     TRUE      ""                                                 
+## 2 year        FALSE     has duplicate values: 1959, 1963, 1975, 1976, …, 1…
+## 3 type        FALSE     "has duplicate values: Fixed wing multi engine , F…
+## 4 manufactur… FALSE     "has duplicate values: AIRBUS               , AIRB…
+## 5 model       FALSE     has duplicate values: 717-200, 737-301, 737-3G7, 7…
+## 6 engines     FALSE     has duplicate values: 1, 2, 3, 4                   
+## 7 seats       FALSE     has duplicate values:  2,  4,  5,  6, …,  8        
+## 8 speed       FALSE     has duplicate values:  90, 105, 162, 432,  NA      
+## 9 engine      FALSE     "has duplicate values: 4 Cycle      , Reciprocatin…</code></pre>
 <p>Now, add any primary keys you may have identified:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">flights_dm_only_pks &lt;-<span class="st"> </span>flights_dm_no_keys <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(<span class="dt">table =</span> airlines, <span class="dt">column =</span> carrier) <span class="op">%&gt;%</span></a>
@@ -156,7 +156,7 @@
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(planes, tailnum)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">flights_dm_only_pks</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x58d7790&gt;
+## src:  &lt;environment: 0x71636a8&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
@@ -183,28 +183,28 @@
 <a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="dt">table =</span> flights,</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="dt">ref_table =</span> airlines</a>
 <a class="sourceLine" id="cb9-5" data-line-number="5">)</a></code></pre></div>
-<pre><code>## # A tibble: 19 x 5
-##    ref_table ref_table_pk table   column         candidate
-##    &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;          &lt;lgl&gt;    
-##  1 airlines  carrier      flights year           FALSE    
-##  2 airlines  carrier      flights month          FALSE    
-##  3 airlines  carrier      flights day            FALSE    
-##  4 airlines  carrier      flights dep_time       FALSE    
-##  5 airlines  carrier      flights sched_dep_time FALSE    
-##  6 airlines  carrier      flights dep_delay      FALSE    
-##  7 airlines  carrier      flights arr_time       FALSE    
-##  8 airlines  carrier      flights sched_arr_time FALSE    
-##  9 airlines  carrier      flights arr_delay      FALSE    
-## 10 airlines  carrier      flights carrier        TRUE     
-## 11 airlines  carrier      flights flight         FALSE    
-## 12 airlines  carrier      flights tailnum        FALSE    
-## 13 airlines  carrier      flights origin         FALSE    
-## 14 airlines  carrier      flights dest           FALSE    
-## 15 airlines  carrier      flights air_time       FALSE    
-## 16 airlines  carrier      flights distance       FALSE    
-## 17 airlines  carrier      flights hour           FALSE    
-## 18 airlines  carrier      flights minute         FALSE    
-## 19 airlines  carrier      flights time_hour      FALSE</code></pre>
+<pre><code>## # A tibble: 19 x 6
+##    ref_table ref_table_pk table   column     candidate why                 
+##    &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;      &lt;lgl&gt;     &lt;chr&gt;               
+##  1 airlines  carrier      flights year       FALSE     not a subset of air…
+##  2 airlines  carrier      flights month      FALSE     not a subset of air…
+##  3 airlines  carrier      flights day        FALSE     not a subset of air…
+##  4 airlines  carrier      flights dep_time   FALSE     not a subset of air…
+##  5 airlines  carrier      flights sched_dep… FALSE     not a subset of air…
+##  6 airlines  carrier      flights dep_delay  FALSE     not a subset of air…
+##  7 airlines  carrier      flights arr_time   FALSE     not a subset of air…
+##  8 airlines  carrier      flights sched_arr… FALSE     not a subset of air…
+##  9 airlines  carrier      flights arr_delay  FALSE     not a subset of air…
+## 10 airlines  carrier      flights carrier    TRUE      ""                  
+## 11 airlines  carrier      flights flight     FALSE     not a subset of air…
+## 12 airlines  carrier      flights tailnum    FALSE     not a subset of air…
+## 13 airlines  carrier      flights origin     FALSE     not a subset of air…
+## 14 airlines  carrier      flights dest       FALSE     not a subset of air…
+## 15 airlines  carrier      flights air_time   FALSE     not a subset of air…
+## 16 airlines  carrier      flights distance   FALSE     not a subset of air…
+## 17 airlines  carrier      flights hour       FALSE     not a subset of air…
+## 18 airlines  carrier      flights minute     FALSE     not a subset of air…
+## 19 airlines  carrier      flights time_hour  FALSE     not a subset of air…</code></pre>
 <p>You define how your tables relate using <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code>. First, define the tables you wish to connect to another using the function’s options <code>table</code> and <code>ref_table</code>. Then indicate in <code>column</code> which column of <code>table</code> refers to <code>ref_table</code>’s primary key, which you’ve defined above. Use <code>check = FALSE</code> to omit consistency checks.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">flights_dm_all_keys &lt;-<span class="st"> </span>flights_dm_only_pks <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(<span class="dt">table =</span> flights, <span class="dt">column =</span> tailnum, <span class="dt">ref_table =</span> planes, <span class="dt">check =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
@@ -212,7 +212,7 @@
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">flights_dm_all_keys</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x58d7790&gt;
+## src:  &lt;environment: 0x71636a8&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
@@ -237,7 +237,7 @@
 <p>Voilà, here’s your <code>dm</code> object that you can work with:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">flights_dm_all_keys</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x58d7790&gt;
+## src:  &lt;environment: 0x71636a8&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
