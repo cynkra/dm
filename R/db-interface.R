@@ -96,7 +96,7 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, set_key_c
 #' # but if there were, and if we had already implemented setting key
 #' # constraints for SQLite, this would do something:
 #' cdm_set_key_constraints(iris_dm)
-#' @export
+#' @noRd
 cdm_set_key_constraints <- function(dm) h(~ {
     if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
     db_table_names <- get_db_table_names(dm)

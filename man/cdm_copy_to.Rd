@@ -46,7 +46,6 @@ iris_dm <- cdm_copy_to(
 )
 }
 \seealso{
-Other DB interaction functions: \code{\link{cdm_learn_from_db}},
-  \code{\link{cdm_set_key_constraints}}
+Other DB interaction functions: \code{\link{cdm_learn_from_db}}
 }
 \concept{DB interaction functions}
