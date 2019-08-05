@@ -38,7 +38,8 @@ if (packageVersion("RSQLite") >= "2.1.1.9003") {
 
 local(try(
   {
-    src <- src_postgres(dbname = "postgres", host = "localhost", port = 5432, user = "postgres")
+    con <- DBI::dbConnect(RPostgres::Postgres(), dbname = "postgres", host = "localhost", port = 5432, user = "postgres")
+    src <- src_dbi(con, auto_disconnect = TRUE)
     test_register_src("postgres", src)
     clear_postgres()
   },

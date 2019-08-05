@@ -251,6 +251,7 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) h(~ {
     ref_table_pk = ref_tbl_pk,
     table = table_name,
     column = tbl_colnames,
-    candidate = subsets
+    candidate = subsets,
+    why = if_else(subsets, "", paste0("not a subset of ", ref_table, "$", ref_table_pk))
   )
 })
