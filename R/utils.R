@@ -5,7 +5,7 @@ commas <- function(x) {
     x <- ""
   } else if (length(x) > MAX_COMMAS) {
     length(x) <- MAX_COMMAS + 1L
-    x[[MAX_COMMAS]] <- clisymbols::symbol$ellipsis
+    x[[MAX_COMMAS]] <- cli::symbol$ellipsis
   }
 
   glue_collapse(x, sep = ", ")
