@@ -102,24 +102,16 @@ cdm_set_key_constraints <- function(dm) h(~ {
     db_table_names <- get_db_table_names(dm)
 
     tables_w_pk <- cdm_get_all_pks(dm)
-    if (nrow(tables_w_pk) > 0) {
-      pk_info <- tables_w_pk %>%
-        left_join(db_table_names, by = c("table" = "table_name"))
-    } else {
-      pk_info <- NULL
-    }
+    pk_info <- tables_w_pk %>%
+      left_join(db_table_names, by = c("table" = "table_name"))
 
-    if (nrow(cdm_get_all_fks(dm)) > 0) {
-      fk_info <-
-        cdm_get_all_fks(dm) %>%
-        left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
-        left_join(db_table_names, by = c("child_table" = "table_name")) %>%
-        rename(db_child_table = remote_name) %>%
-        left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
-        rename(db_parent_table = remote_name)
-    } else {
-      fk_info <- NULL
-    }
+    fk_info <-
+      cdm_get_all_fks(dm) %>%
+      left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
+      left_join(db_table_names, by = c("child_table" = "table_name")) %>%
+      rename(db_child_table = remote_name) %>%
+      left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
+      rename(db_parent_table = remote_name)
 
     con <- con_from_src_or_con(cdm_get_src(dm))
     queries <- create_queries(con, pk_info, fk_info)
