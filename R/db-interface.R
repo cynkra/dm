@@ -1,12 +1,19 @@
 #' Copy a 'dm'-object to a 'src'/'con'
 #'
-#' @description `cdm_copy_to()` takes a `src`- or `con`-object as a first argument,
+#' `cdm_copy_to()` takes a `src`- or `con`-object as a first argument,
 #' and a [`dm`] object as a second. The latter is copied to the former. By default
 #' the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
 #' By default temporary tables will be created.
 #'
+#' No tables will be overwritten, passing `overwrite = TRUE` gives an error.
+#' Types are determined separately for each table, setting the `types` argument
+#' also gives an error.
+#' The arguments are included in the signature to avoid passing them via the
+#' `...` ellipsis.
+#'
 #' @param dest A `src` or `con` object like e.g. a database.
 #' @param dm A `dm` object.
+#' @param overwrite,types Must remain `NULL`.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
 #' @param unique_table_names Boolean, if `FALSE` (default), original table names will be used, if `TRUE`,
 #'   unique table names will be created based on the original table names.
@@ -23,7 +30,7 @@
 #'   set_key_constraints = FALSE
 #' )
 #' @export
-cdm_copy_to <- function(dest, dm, ..., set_key_constraints = TRUE, unique_table_names = FALSE, temporary = TRUE) h(~ {
+cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, set_key_constraints = TRUE, unique_table_names = FALSE, temporary = TRUE) h(~ {
     # for now focusing on MSSQL
     # we expect the src (dest) to already point to the correct schema
     # we want to
@@ -31,8 +38,12 @@ cdm_copy_to <- function(dest, dm, ..., set_key_constraints = TRUE, unique_table_
     #   2. copy the tables to `dest`
     #   3. implement the key situation within our `dm` on the DB
 
-    if (is_true(list(...)$overwrite)) {
+    if (!is_null(overwrite)) {
       abort_no_overwrite()
+    }
+
+    if (!is_null(types)) {
+      abort_no_types()
     }
 
     if (unique_table_names) {
@@ -46,6 +57,7 @@ cdm_copy_to <- function(dest, dm, ..., set_key_constraints = TRUE, unique_table_
       list_of_tables = cdm_get_tables(dm),
       name_vector = name_vector,
       temporary = temporary,
+      overwrite = FALSE,
       ...
     )
 
