@@ -123,7 +123,7 @@ test_that("cdm_get_pk() works as intended?", {
 
 test_that("cdm_enum_pk_candidates() works properly?", {
   candidates_table_1 <- tibble(column = c("a", "b"), candidate = c(TRUE, TRUE), why = c("", ""))
-  candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE), why = "has duplicate values")
+  candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE), why = "has duplicate values: 5")
 
   iwalk(
     cdm_test_obj_src,
