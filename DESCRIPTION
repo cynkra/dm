@@ -51,6 +51,7 @@ Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
+    RPostgres,
     RSQLite,
     tidyverse,
     vctrs
