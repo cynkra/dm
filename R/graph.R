@@ -49,6 +49,12 @@ cdm_get_referencing_tables <- function(dm, table) {
 calculate_join_list <- function(dm, table_name) {
   g <- create_graph_from_dm(dm)
 
+  if (!table_name %in% names(igraph::V(g))) {
+    return(tibble(
+      lhs = character(), rhs = character(), rank = integer(), has_father = logical()
+    ))
+  }
+
   bfs <- igraph::bfs(g, table_name, father = TRUE, rank = TRUE, unreachable = FALSE)
 
   nodes <- names(igraph::V(g))
@@ -74,7 +80,7 @@ create_graph_from_dm <- function(dm) {
   ref_tables <- map(tables, ~ cdm_get_referencing_tables(dm, !!.x))
 
   tibble(tables, ref_tables) %>%
-    unnest(cols = c(ref_tables)) %>%
+    unnest() %>%
     igraph::graph_from_data_frame(directed = FALSE)
 }
 
