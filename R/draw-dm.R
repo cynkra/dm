@@ -3,6 +3,8 @@
 #' @param dm A [`dm`] object
 #' @param table_names Tables to consider in the model visualisation.
 #' If `NULL` (default), there is no constraint.
+#' @param view_type Can be "keys_only" (default), "all" or "title_only". It defines
+#' the level of details for the table rendering (only primary and foreign keys, all columns or no columns)
 #' @inheritParams datamodelr::dm_create_graph
 #'
 #' @description `cdm_draw()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`)
@@ -15,17 +17,18 @@
 #'
 #' @export
 cdm_draw <- function(
-                     dm,
-                     table_names = NULL,
-                     rankdir = "LR",
-                     col_attr = "column",
-                     view_type = "keys_only",
-                     columnArrows = TRUE,
-                     graph_attrs = "",
-                     node_attrs = "",
-                     edge_attrs = "",
-                     focus = NULL,
-                     graph_name = "Data Model") {
+  dm,
+  table_names = NULL,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model") {
+
   data_model <- cdm_get_data_model(dm)
 
   if (!is_null(table_names)) {
