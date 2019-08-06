@@ -70,7 +70,7 @@ new_dm <- function(src, tables, data_model) {
   stopifnot(datamodelr::is.data_model(data_model))
   src <- src_from_src_or_con(src)
 
-  columns <- data_model$columns
+  columns <- as_tibble(data_model$columns)
 
   keys <- columns %>%
     select(column, table, key) %>%

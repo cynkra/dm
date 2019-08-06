@@ -2,9 +2,9 @@ test_that("cdm_copy_to() works as it is intended?", {
   # test copying `dm` w/o keys
   map(
     dbplyr:::test_srcs$get(),
-    ~ expect_error(
-      cdm_copy_to(., cdm_test_obj),
-      NA
+    ~ expect_equivalent_dm(
+      cdm_copy_to(src_df(env = new_environment()), cdm_copy_to(., cdm_test_obj)),
+      cdm_test_obj
     )
   )
 
