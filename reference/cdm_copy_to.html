@@ -138,8 +138,9 @@ By default temporary tables will be created.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_copy_to</span>(<span class='no'>dest</span>, <span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_copy_to</span>(<span class='no'>dest</span>, <span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,6 +158,10 @@ By default temporary tables will be created.</p>
       <td><p>Possible further arguments passed to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code> (which is used on each table)</p></td>
     </tr>
     <tr>
+      <th>overwrite, types</th>
+      <td><p>Must remain <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
       <th>set_key_constraints</th>
       <td><p>Boolean variable, if <code>TRUE</code> will mirror <code>dm</code> key constraints on a database.</p></td>
     </tr>
@@ -171,10 +176,17 @@ unique table names will be created based on the original table names.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>No tables will be overwritten, passing <code>overwrite = TRUE</code> gives an error.
+Types are determined separately for each table, setting the <code>types</code> argument
+also gives an error.
+The arguments are included in the signature to avoid passing them via the
+<code>...</code> ellipsis.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other DB interaction functions: <code><a href='cdm_learn_from_db.html'>cdm_learn_from_db</a></code>,
-  <code><a href='cdm_set_key_constraints.html'>cdm_set_key_constraints</a></code></p></div>
+    <div class='dont-index'><p>Other DB interaction functions: <code><a href='cdm_learn_from_db.html'>cdm_learn_from_db</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -190,6 +202,8 @@ unique table names will be created based on the original table names.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
