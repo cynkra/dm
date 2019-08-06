@@ -317,8 +317,16 @@ abort_no_overwrite <- function() {
   abort(error_txt_no_overwrite(), .subclass = cdm_error_full("no_overwrite"))
 }
 
+abort_no_types <- function() {
+  abort(error_txt_no_types(), .subclass = cdm_error_full("no_types"))
+}
+
 error_txt_no_overwrite <- function() {
-  paste0("'cdm_copy_to()' does not support 'overwrite = TRUE'.")
+  paste0("`cdm_copy_to()` does not support the `overwrite` argument.")
+}
+
+error_txt_no_types <- function() {
+  paste0("`cdm_copy_to()` does not support the `types` argument.")
 }
 
 abort_src_not_db <- function() {

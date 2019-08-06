@@ -70,11 +70,34 @@ new_dm <- function(src, tables, data_model) {
   stopifnot(datamodelr::is.data_model(data_model))
   src <- src_from_src_or_con(src)
 
+  columns <- as_tibble(data_model$columns)
+
+  keys <- columns %>%
+    select(column, table, key) %>%
+    filter(key > 0) %>%
+    select(-key)
+
+  if (is.null(data_model$references)) {
+    references <- data.frame(
+      table = character(),
+      column = character(),
+      ref = character(),
+      ref_col = character(),
+      stringsAsFactors = FALSE
+    )
+  } else {
+    references <-
+      data_model$references %>%
+      select(table, column, ref, ref_col)
+  }
+
   structure(
     list(
       src = src,
       tables = tables,
-      data_model = data_model
+      data_model_tables = data_model$tables,
+      data_model_keys = keys,
+      data_model_references = references
     ),
     class = "dm"
   )
@@ -134,7 +157,35 @@ cdm_get_tables <- function(x) {
 #'
 #' @export
 cdm_get_data_model <- function(x) {
-  unclass(x)$data_model
+  x <- unclass(x)
+
+  references_for_columns <-
+    x$data_model_references
+
+  references <-
+    references_for_columns %>%
+    mutate(ref_id = row_number(), ref_col_num = 1L)
+
+  keys <-
+    x$data_model_keys %>%
+    mutate(key = 1L)
+
+  columns <-
+    x$tables %>%
+    map(colnames) %>%
+    map(~ enframe(., "id", "column")) %>%
+    enframe("table") %>%
+    unnest() %>%
+    mutate(type = "integer") %>%
+    left_join(keys, by = c("table", "column")) %>%
+    mutate(key = coalesce(key, 0L)) %>%
+    left_join(references_for_columns, by = c("table", "column"))
+
+  new_data_model(
+    x$data_model_tables,
+    columns,
+    references
+  )
 }
 
 #' Check class
@@ -281,6 +332,20 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
   # TODO: How to add a table to a dm?
   abort("`dm` objects are immutable, please use ...")
 }
+
+#' @export
+collect.dm <- function(x, ...) {
+  if (!is_src_db(x)) return(x)
+
+  tables <- map(cdm_get_tables(x), collect)
+
+  new_dm(
+    cdm_get_src(x),
+    tables,
+    cdm_get_data_model(x)
+  )
+}
+
 
 #' Rename tables of a `dm`
 #'

@@ -62,7 +62,6 @@ reference:
 - title: Interaction with DBs
   contents:
   - cdm_copy_to
-  - cdm_set_key_constraints
   - cdm_learn_from_db
 
 - title: Utilizing foreign key relations

@@ -4,8 +4,9 @@
 \alias{cdm_copy_to}
 \title{Copy a 'dm'-object to a 'src'/'con'}
 \usage{
-cdm_copy_to(dest, dm, ..., set_key_constraints = TRUE,
-  unique_table_names = FALSE, temporary = TRUE)
+cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
+  set_key_constraints = TRUE, unique_table_names = FALSE,
+  temporary = TRUE)
 }
 \arguments{
 \item{dest}{A \code{src} or \code{con} object like e.g. a database.}
@@ -13,6 +14,8 @@ cdm_copy_to(dest, dm, ..., set_key_constraints = TRUE,
 \item{dm}{A \code{dm} object.}
 
 \item{...}{Possible further arguments passed to \code{\link[dplyr:copy_to]{dplyr::copy_to()}} (which is used on each table)}
+
+\item{overwrite, types}{Must remain \code{NULL}.}
 
 \item{set_key_constraints}{Boolean variable, if \code{TRUE} will mirror \code{dm} key constraints on a database.}
 
@@ -27,6 +30,13 @@ and a \code{\link{dm}} object as a second. The latter is copied to the former. B
 the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
 By default temporary tables will be created.
 }
+\details{
+No tables will be overwritten, passing \code{overwrite = TRUE} gives an error.
+Types are determined separately for each table, setting the \code{types} argument
+also gives an error.
+The arguments are included in the signature to avoid passing them via the
+\code{...} ellipsis.
+}
 \examples{
 src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
 iris_dm <- cdm_copy_to(
@@ -36,7 +46,6 @@ iris_dm <- cdm_copy_to(
 )
 }
 \seealso{
-Other DB interaction functions: \code{\link{cdm_learn_from_db}},
-  \code{\link{cdm_set_key_constraints}}
+Other DB interaction functions: \code{\link{cdm_learn_from_db}}
 }
 \concept{DB interaction functions}
