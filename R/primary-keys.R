@@ -178,36 +178,34 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #' @export
 cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
   table_name <- as_name(enquo(table))
-
   check_correct_input(dm, table_name)
-  data_model <- cdm_get_data_model(dm)
 
-  update_cols <- data_model$columns$table == table_name
-  data_model$columns$key[update_cols] <- 0
+  references <- cdm_get_data_model_references(dm)
+  affected_references <-
+    references %>%
+    filter(ref == !!table_name)
+  new_references <- references
 
-  fks <- cdm_get_all_fks(dm) %>%
-    filter(parent_table == table_name)
-
-  if (nrow(fks)) {
+  if (nrow(affected_references) > 0) {
     if (rm_referencing_fks) {
-      child_tables <- pull(fks, child_table)
-      fk_cols <- pull(fks, child_fk_col)
-      data_model <- reduce2(
-        child_tables,
-        fk_cols,
-        rm_data_model_reference,
-        table_name,
-        .init = data_model
-      )
+      new_references <-
+        references %>%
+        filter(ref != !!table_name)
     } else {
-      abort_first_rm_fks(fks)
+      abort_first_rm_fks(affected_references)
     }
   }
 
-  new_dm(
+  new_keys <-
+    cdm_get_data_model_keys(dm) %>%
+    filter(table != !!table_name)
+
+  new_dm2(
     cdm_get_src(dm),
     cdm_get_tables(dm),
-    data_model
+    cdm_get_data_model_tables(dm),
+    new_keys,
+    new_references
   )
 })
 

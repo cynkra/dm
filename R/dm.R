@@ -70,6 +70,8 @@ new_dm <- function(src, tables, data_model) {
 
   columns <- as_tibble(data_model$columns)
 
+  data_model_tables <- data_model$tables
+
   keys <- columns %>%
     select(column, table, key) %>%
     filter(key > 0) %>%
@@ -89,11 +91,15 @@ new_dm <- function(src, tables, data_model) {
       as_tibble()
   }
 
+  new_dm2(src, tables, data_model_tables, keys, references)
+}
+
+new_dm2 <- function(src, tables, data_model_tables, keys, references) {
   structure(
     list(
       src = src,
       tables = tables,
-      data_model_tables = data_model$tables,
+      data_model_tables = data_model_tables,
       data_model_keys = keys,
       data_model_references = references
     ),
