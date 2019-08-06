@@ -333,6 +333,20 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
   abort("`dm` objects are immutable, please use ...")
 }
 
+#' @export
+collect.dm <- function(x, ...) {
+  if (!is_src_db(x)) return(x)
+
+  tables <- map(cdm_get_tables(x), collect)
+
+  new_dm(
+    cdm_get_src(x),
+    tables,
+    cdm_get_data_model(x)
+  )
+}
+
+
 #' Rename tables of a `dm`
 #'
 #' @description `cdm_rename_table()` changes the name of one of a `dm`'s tables.

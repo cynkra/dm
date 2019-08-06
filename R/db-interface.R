@@ -46,7 +46,11 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, set_key_c
       abort_no_types()
     }
 
+    # FIXME: if same_src(), can use compute(), but need to set NOT NULL
+    # constraints
+
     dest <- src_from_src_or_con(dest)
+    dm <- collect(dm)
 
     copy_data <- build_copy_data(dm, dest, unique_table_names)
 
