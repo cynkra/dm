@@ -37,11 +37,10 @@ cdm_draw <- function(
     )
 
     all_table_names <- names(cdm_get_tables(dm))
-    if (!(length(table_names) == length(all_table_names))) {
-      unwanted_tables <- setdiff(all_table_names, table_names)
-      data_model <- rm_table_from_data_model(data_model, unwanted_tables)
-    }
+    unwanted_tables <- setdiff(all_table_names, table_names)
+    data_model <- rm_table_from_data_model(data_model, unwanted_tables)
   }
+
   graph <- dm_create_graph(
     data_model,
     rankdir = rankdir,
