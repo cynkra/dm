@@ -201,11 +201,9 @@ cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
     filter(table != !!table_name)
 
   new_dm2(
-    cdm_get_src(dm),
-    cdm_get_tables(dm),
-    cdm_get_data_model_tables(dm),
-    new_pks,
-    new_fks
+    pks = new_pks,
+    fks = new_fks,
+    base_dm = dm
   )
 })
 
