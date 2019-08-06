@@ -259,14 +259,14 @@ nycflights13_sqlite %>%
 # Filtering on the database
 nycflights13_sqlite %>%
   cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl")
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_filter(flights, day == 1) %>%
   tbl("flights")
 
 # ... and the corresponding SQL statement
 nycflights13_sqlite %>%
   cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl")
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_filter(flights, day == 1) %>%
   tbl("flights") %>%
   dbplyr::sql_render()
