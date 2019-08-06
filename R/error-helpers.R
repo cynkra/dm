@@ -341,7 +341,7 @@ abort_first_rm_fks <- function(fks) {
   abort(error_first_rm_fks(fks), .subclass = cdm_error_full("first_rm_fks"))
 }
 
-error_first_rm_fks <- function(fks) h(~ {
+error_first_rm_fks <- nse_function(c(fks), ~ {
     child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
     parent_tbl <- paste0(unique(pull(fks, parent_table)))
 

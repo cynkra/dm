@@ -11,7 +11,7 @@
 #' @family Foreign key functions
 #'
 #' @export
-cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) h(~ {
+cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = TRUE), ~ {
     table_name <- as_name(enquo(table))
     ref_table_name <- as_name(enquo(ref_table))
 
@@ -108,7 +108,7 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @family Foreign key functions
 #'
 #' @export
-cdm_get_all_fks <- function(dm) h(~ {
+cdm_get_all_fks <- nse_function(c(dm), ~ {
     all_table_names <- src_tbls(dm)
     all_table_pairings <- crossing(all_table_names, dito = all_table_names) %>%
       filter(all_table_names != dito)
@@ -219,7 +219,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' nycflights_dm %>%
 #'   cdm_enum_fk_candidates(flights, airports)
 #' @export
-cdm_enum_fk_candidates <- function(dm, table, ref_table) h(~ {
+cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
 

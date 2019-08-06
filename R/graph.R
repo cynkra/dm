@@ -84,7 +84,7 @@ create_graph_from_dm <- function(dm) {
     igraph::graph_from_data_frame(directed = FALSE)
 }
 
-are_all_vertices_connected <- function(g, vertex_names) h(~ {
+are_all_vertices_connected <- nse_function(c(g, vertex_names), ~ {
     V <- names(igraph::V(g))
 
     vertex_names[1] %in% V &&

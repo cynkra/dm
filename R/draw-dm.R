@@ -129,7 +129,7 @@ color_quos_to_display <- function(...) {
 #'
 #' @rdname cdm_draw
 #' @export
-cdm_get_colors <- function(dm) h(~ {
+cdm_get_colors <- nse_function(c(dm), ~ {
     data_model <- cdm_get_data_model(dm)
     cdm_get_tables(data_model) %>%
       select(table, display) %>%

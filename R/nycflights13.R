@@ -13,7 +13,7 @@
 #'   colors assigned to different tables for visualization with `cdm_draw()`
 #'
 #' @export
-cdm_nycflights13 <- function(cycle = FALSE, color = TRUE) h(~ {
+cdm_nycflights13 <- nse_function(c(cycle = FALSE, color = TRUE), ~ {
     dm <-
       dm(
         src_df("nycflights13")

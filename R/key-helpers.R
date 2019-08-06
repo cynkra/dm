@@ -42,7 +42,7 @@ check_key <- function(.data, ...) {
 }
 
 # internal function to check if a column is a unique key of a table
-is_unique_key <- function(.data, column) h(~ {
+is_unique_key <- nse_function(c(.data, column), ~ {
   if (is_symbol(enexpr(column))) {
     col_expr <- enexpr(column)
     col_name <- as_name(col_expr)

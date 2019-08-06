@@ -184,7 +184,7 @@ cdm_get_all_pks <- function(dm) {
 #'   cdm_rm_pk(planes, rm_referencing_fks = TRUE) %>%
 #'   cdm_has_pk(planes)
 #' @export
-cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
+cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
     table_name <- as_name(enquo(table))
 
     check_correct_input(dm, table_name)
@@ -229,7 +229,7 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
 #' @export
 #' @examples
 #' nycflights13::flights %>% enum_pk_candidates()
-enum_pk_candidates <- function(table) h(~ {
+enum_pk_candidates <- nse_function(c(table), ~ {
   tbl_colnames <- colnames(table)
 
   # list of ayes and noes:
@@ -255,7 +255,7 @@ enum_pk_candidates <- function(table) h(~ {
 #'
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
-cdm_enum_pk_candidates <- function(dm, table) h(~ {
+cdm_enum_pk_candidates <- nse_function(c(dm, table), ~ {
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)

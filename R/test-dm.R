@@ -56,7 +56,3 @@ is_this_a_test <- function() {
 
   is_test_call || is_testing
 }
-
-h <- function(formula, env = rlang::caller_env()) {
-  rlang::eval_tidy(rlang::as_quosure(formula, env = env))
-}

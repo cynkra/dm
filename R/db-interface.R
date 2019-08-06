@@ -30,7 +30,7 @@
 #'   set_key_constraints = FALSE
 #' )
 #' @export
-cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, set_key_constraints = TRUE, unique_table_names = FALSE, temporary = TRUE) h(~ {
+cdm_copy_to <- nse_function(c(dest, dm, ..., types = NULL, overwrite = NULL, set_key_constraints = TRUE, unique_table_names = FALSE, temporary = TRUE), ~ {
     # for now focusing on MSSQL
     # we expect the src (dest) to already point to the correct schema
     # we want to
@@ -100,7 +100,7 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, set_key_c
 #' # constraints for SQLite, this would do something:
 #' cdm_set_key_constraints(iris_dm)
 #' @noRd
-cdm_set_key_constraints <- function(dm) h(~ {
+cdm_set_key_constraints <- nse_function(c(dm), ~ {
     if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
     db_table_names <- get_db_table_names(dm)
 

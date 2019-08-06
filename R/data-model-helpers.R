@@ -192,14 +192,14 @@ datamodel_tables_from_overview <- function(overview) {
     as.data.frame(stringsAsFactors = FALSE)
 }
 
-datamodel_columns_from_overview <- function(overview) h(~ {
+datamodel_columns_from_overview <- nse_function(c(overview), ~ {
     overview %>%
       select(column, type, table, key, ref, ref_col) %>%
       mutate(key = as.numeric(key)) %>%
       as.data.frame(stringsAsFactors = FALSE)
   })
 
-datamodel_references_from_overview <- function(overview) h(~ {
+datamodel_references_from_overview <- nse_function(c(overview), ~ {
     overview %>%
       filter(!is.na(ref)) %>%
       select(table, column, ref, ref_col) %>%
@@ -208,7 +208,7 @@ datamodel_references_from_overview <- function(overview) h(~ {
       as.data.frame(stringsAsFactors = FALSE)
   })
 
-datamodel_rename_table <- function(data_model, old_name, new_name) h(~ {
+datamodel_rename_table <- nse_function(c(data_model, old_name, new_name), ~ {
   tables <- data_model$tables
   ind_tables <- tables$table == old_name
   tables$table[ind_tables] <- new_name

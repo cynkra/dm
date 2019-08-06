@@ -40,7 +40,7 @@
 #'
 #'
 #' @export
-dm <- function(src, data_model = NULL) h(~ {
+dm <- nse_function(c(src, data_model = NULL), ~ {
     # TODO: add keys argument, if both data_model and keys are missing,
     # create surrogate keys
     if (is.null(data_model)) {
