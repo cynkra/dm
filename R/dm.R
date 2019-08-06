@@ -97,8 +97,8 @@ new_dm <- function(src, tables, data_model) {
 new_dm2 <- function(src = cdm_get_src(base_dm),
                     tables = cdm_get_tables(base_dm),
                     data_model_tables = cdm_get_data_model_tables(base_dm),
-                    keys = cdm_get_data_model_keys(base_dm),
-                    references = cdm_get_data_model_references(base_dm),
+                    pks = cdm_get_data_model_pks(base_dm),
+                    fks = cdm_get_data_model_fks(base_dm),
                     base_dm) {
 
   structure(
@@ -106,8 +106,8 @@ new_dm2 <- function(src = cdm_get_src(base_dm),
       src = src,
       tables = tables,
       data_model_tables = data_model_tables,
-      data_model_keys = keys,
-      data_model_references = references
+      data_model_pks = pks,
+      data_model_fks = fks
     ),
     class = "dm"
   )
@@ -162,12 +162,12 @@ cdm_get_data_model_tables <- function(x) {
   unclass(x)$data_model_tables
 }
 
-cdm_get_data_model_keys <- function(x) {
-  unclass(x)$data_model_keys
+cdm_get_data_model_pks <- function(x) {
+  unclass(x)$data_model_pks
 }
 
-cdm_get_data_model_references <- function(x) {
-  unclass(x)$data_model_references
+cdm_get_data_model_fks <- function(x) {
+  unclass(x)$data_model_fks
 }
 
 #' Get data_model component
@@ -179,14 +179,14 @@ cdm_get_data_model_references <- function(x) {
 #'
 #' @export
 cdm_get_data_model <- function(x) {
-  references_for_columns <- cdm_get_data_model_references(x)
+  references_for_columns <- cdm_get_data_model_fks(x)
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys <-
-    cdm_get_data_model_keys(x) %>%
+    cdm_get_data_model_pks(x) %>%
     mutate(key = 1L)
 
   columns <-

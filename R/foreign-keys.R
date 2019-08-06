@@ -67,8 +67,8 @@ cdm_has_fk <- function(dm, table, ref_table) {
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
 
-  references <- cdm_get_data_model_references(dm)
-  any(references$table == table_name & references$ref == ref_table_name)
+  fks <- cdm_get_data_model_fks(dm)
+  any(fks$table == table_name & fks$ref == ref_table_name)
 }
 
 #' Retrieve the name of the column marked as foreign key, pointing from one table of a [`dm`] to another
@@ -108,7 +108,7 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #'
 #' @export
 cdm_get_all_fks <- nse_function(c(dm), ~ {
-  cdm_get_data_model_references(dm) %>%
+  cdm_get_data_model_fks(dm) %>%
     select(child_table = table, child_fk_col = column, parent_table = ref)
 })
 

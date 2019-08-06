@@ -145,7 +145,7 @@ cdm_get_pk <- function(dm, table) {
 #'
 #' @export
 cdm_get_all_pks <- nse_function(c(dm), ~ {
-  cdm_get_data_model_keys(dm) %>%
+  cdm_get_data_model_pks(dm) %>%
     select(table = table, pk_col = column)
 })
 
@@ -180,32 +180,32 @@ cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
   table_name <- as_name(enquo(table))
   check_correct_input(dm, table_name)
 
-  references <- cdm_get_data_model_references(dm)
-  affected_references <-
-    references %>%
+  fks <- cdm_get_data_model_fks(dm)
+  affected_fks <-
+    fks %>%
     filter(ref == !!table_name)
-  new_references <- references
+  new_fks <- fks
 
-  if (nrow(affected_references) > 0) {
+  if (nrow(affected_fks) > 0) {
     if (rm_referencing_fks) {
-      new_references <-
-        references %>%
+      new_fks <-
+        fks %>%
         filter(ref != !!table_name)
     } else {
-      abort_first_rm_fks(affected_references)
+      abort_first_rm_fks(affected_fks)
     }
   }
 
-  new_keys <-
-    cdm_get_data_model_keys(dm) %>%
+  new_pks <-
+    cdm_get_data_model_pks(dm) %>%
     filter(table != !!table_name)
 
   new_dm2(
     cdm_get_src(dm),
     cdm_get_tables(dm),
     cdm_get_data_model_tables(dm),
-    new_keys,
-    new_references
+    new_pks,
+    new_fks
   )
 })
 
