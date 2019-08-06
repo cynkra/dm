@@ -46,16 +46,13 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, set_key_c
       abort_no_types()
     }
 
-    if (unique_table_names) {
-      name_vector <- map_chr(src_tbls(dm), unique_db_table_name)
-    } else {
-      name_vector <- src_tbls(dm)
-    }
+    dest <- src_from_src_or_con(dest)
+
+    copy_data <- build_copy_data(dm, dest, unique_table_names)
 
     new_tables <- copy_list_of_tables_to(
       dest,
-      list_of_tables = cdm_get_tables(dm),
-      name_vector = name_vector,
+      copy_data = copy_data,
       temporary = temporary,
       overwrite = FALSE,
       ...
