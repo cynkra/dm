@@ -23,9 +23,6 @@ test_that("Learning from MSSQL works?", {
   data_model_original <-
     cdm_get_data_model(dm_for_filter)
 
-  data_model_original$columns <-
-    set_rownames(data_model_original$columns, 1:15) # for some reason the rownames are the column names...
-
   expect_identical(
     data_model_mssql_learned_renamed_reclassed,
     data_model_original
@@ -45,20 +42,15 @@ test_that("Learning from Postgres works?", {
 
   dm_for_filter_postgres_learned <- cdm_learn_from_db(con_postgres)
 
-  data_model_postgres_learned_renamed_reclassed <-
+  dm_postgres_learned_renamed <-
     cdm_rename_tbl(
       dm_for_filter_postgres_learned,
       structure(src_tbls(dm_for_filter_postgres_learned), names = src_tbls(dm_for_filter))
-    ) %>%
-    cdm_get_data_model() %>%
-    data_model_db_types_to_R_types()
+    )
 
-  data_model_original <-
-    cdm_get_data_model(dm_for_filter)
-
-  expect_identical(
-    data_model_postgres_learned_renamed_reclassed,
-    data_model_original
+  expect_equivalent_dm(
+    dm_postgres_learned_renamed,
+    dm_for_filter
   )
 
   # clean up Postgres-DB
