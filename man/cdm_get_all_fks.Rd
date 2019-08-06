@@ -14,7 +14,6 @@ A tibble with columns:
 
 "child_table": child table,
 "child_fk_col": foreign key column in child table,
-"col_class": class of this column,
 "parent_table": parent table,
 }
 \description{
