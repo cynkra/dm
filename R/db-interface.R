@@ -69,7 +69,9 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, set_key_c
       data_model = cdm_get_data_model(dm)
     )
 
-    if (set_key_constraints) cdm_set_key_constraints(remote_dm)
+    if (set_key_constraints && is_src_db(remote_dm)) {
+      cdm_set_key_constraints(remote_dm)
+    }
 
     invisible(remote_dm)
   })
