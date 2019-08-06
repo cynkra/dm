@@ -94,7 +94,13 @@ new_dm <- function(src, tables, data_model) {
   new_dm2(src, tables, data_model_tables, keys, references)
 }
 
-new_dm2 <- function(src, tables, data_model_tables, keys, references) {
+new_dm2 <- function(src = cdm_get_src(base_dm),
+                    tables = cdm_get_tables(base_dm),
+                    data_model_tables = cdm_get_data_model_tables(base_dm),
+                    keys = cdm_get_data_model_keys(base_dm),
+                    references = cdm_get_data_model_references(base_dm),
+                    base_dm) {
+
   structure(
     list(
       src = src,
