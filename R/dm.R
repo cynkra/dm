@@ -101,6 +101,12 @@ new_dm2 <- function(src = cdm_get_src(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
                     base_dm) {
 
+  stopifnot(!is.null(src))
+  stopifnot(!is.null(tables))
+  stopifnot(!is.null(data_model_tables))
+  stopifnot(!is.null(pks))
+  stopifnot(!is.null(fks))
+
   structure(
     list(
       src = src,
