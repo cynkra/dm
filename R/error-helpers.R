@@ -342,11 +342,11 @@ abort_first_rm_fks <- function(fks) {
 }
 
 error_first_rm_fks <- nse_function(c(fks), ~ {
-    child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
-    parent_tbl <- paste0(unique(pull(fks, parent_table)))
+  child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
+  parent_tbl <- paste0(unique(pull(fks, parent_table)))
 
-    glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
-  })
+  glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
+})
 
 
 abort_no_src_or_con <- function() {

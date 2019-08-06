@@ -14,20 +14,19 @@
 #' library(dplyr)
 #' cdm_draw(cdm_nycflights13())
 #' cdm_draw(cdm_nycflights13(cycle = TRUE))
-#'
 #' @export
 cdm_draw <- function(
-  dm,
-  table_names = NULL,
-  rankdir = "LR",
-  col_attr = "column",
-  view_type = "keys_only",
-  columnArrows = TRUE,
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  focus = NULL,
-  graph_name = "Data Model") {
+                     dm,
+                     table_names = NULL,
+                     rankdir = "LR",
+                     col_attr = "column",
+                     view_type = "keys_only",
+                     columnArrows = TRUE,
+                     graph_attrs = "",
+                     node_attrs = "",
+                     edge_attrs = "",
+                     focus = NULL,
+                     graph_name = "Data Model") {
 
   data_model <- cdm_get_data_model(dm)
 
@@ -76,7 +75,7 @@ cdm_draw <- function(
 #'     airlines = ,
 #'     planes = "yellow",
 #'     weather = "dark_blue") %>%
-#'     cdm_draw()
+#'   cdm_draw()
 #'
 #' # Splicing is supported:
 #' new_colors <- c(
@@ -130,13 +129,13 @@ color_quos_to_display <- function(...) {
 #' @rdname cdm_draw
 #' @export
 cdm_get_colors <- nse_function(c(dm), ~ {
-    data_model <- cdm_get_data_model(dm)
-    cdm_get_tables(data_model) %>%
-      select(table, display) %>%
-      as_tibble() %>%
-      mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
-      select(-display)
-  })
+  data_model <- cdm_get_data_model(dm)
+  cdm_get_tables(data_model) %>%
+    select(table, display) %>%
+    as_tibble() %>%
+    mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
+    select(-display)
+})
 
 #' cdm_get_available_colors()
 #'

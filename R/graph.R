@@ -85,12 +85,12 @@ create_graph_from_dm <- function(dm) {
 }
 
 are_all_vertices_connected <- nse_function(c(g, vertex_names), ~ {
-    V <- names(igraph::V(g))
+  V <- names(igraph::V(g))
 
-    vertex_names[1] %in% V &&
-      igraph::bfs(g, vertex_names[1], father = TRUE, rank = TRUE, unreachable = FALSE) %>%
-        extract2("order") %>%
-        names() %>%
-        is_in(vertex_names, .) %>%
-        all()
-  })
+  vertex_names[1] %in% V &&
+    igraph::bfs(g, vertex_names[1], father = TRUE, rank = TRUE, unreachable = FALSE) %>%
+      extract2("order") %>%
+      names() %>%
+      is_in(vertex_names, .) %>%
+      all()
+})

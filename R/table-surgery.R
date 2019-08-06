@@ -76,8 +76,8 @@ decompose_table <- function(.data, new_id_column, ...) {
       by = cols_chr
     ) %>%
     select(non_key_names, !!id_col_q)
-    # FIXME: Think about a good place for the target column,
-    # perhaps if this operation is run in a data model?
+  # FIXME: Think about a good place for the target column,
+  # perhaps if this operation is run in a data model?
 
   list("child_table" = child_table, "parent_table" = parent_table)
 }

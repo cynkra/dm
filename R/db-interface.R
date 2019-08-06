@@ -31,51 +31,51 @@
 #' )
 #' @export
 cdm_copy_to <- nse_function(c(dest, dm, ..., types = NULL, overwrite = NULL, set_key_constraints = TRUE, unique_table_names = FALSE, temporary = TRUE), ~ {
-    # for now focusing on MSSQL
-    # we expect the src (dest) to already point to the correct schema
-    # we want to
-    #   1. change `cdm_get_src(dm)` to `dest`
-    #   2. copy the tables to `dest`
-    #   3. implement the key situation within our `dm` on the DB
+  # for now focusing on MSSQL
+  # we expect the src (dest) to already point to the correct schema
+  # we want to
+  #   1. change `cdm_get_src(dm)` to `dest`
+  #   2. copy the tables to `dest`
+  #   3. implement the key situation within our `dm` on the DB
 
-    if (!is_null(overwrite)) {
-      abort_no_overwrite()
-    }
+  if (!is_null(overwrite)) {
+    abort_no_overwrite()
+  }
 
-    if (!is_null(types)) {
-      abort_no_types()
-    }
+  if (!is_null(types)) {
+    abort_no_types()
+  }
 
-    # FIXME: if same_src(), can use compute(), but need to set NOT NULL
-    # constraints
+  # FIXME: if same_src(), can use compute(), but need to set NOT NULL
+  # constraints
 
-    dest <- src_from_src_or_con(dest)
-    dm <- collect(dm)
+  dest <- src_from_src_or_con(dest)
+  dm <- collect(dm)
 
-    copy_data <- build_copy_data(dm, dest, unique_table_names)
+  copy_data <- build_copy_data(dm, dest, unique_table_names)
 
-    new_tables <- copy_list_of_tables_to(
-      dest,
-      copy_data = copy_data,
-      temporary = temporary,
-      overwrite = FALSE,
-      ...
-    )
+  new_tables <- copy_list_of_tables_to(
+    dest,
+    copy_data = copy_data,
+    temporary = temporary,
+    overwrite = FALSE,
+    ...
+  )
 
-    new_src <- src_from_src_or_con(dest)
+  new_src <- src_from_src_or_con(dest)
 
-    remote_dm <- new_dm(
-      src = new_src,
-      tables = new_tables,
-      data_model = cdm_get_data_model(dm)
-    )
+  remote_dm <- new_dm(
+    src = new_src,
+    tables = new_tables,
+    data_model = cdm_get_data_model(dm)
+  )
 
-    if (set_key_constraints && is_src_db(remote_dm)) {
-      cdm_set_key_constraints(remote_dm)
-    }
+  if (set_key_constraints && is_src_db(remote_dm)) {
+    cdm_set_key_constraints(remote_dm)
+  }
 
-    invisible(remote_dm)
-  })
+  invisible(remote_dm)
+})
 
 #' Set key constraints on a DB for a `dm`-obj with keys.
 #'
@@ -101,24 +101,24 @@ cdm_copy_to <- nse_function(c(dest, dm, ..., types = NULL, overwrite = NULL, set
 #' cdm_set_key_constraints(iris_dm)
 #' @noRd
 cdm_set_key_constraints <- nse_function(c(dm), ~ {
-    if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
-    db_table_names <- get_db_table_names(dm)
+  if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
+  db_table_names <- get_db_table_names(dm)
 
-    tables_w_pk <- cdm_get_all_pks(dm)
-    pk_info <- tables_w_pk %>%
-      left_join(db_table_names, by = c("table" = "table_name"))
+  tables_w_pk <- cdm_get_all_pks(dm)
+  pk_info <- tables_w_pk %>%
+    left_join(db_table_names, by = c("table" = "table_name"))
 
-    fk_info <-
-      cdm_get_all_fks(dm) %>%
-      left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
-      left_join(db_table_names, by = c("child_table" = "table_name")) %>%
-      rename(db_child_table = remote_name) %>%
-      left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
-      rename(db_parent_table = remote_name)
+  fk_info <-
+    cdm_get_all_fks(dm) %>%
+    left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
+    left_join(db_table_names, by = c("child_table" = "table_name")) %>%
+    rename(db_child_table = remote_name) %>%
+    left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
+    rename(db_parent_table = remote_name)
 
-    con <- con_from_src_or_con(cdm_get_src(dm))
-    queries <- create_queries(con, pk_info, fk_info)
-    walk(queries, ~ dbExecute(con, .))
+  con <- con_from_src_or_con(cdm_get_src(dm))
+  queries <- create_queries(con, pk_info, fk_info)
+  walk(queries, ~ dbExecute(con, .))
 
-    invisible(dm)
-  })
+  invisible(dm)
+})

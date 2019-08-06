@@ -37,26 +37,24 @@
 #'   cdm_rename_table(airports, ap)
 #' cdm_nycflights13() %>%
 #'   cdm_rename_tables(c("airports", "flights"), c("ap", "fl"))
-#'
-#'
 #' @export
 dm <- nse_function(c(src, data_model = NULL), ~ {
-    # TODO: add keys argument, if both data_model and keys are missing,
-    # create surrogate keys
-    if (is.null(data_model)) {
-      tbl_names <- src_tbls(src)
-      tbls <- map(set_names(tbl_names), tbl, src = src)
-      tbl_heads <- map(tbls, head, 0)
-      tbl_structures <- map(tbl_heads, collect)
+  # TODO: add keys argument, if both data_model and keys are missing,
+  # create surrogate keys
+  if (is.null(data_model)) {
+    tbl_names <- src_tbls(src)
+    tbls <- map(set_names(tbl_names), tbl, src = src)
+    tbl_heads <- map(tbls, head, 0)
+    tbl_structures <- map(tbl_heads, collect)
 
-      data_model <- datamodelr::dm_from_data_frames(tbl_structures)
-    }
+    data_model <- datamodelr::dm_from_data_frames(tbl_structures)
+  }
 
-    table_names <- set_names(data_model$tables$table)
-    tables <- map(table_names, tbl, src = src)
+  table_names <- set_names(data_model$tables$table)
+  tables <- map(table_names, tbl, src = src)
 
-    new_dm(src, tables, data_model)
-  })
+  new_dm(src, tables, data_model)
+})
 
 #' Low-level constructor
 #'
