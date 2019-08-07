@@ -38,7 +38,8 @@ if (packageVersion("RSQLite") >= "2.1.1.9003") {
 
 local(try(
   {
-    src <- src_postgres(dbname = "postgres", host = "localhost", port = 5432, user = "postgres")
+    con <- DBI::dbConnect(RPostgres::Postgres(), dbname = "postgres", host = "localhost", port = 5432, user = "postgres", bigint = "integer")
+    src <- src_dbi(con, auto_disconnect = TRUE)
     test_register_src("postgres", src)
     clear_postgres()
   },
@@ -92,7 +93,8 @@ data <-
 
 data_check_key_src <- test_load(data)
 
-# for check_fk() and check_set_equality() -------------------------
+message("for check_fk() and check_set_equality()")
+
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
@@ -136,7 +138,7 @@ list_of_data_ts_parent_and_child_src <- map2(
 )
 
 
-# for testing filter and semi_join ----------------------------------------
+message("for testing filter and semi_join")
 
 # the following is for testing the filtering functionality:
 t1 <- tibble(
@@ -270,7 +272,7 @@ dm_for_filter_rev <-
 t1_src <- test_load(t1)
 t3_src <- test_load(t3)
 
-# for tests on `dm` objects: cdm_add_pk(), cdm_add_pk() ------------------------
+message("for tests on `dm` objects: cdm_add_pk(), cdm_add_fk()")
 
 cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7, cdm_table_4 = d8))
 cdm_test_obj_src <- cdm_test_load(cdm_test_obj)

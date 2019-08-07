@@ -11,18 +11,12 @@
 # cdm_test_obj <- cdm_nycflights13(cycle = TRUE)
 # cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
 cdm_test_load <- function(x,
-                          db_names = NULL, # NULL results in the same name on the src for each table as the current table name in the `dm` object
-                          srcs = dbplyr:::test_srcs$get(), # FIXME: nto exported from {dplyr}... could also "borrow" source code as new function here!?
+                          srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
                           ignore = character()) {
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
-  cdm_table_names <- src_tbls(x)
-  if (is_null(db_names)) db_names <- map(cdm_table_names, unique_db_table_name)
 
-  tables <- cdm_get_tables(x)
-
-  remote_tbls <- map(srcs, ~ copy_list_of_tables_to(src = .x, list_of_tables = tables, name_vector = db_names))
-  map2(srcs, remote_tbls, ~ new_dm(.x, .y, cdm_get_data_model(x)))
+  map(srcs, ~ cdm_copy_to(., dm = x, unique_table_names = TRUE))
 }
 
 
@@ -61,8 +55,4 @@ is_this_a_test <- function() {
   is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
 
   is_test_call || is_testing
-}
-
-h <- function(formula, env = rlang::caller_env()) {
-  rlang::eval_tidy(rlang::as_quosure(formula, env = env))
 }

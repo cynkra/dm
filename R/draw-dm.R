@@ -3,6 +3,8 @@
 #' @param dm A [`dm`] object
 #' @param table_names Tables to consider in the model visualisation.
 #' If `NULL` (default), there is no constraint.
+#' @param view_type Can be "keys_only" (default), "all" or "title_only". It defines
+#' the level of details for the table rendering (only primary and foreign keys, all columns or no columns)
 #' @inheritParams datamodelr::dm_create_graph
 #'
 #' @description `cdm_draw()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`)
@@ -12,7 +14,6 @@
 #' library(dplyr)
 #' cdm_draw(cdm_nycflights13())
 #' cdm_draw(cdm_nycflights13(cycle = TRUE))
-#'
 #' @export
 cdm_draw <- function(
                      dm,
@@ -26,6 +27,7 @@ cdm_draw <- function(
                      edge_attrs = "",
                      focus = NULL,
                      graph_name = "Data Model") {
+
   data_model <- cdm_get_data_model(dm)
 
   if (!is_null(table_names)) {
@@ -73,7 +75,7 @@ cdm_draw <- function(
 #'     airlines = ,
 #'     planes = "yellow",
 #'     weather = "dark_blue") %>%
-#'     cdm_draw()
+#'   cdm_draw()
 #'
 #' # Splicing is supported:
 #' new_colors <- c(
@@ -126,14 +128,14 @@ color_quos_to_display <- function(...) {
 #'
 #' @rdname cdm_draw
 #' @export
-cdm_get_colors <- function(dm) h(~ {
-    data_model <- cdm_get_data_model(dm)
-    cdm_get_tables(data_model) %>%
-      select(table, display) %>%
-      as_tibble() %>%
-      mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
-      select(-display)
-  })
+cdm_get_colors <- nse_function(c(dm), ~ {
+  data_model <- cdm_get_data_model(dm)
+  cdm_get_tables(data_model) %>%
+    select(table, display) %>%
+    as_tibble() %>%
+    mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
+    select(-display)
+})
 
 #' cdm_get_available_colors()
 #'

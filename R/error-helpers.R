@@ -317,8 +317,16 @@ abort_no_overwrite <- function() {
   abort(error_txt_no_overwrite(), .subclass = cdm_error_full("no_overwrite"))
 }
 
+abort_no_types <- function() {
+  abort(error_txt_no_types(), .subclass = cdm_error_full("no_types"))
+}
+
 error_txt_no_overwrite <- function() {
-  paste0("'cdm_copy_to()' does not support 'overwrite = TRUE'.")
+  paste0("`cdm_copy_to()` does not support the `overwrite` argument.")
+}
+
+error_txt_no_types <- function() {
+  paste0("`cdm_copy_to()` does not support the `types` argument.")
 }
 
 abort_src_not_db <- function() {
@@ -333,12 +341,12 @@ abort_first_rm_fks <- function(fks) {
   abort(error_first_rm_fks(fks), .subclass = cdm_error_full("first_rm_fks"))
 }
 
-error_first_rm_fks <- function(fks) h(~ {
-    child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
-    parent_tbl <- paste0(unique(pull(fks, parent_table)))
+error_first_rm_fks <- nse_function(c(fks), ~ {
+  child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
+  parent_tbl <- paste0(unique(pull(fks, parent_table)))
 
-    glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
-  })
+  glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
+})
 
 
 abort_no_src_or_con <- function() {

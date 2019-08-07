@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational data models
-Version: 0.0.1.9000
-Date: 2019-07-16
+Version: 0.0.1.9001
+Date: 2019-07-30
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -51,6 +51,7 @@ Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
+    RPostgres,
     RSQLite,
     tidyverse,
     vctrs

@@ -58,9 +58,6 @@ test_that("Learning from Postgres works?", {
   data_model_original <-
     cdm_get_data_model(dm_for_filter)
 
-  data_model_original$columns <-
-    set_rownames(data_model_original$columns, 1:15) # for some reason the rownames are the column names...
-
   expect_identical(
     data_model_postgres_learned_renamed_reclassed,
     data_model_original

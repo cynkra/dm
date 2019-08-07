@@ -123,7 +123,7 @@ rm_table_from_data_model <- function(data_model, tables) {
   if (!is.null(references)) {
     ind_keep_references <-
       !(references$table %in% tables) &
-      !(references$ref %in% tables)
+        !(references$ref %in% tables)
     new_references <- references[ind_keep_references, ]
     new_references$ref_id <- seq_along(new_references$ref_id)
   } else {
@@ -192,23 +192,23 @@ datamodel_tables_from_overview <- function(overview) {
     as.data.frame(stringsAsFactors = FALSE)
 }
 
-datamodel_columns_from_overview <- function(overview) h(~ {
-    overview %>%
-      select(column, type, table, key, ref, ref_col) %>%
-      mutate(key = as.numeric(key)) %>%
-      as.data.frame(stringsAsFactors = FALSE)
-  })
+datamodel_columns_from_overview <- nse_function(c(overview), ~ {
+  overview %>%
+    select(column, type, table, key, ref, ref_col) %>%
+    mutate(key = as.numeric(key)) %>%
+    as.data.frame(stringsAsFactors = FALSE)
+})
 
-datamodel_references_from_overview <- function(overview) h(~ {
-    overview %>%
-      filter(!is.na(ref)) %>%
-      select(table, column, ref, ref_col) %>%
-      mutate(ref_id = as.numeric(row_number())) %>%
-      add_column(ref_col_num = 1) %>%
-      as.data.frame(stringsAsFactors = FALSE)
-  })
+datamodel_references_from_overview <- nse_function(c(overview), ~ {
+  overview %>%
+    filter(!is.na(ref)) %>%
+    select(table, column, ref, ref_col) %>%
+    mutate(ref_id = as.numeric(row_number())) %>%
+    add_column(ref_col_num = 1) %>%
+    as.data.frame(stringsAsFactors = FALSE)
+})
 
-datamodel_rename_table <- function(data_model, old_name, new_name) h(~ {
+datamodel_rename_table <- nse_function(c(data_model, old_name, new_name), ~ {
   tables <- data_model$tables
   ind_tables <- tables$table == old_name
   tables$table[ind_tables] <- new_name

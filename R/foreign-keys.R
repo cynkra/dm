@@ -11,35 +11,35 @@
 #' @family Foreign key functions
 #'
 #' @export
-cdm_add_fk <- function(dm, table, column, ref_table, check = TRUE) h(~ {
-    table_name <- as_name(enquo(table))
-    ref_table_name <- as_name(enquo(ref_table))
+cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = TRUE), ~ {
+  table_name <- as_name(enquo(table))
+  ref_table_name <- as_name(enquo(ref_table))
 
-    column_name <- as_name(enexpr(column))
+  column_name <- as_name(enexpr(column))
 
-    check_correct_input(dm, table_name)
-    check_correct_input(dm, ref_table_name)
+  check_correct_input(dm, table_name)
+  check_correct_input(dm, ref_table_name)
 
-    check_col_input(dm, table_name, column_name)
-    if (!cdm_has_pk(dm, !!ref_table_name)) {
-      abort_ref_tbl_has_no_pk(
-        ref_table_name,
-        cdm_enum_pk_candidates(dm, !!ref_table_name) %>%
-          filter(candidate == TRUE) %>%
-          pull(column)
-      )
-    }
-    ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
+  check_col_input(dm, table_name, column_name)
+  if (!cdm_has_pk(dm, !!ref_table_name)) {
+    abort_ref_tbl_has_no_pk(
+      ref_table_name,
+      cdm_enum_pk_candidates(dm, !!ref_table_name) %>%
+        filter(candidate == TRUE) %>%
+        pull(column)
+    )
+  }
+  ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
 
-    tbl_obj <- cdm_get_tables(dm)[[table_name]]
-    ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
+  tbl_obj <- cdm_get_tables(dm)[[table_name]]
+  ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
 
-    if (check && !is_subset(tbl_obj, !!column_name, ref_tbl_obj, !!ref_column_name)) {
-      abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
-    }
+  if (check && !is_subset(tbl_obj, !!column_name, ref_tbl_obj, !!ref_column_name)) {
+    abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
+  }
 
-    cdm_add_fk_impl(dm, table_name, column_name, ref_table_name, ref_column_name)
-  })
+  cdm_add_fk_impl(dm, table_name, column_name, ref_table_name, ref_column_name)
+})
 
 
 cdm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
@@ -108,43 +108,43 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @family Foreign key functions
 #'
 #' @export
-cdm_get_all_fks <- function(dm) h(~ {
-    all_table_names <- src_tbls(dm)
-    all_table_pairings <- crossing(all_table_names, dito = all_table_names) %>%
-      filter(all_table_names != dito)
+cdm_get_all_fks <- nse_function(c(dm), ~ {
+  all_table_names <- src_tbls(dm)
+  all_table_pairings <- crossing(all_table_names, dito = all_table_names) %>%
+    filter(all_table_names != dito)
 
-    vec_1 <- all_table_pairings %>% pull(1)
-    vec_2 <- all_table_pairings %>% pull(2)
-    has_fk <- map2_lgl(vec_1, vec_2, ~ cdm_has_fk(dm, !!.x, !!.y))
-    if (all(has_fk == FALSE)) {
-      tibble(
-        child_table = character(0),
-        child_fk_col = character(0),
-        col_class = character(0),
-        parent_table = character(0)
-      )
-    } else {
-      child_table <- vec_1[has_fk]
-      parent_table <- vec_2[has_fk]
-      child_fk_col <-
-        map2(child_table, parent_table, ~ cdm_get_fk(dm, !!.x, !!.y))
-      # map2_chr() does not work in cases when there is more than 1 FK from one table to another
+  vec_1 <- all_table_pairings %>% pull(1)
+  vec_2 <- all_table_pairings %>% pull(2)
+  has_fk <- map2_lgl(vec_1, vec_2, ~ cdm_has_fk(dm, !!.x, !!.y))
+  if (all(has_fk == FALSE)) {
+    tibble(
+      child_table = character(0),
+      child_fk_col = character(0),
+      col_class = character(0),
+      parent_table = character(0)
+    )
+  } else {
+    child_table <- vec_1[has_fk]
+    parent_table <- vec_2[has_fk]
+    child_fk_col <-
+      map2(child_table, parent_table, ~ cdm_get_fk(dm, !!.x, !!.y))
+    # map2_chr() does not work in cases when there is more than 1 FK from one table to another
 
-      tibble(
-        child_table = child_table,
-        child_fk_col = child_fk_col,
-        # col_class = child_fk_col_class,
-        parent_table = parent_table
-      ) %>%
-        unnest(child_fk_col) %>%
-        mutate(col_class = map2_chr(
-          child_table,
-          child_fk_col,
-          ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y)
-        )) %>%
-        select(child_table, child_fk_col, col_class, parent_table)
-    }
-  })
+    tibble(
+      child_table = child_table,
+      child_fk_col = child_fk_col,
+      # col_class = child_fk_col_class,
+      parent_table = parent_table
+    ) %>%
+      unnest(child_fk_col) %>%
+      mutate(col_class = map2_chr(
+        child_table,
+        child_fk_col,
+        ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y)
+      )) %>%
+      select(child_table, child_fk_col, col_class, parent_table)
+  }
+})
 
 
 #' Remove reference(s) from one table of a [`dm`] to another
@@ -219,7 +219,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' nycflights_dm %>%
 #'   cdm_enum_fk_candidates(flights, airports)
 #' @export
-cdm_enum_fk_candidates <- function(dm, table, ref_table) h(~ {
+cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
 
@@ -251,6 +251,7 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) h(~ {
     ref_table_pk = ref_tbl_pk,
     table = table_name,
     column = tbl_colnames,
-    candidate = subsets
+    candidate = subsets,
+    why = if_else(subsets, "", paste0("not a subset of ", ref_table, "$", ref_table_pk))
   )
 })

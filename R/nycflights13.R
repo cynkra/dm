@@ -13,34 +13,34 @@
 #'   colors assigned to different tables for visualization with `cdm_draw()`
 #'
 #' @export
-cdm_nycflights13 <- function(cycle = FALSE, color = TRUE) h(~ {
+cdm_nycflights13 <- nse_function(c(cycle = FALSE, color = TRUE), ~ {
+  dm <-
+    dm(
+      src_df("nycflights13")
+    ) %>%
+    cdm_add_pk(planes, tailnum) %>%
+    cdm_add_pk(airlines, carrier) %>%
+    cdm_add_pk(airports, faa) %>%
+    cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+    cdm_add_fk(flights, carrier, airlines) %>%
+    cdm_add_fk(flights, origin, airports)
+
+  if (color) {
     dm <-
-      dm(
-        src_df("nycflights13")
-      ) %>%
-      cdm_add_pk(planes, tailnum) %>%
-      cdm_add_pk(airlines, carrier) %>%
-      cdm_add_pk(airports, faa) %>%
-      cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
-      cdm_add_fk(flights, carrier, airlines) %>%
-      cdm_add_fk(flights, origin, airports)
-
-    if (color) {
-      dm <-
-        dm %>%
-        cdm_set_colors(
-          flights = "blue",
-          airports = ,
-          planes = ,
-          airlines = "orange",
-          weather = "green"
-        )
-    }
-
-    if (cycle) {
       dm %>%
-        cdm_add_fk(flights, dest, airports, check = FALSE)
-    } else {
-      dm
-    }
-  })
+      cdm_set_colors(
+        flights = "blue",
+        airports = ,
+        planes = ,
+        airlines = "orange",
+        weather = "green"
+      )
+  }
+
+  if (cycle) {
+    dm %>%
+      cdm_add_fk(flights, dest, airports, check = FALSE)
+  } else {
+    dm
+  }
+})

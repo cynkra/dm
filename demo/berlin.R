@@ -259,14 +259,14 @@ nycflights13_sqlite %>%
 # Filtering on the database
 nycflights13_sqlite %>%
   cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl")
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_filter(flights, day == 1) %>%
   tbl("flights")
 
 # ... and the corresponding SQL statement
 nycflights13_sqlite %>%
   cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl")
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_filter(flights, day == 1) %>%
   tbl("flights") %>%
   dbplyr::sql_render()
@@ -355,7 +355,8 @@ flights_link <-
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
 
-# FIXME: Nicer way to construct dm
+# one option to create a `dm` is to use `as_dm()`:
+nycflights13_dm <- as_dm(list(airlines = airlines, airports = airports, flights = flights_link, planes = planes, weather = weather_link))
 
 # Copy to this environment
 airlines_global <- airlines

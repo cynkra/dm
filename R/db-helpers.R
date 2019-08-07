@@ -13,11 +13,56 @@ systime_convenient <- function() {
     str_replace(" ", "_")
 }
 
-# FIXME: should this be exported?
-copy_list_of_tables_to <- function(src, list_of_tables,
-                                   name_vector = names(list_of_tables),
-                                   overwrite = FALSE, ...) {
-  map2(list_of_tables, name_vector, copy_to, dest = src, overwrite = overwrite, ...)
+# Internal copy helper functions
+build_copy_data <- nse_function(c(dm, dest, unique_table_names), ~ {
+  source <- cdm_get_tables(dm)
+
+  if (unique_table_names) {
+    dest_names <- map_chr(names(source), unique_db_table_name)
+  } else {
+    dest_names <- names(source)
+  }
+
+  copy_data_base <-
+    source %>%
+    as.list() %>%
+    enframe(name = "source_name", value = "df") %>%
+    mutate(name = !!dest_names)
+
+  if (is_db(dest)) {
+    dest_con <- con_from_src_or_con(dest)
+
+    pks <-
+      cdm_get_all_pks(dm) %>%
+      transmute(source_name = table, column = pk_col, pk = TRUE)
+
+    # Need to supply NOT NULL modifiers for primary keys
+    # because they are difficult to add to MSSQL after the fact
+    copy_data <-
+      copy_data_base %>%
+      mutate(column = map(df, colnames)) %>%
+      mutate(type = map(df, ~ map_chr(., ~ DBI::dbDataType(dest_con, .)))) %>%
+      select(-df) %>%
+      unnest() %>%
+      left_join(pks, by = c("source_name", "column")) %>%
+      mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) %>%
+      group_by(source_name, name) %>%
+      summarize(types = list(deframe(tibble(column, full_type)))) %>%
+      inner_join(copy_data_base, ., by = c("source_name", "name"))
+  } else {
+    copy_data <-
+      copy_data_base
+  }
+
+  copy_data
+})
+
+# Not exported, to give us flexibility to change easily
+copy_list_of_tables_to <- function(dest, copy_data,
+                                   ..., overwrite = FALSE, df = NULL, name = NULL, types = NULL) {
+
+  tables <- pmap(copy_data, copy_to, dest = dest, overwrite = overwrite, ...)
+  set_names(tables, copy_data$source_name)
 }
 
 create_queries <- function(
@@ -25,10 +70,8 @@ create_queries <- function(
                            pk_information,
                            fk_information) {
   if (!is_null(pk_information)) {
-    q_not_nullable <- queries_not_nullable(dest, pk_information)
     q_set_pk_cols <- queries_set_pk_cols(dest, pk_information)
   } else {
-    q_not_nullable <- ""
     q_set_pk_cols <- ""
   }
 
@@ -40,37 +83,8 @@ create_queries <- function(
     q_set_fk_relations <- ""
   }
 
-  queries <- c(q_not_nullable, q_set_pk_cols, q_adapt_fk_col_classes, q_set_fk_relations)
+  queries <- c(q_set_pk_cols, q_adapt_fk_col_classes, q_set_fk_relations)
   queries[queries != ""]
-}
-
-queries_not_nullable <- function(dest, pk_information) {
-  db_tables <- pk_information$remote_name
-  cols_to_set_not_null <- pk_information$pk_col
-  cols_classes <- pk_information$pk_class
-  cols_db_classes <- class_to_db_class(dest, cols_classes)
-
-  if (is_mssql(dest)) {
-    pmap_chr(
-      list(
-        db_tables,
-        cols_to_set_not_null,
-        cols_db_classes
-      ),
-      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3} NOT NULL")
-    )
-  } else if (is_postgres(dest)) {
-    pmap_chr(
-      list(
-        db_tables,
-        cols_to_set_not_null,
-        cols_db_classes
-      ),
-      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}, ALTER COLUMN {..2} SET NOT NULL")
-    )
-  } else {
-    return("")
-  }
 }
 
 queries_set_pk_cols <- function(dest, pk_information) {
@@ -88,31 +102,7 @@ queries_set_pk_cols <- function(dest, pk_information) {
 }
 
 queries_adapt_fk_col_classes <- function(dest, fk_information) {
-  db_child_tables <- fk_information$db_child_table
-  cols_to_adapt <- fk_information$child_fk_col
-  child_col_classes <- fk_information$col_class
-  cols_db_classes <- class_to_db_class(dest, child_col_classes)
-  if (is_mssql(dest)) {
-    pmap_chr(
-      list(
-        db_child_tables,
-        cols_to_adapt,
-        cols_db_classes
-      ),
-      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} {..3}")
-    )
-  } else if (is_postgres(dest)) {
-    pmap_chr(
-      list(
-        db_child_tables,
-        cols_to_adapt,
-        cols_db_classes
-      ),
-      ~ glue("ALTER TABLE {..1} ALTER COLUMN {..2} TYPE {..3}")
-    )
-  } else {
-    return("")
-  }
+  ""
 }
 
 queries_set_fk_relations <- function(dest, fk_information) {
@@ -158,8 +148,12 @@ get_db_table_names <- function(dm) {
   )
 }
 
+is_db <- function(x) {
+  inherits(x, "src_sql")
+}
+
 is_src_db <- function(dm) {
-  inherits(cdm_get_src(dm), "src_sql")
+  is_db(cdm_get_src(dm))
 }
 
 is_mssql <- function(dest) {
@@ -169,7 +163,9 @@ is_mssql <- function(dest) {
 
 is_postgres <- function(dest) {
   inherits(dest, "src_PostgreSQLConnection") ||
-    inherits(dest, "PostgreSQLConnection")
+    inherits(dest, "src_PqConnection") ||
+    inherits(dest, "PostgreSQLConnection") ||
+    inherits(dest, "PqConnection")
 }
 
 src_from_src_or_con <- function(dest) {

@@ -184,40 +184,40 @@ cdm_get_all_pks <- function(dm) {
 #'   cdm_rm_pk(planes, rm_referencing_fks = TRUE) %>%
 #'   cdm_has_pk(planes)
 #' @export
-cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
-    table_name <- as_name(enquo(table))
+cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
+  table_name <- as_name(enquo(table))
 
-    check_correct_input(dm, table_name)
-    data_model <- cdm_get_data_model(dm)
+  check_correct_input(dm, table_name)
+  data_model <- cdm_get_data_model(dm)
 
-    update_cols <- data_model$columns$table == table_name
-    data_model$columns$key[update_cols] <- 0
+  update_cols <- data_model$columns$table == table_name
+  data_model$columns$key[update_cols] <- 0
 
-    fks <- cdm_get_all_fks(dm) %>%
-      filter(parent_table == table_name)
+  fks <- cdm_get_all_fks(dm) %>%
+    filter(parent_table == table_name)
 
-    if (nrow(fks)) {
-      if (rm_referencing_fks) {
-        child_tables <- pull(fks, child_table)
-        fk_cols <- pull(fks, child_fk_col)
-        data_model <- reduce2(
-          child_tables,
-          fk_cols,
-          rm_data_model_reference,
-          table_name,
-          .init = data_model
-        )
-      } else {
-        abort_first_rm_fks(fks)
-      }
+  if (nrow(fks)) {
+    if (rm_referencing_fks) {
+      child_tables <- pull(fks, child_table)
+      fk_cols <- pull(fks, child_fk_col)
+      data_model <- reduce2(
+        child_tables,
+        fk_cols,
+        rm_data_model_reference,
+        table_name,
+        .init = data_model
+      )
+    } else {
+      abort_first_rm_fks(fks)
     }
+  }
 
-    new_dm(
-      cdm_get_src(dm),
-      cdm_get_tables(dm),
-      data_model
-    )
-  })
+  new_dm(
+    cdm_get_src(dm),
+    cdm_get_tables(dm),
+    data_model
+  )
+})
 
 
 #' Which columns are candidates for a primary key column?
@@ -229,13 +229,16 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) h(~ {
 #' @export
 #' @examples
 #' nycflights13::flights %>% enum_pk_candidates()
-enum_pk_candidates <- function(table) h(~ {
+enum_pk_candidates <- nse_function(c(table), ~ {
   tbl_colnames <- colnames(table)
 
   # list of ayes and noes:
-  map_lgl(tbl_colnames, ~ is_unique_key(table, {{.x}})) %>%
-    set_names(tbl_colnames) %>%
-    enframe(name = "column", value = "candidate")
+  map_dfr(tbl_colnames, ~ is_unique_key(table, {{ .x }})) %>%
+    rename(candidate = unique) %>%
+    mutate(values = map_chr(data, ~ commas(format(.$value)))) %>%
+    select(-data) %>%
+    mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
+    select(-values)
 })
 
 
@@ -252,7 +255,7 @@ enum_pk_candidates <- function(table) h(~ {
 #'
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
-cdm_enum_pk_candidates <- function(dm, table) h(~ {
+cdm_enum_pk_candidates <- nse_function(c(dm, table), ~ {
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)

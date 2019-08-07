@@ -1,3 +1,10 @@
+# dm 0.0.1.9001
+
+- Fix corner case for calculating join list: works if table isn't related to other tables.
+- `create_graph_from_dm()` no longer fails in the presence of cycles (#10).
+- Add setup article (#7).
+
+
 # dm 0.0.1.9000
 
 - Only suggest {RSQLite}.

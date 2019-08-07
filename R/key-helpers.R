@@ -42,7 +42,7 @@ check_key <- function(.data, ...) {
 }
 
 # internal function to check if a column is a unique key of a table
-is_unique_key <- function(.data, column) {
+is_unique_key <- nse_function(c(.data, column), ~ {
   if (is_symbol(enexpr(column))) {
     col_expr <- enexpr(column)
     col_name <- as_name(col_expr)
@@ -55,14 +55,17 @@ is_unique_key <- function(.data, column) {
 
   duplicate_rows <-
     .data %>%
-    count(!!col_expr) %>%
-    select(n) %>%
+    count(value = !!col_expr) %>%
     filter(n != 1) %>%
-    head(1) %>%
-    collect()
+    arrange(value) %>%
+    head(7) %>%
+    collect() %>%
+    nest() %>%
+    mutate(column = col_name) %>%
+    mutate(unique = map_lgl(data, ~ nrow(.) == 0))
 
-  nrow(duplicate_rows) == 0
-}
+  duplicate_rows
+})
 
 
 #' Test if the value sets of two different columns in two different tables are the same
