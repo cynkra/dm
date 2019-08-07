@@ -141,7 +141,6 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
   min_1 <- tryCatch(!is_empty(check_set_equality(!!ct, !!fkc, !!pt, !!pkc, verbose = FALSE)),
-                    silent = TRUE,
                     error = function(e) FALSE)
 
   max_1 <- tryCatch(!is_empty(check_key(!!ct, !!fkc)),
