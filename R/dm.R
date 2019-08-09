@@ -34,9 +34,9 @@
 #' cdm_nycflights13() %>% cdm_get_data_model()
 #'
 #' cdm_nycflights13() %>%
-#'   cdm_rename_table(airports, ap)
+#'   cdm_rename_tbl(ap = airports)
 #' cdm_nycflights13() %>%
-#'   cdm_rename_tables(c("airports", "flights"), c("ap", "fl"))
+#'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm <- nse_function(c(src, data_model = NULL), ~ {
   # TODO: add keys argument, if both data_model and keys are missing,
