@@ -367,16 +367,27 @@ global <-
   dm(src_df(env = .GlobalEnv))
 global
 
-# FIXME: Consistent rename() syntax
+global %>%
+  cdm_rename_tbl(
+    airlines = airlines_global,
+    airports = airports_global,
+    planes = planes_global,
+    flights = flights_link,
+    weather = weather_link
+  ) %>%
+  cdm_select_tbl(airlines, airports, planes, flights, weather, all_connected = FALSE)
 
+# or better:
 nycflights13_tbl <-
   global %>%
-  cdm_rename_table(airlines_global, airlines) %>%
-  cdm_rename_table(airports_global, airports) %>%
-  cdm_rename_table(planes_global, planes) %>%
-  cdm_rename_table(flights_link, flights) %>%
-  cdm_rename_table(weather_link, weather) %>%
-  cdm_select_tbl(airlines, airports, planes, flights, weather, all_connected = FALSE)
+  cdm_select_tbl(
+    airlines = airlines_global,
+    airports = airports_global,
+    planes = planes_global,
+    flights = flights_link,
+    weather = weather_link,
+    all_connected = FALSE)
+
 
 nycflights13_tbl
 
