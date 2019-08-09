@@ -345,7 +345,7 @@ collect.dm <- function(x, ...) {
 }
 
 
-cdm_rename_table <- function(dm, old_name, new_name) {
+rename_table_of_dm <- function(dm, old_name, new_name) {
   old_name_q <- as_name(enexpr(old_name))
   check_correct_input(dm, old_name_q)
 
@@ -382,7 +382,7 @@ cdm_rename_tbl <- function(dm, ...) {
   reduce2(
     old_table_names,
     new_table_names,
-    cdm_rename_table,
+    rename_table_of_dm,
     .init = dm
   )
 }
