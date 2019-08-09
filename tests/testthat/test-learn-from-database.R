@@ -13,10 +13,9 @@ test_that("Learning from MSSQL works?", {
   dm_for_filter_mssql_learned <- cdm_learn_from_db(con_mssql)
 
   data_model_mssql_learned_renamed_reclassed <-
-    cdm_rename_tables(
+    cdm_rename_tbl(
       dm_for_filter_mssql_learned,
-      old_table_names = src_tbls(dm_for_filter_mssql_learned),
-      new_table_names = src_tbls(dm_for_filter)
+      structure(src_tbls(dm_for_filter_mssql_learned), names = src_tbls(dm_for_filter))
     ) %>%
     cdm_get_data_model() %>%
     data_model_db_types_to_R_types()
@@ -47,10 +46,9 @@ test_that("Learning from Postgres works?", {
   dm_for_filter_postgres_learned <- cdm_learn_from_db(con_postgres)
 
   data_model_postgres_learned_renamed_reclassed <-
-    cdm_rename_tables(
+    cdm_rename_tbl(
       dm_for_filter_postgres_learned,
-      old_table_names = src_tbls(dm_for_filter_postgres_learned),
-      new_table_names = src_tbls(dm_for_filter)
+      structure(src_tbls(dm_for_filter_postgres_learned), names = src_tbls(dm_for_filter))
     ) %>%
     cdm_get_data_model() %>%
     data_model_db_types_to_R_types()
