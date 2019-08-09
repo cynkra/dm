@@ -374,7 +374,9 @@ cdm_rename_table <- function(dm, old_name, new_name) {
 #' @export
 cdm_rename_tbl <- function(dm, ...) {
 
-  old_table_names <- tidyselect_dm(dm, ...)
+  table_list <- tidyselect_dm(dm, ...)
+
+  old_table_names <- table_list[[2]]
   new_table_names <- names(old_table_names)
 
   reduce2(
