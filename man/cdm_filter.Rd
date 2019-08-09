@@ -39,5 +39,4 @@ a new \code{\link{dm}} object is returned.
 library(magrittr)
 cdm_nycflights13(cycle = FALSE) \%>\%
   cdm_filter(airports, name == "John F Kennedy Intl")
-
 }

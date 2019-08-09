@@ -76,8 +76,6 @@ cdm_nycflights13() \%>\%
   cdm_rename_table(airports, ap)
 cdm_nycflights13() \%>\%
   cdm_rename_tables(c("airports", "flights"), c("ap", "fl"))
-
-
 }
 \seealso{
 \itemize{
