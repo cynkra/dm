@@ -2,14 +2,9 @@
 #'
 #' Opens the documentation website in a browser.
 #'
-#' @importFrom utils browseURL packageName head
+#' @importFrom pkgdown preview_site
 #' @keywords internal
 #' @export
 browse_docs <- function() {
-  path <- get_docs_path()
-  browseURL(path)
-}
-
-get_docs_path <- function() {
-  system.file(package = packageName(), "pkgdown", "index.html")
+  pkgdown::preview_site()
 }
