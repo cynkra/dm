@@ -16,13 +16,7 @@
 #' @export
 cdm_select_tbl <- function(dm, ..., all_connected = TRUE) {
 
-  all_table_names <- structure(
-    src_tbls(dm),
-    type = c("table", "tables")
-  )
-
-  table_names <- tidyselect::vars_select(all_table_names, ...)
-  walk(table_names, ~ check_correct_input(dm, .))
+  table_names <- tidyselect_dm(dm, ...)
 
   if (all_connected) {
     tables_keep <- cdm_find_conn_tbls(dm, !!!table_names)
@@ -88,4 +82,15 @@ cdm_find_conn_tbls <- function(dm, ...) {
 
   all_table_names <- src_tbls(dm)
   all_table_names[all_table_names %in% result_table_names_unordered]
+}
+
+tidyselect_dm <- function(dm, ...) {
+  all_table_names <- structure(
+    src_tbls(dm),
+    type = c("table", "tables")
+  )
+
+  table_names <- tidyselect::evars_select(all_table_names, ...)
+  walk(table_names, ~ check_correct_input(dm, .))
+  table_names
 }
