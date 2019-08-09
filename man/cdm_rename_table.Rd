@@ -23,5 +23,5 @@ cdm_rename_tables(dm, old_table_names, new_table_names)
 \description{
 \code{cdm_rename_table()} changes the name of one of a \code{dm}'s tables.
 
-\code{cdm_rename_tables()} changes the names one or more tables of a \code{dm}.
+\code{cdm_rename_tables()} changes the names of one or more tables of a \code{dm}.
 }

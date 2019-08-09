@@ -374,7 +374,7 @@ cdm_rename_table <- function(dm, old_name, new_name) {
   )
 }
 
-#' @description `cdm_rename_tables()` changes the names one or more tables of a `dm`.
+#' @description `cdm_rename_tables()` changes the names of one or more tables of a `dm`.
 #'
 #' @rdname cdm_rename_table
 #'
