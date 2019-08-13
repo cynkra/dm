@@ -204,7 +204,9 @@ cdm_get_data_model <- function(x) {
     mutate(type = "integer") %>%
     left_join(keys, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
-    left_join(references_for_columns, by = c("table", "column"))
+    left_join(references_for_columns, by = c("table", "column")) %>%
+    # for compatibility with print method from {datamodelr}
+    as.data.frame()
 
   new_data_model(
     cdm_get_data_model_tables(x),
