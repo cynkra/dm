@@ -240,14 +240,33 @@ as_dm.default <- function(x) {
     abort(paste0("Can't coerce <", class(x)[[1]], "> to <dm>."))
   }
 
-  xl <- map(x, list)
-  names(xl)[names2(xl) == ""] <- ""
-
   # Automatic name repair
-  names(x) <- names(as_tibble(xl, .name_repair = ~ make.names(., unique = TRUE)))
+  names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
 
-  src <- src_df(env = new_environment(x))
-  dm(src = src)
+  src <- tbl_src(x[[1]])
+
+  # FIXME: Check if all sources identical
+
+  # Empty tibbles as proxy, we don't need to know the columns
+  # and we don't have keys yet
+  proxies <- map(x, ~ tibble(a = 0))
+  data_model <- datamodelr::dm_from_data_frames(proxies)
+
+  new_dm2(src, x, data_model)
+}
+
+tbl_src <- function(x) {
+  if (is.data.frame(x)) {
+    src_df(env = new_environment(x))
+  } else if (inherits(x, "tbl_sql"))  {
+    x$src
+  } else {
+    # FIXME: Classed error code
+    stop(
+      "Don't know how to determine table source for object of class ",
+      class(x)[[1]]
+    )
+  }
 }
 
 #' @export
