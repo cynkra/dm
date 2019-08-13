@@ -70,32 +70,50 @@ new_dm <- function(src, tables, data_model) {
 
   columns <- as_tibble(data_model$columns)
 
+  data_model_tables <- data_model$tables
+
   keys <- columns %>%
     select(column, table, key) %>%
     filter(key > 0) %>%
     select(-key)
 
   if (is.null(data_model$references)) {
-    references <- data.frame(
+    references <- tibble(
       table = character(),
       column = character(),
       ref = character(),
-      ref_col = character(),
-      stringsAsFactors = FALSE
+      ref_col = character()
     )
   } else {
     references <-
       data_model$references %>%
-      select(table, column, ref, ref_col)
+      select(table, column, ref, ref_col) %>%
+      as_tibble()
   }
+
+  new_dm2(src, tables, data_model_tables, keys, references)
+}
+
+new_dm2 <- function(src = cdm_get_src(base_dm),
+                    tables = cdm_get_tables(base_dm),
+                    data_model_tables = cdm_get_data_model_tables(base_dm),
+                    pks = cdm_get_data_model_pks(base_dm),
+                    fks = cdm_get_data_model_fks(base_dm),
+                    base_dm) {
+
+  stopifnot(!is.null(src))
+  stopifnot(!is.null(tables))
+  stopifnot(!is.null(data_model_tables))
+  stopifnot(!is.null(pks))
+  stopifnot(!is.null(fks))
 
   structure(
     list(
       src = src,
       tables = tables,
-      data_model_tables = data_model$tables,
-      data_model_keys = keys,
-      data_model_references = references
+      data_model_tables = data_model_tables,
+      data_model_pks = pks,
+      data_model_fks = fks
     ),
     class = "dm"
   )
@@ -146,6 +164,18 @@ cdm_get_tables <- function(x) {
   unclass(x)$tables
 }
 
+cdm_get_data_model_tables <- function(x) {
+  unclass(x)$data_model_tables
+}
+
+cdm_get_data_model_pks <- function(x) {
+  unclass(x)$data_model_pks
+}
+
+cdm_get_data_model_fks <- function(x) {
+  unclass(x)$data_model_fks
+}
+
 #' Get data_model component
 #'
 #' `cdm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
@@ -155,21 +185,18 @@ cdm_get_tables <- function(x) {
 #'
 #' @export
 cdm_get_data_model <- function(x) {
-  x <- unclass(x)
-
-  references_for_columns <-
-    x$data_model_references
+  references_for_columns <- cdm_get_data_model_fks(x)
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys <-
-    x$data_model_keys %>%
+    cdm_get_data_model_pks(x) %>%
     mutate(key = 1L)
 
   columns <-
-    x$tables %>%
+    cdm_get_tables(x) %>%
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
@@ -180,7 +207,7 @@ cdm_get_data_model <- function(x) {
     left_join(references_for_columns, by = c("table", "column"))
 
   new_data_model(
-    x$data_model_tables,
+    cdm_get_data_model_tables(x),
     columns,
     references
   )

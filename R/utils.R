@@ -10,3 +10,7 @@ commas <- function(x) {
 
   glue_collapse(x, sep = ", ")
 }
+
+tick <- function(x) {
+  paste0("`", x, "`")
+}

@@ -144,18 +144,10 @@ cdm_get_pk <- function(dm, table) {
 #' @inheritParams cdm_add_pk
 #'
 #' @export
-cdm_get_all_pks <- function(dm) {
-  all_table_names <- src_tbls(dm)
-  tables_w_pk <- all_table_names[map_lgl(all_table_names, ~ cdm_has_pk(dm, !!.))]
-  pk_names <- map_chr(tables_w_pk, ~ cdm_get_pk(dm, !!.x))
-  pk_classes <- map2_chr(
-    tables_w_pk,
-    pk_names,
-    ~ get_class_of_table_col(cdm_get_data_model(dm), .x, .y)
-  )
-
-  tibble(table = tables_w_pk, pk_col = pk_names, pk_class = pk_classes)
-}
+cdm_get_all_pks <- nse_function(c(dm), ~ {
+  cdm_get_data_model_pks(dm) %>%
+    select(table = table, pk_col = column)
+})
 
 #' Remove primary key from a table in a [`dm`] object
 #'
@@ -186,36 +178,32 @@ cdm_get_all_pks <- function(dm) {
 #' @export
 cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
   table_name <- as_name(enquo(table))
-
   check_correct_input(dm, table_name)
-  data_model <- cdm_get_data_model(dm)
 
-  update_cols <- data_model$columns$table == table_name
-  data_model$columns$key[update_cols] <- 0
+  fks <- cdm_get_data_model_fks(dm)
+  affected_fks <-
+    fks %>%
+    filter(ref == !!table_name)
+  new_fks <- fks
 
-  fks <- cdm_get_all_fks(dm) %>%
-    filter(parent_table == table_name)
-
-  if (nrow(fks)) {
+  if (nrow(affected_fks) > 0) {
     if (rm_referencing_fks) {
-      child_tables <- pull(fks, child_table)
-      fk_cols <- pull(fks, child_fk_col)
-      data_model <- reduce2(
-        child_tables,
-        fk_cols,
-        rm_data_model_reference,
-        table_name,
-        .init = data_model
-      )
+      new_fks <-
+        fks %>%
+        filter(ref != !!table_name)
     } else {
-      abort_first_rm_fks(fks)
+      abort_first_rm_fks(affected_fks)
     }
   }
 
-  new_dm(
-    cdm_get_src(dm),
-    cdm_get_tables(dm),
-    data_model
+  new_pks <-
+    cdm_get_data_model_pks(dm) %>%
+    filter(table != !!table_name)
+
+  new_dm2(
+    pks = new_pks,
+    fks = new_fks,
+    base_dm = dm
   )
 })
 
