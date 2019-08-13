@@ -228,7 +228,7 @@ object.</p>
 #&gt; ── Rows ────────────────────────────────────────────────────────────────────────
 #&gt; Total: 367687
 #&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: 0x59e6bf0&gt;
+#&gt; src:  &lt;environment: 0x5ac0360&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   2 tables:  iris, mtcars 
@@ -345,7 +345,7 @@ object.</p>
 #&gt;   1 primary keys
 #&gt;   3 references</div><div class='input'>
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_rename_table.html'>cdm_rename_table</a></span>(<span class='no'>airports</span>, <span class='no'>ap</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+  <span class='fu'><a href='cdm_rename_tbl.html'>cdm_rename_tbl</a></span>(<span class='kw'>ap</span> <span class='kw'>=</span> <span class='no'>airports</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;package: nycflights13&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
@@ -356,7 +356,7 @@ object.</p>
 #&gt; ── Rows ────────────────────────────────────────────────────────────────────────
 #&gt; Total: 367687
 #&gt; airlines: 16, ap: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_rename_table.html'>cdm_rename_tables</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"airports"</span>, <span class='st'>"flights"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap"</span>, <span class='st'>"fl"</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+  <span class='fu'><a href='cdm_rename_tbl.html'>cdm_rename_tbl</a></span>(<span class='kw'>ap</span> <span class='kw'>=</span> <span class='no'>airports</span>, <span class='kw'>fl</span> <span class='kw'>=</span> <span class='no'>flights</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;package: nycflights13&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
@@ -366,9 +366,7 @@ object.</p>
 #&gt;   3 references
 #&gt; ── Rows ────────────────────────────────────────────────────────────────────────
 #&gt; Total: 367687
-#&gt; airlines: 16, ap: 1458, fl: 336776, planes: 3322, weather: 26115</div><div class='input'>
-
-</div></pre>
+#&gt; airlines: 16, ap: 1458, fl: 336776, planes: 3322, weather: 26115</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

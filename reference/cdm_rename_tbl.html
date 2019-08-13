@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rename tables of a <code>dm</code> — cdm_rename_table • dm</title>
+<title>Change names of tables in a <code>dm</code> — cdm_rename_tbl • dm</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,10 +32,9 @@
 
 
 
-<meta property="og:title" content="Rename tables of a <code>dm</code> — cdm_rename_table" />
+<meta property="og:title" content="Change names of tables in a <code>dm</code> — cdm_rename_tbl" />
 
-<meta property="og:description" content="cdm_rename_table() changes the name of one of a dm's tables.
-cdm_rename_tables() changes the names one or more tables of a dm." />
+<meta property="og:description" content="cdm_rename_tbl() changes the names of one or more tables of a dm." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,21 +121,18 @@ cdm_rename_tables() changes the names one or more tables of a dm." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Rename tables of a <code>dm</code></h1>
+    <h1>Change names of tables in a <code>dm</code></h1>
     
-    <div class="hidden name"><code>cdm_rename_table.Rd</code></div>
+    <div class="hidden name"><code>cdm_rename_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>cdm_rename_table()</code> changes the name of one of a <code>dm</code>'s tables.</p>
-<p><code>cdm_rename_tables()</code> changes the names one or more tables of a <code>dm</code>.</p>
+    <p><code>cdm_rename_tbl()</code> changes the names of one or more tables of a <code>dm</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_rename_table</span>(<span class='no'>dm</span>, <span class='no'>old_name</span>, <span class='no'>new_name</span>)
-
-<span class='fu'>cdm_rename_tables</span>(<span class='no'>dm</span>, <span class='no'>old_table_names</span>, <span class='no'>new_table_names</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_rename_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,20 +142,8 @@ cdm_rename_tables() changes the names one or more tables of a dm." />
       <td><p>A <code>dm</code> object</p></td>
     </tr>
     <tr>
-      <th>old_name</th>
-      <td><p>The original name of the table</p></td>
-    </tr>
-    <tr>
-      <th>new_name</th>
-      <td><p>The new name of the table</p></td>
-    </tr>
-    <tr>
-      <th>old_table_names</th>
-      <td><p>Character vector or list of the original names of the tables which are to change</p></td>
-    </tr>
-    <tr>
-      <th>new_table_names</th>
-      <td><p>Character vector or list of the new names of the tables</p></td>
+      <th>...</th>
+      <td><p>Named character vector (new_name = old_name)</p></td>
     </tr>
     </table>
     

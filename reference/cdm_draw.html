@@ -221,14 +221,13 @@ column and auxiliary information in other columns.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'>cdm_draw</span>(<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>())
 <span class='fu'>cdm_draw</span>(<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_set_colors</span>(
     <span class='kw'>airports</span> <span class='kw'>=</span> ,
     <span class='kw'>airlines</span> <span class='kw'>=</span> ,
     <span class='kw'>planes</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>,
     <span class='kw'>weather</span> <span class='kw'>=</span> <span class='st'>"dark_blue"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>cdm_draw</span>()
+  <span class='fu'>cdm_draw</span>()
 
 <span class='co'># Splicing is supported:</span>
 <span class='no'>new_colors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
