@@ -148,7 +148,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x5f81d90&gt;
+#&gt; src:  &lt;environment: 0x5829140&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -171,7 +171,7 @@
 <a class="sourceLine" id="cb3-9" data-line-number="9">    )</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">another_iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x54b91d0&gt;
+#&gt; src:  &lt;environment: 0x4dba1a0&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -264,12 +264,12 @@
 </span></code></pre>
 <p>Get an overview over all tables with primary keys, use <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(<span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span><span>
-#&gt;   table    pk_col  pk_class
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   
-#&gt; </span><span style="color: #555555;">1</span><span> airlines carrier integer 
-#&gt; </span><span style="color: #555555;">2</span><span> airports faa     integer 
-#&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum integer
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
+#&gt;   table    pk_col 
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  
+#&gt; </span><span style="color: #555555;">1</span><span> airlines carrier
+#&gt; </span><span style="color: #555555;">2</span><span> airports faa    
+#&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum
 </span></code></pre>
 <p>We used here the prepared <code>dm</code> object <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13(cycle = TRUE)</a></code> as an example. This object already has all keys pre-set.</p>
 </div>
@@ -360,13 +360,13 @@
 </span></code></pre>
 <p>Get an overview over all foreign key relations in your data model with<code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks</a></span>(<span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 4</span><span>
-#&gt;   child_table child_fk_col col_class parent_table
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       
-#&gt; </span><span style="color: #555555;">1</span><span> flights     carrier      integer   airlines    
-#&gt; </span><span style="color: #555555;">2</span><span> flights     origin       integer   airports    
-#&gt; </span><span style="color: #555555;">3</span><span> flights     dest         integer   airports    
-#&gt; </span><span style="color: #555555;">4</span><span> flights     tailnum      integer   planes
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 3</span><span>
+#&gt;   child_table child_fk_col parent_table
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       
+#&gt; </span><span style="color: #555555;">1</span><span> flights     tailnum      planes      
+#&gt; </span><span style="color: #555555;">2</span><span> flights     carrier      airlines    
+#&gt; </span><span style="color: #555555;">3</span><span> flights     origin       airports    
+#&gt; </span><span style="color: #555555;">4</span><span> flights     dest         airports
 </span></code></pre>
 </div>
   </div>
