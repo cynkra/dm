@@ -252,7 +252,7 @@ as_dm.default <- function(x) {
   proxies <- map(x, ~ tibble(a = 0))
   data_model <- datamodelr::dm_from_data_frames(proxies)
 
-  new_dm2(src, x, data_model)
+  new_dm(src, x, data_model)
 }
 
 tbl_src <- function(x) {
