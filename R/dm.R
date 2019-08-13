@@ -34,9 +34,9 @@
 #' cdm_nycflights13() %>% cdm_get_data_model()
 #'
 #' cdm_nycflights13() %>%
-#'   cdm_rename_table(airports, ap)
+#'   cdm_rename_tbl(ap = airports)
 #' cdm_nycflights13() %>%
-#'   cdm_rename_tables(c("airports", "flights"), c("ap", "fl"))
+#'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm <- nse_function(c(src, data_model = NULL), ~ {
   # TODO: add keys argument, if both data_model and keys are missing,
@@ -347,17 +347,7 @@ collect.dm <- function(x, ...) {
 }
 
 
-#' Rename tables of a `dm`
-#'
-#' @description `cdm_rename_table()` changes the name of one of a `dm`'s tables.
-#'
-#' @param dm A `dm` object
-#' @param old_name The original name of the table
-#' @param new_name The new name of the table
-#'
-#'
-#' @export
-cdm_rename_table <- function(dm, old_name, new_name) {
+rename_table_of_dm <- function(dm, old_name, new_name) {
   old_name_q <- as_name(enexpr(old_name))
   check_correct_input(dm, old_name_q)
 
@@ -376,24 +366,25 @@ cdm_rename_table <- function(dm, old_name, new_name) {
   )
 }
 
-#' @description `cdm_rename_tables()` changes the names one or more tables of a `dm`.
+#' Change names of tables in a `dm`
 #'
-#' @rdname cdm_rename_table
+#' @description `cdm_rename_tbl()` changes the names of one or more tables of a `dm`.
 #'
-#' @inheritParams cdm_rename_table
-#' @param old_table_names Character vector or list of the original names of the tables which are to change
-#' @param new_table_names Character vector or list of the new names of the tables
+#' @param dm A `dm` object
+#' @param ... Named character vector (new_name = old_name)
 #'
 #' @export
-cdm_rename_tables <- function(dm, old_table_names, new_table_names) {
-  if (length(old_table_names) != length(new_table_names)) {
-    abort("Length of 'new_table_names' does not match that of 'old_table_names'")
-  }
-  # abort_rename_table_fail(old_names, new_names)
+cdm_rename_tbl <- function(dm, ...) {
+
+  table_list <- tidyselect_dm(dm, ...)
+
+  old_table_names <- table_list[[2]]
+  new_table_names <- names(old_table_names)
+
   reduce2(
     old_table_names,
     new_table_names,
-    cdm_rename_table,
+    rename_table_of_dm,
     .init = dm
   )
 }

@@ -16,18 +16,16 @@
 #' @export
 cdm_select_tbl <- function(dm, ..., all_connected = TRUE) {
 
-  all_table_names <- structure(
-    src_tbls(dm),
-    type = c("table", "tables")
-  )
+  table_list <- tidyselect_dm(dm, ...)
 
-  table_names <- tidyselect::vars_select(all_table_names, ...)
-  walk(table_names, ~ check_correct_input(dm, .))
+  all_table_names <- table_list[[1]]
+  old_table_names <- table_list[[2]]
+  new_table_names <- names(old_table_names)
 
   if (all_connected) {
-    tables_keep <- cdm_find_conn_tbls(dm, !!!table_names)
+    tables_keep <- cdm_find_conn_tbls(dm, !!!old_table_names)
   } else {
-    tables_keep <- table_names
+    tables_keep <- old_table_names
   }
 
   list_of_removed_tables <- setdiff(all_table_names, tables_keep)
@@ -39,7 +37,8 @@ cdm_select_tbl <- function(dm, ..., all_connected = TRUE) {
     src = cdm_get_src(dm),
     tables = table_objs,
     data_model = new_data_model
-  )
+  ) %>%
+    {if (any(old_table_names != new_table_names)) {cdm_rename_tbl(., old_table_names)} else .}
 }
 
 
@@ -88,4 +87,16 @@ cdm_find_conn_tbls <- function(dm, ...) {
 
   all_table_names <- src_tbls(dm)
   all_table_names[all_table_names %in% result_table_names_unordered]
+}
+
+tidyselect_dm <- function(dm, ...) {
+
+  all_table_names <- structure(
+    src_tbls(dm),
+    type = c("table", "tables")
+  )
+
+  table_names <- tidyselect::vars_select(all_table_names, ...)
+  walk(table_names, ~ check_correct_input(dm, .))
+  list(all_table_names, table_names)
 }

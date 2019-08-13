@@ -70,14 +70,13 @@ as a tibble.
 library(dplyr)
 cdm_draw(cdm_nycflights13())
 cdm_draw(cdm_nycflights13(cycle = TRUE))
-
 cdm_nycflights13(color = FALSE) \%>\%
   cdm_set_colors(
     airports = ,
     airlines = ,
     planes = "yellow",
     weather = "dark_blue") \%>\%
-    cdm_draw()
+  cdm_draw()
 
 # Splicing is supported:
 new_colors <- c(
