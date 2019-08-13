@@ -272,7 +272,7 @@ print.dm <- function(x, ...) {
 
 #' @export
 `[[.dm` <- function(x, name) {
-  if (class(name) == "integer" || class(name) == "numeric") abort_no_numeric_subsetting()
+  if (is.numeric(name)) abort_no_numeric_subsetting()
   table <- as_string(name)
   tbl(x, table)
 }
@@ -286,7 +286,7 @@ print.dm <- function(x, ...) {
 
 #' @export
 `[.dm` <- function(x, name) {
-  if (class(name) == "integer" || class(name) == "numeric") abort_no_numeric_subsetting()
+  if (is.numeric(name)) abort_no_numeric_subsetting()
   tables <- as_character(name)
   cdm_select_tbl(x, !!!tables)
 }
