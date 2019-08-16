@@ -40,7 +40,8 @@ Imports:
     stringr,
     tibble,
     tidyr (>= 0.8.3),
-    tidyselect
+    tidyselect,
+    vctrs (>= 0.2.0)
 Suggests: 
     dbplyr,
     DiagrammeR,
@@ -53,8 +54,7 @@ Suggests:
     rmarkdown,
     RPostgres,
     RSQLite,
-    tidyverse,
-    vctrs
+    tidyverse
 Enhances: 
     RPostgres
 Remotes: 
