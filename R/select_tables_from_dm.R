@@ -6,8 +6,6 @@
 #' @param ... Two or more table names of the [`dm`] object's tables.
 #'   See [tidyselect::vars_select()] for details on the semantics.
 #'
-#' @family Functions utilizing foreign key relations
-#'
 #' @export
 cdm_select_tbl <- function(dm, ...) {
 

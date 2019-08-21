@@ -15,8 +15,3 @@ See \code{\link[tidyselect:vars_select]{tidyselect::vars_select()}} for details 
 \description{
 Returns a reduced \code{\link{dm}} object, taking care of the key relations
 }
-\seealso{
-Other Functions utilizing foreign key relations: \code{\link{cdm_get_referencing_tables}},
-  \code{\link{cdm_is_referenced}}
-}
-\concept{Functions utilizing foreign key relations}
