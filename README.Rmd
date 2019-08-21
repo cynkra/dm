@@ -206,6 +206,8 @@ We're looking forward to a good collaboration!
 
 The [{polyply} package](https://github.com/russHyde/polyply) has a similar intent with a slightly different interface.
 
+The [{data.cube} package](https://github.com/jangorecki/data.cube) has quite the same intent using `array`-like interface.
+
 Articles in the [{rquery} package](https://github.com/WinVector/rquery) discuss [join controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md) and [join dependency sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md), with the intent to move the declaration of table relationships from code to data.
 
 The [{tidygraph} package](https://github.com/thomasp85/tidygraph) stores a network as two related tables of `nodes` and `edges`, compatible with {dplyr} workflows.

@@ -284,6 +284,9 @@ collaboration\!
 The [{polyply} package](https://github.com/russHyde/polyply) has a
 similar intent with a slightly different interface.
 
+The [{data.cube} package](https://github.com/jangorecki/data.cube) has
+quite the same intent using `array`-like interface.
+
 Articles in the [{rquery} package](https://github.com/WinVector/rquery)
 discuss [join
 controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md)
