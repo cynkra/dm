@@ -34,7 +34,6 @@ Imports:
     igraph,
     magrittr,
     methods,
-    pkgdown,
     purrr,
     rlang,
     shiny,
