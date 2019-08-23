@@ -63,7 +63,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
 #'
 #' @rdname dm
 #' @export
-new_dm <- function(src, tables, data_model) {
+new_dm <- function(src, tables, data_model, filter = NULL) {
   if (!is.src(src) && !is(src, "DBIConnection")) abort_no_src_or_con()
   stopifnot(datamodelr::is.data_model(data_model))
   src <- src_from_src_or_con(src)
@@ -91,7 +91,7 @@ new_dm <- function(src, tables, data_model) {
       as_tibble()
   }
 
-  new_dm2(src, tables, data_model_tables, keys, references)
+  new_dm2(src, tables, data_model_tables, keys, references, filter = filter)
 }
 
 new_dm2 <- function(src = cdm_get_src(base_dm),
@@ -99,6 +99,7 @@ new_dm2 <- function(src = cdm_get_src(base_dm),
                     data_model_tables = cdm_get_data_model_tables(base_dm),
                     pks = cdm_get_data_model_pks(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
+                    filter = cdm_get_filter(base_dm),
                     base_dm) {
 
   stopifnot(!is.null(src))
@@ -113,7 +114,8 @@ new_dm2 <- function(src = cdm_get_src(base_dm),
       tables = tables,
       data_model_tables = data_model_tables,
       data_model_pks = pks,
-      data_model_fks = fks
+      data_model_fks = fks,
+      filter = filter
     ),
     class = "dm"
   )
@@ -215,6 +217,10 @@ cdm_get_data_model <- function(x) {
   )
 }
 
+cdm_get_filter <- function(dm) {
+  unclass(dm)$filter
+}
+
 #' Check class
 #'
 #' `is_dm()` returns `TRUE` if the input is of class `dm`.
@@ -294,12 +300,16 @@ print.dm <- function(x, ...) {
 
   print(cdm_get_data_model(x))
 
-  cat_rule("Rows", col = "orange")
+  cat_rule("Filters", col = "orange")
 
-  tbl_names <- src_tbls(x)
-  nrows <- map_dbl(cdm_get_tables(x), ~ as_double(pull(count(.))))
-  cat_line(paste0("Total: "), sum(nrows))
-  cat_line(paste0(names(nrows), ": ", nrows, collapse = ", "))
+  filters <- cdm_get_filter(x)
+
+  if (!is_null(filters)) {
+    names <- pull(filters, table)
+    filter_exprs <- pull(filters, filter) %>% as.character()
+
+    walk2(names, filter_exprs, ~cat_line(paste0(.x, ": ", .y)))
+    } else cat_line("None")
 
   invisible(x)
 }
@@ -363,7 +373,8 @@ tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
   check_correct_input(dm, from)
-
+  # filter_exprs <- unclass(x)$filter
+  # if (is_null(filter_exprs)) return(tables)
   cdm_get_tables(dm)[[from]]
 }
 

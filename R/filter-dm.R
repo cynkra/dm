@@ -25,23 +25,31 @@ cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  quos <- enquos(...)
-  if (is_empty(quos)) {
+  exprs <- enexprs(...)
+  if (is_empty(exprs)) {
     return(dm)
   } # valid table and empty ellipsis provided
 
-  orig_tbl <- tbl(dm, table_name)
+  set_filter_for_table(dm, table_name, exprs)
+}
 
-  # filter data
-  filtered_tbl_pk_obj <- filter(orig_tbl, !!!quos)
-
-  # early return if no filtering was done
-  if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) {
-    return(dm)
+set_filter_for_table <- function(dm, table_name, exprs) {
+  raw_dm <- unclass(dm)
+  filter <- raw_dm[["filter"]]
+  if (is_null(filter)) {
+    raw_dm[["filter"]] <- tibble(table = table_name, filter = exprs)
+  } else {
+    raw_dm[["filter"]] <-
+      bind_rows(filter, tibble(table = table_name, filter = exprs)) %>%
+      arrange(table)
   }
 
-  cdm_semi_join(dm, !!table_name, filtered_tbl_pk_obj)
+  structure(
+    raw_dm,
+    class = "dm"
+  )
 }
+
 
 #' Semi-join a [`dm`] object with one of its reduced tables
 #'
