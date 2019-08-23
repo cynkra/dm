@@ -7,13 +7,14 @@
 \alias{cdm_get_src}
 \alias{cdm_get_tables}
 \alias{cdm_get_data_model}
+\alias{cdm_get_filter}
 \alias{is_dm}
 \alias{as_dm}
 \title{Data model class}
 \usage{
 dm(src, data_model = NULL)
 
-new_dm(src, tables, data_model)
+new_dm(src, tables, data_model, filter = NULL)
 
 validate_dm(x)
 
@@ -22,6 +23,8 @@ cdm_get_src(x)
 cdm_get_tables(x)
 
 cdm_get_data_model(x)
+
+cdm_get_filter(dm)
 
 is_dm(x)
 
@@ -53,9 +56,14 @@ object.
 
 \code{cdm_get_tables()} returns a named list with \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
+The filter expressions are NOT evaluated at this stage.
+To get the filtered tables, use \code{tbl.dm()}
 
 \code{cdm_get_data_model()} returns the \pkg{datamodelr} data model component of a \code{dm}
 object.
+
+\code{cdm_get_filter()} returns the filter component of a \code{dm}
+object, the set filter expressions.
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 

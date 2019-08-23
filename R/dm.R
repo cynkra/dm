@@ -158,6 +158,8 @@ cdm_get_src <- function(x) {
 #'
 #' `cdm_get_tables()` returns a named list with \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
+#' The filter expressions are NOT evaluated at this stage.
+#' To get the filtered tables, use `tbl.dm()`
 #'
 #' @rdname dm
 #'
@@ -217,6 +219,14 @@ cdm_get_data_model <- function(x) {
   )
 }
 
+#' Get filter expressions
+#'
+#' `cdm_get_filter()` returns the filter component of a `dm`
+#' object, the set filter expressions.
+#'
+#' @rdname dm
+#'
+#' @export
 cdm_get_filter <- function(dm) {
   unclass(dm)$filter
 }
