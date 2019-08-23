@@ -18,7 +18,7 @@ cdm_select_tbl <- function(dm, ...) {
   list_of_removed_tables <- setdiff(all_table_names, old_table_names)
 
   new_data_model <- rm_table_from_data_model(cdm_get_data_model(dm), list_of_removed_tables)
-  table_objs <- map(old_table_names, ~ tbl(dm, .)) %>% set_names(old_table_names)
+  table_objs <- map(set_names(old_table_names), ~ tbl(dm, .))
 
   new_dm(
     src = cdm_get_src(dm),
