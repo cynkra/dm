@@ -68,8 +68,6 @@ reference:
   contents:
   - cdm_is_referenced
   - cdm_get_referencing_tables
-  - cdm_select_tbl
-  - cdm_find_conn_tbls
 
 - title: Table surgery
   contents:
@@ -90,6 +88,7 @@ reference:
 - title: Miscellaneous
   contents:
   - cdm_nycflights13
+  - cdm_select_tbl
   - cdm_rename_tbl
 
 navbar:

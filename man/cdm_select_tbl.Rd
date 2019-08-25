@@ -2,27 +2,16 @@
 % Please edit documentation in R/select_tables_from_dm.R
 \name{cdm_select_tbl}
 \alias{cdm_select_tbl}
-\title{Get a \code{\link{dm}} only containing the indicated tables and the connecting ones}
+\title{Get a \code{\link{dm}} only containing the indicated tables}
 \usage{
-cdm_select_tbl(dm, ..., all_connected = TRUE)
+cdm_select_tbl(dm, ...)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
 
 \item{...}{Two or more table names of the \code{\link{dm}} object's tables.
 See \code{\link[tidyselect:vars_select]{tidyselect::vars_select()}} for details on the semantics.}
-
-\item{all_connected}{Boolean, if \code{TRUE} (default), all the connecting tables will
-be part of the resulting \code{\link{dm}} in addition to the indicated tables. If \code{FALSE},
-exclusively the indicated tables will be selected.}
 }
 \description{
-Is a wrapper around \code{cdm_find_conn_tbls()}. It returns a reduced \code{\link{dm}} object,
-containing only the indicated tables plus the ones in between them (unless \code{all_connected = FALSE}).
+Returns a reduced \code{\link{dm}} object, taking care of the key relations
 }
-\seealso{
-Other Functions utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
-  \code{\link{cdm_get_referencing_tables}},
-  \code{\link{cdm_is_referenced}}
-}
-\concept{Functions utilizing foreign key relations}
