@@ -5,5 +5,5 @@
 #' @keywords internal
 #' @export
 browse_docs <- function() {
-  browseURL("https://krlmlr.github.io/dm/")
+  utils::browseURL("https://krlmlr.github.io/dm/")
 }
