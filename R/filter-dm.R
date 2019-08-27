@@ -25,22 +25,23 @@ cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  exprs <- enexprs(...)
-  if (is_empty(exprs)) {
+  quos <- unclass(enquos(...))
+  if (is_empty(quos)) {
     return(dm)
   } # valid table and empty ellipsis provided
 
-  set_filter_for_table(dm, table_name, exprs)
+  set_filter_for_table(dm, table_name, quos)
 }
 
-set_filter_for_table <- function(dm, table_name, exprs) {
+set_filter_for_table <- function(dm, table_name, quos) {
   raw_dm <- unclass(dm)
   filter <- raw_dm[["filter"]]
+
   if (is_null(filter)) {
-    raw_dm[["filter"]] <- tibble(table = table_name, filter = exprs)
+    raw_dm[["filter"]] <- tibble(table = table_name, filter = quos)
   } else {
     raw_dm[["filter"]] <-
-      bind_rows(filter, tibble(table = table_name, filter = exprs)) %>%
+      bind_rows(filter, tibble(table = table_name, filter = quos)) %>%
       arrange(table)
   }
 
