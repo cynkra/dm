@@ -316,7 +316,7 @@ print.dm <- function(x, ...) {
 
   if (!is_null(filters)) {
     names <- pull(filters, table)
-    filter_exprs <- pull(filters, filter) %>% as.character()
+    filter_exprs <- pull(filters, filter) %>% as.character() %>% str_replace("^~", "")
 
     walk2(names, filter_exprs, ~cat_line(paste0(.x, ": ", .y)))
     } else cat_line("None")
