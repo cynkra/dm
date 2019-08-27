@@ -9,5 +9,5 @@
 #' @importFrom methods is
 #' @import stringr
 #' @rawNamespace import(glue, except = c(collapse))
-#' @importFrom igraph shortest_paths V E
+#' @importFrom igraph V E
 NULL

@@ -96,31 +96,45 @@ cdm_get_filtered_table <- function(dm, from) {
 }
 
 get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- pull(cdm_get_filter(dm), table) %>% unique()
+  filtered_tables <- unique(cdm_get_filter(dm)$table)
   graph <- create_graph_from_dm(dm)
 
-  if (length(V(graph)) - 1 < length(E(graph))) {
-    abort_no_cycles()
+  # Computation of distances and shortest paths uses the same algorithm
+  # internally, but s.p. doesn't return distances and distances don't return
+  # the predecessor.
+  distances <- igraph::distances(graph, table)[1, ]
+  finite_distances <- distances[is.finite(distances)]
+
+  # Using only nodes with finite distances (=in the same connected component)
+  # as target. This avoids a warning.
+  target_tables <- names(finite_distances)
+  paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
+
+  # All edges with finite distance as tidy data frame
+  all_edges <-
+    tibble(
+      node = names(V(graph)),
+      parent = names(paths$predecessors),
+      distance = distances
+    ) %>%
+    filter(is.finite(distance))
+
+  # Edges of interest, will be grown until source node `table` is reachable
+  # from all nodes
+  edges <-
+    all_edges %>%
+    filter(node %in% !!c(filtered_tables, table))
+
+  # Recursive join
+  repeat {
+    missing <- setdiff(edges$parent, edges$node)
+    if (is_empty(missing)) break
+
+    edges <- bind_rows(edges, filter(all_edges, node %in% !!missing))
   }
 
-  paths <- map(
-    filtered_tables,
-    ~shortest_paths(graph, from = ., to = table)
-  ) %>%
-    map(~names(pluck(., 1, 1)))
-
-  crossed_path_indices <- crossing(p1 = 1:length(paths), p2 = 1:length(paths)) %>%
-    filter(p1 != p2)
-
-  # only those paths that contain unique tables are needed
-  # FIXME: currently there is a problem if a table (apart from the requested one) contains two parents
-  ind_keep_paths <- map2_lgl(
-    pull(crossed_path_indices, p1),
-    pull(crossed_path_indices, p2),
-    ~(!all(paths[[.x]] %in% paths[[.y]]))
-  )
-
-  paths <- paths[ind_keep_paths]
-
-  map_dfr(paths, ~tibble(parent = lag(.), node = ., child = lead(.)))
+  # Keeping the sentinel row (node == parent) to simplify further processing
+  # and testing
+  edges %>%
+    arrange(-distance)
 }
