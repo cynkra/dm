@@ -384,54 +384,7 @@ tbl.dm <- function(src, from, ...) {
   dm <- src
   check_correct_input(dm, from)
 
-  filter_exprs <- cdm_get_filter(dm)
-  if (is_null(filter_exprs)) return(cdm_get_tables(dm)[[from]])
-
-  # If at least one filter is set, we need to consider potential cascades:
-  all_filterered_plus_connected <- get_all_filtered_connected(dm, from) %>%
-    left_join(filter_exprs, by = c("node" = "table")) %>%
-    nest(-node, -parent, -child, .key = "filter")
-
-  tables <- cdm_get_tables(dm) %>%
-    extract(pull(all_filterered_plus_connected, node) %>% unique()) %>%
-    enframe(name = "table", value = "tbl")
-
-  all_filterered_plus_connected %>%
-    left_join(tables, by = c("node" = "table"))
-
-  browser()
-  # FIXME: implement logic of filtering / semi-joining and the final union
-
-}
-
-get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- pull(cdm_get_filter(dm), table) %>% unique()
-  graph <- create_graph_from_dm(dm)
-
-  if (length(V(graph)) - 1 < length(E(graph))) {
-    abort_no_cycles()
-  }
-
-  paths <- map(
-    filtered_tables,
-    ~shortest_paths(graph, from = ., to = table)
-    ) %>%
-    map(~names(pluck(., 1, 1)))
-
-  crossed_path_indices <- crossing(p1 = 1:length(paths), p2 = 1:length(paths)) %>%
-    filter(p1 != p2)
-
-  # only those paths that contain unique tables are needed
-  # FIXME: currently there is a problem if a table (apart from the requested one) contains two parents
-  ind_keep_paths <- map2_lgl(
-    pull(crossed_path_indices, p1),
-    pull(crossed_path_indices, p2),
-    ~(!all(paths[[.x]] %in% paths[[.y]]))
-    )
-
-  paths <- paths[ind_keep_paths]
-
-  map_dfr(paths, ~tibble(parent = lag(.), node = ., child = lead(.)))
+  cdm_get_filtered_table(dm, from)
 }
 
 
