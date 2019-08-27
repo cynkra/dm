@@ -8,6 +8,33 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
     get_all_filtered_connected("t5")
   expect_pred_chain(fc, c("t2", "t5"))
   expect_pred_chain(fc, c("t6", "t5"))
+
+  # more complicated graph structure:
+  fc <- dm_more_complex %>%
+    cdm_filter(t6, TRUE) %>%
+    cdm_filter(t6_2, TRUE) %>%
+    get_all_filtered_connected("t4")
+  expect_pred_chain(fc, c("t6", "t5", "t4"))
+  expect_pred_chain(fc, c("t6_2", "t5", "t4"))
+
+  # filter in an unconnected component:
+  fc <- dm_more_complex %>%
+    cdm_filter(t6, TRUE) %>%
+    get_all_filtered_connected("a")
+  expect_equal(fc$node, "a")
+
+  # cycle: "t5" connected to "t4" & "t4_2"; "t4" & "t4_2" connected to "t3"
+  # both ways should be considered and when "t5" is filtered and "t3" requested,
+  # the result should/could(?) be the intersect of the effect of "t4" on "t3"
+  # and of "t4_2" on "t3"
+  # FIXME: currently only one path is considered; since this is random behaviour,
+  # it can not be the correct solution
+  # fc <- dm_more_complex %>%
+  #   cdm_filter(t5, TRUE) %>%
+  #   get_all_filtered_connected("t3")
+  # expect_pred_chain(fc, c("t5", "t4", "t3"))
+  # expect_pred_chain(fc, c("t5", "t4_2", "t3"))
+
 })
 
 
