@@ -174,7 +174,8 @@ t6 <- tibble(
   o = letters[5:9]
 )
 
-dm_for_filter <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)) %>%
+list_for_filter <- list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
+dm_for_filter <- as_dm(list_for_filter) %>%
   cdm_add_pk(t1, a) %>%
   cdm_add_pk(t2, c) %>%
   cdm_add_pk(t3, f) %>%
@@ -198,6 +199,7 @@ t7 <- tibble(
   p = letters[4:9],
   q = c("elephant", "lion", "seal", "worm", "dog", "cat")
 )
+
 
 dm_for_filter_w_cycle <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7)) %>%
   cdm_add_pk(t1, a) %>%
@@ -284,3 +286,43 @@ dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
 # for `dm_nrow()` ---------------------------------------------------------
 
 rows_dm_obj <- 24L
+
+
+# Complicated 'dm' --------------------------------------------------------
+t4 <- tibble(
+  h = letters[1:5],
+  i = c("three", "four", "five", "six", "seven"),
+  j = c(LETTERS[3:6], LETTERS[6])
+)
+
+
+list_for_filter[["t6_2"]] <- tibble(p = letters[1:6], q = LETTERS[6:11])
+list_for_filter[["t4_2"]] <- tibble(r = letters[2:6],
+                                    s = c("three", "five", "six", "seven", "eight"),
+                                    t = c(LETTERS[4:7], LETTERS[5]))
+list_for_filter[["a"]] <- tibble(a_1 = letters[10:18], a_2 = 5:13)
+list_for_filter[["b"]] <- tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6)
+list_for_filter[["c"]] <- tibble(c_1 = 4:10)
+
+dm_more_complex <- as_dm(list_for_filter) %>%
+  cdm_add_pk(t1, a) %>%
+  cdm_add_pk(t2, c) %>%
+  cdm_add_pk(t3, f) %>%
+  cdm_add_pk(t4, h) %>%
+  cdm_add_pk(t4_2, r) %>%
+  cdm_add_pk(t5, k) %>%
+  cdm_add_pk(t6, n) %>%
+  cdm_add_pk(t6_2, p) %>%
+  cdm_add_pk(a, a_1) %>%
+  cdm_add_pk(b, b_1) %>%
+  cdm_add_pk(c, c_1) %>%
+  cdm_add_fk(t2, d, t1) %>%
+  cdm_add_fk(t2, e, t3) %>%
+  cdm_add_fk(t4, j, t3) %>%
+  cdm_add_fk(t4_2, t, t3) %>%
+  cdm_add_fk(t5, l, t4) %>%
+  cdm_add_fk(t5, l, t4_2) %>%
+  cdm_add_fk(t5, m, t6) %>%
+  cdm_add_fk(t5, l, t6_2) %>%
+  cdm_add_fk(b, b_2, a) %>%
+  cdm_add_fk(b, b_3, c)
