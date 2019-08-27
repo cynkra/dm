@@ -63,7 +63,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
 #'
 #' @rdname dm
 #' @export
-new_dm <- function(src, tables, data_model, filter = NULL) {
+new_dm <- function(src, tables, data_model) {
   if (!is.src(src) && !is(src, "DBIConnection")) abort_no_src_or_con()
   stopifnot(datamodelr::is.data_model(data_model))
   src <- src_from_src_or_con(src)
@@ -91,7 +91,7 @@ new_dm <- function(src, tables, data_model, filter = NULL) {
       as_tibble()
   }
 
-  new_dm2(src, tables, data_model_tables, keys, references, filter = filter)
+  new_dm2(src, tables, data_model_tables, keys, references, filter = NULL)
 }
 
 new_dm2 <- function(src = cdm_get_src(base_dm),
