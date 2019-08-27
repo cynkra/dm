@@ -74,7 +74,7 @@ cdm_semi_join <- function(dm, table, reduced_table) {
   perform_joins(filtered_dm, join_list)
 }
 
-cdm_get_filtered_table <- function(dm, table) {
+cdm_get_filtered_table <- function(dm, from) {
 
   filter_exprs <- cdm_get_filter(dm)
   if (is_null(filter_exprs)) return(cdm_get_tables(dm)[[from]])
