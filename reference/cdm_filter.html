@@ -8,11 +8,13 @@
 
 <title>Cascading filter of a <code><a href='dm.html'>dm</a></code> object — cdm_filter • dm</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Cascading filter of a <code><a href='dm.html'>dm</a></code> object — cdm_filter" />
 
+<meta property="og:title" content="Cascading filter of a <code><a href='dm.html'>dm</a></code> object — cdm_filter" />
 <meta property="og:description" content="'cdm_filter()' allows you to set one or more filter conditions for one table
 of a dm object. If the dm's tables are connected via key constrains, the
 filtering will affect all other connected tables, leaving only the rows with
@@ -43,6 +45,7 @@ by an inital semi-join of one of its tables with the same, but filtered table. S
 key constraints are used to compute the remainders of the other tables of the dm object and
 a new dm object is returned." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -107,7 +110,6 @@ a new dm object is returned." />
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/krlmlr/dm">
@@ -134,7 +136,6 @@ a new dm object is returned." />
     </div>
 
     <div class="ref-description">
-    
     <p>'cdm_filter()' allows you to set one or more filter conditions for one table
 of a <code><a href='dm.html'>dm</a></code> object. If the <code><a href='dm.html'>dm</a></code>'s tables are connected via key constrains, the
 filtering will affect all other connected tables, leaving only the rows with
@@ -143,13 +144,12 @@ the corresponding key values.</p>
 by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
 key constraints are used to compute the remainders of the other tables of the <code><a href='dm.html'>dm</a></code> object and
 a new <code><a href='dm.html'>dm</a></code> object is returned.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>cdm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
 
 <span class='fu'>cdm_semi_join</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>reduced_table</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -175,13 +175,11 @@ for an introduction to these concepts.</p></td>
       <td><p>The table indicated in argument <code>table</code>, but in a filtered state (cf, <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>).</p></td>
     </tr>
     </table>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    equals, is_less_than, not</span></div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)
+<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;package: nycflights13&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
@@ -198,7 +196,6 @@ for an introduction to these concepts.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -212,7 +209,7 @@ for an introduction to these concepts.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>

@@ -8,11 +8,13 @@
 
 <title>Which columns are candidates for a primary key column? — enum_pk_candidates • dm</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,14 +34,15 @@
 
 
 
-<meta property="og:title" content="Which columns are candidates for a primary key column? — enum_pk_candidates" />
 
+<meta property="og:title" content="Which columns are candidates for a primary key column? — enum_pk_candidates" />
 <meta property="og:description" content="enum_pk_candidates() checks for each column of a
 table if this column contains only unique values and is therefore
 a candidate for a primary key of this table.
 cdm_enum_pk_candidates() performs these checks
 for a table in a dm object." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -104,7 +107,6 @@ for a table in a dm object." />
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/krlmlr/dm">
@@ -131,19 +133,17 @@ for a table in a dm object." />
     </div>
 
     <div class="ref-description">
-    
     <p><code>enum_pk_candidates()</code> checks for each column of a
 table if this column contains only unique values and is therefore
 a candidate for a primary key of this table.</p>
 <p><code>cdm_enum_pk_candidates()</code> performs these checks
 for a table in a <a href='dm.html'>dm</a> object.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>enum_pk_candidates</span>(<span class='no'>table</span>)
 
 <span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -156,13 +156,12 @@ for a table in a <a href='dm.html'>dm</a> object.</p>
       <td><p>A <code>dm</code> object.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Primary key functions: <code><a href='cdm_add_pk.html'>cdm_add_pk</a></code>,
   <code><a href='cdm_get_all_pks.html'>cdm_get_all_pks</a></code>, <code><a href='cdm_get_pk.html'>cdm_get_pk</a></code>,
   <code><a href='cdm_has_pk.html'>cdm_has_pk</a></code>, <code><a href='cdm_rm_pk.html'>cdm_rm_pk</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw pkg'>nycflights13</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>flights</a></span> <span class='kw'>%&gt;%</span> <span class='fu'>enum_pk_candidates</span>()</div><div class='output co'>#&gt; # A tibble: 19 x 3
@@ -224,9 +223,7 @@ for a table in a <a href='dm.html'>dm</a> object.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -240,7 +237,7 @@ for a table in a <a href='dm.html'>dm</a> object.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>
