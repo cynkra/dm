@@ -77,8 +77,10 @@ cdm_semi_join <- function(dm, table, reduced_table) {
 
 cdm_get_filtered_table <- function(dm, from) {
 
+
+
   filter_exprs <- cdm_get_filter(dm)
-  if (is_null(filter_exprs)) return(cdm_get_tables(dm)[[from]])
+  if (nrow(filter_exprs) == 0) return(cdm_get_tables(dm)[[from]])
 
   # If at least one filter is set, we need to consider potential cascades:
   all_filterered_plus_connected <- get_all_filtered_connected(dm, from) %>%

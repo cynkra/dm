@@ -228,7 +228,9 @@ cdm_get_data_model <- function(x) {
 #'
 #' @export
 cdm_get_filter <- function(dm) {
-  unclass(dm)$filter
+  filter <- unclass(dm)$filter
+  if (!is_null(filter)) return(filter)
+  tibble(table = character(0), filter = list(0))
 }
 
 #' Check class
@@ -314,7 +316,7 @@ print.dm <- function(x, ...) {
 
   filters <- cdm_get_filter(x)
 
-  if (!is_null(filters)) {
+  if (nrow(filters) > 0) {
     names <- pull(filters, table)
     filter_exprs <- pull(filters, filter) %>% as.character() %>% str_replace("^~", "")
 
