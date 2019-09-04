@@ -2,12 +2,13 @@ context("test-filter-dm")
 
 test_that("get_all_filtered_connected() calculates the paths correctly", {
   fc <-
-    dm_for_filter %>%
+    dm_more_complex %>%
     cdm_filter(t2, TRUE) %>%
     cdm_filter(t6, TRUE) %>%
     get_all_filtered_connected("t5")
-  expect_pred_chain(fc, c("t2", "t5"))
+  expect_pred_chain(fc, c("t2", "t3", "t4", "t5"))
   expect_pred_chain(fc, c("t6", "t5"))
+  expect_not_pred(fc, c("t1", "t4_2"))
 
   # more complicated graph structure:
   fc <- dm_more_complex %>%
@@ -15,25 +16,43 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
     cdm_filter(t6_2, TRUE) %>%
     get_all_filtered_connected("t4")
   expect_pred_chain(fc, c("t6", "t5", "t4"))
-  expect_pred_chain(fc, c("t6_2", "t5", "t4"))
+  expect_pred_chain(fc, c("t6_2", "t3", "t4"))
 
   # filter in an unconnected component:
   fc <- dm_more_complex %>%
     cdm_filter(t6, TRUE) %>%
     get_all_filtered_connected("a")
-  expect_equal(fc$node, "a")
+  expect_pred_chain(fc, "a")
+  expect_identical(fc$node, "a")
 
-  # cycle: "t5" connected to "t4" & "t4_2"; "t4" & "t4_2" connected to "t3"
-  # both ways should be considered and when "t5" is filtered and "t3" requested,
-  # the result should/could(?) be the intersect of the effect of "t4" on "t3"
-  # and of "t4_2" on "t3"
-  # FIXME: currently only one path is considered; since this is random behaviour,
-  # it can not be the correct solution
-  # fc <- dm_more_complex %>%
-  #   cdm_filter(t5, TRUE) %>%
-  #   get_all_filtered_connected("t3")
-  # expect_pred_chain(fc, c("t5", "t4", "t3"))
-  # expect_pred_chain(fc, c("t5", "t4_2", "t3"))
+
+  fc <- dm_more_complex %>%
+    cdm_filter(t5, TRUE) %>%
+    get_all_filtered_connected("t3")
+  expect_pred_chain(fc, c("t5", "t4", "t3"))
+
+  f <-
+    dm_more_complex %>%
+    cdm_filter(t4_2, TRUE) %>%
+    cdm_filter(t6, TRUE)
+
+  fc_t4 <- get_all_filtered_connected(f, "t4")
+
+  expect_pred_chain(fc_t4, c("t4_2", "t5", "t4"))
+  expect_pred_chain(fc_t4, c("t6", "t5", "t4"))
+  expect_not_pred(fc, c("t6_2", "t3", "t2", "t1"))
+
+  f <-
+    dm_more_complex %>%
+    cdm_filter(t4_2, TRUE) %>%
+    cdm_filter(t6, TRUE, FALSE) %>%
+    cdm_filter(t5, TRUE)
+
+  fc_t4 <- get_all_filtered_connected(f, "t4")
+
+  expect_pred_chain(fc_t4, c("t4_2", "t5", "t4"))
+  expect_pred_chain(fc_t4, c("t6", "t5", "t4"))
+  expect_not_pred(fc, c("t6_2", "t3", "t2", "t1"))
 
 })
 

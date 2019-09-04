@@ -296,13 +296,15 @@ t4 <- tibble(
 )
 
 
-list_for_filter[["t6_2"]] <- tibble(p = letters[1:6], q = LETTERS[6:11])
+list_for_filter[["t6_2"]] <- tibble(p = letters[1:6], f = LETTERS[6:11])
 list_for_filter[["t4_2"]] <- tibble(r = letters[2:6],
                                     s = c("three", "five", "six", "seven", "eight"),
                                     t = c(LETTERS[4:7], LETTERS[5]))
 list_for_filter[["a"]] <- tibble(a_1 = letters[10:18], a_2 = 5:13)
 list_for_filter[["b"]] <- tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6)
 list_for_filter[["c"]] <- tibble(c_1 = 4:10)
+list_for_filter[["d"]] <- tibble(d_1 = 1:6, b_1 = LETTERS[c(12:14, 13:15)])
+list_for_filter[["e"]] <- tibble(e_1 = 1:2, b_1 = LETTERS[c(12:13)])
 
 dm_more_complex <- as_dm(list_for_filter) %>%
   cdm_add_pk(t1, a) %>%
@@ -316,13 +318,16 @@ dm_more_complex <- as_dm(list_for_filter) %>%
   cdm_add_pk(a, a_1) %>%
   cdm_add_pk(b, b_1) %>%
   cdm_add_pk(c, c_1) %>%
+  cdm_add_pk(d, d_1) %>%
+  cdm_add_pk(e, e_1) %>%
   cdm_add_fk(t2, d, t1) %>%
   cdm_add_fk(t2, e, t3) %>%
   cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t4_2, t, t3) %>%
   cdm_add_fk(t5, l, t4) %>%
   cdm_add_fk(t5, l, t4_2) %>%
   cdm_add_fk(t5, m, t6) %>%
-  cdm_add_fk(t5, l, t6_2) %>%
+  cdm_add_fk(t6_2, f, t3) %>%
   cdm_add_fk(b, b_2, a) %>%
-  cdm_add_fk(b, b_3, c)
+  cdm_add_fk(b, b_3, c) %>%
+  cdm_add_fk(d, b_1, b) %>%
+  cdm_add_fk(e, b_1, b)
