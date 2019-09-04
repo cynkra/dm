@@ -77,25 +77,54 @@ cdm_semi_join <- function(dm, table, reduced_table) {
 
 cdm_get_filtered_table <- function(dm, from) {
 
+  filters <- cdm_get_filter(dm)
+  if (nrow(filters) == 0) return(cdm_get_tables(dm)[[from]])
 
+  fc <- get_all_filtered_connected(dm, from)
 
-  filter_exprs <- cdm_get_filter(dm)
-  if (nrow(filter_exprs) == 0) return(cdm_get_tables(dm)[[from]])
+  f_quos <- filters %>%
+    nest(-table) %>%
+    rename(filter = data)
 
-  # If at least one filter is set, we need to consider potential cascades:
-  all_filterered_plus_connected <- get_all_filtered_connected(dm, from) %>%
-    left_join(filter_exprs, by = c("node" = "table")) %>%
-    nest(-node, -parent, -child, .key = "filter")
+  fc_children <-
+    fc %>%
+    filter(node != parent) %>%
+    select(-distance) %>%
+    nest(-parent) %>%
+    rename(table = parent, semi_join = data)
 
-  tables <- cdm_get_tables(dm) %>%
-    extract(pull(all_filterered_plus_connected, node) %>% unique()) %>%
-    enframe(name = "table", value = "tbl")
+  recipe <-
+    fc %>%
+    select(table = node) %>%
+    left_join(fc_children, by = "table") %>%
+    left_join(f_quos, by = "table")
 
-  all_filterered_plus_connected %>%
-    left_join(tables, by = c("node" = "table"))
+  list_of_tables <- cdm_get_tables(dm)
 
-  browser()
-  # FIXME: implement logic of filtering / semi-joining and the final union
+  for (i in 1:nrow(recipe)) {
+    table_name <- recipe$table[i]
+    table <- list_of_tables[[table_name]]
+
+    semi_joins <- recipe$semi_join[[i]]
+    if (!is_null(semi_joins)) {
+      semi_joins <- pull(semi_joins)
+      semi_joins_tbls <- list_of_tables[semi_joins]
+      table <-
+        reduce2(semi_joins_tbls,
+                semi_joins,
+               ~semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
+               .init = table)
+    }
+
+    filter_quos <- recipe$filter[[i]]
+    if (!is_null(filter_quos)) {
+      filter_quos <- pull(filter_quos)
+      table <- filter(table, !!!filter_quos)
+      }
+
+    list_of_tables[[table_name]] <- table
+  }
+  table
 }
 
 get_all_filtered_connected <- function(dm, table) {
