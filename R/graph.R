@@ -76,12 +76,14 @@ calculate_join_list <- function(dm, table_name) {
 }
 
 create_graph_from_dm <- function(dm) {
-  tables <- src_tbls(dm)
-  ref_tables <- map(tables, ~ cdm_get_referencing_tables(dm, !!.x))
+
+  ref_tables <- src_tbls(dm)
+  tables <- map(ref_tables, ~ cdm_get_referencing_tables(dm, !!.x))
 
   tibble(tables, ref_tables) %>%
-    unnest() %>%
-    igraph::graph_from_data_frame(directed = FALSE)
+    unnest(tables) %>%
+    select(tables, ref_tables) %>%
+    igraph::graph_from_data_frame(directed = FALSE, vertices = ref_tables)
 }
 
 are_all_vertices_connected <- nse_function(c(g, vertex_names), ~ {
