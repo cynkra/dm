@@ -22,7 +22,6 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
   fc <- dm_more_complex %>%
     cdm_filter(t6, TRUE) %>%
     get_all_filtered_connected("a")
-  expect_pred_chain(fc, "a")
   expect_identical(fc$node, "a")
 
 
@@ -40,7 +39,7 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 
   expect_pred_chain(fc_t4, c("t4_2", "t5", "t4"))
   expect_pred_chain(fc_t4, c("t6", "t5", "t4"))
-  expect_not_pred(fc, c("t6_2", "t3", "t2", "t1"))
+  expect_not_pred(fc_t4, c("t6_2", "t3", "t2", "t1"))
 
   f <-
     dm_more_complex %>%
@@ -52,7 +51,7 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 
   expect_pred_chain(fc_t4, c("t4_2", "t5", "t4"))
   expect_pred_chain(fc_t4, c("t6", "t5", "t4"))
-  expect_not_pred(fc, c("t6_2", "t3", "t2", "t1"))
+  expect_not_pred(fc_t4, c("t6_2", "t3", "t2", "t1"))
 
 })
 
