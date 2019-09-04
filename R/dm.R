@@ -227,8 +227,8 @@ cdm_get_data_model <- function(x) {
 #' @rdname dm
 #'
 #' @export
-cdm_get_filter <- function(dm) {
-  filter <- unclass(dm)$filter
+cdm_get_filter <- function(x) {
+  filter <- unclass(x)$filter
   if (!is_null(filter)) return(filter)
   tibble(table = character(0), filter = list(0))
 }

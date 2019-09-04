@@ -24,7 +24,7 @@ cdm_get_tables(x)
 
 cdm_get_data_model(x)
 
-cdm_get_filter(dm)
+cdm_get_filter(x)
 
 is_dm(x)
 
