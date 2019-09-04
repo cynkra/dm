@@ -9,5 +9,5 @@
 #' @importFrom methods is
 #' @import stringr
 #' @rawNamespace import(glue, except = c(collapse))
-#' @importFrom igraph V E
+#' @importFrom igraph V E graph_from_data_frame induced_subgraph bfs
 NULL
