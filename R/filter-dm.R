@@ -101,7 +101,7 @@ cdm_get_filtered_table <- function(dm, from) {
 
   list_of_tables <- cdm_get_tables(dm)
 
-  for (i in 1:nrow(recipe)) {
+  for (i in seq_len(nrow(recipe))) {
     table_name <- recipe$table[i]
     table <- list_of_tables[[table_name]]
 
@@ -124,7 +124,7 @@ cdm_get_filtered_table <- function(dm, from) {
 
     list_of_tables[[table_name]] <- table
   }
-  table
+  list_of_tables[[from]]
 }
 
 get_all_filtered_connected <- function(dm, table) {
