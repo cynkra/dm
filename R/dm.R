@@ -446,10 +446,13 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 
 #' @export
 collect.dm <- function(x, ...) {
-  if (!is_src_db(x)) return(x)
 
-  tables <- map(cdm_get_tables(x), collect)
+  list_of_rem_tbls <- cdm_apply_filter_cascades(x) %>% cdm_get_tables()
+  tables <- map(list_of_rem_tbls, collect)
 
+  # FIXME: in future src will no longer be part of `dm` object.
+  # https://github.com/krlmlr/dm/issues/38
+  # `cdm_get_src(x)` needs to be removed (is wrong anyway)
   new_dm(
     cdm_get_src(x),
     tables,
