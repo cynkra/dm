@@ -407,8 +407,9 @@ tbl.dm <- function(src, from, ...) {
 #'   cdm_filter(flights, month == 3) %>%
 #'   cdm_apply_filter_cascades()
 #'
+#' library(dplyr)
 #' cdm_nycflights13() %>%
-#'   cdm_filter(planes, month == 3) %>%
+#'   cdm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #'
 #' @export
