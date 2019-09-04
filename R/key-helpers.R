@@ -58,7 +58,7 @@ is_unique_key <- nse_function(c(.data, column), ~ {
     count(value = !!col_expr) %>%
     filter(n != 1) %>%
     arrange(value) %>%
-    head(7) %>%
+    utils::head(7) %>%
     collect() %>%
     nest() %>%
     mutate(column = col_name) %>%
