@@ -380,8 +380,8 @@ names.dm <- function(x) {
 }
 
 #' @export
-str.dm <- function(x, ...) {
-  x <- unclass(x)
+str.dm <- function(object, ...) {
+  object <- unclass(object)
   NextMethod()
 }
 
