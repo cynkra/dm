@@ -377,6 +377,12 @@ names.dm <- function(x) {
   abort_update_not_supported()
 }
 
+#' @export
+str.dm <- function(x, ...) {
+  x <- unclass(x)
+  NextMethod()
+}
+
 
 #' @export
 tbl.dm <- function(src, from, ...) {
