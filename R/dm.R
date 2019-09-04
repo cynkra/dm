@@ -395,6 +395,31 @@ tbl.dm <- function(src, from, ...) {
   cdm_get_filtered_table(dm, from)
 }
 
+#' Apply all filters
+#'
+#' All set filters are applied and their combined cascading effect on each table of the `dm` is taken into account.
+#' An alias for this function is the method for `dm` class objects for `compute()`.
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @export
+cdm_apply_filter_cascades <- function(dm) {
+  raw_dm <- unclass(dm)
+  table_names <- src_tbls(dm)
+
+  new_list_of_tables <-
+    map(set_names(table_names), ~tbl(dm, .))
+
+  new_dm(
+    src = cdm_get_src(dm),
+    tables = new_list_of_tables,
+    data_model = cdm_get_data_model(dm))
+}
+
+#' @export
+compute.dm <- function(x) {
+  cdm_apply_filter_cascades(x)
+}
 
 
 #' @export
