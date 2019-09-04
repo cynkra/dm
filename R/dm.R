@@ -397,7 +397,7 @@ tbl.dm <- function(src, from, ...) {
 
 #' Apply all filters
 #'
-#' All set filters are applied and their combined cascading effect on each table of the `dm` is taken into account.
+#' All set filters are applied and their combined cascading effect on each table of the [`dm`] is taken into account.
 #' An alias for this function is the method for `dm` class objects for `compute()`.
 #'
 #' @inheritParams cdm_add_pk

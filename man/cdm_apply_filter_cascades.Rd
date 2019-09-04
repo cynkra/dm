@@ -10,7 +10,7 @@ cdm_apply_filter_cascades(dm)
 \item{dm}{A \code{dm} object.}
 }
 \description{
-All set filters are applied and their combined cascading effect on each table of the \code{dm} is taken into account.
+All set filters are applied and their combined cascading effect on each table of the \code{\link{dm}} is taken into account.
 An alias for this function is the method for \code{dm} class objects for \code{compute()}.
 }
 \examples{
