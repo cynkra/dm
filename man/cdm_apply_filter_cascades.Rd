@@ -13,3 +13,13 @@ cdm_apply_filter_cascades(dm)
 All set filters are applied and their combined cascading effect on each table of the \code{dm} is taken into account.
 An alias for this function is the method for \code{dm} class objects for \code{compute()}.
 }
+\examples{
+cdm_nycflights13() \%>\%
+  cdm_filter(flights, month == 3) \%>\%
+  cdm_apply_filter_cascades()
+
+cdm_nycflights13() \%>\%
+  cdm_filter(planes, month == 3) \%>\%
+  compute()
+
+}

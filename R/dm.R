@@ -402,6 +402,15 @@ tbl.dm <- function(src, from, ...) {
 #'
 #' @inheritParams cdm_add_pk
 #'
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_filter(flights, month == 3) %>%
+#'   cdm_apply_filter_cascades()
+#'
+#' cdm_nycflights13() %>%
+#'   cdm_filter(planes, month == 3) %>%
+#'   compute()
+#'
 #' @export
 cdm_apply_filter_cascades <- function(dm) {
   raw_dm <- unclass(dm)
