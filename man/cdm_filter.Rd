@@ -43,7 +43,7 @@ combined cascading effect on each table of the \code{\link{dm}} is taken into ac
 This function is called by the \code{compute()} method for \code{dm} class objects.
 }
 \examples{
-library(magrittr)
+library(dplyr)
 
 dm_nyc_filtered <-
   cdm_nycflights13() \%>\%

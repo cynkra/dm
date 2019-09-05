@@ -28,7 +28,7 @@
 #' @references [cdm_semi_join()]
 #'
 #' @examples
-#' library(magrittr)
+#' library(dplyr)
 #'
 #' dm_nyc_filtered <-
 #'   cdm_nycflights13() %>%
