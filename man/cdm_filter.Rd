@@ -14,13 +14,12 @@ cdm_apply_filters(dm)
 
 \item{table}{A table in the \code{dm}}
 
-\item{...}{Logical predicates defined in terms of the variables in .data.
+\item{...}{Logical predicates defined in terms of the variables in \code{.data}, passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
 Multiple conditions are combined with \code{&} or \code{,}. Only rows where the condition evaluates
 to TRUE are kept.
 
 The arguments in ... are automatically quoted and evaluated in the context of
-the data frame. They support unquoting and splicing. See vignette(
-\href{https://dplyr.tidyverse.org/articles/programming.html}{"programming"})
+the data frame. They support unquoting and splicing. See \code{vignette("programming", package = "dplyr")}
 for an introduction to these concepts.}
 }
 \description{

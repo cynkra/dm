@@ -21,8 +21,7 @@
 #' to TRUE are kept.
 #'
 #' The arguments in ... are automatically quoted and evaluated in the context of
-#' the data frame. They support unquoting and splicing. See vignette(
-#' ["programming"](https://dplyr.tidyverse.org/articles/programming.html))
+#' the data frame. They support unquoting and splicing. See `vignette("programming", package = "dplyr")`
 #' for an introduction to these concepts.
 #'
 #' @references [cdm_semi_join()]
