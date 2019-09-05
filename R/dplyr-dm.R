@@ -56,7 +56,6 @@ rename_cols <- function(dm, table_name, quos) {
     )
 
   new_dm2(
-    src = cdm_get_src(dm),
     tables = list_of_tables,
     pks = pks_upd,
     fks = fks_upd,
