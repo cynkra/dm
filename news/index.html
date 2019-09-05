@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9002</span>
       </span>
     </div>
 
@@ -125,6 +125,30 @@
       
     </div>
 
+    <div id="dm-0-0-1-9002" class="section level1">
+<h1 class="page-header">
+<a href="#dm-0-0-1-9002" class="anchor"></a>dm 0.0.1.9002</h1>
+<ul>
+<li>
+<code><a href="../reference/cdm_filter.html">cdm_filter()</a></code> only records the filtering operation, the filter is applied only when querying a table via <code>tbl()</code> or when calling <code>compute()</code> (#32).</li>
+<li>New <code>str.dm()</code> .</li>
+<li>Remove <code>cdm_find_conn_tbls()</code> and the <code>all_connected</code> argument to <code>cdm_select()</code> (#35).</li>
+<li>
+<code><a href="../reference/browse_docs.html">browse_docs()</a></code> opens the pkgdown website (#36).</li>
+<li>
+<code><a href="../reference/dm.html">as_dm()</a></code> now also accepts a list of remote tables (#30).</li>
+<li>Using simpler internal data structure to store primary and foreign key relations (#26).</li>
+<li>Use {tidyselect} syntax for <code><a href="../reference/cdm_rename_tbl.html">cdm_rename_tbl()</a></code> and <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code> (#14).</li>
+<li>Numeric subsetting in <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> now raises a clear error (#18).</li>
+<li>New <code>nse_function()</code> replaces <code>h()</code> for marking functions as NSE to avoid R CMD check warnings.</li>
+<li>Simplified internal data structure so that creation of new operations that update a dm becomes easier.</li>
+<li>Unexport <code>cdm_set_key_constraints()</code>.</li>
+<li>When copying a dm to a database, <code>NOT NULL</code> constraints are set at creation of the table.</li>
+<li>The tibbles returned by <code><a href="../reference/cdm_enum_fk_candidates.html">cdm_enum_fk_candidates()</a></code> and <code><a href="../reference/enum_pk_candidates.html">cdm_enum_pk_candidates()</a></code> contain a <code>why</code> column that explains the reasons for rejection in a human-readable form (#12).</li>
+<li>Using {RPostgres} instead of {RPostgreSQL} for testing.</li>
+<li>Improve compatibility with RPostgres.</li>
+</ul>
+</div>
     <div id="dm-0-0-1-9001" class="section level1">
 <h1 class="page-header">
 <a href="#dm-0-0-1-9001" class="anchor"></a>dm 0.0.1.9001</h1>
@@ -282,6 +306,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dm-0-0-1-9002">0.0.1.9002</a></li>
         <li><a href="#dm-0-0-1-9001">0.0.1.9001</a></li>
         <li><a href="#dm-0-0-1-9000">0.0.1.9000</a></li>
         <li><a href="#dm-0-0-1">0.0.1</a></li>
