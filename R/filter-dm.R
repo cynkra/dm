@@ -25,23 +25,33 @@ cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  quos <- enquos(...)
+  # We remove the class here so that `bind_rows()` works without warning later
+  quos <- unclass(enquos(...))
   if (is_empty(quos)) {
     return(dm)
   } # valid table and empty ellipsis provided
 
-  orig_tbl <- tbl(dm, table_name)
+  set_filter_for_table(dm, table_name, quos)
+}
 
-  # filter data
-  filtered_tbl_pk_obj <- filter(orig_tbl, !!!quos)
+set_filter_for_table <- function(dm, table_name, quos) {
+  raw_dm <- unclass(dm)
+  filter <- raw_dm[["filter"]]
 
-  # early return if no filtering was done
-  if (pull(count(filtered_tbl_pk_obj)) == pull(count(orig_tbl))) {
-    return(dm)
+  if (is_null(filter)) {
+    raw_dm[["filter"]] <- tibble(table = table_name, filter = quos)
+  } else {
+    raw_dm[["filter"]] <-
+      bind_rows(filter, tibble(table = table_name, filter = quos)) %>%
+      arrange(table)
   }
 
-  cdm_semi_join(dm, !!table_name, filtered_tbl_pk_obj)
+  structure(
+    raw_dm,
+    class = "dm"
+  )
 }
+
 
 #' Semi-join a [`dm`] object with one of its reduced tables
 #'
@@ -64,4 +74,100 @@ cdm_semi_join <- function(dm, table, reduced_table) {
 
   join_list <- calculate_join_list(dm, table_name)
   perform_joins(filtered_dm, join_list)
+}
+
+cdm_get_filtered_table <- function(dm, from) {
+
+  filters <- cdm_get_filter(dm)
+  if (nrow(filters) == 0) return(cdm_get_tables(dm)[[from]])
+
+  fc <- get_all_filtered_connected(dm, from)
+
+  f_quos <- filters %>%
+    nest(-table) %>%
+    rename(filter = data)
+
+  fc_children <-
+    fc %>%
+    filter(node != parent) %>%
+    select(-distance) %>%
+    nest(-parent) %>%
+    rename(table = parent, semi_join = data)
+
+  recipe <-
+    fc %>%
+    select(table = node) %>%
+    left_join(fc_children, by = "table") %>%
+    left_join(f_quos, by = "table")
+
+  list_of_tables <- cdm_get_tables(dm)
+
+  for (i in seq_len(nrow(recipe))) {
+    table_name <- recipe$table[i]
+    table <- list_of_tables[[table_name]]
+
+    semi_joins <- recipe$semi_join[[i]]
+    if (!is_null(semi_joins)) {
+      semi_joins <- pull(semi_joins)
+      semi_joins_tbls <- list_of_tables[semi_joins]
+      table <-
+        reduce2(semi_joins_tbls,
+                semi_joins,
+               ~semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
+               .init = table)
+    }
+
+    filter_quos <- recipe$filter[[i]]
+    if (!is_null(filter_quos)) {
+      filter_quos <- pull(filter_quos)
+      table <- filter(table, !!!filter_quos)
+    }
+
+    list_of_tables[[table_name]] <- table
+  }
+  list_of_tables[[from]]
+}
+
+get_all_filtered_connected <- function(dm, table) {
+  filtered_tables <- unique(cdm_get_filter(dm)$table)
+  graph <- create_graph_from_dm(dm)
+
+  # Computation of distances and shortest paths uses the same algorithm
+  # internally, but s.p. doesn't return distances and distances don't return
+  # the predecessor.
+  distances <- igraph::distances(graph, table)[1, ]
+  finite_distances <- distances[is.finite(distances)]
+
+  # Using only nodes with finite distances (=in the same connected component)
+  # as target. This avoids a warning.
+  target_tables <- names(finite_distances)
+  paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
+
+  # All edges with finite distance as tidy data frame
+  all_edges <-
+    tibble(
+      node = names(V(graph)),
+      parent = names(paths$predecessors),
+      distance = distances
+    ) %>%
+    filter(is.finite(distance))
+
+  # Edges of interest, will be grown until source node `table` is reachable
+  # from all nodes
+  edges <-
+    all_edges %>%
+    filter(node %in% !!c(filtered_tables, table))
+
+  # Recursive join
+  repeat {
+    missing <- setdiff(edges$parent, edges$node)
+    if (is_empty(missing)) break
+
+    edges <- bind_rows(edges, filter(all_edges, node %in% !!missing))
+  }
+
+  # Keeping the sentinel row (node == parent) to simplify further processing
+  # and testing
+  edges %>%
+    arrange(-distance)
 }

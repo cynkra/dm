@@ -91,7 +91,7 @@ new_dm <- function(src, tables, data_model) {
       as_tibble()
   }
 
-  new_dm2(src, tables, data_model_tables, keys, references)
+  new_dm2(src, tables, data_model_tables, keys, references, filter = NULL)
 }
 
 new_dm2 <- function(src = cdm_get_src(base_dm),
@@ -99,6 +99,7 @@ new_dm2 <- function(src = cdm_get_src(base_dm),
                     data_model_tables = cdm_get_data_model_tables(base_dm),
                     pks = cdm_get_data_model_pks(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
+                    filter = cdm_get_filter(base_dm),
                     base_dm) {
 
   stopifnot(!is.null(src))
@@ -113,7 +114,8 @@ new_dm2 <- function(src = cdm_get_src(base_dm),
       tables = tables,
       data_model_tables = data_model_tables,
       data_model_pks = pks,
-      data_model_fks = fks
+      data_model_fks = fks,
+      filter = filter
     ),
     class = "dm"
   )
@@ -156,6 +158,8 @@ cdm_get_src <- function(x) {
 #'
 #' `cdm_get_tables()` returns a named list with \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
+#' The filter expressions are NOT evaluated at this stage.
+#' To get the filtered tables, use `tbl.dm()`
 #'
 #' @rdname dm
 #'
@@ -213,6 +217,20 @@ cdm_get_data_model <- function(x) {
     columns,
     references
   )
+}
+
+#' Get filter expressions
+#'
+#' `cdm_get_filter()` returns the filter component of a `dm`
+#' object, the set filter expressions.
+#'
+#' @rdname dm
+#'
+#' @export
+cdm_get_filter <- function(x) {
+  filter <- unclass(x)$filter
+  if (!is_null(filter)) return(filter)
+  tibble(table = character(0), filter = list(0))
 }
 
 #' Check class
@@ -294,12 +312,16 @@ print.dm <- function(x, ...) {
 
   print(cdm_get_data_model(x))
 
-  cat_rule("Rows", col = "orange")
+  cat_rule("Filters", col = "orange")
 
-  tbl_names <- src_tbls(x)
-  nrows <- map_dbl(cdm_get_tables(x), ~ as_double(pull(count(.))))
-  cat_line(paste0("Total: "), sum(nrows))
-  cat_line(paste0(names(nrows), ": ", nrows, collapse = ", "))
+  filters <- cdm_get_filter(x)
+
+  if (nrow(filters) > 0) {
+    names <- pull(filters, table)
+    filter_exprs <- pull(filters, filter) %>% as.character() %>% str_replace("^~", "")
+
+    walk2(names, filter_exprs, ~cat_line(paste0(.x, ": ", .y)))
+    } else cat_line("None")
 
   invisible(x)
 }
@@ -370,7 +392,43 @@ tbl.dm <- function(src, from, ...) {
   dm <- src
   check_correct_input(dm, from)
 
-  cdm_get_tables(dm)[[from]]
+  cdm_get_filtered_table(dm, from)
+}
+
+#' Apply all filters
+#'
+#' All set filters are applied and their combined cascading effect on each table of the [`dm`] is taken into account.
+#' An alias for this function is the method for `dm` class objects for `compute()`.
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_filter(flights, month == 3) %>%
+#'   cdm_apply_filter_cascades()
+#'
+#' library(dplyr)
+#' cdm_nycflights13() %>%
+#'   cdm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
+#'   compute()
+#'
+#' @export
+cdm_apply_filters <- function(dm) {
+  raw_dm <- unclass(dm)
+  table_names <- src_tbls(dm)
+
+  new_list_of_tables <-
+    map(set_names(table_names), ~tbl(dm, .))
+
+  new_dm(
+    src = cdm_get_src(dm),
+    tables = new_list_of_tables,
+    data_model = cdm_get_data_model(dm))
+}
+
+#' @export
+compute.dm <- function(x) {
+  cdm_apply_filter_cascades(x)
 }
 
 
@@ -389,10 +447,13 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 
 #' @export
 collect.dm <- function(x, ...) {
-  if (!is_src_db(x)) return(x)
 
-  tables <- map(cdm_get_tables(x), collect)
+  list_of_rem_tbls <- cdm_apply_filter_cascades(x) %>% cdm_get_tables()
+  tables <- map(list_of_rem_tbls, collect)
 
+  # FIXME: in future src will no longer be part of `dm` object.
+  # https://github.com/krlmlr/dm/issues/38
+  # `cdm_get_src(x)` needs to be removed (is wrong anyway)
   new_dm(
     cdm_get_src(x),
     tables,
