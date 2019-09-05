@@ -413,7 +413,7 @@ tbl.dm <- function(src, from, ...) {
 #'   compute()
 #'
 #' @export
-cdm_apply_filter_cascades <- function(dm) {
+cdm_apply_filters <- function(dm) {
   raw_dm <- unclass(dm)
   table_names <- src_tbls(dm)
 

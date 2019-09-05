@@ -83,6 +83,8 @@ get_by <- function(dm, lhs_name, rhs_name) {
     lhs_col <- cdm_get_pk(dm, !!lhs_name)
     rhs_col <- cdm_get_fk(dm, !!rhs_name, !!lhs_name)
   }
+  # Construct a `by` argument of the form `c("lhs_col[1]" = "rhs_col[1]", ...)`
+  # as required by `*_join()`
   by <- rhs_col
   names(by) <- lhs_col
   by

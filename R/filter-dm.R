@@ -25,6 +25,7 @@ cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
+  # We remove the class here so that `bind_rows()` works without warning later
   quos <- unclass(enquos(...))
   if (is_empty(quos)) {
     return(dm)
@@ -120,7 +121,7 @@ cdm_get_filtered_table <- function(dm, from) {
     if (!is_null(filter_quos)) {
       filter_quos <- pull(filter_quos)
       table <- filter(table, !!!filter_quos)
-      }
+    }
 
     list_of_tables[[table_name]] <- table
   }
