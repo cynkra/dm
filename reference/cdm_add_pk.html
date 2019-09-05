@@ -191,9 +191,8 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt;   53 columns
 #&gt;   1 primary keys
 #&gt;   0 references
-#&gt; ── Rows ────────────────────────────────────────────────────────────────────────
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>airports</span>, <span class='no'>faa</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; ── Filters ─────────────────────────────────────────────────────────────────────
+#&gt; None</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>airports</span>, <span class='no'>faa</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;package: nycflights13&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
@@ -201,9 +200,8 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt;   53 columns
 #&gt;   1 primary keys
 #&gt;   0 references
-#&gt; ── Rows ────────────────────────────────────────────────────────────────────────
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; ── Filters ─────────────────────────────────────────────────────────────────────
+#&gt; None</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;package: nycflights13&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
@@ -211,9 +209,8 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt;   53 columns
 #&gt;   1 primary keys
 #&gt;   0 references
-#&gt; ── Rows ────────────────────────────────────────────────────────────────────────
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</div><div class='input'>
+#&gt; ── Filters ─────────────────────────────────────────────────────────────────────
+#&gt; None</div><div class='input'>
 <span class='co'># the following does not work</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>))</div><div class='output co'>#&gt; Error : `manufacturer` not a unique key of `table_from_dm`.
 #&gt; Backtrace:

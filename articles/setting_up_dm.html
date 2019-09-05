@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1>Preparing Your Data</h1>
             
-            <h4 class="date">2019-09-04</h4>
+            <h4 class="date">2019-09-05</h4>
       
       
       <div class="hidden name"><code>setting_up_dm.Rmd</code></div>
@@ -156,16 +156,15 @@
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(planes, tailnum)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">flights_dm_only_pks</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x442f9e8&gt;
+## src:  &lt;environment: 0x3b5adb0&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
 ##   53 columns
 ##   3 primary keys
 ##   0 references
-## ── Rows ───────────────────────────────────────────────────────────────────
-## Total: 367687
-## airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</code></pre>
+## ── Filters ────────────────────────────────────────────────────────────────
+## None</code></pre>
 <p>To get an overview of the primary keys after setting them, call <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(flights_dm_only_pks)</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 2
@@ -212,16 +211,15 @@
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">flights_dm_all_keys</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x442f9e8&gt;
+## src:  &lt;environment: 0x3b5adb0&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
 ##   53 columns
 ##   3 primary keys
 ##   3 references
-## ── Rows ───────────────────────────────────────────────────────────────────
-## Total: 367687
-## airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</code></pre>
+## ── Filters ────────────────────────────────────────────────────────────────
+## None</code></pre>
 </div>
 <div id="retrieving-keys" class="section level2">
 <h2 class="hasAnchor">
@@ -237,16 +235,15 @@
 <p>Voilà, here’s your <code>dm</code> object that you can work with:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">flights_dm_all_keys</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x442f9e8&gt;
+## src:  &lt;environment: 0x3b5adb0&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
 ##   53 columns
 ##   3 primary keys
 ##   3 references
-## ── Rows ───────────────────────────────────────────────────────────────────
-## Total: 367687
-## airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115</code></pre>
+## ── Filters ────────────────────────────────────────────────────────────────
+## None</code></pre>
 </div>
 </div>
   </div>

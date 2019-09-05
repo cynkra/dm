@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1>Class ‘dm’ and basic operations</h1>
             
-            <h4 class="date">2019-09-04</h4>
+            <h4 class="date">2019-09-05</h4>
       
       
       <div class="hidden name"><code>dm-class-and-basic-operations.Rmd</code></div>
@@ -139,25 +139,23 @@
 #&gt;   53 columns
 #&gt;   0 primary keys
 #&gt;   0 references
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
+#&gt; None
 </span></code></pre>
 <p>Here we make use of the fact, that the function <code><a href="../reference/dm.html">dm(src, data_model = NULL)</a></code> includes all available tables on a source in the <code>dm</code> object, should the <code>data_model</code>-argument be left <code>NULL</code>. Thus you can use this for example on a postgres database that you access via <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_postgres()</a></code> (with the appropriate arguments <code>dbname</code>, <code>host</code>, <code>port</code>, …), to produce a <code>dm</code> object with all the tables on the database.</p>
 <p>Another way of creating a <code>dm</code> object is calling <code><a href="../reference/dm.html">as_dm()</a></code> on a list of <code>tbls</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x6a7e1e8&gt;
+#&gt; src:  &lt;environment: 0x5c90188&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
 #&gt;   10 columns
 #&gt;   0 primary keys
 #&gt;   0 references
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 300
-#&gt; iris1: 150, iris2: 150
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
+#&gt; None
 </span></code></pre>
 <p>And lastly, with <code><a href="../reference/dm.html">new_dm()</a></code> you can create a <code>dm</code> by providing the three individual parts it consists of:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">local_src &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_local.html">src_df</a></span>(<span class="dt">env =</span> <span class="kw"><a href="https://rdrr.io/r/base/environment.html">new.env</a></span>())</a>
@@ -171,16 +169,15 @@
 <a class="sourceLine" id="cb3-9" data-line-number="9">    )</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">another_iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x5b307e8&gt;
+#&gt; src:  &lt;environment: 0x64bf310&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
 #&gt;   10 columns
 #&gt;   0 primary keys
 #&gt;   0 references
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 300
-#&gt; iris1: 150, iris2: 150
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
+#&gt; None
 </span></code></pre>
 <p>You saw, that with <code><a href="../reference/dm.html">cdm_get_data_model()</a></code> we access the <code>data_model</code> part of a <code>dm</code>. Similarly, we can get the list of tables with <code><a href="../reference/dm.html">cdm_get_tables()</a></code> and the <code>src</code> object with <code><a href="../reference/dm.html">cdm_get_src()</a></code>.</p>
 <p>In order to pull a specific table from a <code>dm</code>, use:</p>
@@ -227,9 +224,8 @@
 #&gt;   53 columns
 #&gt;   1 primary keys
 #&gt;   0 references
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
+#&gt; None
 </span></code></pre>
 <p>The <code>dm</code> model now has a primary key. Let’s check:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(flights_dm_with_key, airports)</a>
@@ -296,9 +292,8 @@
 #&gt;   53 columns
 #&gt;   1 primary keys
 #&gt;   1 references
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
+#&gt; None
 </span></code></pre>
 <p>This will throw an error:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">flights_dm <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports)</a>

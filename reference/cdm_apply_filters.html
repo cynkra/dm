@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cascading filter of a <code><a href='dm.html'>dm</a></code> object — cdm_filter • dm</title>
+<title>Apply all filters — cdm_apply_filters • dm</title>
 
 
 <!-- jquery -->
@@ -35,15 +35,9 @@
 
 
 
-<meta property="og:title" content="Cascading filter of a <code><a href='dm.html'>dm</a></code> object — cdm_filter" />
-<meta property="og:description" content="'cdm_filter()' allows you to set one or more filter conditions for one table
-of a dm object. If the dm's tables are connected via key constrains, the
-filtering will affect all other connected tables, leaving only the rows with
-the corresponding key values.
-'cdm_semi_join()' performs a cascading &quot;row reduction&quot; of a dm object
-by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
-key constraints are used to compute the remainders of the other tables of the dm object and
-a new dm object is returned." />
+<meta property="og:title" content="Apply all filters — cdm_apply_filters" />
+<meta property="og:description" content="All set filters are applied and their combined cascading effect on each table of the dm is taken into account.
+An alias for this function is the method for dm class objects for compute()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,25 +124,17 @@ a new dm object is returned." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Cascading filter of a <code><a href='dm.html'>dm</a></code> object</h1>
+    <h1>Apply all filters</h1>
     
-    <div class="hidden name"><code>cdm_filter.Rd</code></div>
+    <div class="hidden name"><code>cdm_apply_filters.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>'cdm_filter()' allows you to set one or more filter conditions for one table
-of a <code><a href='dm.html'>dm</a></code> object. If the <code><a href='dm.html'>dm</a></code>'s tables are connected via key constrains, the
-filtering will affect all other connected tables, leaving only the rows with
-the corresponding key values.</p>
-<p>'cdm_semi_join()' performs a cascading "row reduction" of a <code><a href='dm.html'>dm</a></code> object
-by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
-key constraints are used to compute the remainders of the other tables of the <code><a href='dm.html'>dm</a></code> object and
-a new <code><a href='dm.html'>dm</a></code> object is returned.</p>
+    <p>All set filters are applied and their combined cascading effect on each table of the <code><a href='dm.html'>dm</a></code> is taken into account.
+An alias for this function is the method for <code>dm</code> class objects for <code>compute()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
-
-<span class='fu'>cdm_semi_join</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>reduced_table</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_apply_filters</span>(<span class='no'>dm</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,30 +143,13 @@ a new <code><a href='dm.html'>dm</a></code> object is returned.</p>
       <th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr>
-    <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Logical predicates defined in terms of the variables in .data.
-Multiple conditions are combined with &amp;. Only rows where the condition evaluates
-to TRUE are kept.</p>
-<p>The arguments in ... are automatically quoted and evaluated in the context of
-the data frame. They support unquoting and splicing. See vignette("programming")
-for an introduction to these concepts.</p></td>
-    </tr>
-    <tr>
-      <th>reduced_table</th>
-      <td><p>The table indicated in argument <code>table</code>, but in a filtered state (cf, <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>).</p></td>
-    </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)
-<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+    <pre class="examples"><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='cdm_filter.html'>cdm_filter</a></span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;package: nycflights13&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
@@ -189,7 +158,21 @@ for an introduction to these concepts.</p></td>
 #&gt;   3 primary keys
 #&gt;   3 references
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
-#&gt; airports: name == "John F Kennedy Intl"</div></pre>
+#&gt; None</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='cdm_filter.html'>cdm_filter</a></span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; ── Data model ──────────────────────────────────────────────────────────────────
+#&gt; Data model object:
+#&gt;   5 tables:  airlines, airports, flights, planes ... 
+#&gt;   53 columns
+#&gt;   3 primary keys
+#&gt;   3 references
+#&gt; ── Filters ─────────────────────────────────────────────────────────────────────
+#&gt; None</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
