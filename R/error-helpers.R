@@ -373,3 +373,14 @@ abort_no_numeric_subsetting <- function() {
 error_no_numeric_subsetting <- function() {
   paste0("Can't subset a `dm` object by position, either subset by name or use cdm_get_tables() to convert to a regular list first.")
 }
+
+
+# when filters are set and they shouldn't be ------------------------------
+
+abort_only_possible_wo_filters <- function(fun_name) {
+  abort(error_only_possible_wo_filters(fun_name), .subclass = cdm_error_full("only_possible_wo_filters"))
+}
+
+error_only_possible_wo_filters <- function(fun_name) {
+  glue("You can not call `{fun_name}` when filter conditions are set. Consider using `cdm_apply_filters()` first.")
+}

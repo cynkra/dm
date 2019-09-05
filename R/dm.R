@@ -491,6 +491,7 @@ rename_table_of_dm <- function(dm, old_name, new_name) {
 #' @export
 cdm_rename_tbl <- function(dm, ...) {
 
+  if (nrow(cdm_get_filter(dm)) > 0) {abort_only_possible_wo_filters("cdm_rename_tbl()")}
   table_list <- tidyselect_dm(dm, ...)
 
   old_table_names <- table_list[[2]]
