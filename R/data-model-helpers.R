@@ -245,3 +245,50 @@ data_model_db_types_to_R_types <- function(data_model) {
   data_model$columns$type <- new_type
   data_model
 }
+
+upd_pks_after_rename <- function(
+  pks,
+  table_name,
+  list_of_renames) {
+
+  pk_of_table <- filter(pks, table == !!table_name) %>% pull(column)
+  if (any(list_of_renames == pk_of_table)) {
+    new_pk <- names(list_of_renames[list_of_renames == pk_of_table])
+    pks$column[pks$table == table_name] <- new_pk
+  }
+  pks
+}
+
+upd_fks_after_rename <- function(
+  fks,
+  table_name,
+  list_of_renames) {
+
+  fks_from_table <- filter(fks, table == !!table_name) %>% pull(column)
+  if (!is_empty(fks_from_table) &&
+      any(map_lgl(fks_from_table, is_in, list_of_renames)))  {
+    indices_to_replace <- which(as.logical(match(fks_from_table, list_of_renames)))
+    values_for_replacing <- map_chr(fks_from_table[indices_to_replace], ~ names(list_of_renames[list_of_renames == .]))
+    fks[fks[["table"]] == table_name,]$column <-
+      replace(
+        fks_from_table,
+        indices_to_replace,
+        values_for_replacing
+      )
+  }
+
+  fks_to_table <- filter(fks, ref == !!table_name) %>% pull(ref_col)
+  if (!is_empty(fks_to_table) &&
+      any(map_lgl(fks_to_table, is_in, list_of_renames)))  {
+    indices_to_replace <- which(as.logical(match(fks_to_table, list_of_renames)))
+    values_for_replacing <- map_chr(fks_to_table[indices_to_replace], ~ names(list_of_renames[list_of_renames == .]))
+    fks[fks[["ref"]] == table_name,]$ref_col <-
+      replace(
+        fks_to_table,
+        indices_to_replace,
+        values_for_replacing
+      )
+  }
+
+  fks
+}
