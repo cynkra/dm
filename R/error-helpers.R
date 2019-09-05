@@ -382,5 +382,5 @@ abort_only_possible_wo_filters <- function(fun_name) {
 }
 
 error_only_possible_wo_filters <- function(fun_name) {
-  glue("You can not call `{fun_name}` when filter conditions are set. Consider using `cdm_apply_filters()` first.")
+  glue("You cannot call `{fun_name}` on a dm with filter conditions. Consider using `cdm_apply_filters()` first.")
 }
