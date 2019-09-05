@@ -24,8 +24,7 @@ cdm_rename <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  # We remove the class here so that `bind_rows()` works without warning later
-  quos <- unclass(enquos(...))
+  quos <- enquos(...)
   if (is_empty(quos)) {
     return(dm)
   } # valid table and empty ellipsis provided
