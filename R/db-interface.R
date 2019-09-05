@@ -46,6 +46,8 @@ cdm_copy_to <- nse_function(c(dest, dm, ..., types = NULL, overwrite = NULL, set
     abort_no_types()
   }
 
+  if (nrow(cdm_get_filter(dm)) > 0) {abort_only_possible_wo_filters("cdm_copy_to()")}
+
   # FIXME: if same_src(), can use compute(), but need to set NOT NULL
   # constraints
 
