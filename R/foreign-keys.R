@@ -186,6 +186,8 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #'   cdm_enum_fk_candidates(flights, airports)
 #' @export
 cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
+
+  if (nrow(cdm_get_filter(dm)) > 0) {abort_only_possible_wo_filters("cdm_enum_pk_candidates()")}
   table_name <- as_name(enquo(table))
   ref_table_name <- as_name(enquo(ref_table))
 
