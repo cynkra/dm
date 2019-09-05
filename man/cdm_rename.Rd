@@ -19,8 +19,7 @@ Use named arguments, e.g. new_name = old_name, to rename selected variables.
 
 The arguments in ... are automatically quoted and evaluated in a context where
 column names represent column positions. They also support unquoting and splicing.
-See vignette(\link{"programming"}(vignette("programming", package = "dplyr")))
-for an introduction to these concepts.
+See \code{vignette("programming", package = "dplyr")} for an introduction to these concepts.
 
 See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...}
 }
