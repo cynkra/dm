@@ -1,25 +1,46 @@
-#' Cascading filter of a [`dm`] object
+#' Filtering a [`dm`] object
 #'
-#' @description 'cdm_filter()' allows you to set one or more filter conditions for one table
-#' of a [`dm`] object. If the [`dm`]'s tables are connected via key constrains, the
-#' filtering will affect all other connected tables, leaving only the rows with
-#' the corresponding key values.
+#' Filtering one table of a [`dm`] object has an effect on all tables connected to this table
+#' via one or more steps of foreign key relations. Firstly, one or more filter conditions for
+#' one or more tables can be defined using `cdm_filter()`, with a syntax similar to `dplyr::filter()`.
+#' These conditions will be stored in the [`dm`] and not immediately executed. With `cdm_apply_filters()`
+#' all tables will be updated according to the filter conditions and the foreign key relations.
 #'
-#' @name cdm_filter
+#'
+#' @details `cdm_filter()` allows you to set one or more filter conditions for one table
+#' of a [`dm`] object. These conditions will be stored in the [`dm`] for when they are needed.
+#' Once executed, the filtering the will affect all tables connected to the filtered one by
+#' foreign key constraints, leaving only the rows with the corresponding key values. The filtering
+#' implicitly takes place, once a table is requested from the [`dm`] by using one of `tbl()`, `[[.dm()`, `$.dm()`.
+#'
+#' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
 #' @param ... Logical predicates defined in terms of the variables in .data.
-#' Multiple conditions are combined with &. Only rows where the condition evaluates
+#' Multiple conditions are combined with `&` or `,`. Only rows where the condition evaluates
 #' to TRUE are kept.
 #'
 #' The arguments in ... are automatically quoted and evaluated in the context of
-#' the data frame. They support unquoting and splicing. See vignette("programming")
+#' the data frame. They support unquoting and splicing. See vignette(
+#' ["programming"](https://dplyr.tidyverse.org/articles/programming.html))
 #' for an introduction to these concepts.
+#'
+#' @references [cdm_semi_join()]
 #'
 #' @examples
 #' library(magrittr)
-#' cdm_nycflights13(cycle = FALSE) %>%
+#'
+#' dm_nyc_filtered <-
+#'   cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl")
+#'
+#'   tbl(dm_nyc_filtered, "flights")
+#'   dm_nyc_filtered[["planes"]]
+#'   dm_nyc_filtered$airlines
+#'
+#'   cdm_nycflights13() %>%
+#'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
+#'   cdm_apply_filters()
 #' @export
 cdm_filter <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
@@ -52,19 +73,52 @@ set_filter_for_table <- function(dm, table_name, quos) {
   )
 }
 
-
-#' Semi-join a [`dm`] object with one of its reduced tables
-#'
-#' @description 'cdm_semi_join()' performs a cascading "row reduction" of a [`dm`] object
-#' by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
-#' key constraints are used to compute the remainders of the other tables of the [`dm`] object and
-#' a new [`dm`] object is returned.
+#' @details With `cdm_apply_filters()` all set filter conditions are applied and their
+#' combined cascading effect on each table of the [`dm`] is taken into account, producing a new
+#' `dm` object.
+#' This function is called by the `compute()` method for `dm` class objects.
 #'
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
-#' @param reduced_table The table indicated in argument `table`, but in a filtered state (cf, `dplyr::filter()`).
 #'
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_filter(flights, month == 3) %>%
+#'   cdm_apply_filters()
+#'
+#' library(dplyr)
+#' cdm_nycflights13() %>%
+#'   cdm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
+#'   compute()
+#'
+#' @export
+cdm_apply_filters <- function(dm) {
+  raw_dm <- unclass(dm)
+  table_names <- src_tbls(dm)
+
+  new_list_of_tables <-
+    map(set_names(table_names), ~tbl(dm, .))
+
+  new_dm(
+    src = cdm_get_src(dm),
+    tables = new_list_of_tables,
+    data_model = cdm_get_data_model(dm))
+}
+
+
+#' Semi-join a [`dm`] object with one of its reduced tables
+#'
+#' @description Similar to the subsequent calls of [`cdm_filter()`] and [`cdm_apply_filters()`], `cdm_semi_join()`
+#' performs a cascading "row reduction" of a [`dm`] object
+#' by an inital semi-join of one of its tables with the same but filtered table. Subsequently, the
+#' key constraints are used to compute the remainders of the other tables of the [`dm`] object and
+#' a new [`dm`] object is returned.
+#'
+#' @inheritParams cdm_add_pk
+#' @param reduced_table The table indicated in argument `table`, but in a filtered state (cf. `dplyr::filter()`).
+#'
+#' @references [cdm_filter()]
 #' @export
 cdm_semi_join <- function(dm, table, reduced_table) {
   table_name <- as_name(enexpr(table))
