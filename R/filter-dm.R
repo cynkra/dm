@@ -16,7 +16,7 @@
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
-#' @param ... Logical predicates defined in terms of the variables in .data.
+#' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
 #' Multiple conditions are combined with `&` or `,`. Only rows where the condition evaluates
 #' to TRUE are kept.
 #'
