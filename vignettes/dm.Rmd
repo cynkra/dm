@@ -150,11 +150,11 @@ us_flights_from_jfk_prepared <-
 us_flights_from_jfk_prepared
 ```
 
-With `cdm_apply_filter_cascades()` you can apply all filters and therefore update all tables in the `dm`, so that they contain only the rows relevant to the filters. 
+With `cdm_apply_filters()` you can apply all filters and therefore update all tables in the `dm`, so that they contain only the rows relevant to the filters. 
 Counting the rows you can see the effect of the filters:
 
 ```{r}
-us_flights_from_jfk <- cdm_apply_filter_cascades(us_flights_from_jfk_prepared)
+us_flights_from_jfk <- cdm_apply_filters(us_flights_from_jfk_prepared)
 us_flights_from_jfk %>% 
   cdm_get_tables() %>% 
   map_int(nrow)

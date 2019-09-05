@@ -405,7 +405,7 @@ tbl.dm <- function(src, from, ...) {
 #' @examples
 #' cdm_nycflights13() %>%
 #'   cdm_filter(flights, month == 3) %>%
-#'   cdm_apply_filter_cascades()
+#'   cdm_apply_filters()
 #'
 #' library(dplyr)
 #' cdm_nycflights13() %>%
@@ -428,7 +428,7 @@ cdm_apply_filters <- function(dm) {
 
 #' @export
 compute.dm <- function(x) {
-  cdm_apply_filter_cascades(x)
+  cdm_apply_filters(x)
 }
 
 
@@ -448,7 +448,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 #' @export
 collect.dm <- function(x, ...) {
 
-  list_of_rem_tbls <- cdm_apply_filter_cascades(x) %>% cdm_get_tables()
+  list_of_rem_tbls <- cdm_apply_filters(x) %>% cdm_get_tables()
   tables <- map(list_of_rem_tbls, collect)
 
   # FIXME: in future src will no longer be part of `dm` object.
