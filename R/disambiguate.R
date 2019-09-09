@@ -28,7 +28,7 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   tables_for_disambiguation <- pull(tbl_cols_for_disambiguation, table)
   cols_for_disambiguation <- pull(tbl_cols_for_disambiguation, renames)
 
-  if (!quiet) {
+  if (!quiet && !is_empty(cols_for_disambiguation)) {
     names_for_disambiguation <- map(cols_for_disambiguation, names)
     msg_renamed_cols <- map2(cols_for_disambiguation, names_for_disambiguation, ~paste0(.x, " -> ", .y)) %>%
       map(~paste(., collapse = "\n"))
