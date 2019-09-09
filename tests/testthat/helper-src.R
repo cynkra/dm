@@ -331,3 +331,22 @@ dm_more_complex <- as_dm(list_for_filter) %>%
   cdm_add_fk(b, b_3, c) %>%
   cdm_add_fk(d, b_1, b) %>%
   cdm_add_fk(e, b_1, b)
+
+
+# for testing 'cdm_disambiguate()' ----------------------------------------
+
+iris_1 <- as_tibble(iris) %>% mutate(key = row_number()) %>% select(key, everything())
+iris_2 <- iris_1 %>% mutate(other_col = TRUE)
+
+iris_1_dis <- iris_1 %>%
+  rename_at(2:6, ~str_replace(., "^", "iris_1."))
+iris_2_dis <- iris_2 %>%
+  rename_at(2:6, ~str_replace(., "^", "iris_2."))
+
+dm_for_disambiguate <- as_dm(list(iris_1 = iris_1, iris_2 = iris_2)) %>%
+  cdm_add_pk(iris_1, key) %>%
+  cdm_add_fk(iris_2, key, iris_1)
+
+dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis)) %>%
+  cdm_add_pk(iris_1, key) %>%
+  cdm_add_fk(iris_2, key, iris_1)
