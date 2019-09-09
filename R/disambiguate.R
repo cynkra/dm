@@ -1,4 +1,4 @@
-cdm_disambiguate <- function(dm, sep = ".", quiet = FALSE) {
+cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   tbl_cols_for_disambiguation <-
     as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
     # key columns are supposed to remain unchanged, even if they are identical

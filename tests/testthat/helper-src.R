@@ -333,7 +333,7 @@ dm_more_complex <- as_dm(list_for_filter) %>%
   cdm_add_fk(e, b_1, b)
 
 
-# for testing 'cdm_disambiguate()' ----------------------------------------
+# for testing 'cdm_disambiguate_cols()' ----------------------------------------
 
 iris_1 <- as_tibble(iris) %>% mutate(key = row_number()) %>% select(key, everything())
 iris_2 <- iris_1 %>% mutate(other_col = TRUE)
