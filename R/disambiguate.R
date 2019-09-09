@@ -1,3 +1,18 @@
+#' Avoid column name conflicts
+#'
+#' This function checks all tables for column names that are not unique and renames
+#' those columns by prefixing the respective table name and a separator.
+#' Key columns will not be renamed, since only one column should remain, when two tables
+#' linked by a key relation are joined.
+#'
+#' @inheritParams cdm_add_pk
+#' @param sep The character variable used in between the table names and the ambiguous column names
+#' @param quiet Boolean, if `TRUE`, will list the renamed columns in a message
+#'
+#' @examples
+#' cdm_disambiguate_cols(cdm_nycflights13())
+#'
+#' @export
 cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   tbl_cols_for_disambiguation <-
     as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
