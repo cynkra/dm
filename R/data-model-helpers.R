@@ -261,30 +261,25 @@ upd_fks_after_rename <- function(fks,
                                  table_name,
                                  list_of_renames) {
   fks_from_table <- filter(fks, table == !!table_name) %>% pull(column)
-  if (!is_empty(fks_from_table) &&
-    any(map_lgl(fks_from_table, is_in, list_of_renames))) {
-    indices_to_replace <- which(as.logical(match(fks_from_table, list_of_renames)))
-    values_for_replacing <- map_chr(fks_from_table[indices_to_replace], ~ names(list_of_renames[list_of_renames == .]))
-    fks[fks[["table"]] == table_name, ]$column <-
-      replace(
-        fks_from_table,
-        indices_to_replace,
-        values_for_replacing
-      )
-  }
-
+  fks <- upd_table_fks(fks, is_from = TRUE, fks_from_table, list_of_renames, table_name)
   fks_to_table <- filter(fks, ref == !!table_name) %>% pull(ref_col)
-  if (!is_empty(fks_to_table) &&
-    any(map_lgl(fks_to_table, is_in, list_of_renames))) {
-    indices_to_replace <- which(as.logical(match(fks_to_table, list_of_renames)))
-    values_for_replacing <- map_chr(fks_to_table[indices_to_replace], ~ names(list_of_renames[list_of_renames == .]))
-    fks[fks[["ref"]] == table_name, ]$ref_col <-
-      replace(
-        fks_to_table,
-        indices_to_replace,
-        values_for_replacing
-      )
-  }
+  upd_table_fks(fks, is_from = FALSE, fks_to_table, list_of_renames, table_name)
+}
 
+upd_table_fks <- function(fks, is_from, fks_xxx_table, list_of_renames, table_name) {
+  if (is_from) {
+    upd_col <- "column"
+    upd_tbl <- "table"} else {
+    upd_col <- "ref_col"
+    upd_tbl <- "ref"
+    }
+  indices_to_replace <- which(as.logical(match(fks_xxx_table, list_of_renames)))
+  values_for_replacing <- map_chr(fks_xxx_table[indices_to_replace], ~ names(list_of_renames[list_of_renames == .]))
+  fks[fks[[upd_tbl]] == table_name, ][[upd_col]] <-
+    replace(
+      fks_xxx_table,
+      indices_to_replace,
+      values_for_replacing
+    )
   fks
 }
