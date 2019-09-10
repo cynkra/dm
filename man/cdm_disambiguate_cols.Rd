@@ -11,10 +11,10 @@ cdm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 
 \item{sep}{The character variable separating the table names and the ambiguous column names}
 
-\item{quiet}{Boolean, if \code{TRUE}, will list the renamed columns in a message}
+\item{quiet}{Boolean. By default this function lists the renamed columns in a message, pass \code{FALSE} to suppress this message.}
 }
 \description{
-This function checks all tables for column names that are not unique and renames
+This function checks all tables for column names that are not unique (across the entire \code{dm} object) and renames
 those columns by prefixing the respective table name and a separator.
 Key columns will not be renamed, since only one column should remain, when two tables
 linked by a key relation are joined.

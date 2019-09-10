@@ -14,7 +14,7 @@
 #'
 #' @export
 cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
-  tbl_cols_for_disambiguation <-
+  recipe <-
     as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
     # key columns are supposed to remain unchanged, even if they are identical
     # in case of flattening, only one column will remains for pk-fk-relations
@@ -25,21 +25,18 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
     nest(-table, .key = "renames") %>%
     mutate(renames = map(renames, deframe))
 
-  tables_for_disambiguation <- pull(tbl_cols_for_disambiguation, table)
-  cols_for_disambiguation <- pull(tbl_cols_for_disambiguation, renames)
-
-  if (!quiet && !is_empty(cols_for_disambiguation)) {
-    names_for_disambiguation <- map(cols_for_disambiguation, names)
-    msg_renamed_cols <- map2(cols_for_disambiguation, names_for_disambiguation, ~paste0(.x, " -> ", .y)) %>%
+  if (!quiet && nrow(recipe) > 0) {
+    names_for_disambiguation <- map(recipe$renames, names)
+    msg_renamed_cols <- map2(recipe$renames, names_for_disambiguation, ~paste0(.x, " -> ", .y)) %>%
       map(~paste(., collapse = "\n"))
-    msg_core <- paste0("Table: ", tables_for_disambiguation, "\n",
+    msg_core <- paste0("Table: ", recipe$table, "\n",
                        msg_renamed_cols, "\n", collapse = "\n")
     msg <- paste0("Renamed columns:\n", msg_core)
     message(msg)
   }
 
-  reduce2(tables_for_disambiguation,
-          cols_for_disambiguation,
+  reduce2(recipe$table,
+          recipe$renames,
           ~cdm_rename(..1, !!..2, !!!..3),
           .init = dm)
 }
