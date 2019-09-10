@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1>Getting Started</h1>
             
-            <h4 class="date">2019-09-09</h4>
+            <h4 class="date">2019-09-10</h4>
       
       
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -242,8 +242,8 @@
 #&gt; airlines: name == "US Airways Inc."
 #&gt; airports: name == "John F Kennedy Intl"
 </span></code></pre>
-<p>With <code><a href="../reference/cdm_apply_filters.html">cdm_apply_filters()</a></code> you can apply all filters and therefore update all tables in the <code>dm</code>, so that they contain only the rows relevant to the filters. Counting the rows you can see the effect of the filters:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">us_flights_from_jfk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_apply_filters.html">cdm_apply_filters</a></span>(us_flights_from_jfk_prepared)</a>
+<p>With <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> you can apply all filters and therefore update all tables in the <code>dm</code>, so that they contain only the rows relevant to the filters. Counting the rows you can see the effect of the filters:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">us_flights_from_jfk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_apply_filters</a></span>(us_flights_from_jfk_prepared)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">us_flights_from_jfk <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/dm.html">cdm_get_tables</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw">map_int</span>(nrow)</a>
