@@ -16,7 +16,10 @@
 #'
 #' @export
 cdm_flatten <- function(dm, join = left_join) {
-  if (!are_all_vertices_connected(create_graph_from_dm(dm), src_tbls(dm))) {
+  # testing, if all vertices of undirected graph of fk-relations are connected, otherwise error for now
+  # FIXME: as discussed: later, we should have a param 'initial_table' and just flatten in the component
+  # of this table and drop the rest
+  if (!is_dm_connected(dm)) {
     abort_vertices_not_connected("cdm_flatten")
   }
   clean_dm <- cdm_apply_filters(dm) %>%

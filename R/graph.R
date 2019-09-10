@@ -86,7 +86,10 @@ create_graph_from_dm <- function(dm, directed = FALSE) {
     igraph::graph_from_data_frame(directed = directed, vertices = ref_tables)
 }
 
-are_all_vertices_connected <- nse_function(c(g, vertex_names), ~ {
+is_dm_connected <- nse_function(c(dm), ~ {
+  g <- create_graph_from_dm(dm)
+  vertex_names <- src_tbls(dm)
+
   V <- names(V(g))
 
   vertex_names[1] %in% V &&
