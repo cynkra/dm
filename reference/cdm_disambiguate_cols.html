@@ -36,7 +36,7 @@
 
 
 <meta property="og:title" content="Avoid column name conflicts — cdm_disambiguate_cols" />
-<meta property="og:description" content="This function checks all tables for column names that are not unique and renames
+<meta property="og:description" content="This function checks all tables for column names that are not unique (across the entire dm object) and renames
 those columns by prefixing the respective table name and a separator.
 Key columns will not be renamed, since only one column should remain, when two tables
 linked by a key relation are joined." />
@@ -132,7 +132,7 @@ linked by a key relation are joined." />
     </div>
 
     <div class="ref-description">
-    <p>This function checks all tables for column names that are not unique and renames
+    <p>This function checks all tables for column names that are not unique (across the entire <code>dm</code> object) and renames
 those columns by prefixing the respective table name and a separator.
 Key columns will not be renamed, since only one column should remain, when two tables
 linked by a key relation are joined.</p>
@@ -153,7 +153,7 @@ linked by a key relation are joined.</p>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>Boolean, if <code>TRUE</code>, will list the renamed columns in a message</p></td>
+      <td><p>Boolean. By default this function lists the renamed columns in a message, pass <code>FALSE</code> to suppress this message.</p></td>
     </tr>
     </table>
 
