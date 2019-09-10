@@ -5,8 +5,9 @@
 #' with `cdm_select_tbl()` in order to reduce the number of tables in advance.
 #'
 #' @inheritParams cdm_join_tbl
-#' @param disambiguate Boolean, if `TRUE`, will rename columns with non-unique names
-#' if necessary using [`cdm_disambiguate_cols()`].
+#' @param sep In case there are columns with non-unique names, they will be renamed using
+#' [`cdm_disambiguate_cols()`]. `sep` is the character variable separating the table
+#' names and the ambiguous column names
 #' @family Flattening functions
 #'
 #' @return A wide table resulting of consecutively joining all tables together.
@@ -17,13 +18,13 @@
 #' cdm_flatten()
 #'
 #' @export
-cdm_flatten <- function(dm, join = left_join, disambiguate = TRUE) {
+cdm_flatten <- function(dm, join = left_join, sep = ".") {
   if (!are_all_vertices_connected(create_graph_from_dm(dm), src_tbls(dm))) {
     abort_vertices_not_connected("cdm_flatten")
   }
   clean_dm <- cdm_apply_filters(dm) %>%
-    cdm_disambiguate_cols(quiet = TRUE) %>%
-    adapt_fk_cols()
+      cdm_disambiguate_cols(sep = sep, quiet = TRUE) %>%
+      adapt_fk_cols()
   g <- create_graph_from_dm(clean_dm, directed = TRUE)
   filtered_tables <- clean_dm %>% cdm_get_tables()
 

@@ -4,15 +4,16 @@
 \alias{cdm_flatten}
 \title{Flatten \code{dm} into a wide table}
 \usage{
-cdm_flatten(dm, join = left_join, disambiguate = TRUE)
+cdm_flatten(dm, join = left_join, sep = ".")
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
 
-\item{disambiguate}{Boolean, if \code{TRUE}, will rename columns with non-unique names
-if necessary using \code{\link[=cdm_disambiguate_cols]{cdm_disambiguate_cols()}}.}
+\item{sep}{In case there are columns with non-unique names, they will be renamed using
+\code{\link[=cdm_disambiguate_cols]{cdm_disambiguate_cols()}}. \code{sep} is the character variable separating the table
+names and the ambiguous column names}
 }
 \value{
 A wide table resulting of consecutively joining all tables together.
