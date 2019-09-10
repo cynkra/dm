@@ -60,7 +60,7 @@ cdm_update_table <- function(dm, name, table) {
 #' @param dm A [`dm`] object
 #' @export
 cdm_nrow <- function(dm) {
-  sum(map_dbl(cdm_get_tables(dm), ~ as.numeric(pull(collect(count(.))))))
+  map_dbl(cdm_get_tables(dm), ~ as.numeric(pull(collect(count(.)))))
 }
 
 get_by <- function(dm, lhs_name, rhs_name) {
