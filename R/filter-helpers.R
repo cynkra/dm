@@ -14,6 +14,8 @@
 #'
 #' @export
 cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
+
+  if (nrow(cdm_get_filter(dm)) > 0) {abort_only_possible_wo_filters("cdm_join_tbl()")}
   lhs_name <- as_name(enexpr(lhs))
   rhs_name <- as_name(enexpr(rhs))
 

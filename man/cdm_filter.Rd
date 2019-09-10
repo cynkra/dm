@@ -2,41 +2,69 @@
 % Please edit documentation in R/filter-dm.R
 \name{cdm_filter}
 \alias{cdm_filter}
-\alias{cdm_semi_join}
-\title{Cascading filter of a \code{\link{dm}} object}
+\alias{cdm_apply_filters}
+\title{Filtering a \code{\link{dm}} object}
 \usage{
 cdm_filter(dm, table, ...)
 
-cdm_semi_join(dm, table, reduced_table)
+cdm_apply_filters(dm)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}}
 
-\item{...}{Logical predicates defined in terms of the variables in .data.
-Multiple conditions are combined with &. Only rows where the condition evaluates
+\item{...}{Logical predicates defined in terms of the variables in \code{.data}, passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
+Multiple conditions are combined with \code{&} or \code{,}. Only rows where the condition evaluates
 to TRUE are kept.
 
 The arguments in ... are automatically quoted and evaluated in the context of
-the data frame. They support unquoting and splicing. See vignette("programming")
+the data frame. They support unquoting and splicing. See \code{vignette("programming", package = "dplyr")}
 for an introduction to these concepts.}
-
-\item{reduced_table}{The table indicated in argument \code{table}, but in a filtered state (cf, \code{dplyr::filter()}).}
 }
 \description{
-'cdm_filter()' allows you to set one or more filter conditions for one table
-of a \code{\link{dm}} object. If the \code{\link{dm}}'s tables are connected via key constrains, the
-filtering will affect all other connected tables, leaving only the rows with
-the corresponding key values.
+Filtering one table of a \code{\link{dm}} object has an effect on all tables connected to this table
+via one or more steps of foreign key relations. Firstly, one or more filter conditions for
+one or more tables can be defined using \code{cdm_filter()}, with a syntax similar to \code{dplyr::filter()}.
+These conditions will be stored in the \code{\link{dm}} and not immediately executed. With \code{cdm_apply_filters()}
+all tables will be updated according to the filter conditions and the foreign key relations.
+}
+\details{
+\code{cdm_filter()} allows you to set one or more filter conditions for one table
+of a \code{\link{dm}} object. These conditions will be stored in the \code{\link{dm}} for when they are needed.
+Once executed, the filtering the will affect all tables connected to the filtered one by
+foreign key constraints, leaving only the rows with the corresponding key values. The filtering
+implicitly takes place, once a table is requested from the \code{\link{dm}} by using one of \code{tbl()}, \code{[[.dm()}, \code{$.dm()}.
 
-'cdm_semi_join()' performs a cascading "row reduction" of a \code{\link{dm}} object
-by an inital semi-join of one of its tables with the same, but filtered table. Subsequently, the
-key constraints are used to compute the remainders of the other tables of the \code{\link{dm}} object and
-a new \code{\link{dm}} object is returned.
+With \code{cdm_apply_filters()} all set filter conditions are applied and their
+combined cascading effect on each table of the \code{\link{dm}} is taken into account, producing a new
+\code{dm} object.
+This function is called by the \code{compute()} method for \code{dm} class objects.
 }
 \examples{
-library(magrittr)
-cdm_nycflights13(cycle = FALSE) \%>\%
+library(dplyr)
+
+dm_nyc_filtered <-
+  cdm_nycflights13() \%>\%
   cdm_filter(airports, name == "John F Kennedy Intl")
+
+  tbl(dm_nyc_filtered, "flights")
+  dm_nyc_filtered[["planes"]]
+  dm_nyc_filtered$airlines
+
+  cdm_nycflights13() \%>\%
+  cdm_filter(airports, name == "John F Kennedy Intl") \%>\%
+  cdm_apply_filters()
+cdm_nycflights13() \%>\%
+  cdm_filter(flights, month == 3) \%>\%
+  cdm_apply_filters()
+
+library(dplyr)
+cdm_nycflights13() \%>\%
+  cdm_filter(planes, engine \%in\% c("Reciprocating", "4 Cycle")) \%>\%
+  compute()
+
+}
+\references{
+\code{\link[=cdm_semi_join]{cdm_semi_join()}}
 }
