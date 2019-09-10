@@ -374,7 +374,6 @@ error_no_numeric_subsetting <- function() {
   paste0("Can't subset a `dm` object by position, either subset by name or use cdm_get_tables() to convert to a regular list first.")
 }
 
-
 # when filters are set and they shouldn't be ------------------------------
 
 abort_only_possible_wo_filters <- function(fun_name) {
@@ -394,4 +393,15 @@ abort_tables_not_neighbours <- function(t1_name, t2_name) {
 
 error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
+}
+
+# if key columns are deselected -------------------------------------------
+
+abort_key_cols_missing <- function(table_name, missing) {
+  abort(error_key_cols_missing(table_name, missing), .subclass = cdm_error_full("key_cols_missing"))
+}
+
+error_key_cols_missing <- function(table_name, missing) {
+  glue("If you want to deselect key columns for table `{table_name}`, remove respective key constraints first:\n",
+       "Key column(s) `{paste0(missing, collapse = ', ')}` missing after `cdm_select()`")
 }

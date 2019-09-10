@@ -62,3 +62,72 @@ rename_cols <- function(dm, table_name, quos) {
     base_dm = dm
   )
 }
+
+cdm_select <- function(dm, table, ...) {
+  table_name <- as_name(enexpr(table))
+  check_correct_input(dm, table_name)
+
+  quos <- enquos(...)
+  if (is_empty(quos)) {
+    return(dm)
+  } # valid table and empty ellipsis provided
+
+  select_cols(dm, table_name, quos)
+}
+
+# need to take care of deselecting key columns
+select_cols <- function(dm, table_name, quos) {
+  list_of_tables <- cdm_get_tables(dm)
+  table <- list_of_tables[[table_name]]
+
+  # create new table using `dplyr::select()`
+  new_table <- select(table, !!!quos)
+  list_of_tables[[table_name]] <- new_table
+
+  # find out which columns were deselected and which ones were renamed
+  unquos <- as.character(quos) %>% map_chr(~str_replace(., "~", ""))
+  ind_deselected <- which(str_detect(unquos, "^-"))
+  ind_select_helper_call <- which(str_detect(unquos, "\\(\\)"))
+  quos_not_deselect <- quos[setdiff(seq_along(unquos), c(ind_deselected, ind_select_helper_call))]
+  list_of_ren_sel <- map_chr(quos_not_deselect, as_name)
+  list_of_renames <- list_of_ren_sel[which(names(list_of_ren_sel) != "")]
+
+  # upd key names after potential renaming
+  keys <- get_key_cols(dm, table_name)
+  for (i in seq_along(list_of_renames)) {
+    if (list_of_renames[i] %in% keys) keys[which(keys == list_of_renames[i])] <- names(list_of_renames[i])
+  }
+  if (!all(keys %in% colnames(new_table))) {
+    abort_key_cols_missing(table_name, setdiff(keys, colnames(new_table)))
+  }
+
+  pks_upd <-
+    upd_pks_after_rename(
+      cdm_get_data_model_pks(dm),
+      table_name,
+      list_of_renames
+    )
+
+  fks_upd <-
+    upd_fks_after_rename(
+      cdm_get_data_model_fks(dm),
+      table_name,
+      list_of_renames
+    )
+
+  new_dm2(
+    tables = list_of_tables,
+    pks = pks_upd,
+    fks = fks_upd,
+    base_dm = dm
+  )
+}
+
+# get all key columns (PK & FK) for a table in a `dm`
+get_key_cols <- function(dm, table_name) {
+  pk <- cdm_get_pk(dm, !!table_name)
+  fks <- cdm_get_all_fks(dm) %>%
+    filter(child_table == !!table_name) %>%
+    pull(child_fk_col)
+  c(pk, fks)
+}
