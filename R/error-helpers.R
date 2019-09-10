@@ -397,11 +397,11 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
 
 # if key columns are deselected -------------------------------------------
 
-abort_key_cols_missing <- function(table_name, missing) {
-  abort(error_key_cols_missing(table_name, missing), .subclass = cdm_error_full("key_cols_missing"))
+abort_key_cols_missing <- function(table_name, old_keys) {
+  abort(error_key_cols_missing(table_name, old_keys), .subclass = cdm_error_full("key_cols_missing"))
 }
 
-error_key_cols_missing <- function(table_name, missing) {
-  glue("If you want to deselect key columns for table `{table_name}`, remove respective key constraints first:\n",
-       "Key column(s) `{paste0(missing, collapse = ', ')}` missing after `cdm_select()`")
+error_key_cols_missing <- function(table_name, old_keys) {
+  glue("`cdm_select()` would remove one or more key column(s) (`{paste0(old_keys, collapse = ', ')}`) ",
+  "for table `{table_name}`, but `prune = FALSE`.")
 }
