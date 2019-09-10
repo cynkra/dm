@@ -4,24 +4,20 @@
 \alias{cdm_flatten}
 \title{Flatten \code{dm} into a wide table}
 \usage{
-cdm_flatten(dm, join = left_join, sep = ".")
+cdm_flatten(dm, join = left_join)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
-
-\item{sep}{In case there are columns with non-unique names, they will be renamed using
-\code{\link[=cdm_disambiguate_cols]{cdm_disambiguate_cols()}}. \code{sep} is the character variable separating the table
-names and the ambiguous column names}
 }
 \value{
 A wide table resulting of consecutively joining all tables together.
 }
 \description{
 This function joins all the tables of your \code{dm} object together and returns one
-table containing all unique columns. This is especially useful in connection
-with \code{cdm_select_tbl()} in order to reduce the number of tables in advance.
+table with unique columns. Use
+\code{\link[=cdm_select_tbl]{cdm_select_tbl()}} if necessary to reduce the number of tables before calling this function.
 }
 \examples{
 cdm_nycflights13() \%>\%
