@@ -1,3 +1,22 @@
+#' Flatten `dm` into a wide table
+#'
+#' This function joins all the tables of your `dm` object together and returns one
+#' table containing all unique columns. This is especially useful in connection
+#' with `cdm_select_tbl()` in order to reduce the number of tables in advance.
+#'
+#' @inheritParams cdm_join_tbl
+#' @param disambiguate Boolean, if `TRUE`, will rename columns with non-unique names
+#' if necessary using [`cdm_disambiguate_cols()`].
+#' @family Flattening functions
+#'
+#' @return A wide table resulting of consecutively joining all tables together.
+#'
+#' @examples
+#' cdm_nycflights13() %>%
+#' cdm_select_tbl(-weather) %>%
+#' cdm_flatten()
+#'
+#' @export
 cdm_flatten <- function(dm, join = left_join, disambiguate = TRUE) {
   if (!are_all_vertices_connected(create_graph_from_dm(dm), src_tbls(dm))) {
     abort_vertices_not_connected("cdm_flatten")
