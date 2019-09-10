@@ -6,7 +6,7 @@
 #' linked by a key relation are joined.
 #'
 #' @inheritParams cdm_add_pk
-#' @param sep The character variable used in between the table names and the ambiguous column names
+#' @param sep The character variable separating the table names and the ambiguous column names
 #' @param quiet Boolean, if `TRUE`, will list the renamed columns in a message
 #'
 #' @examples

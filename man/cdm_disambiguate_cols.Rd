@@ -9,7 +9,7 @@ cdm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{sep}{The character variable used in between the table names and the ambiguous column names}
+\item{sep}{The character variable separating the table names and the ambiguous column names}
 
 \item{quiet}{Boolean, if \code{TRUE}, will list the renamed columns in a message}
 }
