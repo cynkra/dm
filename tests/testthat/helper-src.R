@@ -105,9 +105,9 @@ data_3_src <- test_load(data_3)
 
 # for table-surgery functions ---------------------------------------------
 data_ts <- tibble(
-  a = vctrs::vec_cast(c(1, 2, 1), to= integer()),
+  a = as.integer(c(1, 2, 1)),
   b = c(1.1, 4.2, 1.1),
-  c = vctrs::vec_cast(c(5, 6, 7), to= integer()),
+  c = as.integer(c(5, 6, 7)),
   d = c("a", "b", "c"),
   e = c("c", "b", "c"),
   f = c(TRUE, FALSE, TRUE)
@@ -115,14 +115,14 @@ data_ts <- tibble(
 
 data_ts_child <- tibble(
   b = c(1.1, 4.2, 1.1),
-  aef_id = vctrs::vec_cast(c(1, 2, 1), to= integer()),
-  c = vctrs::vec_cast(c(5, 6, 7), to= integer()),
+  aef_id = as.integer(c(1, 2, 1)),
+  c = as.integer(c(5, 6, 7)),
   d = c("a", "b", "c"),
 )
 
 data_ts_parent <- tibble(
-  aef_id = vctrs::vec_cast(c(1, 2), to= integer()),
-  a = vctrs::vec_cast(c(1, 2), to= integer()),
+  aef_id = as.integer(c(1, 2)),
+  a = as.integer(c(1, 2)),
   e = c("c", "b"),
   f = c(TRUE, FALSE)
 )
