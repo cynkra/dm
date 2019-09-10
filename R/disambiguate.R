@@ -37,7 +37,6 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
     msg <- paste0("Renamed columns:\n", msg_core)
     message(msg)
   }
-  paste(cols_for_disambiguation, " -> ", names_for_disambiguation, collapse = "\n")
 
   reduce2(tables_for_disambiguation,
           cols_for_disambiguation,
