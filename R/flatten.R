@@ -90,17 +90,6 @@ adapt_fk_cols <- function(dm) {
           .init = dm)
   }
 
-reunite_parent_child_2 <- function(child_table, parent_table, id_column, join = left_join) {
-  id_col_q <- enexpr(id_column)
-
-  id_col_chr <-
-    as_name(id_col_q)
-
-  child_table %>%
-    join(parent_table, by = id_col_chr) %>%
-    select(-!!id_col_q)
-}
-
 #' Perform a join between two tables of a [`dm`]
 #'
 #' @description A join of desired type is performed between table `lhs` and
