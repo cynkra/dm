@@ -354,3 +354,74 @@ dm_for_disambiguate <- as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iri
 dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
   cdm_add_pk(iris_1, key) %>%
   cdm_add_fk(iris_2, key, iris_1)
+
+# star schema data model for testing 'cdm_flatten()'
+
+fact <- tibble(
+  fact = c("acorn",
+           "blubber",
+           "cinderella",
+           "depth",
+           "elysium",
+           "fantasy",
+           "gorgeous",
+           "halo",
+           "ill-advised",
+           "jitter"),
+  dim_1_key = 14:5,
+  dim_2_key = letters[3:12],
+  dim_3_key = LETTERS[24:15],
+  dim_4_key = 7:16,
+  something = 1:10)
+fact_clean <-
+  fact %>% rename(
+    dim_1_pk = dim_1_key,
+    dim_2_pk = dim_2_key,
+    dim_3_pk = dim_3_key,
+    dim_4_pk = dim_4_key,
+    fact.something = something
+  )
+
+dim_1 <- tibble(
+  dim_1_pk = 1:20,
+  something = letters[3:22])
+dim_1_clean <- dim_1 %>% rename(dim_1.something = something)
+
+dim_2 <- tibble(
+  dim_2_pk = letters[1:20],
+  something = LETTERS[5:24])
+dim_2_clean <- dim_2 %>% rename(dim_2.something = something)
+
+dim_3 <- tibble(
+  dim_3_pk = LETTERS[5:24],
+  something = 3:22)
+dim_3_clean <- dim_3 %>% rename(dim_3.something = something)
+
+dim_4 <- tibble(
+  dim_4_pk = 19:7,
+  something = 19:31)
+dim_4_clean <- dim_4 %>% rename(dim_4.something = something)
+
+dm_for_flatten <- as_dm(list(
+  fact = fact,
+  dim_1 = dim_1,
+  dim_2 = dim_2,
+  dim_3 = dim_3,
+  dim_4 = dim_4
+  )) %>%
+  cdm_add_pk(dim_1, dim_1_pk) %>%
+  cdm_add_pk(dim_2, dim_2_pk) %>%
+  cdm_add_pk(dim_3, dim_3_pk) %>%
+  cdm_add_pk(dim_4, dim_4_pk) %>%
+  cdm_add_fk(fact, dim_1_key, dim_1) %>%
+  cdm_add_fk(fact, dim_2_key, dim_2) %>%
+  cdm_add_fk(fact, dim_3_key, dim_3) %>%
+  cdm_add_fk(fact, dim_4_key, dim_4)
+dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
+
+result_from_flatten <-
+  fact_clean %>%
+  left_join(dim_1_clean, by = "dim_1_pk") %>%
+  left_join(dim_2_clean, by = "dim_2_pk") %>%
+  left_join(dim_3_clean, by = "dim_3_pk") %>%
+  left_join(dim_4_clean, by = "dim_4_pk")
