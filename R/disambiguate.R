@@ -1,13 +1,13 @@
 #' Avoid column name conflicts
 #'
-#' This function checks all tables for column names that are not unique and renames
+#' This function checks all tables for column names that are not unique (across the entire `dm` object) and renames
 #' those columns by prefixing the respective table name and a separator.
 #' Key columns will not be renamed, since only one column should remain, when two tables
 #' linked by a key relation are joined.
 #'
 #' @inheritParams cdm_add_pk
 #' @param sep The character variable separating the table names and the ambiguous column names
-#' @param quiet Boolean, if `TRUE`, will list the renamed columns in a message
+#' @param quiet Boolean. By default this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
 #'
 #' @examples
 #' cdm_disambiguate_cols(cdm_nycflights13())

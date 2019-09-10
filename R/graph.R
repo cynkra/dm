@@ -55,7 +55,7 @@ calculate_join_list <- function(dm, table_name) {
     ))
   }
 
-  bfs <- bfs(g, table_name, father = TRUE, rank = TRUE, unreachable = FALSE)
+  bfs <- igraph::bfs(g, table_name, father = TRUE, rank = TRUE, unreachable = FALSE)
 
   nodes <- names(V(g))
 
@@ -67,7 +67,7 @@ calculate_join_list <- function(dm, table_name) {
     arrange(rank)
 
   subgraph_nodes <- union(res$lhs, res$rhs)
-  subgraph <- induced_subgraph(g, subgraph_nodes)
+  subgraph <- igraph::induced_subgraph(g, subgraph_nodes)
   if (length(V(subgraph)) - 1 < length(E(subgraph))) {
     abort_no_cycles()
   }
@@ -83,14 +83,14 @@ create_graph_from_dm <- function(dm, directed = FALSE) {
   tibble(tables, ref_tables) %>%
     unnest(tables) %>%
     select(tables, ref_tables) %>%
-    graph_from_data_frame(directed = directed, vertices = ref_tables)
+    igraph::graph_from_data_frame(directed = directed, vertices = ref_tables)
 }
 
 are_all_vertices_connected <- nse_function(c(g, vertex_names), ~ {
   V <- names(V(g))
 
   vertex_names[1] %in% V &&
-    bfs(g, vertex_names[1], father = TRUE, rank = TRUE, unreachable = FALSE) %>%
+    igraph::bfs(g, vertex_names[1], father = TRUE, rank = TRUE, unreachable = FALSE) %>%
       extract2("order") %>%
       names() %>%
       is_in(vertex_names, .) %>%

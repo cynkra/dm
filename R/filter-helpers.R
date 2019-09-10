@@ -63,5 +63,5 @@ get_by <- function(dm, lhs_name, rhs_name) {
 }
 
 relation_exists <- function(dm, table_1, table_2) {
-  cdm_has_fk(dm, !!table_1, !!table_2) | cdm_has_fk(dm, !!table_2, !!table_1)
+  cdm_has_fk(dm, !!table_1, !!table_2) || cdm_has_fk(dm, !!table_2, !!table_1)
 }

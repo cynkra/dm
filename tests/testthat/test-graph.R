@@ -32,7 +32,7 @@ test_that("functions working with graphs do the right thing?", {
   )
 
   expect_identical_graph(
-    graph_from_data_frame(tibble(
+    igraph::graph_from_data_frame(tibble(
       tables = c("t1", "t2", "t2", "t3", "t4", "t5", "t6"),
       ref_tables = c("t2", "t7", "t3", "t4", "t5", "t6", "t7")
     ),

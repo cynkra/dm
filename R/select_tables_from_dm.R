@@ -9,6 +9,7 @@
 #' @export
 cdm_select_tbl <- function(dm, ...) {
 
+  if (nrow(cdm_get_filter(dm)) > 0) {abort_only_possible_wo_filters("cdm_select_tbl()")}
   table_list <- tidyselect_dm(dm, ...)
 
   all_table_names <- table_list[[1]]

@@ -244,6 +244,8 @@ enum_pk_candidates <- nse_function(c(table), ~ {
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
 cdm_enum_pk_candidates <- nse_function(c(dm, table), ~ {
+
+  if (nrow(cdm_get_filter(dm)) > 0) {abort_only_possible_wo_filters("cdm_enum_pk_candidates()")}
   table_name <- as_name(enquo(table))
 
   check_correct_input(dm, table_name)
