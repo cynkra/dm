@@ -105,9 +105,9 @@ data_3_src <- test_load(data_3)
 
 # for table-surgery functions ---------------------------------------------
 data_ts <- tibble(
-  a = as_integer(c(1, 2, 1)),
+  a = vctrs::vec_cast(c(1, 2, 1), to= integer()),
   b = c(1.1, 4.2, 1.1),
-  c = as_integer(c(5, 6, 7)),
+  c = vctrs::vec_cast(c(5, 6, 7), to= integer()),
   d = c("a", "b", "c"),
   e = c("c", "b", "c"),
   f = c(TRUE, FALSE, TRUE)
@@ -115,14 +115,14 @@ data_ts <- tibble(
 
 data_ts_child <- tibble(
   b = c(1.1, 4.2, 1.1),
-  aef_id = as_integer(c(1, 2, 1)),
-  c = as_integer(c(5, 6, 7)),
+  aef_id = vctrs::vec_cast(c(1, 2, 1), to= integer()),
+  c = vctrs::vec_cast(c(5, 6, 7), to= integer()),
   d = c("a", "b", "c"),
 )
 
 data_ts_parent <- tibble(
-  aef_id = as_integer(c(1, 2)),
-  a = as_integer(c(1, 2)),
+  aef_id = vctrs::vec_cast(c(1, 2), to= integer()),
+  a = vctrs::vec_cast(c(1, 2), to= integer()),
   e = c("c", "b"),
   f = c(TRUE, FALSE)
 )
@@ -331,3 +331,26 @@ dm_more_complex <- as_dm(list_for_filter) %>%
   cdm_add_fk(b, b_3, c) %>%
   cdm_add_fk(d, b_1, b) %>%
   cdm_add_fk(e, b_1, b)
+
+
+# for testing 'cdm_disambiguate_cols()' ----------------------------------------
+
+iris_1 <- as_tibble(iris) %>% mutate(key = row_number()) %>% select(key, everything())
+iris_2 <- iris_1 %>% mutate(other_col = TRUE)
+iris_3 <- iris_2 %>% mutate(one_more_col = 1)
+
+iris_1_dis <- iris_1 %>%
+  rename_at(2:6, ~str_replace(., "^", "iris_1."))
+iris_2_dis <- iris_2 %>%
+  rename_at(2:7, ~str_replace(., "^", "iris_2."))
+iris_3_dis <- iris_3 %>%
+  rename_at(1:7, ~str_replace(., "^", "iris_3."))
+
+
+dm_for_disambiguate <- as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
+  cdm_add_pk(iris_1, key) %>%
+  cdm_add_fk(iris_2, key, iris_1)
+
+dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
+  cdm_add_pk(iris_1, key) %>%
+  cdm_add_fk(iris_2, key, iris_1)
