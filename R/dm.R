@@ -379,6 +379,16 @@ names.dm <- function(x) {
 }
 
 #' @export
+length.dm <- function(x) {
+  length(src_tbls(x))
+}
+
+#' @export
+`length<-.dm` <- function(x, value) {
+  abort_update_not_supported()
+}
+
+#' @export
 str.dm <- function(object, ...) {
   object <- unclass(object)
   NextMethod()
