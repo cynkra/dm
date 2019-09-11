@@ -71,24 +71,18 @@ get_by_for_flatten <- function(dm, order) {
 
 # key columns have to be adapted here (child table col needs to get the
 # same name as the parent table primary key)
-# FIXME: this function is very similar to `cdm_disambiguate_cols()`; maybe extract function?
 adapt_fk_cols <- function(dm) {
 
-  tbl_cols_for_disambiguation <-
+  recipe <-
     as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
     filter(!is.na(ref)) %>%
     select(table, ref_col, column) %>%
     nest(-table, .key = "renames") %>%
     mutate(renames = map(renames, deframe))
 
-  tables_for_disambiguation <- pull(tbl_cols_for_disambiguation, table)
-  cols_for_disambiguation <- pull(tbl_cols_for_disambiguation, renames)
+  col_rename(dm, recipe, quiet = TRUE)
+}
 
-  reduce2(tables_for_disambiguation,
-          cols_for_disambiguation,
-          ~cdm_rename(..1, !!..2, !!!..3),
-          .init = dm)
-  }
 
 #' Perform a join between two tables of a [`dm`]
 #'
