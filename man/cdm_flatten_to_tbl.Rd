@@ -24,7 +24,7 @@ table with unique columns. Use
 \examples{
 cdm_nycflights13() \%>\%
 cdm_select_tbl(-weather) \%>\%
-cdm_flatten_to_tbl()
+cdm_flatten_to_tbl(flights)
 
 }
 \seealso{
