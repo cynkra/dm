@@ -6,8 +6,8 @@ perform_joins <- function(
 }
 
 perform_join <- function(dm, lhs, rhs, join) {
-  joined_tbl <- cdm_join_tbl(dm, !!lhs, !!rhs, join = join)
 
+  joined_tbl <- join(tbl(dm, lhs), tbl(dm, rhs), by = get_by(dm, lhs, rhs))
   cdm_update_table(dm, lhs, joined_tbl)
 }
 
