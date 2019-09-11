@@ -42,16 +42,16 @@ cdm_flatten <- function(dm, join = left_join) {
   order <- igraph::dfs(g, initial_LHS_name) %>%
     extract2("order") %>%
     names()
+  # Drop first table in the list of join partners.
+  # (Working with `reduce2()` here and the `.init`-parameter is the first table)
+  order <- order[-1]
+  ordered_table_list <- filtered_tables[order]
 
   # early return in case of only one table...
-  if (length(order) == 1) return(initial_LHS)
-  # since we want to work with `reduce2()`, the `.init`-parameter is the first table
-  # in `order` and the next table is always the join partner
-  ordered_table_list <- filtered_tables[order] %>%
-    extract(2:length(order))
+  if (is_empty(order)) return(initial_LHS)
 
   # get the right column names for each join (should all be adapted by `adapt_fk_cols()`)
-  by <- get_by_for_flatten(clean_dm, order)
+  by <- get_by_for_flatten(clean_dm, c(initial_LHS_name, order))
 
   # perform the joins according to the list, starting with table `initial_LHS`
   reduce2(ordered_table_list, by, ~join(..1, ..2, by = ..3), .init = initial_LHS)
