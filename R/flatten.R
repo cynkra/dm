@@ -99,5 +99,16 @@ cdm_join_tbl <- function(dm, table_1, table_2, join = semi_join) {
   if (!is_dm_connected(red_dm)) {
     abort_tables_not_neighbours(as_string(ensym(table_1)), as_string(ensym(table_2)))
   }
-  cdm_flatten_to_tbl(red_dm, join = join)
+  start <- child_table(dm, {{ table_1 }}, {{ table_2 }})
+  cdm_flatten_to_tbl(red_dm, !!start, join = join)
+}
+
+child_table <- function(dm, table_1, table_2) {
+  t1_name <- as_string(ensym(table_1))
+  t2_name <- as_string(ensym(table_2))
+  cdm_get_all_fks(dm) %>%
+    filter((child_table == t1_name & parent_table == t2_name) |
+             (child_table == t2_name & parent_table == t1_name) ) %>%
+    pull(child_table)
+
 }
