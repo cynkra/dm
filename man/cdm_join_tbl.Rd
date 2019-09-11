@@ -9,11 +9,11 @@ cdm_join_tbl(dm, table_1, table_2, join = semi_join)
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
 
+\item{table_1}{One of the tables involved in the join}
+
+\item{table_2}{The second table of the join}
+
 \item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
-
-\item{lhs}{The table on the left hand side of the join}
-
-\item{rhs}{The table on the right hand side of the join}
 }
 \value{
 The resulting table of the join

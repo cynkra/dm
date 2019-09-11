@@ -72,8 +72,8 @@ adapt_fk_cols <- function(dm) {
 #' the join will always be the "child table", the table referencing the other table.
 #'
 #' @param dm A [`dm`] object
-#' @param lhs The table on the left hand side of the join
-#' @param rhs The table on the right hand side of the join
+#' @param table_1 One of the tables involved in the join
+#' @param table_2 The second table of the join
 #' @param join The type of join to be performed, see \code{\link[dplyr]{join}}
 #'
 #' @return The resulting table of the join
