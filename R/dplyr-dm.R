@@ -15,6 +15,8 @@
 #'
 #' See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
 #'
+#' @details If key columns are renamed the meta-information of the `dm` is updated accordingly
+#'
 #' @examples
 #' cdm_nycflights13() %>%
 #'   cdm_rename(airports, code = faa, altitude = alt)
@@ -40,6 +42,20 @@ rename_cols <- function(dm, table_name, renamed) {
 
 }
 
+#' Select and/or rename one or more columns of a [`dm`] table
+#'
+#' Select columns of your [`dm`] with a similar syntax to `dplyr::select()`.
+#'
+#' @inheritParams cdm_rename
+#'
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_select(airports, code = faa, altitude = alt)
+#'
+#' @details If key columns are renamed the meta-information of the `dm` is updated accordingly.
+#' If key columns would be removed, `cdm_select()` makes sure they are re-added to the table.
+#'
+#' @export
 cdm_select <- function(dm, table, ...) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
