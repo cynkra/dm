@@ -13,10 +13,10 @@
 #' @examples
 #' cdm_nycflights13() %>%
 #' cdm_select_tbl(-weather) %>%
-#' cdm_flatten()
+#' cdm_flatten_to_tbl()
 #'
 #' @export
-cdm_flatten <- function(dm, start, join = left_join) {
+cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   start <- as_name(ensym(start))
   check_correct_input(dm, start)
 
@@ -25,7 +25,7 @@ cdm_flatten <- function(dm, start, join = left_join) {
   # FIXME: as discussed: later, we should have a param 'initial_table' and just flatten in the component
   # of this table and drop the rest
   if (!is_dm_connected(dm)) {
-    abort_vertices_not_connected("cdm_flatten")
+    abort_vertices_not_connected("cdm_flatten_to_tbl")
   }
   clean_dm <- cdm_apply_filters(dm) %>%
       cdm_disambiguate_cols() %>%
@@ -84,7 +84,7 @@ adapt_fk_cols <- function(dm) {
 #'
 #' @description A join of desired type is performed between table `table_1` and
 #' table `table_2`. The two tables need to be directly connected by a foreign key
-#' relation. Since this function is a wrapper around `cdm_flatten()`, the LHS of
+#' relation. Since this function is a wrapper around `cdm_flatten_to_tbl()`, the LHS of
 #' the join will always be the "child table", the table referencing the other table.
 #'
 #' @param dm A [`dm`] object
@@ -103,5 +103,5 @@ cdm_join_tbl <- function(dm, table_1, table_2, join = semi_join) {
   if (!is_dm_connected(red_dm)) {
     abort_tables_not_neighbours(as_string(ensym(table_1)), as_string(ensym(table_2)))
   }
-  cdm_flatten(red_dm, join = join)
+  cdm_flatten_to_tbl(red_dm, join = join)
 }

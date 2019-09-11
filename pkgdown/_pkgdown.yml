@@ -52,7 +52,7 @@ reference:
 
 - title: Flattening
   contents:
-  - cdm_flatten
+  - cdm_flatten_to_tbl
   - cdm_join_tbl
 
 - title: Filtering
