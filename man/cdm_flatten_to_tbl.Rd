@@ -38,6 +38,6 @@ cdm_flatten_to_tbl(flights)
 
 }
 \seealso{
-Other Flattening functions: \code{\link{cdm_join_tbl}}
+Other Flattening functions: \code{\link{cdm_join_to_tbl}}
 }
 \concept{Flattening functions}

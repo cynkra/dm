@@ -6,7 +6,7 @@
 #' It returns one table with unique columns. Use [cdm_select_tbl()] if necessary to
 #' reduce the number of tables before calling this function.
 #'
-#' @inheritParams cdm_join_tbl
+#' @inheritParams cdm_join_to_tbl
 #' @param start Table to start from. From this table all outgoing foreign key relations are
 #' considered to establish a processing order for the joins. An interesting choice could be
 #' for example a fact table in a star schema.
@@ -90,7 +90,7 @@ adapt_fk_cols <- function(dm) {
 #' @family Flattening functions
 #'
 #' @export
-cdm_join_tbl <- function(dm, table_1, table_2, join = semi_join) {
+cdm_join_to_tbl <- function(dm, table_1, table_2, join = semi_join) {
   red_dm <- cdm_select_tbl(dm, {{ table_1 }}, {{ table_2 }})
 
   if (!is_dm_connected(red_dm)) {

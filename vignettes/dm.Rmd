@@ -190,12 +190,12 @@ The {dm} code is leaner, because the fk information is encoded in the object.
 
 ### Joining two tables {#join}
 
-The `cdm_join_tbl()` function joins two immediately related tables in a data model.
+The `cdm_join_to_tbl()` function joins two immediately related tables in a data model.
 The definition of the primary and foreign key constraints is used to define the relationship.
 
 ```{r}
 flights_dm_with_keys %>%
-  cdm_join_tbl(airlines, flights, join = left_join)
+  cdm_join_to_tbl(airlines, flights, join = left_join)
 ```
 
 The same operation using {dplyr} syntax looks like this:
