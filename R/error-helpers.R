@@ -262,12 +262,12 @@ error_txt_no_cycles <- function() {
 
 # errors in cdm_select_tbl() ----------------------------------------------
 
-abort_vertices_not_connected <- function() {
-  abort(error_txt_vertices_not_connected(), .subclass = cdm_error_full("vertices_not_connected"))
+abort_vertices_not_connected <- function(fun_name) {
+  abort(error_txt_vertices_not_connected(fun_name), .subclass = cdm_error_full("vertices_not_connected"))
 }
 
-error_txt_vertices_not_connected <- function() {
-  "Not all of the selected tables of the 'dm'-object are connected."
+error_txt_vertices_not_connected <- function(fun_name) {
+  glue("For `{fun_name}()` all of the selected tables of the 'dm'-object need to be connected.")
 }
 
 
@@ -383,4 +383,15 @@ abort_only_possible_wo_filters <- function(fun_name) {
 
 error_only_possible_wo_filters <- function(fun_name) {
   glue("You cannot call `{fun_name}` on a dm with filter conditions. Consider using `cdm_apply_filters()` first.")
+}
+
+
+# no foreign key relation -------------------------------------------------
+
+abort_tables_not_neighbours <- function(t1_name, t2_name) {
+  abort(error_tables_not_neighbours(t1_name, t2_name), .subclass = cdm_error_full("tables_not_neighbours"))
+}
+
+error_tables_not_neighbours <- function(t1_name, t2_name) {
+  glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }

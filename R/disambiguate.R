@@ -6,7 +6,7 @@
 #' linked by a key relation are joined.
 #'
 #' @inheritParams cdm_add_pk
-#' @param sep The character variable used in between the table names and the ambiguous column names
+#' @param sep The character variable separating the table names and the ambiguous column names
 #' @param quiet Boolean. By default this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
 #'
 #' @examples
@@ -25,6 +25,11 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
     nest(-table, .key = "renames") %>%
     mutate(renames = map(renames, deframe))
 
+  col_rename(dm, recipe, quiet)
+}
+
+col_rename <- function(dm, recipe, quiet) {
+
   if (!quiet && nrow(recipe) > 0) {
     names_for_disambiguation <- map(recipe$renames, names)
     msg_renamed_cols <- map2(recipe$renames, names_for_disambiguation, ~paste0(.x, " -> ", .y)) %>%
@@ -39,4 +44,5 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
           recipe$renames,
           ~cdm_rename(..1, !!..2, !!!..3),
           .init = dm)
+
 }

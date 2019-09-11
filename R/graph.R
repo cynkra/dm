@@ -75,7 +75,7 @@ calculate_join_list <- function(dm, table_name) {
   res
 }
 
-create_graph_from_dm <- function(dm) {
+create_graph_from_dm <- function(dm, directed = FALSE) {
 
   ref_tables <- src_tbls(dm)
   tables <- map(ref_tables, ~ cdm_get_referencing_tables(dm, !!.x))
@@ -83,10 +83,13 @@ create_graph_from_dm <- function(dm) {
   tibble(tables, ref_tables) %>%
     unnest(tables) %>%
     select(tables, ref_tables) %>%
-    igraph::graph_from_data_frame(directed = FALSE, vertices = ref_tables)
+    igraph::graph_from_data_frame(directed = directed, vertices = ref_tables)
 }
 
-are_all_vertices_connected <- nse_function(c(g, vertex_names), ~ {
+is_dm_connected <- nse_function(c(dm), ~ {
+  g <- create_graph_from_dm(dm)
+  vertex_names <- src_tbls(dm)
+
   V <- names(V(g))
 
   vertex_names[1] %in% V &&

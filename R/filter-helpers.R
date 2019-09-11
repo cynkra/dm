@@ -1,32 +1,3 @@
-#' Perform a join between two tables of a [`dm`]
-#'
-#' @description A join of desired type is performed between table `lhs` and
-#' table `rhs`.
-#'
-#' @param dm A [`dm`] object
-#' @param lhs The table on the left hand side of the join
-#' @param rhs The table on the right hand side of the join
-#' @param join The type of join to be performed, see \code{\link[dplyr]{join}}
-#'
-#' @return The resulting table of the join
-#'
-#' @family Flattening functions
-#'
-#' @export
-cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
-
-  if (nrow(cdm_get_filter(dm)) > 0) {abort_only_possible_wo_filters("cdm_join_tbl()")}
-  lhs_name <- as_name(enexpr(lhs))
-  rhs_name <- as_name(enexpr(rhs))
-
-  by <- get_by(dm, lhs_name, rhs_name)
-
-  lhs_obj <- tbl(dm, lhs_name)
-  rhs_obj <- tbl(dm, rhs_name)
-
-  join(lhs_obj, rhs_obj, by = by)
-}
-
 perform_joins <- function(
                           dm, # function should be called with 1 already filtered table which needs to be in first entry of join_list
                           join_list,
@@ -35,8 +6,8 @@ perform_joins <- function(
 }
 
 perform_join <- function(dm, lhs, rhs, join) {
-  joined_tbl <- cdm_join_tbl(dm, !!lhs, !!rhs, join = join)
 
+  joined_tbl <- join(tbl(dm, lhs), tbl(dm, rhs), by = get_by(dm, lhs, rhs))
   cdm_update_table(dm, lhs, joined_tbl)
 }
 
@@ -64,8 +35,7 @@ cdm_nrow <- function(dm) {
 }
 
 get_by <- function(dm, lhs_name, rhs_name) {
-  if (!(cdm_has_fk(dm, !!lhs_name, !!rhs_name) |
-        cdm_has_fk(dm, !!rhs_name, !!lhs_name))) {
+  if (!relation_exists(dm, lhs_name, rhs_name)) {
     abort(
       paste0(
         "No foreign key relation exists between table `",
@@ -90,4 +60,8 @@ get_by <- function(dm, lhs_name, rhs_name) {
   by <- rhs_col
   names(by) <- lhs_col
   by
+}
+
+relation_exists <- function(dm, table_1, table_2) {
+  cdm_has_fk(dm, !!table_1, !!table_2) || cdm_has_fk(dm, !!table_2, !!table_1)
 }

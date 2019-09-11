@@ -52,12 +52,12 @@ reference:
 
 - title: Flattening
   contents:
-  - cdm_join_tbl
+  - cdm_flatten_to_tbl
+  - cdm_join_to_tbl
 
 - title: Filtering
   contents:
   - cdm_filter
-  - cdm_semi_join
   - cdm_apply_filters
 
 - title: Interaction with DBs
