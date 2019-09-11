@@ -99,9 +99,10 @@ adapt_fk_cols <- function(dm) {
 #'
 #' @export
 cdm_join_tbl <- function(dm, table_1, table_2, join = semi_join) {
-  t1_name <- as_name(enexpr(table_1))
-  t2_name <- as_name(enexpr(table_2))
-  red_dm <- cdm_select_tbl(dm, t1_name, t2_name)
-  if (!is_dm_connected(red_dm)) abort_tables_not_neighbours(t1_name, t2_name)
+  red_dm <- cdm_select_tbl(dm, {{ table_1 }}, {{ table_2 }})
+
+  if (!is_dm_connected(red_dm)) {
+    abort_tables_not_neighbours(as_string(ensym(table_1)), as_string(ensym(table_2)))
+  }
   cdm_flatten(red_dm, join = join)
 }
