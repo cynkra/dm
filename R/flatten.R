@@ -1,12 +1,21 @@
-#' Flatten `dm` into a wide table
+#' Flatten part of a `dm` into a wide table
 #'
-#' This function joins all the tables of your `dm` object together and returns one
-#' table with unique columns. Use
-#' [cdm_select_tbl()] if necessary to reduce the number of tables before calling this function.
+#' This function joins all the tables of your [`dm`] object together, that can be reached
+#' from table `start` in the direction that the foreign keys are pointing, using the
+#' foreign key relations to determine the parameter `by` for the necessary joins.
+#' It returns one table with unique columns. Use [cdm_select_tbl()] if necessary to
+#' reduce the number of tables before calling this function.
 #'
 #' @inheritParams cdm_join_tbl
-#' @param start FIXME
+#' @param start Table to start from. From this table all outgoing foreign key relations are
+#' considered to establish a processing order for the joins. An interesting choice could be
+#' for example a fact table in a star schema.
 #' @family Flattening functions
+#'
+#' @details Uses [`cdm_apply_filters()`] and [`cdm_disambiguate_cols()`] first, to
+#' get a "clean" [`dm`]. Subsequently renames all foreign key columns to the names of
+#' the primary key columns they are pointing to. Then the order of the joins is determined
+#' and the joins are performed.
 #'
 #' @return A wide table resulting of consecutively joining all tables together.
 #'
