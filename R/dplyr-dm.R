@@ -49,42 +49,56 @@ cdm_select <- function(dm, table, ..., prune = FALSE) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
-  quos <- enquos(...)
-  if (is_empty(quos)) {
-    return(dm)
-  } # valid table and empty ellipsis provided
+  old_cols <- colnames(tbl(dm, table_name))
+  selected <- tidyselect::vars_select(old_cols, ...)
 
-  select_cols(dm, table_name, quos, prune = prune)
+  select_cols(dm, table_name, selected)
 }
 
-# need to take care of deselecting key columns, depending on `prune`
-select_cols <- function(dm, table_name, quos, prune = prune) {
+# need to take care of
+# 1. adding key columns if they are deselected
+# 2. updating renamed key columns in data model
+select_cols <- function(dm, table_name, selected) {
   list_of_tables <- cdm_get_tables(dm)
   table <- list_of_tables[[table_name]]
-
-  # create new table using `dplyr::select()`
-  new_table <- select(table, !!!quos)
-  list_of_tables[[table_name]] <- new_table
-
-  # find out which columns were deselected and which ones were renamed
-  unquos <- as.character(quos) %>% map_chr(~str_replace(., "~", ""))
-  ind_deselected <- which(str_detect(unquos, "^-"))
-  # in case a select-helper was used it needs to be ignored for the rename-check
-  ind_select_helper_call <- which(str_detect(unquos, "\\(.*\\)"))
-  quos_not_deselect <- quos[setdiff(seq_along(unquos), c(ind_deselected, ind_select_helper_call))]
-  list_of_ren_sel <- map_chr(quos_not_deselect, as_name)
-  list_of_renames <- list_of_ren_sel[which(names(list_of_ren_sel) != "")]
-
-  update_dm_after_rename(dm, list_of_tables, table_name, list_of_renames, prune)
-}
-
-# get all key columns (PK & FK) for a table in a `dm`
-get_key_cols <- function(dm, table_name) {
-  pk <- cdm_get_pk(dm, !!table_name)
-  fks <- cdm_get_all_fks(dm) %>%
+  fk_cols <- fks <- cdm_get_all_fks(dm) %>%
     filter(child_table == !!table_name) %>%
     pull(child_fk_col)
-  c(pk, fks)
+  renamed_fks <- find_renamed(fk_cols, selected)
+  pk_col <- cdm_get_pk(dm, !!table_name)
+  renamed_pk <- find_renamed(pk_col, selected)
+  all_keys <- c(pk_col, fk_cols)
+
+  pks_upd <-
+    upd_pks_after_rename(
+      cdm_get_data_model_pks(dm),
+      table_name,
+      renamed_pk
+    )
+
+  fks_upd <- upd_fks_after_rename(
+      cdm_get_data_model_fks(dm),
+      table_name,
+      renamed_fks
+    )
+
+  # if the selection does not contain all keys, add the missing ones and inform the user
+  if (!all(all_keys %in% selected)) {
+    keys_to_add <- setdiff(all_keys, selected)
+    message(paste0("Adding missing key columns: `", paste0(keys_to_add, collapse = ", "), "`"))
+    selected <- c(keys_to_add, selected)
+  }
+
+  # create new table using `dplyr::select()`
+  new_table <- select(table, selected)
+  list_of_tables[[table_name]] <- new_table
+
+  new_dm2(
+    tables = list_of_tables,
+    pks = pks_upd,
+    fks = fks_upd,
+    base_dm = dm
+    )
 }
 
 update_dm_after_rename <- function(dm, list_of_tables, table_name, list_of_renames, prune = FALSE) {
@@ -130,4 +144,10 @@ update_dm_after_rename <- function(dm, list_of_tables, table_name, list_of_renam
     base_dm = dm
   )
 
+}
+
+# get elements where value and its name don't match and name is not NULL
+find_renamed <- function(names, selected) {
+  l <- map(names, ~selected[selected == . & names(selected) != . & !is.null(names(selected))])
+  unlist(l[map_lgl(l, ~!is_empty(.))])
 }
