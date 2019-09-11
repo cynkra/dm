@@ -86,8 +86,10 @@ adapt_fk_cols <- function(dm) {
 
 #' Perform a join between two tables of a [`dm`]
 #'
-#' @description A join of desired type is performed between table `lhs` and
-#' table `rhs`.
+#' @description A join of desired type is performed between table `table_1` and
+#' table `table_2`. The two tables need to be directly connected by a foreign key
+#' relation. Since this function is a wrapper around `cdm_flatten()`, the LHS of
+#' the join will always be the "child table", the table referencing the other table.
 #'
 #' @param dm A [`dm`] object
 #' @param lhs The table on the left hand side of the join
@@ -99,14 +101,10 @@ adapt_fk_cols <- function(dm) {
 #' @family Flattening functions
 #'
 #' @export
-cdm_join_tbl <- function(dm, lhs, rhs, join = semi_join) {
-  lhs_name <- as_name(enexpr(lhs))
-  rhs_name <- as_name(enexpr(rhs))
-
-  by <- get_by(dm, lhs_name, rhs_name)
-
-  lhs_obj <- tbl(dm, lhs_name)
-  rhs_obj <- tbl(dm, rhs_name)
-
-  join(lhs_obj, rhs_obj, by = by)
+cdm_join_tbl <- function(dm, table_1, table_2, join = semi_join) {
+  t1_name <- as_name(enexpr(table_1))
+  t2_name <- as_name(enexpr(table_2))
+  red_dm <- cdm_select_tbl(dm, t1_name, t2_name)
+  if (!is_dm_connected(red_dm)) abort_tables_not_neighbours(t1_name, t2_name)
+  cdm_flatten(red_dm, join = join)
 }

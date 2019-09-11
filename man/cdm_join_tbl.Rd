@@ -4,23 +4,25 @@
 \alias{cdm_join_tbl}
 \title{Perform a join between two tables of a \code{\link{dm}}}
 \usage{
-cdm_join_tbl(dm, lhs, rhs, join = semi_join)
+cdm_join_tbl(dm, table_1, table_2, join = semi_join)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
 
+\item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
+
 \item{lhs}{The table on the left hand side of the join}
 
 \item{rhs}{The table on the right hand side of the join}
-
-\item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
 }
 \value{
 The resulting table of the join
 }
 \description{
-A join of desired type is performed between table \code{lhs} and
-table \code{rhs}.
+A join of desired type is performed between table \code{table_1} and
+table \code{table_2}. The two tables need to be directly connected by a foreign key
+relation. Since this function is a wrapper around \code{cdm_flatten()}, the LHS of
+the join will always be the "child table", the table referencing the other table.
 }
 \seealso{
 Other Flattening functions: \code{\link{cdm_flatten}}

@@ -384,3 +384,14 @@ abort_only_possible_wo_filters <- function(fun_name) {
 error_only_possible_wo_filters <- function(fun_name) {
   glue("You cannot call `{fun_name}` on a dm with filter conditions. Consider using `cdm_apply_filters()` first.")
 }
+
+
+# no foreign key relation -------------------------------------------------
+
+abort_tables_not_neighbours <- function(t1_name, t2_name) {
+  abort(error_tables_not_neighbours(t1_name, t2_name), .subclass = cdm_error_full("tables_not_neighbours"))
+}
+
+error_tables_not_neighbours <- function(t1_name, t2_name) {
+  glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
+}
