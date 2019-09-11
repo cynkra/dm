@@ -49,18 +49,6 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   reduce2(ordered_table_list, by, ~join(..1, ..2, by = ..3), .init = filtered_tables[[start]])
 }
 
-get_by_for_flatten <- function(dm, order) {
-  by <- character(0)
-  for (i in 2:length(order)) {
-
-    # use first table that has a relation with table `i`
-    relation <- order[which(map2_lgl(order[1:i-1], order[i], ~relation_exists(dm, .x, .y)))[1]]
-
-    by <- append(by, get_by(dm, relation, order[i]))
-  }
-  by
-}
-
 # key columns have to be adapted here (child table col needs to get the
 # same name as the parent table primary key)
 adapt_fk_cols <- function(dm) {
