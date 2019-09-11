@@ -31,10 +31,7 @@ cdm_flatten <- function(dm, join = left_join) {
   # chose a "child table" (only outgoing FKs) as a start (otherwise we might
   # end up with empty rows, if "parent/dim table" contains PK values that are
   # not present in child table (we might anyway though, depending on `join`-type))
-  initial_LHS_name <- g %>%
-    igraph::topo_sort() %>%
-    names() %>%
-    pluck(1)
+  initial_LHS_name <- names(igraph::topo_sort(g))[[1]]
   initial_LHS <- filtered_tables[[initial_LHS_name]]
 
   # each next table needs to be accessible from the former table; this is not ensured by `topo_sort()`
