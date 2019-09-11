@@ -21,10 +21,10 @@ The resulting table of the join
 \description{
 A join of desired type is performed between table \code{table_1} and
 table \code{table_2}. The two tables need to be directly connected by a foreign key
-relation. Since this function is a wrapper around \code{cdm_flatten_tbl()}, the LHS of
+relation. Since this function is a wrapper around \code{cdm_flatten_to_tbl()}, the LHS of
 the join will always be the "child table", the table referencing the other table.
 }
 \seealso{
-Other Flattening functions: \code{\link{cdm_flatten_tbl}}
+Other Flattening functions: \code{\link{cdm_flatten_to_tbl}}
 }
 \concept{Flattening functions}
