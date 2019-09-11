@@ -19,9 +19,9 @@ fansi::set_knit_hooks(knitr::knit_hooks)
 options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
 knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
+  x %>%
+    DiagrammeRsvg::export_svg() %>%
+    c("`````{=html}\n", ., "\n`````\n") %>%
     knitr::asis_output()
 }
 ```
@@ -42,11 +42,15 @@ library(nycflights13)
 
 ## Data: nycflights13
 
-To explore filtering with `dm`, we'll use the `nycflights13` data with its tables `flights`, `planes` and `airports`. This dataset contains all 336776 flights that departed from New York City in 2013 with 3322 different planes and 1458 airports involved.
+To explore filtering with `dm`, we'll use the `nycflights13` data with its tables `flights`, `planes` and `airports`. 
+
+This dataset contains all 336776 flights that departed from New York City in 2013 with 3322 different planes and 1458 airports involved.
 
 The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13`.
 
-First of all, we have to create a `dm` object from the `nycflights13` data. This is implmeneted with `dm::cdm_nycflights13`. A [data model object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm) contains the data as well as metda data.
+First of all, we have to create a `dm` object from the `nycflights13` data. This is implmeneted with `dm::cdm_nycflights13`. 
+
+A [data model object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm) contains the data as well as metda data.
 
 If you want to create a `dm` from other tables, please look at `?dm` and the function `new_dm()`.
 
@@ -54,7 +58,9 @@ If you want to create a `dm` from other tables, please look at `?dm` and the fun
 dm <- cdm_nycflights13()
 ```
 
-A `dm` object output with data and metadata consists of three elements: the table sources, the data model and a short glimpse into the data via the number of rows. The console output is colored for a clear output: 
+A `dm` object output with data and metadata consists of three elements: the table sources, the data model and a short glimpse into the data via the number of rows. 
+
+The console output is colored for a clear output: 
 
 ```{r}
 dm
@@ -63,15 +69,14 @@ dm
 Now we know that there are five tables in our `dm` object. But how are they connected? These relations are best displayed as a visualization of the entity relation model:
 
 ```{r}
-dm %>% cdm_draw()
+cdm_draw(dm)
 ```
 
 You can look at a single table with `tbl`. Print the `airports` table:
 
 ```{r}
-dm %>% tbl("airports")
+tbl(dm, "airports")
 ```
-
 
 ## Filtering a `dm` object {#filter}
 
@@ -79,10 +84,15 @@ dm %>% tbl("airports")
 
 ### How it works
 
-Filtering a `dm` object is not that different from filtering a dataframe or tibble with `dplyr::filter()`. The corresponding `dm` function is `dm::cdm_filter()` and creates a subset of one table depending on the input. But `dm` does not stop here: A cascade of joins is performed along the foreign key relations. This results in a new `dm` containing only rows related to the filter operation.
+Filtering a `dm` object is not that different from filtering a dataframe or tibble with `dplyr::filter()`. 
+
+The corresponding `dm` function is `dm::cdm_filter()` and creates a subset of one table depending on the input. 
+
+But `dm` does not stop here: A cascade of joins is performed along the foreign key relations. 
+
+This results in a new `dm` containing only rows related to the filter operation.
 
 Currently, this only works if the graph induced by the foreign key relations is cycle free. Luckily, this is the default for `cdm_nycflights13()`.
-
 
 ### Filtering Examples
 
@@ -90,29 +100,28 @@ Let's see it in action:
 
 **We only want the data that is related with John F. Kennedy International Airport.**
 
-The total number of rows drops from  367687 to 138786 (apart from the disconnected `weather` table). You can see this in the "Rows"-part of the print output.
+The total number of rows drops from  367687 to 138786 (apart from the disconnected `weather` table). 
+
+You can see this in the "Rows"-part of the print output.
 
 ```{r}
-dm %>% 
-  cdm_filter(airports, name == "John F Kennedy Intl")
+dm %>% cdm_filter(airports, name == "John F Kennedy Intl")
 ```
 
 Another way to check the number of rows is the function `cdm_nrow()`:
 
 ```{r}
-dm %>% 
-  cdm_filter(airports, name == "John F Kennedy Intl") %>% 
+dm %>%
+  cdm_filter(airports, name == "John F Kennedy Intl") %>%
   cdm_nrow()
 ```
-
 
 Next example: 
 
 **Get a `dm` object containing data for flights from New York to the Dulles International Airport in Washington D.C., abbreviated with `IAD`.**
 
 ```{r}
-dm %>% 
-  cdm_filter(flights, dest == "IAD") 
+dm %>% cdm_filter(flights, dest == "IAD")
 ```
 
 Of course, you can also chain multiple filters on different tables.
@@ -124,11 +133,13 @@ An Example:
 ```{r}
 dm_aa_may <- dm %>%
   cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>% 
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_filter(flights, month == 5)
 ```
 
-You can inspect the filtered tables with `tbl`. In the table `airlines` American Airlines is the only remaining carrier:
+You can inspect the filtered tables with `tbl`. 
+
+In the table `airlines` American Airlines is the only remaining carrier:
 
 ```{r}
 dm_aa_may %>% tbl("airlines")
@@ -153,8 +164,10 @@ flights %>%
   left_join(airlines, by = "carrier") %>%
   filter(name == "American Airlines Inc.") %>%
   left_join(airports, by = c("origin" = "faa")) %>%
-  filter(name.y != "John F Kennedy Intl",
-         month == 5)
+  filter(
+    name.y != "John F Kennedy Intl",
+    month == 5
+  )
 ```
 
 The `dm` code is leaner, because the foreign key information is encoded in the object.
@@ -166,11 +179,7 @@ A last example:
 This is the use-case is filtering based on an already reduced table with `cdm_semi_join()`.
 
 ```{r}
+may <- filter(flights, month == 5)
 
-may <- flights %>% dplyr::filter(month== 5)
-
-dm %>%
-  cdm_semi_join(flights, may)
-
+dm %>% cdm_semi_join(flights, may)
 ```
-
