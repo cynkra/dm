@@ -23,23 +23,13 @@
 #'
 #' @export
 cdm_rename <- function(dm, table, ...) {
+  if (nrow(cdm_get_filter(dm)) > 0) abort_only_possible_wo_filters("cdm_rename()")
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
   old_cols <- colnames(tbl(dm, table_name))
   renamed <- tidyselect::vars_rename(old_cols, ...)
-  rename_cols(dm, table_name, renamed)
-}
-
-rename_cols <- function(dm, table_name, renamed) {
-  list_of_tables <- cdm_get_tables(dm)
-  table <- list_of_tables[[table_name]]
-  new_table <- rename(table, !!!renamed)
-
-  list_of_tables[[table_name]] <- new_table
-
-  update_dm_after_rename(dm, list_of_tables, table_name, renamed)
-
+  select_cols(dm, table_name, renamed, check_keys = FALSE)
 }
 
 #' Select and/or rename one or more columns of a [`dm`] table
@@ -57,6 +47,7 @@ rename_cols <- function(dm, table_name, renamed) {
 #'
 #' @export
 cdm_select <- function(dm, table, ...) {
+  if (nrow(cdm_get_filter(dm)) > 0) abort_only_possible_wo_filters("cdm_select()")
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)
 
@@ -69,16 +60,20 @@ cdm_select <- function(dm, table, ...) {
 # need to take care of
 # 1. adding key columns if they are deselected
 # 2. updating renamed key columns in data model
-select_cols <- function(dm, table_name, selected) {
+select_cols <- function(dm, table_name, selected, check_keys = TRUE) {
   list_of_tables <- cdm_get_tables(dm)
   table <- list_of_tables[[table_name]]
-  all_keys <- get_all_keys(dm, table_name)
 
-  # if the selection does not contain all keys, add the missing ones and inform the user
-  if (!all(all_keys %in% selected)) {
-    keys_to_add <- setdiff(all_keys, selected) %>% set_names()
-    message(paste0("Adding missing key columns: `", paste0(keys_to_add, collapse = ", "), "`"))
-    selected <- c(keys_to_add, selected)
+  # check keys only necessary for `cdm_select()`, rename preserves all columns
+  if (check_keys) {
+    all_keys <- get_all_keys(dm, table_name)
+
+    # if the selection does not contain all keys, add the missing ones and inform the user
+    if (!all(all_keys %in% selected)) {
+      keys_to_add <- setdiff(all_keys, selected) %>% set_names()
+      message(paste0("Adding missing key columns: `", paste0(keys_to_add, collapse = ", "), "`"))
+      selected <- c(keys_to_add, selected)
+    }
   }
 
   # create new table using `dplyr::select()`
@@ -110,10 +105,4 @@ update_dm_after_rename <- function(dm, list_of_tables, table_name, list_of_renam
     base_dm = dm
   )
 
-}
-
-# get elements where value and its name don't match and name is not NULL
-find_renamed <- function(names, selected) {
-  l <- map(names, ~selected[selected == . & names(selected) != . & !is.null(names(selected))])
-  unlist(l[map_lgl(l, ~!is_empty(.))])
 }
