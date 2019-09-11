@@ -342,7 +342,8 @@ print.dm <- function(x, ...) {
 
 #' @export
 `[[.dm` <- function(x, id) {
-  cdm_get_tables(x)[[id]]
+  if (is.numeric(id)) id <- src_tbls(x)[id] else id <- as_string(id)
+  tbl(x, id)
 }
 
 
