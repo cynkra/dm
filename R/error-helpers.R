@@ -381,7 +381,7 @@ abort_only_possible_wo_filters <- function(fun_name) {
 }
 
 error_only_possible_wo_filters <- function(fun_name) {
-  glue("You cannot call `{fun_name}` on a dm with filter conditions. Consider using `cdm_apply_filters()` first.")
+  glue("You cannot call `{fun_name}` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.")
 }
 
 
@@ -395,22 +395,3 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
-# if key columns are deselected -------------------------------------------
-
-abort_pk_col_missing <- function(table_name, pk) {
-  abort(error_pk_col_missing(table_name, old_keys), .subclass = cdm_error_full("pk_col_missing"))
-}
-
-error_pk_col_missing <- function(table_name, pk) {
-  glue("`cdm_select()` would remove the primary key column (`{pk}`) ",
-       "for table `{table_name}`.")
-}
-
-abort_fk_cols_missing <- function(table_name, fks) {
-  abort(error_fk_cols_missing(table_name, fks), .subclass = cdm_error_full("fk_cols_missing"))
-}
-
-error_fk_cols_missing <- function(table_name, fks) {
-  glue("`cdm_select()` would remove one or more foreign key column(s) (`{paste0(fks, collapse = ', ')}`) ",
-  "for table `{table_name}`, but `prune = FALSE`.")
-}
