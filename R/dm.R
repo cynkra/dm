@@ -341,10 +341,8 @@ print.dm <- function(x, ...) {
 
 
 #' @export
-`[[.dm` <- function(x, name) {
-  if (is.numeric(name)) abort_no_numeric_subsetting()
-  table <- as_string(name)
-  tbl(x, table)
+`[[.dm` <- function(x, id) {
+  cdm_get_tables(x)[[id]]
 }
 
 
