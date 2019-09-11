@@ -20,34 +20,30 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   start <- as_name(ensym(start))
   check_correct_input(dm, start)
 
-  # chose a "child table" (only outgoing FKs) as a start (otherwise we might
-  # testing, if all vertices of undirected graph of fk-relations are connected, otherwise error for now
-  # FIXME: as discussed: later, we should have a param 'initial_table' and just flatten in the component
-  # of this table and drop the rest
-  if (!is_dm_connected(dm)) {
-    abort_vertices_not_connected("cdm_flatten_to_tbl")
-  }
+  # prepare `dm` by applying all filters, disambiguate columns, and adapt FK-column names
+  # to the respective PK-column names
   clean_dm <- cdm_apply_filters(dm) %>%
       cdm_disambiguate_cols() %>%
       adapt_fk_cols()
+
+  # need to work with directed graph here, since we only want to go in the direction
+  # the foreign key is pointing to
   g <- create_graph_from_dm(clean_dm, directed = TRUE)
   filtered_tables <- clean_dm %>% cdm_get_tables()
 
-  # each next table needs to be accessible from the former table; this is not ensured by `topo_sort()`
-  # we achieve this with a depth-first-search (DFS)
-  order <- igraph::dfs(g, start) %>%
-    extract2("order") %>%
-    names()
+  # each next table needs to be accessible from the former table (note: directed relations)
+  # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
+  dfs <- igraph::dfs(g, start, unreachable = FALSE)
 
   # Drop first table in the list of join partners. (We have at least one table, `start`.)
   # (Working with `reduce2()` here and the `.init`-parameter is the first table)
-  order <- order[-1]
+  # in the case of only one table in the `dm` (table "start"), all code below is a no-op
+  order <- names(dfs[["order"]])[-1]
+  order <- order[!is.na(order)]
+  by <- map_chr(order, ~cdm_get_pk(dm, !!.))
+
+  # list of join partners
   ordered_table_list <- filtered_tables[order]
-
-  # in the case of one table, get_by_for_flatten() and reduce2() are no-ops
-
-  # get the right column names for each join (should all be adapted by `adapt_fk_cols()`)
-  by <- get_by_for_flatten(clean_dm, c(initial_LHS_name, order))
 
   # perform the joins according to the list, starting with table `initial_LHS`
   reduce2(ordered_table_list, by, ~join(..1, ..2, by = ..3), .init = filtered_tables[[start]])
