@@ -34,7 +34,7 @@ cdm_rename <- function(dm, table, ...) {
 rename_cols <- function(dm, table_name, renamed) {
   list_of_tables <- cdm_get_tables(dm)
   table <- list_of_tables[[table_name]]
-  new_table <- rename(table, !!renamed)
+  new_table <- rename(table, !!!renamed)
 
   list_of_tables[[table_name]] <- new_table
 
@@ -82,7 +82,7 @@ select_cols <- function(dm, table_name, selected) {
   }
 
   # create new table using `dplyr::select()`
-  new_table <- select(table, selected)
+  new_table <- select(table, !!!selected)
   list_of_tables[[table_name]] <- new_table
 
   update_dm_after_rename(dm, list_of_tables, table_name, selected)
