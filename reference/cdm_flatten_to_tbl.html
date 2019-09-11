@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Perform a join between two tables of a <code><a href='dm.html'>dm</a></code> — cdm_join_tbl • dm</title>
+<title>Flatten part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl • dm</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,12 @@
 
 
 
-<meta property="og:title" content="Perform a join between two tables of a <code><a href='dm.html'>dm</a></code> — cdm_join_tbl" />
-<meta property="og:description" content="A join of desired type is performed between table lhs and
-table rhs." />
+<meta property="og:title" content="Flatten part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl" />
+<meta property="og:description" content="This function joins all the tables of your dm object together, that can be reached
+from table start in the direction that the foreign keys are pointing, using the
+foreign key relations to determine the parameter by for the necessary joins.
+It returns one table with unique columns. Use cdm_select_tbl() if necessary to
+reduce the number of tables before calling this function." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -124,17 +127,20 @@ table rhs." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Perform a join between two tables of a <code><a href='dm.html'>dm</a></code></h1>
+    <h1>Flatten part of a <code>dm</code> into a wide table</h1>
     
-    <div class="hidden name"><code>cdm_join_tbl.Rd</code></div>
+    <div class="hidden name"><code>cdm_flatten_to_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A join of desired type is performed between table <code>lhs</code> and
-table <code>rhs</code>.</p>
+    <p>This function joins all the tables of your <code><a href='dm.html'>dm</a></code> object together, that can be reached
+from table <code>start</code> in the direction that the foreign keys are pointing, using the
+foreign key relations to determine the parameter <code>by</code> for the necessary joins.
+It returns one table with unique columns. Use <code><a href='cdm_select_tbl.html'>cdm_select_tbl()</a></code> if necessary to
+reduce the number of tables before calling this function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_join_tbl</span>(<span class='no'>dm</span>, <span class='no'>lhs</span>, <span class='no'>rhs</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>semi_join</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,12 +150,10 @@ table <code>rhs</code>.</p>
       <td><p>A <code><a href='dm.html'>dm</a></code> object</p></td>
     </tr>
     <tr>
-      <th>lhs</th>
-      <td><p>The table on the left hand side of the join</p></td>
-    </tr>
-    <tr>
-      <th>rhs</th>
-      <td><p>The table on the right hand side of the join</p></td>
+      <th>start</th>
+      <td><p>Table to start from. From this table all outgoing foreign key relations are
+considered to establish a processing order for the joins. An interesting choice could be
+for example a fact table in a star schema.</p></td>
     </tr>
     <tr>
       <th>join</th>
@@ -159,14 +163,61 @@ table <code>rhs</code>.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The resulting table of the join</p>
+    <p>A wide table resulting of consecutively joining all tables together.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>Uses <code><a href='cdm_filter.html'>cdm_apply_filters()</a></code> and <code><a href='cdm_disambiguate_cols.html'>cdm_disambiguate_cols()</a></code> first, to
+get a "clean" <code><a href='dm.html'>dm</a></code>. Subsequently renames all foreign key columns to the names of
+the primary key columns they are pointing to. Then the order of the joins is determined
+and the joins are performed.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other Flattening functions: <code><a href='cdm_join_to_tbl.html'>cdm_join_to_tbl</a></code></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='cdm_select_tbl.html'>cdm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
+#&gt; <span class='message'>Table: airlines</span>
+#&gt; <span class='message'>name -&gt; airlines.name</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>Table: airports</span>
+#&gt; <span class='message'>name -&gt; airports.name</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>Table: flights</span>
+#&gt; <span class='message'>year -&gt; flights.year</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>Table: planes</span>
+#&gt; <span class='message'>year -&gt; planes.year</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
+#&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
+#&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
+#&gt;  1         2013     1     1      517            515         2      830
+#&gt;  2         2013     1     1      533            529         4      850
+#&gt;  3         2013     1     1      542            540         2      923
+#&gt;  4         2013     1     1      544            545        -1     1004
+#&gt;  5         2013     1     1      554            600        -6      812
+#&gt;  6         2013     1     1      554            558        -4      740
+#&gt;  7         2013     1     1      555            600        -5      913
+#&gt;  8         2013     1     1      557            600        -3      709
+#&gt;  9         2013     1     1      557            600        -3      838
+#&gt; 10         2013     1     1      558            600        -2      753
+#&gt; # … with 336,766 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,
+#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, faa &lt;chr&gt;,
+#&gt; #   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
+#&gt; #   time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;, airports.name &lt;chr&gt;, lat &lt;dbl&gt;,
+#&gt; #   lon &lt;dbl&gt;, alt &lt;int&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;,
+#&gt; #   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,
+#&gt; #   speed &lt;int&gt;, engine &lt;chr&gt;</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

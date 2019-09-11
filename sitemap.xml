@@ -28,6 +28,9 @@
     <loc>https://krlmlr.github.io/dm/reference/cdm_filter.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/cdm_flatten_to_tbl.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/reference/cdm_get_all_fks.html</loc>
   </url>
   <url>
@@ -52,7 +55,7 @@
     <loc>https://krlmlr.github.io/dm/reference/cdm_is_referenced.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/reference/cdm_join_tbl.html</loc>
+    <loc>https://krlmlr.github.io/dm/reference/cdm_join_to_tbl.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/cdm_learn_from_db.html</loc>

@@ -139,7 +139,7 @@
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">  </span><span class="kw">left_join</span>(airports, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> =<span class="st"> "faa"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">  </span><span class="kw">left_join</span>(planes, <span class="dt">by =</span> <span class="st">"tailnum"</span>)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 19</span><span>
-#&gt;    </span><span style="font-weight: bold;">month</span><span>   </span><span style="font-weight: bold;">day</span><span> </span><span style="font-weight: bold;">origin</span><span> </span><span style="font-weight: bold;">tailnum</span><span> </span><span style="font-weight: bold;">name</span><span>    </span><span style="font-weight: bold;">lat</span><span>   </span><span style="font-weight: bold;">lon</span><span>   </span><span style="font-weight: bold;">alt</span><span>    </span><span style="font-weight: bold;">tz</span><span> </span><span style="font-weight: bold;">dst</span><span>   </span><span style="font-weight: bold;">tzone</span><span>
+#&gt;    month   day origin tailnum name    lat   lon   alt    tz dst   tzone
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 #&gt; </span><span style="color: #555555;"> 1</span><span>     1     1 EWR    N14228  Newa…  40.7 -</span><span style="color: #BB0000;">74.2</span><span>    18    -</span><span style="color: #BB0000;">5</span><span> A     Amer…
 #&gt; </span><span style="color: #555555;"> 2</span><span>     1     1 LGA    N24211  La G…  40.8 -</span><span style="color: #BB0000;">73.9</span><span>    22    -</span><span style="color: #BB0000;">5</span><span> A     Amer…
@@ -151,9 +151,9 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>     1     1 LGA    N829AS  La G…  40.8 -</span><span style="color: #BB0000;">73.9</span><span>    22    -</span><span style="color: #BB0000;">5</span><span> A     Amer…
 #&gt; </span><span style="color: #555555;"> 9</span><span>     1     1 JFK    N593JB  John…  40.6 -</span><span style="color: #BB0000;">73.8</span><span>    13    -</span><span style="color: #BB0000;">5</span><span> A     Amer…
 #&gt; </span><span style="color: #555555;">10</span><span>     1     1 LGA    N3ALAA  La G…  40.8 -</span><span style="color: #BB0000;">73.9</span><span>    22    -</span><span style="color: #BB0000;">5</span><span> A     Amer…
-#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 8 more variables: </span><span style="color: #555555;font-weight: bold;">year</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">type</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,
-#&gt; #   </span><span style="color: #555555;font-weight: bold;">manufacturer</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">model</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">engines</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">seats</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,
-#&gt; #   </span><span style="color: #555555;font-weight: bold;">speed</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">engine</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 8 more variables: year </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, type </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,
+#&gt; #   manufacturer </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, model </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, engines </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, seats </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,
+#&gt; #   speed </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, engine </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
 </div>
 </div>
@@ -201,10 +201,9 @@
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
 #&gt;   53 columns
 #&gt;   3 primary keys
-#&gt;   4 references
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+#&gt;   3 references
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
+#&gt; None
 </span></code></pre>
 <p>The <code><a href="reference/cdm_draw.html">cdm_draw()</a></code> function creates a visualization of the entity relationship model:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -225,16 +224,27 @@
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="reference/dm.html">cdm_get_tables</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span><span class="kw">map_int</span>(nrow)</a>
 <a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;        4        3     7301      134    26115</span></a></code></pre></div>
-<p>For joining two tables using their relationship defined in the <code>dm</code>, you can use <code><a href="reference/cdm_join_tbl.html">cdm_join_tbl()</a></code>:</p>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;       16     1458   336776     3322    26115</span></a></code></pre></div>
+<p>For joining two tables using their relationship defined in the <code>dm</code>, you can use <code>cdm_join_tbl()</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/cdm_join_tbl.html">cdm_join_tbl</a></span>(airports, flights, <span class="dt">join =</span> semi_join)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 8</span><span>
-#&gt;   </span><span style="font-weight: bold;">faa</span><span>   </span><span style="font-weight: bold;">name</span><span>                  </span><span style="font-weight: bold;">lat</span><span>   </span><span style="font-weight: bold;">lon</span><span>   </span><span style="font-weight: bold;">alt</span><span>    </span><span style="font-weight: bold;">tz</span><span> </span><span style="font-weight: bold;">dst</span><span>   </span><span style="font-weight: bold;">tzone</span><span>           
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>               </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           
-#&gt; </span><span style="color: #555555;">1</span><span> EWR   Newark Liberty Intl  40.7 -</span><span style="color: #BB0000;">74.2</span><span>    18    -</span><span style="color: #BB0000;">5</span><span> A     America/New_York
-#&gt; </span><span style="color: #555555;">2</span><span> JFK   John F Kennedy Intl  40.6 -</span><span style="color: #BB0000;">73.8</span><span>    13    -</span><span style="color: #BB0000;">5</span><span> A     America/New_York
-#&gt; </span><span style="color: #555555;">3</span><span> LGA   La Guardia           40.8 -</span><span style="color: #BB0000;">73.9</span><span>    22    -</span><span style="color: #BB0000;">5</span><span> A     America/New_York
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(airports, flights, <span class="dt">join =</span> semi_join)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 19</span><span>
+#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      517            515         2      830
+#&gt; </span><span style="color: #555555;"> 2</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      533            529         4      850
+#&gt; </span><span style="color: #555555;"> 3</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      542            540         2      923
+#&gt; </span><span style="color: #555555;"> 4</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      544            545        -</span><span style="color: #BB0000;">1</span><span>     </span><span style="text-decoration: underline;">1</span><span>004
+#&gt; </span><span style="color: #555555;"> 5</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      554            600        -</span><span style="color: #BB0000;">6</span><span>      812
+#&gt; </span><span style="color: #555555;"> 6</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      554            558        -</span><span style="color: #BB0000;">4</span><span>      740
+#&gt; </span><span style="color: #555555;"> 7</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      555            600        -</span><span style="color: #BB0000;">5</span><span>      913
+#&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      709
+#&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      838
+#&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      558            600        -</span><span style="color: #BB0000;">2</span><span>      753
+#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 12 more variables: sched_arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,
+#&gt; #   arr_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, carrier </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, flight </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, tailnum </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,
+#&gt; #   faa </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,
+#&gt; #   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
 </span></code></pre>
 <p>In our <code>dm</code>, the <code>origin</code> column of the <code>flights</code> table points to the <code>airports</code> table. Since all <code>nycflights13</code>-flights depart from New York, only these airports are included in the semi-join.</p>
 </div>
@@ -244,21 +254,20 @@
 <p>In order to transfer an existing <code>dm</code> object to a DB, you can call <code><a href="reference/cdm_copy_to.html">cdm_copy_to()</a></code> with the target DB and the <code>dm</code> object:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">src_sqlite &lt;-<span class="st"> </span><span class="kw">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="dt">create =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">src_sqlite</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.25.3 [:memory:]</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.29.0 [:memory:]</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; tbls:</span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5">nycflights13_remote &lt;-<span class="st"> </span><span class="kw"><a href="reference/cdm_copy_to.html">cdm_copy_to</a></span>(src_sqlite, <span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb6-6" data-line-number="6">nycflights13_remote</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.25.3 [:memory:]
+#&gt; src:  sqlite 3.29.0 [:memory:]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
 #&gt;   53 columns
 #&gt;   3 primary keys
 #&gt;   4 references
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Rows</span><span> </span><span style="color: #BBBB00;">───────────────────────────────────────────────────────────────────</span><span>
-#&gt; Total: 367687
-#&gt; airlines: 16, airports: 1458, flights: 336776, planes: 3322, weather: 26115
+#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
+#&gt; None
 </span></code></pre>
 <p>The key constraints from the original object are also copied to the newly created object. With the default setting <code>set_key_constraints = TRUE</code> for <code><a href="reference/cdm_copy_to.html">cdm_copy_to()</a></code>, key constraints are also established on the target DB. Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).</p>
 <p>It is also possible to automatically create a <code>dm</code> object from the permanent tables of a DB. Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated. The support for other DBMS will be implemented in a future update.</p>
