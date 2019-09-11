@@ -118,7 +118,6 @@ cdm_apply_filters <- function(dm) {
 #' @param reduced_table The table indicated in argument `table`, but in a filtered state (cf. `dplyr::filter()`).
 #'
 #' @references [cdm_filter()]
-#' @export
 cdm_semi_join <- function(dm, table, reduced_table) {
   table_name <- as_name(enexpr(table))
   check_correct_input(dm, table_name)

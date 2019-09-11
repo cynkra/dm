@@ -58,7 +58,6 @@ reference:
 - title: Filtering
   contents:
   - cdm_filter
-  - cdm_semi_join
   - cdm_apply_filters
 
 - title: Interaction with DBs
