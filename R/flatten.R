@@ -38,8 +38,8 @@ cdm_flatten <- function(dm, join = left_join) {
   initial_LHS <- filtered_tables[[initial_LHS_name]]
 
   # each next table needs to be accessible from the former table; this is not ensured by `topo_sort()`
-  # we achieve this with a breadth-first-search (BFS)
-  order <- igraph::bfs(g, initial_LHS_name) %>%
+  # we achieve this with a depth-first-search (DFS)
+  order <- igraph::dfs(g, initial_LHS_name) %>%
     extract2("order") %>%
     names()
 
