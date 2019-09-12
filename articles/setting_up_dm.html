@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1>Preparing Your Data</h1>
             
-            <h4 class="date">2019-09-11</h4>
+            <h4 class="date">2019-09-12</h4>
       
       
       <div class="hidden name"><code>setting_up_dm.Rmd</code></div>
@@ -141,13 +141,13 @@
 ##   column      candidate why                                                
 ##   &lt;chr&gt;       &lt;lgl&gt;     &lt;chr&gt;                                              
 ## 1 tailnum     TRUE      ""                                                 
-## 2 year        FALSE     has duplicate values: 1959, 1963, 1975, 1976, …, 1…
+## 2 year        FALSE     has duplicate values: 1959, 1963, 1975, 1976, 1977…
 ## 3 type        FALSE     "has duplicate values: Fixed wing multi engine , F…
-## 4 manufactur… FALSE     "has duplicate values: AIRBUS               , AIRB…
+## 4 manufactur… FALSE     has duplicate values: AIRBUS               , AIRBU…
 ## 5 model       FALSE     has duplicate values: 717-200, 737-301, 737-3G7, 7…
 ## 6 engines     FALSE     has duplicate values: 1, 2, 3, 4                   
-## 7 seats       FALSE     has duplicate values:  2,  4,  5,  6, …,  8        
-## 8 speed       FALSE     has duplicate values:  90, 105, 162, 432,  NA      
+## 7 seats       FALSE     has duplicate values: 2, 4, 5, 6, 7, 8, …          
+## 8 speed       FALSE     has duplicate values: 90, 105, 162, 432, NA        
 ## 9 engine      FALSE     "has duplicate values: 4 Cycle      , Reciprocatin…</code></pre>
 <p>Now, add any primary keys you may have identified:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">flights_dm_only_pks &lt;-<span class="st"> </span>flights_dm_no_keys <span class="op">%&gt;%</span></a>
@@ -156,7 +156,7 @@
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(planes, tailnum)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">flights_dm_only_pks</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x4693850&gt;
+## src:  &lt;environment: 0x6b63620&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
@@ -211,7 +211,7 @@
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">flights_dm_all_keys</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x4693850&gt;
+## src:  &lt;environment: 0x6b63620&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
@@ -235,7 +235,7 @@
 <p>Voilà, here’s your <code>dm</code> object that you can work with:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">flights_dm_all_keys</a></code></pre></div>
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;environment: 0x4693850&gt;
+## src:  &lt;environment: 0x6b63620&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
 ## Data model object:
 ##   5 tables:  airlines, airports, flights, planes ... 
