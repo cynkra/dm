@@ -39,7 +39,7 @@ Imports:
     shiny,
     stringr,
     tibble,
-    tidyr (>= 0.8.3),
+    tidyr (>= 1.0.0),
     tidyselect,
     vctrs (>= 0.2.0)
 Suggests: 

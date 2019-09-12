@@ -66,7 +66,7 @@ adapt_fk_cols <- function(dm) {
     as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
     filter(!is.na(ref)) %>%
     select(table, ref_col, column) %>%
-    nest(-table, .key = "renames") %>%
+    nest(renames = -table) %>%
     mutate(renames = map(renames, deframe))
 
   col_rename(dm, recipe, quiet = TRUE)

@@ -58,10 +58,9 @@ is_unique_key <- nse_function(c(.data, column), ~ {
     count(value = !!col_expr) %>%
     filter(n != 1) %>%
     arrange(value) %>%
-    utils::head(7) %>%
+    utils::head(MAX_COMMAS + 1) %>%
     collect() %>%
-    nest() %>%
-    mutate(column = col_name) %>%
+    { tibble(data = list(.)) } %>%
     mutate(unique = map_lgl(data, ~ nrow(.) == 0))
 
   duplicate_rows

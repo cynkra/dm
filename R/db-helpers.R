@@ -43,7 +43,7 @@ build_copy_data <- nse_function(c(dm, dest, unique_table_names), ~ {
       mutate(column = map(df, colnames)) %>%
       mutate(type = map(df, ~ map_chr(., ~ DBI::dbDataType(dest_con, .)))) %>%
       select(-df) %>%
-      unnest() %>%
+      unnest(c(column, type)) %>%
       left_join(pks, by = c("source_name", "column")) %>%
       mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) %>%
       group_by(source_name, name) %>%

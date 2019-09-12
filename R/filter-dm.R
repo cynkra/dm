@@ -136,15 +136,14 @@ cdm_get_filtered_table <- function(dm, from) {
   fc <- get_all_filtered_connected(dm, from)
 
   f_quos <- filters %>%
-    nest(-table) %>%
-    rename(filter = data)
+    nest(filter = -table)
 
   fc_children <-
     fc %>%
     filter(node != parent) %>%
     select(-distance) %>%
-    nest(-parent) %>%
-    rename(table = parent, semi_join = data)
+    nest(semi_join = -parent) %>%
+    rename(table = parent)
 
   recipe <-
     fc %>%

@@ -178,32 +178,31 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
 
 # errors in fk handling --------------------------------------------------
 
-abort_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
-  abort(error_txt_ref_tbl_has_no_pk(ref_table_name, pk_candidates),
+abort_ref_tbl_has_no_pk <- function(ref_table_name) {
+  abort(error_txt_ref_tbl_has_no_pk(ref_table_name),
     .subclass = cdm_error_full("ref_tbl_has_no_pk")
   )
 }
 
-error_txt_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
+error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
   paste0(
-    "ref_table '", ref_table_name, "' needs a primary key first.",
-    " Candidates are: '",
-    paste0(pk_candidates, collapse = ", "),
-    "'. Use 'cdm_add_pk()' to set it."
+    "ref_table ", tick(ref_table_name), " needs a primary key first. ",
+    "Use `cdm_enum_pk_candidates()` to find candidates, and `cdm_add_pk()` define a primary key."
   )
 }
 
-abort_is_not_fkc <- function(
-                             child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
-  abort(error_txt_is_not_fk(
-    child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
-  ),
-  .subclass = cdm_error_full("is_not_fkc")
+abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
+                             parent_table_name, actual_fk_colnames) {
+  abort(
+    error_txt_is_not_fk(
+      child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
+    ),
+    .subclass = cdm_error_full("is_not_fkc")
   )
 }
 
-error_txt_is_not_fk <- function(
-                                child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
+error_txt_is_not_fk <- function(child_table_name, wrong_fk_colnames,
+                                parent_table_name, actual_fk_colnames) {
   paste0(
     "The given combination of columns '",
     paste0(wrong_fk_colnames, collapse = ", "),

@@ -22,12 +22,7 @@ cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = TRUE), ~ {
 
   check_col_input(dm, table_name, column_name)
   if (!cdm_has_pk(dm, !!ref_table_name)) {
-    abort_ref_tbl_has_no_pk(
-      ref_table_name,
-      cdm_enum_pk_candidates(dm, !!ref_table_name) %>%
-        filter(candidate == TRUE) %>%
-        pull(column)
-    )
+    abort_ref_tbl_has_no_pk(ref_table_name)
   }
   ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
 
@@ -195,12 +190,7 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   check_correct_input(dm, ref_table_name)
 
   if (!cdm_has_pk(dm, !!ref_table_name)) {
-    abort_ref_tbl_has_no_pk(
-      ref_table_name,
-      cdm_enum_pk_candidates(dm, !!ref_table_name) %>%
-        filter(candidate == TRUE) %>%
-        pull(column)
-    )
+    abort_ref_tbl_has_no_pk(ref_table_name)
   }
 
   tbl <- cdm_get_tables(dm)[[table_name]]

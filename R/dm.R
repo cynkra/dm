@@ -204,7 +204,7 @@ cdm_get_data_model <- function(x) {
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
-    unnest() %>%
+    unnest(value) %>%
     mutate(type = "integer") %>%
     left_join(keys, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%

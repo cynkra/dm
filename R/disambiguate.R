@@ -22,7 +22,7 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
     filter(key == 0, is.na(ref), n > 1) %>%
     mutate(new_name = paste0(table, sep, column)) %>%
     select(table, new_name, column) %>%
-    nest(-table, .key = "renames") %>%
+    nest(renames = -table) %>%
     mutate(renames = map(renames, deframe))
 
   col_rename(dm, recipe, quiet)

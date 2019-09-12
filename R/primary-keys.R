@@ -221,9 +221,13 @@ enum_pk_candidates <- nse_function(c(table), ~ {
   tbl_colnames <- colnames(table)
 
   # list of ayes and noes:
-  map_dfr(tbl_colnames, ~ is_unique_key(table, {{ .x }})) %>%
-    rename(candidate = unique) %>%
-    mutate(values = map_chr(data, ~ commas(format(.$value)))) %>%
+  map(set_names(colnames(table)), ~ is_unique_key(table, {{ .x }})) %>%
+    enframe("column") %>%
+    # Workaround: Can't call bind_rows() here with dplyr < 0.9.0
+    # Can't call unnest() either for an unknown reason
+    mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
+    select(-value) %>%
+    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE)))) %>%
     select(-data) %>%
     mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
     select(-values)
