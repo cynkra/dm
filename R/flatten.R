@@ -21,9 +21,8 @@
 #'
 #' @examples
 #' cdm_nycflights13() %>%
-#' cdm_select_tbl(-weather) %>%
-#' cdm_flatten_to_tbl(flights)
-#'
+#'   cdm_select_tbl(-weather) %>%
+#'   cdm_flatten_to_tbl(flights)
 #' @export
 cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   start <- as_name(ensym(start))
@@ -32,8 +31,8 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   # prepare `dm` by applying all filters, disambiguate columns, and adapt FK-column names
   # to the respective PK-column names
   clean_dm <- cdm_apply_filters(dm) %>%
-      cdm_disambiguate_cols() %>%
-      adapt_fk_cols()
+    cdm_disambiguate_cols() %>%
+    adapt_fk_cols()
 
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
@@ -49,19 +48,18 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order <- names(dfs[["order"]])[-1]
   order <- order[!is.na(order)]
-  by <- map_chr(order, ~cdm_get_pk(dm, !!.))
+  by <- map_chr(order, ~ cdm_get_pk(dm, !!.))
 
   # list of join partners
   ordered_table_list <- filtered_tables[order]
 
   # perform the joins according to the list, starting with table `initial_LHS`
-  reduce2(ordered_table_list, by, ~join(..1, ..2, by = ..3), .init = filtered_tables[[start]])
+  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = filtered_tables[[start]])
 }
 
 # key columns have to be adapted here (child table col needs to get the
 # same name as the parent table primary key)
 adapt_fk_cols <- function(dm) {
-
   recipe <-
     as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
     filter(!is.na(ref)) %>%
@@ -104,8 +102,9 @@ child_table <- function(dm, table_1, table_2) {
   t1_name <- as_string(ensym(table_1))
   t2_name <- as_string(ensym(table_2))
   cdm_get_all_fks(dm) %>%
-    filter((child_table == t1_name & parent_table == t2_name) |
-             (child_table == t2_name & parent_table == t1_name) ) %>%
+    filter(
+      (child_table == t1_name & parent_table == t2_name) |
+        (child_table == t2_name & parent_table == t1_name)
+    ) %>%
     pull(child_table)
-
 }

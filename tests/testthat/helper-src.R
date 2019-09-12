@@ -297,9 +297,11 @@ t4 <- tibble(
 
 
 list_for_filter[["t6_2"]] <- tibble(p = letters[1:6], f = LETTERS[6:11])
-list_for_filter[["t4_2"]] <- tibble(r = letters[2:6],
-                                    s = c("three", "five", "six", "seven", "eight"),
-                                    t = c(LETTERS[4:7], LETTERS[5]))
+list_for_filter[["t4_2"]] <- tibble(
+  r = letters[2:6],
+  s = c("three", "five", "six", "seven", "eight"),
+  t = c(LETTERS[4:7], LETTERS[5])
+)
 list_for_filter[["a"]] <- tibble(a_1 = letters[10:18], a_2 = 5:13)
 list_for_filter[["b"]] <- tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6)
 list_for_filter[["c"]] <- tibble(c_1 = 4:10)
@@ -335,16 +337,18 @@ dm_more_complex <- as_dm(list_for_filter) %>%
 
 # for testing 'cdm_disambiguate_cols()' ----------------------------------------
 
-iris_1 <- as_tibble(iris) %>% mutate(key = row_number()) %>% select(key, everything())
+iris_1 <- as_tibble(iris) %>%
+  mutate(key = row_number()) %>%
+  select(key, everything())
 iris_2 <- iris_1 %>% mutate(other_col = TRUE)
 iris_3 <- iris_2 %>% mutate(one_more_col = 1)
 
 iris_1_dis <- iris_1 %>%
-  rename_at(2:6, ~str_replace(., "^", "iris_1."))
+  rename_at(2:6, ~ str_replace(., "^", "iris_1."))
 iris_2_dis <- iris_2 %>%
-  rename_at(2:7, ~str_replace(., "^", "iris_2."))
+  rename_at(2:7, ~ str_replace(., "^", "iris_2."))
 iris_3_dis <- iris_3 %>%
-  rename_at(1:7, ~str_replace(., "^", "iris_3."))
+  rename_at(1:7, ~ str_replace(., "^", "iris_3."))
 
 
 dm_for_disambiguate <- as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
@@ -358,21 +362,24 @@ dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, ir
 # star schema data model for testing 'cdm_flatten_to_tbl()'
 
 fact <- tibble(
-  fact = c("acorn",
-           "blubber",
-           "cinderella",
-           "depth",
-           "elysium",
-           "fantasy",
-           "gorgeous",
-           "halo",
-           "ill-advised",
-           "jitter"),
+  fact = c(
+    "acorn",
+    "blubber",
+    "cinderella",
+    "depth",
+    "elysium",
+    "fantasy",
+    "gorgeous",
+    "halo",
+    "ill-advised",
+    "jitter"
+  ),
   dim_1_key = 14:5,
   dim_2_key = letters[3:12],
   dim_3_key = LETTERS[24:15],
   dim_4_key = 7:16,
-  something = 1:10)
+  something = 1:10
+)
 fact_clean <-
   fact %>% rename(
     dim_1_pk = dim_1_key,
@@ -384,22 +391,26 @@ fact_clean <-
 
 dim_1 <- tibble(
   dim_1_pk = 1:20,
-  something = letters[3:22])
+  something = letters[3:22]
+)
 dim_1_clean <- dim_1 %>% rename(dim_1.something = something)
 
 dim_2 <- tibble(
   dim_2_pk = letters[1:20],
-  something = LETTERS[5:24])
+  something = LETTERS[5:24]
+)
 dim_2_clean <- dim_2 %>% rename(dim_2.something = something)
 
 dim_3 <- tibble(
   dim_3_pk = LETTERS[5:24],
-  something = 3:22)
+  something = 3:22
+)
 dim_3_clean <- dim_3 %>% rename(dim_3.something = something)
 
 dim_4 <- tibble(
   dim_4_pk = 19:7,
-  something = 19:31)
+  something = 19:31
+)
 dim_4_clean <- dim_4 %>% rename(dim_4.something = something)
 
 dm_for_flatten <- as_dm(list(
@@ -408,7 +419,7 @@ dm_for_flatten <- as_dm(list(
   dim_2 = dim_2,
   dim_3 = dim_3,
   dim_4 = dim_4
-  )) %>%
+)) %>%
   cdm_add_pk(dim_1, dim_1_pk) %>%
   cdm_add_pk(dim_2, dim_2_pk) %>%
   cdm_add_pk(dim_3, dim_3_pk) %>%

@@ -11,7 +11,6 @@
 #'
 #' @examples
 #' cdm_disambiguate_cols(cdm_nycflights13())
-#'
 #' @export
 cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   recipe <-
@@ -29,20 +28,21 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
 }
 
 col_rename <- function(dm, recipe, quiet) {
-
   if (!quiet && nrow(recipe) > 0) {
     names_for_disambiguation <- map(recipe$renames, names)
-    msg_renamed_cols <- map2(recipe$renames, names_for_disambiguation, ~paste0(.x, " -> ", .y)) %>%
-      map(~paste(., collapse = "\n"))
+    msg_renamed_cols <- map2(recipe$renames, names_for_disambiguation, ~ paste0(.x, " -> ", .y)) %>%
+      map(~ paste(., collapse = "\n"))
     msg_core <- paste0("Table: ", recipe$table, "\n",
-                       msg_renamed_cols, "\n", collapse = "\n")
+      msg_renamed_cols, "\n",
+      collapse = "\n"
+    )
     msg <- paste0("Renamed columns:\n", msg_core)
     message(msg)
   }
 
   reduce2(recipe$table,
-          recipe$renames,
-          ~cdm_rename(..1, !!..2, !!!..3),
-          .init = dm)
-
+    recipe$renames,
+    ~ cdm_rename(..1, !!..2, !!!..3),
+    .init = dm
+  )
 }

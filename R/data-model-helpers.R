@@ -269,10 +269,11 @@ upd_fks_after_rename <- function(fks,
 upd_table_fks <- function(fks, is_from, fks_xxx_table, list_of_renames, table_name) {
   if (is_from) {
     upd_col <- "column"
-    upd_tbl <- "table"} else {
+    upd_tbl <- "table"
+  } else {
     upd_col <- "ref_col"
     upd_tbl <- "ref"
-    }
+  }
   indices_to_replace <- which(as.logical(match(fks_xxx_table, list_of_renames)))
   values_for_replacing <- map_chr(fks_xxx_table[indices_to_replace], ~ names(list_of_renames[list_of_renames == .]))
   fks[fks[[upd_tbl]] == table_name, ][[upd_col]] <-

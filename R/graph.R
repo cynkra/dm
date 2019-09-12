@@ -76,7 +76,6 @@ calculate_join_list <- function(dm, table_name) {
 }
 
 create_graph_from_dm <- function(dm, directed = FALSE) {
-
   ref_tables <- src_tbls(dm)
   tables <- map(ref_tables, ~ cdm_get_referencing_tables(dm, !!.x))
 

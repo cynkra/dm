@@ -385,4 +385,3 @@ abort_tables_not_neighbours <- function(t1_name, t2_name) {
 error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
-

@@ -399,7 +399,8 @@ nycflights13_tbl <-
     airports = airports_global,
     planes = planes_global,
     flights = flights_link,
-    weather = weather_link)
+    weather = weather_link
+  )
 
 
 nycflights13_tbl

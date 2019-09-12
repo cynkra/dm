@@ -6,7 +6,7 @@ test_that("numeric subsetting works", {
   # compare numeric subsetting and subsetting by name on all sources
   walk(
     dm_for_filter_src,
-    ~expect_equal(
+    ~ expect_equal(
       .x[["t2"]],
       .x[[2]]
     )
@@ -15,7 +15,7 @@ test_that("numeric subsetting works", {
   # check if reducing `dm` size works on all sources
   walk(
     dm_for_filter_src,
-    ~expect_equal(
+    ~ expect_equal(
       .x[c(1, 3, 5)],
       cdm_select_tbl(.x, 1, 3, 5)
     )

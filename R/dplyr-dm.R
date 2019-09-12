@@ -20,7 +20,6 @@
 #' @examples
 #' cdm_nycflights13() %>%
 #'   cdm_rename(airports, code = faa, altitude = alt)
-#'
 #' @export
 cdm_rename <- function(dm, table, ...) {
   if (nrow(cdm_get_filter(dm)) > 0) abort_only_possible_wo_filters("cdm_rename()")
@@ -41,7 +40,6 @@ cdm_rename <- function(dm, table, ...) {
 #' @examples
 #' cdm_nycflights13() %>%
 #'   cdm_select(airports, code = faa, altitude = alt)
-#'
 #' @details If key columns are renamed the meta-information of the `dm` is updated accordingly.
 #' If key columns would be removed, `cdm_select()` makes sure they are re-added to the table.
 #'
@@ -104,5 +102,4 @@ update_dm_after_rename <- function(dm, list_of_tables, table_name, list_of_renam
     fks = fks_upd,
     base_dm = dm
   )
-
 }

@@ -60,7 +60,10 @@ is_unique_key <- nse_function(c(.data, column), ~ {
     arrange(value) %>%
     utils::head(MAX_COMMAS + 1) %>%
     collect() %>%
-    { tibble(data = list(.)) } %>%
+    {
+      # https://github.com/tidyverse/tidyr/issues/734
+      tibble(data = list(.))
+    } %>%
     mutate(unique = map_lgl(data, ~ nrow(.) == 0))
 
   duplicate_rows

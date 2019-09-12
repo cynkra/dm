@@ -52,7 +52,6 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
   expect_pred_chain(fc_t4, c("t4_2", "t5", "t4"))
   expect_pred_chain(fc_t4, c("t6", "t5", "t4"))
   expect_not_pred(fc_t4, c("t6_2", "t3", "t2", "t1"))
-
 })
 
 
@@ -60,12 +59,13 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 
 
 test_that("cdm_filter() works as intended for reversed dm", {
-    map(.x = dm_for_filter_rev_src,
-        ~ expect_identical(
-          cdm_filter(.x, t1, a < 8, a > 3) %>% collect() %>% cdm_get_tables(),
-          rev(output_1)
-          )
-        )
+  map(
+    .x = dm_for_filter_rev_src,
+    ~ expect_identical(
+      cdm_filter(.x, t1, a < 8, a > 3) %>% collect() %>% cdm_get_tables(),
+      rev(output_1)
+    )
+  )
 })
 
 test_that("cdm_filter() works as intended?", {
@@ -74,8 +74,8 @@ test_that("cdm_filter() works as intended?", {
     ~ expect_identical(
       cdm_filter(.x, t1, a < 8, a > 3) %>% collect() %>% cdm_get_tables(),
       output_1
-      )
     )
+  )
 })
 
 test_that("cdm_filter() works as intended for inbetween table", {
@@ -84,12 +84,11 @@ test_that("cdm_filter() works as intended for inbetween table", {
     ~ expect_identical(
       cdm_filter(.x, t3, g == "five") %>% collect() %>% cdm_get_tables(),
       output_3
-      )
     )
+  )
 })
 
 test_that("cdm_filter() works without primary keys", {
-
   map(
     .x = dm_for_filter_src,
     ~ expect_error(

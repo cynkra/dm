@@ -33,11 +33,11 @@
 #'   cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl")
 #'
-#'   tbl(dm_nyc_filtered, "flights")
-#'   dm_nyc_filtered[["planes"]]
-#'   dm_nyc_filtered$airlines
+#' tbl(dm_nyc_filtered, "flights")
+#' dm_nyc_filtered[["planes"]]
+#' dm_nyc_filtered$airlines
 #'
-#'   cdm_nycflights13() %>%
+#' cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
 #'   cdm_apply_filters()
 #' @export
@@ -90,19 +90,19 @@ set_filter_for_table <- function(dm, table_name, quos) {
 #' cdm_nycflights13() %>%
 #'   cdm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
-#'
 #' @export
 cdm_apply_filters <- function(dm) {
   raw_dm <- unclass(dm)
   table_names <- src_tbls(dm)
 
   new_list_of_tables <-
-    map(set_names(table_names), ~tbl(dm, .))
+    map(set_names(table_names), ~ tbl(dm, .))
 
   new_dm(
     src = cdm_get_src(dm),
     tables = new_list_of_tables,
-    data_model = cdm_get_data_model(dm))
+    data_model = cdm_get_data_model(dm)
+  )
 }
 
 
@@ -129,9 +129,10 @@ cdm_semi_join <- function(dm, table, reduced_table) {
 }
 
 cdm_get_filtered_table <- function(dm, from) {
-
   filters <- cdm_get_filter(dm)
-  if (nrow(filters) == 0) return(cdm_get_tables(dm)[[from]])
+  if (nrow(filters) == 0) {
+    return(cdm_get_tables(dm)[[from]])
+  }
 
   fc <- get_all_filtered_connected(dm, from)
 
@@ -163,9 +164,10 @@ cdm_get_filtered_table <- function(dm, from) {
       semi_joins_tbls <- list_of_tables[semi_joins]
       table <-
         reduce2(semi_joins_tbls,
-                semi_joins,
-               ~semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
-               .init = table)
+          semi_joins,
+          ~ semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
+          .init = table
+        )
     }
 
     filter_quos <- recipe$filter[[i]]

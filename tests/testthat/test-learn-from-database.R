@@ -31,7 +31,6 @@ test_that("Learning from MSSQL works?", {
 
 # cdm_learn_from_postgres() --------------------------------------------------
 test_that("Learning from Postgres works?", {
-
   src_postgres <- skip_if_error(src_test("postgres"))
   con_postgres <- src_postgres$con
 

@@ -229,7 +229,9 @@ cdm_get_data_model <- function(x) {
 #' @export
 cdm_get_filter <- function(x) {
   filter <- unclass(x)$filter
-  if (!is_null(filter)) return(filter)
+  if (!is_null(filter)) {
+    return(filter)
+  }
   tibble(table = character(0), filter = list(0))
 }
 
@@ -278,7 +280,7 @@ as_dm.default <- function(x) {
 tbl_src <- function(x) {
   if (is.data.frame(x)) {
     src_df(env = new_environment(x))
-  } else if (inherits(x, "tbl_sql"))  {
+  } else if (inherits(x, "tbl_sql")) {
     x$src
   } else {
     # FIXME: Classed error code
@@ -318,10 +320,14 @@ print.dm <- function(x, ...) {
 
   if (nrow(filters) > 0) {
     names <- pull(filters, table)
-    filter_exprs <- pull(filters, filter) %>% as.character() %>% str_replace("^~", "")
+    filter_exprs <- pull(filters, filter) %>%
+      as.character() %>%
+      str_replace("^~", "")
 
-    walk2(names, filter_exprs, ~cat_line(paste0(.x, ": ", .y)))
-    } else cat_line("None")
+    walk2(names, filter_exprs, ~ cat_line(paste0(.x, ": ", .y)))
+  } else {
+    cat_line("None")
+  }
 
   invisible(x)
 }
@@ -425,7 +431,6 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 
 #' @export
 collect.dm <- function(x, ...) {
-
   list_of_rem_tbls <- cdm_apply_filters(x) %>% cdm_get_tables()
   tables <- map(list_of_rem_tbls, collect)
 
@@ -468,8 +473,9 @@ rename_table_of_dm <- function(dm, old_name, new_name) {
 #'
 #' @export
 cdm_rename_tbl <- function(dm, ...) {
-
-  if (nrow(cdm_get_filter(dm)) > 0) {abort_only_possible_wo_filters("cdm_rename_tbl()")}
+  if (nrow(cdm_get_filter(dm)) > 0) {
+    abort_only_possible_wo_filters("cdm_rename_tbl()")
+  }
   table_list <- tidyselect_dm(dm, ...)
 
   old_table_names <- table_list[[2]]

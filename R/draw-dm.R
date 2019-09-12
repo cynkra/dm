@@ -73,7 +73,8 @@ cdm_draw <- function(
 #'     airports = ,
 #'     airlines = ,
 #'     planes = "yellow",
-#'     weather = "dark_blue") %>%
+#'     weather = "dark_blue"
+#'   ) %>%
 #'   cdm_draw()
 #'
 #' # Splicing is supported:
