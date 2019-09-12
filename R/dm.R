@@ -356,7 +356,7 @@ print.dm <- function(x, ...) {
 #' @export
 `[.dm` <- function(x, id) {
   if (is.numeric(id)) id <- src_tbls(x)[id]
-  id <- as_character(id)
+  id <- as.character(id)
   cdm_select_tbl(x, !!!id)
 }
 

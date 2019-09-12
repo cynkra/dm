@@ -283,3 +283,11 @@ upd_table_fks <- function(fks, is_from, fks_xxx_table, list_of_renames, table_na
     )
   fks
 }
+
+get_all_keys <- function(dm, table_name) {
+  fks <- cdm_get_all_fks(dm) %>%
+    filter(child_table == !!table_name) %>%
+    pull(child_fk_col)
+  pk <- cdm_get_pk(dm, !!table_name)
+  c(pk, fks)
+}
