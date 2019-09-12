@@ -341,9 +341,10 @@ print.dm <- function(x, ...) {
 
 
 #' @export
-`[[.dm` <- function(x, id) {
-  if (is.numeric(id)) id <- src_tbls(x)[id] else id <- as_string(id)
-  tbl(x, id)
+`[[.dm` <- function(x, name) {
+  if (is.numeric(name)) abort_no_numeric_subsetting()
+  table <- as_string(name)
+  tbl(x, table)
 }
 
 
@@ -375,16 +376,6 @@ names.dm <- function(x) {
 
 #' @export
 `names<-.dm` <- function(x, value) {
-  abort_update_not_supported()
-}
-
-#' @export
-length.dm <- function(x) {
-  length(src_tbls(x))
-}
-
-#' @export
-`length<-.dm` <- function(x, value) {
   abort_update_not_supported()
 }
 
