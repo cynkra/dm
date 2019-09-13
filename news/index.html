@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9003</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2</span>
       </span>
     </div>
 
@@ -125,76 +125,86 @@
       
     </div>
 
-    <div id="dm-0-0-1-9003" class="section level1">
+    <div id="dm-0-0-2" class="section level1">
 <h1 class="page-header">
-<a href="#dm-0-0-1-9003" class="anchor"></a>dm 0.0.1.9003</h1>
+<a href="#dm-0-0-2" class="anchor"></a>dm 0.0.2</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <ul>
-<li>Adapt to tidyr &gt;= 1.0.0.</li>
+<li>Requires tidyr &gt;= 1.0.0.</li>
+<li>
+<code><a href="../reference/cdm_nrow.html">cdm_nrow()</a></code> returns named list (#49).</li>
+<li>Remove <code>cdm_semi_join()</code>.</li>
+<li>Remove <code>cdm_find_conn_tbls()</code> and the <code>all_connected</code> argument to <code><a href="../reference/cdm_select.html">cdm_select()</a></code> (#35).</li>
+<li>Unexport <code>cdm_set_key_constraints()</code>.</li>
+<li>Rename <code><a href="../reference/cdm_select.html">cdm_select()</a></code> to <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code>, now uses {tidyselect}.</li>
+<li>
+<code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> now has <code>cycle = FALSE</code> as default.</li>
+<li>Rename <code>cdm_check_for_*()</code> to <code>cdm_enum_*()</code>.</li>
+</ul>
+</div>
+<div id="performance" class="section level2">
+<h2 class="hasAnchor">
+<a href="#performance" class="anchor"></a>Performance</h2>
+<ul>
+<li>
+<code><a href="../reference/cdm_filter.html">cdm_filter()</a></code> only records the filtering operation, the filter is applied only when querying a table via <code>tbl()</code> or when calling <code>compute()</code> or the new <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> (#32).</li>
+</ul>
+</div>
+<div id="new-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions" class="anchor"></a>New functions</h2>
+<ul>
 <li>New <code><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl()</a></code> flattens a <code>dm</code> to a wide table with starting from a specified table (#13). Rename <code>cdm_join_tbl()</code> to <code><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl()</a></code>.</li>
 <li>New <code><a href="../reference/cdm_disambiguate_cols.html">cdm_disambiguate_cols()</a></code> (#40).</li>
 <li>New <code><a href="../reference/cdm_rename.html">cdm_rename()</a></code> (#41) and <code><a href="../reference/cdm_select.html">cdm_select()</a></code> (#50) for renaming and selecting columns of <code>dm</code> tables.</li>
 <li>New <code>length.dm()</code> and <code>length&lt;-.dm()</code> (#53).</li>
-<li>Numeric subsetting is supported again so that the RStudio IDE can display <code>dm</code> objects (#53).</li>
 <li>
-<code><a href="../reference/cdm_nrow.html">cdm_nrow()</a></code> returns named list (#49).</li>
-<li>Remove <code>cdm_semi_join()</code>.</li>
+<code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, <code><a href="https://rdrr.io/r/base/names.html">names()</a></code>, <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> and <code><a href="https://rdrr.io/r/base/length.html">length()</a></code> now implemented for dm objects (read-only).</li>
+<li>New <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code>.</li>
 </ul>
 </div>
-    <div id="dm-0-0-1-9002" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-1-9002" class="anchor"></a>dm 0.0.1.9002</h1>
+<div id="minor-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes" class="anchor"></a>Minor changes</h2>
 <ul>
-<li>
-<code><a href="../reference/cdm_filter.html">cdm_filter()</a></code> only records the filtering operation, the filter is applied only when querying a table via <code>tbl()</code> or when calling <code>compute()</code> (#32).</li>
-<li>New <code>str.dm()</code> .</li>
-<li>Remove <code>cdm_find_conn_tbls()</code> and the <code>all_connected</code> argument to <code><a href="../reference/cdm_select.html">cdm_select()</a></code> (#35).</li>
 <li>
 <code><a href="../reference/browse_docs.html">browse_docs()</a></code> opens the pkgdown website (#36).</li>
 <li>
 <code><a href="../reference/dm.html">as_dm()</a></code> now also accepts a list of remote tables (#30).</li>
-<li>Using simpler internal data structure to store primary and foreign key relations (#26).</li>
 <li>Use {tidyselect} syntax for <code><a href="../reference/cdm_rename_tbl.html">cdm_rename_tbl()</a></code> and <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code> (#14).</li>
-<li>Numeric subsetting in <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> now raises a clear error (#18).</li>
-<li>New <code>nse_function()</code> replaces <code>h()</code> for marking functions as NSE to avoid R CMD check warnings.</li>
-<li>Simplified internal data structure so that creation of new operations that update a dm becomes easier.</li>
-<li>Unexport <code>cdm_set_key_constraints()</code>.</li>
-<li>When copying a dm to a database, <code>NOT NULL</code> constraints are set at creation of the table.</li>
 <li>The tibbles returned by <code><a href="../reference/cdm_enum_fk_candidates.html">cdm_enum_fk_candidates()</a></code> and <code><a href="../reference/enum_pk_candidates.html">cdm_enum_pk_candidates()</a></code> contain a <code>why</code> column that explains the reasons for rejection in a human-readable form (#12).</li>
-<li>Using {RPostgres} instead of {RPostgreSQL} for testing.</li>
 <li>Improve compatibility with RPostgres.</li>
-</ul>
-</div>
-    <div id="dm-0-0-1-9001" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-1-9001" class="anchor"></a>dm 0.0.1.9001</h1>
-<ul>
-<li>Fix corner case for calculating join list: works if table isn’t related to other tables.</li>
 <li>
 <code>create_graph_from_dm()</code> no longer fails in the presence of cycles (#10).</li>
-<li>Add setup article (#7).</li>
-</ul>
-</div>
-    <div id="dm-0-0-1-9000" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-1-9000" class="anchor"></a>dm 0.0.1.9000</h1>
-<ul>
 <li>Only suggest {RSQLite}.</li>
 <li>
 <code><a href="../reference/cdm_filter.html">cdm_filter()</a></code> no longer requires a primary key.</li>
 <li>
 <code><a href="../reference/decompose_table.html">decompose_table()</a></code> adds the new column in the table to the end.</li>
-<li>Rename <code><a href="../reference/cdm_select.html">cdm_select()</a></code> to <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code>.</li>
-<li>
-<code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> now has <code>cycle = FALSE</code> as default.</li>
-<li>
-<code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, and <code><a href="https://rdrr.io/r/base/names.html">names()</a></code> now implemented for dm objects (read-only).</li>
 <li>
 <code>tbl()</code> now fails if the table is not part of the data model.</li>
-<li>
-<code><a href="../reference/cdm_select.html">cdm_select()</a></code> uses tidyselect.</li>
-<li>New <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code>.</li>
-<li>Rename <code>cdm_check_for_*()</code> to <code>cdm_enum_*()</code>.</li>
 </ul>
+</div>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<ul>
+<li>Add setup article (#7).</li>
+</ul>
+</div>
+<div id="internal" class="section level2">
+<h2 class="hasAnchor">
+<a href="#internal" class="anchor"></a>Internal</h2>
+<ul>
+<li>Using simpler internal data structure to store primary and foreign key relations (#26).</li>
+<li>New <code>nse_function()</code> replaces <code>h()</code> for marking functions as NSE to avoid R CMD check warnings.</li>
+<li>Simplified internal data structure so that creation of new operations that update a dm becomes easier.</li>
+<li>When copying a dm to a database, <code>NOT NULL</code> constraints are set at creation of the table. This removes the necessity to store column types.</li>
+<li>Using {RPostgres} instead of {RPostgreSQL} for testing.</li>
+</ul>
+</div>
 </div>
     <div id="dm-0-0-1" class="section level1">
 <h1 class="page-header">
@@ -321,10 +331,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#dm-0-0-1-9003">0.0.1.9003</a></li>
-        <li><a href="#dm-0-0-1-9002">0.0.1.9002</a></li>
-        <li><a href="#dm-0-0-1-9001">0.0.1.9001</a></li>
-        <li><a href="#dm-0-0-1-9000">0.0.1.9000</a></li>
+        <li><a href="#dm-0-0-2">0.0.2</a></li>
         <li><a href="#dm-0-0-1">0.0.1</a></li>
       </ul>
     </div>
