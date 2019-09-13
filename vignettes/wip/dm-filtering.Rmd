@@ -62,7 +62,7 @@ A `dm` object output with data and metadata consists of three elements:
 
 1. the table sources,
 2. the data model,
-3. and a short glimpse into the data via the number of rows.
+3. and a review of active filter conditions.
 
 The console output is colored for a clear output:
 
