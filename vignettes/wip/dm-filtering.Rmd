@@ -52,7 +52,7 @@ The built-in `dm::cdm_nycflights13()` function takes care of this.
 
 A [data model object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm) contains the data as well as metadata.
 
-If you want to create a `dm` from other tables, please look at `?dm` and the function `new_dm()`.
+If you want to create a `dm` from other tables, please use the `new_dm()` and `dm()` functions.
 
 ```{r}
 dm <- cdm_nycflights13()
