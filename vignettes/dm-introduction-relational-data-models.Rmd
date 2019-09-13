@@ -1,0 +1,105 @@
+---
+title: "Introduction to Relational Data Models"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to Relational Data Models}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+
+knit_print.grViz <- function(x, ...) {
+  x %>% 
+    DiagrammeRsvg::export_svg() %>% 
+    c("`````{=html}\n", ., "\n`````\n") %>% 
+    knitr::asis_output()
+}
+```
+
+Multiple, linked tables are a common concept within computer science. 
+Since many R users have a background in other disciplines, we present **five important terms in relational data modeling** to jump-start working with {dm}.
+
+It's good to have at least basic knowledge about the following five terms:
+
+1) [Model](#model)
+2) [Primary Keys](#pk)
+3) [Foreign Keys](#fk)
+4) [Normalisation](#normalisation)
+5) [Relational Databases](#relational-databases)
+
+## 1. Model {#model}
+
+A data model shows the structure between multiple tables, that can be linked together.
+
+An example is the [`nycflights13` dataset](https://github.com/hadley/nycflights13).
+It contains detailed information of 336776 flights that departed from New York City in 2013.
+The information is stored in five tables.
+
+The `nycflights13` relations can be transferred into the following graphical representation:
+
+<img src="../man/figures/README-draw-1.png" width="100%" />
+
+The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.
+By using directed arrows the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere).
+
+For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
+
+The links between the tables are established through [primary keys](#pk) and [foreign keys](#fk).
+
+Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
+
+## 2. Primary Keys {#pk}
+
+In a relational data model every table needs to have **one column or attribute that uniquely identifies a row**.
+This column is called primary key (abbreviated with pk).
+A primary key can be either an existing column that satifies the condition of being unique or a new column that assigns an identifier.
+
+Example: In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
+
+Further Reading:The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
+
+## 3. Foreign Keys {#fk}
+
+The **counterpart of a primary key in one table is the foreign key in another table**.
+In order to join two tables, the primary key of the first table needs to be available in the second table, too.
+This second column is called the foreign key (abbreviated with fk).
+
+For example: If you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
+This is true, because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
+
+Further Reading: The {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
+
+
+## 4. Normalisation {#normalisation}
+
+Normalisation is the technical term that describes the **central design principle of a relational data model**:
+splitting data into multiple tables.
+
+A normalized data schema consists of several relations (tables) that are linked with attributes (columns).
+The joining is with [primary](#pk) and [foreign keys](#fk).
+One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries.
+
+For example: If you want to change the name of one airport in the `nycflights13` dataset, you have to update just a single data entry.
+Sometimes, this principle is called "single point of truth".
+
+Further Reading: See the [Simple English Wikipedia article on database normalisation](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
+
+## 5. Relational Databases {#relational-databases}
+
+{dm} is built upon relational data models, but it is not a database itself.
+Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres.
+As you can guess from the names of the databases SQL, short for **s**tructured **q**uerying **l**anguage, plays an important role: It was invented for the purpose of querying relational databases.
+
+In production, the data is stored in a relational database and {dm} is used to work with the data.
+
+Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works transparently with both in-memory data and with relational database systems.
