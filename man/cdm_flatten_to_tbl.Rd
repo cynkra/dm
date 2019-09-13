@@ -33,9 +33,8 @@ and the joins are performed.
 }
 \examples{
 cdm_nycflights13() \%>\%
-cdm_select_tbl(-weather) \%>\%
-cdm_flatten_to_tbl(flights)
-
+  cdm_select_tbl(-weather) \%>\%
+  cdm_flatten_to_tbl(flights)
 }
 \seealso{
 Other Flattening functions: \code{\link{cdm_join_to_tbl}}

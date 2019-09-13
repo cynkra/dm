@@ -33,5 +33,4 @@ If key columns would be removed, \code{cdm_select()} makes sure they are re-adde
 \examples{
 cdm_nycflights13() \%>\%
   cdm_select(airports, code = faa, altitude = alt)
-
 }

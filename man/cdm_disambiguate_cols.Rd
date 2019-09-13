@@ -21,5 +21,4 @@ linked by a key relation are joined.
 }
 \examples{
 cdm_disambiguate_cols(cdm_nycflights13())
-
 }

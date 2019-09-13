@@ -14,7 +14,7 @@ cdm_get_pk(dm, table)
 \description{
 \code{cdm_get_pk()} returns the name of the
 column marked as primary key of a table of a \code{\link{dm}} object. If no primary key is
-set for the table, an empty character variable is returned.
+set for the table, an empty character vector is returned.
 }
 \examples{
 library(dplyr)

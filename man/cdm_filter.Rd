@@ -48,11 +48,11 @@ dm_nyc_filtered <-
   cdm_nycflights13() \%>\%
   cdm_filter(airports, name == "John F Kennedy Intl")
 
-  tbl(dm_nyc_filtered, "flights")
-  dm_nyc_filtered[["planes"]]
-  dm_nyc_filtered$airlines
+tbl(dm_nyc_filtered, "flights")
+dm_nyc_filtered[["planes"]]
+dm_nyc_filtered$airlines
 
-  cdm_nycflights13() \%>\%
+cdm_nycflights13() \%>\%
   cdm_filter(airports, name == "John F Kennedy Intl") \%>\%
   cdm_apply_filters()
 cdm_nycflights13() \%>\%
@@ -63,8 +63,4 @@ library(dplyr)
 cdm_nycflights13() \%>\%
   cdm_filter(planes, engine \%in\% c("Reciprocating", "4 Cycle")) \%>\%
   compute()
-
-}
-\references{
-\code{\link[=cdm_semi_join]{cdm_semi_join()}}
 }

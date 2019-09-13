@@ -32,5 +32,4 @@ If key columns are renamed the meta-information of the \code{dm} is updated acco
 \examples{
 cdm_nycflights13() \%>\%
   cdm_rename(airports, code = faa, altitude = alt)
-
 }
