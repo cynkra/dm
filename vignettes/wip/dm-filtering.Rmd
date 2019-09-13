@@ -161,7 +161,7 @@ dm_aa_may %>%
   tbl("planes")
 ```
 
-And indeed, there are only flights from `month==5`:
+And indeed, there are only flights from `month == 5`:
 
 ```{r}
 dm_aa_may %>% 
