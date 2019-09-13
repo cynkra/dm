@@ -132,7 +132,7 @@ dm %>%
   cdm_filter(flights, dest == "IAD")
 ```
 
-Of course, you can also chain multiple filters on different tables.
+Chaining multiple filters on different tables is also supported.
 
 An Example:
 
