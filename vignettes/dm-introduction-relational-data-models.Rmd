@@ -102,4 +102,4 @@ As you can guess from the names of the databases SQL, short for **s**tructured *
 
 In production, the data is stored in a relational database and {dm} is used to work with the data.
 
-Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
+Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works transparently with both in-memory data and with relational database systems.
