@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.1.9003</span>
       </span>
     </div>
 
@@ -147,7 +147,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x4750668&gt;
+#&gt; src:  &lt;environment: 0x3b91180&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -169,7 +169,7 @@
 <a class="sourceLine" id="cb3-9" data-line-number="9">    )</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">another_iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x6a42088&gt;
+#&gt; src:  &lt;environment: 0x654d8d8&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -321,9 +321,9 @@
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_rm_fk.html">cdm_rm_fk</a></span>(<span class="dt">table =</span> flights, <span class="dt">column =</span> dest, <span class="dt">ref_table =</span> airports) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_get_fk.html">cdm_get_fk</a></span>(flights, airports)</a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; The given combination of columns 'dest' is not a foreign key of table</span></a>
-<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt; 'flights' with regards to ref_table 'airports'. Foreign key columns are:</span></a>
-<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co">#&gt; 'origin'.</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; The given combination of columns `dest` is not a foreign key of table</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt; `flights` with regards to ref_table `airports`. Foreign key columns are:</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co">#&gt; `origin`.</span></a>
 <a class="sourceLine" id="cb18-7" data-line-number="7">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb18-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/cdm_rm_fk.html">cdm_rm_fk</a></span>(flights, origin, airports) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb18-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="../reference/cdm_get_fk.html">cdm_get_fk</a></span>(flights, airports)</a>
