@@ -27,7 +27,7 @@ test_that("bad color", {
       flights = "mauve"
     ),
     class = cdm_error("wrong_color"),
-    error_txt_wrong_color(paste0("'", colors$dm, "' ", colors$nb)),
+    error_txt_wrong_color(paste0("`", colors$dm, "` ", colors$nb)),
     fixed = TRUE
   )
 })

@@ -37,11 +37,10 @@ cdm_draw <- function(
     )
 
     all_table_names <- names(cdm_get_tables(dm))
-    if (!(length(table_names) == length(all_table_names))) {
-      unwanted_tables <- setdiff(all_table_names, table_names)
-      data_model <- rm_table_from_data_model(data_model, unwanted_tables)
-    }
+    unwanted_tables <- setdiff(all_table_names, table_names)
+    data_model <- rm_table_from_data_model(data_model, unwanted_tables)
   }
+
   graph <- dm_create_graph(
     data_model,
     rankdir = rankdir,
@@ -74,7 +73,8 @@ cdm_draw <- function(
 #'     airports = ,
 #'     airlines = ,
 #'     planes = "yellow",
-#'     weather = "dark_blue") %>%
+#'     weather = "dark_blue"
+#'   ) %>%
 #'   cdm_draw()
 #'
 #' # Splicing is supported:
@@ -110,12 +110,12 @@ color_quos_to_display <- function(...) {
   values <- map_chr(quos[avail], eval_tidy)
 
   if (!all(values %in% colors$dm)) {
-    abort_wrong_color(paste0("'", colors$dm, "' ", colors$nb))
+    abort_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
   }
   new_values <- rev(colors$datamodelr[match(values, colors$dm)])
 
   tibble(tables = names(quos), colors = new_values[idx]) %>%
-    nest(-colors) %>%
+    nest(data = -colors) %>%
     deframe() %>%
     map(pull)
 }

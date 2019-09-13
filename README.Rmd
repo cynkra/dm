@@ -152,7 +152,7 @@ For joining two tables using their relationship defined in the `dm`, you can use
 
 ```{r}
 cdm_nycflights13(cycle = FALSE) %>%
-  cdm_join_tbl(airports, flights, join = semi_join)
+  cdm_join_to_tbl(airports, flights, join = semi_join)
 ```
 
 In our `dm`, the `origin` column of the `flights` table points to the `airports` table.
@@ -205,6 +205,8 @@ The {dm} package builds heavily upon the [{datamodelr} package](https://github.c
 We're looking forward to a good collaboration!
 
 The [{polyply} package](https://github.com/russHyde/polyply) has a similar intent with a slightly different interface.
+
+The [{data.cube} package](https://github.com/jangorecki/data.cube) has quite the same intent using `array`-like interface.
 
 Articles in the [{rquery} package](https://github.com/WinVector/rquery) discuss [join controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md) and [join dependency sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md), with the intent to move the declaration of table relationships from code to data.
 

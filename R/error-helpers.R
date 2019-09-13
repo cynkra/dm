@@ -10,35 +10,6 @@ cdm_error_full <- function(x) {
 }
 
 
-# abort and text for cdm_filter() error -----------------------------------
-
-abort_pk_for_filter_missing <- function(table_name) {
-  abort(error_txt_pk_filter_missing(table_name),
-    .subclass = cdm_error_full("no_pk_filter")
-  )
-}
-
-error_txt_pk_filter_missing <- function(table_name) {
-  paste0(
-    "Table '", table_name,
-    "' needs primary key for the filtering to work. ",
-    "Please set one using cdm_add_pk()."
-  )
-}
-
-
-# abort and text for cdm_semi_join() errors -------------------------------
-
-abort_wrong_table_cols_semi_join <- function(table_name) {
-  abort(error_txt_wrong_table_cols_semi_join(table_name),
-    .subclass = cdm_error_full("wrong_table_cols_semi_join")
-  )
-}
-
-error_txt_wrong_table_cols_semi_join <- function(table_name) {
-  paste0("The table you passed to `cdm_semi_join()` needs to have same the columns as table '", table_name, "'.")
-}
-
 # abort and text for primary key handling errors --------------------------
 
 abort_wrong_col_args <- function() {
@@ -46,7 +17,7 @@ abort_wrong_col_args <- function() {
 }
 
 error_txt_wrong_col_args <- function() {
-  "Argument 'column' has to be given as character variable or unquoted and may only contain 1 element."
+  "Argument `column` has to be given as character variable or unquoted and may only contain 1 element."
 }
 
 abort_key_set_force_false <- function() {
@@ -55,16 +26,6 @@ abort_key_set_force_false <- function() {
 
 error_txt_key_set_force_false <- function() {
   "If you want to change the existing primary key for a table, set `force` == TRUE."
-}
-
-abort_multiple_pks <- function(table_name) {
-  abort(error_txt_multiple_pks(table_name), .subclass = cdm_error_full("multiple_pks"))
-}
-
-error_txt_multiple_pks <- function(table_name) {
-  paste0(
-    "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
-  )
 }
 
 
@@ -84,7 +45,7 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 }
 
 
-# general error: table not part of 'dm' -----------------------------------
+# general error: table not part of `dm` -----------------------------------
 
 
 abort_table_not_in_dm <- function(table_name, tables_in_dm) {
@@ -178,43 +139,40 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
 
 # errors in fk handling --------------------------------------------------
 
-abort_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
-  abort(error_txt_ref_tbl_has_no_pk(ref_table_name, pk_candidates),
+abort_ref_tbl_has_no_pk <- function(ref_table_name) {
+  abort(error_txt_ref_tbl_has_no_pk(ref_table_name),
     .subclass = cdm_error_full("ref_tbl_has_no_pk")
   )
 }
 
-error_txt_ref_tbl_has_no_pk <- function(ref_table_name, pk_candidates) {
+error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
   paste0(
-    "ref_table '", ref_table_name, "' needs a primary key first.",
-    " Candidates are: '",
-    paste0(pk_candidates, collapse = ", "),
-    "'. Use 'cdm_add_pk()' to set it."
+    "ref_table ", tick(ref_table_name), " needs a primary key first. ",
+    "Use `cdm_enum_pk_candidates()` to find candidates, and `cdm_add_pk()` define a primary key."
   )
 }
 
-abort_is_not_fkc <- function(
-                             child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
-  abort(error_txt_is_not_fk(
-    child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
-  ),
-  .subclass = cdm_error_full("is_not_fkc")
+abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
+                             parent_table_name, actual_fk_colnames) {
+  abort(
+    error_txt_is_not_fk(
+      child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
+    ),
+    .subclass = cdm_error_full("is_not_fkc")
   )
 }
 
-error_txt_is_not_fk <- function(
-                                child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames) {
+error_txt_is_not_fk <- function(child_table_name, wrong_fk_colnames,
+                                parent_table_name, actual_fk_colnames) {
   paste0(
-    "The given combination of columns '",
-    paste0(wrong_fk_colnames, collapse = ", "),
-    "' is not a foreign key of table '",
-    child_table_name,
-    "' with regards to ref_table '",
-    parent_table_name,
-    "'. Foreign key columns are: '",
-    paste0(actual_fk_colnames,
-      collapse = ", "
-    ), "'."
+    "The given combination of columns ",
+    paste0(tick(wrong_fk_colnames), collapse = ", "), " ",
+    "is not a foreign key of table ",
+    tick(child_table_name), " ",
+    "with regards to ref_table ",
+    tick(parent_table_name), ". ",
+    "Foreign key columns are: ",
+    commas(tick(actual_fk_colnames)), "."
   )
 }
 
@@ -223,7 +181,7 @@ abort_rm_fk_col_missing <- function() {
 }
 
 error_txt_rm_fk_col_missing <- function() {
-  "Parameter 'column' has to be set. 'NULL' for removing all references."
+  "Parameter `column` has to be set. Pass `NULL` for removing all references."
 }
 
 
@@ -262,12 +220,12 @@ error_txt_no_cycles <- function() {
 
 # errors in cdm_select_tbl() ----------------------------------------------
 
-abort_vertices_not_connected <- function() {
-  abort(error_txt_vertices_not_connected(), .subclass = cdm_error_full("vertices_not_connected"))
+abort_vertices_not_connected <- function(fun_name) {
+  abort(error_txt_vertices_not_connected(fun_name), .subclass = cdm_error_full("vertices_not_connected"))
 }
 
-error_txt_vertices_not_connected <- function() {
-  "Not all of the selected tables of the 'dm'-object are connected."
+error_txt_vertices_not_connected <- function(fun_name) {
+  glue("For `{fun_name}()` all of the selected tables of the `dm`-object need to be connected.")
 }
 
 
@@ -289,9 +247,9 @@ error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colname
     )
   } else {
     paste0(
-      "'", wrong_colnames, "' is not a column of '",
-      table_name, "'. Its columns are: \n'",
-      paste0(actual_colnames, collapse = "', '"), "'"
+      tick(wrong_colnames), " is not a column of ",
+      tick(table_name), ". Its columns are: \n`",
+      commas(tick(actual_colnames)), "."
     )
   }
 }
@@ -334,7 +292,7 @@ abort_src_not_db <- function() {
 }
 
 error_src_not_db <- function() {
-  paste0("This does not work if 'cdm_get_src(dm)' is not on a database.")
+  paste0("This does not work if `cdm_get_src(dm)` is not on a database.")
 }
 
 abort_first_rm_fks <- function(fks) {
@@ -342,10 +300,10 @@ abort_first_rm_fks <- function(fks) {
 }
 
 error_first_rm_fks <- nse_function(c(fks), ~ {
-  child_tbls <- paste0(pull(fks, child_table), collapse = ", ")
-  parent_tbl <- paste0(unique(pull(fks, parent_table)))
+  child_tbls <- paste0(tick(pull(fks, table)), collapse = ", ")
+  parent_tbl <- tick(pull(fks, table)[[1]])
 
-  glue("There are foreign keys pointing from table(s) ({child_tbls}) to table ({parent_tbl}). First remove those or set 'rm_referencing_fks = TRUE'.")
+  glue("There are foreign keys pointing from table(s) {child_tbls} to table {parent_tbl}. First remove those or set `rm_referencing_fks = TRUE`.")
 })
 
 
@@ -366,10 +324,23 @@ error_update_not_supported <- function() {
   paste0('Updating "dm" objects not supported.')
 }
 
-abort_no_numeric_subsetting <- function() {
-  abort(error_no_numeric_subsetting(), .subclass = cdm_error_full("no_numeric_subsetting"))
+# when filters are set and they shouldn't be ------------------------------
+
+abort_only_possible_wo_filters <- function(fun_name) {
+  abort(error_only_possible_wo_filters(fun_name), .subclass = cdm_error_full("only_possible_wo_filters"))
 }
 
-error_no_numeric_subsetting <- function() {
-  paste0("Can't subset a `dm` object by position, either subset by name or use cdm_get_tables() to convert to a regular list first.")
+error_only_possible_wo_filters <- function(fun_name) {
+  glue("You cannot call `{fun_name}` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.")
+}
+
+
+# no foreign key relation -------------------------------------------------
+
+abort_tables_not_neighbours <- function(t1_name, t2_name) {
+  abort(error_tables_not_neighbours(t1_name, t2_name), .subclass = cdm_error_full("tables_not_neighbours"))
+}
+
+error_tables_not_neighbours <- function(t1_name, t2_name) {
+  glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }

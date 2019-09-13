@@ -1,3 +1,34 @@
+# dm 0.0.1.9003
+
+- Adapt to tidyr >= 1.0.0.
+- New `cdm_flatten_to_tbl()` flattens a `dm` to a wide table with starting from a specified table (#13). Rename `cdm_join_tbl()` to `cdm_join_to_tbl()`.
+- New `cdm_disambiguate_cols()` (#40).
+- New `cdm_rename()` (#41) and `cdm_select()` (#50) for renaming and selecting columns of `dm` tables.
+- New `length.dm()` and `length<-.dm()` (#53).
+- Numeric subsetting is supported again so that the RStudio IDE can display `dm` objects (#53).
+- `cdm_nrow()` returns named list (#49).
+- Remove `cdm_semi_join()`.
+
+
+# dm 0.0.1.9002
+
+- `cdm_filter()` only records the filtering operation, the filter is applied only when querying a table via `tbl()` or when calling `compute()` (#32).
+- New `str.dm()` .
+- Remove `cdm_find_conn_tbls()` and the `all_connected` argument to `cdm_select()` (#35).
+- `browse_docs()` opens the pkgdown website (#36).
+- `as_dm()` now also accepts a list of remote tables (#30).
+- Using simpler internal data structure to store primary and foreign key relations (#26).
+- Use {tidyselect} syntax for `cdm_rename_tbl()` and `cdm_select_tbl()` (#14).
+- Numeric subsetting in `[` and `[[` now raises a clear error (#18).
+- New `nse_function()` replaces `h()` for marking functions as NSE to avoid R CMD check warnings.
+- Simplified internal data structure so that creation of new operations that update a dm becomes easier.
+- Unexport `cdm_set_key_constraints()`.
+- When copying a dm to a database, `NOT NULL` constraints are set at creation of the table.
+- The tibbles returned by `cdm_enum_fk_candidates()` and `cdm_enum_pk_candidates()` contain a `why` column that explains the reasons for rejection in a human-readable form (#12).
+- Using {RPostgres} instead of {RPostgreSQL} for testing.
+- Improve compatibility with RPostgres.
+
+
 # dm 0.0.1.9001
 
 - Fix corner case for calculating join list: works if table isn't related to other tables.

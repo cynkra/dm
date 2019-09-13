@@ -9,4 +9,5 @@
 #' @importFrom methods is
 #' @import stringr
 #' @rawNamespace import(glue, except = c(collapse))
+#' @importFrom igraph V E
 NULL

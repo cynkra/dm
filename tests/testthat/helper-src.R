@@ -105,9 +105,9 @@ data_3_src <- test_load(data_3)
 
 # for table-surgery functions ---------------------------------------------
 data_ts <- tibble(
-  a = as_integer(c(1, 2, 1)),
+  a = as.integer(c(1, 2, 1)),
   b = c(1.1, 4.2, 1.1),
-  c = as_integer(c(5, 6, 7)),
+  c = as.integer(c(5, 6, 7)),
   d = c("a", "b", "c"),
   e = c("c", "b", "c"),
   f = c(TRUE, FALSE, TRUE)
@@ -115,14 +115,14 @@ data_ts <- tibble(
 
 data_ts_child <- tibble(
   b = c(1.1, 4.2, 1.1),
-  aef_id = as_integer(c(1, 2, 1)),
-  c = as_integer(c(5, 6, 7)),
+  aef_id = as.integer(c(1, 2, 1)),
+  c = as.integer(c(5, 6, 7)),
   d = c("a", "b", "c"),
 )
 
 data_ts_parent <- tibble(
-  aef_id = as_integer(c(1, 2)),
-  a = as_integer(c(1, 2)),
+  aef_id = as.integer(c(1, 2)),
+  a = as.integer(c(1, 2)),
   e = c("c", "b"),
   f = c(TRUE, FALSE)
 )
@@ -174,7 +174,8 @@ t6 <- tibble(
   o = letters[5:9]
 )
 
-dm_for_filter <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)) %>%
+list_for_filter <- list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
+dm_for_filter <- as_dm(list_for_filter) %>%
   cdm_add_pk(t1, a) %>%
   cdm_add_pk(t2, c) %>%
   cdm_add_pk(t3, f) %>%
@@ -198,6 +199,7 @@ t7 <- tibble(
   p = letters[4:9],
   q = c("elephant", "lion", "seal", "worm", "dog", "cat")
 )
+
 
 dm_for_filter_w_cycle <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7)) %>%
   cdm_add_pk(t1, a) %>%
@@ -284,3 +286,153 @@ dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
 # for `dm_nrow()` ---------------------------------------------------------
 
 rows_dm_obj <- 24L
+
+
+# Complicated `dm` --------------------------------------------------------
+t4 <- tibble(
+  h = letters[1:5],
+  i = c("three", "four", "five", "six", "seven"),
+  j = c(LETTERS[3:6], LETTERS[6])
+)
+
+
+list_for_filter[["t6_2"]] <- tibble(p = letters[1:6], f = LETTERS[6:11])
+list_for_filter[["t4_2"]] <- tibble(
+  r = letters[2:6],
+  s = c("three", "five", "six", "seven", "eight"),
+  t = c(LETTERS[4:7], LETTERS[5])
+)
+list_for_filter[["a"]] <- tibble(a_1 = letters[10:18], a_2 = 5:13)
+list_for_filter[["b"]] <- tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6)
+list_for_filter[["c"]] <- tibble(c_1 = 4:10)
+list_for_filter[["d"]] <- tibble(d_1 = 1:6, b_1 = LETTERS[c(12:14, 13:15)])
+list_for_filter[["e"]] <- tibble(e_1 = 1:2, b_1 = LETTERS[c(12:13)])
+
+dm_more_complex <- as_dm(list_for_filter) %>%
+  cdm_add_pk(t1, a) %>%
+  cdm_add_pk(t2, c) %>%
+  cdm_add_pk(t3, f) %>%
+  cdm_add_pk(t4, h) %>%
+  cdm_add_pk(t4_2, r) %>%
+  cdm_add_pk(t5, k) %>%
+  cdm_add_pk(t6, n) %>%
+  cdm_add_pk(t6_2, p) %>%
+  cdm_add_pk(a, a_1) %>%
+  cdm_add_pk(b, b_1) %>%
+  cdm_add_pk(c, c_1) %>%
+  cdm_add_pk(d, d_1) %>%
+  cdm_add_pk(e, e_1) %>%
+  cdm_add_fk(t2, d, t1) %>%
+  cdm_add_fk(t2, e, t3) %>%
+  cdm_add_fk(t4, j, t3) %>%
+  cdm_add_fk(t5, l, t4) %>%
+  cdm_add_fk(t5, l, t4_2) %>%
+  cdm_add_fk(t5, m, t6) %>%
+  cdm_add_fk(t6_2, f, t3) %>%
+  cdm_add_fk(b, b_2, a) %>%
+  cdm_add_fk(b, b_3, c) %>%
+  cdm_add_fk(d, b_1, b) %>%
+  cdm_add_fk(e, b_1, b)
+
+
+# for testing `cdm_disambiguate_cols()` ----------------------------------------
+
+iris_1 <- as_tibble(iris) %>%
+  mutate(key = row_number()) %>%
+  select(key, everything())
+iris_2 <- iris_1 %>% mutate(other_col = TRUE)
+iris_3 <- iris_2 %>% mutate(one_more_col = 1)
+
+iris_1_dis <- iris_1 %>%
+  rename_at(2:6, ~ str_replace(., "^", "iris_1."))
+iris_2_dis <- iris_2 %>%
+  rename_at(2:7, ~ str_replace(., "^", "iris_2."))
+iris_3_dis <- iris_3 %>%
+  rename_at(1:7, ~ str_replace(., "^", "iris_3."))
+
+
+dm_for_disambiguate <- as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
+  cdm_add_pk(iris_1, key) %>%
+  cdm_add_fk(iris_2, key, iris_1)
+
+dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
+  cdm_add_pk(iris_1, key) %>%
+  cdm_add_fk(iris_2, key, iris_1)
+
+# star schema data model for testing `cdm_flatten_to_tbl()`
+
+fact <- tibble(
+  fact = c(
+    "acorn",
+    "blubber",
+    "cinderella",
+    "depth",
+    "elysium",
+    "fantasy",
+    "gorgeous",
+    "halo",
+    "ill-advised",
+    "jitter"
+  ),
+  dim_1_key = 14:5,
+  dim_2_key = letters[3:12],
+  dim_3_key = LETTERS[24:15],
+  dim_4_key = 7:16,
+  something = 1:10
+)
+fact_clean <-
+  fact %>% rename(
+    dim_1_pk = dim_1_key,
+    dim_2_pk = dim_2_key,
+    dim_3_pk = dim_3_key,
+    dim_4_pk = dim_4_key,
+    fact.something = something
+  )
+
+dim_1 <- tibble(
+  dim_1_pk = 1:20,
+  something = letters[3:22]
+)
+dim_1_clean <- dim_1 %>% rename(dim_1.something = something)
+
+dim_2 <- tibble(
+  dim_2_pk = letters[1:20],
+  something = LETTERS[5:24]
+)
+dim_2_clean <- dim_2 %>% rename(dim_2.something = something)
+
+dim_3 <- tibble(
+  dim_3_pk = LETTERS[5:24],
+  something = 3:22
+)
+dim_3_clean <- dim_3 %>% rename(dim_3.something = something)
+
+dim_4 <- tibble(
+  dim_4_pk = 19:7,
+  something = 19:31
+)
+dim_4_clean <- dim_4 %>% rename(dim_4.something = something)
+
+dm_for_flatten <- as_dm(list(
+  fact = fact,
+  dim_1 = dim_1,
+  dim_2 = dim_2,
+  dim_3 = dim_3,
+  dim_4 = dim_4
+)) %>%
+  cdm_add_pk(dim_1, dim_1_pk) %>%
+  cdm_add_pk(dim_2, dim_2_pk) %>%
+  cdm_add_pk(dim_3, dim_3_pk) %>%
+  cdm_add_pk(dim_4, dim_4_pk) %>%
+  cdm_add_fk(fact, dim_1_key, dim_1) %>%
+  cdm_add_fk(fact, dim_2_key, dim_2) %>%
+  cdm_add_fk(fact, dim_3_key, dim_3) %>%
+  cdm_add_fk(fact, dim_4_key, dim_4)
+dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
+
+result_from_flatten <-
+  fact_clean %>%
+  left_join(dim_1_clean, by = "dim_1_pk") %>%
+  left_join(dim_2_clean, by = "dim_2_pk") %>%
+  left_join(dim_3_clean, by = "dim_3_pk") %>%
+  left_join(dim_4_clean, by = "dim_4_pk")

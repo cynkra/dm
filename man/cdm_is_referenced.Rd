@@ -19,8 +19,6 @@ key of parameter \code{table}, \code{FALSE} otherwise.
 Is a \code{\link{dm}}'s table referenced by another table?
 }
 \seealso{
-Other Functions utilizing foreign key relations: \code{\link{cdm_find_conn_tbls}},
-  \code{\link{cdm_get_referencing_tables}},
-  \code{\link{cdm_select_tbl}}
+Other Functions utilizing foreign key relations: \code{\link{cdm_get_referencing_tables}}
 }
 \concept{Functions utilizing foreign key relations}

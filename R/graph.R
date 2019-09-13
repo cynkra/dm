@@ -9,7 +9,7 @@
 #'
 #' @export
 cdm_is_referenced <- function(dm, table) {
-  table_name <- as_name(enexpr(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   data_model <- cdm_get_data_model(dm)
@@ -37,7 +37,7 @@ is_referencing_data_model <- function(data_model, table_name) {
 #'
 #' @export
 cdm_get_referencing_tables <- function(dm, table) {
-  table_name <- as_name(enexpr(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   data_model <- cdm_get_data_model(dm)
@@ -49,7 +49,7 @@ cdm_get_referencing_tables <- function(dm, table) {
 calculate_join_list <- function(dm, table_name) {
   g <- create_graph_from_dm(dm)
 
-  if (!table_name %in% names(igraph::V(g))) {
+  if (!table_name %in% names(V(g))) {
     return(tibble(
       lhs = character(), rhs = character(), rank = integer(), has_father = logical()
     ))
@@ -57,7 +57,7 @@ calculate_join_list <- function(dm, table_name) {
 
   bfs <- igraph::bfs(g, table_name, father = TRUE, rank = TRUE, unreachable = FALSE)
 
-  nodes <- names(igraph::V(g))
+  nodes <- names(V(g))
 
   has_father <- !is.na(bfs$father)
 
@@ -68,24 +68,28 @@ calculate_join_list <- function(dm, table_name) {
 
   subgraph_nodes <- union(res$lhs, res$rhs)
   subgraph <- igraph::induced_subgraph(g, subgraph_nodes)
-  if (length(igraph::V(subgraph)) - 1 < length(igraph::E(subgraph))) {
+  if (length(V(subgraph)) - 1 < length(E(subgraph))) {
     abort_no_cycles()
   }
 
   res
 }
 
-create_graph_from_dm <- function(dm) {
-  tables <- src_tbls(dm)
-  ref_tables <- map(tables, ~ cdm_get_referencing_tables(dm, !!.x))
+create_graph_from_dm <- function(dm, directed = FALSE) {
+  ref_tables <- src_tbls(dm)
+  tables <- map(ref_tables, ~ cdm_get_referencing_tables(dm, !!.x))
 
   tibble(tables, ref_tables) %>%
-    unnest() %>%
-    igraph::graph_from_data_frame(directed = FALSE)
+    unnest(tables) %>%
+    select(tables, ref_tables) %>%
+    igraph::graph_from_data_frame(directed = directed, vertices = ref_tables)
 }
 
-are_all_vertices_connected <- nse_function(c(g, vertex_names), ~ {
-  V <- names(igraph::V(g))
+is_dm_connected <- nse_function(c(dm), ~ {
+  g <- create_graph_from_dm(dm)
+  vertex_names <- src_tbls(dm)
+
+  V <- names(V(g))
 
   vertex_names[1] %in% V &&
     igraph::bfs(g, vertex_names[1], father = TRUE, rank = TRUE, unreachable = FALSE) %>%

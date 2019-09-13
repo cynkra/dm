@@ -75,7 +75,8 @@ cdm_nycflights13(color = FALSE) \%>\%
     airports = ,
     airlines = ,
     planes = "yellow",
-    weather = "dark_blue") \%>\%
+    weather = "dark_blue"
+  ) \%>\%
   cdm_draw()
 
 # Splicing is supported:

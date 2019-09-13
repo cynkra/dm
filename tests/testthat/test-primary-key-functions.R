@@ -111,12 +111,23 @@ test_that("cdm_get_pk() works as intended?", {
   map(
     .x = cdm_test_obj_src,
     ~ expect_error(
-      cdm_add_pk(.x, cdm_table_1, a) %>%
-        cdm_add_pk_impl("cdm_table_1", "b") %>%
-        cdm_get_pk(cdm_table_1),
-      class = cdm_error("multiple_pks"),
-      error_txt_multiple_pks("cdm_table_1"),
+      .x %>%
+        cdm_add_pk(cdm_table_1, a) %>%
+        cdm_add_pk(cdm_table_1, b),
+      class = cdm_error("key_set_force_false"),
+      error_txt_key_set_force_false(),
       fixed = TRUE
+    )
+  )
+
+  map(
+    .x = cdm_test_obj_src,
+    ~ expect_equivalent_dm(
+      .x %>%
+        cdm_add_pk(cdm_table_1, a) %>%
+        cdm_add_pk(cdm_table_1, b, force = TRUE),
+      .x %>%
+        cdm_add_pk(cdm_table_1, b)
     )
   )
 })

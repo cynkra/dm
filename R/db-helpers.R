@@ -43,7 +43,7 @@ build_copy_data <- nse_function(c(dm, dest, unique_table_names), ~ {
       mutate(column = map(df, colnames)) %>%
       mutate(type = map(df, ~ map_chr(., ~ DBI::dbDataType(dest_con, .)))) %>%
       select(-df) %>%
-      unnest() %>%
+      unnest(c(column, type)) %>%
       left_join(pks, by = c("source_name", "column")) %>%
       mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) %>%
       group_by(source_name, name) %>%
@@ -76,14 +76,12 @@ create_queries <- function(
   }
 
   if (!is_null(fk_information)) {
-    q_adapt_fk_col_classes <- queries_adapt_fk_col_classes(dest, fk_information)
     q_set_fk_relations <- queries_set_fk_relations(dest, fk_information)
   } else {
-    q_adapt_fk_col_classes <- ""
     q_set_fk_relations <- ""
   }
 
-  queries <- c(q_set_pk_cols, q_adapt_fk_col_classes, q_set_fk_relations)
+  queries <- c(q_set_pk_cols, q_set_fk_relations)
   queries[queries != ""]
 }
 
@@ -99,10 +97,6 @@ queries_set_pk_cols <- function(dest, pk_information) {
   } else {
     return("")
   }
-}
-
-queries_adapt_fk_col_classes <- function(dest, fk_information) {
-  ""
 }
 
 queries_set_fk_relations <- function(dest, fk_information) {

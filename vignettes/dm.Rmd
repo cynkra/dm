@@ -127,8 +127,10 @@ flights_dm_with_keys %>%
 
 The idea of a filter on a `dm` object:
 
-1. You filter one table of your `dm`, just like with a normal `dplyr::filter()` call
-2. A cascade of joins is performed along the fk relations, resulting in a new `dm` containing only rows related to the filter operation
+1. You filter one or more of `dm`'s tables, just like with normal `dplyr::filter()` calls
+1. The filter conditions are stored in the `dm` object, but not immediately executed
+1. Once you access a table, the relevant filter conditions are applied to the respective tables and the necessary joins are performed along the fk relations.
+What you get out is a table containing only rows related to the filter operations
 
 Currently, this only works if the graph induced by the fk relations is cycle free, the default for `cdm_nycflights13()`:
 
@@ -138,19 +140,27 @@ flights_dm_acyclic %>%
   cdm_draw()
 ```
 
-Let's see it in action:
+Let's set two filters:
 
 ```{r}
-us_flights_from_jfk <- 
+us_flights_from_jfk_prepared <- 
   flights_dm_acyclic %>%
   cdm_filter(airports, name == "John F Kennedy Intl") %>% 
   cdm_filter(airlines, name == "US Airways Inc.")
-us_flights_from_jfk
+us_flights_from_jfk_prepared
 ```
 
-In the "Rows" part of the print-output, you can observe the reduction in the numbers of rows for all tables (apart from the disconnected `weather` table), corresponding to US Airways flights having started from JFK airport.
+With `cdm_apply_filters()` you can apply all filters and therefore update all tables in the `dm`, so that they contain only the rows relevant to the filters. 
+Counting the rows you can see the effect of the filters:
 
-Which planes were used to service these flights?
+```{r}
+us_flights_from_jfk <- cdm_apply_filters(us_flights_from_jfk_prepared)
+us_flights_from_jfk %>% 
+  cdm_get_tables() %>% 
+  map_int(nrow)
+```
+
+Or you can just pull out one of the tables from the `dm`, answering the question which planes were used to service US Airways flights having started from JFK airport:
 
 ```{r}
 tbl(us_flights_from_jfk, "planes")
@@ -180,12 +190,12 @@ The {dm} code is leaner, because the fk information is encoded in the object.
 
 ### Joining two tables {#join}
 
-The `cdm_join_tbl()` function joins two immediately related tables in a data model.
+The `cdm_join_to_tbl()` function joins two immediately related tables in a data model.
 The definition of the primary and foreign key constraints is used to define the relationship.
 
 ```{r}
 flights_dm_with_keys %>%
-  cdm_join_tbl(airlines, flights, join = left_join)
+  cdm_join_to_tbl(airlines, flights, join = left_join)
 ```
 
 The same operation using {dplyr} syntax looks like this:

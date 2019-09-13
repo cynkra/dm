@@ -171,13 +171,6 @@ add_column_row <- function(.data, col_name, col_type, table_name) {
   add_row(.data, column = col_name, type = col_type, table = table_name, key = FALSE, ref = NA)
 }
 
-cdm_colnames <- function(dm) { # maybe better as dm-method for function `colnames()`
-  data_model <- cdm_get_data_model(dm)
-  data_model %>%
-    extract2("columns") %>%
-    pull("column")
-}
-
 get_datamodel_from_overview <- function(overview) {
   new_data_model(
     tables = datamodel_tables_from_overview(overview),
@@ -244,4 +237,51 @@ data_model_db_types_to_R_types <- function(data_model) {
   new_type <- if_else(str_detect(new_type, "text"), "character", new_type)
   data_model$columns$type <- new_type
   data_model
+}
+
+upd_pks_after_rename <- function(pks,
+                                 table_name,
+                                 list_of_renames) {
+  pk_of_table <- filter(pks, table == !!table_name) %>% pull(column)
+  if (any(list_of_renames == pk_of_table)) {
+    new_pk <- names(list_of_renames[list_of_renames == pk_of_table])
+    pks$column[pks$table == table_name] <- new_pk
+  }
+  pks
+}
+
+upd_fks_after_rename <- function(fks,
+                                 table_name,
+                                 list_of_renames) {
+  fks_from_table <- filter(fks, table == !!table_name) %>% pull(column)
+  fks <- upd_table_fks(fks, is_from = TRUE, fks_from_table, list_of_renames, table_name)
+  fks_to_table <- filter(fks, ref == !!table_name) %>% pull(ref_col)
+  upd_table_fks(fks, is_from = FALSE, fks_to_table, list_of_renames, table_name)
+}
+
+upd_table_fks <- function(fks, is_from, fks_xxx_table, list_of_renames, table_name) {
+  if (is_from) {
+    upd_col <- "column"
+    upd_tbl <- "table"
+  } else {
+    upd_col <- "ref_col"
+    upd_tbl <- "ref"
+  }
+  indices_to_replace <- which(as.logical(match(fks_xxx_table, list_of_renames)))
+  values_for_replacing <- map_chr(fks_xxx_table[indices_to_replace], ~ names(list_of_renames[list_of_renames == .]))
+  fks[fks[[upd_tbl]] == table_name, ][[upd_col]] <-
+    replace(
+      fks_xxx_table,
+      indices_to_replace,
+      values_for_replacing
+    )
+  fks
+}
+
+get_all_keys <- function(dm, table_name) {
+  fks <- cdm_get_all_fks(dm) %>%
+    filter(child_table == !!table_name) %>%
+    pull(child_fk_col)
+  pk <- cdm_get_pk(dm, !!table_name)
+  c(pk, fks)
 }

@@ -23,6 +23,7 @@ reference:
   - cdm_get_src
   - cdm_get_tables
   - cdm_get_data_model
+  - cdm_get_filter
 
 - title: Primary keys
   contents:
@@ -51,13 +52,13 @@ reference:
 
 - title: Flattening
   contents:
-  - cdm_join_tbl
+  - cdm_flatten_to_tbl
+  - cdm_join_to_tbl
 
 - title: Filtering
   contents:
   - cdm_filter
-  - cdm_semi_join
-  - cdm_nrow
+  - cdm_apply_filters
 
 - title: Interaction with DBs
   contents:
@@ -68,8 +69,6 @@ reference:
   contents:
   - cdm_is_referenced
   - cdm_get_referencing_tables
-  - cdm_select_tbl
-  - cdm_find_conn_tbls
 
 - title: Table surgery
   contents:
@@ -90,7 +89,9 @@ reference:
 - title: Miscellaneous
   contents:
   - cdm_nycflights13
+  - cdm_select_tbl
   - cdm_rename_tbl
+  - cdm_nrow
 
 navbar:
   title: ~

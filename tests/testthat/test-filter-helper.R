@@ -2,7 +2,7 @@ test_that("cdm_nrow() works?", {
   map(
     cdm_test_obj_src,
     ~ expect_equal(
-      cdm_nrow(.x) %>% unname(),
+      sum(cdm_nrow(.x)),
       rows_dm_obj
     )
   )

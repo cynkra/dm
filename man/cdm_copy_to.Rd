@@ -2,7 +2,7 @@
 % Please edit documentation in R/db-interface.R
 \name{cdm_copy_to}
 \alias{cdm_copy_to}
-\title{Copy a 'dm'-object to a 'src'/'con'}
+\title{Copy a \code{dm}-object to a \code{src}/\code{con}}
 \usage{
 cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
   set_key_constraints = TRUE, unique_table_names = FALSE,
