@@ -92,7 +92,7 @@ flights %>%
 
 This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of merging data. 
 
-{dm} offers a more elegant and shorter way to combine values by establishing key relations ([see next section](#terms)) while augmenting {dplyr}/{dbplyr} workflows.
+{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section) while augmenting {dplyr}/{dbplyr} workflows.
 
 ## Good to Know 
 
