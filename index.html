@@ -91,10 +91,13 @@
 <div id="dm" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dm" class="anchor"></a>dm</h1></div>
-<p>The goal of {dm} is to provide tools for working with multiple tables. Skip to the <a href="#features">Features section</a> if you are familiar with relational data models.</p>
+<p>The goal of {dm} is to provide tools for working with multiple tables.</p>
+<p>Skip to the <a href="#features">Features section</a> if you are familiar with relational data models.</p>
 <ul>
 <li>
-<a href="#why">Why?</a> gives a short motivation</li>
+<a href="#why">Why?</a> gives a short motivation, especially for {dplyr} users</li>
+<li>
+<a href="#good-to-know">Good to Know</a> explains important terms of relational data models</li>
 <li>
 <a href="#features">Features</a> gives a one-page overview over the scope of this package</li>
 <li>
@@ -109,8 +112,9 @@
 <div id="why" class="section level2">
 <h2 class="hasAnchor">
 <a href="#why" class="anchor"></a>Why?</h2>
-<p>As an example, we consider the <a href="https://github.com/hadley/nycflights13">nycflights13</a> dataset. This dataset contains five tables: the main <code>flights</code> table with links into the <code>airlines</code>, <code>planes</code> and <code>airports</code> tables, and a <code>weather</code> table without an explicit link.</p>
+<p>The motivation for the {dm} package is a more sophisticated data management. {dm} uses the relational data model and its core concept of splitting one table into multiple tables.</p>
 <p><img src="reference/figures/README-draw-1.png" width="100%"></p>
+<p>As an example, we consider the <a href="https://github.com/hadley/nycflights13"><code>nycflights13</code></a> dataset. This dataset contains five tables: the main <code>flights</code> table with links into the <code>airlines</code>, <code>planes</code> and <code>airports</code> tables, and a <code>weather</code> table without an explicit link.</p>
 <p>The separation into multiple tables achieves several goals:</p>
 <ul>
 <li>
@@ -126,11 +130,10 @@
 <li>
 <strong>Segmentation</strong>: facts are organized by topic, individual tables are smaller and easier to handle</li>
 </ul>
-<p>The links are established through <em>primary</em> and <em>foreign keys</em>: a primary key identifies rows/tuples/observations of <em>this</em> table, foreign keys link to a row/tuple/observation in <em>another</em> table. See the <a href="https://simple.wikipedia.org/wiki/Database_normalisation">Simple English Wikipedia article on database normalization</a> for more detail.</p>
-<div id="joining" class="section level3">
+<div id="the-case-for-a-relational-data-models-for-dplyr-users" class="section level3">
 <h3 class="hasAnchor">
-<a href="#joining" class="anchor"></a>Joining</h3>
-<p>The separation into multiple tables helps data quality but poses a different challenge: for each flight, the location of the origin airport, or the details on the airplane, are not available immediately but must be <em>joined</em>/merged:</p>
+<a href="#the-case-for-a-relational-data-models-for-dplyr-users" class="anchor"></a>The case for a relational data models for dplyr users</h3>
+<p>Users of the popular <a href="https://dplyr.tidyverse.org">dplyr</a> package for data wrangling mainly rely on dataframes. However, flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values. Worst case, you have a dataframe with multiple columns and in each row only a single value is changing. These users can benefit from a better data organization. The separation into multiple tables helps data quality but poses a different challenge: for each flight, the location of the origin airport, or the details on the airplane, are not available immediately but must be <em>joined</em>/merged:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"></a>
@@ -155,6 +158,49 @@
 #&gt; #   manufacturer </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, model </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, engines </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, seats </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,
 #&gt; #   speed </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, engine </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
+<p>This can result in long and inflated pipe chains full of <code>left_join()</code>, <code>anti_join()</code> and other forms of merging data.</p>
+<p>{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section) while augmenting {dplyr}/{dbplyr} workflows.</p>
+</div>
+</div>
+<div id="good-to-know" class="section level2">
+<h2 class="hasAnchor">
+<a href="#good-to-know" class="anchor"></a>Good to Know</h2>
+<p>Multiple, linked tables are a common concept within computer science. Since many R users have a background in other disciplines, we present five important terms in relational data modeling to jump-start working with {dm}.</p>
+<div id="model" class="section level3">
+<h3 class="hasAnchor">
+<a href="#model" class="anchor"></a>1) Model</h3>
+<p>A data model shows the structure between multiple tables that can be linked together. The <code>nycflights13</code> relations can be transferred into the following graphical representation:</p>
+<p><img src="reference/figures/README-draw-1.png" width="100%"></p>
+<p>The <code>flights</code> table is linked to three other tables: <code>airlines</code>, <code>planes</code> and <code>airports</code>. By using directed arrows the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere). For example: The column <code>carrier</code> in <code>flights</code> can be joined with the column <code>carrier</code> from the <code>airlines</code> table.</p>
+<p>Further Reading: The {dm} methods for <a href="https://krlmlr.github.io/dm/articles/dm-visualization.html">visualizing data models</a>.</p>
+<p>The links between the tables are established through <em>primary keys</em> and <em>foreign keys</em>.</p>
+</div>
+<div id="primary-keys" class="section level3">
+<h3 class="hasAnchor">
+<a href="#primary-keys" class="anchor"></a>2) Primary Keys</h3>
+<p>In a relational data model every table needs to have one column/attribute that uniquely identifies a row. This column is called primary key (abbreviated with pk). A primary key can be either an existing column that satifies the condition of being unique or a new column that assigns an identifier.</p>
+<p>In the <code>airlines</code> table of <code>nycflights13</code> the column <code>carrier</code> is the primary key.</p>
+<p>Further Reading: The {dm} package offers several function for dealing with <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk">primary keys</a>.</p>
+</div>
+<div id="foreign-keys" class="section level3">
+<h3 class="hasAnchor">
+<a href="#foreign-keys" class="anchor"></a>3) Foreign Keys</h3>
+<p>The counterpart of a primary key in one table is the foreign key in another table. In order to join two tables, the primary key of the first table needs to be available in the second table, too. This second column is called the foreign key (abbreviated with fk).</p>
+<p>For example, if you want to link the <code>airlines</code> table in the <code>nycflights13</code> data to the <code>flights</code> table, the primary key in the <code>airlines</code> table is <code>carrier</code> which is present as foreign key <code>carrier</code> in the <code>flights</code> table.</p>
+<p>Further Reading: The {dm} functions for working with <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys">foreign keys</a>.</p>
+</div>
+<div id="normalization" class="section level3">
+<h3 class="hasAnchor">
+<a href="#normalization" class="anchor"></a>4) Normalization</h3>
+<p>Normalization is the technical term that describes the central design principle of a relational data model: splitting data into multiple tables. A normalized data schema consists of several relations (tables) that are linked with attributes (columns) with primary and foreign keys. One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries.</p>
+<p>For example, if you want to change the name of one airport in <code>nycflights13</code>, you have to change only a single data entry. Sometimes, this principle is called “single point of truth”.</p>
+<p>See the <a href="https://en.wikipedia.org/wiki/Database_normalisation">Wikipedia article on database normalization</a> for more details. Consider reviewing the <a href="https://simple.wikipedia.org/wiki/Database_normalisation">Simple English version</a> for a gentle introduction.</p>
+</div>
+<div id="relational-databases" class="section level3">
+<h3 class="hasAnchor">
+<a href="#relational-databases" class="anchor"></a>5) Relational Databases</h3>
+<p><code>dm</code> is built upon relational data models, but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases SQL, the <strong>s</strong>tructured <strong>q</strong>uerying <strong>l</strong>anguage plays an important role: It was invented for the purpose of querying relational databases.</p>
+<p>Therefore, {dm} can copy data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
 </div>
 </div>
 <div id="features" class="section level2">
