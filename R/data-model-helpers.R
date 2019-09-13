@@ -171,13 +171,6 @@ add_column_row <- function(.data, col_name, col_type, table_name) {
   add_row(.data, column = col_name, type = col_type, table = table_name, key = FALSE, ref = NA)
 }
 
-cdm_colnames <- function(dm) { # maybe better as dm-method for function `colnames()`
-  data_model <- cdm_get_data_model(dm)
-  data_model %>%
-    extract2("columns") %>%
-    pull("column")
-}
-
 get_datamodel_from_overview <- function(overview) {
   new_data_model(
     tables = datamodel_tables_from_overview(overview),
