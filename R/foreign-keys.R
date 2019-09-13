@@ -56,14 +56,7 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
 #'
 #' @export
 cdm_has_fk <- function(dm, table, ref_table) {
-  table_name <- as_name(enquo(table))
-  ref_table_name <- as_name(enquo(ref_table))
-
-  check_correct_input(dm, table_name)
-  check_correct_input(dm, ref_table_name)
-
-  fks <- cdm_get_data_model_fks(dm)
-  any(fks$table == table_name & fks$ref == ref_table_name)
+  has_length(cdm_get_fk(dm, {{ table }}, {{ ref_table }}))
 }
 
 #' Retrieve the name of the column marked as foreign key, pointing from one table of a [`dm`] to another
@@ -81,10 +74,8 @@ cdm_get_fk <- function(dm, table, ref_table) {
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
 
-  dm_data_model <- cdm_get_data_model(dm)
-  fk_ind <- dm_data_model$references$table == table_name & dm_data_model$references$ref == ref_table_name
-
-  as.character(dm_data_model$references$column[fk_ind]) # FIXME: maybe something nicer?
+  fks <- cdm_get_data_model_fks(dm)
+  fks$column[fks$table == table_name & fks$ref == ref_table_name]
 }
 
 #' Retrieve all foreign key constraints in a [`dm`]
@@ -128,23 +119,22 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   check_correct_input(dm, eval_tidy(table_name))
   check_correct_input(dm, eval_tidy(ref_table_name))
 
-  if (!cdm_has_fk(dm, !!table_name, !!ref_table_name)) {
+  fk_cols <- cdm_get_fk(dm, !!table_name, !!ref_table_name)
+  if (is_empty(fk_cols)) {
     return(dm)
   }
 
-  if (quo_is_null(enquo(column))) {
-    col_names <- cdm_get_fk(dm, !!table_name, !!ref_table_name)
+  column_quo <- enquo(column)
+
+  if (quo_is_null(column_quo)) {
+    col_names <- fk_cols
+  } else if (quo_is_missing(column_quo)) {
+    abort_rm_fk_col_missing()
   } else {
     col_names <- as_name(enexpr(column))
-    if (col_names == "") {
-      abort_rm_fk_col_missing()
+    if (!all(col_names %in% fk_cols)) {
+      abort_is_not_fkc(table_name, col_names, ref_table_name, fk_cols)
     }
-  }
-
-  if (!(all(col_names %in% cdm_get_fk(dm, !!table_name, !!ref_table_name)))) {
-    abort_is_not_fkc(
-      table_name, col_names, ref_table_name, cdm_get_fk(dm, !!table_name, !!ref_table_name)
-    )
   }
 
   new_dm(
