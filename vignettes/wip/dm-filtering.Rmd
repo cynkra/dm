@@ -205,6 +205,7 @@ dm %>%
   cdm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE) %>% 
   cdm_filter(airlines, name == "American Airlines Inc.") %>%
   cdm_filter(airports, name != "John F Kennedy Intl") %>%
+  cdm_apply_filters() %>% 
   cdm_get_tables() %>%
   map(dbplyr::sql_render)
 ```
