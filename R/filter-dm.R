@@ -24,8 +24,6 @@
 #' the data frame. They support unquoting and splicing. See `vignette("programming", package = "dplyr")`
 #' for an introduction to these concepts.
 #'
-#' @references [cdm_semi_join()]
-#'
 #' @examples
 #' library(dplyr)
 #'
@@ -105,28 +103,6 @@ cdm_apply_filters <- function(dm) {
   )
 }
 
-
-#' Semi-join a [`dm`] object with one of its reduced tables
-#'
-#' @description Similar to the subsequent calls of [`cdm_filter()`] and [`cdm_apply_filters()`], `cdm_semi_join()`
-#' performs a cascading "row reduction" of a [`dm`] object
-#' by an inital semi-join of one of its tables with the same but filtered table. Subsequently, the
-#' key constraints are used to compute the remainders of the other tables of the [`dm`] object and
-#' a new [`dm`] object is returned.
-#'
-#' @inheritParams cdm_add_pk
-#' @param reduced_table The table indicated in argument `table`, but in a filtered state (cf. `dplyr::filter()`).
-#'
-#' @references [cdm_filter()]
-cdm_semi_join <- function(dm, table, reduced_table) {
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
-
-  filtered_dm <- cdm_update_table(dm, table_name, reduced_table)
-
-  join_list <- calculate_join_list(dm, table_name)
-  perform_joins(filtered_dm, join_list)
-}
 
 cdm_get_filtered_table <- function(dm, from) {
   filters <- cdm_get_filter(dm)

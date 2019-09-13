@@ -1,28 +1,3 @@
-perform_joins <- function(
-                          dm, # function should be called with 1 already filtered table which needs to be in first entry of join_list
-                          join_list,
-                          join = semi_join) {
-  reduce2(join_list$lhs, join_list$rhs, perform_join, join = join, .init = dm)
-}
-
-perform_join <- function(dm, lhs, rhs, join) {
-  joined_tbl <- join(tbl(dm, lhs), tbl(dm, rhs), by = get_by(dm, lhs, rhs))
-  cdm_update_table(dm, lhs, joined_tbl)
-}
-
-cdm_update_table <- function(dm, name, table) {
-  if (!identical(colnames(table), colnames(tbl(dm, name)))) abort_wrong_table_cols_semi_join(name)
-
-  tables_list <- cdm_get_tables(dm)
-  tables_list[[name]] <- table
-
-  new_dm(
-    src = cdm_get_src(dm),
-    tables = tables_list,
-    data_model = cdm_get_data_model(dm)
-  )
-}
-
 #' Number of rows
 #'
 #' Returns a named vector with the number of rows for each table.
