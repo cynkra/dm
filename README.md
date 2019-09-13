@@ -116,7 +116,7 @@ In a relational data model every table needs to have one column/attribute that u
 
 In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
 
-Further Reading:The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
+Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
 
 ### 3) Foreign Keys
 
