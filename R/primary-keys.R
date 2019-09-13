@@ -30,19 +30,12 @@
 #' # the following does not work
 #' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
-  table_name <- as_name(enquo(table))
+  table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)
 
-  if (is_symbol(enexpr(column))) {
-    col_expr <- enexpr(column)
-    col_name <- as_name(col_expr)
-  } else if (is_character(column)) {
-    col_name <- column
-    col_expr <- ensym(column)
-  } else {
-    abort_wrong_col_args()
-  }
+  col_expr <- enexpr(column)
+  col_name <- as_name(col_expr)
 
   old_key <- cdm_get_pk(dm, !!table_name)
   if (has_length(old_key)) {
@@ -115,7 +108,7 @@ cdm_has_pk <- function(dm, table) {
 #'   cdm_get_pk(planes)
 #' @export
 cdm_get_pk <- function(dm, table) {
-  table_name <- as_name(enquo(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   pks <- cdm_get_data_model_pks(dm)
@@ -166,7 +159,7 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #'   cdm_has_pk(planes)
 #' @export
 cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
-  table_name <- as_name(enquo(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   fks <- cdm_get_data_model_fks(dm)
@@ -240,7 +233,7 @@ cdm_enum_pk_candidates <- nse_function(c(dm, table), ~ {
   if (nrow(cdm_get_filter(dm)) > 0) {
     abort_only_possible_wo_filters("cdm_enum_pk_candidates()")
   }
-  table_name <- as_name(enquo(table))
+  table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)
 

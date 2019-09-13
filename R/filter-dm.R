@@ -55,6 +55,7 @@ cdm_filter <- function(dm, table, ...) {
 }
 
 set_filter_for_table <- function(dm, table_name, quos) {
+  # FIXME: Implement cdm_get_filter() and add filter option to new_dm2()
   raw_dm <- unclass(dm)
   filter <- raw_dm[["filter"]]
 

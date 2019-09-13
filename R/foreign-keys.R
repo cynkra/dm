@@ -12,8 +12,8 @@
 #'
 #' @export
 cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = TRUE), ~ {
-  table_name <- as_name(enquo(table))
-  ref_table_name <- as_name(enquo(ref_table))
+  table_name <- as_name(ensym(table))
+  ref_table_name <- as_name(ensym(ref_table))
 
   column_name <- as_name(enexpr(column))
 
@@ -68,8 +68,8 @@ cdm_has_fk <- function(dm, table, ref_table) {
 #'
 #' @export
 cdm_get_fk <- function(dm, table, ref_table) {
-  table_name <- as_name(enquo(table))
-  ref_table_name <- as_name(enquo(ref_table))
+  table_name <- as_name(ensym(table))
+  ref_table_name <- as_name(ensym(ref_table))
 
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
@@ -113,8 +113,8 @@ cdm_get_all_fks <- nse_function(c(dm), ~ {
 #'
 #' @export
 cdm_rm_fk <- function(dm, table, column, ref_table) {
-  table_name <- as_name(enquo(table))
-  ref_table_name <- as_name(enquo(ref_table))
+  table_name <- as_name(ensym(table))
+  ref_table_name <- as_name(ensym(ref_table))
 
   check_correct_input(dm, eval_tidy(table_name))
   check_correct_input(dm, eval_tidy(ref_table_name))
@@ -174,8 +174,8 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   if (nrow(cdm_get_filter(dm)) > 0) {
     abort_only_possible_wo_filters("cdm_enum_pk_candidates()")
   }
-  table_name <- as_name(enquo(table))
-  ref_table_name <- as_name(enquo(ref_table))
+  table_name <- as_name(ensym(table))
+  ref_table_name <- as_name(ensym(ref_table))
 
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
