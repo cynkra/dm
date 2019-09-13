@@ -48,7 +48,7 @@ This dataset contains all 336 776 flights that departed from New York City in 20
 The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13`.
 
 First of all, we have to create a `dm` object from the {nycflights13} data.
-This is implmeneted with `dm::cdm_nycflights13`.
+The built-in `dm::cdm_nycflights13()` function takes care of this.
 
 A [data model object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm) contains the data as well as metda data.
 
