@@ -451,10 +451,10 @@ collect.dm <- function(x, ...) {
 
 
 rename_table_of_dm <- function(dm, old_name, new_name) {
-  old_name_q <- as_name(enexpr(old_name))
+  old_name_q <- as_name(ensym(old_name))
   check_correct_input(dm, old_name_q)
 
-  new_name_q <- as_name(enexpr(new_name))
+  new_name_q <- as_name(ensym(new_name))
   tables <- cdm_get_tables(dm)
   table_names <- names(tables)
   table_names[table_names == old_name_q] <- new_name_q

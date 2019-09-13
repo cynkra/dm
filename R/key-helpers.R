@@ -43,15 +43,8 @@ check_key <- function(.data, ...) {
 
 # internal function to check if a column is a unique key of a table
 is_unique_key <- nse_function(c(.data, column), ~ {
-  if (is_symbol(enexpr(column))) {
-    col_expr <- enexpr(column)
-    col_name <- as_name(col_expr)
-  } else if (is_character(column)) {
-    col_name <- column
-    col_expr <- ensym(column)
-  } else {
-    abort_wrong_col_args()
-  }
+  col_expr <- ensym(column)
+  col_name <- as_name(col_expr)
 
   duplicate_rows <-
     .data %>%
@@ -93,10 +86,10 @@ is_unique_key <- nse_function(c(.data, column), ~ {
 #' check_set_equality(data_1, a, data_3, a)
 check_set_equality <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
-  c1q <- enexpr(c1)
-
   t2q <- enquo(t2)
-  c2q <- enexpr(c2)
+
+  c1q <- ensym(c1)
+  c2q <- ensym(c2)
 
   catcher_1 <- tryCatch({
     check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
@@ -144,8 +137,8 @@ check_if_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
-  c1q <- enexpr(c1)
-  c2q <- enexpr(c2)
+  c1q <- ensym(c1)
+  c2q <- ensym(c2)
 
   if (is_subset(eval_tidy(t1q), !!c1q, eval_tidy(t2q), !!c2q)) {
     return(invisible(eval_tidy(t1q)))
@@ -168,8 +161,8 @@ is_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
-  c1q <- enexpr(c1)
-  c2q <- enexpr(c2)
+  c1q <- ensym(c1)
+  c2q <- ensym(c2)
 
   # Hier kann nicht t1 direkt verwendet werden, da das für den Aufruf
   # check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q

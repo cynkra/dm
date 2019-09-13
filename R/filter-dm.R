@@ -42,7 +42,7 @@
 #'   cdm_apply_filters()
 #' @export
 cdm_filter <- function(dm, table, ...) {
-  table_name <- as_name(enexpr(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   # We remove the class here so that `bind_rows()` works without warning later
@@ -119,7 +119,7 @@ cdm_apply_filters <- function(dm) {
 #'
 #' @references [cdm_filter()]
 cdm_semi_join <- function(dm, table, reduced_table) {
-  table_name <- as_name(enexpr(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   filtered_dm <- cdm_update_table(dm, table_name, reduced_table)

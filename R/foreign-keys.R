@@ -15,7 +15,7 @@ cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = TRUE), ~ {
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
-  column_name <- as_name(enexpr(column))
+  column_name <- as_name(ensym(column))
 
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
@@ -131,7 +131,8 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   } else if (quo_is_missing(column_quo)) {
     abort_rm_fk_col_missing()
   } else {
-    col_names <- as_name(enexpr(column))
+    # FIXME: Add tidyselect support
+    col_names <- as_name(ensym(column))
     if (!all(col_names %in% fk_cols)) {
       abort_is_not_fkc(table_name, col_names, ref_table_name, fk_cols)
     }

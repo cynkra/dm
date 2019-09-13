@@ -23,7 +23,7 @@
 #' @export
 cdm_rename <- function(dm, table, ...) {
   if (nrow(cdm_get_filter(dm)) > 0) abort_only_possible_wo_filters("cdm_rename()")
-  table_name <- as_name(enexpr(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   old_cols <- colnames(tbl(dm, table_name))
@@ -46,7 +46,7 @@ cdm_rename <- function(dm, table, ...) {
 #' @export
 cdm_select <- function(dm, table, ...) {
   if (nrow(cdm_get_filter(dm)) > 0) abort_only_possible_wo_filters("cdm_select()")
-  table_name <- as_name(enexpr(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   old_cols <- colnames(tbl(dm, table_name))

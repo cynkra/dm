@@ -34,7 +34,7 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
 
   check_correct_input(dm, table_name)
 
-  col_expr <- enexpr(column)
+  col_expr <- ensym(column)
   col_name <- as_name(col_expr)
 
   old_key <- cdm_get_pk(dm, !!table_name)
@@ -200,10 +200,8 @@ cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
 #' @examples
 #' nycflights13::flights %>% enum_pk_candidates()
 enum_pk_candidates <- nse_function(c(table), ~ {
-  tbl_colnames <- colnames(table)
-
   # list of ayes and noes:
-  map(set_names(colnames(table)), ~ is_unique_key(table, {{ .x }})) %>%
+  map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
     enframe("column") %>%
     # Workaround: Can't call bind_rows() here with dplyr < 0.9.0
     # Can't call unnest() either for an unknown reason

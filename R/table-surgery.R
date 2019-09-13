@@ -31,8 +31,8 @@
 #' @export
 decompose_table <- function(.data, new_id_column, ...) {
   .data_q <- enquo(.data)
-  cols_q <- enexprs(...)
-  id_col_q <- enexpr(new_id_column)
+  cols_q <- ensyms(...)
+  id_col_q <- ensym(new_id_column)
 
   cols_chr <-
     cols_q %>%
@@ -98,7 +98,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' @name reunite_parent_child
 #' @export
 reunite_parent_child <- function(child_table, parent_table, id_column) {
-  id_col_q <- enexpr(id_column)
+  id_col_q <- ensym(id_column)
 
   id_col_chr <-
     as_name(id_col_q)
@@ -125,7 +125,7 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 #' @rdname reunite_parent_child
 #' @export
 reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_column) {
-  id_col_q <- enexpr(id_column)
+  id_col_q <- ensym(id_column)
 
   id_col_chr <-
     as_name(id_col_q)

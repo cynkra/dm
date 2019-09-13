@@ -56,9 +56,9 @@
 #' check_cardinality_0_1(d1, a, d3, c)
 check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(pk_column)
+  pkc <- ensym(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(fk_column)
+  fkc <- ensym(fk_column)
 
   check_key(!!pt, !!pkc)
 
@@ -71,9 +71,9 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(pk_column)
+  pkc <- ensym(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(fk_column)
+  fkc <- ensym(fk_column)
 
   check_key(!!pt, !!pkc)
 
@@ -86,9 +86,9 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(pk_column)
+  pkc <- ensym(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(fk_column)
+  fkc <- ensym(fk_column)
 
   check_key(!!pt, !!pkc)
 
@@ -108,9 +108,9 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(pk_column)
+  pkc <- ensym(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(fk_column)
+  fkc <- ensym(fk_column)
 
   check_key(!!pt, !!pkc)
 

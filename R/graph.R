@@ -9,7 +9,7 @@
 #'
 #' @export
 cdm_is_referenced <- function(dm, table) {
-  table_name <- as_name(enexpr(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   data_model <- cdm_get_data_model(dm)
@@ -37,7 +37,7 @@ is_referencing_data_model <- function(data_model, table_name) {
 #'
 #' @export
 cdm_get_referencing_tables <- function(dm, table) {
-  table_name <- as_name(enexpr(table))
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   data_model <- cdm_get_data_model(dm)
