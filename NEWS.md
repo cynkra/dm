@@ -1,3 +1,15 @@
+# dm 0.0.1.9003
+
+- Adapt to tidyr >= 1.0.0.
+- New `cdm_flatten_to_tbl()` flattens a `dm` to a wide table with starting from a specified table (#13). Rename `cdm_join_tbl()` to `cdm_join_to_tbl()`.
+- New `cdm_disambiguate_cols()` (#40).
+- New `cdm_rename()` (#41) and `cdm_select()` (#50) for renaming and selecting columns of `dm` tables.
+- New `length.dm()` and `length<-.dm()` (#53).
+- Numeric subsetting is supported again so that the RStudio IDE can display `dm` objects (#53).
+- `cdm_nrow()` returns named list (#49).
+- Remove `cdm_semi_join()`.
+
+
 # dm 0.0.1.9002
 
 - `cdm_filter()` only records the filtering operation, the filter is applied only when querying a table via `tbl()` or when calling `compute()` (#32).
