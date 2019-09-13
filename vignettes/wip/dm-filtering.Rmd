@@ -140,7 +140,7 @@ An Example:
 
 ```{r}
 dm_aa_may <- dm %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_filter(flights, month == 5)
 ```
