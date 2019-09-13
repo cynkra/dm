@@ -14,6 +14,7 @@ status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/pac
 # dm
 
 The goal of {dm} is to provide tools for working with multiple tables.
+
 Skip to the [Features section](#features) if you are familiar with
 relational data models.
 
@@ -30,7 +31,8 @@ relational data models.
 
 ## Why?
 
-The motivation for the {dm} package is a more sophisticated data management. {dm} uses the relational data model and its core concept of splitting one table into multiple tables.
+The motivation for the {dm} package is a more sophisticated data management. 
+{dm} uses the relational data model and its core concept of splitting one table into multiple tables.
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
@@ -55,8 +57,9 @@ The separation into multiple tables achieves several goals:
 
 ### The case for a relational data models for dplyr users
 
-Users of the popular [dplyr](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes. However, flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values. Worst case, you have a dataframe with multiple columns and in each row only a single value is changing. These users can benefit from a better data organization. 
-
+Users of the popular [dplyr](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
+However, flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values.
+Worst case, you have a dataframe with multiple columns and in each row only a single value is changing. These users can benefit from a better data organization. 
 The separation into multiple tables helps data quality but poses a different challenge: for each flight, the location of the origin airport, or the details on the airplane, are not available immediately but must be *joined*/merged:
 
 ``` r
@@ -87,7 +90,9 @@ flights %>%
 #&gt; #   </span><span style='color: #555555;font-weight: bold;'>speed</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engine</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 </span></CODE></PRE>
 
-This can result in long and inflated pipe chains full of `left_join`, `anti_join` and other forms of merging data. {dm} offers a more elegant and shorter way to combine values by establishing key relations ([see next section](#terms)) while augmenting {dplyr}/{dbplyr} workflows.
+This can result in long and inflated pipe chains full of `left_join`, `anti_join` and other forms of merging data. 
+
+{dm} offers a more elegant and shorter way to combine values by establishing key relations ([see next section](#terms)) while augmenting {dplyr}/{dbplyr} workflows.
 
 ## Good to Know 
 
