@@ -139,7 +139,7 @@ See the [Simple English Wikipedia article on database normalization](https://sim
 
 `dm` is built upon relational data models, but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases SQL, the **s**tructured **q**uerying **l**anguage plays an important role: It was invented for the purpose of querying relational databases. 
 
-Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
+Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works transparently with both in-memory data and with relational database systems.
 
 ## Features
 
