@@ -98,10 +98,9 @@ cdm_apply_filters <- function(dm) {
   new_list_of_tables <-
     map(set_names(table_names), ~ tbl(dm, .))
 
-  new_dm(
-    src = cdm_get_src(dm),
+  new_dm2(
     tables = new_list_of_tables,
-    data_model = cdm_get_data_model(dm)
+    base_dm = dm
   )
 }
 
