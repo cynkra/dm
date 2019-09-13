@@ -240,7 +240,7 @@ This function is called by the <code><a href='https://dplyr.tidyverse.org/refere
 #&gt;   3 primary keys
 #&gt;   3 references
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
-#&gt; None</div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+#&gt; airports: name == "John F Kennedy Intl"</div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;package: nycflights13&gt;
@@ -251,7 +251,7 @@ This function is called by the <code><a href='https://dplyr.tidyverse.org/refere
 #&gt;   3 primary keys
 #&gt;   3 references
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
-#&gt; None</div><div class='input'>
+#&gt; flights: month == 3</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
@@ -264,7 +264,7 @@ This function is called by the <code><a href='https://dplyr.tidyverse.org/refere
 #&gt;   3 primary keys
 #&gt;   3 references
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
-#&gt; None</div><div class='input'>
+#&gt; planes: engine %in% c("Reciprocating", "4 Cycle")</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
