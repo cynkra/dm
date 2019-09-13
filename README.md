@@ -19,7 +19,8 @@ Skip to the [Features section](#features) if you are familiar with
 relational data models.
 
   - [Why?](#why) gives a short motivation, especially for {dplyr} users
-  - [Good to Know](#good-to-know) explains important terms of relational data models
+  - [Good to Know](#good-to-know) explains important terms of relational
+    data models
   - [Features](#features) gives a one-page overview over the scope of
     this package
   - [Example](#example) outlines some of the features in a short example
@@ -31,8 +32,9 @@ relational data models.
 
 ## Why?
 
-The motivation for the {dm} package is a more sophisticated data management. 
-{dm} uses the relational data model and its core concept of splitting one table into multiple tables.
+The motivation for the {dm} package is a more sophisticated data
+management. {dm} uses the relational data model and its core concept of
+splitting one table into multiple tables.
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
@@ -44,23 +46,27 @@ without an explicit link.
 
 The separation into multiple tables achieves several goals:
 
-  - **Avoid repetition, conserve memory**: the facts about each airline,
-    airport, and airplane are stored only once
+  - **Avoid repetition, conserve memory**: the information related to
+    each airline, airport, and airplane are stored only once
       - name of each airline
       - name, location and altitude of each airport
       - manufacturer and number of seats for each airplane
-  - **Improve consistency**: if facts (e.g. the name of an airport) need
-    to be updated, they need to be updated in only one place
-  - **Segmentation**: facts are organized by topic, individual tables
-    are smaller and easier to handle
-
+  - **Improve consistency**: for updating any information (e.g. the name
+    of an airport), it is sufficient to update in only one place
+  - **Segmentation**: information is organized by topic, individual
+    tables are smaller and easier to handle
 
 ### The case for a relational data models for dplyr users
 
-Users of the popular [dplyr](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
-However, flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values.
-Worst case, you have a dataframe with multiple columns and in each row only a single value is changing. These users can benefit from a better data organization. 
-The separation into multiple tables helps data quality but poses a different challenge: for each flight, the location of the origin airport, or the details on the airplane, are not available immediately but must be *joined*/merged:
+Users of the popular [dplyr](https://dplyr.tidyverse.org) package for
+data wrangling mainly rely on dataframes. However, flat file systems
+like spreadsheets and dataframes can result in bloated tables, that hold
+many repetitive values. Worst case, you have a dataframe with multiple
+columns and in each row only a single value is changing. These users can
+benefit from a better data organization. The separation into multiple
+tables helps data quality but poses a different challenge: for each
+flight, the location of the origin airport, or the details on the
+airplane, are not available immediately but must be *joined*/merged:
 
 ``` r
 library(tidyverse)
@@ -73,7 +79,7 @@ flights %>%
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 19</span><span>
-#&gt;    month   day origin tailnum name    lat   lon   alt    tz dst   tzone
+#&gt;    </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>origin</span><span> </span><span style='font-weight: bold;'>tailnum</span><span> </span><span style='font-weight: bold;'>name</span><span>    </span><span style='font-weight: bold;'>lat</span><span>   </span><span style='font-weight: bold;'>lon</span><span>   </span><span style='font-weight: bold;'>alt</span><span>    </span><span style='font-weight: bold;'>tz</span><span> </span><span style='font-weight: bold;'>dst</span><span>   </span><span style='font-weight: bold;'>tzone</span><span>
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>     1     1 EWR    N14228  Newa…  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
 #&gt; </span><span style='color: #555555;'> 2</span><span>     1     1 LGA    N24211  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
@@ -85,63 +91,107 @@ flights %>%
 #&gt; </span><span style='color: #555555;'> 8</span><span>     1     1 LGA    N829AS  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
 #&gt; </span><span style='color: #555555;'> 9</span><span>     1     1 JFK    N593JB  John…  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
 #&gt; </span><span style='color: #555555;'>10</span><span>     1     1 LGA    N3ALAA  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 8 more variables: year </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   manufacturer </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, model </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, engines </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, seats </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   speed </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, engine </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 8 more variables: </span><span style='color: #555555;font-weight: bold;'>year</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>type</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>manufacturer</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>model</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engines</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>seats</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>speed</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engine</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 </span></CODE></PRE>
 
-This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of merging data. 
+This can result in long and inflated pipe chains full of `left_join()`,
+`anti_join()` and other forms of merging data.
 
-{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section) while augmenting {dplyr}/{dbplyr} workflows.
+{dm} offers a more elegant and shorter way to combine values by
+establishing key relations (see next section) while augmenting
+{dplyr}/{dbplyr} workflows.
 
-## Good to Know 
+## Good to Know
 
-Multiple, linked tables are a common concept within computer science. Since many R users have a background in other disciplines, we present five important terms in relational data modeling to jump-start working with {dm}.
+Multiple, linked tables are a common concept within computer science.
+Since many R users have a background in other disciplines, we present
+five important terms in relational data modeling to jump-start working
+with {dm}.
 
-### 1) Model
+### 1\) Model
 
-A data model shows the structure between multiple tables that can be linked together.
-The `nycflights13` relations can be transferred into the following graphical representation:
+A data model shows the structure between multiple tables that can be
+linked together. The `nycflights13` relations can be transferred into
+the following graphical representation:
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
-The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`. By using directed arrows the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere). For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table. 
+The `flights` table is linked to three other tables: `airlines`,
+`planes` and `airports`. By using directed arrows the visualization
+explicitly shows the connection between different columns (they are
+called attributes in the relational data sphere). For example: The
+column `carrier` in `flights` can be joined with the column `carrier`
+from the `airlines` table. Further Reading: The {dm} methods for
+[visualizing data
+models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
 
-Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
+The links between the tables are established through *primary keys* and
+*foreign keys*.
 
-The links between the tables are established through *primary keys* and *foreign keys*.
+### 2\) Primary Keys
 
-### 2) Primary Keys
+In a relational data model every table needs to have one
+column/attribute that uniquely identifies a row. This column is called
+primary key (abbreviated with pk). A primary key can be either an
+existing column that satifies the condition of being unique or a new
+column that assigns an identifier.
 
-In a relational data model every table needs to have one column/attribute that uniquely identifies a row. This column is called primary key (abbreviated with pk). A primary key can be either an existing column that satifies the condition of being unique or a new column that assigns an identifier.
+In the `airlines` table of `nycflights13` the column `carrier` is the
+primary key.
 
-In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
+Further Reading: The {dm} package offers several function for dealing
+with [primary
+keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
 
-Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
+### 3\) Foreign Keys
 
-### 3) Foreign Keys
+The counterpart of a primary key in one table is the foreign key in
+another table. In order to join two tables, the primary key of the first
+table needs to be available in the second table, too. This second column
+is called the foreign key (abbreviated with fk).
 
-The counterpart of a primary key in one table is the foreign key in another table. In order to join two tables, the primary key of the first table needs to be available in the second table, too. This second column is called the foreign key (abbreviated with fk). 
+For example, if you want to link the `airlines` table in the
+`nycflights13` data to the `flights` table, the primary key in the
+`airlines` table is `carrier` which is present as foreign key `carrier`
+in the `flights` table.
 
-For example, if you want to link the `airlines` table in the `nycflights13` data to the `flights` table, the primary key in the `airlines` table is `carrier` which is present as foreign key `carrier` in the `flights` table. 
+Further Reading: The {dm} functions for working with [foreign
+keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
 
-Further Reading: The {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
+### 4\) Normalization
 
+Normalization is the technical term that describes the central design
+principle of a relational data model: splitting data into multiple
+tables. A normalized data schema consists of several relations (tables)
+that are linked with attributes (columns) with primary and foreign keys.
+One main goal is to keep the data organization as clean and simple as
+possible by avoiding redundant data entries.
 
-### 4) Normalization
+For example, if you want to change the name of one airport in
+`nycflights13`, you have to change only a single data entry. Sometimes,
+this principle is called “single point of truth”.
 
-Normalization is the technical term that describes the central design principle of a relational data model: splitting data into multiple tables. A normalized data schema consists of several relations (tables) that are linked with attributes (columns) with primary and foreign keys. One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries. 
+See the [Wikipedia article on database
+normalization](https://en.wikipedia.org/wiki/Database_normalisation) for
+more details. Consider reviewing the [Simple English
+version](https://simple.wikipedia.org/wiki/Database_normalisation) for a
+gentle introduction.
 
-For example, if you want to change the name of one airport in `nycflights13`, you have to change only a single data entry. Sometimes, this principle is called "single point of truth".
+### 5\) Relational Databases
 
-See the [Wikipedia article on database normalization](https://en.wikipedia.org/wiki/Database_normalisation) for more details.
-Consider reviewing the [Simple English version](https://simple.wikipedia.org/wiki/Database_normalisation) for a gentle introduction.
+`dm` is built upon relational data models, but it is not a database
+itself. Databases are systems for data management and many of them are
+constructed as relational databases, e.g. SQLite, MySQL, MSSQL,
+Postgres. As you can guess from the names of the databases SQL, the
+**s**tructured **q**uerying **l**anguage plays an important role: It was
+invented for the purpose of querying relational databases.
 
-### 5) Relational Databases
-
-`dm` is built upon relational data models, but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases SQL, the **s**tructured **q**uerying **l**anguage plays an important role: It was invented for the purpose of querying relational databases. 
-
-Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works transparently with both in-memory data and with relational database systems.
+Therefore, {dm} can copy data [from and to
+databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works
+transparently with both in-memory data and with relational database
+systems.
 
 ## Features
 
@@ -244,7 +294,7 @@ cdm_nycflights13(cycle = FALSE) %>%
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 19</span><span>
-#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
+#&gt;     </span><span style='font-weight: bold;'>year</span><span> </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>dep_time</span><span> </span><span style='font-weight: bold;'>sched_dep_time</span><span> </span><span style='font-weight: bold;'>dep_delay</span><span> </span><span style='font-weight: bold;'>arr_time</span><span>
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1     1      517            515         2      830
 #&gt; </span><span style='color: #555555;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1     1      533            529         4      850
@@ -256,10 +306,10 @@ cdm_nycflights13(cycle = FALSE) %>%
 #&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      709
 #&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      838
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1     1      558            600        -</span><span style='color: #BB0000;'>2</span><span>      753
-#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 12 more variables: sched_arr_time </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   faa </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 12 more variables: </span><span style='color: #555555;font-weight: bold;'>sched_arr_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>arr_delay</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>carrier</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>flight</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tailnum</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>faa</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>dest</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>air_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>distance</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>minute</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>time_hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>
 </span></CODE></PRE>
 
 In our `dm`, the `origin` column of the `flights` table points to the
