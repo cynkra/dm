@@ -72,7 +72,7 @@ dm
 
 Now we know that there are five tables in our `dm` object.
 But how are they connected?
-These relations are best displayed as a visualization of the entity relation model:
+These relations are best displayed as a visualization of the entity-relationship model:
 
 ```{r}
 cdm_draw(dm)
