@@ -134,7 +134,8 @@ Normalization is the technical term that describes the central design principle 
 
 For example, if you want to change the name of one airport in `nycflights13`, you have to change only a single data entry. Sometimes, this principle is called "single point of truth".
 
-See the [Simple English Wikipedia article on database normalization](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
+See the [Wikipedia article on database normalization](https://en.wikipedia.org/wiki/Database_normalisation) for more details.
+Consider reviewing the [Simple English version](https://simple.wikipedia.org/wiki/Database_normalisation) for a gentle introduction.
 
 ### 5) Relational Databases
 
