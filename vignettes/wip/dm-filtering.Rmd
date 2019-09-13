@@ -147,7 +147,7 @@ dm_aa_may <- dm %>%
 
 You can inspect the filtered tables with `tbl`.
 
-In the table `airlines` American Airlines is the only remaining carrier:
+In the `airlines` table, Delta is the only remaining carrier:
 
 ```{r}
 dm_aa_may %>% 
