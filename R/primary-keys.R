@@ -44,9 +44,9 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
     abort_wrong_col_args()
   }
 
-  if (cdm_has_pk(dm, !!table_name)) {
+  old_key <- cdm_get_pk(dm, !!table_name)
+  if (has_length(old_key)) {
     if (!force) {
-      old_key <- cdm_get_pk(dm, !!table_name)
       if (old_key == col_name) {
         return(dm)
       }
@@ -59,7 +59,11 @@ cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
     check_key(table_from_dm, !!col_expr)
   }
 
-  cdm_rm_pk(dm, !!table_name) %>% cdm_add_pk_impl(table_name, col_name)
+  if (has_length(old_key)) {
+    dm <- cdm_rm_pk(dm, !!table_name)
+  }
+
+  cdm_add_pk_impl(dm, table_name, col_name)
 }
 
 # "table" and "column" has to be character
@@ -90,24 +94,14 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #'   cdm_has_pk(planes)
 #' @export
 cdm_has_pk <- function(dm, table) {
-  table_name <- as_name(enquo(table))
-
-  check_correct_input(dm, table_name)
-
-  cdm_data_model <- cdm_get_data_model(dm)
-
-  cols_from_table <- cdm_data_model$columns$table == table_name
-  if (sum(cdm_data_model$columns$key[cols_from_table] > 0) > 1) {
-    abort_multiple_pks(table_name)
-  }
-  !all(cdm_data_model$columns$key[cols_from_table] == 0)
+  has_length(cdm_get_pk(dm, {{ table }}))
 }
 
 #' Retrieve the name of the column marked as primary key of a table of a [`dm`] object
 #'
 #' @description `cdm_get_pk()` returns the name of the
 #' column marked as primary key of a table of a [`dm`] object. If no primary key is
-#' set for the table, an empty character variable is returned.
+#' set for the table, an empty character vector is returned.
 #'
 #' @family Primary key functions
 #'
@@ -122,15 +116,10 @@ cdm_has_pk <- function(dm, table) {
 #' @export
 cdm_get_pk <- function(dm, table) {
   table_name <- as_name(enquo(table))
-
   check_correct_input(dm, table_name)
-  cdm_data_model <- cdm_get_data_model(dm)
 
-  index_key_from_table <- cdm_data_model$columns$table == table_name & cdm_data_model$columns$key != 0
-  if (sum(index_key_from_table) > 1) {
-    abort_multiple_pks(table_name)
-  }
-  cdm_data_model$columns$column[index_key_from_table]
+  pks <- cdm_get_data_model_pks(dm)
+  pks$column[pks$table == table_name]
 }
 
 # FIXME: export?

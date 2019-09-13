@@ -57,16 +57,6 @@ error_txt_key_set_force_false <- function() {
   "If you want to change the existing primary key for a table, set `force` == TRUE."
 }
 
-abort_multiple_pks <- function(table_name) {
-  abort(error_txt_multiple_pks(table_name), .subclass = cdm_error_full("multiple_pks"))
-}
-
-error_txt_multiple_pks <- function(table_name) {
-  paste0(
-    "Please use cdm_rm_pk() on ", table_name, ", more than 1 primary key is currently set for it."
-  )
-}
-
 
 # abort and text for key-helper functions ---------------------------------
 
