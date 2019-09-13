@@ -19,7 +19,7 @@ Skip to the [Features section](#features) if you are familiar with
 relational data models.
 
   - [Why?](#why) gives a short motivation, especially for {dplyr} users
-  - [Good to Know](#terms) explains important terms of relational data models
+  - [Good to Know](#good-to-know) explains important terms of relational data models
   - [Features](#features) gives a one-page overview over the scope of
     this package
   - [Example](#example) outlines some of the features in a short example
