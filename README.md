@@ -100,7 +100,8 @@ Multiple, linked tables are a common concept within computer science. Since many
 
 ### 1) Model
 
-A data model shows the structure between multiple tables, that can be linked together. The `nycflights13` relations can be transfered into the following graphical representation:
+A data model shows the structure between multiple tables that can be linked together.
+The `nycflights13` relations can be transferred into the following graphical representation:
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
