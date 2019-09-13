@@ -23,9 +23,9 @@ cdm_test_load <- function(x,
 # internal helper functions:
 # validates, that object `dm` is of class `dm` and that `table` is character and is part of the `dm` object
 check_correct_input <- function(dm, table) {
-  if (!is_dm(dm)) abort("'dm' has to be of class 'dm'")
-  if (!is_bare_character(table, n = 1)) {
-    abort("Argument 'table' has to be given as 1 element character variable")
+  if (!is_dm(dm)) abort("`dm` has to be of class `dm`")
+  if (!is_string(table)) {
+    abort("`table` must be a string.")
   }
   cdm_table_names <- src_tbls(dm)
   if (!table %in% cdm_table_names) abort_table_not_in_dm(table, cdm_table_names)

@@ -288,7 +288,7 @@ dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
 rows_dm_obj <- 24L
 
 
-# Complicated 'dm' --------------------------------------------------------
+# Complicated `dm` --------------------------------------------------------
 t4 <- tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
@@ -335,7 +335,7 @@ dm_more_complex <- as_dm(list_for_filter) %>%
   cdm_add_fk(e, b_1, b)
 
 
-# for testing 'cdm_disambiguate_cols()' ----------------------------------------
+# for testing `cdm_disambiguate_cols()` ----------------------------------------
 
 iris_1 <- as_tibble(iris) %>%
   mutate(key = row_number()) %>%
@@ -359,7 +359,7 @@ dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, ir
   cdm_add_pk(iris_1, key) %>%
   cdm_add_fk(iris_2, key, iris_1)
 
-# star schema data model for testing 'cdm_flatten_to_tbl()'
+# star schema data model for testing `cdm_flatten_to_tbl()`
 
 fact <- tibble(
   fact = c(

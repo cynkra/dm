@@ -17,7 +17,7 @@ abort_wrong_col_args <- function() {
 }
 
 error_txt_wrong_col_args <- function() {
-  "Argument 'column' has to be given as character variable or unquoted and may only contain 1 element."
+  "Argument `column` has to be given as character variable or unquoted and may only contain 1 element."
 }
 
 abort_key_set_force_false <- function() {
@@ -45,7 +45,7 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 }
 
 
-# general error: table not part of 'dm' -----------------------------------
+# general error: table not part of `dm` -----------------------------------
 
 
 abort_table_not_in_dm <- function(table_name, tables_in_dm) {
@@ -165,16 +165,14 @@ abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
 error_txt_is_not_fk <- function(child_table_name, wrong_fk_colnames,
                                 parent_table_name, actual_fk_colnames) {
   paste0(
-    "The given combination of columns '",
-    paste0(wrong_fk_colnames, collapse = ", "),
-    "' is not a foreign key of table '",
-    child_table_name,
-    "' with regards to ref_table '",
-    parent_table_name,
-    "'. Foreign key columns are: '",
-    paste0(actual_fk_colnames,
-      collapse = ", "
-    ), "'."
+    "The given combination of columns ",
+    paste0(tick(wrong_fk_colnames), collapse = ", "), " ",
+    "is not a foreign key of table ",
+    tick(child_table_name), " ",
+    "with regards to ref_table ",
+    tick(parent_table_name), ". ",
+    "Foreign key columns are: ",
+    commas(tick(actual_fk_colnames)), "."
   )
 }
 
@@ -183,7 +181,7 @@ abort_rm_fk_col_missing <- function() {
 }
 
 error_txt_rm_fk_col_missing <- function() {
-  "Parameter 'column' has to be set. 'NULL' for removing all references."
+  "Parameter `column` has to be set. Pass `NULL` for removing all references."
 }
 
 
@@ -227,7 +225,7 @@ abort_vertices_not_connected <- function(fun_name) {
 }
 
 error_txt_vertices_not_connected <- function(fun_name) {
-  glue("For `{fun_name}()` all of the selected tables of the 'dm'-object need to be connected.")
+  glue("For `{fun_name}()` all of the selected tables of the `dm`-object need to be connected.")
 }
 
 
@@ -249,9 +247,9 @@ error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colname
     )
   } else {
     paste0(
-      "'", wrong_colnames, "' is not a column of '",
-      table_name, "'. Its columns are: \n'",
-      paste0(actual_colnames, collapse = "', '"), "'"
+      tick(wrong_colnames), " is not a column of ",
+      tick(table_name), ". Its columns are: \n`",
+      commas(tick(actual_colnames)), "."
     )
   }
 }
@@ -294,7 +292,7 @@ abort_src_not_db <- function() {
 }
 
 error_src_not_db <- function() {
-  paste0("This does not work if 'cdm_get_src(dm)' is not on a database.")
+  paste0("This does not work if `cdm_get_src(dm)` is not on a database.")
 }
 
 abort_first_rm_fks <- function(fks) {

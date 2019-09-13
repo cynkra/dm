@@ -110,7 +110,7 @@ color_quos_to_display <- function(...) {
   values <- map_chr(quos[avail], eval_tidy)
 
   if (!all(values %in% colors$dm)) {
-    abort_wrong_color(paste0("'", colors$dm, "' ", colors$nb))
+    abort_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
   }
   new_values <- rev(colors$datamodelr[match(values, colors$dm)])
 
