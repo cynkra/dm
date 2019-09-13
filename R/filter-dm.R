@@ -53,21 +53,15 @@ cdm_filter <- function(dm, table, ...) {
 }
 
 set_filter_for_table <- function(dm, table_name, quos) {
-  # FIXME: Implement cdm_get_filter() and add filter option to new_dm2()
-  raw_dm <- unclass(dm)
-  filter <- raw_dm[["filter"]]
+  filter <- cdm_get_filter(dm)
 
-  if (is_null(filter)) {
-    raw_dm[["filter"]] <- tibble(table = table_name, filter = quos)
-  } else {
-    raw_dm[["filter"]] <-
-      bind_rows(filter, tibble(table = table_name, filter = quos)) %>%
-      arrange(table)
-  }
+  new_filter <-
+    bind_rows(filter, tibble(table = table_name, filter = quos)) %>%
+    arrange(table)
 
-  structure(
-    raw_dm,
-    class = "dm"
+  new_dm2(
+    filter = new_filter,
+    base_dm = dm
   )
 }
 
