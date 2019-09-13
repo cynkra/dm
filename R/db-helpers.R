@@ -36,19 +36,40 @@ build_copy_data <- nse_function(c(dm, dest, unique_table_names), ~ {
       cdm_get_all_pks(dm) %>%
       transmute(source_name = table, column = pk_col, pk = TRUE)
 
+    fks <-
+      cdm_get_all_fks(dm) %>%
+      transmute(source_name = child_table, column = child_fk_col, fk = TRUE)
+
     # Need to supply NOT NULL modifiers for primary keys
     # because they are difficult to add to MSSQL after the fact
-    copy_data <-
+    copy_data_types <-
       copy_data_base %>%
+      select(source_name, df) %>%
       mutate(column = map(df, colnames)) %>%
       mutate(type = map(df, ~ map_chr(., ~ DBI::dbDataType(dest_con, .)))) %>%
       select(-df) %>%
       unnest(c(column, type)) %>%
       left_join(pks, by = c("source_name", "column")) %>%
-      mutate(full_type = paste0(type, if_else(pk, " NOT NULL", "", ""))) %>%
-      group_by(source_name, name) %>%
-      summarize(types = list(deframe(tibble(column, full_type)))) %>%
-      inner_join(copy_data_base, ., by = c("source_name", "name"))
+      mutate(full_type = paste0(type, if_else(pk, " NOT NULL PRIMARY KEY", "", ""))) %>%
+      group_by(source_name) %>%
+      summarize(types = list(deframe(tibble(column, full_type))))
+
+    copy_data_unique_indexes <-
+      pks %>%
+      transmute(source_name, unique_indexes = map(as.list(column), list))
+
+    copy_data_indexes <-
+      fks %>%
+      select(source_name, column) %>%
+      group_by(source_name) %>%
+      summarize(indexes = map(list(column), as.list))
+
+    copy_data <-
+      copy_data_base %>%
+      inner_join(copy_data_types, by = "source_name") %>%
+      left_join(copy_data_unique_indexes, by = "source_name") %>%
+      left_join(copy_data_indexes, by = "source_name") %>%
+      mutate(indexes = map2(indexes, unique_indexes, setdiff))
   } else {
     copy_data <-
       copy_data_base
@@ -65,37 +86,11 @@ copy_list_of_tables_to <- function(dest, copy_data,
   set_names(tables, copy_data$source_name)
 }
 
-create_queries <- function(
-                           dest,
-                           pk_information,
-                           fk_information) {
-  if (!is_null(pk_information)) {
-    q_set_pk_cols <- queries_set_pk_cols(dest, pk_information)
+create_queries <- function(dest, fk_information) {
+  if (is_null(fk_information)) {
+    character()
   } else {
-    q_set_pk_cols <- ""
-  }
-
-  if (!is_null(fk_information)) {
-    q_set_fk_relations <- queries_set_fk_relations(dest, fk_information)
-  } else {
-    q_set_fk_relations <- ""
-  }
-
-  queries <- c(q_set_pk_cols, q_set_fk_relations)
-  queries[queries != ""]
-}
-
-queries_set_pk_cols <- function(dest, pk_information) {
-  db_tables <- pk_information$remote_name
-  cols_to_set_as_pk <- pk_information$pk_col
-  if (is_mssql(dest) || is_postgres(dest)) {
-    map2_chr(
-      db_tables,
-      cols_to_set_as_pk,
-      ~ glue("ALTER TABLE {.x} ADD CONSTRAINT pk_{.x} PRIMARY KEY ({.y})")
-    )
-  } else {
-    return("")
+    queries_set_fk_relations(dest, fk_information)
   }
 }
 
@@ -116,7 +111,7 @@ queries_set_fk_relations <- function(dest, fk_information) {
       ~ glue("ALTER TABLE {..1} ADD FOREIGN KEY ({..2}) REFERENCES {..3}({..4}) ON DELETE CASCADE ON UPDATE CASCADE")
     )
   } else {
-    return("")
+    return(character())
   }
 }
 

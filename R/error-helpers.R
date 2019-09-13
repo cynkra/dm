@@ -275,16 +275,32 @@ abort_no_overwrite <- function() {
   abort(error_txt_no_overwrite(), .subclass = cdm_error_full("no_overwrite"))
 }
 
-abort_no_types <- function() {
-  abort(error_txt_no_types(), .subclass = cdm_error_full("no_types"))
-}
-
 error_txt_no_overwrite <- function() {
   paste0("`cdm_copy_to()` does not support the `overwrite` argument.")
 }
 
+abort_no_types <- function() {
+  abort(error_txt_no_types(), .subclass = cdm_error_full("no_types"))
+}
+
 error_txt_no_types <- function() {
   paste0("`cdm_copy_to()` does not support the `types` argument.")
+}
+
+abort_no_indexes <- function() {
+  abort(error_txt_no_indexes(), .subclass = cdm_error_full("no_indexes"))
+}
+
+error_txt_no_indexes <- function() {
+  paste0("`cdm_copy_to()` does not support the `indexes` argument.")
+}
+
+abort_no_unique_indexes <- function() {
+  abort(error_txt_no_unique_indexes(), .subclass = cdm_error_full("no_unique_indexes"))
+}
+
+error_txt_no_unique_indexes <- function() {
+  paste0("`cdm_copy_to()` does not support the `unique_indexes` argument.")
 }
 
 abort_src_not_db <- function() {
