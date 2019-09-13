@@ -200,11 +200,8 @@ cdm_get_data_model <- function(x) {
     mutate(key = 1L)
 
   columns <-
-    cdm_get_tables(x) %>%
-    map(colnames) %>%
-    map(~ enframe(., "id", "column")) %>%
-    enframe("table") %>%
-    unnest(value) %>%
+    cdm_get_all_columns(x) %>%
+    # Hack: datamodelr requires `type` column
     mutate(type = "integer") %>%
     left_join(keys, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
@@ -217,6 +214,14 @@ cdm_get_data_model <- function(x) {
     columns,
     references
   )
+}
+
+cdm_get_all_columns <- function(x) {
+  cdm_get_tables(x) %>%
+    map(colnames) %>%
+    map(~ enframe(., "id", "column")) %>%
+    enframe("table") %>%
+    unnest(value)
 }
 
 #' Get filter expressions
