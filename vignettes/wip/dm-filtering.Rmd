@@ -183,18 +183,6 @@ flights %>%
 
 The `dm` code is leaner, because the foreign key information is encoded in the object.
 
-A last example:
-
-**Filter the `dm` object based on a table with flights from may.**
-
-This is the use-case for filtering based on an already reduced table with `cdm_semi_join()`.
-
-```{r}
-may <- filter(flights, month == 5)
-
-dm %>% cdm_semi_join(flights, may)
-```
-
 ## SQL statements behind filtering a `dm` object on a database
 
 {dm} is meant to work with relational databases, locally as well on databases.
