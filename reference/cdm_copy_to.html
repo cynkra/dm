@@ -139,8 +139,8 @@ By default temporary tables will be created.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_copy_to</span>(<span class='no'>dest</span>, <span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>unique_indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,7 +158,7 @@ By default temporary tables will be created.</p>
       <td><p>Possible further arguments passed to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code> (which is used on each table)</p></td>
     </tr>
     <tr>
-      <th>overwrite, types</th>
+      <th>overwrite, types, indexes, unique_indexes</th>
       <td><p>Must remain <code>NULL</code>.</p></td>
     </tr>
     <tr>
