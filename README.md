@@ -92,7 +92,7 @@ flights %>%
 
 This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of merging data. 
 
-{dm} offers a more elegant and shorter way to combine values by establishing key relations ([see next section](#terms)) while augmenting {dplyr}/{dbplyr} workflows.
+{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section) while augmenting {dplyr}/{dbplyr} workflows.
 
 ## Good to Know 
 
@@ -100,7 +100,8 @@ Multiple, linked tables are a common concept within computer science. Since many
 
 ### 1) Model
 
-A data model shows the structure between multiple tables, that can be linked together. The `nycflights13` relations can be transfered into the following graphical representation:
+A data model shows the structure between multiple tables that can be linked together.
+The `nycflights13` relations can be transferred into the following graphical representation:
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
@@ -133,7 +134,8 @@ Normalization is the technical term that describes the central design principle 
 
 For example, if you want to change the name of one airport in `nycflights13`, you have to change only a single data entry. Sometimes, this principle is called "single point of truth".
 
-See the [Simple English Wikipedia article on database normalization](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
+See the [Wikipedia article on database normalization](https://en.wikipedia.org/wiki/Database_normalisation) for more details.
+Consider reviewing the [Simple English version](https://simple.wikipedia.org/wiki/Database_normalisation) for a gentle introduction.
 
 ### 5) Relational Databases
 

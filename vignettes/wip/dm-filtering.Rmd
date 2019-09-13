@@ -45,14 +45,14 @@ library(nycflights13)
 To explore filtering with `dm`, we'll use the {nycflights13} data with its tables `flights`, `planes`, `airlines` and `airports`.
 
 This dataset contains all 336 776 flights that departed from New York City in 2013 with 3322 different planes and 1458 airports involved.
-The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13`.
+The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13::flights`.
 
 First of all, we have to create a `dm` object from the {nycflights13} data.
 The built-in `dm::cdm_nycflights13()` function takes care of this.
 
 A [data model object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm) contains the data as well as metadata.
 
-If you want to create a `dm` from other tables, please look at `?dm` and the function `new_dm()`.
+If you want to create a `dm` from other tables, please use the `new_dm()` and `dm()` functions.
 
 ```{r}
 dm <- cdm_nycflights13()
@@ -62,7 +62,7 @@ A `dm` object output with data and metadata consists of three elements:
 
 1. the table sources,
 2. the data model,
-3. and a short glimpse into the data via the number of rows.
+3. and a review of active filter conditions.
 
 The console output is colored for a clear output:
 
@@ -132,7 +132,7 @@ dm %>%
   cdm_filter(flights, dest == "IAD")
 ```
 
-Of course, you can also chain multiple filters on different tables.
+Chaining multiple filters on different tables is also supported.
 
 An Example:
 
