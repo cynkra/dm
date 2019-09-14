@@ -18,7 +18,8 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
 
 cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
   recipe <- compute_disambiguate_cols_recipe(dm, tables = tables, sep = sep)
-  col_rename(dm, recipe, quiet)
+  if (!quiet) explain_col_rename(recipe)
+  col_rename(dm, recipe)
 }
 
 compute_disambiguate_cols_recipe <- function(dm, tables, sep) {
@@ -41,19 +42,22 @@ compute_disambiguate_cols_recipe <- function(dm, tables, sep) {
     mutate(renames = map(renames, deframe))
 }
 
-col_rename <- function(dm, recipe, quiet) {
-  if (!quiet && nrow(recipe) > 0) {
-    names_for_disambiguation <- map(recipe$renames, names)
-    msg_renamed_cols <- map2(recipe$renames, names_for_disambiguation, ~ paste0(.x, " -> ", .y)) %>%
-      map(~ paste(., collapse = "\n"))
-    msg_core <- paste0("Table: ", recipe$table, "\n",
-      msg_renamed_cols, "\n",
-      collapse = "\n"
-    )
-    msg <- paste0("Renamed columns:\n", msg_core)
-    message(msg)
-  }
+explain_col_rename <- function(recipe) {
+  if (nrow(recipe) == 0) return()
 
+  msg_core <-
+    recipe %>%
+    mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
+    unnest(renames) %>%
+    nest(data = -old) %>%
+    mutate(sub_text = map_chr(data, ~ paste0(.$table, "$", .$new, collapse = ", "))) %>%
+    mutate(text = paste0("* ", old, " -> ", sub_text)) %>%
+    pull()
+
+  message("Renamed columns:\n", paste(msg_core, collapse = "\n"))
+}
+
+col_rename <- function(dm, recipe) {
   reduce2(recipe$table,
     recipe$renames,
     ~ cdm_rename(..1, !!..2, !!!..3),
