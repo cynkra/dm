@@ -4,6 +4,22 @@
 
 options(tibble.print_min = 6)
 options(tibble.print_max = 6)
+options(rlang_backtrace_on_error = "none")
+
+##
+##
+##
+## Greeting
+## --------------------------------------------------------------------
+##
+##
+##
+
+# Poll: Who has worked with a software that has the concept of "the dataset"?
+
+# Poll: Who has worked with databases?
+
+# Poll: Who uses more than one table/data frame
 
 ##
 ##
@@ -19,25 +35,75 @@ library(nycflights13)
 # Example dataset: tables linked with each other
 ?flights
 
+flights
+
+##
+##
+##
+## Data model
+## --------------------------------------------------------------------
+##
+##
+##
+
+library(dm)
+
+# Visualization
+cdm_nycflights13(cycle = TRUE) %>%
+  cdm_draw()
+
 library(tidyverse)
 flights_base <-
   flights %>%
   select(year, month, day, carrier, tailnum, origin, dest)
 flights_base
 
-# carrier column also present in `airlines`, this table contains
+# `carrier` column also present in `airlines`, this table contains
 # additional information
 airlines
 
 flights_base %>%
   left_join(airlines)
 
-# single source of truth: updating in one single location
+##
+##
+##
+## Keys
+## --------------------------------------------------------------------
+##
+##
+##
+
+# `carrier` is a "primary key" in `airlines`
+any(duplicated(airlines$carrier))
+
+# `carrier` is a "foreign key" in `flights` into `airlines`
+all(flights$carrier %in% airlines$carrier)
+
+##
+##
+##
+## Single source of truth
+## --------------------------------------------------------------------
+##
+##
+##
+
+# Update in one single location
 airlines[airlines$carrier == "UA", "name"] <- "United broke my guitar"
 
-# ...propagates to related records
+# ...propagates to all related records
 flights_base %>%
   left_join(airlines)
+
+##
+##
+##
+## Pitfall: wrong keys
+## --------------------------------------------------------------------
+##
+##
+##
 
 # Same for airplanes?
 planes
@@ -52,6 +118,36 @@ flights_base %>%
 # Take a closer look at the join
 flights_base %>%
   left_join(planes, by = "tailnum")
+
+flights_base %>%
+  left_join(planes, by = "tailnum") %>%
+  count(is.na(type))
+
+##
+##
+##
+## Pitfall: data mismatches
+## --------------------------------------------------------------------
+##
+##
+##
+
+flights_base %>%
+  left_join(planes, by = "tailnum") %>%
+  group_by(carrier) %>%
+  summarize(mismatch_rate = mean(is.na(type))) %>%
+  filter(mismatch_rate > 0) %>%
+  ggplot(aes(x = carrier, y = mismatch_rate)) +
+  geom_col()
+
+##
+##
+##
+## Pitfall: relationship unclear
+## --------------------------------------------------------------------
+##
+##
+##
 
 # Same for airports?
 airports
@@ -71,7 +167,7 @@ rm(airlines)
 ##
 ##
 ##
-## Keys
+## Pitfall: combinatorial explosion
 ## --------------------------------------------------------------------
 ##
 ##
@@ -103,20 +199,20 @@ planes %>%
 
 # dm shortcut:
 planes %>%
-  dm::check_key(tailnum)
+  check_key(tailnum)
 
 try(
   planes %>%
-    dm::check_key(engines)
+    check_key(engines)
 )
 
 airports %>%
-  dm::check_key(faa)
+  check_key(faa)
 
 # Why is name not a key candidate for airports?
 try(
   airports %>%
-    dm::check_key(name)
+    check_key(name)
 )
 
 # NEW NEW NEW: Friendly description
@@ -129,13 +225,11 @@ rm(t1, t2)
 ##
 ##
 ##
-## Data model
+## Data model object
 ## --------------------------------------------------------------------
 ##
 ##
 ##
-
-library(dm)
 
 # Compound object: tables, relationships, data
 cdm_nycflights13(cycle = TRUE)
@@ -167,17 +261,21 @@ cdm_nycflights13() %>%
 
 # NB: [, $, [[ and names() also work
 
-# Analogy: parallel vectors in the global environment
+# Analogy: parallel vectors
+# Multiple parallel vectors can be combined into a data frame.
+# Multiple related tables can be combined into a dm.
 x <- 1:5
+x
 y <- x + 1
-z <- x * y
-w <- map(z, ~ runif(.))
-tibble(x, y, z, w)
+y
+z <- diff(y)
+z
 
-tibble(x = 1:5) %>%
-  mutate(y = x + 1) %>%
-  mutate(z = x * y) %>%
-  mutate(w = map(z, ~ runif(.)))
+try(
+  tibble(x = 1:5) %>%
+    mutate(y = x + 1) %>%
+    mutate(z = diff(y))
+)
 
 ##
 ##
@@ -191,45 +289,27 @@ tibble(x = 1:5) %>%
 cdm_nycflights13()
 
 # Filtering on a table returns a dm object with the filter condition(s) stored
-(dm_nyc_filtered <-
-  cdm_nycflights13() %>%
-  cdm_filter(airlines, carrier == "AA"))
-
-# Apply all filters and retrieve an "updated" `dm`
-dm_nyc_filtered %>%
-  cdm_apply_filters()
-
-# If a filter condition is phrased wrongly it will only fail, once the filter is being applied
-(dm_nyc_fail <- cdm_nycflights13() %>%
-  cdm_filter(airports, origin == "EWR"))
-try(
-  tbl(dm_nyc_fail, "flights")
-)
-# Mind: when accessing table from a `dm` (using one of: `tbl()`, `[[.dm()`, `$.dm()`),
-# only the necessary filter conditions are applied:
-tbl(dm_nyc_fail, "weather")
-
 cdm_nycflights13() %>%
-  cdm_filter(flights, origin == "EWR") %>%
-  cdm_apply_filters()
+  cdm_filter(airlines, name == "Delta Air Lines Inc.")
 
 # ... which then can be filtered on another table
 cdm_nycflights13() %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_apply_filters()
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl")
 
-aa_non_jfk_january <-
+# ... and stored in another dm variable
+delta_non_jfk_january <-
   cdm_nycflights13() %>%
   cdm_filter(airlines, name == "American Airlines Inc.") %>%
   cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, month == 1) %>%
-  cdm_apply_filters()
-aa_non_jfk_january
+  cdm_filter(planes, year < 2000) %>%
+  cdm_filter(flights, month == 1)
+delta_non_jfk_january
 
-# ... and processed further
-aa_non_jfk_january %>%
+# Querying a table applies the filters
+delta_non_jfk_january %>%
   tbl("planes")
+
 
 ##
 ##
@@ -264,13 +344,13 @@ nycflights13_sqlite %>%
   cdm_filter(flights, day == 1) %>%
   tbl("flights")
 
-# ... and the corresponding SQL statement
+# ... and the corresponding SQL statement and query plan
 nycflights13_sqlite %>%
   cdm_filter(airlines, name == "American Airlines Inc.") %>%
   cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_filter(flights, day == 1) %>%
   tbl("flights") %>%
-  dbplyr::sql_render()
+  explain()
 
 ##
 ##
@@ -284,15 +364,12 @@ nycflights13_sqlite %>%
 cdm_nycflights13() %>%
   cdm_join_to_tbl(airlines, flights)
 
-cdm_nycflights13() %>%
-  cdm_join_to_tbl(flights, airlines)
-
 nycflights13_sqlite %>%
   cdm_join_to_tbl(airlines, flights)
 
 # FIXME: Can this work without applying all filters?
 
-aa_non_jfk_january %>%
+delta_non_jfk_january %>%
   cdm_apply_filters() %>%
   cdm_join_to_tbl(flights, airlines)
 
@@ -311,22 +388,14 @@ try(
 ##
 
 cdm_nycflights13() %>%
-  cdm_flatten_to_tbl(airlines, flights)
-
-nycflights13_sqlite %>%
-  cdm_flatten_to_tbl(airlines, flights)
-
-nycflights13_sqlite %>%
-  cdm_flatten_to_tbl(airlines, flights) %>%
-  sql_render()
-
-aa_non_jfk_january %>%
   cdm_flatten_to_tbl(flights)
 
-try(
-  cdm_nycflights13() %>%
-    cdm_join_to_tbl(flights, airports, airlines, join = left_join)
-)
+nycflights13_sqlite %>%
+  cdm_flatten_to_tbl(flights) %>%
+  dbplyr::sql_render()
+
+delta_non_jfk_january %>%
+  cdm_flatten_to_tbl(flights)
 
 ##
 ##
@@ -380,38 +449,13 @@ flights_link <-
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
 
 # one option to create a `dm` is to use `as_dm()`:
-nycflights13_dm <- as_dm(list(airlines = airlines, airports = airports, flights = flights_link, planes = planes, weather = weather_link))
-
-# Copy to this environment
-airlines_global <- airlines
-airports_global <- airports
-planes_global <- planes
-
-global <-
-  dm(src_df(env = .GlobalEnv))
-global
-
-global %>%
-  cdm_rename_tbl(
-    airlines = airlines_global,
-    airports = airports_global,
-    planes = planes_global,
-    flights = flights_link,
-    weather = weather_link
-  ) %>%
-  cdm_select_tbl(airlines, airports, planes, flights, weather)
-
-# or better:
-nycflights13_tbl <-
-  global %>%
-  cdm_select_tbl(
-    airlines = airlines_global,
-    airports = airports_global,
-    planes = planes_global,
-    flights = flights_link,
-    weather = weather_link
-  )
-
+nycflights13_tbl <- as_dm(list(
+  airlines = airlines,
+  airports = airports,
+  flights = flights_link,
+  planes = planes,
+  weather = weather_link
+))
 
 nycflights13_tbl
 
@@ -464,11 +508,11 @@ try({
 
   # FIXME: Schema support
 
-  # Ensure that no tables are accidentally deleted
+  # Off by default, to ensure that no tables are accidentally deleted
   if (FALSE) {
     walk(
       names(cdm_nycflights13()),
-      ~ dbExecute(con_pq, paste0("DROP TABLE IF EXISTS ", ., " CASCADE"))
+      ~ DBI::dbExecute(con_pq, paste0("DROP TABLE IF EXISTS ", ., " CASCADE"))
     )
   }
 
@@ -477,7 +521,7 @@ try({
     cdm_nycflights13() %>%
     cdm_filter(planes, TRUE) %>%
     cdm_filter(flights, month == 1, day == 1) %>%
-    cdm_copy_to(src_dbi(con_pq), ., temporary = FALSE)
+    cdm_copy_to(con_pq, ., temporary = FALSE)
 
   dm_from_pq <-
     cdm_learn_from_db(con_pq)
