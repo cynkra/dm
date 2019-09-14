@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2.9000</span>
       </span>
     </div>
 
@@ -125,6 +125,27 @@
       
     </div>
 
+    <div id="dm-0-0-2-9000" class="section level1">
+<h1 class="page-header">
+<a href="#dm-0-0-2-9000" class="anchor"></a>dm 0.0.2.9000</h1>
+<ul>
+<li>
+<code><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl()</a></code> disambiguates only the necessary columns.</li>
+<li>When flattening, the column name of the LHS (child) table is used (#52).</li>
+<li>Fix formatting in <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> for character data.</li>
+<li>
+<code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code> and <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> no longer check data integrity by default.</li>
+<li>Explicitly checking that the <code>join</code> argument is a function, to avoid surprises when the caller passes data.</li>
+<li>
+<code><a href="../reference/cdm_copy_to.html">cdm_copy_to()</a></code> works correctly with filtered <code>dm</code> objects.</li>
+<li>
+<code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> actually resets the filter conditions.</li>
+<li>A more detailed README file and a vignette for filtering (#29, <a href='https://github.com/cutterkom'>@cutterkom</a>).</li>
+<li>
+<code><a href="../reference/cdm_draw.html">cdm_draw()</a></code> no longer supports the <code>table_names</code> argument, use <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code>.</li>
+<li>Copying a <code>dm</code> to a database now creates indexes for all primary and foreign keys.</li>
+</ul>
+</div>
     <div id="dm-0-0-2" class="section level1">
 <h1 class="page-header">
 <a href="#dm-0-0-2" class="anchor"></a>dm 0.0.2</h1>
@@ -331,6 +352,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dm-0-0-2-9000">0.0.2.9000</a></li>
         <li><a href="#dm-0-0-2">0.0.2</a></li>
         <li><a href="#dm-0-0-1">0.0.1</a></li>
       </ul>

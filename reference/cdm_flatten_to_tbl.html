@@ -73,7 +73,7 @@ reduce the number of tables before calling this function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2.9000</span>
       </span>
     </div>
 
@@ -178,17 +178,8 @@ and the joins are performed.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='cdm_select_tbl.html'>cdm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
-#&gt; <span class='message'>Table: airlines</span>
-#&gt; <span class='message'>name -&gt; airlines.name</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>Table: airports</span>
-#&gt; <span class='message'>name -&gt; airports.name</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>Table: flights</span>
-#&gt; <span class='message'>year -&gt; flights.year</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>Table: planes</span>
-#&gt; <span class='message'>year -&gt; planes.year</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
+#&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span>
+#&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
 #&gt;  1         2013     1     1      517            515         2      830
@@ -202,7 +193,7 @@ and the joins are performed.</p>
 #&gt;  9         2013     1     1      557            600        -3      838
 #&gt; 10         2013     1     1      558            600        -2      753
 #&gt; # … with 336,766 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,
-#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, faa &lt;chr&gt;,
+#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,
 #&gt; #   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
 #&gt; #   time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;, airports.name &lt;chr&gt;, lat &lt;dbl&gt;,
 #&gt; #   lon &lt;dbl&gt;, alt &lt;int&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;,
