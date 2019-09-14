@@ -29,7 +29,7 @@
 #'
 #' # the following does not work
 #' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
-cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
+cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)

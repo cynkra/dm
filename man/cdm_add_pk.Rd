@@ -4,7 +4,7 @@
 \alias{cdm_add_pk}
 \title{Mark a column of a table in a \code{\link{dm}} object as its primary key}
 \usage{
-cdm_add_pk(dm, table, column, check = TRUE, force = FALSE)
+cdm_add_pk(dm, table, column, check = FALSE, force = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}

@@ -4,7 +4,7 @@
 \alias{cdm_add_fk}
 \title{Add a reference from one table of a \code{\link{dm}} to another}
 \usage{
-cdm_add_fk(dm, table, column, ref_table, check = TRUE)
+cdm_add_fk(dm, table, column, ref_table, check = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}

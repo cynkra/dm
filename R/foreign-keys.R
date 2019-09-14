@@ -11,7 +11,7 @@
 #' @family foreign key functions
 #'
 #' @export
-cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = TRUE), ~ {
+cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = FALSE), ~ {
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
