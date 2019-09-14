@@ -105,7 +105,7 @@ establishing key relations (see next section) while augmenting
 
 ## Good to Know
 
-Multiple, linked tables are a common concept within computer science.
+Multiple, linked tables are a common concept in database management.
 Since many R users have a background in other disciplines, we present
 five important terms in relational data modeling to jump-start working
 with {dm}.
