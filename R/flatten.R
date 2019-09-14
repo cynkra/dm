@@ -28,6 +28,8 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   start <- as_name(ensym(start))
   check_correct_input(dm, start)
 
+  stopifnot(is_function(join))
+
   # prepare `dm` by applying all filters, disambiguate columns, and adapt FK-column names
   # to the respective PK-column names
   clean_dm <- cdm_apply_filters(dm) %>%
@@ -89,6 +91,8 @@ adapt_fk_cols <- function(dm) {
 #'
 #' @export
 cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+  stopifnot(is_function(join))
+
   red_dm <- cdm_select_tbl(dm, {{ table_1 }}, {{ table_2 }})
 
   if (!is_dm_connected(red_dm)) {
