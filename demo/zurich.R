@@ -1,4 +1,4 @@
-# Demo for presentation at the 16th Berlin R meetup
+# Demo for presentation at the Zurich R meetup, September 2019
 
 # {dm} facilitates working with multiple tables
 
