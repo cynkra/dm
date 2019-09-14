@@ -95,34 +95,15 @@ t6 <- tibble(
   o = letters[5:9]
 )
 
-list_for_filter <- list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
-dm_for_filter <- as_dm(list_for_filter) %>%
-  cdm_add_pk(t1, a) %>%
-  cdm_add_pk(t2, c) %>%
-  cdm_add_pk(t3, f) %>%
-  cdm_add_pk(t4, h) %>%
-  cdm_add_pk(t5, k) %>%
-  cdm_add_pk(t6, n) %>%
-  cdm_add_fk(t2, d, t1) %>%
-  cdm_add_fk(t2, e, t3) %>%
-  cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t5, l, t4) %>%
-  cdm_add_fk(t5, m, t6)
-
-dm_for_filter_smaller <- as_dm(list(t3 = t3, t4 = t4, t5 = t5)) %>%
-  cdm_add_pk(t3, f) %>%
-  cdm_add_pk(t4, h) %>%
-  cdm_add_pk(t5, k) %>%
-  cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t5, l, t4)
-
 t7 <- tibble(
   p = letters[4:9],
   q = c("elephant", "lion", "seal", "worm", "dog", "cat")
 )
 
-
-dm_for_filter_w_cycle <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7)) %>%
+dm_for_filter_w_cycle <-
+  as_dm(list(
+    t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7
+  )) %>%
   cdm_add_pk(t1, a) %>%
   cdm_add_pk(t2, c) %>%
   cdm_add_pk(t3, f) %>%
@@ -137,6 +118,19 @@ dm_for_filter_w_cycle <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5,
   cdm_add_fk(t5, m, t6) %>%
   cdm_add_fk(t6, o, t7) %>%
   cdm_add_fk(t7, q, t2)
+
+message("for testing filter and semi_join (2)")
+
+list_for_filter <- list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
+dm_for_filter <-
+  dm_for_filter_w_cycle %>%
+  cdm_select_tbl(-t7)
+
+dm_for_filter_smaller <-
+  dm_for_filter %>%
+  cdm_select_tbl(-t1, -t2, -t6)
+
+message("for testing filter and semi_join (3)")
 
 output_1 <- list(
   t1 = tibble(a = c(4:7), b = LETTERS[4:7]),
@@ -186,10 +180,9 @@ output_3 <- list(
 )
 
 dm_for_filter_rev <-
-  new_dm(
-    cdm_get_src(dm_for_filter),
-    rev(cdm_get_tables(dm_for_filter)),
-    cdm_get_data_model(dm_for_filter)
+  new_dm2(
+    tables = rev(cdm_get_tables(dm_for_filter)),
+    base_dm = dm_for_filter
   )
 
 # for tests on `dm` objects: cdm_add_pk(), cdm_add_fk() ------------------------
