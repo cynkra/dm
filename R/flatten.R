@@ -88,7 +88,7 @@ adapt_fk_cols <- function(dm) {
 #' @family flattening functions
 #'
 #' @export
-cdm_join_to_tbl <- function(dm, table_1, table_2, join = semi_join) {
+cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   red_dm <- cdm_select_tbl(dm, {{ table_1 }}, {{ table_2 }})
 
   if (!is_dm_connected(red_dm)) {

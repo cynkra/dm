@@ -4,7 +4,7 @@
 \alias{cdm_join_to_tbl}
 \title{Perform a join between two tables of a \code{\link{dm}}}
 \usage{
-cdm_join_to_tbl(dm, table_1, table_2, join = semi_join)
+cdm_join_to_tbl(dm, table_1, table_2, join = left_join)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
