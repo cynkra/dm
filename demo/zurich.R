@@ -18,10 +18,6 @@ library(nycflights13)
 
 # Example dataset: tables linked with each other
 ?flights
-?airports
-?airlines
-?planes
-?weather
 
 library(tidyverse)
 flights_base <-
@@ -117,18 +113,15 @@ try(
 airports %>%
   dm::check_key(faa)
 
-# FIXME: add dm function that explains why not key candidate
-
 # Why is name not a key candidate for airports?
 try(
   airports %>%
     dm::check_key(name)
 )
 
+# NEW NEW NEW: Friendly description
 airports %>%
-  add_count(name) %>%
-  filter(n > 1) %>%
-  arrange(name)
+  enum_pk_candidates()
 
 # Cleanup
 rm(t1, t2)
@@ -247,19 +240,13 @@ aa_non_jfk_january %>%
 ##
 ##
 
-# FIXME: SQLite with many rows
-
-# FIXME: Make work with planes table
-
-# FIXME: remove all_connected = TRUE for now, redo example above
-
 # All operations are designed to work locally and on the database
 nycflights13_sqlite <-
   cdm_nycflights13() %>%
-  cdm_select_tbl(-planes) %>%
-  cdm_filter(flights, month == 1) %>%
-  cdm_apply_filters() %>%
-  cdm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
+  cdm_copy_to(
+    dbplyr::src_memdb(), .,
+    unique_table_names = TRUE, set_key_constraints = FALSE
+  )
 
 nycflights13_sqlite
 
@@ -288,30 +275,53 @@ nycflights13_sqlite %>%
 ##
 ##
 ##
-## Joining tables
+## Joining two tables
 ## --------------------------------------------------------------------
 ##
 ##
 ##
 
 cdm_nycflights13() %>%
-  cdm_join_to_tbl(airlines, flights, join = left_join)
+  cdm_join_to_tbl(airlines, flights)
 
 cdm_nycflights13() %>%
-  cdm_join_to_tbl(flights, airlines, join = left_join)
+  cdm_join_to_tbl(flights, airlines)
 
 nycflights13_sqlite %>%
-  cdm_join_to_tbl(airlines, flights, join = left_join)
+  cdm_join_to_tbl(airlines, flights)
+
+# FIXME: Can this work without applying all filters?
 
 aa_non_jfk_january %>%
-  cdm_join_to_tbl(flights, airlines, join = left_join)
-
-# FIXME: Multi-joins
+  cdm_apply_filters() %>%
+  cdm_join_to_tbl(flights, airlines)
 
 try(
   cdm_nycflights13() %>%
-    cdm_join_to_tbl(airports, airlines, join = left_join)
+    cdm_join_to_tbl(airports, airlines)
 )
+
+##
+##
+##
+## NEW NEW NEW: Joining many tables
+## --------------------------------------------------------------------
+##
+##
+##
+
+cdm_nycflights13() %>%
+  cdm_flatten_to_tbl(airlines, flights)
+
+nycflights13_sqlite %>%
+  cdm_flatten_to_tbl(airlines, flights)
+
+nycflights13_sqlite %>%
+  cdm_flatten_to_tbl(airlines, flights) %>%
+  sql_render()
+
+aa_non_jfk_january %>%
+  cdm_flatten_to_tbl(flights)
 
 try(
   cdm_nycflights13() %>%
@@ -424,10 +434,10 @@ nycflights13_pk %>%
 # Adding foreign keys
 nycflights13_fk <-
   nycflights13_pk %>%
-  cdm_add_fk(flights, origin_slot_id, weather, check = FALSE) %>%
-  cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+  cdm_add_fk(flights, origin_slot_id, weather) %>%
+  cdm_add_fk(flights, tailnum, planes) %>%
   cdm_add_fk(flights, origin, airports) %>%
-  cdm_add_fk(flights, dest, airports, check = FALSE) %>%
+  cdm_add_fk(flights, dest, airports) %>%
   cdm_add_fk(flights, carrier, airlines)
 
 nycflights13_fk %>%
@@ -450,13 +460,28 @@ nycflights13_fk %>%
 ##
 
 try({
+  con_pq <- DBI::dbConnect(RPostgres::Postgres())
+
+  # FIXME: Schema support
+
+  # Ensure that no tables are accidentally deleted
+  if (FALSE) {
+    walk(
+      names(cdm_nycflights13()),
+      ~ dbExecute(con_pq, paste0("DROP TABLE IF EXISTS ", ., " CASCADE"))
+    )
+  }
+
   # Import
   dm_pq <-
     cdm_nycflights13() %>%
-    cdm_select_tbl(-planes) %>%
-    cdm_filter(flights, month == 1) %>%
-    cdm_copy_to(src_postgres(), ., temporary = FALSE)
+    cdm_filter(planes, TRUE) %>%
+    cdm_filter(flights, month == 1, day == 1) %>%
+    cdm_copy_to(src_dbi(con_pq), ., temporary = FALSE)
 
   dm_from_pq <-
-    cdm_learn_from_db(src_postgres())
+    cdm_learn_from_db(con_pq)
+
+  dm_from_pq %>%
+    cdm_draw()
 })
