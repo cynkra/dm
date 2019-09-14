@@ -207,7 +207,7 @@ enum_pk_candidates <- nse_function(c(table), ~ {
     # Can't call unnest() either for an unknown reason
     mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
     select(-value) %>%
-    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE)))) %>%
+    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none")))) %>%
     select(-data) %>%
     mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
     select(-values)
