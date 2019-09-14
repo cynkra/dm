@@ -277,11 +277,6 @@ t3_src <- test_load(t3)
 message("for tests on `dm` objects: cdm_add_pk(), cdm_add_fk()")
 
 cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7, cdm_table_4 = d8))
-cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
-dm_for_filter_src <- cdm_test_load(dm_for_filter)
-dm_for_filter_rev_src <- cdm_test_load(dm_for_filter_rev)
-dm_for_filter_smaller_src <- cdm_test_load(dm_for_filter_smaller)
-dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
 
 # for `dm_nrow()` ---------------------------------------------------------
 
@@ -289,6 +284,9 @@ rows_dm_obj <- 24L
 
 
 # Complicated `dm` --------------------------------------------------------
+
+message("complicated dm")
+
 t4 <- tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
@@ -337,6 +335,8 @@ dm_more_complex <- as_dm(list_for_filter) %>%
 
 # for testing `cdm_disambiguate_cols()` ----------------------------------------
 
+message("for cdm_disambiguate_cols()")
+
 iris_1 <- as_tibble(iris) %>%
   mutate(key = row_number()) %>%
   select(key, everything())
@@ -361,6 +361,8 @@ dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, ir
 
 # star schema data model for testing `cdm_flatten_to_tbl()`
 
+message("star schema")
+
 fact <- tibble(
   fact = c(
     "acorn",
@@ -381,11 +383,8 @@ fact <- tibble(
   something = 1:10
 )
 fact_clean <-
-  fact %>% rename(
-    dim_1_pk = dim_1_key,
-    dim_2_pk = dim_2_key,
-    dim_3_pk = dim_3_key,
-    dim_4_pk = dim_4_key,
+  fact %>%
+  rename(
     fact.something = something
   )
 
@@ -428,11 +427,23 @@ dm_for_flatten <- as_dm(list(
   cdm_add_fk(fact, dim_2_key, dim_2) %>%
   cdm_add_fk(fact, dim_3_key, dim_3) %>%
   cdm_add_fk(fact, dim_4_key, dim_4)
-dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
 
 result_from_flatten <-
   fact_clean %>%
-  left_join(dim_1_clean, by = "dim_1_pk") %>%
-  left_join(dim_2_clean, by = "dim_2_pk") %>%
-  left_join(dim_3_clean, by = "dim_3_pk") %>%
-  left_join(dim_4_clean, by = "dim_4_pk")
+  left_join(dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
+  left_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
+  left_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
+  left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
+
+# for database tests -------------------------------------------------
+
+if (testthat::is_testing() || Sys.getenv("NOT_CRAN") != "") {
+  message("loading into database")
+
+  dm_for_filter_src <- cdm_test_load(dm_for_filter)
+  dm_for_filter_rev_src <- cdm_test_load(dm_for_filter_rev)
+  dm_for_filter_smaller_src <- cdm_test_load(dm_for_filter_smaller)
+  dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
+  cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
+  dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
+}
