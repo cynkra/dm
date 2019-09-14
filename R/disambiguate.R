@@ -13,8 +13,24 @@
 #' cdm_disambiguate_cols(cdm_nycflights13())
 #' @export
 cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
-  recipe <-
-    as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
+  cdm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
+}
+
+cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
+  recipe <- compute_disambiguate_cols_recipe(dm, tables = tables, sep = sep)
+  col_rename(dm, recipe, quiet)
+}
+
+compute_disambiguate_cols_recipe <- function(dm, tables, sep) {
+  columns <- as_tibble(cdm_get_data_model(dm)[["columns"]])
+
+  if (!is.null(tables)) {
+    columns <-
+      columns %>%
+      filter(table %in% !!tables)
+  }
+
+  columns %>%
     # key columns are supposed to remain unchanged, even if they are identical
     # in case of flattening, only one column will remains for pk-fk-relations
     add_count(column) %>%
@@ -23,8 +39,6 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
     select(table, new_name, column) %>%
     nest(renames = -table) %>%
     mutate(renames = map(renames, deframe))
-
-  col_rename(dm, recipe, quiet)
 }
 
 col_rename <- function(dm, recipe, quiet) {
