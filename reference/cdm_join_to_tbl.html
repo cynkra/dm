@@ -138,7 +138,7 @@ relation. Since this function is a wrapper around <code><a href='cdm_flatten_to_
 the join will always be the "child table", the table referencing the other table.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_join_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table_1</span>, <span class='no'>table_2</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>semi_join</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_join_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table_1</span>, <span class='no'>table_2</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,16 +157,16 @@ the join will always be the "child table", the table referencing the other table
     </tr>
     <tr>
       <th>join</th>
-      <td><p>The type of join to be performed, see <code><a href='https://dplyr.tidyverse.org/reference/join.html'>join</a></code></p></td>
+      <td><p>The type of join to be performed, see <code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::join()</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The resulting table of the join</p>
+    <p>The resulting table of the join.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Flattening functions: <code><a href='cdm_flatten_to_tbl.html'>cdm_flatten_to_tbl</a></code></p></div>
+    <div class='dont-index'><p>Other flattening functions: <code><a href='cdm_flatten_to_tbl.html'>cdm_flatten_to_tbl</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
