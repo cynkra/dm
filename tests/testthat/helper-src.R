@@ -1,67 +1,6 @@
 try(library(dbplyr), silent = TRUE)
 library(rprojroot)
 
-# postgres needs to be cleaned of t?_2019_* tables for learn-test ---------
-
-get_test_tables_from_postgres <- function() {
-  src_postgres <- src_test("postgres")
-  con_postgres <- src_postgres$con
-
-  dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
-    as_tibble() %>%
-    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
-}
-
-is_postgres_empty <- function() {
-  nrow(get_test_tables_from_postgres()) == 0
-}
-
-clear_postgres <- function() {
-  src_postgres <- src_test("postgres")
-  con_postgres <- src_postgres$con
-
-  walk(
-    get_test_tables_from_postgres() %>%
-      pull(),
-    ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
-  )
-}
-
-
-# register srcs -----------------------------------------------------------
-
-test_register_src("df", src_df(env = new_environment()))
-
-if (packageVersion("RSQLite") >= "2.1.1.9003") {
-  try(test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
-}
-
-local(try(
-  {
-    con <- DBI::dbConnect(RPostgres::Postgres(), dbname = "postgres", host = "localhost", port = 5432, user = "postgres", bigint = "integer")
-    src <- src_dbi(con, auto_disconnect = TRUE)
-    test_register_src("postgres", src)
-    clear_postgres()
-  },
-  silent = TRUE
-))
-
-
-# Only run if the top level call is devtools::test() or testthat::test_check()
-# In addition: this will only work, if run on TS's laptop
-if (is_this_a_test()) {
-  try(
-    {
-      source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
-      con_mssql <- mssql_con()
-      src_mssql <- src_dbi(con_mssql)
-      test_register_src("mssql", src_mssql)
-    },
-    silent = TRUE
-  )
-}
-
-
 # for check_cardinality...() ----------------------------------------------
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
 d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
@@ -72,16 +11,6 @@ d6 <- tibble::tibble(c = 1:4)
 d7 <- tibble::tibble(c = c(1:5, 5, 6))
 d8 <- tibble::tibble(c = c(1:6))
 
-d1_src <- test_load(d1)
-d2_src <- test_load(d2)
-d3_src <- test_load(d3)
-d4_src <- test_load(d4)
-d5_src <- test_load(d5)
-d6_src <- test_load(d6)
-
-# names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
-src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
-
 # for check_key() ---------------------------------------------------------
 data <-
   tribble(
@@ -91,19 +20,14 @@ data <-
     1, 2, 4
   )
 
-data_check_key_src <- test_load(data)
-
 message("for check_fk() and check_set_equality()")
 
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
-data_1_src <- test_load(data_1)
-data_2_src <- test_load(data_2)
-data_3_src <- test_load(data_3)
-
 # for table-surgery functions ---------------------------------------------
+
 data_ts <- tibble(
   a = as.integer(c(1, 2, 1)),
   b = c(1.1, 4.2, 1.1),
@@ -127,16 +51,7 @@ data_ts_parent <- tibble(
   f = c(TRUE, FALSE)
 )
 
-data_ts_src <- test_load(data_ts)
-data_ts_child_src <- test_load(data_ts_child)
-data_ts_parent_src <- test_load(data_ts_parent)
-
-list_of_data_ts_parent_and_child_src <- map2(
-  .x = data_ts_child_src,
-  .y = data_ts_parent_src,
-  ~ list("child_table" = .x, "parent_table" = .y)
-)
-
+# for testing filter and semi_join ---------------------------------------------
 
 message("for testing filter and semi_join")
 
@@ -271,8 +186,7 @@ dm_for_filter_rev <-
     cdm_get_data_model(dm_for_filter)
   )
 
-t1_src <- test_load(t1)
-t3_src <- test_load(t3)
+# for tests on `dm` objects: cdm_add_pk(), cdm_add_fk() ------------------------
 
 message("for tests on `dm` objects: cdm_add_pk(), cdm_add_fk()")
 
@@ -437,7 +351,66 @@ result_from_flatten <-
 
 # for database tests -------------------------------------------------
 
-if (testthat::is_testing() || Sys.getenv("NOT_CRAN") != "") {
+# postgres needs to be cleaned of t?_2019_* tables for learn-test
+get_test_tables_from_postgres <- function() {
+  src_postgres <- src_test("postgres")
+  con_postgres <- src_postgres$con
+
+  dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
+    as_tibble() %>%
+    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
+}
+
+is_postgres_empty <- function() {
+  nrow(get_test_tables_from_postgres()) == 0
+}
+
+clear_postgres <- function() {
+  src_postgres <- src_test("postgres")
+  con_postgres <- src_postgres$con
+
+  walk(
+    get_test_tables_from_postgres() %>%
+      pull(),
+    ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
+  )
+}
+
+# Only run if the top level call is devtools::test() or testthat::test_check()
+if (is_this_a_test()) {
+  message("connecting")
+
+  test_register_src("df", src_df(env = new_environment()))
+
+  if (packageVersion("RSQLite") >= "2.1.1.9003") {
+    try(test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
+  }
+
+  local(try(
+    {
+      con <- DBI::dbConnect(
+        RPostgres::Postgres(), dbname = "postgres", host = "localhost", port = 5432,
+        user = "postgres", bigint = "integer"
+      )
+      src <- src_dbi(con, auto_disconnect = TRUE)
+      test_register_src("postgres", src)
+      clear_postgres()
+    },
+    silent = TRUE
+  ))
+
+
+  # This will only work, if run on TS's laptop
+  try(
+    {
+      source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
+      con_mssql <- mssql_con()
+      src_mssql <- src_dbi(con_mssql)
+      test_register_src("mssql", src_mssql)
+    },
+    silent = TRUE
+  )
+
   message("loading into database")
 
   dm_for_filter_src <- cdm_test_load(dm_for_filter)
@@ -446,4 +419,33 @@ if (testthat::is_testing() || Sys.getenv("NOT_CRAN") != "") {
   dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
   cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
   dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
+
+  d1_src <- test_load(d1)
+  d2_src <- test_load(d2)
+  d3_src <- test_load(d3)
+  d4_src <- test_load(d4)
+  d5_src <- test_load(d5)
+  d6_src <- test_load(d6)
+
+  # names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
+  src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
+
+  data_check_key_src <- test_load(data)
+
+  data_1_src <- test_load(data_1)
+  data_2_src <- test_load(data_2)
+  data_3_src <- test_load(data_3)
+
+  data_ts_src <- test_load(data_ts)
+  data_ts_child_src <- test_load(data_ts_child)
+  data_ts_parent_src <- test_load(data_ts_parent)
+
+  list_of_data_ts_parent_and_child_src <- map2(
+    .x = data_ts_child_src,
+    .y = data_ts_parent_src,
+    ~ list("child_table" = .x, "parent_table" = .y)
+  )
+
+  t1_src <- test_load(t1)
+  t3_src <- test_load(t3)
 }
