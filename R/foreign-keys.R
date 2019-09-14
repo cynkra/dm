@@ -106,7 +106,8 @@ cdm_get_all_fks <- nse_function(c(dm), ~ {
 #'
 #' @inheritParams cdm_add_fk
 #' @param column The column of `table` which should no longer be referencing the primary
-#' key of `ref_table`.
+#'   key of `ref_table`.
+#'   If `NULL`, all columns will be considered.
 #' @param ref_table The table which `table` was referencing.
 #'
 #' @family foreign key functions
