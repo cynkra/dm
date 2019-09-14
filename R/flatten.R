@@ -10,7 +10,7 @@
 #' @param start Table to start from. From this table all outgoing foreign key relations are
 #' considered to establish a processing order for the joins. An interesting choice could be
 #' for example a fact table in a star schema.
-#' @family Flattening functions
+#' @family flattening functions
 #'
 #' @details Uses [`cdm_apply_filters()`] and [`cdm_disambiguate_cols()`] first, to
 #' get a "clean" [`dm`]. Subsequently renames all foreign key columns to the names of
@@ -81,11 +81,11 @@ adapt_fk_cols <- function(dm) {
 #' @param dm A [`dm`] object
 #' @param table_1 One of the tables involved in the join
 #' @param table_2 The second table of the join
-#' @param join The type of join to be performed, see \code{\link[dplyr]{join}}
+#' @param join The type of join to be performed, see [dplyr::join()]
 #'
-#' @return The resulting table of the join
+#' @return The resulting table of the join.
 #'
-#' @family Flattening functions
+#' @family flattening functions
 #'
 #' @export
 cdm_join_to_tbl <- function(dm, table_1, table_2, join = semi_join) {

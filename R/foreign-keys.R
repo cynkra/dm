@@ -8,7 +8,7 @@
 #' @param check Boolean, if `TRUE` (default), a check is performed, if the values of
 #' `column` are a subset of the values of the primary key column of `ref_table`.
 #'
-#' @family Foreign key functions
+#' @family foreign key functions
 #'
 #' @export
 cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = TRUE), ~ {
@@ -52,7 +52,7 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
 #'
 #' @return A boolean value: `TRUE`, if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
 #'
-#' @family Foreign key functions
+#' @family foreign key functions
 #'
 #' @export
 cdm_has_fk <- function(dm, table, ref_table) {
@@ -64,7 +64,7 @@ cdm_has_fk <- function(dm, table, ref_table) {
 #' @inheritParams cdm_has_fk
 #' @param ref_table The table which is referenced from `table`.
 #'
-#' @family Foreign key functions
+#' @family foreign key functions
 #'
 #' @export
 cdm_get_fk <- function(dm, table, ref_table) {
@@ -90,7 +90,7 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #'
 #' @inheritParams cdm_has_fk
 #'
-#' @family Foreign key functions
+#' @family foreign key functions
 #'
 #' @export
 cdm_get_all_fks <- nse_function(c(dm), ~ {
@@ -109,7 +109,7 @@ cdm_get_all_fks <- nse_function(c(dm), ~ {
 #' key of `ref_table`.
 #' @param ref_table The table which `table` was referencing.
 #'
-#' @family Foreign key functions
+#' @family foreign key functions
 #'
 #' @export
 cdm_rm_fk <- function(dm, table, column, ref_table) {
@@ -161,7 +161,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' for each column of `table`, if this column contains only a subset of values of the primary key column of
 #' `ref_table` and is therefore a candidate for a foreign key from `table` to `ref_table`.
 #'
-#' @family Foreign key functions
+#' @family foreign key functions
 #'
 #' @examples
 #' library(dplyr)

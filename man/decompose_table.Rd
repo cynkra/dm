@@ -38,6 +38,6 @@ decomposed_table$child_table
 decomposed_table$parent_table
 }
 \seealso{
-Other Table surgery functions: \code{\link{reunite_parent_child}}
+Other table surgery functions: \code{\link{reunite_parent_child}}
 }
-\concept{Table surgery functions}
+\concept{table surgery functions}

@@ -21,9 +21,9 @@ Can either remove one reference between the two tables or all at once if paramet
 All parameters can be provided unquoted or quoted.
 }
 \seealso{
-Other Foreign key functions: \code{\link{cdm_add_fk}},
+Other foreign key functions: \code{\link{cdm_add_fk}},
   \code{\link{cdm_enum_fk_candidates}},
   \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
   \code{\link{cdm_has_fk}}
 }
-\concept{Foreign key functions}
+\concept{foreign key functions}

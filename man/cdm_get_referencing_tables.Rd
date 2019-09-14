@@ -19,6 +19,6 @@ key of parameter \code{table}.
 Get the names of a \code{\link{dm}}'s tables referencing a given table.
 }
 \seealso{
-Other Functions utilizing foreign key relations: \code{\link{cdm_is_referenced}}
+Other functions utilizing foreign key relations: \code{\link{cdm_is_referenced}}
 }
-\concept{Functions utilizing foreign key relations}
+\concept{functions utilizing foreign key relations}

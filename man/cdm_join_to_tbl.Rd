@@ -13,10 +13,10 @@ cdm_join_to_tbl(dm, table_1, table_2, join = semi_join)
 
 \item{table_2}{The second table of the join}
 
-\item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
+\item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}}
 }
 \value{
-The resulting table of the join
+The resulting table of the join.
 }
 \description{
 A join of desired type is performed between table \code{table_1} and
@@ -25,6 +25,6 @@ relation. Since this function is a wrapper around \code{cdm_flatten_to_tbl()}, t
 the join will always be the "child table", the table referencing the other table.
 }
 \seealso{
-Other Flattening functions: \code{\link{cdm_flatten_to_tbl}}
+Other flattening functions: \code{\link{cdm_flatten_to_tbl}}
 }
-\concept{Flattening functions}
+\concept{flattening functions}
