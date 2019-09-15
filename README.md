@@ -9,6 +9,7 @@ status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.or
 coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/package=dm)
+[![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
 # dm
