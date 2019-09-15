@@ -15,11 +15,17 @@ options(rlang_backtrace_on_error = "none")
 ##
 ##
 
-# Poll: Who has worked with a software that has the concept of "the dataset"?
+# Teaser
+dm::cdm_nycflights13(cycle = TRUE) %>%
+  dm::cdm_draw()
+
+# Poll: Who has worked with a software that has
+#       a concept of "THE DATASET"?
 
 # Poll: Who has worked with databases?
 
 # Poll: Who uses more than one table/data frame
+#       at the same time?
 
 ##
 ##
@@ -45,12 +51,6 @@ flights
 ##
 ##
 ##
-
-library(dm)
-
-# Visualization
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
 
 library(tidyverse)
 flights_base <-
@@ -90,11 +90,365 @@ all(flights$carrier %in% airlines$carrier)
 ##
 
 # Update in one single location
-airlines[airlines$carrier == "UA", "name"] <- "United broke my guitar"
+airlines[airlines$carrier == "UA", "name"] <-
+  "United broke my guitar"
+
+airlines %>%
+  filter(carrier == "UA")
 
 # ...propagates to all related records
 flights_base %>%
   left_join(airlines)
+
+##
+##
+##
+## PROBLEMS (see appendix)
+## --------------------------------------------------------------------
+##
+##
+##
+
+##
+##
+##
+## Goal: work with one table
+## --------------------------------------------------------------------
+##
+##
+##
+
+##
+##
+##
+## Data model object
+## --------------------------------------------------------------------
+##
+##
+##
+
+library(dm)
+
+# Compound object: tables, relationships, data
+dm_flights <- cdm_nycflights13(cycle = TRUE)
+dm_flights
+
+dm_flights %>%
+  cdm_draw()
+
+# Selection of tables
+dm_flights %>%
+  cdm_select_tbl(flights, airlines) %>%
+  cdm_draw()
+
+dm_flights %>%
+  cdm_select_tbl(airports, airlines) %>%
+  cdm_draw()
+
+try(
+  dm_flights %>%
+    cdm_select_tbl(bogus)
+)
+
+# Accessing tables
+dm_flights %>%
+  tbl("airlines")
+
+# Table names
+dm_flights %>%
+  src_tbls()
+
+# NB: [, $, [[ and names() also work
+
+##
+##
+##
+## Filtering for data models
+## --------------------------------------------------------------------
+##
+##
+##
+
+dm_flights <- cdm_nycflights13()
+dm_flights %>%
+  cdm_draw()
+
+# Filtering on a table returns a dm object
+# with the filter condition(s) stored
+dm_flights %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.")
+
+# ... which then can be filtered on another table
+dm_flights %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl")
+
+# ... and stored in another dm variable
+delta_non_jfk_january <-
+  dm_flights %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
+  cdm_filter(planes, year < 2000) %>%
+  cdm_filter(flights, month == 1)
+delta_non_jfk_january
+
+# Querying a table applies the filters
+delta_non_jfk_january %>%
+  tbl("planes")
+
+
+##
+##
+##
+## Copy to database
+## --------------------------------------------------------------------
+##
+##
+##
+
+# All operations are designed to work locally and on the database
+dm_flights_sqlite <-
+  dm_flights %>%
+  cdm_copy_to(
+    dbplyr::src_memdb(), .,
+    unique_table_names = TRUE, set_key_constraints = FALSE
+  )
+
+dm_flights_sqlite
+
+dm_flights_sqlite %>%
+  cdm_draw()
+
+dm_flights_sqlite %>%
+  cdm_get_tables() %>%
+  map(dbplyr::sql_render)
+
+# Filtering on the database
+dm_flights_sqlite %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
+  cdm_filter(flights, day == 1) %>%
+  tbl("flights")
+
+# ... and the corresponding SQL statement and query plan
+dm_flights_sqlite %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
+  cdm_filter(flights, day == 1) %>%
+  tbl("flights") %>%
+  dbplyr::sql_render()
+
+##
+##
+##
+## Joining two tables
+## --------------------------------------------------------------------
+##
+##
+##
+
+dm_flights %>%
+  cdm_join_to_tbl(airlines, flights)
+
+dm_flights_sqlite %>%
+  cdm_join_to_tbl(airlines, flights)
+
+# FIXME: Can this work without applying all filters?
+
+delta_non_jfk_january %>%
+  cdm_apply_filters() %>%
+  cdm_join_to_tbl(flights, airlines)
+
+try(
+  dm_flights %>%
+    cdm_join_to_tbl(airports, airlines)
+)
+
+##
+##
+##
+## NEW NEW NEW: Joining many tables
+## --------------------------------------------------------------------
+##
+##
+##
+
+dm_flights %>%
+  cdm_flatten_to_tbl(flights)
+
+dm_flights_sqlite %>%
+  cdm_flatten_to_tbl(flights) %>%
+  dbplyr::sql_render()
+
+delta_non_jfk_january %>%
+  cdm_flatten_to_tbl(flights)
+
+##
+##
+##
+## Build up data model from scratch
+## --------------------------------------------------------------------
+##
+##
+##
+
+# Linking the weather table
+
+# Determine key candidates
+weather %>%
+  enum_pk_candidates()
+
+weather %>%
+  enum_pk_candidates() %>%
+  count(candidate)
+
+# It's tricky:
+weather %>%
+  unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
+  count(slot_id) %>%
+  filter(n > 1)
+
+weather %>%
+  count(origin, time_hour) %>%
+  filter(n > 1)
+
+weather %>%
+  count(origin, format(time_hour)) %>%
+  filter(n > 1)
+
+# This looks like a good candidate:
+weather %>%
+  count(origin, format(time_hour, tz = "UTC")) %>%
+  filter(n > 1)
+
+# FIXME: Support compound keys (#3)
+
+# Currently, we need to create surrogate keys:
+weather_link <-
+  weather %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
+
+flights_link <-
+  flights %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
+
+# one option to create a `dm` is to use `as_dm()`:
+nycflights13_tbl <- as_dm(list(
+  airlines = airlines,
+  airports = airports,
+  flights = flights_link,
+  planes = planes,
+  weather = weather_link
+))
+
+nycflights13_tbl
+
+nycflights13_tbl %>%
+  cdm_draw()
+
+# Adding primary keys
+nycflights13_pk <-
+  nycflights13_tbl %>%
+  cdm_add_pk(weather, origin_slot_id) %>%
+  cdm_add_pk(planes, tailnum) %>%
+  cdm_add_pk(airports, faa) %>%
+  cdm_add_pk(airlines, carrier)
+
+nycflights13_pk %>%
+  cdm_draw()
+
+# FIXME: Model weak constraints, show differently in diagram (#4)
+
+# Adding foreign keys
+nycflights13_fk <-
+  nycflights13_pk %>%
+  cdm_add_fk(flights, origin_slot_id, weather) %>%
+  cdm_add_fk(flights, tailnum, planes) %>%
+  cdm_add_fk(flights, origin, airports) %>%
+  cdm_add_fk(flights, dest, airports) %>%
+  cdm_add_fk(flights, carrier, airlines)
+
+nycflights13_fk %>%
+  cdm_draw()
+
+# Color it!
+cdm_get_available_colors()
+
+nycflights13_fk %>%
+  cdm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
+  cdm_draw()
+
+##
+##
+##
+## Import a dm from a database, including key constraints
+## --------------------------------------------------------------------
+##
+##
+##
+
+try({
+  con_pq <- DBI::dbConnect(RPostgres::Postgres())
+
+  # FIXME: Schema support
+
+  # Off by default, to ensure that no tables are accidentally deleted
+  if (FALSE) {
+    walk(
+      names(dm),
+      ~ DBI::dbExecute(con_pq, paste0("DROP TABLE IF EXISTS ", ., " CASCADE"))
+    )
+  }
+
+  # Import
+  dm_flights_pq <-
+    dm_flights %>%
+    cdm_filter(planes, TRUE) %>%
+    cdm_filter(flights, month == 1, day == 1) %>%
+    cdm_copy_to(con_pq, ., temporary = FALSE)
+
+  dm_flights_from_pq <-
+    cdm_learn_from_db(con_pq)
+
+  dm_flights_from_pq %>%
+    cdm_draw()
+})
+
+##
+##
+##
+## Appendix
+## ====================================================================
+##
+##
+##
+
+##
+##
+##
+## Analogy?
+## --------------------------------------------------------------------
+##
+##
+##
+
+# Analogy: parallel vectors
+# Multiple parallel vectors can be combined into a data frame.
+# Multiple related tables can be combined into a dm.
+x <- 1:5
+x
+y <- x + 1
+y
+z <- diff(y)
+z
+
+try(
+  tibble(x = 1:5) %>%
+    mutate(y = x + 1) %>%
+    mutate(z = diff(y))
+)
 
 ##
 ##
@@ -221,311 +575,3 @@ airports %>%
 
 # Cleanup
 rm(t1, t2)
-
-##
-##
-##
-## Data model object
-## --------------------------------------------------------------------
-##
-##
-##
-
-# Compound object: tables, relationships, data
-cdm_nycflights13(cycle = TRUE)
-
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
-
-# Selection of tables
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_select_tbl(flights, airlines) %>%
-  cdm_draw()
-
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_select_tbl(airports, airlines) %>%
-  cdm_draw()
-
-try(
-  cdm_nycflights13() %>%
-    cdm_select_tbl(bogus)
-)
-
-# Accessing tables
-cdm_nycflights13() %>%
-  tbl("airlines")
-
-# Table names
-cdm_nycflights13() %>%
-  src_tbls()
-
-# NB: [, $, [[ and names() also work
-
-# Analogy: parallel vectors
-# Multiple parallel vectors can be combined into a data frame.
-# Multiple related tables can be combined into a dm.
-x <- 1:5
-x
-y <- x + 1
-y
-z <- diff(y)
-z
-
-try(
-  tibble(x = 1:5) %>%
-    mutate(y = x + 1) %>%
-    mutate(z = diff(y))
-)
-
-##
-##
-##
-## Filtering for data models
-## --------------------------------------------------------------------
-##
-##
-##
-
-cdm_nycflights13()
-
-# Filtering on a table returns a dm object with the filter condition(s) stored
-cdm_nycflights13() %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.")
-
-# ... which then can be filtered on another table
-cdm_nycflights13() %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl")
-
-# ... and stored in another dm variable
-delta_non_jfk_january <-
-  cdm_nycflights13() %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(planes, year < 2000) %>%
-  cdm_filter(flights, month == 1)
-delta_non_jfk_january
-
-# Querying a table applies the filters
-delta_non_jfk_january %>%
-  tbl("planes")
-
-
-##
-##
-##
-## Copy to database
-## --------------------------------------------------------------------
-##
-##
-##
-
-# All operations are designed to work locally and on the database
-nycflights13_sqlite <-
-  cdm_nycflights13() %>%
-  cdm_copy_to(
-    dbplyr::src_memdb(), .,
-    unique_table_names = TRUE, set_key_constraints = FALSE
-  )
-
-nycflights13_sqlite
-
-nycflights13_sqlite %>%
-  cdm_draw()
-
-nycflights13_sqlite %>%
-  cdm_get_tables() %>%
-  map(dbplyr::sql_render)
-
-# Filtering on the database
-nycflights13_sqlite %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, day == 1) %>%
-  tbl("flights")
-
-# ... and the corresponding SQL statement and query plan
-nycflights13_sqlite %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, day == 1) %>%
-  tbl("flights") %>%
-  explain()
-
-##
-##
-##
-## Joining two tables
-## --------------------------------------------------------------------
-##
-##
-##
-
-cdm_nycflights13() %>%
-  cdm_join_to_tbl(airlines, flights)
-
-nycflights13_sqlite %>%
-  cdm_join_to_tbl(airlines, flights)
-
-# FIXME: Can this work without applying all filters?
-
-delta_non_jfk_january %>%
-  cdm_apply_filters() %>%
-  cdm_join_to_tbl(flights, airlines)
-
-try(
-  cdm_nycflights13() %>%
-    cdm_join_to_tbl(airports, airlines)
-)
-
-##
-##
-##
-## NEW NEW NEW: Joining many tables
-## --------------------------------------------------------------------
-##
-##
-##
-
-cdm_nycflights13() %>%
-  cdm_flatten_to_tbl(flights)
-
-nycflights13_sqlite %>%
-  cdm_flatten_to_tbl(flights) %>%
-  dbplyr::sql_render()
-
-delta_non_jfk_january %>%
-  cdm_flatten_to_tbl(flights)
-
-##
-##
-##
-## Build up data model from scratch
-## --------------------------------------------------------------------
-##
-##
-##
-
-# Linking the weather table
-
-# Determine key candidates
-weather %>%
-  enum_pk_candidates()
-
-weather %>%
-  enum_pk_candidates() %>%
-  count(candidate)
-
-# It's tricky:
-weather %>%
-  unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
-  count(slot_id) %>%
-  filter(n > 1)
-
-weather %>%
-  count(origin, time_hour) %>%
-  filter(n > 1)
-
-weather %>%
-  count(origin, format(time_hour)) %>%
-  filter(n > 1)
-
-# This looks like a good candidate:
-weather %>%
-  count(origin, format(time_hour, tz = "UTC")) %>%
-  filter(n > 1)
-
-# FIXME: Support compound keys (#3)
-
-# Currently, we need to create surrogate keys:
-weather_link <-
-  weather %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
-
-flights_link <-
-  flights %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
-
-# one option to create a `dm` is to use `as_dm()`:
-nycflights13_tbl <- as_dm(list(
-  airlines = airlines,
-  airports = airports,
-  flights = flights_link,
-  planes = planes,
-  weather = weather_link
-))
-
-nycflights13_tbl
-
-nycflights13_tbl %>%
-  cdm_draw()
-
-# Adding primary keys
-nycflights13_pk <-
-  nycflights13_tbl %>%
-  cdm_add_pk(weather, origin_slot_id) %>%
-  cdm_add_pk(planes, tailnum) %>%
-  cdm_add_pk(airports, faa) %>%
-  cdm_add_pk(airlines, carrier)
-
-nycflights13_pk %>%
-  cdm_draw()
-
-# FIXME: Model weak constraints, show differently in diagram (#4)
-
-# Adding foreign keys
-nycflights13_fk <-
-  nycflights13_pk %>%
-  cdm_add_fk(flights, origin_slot_id, weather) %>%
-  cdm_add_fk(flights, tailnum, planes) %>%
-  cdm_add_fk(flights, origin, airports) %>%
-  cdm_add_fk(flights, dest, airports) %>%
-  cdm_add_fk(flights, carrier, airlines)
-
-nycflights13_fk %>%
-  cdm_draw()
-
-# Color it!
-cdm_get_available_colors()
-
-nycflights13_fk %>%
-  cdm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
-  cdm_draw()
-
-##
-##
-##
-## Import a dm from a database, including key constraints
-## --------------------------------------------------------------------
-##
-##
-##
-
-try({
-  con_pq <- DBI::dbConnect(RPostgres::Postgres())
-
-  # FIXME: Schema support
-
-  # Off by default, to ensure that no tables are accidentally deleted
-  if (FALSE) {
-    walk(
-      names(cdm_nycflights13()),
-      ~ DBI::dbExecute(con_pq, paste0("DROP TABLE IF EXISTS ", ., " CASCADE"))
-    )
-  }
-
-  # Import
-  dm_pq <-
-    cdm_nycflights13() %>%
-    cdm_filter(planes, TRUE) %>%
-    cdm_filter(flights, month == 1, day == 1) %>%
-    cdm_copy_to(con_pq, ., temporary = FALSE)
-
-  dm_from_pq <-
-    cdm_learn_from_db(con_pq)
-
-  dm_from_pq %>%
-    cdm_draw()
-})
