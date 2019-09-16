@@ -9,7 +9,10 @@ articles:
   desc: ~
   class: ~
   contents:
+  - dm-introduction-relational-data-model
   - dm-class-and-basic-operations
+  - dm-joining
+  - setting_up_dm
   - dm-visualization
   - dm-low-level
 
