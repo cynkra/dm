@@ -60,7 +60,6 @@ If you want to create a `dm` from other tables, please look at `?dm` and the fun
 dm <- cdm_nycflights13()
 ```
 
-
 ## Joining a `dm` object {#join}
 
 {dm} allows you to join two tables of a `dm` object based on a shared column. You can use all join functions you know from the [{dplyr} package](https://dplyr.tidyverse.org/reference/join.html).
@@ -137,7 +136,22 @@ dm %>%
   cdm_join_to_tbl(flights, airlines, join = anti_join)
 ```
 
-Next example:
+An example with filtering on a `dm` and then merging:
+
+**Get all flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in May 2013 - and join all the airports data into the `flights` table.**
+
+It is important to call `cdm_apply_filters()` after piping your conditions.
+Only then the underlying tables and key relations are updated and you can perform a join on the filtered data.
+
+```{r}
+cdm_nycflights13() %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  cdm_filter(flights, month == 5) %>% 
+  cdm_apply_filters() %>% 
+  cdm_join_to_tbl(flights, airports, join = left_join)
+```
+
+A last example:
 
 **Merge all tables into one big table.**
 
