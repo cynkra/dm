@@ -198,7 +198,9 @@ The `cdm_draw()` function creates a visualization of the entity relationship mod
 
 Similarly to `dplyr::filter()`, a filtering function `cdm_filter()` is available for `dm` objects.
 You need to provide the `dm` object, the table whose rows you want to filter, and the filter expression.
-A `dm` object is returned whose tables only contain rows that are related to the reduced rows in the filtered table.
+The actual effect of the filtering will only be realized once you use `cdm_apply_filters`.
+Before that, the filter conditions are merely stored within the `dm`.
+After using `cdm_apply_filters()` a `dm` object is returned whose tables only contain rows that are related to the reduced rows in the filtered table.
 This currently only works for cycle-free relationships between the tables.
 
 ```{r}
@@ -208,6 +210,7 @@ cdm_nycflights13(cycle = FALSE) %>%
 
 cdm_nycflights13(cycle = FALSE) %>% 
   cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
+  cdm_apply_filters() %>% 
   cdm_get_tables() %>%
   map_int(nrow)
 ```
