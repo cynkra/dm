@@ -342,10 +342,14 @@ weather_link <-
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
 
+weather_link
+
 flights_link <-
   flights %>%
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
+
+flights_link
 
 # one option to create a `dm` is to use `as_dm()`:
 nycflights13_tbl <- as_dm(list(
@@ -412,7 +416,7 @@ try({
   # Off by default, to ensure that no tables are accidentally deleted
   if (FALSE) {
     walk(
-      names(dm),
+      names(dm_flights),
       ~ DBI::dbExecute(
         con_pq,
         paste0("DROP TABLE IF EXISTS ", ., " CASCADE")
