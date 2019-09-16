@@ -95,7 +95,9 @@ flights %>%
 
 This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of merging data. 
 
-{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section) while augmenting {dplyr}/{dbplyr} workflows.
+{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section [Good to Know](#good-to-know)) while augmenting {dplyr}/{dbplyr} workflows. 
+
+You can have the best of both worlds: Manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.
 
 ## Good to Know 
 
