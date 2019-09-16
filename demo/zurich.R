@@ -175,7 +175,7 @@ dm_flights %>%
 ##
 ##
 ##
-## Filtering for data models
+## Joining two tables
 ## --------------------------------------------------------------------
 ##
 ##
@@ -185,29 +185,25 @@ dm_flights <- cdm_nycflights13()
 dm_flights %>%
   cdm_draw()
 
-# Filtering on a table returns a dm object
-# with the filter condition(s) stored
 dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.")
+  cdm_join_to_tbl(airlines, flights)
 
-# ... which then can be filtered on another table
-dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl")
-
-# ... and stored in another dm variable
-delta_non_jfk_january <-
+try(
   dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(planes, year < 2000) %>%
-  cdm_filter(flights, month == 1)
-delta_non_jfk_january
+    cdm_join_to_tbl(airports, airlines)
+)
 
-# Querying a table applies the filters
-delta_non_jfk_january %>%
-  tbl("planes")
+##
+##
+##
+## NEW NEW NEW: Joining many tables
+## --------------------------------------------------------------------
+##
+##
+##
 
+dm_flights %>%
+  cdm_flatten_to_tbl(flights)
 
 ##
 ##
@@ -235,6 +231,14 @@ dm_flights_sqlite %>%
   cdm_get_tables() %>%
   map(dbplyr::sql_render)
 
+dm_flights_sqlite %>%
+  cdm_join_to_tbl(airlines, flights) %>%
+  dbplyr::sql_render()
+
+dm_flights_sqlite %>%
+  cdm_flatten_to_tbl(flights) %>%
+  dbplyr::sql_render()
+
 # Filtering on the database
 dm_flights_sqlite %>%
   cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
@@ -253,17 +257,34 @@ dm_flights_sqlite %>%
 ##
 ##
 ##
-## Joining two tables
+## Filtering for data models
 ## --------------------------------------------------------------------
 ##
 ##
 ##
 
+# Filtering on a table returns a dm object
+# with the filter condition(s) stored
 dm_flights %>%
-  cdm_join_to_tbl(airlines, flights)
+  cdm_filter(airlines, name == "Delta Air Lines Inc.")
 
-dm_flights_sqlite %>%
-  cdm_join_to_tbl(airlines, flights)
+# ... which then can be filtered on another table
+dm_flights %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl")
+
+# ... and stored in another dm variable
+delta_non_jfk_january <-
+  dm_flights %>%
+  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  cdm_filter(airports, name != "John F Kennedy Intl") %>%
+  cdm_filter(planes, year < 2000) %>%
+  cdm_filter(flights, month == 1)
+delta_non_jfk_january
+
+# Querying a table applies the filters
+delta_non_jfk_january %>%
+  tbl("planes")
 
 # FIXME: Can this work without applying all filters?
 
@@ -271,29 +292,9 @@ delta_non_jfk_january %>%
   cdm_apply_filters() %>%
   cdm_join_to_tbl(flights, airlines)
 
-try(
-  dm_flights %>%
-    cdm_join_to_tbl(airports, airlines)
-)
-
-##
-##
-##
-## NEW NEW NEW: Joining many tables
-## --------------------------------------------------------------------
-##
-##
-##
-
-dm_flights %>%
-  cdm_flatten_to_tbl(flights)
-
-dm_flights_sqlite %>%
-  cdm_flatten_to_tbl(flights) %>%
-  dbplyr::sql_render()
-
 delta_non_jfk_january %>%
   cdm_flatten_to_tbl(flights)
+
 
 ##
 ##
