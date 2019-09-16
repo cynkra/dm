@@ -55,7 +55,7 @@ flights
 library(tidyverse)
 flights_base <-
   flights %>%
-  select(year, month, day, carrier, tailnum, origin, dest)
+  select(year, month, day, carrier, tailnum, origin, dest, time_hour)
 flights_base
 
 # `carrier` column also present in `airlines`, this table contains
@@ -103,17 +103,29 @@ flights_base %>%
 ##
 ##
 ##
-## PROBLEMS (see appendix)
+## Goal: work with one table
 ## --------------------------------------------------------------------
 ##
 ##
 ##
 
+flights_base %>%
+  left_join(airlines, by = "carrier") %>%
+  left_join(planes, by = "tailnum") %>%
+  left_join(weather, by = c("origin", "time_hour")) %>%
+  left_join(airports, by = c("origin" = "faa")) %>%
+  left_join(airports, by = c("dest" = "faa"))
+
 ##
 ##
 ##
-## Goal: work with one table
+## PROBLEMS (see appendix)
 ## --------------------------------------------------------------------
+##
+## - wrong keys
+## - data mismatches
+## - relationship unclear
+## - combinatorial explosion
 ##
 ##
 ##
