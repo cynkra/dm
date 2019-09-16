@@ -377,7 +377,9 @@ nycflights13_fk %>%
 cdm_get_available_colors()
 
 nycflights13_fk %>%
-  cdm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
+  cdm_set_colors(
+    airlines = , planes = , weather = , airports = "blue"
+  ) %>%
   cdm_draw()
 
 ##
@@ -398,7 +400,10 @@ try({
   if (FALSE) {
     walk(
       names(dm),
-      ~ DBI::dbExecute(con_pq, paste0("DROP TABLE IF EXISTS ", ., " CASCADE"))
+      ~ DBI::dbExecute(
+        con_pq,
+        paste0("DROP TABLE IF EXISTS ", ., " CASCADE")
+      )
     )
   }
 
