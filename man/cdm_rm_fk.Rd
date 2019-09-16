@@ -12,7 +12,8 @@ cdm_rm_fk(dm, table, column, ref_table)
 \item{table}{A table in the \code{dm}}
 
 \item{column}{The column of \code{table} which should no longer be referencing the primary
-key of \code{ref_table}.}
+key of \code{ref_table}.
+If \code{NULL}, all columns will be considered.}
 
 \item{ref_table}{The table which \code{table} was referencing.}
 }
@@ -21,9 +22,9 @@ Can either remove one reference between the two tables or all at once if paramet
 All parameters can be provided unquoted or quoted.
 }
 \seealso{
-Other Foreign key functions: \code{\link{cdm_add_fk}},
+Other foreign key functions: \code{\link{cdm_add_fk}},
   \code{\link{cdm_enum_fk_candidates}},
   \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
   \code{\link{cdm_has_fk}}
 }
-\concept{Foreign key functions}
+\concept{foreign key functions}

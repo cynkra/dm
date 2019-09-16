@@ -13,8 +13,25 @@
 #' cdm_disambiguate_cols(cdm_nycflights13())
 #' @export
 cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
-  recipe <-
-    as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
+  cdm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
+}
+
+cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
+  recipe <- compute_disambiguate_cols_recipe(dm, tables = tables, sep = sep)
+  if (!quiet) explain_col_rename(recipe)
+  col_rename(dm, recipe)
+}
+
+compute_disambiguate_cols_recipe <- function(dm, tables, sep) {
+  columns <- as_tibble(cdm_get_data_model(dm)[["columns"]])
+
+  if (!is.null(tables)) {
+    columns <-
+      columns %>%
+      filter(table %in% !!tables)
+  }
+
+  columns %>%
     # key columns are supposed to remain unchanged, even if they are identical
     # in case of flattening, only one column will remains for pk-fk-relations
     add_count(column) %>%
@@ -23,23 +40,24 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
     select(table, new_name, column) %>%
     nest(renames = -table) %>%
     mutate(renames = map(renames, deframe))
-
-  col_rename(dm, recipe, quiet)
 }
 
-col_rename <- function(dm, recipe, quiet) {
-  if (!quiet && nrow(recipe) > 0) {
-    names_for_disambiguation <- map(recipe$renames, names)
-    msg_renamed_cols <- map2(recipe$renames, names_for_disambiguation, ~ paste0(.x, " -> ", .y)) %>%
-      map(~ paste(., collapse = "\n"))
-    msg_core <- paste0("Table: ", recipe$table, "\n",
-      msg_renamed_cols, "\n",
-      collapse = "\n"
-    )
-    msg <- paste0("Renamed columns:\n", msg_core)
-    message(msg)
-  }
+explain_col_rename <- function(recipe) {
+  if (nrow(recipe) == 0) return()
 
+  msg_core <-
+    recipe %>%
+    mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
+    unnest(renames) %>%
+    nest(data = -old) %>%
+    mutate(sub_text = map_chr(data, ~ paste0(.$table, "$", .$new, collapse = ", "))) %>%
+    mutate(text = paste0("* ", old, " -> ", sub_text)) %>%
+    pull()
+
+  message("Renamed columns:\n", paste(msg_core, collapse = "\n"))
+}
+
+col_rename <- function(dm, recipe) {
   reduce2(recipe$table,
     recipe$renames,
     ~ cdm_rename(..1, !!..2, !!!..3),

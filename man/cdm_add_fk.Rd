@@ -4,7 +4,7 @@
 \alias{cdm_add_fk}
 \title{Add a reference from one table of a \code{\link{dm}} to another}
 \usage{
-cdm_add_fk(dm, table, column, ref_table, check = TRUE)
+cdm_add_fk(dm, table, column, ref_table, check = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -24,8 +24,8 @@ a primary key set.}
 Add a reference from one table of a \code{\link{dm}} to another
 }
 \seealso{
-Other Foreign key functions: \code{\link{cdm_enum_fk_candidates}},
+Other foreign key functions: \code{\link{cdm_enum_fk_candidates}},
   \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
   \code{\link{cdm_has_fk}}, \code{\link{cdm_rm_fk}}
 }
-\concept{Foreign key functions}
+\concept{foreign key functions}

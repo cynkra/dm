@@ -29,7 +29,7 @@ test_that("cdm_add_pk() works as intended?", {
   map(
     .x = cdm_test_obj_src,
     ~ expect_error(
-      cdm_add_pk(.x, cdm_table_2, c),
+      cdm_add_pk(.x, cdm_table_2, c, check = TRUE),
       class = cdm_error("not_unique_key"),
       error_txt_not_unique_key("table_from_dm", "c")
     )
@@ -38,7 +38,7 @@ test_that("cdm_add_pk() works as intended?", {
   map(
     .x = cdm_test_obj_src,
     ~ expect_silent(
-      cdm_add_pk(.x, cdm_table_2, c, check = FALSE)
+      cdm_add_pk(.x, cdm_table_2, c)
     )
   )
 })

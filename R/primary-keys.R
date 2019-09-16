@@ -14,7 +14,7 @@
 #' @param force Boolean, if `FALSE` (default), an error will be thrown, if there is
 #' already a primary key set for this table. If `TRUE` a potential old `pk` is deleted before setting the new one.
 #'
-#' @family Primary key functions
+#' @family primary key functions
 #' @export
 #' @examples
 #' library(dplyr)
@@ -29,7 +29,7 @@
 #'
 #' # the following does not work
 #' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
-cdm_add_pk <- function(dm, table, column, check = TRUE, force = FALSE) {
+cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)
@@ -77,7 +77,7 @@ cdm_add_pk_impl <- function(dm, table, column) {
 #'
 #' @inheritParams cdm_add_pk
 #'
-#' @family Primary key functions
+#' @family primary key functions
 #'
 #' @examples
 #' library(dplyr)
@@ -96,7 +96,7 @@ cdm_has_pk <- function(dm, table) {
 #' column marked as primary key of a table of a [`dm`] object. If no primary key is
 #' set for the table, an empty character vector is returned.
 #'
-#' @family Primary key functions
+#' @family primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #'
@@ -121,7 +121,7 @@ cdm_get_pk <- function(dm, table) {
 #' @description `cdm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
-#' @family Primary key functions
+#' @family primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #'
@@ -138,7 +138,7 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #'
 #' Foreign keys pointing to the table from other tables can optionally be removed as well.
 #'
-#' @family Primary key functions
+#' @family primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error, if
@@ -207,7 +207,7 @@ enum_pk_candidates <- nse_function(c(table), ~ {
     # Can't call unnest() either for an unknown reason
     mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
     select(-value) %>%
-    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE)))) %>%
+    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none")))) %>%
     select(-data) %>%
     mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
     select(-values)
@@ -217,7 +217,7 @@ enum_pk_candidates <- nse_function(c(table), ~ {
 #' @description `cdm_enum_pk_candidates()` performs these checks
 #' for a table in a [dm] object.
 #'
-#' @family Primary key functions
+#' @family primary key functions
 #'
 #' @inheritParams cdm_add_pk
 #'

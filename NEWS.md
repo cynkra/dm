@@ -1,3 +1,17 @@
+# dm 0.0.2.9000
+
+- `cdm_flatten_to_tbl()` disambiguates only the necessary columns.
+- When flattening, the column name of the LHS (child) table is used (#52).
+- Fix formatting in `enum_pk_candidates()` for character data.
+- `cdm_add_pk()` and `cdm_add_fk()` no longer check data integrity by default.
+- Explicitly checking that the `join` argument is a function, to avoid surprises when the caller passes data.
+- `cdm_copy_to()` works correctly with filtered `dm` objects.
+- `cdm_apply_filters()` actually resets the filter conditions.
+- A more detailed README file and a vignette for filtering (#29, @cutterkom).
+- `cdm_draw()` no longer supports the `table_names` argument, use `cdm_select_tbl()`.
+- Copying a `dm` to a database now creates indexes for all primary and foreign keys.
+
+
 # dm 0.0.2
 
 ## Breaking changes

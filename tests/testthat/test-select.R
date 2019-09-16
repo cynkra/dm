@@ -4,9 +4,9 @@ test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?",
   map2(
     dm_for_filter_src,
     dm_for_filter_smaller_src,
-    ~ expect_equal(
-      cdm_select_tbl(.x, t3, t4, t5) %>% cdm_get_tables() %>% map(collect),
-      cdm_get_tables(.y) %>% map(collect)
+    ~ expect_equivalent_dm(
+      cdm_select_tbl(.x, t3, t4, t5),
+      .y
     )
   )
 

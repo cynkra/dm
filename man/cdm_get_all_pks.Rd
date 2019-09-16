@@ -14,8 +14,8 @@ cdm_get_all_pks(dm)
 returns the tables, the respective primary key columns and their classes.
 }
 \seealso{
-Other Primary key functions: \code{\link{cdm_add_pk}},
+Other primary key functions: \code{\link{cdm_add_pk}},
   \code{\link{cdm_get_pk}}, \code{\link{cdm_has_pk}},
   \code{\link{cdm_rm_pk}}, \code{\link{enum_pk_candidates}}
 }
-\concept{Primary key functions}
+\concept{primary key functions}

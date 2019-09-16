@@ -10,7 +10,7 @@
 #' @param start Table to start from. From this table all outgoing foreign key relations are
 #' considered to establish a processing order for the joins. An interesting choice could be
 #' for example a fact table in a star schema.
-#' @family Flattening functions
+#' @family flattening functions
 #'
 #' @details Uses [`cdm_apply_filters()`] and [`cdm_disambiguate_cols()`] first, to
 #' get a "clean" [`dm`]. Subsequently renames all foreign key columns to the names of
@@ -28,48 +28,47 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   start <- as_name(ensym(start))
   check_correct_input(dm, start)
 
-  # prepare `dm` by applying all filters, disambiguate columns, and adapt FK-column names
-  # to the respective PK-column names
-  clean_dm <- cdm_apply_filters(dm) %>%
-    cdm_disambiguate_cols() %>%
-    adapt_fk_cols()
+  force(join)
+  stopifnot(is_function(join))
 
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
-  g <- create_graph_from_dm(clean_dm, directed = TRUE)
-  filtered_tables <- clean_dm %>% cdm_get_tables()
+  g <- create_graph_from_dm(dm, directed = TRUE)
 
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
-  dfs <- igraph::dfs(g, start, unreachable = FALSE)
+  dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE)
+
+  # compute all table names
+  order_df <-
+    tibble(
+      name = names(dfs[["order"]]),
+      pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
+    ) %>%
+    filter(!is.na(name))
+
+  # FIXME: Don't need to apply all filters on all tables!
+  # Only need to compute tbl(dm, start) and then use the raw tables.
+
+  # prepare `dm` by applying all filters, disambiguate columns, and adapt FK-column names
+  # to the respective PK-column names
+  clean_dm <-
+    cdm_apply_filters(dm) %>%
+    cdm_disambiguate_cols_impl(order_df$name)
 
   # Drop first table in the list of join partners. (We have at least one table, `start`.)
   # (Working with `reduce2()` here and the `.init`-parameter is the first table)
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
-  order <- names(dfs[["order"]])[-1]
-  order <- order[!is.na(order)]
-  by <- map_chr(order, ~ cdm_get_pk(dm, !!.))
+  order_df <- order_df[-1, ]
 
   # list of join partners
-  ordered_table_list <- filtered_tables[order]
+  filtered_tables <- clean_dm %>% cdm_get_tables()
+  ordered_table_list <- filtered_tables[order_df$name]
+  by <- map2(order_df$pred, order_df$name, ~ get_by(dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
   reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = filtered_tables[[start]])
 }
-
-# key columns have to be adapted here (child table col needs to get the
-# same name as the parent table primary key)
-adapt_fk_cols <- function(dm) {
-  recipe <-
-    as_tibble(cdm_get_data_model(dm)[["columns"]]) %>%
-    filter(!is.na(ref)) %>%
-    select(table, ref_col, column) %>%
-    nest(renames = -table) %>%
-    mutate(renames = map(renames, deframe))
-
-  col_rename(dm, recipe, quiet = TRUE)
-}
-
 
 #' Perform a join between two tables of a [`dm`]
 #'
@@ -81,14 +80,17 @@ adapt_fk_cols <- function(dm) {
 #' @param dm A [`dm`] object
 #' @param table_1 One of the tables involved in the join
 #' @param table_2 The second table of the join
-#' @param join The type of join to be performed, see \code{\link[dplyr]{join}}
+#' @param join The type of join to be performed, see [dplyr::join()]
 #'
-#' @return The resulting table of the join
+#' @return The resulting table of the join.
 #'
-#' @family Flattening functions
+#' @family flattening functions
 #'
 #' @export
-cdm_join_to_tbl <- function(dm, table_1, table_2, join = semi_join) {
+cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+  force(join)
+  stopifnot(is_function(join))
+
   red_dm <- cdm_select_tbl(dm, {{ table_1 }}, {{ table_2 }})
 
   if (!is_dm_connected(red_dm)) {

@@ -20,7 +20,7 @@
 #'
 #' See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
 #'
-#' @family Table surgery functions
+#' @family table surgery functions
 #'
 #' @examples
 #' library(magrittr)
@@ -93,7 +93,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' @param parent_table Table (possibly created by `decompose_table()`).
 #' @param id_column Identical name of referencing/referenced column in `child_table`/`parent_table`
 #'
-#' @family Table surgery functions
+#' @family table surgery functions
 #'
 #' @name reunite_parent_child
 #' @export
@@ -120,7 +120,7 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 #' @param list_of_parent_child_tables Cf arguments `child_table` and `parent_table` from
 #' `reunite_parent_child()`, but both in a named list (as created by `decompose_table()`).
 #'
-#' @family Table surgery functions
+#' @family table surgery functions
 #'
 #' @rdname reunite_parent_child
 #' @export

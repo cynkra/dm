@@ -4,7 +4,7 @@
 \alias{cdm_add_pk}
 \title{Mark a column of a table in a \code{\link{dm}} object as its primary key}
 \usage{
-cdm_add_pk(dm, table, column, check = TRUE, force = FALSE)
+cdm_add_pk(dm, table, column, check = FALSE, force = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -39,8 +39,8 @@ cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 }
 \seealso{
-Other Primary key functions: \code{\link{cdm_get_all_pks}},
+Other primary key functions: \code{\link{cdm_get_all_pks}},
   \code{\link{cdm_get_pk}}, \code{\link{cdm_has_pk}},
   \code{\link{cdm_rm_pk}}, \code{\link{enum_pk_candidates}}
 }
-\concept{Primary key functions}
+\concept{primary key functions}

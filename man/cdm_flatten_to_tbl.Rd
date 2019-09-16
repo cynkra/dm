@@ -13,7 +13,7 @@ cdm_flatten_to_tbl(dm, start, join = left_join)
 considered to establish a processing order for the joins. An interesting choice could be
 for example a fact table in a star schema.}
 
-\item{join}{The type of join to be performed, see \code{\link[dplyr]{join}}}
+\item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}}
 }
 \value{
 A wide table resulting of consecutively joining all tables together.
@@ -37,6 +37,6 @@ cdm_nycflights13() \%>\%
   cdm_flatten_to_tbl(flights)
 }
 \seealso{
-Other Flattening functions: \code{\link{cdm_join_to_tbl}}
+Other flattening functions: \code{\link{cdm_join_to_tbl}}
 }
-\concept{Flattening functions}
+\concept{flattening functions}

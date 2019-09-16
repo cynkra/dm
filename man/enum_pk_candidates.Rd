@@ -29,8 +29,8 @@ cdm_nycflights13() \%>\% cdm_enum_pk_candidates(flights)
 cdm_nycflights13() \%>\% cdm_enum_pk_candidates(airports)
 }
 \seealso{
-Other Primary key functions: \code{\link{cdm_add_pk}},
+Other primary key functions: \code{\link{cdm_add_pk}},
   \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
   \code{\link{cdm_has_pk}}, \code{\link{cdm_rm_pk}}
 }
-\concept{Primary key functions}
+\concept{primary key functions}

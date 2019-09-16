@@ -1,68 +1,10 @@
 try(library(dbplyr), silent = TRUE)
 library(rprojroot)
 
-# postgres needs to be cleaned of t?_2019_* tables for learn-test ---------
-
-get_test_tables_from_postgres <- function() {
-  src_postgres <- src_test("postgres")
-  con_postgres <- src_postgres$con
-
-  dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
-    as_tibble() %>%
-    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
-}
-
-is_postgres_empty <- function() {
-  nrow(get_test_tables_from_postgres()) == 0
-}
-
-clear_postgres <- function() {
-  src_postgres <- src_test("postgres")
-  con_postgres <- src_postgres$con
-
-  walk(
-    get_test_tables_from_postgres() %>%
-      pull(),
-    ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
-  )
-}
-
-
-# register srcs -----------------------------------------------------------
-
-test_register_src("df", src_df(env = new_environment()))
-
-if (packageVersion("RSQLite") >= "2.1.1.9003") {
-  try(test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
-}
-
-local(try(
-  {
-    con <- DBI::dbConnect(RPostgres::Postgres(), dbname = "postgres", host = "localhost", port = 5432, user = "postgres", bigint = "integer")
-    src <- src_dbi(con, auto_disconnect = TRUE)
-    test_register_src("postgres", src)
-    clear_postgres()
-  },
-  silent = TRUE
-))
-
-
-# Only run if the top level call is devtools::test() or testthat::test_check()
-# In addition: this will only work, if run on TS's laptop
-if (is_this_a_test()) {
-  try(
-    {
-      source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
-      con_mssql <- mssql_con()
-      src_mssql <- src_dbi(con_mssql)
-      test_register_src("mssql", src_mssql)
-    },
-    silent = TRUE
-  )
-}
-
-
 # for check_cardinality...() ----------------------------------------------
+
+message("for ccheck_cardinality...()")
+
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
 d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 d3 <- tibble::tibble(c = 1:5)
@@ -72,17 +14,10 @@ d6 <- tibble::tibble(c = 1:4)
 d7 <- tibble::tibble(c = c(1:5, 5, 6))
 d8 <- tibble::tibble(c = c(1:6))
 
-d1_src <- test_load(d1)
-d2_src <- test_load(d2)
-d3_src <- test_load(d3)
-d4_src <- test_load(d4)
-d5_src <- test_load(d5)
-d6_src <- test_load(d6)
-
-# names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
-src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
-
 # for check_key() ---------------------------------------------------------
+
+message("for check_fk() and check_set_equality()")
+
 data <-
   tribble(
     ~c1, ~c2, ~c3,
@@ -91,19 +26,14 @@ data <-
     1, 2, 4
   )
 
-data_check_key_src <- test_load(data)
-
-message("for check_fk() and check_set_equality()")
-
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
-data_1_src <- test_load(data_1)
-data_2_src <- test_load(data_2)
-data_3_src <- test_load(data_3)
-
 # for table-surgery functions ---------------------------------------------
+
+message("for table surgery")
+
 data_ts <- tibble(
   a = as.integer(c(1, 2, 1)),
   b = c(1.1, 4.2, 1.1),
@@ -127,16 +57,7 @@ data_ts_parent <- tibble(
   f = c(TRUE, FALSE)
 )
 
-data_ts_src <- test_load(data_ts)
-data_ts_child_src <- test_load(data_ts_child)
-data_ts_parent_src <- test_load(data_ts_parent)
-
-list_of_data_ts_parent_and_child_src <- map2(
-  .x = data_ts_child_src,
-  .y = data_ts_parent_src,
-  ~ list("child_table" = .x, "parent_table" = .y)
-)
-
+# for testing filter and semi_join ---------------------------------------------
 
 message("for testing filter and semi_join")
 
@@ -174,34 +95,15 @@ t6 <- tibble(
   o = letters[5:9]
 )
 
-list_for_filter <- list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
-dm_for_filter <- as_dm(list_for_filter) %>%
-  cdm_add_pk(t1, a) %>%
-  cdm_add_pk(t2, c) %>%
-  cdm_add_pk(t3, f) %>%
-  cdm_add_pk(t4, h) %>%
-  cdm_add_pk(t5, k) %>%
-  cdm_add_pk(t6, n) %>%
-  cdm_add_fk(t2, d, t1) %>%
-  cdm_add_fk(t2, e, t3) %>%
-  cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t5, l, t4) %>%
-  cdm_add_fk(t5, m, t6)
-
-dm_for_filter_smaller <- as_dm(list(t3 = t3, t4 = t4, t5 = t5)) %>%
-  cdm_add_pk(t3, f) %>%
-  cdm_add_pk(t4, h) %>%
-  cdm_add_pk(t5, k) %>%
-  cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t5, l, t4)
-
 t7 <- tibble(
   p = letters[4:9],
   q = c("elephant", "lion", "seal", "worm", "dog", "cat")
 )
 
-
-dm_for_filter_w_cycle <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7)) %>%
+dm_for_filter_w_cycle <-
+  as_dm(list(
+    t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7
+  )) %>%
   cdm_add_pk(t1, a) %>%
   cdm_add_pk(t2, c) %>%
   cdm_add_pk(t3, f) %>%
@@ -216,6 +118,19 @@ dm_for_filter_w_cycle <- as_dm(list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5,
   cdm_add_fk(t5, m, t6) %>%
   cdm_add_fk(t6, o, t7) %>%
   cdm_add_fk(t7, q, t2)
+
+message("for testing filter and semi_join (2)")
+
+list_for_filter <- list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
+dm_for_filter <-
+  dm_for_filter_w_cycle %>%
+  cdm_select_tbl(-t7)
+
+dm_for_filter_smaller <-
+  dm_for_filter %>%
+  cdm_select_tbl(-t1, -t2, -t6)
+
+message("for testing filter and semi_join (3)")
 
 output_1 <- list(
   t1 = tibble(a = c(4:7), b = LETTERS[4:7]),
@@ -265,23 +180,16 @@ output_3 <- list(
 )
 
 dm_for_filter_rev <-
-  new_dm(
-    cdm_get_src(dm_for_filter),
-    rev(cdm_get_tables(dm_for_filter)),
-    cdm_get_data_model(dm_for_filter)
+  new_dm2(
+    tables = rev(cdm_get_tables(dm_for_filter)),
+    base_dm = dm_for_filter
   )
 
-t1_src <- test_load(t1)
-t3_src <- test_load(t3)
+# for tests on `dm` objects: cdm_add_pk(), cdm_add_fk() ------------------------
 
 message("for tests on `dm` objects: cdm_add_pk(), cdm_add_fk()")
 
 cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7, cdm_table_4 = d8))
-cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
-dm_for_filter_src <- cdm_test_load(dm_for_filter)
-dm_for_filter_rev_src <- cdm_test_load(dm_for_filter_rev)
-dm_for_filter_smaller_src <- cdm_test_load(dm_for_filter_smaller)
-dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
 
 # for `dm_nrow()` ---------------------------------------------------------
 
@@ -289,6 +197,9 @@ rows_dm_obj <- 24L
 
 
 # Complicated `dm` --------------------------------------------------------
+
+message("complicated dm")
+
 t4 <- tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
@@ -337,6 +248,8 @@ dm_more_complex <- as_dm(list_for_filter) %>%
 
 # for testing `cdm_disambiguate_cols()` ----------------------------------------
 
+message("for cdm_disambiguate_cols()")
+
 iris_1 <- as_tibble(iris) %>%
   mutate(key = row_number()) %>%
   select(key, everything())
@@ -361,6 +274,8 @@ dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, ir
 
 # star schema data model for testing `cdm_flatten_to_tbl()`
 
+message("star schema")
+
 fact <- tibble(
   fact = c(
     "acorn",
@@ -381,11 +296,8 @@ fact <- tibble(
   something = 1:10
 )
 fact_clean <-
-  fact %>% rename(
-    dim_1_pk = dim_1_key,
-    dim_2_pk = dim_2_key,
-    dim_3_pk = dim_3_key,
-    dim_4_pk = dim_4_key,
+  fact %>%
+  rename(
     fact.something = something
   )
 
@@ -428,11 +340,111 @@ dm_for_flatten <- as_dm(list(
   cdm_add_fk(fact, dim_2_key, dim_2) %>%
   cdm_add_fk(fact, dim_3_key, dim_3) %>%
   cdm_add_fk(fact, dim_4_key, dim_4)
-dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
 
 result_from_flatten <-
   fact_clean %>%
-  left_join(dim_1_clean, by = "dim_1_pk") %>%
-  left_join(dim_2_clean, by = "dim_2_pk") %>%
-  left_join(dim_3_clean, by = "dim_3_pk") %>%
-  left_join(dim_4_clean, by = "dim_4_pk")
+  left_join(dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
+  left_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
+  left_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
+  left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
+
+# for database tests -------------------------------------------------
+
+# postgres needs to be cleaned of t?_2019_* tables for learn-test
+get_test_tables_from_postgres <- function() {
+  src_postgres <- src_test("postgres")
+  con_postgres <- src_postgres$con
+
+  dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
+    as_tibble() %>%
+    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
+}
+
+is_postgres_empty <- function() {
+  nrow(get_test_tables_from_postgres()) == 0
+}
+
+clear_postgres <- function() {
+  src_postgres <- src_test("postgres")
+  con_postgres <- src_postgres$con
+
+  walk(
+    get_test_tables_from_postgres() %>%
+      pull(),
+    ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
+  )
+}
+
+# Only run if the top level call is devtools::test() or testthat::test_check()
+if (is_this_a_test()) {
+  message("connecting")
+
+  test_register_src("df", src_df(env = new_environment()))
+
+  if (packageVersion("RSQLite") >= "2.1.1.9003") {
+    try(test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
+  }
+
+  local(try(
+    {
+      con <- DBI::dbConnect(
+        RPostgres::Postgres(), dbname = "postgres", host = "localhost", port = 5432,
+        user = "postgres", bigint = "integer"
+      )
+      src <- src_dbi(con, auto_disconnect = TRUE)
+      test_register_src("postgres", src)
+      clear_postgres()
+    },
+    silent = TRUE
+  ))
+
+
+  # This will only work, if run on TS's laptop
+  try(
+    {
+      source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
+      con_mssql <- mssql_con()
+      src_mssql <- src_dbi(con_mssql)
+      test_register_src("mssql", src_mssql)
+    },
+    silent = TRUE
+  )
+
+  message("loading into database")
+
+  dm_for_filter_src <- cdm_test_load(dm_for_filter)
+  dm_for_filter_rev_src <- cdm_test_load(dm_for_filter_rev)
+  dm_for_filter_smaller_src <- cdm_test_load(dm_for_filter_smaller)
+  dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
+  cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
+  dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
+
+  d1_src <- test_load(d1)
+  d2_src <- test_load(d2)
+  d3_src <- test_load(d3)
+  d4_src <- test_load(d4)
+  d5_src <- test_load(d5)
+  d6_src <- test_load(d6)
+
+  # names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
+  src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
+
+  data_check_key_src <- test_load(data)
+
+  data_1_src <- test_load(data_1)
+  data_2_src <- test_load(data_2)
+  data_3_src <- test_load(data_3)
+
+  data_ts_src <- test_load(data_ts)
+  data_ts_child_src <- test_load(data_ts_child)
+  data_ts_parent_src <- test_load(data_ts_parent)
+
+  list_of_data_ts_parent_and_child_src <- map2(
+    .x = data_ts_child_src,
+    .y = data_ts_parent_src,
+    ~ list("child_table" = .x, "parent_table" = .y)
+  )
+
+  t1_src <- test_load(t1)
+  t3_src <- test_load(t3)
+}

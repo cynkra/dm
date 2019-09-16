@@ -1,9 +1,11 @@
-#' Creates a test [`dm`] object from \pkg{nycflights13}
+#' Creates a [`dm`] object for the \pkg{nycflights13} data
 #'
 #' @description Creates an exemplary [`dm`] object from the tables in \pkg{nycflights13}
-#' along with key relations (two foreign key relations are violated, but we accept this,
-#' since this should only be seen as a quick way of getting a [`dm`] with known tables to
-#' play around with).
+#' along with the references.
+#' See [nycflights13::flights] for a description of the data.
+#' As described in [nycflights13::planes], the relationship
+#' between the `flights` and `planes` tables is "weak", it does not satisfy
+#' data integrity constraints.
 #'
 #' @param cycle Boolean. If `FALSE` (default), only one foreign key relation
 #'   (from `flights$origin` to `airports$faa`) between `flights` and `airports` is
@@ -13,6 +15,11 @@
 #'   colors assigned to different tables for visualization with `cdm_draw()`
 #'
 #' @export
+#' @examples
+#' if (rlang::is_installed("nycflights13")) {
+#'   cdm_nycflights13() %>%
+#'     cdm_draw()
+#' }
 cdm_nycflights13 <- nse_function(c(cycle = FALSE, color = TRUE), ~ {
   dm <-
     dm(
@@ -38,9 +45,10 @@ cdm_nycflights13 <- nse_function(c(cycle = FALSE, color = TRUE), ~ {
   }
 
   if (cycle) {
-    dm %>%
+    dm <-
+      dm %>%
       cdm_add_fk(flights, dest, airports, check = FALSE)
-  } else {
-    dm
   }
+
+  dm
 })
