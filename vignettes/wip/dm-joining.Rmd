@@ -142,6 +142,7 @@ An example with filtering on a `dm` and then merging:
 
 Currently, it is important to call `cdm_apply_filters()` after piping your conditions.
 Only then the underlying tables and key relations are updated and you can perform a join on the filtered data.
+We're working towards removing this inconvenience [#62](https://github.com/krlmlr/dm/issues/62).
 
 ```{r}
 cdm_nycflights13() %>%
