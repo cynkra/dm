@@ -30,6 +30,12 @@ dm1 %>% tbl("weather") %>% sql_render()
 dm1 %>% tbl("airlines") %>% sql_render()
 dm1 %>% tbl("planes") %>% sql_render()
 
+dm1 %>% tbl("airports") %>% count() %>% explain()
+dm1 %>% tbl("flights") %>% count() %>% explain()
+dm1 %>% tbl("weather") %>% count() %>% explain()
+dm1 %>% tbl("airlines") %>% count() %>% explain()
+dm1 %>% tbl("planes") %>% count() %>% explain()
+
 dm1 %>% tbl("airports") %>% count()
 dm1 %>% tbl("flights") %>% count()
 dm1 %>% tbl("weather") %>% count()

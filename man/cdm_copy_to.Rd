@@ -5,8 +5,8 @@
 \title{Copy a \code{dm}-object to a \code{src}/\code{con}}
 \usage{
 cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
-  set_key_constraints = TRUE, unique_table_names = FALSE,
-  temporary = TRUE)
+  indexes = NULL, unique_indexes = NULL, set_key_constraints = TRUE,
+  unique_table_names = FALSE, temporary = TRUE)
 }
 \arguments{
 \item{dest}{A \code{src} or \code{con} object like e.g. a database.}
@@ -15,7 +15,7 @@ cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
 
 \item{...}{Possible further arguments passed to \code{\link[dplyr:copy_to]{dplyr::copy_to()}} (which is used on each table)}
 
-\item{overwrite, types}{Must remain \code{NULL}.}
+\item{overwrite, types, indexes, unique_indexes}{Must remain \code{NULL}.}
 
 \item{set_key_constraints}{Boolean variable, if \code{TRUE} will mirror \code{dm} key constraints on a database.}
 

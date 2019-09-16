@@ -13,7 +13,7 @@
 #'
 #' @param dest A `src` or `con` object like e.g. a database.
 #' @param dm A `dm` object.
-#' @param overwrite,types Must remain `NULL`.
+#' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
 #' @param unique_table_names Boolean, if `FALSE` (default), original table names will be used, if `TRUE`,
 #'   unique table names will be created based on the original table names.
@@ -30,7 +30,11 @@
 #'   set_key_constraints = FALSE
 #' )
 #' @export
-cdm_copy_to <- nse_function(c(dest, dm, ..., types = NULL, overwrite = NULL, set_key_constraints = TRUE, unique_table_names = FALSE, temporary = TRUE), ~ {
+cdm_copy_to <- nse_function(c(dest, dm, ...,
+                              types = NULL, overwrite = NULL,
+                              indexes = NULL, unique_indexes = NULL,
+                              set_key_constraints = TRUE, unique_table_names = FALSE,
+                              temporary = TRUE), ~ {
   # for now focusing on MSSQL
   # we expect the src (dest) to already point to the correct schema
   # we want to
@@ -44,6 +48,14 @@ cdm_copy_to <- nse_function(c(dest, dm, ..., types = NULL, overwrite = NULL, set
 
   if (!is_null(types)) {
     abort_no_types()
+  }
+
+  if (!is_null(indexes)) {
+    abort_no_indexes()
+  }
+
+  if (!is_null(unique_indexes)) {
+    abort_no_unique_indexes()
   }
 
   # FIXME: if same_src(), can use compute(), but need to set NOT NULL
@@ -105,8 +117,6 @@ cdm_set_key_constraints <- nse_function(c(dm), ~ {
   db_table_names <- get_db_table_names(dm)
 
   tables_w_pk <- cdm_get_all_pks(dm)
-  pk_info <- tables_w_pk %>%
-    left_join(db_table_names, by = c("table" = "table_name"))
 
   fk_info <-
     cdm_get_all_fks(dm) %>%
@@ -117,7 +127,7 @@ cdm_set_key_constraints <- nse_function(c(dm), ~ {
     rename(db_parent_table = remote_name)
 
   con <- con_from_src_or_con(cdm_get_src(dm))
-  queries <- create_queries(con, pk_info, fk_info)
+  queries <- create_queries(con, fk_info)
   walk(queries, ~ dbExecute(con, .))
 
   invisible(dm)

@@ -1,53 +1,53 @@
-# dm 0.0.1.9003
+# dm 0.0.2
 
-- Adapt to tidyr >= 1.0.0.
+## Breaking changes
+
+- Requires tidyr >= 1.0.0.
+- `cdm_nrow()` returns named list (#49).
+- Remove `cdm_semi_join()`.
+- Remove `cdm_find_conn_tbls()` and the `all_connected` argument to `cdm_select()` (#35).
+- Unexport `cdm_set_key_constraints()`.
+- Rename `cdm_select()` to `cdm_select_tbl()`, now uses {tidyselect}.
+- `cdm_nycflights13()` now has `cycle = FALSE` as default.
+- Rename `cdm_check_for_*()` to `cdm_enum_*()`.
+
+## Performance
+
+- `cdm_filter()` only records the filtering operation, the filter is applied only when querying a table via `tbl()` or when calling `compute()` or the new `cdm_apply_filters()` (#32).
+
+## New functions
+
 - New `cdm_flatten_to_tbl()` flattens a `dm` to a wide table with starting from a specified table (#13). Rename `cdm_join_tbl()` to `cdm_join_to_tbl()`.
 - New `cdm_disambiguate_cols()` (#40).
 - New `cdm_rename()` (#41) and `cdm_select()` (#50) for renaming and selecting columns of `dm` tables.
 - New `length.dm()` and `length<-.dm()` (#53).
-- Numeric subsetting is supported again so that the RStudio IDE can display `dm` objects (#53).
-- `cdm_nrow()` returns named list (#49).
-- Remove `cdm_semi_join()`.
+- `$`, `[[`, `[`, `names()`, `str()` and `length()` now implemented for dm objects (read-only).
+- New `enum_pk_candidates()`.
 
+## Minor changes
 
-# dm 0.0.1.9002
-
-- `cdm_filter()` only records the filtering operation, the filter is applied only when querying a table via `tbl()` or when calling `compute()` (#32).
-- New `str.dm()` .
-- Remove `cdm_find_conn_tbls()` and the `all_connected` argument to `cdm_select()` (#35).
 - `browse_docs()` opens the pkgdown website (#36).
 - `as_dm()` now also accepts a list of remote tables (#30).
-- Using simpler internal data structure to store primary and foreign key relations (#26).
 - Use {tidyselect} syntax for `cdm_rename_tbl()` and `cdm_select_tbl()` (#14).
-- Numeric subsetting in `[` and `[[` now raises a clear error (#18).
-- New `nse_function()` replaces `h()` for marking functions as NSE to avoid R CMD check warnings.
-- Simplified internal data structure so that creation of new operations that update a dm becomes easier.
-- Unexport `cdm_set_key_constraints()`.
-- When copying a dm to a database, `NOT NULL` constraints are set at creation of the table.
 - The tibbles returned by `cdm_enum_fk_candidates()` and `cdm_enum_pk_candidates()` contain a `why` column that explains the reasons for rejection in a human-readable form (#12).
-- Using {RPostgres} instead of {RPostgreSQL} for testing.
 - Improve compatibility with RPostgres.
-
-
-# dm 0.0.1.9001
-
-- Fix corner case for calculating join list: works if table isn't related to other tables.
 - `create_graph_from_dm()` no longer fails in the presence of cycles (#10).
-- Add setup article (#7).
-
-
-# dm 0.0.1.9000
-
 - Only suggest {RSQLite}.
 - `cdm_filter()` no longer requires a primary key.
 - `decompose_table()` adds the new column in the table to the end.
-- Rename `cdm_select()` to `cdm_select_tbl()`.
-- `cdm_nycflights13()` now has `cycle = FALSE` as default.
-- `$`, `[[`, `[`, and `names()` now implemented for dm objects (read-only).
 - `tbl()` now fails if the table is not part of the data model.
-- `cdm_select()` uses tidyselect.
-- New `enum_pk_candidates()`.
-- Rename `cdm_check_for_*()` to `cdm_enum_*()`.
+
+## Documentation
+
+- Add setup article (#7).
+
+## Internal
+
+- Using simpler internal data structure to store primary and foreign key relations (#26).
+- New `nse_function()` replaces `h()` for marking functions as NSE to avoid R CMD check warnings.
+- Simplified internal data structure so that creation of new operations that update a dm becomes easier.
+- When copying a dm to a database, `NOT NULL` constraints are set at creation of the table. This removes the necessity to store column types.
+- Using {RPostgres} instead of {RPostgreSQL} for testing.
 
 
 # dm 0.0.1

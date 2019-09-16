@@ -7,7 +7,7 @@
 \alias{cdm_get_available_colors}
 \title{Draw schema of a \code{\link{dm}}-object's data model}
 \usage{
-cdm_draw(dm, table_names = NULL, rankdir = "LR", col_attr = "column",
+cdm_draw(dm, rankdir = "LR", col_attr = "column",
   view_type = "keys_only", columnArrows = TRUE, graph_attrs = "",
   node_attrs = "", edge_attrs = "", focus = NULL,
   graph_name = "Data Model")
@@ -21,16 +21,14 @@ cdm_get_available_colors()
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
 
-\item{table_names}{Tables to consider in the model visualisation.
-If \code{NULL} (default), there is no constraint.}
-
 \item{rankdir}{Graph attribute for direction (eg. 'BT' = bottom --> top)}
 
 \item{col_attr}{Column atributes to display.
 Only column name (\code{column}) is included by default.}
 
-\item{view_type}{Can be "keys_only" (default), "all" or "title_only". It defines
-the level of details for the table rendering (only primary and foreign keys, all columns or no columns)}
+\item{view_type}{Can be "keys_only" (default), "all" or "title_only".
+It defines the level of details for the table rendering
+(only primary and foreign keys, all columns or no columns)}
 
 \item{columnArrows}{Edges from column to column (default: FALSE)}
 
@@ -57,7 +55,7 @@ For \code{cdm_get_available_colors()}, a tibble with the color in the first
 column and auxiliary information in other columns.
 }
 \description{
-\code{cdm_draw()} draws a schema of the data model using \code{datamodelr} (which in turn uses \code{DiagrammeR})
+\code{cdm_draw()} draws a schema of the data model using \code{datamodelr} (which in turn uses \code{DiagrammeR}).
 
 \code{cdm_set_colors()} allows to define the colors in which to display the tables of the data model.
 
