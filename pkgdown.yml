@@ -4,13 +4,13 @@ pkgdown_sha: 109bf35554443efeb34452311fb61c39ac56d2e5
 articles:
   dm-class-and-basic-operations: dm-class-and-basic-operations.html
   dm-introduction-relational-data-models: dm-introduction-relational-data-models.html
+  dm-joining: dm-joining.html
   dm-low-level: dm-low-level.html
   dm-visualization: dm-visualization.html
   dm: dm.html
   setting_up_dm: setting_up_dm.html
   dm-db: wip/dm-db.html
   dm-filtering: wip/dm-filtering.html
-  dm-joining: wip/dm-joining.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
 urls:

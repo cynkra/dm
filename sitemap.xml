@@ -118,6 +118,9 @@
     <loc>https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-joining.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-low-level.html</loc>
   </url>
   <url>
@@ -134,9 +137,6 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-filtering.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/wip/dm-joining.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-shiny-dynafilter.html</loc>
