@@ -10,6 +10,7 @@ articles:
   setting_up_dm: setting_up_dm.html
   dm-db: wip/dm-db.html
   dm-filtering: wip/dm-filtering.html
+  dm-joining: wip/dm-joining.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
 urls:
