@@ -42,7 +42,7 @@ library(nycflights13)
 
 ## Data: nycflights13
 
-To explore filtering with `dm`, we'll use the {nycflights13} data with its tables `flights`, `planes`, `airlines` and `airports`.
+To explore filtering with {dm}, we'll use the {nycflights13} data with its tables `flights`, `planes`, `airlines` and `airports`.
 
 This dataset contains all 336 776 flights that departed from New York City in 2013 with 3322 different planes and 1458 airports involved.
 The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13::flights`.
@@ -99,6 +99,10 @@ This results in a new `dm` containing only rows related to the filter operation.
 
 Currently, this only works if the graph induced by the foreign key relations is cycle free.
 Luckily, this is the default for `cdm_nycflights13()`.
+
+While `cdm_filter()` shows you a filtered `dm` object, the actual computing is done when calling `cdm_apply_filters()` after stating the filtering conditions with `cdm_filter()`.
+It updates all tables and foreign key relations.
+For example, this is important when you first want to filter a `dm` object and then to join tables.
 
 ### Filtering Examples
 
@@ -209,5 +213,8 @@ dm %>%
   cdm_get_tables() %>%
   map(dbplyr::sql_render)
 ```
+
+If you look closely, you will notice the function call `cdm_apply_filters()` after stating the filtering conditions.
+This functions updates all tables and foreign key relations.
 
 Further reading: {dm}'s function for copying data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
