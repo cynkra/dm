@@ -1,9 +1,10 @@
 try(library(dbplyr), silent = TRUE)
 library(rprojroot)
+library(nycflights13)
 
 # for check_cardinality...() ----------------------------------------------
 
-message("for ccheck_cardinality...()")
+message("for check_cardinality...()")
 
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
 d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
