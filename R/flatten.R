@@ -25,6 +25,11 @@
 #'   cdm_flatten_to_tbl(flights)
 #' @export
 cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+  cdm_flatten_to_tbl_impl(dm, start, ..., join = join)
+}
+
+cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name = NULL) {
+
   start <- as_name(ensym(start))
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
@@ -34,7 +39,7 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 
   force(join)
   stopifnot(is_function(join))
-  join_name <- deparse(substitute(join))
+  if (is_null(join_name)) join_name <- deparse(substitute(join))
   # early returns for some of the possible joins:
   if (join_name == "semi_join") return(tbl(dm, start))
   if (join_name == "anti_join") return(tbl(dm, start) %>% filter(FALSE))
@@ -116,14 +121,18 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   force(join)
   stopifnot(is_function(join))
+  join_name <- deparse(substitute(join))
 
-  red_dm <- cdm_select_tbl(dm, {{ table_1 }}, {{ table_2 }})
+  t1_name <- as_string(ensym(table_1))
+  t2_name <- as_string(ensym(table_2))
 
-  if (!is_dm_connected(red_dm)) {
-    abort_tables_not_neighbours(as_string(ensym(table_1)), as_string(ensym(table_2)))
+  if (!are_neighbours(dm, t1_name, t2_name)) {
+    abort_tables_not_neighbours(t1_name, t2_name)
   }
   start <- child_table(dm, {{ table_1 }}, {{ table_2 }})
-  cdm_flatten_to_tbl(red_dm, !!start, join = join)
+  other <- setdiff(c(t1_name, t2_name), start)
+
+  cdm_flatten_to_tbl_impl(dm, !!start, !!other, join = join, join_name = join_name)
 }
 
 child_table <- function(dm, table_1, table_2) {
