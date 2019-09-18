@@ -30,6 +30,10 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
 
   force(join)
   stopifnot(is_function(join))
+  join_name <- deparse(substitute(join))
+  # early returns for some of the possible joins:
+  if (join_name == "semi_join") return(tbl(dm, start))
+  if (join_name == "anti_join") return(tbl(dm, start) %>% filter(FALSE))
 
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
