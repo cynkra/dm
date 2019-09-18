@@ -4,7 +4,7 @@
 \alias{cdm_flatten_to_tbl}
 \title{Flatten part of a \code{dm} into a wide table}
 \usage{
-cdm_flatten_to_tbl(dm, start, join = left_join)
+cdm_flatten_to_tbl(dm, start, ..., join = left_join)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
@@ -12,6 +12,9 @@ cdm_flatten_to_tbl(dm, start, join = left_join)
 \item{start}{Table to start from. From this table all outgoing foreign key relations are
 considered to establish a processing order for the joins. An interesting choice could be
 for example a fact table in a star schema.}
+
+\item{...}{Unquoted table names to include in addition to \code{start}. If empty, all tables that can
+be reached are included.}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}}
 }
@@ -22,14 +25,16 @@ A wide table resulting of consecutively joining all tables together.
 This function joins all the tables of your \code{\link{dm}} object together, that can be reached
 from table \code{start} in the direction that the foreign keys are pointing, using the
 foreign key relations to determine the parameter \code{by} for the necessary joins.
-It returns one table with unique columns. Use \code{\link[=cdm_select_tbl]{cdm_select_tbl()}} if necessary to
-reduce the number of tables before calling this function.
+It returns one table with unique columns. Use the \code{...} if necessary to
+reduce the number of tables that should be included in the result.
 }
 \details{
-Uses \code{\link[=cdm_apply_filters]{cdm_apply_filters()}} and \code{\link[=cdm_disambiguate_cols]{cdm_disambiguate_cols()}} first, to
-get a "clean" \code{\link{dm}}. Subsequently renames all foreign key columns to the names of
-the primary key columns they are pointing to. Then the order of the joins is determined
-and the joins are performed.
+Applied the necessary filters (in any case the cascading effect of the filters on \code{start}
+is taken into account) and \code{\link[=cdm_disambiguate_cols]{cdm_disambiguate_cols()}} first, to get a "clean" \code{\link{dm}}.
+Then the order of the joins is determined and the joins are performed.
+
+Mind, that for \code{join = right_join} the result two or more consecutive joins depends on the order
+of the joins and eventually on the order of the table in the \code{dm}.
 }
 \examples{
 cdm_nycflights13() \%>\%

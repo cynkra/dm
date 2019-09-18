@@ -3,19 +3,23 @@
 #' This function joins all the tables of your [`dm`] object together, that can be reached
 #' from table `start` in the direction that the foreign keys are pointing, using the
 #' foreign key relations to determine the parameter `by` for the necessary joins.
-#' It returns one table with unique columns. Use [cdm_select_tbl()] if necessary to
-#' reduce the number of tables before calling this function.
+#' It returns one table with unique columns. Use the `...` if necessary to
+#' reduce the number of tables that should be included in the result.
 #'
 #' @inheritParams cdm_join_to_tbl
 #' @param start Table to start from. From this table all outgoing foreign key relations are
 #' considered to establish a processing order for the joins. An interesting choice could be
 #' for example a fact table in a star schema.
+#' @param ... Unquoted table names to include in addition to `start`. If empty, all tables that can
+#' be reached are included.
 #' @family flattening functions
 #'
-#' @details Uses [`cdm_apply_filters()`] and [`cdm_disambiguate_cols()`] first, to
-#' get a "clean" [`dm`]. Subsequently renames all foreign key columns to the names of
-#' the primary key columns they are pointing to. Then the order of the joins is determined
-#' and the joins are performed.
+#' @details Applied the necessary filters (in any case the cascading effect of the filters on `start`
+#' is taken into account) and [`cdm_disambiguate_cols()`] first, to get a "clean" [`dm`].
+#' Then the order of the joins is determined and the joins are performed.
+#'
+#' Mind, that for `join = right_join` the result two or more consecutive joins depends on the order
+#' of the joins and eventually on the order of the table in the `dm`.
 #'
 #' @return A wide table resulting of consecutively joining all tables together.
 #'
