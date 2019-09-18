@@ -24,9 +24,13 @@
 #'   cdm_select_tbl(-weather) %>%
 #'   cdm_flatten_to_tbl(flights)
 #' @export
-cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
+cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   start <- as_name(ensym(start))
   check_correct_input(dm, start)
+  list_of_pts <- as.character(enexprs(...))
+  walk(list_of_pts, ~check_correct_input(dm, .))
+  # in case ellipsis is empty, user probably wants all possible joins
+  if (is_empty(list_of_pts)) list_of_pts <- src_tbls(dm)
 
   force(join)
   stopifnot(is_function(join))
@@ -49,12 +53,12 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
       name = names(dfs[["order"]]),
       pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
     ) %>%
-    filter(!is.na(name))
+    filter(!is.na(name), name %in% c(start, list_of_pts))
 
   # in case of `full_join` and `right_join` the filters need to be applied first
   if (join_name %in% c("full_join", "right_join")) {
     dm <- cdm_apply_filters(dm)
-    if (join_name == "right_join" && nrow(order_df > 2)) warning(
+    if (join_name == "right_join" && nrow(order_df) > 2) warning(
       paste0("When using `cdm_flatten_to_tbl()` with `right_join()`, the result will generally ",
       "depend on which referred table is joined last.")
     )
