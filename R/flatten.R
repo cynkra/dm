@@ -47,14 +47,22 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
     ) %>%
     filter(!is.na(name))
 
-  # prepare `dm` by applying all filters, disambiguate columns, and adapt FK-column names
-  # to the respective PK-column names
+  # in case of `full_join` and `right_join` the filters need to be applied first
+  if (join_name %in% c("full_join", "right_join")) {
+    dm <- cdm_apply_filters(dm)
+    if (join_name == "right_join" && nrow(order_df > 2)) warning(
+      paste0("When using `cdm_flatten_to_tbl()` with `right_join()`, the result will generally ",
+      "depend on which referred table is joined last.")
+    )
+  } else {
+    # if the filters aren't empty, the disambiguation won't work
+    dm <- cdm_reset_all_filters(dm)
+  }
+  # prepare `dm` by disambiguating columns (on a reduced dm)
   clean_dm <-
-    # if the filters aren't reset, the disambiguation won't work
-    cdm_reset_all_filters(dm) %>%
     # if we reduce the `dm` to the necessary tables here, since then the renaming
     # will be minimized
-    cdm_select_tbl(order_df$name) %>%
+    cdm_select_tbl(dm, order_df$name) %>%
     cdm_disambiguate_cols_impl(order_df$name)
 
   # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`
