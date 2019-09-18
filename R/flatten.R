@@ -47,14 +47,24 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
     ) %>%
     filter(!is.na(name))
 
-  # FIXME: Don't need to apply all filters on all tables!
-  # Only need to compute tbl(dm, start) and then use the raw tables.
-
   # prepare `dm` by applying all filters, disambiguate columns, and adapt FK-column names
   # to the respective PK-column names
   clean_dm <-
-    cdm_apply_filters(dm) %>%
+    # if the filters aren't reset, the disambiguation won't work
+    cdm_reset_all_filters(dm) %>%
+    # if we reduce the `dm` to the necessary tables here, since then the renaming
+    # will be minimized
+    cdm_select_tbl(order_df$name) %>%
     cdm_disambiguate_cols_impl(order_df$name)
+
+  # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`
+  renames <- compute_disambiguate_cols_recipe(dm, order_df$name, sep = ".") %>%
+    filter(table == !!start) %>% pull() %>% flatten_chr()
+  # Only need to compute tbl(dm, start) (relevant filters will be applied) in case of left join
+  # and then use the raw tables.
+  start_tbl <- tbl(dm, start) %>% rename(
+    !!!renames
+    )
 
   # Drop first table in the list of join partners. (We have at least one table, `start`.)
   # (Working with `reduce2()` here and the `.init`-parameter is the first table)
@@ -67,7 +77,7 @@ cdm_flatten_to_tbl <- function(dm, start, join = left_join) {
   by <- map2(order_df$pred, order_df$name, ~ get_by(dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
-  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = filtered_tables[[start]])
+  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = start_tbl)
 }
 
 #' Perform a join between two tables of a [`dm`]
