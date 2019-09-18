@@ -39,10 +39,10 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name = NULL) {
 
   force(join)
   stopifnot(is_function(join))
-  if (is_null(join_name)) join_name <- deparse(substitute(join))
-  # early returns for some of the possible joins:
-  if (join_name == "semi_join") return(tbl(dm, start))
-  if (join_name == "anti_join") return(tbl(dm, start) %>% filter(FALSE))
+  # early returns for some of the possible joins would be possible for "perfect" key relations,
+  # but since it is possible to have imperfect FK relations, `semi_join` and `anti_join` might
+  # produce results, that are of interest, e.g.
+  # cdm_flatten_to_tbl(cdm_nycflights13(cycle = TRUE) %>% cdm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
 
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
