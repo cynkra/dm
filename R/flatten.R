@@ -76,21 +76,21 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
     # if the filters aren't empty, the disambiguation won't work
     dm <- cdm_reset_all_filters(dm)
   }
+
+  # if we reduce the `dm` to the necessary tables here, since then the renaming
+  # will be minimized
+  red_dm <- cdm_select_tbl(dm, order_df$name)
+  recipe <- compute_disambiguate_cols_recipe(red_dm, order_df$name, sep = ".")
+  explain_col_rename(recipe)
   # prepare `dm` by disambiguating columns (on a reduced dm)
   clean_dm <-
-    # if we reduce the `dm` to the necessary tables here, since then the renaming
-    # will be minimized
-    cdm_select_tbl(dm, order_df$name) %>%
-    cdm_disambiguate_cols_impl(order_df$name)
+    col_rename(red_dm, recipe)
 
   # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`
-  renames <- compute_disambiguate_cols_recipe(dm, order_df$name, sep = ".") %>%
-    filter(table == !!start) %>% pull() %>% flatten_chr()
+  renames <- recipe %>% filter(table == !!start) %>% pull() %>% flatten_chr()
   # Only need to compute tbl(dm, start) (relevant filters will be applied) in case of left join
   # and then use the raw tables.
-  start_tbl <- tbl(dm, start) %>% rename(
-    !!!renames
-    )
+  start_tbl <- tbl(dm, start) %>% rename(!!!renames)
 
   # Drop first table in the list of join partners. (We have at least one table, `start`.)
   # (Working with `reduce2()` here and the `.init`-parameter is the first table)
