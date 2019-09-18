@@ -25,12 +25,13 @@
 #'   cdm_flatten_to_tbl(flights)
 #' @export
 cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
-  cdm_flatten_to_tbl_impl(dm, start, ..., join = join)
+  join_name <- deparse(substitute(join))
+  start <- as_string(ensym(start))
+  cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name)
 }
 
-cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name = NULL) {
+cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
 
-  start <- as_name(ensym(start))
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
   walk(list_of_pts, ~check_correct_input(dm, .))
@@ -132,7 +133,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- child_table(dm, {{ table_1 }}, {{ table_2 }})
   other <- setdiff(c(t1_name, t2_name), start)
 
-  cdm_flatten_to_tbl_impl(dm, !!start, !!other, join = join, join_name = join_name)
+  cdm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name)
 }
 
 child_table <- function(dm, table_1, table_2) {
