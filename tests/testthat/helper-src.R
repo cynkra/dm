@@ -1,6 +1,5 @@
 try(library(dbplyr), silent = TRUE)
 library(rprojroot)
-library(nycflights13)
 
 # for check_cardinality...() ----------------------------------------------
 
@@ -378,6 +377,8 @@ clear_postgres <- function() {
 
 # Only run if the top level call is devtools::test() or testthat::test_check()
 if (is_this_a_test()) {
+  library(nycflights13)
+
   message("connecting")
 
   test_register_src("df", src_df(env = new_environment()))
