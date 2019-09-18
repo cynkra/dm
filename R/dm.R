@@ -492,6 +492,13 @@ cdm_reset_all_filters <- function(dm) {
   )
 }
 
+cdm_reset_all_filters <- function(dm) {
+  new_dm2(
+    filter = tibble(table = character(0), filter = list(0)),
+    base_dm = dm
+  )
+}
+
 all_same_source <- function(tables) {
   all(map_lgl(tables, same_src, tables[[1]]))
 }
