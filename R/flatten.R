@@ -1,10 +1,11 @@
 #' Flatten part of a `dm` into a wide table
 #'
-#' This function joins all the tables of your [`dm`] object together, that can be reached
-#' from table `start` in the direction that the foreign keys are pointing, using the
-#' foreign key relations to determine the parameter `by` for the necessary joins.
-#' It returns one table with unique columns. Use the `...` if necessary to
-#' reduce the number of tables that should be included in the result.
+#' With the `...` left empty, this function joins all the tables of your [`dm`]
+#' object together, that can be reached from table `start` in the direction of the foreign
+#' key relations (pointing from child table to parent table), using the foreign key relations to
+#' determine the parameter `by` for the necessary joins.
+#' The result is one table with unique column names.
+#' Use the `...` if you want to control which tables should be joined to table `start`.
 #'
 #' @inheritParams cdm_join_to_tbl
 #' @param start Table to start from. From this table all outgoing foreign key relations are
@@ -14,14 +15,23 @@
 #' be reached are included.
 #' @family flattening functions
 #'
-#' @details Applied the necessary filters (in any case the cascading effect of the filters on `start`
-#' is taken into account) and [`cdm_disambiguate_cols()`] first, to get a "clean" [`dm`].
-#' Then the order of the joins is determined and the joins are performed.
+#' @details **Case 1**, no filters conditions are set in the `dm`:
+#' The necessary disambiguations of the column names are performed first. Then all involved foreign tables
+#' are joined to table `start` successively with the join function given in parameter `join`.
 #'
-#' Mind, that for `join = right_join` the result two or more consecutive joins depends on the order
-#' of the joins and eventually on the order of the table in the `dm`.
+#' **Case 2**, filter conditions are set:
+#' The result of filtering a `dm` object is necessarily a data model conforming to referential integrity.
+#' Consequently, there is no difference between `left_join`, `right_join`, `inner_join` and `full_join`.
+#' In this case, `left_join` is being used. Using `semi_join` in `cdm_flatten_to_tbl()` on a filtered `dm`
+#' is identical to `tbl(dm, start)`, `anti_join` is identical to `tbl(dm, start) %>% filter(FALSE)`.
+#' Disambiguation is performed initially if necessary.
 #'
-#' @return A wide table resulting of consecutively joining all tables together.
+#' Mind, that calling `cdm_flatten_to_tbl()` on an unfiltered `dm` with `join = right_join` would not lead
+#' to a well-defined result, if two or more foreign tables are to be joined to `start`. The resulting
+#' table would depend on the order the tables are listed in the `dm`. Therefore trying this results
+#' in an error.
+#'
+#' @return A wide table resulting of consecutively joining all tables involved to table `start`.
 #'
 #' @examples
 #' cdm_nycflights13() %>%

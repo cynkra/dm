@@ -19,22 +19,32 @@ be reached are included.}
 \item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}}
 }
 \value{
-A wide table resulting of consecutively joining all tables together.
+A wide table resulting of consecutively joining all tables involved to table \code{start}.
 }
 \description{
-This function joins all the tables of your \code{\link{dm}} object together, that can be reached
-from table \code{start} in the direction that the foreign keys are pointing, using the
-foreign key relations to determine the parameter \code{by} for the necessary joins.
-It returns one table with unique columns. Use the \code{...} if necessary to
-reduce the number of tables that should be included in the result.
+With the \code{...} left empty, this function joins all the tables of your \code{\link{dm}}
+object together, that can be reached from table \code{start} in the direction of the foreign
+key relations (pointing from child table to parent table), using the foreign key relations to
+determine the parameter \code{by} for the necessary joins.
+The result is one table with unique column names.
+Use the \code{...} if you want to control which tables should be joined to table \code{start}.
 }
 \details{
-Applied the necessary filters (in any case the cascading effect of the filters on \code{start}
-is taken into account) and \code{\link[=cdm_disambiguate_cols]{cdm_disambiguate_cols()}} first, to get a "clean" \code{\link{dm}}.
-Then the order of the joins is determined and the joins are performed.
+\strong{Case 1}, no filters conditions are set in the \code{dm}:
+The necessary disambiguations of the column names are performed first. Then all involved foreign tables
+are joined to table \code{start} successively with the join function given in parameter \code{join}.
 
-Mind, that for \code{join = right_join} the result two or more consecutive joins depends on the order
-of the joins and eventually on the order of the table in the \code{dm}.
+\strong{Case 2}, filter conditions are set:
+The result of filtering a \code{dm} object is necessarily a data model conforming to referential integrity.
+Consequently, there is no difference between \code{left_join}, \code{right_join}, \code{inner_join} and \code{full_join}.
+In this case, \code{left_join} is being used. Using \code{semi_join} in \code{cdm_flatten_to_tbl()} on a filtered \code{dm}
+is identical to \code{tbl(dm, start)}, \code{anti_join} is identical to \code{tbl(dm, start) \%>\% filter(FALSE)}.
+Disambiguation is performed initially if necessary.
+
+Mind, that calling \code{cdm_flatten_to_tbl()} on an unfiltered \code{dm} with \code{join = right_join} would not lead
+to a well-defined result, if two or more foreign tables are to be joined to \code{start}. The resulting
+table would depend on the order the tables are listed in the \code{dm}. Therefore trying this results
+in an error.
 }
 \examples{
 cdm_nycflights13() \%>\%
