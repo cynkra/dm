@@ -101,8 +101,12 @@ This can result in long and inflated pipe chains full of `left_join()`,
 `anti_join()` and other forms of merging data.
 
 {dm} offers a more elegant and shorter way to combine values by
-establishing key relations (see next section) while augmenting
-{dplyr}/{dbplyr} workflows.
+establishing key relations (see next section [Good to
+Know](#good-to-know)) while augmenting {dplyr}/{dbplyr} workflows.
+
+You can have the best of both worlds: Manage your data with {dm} as
+linked tables, then flatten multiple tables into one for your analysis
+with {dplyr} on an as-needed basis.
 
 ## Good to Know
 
@@ -241,7 +245,7 @@ cdm_nycflights13()
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; local
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -380,7 +384,7 @@ to start. Further resources:
   - [Low-level
     operations](https://krlmlr.github.io/dm/articles/dm-low-level.html)
     article
-    <!-- FIXME: vignettes missing; once there, needs to be linked -->
+    <!-- FIXME: vignettes missing;  once there, needs to be linked -->
 
 ## Standing on the shoulders of giants
 

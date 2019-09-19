@@ -260,7 +260,7 @@ Further resources:
 - [Class 'dm' and basic operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html) article
 - [Visualizing 'dm' objects](https://krlmlr.github.io/dm/articles/dm-visualization.html) article
 - [Low-level operations](https://krlmlr.github.io/dm/articles/dm-low-level.html) article
-<!-- FIXME: vignettes missing; once there, needs to be linked -->
+<!-- FIXME: vignettes missing;  once there, needs to be linked -->
 
 ## Standing on the shoulders of giants
 
