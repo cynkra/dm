@@ -99,3 +99,39 @@ test_that("`cdm_flatten_to_tbl()` does the right thing for 'right_join()'", {
 
   })
 
+test_that("`cdm_flatten_to_tbl()` does the right thing for filtered `dm`s", {
+
+  walk(dm_more_complex_src,
+       ~expect_equivalent(
+         cdm_flatten_to_tbl(cdm_filter(., t1, a > 5), t5) %>% collect(),
+         tibble(k = 2:4, l = letters[3:5], m = c("tree", rep("streetlamp", 2)),
+                i = c("five", "six", "seven"), j = c("E", "F", "F"), g = c("four", rep("five", 2)),
+                o = c("f", "h", "h"), s = i, t = c("E", "F", "G"))
+       )
+  )
+
+  walk(dm_more_complex_src,
+       ~expect_equivalent(
+         cdm_flatten_to_tbl(cdm_filter(., t1, a > 5), t5, join = semi_join) %>% collect(),
+         slice(t5, 2:4)
+       )
+  )
+
+  walk(dm_more_complex_src,
+       ~expect_equivalent(
+         cdm_flatten_to_tbl(cdm_filter(., b, b_3 > 7), t5) %>% collect(),
+         tibble(k = 1:4, l = letters[2:5], m = c("house", "tree", rep("streetlamp", 2)),
+                i = c("four", "five", "six", "seven"), j = c("D", "E", "F", "F"),
+                g = c("three", "four", rep("five", 2)), o = c("e", "f", "h", "h"),
+                s = c("three", "five", "six", "seven"), t = c("D", "E", "F", "G"))
+       )
+  )
+
+  # this is NYI for anti_join and semi_join:
+  walk(dm_more_complex_src,
+       ~expect_error(
+         cdm_flatten_to_tbl(cdm_filter(., b, b_3 > 7), t5, join = semi_join) %>% collect(),
+         class = cdm_error("semi_anti_nys")
+       )
+  )
+})

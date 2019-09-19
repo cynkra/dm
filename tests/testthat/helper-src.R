@@ -420,6 +420,7 @@ if (is_this_a_test()) {
   dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
   cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
   dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
+  dm_more_complex_src <- cdm_test_load(dm_more_complex)
 
   d1_src <- test_load(d1)
   d2_src <- test_load(d2)
