@@ -152,31 +152,34 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 
 #' Find foreign key candidates in a table
 #'
+#' Which columns are candidates for a foreign key of a table, referencing
+#' the primary key column of another [`dm`] object's table?
+#'
 #' @inheritParams cdm_add_fk
 #' @param table The table whose columns should be tested for foreign key candidate potential
 #' @param ref_table A table with a primary key.
 #'
-#' @description Which columns are foreign candidates of a table, referencing the primary key column of another [`dm`] object's table?
-#' `cdm_enum_fk_candidates()` checks first, if `ref_table` has a primary key set. Then it determines
-#' for each column of `table`, if this column contains only a subset of values of the primary key column of
-#' `ref_table` and is therefore a candidate for a foreign key from `table` to `ref_table`.
+#' @details `cdm_enum_fk_candidates()` checks first, if `ref_table` has a primary key set. Then
+#' it determines for each column of `table`, if it has the same class as the primary key of `ref_table`.
+#' If this is the case a check is performed, if the column contains only a subset of values of the
+#' primary key column of `ref_table`. If this is `TRUE`, this column is a candidate for a foreign key
+#' from `table` to `ref_table`.
+#'
+#' @return A table with an overview which columns of `table` would be suitable candidates as
+#' foreign key columns referencing `ref_table`
 #'
 #' @family foreign key functions
 #'
 #' @examples
-#' library(dplyr)
+#' cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
 #'
-#' nycflights_dm <- cdm_nycflights13(cycle = TRUE)
-#'
-#' nycflights_dm %>%
-#'   cdm_enum_fk_candidates(flights, airports)
 #' @export
 cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   if (nrow(cdm_get_filter(dm)) > 0) {
     abort_only_possible_wo_filters("cdm_enum_pk_candidates()")
   }
-  table_name <- as_name(ensym(table))
-  ref_table_name <- as_name(ensym(ref_table))
+  table_name <- as_string(ensym(table))
+  ref_table_name <- as_string(ensym(ref_table))
 
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
@@ -191,17 +194,44 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
 
   ref_tbl <- cdm_get_tables(dm)[[ref_table_name]]
 
-  subsets <- map_lgl(
-    tbl_colnames,
-    ~ is_subset(tbl, !!.x, ref_tbl, !!ref_tbl_pk)
-  )
+  # what `class` is pk-column of ref_table?
+  class_pk <- class(ref_tbl[[ref_tbl_pk]])[[1]]
+  cols_class_match <- tbl_colnames[map_lgl(tbl_colnames, ~identical(class(tbl[[.x]])[[1]], class_pk))]
+  tibble_cols_class_no_match <- tibble(
+    column = setdiff(tbl_colnames, cols_class_match),
+    candidate = FALSE,
+    why = map_chr(
+      column,
+      ~glue("class `{class(tbl[[.x]])[[1]]}` differs from PK-column class `{class_pk}`")
+      )
+    )
 
-  tibble(
-    ref_table = ref_table_name,
-    ref_table_pk = ref_tbl_pk,
-    table = table_name,
-    column = tbl_colnames,
-    candidate = subsets,
-    why = if_else(subsets, "", paste0("not a subset of ", ref_table, "$", ref_table_pk))
-  )
+  col_candidates <- cols_class_match[map_lgl(
+    cols_class_match,
+    ~ is_subset(tbl, !!.x, ref_tbl, !!ref_tbl_pk))]
+  tibble_candidates <- tibble(column = col_candidates,
+    candidate = TRUE,
+    why = "")
+
+  set_of_pk_vals <- pull(arrange(distinct(ref_tbl, !!ensym(ref_tbl_pk))))
+  cols_no_candidates <- setdiff(cols_class_match, col_candidates)
+  vals_not_in_subset <- map(cols_no_candidates, ~setdiff(
+    pull(arrange(distinct(tbl, !!sym(.x)))),
+    set_of_pk_vals))
+  tibble_no_candidates <- tibble(
+    column = cols_no_candidates,
+    first = glue("values not in {tick(glue('{ref_table_name}${ref_tbl_pk}'))}: "),
+    values = vals_not_in_subset
+  ) %>%
+    mutate(second = map_chr(values, ~commas(format(.x, trim = TRUE, justify = "none")))) %>%
+    transmute(
+      column,
+      candidate = FALSE,
+      why = paste0(first, second)
+    )
+
+    bind_rows(tibble_candidates,
+              tibble_no_candidates,
+              tibble_cols_class_no_match)
+
 })

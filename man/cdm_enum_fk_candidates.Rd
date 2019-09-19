@@ -13,19 +13,24 @@ cdm_enum_fk_candidates(dm, table, ref_table)
 
 \item{ref_table}{A table with a primary key.}
 }
+\value{
+A table with an overview which columns of \code{table} would be suitable candidates as
+foreign key columns referencing \code{ref_table}
+}
 \description{
-Which columns are foreign candidates of a table, referencing the primary key column of another \code{\link{dm}} object's table?
-\code{cdm_enum_fk_candidates()} checks first, if \code{ref_table} has a primary key set. Then it determines
-for each column of \code{table}, if this column contains only a subset of values of the primary key column of
-\code{ref_table} and is therefore a candidate for a foreign key from \code{table} to \code{ref_table}.
+Which columns are candidates for a foreign key of a table, referencing
+the primary key column of another \code{\link{dm}} object's table?
+}
+\details{
+\code{cdm_enum_fk_candidates()} checks first, if \code{ref_table} has a primary key set. Then
+it determines for each column of \code{table}, if it has the same class as the primary key of \code{ref_table}.
+If this is the case a check is performed, if the column contains only a subset of values of the
+primary key column of \code{ref_table}. If this is \code{TRUE}, this column is a candidate for a foreign key
+from \code{table} to \code{ref_table}.
 }
 \examples{
-library(dplyr)
+cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
 
-nycflights_dm <- cdm_nycflights13(cycle = TRUE)
-
-nycflights_dm \%>\%
-  cdm_enum_fk_candidates(flights, airports)
 }
 \seealso{
 Other foreign key functions: \code{\link{cdm_add_fk}},
