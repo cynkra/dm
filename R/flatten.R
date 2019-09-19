@@ -58,13 +58,16 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # in case of `semi_join()` and `anti_join()` no renaming necessary
   gotta_rename <- !(join_name %in% c("semi_join", "anti_join"))
 
-  # if filters are set, the user expects referential integrity. This has several implications:
-  # FIXME: what if filters are set in an unconnected component??
+  # if filters are set and at least one of them is connected to the table `start`,
+  # the user expects referential integrity. This has several implications:
   # 1. left_join(), right_join(), full_join(), inner_join() will produce the same results
   # 2. semi_join() will be equal to `tbl(dm, start)`
   # 3. anti_join() will be equal to `tbl(dm, start) %>% filter(FALSE)`
-  are_filters_set <- nrow(cdm_get_filter(dm)) > 0
-  if (are_filters_set) {
+  any_filter_in_conn_comp <- any(
+    map_lgl(pull(cdm_get_filter(dm), table), ~are_tables_connected(dm, start, .x))
+    )
+
+  if (any_filter_in_conn_comp) {
     if (join_name == "semi_join") return(tbl(dm, start))
     if (join_name == "anti_join") return(tbl(dm, start) %>% filter(FALSE))
     message("Using default `left_join()`, since filter conditions are set and `join` ",
@@ -95,8 +98,9 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
 
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table. If filter conditions are set,
+  # and at least one of them is in the same connected component of the graph representation of the `dm`,
   # it does not play a role.
-  if (join_name == "right_join" && nrow(order_df) > 2 && !are_filters_set) abort_rj_not_wd()
+  if (join_name == "right_join" && nrow(order_df) > 2 && !any_filter_in_conn_comp) abort_rj_not_wd()
 
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
