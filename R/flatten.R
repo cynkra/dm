@@ -83,9 +83,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table. If filter conditions are set,
   # it does not play a role.
-  if (join_name == "right_join" && nrow(order_df) > 2 && !are_filters_set) warning(
-    "When using `cdm_flatten_to_tbl()` with `right_join()`, the result will generally ",
-           "depend on which foreign table is joined last to `start`.")
+  if (join_name == "right_join" && nrow(order_df) > 2 && !are_filters_set) abort_rj_not_wd()
 
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
