@@ -47,6 +47,9 @@ Mind, that calling \code{cdm_flatten_to_tbl()} on an unfiltered \code{dm} with \
 to a well-defined result, if two or more foreign tables are to be joined to \code{start}. The resulting
 table would depend on the order the tables are listed in the \code{dm}. Therefore trying this results
 in an error.
+
+Currently, it is not possible to use \code{semi_join} or \code{anti_join} as join-methods in the case of an
+unfiltered \code{dm}, when not all involved foreign tables are directly connected to table \code{start}.
 }
 \examples{
 cdm_nycflights13() \%>\%

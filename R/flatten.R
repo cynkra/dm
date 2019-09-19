@@ -33,6 +33,9 @@
 #' table would depend on the order the tables are listed in the `dm`. Therefore trying this results
 #' in an error.
 #'
+#' Currently, it is not possible to use `semi_join` or `anti_join` as join-methods in the case of an
+#' unfiltered `dm`, when not all involved foreign tables are directly connected to table `start`.
+#'
 #' @return A wide table resulting of consecutively joining all tables involved to table `start`.
 #'
 #' @examples
