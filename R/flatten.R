@@ -45,6 +45,9 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   force(join)
   stopifnot(is_function(join))
 
+  # in case of `semi_join()` and `anti_join()` no renaming necessary
+  gotta_rename <- !(join_name %in% c("semi_join", "anti_join"))
+
   # if filters are set, the user expects referential integrity. This has several implications:
   # FIXME: what if filters are set in an unconnected component??
   # 1. left_join(), right_join(), full_join(), inner_join() will produce the same results
@@ -88,14 +91,19 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
   red_dm <- cdm_reset_all_filters(dm) %>% cdm_select_tbl(order_df$name)
-  recipe <- compute_disambiguate_cols_recipe(red_dm, order_df$name, sep = ".")
-  explain_col_rename(recipe)
-  # prepare `dm` by disambiguating columns (on a reduced dm)
-  clean_dm <-
-    col_rename(red_dm, recipe)
+  if (gotta_rename) {
+    recipe <- compute_disambiguate_cols_recipe(red_dm, order_df$name, sep = ".")
+    explain_col_rename(recipe)
+    # prepare `dm` by disambiguating columns (on a reduced dm)
+    clean_dm <-
+      col_rename(red_dm, recipe)
+    # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`
+    renames <- recipe %>% filter(table == !!start) %>% pull() %>% flatten_chr()
+  } else { # for `anti_join()` and `semi_join()` no renaming necessary
+    clean_dm <- red_dm
+    renames <- character(0)
+  }
 
-  # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`
-  renames <- recipe %>% filter(table == !!start) %>% pull() %>% flatten_chr()
   # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
   start_tbl <- tbl(dm, start) %>% rename(!!!renames)
