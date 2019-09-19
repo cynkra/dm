@@ -282,7 +282,7 @@ as_dm.default <- function(x) {
 
 tbl_src <- function(x) {
   if (is.data.frame(x)) {
-    "local"
+    NULL
   } else if (inherits(x, "tbl_sql")) {
     x$src
   } else {
@@ -304,8 +304,10 @@ format.dm <- function(x, ...) {
 #' @import cli
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
+  src <- cdm_get_src(x)
+  if (is_null(src)) src <- "local"
 
-  db_info <- strsplit(format(cdm_get_src(x)), "\n")[[1]][[1]]
+  db_info <- strsplit(format(src), "\n")[[1]][[1]]
 
   cat_line(db_info)
 
