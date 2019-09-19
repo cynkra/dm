@@ -44,10 +44,25 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
 
   force(join)
   stopifnot(is_function(join))
+
+  # if filters are set, the user expects referential integrity. This has several implications:
+  # FIXME: what if filters are set in an unconnected component??
+  # 1. left_join(), right_join(), full_join(), inner_join() will produce the same results
+  # 2. semi_join() will be equal to `tbl(dm, start)`
+  # 3. anti_join() will be equal to `tbl(dm, start) %>% filter(FALSE)`
+  are_filters_set <- nrow(cdm_get_filter(dm)) > 0
+  if (are_filters_set) {
+    if (join_name == "semi_join") return(tbl(dm, start))
+    if (join_name == "anti_join") return(tbl(dm, start) %>% filter(FALSE))
+    message("Using default `left_join()`, since filter conditions are set and `join` ",
+            "neither `semi_join()` nor `anti_join()`.")
+    join <- left_join
+  }
   # early returns for some of the possible joins would be possible for "perfect" key relations,
-  # but since it is possible to have imperfect FK relations, `semi_join` and `anti_join` might
+  # but since it is generally possible to have imperfect FK relations, `semi_join` and `anti_join` might
   # produce results, that are of interest, e.g.
   # cdm_flatten_to_tbl(cdm_nycflights13(cycle = TRUE) %>% cdm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
+
 
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
@@ -65,21 +80,16 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
     ) %>%
     filter(!is.na(name), name %in% c(start, list_of_pts))
 
-  # in case of `full_join` and `right_join` the filters need to be applied first
-  if (join_name %in% c("full_join", "right_join")) {
-    dm <- cdm_apply_filters(dm)
-    if (join_name == "right_join" && nrow(order_df) > 2) warning(
-      paste0("When using `cdm_flatten_to_tbl()` with `right_join()`, the result will generally ",
-      "depend on which referred table is joined last.")
-    )
-  } else {
-    # if the filters aren't empty, the disambiguation won't work
-    dm <- cdm_reset_all_filters(dm)
-  }
+  # the result for `right_join()` depends on the order of the dim-tables in the `dm`
+  # if 2 or more of them are joined to the fact table. If filter conditions are set,
+  # it does not play a role.
+  if (join_name == "right_join" && nrow(order_df) > 2 && !are_filters_set) warning(
+    "When using `cdm_flatten_to_tbl()` with `right_join()`, the result will generally ",
+           "depend on which foreign table is joined last to `start`.")
 
-  # if we reduce the `dm` to the necessary tables here, since then the renaming
-  # will be minimized
-  red_dm <- cdm_select_tbl(dm, order_df$name)
+  # filters need to be empty, for the disambiguation to work
+  # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
+  red_dm <- cdm_reset_all_filters(dm) %>% cdm_select_tbl(order_df$name)
   recipe <- compute_disambiguate_cols_recipe(red_dm, order_df$name, sep = ".")
   explain_col_rename(recipe)
   # prepare `dm` by disambiguating columns (on a reduced dm)
@@ -88,8 +98,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
 
   # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`
   renames <- recipe %>% filter(table == !!start) %>% pull() %>% flatten_chr()
-  # Only need to compute tbl(dm, start) (relevant filters will be applied) in case of left join
-  # and then use the raw tables.
+  # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
+  # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
   start_tbl <- tbl(dm, start) %>% rename(!!!renames)
 
   # Drop first table in the list of join partners. (We have at least one table, `start`.)

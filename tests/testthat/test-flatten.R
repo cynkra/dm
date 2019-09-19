@@ -32,10 +32,11 @@ test_that("`cdm_flatten_to_tbl()` does the right thing for a one-table-dm", {
 test_that("`cdm_flatten_to_tbl()` does the right thing for 'right_join()'", {
   map(
     # sqlite: RIGHT and FULL OUTER JOINs are not currently supported
-    dm_for_flatten_src[setdiff(names(dm_for_flatten_src), "sqlite")],
+    # yet, here we eventually use `left_join()` anyway
+    dm_for_flatten_src,
     ~ expect_equivalent(
       cdm_flatten_to_tbl(cdm_filter(.x, dim_1, dim_1_pk > 4), fact, dim_1, join = right_join) %>% collect(),
-      right_join(fact, filter(dim_1, dim_1_pk > 4), by = c("dim_1_key" = "dim_1_pk")) %>%
+      left_join(fact, filter(dim_1, dim_1_pk > 4), by = c("dim_1_key" = "dim_1_pk")) %>%
         rename(fact.something = something.x, dim_1.something = something.y)
     )
   )
