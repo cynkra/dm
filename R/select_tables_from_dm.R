@@ -23,7 +23,6 @@ cdm_select_tbl <- function(dm, ...) {
   table_objs <- map(set_names(old_table_names), ~ tbl(dm, .))
 
   new_dm(
-    src = cdm_get_src(dm),
     tables = table_objs,
     data_model = new_data_model
   ) %>%

@@ -67,7 +67,7 @@ cdm_add_pk_impl <- function(dm, table, column) {
   new_data_model <- cdm_get_data_model(dm) %>%
     datamodelr::dm_set_key(table, column)
 
-  new_dm(cdm_get_src(dm), cdm_get_tables(dm), new_data_model)
+  new_dm(cdm_get_tables(dm), new_data_model)
 }
 
 #' Does a table of a [`dm`] object have a column set as primary key?

@@ -33,7 +33,6 @@ cdm_learn_from_db <- function(dest) {
     pull()
 
   new_dm(
-    src = src,
     tables = map(table_names, ~ tbl(con, .)) %>% set_names(table_names),
     data_model = get_datamodel_from_overview(overview)
   )
