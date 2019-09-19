@@ -129,6 +129,13 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
 
+  # FIXME: so far there is a problem with `semi_join` and `anti_join`, when one of the
+  # included tables has a distance of 2 or more to `start`, because then the required
+  # column for `by` on the LHS is missing
+  if (!gotta_rename && !all(map_lgl(order_df$name, ~are_neighbours(clean_dm, start, .)))) {
+    abort_semi_anti_nys()
+  }
+
   # list of join partners
   ordered_table_list <- clean_dm %>% cdm_get_tables() %>% extract(order_df$name)
   by <- map2(order_df$pred, order_df$name, ~ get_by(dm, .x, .y))

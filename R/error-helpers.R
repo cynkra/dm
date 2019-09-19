@@ -364,7 +364,7 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
 # `right_join()` might produce random result for `cdm_flatten_to_tbl()`
 
 abort_rj_not_wd <- function() {
-  abort(error_rj_not_wd(), .subclass = cdm_error_full("_rj_not_wd"))
+  abort(error_rj_not_wd(), .subclass = cdm_error_full("rj_not_wd"))
 }
 
 error_rj_not_wd <- function() {
@@ -372,3 +372,13 @@ error_rj_not_wd <- function() {
          "with more than 2 tables involved (depends on order of tables in `dm`)")
 }
 
+# `semi_join()` and `anti_join()` not supported for `cdm_flatten_to_tbl()` for deep hierarchy
+
+abort_semi_anti_nys <- function() {
+  abort(error_semi_anti_nys(), .subclass = cdm_error_full("semi_anti_nys"))
+}
+
+error_semi_anti_nys <- function() {
+  paste0("When flattening a `dm` with `semi_join()` or `anti_join()` all tables have to be ",
+  "directly connected to table `start` (at least currently).")
+}
