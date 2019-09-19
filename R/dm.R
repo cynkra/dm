@@ -99,8 +99,8 @@ new_dm2 <- function(tables = cdm_get_tables(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
                     filter = cdm_get_filter(base_dm),
                     base_dm) {
-  if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(!is.null(tables))
+  if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(!is.null(data_model_tables))
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
