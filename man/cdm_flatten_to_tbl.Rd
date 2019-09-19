@@ -30,15 +30,17 @@ The result is one table with unique column names.
 Use the \code{...} if you want to control which tables should be joined to table \code{start}.
 }
 \details{
-\strong{Case 1}, no filters conditions are set in the \code{dm}:
-The necessary disambiguations of the column names are performed first. Then all involved foreign tables
-are joined to table \code{start} successively with the join function given in parameter \code{join}.
+\strong{Case 1}, either no filter conditions are set in the \code{dm}, or only in a part unconnected to
+table \code{start}:
+The necessary disambiguations of the column names are performed first. Then all
+involved foreign tables are joined to table \code{start} successively with the join function given in
+parameter \code{join}.
 
-\strong{Case 2}, filter conditions are set:
+\strong{Case 2}, filter conditions are set for at least one table connected to \code{start}:
 The result of filtering a \code{dm} object is necessarily a data model conforming to referential integrity.
 Consequently, there is no difference between \code{left_join}, \code{right_join}, \code{inner_join} and \code{full_join}.
 In this case, \code{left_join} is being used. Using \code{semi_join} in \code{cdm_flatten_to_tbl()} on a filtered \code{dm}
-is identical to \code{tbl(dm, start)}, \code{anti_join} is identical to \code{tbl(dm, start) \%>\% filter(FALSE)}.
+is identical to \code{tbl(dm, start)}, and \code{anti_join} is identical to \code{tbl(dm, start) \%>\% filter(FALSE)}.
 Disambiguation is performed initially if necessary.
 
 Mind, that calling \code{cdm_flatten_to_tbl()} on an unfiltered \code{dm} with \code{join = right_join} would not lead

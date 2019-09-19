@@ -15,15 +15,17 @@
 #' be reached are included.
 #' @family flattening functions
 #'
-#' @details **Case 1**, no filters conditions are set in the `dm`:
-#' The necessary disambiguations of the column names are performed first. Then all involved foreign tables
-#' are joined to table `start` successively with the join function given in parameter `join`.
+#' @details **Case 1**, either no filter conditions are set in the `dm`, or only in a part unconnected to
+#' table `start`:
+#' The necessary disambiguations of the column names are performed first. Then all
+#' involved foreign tables are joined to table `start` successively with the join function given in
+#' parameter `join`.
 #'
-#' **Case 2**, filter conditions are set:
+#' **Case 2**, filter conditions are set for at least one table connected to `start`:
 #' The result of filtering a `dm` object is necessarily a data model conforming to referential integrity.
 #' Consequently, there is no difference between `left_join`, `right_join`, `inner_join` and `full_join`.
 #' In this case, `left_join` is being used. Using `semi_join` in `cdm_flatten_to_tbl()` on a filtered `dm`
-#' is identical to `tbl(dm, start)`, `anti_join` is identical to `tbl(dm, start) %>% filter(FALSE)`.
+#' is identical to `tbl(dm, start)`, and `anti_join` is identical to `tbl(dm, start) %>% filter(FALSE)`.
 #' Disambiguation is performed initially if necessary.
 #'
 #' Mind, that calling `cdm_flatten_to_tbl()` on an unfiltered `dm` with `join = right_join` would not lead
