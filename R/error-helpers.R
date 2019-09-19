@@ -431,3 +431,25 @@ error_semi_anti_nys <- function() {
   paste0("When flattening a `dm` with `semi_join()` or `anti_join()` all tables have to be ",
   "directly connected to table `start` (at least currently).")
 }
+
+# not all tables have the same src ----------------------------------------
+
+
+abort_not_same_src <- function() {
+  abort(error_not_same_src(), .subclass = cdm_error_full("not_same_src"))
+}
+
+error_not_same_src <- function() {
+  "Not all tables in the object share the same `src`"
+}
+
+# Something other than tables are put in a `dm` ------------------
+
+abort_what_a_weird_object <- function(class) {
+  abort(error_what_a_weird_object(class), .subclass = cdm_error_full("what_a_weird_object"))
+}
+
+error_what_a_weird_object <- function(class) {
+  paste0("Don't know how to determine table source for object of class ",
+         class)
+}
