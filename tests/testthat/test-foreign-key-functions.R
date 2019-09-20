@@ -180,14 +180,14 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
     "c",      FALSE,      "values not in `cdm_table_4$c`: 5, 6"
   )
   # on PG the order of the found mismatches differs...
-  tbl_t3_t4_pg <- tibble::tribble(
-    ~column, ~candidate,  ~why,
-    "c",      FALSE,      "values not in `cdm_table_4$c`: 6, 5"
-  )
-  tbl_list <- list(tbl_t3_t4_df_sqlite, tbl_t3_t4_df_sqlite, tbl_t3_t4_pg)
+  # tbl_t3_t4_pg <- tibble::tribble(
+  #   ~column, ~candidate,  ~why,
+  #   "c",      FALSE,      "values not in `cdm_table_4$c`: 6, 5"
+  # )
+  tbl_list <- list(tbl_t3_t4_df_sqlite, tbl_t3_t4_df_sqlite)
 
   map2(
-    cdm_test_obj_2_src,
+    cdm_test_obj_2_src[c("df", "sqlite")],
     tbl_list,
     ~ expect_identical(
       .x %>%
