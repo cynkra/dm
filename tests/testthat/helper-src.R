@@ -8,10 +8,10 @@ message("for check_cardinality...()")
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
 d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 d3 <- tibble::tibble(c = 1:5)
-d4 <- tibble::tibble(c = c(1:5, 5))
+d4 <- tibble::tibble(c = c(1:5, 5L))
 d5 <- tibble::tibble(a = 1:5)
 d6 <- tibble::tibble(c = 1:4)
-d7 <- tibble::tibble(c = c(1:5, 5, 6))
+d7 <- tibble::tibble(c = c(1:5, 5L, 6L))
 d8 <- tibble::tibble(c = c(1:6))
 
 # for check_key() ---------------------------------------------------------
@@ -189,7 +189,18 @@ dm_for_filter_rev <-
 
 message("for tests on `dm` objects: cdm_add_pk(), cdm_add_fk()")
 
-cdm_test_obj <- as_dm(list(cdm_table_1 = d2, cdm_table_2 = d4, cdm_table_3 = d7, cdm_table_4 = d8))
+cdm_test_obj <- as_dm(list(
+  cdm_table_1 = d2,
+  cdm_table_2 = d4,
+  cdm_table_3 = d7,
+  cdm_table_4 = d8))
+
+cdm_test_obj_2 <- as_dm(list(
+  cdm_table_1 = d4,
+  cdm_table_2 = d7,
+  cdm_table_3 = d8,
+  cdm_table_4 = d6))
+
 
 # for `dm_nrow()` ---------------------------------------------------------
 
@@ -419,6 +430,7 @@ if (is_this_a_test()) {
   dm_for_filter_smaller_src <- cdm_test_load(dm_for_filter_smaller)
   dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
   cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
+  cdm_test_obj_2_src <- cdm_test_load(cdm_test_obj_2)
   dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
   dm_more_complex_src <- cdm_test_load(dm_more_complex)
 

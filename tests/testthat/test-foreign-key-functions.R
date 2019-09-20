@@ -160,20 +160,84 @@ test_that("cdm_rm_fk() works as intended?", {
 
 test_that("cdm_enum_fk_candidates() works as intended?", {
   tbl_fk_candidates_t1_t4 <- tribble(
-    ~candidate, ~column, ~table,        ~ref_table,    ~ref_table_pk, ~why,
-    TRUE,       "a",     "cdm_table_1", "cdm_table_4", "c",           "",
-    FALSE,      "b",     "cdm_table_1", "cdm_table_4", "c",           "not a subset of cdm_table_4$c"
-  ) %>%
-    select(ref_table, ref_table_pk, table, column, candidate, why)
+    ~column, ~candidate,  ~why,
+    "a",     FALSE,       "class `numeric` differs from PK-column class `integer`",
+    "b",     FALSE,       "class `character` differs from PK-column class `integer`"
+  )
 
   map(
-    .x = cdm_test_obj_src,
+    cdm_test_obj_src,
     ~ expect_identical(
       .x %>%
         cdm_add_pk(cdm_table_4, c) %>%
         cdm_enum_fk_candidates(cdm_table_1, cdm_table_4),
       tbl_fk_candidates_t1_t4
     )
+  )
+
+  tbl_t3_t4_df_sqlite <- tibble::tribble(
+    ~column, ~candidate,  ~why,
+    "c",      FALSE,      "values not in `cdm_table_4$c`: 5, 6"
+  )
+  # on PG the order of the found mismatches differs...
+  tbl_t3_t4_pg <- tibble::tribble(
+    ~column, ~candidate,  ~why,
+    "c",      FALSE,      "values not in `cdm_table_4$c`: 6, 5"
+  )
+  tbl_list <- list(tbl_t3_t4_df_sqlite, tbl_t3_t4_df_sqlite, tbl_t3_t4_pg)
+
+  map2(
+    cdm_test_obj_2_src,
+    tbl_list,
+    ~ expect_identical(
+      .x %>%
+        cdm_add_pk(cdm_table_4, c) %>%
+        cdm_enum_fk_candidates(cdm_table_3, cdm_table_4),
+      .y
+    )
+  )
+
+  tbl_t4_t3 <- tibble::tribble(
+    ~column, ~candidate, ~why,
+    "c",     TRUE,       ""
+  )
+
+  map(
+    cdm_test_obj_src,
+    ~ expect_identical(
+      .x %>%
+        cdm_add_pk(cdm_table_3, c) %>%
+        cdm_enum_fk_candidates(cdm_table_4, cdm_table_3),
+      tbl_t4_t3
+    )
+  )
+
+  nycflights_example <-     tibble::tribble(
+    ~column,           ~candidate,  ~why,
+    "origin",          TRUE,        "",
+    "carrier",         FALSE,       "values not in `airports$faa`: UA, AA, B6, DL, EV, MQ, …",
+    "tailnum",         FALSE,       "values not in `airports$faa`: N14228, N24211, N619AA, N804JB, N668DN, N39463, …",
+    "dest",            FALSE,       "values not in `airports$faa`: BQN, SJU, STT, PSE",
+    "year",            FALSE,       "class `integer` differs from PK-column class `character`",
+    "month",           FALSE,       "class `integer` differs from PK-column class `character`",
+    "day",             FALSE,       "class `integer` differs from PK-column class `character`",
+    "dep_time",        FALSE,       "class `integer` differs from PK-column class `character`",
+    "sched_dep_time",  FALSE,       "class `integer` differs from PK-column class `character`",
+    "dep_delay",       FALSE,       "class `numeric` differs from PK-column class `character`",
+    "arr_time",        FALSE,       "class `integer` differs from PK-column class `character`",
+    "sched_arr_time",  FALSE,       "class `integer` differs from PK-column class `character`",
+    "arr_delay",       FALSE,       "class `numeric` differs from PK-column class `character`",
+    "flight",          FALSE,       "class `integer` differs from PK-column class `character`",
+    "air_time",        FALSE,       "class `numeric` differs from PK-column class `character`",
+    "distance",        FALSE,       "class `numeric` differs from PK-column class `character`",
+    "hour",            FALSE,       "class `numeric` differs from PK-column class `character`",
+    "minute",          FALSE,       "class `numeric` differs from PK-column class `character`",
+    "time_hour",       FALSE,       "class `POSIXct` differs from PK-column class `character`"
+  )
+
+  expect_identical(
+    cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports),
+    nycflights_example
   )
 
   map(
