@@ -195,14 +195,19 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   ref_tbl <- cdm_get_tables(dm)[[ref_table_name]]
 
   # what `class` is pk-column of ref_table?
-  class_pk <- class(ref_tbl[[ref_tbl_pk]])[[1]]
-  cols_class_match <- tbl_colnames[map_lgl(tbl_colnames, ~identical(class(tbl[[.x]])[[1]], class_pk))]
+  # which columns from 'table' match this class?
+  class_pk <- class(head(ref_tbl, 0) %>% pull(!!sym(ref_tbl_pk)))[[1]]
+  cols_classes <- map_chr(
+    tbl_colnames,
+    ~class(head(tbl, 0) %>% pull(!!sym(.x)))[[1]]
+  ) %>% set_names(tbl_colnames)
+  cols_class_match <- tbl_colnames[cols_classes == class_pk]
   tibble_cols_class_no_match <- tibble(
     column = setdiff(tbl_colnames, cols_class_match),
     candidate = FALSE,
     why = map_chr(
       column,
-      ~glue("class `{class(tbl[[.x]])[[1]]}` differs from PK-column class `{class_pk}`")
+      ~glue("class `{cols_classes[.x]}` differs from PK-column class `{class_pk}`")
       )
     )
 
