@@ -191,16 +191,17 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
 
   tbl <- cdm_get_tables(dm)[[table_name]]
   tbl_colnames <- colnames(tbl)
-
-  ref_tbl <- cdm_get_tables(dm)[[ref_table_name]]
-
-  # what `class` is pk-column of ref_table?
-  # which columns from 'table' match this class?
-  class_pk <- class(head(ref_tbl, 0) %>% pull(!!sym(ref_tbl_pk)))[[1]]
+  # classes of columns from 'table'?
   cols_classes <- map_chr(
     tbl_colnames,
     ~class(head(tbl, 0) %>% pull(!!sym(.x)))[[1]]
   ) %>% set_names(tbl_colnames)
+
+  # what `class` is pk-column of ref_table?
+  ref_tbl <- cdm_get_tables(dm)[[ref_table_name]]
+  class_pk <- class(head(ref_tbl, 0) %>% pull(!!sym(ref_tbl_pk)))[[1]]
+
+  # which classes match/don't match?
   cols_class_match <- tbl_colnames[cols_classes == class_pk]
   tibble_cols_class_no_match <- tibble(
     column = setdiff(tbl_colnames, cols_class_match),
@@ -211,6 +212,7 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
       )
     )
 
+  # which columns contain subset of values of PK-col?
   col_candidates <- cols_class_match[map_lgl(
     cols_class_match,
     ~ is_subset(tbl, !!.x, ref_tbl, !!ref_tbl_pk))]
@@ -218,6 +220,7 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
     candidate = TRUE,
     why = "")
 
+  # which columns of same class contain additional values and which ones?
   set_of_pk_vals <- pull(arrange(distinct(ref_tbl, !!ensym(ref_tbl_pk))))
   cols_no_candidates <- setdiff(cols_class_match, col_candidates)
   vals_not_in_subset <- map(cols_no_candidates, ~setdiff(
@@ -235,8 +238,7 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
       why = paste0(first, second)
     )
 
-    bind_rows(tibble_candidates,
-              tibble_no_candidates,
-              tibble_cols_class_no_match)
-
+  bind_rows(tibble_candidates,
+            tibble_no_candidates,
+            tibble_cols_class_no_match)
 })
