@@ -99,9 +99,7 @@ new_dm2 <- function(tables = cdm_get_tables(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
                     filter = cdm_get_filter(base_dm),
                     base_dm) {
-  if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(!is.null(tables))
-  if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(!is.null(data_model_tables))
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
@@ -482,13 +480,6 @@ cdm_rename_tbl <- function(dm, ...) {
     new_table_names,
     rename_table_of_dm,
     .init = dm
-  )
-}
-
-cdm_reset_all_filters <- function(dm) {
-  new_dm2(
-    filter = tibble(table = character(0), filter = list(0)),
-    base_dm = dm
   )
 }
 
