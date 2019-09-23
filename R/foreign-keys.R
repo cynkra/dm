@@ -188,57 +188,32 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   if (is_empty(ref_tbl_pk)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
-
-  tbl <- cdm_get_tables(dm)[[table_name]]
+  ref_tbl <- tbl(dm, ref_table_name)
+  tbl <- tbl(dm, table_name)
   tbl_colnames <- colnames(tbl)
-  # classes of columns from 'table'?
-  cols_classes <- map_chr(
-    tbl_colnames,
-    ~class(head(tbl, 0) %>% pull(!!sym(.x)))[[1]]
-  ) %>% set_names(tbl_colnames)
 
-  # what `class` is pk-column of ref_table?
-  ref_tbl <- cdm_get_tables(dm)[[ref_table_name]]
-  class_pk <- class(head(ref_tbl, 0) %>% pull(!!sym(ref_tbl_pk)))[[1]]
-
-  # which classes match/don't match?
-  cols_class_match <- tbl_colnames[cols_classes == class_pk]
-  tibble_cols_class_no_match <- tibble(
-    column = setdiff(tbl_colnames, cols_class_match),
-    candidate = FALSE,
-    why = map_chr(
-      column,
-      ~glue("class `{cols_classes[.x]}` differs from PK-column class `{class_pk}`")
-      )
-    )
-
-  # which columns contain subset of values of PK-col?
-  col_candidates <- cols_class_match[map_lgl(
-    cols_class_match,
-    ~ is_subset(tbl, !!.x, ref_tbl, !!ref_tbl_pk))]
-  tibble_candidates <- tibble(column = col_candidates,
-    candidate = TRUE,
-    why = "")
-
-  # which columns of same class contain additional values and which ones?
-  set_of_pk_vals <- pull(arrange(distinct(ref_tbl, !!ensym(ref_tbl_pk))))
-  cols_no_candidates <- setdiff(cols_class_match, col_candidates)
-  vals_not_in_subset <- map(cols_no_candidates, ~setdiff(
-    pull(arrange(distinct(tbl, !!sym(.x)))),
-    set_of_pk_vals))
-  tibble_no_candidates <- tibble(
-    column = cols_no_candidates,
-    first = glue("values not in {tick(glue('{ref_table_name}${ref_tbl_pk}'))}: "),
-    values = vals_not_in_subset
+  tibble(
+    column = tbl_colnames,
+    why = map_chr(column, ~why(dm, tbl, .x, ref_tbl, ref_table_name, ref_tbl_pk))
   ) %>%
-    mutate(second = map_chr(values, ~commas(format(.x, trim = TRUE, justify = "none")))) %>%
-    transmute(
-      column,
-      candidate = FALSE,
-      why = paste0(first, second)
-    )
-
-  bind_rows(tibble_candidates,
-            tibble_no_candidates,
-            tibble_cols_class_no_match)
+    mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
+    select(column, candidate, why) %>%
+    mutate(arrange_col = str_sub(why, 1, 3)) %>%
+    arrange(desc(candidate), desc(arrange_col), column) %>%
+    select(-arrange_col)
 })
+
+why <- function(dm, t1, colname, t2, t2_name, pk) {
+  names(pk) <- colname
+  test <- tryCatch(anti_join(
+    select(t1, !!sym(colname)), select(t2, !!sym(pk)), by = pk) %>%
+      utils::head(MAX_COMMAS + 1) %>%
+      pull(), error = identity)
+  if (is_condition(test)) {
+    return(conditionMessage(test))
+  }
+  if (is_empty(test)) return("") else {
+    test_formatted <- commas(format(test, trim = TRUE, justify = "none"))
+    glue("values not in {tick(glue('{t2_name}${pk}'))}: {test_formatted}")
+  }
+}
