@@ -132,7 +132,7 @@
 <a class="sourceLine" id="cb1-3" data-line-number="3">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">dm</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_local.html">src_df</a></span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">flights_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -147,7 +147,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iris_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"iris1"</span> =<span class="st"> </span>iris, <span class="st">"iris2"</span> =<span class="st"> </span>iris))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x456d0f0&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -163,13 +163,12 @@
 <a class="sourceLine" id="cb3-3" data-line-number="3">data_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">cdm_get_data_model</a></span>(iris_dm)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">another_iris_dm &lt;-<span class="st"> </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/dm.html">new_dm</a></span>(</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">    <span class="dt">src =</span> local_src,</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">    <span class="dt">tables =</span> tables,</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">    <span class="dt">data_model =</span> data_model</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">    )</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">another_iris_dm</a></code></pre></div>
+<a class="sourceLine" id="cb3-6" data-line-number="6">    <span class="dt">tables =</span> tables,</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">    <span class="dt">data_model =</span> data_model</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">    )</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">another_iris_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: 0x7113900&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   2 tables:  iris1, iris2 
@@ -217,7 +216,7 @@
 <a class="sourceLine" id="cb5-3" data-line-number="3">flights_dm_with_key &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(flights_dm, airports, faa)</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4">flights_dm_with_key</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -285,7 +284,7 @@
 <p>When dealing with data models, a foreign key from one table has to always point to a primary key of another table. The primary key of the referred table must be set with <code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code>. <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">flights_dm_with_key <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -305,7 +304,7 @@
 <p>What if we try to add another foreign key relation from <code>flights</code> to <code>airports</code> to the object? Column <code>dest</code> might work, since it also contains airport codes:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">flights_dm_with_fk <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, dest, airports)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 

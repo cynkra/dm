@@ -159,7 +159,8 @@
 #&gt; #   </span><span style="color: #555555;font-weight: bold;">speed</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">engine</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
 <p>This can result in long and inflated pipe chains full of <code>left_join()</code>, <code>anti_join()</code> and other forms of merging data.</p>
-<p>{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section) while augmenting {dplyr}/{dbplyr} workflows.</p>
+<p>{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section <a href="#good-to-know">Good to Know</a>) while augmenting {dplyr}/{dbplyr} workflows.</p>
+<p>You can have the best of both worlds: Manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.</p>
 </div>
 </div>
 <div id="good-to-know" class="section level2">
@@ -240,7 +241,7 @@
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>()</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -332,7 +333,7 @@
 <li>
 <a href="https://krlmlr.github.io/dm/articles/dm-visualization.html">Visualizing ‘dm’ objects</a> article</li>
 <li>
-<a href="https://krlmlr.github.io/dm/articles/dm-low-level.html">Low-level operations</a> article <!-- FIXME: vignettes missing; once there, needs to be linked -->
+<a href="https://krlmlr.github.io/dm/articles/dm-low-level.html">Low-level operations</a> article <!-- FIXME: vignettes missing;  once there, needs to be linked -->
 </li>
 </ul>
 </div>

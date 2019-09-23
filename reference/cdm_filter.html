@@ -229,7 +229,7 @@ This function is called by the <code><a href='https://dplyr.tidyverse.org/refere
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -240,7 +240,7 @@ This function is called by the <code><a href='https://dplyr.tidyverse.org/refere
 #&gt; None</div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -253,7 +253,7 @@ This function is called by the <code><a href='https://dplyr.tidyverse.org/refere
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 

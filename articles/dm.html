@@ -133,7 +133,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">dm</a></span>(<span class="kw">src_df</span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">flights_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -145,9 +145,9 @@
 </span></code></pre>
 <p>The fairly verbose output shows the three components of a <code>dm</code> object: the table source, the metadata, and row counts. These components can be accessed with <code><a href="../reference/dm.html">cdm_get_src()</a></code>, <code><a href="../reference/dm.html">cdm_get_tables()</a></code> and <code><a href="../reference/dm.html">cdm_get_data_model()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/dm.html">cdm_get_src</a></span>(flights_dm)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; src:  &lt;package: nycflights13&gt;</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; tbls: airlines, airports, flights, planes, weather</span></a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Quering nrow() for each table, to suppress otherwise huge output</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; src:  &lt;environment: R_GlobalEnv&gt;</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; tbls:</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Querying nrow() for each table, to suppress otherwise huge output</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="../reference/dm.html">cdm_get_tables</a></span>(flights_dm) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">map_int</span>(nrow)</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
@@ -231,7 +231,7 @@
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airlines, name <span class="op">==</span><span class="st"> "US Airways Inc."</span>)</a>
 <a class="sourceLine" id="cb10-5" data-line-number="5">us_flights_from_jfk_prepared</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 

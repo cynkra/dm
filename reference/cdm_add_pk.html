@@ -184,7 +184,7 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 
 <span class='co'># the following works</span>
 <span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>tailnum</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -193,7 +193,7 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt;   0 references
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
 #&gt; None</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>airports</span>, <span class='no'>faa</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -202,7 +202,7 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt;   0 references
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
 #&gt; None</div><div class='input'><span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
@@ -213,7 +213,7 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt; None</div><div class='input'>
 <span class='co'># the following does not work</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;package: nycflights13&gt;
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:
 #&gt;   5 tables:  airlines, airports, flights, planes ... 
