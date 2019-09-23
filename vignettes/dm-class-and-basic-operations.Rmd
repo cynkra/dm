@@ -83,7 +83,6 @@ tables <- list("iris1" = iris, "iris2" = iris)
 data_model <- cdm_get_data_model(iris_dm)
 another_iris_dm <- 
   new_dm(
-    src = local_src,
     tables = tables,
     data_model = data_model
     )

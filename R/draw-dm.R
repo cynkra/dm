@@ -78,7 +78,6 @@ cdm_set_colors <- function(dm, ...) {
   display <- color_quos_to_display(...)
 
   new_dm(
-    cdm_get_src(dm),
     cdm_get_tables(dm),
     dm_set_display(data_model, display)
   )

@@ -53,7 +53,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
   table_names <- set_names(data_model$tables$table)
   tables <- map(table_names, tbl, src = src)
 
-  new_dm(src, tables, data_model)
+  new_dm(tables, data_model)
 })
 
 #' Low-level constructor
@@ -63,10 +63,9 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
 #'
 #' @rdname dm
 #' @export
-new_dm <- function(src, tables, data_model) {
-  if (!is.src(src) && !is(src, "DBIConnection")) abort_no_src_or_con()
+new_dm <- function(tables, data_model) {
+  if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(datamodelr::is.data_model(data_model))
-  src <- src_from_src_or_con(src)
 
   columns <- as_tibble(data_model$columns)
 
@@ -91,26 +90,23 @@ new_dm <- function(src, tables, data_model) {
       as_tibble()
   }
 
-  new_dm2(src, tables, data_model_tables, keys, references, filter = NULL)
+  new_dm2(tables, data_model_tables, keys, references, filter = NULL)
 }
 
-new_dm2 <- function(src = cdm_get_src(base_dm),
-                    tables = cdm_get_tables(base_dm),
+new_dm2 <- function(tables = cdm_get_tables(base_dm),
                     data_model_tables = cdm_get_data_model_tables(base_dm),
                     pks = cdm_get_data_model_pks(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
                     filter = cdm_get_filter(base_dm),
                     base_dm) {
-
-  stopifnot(!is.null(src))
   stopifnot(!is.null(tables))
   stopifnot(!is.null(data_model_tables))
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
 
+
   structure(
     list(
-      src = src,
       tables = tables,
       data_model_tables = data_model_tables,
       data_model_pks = pks,
@@ -151,7 +147,8 @@ validate_dm <- function(x) {
 #'
 #' @export
 cdm_get_src <- function(x) {
-  unclass(x)$src
+  tables <- cdm_get_tables(x)
+  tbl_src(tables[1][[1]])
 }
 
 #' Get tables component
@@ -270,29 +267,24 @@ as_dm.default <- function(x) {
   # Automatic name repair
   names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
 
-  src <- tbl_src(x[[1]])
-
-  # FIXME: Check if all sources identical
+  # Check if all sources are identical
+  if (!all_same_source(x)) abort_not_same_src()
 
   # Empty tibbles as proxy, we don't need to know the columns
   # and we don't have keys yet
   proxies <- map(x, ~ tibble(a = 0))
   data_model <- datamodelr::dm_from_data_frames(proxies)
 
-  new_dm(src, x, data_model)
+  new_dm(x, data_model)
 }
 
 tbl_src <- function(x) {
-  if (is.data.frame(x)) {
-    src_df(env = new_environment(x))
+  if (is_empty(x) || is.data.frame(x)) {
+    default_local_src()
   } else if (inherits(x, "tbl_sql")) {
     x$src
   } else {
-    # FIXME: Classed error code
-    stop(
-      "Don't know how to determine table source for object of class ",
-      class(x)[[1]]
-    )
+    abort_what_a_weird_object(class(x)[[1]])
   }
 }
 
@@ -310,8 +302,9 @@ format.dm <- function(x, ...) {
 #' @import cli
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
+  src <- cdm_get_src(x)
 
-  db_info <- strsplit(format(cdm_get_src(x)), "\n")[[1]][[1]]
+  db_info <- strsplit(format(src), "\n")[[1]][[1]]
 
   cat_line(db_info)
 
@@ -439,11 +432,7 @@ collect.dm <- function(x, ...) {
   list_of_rem_tbls <- cdm_apply_filters(x) %>% cdm_get_tables()
   tables <- map(list_of_rem_tbls, collect)
 
-  # FIXME: in future src will no longer be part of `dm` object.
-  # https://github.com/krlmlr/dm/issues/38
-  # `cdm_get_src(x)` needs to be removed (is wrong anyway)
   new_dm(
-    cdm_get_src(x),
     tables,
     cdm_get_data_model(x)
   )
@@ -461,7 +450,6 @@ rename_table_of_dm <- function(dm, old_name, new_name) {
   new_tables <- set_names(tables, table_names)
 
   new_dm(
-    src = cdm_get_src(dm),
     tables = new_tables,
     data_model = datamodel_rename_table(
       cdm_get_data_model(dm), old_name_q, new_name_q
@@ -499,4 +487,10 @@ cdm_reset_all_filters <- function(dm) {
     filter = tibble(table = character(0), filter = list(0)),
     base_dm = dm
   )
+}
+
+all_same_source <- function(tables) {
+  # Use `NULL` if `tables` is empty
+  first_table <- tables[1][[1]]
+  is.null(detect(tables[-1], ~ !same_src(., first_table)))
 }

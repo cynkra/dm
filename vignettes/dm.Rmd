@@ -83,7 +83,7 @@ cdm_get_src(flights_dm)
 
 
 ```{r}
-# Quering nrow() for each table, to suppress otherwise huge output
+# Querying nrow() for each table, to suppress otherwise huge output
 cdm_get_tables(flights_dm) %>% 
   map_int(nrow)
 ```

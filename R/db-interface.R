@@ -77,7 +77,6 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
   new_src <- src_from_src_or_con(dest)
 
   remote_dm <- new_dm2(
-    src = new_src,
     tables = new_tables,
     base_dm = dm
   )
