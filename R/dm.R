@@ -492,5 +492,5 @@ cdm_reset_all_filters <- function(dm) {
 all_same_source <- function(tables) {
   # Use `NULL` if `tables` is empty
   first_table <- tables[1][[1]]
-  is.null(detect(tables[-1], ~ same_src(., first_table)))
+  is.null(detect(tables[-1], ~ !same_src(., first_table)))
 }
