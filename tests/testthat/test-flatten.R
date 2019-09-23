@@ -134,4 +134,21 @@ test_that("`cdm_flatten_to_tbl()` does the right thing for filtered `dm`s", {
          class = cdm_error("semi_anti_nys")
        )
   )
+
+})
+
+test_that("`cdm_flatten_to_tbl()` throws right errors", {
+  walk(dm_more_complex_src,
+       ~expect_error(
+         cdm_flatten_to_tbl(., t5, t6, t3),
+         class = cdm_error("vertices_not_connected")
+       )
+  )
+
+  walk(dm_for_filter_src,
+       ~expect_error(
+         cdm_flatten_to_tbl(., t5, join = right_join),
+         class = cdm_error("rj_not_wd")
+       )
+  )
 })
