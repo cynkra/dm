@@ -74,7 +74,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   gotta_rename <- !(join_name %in% c("semi_join", "anti_join"))
 
   # if filters are set and at least one of them is connected to the table `start`,
-  # the user expects referential integrity. This has several implications:
+  # referential integrity is guaranteed by definition of the filtering operation.
+  # This has several implications:
   # 1. left_join(), right_join(), full_join(), inner_join() will produce the same results
   # 2. semi_join() will be equal to `tbl(dm, start)`
   # 3. anti_join() will be equal to `tbl(dm, start) %>% filter(FALSE)`
@@ -84,11 +85,13 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   if (any_filter_in_conn_comp) {
     if (join_name == "semi_join") return(tbl(dm, start))
     if (join_name == "anti_join") return(cdm_get_tables(dm)[[start]] %>% filter(1 == 0))
-    message("Using default `left_join()`, since filter conditions are set and `join` ",
-            "neither `semi_join()` nor `anti_join()`. ",
-            "Use `join = left_join` to silence this message.")
-    join <- left_join
-    join_name <- "left_join"
+    if (join_name != "left_join") {
+      message("Using default `left_join()`, since filter conditions are set and `join` ",
+              "neither `semi_join()` nor `anti_join()`. ",
+              "Use `join = left_join` to silence this message.")
+      join <- left_join
+      join_name <- "left_join"
+    }
   }
   # early returns for some of the possible joins would be possible for "perfect" key relations,
   # but since it is generally possible to have imperfect FK relations, `semi_join` and `anti_join` might
