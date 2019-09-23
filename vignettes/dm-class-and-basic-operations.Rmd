@@ -35,10 +35,11 @@ Let's first have a look at the new class:
 The `dm` class contains a set of tables as well as information about their primary keys and the relations between the tables. 
 You can have your `dm` object on different data sources, such as a local environment or a database.
 
-`dm` is a wrapper around the two `data_model` object
- from the package [{datamodelr}](https://github.com/bergant/datamodelr)
+`dm` is a wrapper around two classes, which are independent from each other:
 
-If the tables in the `dm` are on a database, the corresponding [`src` object](https://dplyr.tidyverse.org/reference/src.html) from {dplyr} is implicitly part of the `dm`
+1. part of the object is a [`src` object](https://dplyr.tidyverse.org/reference/src.html) from {dplyr}
+2. the other part is a class `data_model` object
+ from the package [{datamodelr}](https://github.com/bergant/datamodelr)
 
 The `src` object contains the information, where the tables of your data model are physically stored. 
 In the `data_model` object the meta-information is about your data is kept, among others:
@@ -46,7 +47,7 @@ In the `data_model` object the meta-information is about your data is kept, amon
 - what are the primary keys in your schema?
 - how are the tables related to each other, i.e. what are the foreign key relations?
 
-Last but not least, a third part of the object is a named list containing the tables on the `src` (or local ones).
+Last but not least, a third part of the object is a named list containing the tables on the `src`.
 
 So much to the theory, let's see how to construct such an object and how it looks in `R`:
 
@@ -75,12 +76,14 @@ iris_dm <- as_dm(list("iris1" = iris, "iris2" = iris))
 iris_dm
 ```
 
-And lastly, with `new_dm()` you can create a `dm` by providing the two necessary part for its creation:
+And lastly, with `new_dm()` you can create a `dm` by providing the three individual parts it consists of:
 ```{r}
+local_src <- src_df(env = new.env())
 tables <- list("iris1" = iris, "iris2" = iris)
 data_model <- cdm_get_data_model(iris_dm)
 another_iris_dm <- 
   new_dm(
+    src = local_src,
     tables = tables,
     data_model = data_model
     )
@@ -88,7 +91,7 @@ another_iris_dm
 ```
 
 You saw, that with `cdm_get_data_model()` we access the `data_model` part of a `dm`.
-Similarly, we can get the list of tables with `cdm_get_tables()` and the `src` object with `cdm_get_src()` (is `NULL` for local tables).
+Similarly, we can get the list of tables with `cdm_get_tables()` and the `src` object with `cdm_get_src()`.
 
 In order to pull a specific table from a `dm`, use:
 ```{r}
