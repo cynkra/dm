@@ -23,28 +23,39 @@
 #' The result is one table with unique column names.
 #' Use the `...` if you want to control which tables should be joined to table `start`.
 #'
-#' How does filtering affect the result?
+#' **How does filtering affect the result?**
 #'
-#' **Case 1**, either no filter conditions are set in the `dm`, or only in a part unconnected to
+#' *Case 1*, either no filter conditions are set in the `dm`, or only in a part unconnected to
 #' table `start`:
 #' The necessary disambiguations of the column names are performed first. Then all
 #' involved foreign tables are joined to table `start` successively with the join function given in
 #' parameter `join`.
 #'
-#' **Case 2**, filter conditions are set for at least one table connected to `start`:
+#' *Case 2*, filter conditions are set for at least one table connected to `start`:
 #' The result of filtering a `dm` object is necessarily a data model conforming to referential integrity.
 #' Consequently, there is no difference between `left_join`, `right_join`, `inner_join` and `full_join`.
 #' In this case, `left_join` is being used. Using `semi_join` in `cdm_flatten_to_tbl()` on a filtered `dm`
 #' is identical to `tbl(dm, start)`, and `anti_join` is identical to `tbl(dm, start) %>% filter(1 == 0)`.
 #' Disambiguation is performed initially if necessary.
 #'
+#' **join-methods: `join = semi_join()` and `join = anti_join()`**
+#'
+#' The implementation of this function for `semi_join` and `anti_join` is different from the other join-methods:
+#' 1. `dplyr::semi_join()` is successively used to determine which rows of table `start` contain valid lookup-values
+#' in the primary key columns of all its included parent tables.
+#' 2. For method `join = semi_join`, this is the result of the flattening. For method `join = anti_join`,
+#' `dplyr::anti_join()` is calculated between the original table and the result from 1., effectively letting
+#' those rows of table `start` remain, whose references are missing in at least one parent table.
+#'
+#' The result for `semi_join` lets you know which references are intact everywhere.
+#' The result from `anti_join` tells you, which references are missing somewhere.
+#'
+#' **join-method: `join = right_join()`**
+#'
 #' Mind, that calling `cdm_flatten_to_tbl()` on an unfiltered `dm` with `join = right_join` would not lead
 #' to a well-defined result, if two or more foreign tables are to be joined to `start`. The resulting
 #' table would depend on the order the tables are listed in the `dm`. Therefore trying this results
 #' in an error.
-#'
-#' Currently, it is not possible to use `semi_join` or `anti_join` as join-methods in the case of an
-#' unfiltered `dm`, when not all involved foreign tables are directly connected to table `start`.
 #'
 #' @return A wide table resulting of consecutively joining all tables involved to table `start`.
 #'
