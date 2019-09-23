@@ -493,3 +493,10 @@ cdm_rename_tbl <- function(dm, ...) {
     .init = dm
   )
 }
+
+cdm_reset_all_filters <- function(dm) {
+  new_dm2(
+    filter = tibble(table = character(0), filter = list(0)),
+    base_dm = dm
+  )
+}

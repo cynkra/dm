@@ -3,7 +3,7 @@ library(rprojroot)
 
 # for check_cardinality...() ----------------------------------------------
 
-message("for ccheck_cardinality...()")
+message("for check_cardinality...()")
 
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
 d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
@@ -377,6 +377,8 @@ clear_postgres <- function() {
 
 # Only run if the top level call is devtools::test() or testthat::test_check()
 if (is_this_a_test()) {
+  library(nycflights13)
+
   message("connecting")
 
   test_register_src("df", src_df(env = new_environment()))
@@ -418,6 +420,7 @@ if (is_this_a_test()) {
   dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
   cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
   dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
+  dm_more_complex_src <- cdm_test_load(dm_more_complex)
 
   d1_src <- test_load(d1)
   d2_src <- test_load(d2)

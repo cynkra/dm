@@ -4,7 +4,7 @@
 \alias{cdm_flatten_to_tbl}
 \title{Flatten part of a \code{dm} into a wide table}
 \usage{
-cdm_flatten_to_tbl(dm, start, join = left_join)
+cdm_flatten_to_tbl(dm, start, ..., join = left_join)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
@@ -13,23 +13,53 @@ cdm_flatten_to_tbl(dm, start, join = left_join)
 considered to establish a processing order for the joins. An interesting choice could be
 for example a fact table in a star schema.}
 
+\item{...}{Unquoted table names to include in addition to \code{start}. If empty, all tables that can
+be reached are included.}
+
 \item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}}
 }
 \value{
-A wide table resulting of consecutively joining all tables together.
+A wide table resulting of consecutively joining all tables involved to table \code{start}.
 }
 \description{
-This function joins all the tables of your \code{\link{dm}} object together, that can be reached
-from table \code{start} in the direction that the foreign keys are pointing, using the
-foreign key relations to determine the parameter \code{by} for the necessary joins.
-It returns one table with unique columns. Use \code{\link[=cdm_select_tbl]{cdm_select_tbl()}} if necessary to
-reduce the number of tables before calling this function.
+Gather all information of interest in one place in a wide table (on a database-\code{\link{dm}} a
+temporary table will be created).
+If referential integrity is given among the tables of the data model, the resulting
+table of this function will contain as many rows as the table \code{start} does (exceptions are
+\code{join = anti_join} (result is empty table with same columns as \code{start}) and \code{join = right_join} (
+number of rows equal to those of the join-partner of \code{start})).
+For more information please refer to \code{vignette("dm-joining")}.
 }
 \details{
-Uses \code{\link[=cdm_apply_filters]{cdm_apply_filters()}} and \code{\link[=cdm_disambiguate_cols]{cdm_disambiguate_cols()}} first, to
-get a "clean" \code{\link{dm}}. Subsequently renames all foreign key columns to the names of
-the primary key columns they are pointing to. Then the order of the joins is determined
-and the joins are performed.
+With the \code{...} left empty, this function joins all the tables of your \code{\link{dm}}
+object together, that can be reached from table \code{start} in the direction of the foreign
+key relations (pointing from child table to parent table), using the foreign key relations to
+determine the parameter \code{by} for the necessary joins.
+The result is one table with unique column names.
+Use the \code{...} if you want to control which tables should be joined to table \code{start}.
+
+How does filtering affect the result?
+
+\strong{Case 1}, either no filter conditions are set in the \code{dm}, or only in a part unconnected to
+table \code{start}:
+The necessary disambiguations of the column names are performed first. Then all
+involved foreign tables are joined to table \code{start} successively with the join function given in
+parameter \code{join}.
+
+\strong{Case 2}, filter conditions are set for at least one table connected to \code{start}:
+The result of filtering a \code{dm} object is necessarily a data model conforming to referential integrity.
+Consequently, there is no difference between \code{left_join}, \code{right_join}, \code{inner_join} and \code{full_join}.
+In this case, \code{left_join} is being used. Using \code{semi_join} in \code{cdm_flatten_to_tbl()} on a filtered \code{dm}
+is identical to \code{tbl(dm, start)}, and \code{anti_join} is identical to \code{tbl(dm, start) \%>\% filter(1 == 0)}.
+Disambiguation is performed initially if necessary.
+
+Mind, that calling \code{cdm_flatten_to_tbl()} on an unfiltered \code{dm} with \code{join = right_join} would not lead
+to a well-defined result, if two or more foreign tables are to be joined to \code{start}. The resulting
+table would depend on the order the tables are listed in the \code{dm}. Therefore trying this results
+in an error.
+
+Currently, it is not possible to use \code{semi_join} or \code{anti_join} as join-methods in the case of an
+unfiltered \code{dm}, when not all involved foreign tables are directly connected to table \code{start}.
 }
 \examples{
 cdm_nycflights13() \%>\%

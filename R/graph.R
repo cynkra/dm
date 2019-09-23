@@ -92,9 +92,29 @@ is_dm_connected <- nse_function(c(dm), ~ {
   V <- names(V(g))
 
   vertex_names[1] %in% V &&
-    igraph::bfs(g, vertex_names[1], father = TRUE, rank = TRUE, unreachable = FALSE) %>%
-      extract2("order") %>%
-      names() %>%
+    get_names_of_connected(g, vertex_names[1]) %>%
       is_in(vertex_names, .) %>%
       all()
 })
+
+are_tables_connected <- function(dm, t1_name, t2_name) {
+  walk(c(t1_name, t2_name), ~check_correct_input(dm, .))
+  g <- create_graph_from_dm(dm)
+  V <- names(V(g))
+
+  conn_tbls <- get_names_of_connected(g, t1_name)
+  t2_name %in% conn_tbls
+}
+
+get_names_of_connected <- function(g, start) {
+  igraph::bfs(g, start, unreachable = FALSE) %>%
+    extract2("order") %>%
+    names()
+}
+
+is_any_filter_conn_to_tbl <- function(dm, tbl) {
+  any(map_lgl(
+    pull(cdm_get_filter(dm), table),
+    ~ are_tables_connected(dm, tbl, .x)
+  ))
+}

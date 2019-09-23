@@ -220,12 +220,17 @@ error_txt_no_cycles <- function() {
 
 # errors in cdm_select_tbl() ----------------------------------------------
 
-abort_vertices_not_connected <- function(fun_name) {
-  abort(error_txt_vertices_not_connected(fun_name), .subclass = cdm_error_full("vertices_not_connected"))
+abort_vertices_not_connected <- function(fun_name, param = NULL) {
+  abort(error_txt_vertices_not_connected(fun_name, param), .subclass = cdm_error_full("vertices_not_connected"))
 }
 
-error_txt_vertices_not_connected <- function(fun_name) {
-  glue("For `{fun_name}()` all of the selected tables of the `dm`-object need to be connected.")
+error_txt_vertices_not_connected <- function(fun_name, param) {
+  if (is_null(param)) {
+    glue("For `{fun_name}()` all of the selected tables of the `dm`-object need to be connected.")
+  } else {
+    glue("All selected tables in parameter `{param}` of `{fun_name}()` need to be connected (no missing links).")
+  }
+
 }
 
 
@@ -359,4 +364,26 @@ abort_tables_not_neighbours <- function(t1_name, t2_name) {
 
 error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
+}
+
+# `right_join()` might produce random result for `cdm_flatten_to_tbl()`
+
+abort_rj_not_wd <- function() {
+  abort(error_rj_not_wd(), .subclass = cdm_error_full("rj_not_wd"))
+}
+
+error_rj_not_wd <- function() {
+  paste0("No well-defined result, when using `cdm_flatten_to_tbl()` with `right_join()` ",
+         "with more than 2 tables involved (depends on order of tables in `dm`)")
+}
+
+# `semi_join()` and `anti_join()` not supported for `cdm_flatten_to_tbl()` for deep hierarchy
+
+abort_semi_anti_nys <- function() {
+  abort(error_semi_anti_nys(), .subclass = cdm_error_full("semi_anti_nys"))
+}
+
+error_semi_anti_nys <- function() {
+  paste0("When flattening a `dm` with `semi_join()` or `anti_join()` all tables have to be ",
+  "directly connected to table `start`.")
 }

@@ -285,3 +285,4 @@ get_all_keys <- function(dm, table_name) {
   pk <- cdm_get_pk(dm, !!table_name)
   c(pk, fks)
 }
+
