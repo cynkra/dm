@@ -119,6 +119,11 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
   red_dm <- cdm_reset_all_filters(dm) %>% cdm_select_tbl(order_df$name)
+
+  # if tables in the ellipsis aren't connected without missing links, throw an error
+  if (!all(map_lgl(order_df$name, ~are_tables_connected(red_dm, start, .x)))) {
+    abort_vertices_not_connected("cdm_flatten_to_tbl", "...")
+  }
   if (gotta_rename) {
     recipe <- compute_disambiguate_cols_recipe(red_dm, order_df$name, sep = ".")
     explain_col_rename(recipe)
