@@ -78,9 +78,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # 1. left_join(), right_join(), full_join(), inner_join() will produce the same results
   # 2. semi_join() will be equal to `tbl(dm, start)`
   # 3. anti_join() will be equal to `tbl(dm, start) %>% filter(FALSE)`
-  any_filter_in_conn_comp <- any(
-    map_lgl(pull(cdm_get_filter(dm), table), ~are_tables_connected(dm, start, .x))
-    )
+  # FIXME: improve `is_any_filter_conn_to_tbl()`
+  any_filter_in_conn_comp <- is_any_filter_conn_to_tbl(dm, start)
 
   if (any_filter_in_conn_comp) {
     if (join_name == "semi_join") return(tbl(dm, start))

@@ -111,3 +111,10 @@ get_names_of_connected <- function(g, start) {
     extract2("order") %>%
     names()
 }
+
+is_any_filter_conn_to_tbl <- function(dm, tbl) {
+  any(map_lgl(
+    pull(cdm_get_filter(dm), table),
+    ~ are_tables_connected(dm, tbl, .x)
+  ))
+}
