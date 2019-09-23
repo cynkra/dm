@@ -38,7 +38,7 @@ determine the parameter \code{by} for the necessary joins.
 The result is one table with unique column names.
 Use the \code{...} if you want to control which tables should be joined to table \code{start}.
 
-How does filtering affects the result?
+How does filtering affect the result?
 
 \strong{Case 1}, either no filter conditions are set in the \code{dm}, or only in a part unconnected to
 table \code{start}:

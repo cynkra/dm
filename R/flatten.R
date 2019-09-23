@@ -23,7 +23,7 @@
 #' The result is one table with unique column names.
 #' Use the `...` if you want to control which tables should be joined to table `start`.
 #'
-#' How does filtering affects the result?
+#' How does filtering affect the result?
 #'
 #' **Case 1**, either no filter conditions are set in the `dm`, or only in a part unconnected to
 #' table `start`:
