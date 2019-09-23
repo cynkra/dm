@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1>Joining in relational data models</h1>
             
-            <h4 class="date">2019-09-16</h4>
+            <h4 class="date">2019-09-23</h4>
       
       
       <div class="hidden name"><code>dm-joining.Rmd</code></div>
@@ -253,8 +253,8 @@
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_select_tbl.html">cdm_select_tbl</a></span>(<span class="op">-</span>weather) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl</a></span>(<span class="dt">start =</span> flights)</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Renamed columns:</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; * name -&gt; airlines$airlines.name, airports$airports.name</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; * year -&gt; flights$flights.year, planes$planes.year</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; * year -&gt; flights$flights.year, planes$planes.year</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; * name -&gt; airlines$airlines.name, airports$airports.name</span></a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 35</span><span>
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>

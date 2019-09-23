@@ -36,11 +36,13 @@
 
 
 <meta property="og:title" content="Flatten part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl" />
-<meta property="og:description" content="This function joins all the tables of your dm object together, that can be reached
-from table start in the direction that the foreign keys are pointing, using the
-foreign key relations to determine the parameter by for the necessary joins.
-It returns one table with unique columns. Use cdm_select_tbl() if necessary to
-reduce the number of tables before calling this function." />
+<meta property="og:description" content="Gather all information of interest in one place in a wide table (on a database-dm a
+temporary table will be created).
+If referential integrity is given among the tables of the data model, the resulting
+table of this function will contain as many rows as the table start does (exceptions are
+join = anti_join (result is empty table with same columns as start) and join = right_join (
+number of rows equal to those of the join-partner of start)).
+For more information please refer to vignette(&quot;dm-joining&quot;)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -133,14 +135,16 @@ reduce the number of tables before calling this function." />
     </div>
 
     <div class="ref-description">
-    <p>This function joins all the tables of your <code><a href='dm.html'>dm</a></code> object together, that can be reached
-from table <code>start</code> in the direction that the foreign keys are pointing, using the
-foreign key relations to determine the parameter <code>by</code> for the necessary joins.
-It returns one table with unique columns. Use <code><a href='cdm_select_tbl.html'>cdm_select_tbl()</a></code> if necessary to
-reduce the number of tables before calling this function.</p>
+    <p>Gather all information of interest in one place in a wide table (on a database-<code><a href='dm.html'>dm</a></code> a
+temporary table will be created).
+If referential integrity is given among the tables of the data model, the resulting
+table of this function will contain as many rows as the table <code>start</code> does (exceptions are
+<code>join = anti_join</code> (result is empty table with same columns as <code>start</code>) and <code>join = right_join</code> (
+number of rows equal to those of the join-partner of <code>start</code>)).
+For more information please refer to <code><a href='../articles/dm-joining.html'>vignette("dm-joining")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,6 +160,11 @@ considered to establish a processing order for the joins. An interesting choice 
 for example a fact table in a star schema.</p></td>
     </tr>
     <tr>
+      <th>...</th>
+      <td><p>Unquoted table names to include in addition to <code>start</code>. If empty, all tables that can
+be reached are included.</p></td>
+    </tr>
+    <tr>
       <th>join</th>
       <td><p>The type of join to be performed, see <code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::join()</a></code></p></td>
     </tr>
@@ -163,13 +172,33 @@ for example a fact table in a star schema.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A wide table resulting of consecutively joining all tables together.</p>
+    <p>A wide table resulting of consecutively joining all tables involved to table <code>start</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Uses <code><a href='cdm_filter.html'>cdm_apply_filters()</a></code> and <code><a href='cdm_disambiguate_cols.html'>cdm_disambiguate_cols()</a></code> first, to
-get a "clean" <code><a href='dm.html'>dm</a></code>. Subsequently renames all foreign key columns to the names of
-the primary key columns they are pointing to. Then the order of the joins is determined
-and the joins are performed.</p>
+    <p>With the <code>...</code> left empty, this function joins all the tables of your <code><a href='dm.html'>dm</a></code>
+object together, that can be reached from table <code>start</code> in the direction of the foreign
+key relations (pointing from child table to parent table), using the foreign key relations to
+determine the parameter <code>by</code> for the necessary joins.
+The result is one table with unique column names.
+Use the <code>...</code> if you want to control which tables should be joined to table <code>start</code>.</p>
+<p>How does filtering affect the result?</p>
+<p><strong>Case 1</strong>, either no filter conditions are set in the <code>dm</code>, or only in a part unconnected to
+table <code>start</code>:
+The necessary disambiguations of the column names are performed first. Then all
+involved foreign tables are joined to table <code>start</code> successively with the join function given in
+parameter <code>join</code>.</p>
+<p><strong>Case 2</strong>, filter conditions are set for at least one table connected to <code>start</code>:
+The result of filtering a <code>dm</code> object is necessarily a data model conforming to referential integrity.
+Consequently, there is no difference between <code>left_join</code>, <code>right_join</code>, <code>inner_join</code> and <code>full_join</code>.
+In this case, <code>left_join</code> is being used. Using <code>semi_join</code> in <code>cdm_flatten_to_tbl()</code> on a filtered <code>dm</code>
+is identical to <code>tbl(dm, start)</code>, and <code>anti_join</code> is identical to <code>tbl(dm, start) %&gt;% filter(1 == 0)</code>.
+Disambiguation is performed initially if necessary.</p>
+<p>Mind, that calling <code>cdm_flatten_to_tbl()</code> on an unfiltered <code>dm</code> with <code>join = right_join</code> would not lead
+to a well-defined result, if two or more foreign tables are to be joined to <code>start</code>. The resulting
+table would depend on the order the tables are listed in the <code>dm</code>. Therefore trying this results
+in an error.</p>
+<p>Currently, it is not possible to use <code>semi_join</code> or <code>anti_join</code> as join-methods in the case of an
+unfiltered <code>dm</code>, when not all involved foreign tables are directly connected to table <code>start</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other flattening functions: <code><a href='cdm_join_to_tbl.html'>cdm_join_to_tbl</a></code></p></div>
@@ -178,8 +207,8 @@ and the joins are performed.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='cdm_select_tbl.html'>cdm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
-#&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span>
-#&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
+#&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year</span>
+#&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
 #&gt;  1         2013     1     1      517            515         2      830
