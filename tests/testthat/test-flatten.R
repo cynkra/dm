@@ -97,6 +97,16 @@ test_that("`cdm_flatten_to_tbl()` does the right thing for 'right_join()'", {
       semi_join(flights, airlines, by = "carrier")
     )
 
+    expect_identical(cdm_flatten_to_tbl(bad_dm, tbl_1, join = semi_join), filter(tbl_1, a == 2))
+    expect_identical(cdm_flatten_to_tbl(bad_dm, tbl_1, join = anti_join), filter(tbl_1, a != 2))
+    expect_identical(cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = semi_join),
+                     filter(tbl_1, a %in% 2:4))
+    expect_identical(cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = anti_join),
+                         filter(tbl_1, !(a %in% 2:4)))
+    expect_identical(cdm_flatten_to_tbl(bad_dm2, tbl_1, join = semi_join),
+                     filter(tbl_1, a == 2))
+    expect_identical(cdm_flatten_to_tbl(bad_dm2, tbl_1, join = anti_join),
+                     filter(tbl_1, a != 2))
   })
 
 test_that("`cdm_flatten_to_tbl()` does the right thing for filtered `dm`s", {
@@ -127,13 +137,14 @@ test_that("`cdm_flatten_to_tbl()` does the right thing for filtered `dm`s", {
        )
   )
 
-  # this is NYI for anti_join and semi_join:
+  # semi_join with at least one table with distance > 1
   walk(dm_more_complex_src,
-       ~expect_error(
+       ~expect_identical(
          cdm_flatten_to_tbl(cdm_filter(., b, b_3 > 7), t5, join = semi_join) %>% collect(),
-         class = cdm_error("semi_anti_nys")
+         t5
        )
   )
+
 
 })
 

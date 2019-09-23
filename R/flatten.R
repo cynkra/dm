@@ -146,12 +146,15 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
 
-  # FIXME: so far there is a problem with `semi_join` and `anti_join`, when one of the
-  # included tables has a distance of 2 or more to `start`, because then the required
-  # column for `by` on the LHS is missing
-  if (!gotta_rename && !all(map_lgl(order_df$name, ~{
-    cdm_has_fk(clean_dm, !!start, !!.) || cdm_has_fk(clean_dm, !!., !!start)}))) {
-    abort_semi_anti_nys()
+  # For `semi_join` and `anti_join` it's beneficial to use the `cdm_get_filtered_table()`-logic;
+  # otherwise:
+  # 1. if there is at least one table with distance to table `start` > 1: starting from table `start`,
+  # the LHS would be missing for the respective join(s).
+  # 2. `anti_join` is implemented here as the opposite of `semi_join`, which would otherwise
+  # not work (it's the difference between lookup-values not being available in any parent table, or
+  # lookup-values not being available in at least one parent table)
+  if (!gotta_rename) {
+    return(semi_anti_result(clean_dm, start, colnames(start_tbl), order_df$name, join_name))
   }
 
   # list of join partners
@@ -205,4 +208,13 @@ child_table <- function(dm, table_1, table_2) {
         (child_table == t2_name & parent_table == t1_name)
     ) %>%
     pull(child_table)
+}
+
+semi_anti_result <- function(dm, start, cols_start, tables, join_name) {
+  # need to set `filter == TRUE` for all involved tables (apart from start) to
+  # really evaluate relations; otherwise `cdm_get_filtered_table()` will return
+  # `cdm_get_tables(dm)[[from]]`; only makes sense for data model with NO referential integrity
+  semi <- tbl(reduce(tables, ~cdm_filter(..1, !!sym(..2), 1 == 1), .init = dm), start)
+  if (join_name == "semi_join") semi else anti_join(
+    cdm_get_tables(dm)[[start]], semi, by = set_names(cols_start))
 }

@@ -348,6 +348,21 @@ result_from_flatten <-
   left_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
   left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
 
+# another dm for flatten (no referential integrity)
+tbl_1 <- tibble(a = 1:5, b = 1:5, c = 1:5, d = 1:5)
+bad_dm <- as_dm(list(
+  tbl_1 = tbl_1, tbl_2 = tibble(e = 1:5, f = 1:5),
+  tbl_3 = tibble(g = 2:4, h = 2:4), tbl_4 = tibble(g = 1:6),
+  tbl_5 = tibble(h = 1:2))) %>% cdm_add_pk(tbl_1, a) %>% cdm_add_pk(tbl_2, e) %>%
+  cdm_add_pk(tbl_3, g) %>% cdm_add_pk(tbl_4, g) %>% cdm_add_pk(tbl_5, h) %>%
+  cdm_add_fk(tbl_1, b, tbl_2) %>% cdm_add_fk(tbl_1, c, tbl_4) %>%
+  cdm_add_fk(tbl_1, d, tbl_5) %>% cdm_add_fk(tbl_2, f, tbl_3)
+
+bad_dm2 <- as_dm(list(tbl_1 = tbl_1, tbl_2 = tibble(g = 2:4, h = 2:4), tbl_3 = tibble(h = 1:2))) %>%
+  cdm_add_pk(tbl_1, a) %>% cdm_add_pk(tbl_2, g) %>% cdm_add_pk(tbl_3, h) %>%
+  cdm_add_fk(tbl_1, b, tbl_2) %>% cdm_add_fk(tbl_1, c, tbl_3)
+
+
 # for database tests -------------------------------------------------
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test
