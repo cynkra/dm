@@ -74,7 +74,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
 
   if (any_filter_in_conn_comp) {
     if (join_name == "semi_join") return(tbl(dm, start))
-    if (join_name == "anti_join") return(tbl(dm, start) %>% filter(FALSE))
+    if (join_name == "anti_join") return(cdm_get_tables(dm)[[start]] %>% filter(1 == 0))
     message("Using default `left_join()`, since filter conditions are set and `join` ",
             "neither `semi_join()` nor `anti_join()`.")
     join <- left_join
