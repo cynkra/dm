@@ -159,10 +159,11 @@ test_that("cdm_rm_fk() works as intended?", {
 
 
 test_that("cdm_enum_fk_candidates() works as intended?", {
+
+  # `anti_join()` doesn't distinguish between `dbl` and `int`
   tbl_fk_candidates_t1_t4 <- tribble(
     ~column, ~candidate,  ~why,
-    "a",     FALSE,       "class `numeric` differs from PK-column class `integer`",
-    "b",     FALSE,       "class `character` differs from PK-column class `integer`"
+    "a",     TRUE,       "",
   )
 
   map(
@@ -170,7 +171,8 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
     ~ expect_identical(
       .x %>%
         cdm_add_pk(cdm_table_4, c) %>%
-        cdm_enum_fk_candidates(cdm_table_1, cdm_table_4),
+        cdm_enum_fk_candidates(cdm_table_1, cdm_table_4) %>%
+        filter(candidate) %>% collect(),
       tbl_fk_candidates_t1_t4
     )
   )
@@ -213,26 +215,26 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
   )
 
   nycflights_example <-     tibble::tribble(
-    ~column,           ~candidate,  ~why,
-    "origin",          TRUE,        "",
-    "carrier",         FALSE,       "values not in `airports$faa`: UA, AA, B6, DL, EV, MQ, …",
-    "tailnum",         FALSE,       "values not in `airports$faa`: N14228, N24211, N619AA, N804JB, N668DN, N39463, …",
-    "dest",            FALSE,       "values not in `airports$faa`: BQN, SJU, STT, PSE",
-    "year",            FALSE,       "class `integer` differs from PK-column class `character`",
-    "month",           FALSE,       "class `integer` differs from PK-column class `character`",
-    "day",             FALSE,       "class `integer` differs from PK-column class `character`",
-    "dep_time",        FALSE,       "class `integer` differs from PK-column class `character`",
-    "sched_dep_time",  FALSE,       "class `integer` differs from PK-column class `character`",
-    "dep_delay",       FALSE,       "class `numeric` differs from PK-column class `character`",
-    "arr_time",        FALSE,       "class `integer` differs from PK-column class `character`",
-    "sched_arr_time",  FALSE,       "class `integer` differs from PK-column class `character`",
-    "arr_delay",       FALSE,       "class `numeric` differs from PK-column class `character`",
-    "flight",          FALSE,       "class `integer` differs from PK-column class `character`",
-    "air_time",        FALSE,       "class `numeric` differs from PK-column class `character`",
-    "distance",        FALSE,       "class `numeric` differs from PK-column class `character`",
-    "hour",            FALSE,       "class `numeric` differs from PK-column class `character`",
-    "minute",          FALSE,       "class `numeric` differs from PK-column class `character`",
-    "time_hour",       FALSE,       "class `POSIXct` differs from PK-column class `character`"
+    ~column,          ~candidate, ~why,
+    "origin",         TRUE,       "",
+    "carrier",        FALSE,      "values not in `airports$faa`: UA, UA, AA, B6, DL, UA, …",
+    "dest",           FALSE,      "values not in `airports$faa`: BQN, SJU, SJU, SJU, SJU, SJU, …",
+    "tailnum",        FALSE,      "values not in `airports$faa`: N14228, N24211, N619AA, N804JB, N668DN, N39463, …",
+    "air_time",       FALSE,      "Can't join on 'air_time' x 'faa' because of incompatible types (numeric / character)",
+    "arr_delay",      FALSE,      "Can't join on 'arr_delay' x 'faa' because of incompatible types (numeric / character)",
+    "arr_time",       FALSE,      "Can't join on 'arr_time' x 'faa' because of incompatible types (integer / character)",
+    "day",            FALSE,      "Can't join on 'day' x 'faa' because of incompatible types (integer / character)",
+    "dep_delay",      FALSE,      "Can't join on 'dep_delay' x 'faa' because of incompatible types (numeric / character)",
+    "dep_time",       FALSE,      "Can't join on 'dep_time' x 'faa' because of incompatible types (integer / character)",
+    "distance",       FALSE,      "Can't join on 'distance' x 'faa' because of incompatible types (numeric / character)",
+    "flight",         FALSE,      "Can't join on 'flight' x 'faa' because of incompatible types (integer / character)",
+    "hour",           FALSE,      "Can't join on 'hour' x 'faa' because of incompatible types (numeric / character)",
+    "minute",         FALSE,      "Can't join on 'minute' x 'faa' because of incompatible types (numeric / character)",
+    "month",          FALSE,      "Can't join on 'month' x 'faa' because of incompatible types (integer / character)",
+    "sched_arr_time", FALSE,      "Can't join on 'sched_arr_time' x 'faa' because of incompatible types (integer / character)",
+    "sched_dep_time", FALSE,      "Can't join on 'sched_dep_time' x 'faa' because of incompatible types (integer / character)",
+    "year",           FALSE,      "Can't join on 'year' x 'faa' because of incompatible types (integer / character)",
+    "time_hour",      FALSE,      "cannot join a POSIXct object with an object that is not a POSIXct object"
   )
 
   expect_identical(
