@@ -14,3 +14,7 @@ commas <- function(x) {
 tick <- function(x) {
   paste0("`", x, "`")
 }
+
+default_local_src <- function() {
+  src_df(env = .GlobalEnv)
+}
