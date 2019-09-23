@@ -490,5 +490,7 @@ cdm_reset_all_filters <- function(dm) {
 }
 
 all_same_source <- function(tables) {
-  all(map_lgl(tables, same_src, tables[[1]]))
+  # Use `NULL` if `tables` is empty
+  first_table <- tables[1][[1]]
+  is.null(detect(tables[-1], ~ same_src(., first_table)))
 }
