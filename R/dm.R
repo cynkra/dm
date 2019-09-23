@@ -148,7 +148,7 @@ validate_dm <- function(x) {
 #' @export
 cdm_get_src <- function(x) {
   tables <- cdm_get_tables(x)
-  if (!is_empty(tables)) tbl_src(tables[[1]]) else default_local_src()
+  tbl_src(tables[1][[1]])
 }
 
 #' Get tables component
