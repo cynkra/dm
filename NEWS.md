@@ -1,3 +1,14 @@
+# dm 0.0.2.9001
+
+- Remove the `src` component from dm (#38).
+- Internal: Add function checking if all tables have same src.
+- Internal: Add 2 classed errors.
+- `cdm_get_src()` for local dm always returns a src based on `.GlobalEnv`.
+- `cdm_flatten()` gains `...` argument to specify which tables to include. Currently, all tables must form a connected subtree rooted at `start`. Disambiguation of column names now happens after selecting relevant tables. The resulting SQL query is more efficient for inner and outer joins if filtering is applied. Flattening with a `right_join` with more than two tables is not well-defined and gives an error (#62).
+- Add a vignette for joining functions (#60, @cutterkom).
+- Shorten message in `cdm_disambiguate_cols()`.
+
+
 # dm 0.0.2.9000
 
 - `cdm_flatten_to_tbl()` disambiguates only the necessary columns.
