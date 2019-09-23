@@ -99,7 +99,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
       name = names(dfs[["order"]]),
       pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
     ) %>%
-    filter(!is.na(name), name %in% c(start, list_of_pts))
+    filter(name %in% c(start, list_of_pts))
 
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table. If filter conditions are set,
