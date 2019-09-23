@@ -380,5 +380,5 @@ abort_semi_anti_nys <- function() {
 
 error_semi_anti_nys <- function() {
   paste0("When flattening a `dm` with `semi_join()` or `anti_join()` all tables have to be ",
-  "directly connected to table `start` (at least currently).")
+  "directly connected to table `start`.")
 }
