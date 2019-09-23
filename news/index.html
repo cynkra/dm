@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2.9001</span>
       </span>
     </div>
 
@@ -125,6 +125,21 @@
       
     </div>
 
+    <div id="dm-0-0-2-9001" class="section level1">
+<h1 class="page-header">
+<a href="#dm-0-0-2-9001" class="anchor"></a>dm 0.0.2.9001</h1>
+<ul>
+<li>Remove the <code>src</code> component from dm (#38).</li>
+<li>Internal: Add function checking if all tables have same src.</li>
+<li>Internal: Add 2 classed errors.</li>
+<li>
+<code><a href="../reference/dm.html">cdm_get_src()</a></code> for local dm always returns a src based on <code>.GlobalEnv</code>.</li>
+<li>
+<code>cdm_flatten()</code> gains <code>...</code> argument to specify which tables to include. Currently, all tables must form a connected subtree rooted at <code>start</code>. Disambiguation of column names now happens after selecting relevant tables. The resulting SQL query is more efficient for inner and outer joins if filtering is applied. Flattening with a <code>right_join</code> with more than two tables is not well-defined and gives an error (#62).</li>
+<li>Add a vignette for joining functions (#60, <a href='https://github.com/cutterkom'>@cutterkom</a>).</li>
+<li>Shorten message in <code><a href="../reference/cdm_disambiguate_cols.html">cdm_disambiguate_cols()</a></code>.</li>
+</ul>
+</div>
     <div id="dm-0-0-2-9000" class="section level1">
 <h1 class="page-header">
 <a href="#dm-0-0-2-9000" class="anchor"></a>dm 0.0.2.9000</h1>
@@ -352,6 +367,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dm-0-0-2-9001">0.0.2.9001</a></li>
         <li><a href="#dm-0-0-2-9000">0.0.2.9000</a></li>
         <li><a href="#dm-0-0-2">0.0.2</a></li>
         <li><a href="#dm-0-0-1">0.0.1</a></li>
