@@ -85,8 +85,10 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
     if (join_name == "semi_join") return(tbl(dm, start))
     if (join_name == "anti_join") return(cdm_get_tables(dm)[[start]] %>% filter(1 == 0))
     message("Using default `left_join()`, since filter conditions are set and `join` ",
-            "neither `semi_join()` nor `anti_join()`.")
+            "neither `semi_join()` nor `anti_join()`. ",
+            "Use `join = left_join` to silence this message.")
     join <- left_join
+    join_name <- "left_join"
   }
   # early returns for some of the possible joins would be possible for "perfect" key relations,
   # but since it is generally possible to have imperfect FK relations, `semi_join` and `anti_join` might
