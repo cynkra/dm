@@ -22,14 +22,24 @@ be reached are included.}
 A wide table resulting of consecutively joining all tables involved to table \code{start}.
 }
 \description{
+Gather all information of interest in one place in a wide table (on a database-\code{\link{dm}} a
+temporary table will be created).
+If referential integrity is given among the tables of the data model, the resulting
+table of this function will contain as many rows as the table \code{start} does (exceptions are
+\code{join = anti_join} (result is empty table with same columns as \code{start}) and \code{join = right_join} (
+number of rows equal to those of the join-partner of \code{start})).
+For more information please refer to \code{vignette("dm-joining")}.
+}
+\details{
 With the \code{...} left empty, this function joins all the tables of your \code{\link{dm}}
 object together, that can be reached from table \code{start} in the direction of the foreign
 key relations (pointing from child table to parent table), using the foreign key relations to
 determine the parameter \code{by} for the necessary joins.
 The result is one table with unique column names.
 Use the \code{...} if you want to control which tables should be joined to table \code{start}.
-}
-\details{
+
+How does filtering affects the result?
+
 \strong{Case 1}, either no filter conditions are set in the \code{dm}, or only in a part unconnected to
 table \code{start}:
 The necessary disambiguations of the column names are performed first. Then all
@@ -40,7 +50,7 @@ parameter \code{join}.
 The result of filtering a \code{dm} object is necessarily a data model conforming to referential integrity.
 Consequently, there is no difference between \code{left_join}, \code{right_join}, \code{inner_join} and \code{full_join}.
 In this case, \code{left_join} is being used. Using \code{semi_join} in \code{cdm_flatten_to_tbl()} on a filtered \code{dm}
-is identical to \code{tbl(dm, start)}, and \code{anti_join} is identical to \code{tbl(dm, start) \%>\% filter(FALSE)}.
+is identical to \code{tbl(dm, start)}, and \code{anti_join} is identical to \code{tbl(dm, start) \%>\% filter(1 == 0)}.
 Disambiguation is performed initially if necessary.
 
 Mind, that calling \code{cdm_flatten_to_tbl()} on an unfiltered \code{dm} with \code{join = right_join} would not lead
