@@ -135,7 +135,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # FIXME: so far there is a problem with `semi_join` and `anti_join`, when one of the
   # included tables has a distance of 2 or more to `start`, because then the required
   # column for `by` on the LHS is missing
-  if (!gotta_rename && !all(map_lgl(order_df$name, ~are_neighbours(clean_dm, start, .)))) {
+  if (!gotta_rename && !all(map_lgl(order_df$name, ~{
+    cdm_has_fk(clean_dm, !!start, !!.) || cdm_has_fk(clean_dm, !!., !!start)}))) {
     abort_semi_anti_nys()
   }
 
@@ -172,7 +173,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   t1_name <- as_string(ensym(table_1))
   t2_name <- as_string(ensym(table_2))
 
-  if (!are_neighbours(dm, t1_name, t2_name)) {
+  if (!(cdm_has_fk(dm, {{ t1_name }}, {{ t2_name }}) || cdm_has_fk(dm, {{ t2_name }}, {{ t1_name }}))) {
     abort_tables_not_neighbours(t1_name, t2_name)
   }
   start <- child_table(dm, {{ table_1 }}, {{ table_2 }})

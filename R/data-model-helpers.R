@@ -286,6 +286,3 @@ get_all_keys <- function(dm, table_name) {
   c(pk, fks)
 }
 
-are_neighbours <- function(dm, table_1, table_2) {
-  any(c(cdm_has_fk(dm, !!table_1, !!table_2), cdm_has_fk(dm, !!table_2, !!table_1)))
-}
