@@ -148,8 +148,7 @@ validate_dm <- function(x) {
 #' @export
 cdm_get_src <- function(x) {
   tables <- cdm_get_tables(x)
-  if (!all_same_source(tables)) abort_not_same_src()
-  tbl_src(tables[[1]])
+  if (!is_empty(tables)) tbl_src(tables[[1]]) else default_local_src()
 }
 
 #' Get tables component
@@ -280,7 +279,7 @@ as_dm.default <- function(x) {
 }
 
 tbl_src <- function(x) {
-  if (is.data.frame(x)) {
+  if (is_empty(x) || is.data.frame(x)) {
     default_local_src()
   } else if (inherits(x, "tbl_sql")) {
     x$src
