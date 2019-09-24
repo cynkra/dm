@@ -85,7 +85,6 @@ set_filter_for_table <- function(dm, table_name, quos) {
 #'   compute()
 #' @export
 cdm_apply_filters <- function(dm) {
-  raw_dm <- unclass(dm)
   table_names <- src_tbls(dm)
 
   new_list_of_tables <-
