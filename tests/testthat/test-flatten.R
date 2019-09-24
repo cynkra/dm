@@ -141,7 +141,7 @@ test_that("`cdm_flatten_to_tbl()` throws right errors", {
   walk(dm_more_complex_src,
        ~expect_error(
          cdm_flatten_to_tbl(., t5, t6, t3),
-         class = cdm_error("vertices_not_connected")
+         class = cdm_error("tables_not_reachable_from_start")
        )
   )
 
