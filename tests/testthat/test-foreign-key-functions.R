@@ -238,7 +238,8 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
   )
 
   expect_identical(
-    cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports),
+    cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports) %>%
+      mutate(why = if_else(why != "", "<reason>", ""),
     nycflights_example
   )
 
