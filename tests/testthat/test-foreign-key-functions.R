@@ -217,29 +217,29 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
   nycflights_example <-     tibble::tribble(
     ~column,          ~candidate, ~why,
     "origin",         TRUE,       "",
-    "carrier",        FALSE,      "values not in `airports$faa`: UA, UA, AA, B6, DL, UA, …",
-    "dest",           FALSE,      "values not in `airports$faa`: BQN, SJU, SJU, SJU, SJU, SJU, …",
-    "tailnum",        FALSE,      "values not in `airports$faa`: N14228, N24211, N619AA, N804JB, N668DN, N39463, …",
-    "air_time",       FALSE,      "Can't join on 'air_time' x 'faa' because of incompatible types (numeric / character)",
-    "arr_delay",      FALSE,      "Can't join on 'arr_delay' x 'faa' because of incompatible types (numeric / character)",
-    "arr_time",       FALSE,      "Can't join on 'arr_time' x 'faa' because of incompatible types (integer / character)",
-    "day",            FALSE,      "Can't join on 'day' x 'faa' because of incompatible types (integer / character)",
-    "dep_delay",      FALSE,      "Can't join on 'dep_delay' x 'faa' because of incompatible types (numeric / character)",
-    "dep_time",       FALSE,      "Can't join on 'dep_time' x 'faa' because of incompatible types (integer / character)",
-    "distance",       FALSE,      "Can't join on 'distance' x 'faa' because of incompatible types (numeric / character)",
-    "flight",         FALSE,      "Can't join on 'flight' x 'faa' because of incompatible types (integer / character)",
-    "hour",           FALSE,      "Can't join on 'hour' x 'faa' because of incompatible types (numeric / character)",
-    "minute",         FALSE,      "Can't join on 'minute' x 'faa' because of incompatible types (numeric / character)",
-    "month",          FALSE,      "Can't join on 'month' x 'faa' because of incompatible types (integer / character)",
-    "sched_arr_time", FALSE,      "Can't join on 'sched_arr_time' x 'faa' because of incompatible types (integer / character)",
-    "sched_dep_time", FALSE,      "Can't join on 'sched_dep_time' x 'faa' because of incompatible types (integer / character)",
-    "year",           FALSE,      "Can't join on 'year' x 'faa' because of incompatible types (integer / character)",
-    "time_hour",      FALSE,      "cannot join a POSIXct object with an object that is not a POSIXct object"
+    "carrier",        FALSE,      "<reason>",
+    "dest",           FALSE,      "<reason>",
+    "tailnum",        FALSE,      "<reason>",
+    "air_time",       FALSE,      "<reason>",
+    "arr_delay",      FALSE,      "<reason>",
+    "arr_time",       FALSE,      "<reason>",
+    "day",            FALSE,      "<reason>",
+    "dep_delay",      FALSE,      "<reason>",
+    "dep_time",       FALSE,      "<reason>",
+    "distance",       FALSE,      "<reason>",
+    "flight",         FALSE,      "<reason>",
+    "hour",           FALSE,      "<reason>",
+    "minute",         FALSE,      "<reason>",
+    "month",          FALSE,      "<reason>",
+    "sched_arr_time", FALSE,      "<reason>",
+    "sched_dep_time", FALSE,      "<reason>",
+    "year",           FALSE,      "<reason>",
+    "time_hour",      FALSE,      "<reason>"
   )
 
   expect_identical(
     cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports) %>%
-      mutate(why = if_else(why != "", "<reason>", ""),
+      mutate(why = if_else(why != "", "<reason>", "")),
     nycflights_example
   )
 
