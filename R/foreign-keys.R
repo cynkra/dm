@@ -200,7 +200,7 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
 
   tibble(
     column = tbl_colnames,
-    why = map_chr(column, ~why(dm, tbl, .x, ref_tbl, ref_table_name, ref_tbl_pk))
+    why = map_chr(column, ~check_fk(dm, tbl, .x, ref_tbl, ref_table_name, ref_tbl_pk))
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
@@ -209,7 +209,7 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
     select(-arrange_col)
 })
 
-why <- function(dm, t1, colname, t2, t2_name, pk) {
+check_fk <- function(dm, t1, colname, t2, t2_name, pk) {
   names(pk) <- colname
   test <- tryCatch(anti_join(
     select(t1, !!sym(colname)), select(t2, !!sym(pk)), by = pk) %>%
@@ -218,8 +218,7 @@ why <- function(dm, t1, colname, t2, t2_name, pk) {
   if (is_condition(test)) {
     return(conditionMessage(test))
   }
-  if (is_empty(test)) return("") else {
-    test_formatted <- commas(format(test, trim = TRUE, justify = "none"))
-    glue("values not in {tick(glue('{t2_name}${pk}'))}: {test_formatted}")
-  }
+  if (is_empty(test)) return("")
+  test_formatted <- commas(format(test, trim = TRUE, justify = "none"))
+  glue("values not in {tick(glue('{t2_name}${pk}'))}: {test_formatted}")
 }
