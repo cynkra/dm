@@ -18,15 +18,22 @@ A table with an overview which columns of \code{table} would be suitable candida
 foreign key columns referencing \code{ref_table}
 }
 \description{
-Which columns are candidates for a foreign key of a table, referencing
+Which columns are good candidates as a foreign key of a table, referencing
 the primary key column of another \code{\link{dm}} object's table?
 }
 \details{
-\code{cdm_enum_fk_candidates()} checks first, if \code{ref_table} has a primary key set. Then
-it determines for each column of \code{table}, if it has the same class as the primary key of \code{ref_table}.
-If this is the case a check is performed, if the column contains only a subset of values of the
-primary key column of \code{ref_table}. If this is \code{TRUE}, this column is a candidate for a foreign key
-from \code{table} to \code{ref_table}.
+\code{cdm_enum_fk_candidates()} checks first, if \code{ref_table} has a primary key set.
+For each column of \code{table} an \code{\link[=anti_join]{anti_join()}} is then tried, with parameter \code{by} matching
+the respective column with the primary key of \code{ref_table}. This tests implicitly for
+type compatibility. If the result of the \code{anti_join()} is:
+\itemize{
+\item a tibble with zero rows: the column is a candidate, there will be an empty entry in column \code{why}
+of the result tibble.
+\item a tibble with rows: the percentage of missing values in the parent table is calculated and included in
+the entry for this column in \code{why}
+\item an error: the error message becomes the entry in column \code{why} for this column (often this is because of
+mismatched column types)
+}
 }
 \examples{
 cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)

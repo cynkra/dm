@@ -152,18 +152,24 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 
 #' Find foreign key candidates in a table
 #'
-#' Which columns are candidates for a foreign key of a table, referencing
+#' Which columns are good candidates as a foreign key of a table, referencing
 #' the primary key column of another [`dm`] object's table?
 #'
 #' @inheritParams cdm_add_fk
 #' @param table The table whose columns should be tested for foreign key candidate potential
 #' @param ref_table A table with a primary key.
 #'
-#' @details `cdm_enum_fk_candidates()` checks first, if `ref_table` has a primary key set. Then
-#' it determines for each column of `table`, if it has the same class as the primary key of `ref_table`.
-#' If this is the case a check is performed, if the column contains only a subset of values of the
-#' primary key column of `ref_table`. If this is `TRUE`, this column is a candidate for a foreign key
-#' from `table` to `ref_table`.
+#' @details `cdm_enum_fk_candidates()` checks first, if `ref_table` has a primary key set.
+#' For each column of `table` an [anti_join()] is then tried, with parameter `by` matching
+#' the respective column with the primary key of `ref_table`. This tests implicitly for
+#' type compatibility. If the result of the `anti_join()` is:
+#'
+#' - a tibble with zero rows: the column is a candidate, there will be an empty entry in column `why`
+#' of the result tibble.
+#' - a tibble with rows: the percentage of missing values in the parent table is calculated and included in
+#' the entry for this column in `why`
+#' - an error: the error message becomes the entry in column `why` for this column (often this is because of
+#' mismatched column types)
 #'
 #' @return A table with an overview which columns of `table` would be suitable candidates as
 #' foreign key columns referencing `ref_table`
