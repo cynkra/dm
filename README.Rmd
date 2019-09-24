@@ -52,7 +52,7 @@ relational data models.
 
 ## Why?
 
-The motivation for the {dm} package is a more sophisticated data management. 
+The motivation for the {dm} package is a more sophisticated data management.
 {dm} uses the relational data model and its core concept of splitting one table into multiple tables.
 
 ```{r draw, echo = FALSE}
@@ -60,11 +60,40 @@ cdm_nycflights13(cycle = TRUE) %>%
   cdm_draw()
 ```
 
-As an example, we consider the
-[`nycflights13`](https://github.com/hadley/nycflights13) dataset. This
-dataset contains five tables: the main `flights` table with links into
-the `airlines`, `planes` and `airports` tables, and a `weather` table
-without an explicit link.
+This has a **hugh advantage**:
+The code becomes simpler.
+
+### Example {#example}
+
+As an example, we consider the [`nycflights13`](https://github.com/hadley/nycflights13) dataset.
+This dataset contains five tables: the main `flights` table with links into the `airlines`, `planes` and `airports` tables, and a `weather` table without an explicit link.
+
+Assume your task is to merge all tables (except the `weather` table).
+In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one big dataframe.
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+
+flights %>% 
+  left_join(airlines, by = "carrier") %>%
+  left_join(planes, by = "tailnum") %>%
+  left_join(airports, by = c("origin" = "faa"))
+```
+
+In contrast, **using a relational data model shortens the task** to one line of code by using `cdm_flatten_to_tbl()`.
+
+The reason: A once defined data model contains all relations between the tables.
+The function `cdm_nycflights13()` helps to do this with the example data.
+After creating such [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html), you can use these links as often as you wish - without explicitly referring to the relations ever again.
+The task of joining `flights` with `airlines`, `planes` and `airports` boils down to:
+
+```{r}
+cdm_nycflights13() %>%
+  cdm_flatten_to_tbl(start = flights)
+```
+
+### The Advantages in Brief
 
 The separation into multiple tables achieves several goals:
 
@@ -75,27 +104,21 @@ The separation into multiple tables achieves several goals:
 - **Improve consistency**: for updating any information (e.g. the name of an airport), it is sufficient to update in only one place
 - **Segmentation**: information is organized by topic, individual tables are smaller and easier to handle
 
-### The case for a relational data models for dplyr users
+### The Case for Relational Data Models for {dplyr} Users
 
-Users of the popular [dplyr](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
+Users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
 However, flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values.
-Worst case, you have a dataframe with multiple columns and in each row only a single value is changing.
-These users can benefit from a better data organization. 
-The separation into multiple tables helps data quality but poses a different challenge: for each flight, the location of the origin airport, or the details on the airplane, are not available immediately but must be *joined*/merged:
+Worst case, you have a dataframe with multiple columns and in each row only a single value is different.
 
-```{r join}
-library(tidyverse)
-library(nycflights13)
+This calls for a better data organization.
+The separation into multiple tables is a first step that helps data quality.
+But without an associated data model you don't take full advantage.
 
-flights %>% 
-  select(month, day, origin, tailnum) %>% 
-  left_join(airports, by = c("origin" = "faa")) %>% 
-  left_join(planes, by = "tailnum")
-```
+Let's illustrate this challenge with the `flights` data.
+Details like the full name of an airport are not available immediately but must be joined/merged.
+This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other  forms of merging data ([see Example above](#example)).
 
-This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of merging data. 
-
-{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section [Good to Know](#good-to-know)) while augmenting {dplyr}/{dbplyr} workflows. 
+{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section [Good to Know](#good-to-know)) while augmenting {dplyr}/{dbplyr} workflows.
 
 You can have the best of both worlds: Manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.
 
@@ -112,14 +135,18 @@ The `nycflights13` relations can be transferred into the following graphical rep
 ```{r draw, echo = FALSE}
 ```
 
-The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`. By using directed arrows the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere). For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table. 
+The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.
+By using directed arrows the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere).
+For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
 Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
 
 The links between the tables are established through *primary keys* and *foreign keys*.
 
 ### 2) Primary Keys
 
-In a relational data model every table needs to have one column/attribute that uniquely identifies a row. This column is called primary key (abbreviated with pk). A primary key can be either an existing column that satifies the condition of being unique or a new column that assigns an identifier.
+In a relational data model every table needs to have one column/attribute that uniquely identifies a row.
+This column is called primary key (abbreviated with pk).
+A primary key can be either an existing column that satifies the condition of being unique or a new column that assigns an identifier.
 
 In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
 
@@ -127,25 +154,32 @@ Further Reading: The {dm} package offers several function for dealing with [prim
 
 ### 3) Foreign Keys
 
-The counterpart of a primary key in one table is the foreign key in another table. In order to join two tables, the primary key of the first table needs to be available in the second table, too. This second column is called the foreign key (abbreviated with fk). 
+The counterpart of a primary key in one table is the foreign key in another table.
+In order to join two tables, the primary key of the first table needs to be available in the second table, too.
+This second column is called the foreign key (abbreviated with fk).
 
-For example, if you want to link the `airlines` table in the `nycflights13` data to the `flights` table, the primary key in the `airlines` table is `carrier` which is present as foreign key `carrier` in the `flights` table. 
+For example, if you want to link the `airlines` table in the `nycflights13` data to the `flights` table, the primary key in the `airlines` table is `carrier` which is present as foreign key `carrier` in the `flights` table.
 
 Further Reading: The {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
 
 
 ### 4) Normalization
 
-Normalization is the technical term that describes the central design principle of a relational data model: splitting data into multiple tables. A normalized data schema consists of several relations (tables) that are linked with attributes (columns) with primary and foreign keys. One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries. 
+Normalization is the technical term that describes the central design principle of a relational data model: splitting data into multiple tables.
+A normalized data schema consists of several relations (tables) that are linked with attributes (columns) with primary and foreign keys.
+One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries.
 
-For example, if you want to change the name of one airport in `nycflights13`, you have to change only a single data entry. Sometimes, this principle is called "single point of truth".
+For example, if you want to change the name of one airport in `nycflights13`, you have to change only a single data entry.
+Sometimes, this principle is called "single point of truth".
 
 See the [Wikipedia article on database normalization](https://en.wikipedia.org/wiki/Database_normalisation) for more details.
 Consider reviewing the [Simple English version](https://simple.wikipedia.org/wiki/Database_normalisation) for a gentle introduction.
 
 ### 5) Relational Databases
 
-`dm` is built upon relational data models, but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases SQL, the **s**tructured **q**uerying **l**anguage plays an important role: It was invented for the purpose of querying relational databases. 
+`dm` is built upon relational data models, but it is not a database itself.
+Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres.
+As you can guess from the names of the databases SQL, the **s**tructured **q**uerying **l**anguage plays an important role: It was invented for the purpose of querying relational databases.
 
 Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works transparently with both in-memory data and with relational database systems.
 
