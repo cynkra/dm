@@ -164,6 +164,7 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
   tbl_fk_candidates_t1_t4 <- tribble(
     ~column, ~candidate,  ~why,
     "a",     TRUE,       "",
+    "b",     FALSE,      "<reason>"
   )
 
   map(
@@ -172,30 +173,24 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
       .x %>%
         cdm_add_pk(cdm_table_4, c) %>%
         cdm_enum_fk_candidates(cdm_table_1, cdm_table_4) %>%
-        filter(candidate) %>% collect(),
+        mutate(why = if_else(why != "", "<reason>", "")) %>%
+        collect(),
       tbl_fk_candidates_t1_t4
     )
   )
 
-  tbl_t3_t4_df_sqlite <- tibble::tribble(
+  tbl_t3_t4 <- tibble::tribble(
     ~column, ~candidate,  ~why,
-    "c",      FALSE,      "values not in `cdm_table_4$c`: 5, 6"
+    "c",      FALSE,      "<reason>"
   )
-  # on PG the order of the found mismatches differs...
-  # tbl_t3_t4_pg <- tibble::tribble(
-  #   ~column, ~candidate,  ~why,
-  #   "c",      FALSE,      "values not in `cdm_table_4$c`: 6, 5"
-  # )
-  tbl_list <- list(tbl_t3_t4_df_sqlite, tbl_t3_t4_df_sqlite)
 
-  map2(
-    cdm_test_obj_2_src[c("df", "sqlite")],
-    tbl_list,
-    ~ expect_identical(
-      .x %>%
-        cdm_add_pk(cdm_table_4, c) %>%
-        cdm_enum_fk_candidates(cdm_table_3, cdm_table_4),
-      .y
+  map(
+    cdm_test_obj_2_src,
+    ~ expect_equivalent(
+      cdm_add_pk(.x, cdm_table_4, c) %>%
+        cdm_enum_fk_candidates(cdm_table_3, cdm_table_4) %>%
+        mutate(why = if_else(why != "", "<reason>", "")),
+      tbl_t3_t4
     )
   )
 
@@ -217,9 +212,9 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
   nycflights_example <-     tibble::tribble(
     ~column,          ~candidate, ~why,
     "origin",         TRUE,       "",
-    "carrier",        FALSE,      "<reason>",
     "dest",           FALSE,      "<reason>",
     "tailnum",        FALSE,      "<reason>",
+    "carrier",        FALSE,      "<reason>",
     "air_time",       FALSE,      "<reason>",
     "arr_delay",      FALSE,      "<reason>",
     "arr_time",       FALSE,      "<reason>",
@@ -233,8 +228,8 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
     "month",          FALSE,      "<reason>",
     "sched_arr_time", FALSE,      "<reason>",
     "sched_dep_time", FALSE,      "<reason>",
-    "year",           FALSE,      "<reason>",
-    "time_hour",      FALSE,      "<reason>"
+    "time_hour",      FALSE,      "<reason>",
+    "year",           FALSE,      "<reason>"
   )
 
   expect_identical(
