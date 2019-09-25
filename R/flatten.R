@@ -129,7 +129,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
       order_df %>%
       filter(!is.na(name))
 
-    g <- igraph::induced_subgraph(g, c(start, list_of_pts))
+    g <- igraph::induced_subgraph(g, c(start, order_df$name))
   }
 
   # We can only be sure that we have a cycle if all tables
