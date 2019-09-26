@@ -159,21 +159,83 @@ test_that("cdm_rm_fk() works as intended?", {
 
 
 test_that("cdm_enum_fk_candidates() works as intended?", {
+
+  # `anti_join()` doesn't distinguish between `dbl` and `int`
   tbl_fk_candidates_t1_t4 <- tribble(
-    ~candidate, ~column, ~table,        ~ref_table,    ~ref_table_pk, ~why,
-    TRUE,       "a",     "cdm_table_1", "cdm_table_4", "c",           "",
-    FALSE,      "b",     "cdm_table_1", "cdm_table_4", "c",           "not a subset of cdm_table_4$c"
-  ) %>%
-    select(ref_table, ref_table_pk, table, column, candidate, why)
+    ~column, ~candidate,  ~why,
+    "a",     TRUE,       "",
+    "b",     FALSE,      "<reason>"
+  )
 
   map(
-    .x = cdm_test_obj_src,
+    cdm_test_obj_src,
     ~ expect_identical(
       .x %>%
         cdm_add_pk(cdm_table_4, c) %>%
-        cdm_enum_fk_candidates(cdm_table_1, cdm_table_4),
+        cdm_enum_fk_candidates(cdm_table_1, cdm_table_4) %>%
+        mutate(why = if_else(why != "", "<reason>", "")) %>%
+        collect(),
       tbl_fk_candidates_t1_t4
     )
+  )
+
+  tbl_t3_t4 <- tibble::tribble(
+    ~column, ~candidate,  ~why,
+    "c",      FALSE,      "<reason>"
+  )
+
+  map(
+    cdm_test_obj_2_src,
+    ~ expect_equivalent(
+      cdm_add_pk(.x, cdm_table_4, c) %>%
+        cdm_enum_fk_candidates(cdm_table_3, cdm_table_4) %>%
+        mutate(why = if_else(why != "", "<reason>", "")),
+      tbl_t3_t4
+    )
+  )
+
+  tbl_t4_t3 <- tibble::tribble(
+    ~column, ~candidate, ~why,
+    "c",     TRUE,       ""
+  )
+
+  map(
+    cdm_test_obj_src,
+    ~ expect_identical(
+      .x %>%
+        cdm_add_pk(cdm_table_3, c) %>%
+        cdm_enum_fk_candidates(cdm_table_4, cdm_table_3),
+      tbl_t4_t3
+    )
+  )
+
+  nycflights_example <-     tibble::tribble(
+    ~column,          ~candidate, ~why,
+    "origin",         TRUE,       "",
+    "dest",           FALSE,      "<reason>",
+    "tailnum",        FALSE,      "<reason>",
+    "carrier",        FALSE,      "<reason>",
+    "air_time",       FALSE,      "<reason>",
+    "arr_delay",      FALSE,      "<reason>",
+    "arr_time",       FALSE,      "<reason>",
+    "day",            FALSE,      "<reason>",
+    "dep_delay",      FALSE,      "<reason>",
+    "dep_time",       FALSE,      "<reason>",
+    "distance",       FALSE,      "<reason>",
+    "flight",         FALSE,      "<reason>",
+    "hour",           FALSE,      "<reason>",
+    "minute",         FALSE,      "<reason>",
+    "month",          FALSE,      "<reason>",
+    "sched_arr_time", FALSE,      "<reason>",
+    "sched_dep_time", FALSE,      "<reason>",
+    "time_hour",      FALSE,      "<reason>",
+    "year",           FALSE,      "<reason>"
+  )
+
+  expect_identical(
+    cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports) %>%
+      mutate(why = if_else(why != "", "<reason>", "")),
+    nycflights_example
   )
 
   map(
