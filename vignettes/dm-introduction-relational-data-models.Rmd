@@ -82,7 +82,7 @@ dm %>%
   cdm_get_all_pks()
 ```
 
-If an attribute is suitable as a primary key can be checked with `cdm_enum_pk_candidates()`.
+If an attribute is suitable as a primary key, it can be checked with `cdm_enum_pk_candidates()`.
 Which columns of the `airlines` table can serve as a primary key?
 
 ```{r}
