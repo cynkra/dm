@@ -1,5 +1,5 @@
 ---
-output: 
+output:
   github_document:
     html_preview: false
 ---
@@ -19,9 +19,9 @@ fansi::set_knit_hooks(knitr::knit_hooks)
 options(crayon.enabled = TRUE, width = 75, cli.width = 75, pillar.bold = TRUE)
 
 knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
+  x %>%
+    DiagrammeRsvg::export_svg() %>%
+    c("`````{=html}\n", ., "\n`````\n") %>%
     knitr::asis_output()
 }
 ```
@@ -56,7 +56,7 @@ The motivation for the {dm} package is a more sophisticated data management.
 {dm} uses the relational data model and its core concept of splitting one table into multiple tables.
 
 ```{r draw, echo = FALSE}
-cdm_nycflights13(cycle = TRUE) %>% 
+cdm_nycflights13(cycle = TRUE) %>%
   cdm_draw()
 ```
 
@@ -87,7 +87,7 @@ In contrast, using the classical {dplyr} notation you need three `left_join()` c
 library(tidyverse)
 library(nycflights13)
 
-flights %>% 
+flights %>%
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
   left_join(airports, by = c("origin" = "faa"))
@@ -106,7 +106,7 @@ The separation into multiple tables achieves several goals:
 - **Improve consistency**: for updating any information (e.g. the name of an airport), it is sufficient to update in only one place
 - **Segmentation**: information is organized by topic, individual tables are smaller and easier to handle
 
-## Good to Know 
+## Good to Know
 
 Multiple, linked tables are a common concept in database management.
 Since many R users have a background in other disciplines, we present five important terms in relational data modeling to jump-start working with {dm}.
@@ -134,7 +134,7 @@ The `nycflights13` relations can be transferred into the following graphical rep
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.
-By using directed arrows the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere).
+By using directed arrows the visualization explicitly shows the connection between different columns/attributes.
 For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
 Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
 
@@ -144,7 +144,8 @@ The links between the tables are established through *primary keys* and *foreign
 
 In a relational data model every table needs to have one column/attribute that uniquely identifies a row.
 This column is called primary key (abbreviated with pk).
-A primary key can be either an existing column that satifies the condition of being unique or a new column that assigns an identifier.
+The primary key column has unique values and can't contain `NA` or `NULL` values.
+If no such column exists, it is common practice to create a synthetic column of numeric or globally unique identifiers (surrogate key).
 
 In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
 
@@ -241,9 +242,9 @@ cdm_nycflights13(cycle = FALSE) %>%
   cdm_get_tables() %>%
   map_int(nrow)
 
-cdm_nycflights13(cycle = FALSE) %>% 
+cdm_nycflights13(cycle = FALSE) %>%
   cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
-  cdm_apply_filters() %>% 
+  cdm_apply_filters() %>%
   cdm_get_tables() %>%
   map_int(nrow)
 ```
