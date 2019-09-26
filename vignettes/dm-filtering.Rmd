@@ -1,5 +1,5 @@
 ---
-title: "Filtering in relational data models"
+title: "Filtering in Relational Data Models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
