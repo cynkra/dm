@@ -69,7 +69,7 @@ As an example, we consider the [`nycflights13`](https://github.com/hadley/nycfli
 This dataset contains five tables: the main `flights` table with links into the `airlines`, `planes` and `airports` tables, and a `weather` table without an explicit link.
 
 Assume your task is to merge all tables (except the `weather` table).
-In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one big dataframe.
+In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide dataframe.
 
 ```{r}
 library(tidyverse)
