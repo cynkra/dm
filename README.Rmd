@@ -146,7 +146,8 @@ The links between the tables are established through *primary keys* and *foreign
 
 In a relational data model every table needs to have one column/attribute that uniquely identifies a row.
 This column is called primary key (abbreviated with pk).
-A primary key can be either an existing column that satifies the condition of being unique or a new column that assigns an identifier.
+The primary key column has unique values and can't contain `NA` or `NULL` values.
+If no such column exists, it is common practice to create a synthetic column of numeric or globally unique identifiers (surrogate key).
 
 In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
 
