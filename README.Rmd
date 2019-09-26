@@ -69,7 +69,19 @@ As an example, we consider the [`nycflights13`](https://github.com/hadley/nycfli
 This dataset contains five tables: the main `flights` table with links into the `airlines`, `planes` and `airports` tables, and a `weather` table without an explicit link.
 
 Assume your task is to merge all tables (except the `weather` table).
-In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one big dataframe.
+This cross-referencing is a common first step when modelling or plotting data.
+
+In {dm} the basic element is [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
+You can create it with `cdm_nycflights13()` for the example data.
+After that you can use the links between the tables as often as you wish - without explicitly referring to the relations ever again.
+The task of joining four tables (`flights`, `airlines`, `planes` and `airports`) boils down to:
+
+```{r}
+cdm_nycflights13() %>%
+  cdm_flatten_to_tbl(start = flights)
+```
+
+In contrast, using the classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide dataframe.
 
 ```{r}
 library(tidyverse)
@@ -81,17 +93,7 @@ flights %>%
   left_join(airports, by = c("origin" = "faa"))
 ```
 
-In contrast, **using a relational data model shortens the task** to one line of code by using `cdm_flatten_to_tbl()`.
-
-The reason: A once defined data model contains all relations between the tables.
-The function `cdm_nycflights13()` helps to do this with the example data.
-After creating such [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html), you can use these links as often as you wish - without explicitly referring to the relations ever again.
-The task of joining `flights` with `airlines`, `planes` and `airports` boils down to:
-
-```{r}
-cdm_nycflights13() %>%
-  cdm_flatten_to_tbl(start = flights)
-```
+You can find more information and important terms to jump-start working with {dm} in the article ["Introduction to Relational Data Models""](dm-introduction-relational-data-models.html).
 
 ### The Advantages in Brief
 
@@ -103,24 +105,6 @@ The separation into multiple tables achieves several goals:
     - manufacturer and number of seats for each airplane
 - **Improve consistency**: for updating any information (e.g. the name of an airport), it is sufficient to update in only one place
 - **Segmentation**: information is organized by topic, individual tables are smaller and easier to handle
-
-### The Case for Relational Data Models for {dplyr} Users
-
-Users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
-However, flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values.
-Worst case, you have a dataframe with multiple columns and in each row only a single value is different.
-
-This calls for a better data organization.
-The separation into multiple tables is a first step that helps data quality.
-But without an associated data model you don't take full advantage.
-
-Let's illustrate this challenge with the `flights` data.
-Details like the full name of an airport are not available immediately but must be joined/merged.
-This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other  forms of merging data ([see Example above](#example)).
-
-{dm} offers a more elegant and shorter way to combine values by establishing key relations (see next section [Good to Know](#good-to-know)) while augmenting {dplyr}/{dbplyr} workflows.
-
-You can have the best of both worlds: Manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.
 
 ## Good to Know 
 
@@ -162,12 +146,11 @@ For example, if you want to link the `airlines` table in the `nycflights13` data
 
 Further Reading: The {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
 
-
 ### 4) Normalization
 
-Normalization is the technical term that describes the central design principle of a relational data model: splitting data into multiple tables.
-A normalized data schema consists of several relations (tables) that are linked with attributes (columns) with primary and foreign keys.
 One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries.
+Normalization is the technical term that describes this central design principle of a relational data model: splitting data into multiple tables.
+A normalized data schema consists of several relations (tables) that are linked with attributes (columns) with primary and foreign keys.
 
 For example, if you want to change the name of one airport in `nycflights13`, you have to change only a single data entry.
 Sometimes, this principle is called "single point of truth".
