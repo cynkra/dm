@@ -36,10 +36,8 @@
 
 
 <meta property="og:title" content="Find foreign key candidates in a table — cdm_enum_fk_candidates" />
-<meta property="og:description" content="Which columns are foreign candidates of a table, referencing the primary key column of another dm object's table?
-cdm_enum_fk_candidates() checks first, if ref_table has a primary key set. Then it determines
-for each column of table, if this column contains only a subset of values of the primary key column of
-ref_table and is therefore a candidate for a foreign key from table to ref_table." />
+<meta property="og:description" content="Which columns are good candidates as a foreign key of a table, referencing
+the primary key column of another dm object's table?" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,10 +130,8 @@ ref_table and is therefore a candidate for a foreign key from table to ref_table
     </div>
 
     <div class="ref-description">
-    <p>Which columns are foreign candidates of a table, referencing the primary key column of another <code><a href='dm.html'>dm</a></code> object's table?
-<code>cdm_enum_fk_candidates()</code> checks first, if <code>ref_table</code> has a primary key set. Then it determines
-for each column of <code>table</code>, if this column contains only a subset of values of the primary key column of
-<code>ref_table</code> and is therefore a candidate for a foreign key from <code>table</code> to <code>ref_table</code>.</p>
+    <p>Which columns are good candidates as a foreign key of a table, referencing
+the primary key column of another <code><a href='dm.html'>dm</a></code> object's table?</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_enum_fk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)</pre>
@@ -157,6 +153,23 @@ for each column of <code>table</code>, if this column contains only a subset of 
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A table with an overview which columns of <code>table</code> would be suitable candidates as
+foreign key columns referencing <code>ref_table</code> and which columns would not.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>cdm_enum_fk_candidates()</code> checks first, if <code>ref_table</code> has a primary key set.
+For each column of <code>table</code> a join operation is then tried, with parameter <code>by</code> matching
+the respective column with the primary key of <code>ref_table</code>. This tests implicitly for
+type compatibility (on most sources). Based on the result of the join, the
+entry in the result column <code>why</code> is:</p><ul>
+<li><p>an empty entry, if the column is a candidate</p></li>
+<li><p>the total percentage and individual numbers of missing matches between the entries of the
+respective column in table <code>table</code> and the primary column entries in table <code>ref_table</code>.</p></li>
+<li><p>the error message triggered by the error (often stating the mismatched column types)</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other foreign key functions: <code><a href='cdm_add_fk.html'>cdm_add_fk</a></code>,
@@ -164,38 +177,36 @@ for each column of <code>table</code>, if this column contains only a subset of 
   <code><a href='cdm_has_fk.html'>cdm_has_fk</a></code>, <code><a href='cdm_rm_fk.html'>cdm_rm_fk</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-
-<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_enum_fk_candidates</span>(<span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 6
-#&gt;    ref_table ref_table_pk table   column       candidate why                    
-#&gt;    &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;        &lt;lgl&gt;     &lt;chr&gt;                  
-#&gt;  1 airports  faa          flights year         FALSE     not a subset of airpor…
-#&gt;  2 airports  faa          flights month        FALSE     not a subset of airpor…
-#&gt;  3 airports  faa          flights day          FALSE     not a subset of airpor…
-#&gt;  4 airports  faa          flights dep_time     FALSE     not a subset of airpor…
-#&gt;  5 airports  faa          flights sched_dep_t… FALSE     not a subset of airpor…
-#&gt;  6 airports  faa          flights dep_delay    FALSE     not a subset of airpor…
-#&gt;  7 airports  faa          flights arr_time     FALSE     not a subset of airpor…
-#&gt;  8 airports  faa          flights sched_arr_t… FALSE     not a subset of airpor…
-#&gt;  9 airports  faa          flights arr_delay    FALSE     not a subset of airpor…
-#&gt; 10 airports  faa          flights carrier      FALSE     not a subset of airpor…
-#&gt; 11 airports  faa          flights flight       FALSE     not a subset of airpor…
-#&gt; 12 airports  faa          flights tailnum      FALSE     not a subset of airpor…
-#&gt; 13 airports  faa          flights origin       TRUE      ""                     
-#&gt; 14 airports  faa          flights dest         FALSE     not a subset of airpor…
-#&gt; 15 airports  faa          flights air_time     FALSE     not a subset of airpor…
-#&gt; 16 airports  faa          flights distance     FALSE     not a subset of airpor…
-#&gt; 17 airports  faa          flights hour         FALSE     not a subset of airpor…
-#&gt; 18 airports  faa          flights minute       FALSE     not a subset of airpor…
-#&gt; 19 airports  faa          flights time_hour    FALSE     not a subset of airpor…</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>cdm_enum_fk_candidates</span>(<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>(), <span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 3
+#&gt;    column       candidate why                                                   
+#&gt;    &lt;chr&gt;        &lt;lgl&gt;     &lt;chr&gt;                                                 
+#&gt;  1 origin       TRUE      ""                                                    
+#&gt;  2 dest         FALSE     7602 entries (2.3%) of `flights$dest` not in `airport…
+#&gt;  3 tailnum      FALSE     334264 entries (99.3%) of `flights$tailnum` not in `a…
+#&gt;  4 carrier      FALSE     336776 entries (100%) of `flights$carrier` not in `ai…
+#&gt;  5 air_time     FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt;  6 arr_delay    FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt;  7 arr_time     FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt;  8 day          FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt;  9 dep_delay    FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 10 dep_time     FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 11 distance     FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 12 flight       FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 13 hour         FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 14 minute       FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 15 month        FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 16 sched_arr_t… FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 17 sched_dep_t… FALSE     Can't join on 'value' x 'value' because of incompatib…
+#&gt; 18 time_hour    FALSE     cannot join a POSIXct object with an object that is n…
+#&gt; 19 year         FALSE     Can't join on 'value' x 'value' because of incompatib…</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
