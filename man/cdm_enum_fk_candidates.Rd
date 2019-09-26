@@ -15,7 +15,7 @@ cdm_enum_fk_candidates(dm, table, ref_table)
 }
 \value{
 A table with an overview which columns of \code{table} would be suitable candidates as
-foreign key columns referencing \code{ref_table}
+foreign key columns referencing \code{ref_table} and which columns would not.
 }
 \description{
 Which columns are good candidates as a foreign key of a table, referencing
@@ -23,16 +23,15 @@ the primary key column of another \code{\link{dm}} object's table?
 }
 \details{
 \code{cdm_enum_fk_candidates()} checks first, if \code{ref_table} has a primary key set.
-For each column of \code{table} an \code{\link[=anti_join]{anti_join()}} is then tried, with parameter \code{by} matching
+For each column of \code{table} a join operation is then tried, with parameter \code{by} matching
 the respective column with the primary key of \code{ref_table}. This tests implicitly for
-type compatibility. If the result of the \code{anti_join()} is:
+type compatibility (on most sources). Based on the result of the join, the
+entry in the result column \code{why} is:
 \itemize{
-\item a tibble with zero rows: the column is a candidate, there will be an empty entry in column \code{why}
-of the result tibble.
-\item a tibble with rows: the percentage of missing values in the parent table is calculated and included in
-the entry for this column in \code{why}
-\item an error: the error message becomes the entry in column \code{why} for this column (often this is because of
-mismatched column types)
+\item an empty entry, if the column is a candidate
+\item the total percentage and individual numbers of missing matches between the entries of the
+respective column in table \code{table} and the primary column entries in table \code{ref_table}.
+\item the error message triggered by the error (often stating the mismatched column types)
 }
 }
 \examples{
