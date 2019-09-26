@@ -288,6 +288,9 @@ If you would like to learn more about {dm}, the [Intro article](https://krlmlr.g
 Further resources:
 
 - [Function reference](https://krlmlr.github.io/dm/reference/index.html)
+- [Introduction to Relational Data Models](https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-model.html) article
+- [Joining](https://krlmlr.github.io/dm/articles/dm-joining.html) article
+- [Filtering](https://krlmlr.github.io/dm/articles/dm-filtering.html) article
 - [Class 'dm' and basic operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html) article
 - [Visualizing 'dm' objects](https://krlmlr.github.io/dm/articles/dm-visualization.html) article
 - [Low-level operations](https://krlmlr.github.io/dm/articles/dm-low-level.html) article
