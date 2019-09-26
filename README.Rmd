@@ -136,7 +136,7 @@ The `nycflights13` relations can be transferred into the following graphical rep
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.
-By using directed arrows the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere).
+By using directed arrows the visualization explicitly shows the connection between different columns/attributes.
 For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
 Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
 
