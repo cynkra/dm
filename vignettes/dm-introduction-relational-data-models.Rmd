@@ -163,6 +163,16 @@ flights %>%
   select(flight, name)
 ```
 
+Another way to demonstrate normalisation is the function `decompose_table()`.
+It splits one table into two.
+Let's take the `planes` table and determine a new table containing the specified columns.
+This results in a `parent_table` and a `child_table` containing the remaining columns, connected by surrogate keys, in this case `model_id`.
+
+```{r}
+planes %>% 
+  decompose_table(model_id, model, manufacturer, type, engines, seats, manufacturer, speed)
+```
+
 Further Reading: See the [Simple English Wikipedia article on database normalisation](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
 
 ## 6. Relational Databases {#relational-databases}
