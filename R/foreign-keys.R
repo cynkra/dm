@@ -196,12 +196,11 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   }
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)
-  rows_tbl <- count(tbl) %>% pull()
   tbl_colnames <- colnames(tbl)
 
   tibble(
     column = tbl_colnames,
-    why = map_chr(column, ~check_fk(dm, tbl, table_name, .x, rows_tbl, ref_tbl, ref_table_name, ref_tbl_pk))
+    why = map_chr(column, ~check_fk(dm, tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_pk))
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
@@ -210,39 +209,40 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
     select(-arrange_col)
 })
 
-check_fk <- function(dm, t1, t1_name, colname, rows_t1, t2, t2_name, pk) {
+check_fk <- function(dm, t1, t1_name, colname, t2, t2_name, pk) {
 
   t1_join <- t1 %>% select(value = !!sym(colname))
   t2_join <- t2 %>% select(value = !!sym(pk)) %>% mutate(match = 1L)
 
   res_tbl <- tryCatch(
     left_join(t1_join, t2_join, by = "value") %>%
-      mutate(mismatch_or_null = if_else(is.na(match), value, NULL)) %>%
-      count(mismatch_or_null) %>%
-      filter(!is.na(mismatch_or_null)) %>%
-      arrange(desc(n)),
+    # if value is NULL, this also counts as a match -- consistent with fk semantics
+    mutate(mismatch_or_null = if_else(is.na(match), value, NULL)) %>%
+    count(mismatch_or_null) %>%
+    ungroup() %>% # dbplyr problem?
+    mutate(n_mismatch = sum(if_else(is.na(mismatch_or_null), 0L, n), na.rm = TRUE)) %>%
+    mutate(n_total = sum(n, na.rm = TRUE)) %>%
+    arrange(desc(n)) %>%
+    filter(!is.na(mismatch_or_null)) %>%
+    head(MAX_COMMAS + 1L) %>%
+    collect(),
     error = identity)
-  if (is_condition(res_tbl)) {
-    return(conditionMessage(res_tbl))
-  }
-  # "na.rm = TRUE", to suppress standard warning message: "Missing values are always removed in SQL."
-  # Second `tryCatch()` is necessary, because on some DBs (e.g. Postgres) mismatched types don't give an immediate error,
-  # but only once the SQL is executed (`summarize(...)`)
-  rows_missing <- tryCatch(summarize(res_tbl, sum(n, na.rm = TRUE)) %>% pull(),
-                           error = identity)
-  if (is_condition(rows_missing)) {
-    return(conditionMessage(rows_missing))
-  }
 
-  if (is.na(rows_missing) || rows_missing == 0) return("")
-  percentage_missing <- as.character(round((rows_missing / rows_t1) * 100, 1))
+  # return error message if error occurred (possibly types didn't match etc.)
+  if (is_condition(res_tbl)) return(conditionMessage(res_tbl))
+  n_mismatch <- pull(head(res_tbl, 1), n_mismatch)
+  # return empty character if candidate
+  if (is_empty(n_mismatch)) return("")
+  # calculate percentage and compose detailed description for missing values
+  n_total <- pull(head(res_tbl, 1), n_total)
+
+  percentage_missing <- as.character(round((n_mismatch / n_total) * 100, 1))
   vals_extended <- res_tbl %>%
-    head(MAX_COMMAS + 1) %>%
     mutate(num_mismatch = paste0(mismatch_or_null, " (", n, ")")) %>%
     # FIXME: this fails on SQLite, why?
     # mutate(num_mismatch = glue("{as.character(mismatch_or_null)} ({as.character(n)})")) %>%
     pull()
   vals_formatted <- commas(format(vals_extended, trim = TRUE, justify = "none"))
-  glue("{as.character(rows_missing)} entries ({percentage_missing}%) of ",
+  glue("{as.character(n_mismatch)} entries ({percentage_missing}%) of ",
        "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}")
 }
