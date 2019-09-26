@@ -27,31 +27,60 @@ knit_print.grViz <- function(x, ...) {
 ```
 
 Multiple, linked tables are a common concept within computer science. 
-Since many R users have a background in other disciplines, we present **five important terms in relational data modeling** to jump-start working with {dm}.
+Since many R users have a background in other disciplines, we present **six important terms in relational data modeling** to jump-start working with {dm}.
 
-It's good to have at least basic knowledge about the following five terms:
+It's good to have at least basic knowledge about the following terms:
 
-1) [Data Model](#model)
-2) [Primary Keys](#pk)
-3) [Foreign Keys](#fk)
-4) [Normalisation](#normalisation)
-5) [Relational Databases](#relational-databases)
+1) [Tables](#tables)
+2) [Data Model](#model)
+3) [Primary Keys](#pk)
+4) [Foreign Keys](#fk)
+5) [Normalisation](#normalisation)
+6) [Relational Databases](#relational-databases)
 
-## 1. Data Model {#model}
+## 1. Tables
 
-A data model shows the structure between multiple tables, that can be linked together.
+Users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
+However, flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values.
+Worst case, you have a dataframe with multiple columns and in each row only a single value is different.
 
-An example is the [`nycflights13` dataset](https://github.com/hadley/nycflights13).
+This calls for a better data organization.
+The separation into multiple tables is a first step that helps data quality.
+But without an associated data model you don't take full advantage.
+
+Let's illustrate this challenge with data from the [`nycflights13` dataset](https://github.com/hadley/nycflights13).
 It contains detailed information of 336776 flights that departed from New York City in 2013.
 The information is stored in five tables.
 
-The `nycflights13` relations can be transferred into the following graphical representation:
+Details like the full name of an airport are not available immediately but must be joined/merged.
+This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other  forms of merging data.
+
+In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide dataframe.
 
 ```{r warning=F, message=F}
 library(tidyverse)
 library(dm)
 library(nycflights13)
 
+flights %>% 
+  left_join(airlines, by = "carrier") %>%
+  left_join(planes, by = "tailnum") %>%
+  left_join(airports, by = c("origin" = "faa"))
+```
+
+{dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.
+
+You can have the best of both worlds: Manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.
+
+The next step is to create a [data model](#model) based on multiple tables:
+
+## 2. Data Model {#model}
+
+A data model shows the structure between multiple tables, that can be linked together.
+
+The `nycflights13` relations can be transferred into the following graphical representation:
+
+```{r warning=F, message=F}
 dm <- cdm_nycflights13(cycle = TRUE) 
 
 dm %>% 
@@ -67,7 +96,7 @@ The links between the tables are established through [primary keys](#pk) and [fo
 
 Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
 
-## 2. Primary Keys {#pk}
+## 3. Primary Keys {#pk}
 
 In a relational data model every table needs to have **one column or attribute that uniquely identifies a row**.
 This column is called primary key (abbreviated with pk).
@@ -92,7 +121,7 @@ dm %>%
 
 Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
 
-## 3. Foreign Keys {#fk}
+## 4. Foreign Keys {#fk}
 
 The **counterpart of a primary key in one table is the foreign key in another table**.
 In order to join two tables, the primary key of the first table needs to be available in the second table, too.
@@ -109,7 +138,7 @@ dm %>%
 
 Further Reading: All {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
 
-## 4. Normalisation {#normalisation}
+## 5. Normalisation {#normalisation}
 
 Normalisation is the technical term that describes the **central design principle of a relational data model**:
 splitting data into multiple tables.
@@ -136,7 +165,7 @@ flights %>%
 
 Further Reading: See the [Simple English Wikipedia article on database normalisation](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
 
-## 5. Relational Databases {#relational-databases}
+## 6. Relational Databases {#relational-databases}
 
 {dm} is built upon relational data models, but it is not a database itself.
 Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres.
