@@ -71,26 +71,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # in case of `semi_join()` and `anti_join()` no renaming necessary
   gotta_rename <- !(join_name %in% c("semi_join", "anti_join"))
 
-  # if filters are set and at least one of them is connected to the table `start`,
-  # referential integrity is guaranteed by definition of the filtering operation.
-  # This has several implications:
-  # 1. left_join(), right_join(), full_join(), inner_join() will produce the same results
-  # 2. semi_join() will be equal to `tbl(dm, start)`
-  # 3. anti_join() will be equal to `tbl(dm, start) %>% filter(FALSE)`
-  # FIXME: improve `is_any_filter_conn_to_tbl()`
-  any_filter_in_conn_comp <- is_any_filter_conn_to_tbl(dm, start)
-
-  if (any_filter_in_conn_comp) {
-    if (join_name == "semi_join") return(tbl(dm, start))
-    if (join_name == "anti_join") return(cdm_get_tables(dm)[[start]] %>% filter(1 == 0))
-    if (join_name != "left_join") {
-      message("Using default `left_join()`, since filter conditions are set and `join` ",
-              "neither `semi_join()` nor `anti_join()`. ",
-              "Use `join = left_join` to silence this message.")
-      join <- left_join
-      join_name <- "left_join"
-    }
-  }
   # early returns for some of the possible joins would be possible for "perfect" key relations,
   # but since it is generally possible to have imperfect FK relations, `semi_join` and `anti_join` might
   # produce results, that are of interest, e.g.
@@ -101,11 +81,13 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # the foreign key is pointing to
   g <- create_graph_from_dm(dm, directed = TRUE)
 
-  # We use the induced subgraph right away if the list of tables
-  # is restricted
-  if (has_length(list_of_pts)) {
-    g <- igraph::induced_subgraph(g, c(start, list_of_pts))
+  # If no tables are given, we use all reachable tables
+  if (is_empty(list_of_pts)) {
+    list_of_pts <- get_names_of_connected(g, start)
   }
+
+  # We use the induced subgraph right away
+  g <- igraph::induced_subgraph(g, c(start, list_of_pts))
 
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
@@ -120,20 +102,11 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
 
   # argument checking, or filter and recompute induced subgraph
   # for subsequent check
-  if (has_length(list_of_pts)) {
-    if (anyNA(order_df$name)) {
-      abort_tables_not_reachable_from_start()
-    }
-  } else {
-    order_df <-
-      order_df %>%
-      filter(!is.na(name))
-
-    g <- igraph::induced_subgraph(g, c(start, order_df$name))
+  if (anyNA(order_df$name)) {
+    abort_tables_not_reachable_from_start()
   }
 
-  # We can only be sure that we have a cycle if all tables
-  # are reachable
+  # Cycles not yet supported
   if (length(V(g)) - 1 != length(E(g))) {
     abort_no_cycles()
   }
@@ -142,7 +115,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # if 2 or more of them are joined to the fact table. If filter conditions are set,
   # and at least one of them is in the same connected component of the graph representation of the `dm`,
   # it does not play a role.
-  if (join_name == "right_join" && nrow(order_df) > 2 && !any_filter_in_conn_comp) abort_rj_not_wd()
+  if (join_name == "right_join" && nrow(order_df) > 2) abort_rj_not_wd()
 
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
