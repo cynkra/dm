@@ -1,24 +1,44 @@
 try(library(dbplyr), silent = TRUE)
 library(rprojroot)
 
+if (!is_attached("dm_cache")) {
+  ((attach))(new_environment(), pos = length(search()) - 1, name = "dm_cache")
+}
+cache <- search_env("dm_cache")
+
+`%<-%` <- function(lhs, rhs) {
+  lhs <- as_name(ensym(lhs))
+
+  value <- get0(lhs, cache)
+  if (is.null(value)) {
+    message("Evaluating ", lhs)
+    value <- rhs
+    assign(lhs, value, cache)
+  } else {
+    message("Using cached ", lhs)
+  }
+  assign(lhs, value, parent.frame())
+  invisible(value)
+}
+
 # for check_cardinality...() ----------------------------------------------
 
 message("for check_cardinality...()")
 
-d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
-d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
-d3 <- tibble::tibble(c = 1:5)
-d4 <- tibble::tibble(c = c(1:5, 5L))
-d5 <- tibble::tibble(a = 1:5)
-d6 <- tibble::tibble(c = 1:4)
-d7 <- tibble::tibble(c = c(1:5, 5L, 6L))
-d8 <- tibble::tibble(c = c(1:6))
+d1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
+d2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
+d3 %<-% tibble::tibble(c = 1:5)
+d4 %<-% tibble::tibble(c = c(1:5, 5L))
+d5 %<-% tibble::tibble(a = 1:5)
+d6 %<-% tibble::tibble(c = 1:4)
+d7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
+d8 %<-% tibble::tibble(c = c(1:6))
 
 # for check_key() ---------------------------------------------------------
 
 message("for check_fk() and check_set_equality()")
 
-data <-
+data %<-%
   tribble(
     ~c1, ~c2, ~c3,
     1, 2, 3,
@@ -26,15 +46,15 @@ data <-
     1, 2, 4
   )
 
-data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
-data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
+data_1 %<-% tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
+data_2 %<-% tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+data_3 %<-% tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
 # for table-surgery functions ---------------------------------------------
 
 message("for table surgery")
 
-data_ts <- tibble(
+data_ts %<-% tibble(
   a = as.integer(c(1, 2, 1)),
   b = c(1.1, 4.2, 1.1),
   c = as.integer(c(5, 6, 7)),
@@ -43,14 +63,14 @@ data_ts <- tibble(
   f = c(TRUE, FALSE, TRUE)
 )
 
-data_ts_child <- tibble(
+data_ts_child %<-% tibble(
   b = c(1.1, 4.2, 1.1),
   aef_id = as.integer(c(1, 2, 1)),
   c = as.integer(c(5, 6, 7)),
   d = c("a", "b", "c"),
 )
 
-data_ts_parent <- tibble(
+data_ts_parent %<-% tibble(
   aef_id = as.integer(c(1, 2)),
   a = as.integer(c(1, 2)),
   e = c("c", "b"),
@@ -62,45 +82,45 @@ data_ts_parent <- tibble(
 message("for testing filter and semi_join")
 
 # the following is for testing the filtering functionality:
-t1 <- tibble(
+t1 %<-% tibble(
   a = 1:10,
   b = LETTERS[1:10]
 )
 
-t2 <- tibble(
+t2 %<-% tibble(
   c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
   d = 2:7,
   e = c(LETTERS[4:7], LETTERS[5:6])
 )
 
-t3 <- tibble(
+t3 %<-% tibble(
   f = LETTERS[2:11],
   g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
 )
 
-t4 <- tibble(
+t4 %<-% tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
   j = c(LETTERS[3:6], LETTERS[6])
 )
 
-t5 <- tibble(
+t5 %<-% tibble(
   k = 1:4,
   l = letters[2:5],
   m = c("house", "tree", "streetlamp", "streetlamp")
 )
 
-t6 <- tibble(
+t6 %<-% tibble(
   n = c("house", "tree", "hill", "streetlamp", "garden"),
   o = letters[5:9]
 )
 
-t7 <- tibble(
+t7 %<-% tibble(
   p = letters[4:9],
   q = c("elephant", "lion", "seal", "worm", "dog", "cat")
 )
 
-dm_for_filter_w_cycle <-
+dm_for_filter_w_cycle %<-%
   as_dm(list(
     t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7
   )) %>%
@@ -121,18 +141,18 @@ dm_for_filter_w_cycle <-
 
 message("for testing filter and semi_join (2)")
 
-list_for_filter <- list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
-dm_for_filter <-
+list_for_filter %<-% list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
+dm_for_filter %<-%
   dm_for_filter_w_cycle %>%
   cdm_select_tbl(-t7)
 
-dm_for_filter_smaller <-
+dm_for_filter_smaller %<-%
   dm_for_filter %>%
   cdm_select_tbl(-t1, -t2, -t6)
 
 message("for testing filter and semi_join (3)")
 
-output_1 <- list(
+output_1 %<-% list(
   t1 = tibble(a = c(4:7), b = LETTERS[4:7]),
   t2 = tibble(c = c("seal", "worm", "dog", "cat"), d = 4:7, e = c("F", "G", "E", "F")),
   t3 = tibble(f = LETTERS[5:7], g = c("four", "five", "six")),
@@ -148,7 +168,7 @@ output_1 <- list(
   )
 )
 
-output_3 <- list(
+output_3 %<-% list(
   t1 = tibble::tribble(
     ~a, ~b,
     4L, "D",
@@ -179,7 +199,7 @@ output_3 <- list(
   )
 )
 
-dm_for_filter_rev <-
+dm_for_filter_rev %<-%
   new_dm2(
     tables = rev(cdm_get_tables(dm_for_filter)),
     base_dm = dm_for_filter
@@ -189,13 +209,13 @@ dm_for_filter_rev <-
 
 message("for tests on `dm` objects: cdm_add_pk(), cdm_add_fk()")
 
-cdm_test_obj <- as_dm(list(
+cdm_test_obj %<-% as_dm(list(
   cdm_table_1 = d2,
   cdm_table_2 = d4,
   cdm_table_3 = d7,
   cdm_table_4 = d8))
 
-cdm_test_obj_2 <- as_dm(list(
+cdm_test_obj_2 %<-% as_dm(list(
   cdm_table_1 = d4,
   cdm_table_2 = d7,
   cdm_table_3 = d8,
@@ -211,26 +231,33 @@ rows_dm_obj <- 24L
 
 message("complicated dm")
 
-t4 <- tibble(
+t4 %<-% tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
   j = c(LETTERS[3:6], LETTERS[6])
 )
 
 
-list_for_filter[["t6_2"]] <- tibble(p = letters[1:6], f = LETTERS[6:11])
-list_for_filter[["t4_2"]] <- tibble(
-  r = letters[2:6],
-  s = c("three", "five", "six", "seven", "eight"),
-  t = c(LETTERS[4:7], LETTERS[5])
-)
-list_for_filter[["a"]] <- tibble(a_1 = letters[10:18], a_2 = 5:13)
-list_for_filter[["b"]] <- tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6)
-list_for_filter[["c"]] <- tibble(c_1 = 4:10)
-list_for_filter[["d"]] <- tibble(d_1 = 1:6, b_1 = LETTERS[c(12:14, 13:15)])
-list_for_filter[["e"]] <- tibble(e_1 = 1:2, b_1 = LETTERS[c(12:13)])
+list_for_filter_2 %<-%
+  modifyList(
+    list_for_filter,
+    list(
+      t6_2 = tibble(p = letters[1:6], f = LETTERS[6:11]),
+      t4_2 = tibble(
+        r = letters[2:6],
+        s = c("three", "five", "six", "seven", "eight"),
+        t = c(LETTERS[4:7], LETTERS[5])
+      ),
+      a = tibble(a_1 = letters[10:18], a_2 = 5:13),
+      b = tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6),
+      c = tibble(c_1 = 4:10),
+      d = tibble(d_1 = 1:6, b_1 = LETTERS[c(12:14, 13:15)]),
+      e = tibble(e_1 = 1:2, b_1 = LETTERS[c(12:13)])
+    )
+  )
 
-dm_more_complex <- as_dm(list_for_filter) %>%
+dm_more_complex %<-%
+  as_dm(list_for_filter_2) %>%
   cdm_add_pk(t1, a) %>%
   cdm_add_pk(t2, c) %>%
   cdm_add_pk(t3, f) %>%
@@ -261,25 +288,25 @@ dm_more_complex <- as_dm(list_for_filter) %>%
 
 message("for cdm_disambiguate_cols()")
 
-iris_1 <- as_tibble(iris) %>%
+iris_1 %<-% as_tibble(iris) %>%
   mutate(key = row_number()) %>%
   select(key, everything())
-iris_2 <- iris_1 %>% mutate(other_col = TRUE)
-iris_3 <- iris_2 %>% mutate(one_more_col = 1)
+iris_2 %<-% iris_1 %>% mutate(other_col = TRUE)
+iris_3 %<-% iris_2 %>% mutate(one_more_col = 1)
 
-iris_1_dis <- iris_1 %>%
+iris_1_dis %<-% iris_1 %>%
   rename_at(2:6, ~ str_replace(., "^", "iris_1."))
-iris_2_dis <- iris_2 %>%
+iris_2_dis %<-% iris_2 %>%
   rename_at(2:7, ~ str_replace(., "^", "iris_2."))
-iris_3_dis <- iris_3 %>%
+iris_3_dis %<-% iris_3 %>%
   rename_at(1:7, ~ str_replace(., "^", "iris_3."))
 
 
-dm_for_disambiguate <- as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
+dm_for_disambiguate %<-% as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
   cdm_add_pk(iris_1, key) %>%
   cdm_add_fk(iris_2, key, iris_1)
 
-dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
+dm_for_disambiguate_2 %<-% as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
   cdm_add_pk(iris_1, key) %>%
   cdm_add_fk(iris_2, key, iris_1)
 
@@ -287,7 +314,7 @@ dm_for_disambiguate_2 <- as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, ir
 
 message("star schema")
 
-fact <- tibble(
+fact %<-% tibble(
   fact = c(
     "acorn",
     "blubber",
@@ -306,37 +333,37 @@ fact <- tibble(
   dim_4_key = 7:16,
   something = 1:10
 )
-fact_clean <-
+fact_clean %<-%
   fact %>%
   rename(
     fact.something = something
   )
 
-dim_1 <- tibble(
+dim_1 %<-% tibble(
   dim_1_pk = 1:20,
   something = letters[3:22]
 )
-dim_1_clean <- dim_1 %>% rename(dim_1.something = something)
+dim_1_clean %<-% dim_1 %>% rename(dim_1.something = something)
 
-dim_2 <- tibble(
+dim_2 %<-% tibble(
   dim_2_pk = letters[1:20],
   something = LETTERS[5:24]
 )
-dim_2_clean <- dim_2 %>% rename(dim_2.something = something)
+dim_2_clean %<-% dim_2 %>% rename(dim_2.something = something)
 
-dim_3 <- tibble(
+dim_3 %<-% tibble(
   dim_3_pk = LETTERS[5:24],
   something = 3:22
 )
-dim_3_clean <- dim_3 %>% rename(dim_3.something = something)
+dim_3_clean %<-% dim_3 %>% rename(dim_3.something = something)
 
-dim_4 <- tibble(
+dim_4 %<-% tibble(
   dim_4_pk = 19:7,
   something = 19:31
 )
-dim_4_clean <- dim_4 %>% rename(dim_4.something = something)
+dim_4_clean %<-% dim_4 %>% rename(dim_4.something = something)
 
-dm_for_flatten <- as_dm(list(
+dm_for_flatten %<-% as_dm(list(
   fact = fact,
   dim_1 = dim_1,
   dim_2 = dim_2,
@@ -352,7 +379,7 @@ dm_for_flatten <- as_dm(list(
   cdm_add_fk(fact, dim_3_key, dim_3) %>%
   cdm_add_fk(fact, dim_4_key, dim_4)
 
-result_from_flatten <-
+result_from_flatten %<-%
   fact_clean %>%
   left_join(dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
   left_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
@@ -425,41 +452,43 @@ if (is_this_a_test()) {
 
   message("loading into database")
 
-  dm_for_filter_src <- cdm_test_load(dm_for_filter)
-  dm_for_filter_rev_src <- cdm_test_load(dm_for_filter_rev)
-  dm_for_filter_smaller_src <- cdm_test_load(dm_for_filter_smaller)
-  dm_for_filter_w_cycle_src <- cdm_test_load(dm_for_filter_w_cycle)
-  cdm_test_obj_src <- cdm_test_load(cdm_test_obj)
-  cdm_test_obj_2_src <- cdm_test_load(cdm_test_obj_2)
-  dm_for_flatten_src <- cdm_test_load(dm_for_flatten)
-  dm_more_complex_src <- cdm_test_load(dm_more_complex)
+  dm_for_filter_src %<-% cdm_test_load(dm_for_filter)
+  dm_for_filter_rev_src %<-% cdm_test_load(dm_for_filter_rev)
+  dm_for_filter_smaller_src %<-% cdm_test_load(dm_for_filter_smaller)
+  dm_for_filter_w_cycle_src %<-% cdm_test_load(dm_for_filter_w_cycle)
+  cdm_test_obj_src %<-% cdm_test_load(cdm_test_obj)
+  cdm_test_obj_2_src %<-% cdm_test_load(cdm_test_obj_2)
+  dm_for_flatten_src %<-% cdm_test_load(dm_for_flatten)
+  dm_more_complex_src %<-% cdm_test_load(dm_more_complex)
 
-  d1_src <- test_load(d1)
-  d2_src <- test_load(d2)
-  d3_src <- test_load(d3)
-  d4_src <- test_load(d4)
-  d5_src <- test_load(d5)
-  d6_src <- test_load(d6)
+  message("loading data frames into database")
+
+  d1_src %<-% test_load(d1)
+  d2_src %<-% test_load(d2)
+  d3_src %<-% test_load(d3)
+  d4_src %<-% test_load(d4)
+  d5_src %<-% test_load(d5)
+  d6_src %<-% test_load(d6)
 
   # names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
-  src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
+  src_names %<-% names(d1_src) # e.g. gets src names of list entries of object d1_src
 
-  data_check_key_src <- test_load(data)
+  data_check_key_src %<-% test_load(data)
 
-  data_1_src <- test_load(data_1)
-  data_2_src <- test_load(data_2)
-  data_3_src <- test_load(data_3)
+  data_1_src %<-% test_load(data_1)
+  data_2_src %<-% test_load(data_2)
+  data_3_src %<-% test_load(data_3)
 
-  data_ts_src <- test_load(data_ts)
-  data_ts_child_src <- test_load(data_ts_child)
-  data_ts_parent_src <- test_load(data_ts_parent)
+  data_ts_src %<-% test_load(data_ts)
+  data_ts_child_src %<-% test_load(data_ts_child)
+  data_ts_parent_src %<-% test_load(data_ts_parent)
 
-  list_of_data_ts_parent_and_child_src <- map2(
+  list_of_data_ts_parent_and_child_src %<-% map2(
     .x = data_ts_child_src,
     .y = data_ts_parent_src,
     ~ list("child_table" = .x, "parent_table" = .y)
   )
 
-  t1_src <- test_load(t1)
-  t3_src <- test_load(t3)
+  t1_src %<-% test_load(t1)
+  t3_src %<-% test_load(t3)
 }
