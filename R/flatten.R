@@ -167,7 +167,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   # list of join partners
   ordered_table_list <- clean_dm %>% cdm_get_tables() %>% extract(order_df$name)
-  by <- map2(order_df$pred, order_df$name, ~ get_by(dm, .x, .y))
+  by <- map2(order_df$pred, order_df$name, ~ get_by(clean_dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
   reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = start_tbl)
