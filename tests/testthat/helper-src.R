@@ -234,13 +234,6 @@ rows_dm_obj <- 24L
 
 message("complicated dm")
 
-t4 %<-% tibble(
-  h = letters[1:5],
-  i = c("three", "four", "five", "six", "seven"),
-  j = c(LETTERS[3:6], LETTERS[6])
-)
-
-
 list_for_filter_2 %<-%
   modifyList(
     list_for_filter,
@@ -311,7 +304,7 @@ iris_1_dis %<-% {
 }
 iris_2_dis %<-% {
   iris_2 %>%
-    rename_at(2:7, ~ str_replace(., "^", "iris_2."))
+    rename_at(1:7, ~ str_replace(., "^", "iris_2."))
 }
 iris_3_dis %<-% {
   iris_3 %>%
@@ -328,7 +321,7 @@ dm_for_disambiguate %<-% {
 dm_for_disambiguate_2 %<-% {
   as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
     cdm_add_pk(iris_1, key) %>%
-    cdm_add_fk(iris_2, key, iris_1)
+    cdm_add_fk(iris_2, iris_2.key, iris_1)
 }
 
 # star schema data model for testing `cdm_flatten_to_tbl()`
