@@ -27,7 +27,6 @@ Imports:
     cli,
     datamodelr,
     DBI,
-    dbplyr,
     dplyr,
     DT (>= 0.5),
     glue,
@@ -45,6 +44,7 @@ Imports:
 Suggests: 
     DiagrammeR,
     DiagrammeRsvg,
+    dbplyr,
     fansi,
     knitr,
     nycflights13,
