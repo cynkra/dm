@@ -81,7 +81,7 @@ cdm_nycflights13() %>%
   cdm_flatten_to_tbl(start = flights)
 ```
 
-In contrast, using the classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide dataframe.
+In contrast, using the classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
 
 ```{r}
 library(tidyverse)
@@ -109,16 +109,26 @@ The separation into multiple tables achieves several goals:
 ## Good to Know
 
 Multiple, linked tables are a common concept in database management.
-Since many R users have a background in other disciplines, we present five important terms in relational data modeling to jump-start working with {dm}.
+Since many R users have a background in other disciplines, we present six important terms in relational data modeling to jump-start working with {dm}.
 
-### 1) Tables
+### 1) Data Frames and Tables
 
-Users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
-Flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values.
-Worst case, you have a dataframe with multiple columns and in each row only a single value is different.
+A data frame is a fundamental data structure in R.
+If you imagine it visually, the result is a typical table structure.
+That's why working with data from spreadsheets is so convenient and users of the the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
 
-This calls for a better data organization.
-The separation into multiple tables is a first step that helps data quality.
+The downside: Data frames and flat file systems like spreadsheets can result in bloated tables, that hold many repetitive values.
+Worst case, you have a data frame with multiple columns and in each row only a single value is different.
+
+This calls for a better data organization by utilizing the resemblance between data frames and database tables, which consist of columns and rows, too.
+The elements are just called differently:
+
+| Data Frame | Table |
+|------------|------------|
+| Column     | Attribute  |
+| Row        | Tuple     |
+
+Therefore, the separation into multiple tables is a first step that helps data quality.
 But without an associated data model you don't take full advantage.
 For example, joining is more complicated than it should be.
 This is illustrated [above](#example).
@@ -130,7 +140,9 @@ With {dm} you can have the best of both worlds: Manage your data as linked table
 A data model shows the structure between multiple tables that can be linked together.
 The `nycflights13` relations can be transferred into the following graphical representation:
 
-```{r draw, echo = FALSE}
+```{r, echo = FALSE}
+cdm_nycflights13(cycle = TRUE) %>%
+  cdm_draw()
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.

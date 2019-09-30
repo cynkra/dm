@@ -31,22 +31,35 @@ Since many R users have a background in other disciplines, we present **six impo
 
 It's good to have at least basic knowledge about the following terms:
 
-1) [Tables](#tables)
+1) [Data Frames and Tables](#tables)
 2) [Data Model](#model)
 3) [Primary Keys](#pk)
 4) [Foreign Keys](#fk)
 5) [Normalisation](#normalisation)
 6) [Relational Databases](#relational-databases)
 
-## 1. Tables
+## 1. Data Frames and Tables
 
-Users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
-However, flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values.
-Worst case, you have a dataframe with multiple columns and in each row only a single value is different.
+A data frame is a fundamental data structure in R.
+Columns represent the variables, the rows the observations.
+In more technical terms: It is a list of variables of the same length and unique row names.
+If you imagine it visually, the result is a typical table structure.
+That's why working with data from spreadsheets is so convenient and users of the the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
 
-This calls for a better data organization.
-The separation into multiple tables is a first step that helps data quality.
+The downside: Data frames and flat file systems like spreadsheets can result in bloated tables, that hold many repetitive values.
+Worst case, you have a data frame with multiple columns and in each row only a single value is different.
+
+This calls for a better data organization by utilizing the resemblance between data frames and database tables, which consist of columns and rows, too.
+The elements are just called differently:
+
+| Data Frame | Table |
+|------------|------------|
+| Column     | Attribute  |
+| Row        | Tuple     |
+
+Therefore, the separation into multiple tables is a first step that helps data quality.
 But without an associated data model you don't take full advantage.
+For example, joining is more complicated than it should be.
 
 Let's illustrate this challenge with data from the [`nycflights13` dataset](https://github.com/hadley/nycflights13).
 It contains detailed information of 336776 flights that departed from New York City in 2013.
@@ -55,7 +68,7 @@ The information is stored in five tables.
 Details like the full name of an airport are not available immediately but must be joined/merged.
 This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other  forms of merging data.
 
-In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide dataframe.
+In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
 
 ```{r warning=F, message=F}
 library(tidyverse)
@@ -128,7 +141,16 @@ In order to join two tables, the primary key of the first table needs to be avai
 This second column is called the foreign key (abbreviated with fk).
 
 For example: If you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
-This is true, because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table:
+This is true, because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
+You can find foreign key candidates with the function `cdm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column and give a
+
+```{r}
+dm %>% 
+  cdm_enum_fk_candidates(flights, airlines) %>% 
+  arrange(desc(candidate))
+```
+
+After finding and assigning foreign keys, get the name of the set foreign key:
 
 ```{r}
 dm %>% 
