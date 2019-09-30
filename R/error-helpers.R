@@ -397,17 +397,6 @@ error_what_a_weird_object <- function(class) {
          class)
 }
 
-# `right_join()` might produce random result for `cdm_flatten_to_tbl()`
-
-abort_rj_not_wd <- function() {
-  abort(error_rj_not_wd(), .subclass = cdm_error_full("rj_not_wd"))
-}
-
-error_rj_not_wd <- function() {
-  paste0("No well-defined result, when using `cdm_flatten_to_tbl()` with `right_join()` ",
-         "with more than 2 tables involved (depends on order of tables in `dm`)")
-}
-
 # not all tables have the same src ----------------------------------------
 
 
