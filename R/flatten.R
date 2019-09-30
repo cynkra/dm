@@ -64,8 +64,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
   walk(list_of_pts, ~check_correct_input(dm, .))
-  # in case ellipsis is empty, user probably wants all possible joins
-  if (is_empty(list_of_pts)) list_of_pts <- src_tbls(dm)
 
   force(join)
   stopifnot(is_function(join))
@@ -103,6 +101,12 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # the foreign key is pointing to
   g <- create_graph_from_dm(dm, directed = TRUE)
 
+  # We use the induced subgraph right away if the list of tables
+  # is restricted
+  if (has_length(list_of_pts)) {
+    g <- igraph::induced_subgraph(g, c(start, list_of_pts))
+  }
+
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
   dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE)
@@ -112,8 +116,27 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
     tibble(
       name = names(dfs[["order"]]),
       pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
-    ) %>%
-    filter(name %in% c(start, list_of_pts))
+    )
+
+  # argument checking, or filter and recompute induced subgraph
+  # for subsequent check
+  if (has_length(list_of_pts)) {
+    if (anyNA(order_df$name)) {
+      abort_tables_not_reachable_from_start()
+    }
+  } else {
+    order_df <-
+      order_df %>%
+      filter(!is.na(name))
+
+    g <- igraph::induced_subgraph(g, c(start, order_df$name))
+  }
+
+  # We can only be sure that we have a cycle if all tables
+  # are reachable
+  if (length(V(g)) - 1 != length(E(g))) {
+    abort_no_cycles()
+  }
 
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table. If filter conditions are set,
@@ -125,10 +148,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
   red_dm <- cdm_reset_all_filters(dm) %>% cdm_select_tbl(order_df$name)
 
-  # if tables in the ellipsis aren't connected without missing links, throw an error
-  if (!all(map_lgl(order_df$name, ~are_tables_connected(red_dm, start, .x)))) {
-    abort_vertices_not_connected("cdm_flatten_to_tbl", "...")
-  }
   if (gotta_rename) {
     recipe <- compute_disambiguate_cols_recipe(red_dm, order_df$name, sep = ".")
     explain_col_rename(recipe)
@@ -171,7 +190,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
 #'
 #' @description A join of desired type is performed between table `table_1` and
 #' table `table_2`. The two tables need to be directly connected by a foreign key
-#' relation. Since this function is a wrapper around `cdm_flatten_to_tbl()`, the LHS of
+#' relation. Since this function is a wrapper around [cdm_flatten_to_tbl()], the LHS of
 #' the join will always be the "child table", the table referencing the other table.
 #'
 #' @param dm A [`dm`] object
@@ -192,22 +211,31 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   t1_name <- as_string(ensym(table_1))
   t2_name <- as_string(ensym(table_2))
 
-  if (!(cdm_has_fk(dm, {{ t1_name }}, {{ t2_name }}) || cdm_has_fk(dm, {{ t2_name }}, {{ t1_name }}))) {
-    abort_tables_not_neighbours(t1_name, t2_name)
-  }
-  start <- child_table(dm, {{ table_1 }}, {{ table_2 }})
-  other <- setdiff(c(t1_name, t2_name), start)
+  rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
+  start <- rel$child_table
+  other <- rel$parent_table
 
   cdm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name)
 }
 
-child_table <- function(dm, table_1, table_2) {
+parent_child_table <- function(dm, table_1, table_2) {
   t1_name <- as_string(ensym(table_1))
   t2_name <- as_string(ensym(table_2))
-  cdm_get_all_fks(dm) %>%
+
+  rel <-
+    cdm_get_all_fks(dm) %>%
     filter(
       (child_table == t1_name & parent_table == t2_name) |
         (child_table == t2_name & parent_table == t1_name)
-    ) %>%
-    pull(child_table)
+    )
+
+  if (nrow(rel) == 0) {
+    abort_tables_not_neighbours(t1_name, t2_name)
+  }
+
+  if (nrow(rel) > 1) {
+    abort_no_cycles()
+  }
+
+  rel
 }

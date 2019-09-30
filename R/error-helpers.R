@@ -214,23 +214,18 @@ abort_no_cycles <- function() {
 }
 
 error_txt_no_cycles <- function() {
-  "Cycles not yet supported"
+  "Cycles in the relationship graph not yet supported."
 }
 
 
-# errors in cdm_select_tbl() ----------------------------------------------
+# error in cdm_flatten_to_tbl() ----------------------------------------------
 
-abort_vertices_not_connected <- function(fun_name, param = NULL) {
-  abort(error_txt_vertices_not_connected(fun_name, param), .subclass = cdm_error_full("vertices_not_connected"))
+abort_tables_not_reachable_from_start <- function() {
+  abort(error_txt_tables_not_reachable_from_start(), .subclass = cdm_error_full("tables_not_reachable_from_start"))
 }
 
-error_txt_vertices_not_connected <- function(fun_name, param) {
-  if (is_null(param)) {
-    glue("For `{fun_name}()` all of the selected tables of the `dm`-object need to be connected.")
-  } else {
-    glue("All selected tables in parameter `{param}` of `{fun_name}()` need to be connected (no missing links).")
-  }
-
+error_txt_tables_not_reachable_from_start <- function(fun_name, param) {
+  glue("All selected tables must be reachable from `start`.")
 }
 
 
