@@ -59,6 +59,15 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
+
+cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+  join_name <- deparse(substitute(join))
+  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  start <- as_string(ensym(start))
+  cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+}
+
+
 cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   check_correct_input(dm, start)

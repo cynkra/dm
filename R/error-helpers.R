@@ -418,3 +418,11 @@ error_what_a_weird_object <- function(class) {
   paste0("Don't know how to determine table source for object of class ",
          class)
 }
+
+abort_squash_limited <- function() {
+  abort(error_squash_limited(), .subclass = cdm_error_full("squash_limited"))
+}
+
+error_squash_limited <- function() {
+  paste0("`cdm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
+}
