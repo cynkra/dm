@@ -1,3 +1,24 @@
+cdm_check_constraints <- function(dm) {
+  pks <- cdm_get_all_pks(dm)
+  table_names <- pull(pks, table)
+  tbls <- map(set_names(table_names), ~ tbl(dm, .))
+  browser()
+  pk_tibble <- tibble(
+    .data = tbls,
+    pk = syms(pks$pk_col)
+  )
+    # mutate(.data = tbl(dm, !!sym(table)))
+  pk_results <- pmap(pk_tibble, check_key)
+  fks <- cdm_get_all_fks(dm)
+  fk_results <- pmap(fks, ~ is_subset(...))
+
+  list(
+    pk = pk_results,
+    fk = fk_results
+  )
+}
+
+
 #' Test if column (combination) is unique key of table
 #'
 #' @description `check_key()` accepts a data frame and optionally columns and throws an error,
