@@ -90,24 +90,37 @@ new_dm <- function(tables, data_model) {
       as_tibble()
   }
 
-  new_dm2(tables, data_model_tables, keys, references, filter = NULL)
+  new_dm2(
+    tables,
+    data_model_tables$table,
+    data_model_tables$segment,
+    data_model_tables$display,
+    keys,
+    references,
+    filter = NULL
+  )
 }
 
-new_dm2 <- function(tables = cdm_get_tables(base_dm),
-                    data_model_tables = cdm_get_data_model_tables(base_dm),
+new_dm2 <- function(table = cdm_get_tables(base_dm),
+                    name = cdm_get_data_model_tables(base_dm)$table,
+                    segment = cdm_get_data_model_tables(base_dm)$segment,
+                    display = cdm_get_data_model_tables(base_dm)$display,
                     pks = cdm_get_data_model_pks(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
                     filter = cdm_get_filter(base_dm),
                     base_dm) {
-  stopifnot(!is.null(tables))
-  stopifnot(!is.null(data_model_tables))
+  stopifnot(!is.null(table))
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
 
+  data_model_tables <- data.frame(
+    table = name, segment, display,
+    stringsAsFactors = FALSE
+  )
 
   structure(
     list(
-      tables = tables,
+      tables = table,
       data_model_tables = data_model_tables,
       data_model_pks = pks,
       data_model_fks = fks,
