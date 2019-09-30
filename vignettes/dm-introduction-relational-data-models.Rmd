@@ -186,15 +186,21 @@ flights %>%
   select(flight, name)
 ```
 
-Another way to demonstrate normalisation is the function `decompose_table()`.
-It splits one table into two.
-Let's take the `planes` table and determine a new table containing the specified columns.
-This results in a `parent_table` and a `child_table` containing the remaining columns, connected by surrogate keys, in this case `model_id`.
+Another way to demonstrate normalisation is splitting a table in two parts.
+
+Let's look at the `planes` table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.
+
+The function `decompose_table()` extracts two new tables and creates a new key `model_id`, that links both tables.
+
+This results in a `parent_table` and a `child_table` that differ massively in the number of rows:
 
 ```{r}
-planes %>% 
+planes %>%
   decompose_table(model_id, model, manufacturer, type, engines, seats, manufacturer, speed)
 ```
+ 
+While `child_table` contains 3322 unique `tailnum` rows and therefore consists of 3322 rows, just like the original `planes` table, the `parent_table` shrunk to just 147 rows.
+They are enough to store all relevant combinations and avoids storing redundant information.
 
 Further Reading: See the [Simple English Wikipedia article on database normalisation](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
 
