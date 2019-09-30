@@ -241,14 +241,16 @@ abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
 error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   if (length(wrong_colnames) > 1) {
     paste0(
-      "Not all specified variables `", paste(wrong_colnames, collapse = ", "),
-      "` are columns of `", table_name,
-      "`. Its columns are: \n`", paste(actual_colnames, collapse = ", "), "`."
+      "Not all specified variables ",
+      paste(tick(wrong_colnames), collapse = ", "), " ",
+      "are columns of ", tick(table_name), ". ",
+      "Its columns are: \n",
+      paste(tick(actual_colnames), collapse = ", "), "."
     )
   } else {
     paste0(
       tick(wrong_colnames), " is not a column of ",
-      tick(table_name), ". Its columns are: \n`",
+      tick(table_name), ". Its columns are: \n",
       commas(tick(actual_colnames)), "."
     )
   }
