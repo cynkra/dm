@@ -417,6 +417,21 @@ result_from_flatten %<-% {
     left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
 }
 
+
+# 'bad' dm (no ref. integrity) for testing cdm_flatten_to_tbl() --------
+
+tbl_1 %<-% tibble(a = 1:5, b = 1:5)
+tbl_2 %<-% tibble(id = 1:2, c = letters[1:2])
+tbl_3 %<-% tibble(id = 2:4, d = letters[2:4])
+
+bad_dm %<-% {
+  as_dm(list(tbl_1 = tbl_1, tbl_2 = tbl_2, tbl_3 = tbl_3)) %>%
+    cdm_add_pk(tbl_2, id) %>%
+    cdm_add_pk(tbl_3, id) %>%
+    cdm_add_fk(tbl_1, a, tbl_2) %>%
+    cdm_add_fk(tbl_1, b, tbl_3)
+}
+
 # for database tests -------------------------------------------------
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test
