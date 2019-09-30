@@ -457,10 +457,10 @@ if (is_this_a_test()) {
 
   message("connecting")
 
-  test_register_src("df", src_df(env = new_environment()))
+  dbplyr::test_register_src("df", src_df(env = new_environment()))
 
   if (packageVersion("RSQLite") >= "2.1.1.9003") {
-    try(test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
+    try(dbplyr::test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
   }
 
   local(try(
@@ -470,7 +470,7 @@ if (is_this_a_test()) {
         user = "postgres", bigint = "integer"
       )
       src <- src_dbi(con, auto_disconnect = TRUE)
-      test_register_src("postgres", src)
+      dbplyr::test_register_src("postgres", src)
       clear_postgres()
     },
     silent = TRUE
@@ -483,7 +483,7 @@ if (is_this_a_test()) {
       source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
       con_mssql <- mssql_con()
       src_mssql <- src_dbi(con_mssql)
-      test_register_src("mssql", src_mssql)
+      dbplyr::test_register_src("mssql", src_mssql)
     },
     silent = TRUE
   )
@@ -501,25 +501,25 @@ if (is_this_a_test()) {
 
   message("loading data frames into database")
 
-  d1_src %<-% test_load(d1)
-  d2_src %<-% test_load(d2)
-  d3_src %<-% test_load(d3)
-  d4_src %<-% test_load(d4)
-  d5_src %<-% test_load(d5)
-  d6_src %<-% test_load(d6)
+  d1_src %<-% dbplyr::test_load(d1)
+  d2_src %<-% dbplyr::test_load(d2)
+  d3_src %<-% dbplyr::test_load(d3)
+  d4_src %<-% dbplyr::test_load(d4)
+  d5_src %<-% dbplyr::test_load(d5)
+  d6_src %<-% dbplyr::test_load(d6)
 
   # names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
   src_names %<-% names(d1_src) # e.g. gets src names of list entries of object d1_src
 
-  data_check_key_src %<-% test_load(data)
+  data_check_key_src %<-% dbplyr::test_load(data)
 
-  data_1_src %<-% test_load(data_1)
-  data_2_src %<-% test_load(data_2)
-  data_3_src %<-% test_load(data_3)
+  data_1_src %<-% dbplyr::test_load(data_1)
+  data_2_src %<-% dbplyr::test_load(data_2)
+  data_3_src %<-% dbplyr::test_load(data_3)
 
-  data_ts_src %<-% test_load(data_ts)
-  data_ts_child_src %<-% test_load(data_ts_child)
-  data_ts_parent_src %<-% test_load(data_ts_parent)
+  data_ts_src %<-% dbplyr::test_load(data_ts)
+  data_ts_child_src %<-% dbplyr::test_load(data_ts_child)
+  data_ts_parent_src %<-% dbplyr::test_load(data_ts_parent)
 
   list_of_data_ts_parent_and_child_src %<-% map2(
     .x = data_ts_child_src,
@@ -527,6 +527,6 @@ if (is_this_a_test()) {
     ~ list("child_table" = .x, "parent_table" = .y)
   )
 
-  t1_src %<-% test_load(t1)
-  t3_src %<-% test_load(t3)
+  t1_src %<-% dbplyr::test_load(t1)
+  t3_src %<-% dbplyr::test_load(t3)
 }
