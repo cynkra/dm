@@ -56,10 +56,10 @@
 cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   start <- as_string(ensym(start))
-  cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name)
+  cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
-cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
+cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
@@ -135,6 +135,13 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
     renames <- character(0)
   }
 
+  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
+  # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
+  if (!squash && !all(map_lgl(order_df$name, ~{
+    cdm_has_fk(clean_dm, !!start, !!.) || cdm_has_fk(clean_dm, !!., !!start)}))) {
+    abort_only_parents()
+  }
+
   # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
   start_tbl <- tbl(dm, start) %>% rename(!!!renames)
@@ -144,13 +151,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
 
-  # FIXME: so far there is a problem with `semi_join` and `anti_join`, when one of the
-  # included tables has a distance of 2 or more to `start`, because then the required
-  # column for `by` on the LHS is missing
-  if (!gotta_rename && !all(map_lgl(order_df$name, ~{
-    cdm_has_fk(clean_dm, !!start, !!.) || cdm_has_fk(clean_dm, !!., !!start)}))) {
-    abort_semi_anti_nys()
-  }
 
   # list of join partners
   ordered_table_list <- clean_dm %>% cdm_get_tables() %>% extract(order_df$name)
@@ -189,7 +189,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  cdm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name)
+  cdm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
