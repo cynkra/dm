@@ -111,7 +111,7 @@ The separation into multiple tables achieves several goals:
 Multiple, linked tables are a common concept in database management.
 Since many R users have a background in other disciplines, we present six important terms in relational data modeling to jump-start working with {dm}.
 
-### 1) Data Frames and Tables
+### 1) Data frames and tables
 
 A data frame is a fundamental data structure in R.
 If you imagine it visually, the result is a typical table structure.
