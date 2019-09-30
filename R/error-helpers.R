@@ -366,7 +366,7 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
 # `cdm_flatten_to_tbl()` and `cdm_join_to_tbl()` only supported for parents
 
 abort_only_parents <- function() {
-  abort(error_only_parents(), .subclass = cdm_error_full("semi_only_parents"))
+  abort(error_only_parents(), .subclass = cdm_error_full("only_parents"))
 }
 
 error_only_parents <- function() {
