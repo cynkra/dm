@@ -111,7 +111,7 @@ The separation into multiple tables achieves several goals:
 Multiple, linked tables are a common concept in database management.
 Since many R users have a background in other disciplines, we present five important terms in relational data modeling to jump-start working with {dm}.
 
-### 1) Tables
+### 1) Data frames and tables
 
 Users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on dataframes.
 Flat file systems like spreadsheets and dataframes can result in bloated tables, that hold many repetitive values.
