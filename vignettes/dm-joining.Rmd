@@ -8,6 +8,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
+author: Katharina Brunner
 ---
 
 ```{r setup, include = FALSE}
