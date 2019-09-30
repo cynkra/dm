@@ -13,14 +13,14 @@
 #' @export
 cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = FALSE), ~ {
   table_name <- as_name(ensym(table))
-  ref_table_name <- as_name(ensym(ref_table))
+  check_correct_input(dm, table_name)
 
   column_name <- as_name(ensym(column))
+  check_col_input(dm, table_name, column_name)
 
-  check_correct_input(dm, table_name)
+  ref_table_name <- as_name(ensym(ref_table))
   check_correct_input(dm, ref_table_name)
 
-  check_col_input(dm, table_name, column_name)
   ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
   if (is_empty(ref_column_name)) {
     abort_ref_tbl_has_no_pk(ref_table_name)

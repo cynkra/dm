@@ -36,6 +36,7 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 
   col_expr <- ensym(column)
   col_name <- as_name(col_expr)
+  check_col_input(dm, table_name, col_name)
 
   old_key <- cdm_get_pk(dm, !!table_name)
   if (has_length(old_key)) {
