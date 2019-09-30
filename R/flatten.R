@@ -127,7 +127,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
     # prepare `dm` by disambiguating columns (on a reduced dm)
     clean_dm <-
       col_rename(red_dm, recipe)
-    # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`
+    # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`,
+    # therefore we need a named variable containing the new and old names
     renames <- recipe %>% filter(table == !!start) %>% pull() %>% flatten_chr()
   } else { # for `anti_join()` and `semi_join()` no renaming necessary
     clean_dm <- red_dm
