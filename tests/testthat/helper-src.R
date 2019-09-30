@@ -120,35 +120,38 @@ t7 %<-% tibble(
   q = c("elephant", "lion", "seal", "worm", "dog", "cat")
 )
 
-dm_for_filter_w_cycle %<-%
+dm_for_filter_w_cycle %<-% {
   as_dm(list(
     t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7
   )) %>%
-  cdm_add_pk(t1, a) %>%
-  cdm_add_pk(t2, c) %>%
-  cdm_add_pk(t3, f) %>%
-  cdm_add_pk(t4, h) %>%
-  cdm_add_pk(t5, k) %>%
-  cdm_add_pk(t6, n) %>%
-  cdm_add_pk(t7, p) %>%
-  cdm_add_fk(t2, d, t1) %>%
-  cdm_add_fk(t2, e, t3) %>%
-  cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t5, l, t4) %>%
-  cdm_add_fk(t5, m, t6) %>%
-  cdm_add_fk(t6, o, t7) %>%
-  cdm_add_fk(t7, q, t2)
+    cdm_add_pk(t1, a) %>%
+    cdm_add_pk(t2, c) %>%
+    cdm_add_pk(t3, f) %>%
+    cdm_add_pk(t4, h) %>%
+    cdm_add_pk(t5, k) %>%
+    cdm_add_pk(t6, n) %>%
+    cdm_add_pk(t7, p) %>%
+    cdm_add_fk(t2, d, t1) %>%
+    cdm_add_fk(t2, e, t3) %>%
+    cdm_add_fk(t4, j, t3) %>%
+    cdm_add_fk(t5, l, t4) %>%
+    cdm_add_fk(t5, m, t6) %>%
+    cdm_add_fk(t6, o, t7) %>%
+    cdm_add_fk(t7, q, t2)
+}
 
 message("for testing filter and semi_join (2)")
 
 list_for_filter %<-% list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
-dm_for_filter %<-%
+dm_for_filter %<-% {
   dm_for_filter_w_cycle %>%
-  cdm_select_tbl(-t7)
+    cdm_select_tbl(-t7)
+}
 
-dm_for_filter_smaller %<-%
+dm_for_filter_smaller %<-% {
   dm_for_filter %>%
-  cdm_select_tbl(-t1, -t2, -t6)
+    cdm_select_tbl(-t1, -t2, -t6)
+}
 
 message("for testing filter and semi_join (3)")
 
@@ -256,59 +259,77 @@ list_for_filter_2 %<-%
     )
   )
 
-dm_more_complex %<-%
+dm_more_complex %<-% {
   as_dm(list_for_filter_2) %>%
-  cdm_add_pk(t1, a) %>%
-  cdm_add_pk(t2, c) %>%
-  cdm_add_pk(t3, f) %>%
-  cdm_add_pk(t4, h) %>%
-  cdm_add_pk(t4_2, r) %>%
-  cdm_add_pk(t5, k) %>%
-  cdm_add_pk(t6, n) %>%
-  cdm_add_pk(t6_2, p) %>%
-  cdm_add_pk(a, a_1) %>%
-  cdm_add_pk(b, b_1) %>%
-  cdm_add_pk(c, c_1) %>%
-  cdm_add_pk(d, d_1) %>%
-  cdm_add_pk(e, e_1) %>%
-  cdm_add_fk(t2, d, t1) %>%
-  cdm_add_fk(t2, e, t3) %>%
-  cdm_add_fk(t4, j, t3) %>%
-  cdm_add_fk(t5, l, t4) %>%
-  cdm_add_fk(t5, l, t4_2) %>%
-  cdm_add_fk(t5, m, t6) %>%
-  cdm_add_fk(t6_2, f, t3) %>%
-  cdm_add_fk(b, b_2, a) %>%
-  cdm_add_fk(b, b_3, c) %>%
-  cdm_add_fk(d, b_1, b) %>%
-  cdm_add_fk(e, b_1, b)
-
+    cdm_add_pk(t1, a) %>%
+    cdm_add_pk(t2, c) %>%
+    cdm_add_pk(t3, f) %>%
+    cdm_add_pk(t4, h) %>%
+    cdm_add_pk(t4_2, r) %>%
+    cdm_add_pk(t5, k) %>%
+    cdm_add_pk(t6, n) %>%
+    cdm_add_pk(t6_2, p) %>%
+    cdm_add_pk(a, a_1) %>%
+    cdm_add_pk(b, b_1) %>%
+    cdm_add_pk(c, c_1) %>%
+    cdm_add_pk(d, d_1) %>%
+    cdm_add_pk(e, e_1) %>%
+    cdm_add_fk(t2, d, t1) %>%
+    cdm_add_fk(t2, e, t3) %>%
+    cdm_add_fk(t4, j, t3) %>%
+    cdm_add_fk(t5, l, t4) %>%
+    cdm_add_fk(t5, l, t4_2) %>%
+    cdm_add_fk(t5, m, t6) %>%
+    cdm_add_fk(t6_2, f, t3) %>%
+    cdm_add_fk(b, b_2, a) %>%
+    cdm_add_fk(b, b_3, c) %>%
+    cdm_add_fk(d, b_1, b) %>%
+    cdm_add_fk(e, b_1, b)
+}
 
 # for testing `cdm_disambiguate_cols()` ----------------------------------------
 
 message("for cdm_disambiguate_cols()")
 
-iris_1 %<-% as_tibble(iris) %>%
-  mutate(key = row_number()) %>%
-  select(key, everything())
-iris_2 %<-% iris_1 %>% mutate(other_col = TRUE)
-iris_3 %<-% iris_2 %>% mutate(one_more_col = 1)
+iris_1 %<-% {
+  as_tibble(iris) %>%
+    mutate(key = row_number()) %>%
+    select(key, everything())
+}
+iris_2 %<-% {
+  iris_1 %>%
+    mutate(other_col = TRUE)
+}
+iris_3 %<-% {
+  iris_2 %>%
+    mutate(one_more_col = 1)
+}
 
-iris_1_dis %<-% iris_1 %>%
-  rename_at(2:6, ~ str_replace(., "^", "iris_1."))
-iris_2_dis %<-% iris_2 %>%
-  rename_at(2:7, ~ str_replace(., "^", "iris_2."))
-iris_3_dis %<-% iris_3 %>%
-  rename_at(1:7, ~ str_replace(., "^", "iris_3."))
+iris_1_dis %<-% {
+  iris_1 %>%
+    rename_at(2:6, ~ str_replace(., "^", "iris_1."))
+}
+iris_2_dis %<-% {
+  iris_2 %>%
+    rename_at(2:7, ~ str_replace(., "^", "iris_2."))
+}
+iris_3_dis %<-% {
+  iris_3 %>%
+    rename_at(1:7, ~ str_replace(., "^", "iris_3."))
+}
 
 
-dm_for_disambiguate %<-% as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
-  cdm_add_pk(iris_1, key) %>%
-  cdm_add_fk(iris_2, key, iris_1)
+dm_for_disambiguate %<-% {
+  as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
+    cdm_add_pk(iris_1, key) %>%
+    cdm_add_fk(iris_2, key, iris_1)
+}
 
-dm_for_disambiguate_2 %<-% as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
-  cdm_add_pk(iris_1, key) %>%
-  cdm_add_fk(iris_2, key, iris_1)
+dm_for_disambiguate_2 %<-% {
+  as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
+    cdm_add_pk(iris_1, key) %>%
+    cdm_add_fk(iris_2, key, iris_1)
+}
 
 # star schema data model for testing `cdm_flatten_to_tbl()`
 
@@ -333,58 +354,75 @@ fact %<-% tibble(
   dim_4_key = 7:16,
   something = 1:10
 )
-fact_clean %<-%
+
+fact_clean %<-% {
   fact %>%
-  rename(
-    fact.something = something
-  )
+    rename(
+      fact.something = something
+    )
+}
 
 dim_1 %<-% tibble(
   dim_1_pk = 1:20,
   something = letters[3:22]
 )
-dim_1_clean %<-% dim_1 %>% rename(dim_1.something = something)
+dim_1_clean %<-% {
+  dim_1 %>%
+    rename(dim_1.something = something)
+}
 
 dim_2 %<-% tibble(
   dim_2_pk = letters[1:20],
   something = LETTERS[5:24]
 )
-dim_2_clean %<-% dim_2 %>% rename(dim_2.something = something)
+dim_2_clean %<-% {
+  dim_2 %>%
+    rename(dim_2.something = something)
+}
 
 dim_3 %<-% tibble(
   dim_3_pk = LETTERS[5:24],
   something = 3:22
 )
-dim_3_clean %<-% dim_3 %>% rename(dim_3.something = something)
+dim_3_clean %<-% {
+  dim_3 %>%
+    rename(dim_3.something = something)
+}
 
 dim_4 %<-% tibble(
   dim_4_pk = 19:7,
   something = 19:31
 )
-dim_4_clean %<-% dim_4 %>% rename(dim_4.something = something)
+dim_4_clean %<-% {
+  dim_4 %>%
+    rename(dim_4.something = something)
+}
 
-dm_for_flatten %<-% as_dm(list(
-  fact = fact,
-  dim_1 = dim_1,
-  dim_2 = dim_2,
-  dim_3 = dim_3,
-  dim_4 = dim_4
-)) %>%
-  cdm_add_pk(dim_1, dim_1_pk) %>%
-  cdm_add_pk(dim_2, dim_2_pk) %>%
-  cdm_add_pk(dim_3, dim_3_pk) %>%
-  cdm_add_pk(dim_4, dim_4_pk) %>%
-  cdm_add_fk(fact, dim_1_key, dim_1) %>%
-  cdm_add_fk(fact, dim_2_key, dim_2) %>%
-  cdm_add_fk(fact, dim_3_key, dim_3) %>%
-  cdm_add_fk(fact, dim_4_key, dim_4)
+dm_for_flatten %<-% {
+  as_dm(list(
+    fact = fact,
+    dim_1 = dim_1,
+    dim_2 = dim_2,
+    dim_3 = dim_3,
+    dim_4 = dim_4
+  )) %>%
+    cdm_add_pk(dim_1, dim_1_pk) %>%
+    cdm_add_pk(dim_2, dim_2_pk) %>%
+    cdm_add_pk(dim_3, dim_3_pk) %>%
+    cdm_add_pk(dim_4, dim_4_pk) %>%
+    cdm_add_fk(fact, dim_1_key, dim_1) %>%
+    cdm_add_fk(fact, dim_2_key, dim_2) %>%
+    cdm_add_fk(fact, dim_3_key, dim_3) %>%
+    cdm_add_fk(fact, dim_4_key, dim_4)
+}
 
-result_from_flatten %<-%
+result_from_flatten %<-% {
   fact_clean %>%
-  left_join(dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
-  left_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
-  left_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
-  left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
+    left_join(dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
+    left_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
+    left_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
+    left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
+}
 
 # for database tests -------------------------------------------------
 
