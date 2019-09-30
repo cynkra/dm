@@ -1,3 +1,8 @@
+# dm 0.0.2.9003
+
+- Fix `R CMD check`.
+
+
 # dm 0.0.2.9002
 
 - Use caching to improve loading times.
