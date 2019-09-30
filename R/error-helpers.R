@@ -363,17 +363,6 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
-# `right_join()` might produce random result for `cdm_flatten_to_tbl()`
-
-abort_rj_not_wd <- function() {
-  abort(error_rj_not_wd(), .subclass = cdm_error_full("rj_not_wd"))
-}
-
-error_rj_not_wd <- function() {
-  paste0("No well-defined result, when using `cdm_flatten_to_tbl()` with `right_join()` ",
-         "with more than 2 tables involved (depends on order of tables in `dm`)")
-}
-
 # `semi_join()` and `anti_join()` not supported for `cdm_flatten_to_tbl()` for deep hierarchy
 
 abort_semi_anti_nys <- function() {

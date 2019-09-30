@@ -76,13 +76,13 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   # produce results, that are of interest, e.g.
   # cdm_flatten_to_tbl(cdm_nycflights13(cycle = TRUE) %>% cdm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
 
-
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
   g <- create_graph_from_dm(dm, directed = TRUE)
 
   # If no tables are given, we use all reachable tables
-  if (is_empty(list_of_pts)) {
+  auto_detect <- is_empty(list_of_pts)
+  if (auto_detect) {
     list_of_pts <- get_names_of_connected(g, start)
   }
 
@@ -112,10 +112,10 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name) {
   }
 
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
-  # if 2 or more of them are joined to the fact table. If filter conditions are set,
-  # and at least one of them is in the same connected component of the graph representation of the `dm`,
-  # it does not play a role.
-  if (join_name == "right_join" && nrow(order_df) > 2) abort_rj_not_wd()
+  # if 2 or more of them are joined to the fact table and ellipsis is empty.
+  if (join_name == "right_join" && auto_detect && nrow(order_df) > 2) warning(
+    paste0("Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
+             "more than 2 tables involved and no explicit order given in `...`."))
 
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
