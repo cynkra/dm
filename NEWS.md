@@ -1,3 +1,12 @@
+# dm 0.0.2.9002
+
+- Use caching to improve loading times.
+- Run some tests only for one source (#76).
+- `cdm_enum_fk_candidates()` checks for class compatibility implicitly via `left_join()`.
+- `cdm_enum_fk_candidates()` contains a more detailed entry in column why if no error & no candidate (percentage of mismatched vals etc.).
+- Improve error messages for `cdm_join_to_tbl()` and `cdm_flatten_to_tbl()` in the presence of cycles or disconnected tables (#74).
+
+
 # dm 0.0.2.9001
 
 - Remove the `src` component from dm (#38).
