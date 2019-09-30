@@ -85,7 +85,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   if (auto_detect) {
     list_of_pts <- get_names_of_connected(g, start)
   }
-
   # We use the induced subgraph right away
   g <- igraph::induced_subgraph(g, c(start, list_of_pts))
 
@@ -135,6 +134,17 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
     renames <- character(0)
   }
 
+  # Drop first table in the list of join partners. (We have at least one table, `start`.)
+  # (Working with `reduce2()` here and the `.init`-parameter is the first table)
+  # in the case of only one table in the `dm` (table "start"), all code below is a no-op
+  order_df <- order_df[-1, ]
+  # the order given in the ellipsis determines the join-list
+  if (!auto_detect) {
+    pt_names <- order_df$name
+    pt_indices <- match(pt_names, list_of_pts)
+    order_df <- slice(order_df, pt_indices)
+  }
+
   # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
   if (!squash && !all(map_lgl(order_df$name, ~{
@@ -145,12 +155,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
   start_tbl <- tbl(dm, start) %>% rename(!!!renames)
-
-  # Drop first table in the list of join partners. (We have at least one table, `start`.)
-  # (Working with `reduce2()` here and the `.init`-parameter is the first table)
-  # in the case of only one table in the `dm` (table "start"), all code below is a no-op
-  order_df <- order_df[-1, ]
-
 
   # list of join partners
   ordered_table_list <- clean_dm %>% cdm_get_tables() %>% extract(order_df$name)
