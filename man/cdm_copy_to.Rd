@@ -6,7 +6,7 @@
 \usage{
 cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
   indexes = NULL, unique_indexes = NULL, set_key_constraints = TRUE,
-  unique_table_names = FALSE, temporary = TRUE)
+  unique_table_names = FALSE, table_names = NULL, temporary = TRUE)
 }
 \arguments{
 \item{dest}{A \code{src} or \code{con} object like e.g. a database.}
@@ -21,6 +21,9 @@ cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
 
 \item{unique_table_names}{Boolean, if \code{FALSE} (default), original table names will be used, if \code{TRUE},
 unique table names will be created based on the original table names.}
+
+\item{table_names}{The names on the \code{DB} you want the tables in the \code{dm} have
+after copying. The \code{dm} table names will remain unchanged.}
 
 \item{temporary}{Boolean variable, if \code{TRUE} will only create temporary tables, which will vanish when connection is interrupted.}
 }

@@ -13,6 +13,8 @@
 #'
 #' @param dest A `src` or `con` object like e.g. a database.
 #' @param dm A `dm` object.
+#' @param table_names The names on the `DB` you want the tables in the `dm` have
+#' after copying. The `dm` table names will remain unchanged.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
 #' @param unique_table_names Boolean, if `FALSE` (default), original table names will be used, if `TRUE`,
