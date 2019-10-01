@@ -61,14 +61,13 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
   }
 
   if (!is.null(table_names)) {
-    if (!is_false(unique_table_names)) {
-      # FIXME: Add error message
+    if (unique_table_names) {
       abort_unique_table_names_or_table_names()
     }
 
     not_found <- setdiff(names2(table_names), src_tbls(dm))
     if (has_length(not_found)) {
-      abort_table_not_found(unique(not_found))
+      abort_table_not_in_dm(unique(not_found))
     }
   }
 
