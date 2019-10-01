@@ -450,3 +450,14 @@ error_what_a_weird_object <- function(class) {
   paste0("Don't know how to determine table source for object of class ",
          class)
 }
+
+
+# either explicit table names, or auto-unique ones ------------------------
+
+abort_unique_table_names_or_table_names <- function() {
+  abort(error_unique_table_names_or_table_names(), .subclass = cdm_error_full("unique_table_names_or_table_names"))
+}
+
+error_unique_table_names_or_table_names <- function() {
+  "Can't provide param `table_names` and have `unique_table_names = TRUE` at the same time."
+}
