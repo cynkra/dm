@@ -14,13 +14,17 @@ systime_convenient <- function() {
 }
 
 # Internal copy helper functions
-build_copy_data <- nse_function(c(dm, dest, unique_table_names), ~ {
+build_copy_data <- nse_function(c(dm, dest, table_names, unique_table_names), ~ {
   source <-
     dm %>%
     cdm_apply_filters() %>%
     cdm_get_tables()
 
-  if (unique_table_names) {
+  # Also need table names for local src (?)
+  if (!is.null(table_names)) {
+    mapped_names <- unname(table_names[names(source)])
+    dest_names <- coalesce(mapped_names, names(source))
+  } else if (unique_table_names) {
     dest_names <- map_chr(names(source), unique_db_table_name)
   } else {
     dest_names <- names(source)
@@ -30,7 +34,7 @@ build_copy_data <- nse_function(c(dm, dest, unique_table_names), ~ {
     source %>%
     as.list() %>%
     enframe(name = "source_name", value = "df") %>%
-    mutate(name = !!dest_names)
+    mutate(name = map(!!dest_names, dbplyr::ident_q))
 
   if (is_db(dest)) {
     dest_con <- con_from_src_or_con(dest)

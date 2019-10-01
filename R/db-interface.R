@@ -34,7 +34,9 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
                               types = NULL, overwrite = NULL,
                               indexes = NULL, unique_indexes = NULL,
                               set_key_constraints = TRUE, unique_table_names = FALSE,
-                              temporary = TRUE), ~ {
+                              table_names = NULL,
+                              temporary = TRUE), ~
+{
   # for now focusing on MSSQL
   # we expect the src (dest) to already point to the correct schema
   # we want to
@@ -58,19 +60,32 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
     abort_no_unique_indexes()
   }
 
+  if (!is.null(table_names)) {
+    if (!is_false(unique_table_names)) {
+      # FIXME: Add error message
+      abort_unique_table_names_or_table_names()
+    }
+
+    not_found <- setdiff(names2(table_names), src_tbls(dm))
+    if (has_length(not_found)) {
+      abort_table_not_found(unique(not_found))
+    }
+  }
+
   # FIXME: if same_src(), can use compute(), but need to set NOT NULL
   # constraints
 
   dest <- src_from_src_or_con(dest)
   dm <- collect(dm)
 
-  copy_data <- build_copy_data(dm, dest, unique_table_names)
+  copy_data <- build_copy_data(dm, dest, table_names, unique_table_names)
 
   new_tables <- copy_list_of_tables_to(
     dest,
     copy_data = copy_data,
     temporary = temporary,
     overwrite = FALSE,
+    table_names = table_names,
     ...
   )
 
