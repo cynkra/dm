@@ -77,7 +77,6 @@ In classical {dplyr} notation you need three `left_join()` calls to merge the `f
 ```{r}
 library(tidyverse)
 library(dm)
-library(nycflights13)
 
 flights %>% 
   left_join(airlines, by = "carrier") %>%
