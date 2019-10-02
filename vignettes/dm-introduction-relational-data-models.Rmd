@@ -146,7 +146,7 @@ This second column is called the foreign key (abbreviated with fk).
 
 For example: If you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
 This is true, because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
-You can find foreign key candidates with the function `cdm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column and give a
+You can find foreign key candidates with the function `cdm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column.
 
 ```{r}
 dm %>% 
