@@ -74,7 +74,7 @@ This can result in long and inflated pipe chains full of `left_join()`, `anti_jo
 
 In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
 
-```{r warning=F, message=F}
+```{r}
 library(tidyverse)
 library(dm)
 library(nycflights13)
