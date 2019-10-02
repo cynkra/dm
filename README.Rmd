@@ -93,7 +93,7 @@ flights %>%
   left_join(airports, by = c("origin" = "faa"))
 ```
 
-You can find more information and important terms to jump-start working with {dm} in the article ["Introduction to Relational Data Models""](dm-introduction-relational-data-models.html).
+You can find more information and important terms to jump-start working with {dm} in the article ["Introduction to Relational Data Models"](dm-introduction-relational-data-models.html).
 
 ### The Advantages in Brief
 
