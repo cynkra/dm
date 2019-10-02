@@ -25,6 +25,9 @@ knit_print.grViz <- function(x, ...) {
     c("`````{=html}\n", ., "\n`````\n") %>% 
     knitr::asis_output()
 }
+
+library(tidyverse)
+library(dm)
 ```
 
 Multiple, linked tables are a common concept within computer science. 
