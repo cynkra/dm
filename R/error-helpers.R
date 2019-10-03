@@ -305,6 +305,15 @@ error_txt_no_unique_indexes <- function() {
   paste0("`cdm_copy_to()` does not support the `unique_indexes` argument.")
 }
 
+abort_need_named_vec <- function() {
+  abort(error_txt_need_named_vec(), .subclass = cdm_error_full("need_named_vec"))
+}
+
+error_txt_need_named_vec <- function() {
+  paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector, the names ",
+  "being the original table names, as in `src_tbls(dm)`")
+}
+
 abort_src_not_db <- function() {
   abort(error_src_not_db(), .subclass = cdm_error_full("src_not_db"))
 }
