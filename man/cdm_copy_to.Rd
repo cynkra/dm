@@ -22,8 +22,9 @@ cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
 \item{unique_table_names}{Boolean, if \code{FALSE} (default), original table names will be used, if \code{TRUE},
 unique table names will be created based on the original table names.}
 
-\item{table_names}{The names on the \code{DB} you want the tables in the \code{dm} have
-after copying. The \code{dm} table names will remain unchanged.}
+\item{table_names}{A named character vector, containing the names you want the tables in the \code{dm} to have
+after copying them to the database. The table names within the \code{dm} will remain unchanged.
+The name of each element of the vector needs to be one of the table names of the \code{dm}.}
 
 \item{temporary}{Boolean variable, if \code{TRUE} will only create temporary tables, which will vanish when connection is interrupted.}
 }
