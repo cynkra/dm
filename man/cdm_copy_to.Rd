@@ -24,7 +24,8 @@ unique table names will be created based on the original table names.}
 
 \item{table_names}{A named character vector, containing the names you want the tables in the \code{dm} to have
 after copying them to the database. The table names within the \code{dm} will remain unchanged.
-The name of each element of the vector needs to be one of the table names of the \code{dm}.}
+The name of each element of the vector needs to be one of the table names of the \code{dm}.
+Those tables of the \code{dm} that are not addressed will be called by their original name on the database.}
 
 \item{temporary}{Boolean variable, if \code{TRUE} will only create temporary tables, which will vanish when connection is interrupted.}
 }

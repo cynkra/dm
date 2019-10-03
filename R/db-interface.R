@@ -16,6 +16,7 @@
 #' @param table_names A named character vector, containing the names you want the tables in the `dm` to have
 #' after copying them to the database. The table names within the `dm` will remain unchanged.
 #' The name of each element of the vector needs to be one of the table names of the `dm`.
+#' Those tables of the `dm` that are not addressed will be called by their original name on the database.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
 #' @param unique_table_names Boolean, if `FALSE` (default), original table names will be used, if `TRUE`,
