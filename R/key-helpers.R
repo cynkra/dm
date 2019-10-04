@@ -1,3 +1,22 @@
+#' Validate your [`dm`]: are all key constraints met?
+#'
+#' This function returns a concise list, reporting for each key constraint if it is met (`TRUE`) or violated (`FALSE`).
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @return A list of 2:
+#'   1. `pk`: a named list of logical values. The names are a combination of the table name, a dollar sign
+#'   and the primary key column name.
+#'   2. `fk`: a named list of logical values. The names are a combination of the table name, a dollar sign
+#'   and the foreign key column name.
+#'
+#' @details For the primary key constraints it is tested, if the values in the respective columns are all unique.
+#' For the foreign key constraints the tests check, if for each foreign key constraint, the values of the foreign key column
+#' are a subset of those of the referenced column.
+#'
+#' @export
+#' @examples
+#' cdm_check_constraints(cdm_nycflights13())
 cdm_check_constraints <- function(dm) {
   pk_results <- check_pk_constraints(dm)
   if (!is_empty(pk_results) && !all(flatten_lgl(pk_results))) warning(
