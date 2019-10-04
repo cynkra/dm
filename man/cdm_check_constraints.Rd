@@ -12,9 +12,9 @@ cdm_check_constraints(dm)
 \value{
 A list of 2:
 \enumerate{
-\item \code{pk}: a named list of logical values. The names are a combination of the table name, a dollar sign
+\item \code{pk}: a named logical vector. The names are a combination of the table name, a dollar sign
 and the primary key column name.
-\item \code{fk}: a named list of logical values. The names are a combination of the table name, a dollar sign
+\item \code{fk}: a named logical vector. The names are a combination of the table name, a dollar sign
 and the foreign key column name.
 }
 }

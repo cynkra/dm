@@ -5,9 +5,9 @@
 #' @inheritParams cdm_add_pk
 #'
 #' @return A list of 2:
-#'   1. `pk`: a named list of logical values. The names are a combination of the table name, a dollar sign
+#'   1. `pk`: a named logical vector. The names are a combination of the table name, a dollar sign
 #'   and the primary key column name.
-#'   2. `fk`: a named list of logical values. The names are a combination of the table name, a dollar sign
+#'   2. `fk`: a named logical vector. The names are a combination of the table name, a dollar sign
 #'   and the foreign key column name.
 #'
 #' @details For the primary key constraints it is tested, if the values in the respective columns are all unique.
@@ -19,11 +19,11 @@
 #' cdm_check_constraints(cdm_nycflights13())
 cdm_check_constraints <- function(dm) {
   pk_results <- check_pk_constraints(dm)
-  if (!is_empty(pk_results) && !all(flatten_lgl(pk_results))) warning(
+  if (!is_empty(pk_results) && !all(pk_results)) warning(
     "One or more of the primary keys violate the constraints (is not a unique key; value is `FALSE`)."
     )
   fk_results <- check_fk_constraints(dm)
-  if (!is_empty(fk_results) && !all(flatten_lgl(fk_results))) warning(
+  if (!is_empty(fk_results) && !all(fk_results)) warning(
     "One or more of the foreign keys violate the constraints (values are not a subset of referenced column; value is `FALSE`)."
     )
   list(
@@ -241,7 +241,7 @@ check_pk_constraints <- function(dm) {
     .data = tbls,
     column = syms(pks$pk_col)
   )
-  tryCatch(pmap(pk_tibble, is_key) %>% set_names(paste(pks$table, pks$pk_col, sep = "$")), error = identity)
+  tryCatch(pmap_lgl(pk_tibble, is_key) %>% set_names(paste(pks$table, pks$pk_col, sep = "$")), error = identity)
 }
 
 check_fk_constraints <- function(dm) {
@@ -250,5 +250,5 @@ check_fk_constraints <- function(dm) {
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
   fks_tibble <- fks %>%
     transmute(t1 = cts, c1 = syms(child_fk_col), t2 = pts, c2 = syms(pk_col))
-  tryCatch(pmap(fks_tibble, is_subset) %>% set_names(paste(fks$child_table, fks$child_fk_col, sep = "$")), error = identity)
+  tryCatch(pmap_lgl(fks_tibble, is_subset) %>% set_names(paste(fks$child_table, fks$child_fk_col, sep = "$")), error = identity)
 }
