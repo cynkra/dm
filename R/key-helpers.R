@@ -1,16 +1,6 @@
 cdm_check_constraints <- function(dm) {
-  pks <- cdm_get_all_pks(dm)
-  table_names <- pull(pks, table)
-  tbls <- map(set_names(table_names), ~ tbl(dm, .))
-  browser()
-  pk_tibble <- tibble(
-    .data = tbls,
-    pk = syms(pks$pk_col)
-  )
-    # mutate(.data = tbl(dm, !!sym(table)))
-  pk_results <- pmap(pk_tibble, check_key)
-  fks <- cdm_get_all_fks(dm)
-  fk_results <- pmap(fks, ~ is_subset(...))
+  pk_results <- check_pk_constraints(dm)
+  fk_results <- check_fk_constraints(dm)
 
   list(
     pk = pk_results,
@@ -98,6 +88,15 @@ is_unique_key <- nse_function(c(.data, column), ~ {
   duplicate_rows
 })
 
+is_key <- nse_function(c(.data, column), ~ {
+  col_expr <- ensym(column)
+  col_name <- as_name(col_expr)
+
+  duplicate_rows <- .data %>%
+    count(value = !!col_expr) %>%
+    filter(n != 1)
+  nrow(duplicate_rows) == 0
+})
 
 #' Test if the value sets of two different columns in two different tables are the same
 #'
@@ -208,4 +207,24 @@ is_subset <- function(t1, c1, t2, c2) {
   v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
 
   if (!all(v1 %in% v2)) FALSE else TRUE
+}
+
+check_pk_constraints <- function(dm) {
+  pks <- cdm_get_all_pks(dm)
+  table_names <- pull(pks, table)
+  tbls <- map(set_names(table_names), ~ tbl(dm, .))
+  pk_tibble <- tibble(
+    .data = tbls,
+    column = syms(pks$pk_col)
+  )
+  tryCatch(pmap(pk_tibble, is_key) %>% set_names(paste0(pks$table, ".", pks$pk_col)), error = identity)
+}
+
+check_fk_constraints <- function(dm) {
+  fks <-  left_join(cdm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
+  pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
+  cts <- pull(fks, child_table) %>% map(tbl, src = dm)
+  fks_tibble <- fks %>%
+    transmute(t1 = cts, c1 = syms(child_fk_col), t2 = pts, c2 = syms(pk_col))
+  tryCatch(pmap(fks_tibble, is_subset) %>% set_names(paste0(fks$child_table, ".", fks$child_fk_col)), error = identity)
 }
