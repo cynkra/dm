@@ -58,9 +58,8 @@ check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
   args <- exprs(...)
-  if (count_problem(args)) {
-    count_col <- "nn"
-  } else count_col <- "n"
+
+  if (any(!!args %in% "n")) count_col <- "nn" else count_col <- "n"
 
   duplicate_rows <-
     .data %>%
@@ -71,20 +70,6 @@ check_key <- function(.data, ...) {
   if (nrow(duplicate_rows) != 0) abort_not_unique_key(as_label(data_q), map_chr(args, as_label))
 
   invisible(.data)
-}
-
-count_problem <- function(args) {
-  if (is_named(args)) {
-    names <- names(args)
-    if (any(names == "n") || any(as.character(args[names == ""]) == "n")) {
-      if (any(names == "nn") || any(as.character(args[names == ""]) == "nn")) abort_rename_plz()
-      return(TRUE)
-    }
-  } else if (any(as.character(args) == "n")) {
-    if (any(as.character(args) == "nn")) abort_rename_plz()
-    return(TRUE)
-  }
-  FALSE
 }
 
 # internal function to check if a column is a unique key of a table
