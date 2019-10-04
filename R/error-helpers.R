@@ -450,3 +450,12 @@ error_what_a_weird_object <- function(class) {
   paste0("Don't know how to determine table source for object of class ",
          class)
 }
+
+abort_rename_plz <- function() {
+ abort(error_rename_plz(), .subclass = cdm_error_full("rename_plz"))
+}
+
+error_rename_plz <- function() {
+  paste0("`check_key()` can currently not deal with cases, when both variables `n` and `nn` are involved. ",
+  "Please consider changing one of the variables names.")
+}
