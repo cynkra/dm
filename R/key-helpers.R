@@ -1,7 +1,12 @@
 cdm_check_constraints <- function(dm) {
   pk_results <- check_pk_constraints(dm)
+  if (!all(flatten_lgl(pk_results))) warning(
+    "One or more of the primary keys violate the constraints (is not a unique key)."
+    )
   fk_results <- check_fk_constraints(dm)
-
+  if (!all(flatten_lgl(fk_results))) warning(
+    "One or more of the foreign keys violate the constraints (values are not a subset of referenced column)."
+    )
   list(
     pk = pk_results,
     fk = fk_results
