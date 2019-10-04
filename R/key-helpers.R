@@ -236,12 +236,16 @@ is_subset <- function(t1, c1, t2, c2) {
 check_pk_constraints <- function(dm) {
   pks <- cdm_get_all_pks(dm)
   table_names <- pull(pks, table)
-  tbls <- map(set_names(table_names), ~ tbl(dm, .))
-  pk_tibble <- tibble(
-    .data = tbls,
-    column = syms(pks$pk_col)
-  )
-  tryCatch(pmap_lgl(pk_tibble, is_key) %>% set_names(paste(pks$table, pks$pk_col, sep = "$")), error = identity)
+  tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
+    map2(syms(pks$pk_col), ~select(.x, !!.y))
+  tbl_is_pk <- map_dfr(tbls, enum_pk_candidates) %>%
+    rename(is_key = candidate, problem = why)
+
+  tibble(
+    table = table_names,
+    kind = "PK",
+    column = pks$pk_col
+  ) %>% left_join(tbl_is_pk, by = "column")
 }
 
 check_fk_constraints <- function(dm) {
