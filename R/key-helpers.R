@@ -19,17 +19,12 @@
 #' cdm_check_constraints(cdm_nycflights13())
 cdm_check_constraints <- function(dm) {
   pk_results <- check_pk_constraints(dm)
-  if (!is_empty(pk_results) && !all(pk_results)) warning(
-    "One or more of the primary keys violate the constraints (is not a unique key; value is `FALSE`)."
-    )
   fk_results <- check_fk_constraints(dm)
-  if (!is_empty(fk_results) && !all(fk_results)) warning(
-    "One or more of the foreign keys violate the constraints (values are not a subset of referenced column; value is `FALSE`)."
-    )
-  list(
-    pk = pk_results,
-    fk = fk_results
-  )
+  bind_rows(
+    pk_results,
+    fk_results
+  ) %>%
+    arrange(is_key, table, column)
 }
 
 
@@ -258,5 +253,5 @@ check_fk_constraints <- function(dm) {
     fks_tibble, problem = pmap_chr(fks_tibble, check_fk),
     is_key = if_else(problem == "", TRUE, FALSE),
     kind = "FK") %>%
-    select(name = t1_name, kind, column = colname, is_key, problem)
+    select(table = t1_name, kind, column = colname, is_key, problem)
 }
