@@ -10,16 +10,17 @@ cdm_check_constraints(dm)
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A list of 2:
+A tibble with 5 columns:
 \enumerate{
-\item \code{pk}: a named logical vector. The names are a combination of the table name, a dollar sign
-and the primary key column name.
-\item \code{fk}: a named logical vector. The names are a combination of the table name, a dollar sign
-and the foreign key column name.
+\item \code{table}: the table in the \code{dm}
+\item \code{kind}: "PK" or "FK"
+\item \code{column}: column of \code{table}
+\item \code{is_key}: logical
+\item \code{problem}: in case, \code{is_key = FALSE}, the reason for that
 }
 }
 \description{
-This function returns a concise list, reporting for each key constraint if it is met (\code{TRUE}) or violated (\code{FALSE}).
+This function returns a tibble with information, which key constraints are met (\code{is_key = TRUE}) or violated (\code{FALSE}).
 }
 \details{
 For the primary key constraints it is tested, if the values in the respective columns are all unique.

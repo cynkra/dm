@@ -1,14 +1,15 @@
 #' Validate your [`dm`]: are all key constraints met?
 #'
-#' This function returns a concise list, reporting for each key constraint if it is met (`TRUE`) or violated (`FALSE`).
+#' This function returns a tibble with information, which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #'
 #' @inheritParams cdm_add_pk
 #'
-#' @return A list of 2:
-#'   1. `pk`: a named logical vector. The names are a combination of the table name, a dollar sign
-#'   and the primary key column name.
-#'   2. `fk`: a named logical vector. The names are a combination of the table name, a dollar sign
-#'   and the foreign key column name.
+#' @return A tibble with 5 columns:
+#'   1. `table`: the table in the `dm`
+#'   1. `kind`: "PK" or "FK"
+#'   1. `column`: column of `table`
+#'   1. `is_key`: logical
+#'   1. `problem`: in case, `is_key = FALSE`, the reason for that
 #'
 #' @details For the primary key constraints it is tested, if the values in the respective columns are all unique.
 #' For the foreign key constraints the tests check, if for each foreign key constraint, the values of the foreign key column
