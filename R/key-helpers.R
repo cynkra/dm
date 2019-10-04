@@ -248,7 +248,11 @@ check_fk_constraints <- function(dm) {
   fks <-  left_join(cdm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
   pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
-  fks_tibble <- fks %>%
-    transmute(t1 = cts, c1 = syms(child_fk_col), t2 = pts, c2 = syms(pk_col))
-  tryCatch(pmap_lgl(fks_tibble, is_subset) %>% set_names(paste(fks$child_table, fks$child_fk_col, sep = "$")), error = identity)
+  fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
+    select(t1, t1_name = child_table, colname = child_fk_col, t2, t2_name = parent_table, pk = pk_col)
+  mutate(
+    fks_tibble, problem = pmap_chr(fks_tibble, check_fk),
+    is_key = if_else(problem == "", TRUE, FALSE),
+    kind = "FK") %>%
+    select(name = t1_name, kind, column = colname, is_key, problem)
 }
