@@ -27,6 +27,7 @@ check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
   args <- exprs(...)
+  names(args) <- set_names(paste0("...", seq_along(args)))
   if (count_problem(args)) {
     count_col <- "nn"
   } else count_col <- "n"
