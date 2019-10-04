@@ -29,8 +29,7 @@ test_that("check_key() checks primary key properly?", {
     check_key(test_tbl, !!!c("n1" = sym("n"), "n2" = sym("nn")))
   )
 
-  expect_error(
-    check_key(test_tbl, !!!c(sym("n"), sym("nn"))),
-    class = cdm_error("rename_plz")
+  expect_silent(
+    check_key(test_tbl, !!!c(sym("n"), sym("nn")))
   )
 })
