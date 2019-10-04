@@ -1,10 +1,10 @@
 cdm_check_constraints <- function(dm) {
   pk_results <- check_pk_constraints(dm)
-  if (!all(flatten_lgl(pk_results))) warning(
+  if (!is_empty(pk_results) && !all(flatten_lgl(pk_results))) warning(
     "One or more of the primary keys violate the constraints (is not a unique key; value is `FALSE`)."
     )
   fk_results <- check_fk_constraints(dm)
-  if (!all(flatten_lgl(fk_results))) warning(
+  if (!is_empty(fk_results) && !all(flatten_lgl(fk_results))) warning(
     "One or more of the foreign keys violate the constraints (values are not a subset of referenced column; value is `FALSE`)."
     )
   list(
@@ -222,7 +222,7 @@ check_pk_constraints <- function(dm) {
     .data = tbls,
     column = syms(pks$pk_col)
   )
-  tryCatch(pmap(pk_tibble, is_key) %>% set_names(paste0(pks$table, "$", pks$pk_col)), error = identity)
+  tryCatch(pmap(pk_tibble, is_key) %>% set_names(paste(pks$table, pks$pk_col, sep = "$")), error = identity)
 }
 
 check_fk_constraints <- function(dm) {
@@ -231,5 +231,5 @@ check_fk_constraints <- function(dm) {
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
   fks_tibble <- fks %>%
     transmute(t1 = cts, c1 = syms(child_fk_col), t2 = pts, c2 = syms(pk_col))
-  tryCatch(pmap(fks_tibble, is_subset) %>% set_names(paste0(fks$child_table, "$", fks$child_fk_col)), error = identity)
+  tryCatch(pmap(fks_tibble, is_subset) %>% set_names(paste(fks$child_table, fks$child_fk_col, sep = "$")), error = identity)
 }
