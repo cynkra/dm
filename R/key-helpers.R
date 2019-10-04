@@ -24,7 +24,7 @@ cdm_check_constraints <- function(dm) {
     pk_results,
     fk_results
   ) %>%
-    arrange(is_key, table, column)
+    arrange(is_key, desc(kind), table, column)
 }
 
 
