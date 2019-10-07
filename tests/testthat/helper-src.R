@@ -424,6 +424,23 @@ result_from_flatten %<-% {
     left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
 }
 
+dm_nycflights_small %<-% {as_dm(
+  list(
+    flights = nycflights13::flights %>% semi_join(nycflights13::planes, by = "tailnum") %>% slice(1:800),
+    planes = nycflights13::planes,
+    airlines = nycflights13::airlines,
+    airports = nycflights13::airports)
+  ) %>%
+  cdm_add_pk(planes, tailnum) %>%
+  cdm_add_pk(airlines, carrier) %>%
+  cdm_add_pk(airports, faa) %>%
+  cdm_add_fk(flights, tailnum, planes) %>%
+  cdm_add_fk(flights, carrier, airlines) %>%
+  cdm_add_fk(flights, origin, airports)
+  }
+
+
+
 # for database tests -------------------------------------------------
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test
@@ -498,6 +515,8 @@ if (is_this_a_test()) {
   cdm_test_obj_2_src %<-% cdm_test_load(cdm_test_obj_2)
   dm_for_flatten_src %<-% cdm_test_load(dm_for_flatten)
   dm_more_complex_src %<-% cdm_test_load(dm_more_complex)
+  dm_for_disambiguate_src %<-% cdm_test_load(dm_for_disambiguate)
+  dm_nycflights_small_src %<-% cdm_test_load(dm_nycflights_small)
 
   message("loading data frames into database")
 
