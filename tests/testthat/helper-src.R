@@ -436,7 +436,7 @@ dm_nycflights_small %<-% {as_dm(
   cdm_add_pk(airports, faa) %>%
   cdm_add_fk(flights, tailnum, planes) %>%
   cdm_add_fk(flights, carrier, airlines) %>%
-  cdm_add_fk(flights, origin, airports)
+  cdm_add_fk(flights, dest, airports)
   }
 
 
