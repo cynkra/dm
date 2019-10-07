@@ -4,16 +4,18 @@
 #' temporary table will be created).
 #' If referential integrity is given among the tables of the data model, the resulting
 #' table of this function will contain as many rows as the table `start` does (exceptions are
-#' `join = anti_join` (result is empty table with same columns as `start`) and `join = right_join` (
-#' number of rows equal to those of the join-partner of `start`)).
+#' `join = anti_join` (result is empty table with same columns as `start`) and `join = right_join`
+#' (number of rows equal to or larger than those of `start`)).
 #' For more information please refer to `vignette("dm-joining")`.
 #'
 #' @inheritParams cdm_join_to_tbl
 #' @param start Table to start from. From this table all outgoing foreign key relations are
 #' considered to establish a processing order for the joins. An interesting choice could be
 #' for example a fact table in a star schema.
-#' @param ... Unquoted table names to include in addition to `start`. If empty, all tables that can
-#' be reached are included.
+#' @param ... Unquoted table names to include in addition to `start`. The order of the tables here determines
+#' the order of the joins. If empty, all tables that can be reached are included.
+#' If this includes tables which aren't direct neighbours of `start`,
+#' it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
 #' @family flattening functions
 #'
 #' @details With the `...` left empty, this function joins all the tables of your [`dm`]
@@ -32,21 +34,21 @@
 #' parameter `join`.
 #'
 #' **Case 2**, filter conditions are set for at least one table connected to `start`:
-#' The result of filtering a `dm` object is necessarily a data model conforming to referential integrity.
-#' Consequently, there is no difference between `left_join`, `right_join`, `inner_join` and `full_join`.
-#' In this case, `left_join` is being used. Using `semi_join` in `cdm_flatten_to_tbl()` on a filtered `dm`
-#' is identical to `tbl(dm, start)`, and `anti_join` is identical to `tbl(dm, start) %>% filter(1 == 0)`.
-#' Disambiguation is performed initially if necessary.
+#' Disambiguation is performed initially if necessary. Table `start` is calculated using `tbl(dm, "start")`. This implies
+#' that the effect of the filters on this table is taken into account. For `right_join`, `full_join` and `nest_join` an error
+#' is thrown in case filters are set, because the filters won't affect right hand side tables and thus the result will be
+#' incorrect in general (and calculating the effects on all RHS-tables would be time-consuming and is not supported;
+#' if desired call `cdm_apply_filters()` first to achieve this effect.).
+#' For all other join types filtering only `start` is enough, since the effect is passed on by the
+#' successive joins.
 #'
-#' Mind, that calling `cdm_flatten_to_tbl()` on an unfiltered `dm` with `join = right_join` would not lead
-#' to a well-defined result, if two or more foreign tables are to be joined to `start`. The resulting
+#' Mind, that calling `cdm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...`
+#' would not lead to a well-defined result, if two or more foreign tables are to be joined to `start`. The resulting
 #' table would depend on the order the tables are listed in the `dm`. Therefore trying this results
-#' in an error.
+#' in a warning.
 #'
-#' Currently, it is not possible to use `semi_join` or `anti_join` as join-methods in the case of an
-#' unfiltered `dm`, when not all involved foreign tables are directly connected to table `start`.
-#'
-#' @return A wide table resulting of consecutively joining all tables involved to table `start`.
+#' @return A single table, resulting of consecutively joining
+#' all tables involved to table `start`.
 #'
 #' @examples
 #' cdm_nycflights13() %>%
@@ -59,7 +61,8 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
-
+#' @rdname cdm_flatten_to_tbl
+#' @export
 cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
