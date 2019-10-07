@@ -16,7 +16,7 @@ A tibble with 5 columns:
 \item \code{kind}: "PK" or "FK"
 \item \code{column}: column of \code{table}
 \item \code{is_key}: logical
-\item \code{problem}: in case, \code{is_key = FALSE}, the reason for that
+\item \code{problem}: in case \code{is_key = FALSE} the reason for that
 }
 }
 \description{
