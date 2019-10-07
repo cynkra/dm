@@ -426,3 +426,13 @@ abort_squash_limited <- function() {
 error_squash_limited <- function() {
   paste0("`cdm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
 }
+
+abort_apply_filters_first <- function(join_name) {
+  abort(error_apply_filters_first(join_name), .subclass = cdm_error_full("apply_filters_first"))
+}
+
+error_apply_filters_first <- function(join_name) {
+  glue("`cdm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
+       "produce the correct result when filters are set. ",
+       "Please consider calling `cdm_apply_filters()` first.")
+}

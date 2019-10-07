@@ -92,10 +92,16 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # If no tables are given, we use all reachable tables
   auto_detect <- is_empty(list_of_pts)
   if (auto_detect) {
-    list_of_pts <- get_names_of_connected(g, start)
+    # `purrr::discard()` in case `list_of_pts` is `NA`
+    list_of_pts <- get_names_of_connected(g, start) %>% discard(is.na)
   }
   # We use the induced subgraph right away
   g <- igraph::induced_subgraph(g, c(start, list_of_pts))
+
+  has_filters <- nrow(cdm_get_filter(dm)) > 0
+  if (has_filters && join_name %in% c("full_join", "right_join", "nest_join") && length(igraph::V(g)) > 1) {
+    abort_apply_filters_first(join_name)
+  }
 
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
