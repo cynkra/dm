@@ -226,7 +226,8 @@ check_pk_constraints <- function(dm) {
     table = table_names,
     kind = "PK",
     column = pks$pk_col
-  ) %>% left_join(tbl_is_pk, by = "column")
+  ) %>%
+    left_join(tbl_is_pk, by = "column")
 }
 
 check_fk_constraints <- function(dm) {
@@ -238,6 +239,7 @@ check_fk_constraints <- function(dm) {
   mutate(
     fks_tibble, problem = pmap_chr(fks_tibble, check_fk),
     is_key = if_else(problem == "", TRUE, FALSE),
-    kind = "FK") %>%
+    kind = "FK"
+  ) %>%
     select(table = t1_name, kind, column = colname, is_key, problem)
 }
