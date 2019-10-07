@@ -65,6 +65,9 @@ Mind, that calling \code{cdm_flatten_to_tbl()} with \code{join = right_join} and
 would not lead to a well-defined result, if two or more foreign tables are to be joined to \code{start}. The resulting
 table would depend on the order the tables are listed in the \code{dm}. Therefore trying this results
 in a warning.
+
+Since \code{join = nest_join()} does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
+each nested column entry would be a tibble of 1 row), an error is thrown, if this method is chosen.
 }
 \examples{
 cdm_nycflights13() \%>\%

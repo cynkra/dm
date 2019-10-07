@@ -47,6 +47,9 @@
 #' table would depend on the order the tables are listed in the `dm`. Therefore trying this results
 #' in a warning.
 #'
+#' Since `join = nest_join()` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
+#' each nested column entry would be a tibble of 1 row), an error is thrown, if this method is chosen.
+#'
 #' @return A single table, resulting of consecutively joining
 #' all tables involved to table `start`.
 #'
@@ -76,6 +79,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
   walk(list_of_pts, ~check_correct_input(dm, .))
+  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
   force(join)
   stopifnot(is_function(join))

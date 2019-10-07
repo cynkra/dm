@@ -436,3 +436,12 @@ error_apply_filters_first <- function(join_name) {
        "produce the correct result when filters are set. ",
        "Please consider calling `cdm_apply_filters()` first.")
 }
+
+abort_no_flatten_with_nest_join <- function() {
+  abort(error_no_flatten_with_nest_join(), .subclass = cdm_error_full("no_flatten_with_nest_join"))
+}
+
+error_no_flatten_with_nest_join <- function() {
+  paste0("`cdm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
+  "cf. the help pages for these functions. Consider `join = left_join`")
+}
