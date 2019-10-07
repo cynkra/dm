@@ -206,6 +206,14 @@ is_subset <- function(t1, c1, t2, c2) {
 
 check_pk_constraints <- function(dm) {
   pks <- cdm_get_all_pks(dm)
+  if (nrow(pks) == 0) return(tibble(
+    table = character(0),
+    kind = character(0),
+    column = character(0),
+    is_key = logical(0),
+    problem = character(0)
+    )
+  )
   table_names <- pull(pks, table)
   tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
     map2(syms(pks$pk_col), ~select(.x, !!.y))

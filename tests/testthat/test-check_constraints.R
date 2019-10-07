@@ -10,15 +10,19 @@ nyc_check <- tibble::tribble(
 
 test_that("`cdm_check_constraints()` works", {
 
-  walk(
-    dm_nycflights_small_src,
-    ~ expect_identical(
-      cdm_check_constraints(.) %>%
-        mutate(problem = if_else(problem == "", "", "<reason>")),
-      nyc_check
-      )
+  # case of no constraints:
+  expect_equal(
+    cdm_check_constraints(cdm_test_obj),
+    tibble(
+      table = character(0),
+      kind = character(0),
+      column = character(0),
+      is_key = logical(0),
+      problem = character(0)
     )
+  )
 
+  # case of some constraints, all met:
   walk(
     dm_for_disambiguate_src,
     ~ expect_identical(
@@ -28,6 +32,16 @@ test_that("`cdm_check_constraints()` works", {
              column = "key",
              is_key = TRUE,
              problem = "")
+      )
+    )
+
+  # case of some constraints, some violated:
+  walk(
+    dm_nycflights_small_src,
+    ~ expect_identical(
+      cdm_check_constraints(.) %>%
+        mutate(problem = if_else(problem == "", "", "<reason>")),
+      nyc_check
       )
     )
 })
