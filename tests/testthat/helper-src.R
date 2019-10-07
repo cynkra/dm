@@ -426,7 +426,7 @@ result_from_flatten %<-% {
 
 dm_nycflights_small %<-% {as_dm(
   list(
-    flights = nycflights13::flights %>% semi_join(nycflights13::planes, by = "tailnum") %>% slice(1:800),
+    flights = nycflights13::flights %>% slice(1:800),
     planes = nycflights13::planes,
     airlines = nycflights13::airlines,
     airports = nycflights13::airports)
@@ -516,7 +516,7 @@ if (is_this_a_test()) {
   dm_for_flatten_src %<-% cdm_test_load(dm_for_flatten)
   dm_more_complex_src %<-% cdm_test_load(dm_more_complex)
   dm_for_disambiguate_src %<-% cdm_test_load(dm_for_disambiguate)
-  dm_nycflights_small_src %<-% cdm_test_load(dm_nycflights_small)
+  dm_nycflights_small_src %<-% cdm_test_load(dm_nycflights_small, set_key_constraints = FALSE)
 
   message("loading data frames into database")
 

@@ -1,13 +1,3 @@
-nyc_small_check <- tibble::tribble(
-  ~table,     ~kind,   ~column,   ~is_key,  ~problem,
-  "airlines", "PK",    "carrier", TRUE,     "",
-  "airports", "PK",    "faa",     TRUE,     "",
-  "planes",   "PK",    "tailnum", TRUE,     "",
-  "flights",  "FK",    "carrier", TRUE,     "",
-  "flights",  "FK",    "origin",  TRUE,     "",
-  "flights",  "FK",    "tailnum", TRUE,    ""
-)
-
 nyc_check <- tibble::tribble(
   ~table,     ~kind,   ~column,   ~is_key,  ~problem,
   "flights",  "FK",    "tailnum", FALSE,    "<reason>",
@@ -20,17 +10,12 @@ nyc_check <- tibble::tribble(
 
 test_that("`cdm_check_constraints()` works", {
 
-  expect_identical(
-    cdm_check_constraints(cdm_nycflights13()) %>%
-      mutate(problem = if_else(problem == "", "", "<reason>")),
-    nyc_check
-  )
-
   walk(
     dm_nycflights_small_src,
     ~ expect_identical(
-      cdm_check_constraints(.),
-      nyc_small_check
+      cdm_check_constraints(.) %>%
+        mutate(problem = if_else(problem == "", "", "<reason>")),
+      nyc_check
       )
     )
 
