@@ -1,8 +1,21 @@
+bad_filtered_dm <- cdm_filter(bad_dm, tbl_1, a != 4)
+
 test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
-  expect_identical(
-    cdm_flatten_to_tbl(dm_for_flatten, fact),
-    result_from_flatten
+  # for left join test the basic flattening also on all DBs
+  walk(
+    dm_for_flatten_src,
+    ~ expect_equal(
+      cdm_flatten_to_tbl(., fact) %>% collect(),
+      result_from_flatten)
   )
+
+  # a one-table-dm
+    expect_equivalent(
+      dm_for_flatten %>%
+        cdm_select_tbl(fact) %>%
+        cdm_flatten_to_tbl(fact),
+      fact
+    )
 
   # explicitly choose parent tables
   expect_identical(
@@ -22,134 +35,280 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
       left_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
   )
 
+  # flatten bad_dm (no referential integrity)
+  expect_identical(
+    cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3),
+    left_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
+      left_join(tbl_3, by = c("b" = "id"))
+  )
+
+  # filtered `dm`
+  expect_identical(
+    cdm_flatten_to_tbl(bad_filtered_dm, tbl_1),
+    cdm_apply_filters(bad_filtered_dm) %>% cdm_flatten_to_tbl(tbl_1)
+  )
+
+  # with grandparent table
   expect_error(
     cdm_flatten_to_tbl(dm_more_complex, t5, t4, t3),
     class = cdm_error("only_parents")
   )
 
+
+
+})
+
+test_that("`cdm_flatten_to_tbl()` does the right things for 'inner_join()'", {
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, join = inner_join),
+    result_from_flatten
+  )
+
+  # explicitly choose parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = inner_join),
+    inner_join(
+      rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
+      by = c("dim_1_key" = "dim_1_pk")) %>%
+      inner_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
+  )
+
+  # change order of parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = inner_join),
+    inner_join(
+      rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
+      by = c("dim_2_key" = "dim_2_pk")) %>%
+      inner_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
+  )
+
+  # flatten bad_dm (no referential integrity)
+  expect_identical(
+    cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = inner_join),
+    inner_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
+      inner_join(tbl_3, by = c("b" = "id"))
+  )
+
+  # filtered `dm`
+  expect_identical(
+    cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = inner_join),
+    cdm_apply_filters(bad_filtered_dm) %>% cdm_flatten_to_tbl(tbl_1, join = inner_join)
+  )
+
+})
+
+test_that("`cdm_flatten_to_tbl()` does the right things for 'full_join()'", {
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, join = full_join),
+    full_join(fact_clean, dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
+      full_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
+      full_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
+      full_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
+  )
+
+  # explicitly choose parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = full_join),
+    full_join(
+      rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
+      by = c("dim_1_key" = "dim_1_pk")) %>%
+      full_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
+  )
+
+  # change order of parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = full_join),
+    full_join(
+      rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
+      by = c("dim_2_key" = "dim_2_pk")) %>%
+      full_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
+  )
+
+  # flatten bad_dm (no referential integrity)
+  expect_identical(
+    cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = full_join),
+    full_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
+      full_join(tbl_3, by = c("b" = "id"))
+  )
+
+  # filtered `dm`
+  expect_error(
+    cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = full_join),
+    "to_tbl\\(\\)` with join method `full_join",
+    class = cdm_error("apply_filters_first")
+  )
+})
+
+test_that("`cdm_flatten_to_tbl()` does the right things for 'semi_join()'", {
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, join = semi_join),
+    fact
+  )
+
+  # explicitly choose parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = semi_join),
+    semi_join(fact, dim_1, by = c("dim_1_key" = "dim_1_pk")) %>%
+      semi_join(dim_2, by = c("dim_2_key" = "dim_2_pk"))
+  )
+
+  # change order of parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = semi_join),
+    semi_join(fact, dim_2, by = c("dim_2_key" = "dim_2_pk")) %>%
+      semi_join(dim_1, by = c("dim_1_key" = "dim_1_pk"))
+  )
+
+  # flatten bad_dm (no referential integrity)
+  expect_identical(
+    cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = semi_join),
+    semi_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
+      semi_join(tbl_3, by = c("b" = "id"))
+  )
+
+  # filtered `dm`
+  expect_identical(
+    cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = semi_join),
+    cdm_apply_filters(bad_filtered_dm) %>% cdm_flatten_to_tbl(tbl_1, join = semi_join)
+  )
+})
+
+test_that("`cdm_flatten_to_tbl()` does the right things for 'anti_join()'", {
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, join = anti_join),
+    fact %>% filter(1 == 0)
+  )
+
+  # explicitly choose parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = anti_join),
+    anti_join(fact, dim_1, by = c("dim_1_key" = "dim_1_pk")) %>%
+      anti_join(dim_2, by = c("dim_2_key" = "dim_2_pk"))
+  )
+
+  # change order of parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = anti_join),
+    anti_join(fact, dim_2, by = c("dim_2_key" = "dim_2_pk")) %>%
+      anti_join(dim_1, by = c("dim_1_key" = "dim_1_pk"))
+  )
+
+  # flatten bad_dm (no referential integrity)
+  expect_identical(
+    cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = anti_join),
+    anti_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
+      anti_join(tbl_3, by = c("b" = "id"))
+  )
+
+  # filtered `dm`
+  expect_identical(
+    cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = anti_join),
+    cdm_apply_filters(bad_filtered_dm) %>% cdm_flatten_to_tbl(tbl_1, join = anti_join)
+  )
+})
+
+test_that("`cdm_flatten_to_tbl()` does the right things for 'nest_join()'", {
+  expect_error(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, join = nest_join),
+    "nest_join",
+    class = cdm_error("no_flatten_with_nest_join")
+  )
+
 })
 
 
+test_that("`cdm_flatten_to_tbl()` does the right things for 'right_join()'", {
+  expect_identical(
+    expect_warning(
+      cdm_flatten_to_tbl(dm_for_flatten, fact, join = right_join),
+      "right_join()"),
+    right_join(fact_clean, dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
+      right_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
+      right_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
+      right_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
+  )
 
-# test_that("`cdm_flatten_to_tbl()` does the right thing for a one-table-dm", {
-#   expect_equivalent(
-#     dm_for_flatten %>%
-#       cdm_select_tbl(fact) %>%
-#       cdm_flatten_to_tbl(fact),
-#     fact
-#   )
-# })
-#
-# test_that("`cdm_flatten_to_tbl()` does the right thing for 'right_join()'", {
-#   expect_equivalent(
-#     dm_for_flatten %>%
-#       cdm_filter(dim_1, dim_1_pk > 4) %>%
-#       cdm_flatten_to_tbl(fact, dim_1, join = right_join),
-#     left_join(fact, filter(dim_1, dim_1_pk > 4), by = c("dim_1_key" = "dim_1_pk")) %>%
-#       rename(fact.something = something.x, dim_1.something = something.y)
-#   )
-#
-#   expect_equivalent(
-#     dm_for_flatten %>%
-#       cdm_filter(fact, something > 4) %>%
-#       cdm_flatten_to_tbl(fact, dim_1, join = right_join),
-#     left_join(filter(fact, something > 4), dim_1, by = c("dim_1_key" = "dim_1_pk")) %>%
-#       rename(fact.something = something.x, dim_1.something = something.y)
-#   )
-#
-#   expect_equivalent(
-#     dm_for_flatten %>%
-#       cdm_filter(fact, something > 4) %>%
-#       cdm_flatten_to_tbl(fact, join = right_join),
-#     left_join(filter(fact, something > 4), dim_1, by = c("dim_1_key" = "dim_1_pk")) %>%
-#       rename(fact.something = something.x, dim_1.something = something.y) %>%
-#       left_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk")) %>%
-#       left_join(rename(dim_3, dim_3.something = something), by = c("dim_3_key" = "dim_3_pk")) %>%
-#       left_join(rename(dim_4, dim_4.something = something), by = c("dim_4_key" = "dim_4_pk"))
-#   )
-# })
-#
-#   test_that("`cdm_flatten_to_tbl()` does the right thing for 'anti_join()' and `semi_join()`", {
-#
-#     expect_equivalent(
-#       cdm_flatten_to_tbl(
-#         cdm_nycflights13(cycle = TRUE) %>%
-#           cdm_rm_fk(flights, origin, airports),
-#         flights, airports, join = anti_join),
-#         anti_join(flights, airports, by = c("dest" = "faa"))
-#       )
-#
-#     expect_equivalent(
-#       cdm_flatten_to_tbl(
-#         cdm_nycflights13(cycle = TRUE) %>%
-#           cdm_rm_fk(flights, origin, airports),
-#         flights, join = semi_join),
-#       semi_join(flights, airlines, by = "carrier") %>%
-#         semi_join(airports, by = c("dest" = "faa")) %>%
-#         semi_join(planes, by = "tailnum")
-#     )
-#
-#     expect_equivalent(
-#       cdm_flatten_to_tbl(
-#         cdm_nycflights13(cycle = TRUE) %>%
-#           cdm_rm_fk(flights, origin, airports),
-#         flights, airlines, join = semi_join),
-#       semi_join(flights, airlines, by = "carrier")
-#     )
-#
-#   })
-#
-# test_that("`cdm_flatten_to_tbl()` does the right thing for filtered `dm`s", {
-#
-#   walk(dm_more_complex_src,
-#        ~expect_equivalent(
-#          cdm_flatten_to_tbl(cdm_filter(., t1, a > 5), t5) %>% collect(),
-#          tibble(k = 2:4, l = letters[3:5], m = c("tree", rep("streetlamp", 2)),
-#                 i = c("five", "six", "seven"), j = c("E", "F", "F"), g = c("four", rep("five", 2)),
-#                 o = c("f", "h", "h"), s = i, t = c("E", "F", "G"))
-#        )
-#   )
-#
-#   walk(dm_more_complex_src,
-#        ~expect_equivalent(
-#          cdm_flatten_to_tbl(cdm_filter(., t1, a > 5), t5, join = semi_join) %>% collect(),
-#          slice(t5, 2:4)
-#        )
-#   )
-#
-#   walk(dm_more_complex_src,
-#        ~expect_equivalent(
-#          cdm_flatten_to_tbl(cdm_filter(., b, b_3 > 7), t5) %>% collect(),
-#          tibble(k = 1:4, l = letters[2:5], m = c("house", "tree", rep("streetlamp", 2)),
-#                 i = c("four", "five", "six", "seven"), j = c("D", "E", "F", "F"),
-#                 g = c("three", "four", rep("five", 2)), o = c("e", "f", "h", "h"),
-#                 s = c("three", "five", "six", "seven"), t = c("D", "E", "F", "G"))
-#        )
-#   )
-#
-#   # this is NYI for anti_join and semi_join:
-#   walk(dm_more_complex_src,
-#        ~expect_error(
-#          cdm_flatten_to_tbl(cdm_filter(., b, b_3 > 7), t5, join = semi_join) %>% collect(),
-#          class = cdm_error("semi_anti_nys")
-#        )
-#   )
-#
-# })
-#
-# test_that("`cdm_flatten_to_tbl()` throws right errors", {
-#   expect_error(
-#     cdm_flatten_to_tbl(cdm_nycflights13(cycle = TRUE), flights),
-#     class = cdm_error("no_cycles")
-#   )
-#
-#   expect_error(
-#     cdm_flatten_to_tbl(dm_more_complex, t5, t6, t3),
-#     class = cdm_error("tables_not_reachable_from_start")
-#   )
-#
-#   expect_error(
-#     cdm_flatten_to_tbl(dm_for_filter, t5, join = right_join),
-#     class = cdm_error("rj_not_wd")
-#   )
-# })
+  # explicitly choose parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = right_join),
+    right_join(
+      rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
+      by = c("dim_1_key" = "dim_1_pk")) %>%
+      right_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
+  )
+
+  # change order of parent tables
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = right_join),
+    right_join(
+      rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
+      by = c("dim_2_key" = "dim_2_pk")) %>%
+      right_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
+  )
+
+  # flatten bad_dm (no referential integrity)
+  expect_identical(
+    cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = right_join),
+    right_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
+      right_join(tbl_3, by = c("b" = "id"))
+  )
+
+  # flatten bad_dm (no referential integrity); different order
+  expect_identical(
+    cdm_flatten_to_tbl(bad_dm, tbl_1, tbl_3, tbl_2, join = right_join),
+    right_join(tbl_1, tbl_3, by = c("b" = "id")) %>%
+      right_join(tbl_2, by = c("a" = "id"))
+  )
+
+  # filtered `dm`
+  expect_error(
+    cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = right_join),
+    "to_tbl\\(\\)` with join method `right_join",
+    class = cdm_error("apply_filters_first")
+  )
+})
+
+test_that("`cdm_squash_to_tbl()` does the right things", {
+  # with grandparent table
+  # left_join:
+  expect_identical(
+    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3),
+    left_join(t5, t4, by = c("l" = "h")) %>%
+      left_join(t3, by = c("j" = "f"))
+    )
+
+  # full_join:
+  expect_identical(
+    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = full_join),
+    full_join(t5, t4, by = c("l" = "h")) %>%
+      full_join(t3, by = c("j" = "f"))
+    )
+
+  # inner_join:
+  expect_identical(
+    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = inner_join),
+    inner_join(t5, t4, by = c("l" = "h")) %>%
+      inner_join(t3, by = c("j" = "f"))
+    )
+
+  # right_join:
+  expect_error(
+    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = right_join),
+    "`left_join`, `inner_join`, `full_join`",
+    class = cdm_error("squash_limited")
+  )
+
+  # semi_join:
+  expect_error(
+    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = semi_join),
+    "`left_join`, `inner_join`, `full_join`",
+    class = cdm_error("squash_limited")
+  )
+
+  # anti_join:
+  expect_error(
+    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = anti_join),
+    "`left_join`, `inner_join`, `full_join`",
+    class = cdm_error("squash_limited")
+  )
+})
