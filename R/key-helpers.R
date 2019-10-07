@@ -93,16 +93,6 @@ is_unique_key <- nse_function(c(.data, column), ~ {
   duplicate_rows
 })
 
-is_key <- nse_function(c(.data, column), ~ {
-  col_expr <- ensym(column)
-  col_name <- as_name(col_expr)
-
-  duplicate_rows <- .data %>%
-    count(value = !!col_expr) %>%
-    filter(n != 1)
-  nrow(duplicate_rows) == 0
-})
-
 #' Test if the value sets of two different columns in two different tables are the same
 #'
 #' @description `check_set_equality()` is a wrapper of `check_if_subset()`. It tests if
