@@ -3,6 +3,7 @@ pkgdown: 1.4.1.9000
 pkgdown_sha: d01672efa3baa80fd7ab238b7143080b0daf49a4
 articles:
   dm-class-and-basic-operations: dm-class-and-basic-operations.html
+  dm-filtering: dm-filtering.html
   dm-introduction-relational-data-models: dm-introduction-relational-data-models.html
   dm-joining: dm-joining.html
   dm-low-level: dm-low-level.html
@@ -10,7 +11,6 @@ articles:
   dm: dm.html
   setting_up_dm: setting_up_dm.html
   dm-db: wip/dm-db.html
-  dm-filtering: wip/dm-filtering.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
 urls:

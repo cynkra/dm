@@ -95,6 +95,15 @@ linked by a key relation are joined." />
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
+      <a href="../articles/dm-introduction-relational-data-model.html">Introduction to Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
@@ -164,9 +173,9 @@ linked by a key relation are joined.</p>
 #&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year, weather$weather.year</span>
 #&gt; <span class='message'>* month -&gt; flights$flights.month, weather$weather.month</span>
 #&gt; <span class='message'>* day -&gt; flights$flights.day, weather$weather.day</span>
+#&gt; <span class='message'>* origin -&gt; flights$flights.origin, weather$weather.origin</span>
 #&gt; <span class='message'>* hour -&gt; flights$flights.hour, weather$weather.hour</span>
-#&gt; <span class='message'>* time_hour -&gt; flights$flights.time_hour, weather$weather.time_hour</span>
-#&gt; <span class='message'>* origin -&gt; weather$weather.origin</span></div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; <span class='message'>* time_hour -&gt; flights$flights.time_hour, weather$weather.time_hour</span></div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Data model object:

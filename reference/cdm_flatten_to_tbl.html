@@ -40,8 +40,8 @@
 temporary table will be created).
 If referential integrity is given among the tables of the data model, the resulting
 table of this function will contain as many rows as the table start does (exceptions are
-join = anti_join (result is empty table with same columns as start) and join = right_join (
-number of rows equal to those of the join-partner of start)).
+join = anti_join (result is empty table with same columns as start) and join = right_join
+(number of rows equal to or larger than those of start)).
 For more information please refer to vignette(&quot;dm-joining&quot;)." />
 <meta name="twitter:card" content="summary" />
 
@@ -98,6 +98,15 @@ For more information please refer to vignette(&quot;dm-joining&quot;)." />
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
+      <a href="../articles/dm-introduction-relational-data-model.html">Introduction to Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
@@ -139,12 +148,14 @@ For more information please refer to vignette(&quot;dm-joining&quot;)." />
 temporary table will be created).
 If referential integrity is given among the tables of the data model, the resulting
 table of this function will contain as many rows as the table <code>start</code> does (exceptions are
-<code>join = anti_join</code> (result is empty table with same columns as <code>start</code>) and <code>join = right_join</code> (
-number of rows equal to those of the join-partner of <code>start</code>)).
+<code>join = anti_join</code> (result is empty table with same columns as <code>start</code>) and <code>join = right_join</code>
+(number of rows equal to or larger than those of <code>start</code>)).
 For more information please refer to <code><a href='../articles/dm-joining.html'>vignette("dm-joining")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)
+
+<span class='fu'>cdm_squash_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,8 +172,10 @@ for example a fact table in a star schema.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Unquoted table names to include in addition to <code>start</code>. If empty, all tables that can
-be reached are included.</p></td>
+      <td><p>Unquoted table names to include in addition to <code>start</code>. The order of the tables here determines
+the order of the joins. If empty, all tables that can be reached are included.
+If this includes tables which aren't direct neighbours of <code>start</code>,
+it will only work with <code>cdm_squash_to_tbl()</code> (given one of the allowed join-methods).</p></td>
     </tr>
     <tr>
       <th>join</th>
@@ -172,7 +185,8 @@ be reached are included.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A wide table resulting of consecutively joining all tables involved to table <code>start</code>.</p>
+    <p>A single table, resulting of consecutively joining
+all tables involved to table <code>start</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>With the <code>...</code> left empty, this function joins all the tables of your <code><a href='dm.html'>dm</a></code>
@@ -188,17 +202,19 @@ The necessary disambiguations of the column names are performed first. Then all
 involved foreign tables are joined to table <code>start</code> successively with the join function given in
 parameter <code>join</code>.</p>
 <p><strong>Case 2</strong>, filter conditions are set for at least one table connected to <code>start</code>:
-The result of filtering a <code>dm</code> object is necessarily a data model conforming to referential integrity.
-Consequently, there is no difference between <code>left_join</code>, <code>right_join</code>, <code>inner_join</code> and <code>full_join</code>.
-In this case, <code>left_join</code> is being used. Using <code>semi_join</code> in <code>cdm_flatten_to_tbl()</code> on a filtered <code>dm</code>
-is identical to <code>tbl(dm, start)</code>, and <code>anti_join</code> is identical to <code>tbl(dm, start) %&gt;% filter(1 == 0)</code>.
-Disambiguation is performed initially if necessary.</p>
-<p>Mind, that calling <code>cdm_flatten_to_tbl()</code> on an unfiltered <code>dm</code> with <code>join = right_join</code> would not lead
-to a well-defined result, if two or more foreign tables are to be joined to <code>start</code>. The resulting
+Disambiguation is performed initially if necessary. Table <code>start</code> is calculated using <code>tbl(dm, "start")</code>. This implies
+that the effect of the filters on this table is taken into account. For <code>right_join</code>, <code>full_join</code> and <code>nest_join</code> an error
+is thrown in case filters are set, because the filters won't affect right hand side tables and thus the result will be
+incorrect in general (and calculating the effects on all RHS-tables would be time-consuming and is not supported;
+if desired call <code><a href='cdm_filter.html'>cdm_apply_filters()</a></code> first to achieve this effect.).
+For all other join types filtering only <code>start</code> is enough, since the effect is passed on by the
+successive joins.</p>
+<p>Mind, that calling <code>cdm_flatten_to_tbl()</code> with <code>join = right_join</code> and no table order determined in the <code>...</code>
+would not lead to a well-defined result, if two or more foreign tables are to be joined to <code>start</code>. The resulting
 table would depend on the order the tables are listed in the <code>dm</code>. Therefore trying this results
-in an error.</p>
-<p>Currently, it is not possible to use <code>semi_join</code> or <code>anti_join</code> as join-methods in the case of an
-unfiltered <code>dm</code>, when not all involved foreign tables are directly connected to table <code>start</code>.</p>
+in a warning.</p>
+<p>Since <code>join = nest_join()</code> does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
+each nested column entry would be a tibble of 1 row), an error is thrown, if this method is chosen.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other flattening functions: <code><a href='cdm_join_to_tbl.html'>cdm_join_to_tbl</a></code></p></div>

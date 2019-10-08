@@ -95,6 +95,15 @@ By default temporary tables will be created." />
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
+      <a href="../articles/dm-introduction-relational-data-model.html">Introduction to Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
@@ -140,7 +149,7 @@ By default temporary tables will be created.</p>
 
     <pre class="usage"><span class='fu'>cdm_copy_to</span>(<span class='no'>dest</span>, <span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>unique_indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,6 +178,13 @@ By default temporary tables will be created.</p>
       <th>unique_table_names</th>
       <td><p>Boolean, if <code>FALSE</code> (default), original table names will be used, if <code>TRUE</code>,
 unique table names will be created based on the original table names.</p></td>
+    </tr>
+    <tr>
+      <th>table_names</th>
+      <td><p>A named character vector, containing the names you want the tables in the <code>dm</code> to have
+after copying them to the database. The table names within the <code>dm</code> will remain unchanged.
+The name of each element of the vector needs to be one of the table names of the <code>dm</code>.
+Those tables of the <code>dm</code> that are not addressed will be called by their original name on the database.</p></td>
     </tr>
     <tr>
       <th>temporary</th>

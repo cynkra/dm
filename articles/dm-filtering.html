@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Filtering in relational data models • dm</title>
+<title>Filtering in Relational Data Models • dm</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../pkgdown.js"></script><meta property="og:title" content="Filtering in relational data models">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Filtering in Relational Data Models">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -30,7 +30,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../../index.html">dm</a>
+        <a class="navbar-link" href="../index.html">dm</a>
         <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2.9003</span>
       </span>
     </div>
@@ -38,10 +38,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../../articles/dm.html">Intro</a>
+  <a href="../articles/dm.html">Intro</a>
 </li>
 <li>
-  <a href="../../reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -51,18 +51,27 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+      <a href="../articles/dm-introduction-relational-data-model.html">Introduction to Relational Data Models</a>
     </li>
     <li>
-      <a href="../../articles/dm-low-level.html">Low level operations</a>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+    </li>
+    <li>
+      <a href="../articles/dm-low-level.html">Low level operations</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../../news/index.html">News</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -85,9 +94,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Filtering in relational data models</h1>
+      <h1>Filtering in Relational Data Models</h1>
+                        <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2019-09-30</h4>
+            <h4 class="date">2019-10-08</h4>
       
       
       <div class="hidden name"><code>dm-filtering.Rmd</code></div>
@@ -108,10 +118,10 @@
 <a href="#data-nycflights13" class="anchor"></a>Data: nycflights13</h2>
 <p>To explore filtering with {dm}, we’ll use the {nycflights13} data with its tables <code>flights</code>, <code>planes</code>, <code>airlines</code> and <code>airports</code>.</p>
 <p>This dataset contains all 336 776 flights that departed from New York City in 2013 with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">?nycflights13::flights</a></code>.</p>
-<p>First of all, we have to create a <code>dm</code> object from the {nycflights13} data. The built-in <code><a href="../../reference/cdm_nycflights13.html">dm::cdm_nycflights13()</a></code> function takes care of this.</p>
+<p>First of all, we have to create a <code>dm</code> object from the {nycflights13} data. The built-in <code><a href="../reference/cdm_nycflights13.html">dm::cdm_nycflights13()</a></code> function takes care of this.</p>
 <p>A <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm">data model object</a> contains the data as well as metadata.</p>
-<p>If you want to create a <code>dm</code> from other tables, please use the <code><a href="../../reference/dm.html">new_dm()</a></code> and <code><a href="../../reference/dm.html">dm()</a></code> functions.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>()</a></code></pre></div>
+<p>If you want to create a <code>dm</code> from other tables, please use the <code><a href="../reference/dm.html">new_dm()</a></code> and <code><a href="../reference/dm.html">dm()</a></code> functions.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>()</a></code></pre></div>
 <p>A <code>dm</code> object output with data and metadata consists of three elements:</p>
 <ol style="list-style-type: decimal">
 <li>the table sources,</li>
@@ -132,7 +142,7 @@
 #&gt; None
 </span></code></pre>
 <p>Now we know that there are five tables in our <code>dm</code> object. But how are they connected? These relations are best displayed as a visualization of the entity-relationship model:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../../reference/cdm_draw.html">cdm_draw</a></span>(dm)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_draw.html">cdm_draw</a></span>(dm)</a></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="184pt" viewbox="0.00 0.00 152.00 184.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 180)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -166,14 +176,14 @@
 <div id="filter" class="section level2">
 <h2 class="hasAnchor">
 <a href="#filter" class="anchor"></a>Filtering a <code>dm</code> object</h2>
-<p><code><a href="../../reference/cdm_filter.html">cdm_filter()</a></code> allows you to select a subset of a <code>dm</code> object.</p>
+<p><code><a href="../reference/cdm_filter.html">cdm_filter()</a></code> allows you to select a subset of a <code>dm</code> object.</p>
 <div id="how-it-works" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-it-works" class="anchor"></a>How it works</h3>
 <p>Filtering a <code>dm</code> object is not that different from filtering a dataframe or tibble with <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code>.</p>
-<p>The corresponding <code>dm</code> function is <code><a href="../../reference/cdm_filter.html">dm::cdm_filter()</a></code> and creates a subset of one table depending on the input. But <code>dm</code> does not stop here: A cascade of joins is performed along the foreign key relations. This results in a new <code>dm</code> containing only rows related to the filter operation.</p>
-<p>Currently, this only works if the graph induced by the foreign key relations is cycle free. Luckily, this is the default for <code><a href="../../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code>.</p>
-<p>While <code><a href="../../reference/cdm_filter.html">cdm_filter()</a></code> shows you a filtered <code>dm</code> object, the actual computing is done when calling <code><a href="../../reference/cdm_filter.html">cdm_apply_filters()</a></code> after stating the filtering conditions with <code><a href="../../reference/cdm_filter.html">cdm_filter()</a></code>. It updates all tables and foreign key relations. For example, this is important when you first want to filter a <code>dm</code> object and then to join tables.</p>
+<p>The corresponding <code>dm</code> function is <code><a href="../reference/cdm_filter.html">dm::cdm_filter()</a></code> and creates a subset of one table depending on the input. But <code>dm</code> does not stop here: A cascade of joins is performed along the foreign key relations. This results in a new <code>dm</code> containing only rows related to the filter operation.</p>
+<p>Currently, this only works if the graph induced by the foreign key relations is cycle free. Luckily, this is the default for <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code>.</p>
+<p>While <code><a href="../reference/cdm_filter.html">cdm_filter()</a></code> shows you a filtered <code>dm</code> object, the actual computing is done when calling <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> after stating the filtering conditions with <code><a href="../reference/cdm_filter.html">cdm_filter()</a></code>. It updates all tables and foreign key relations. For example, this is important when you first want to filter a <code>dm</code> object and then to join tables.</p>
 </div>
 <div id="filtering-examples" class="section level3">
 <h3 class="hasAnchor">
@@ -183,7 +193,7 @@
 <p>The total number of rows drops from 367 687 to 138 786 (apart from the disconnected <code>weather</code> table).</p>
 <p>You can see this in the <code>Rows</code>-part of the print output.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(airports, name <span class="op">==</span><span class="st"> "John F Kennedy Intl"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airports, name <span class="op">==</span><span class="st"> "John F Kennedy Intl"</span>)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
@@ -195,16 +205,16 @@
 #&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
 #&gt; airports: name == "John F Kennedy Intl"
 </span></code></pre>
-<p>Another way to check the number of rows is the function <code><a href="../../reference/cdm_nrow.html">cdm_nrow()</a></code>:</p>
+<p>Another way to check the number of rows is the function <code><a href="../reference/cdm_nrow.html">cdm_nrow()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">dm <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(airports, name <span class="op">==</span><span class="st"> "John F Kennedy Intl"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_nrow.html">cdm_nrow</a></span>()</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airports, name <span class="op">==</span><span class="st"> "John F Kennedy Intl"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_nrow.html">cdm_nrow</a></span>()</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;       16     1458   336776     3322    26115</span></a></code></pre></div>
 <p>Next example:</p>
 <p><strong>Get a <code>dm</code> object containing data for flights from New York to the Dulles International Airport in Washington D.C., abbreviated with <code>IAD</code>.</strong></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(flights, dest <span class="op">==</span><span class="st"> "IAD"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(flights, dest <span class="op">==</span><span class="st"> "IAD"</span>)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Data model</span><span> </span><span style="color: #555555;">─────────────────────────────────────────────────────────────</span><span>
@@ -220,9 +230,9 @@
 <p>An Example:</p>
 <p><strong>Get all flights from Delta Air Lines which didn’t depart from John F. Kennedy International Airport in May 2013.</strong></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">dm_delta_may &lt;-<span class="st"> </span>dm <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(airlines, name <span class="op">==</span><span class="st"> "Delta Air Lines Inc."</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(airports, name <span class="op">!=</span><span class="st"> "John F Kennedy Intl"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(flights, month <span class="op">==</span><span class="st"> </span><span class="dv">5</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airlines, name <span class="op">==</span><span class="st"> "Delta Air Lines Inc."</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airports, name <span class="op">!=</span><span class="st"> "John F Kennedy Intl"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(flights, month <span class="op">==</span><span class="st"> </span><span class="dv">5</span>)</a></code></pre></div>
 <p>You can inspect the filtered tables with <code>tbl</code>.</p>
 <p>In the <code>airlines</code> table, Delta is the only remaining carrier:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">dm_delta_may <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -309,40 +319,40 @@
 <p>You can check the queries by using the <code>sql_render()</code> from the <a href="https://dbplyr.tidyverse.org/"><code>dbplyr</code> package</a>.</p>
 <p>Example:</p>
 <p><strong>Print the SQL statements for getting all flights from Delta Air Lines which didn’t depart from John F. Kennedy International Airport in May 2013 when the data is stored in a sqlite database.</strong></p>
-<p>To show the SQL query behind a <code><a href="../../reference/cdm_filter.html">cdm_filter()</a></code>, we copy the <code>flights</code>, <code>airlines</code> and <code>airports</code> tables from the <code>nyflights13</code> dataset to a temporary in-memory database using the built-in function <code><a href="../../reference/cdm_copy_to.html">cdm_copy_to()</a></code> and <code><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">dbplyr::src_memdb</a></code>.</p>
+<p>To show the SQL query behind a <code><a href="../reference/cdm_filter.html">cdm_filter()</a></code>, we copy the <code>flights</code>, <code>airlines</code> and <code>airports</code> tables from the <code>nyflights13</code> dataset to a temporary in-memory database using the built-in function <code><a href="../reference/cdm_copy_to.html">cdm_copy_to()</a></code> and <code><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">dbplyr::src_memdb</a></code>.</p>
 <p>Then we filter the data and print the corresponding SQL statement with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">dbplyr::sql_render()</a></code>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">dm <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_select_tbl.html">cdm_select_tbl</a></span>(flights, airlines, airports) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(flights, month <span class="op">==</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_copy_to.html">cdm_copy_to</a></span>(dbplyr<span class="op">::</span><span class="kw"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">src_memdb</a></span>(), ., <span class="dt">unique_table_names =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(airlines, name <span class="op">==</span><span class="st"> "Delta Air Lines Inc."</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_filter</a></span>(airports, name <span class="op">!=</span><span class="st"> "John F Kennedy Intl"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../../reference/cdm_filter.html">cdm_apply_filters</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../../reference/dm.html">cdm_get_tables</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_select_tbl.html">cdm_select_tbl</a></span>(flights, airlines, airports) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(flights, month <span class="op">==</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_copy_to.html">cdm_copy_to</a></span>(dbplyr<span class="op">::</span><span class="kw"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">src_memdb</a></span>(), ., <span class="dt">unique_table_names =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airlines, name <span class="op">==</span><span class="st"> "Delta Air Lines Inc."</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airports, name <span class="op">!=</span><span class="st"> "John F Kennedy Intl"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_apply_filters</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/dm.html">cdm_get_tables</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb14-9" data-line-number="9"><span class="st">  </span><span class="kw">map</span>(dbplyr<span class="op">::</span>sql_render)</a>
 <a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt; $flights</span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM `flights_2019_09_30_19_42_26_1` AS `LHS`</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM flights_2019_10_08_08_25_51_1 AS `LHS`</span></a>
 <a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt; WHERE EXISTS (</span></a>
 <a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt;   SELECT 1 FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; FROM `airlines_2019_09_30_19_42_26_2`</span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; FROM airlines_2019_10_08_08_25_51_2</span></a>
 <a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span></a>
 <a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></a>
 <a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt; )) AS `LHS`</span></a>
 <a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt; WHERE EXISTS (</span></a>
 <a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt;   SELECT 1 FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt; FROM `airports_2019_09_30_19_42_26_3`</span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt; FROM airports_2019_10_08_08_25_51_3</span></a>
 <a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span></a>
 <a class="sourceLine" id="cb14-22" data-line-number="22"><span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></a>
 <a class="sourceLine" id="cb14-23" data-line-number="23"><span class="co">#&gt; )</span></a>
 <a class="sourceLine" id="cb14-24" data-line-number="24"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb14-25" data-line-number="25"><span class="co">#&gt; $airlines</span></a>
 <a class="sourceLine" id="cb14-26" data-line-number="26"><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></a>
-<a class="sourceLine" id="cb14-27" data-line-number="27"><span class="co">#&gt; FROM (SELECT * FROM `airlines_2019_09_30_19_42_26_2` AS `LHS`</span></a>
+<a class="sourceLine" id="cb14-27" data-line-number="27"><span class="co">#&gt; FROM (SELECT * FROM airlines_2019_10_08_08_25_51_2 AS `LHS`</span></a>
 <a class="sourceLine" id="cb14-28" data-line-number="28"><span class="co">#&gt; WHERE EXISTS (</span></a>
-<a class="sourceLine" id="cb14-29" data-line-number="29"><span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2019_09_30_19_42_26_1` AS `LHS`</span></a>
+<a class="sourceLine" id="cb14-29" data-line-number="29"><span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2019_10_08_08_25_51_1 AS `LHS`</span></a>
 <a class="sourceLine" id="cb14-30" data-line-number="30"><span class="co">#&gt; WHERE EXISTS (</span></a>
 <a class="sourceLine" id="cb14-31" data-line-number="31"><span class="co">#&gt;   SELECT 1 FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb14-32" data-line-number="32"><span class="co">#&gt; FROM `airports_2019_09_30_19_42_26_3`</span></a>
+<a class="sourceLine" id="cb14-32" data-line-number="32"><span class="co">#&gt; FROM airports_2019_10_08_08_25_51_3</span></a>
 <a class="sourceLine" id="cb14-33" data-line-number="33"><span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span></a>
 <a class="sourceLine" id="cb14-34" data-line-number="34"><span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></a>
 <a class="sourceLine" id="cb14-35" data-line-number="35"><span class="co">#&gt; )) AS `RHS`</span></a>
@@ -352,19 +362,19 @@
 <a class="sourceLine" id="cb14-39" data-line-number="39"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb14-40" data-line-number="40"><span class="co">#&gt; $airports</span></a>
 <a class="sourceLine" id="cb14-41" data-line-number="41"><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></a>
-<a class="sourceLine" id="cb14-42" data-line-number="42"><span class="co">#&gt; FROM (SELECT * FROM `airports_2019_09_30_19_42_26_3` AS `LHS`</span></a>
+<a class="sourceLine" id="cb14-42" data-line-number="42"><span class="co">#&gt; FROM (SELECT * FROM airports_2019_10_08_08_25_51_3 AS `LHS`</span></a>
 <a class="sourceLine" id="cb14-43" data-line-number="43"><span class="co">#&gt; WHERE EXISTS (</span></a>
-<a class="sourceLine" id="cb14-44" data-line-number="44"><span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2019_09_30_19_42_26_1` AS `LHS`</span></a>
+<a class="sourceLine" id="cb14-44" data-line-number="44"><span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2019_10_08_08_25_51_1 AS `LHS`</span></a>
 <a class="sourceLine" id="cb14-45" data-line-number="45"><span class="co">#&gt; WHERE EXISTS (</span></a>
 <a class="sourceLine" id="cb14-46" data-line-number="46"><span class="co">#&gt;   SELECT 1 FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb14-47" data-line-number="47"><span class="co">#&gt; FROM `airlines_2019_09_30_19_42_26_2`</span></a>
+<a class="sourceLine" id="cb14-47" data-line-number="47"><span class="co">#&gt; FROM airlines_2019_10_08_08_25_51_2</span></a>
 <a class="sourceLine" id="cb14-48" data-line-number="48"><span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span></a>
 <a class="sourceLine" id="cb14-49" data-line-number="49"><span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></a>
 <a class="sourceLine" id="cb14-50" data-line-number="50"><span class="co">#&gt; )) AS `RHS`</span></a>
 <a class="sourceLine" id="cb14-51" data-line-number="51"><span class="co">#&gt;   WHERE (`LHS`.`faa` = `RHS`.`origin`)</span></a>
 <a class="sourceLine" id="cb14-52" data-line-number="52"><span class="co">#&gt; ))</span></a>
 <a class="sourceLine" id="cb14-53" data-line-number="53"><span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')</span></a></code></pre></div>
-<p>If you look closely, you will notice the function call <code><a href="../../reference/cdm_filter.html">cdm_apply_filters()</a></code> after stating the filtering conditions. This functions updates all tables and foreign key relations.</p>
+<p>If you look closely, you will notice the function call <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> after stating the filtering conditions. This functions updates all tables and foreign key relations.</p>
 <p>Further reading: {dm}’s function for copying data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>.</p>
 </div>
   </div>

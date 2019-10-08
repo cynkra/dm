@@ -54,6 +54,15 @@
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
+      <a href="../articles/dm-introduction-relational-data-model.html">Introduction to Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
@@ -87,7 +96,7 @@
     <div class="page-header toc-ignore">
       <h1>Preparing Your Data</h1>
             
-            <h4 class="date">2019-09-30</h4>
+            <h4 class="date">2019-10-08</h4>
       
       
       <div class="hidden name"><code>setting_up_dm.Rmd</code></div>
@@ -141,14 +150,14 @@
 ##   column      candidate why                                                
 ##   &lt;chr&gt;       &lt;lgl&gt;     &lt;chr&gt;                                              
 ## 1 tailnum     TRUE      ""                                                 
-## 2 year        FALSE     has duplicate values: 1959, 1963, 1975, 1976, 1977…
-## 3 type        FALSE     has duplicate values: Fixed wing multi engine, Fix…
+## 2 engine      FALSE     has duplicate values: 4 Cycle, Reciprocating, Turb…
+## 3 engines     FALSE     has duplicate values: 1, 2, 3, 4                   
 ## 4 manufactur… FALSE     has duplicate values: AIRBUS, AIRBUS INDUSTRIE, AM…
 ## 5 model       FALSE     has duplicate values: 717-200, 737-301, 737-3G7, 7…
-## 6 engines     FALSE     has duplicate values: 1, 2, 3, 4                   
-## 7 seats       FALSE     has duplicate values: 2, 4, 5, 6, 7, 8, …          
-## 8 speed       FALSE     has duplicate values: 90, 105, 162, 432, NA        
-## 9 engine      FALSE     has duplicate values: 4 Cycle, Reciprocating, Turb…</code></pre>
+## 6 seats       FALSE     has duplicate values: 2, 4, 5, 6, 7, 8, …          
+## 7 speed       FALSE     has duplicate values: 90, 105, 162, 432, NA        
+## 8 type        FALSE     has duplicate values: Fixed wing multi engine, Fix…
+## 9 year        FALSE     has duplicate values: 1959, 1963, 1975, 1976, 1977…</code></pre>
 <p>Now, add any primary keys you may have identified:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">flights_dm_only_pks &lt;-<span class="st"> </span>flights_dm_no_keys <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(<span class="dt">table =</span> airlines, <span class="dt">column =</span> carrier) <span class="op">%&gt;%</span></a>

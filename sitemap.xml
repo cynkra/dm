@@ -13,6 +13,9 @@
     <loc>https://krlmlr.github.io/dm/reference/cdm_add_pk.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/cdm_check_constraints.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/reference/cdm_copy_to.html</loc>
   </url>
   <url>
@@ -115,6 +118,9 @@
     <loc>https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-filtering.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html</loc>
   </url>
   <url>
@@ -134,9 +140,6 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-db.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/wip/dm-filtering.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-shiny-dynafilter.html</loc>
