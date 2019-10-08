@@ -79,7 +79,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
   walk(list_of_pts, ~check_correct_input(dm, .))
-  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
   force(join)
   stopifnot(is_function(join))
@@ -104,11 +103,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # We use the induced subgraph right away
   g <- igraph::induced_subgraph(g, c(start, list_of_pts))
 
-  has_filters <- nrow(cdm_get_filter(dm)) > 0
-  if (has_filters && join_name %in% c("full_join", "right_join") && !is_empty(list_of_pts)) {
-    abort_apply_filters_first(join_name)
-  }
-
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
   dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE, dist = TRUE)
@@ -120,16 +114,11 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
       pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
     )
 
-  # argument checking, or filter and recompute induced subgraph
-  # for subsequent check
-  if (anyNA(order_df$name)) {
-    abort_tables_not_reachable_from_start()
-  }
-
-  # Cycles not yet supported
-  if (length(V(g)) - 1 != length(E(g))) {
-    abort_no_cycles()
-  }
+  dispatch_abort(
+    join_name,
+    (nrow(cdm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
+    anyNA(order_df$name),
+    g)
 
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
