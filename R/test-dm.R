@@ -12,11 +12,12 @@
 # cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
 cdm_test_load <- function(x,
                           srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
-                          ignore = character()) {
+                          ignore = character(),
+                          set_key_constraints = TRUE) {
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
 
-  map(srcs, ~ cdm_copy_to(., dm = x, unique_table_names = TRUE))
+  map(srcs, ~ cdm_copy_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
 }
 
 
