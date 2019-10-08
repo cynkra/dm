@@ -151,6 +151,18 @@ cdm_get_src <- function(x) {
   tbl_src(tables[1][[1]])
 }
 
+#' Get connection
+#'
+#' `cdm_get_con()` returns the connection object (`con`-part of \pkg{dplyr} source component) of a `dm`
+#' object.
+#'
+#' @rdname dm
+#'
+#' @export
+cdm_get_con <- function(x) {
+  cdm_get_src(x)[["con"]]
+}
+
 #' Get tables component
 #'
 #' `cdm_get_tables()` returns a named list with \pkg{dplyr} [tbl] objects
