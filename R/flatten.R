@@ -105,7 +105,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   g <- igraph::induced_subgraph(g, c(start, list_of_pts))
 
   has_filters <- nrow(cdm_get_filter(dm)) > 0
-  if (has_filters && join_name %in% c("full_join", "right_join") && length(igraph::V(g)) > 1) {
+  if (has_filters && join_name %in% c("full_join", "right_join") && !is_empty(list_of_pts)) {
     abort_apply_filters_first(join_name)
   }
 
