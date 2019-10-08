@@ -28,6 +28,7 @@ knit_print.grViz <- function(x, ...) {
 
 library(tidyverse)
 library(dm)
+library(nycflights13)
 ```
 
 Multiple, linked tables are a common concept within computer science. 
@@ -75,9 +76,6 @@ This can result in long and inflated pipe chains full of `left_join()`, `anti_jo
 In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
 
 ```{r}
-library(tidyverse)
-library(dm)
-
 flights %>% 
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
@@ -132,7 +130,8 @@ Which columns of the `airlines` table can serve as a primary key?
 
 ```{r}
 dm %>% 
-  cdm_enum_pk_candidates(airports)
+  cdm_enum_pk_candidates(airports) %>% 
+  arrange(desc(candidate))
 ```
 
 Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
@@ -149,8 +148,7 @@ You can find foreign key candidates with the function `cdm_enum_fk_candidates()`
 
 ```{r}
 dm %>% 
-  cdm_enum_fk_candidates(flights, airlines) %>% 
-  arrange(desc(candidate))
+  cdm_enum_fk_candidates(flights, airlines)
 ```
 
 After finding and assigning foreign keys, get the name of the set foreign key:
