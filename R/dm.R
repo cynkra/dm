@@ -114,13 +114,12 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
   stopifnot(!is.null(fks))
 
   def <- tibble(
-    name, segment, display,
+    table, name, segment, display,
     stringsAsFactors = FALSE
   )
 
   structure(
     list(
-      tables = table,
       def = def,
       data_model_pks = pks,
       data_model_fks = fks,
@@ -175,7 +174,7 @@ cdm_get_src <- function(x) {
 #'
 #' @export
 cdm_get_tables <- function(x) {
-  unclass(x)$tables
+  cdm_get_def(x)$table
 }
 
 cdm_get_def <- function(x) {
