@@ -28,7 +28,9 @@ check_correct_input <- function(dm, table) {
     abort("`table` must be a string.")
   }
   cdm_table_names <- src_tbls(dm)
-  if (!table %in% cdm_table_names) abort_table_not_in_dm(table, cdm_table_names)
+  if (!table %in% cdm_table_names) {
+    abort_table_not_in_dm(table, dm)
+  }
 }
 
 # validates, that the given column is indeed part of the table of the `dm` object.
