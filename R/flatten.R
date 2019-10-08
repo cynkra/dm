@@ -112,7 +112,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
-  dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE)
+  dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE, dist = TRUE)
 
   # compute all table names
   order_df <-
@@ -169,8 +169,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
-  if (!squash && !all(map_lgl(order_df$name, ~{
-    cdm_has_fk(clean_dm, !!start, !!.) || cdm_has_fk(clean_dm, !!., !!start)}))) {
+  if (!squash && any(dfs$dist > 1)) {
     abort_only_parents()
   }
 
