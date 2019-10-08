@@ -92,7 +92,7 @@ cdm_apply_filters <- function(dm) {
 
   new_dm2(
     table = new_list_of_tables,
-    filter = NULL,
+    filter = new_filters(),
     base_dm = dm
   )
 }

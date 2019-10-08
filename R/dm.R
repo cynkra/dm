@@ -71,6 +71,9 @@ new_dm <- function(tables, data_model) {
 
   data_model_tables <- data_model$tables
 
+  stopifnot(all(names(tables) %in% data_model_tables$table))
+  stopifnot(all(data_model_tables$table %in% names(tables)))
+
   keys <- columns %>%
     select(column, table, key) %>%
     filter(key > 0) %>%
@@ -91,13 +94,13 @@ new_dm <- function(tables, data_model) {
   }
 
   new_dm2(
-    tables,
+    tables[data_model_tables$table],
     data_model_tables$table,
     data_model_tables$segment,
     data_model_tables$display,
     keys,
     references,
-    filter = NULL
+    filter = new_filters()
   )
 }
 
@@ -113,20 +116,27 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
 
-  def <- tibble(
-    table, name, segment, display,
-    stringsAsFactors = FALSE
-  )
+  filters <-
+    filter %>%
+    rename(name = table, filter_quo = filter) %>%
+    nest(filters = filter_quo)
+
+  def <-
+    tibble(table = unname(table), name, segment, display) %>%
+    left_join(filters, by = "name")
 
   structure(
     list(
       def = def,
       data_model_pks = pks,
-      data_model_fks = fks,
-      filter = filter
+      data_model_fks = fks
     ),
     class = "dm"
   )
+}
+
+new_filters <- function() {
+  tibble(table = character(), filter = list())
 }
 
 #' Validator
@@ -174,7 +184,7 @@ cdm_get_src <- function(x) {
 #'
 #' @export
 cdm_get_tables <- function(x) {
-  cdm_get_def(x)$table
+  set_names(cdm_get_def(x)$table, cdm_get_def(x)$name)
 }
 
 cdm_get_def <- function(x) {
@@ -251,11 +261,18 @@ cdm_get_all_columns <- function(x) {
 #'
 #' @export
 cdm_get_filter <- function(x) {
-  filter <- unclass(x)$filter
-  if (!is_null(filter)) {
-    return(filter)
+  filter_df <-
+    cdm_get_def(x) %>%
+    select(name, filters) %>%
+    unnest(filters)
+
+  # FIXME: Should work better with dplyr 0.9.0
+  if (!("filter_quo" %in% names(filter_df))) {
+    filter_df$filter_quo <- list()
   }
-  tibble(table = character(0), filter = list(0))
+
+  filter_df  %>%
+    rename(table = name, filter = filter_quo)
 }
 
 #' Check class
