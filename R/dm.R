@@ -161,9 +161,9 @@ cdm_get_src <- function(x) {
 #'
 #' @export
 cdm_get_con <- function(x) {
-  con <- cdm_get_src(x)[["con"]]
-  if (is_null(con)) abort_no_con_if_local()
-  con
+  src <- cdm_get_src(x)
+  if (inherits(src, "src_local")) abort_no_con_if_local()
+  src$con
 }
 
 #' Get tables component
