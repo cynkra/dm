@@ -102,9 +102,9 @@ new_dm <- function(tables, data_model) {
 }
 
 new_dm2 <- function(table = cdm_get_tables(base_dm),
-                    name = cdm_get_data_model_tables(base_dm)$table,
-                    segment = cdm_get_data_model_tables(base_dm)$segment,
-                    display = cdm_get_data_model_tables(base_dm)$display,
+                    name = cdm_get_def(base_dm)$name,
+                    segment = cdm_get_def(base_dm)$segment,
+                    display = cdm_get_def(base_dm)$display,
                     pks = cdm_get_data_model_pks(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
                     filter = cdm_get_filter(base_dm),
@@ -113,15 +113,15 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
 
-  data_model_tables <- data.frame(
-    table = name, segment, display,
+  def <- tibble(
+    name, segment, display,
     stringsAsFactors = FALSE
   )
 
   structure(
     list(
       tables = table,
-      data_model_tables = data_model_tables,
+      def = def,
       data_model_pks = pks,
       data_model_fks = fks,
       filter = filter
@@ -178,8 +178,8 @@ cdm_get_tables <- function(x) {
   unclass(x)$tables
 }
 
-cdm_get_data_model_tables <- function(x) {
-  unclass(x)$data_model_tables
+cdm_get_def <- function(x) {
+  unclass(x)$def
 }
 
 cdm_get_data_model_pks <- function(x) {
@@ -199,6 +199,15 @@ cdm_get_data_model_fks <- function(x) {
 #'
 #' @export
 cdm_get_data_model <- function(x) {
+  def <- cdm_get_def(x)
+
+  tables <- data.frame(
+    table = def$name,
+    segment = def$segment,
+    display = def$display,
+    stringsAsFactors = FALSE
+  )
+
   references_for_columns <- cdm_get_data_model_fks(x)
 
   references <-
@@ -220,7 +229,7 @@ cdm_get_data_model <- function(x) {
     as.data.frame()
 
   new_data_model(
-    cdm_get_data_model_tables(x),
+    tables,
     columns,
     references
   )
