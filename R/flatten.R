@@ -99,7 +99,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # If no tables are given, we use all reachable tables
   auto_detect <- is_empty(list_of_pts)
   if (auto_detect) {
-    # `purrr::discard()` in case `list_of_pts` is `NA`
     list_of_pts <- get_names_of_connected(g, start)
   }
   # We use the induced subgraph right away
