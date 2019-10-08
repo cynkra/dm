@@ -87,5 +87,5 @@ create_graph_from_dm <- function(dm, directed = FALSE) {
 
 get_names_of_connected <- function(g, start) {
   bfs <- igraph::bfs(g, start, unreachable = FALSE)
-  setdiff(names(bfs[["order"]]), start)
+  setdiff(names(bfs[["order"]]), start) %>% discard(is.na)
 }
