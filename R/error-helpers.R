@@ -470,7 +470,7 @@ abort_is_not_dm <- function(obj_class) {
 }
 
 error_is_not_dm <- function(obj_class) {
-  glue("Object of class {tick(obj_class)}, but needs to be of class `dm`")
+  glue("Required class `dm` but instead is {tick(obj_class)}")
 }
 
 
