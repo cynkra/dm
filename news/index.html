@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.2.9003</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3</span>
       </span>
     </div>
 
@@ -134,6 +134,24 @@
       
     </div>
 
+    <div id="dm-0-0-3" class="section level1">
+<h1 class="page-header">
+<a href="#dm-0-0-3" class="anchor"></a>dm 0.0.3</h1>
+<ul>
+<li>
+<code><a href="../reference/enum_pk_candidates.html">cdm_enum_pk_candidates()</a></code> and <code><a href="../reference/cdm_enum_fk_candidates.html">cdm_enum_fk_candidates()</a></code> both show candidates first (#85).</li>
+<li>
+<code><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl()</a></code> works only in the immediate neighborhood (#75).</li>
+<li>New <code><a href="../reference/cdm_flatten_to_tbl.html">cdm_squash_to_tbl()</a></code> implements recursive flattening for left, inner and full join (#75).</li>
+<li>Updated readme and introduction vignette (#72, <a href='https://github.com/cutterkom'>@cutterkom</a>).</li>
+<li>New <code><a href="../reference/cdm_check_constraints.html">cdm_check_constraints()</a></code> to check referential integrity of a <code>dm</code> (#56).</li>
+<li>
+<code><a href="../reference/cdm_copy_to.html">cdm_copy_to()</a></code> gains <code>table_names</code> argument (#79).</li>
+<li>
+<code><a href="../reference/check_key.html">check_key()</a></code> now deals correctly with named column lists (#83).</li>
+<li>Improve error message when calling <code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code> with a missing column.</li>
+</ul>
+</div>
     <div id="dm-0-0-2-9003" class="section level1">
 <h1 class="page-header">
 <a href="#dm-0-0-2-9003" class="anchor"></a>dm 0.0.2.9003</h1>
@@ -396,6 +414,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dm-0-0-3">0.0.3</a></li>
         <li><a href="#dm-0-0-2-9003">0.0.2.9003</a></li>
         <li><a href="#dm-0-0-2-9002">0.0.2.9002</a></li>
         <li><a href="#dm-0-0-2-9001">0.0.2.9001</a></li>
