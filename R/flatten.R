@@ -159,12 +159,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # (Working with `reduce2()` here and the `.init`-parameter is the first table)
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
-  # the order given in the ellipsis determines the join-list
-  if (!auto_detect) {
-    pt_names <- order_df$name
-    pt_indices <- match(pt_names, list_of_pts)
-    order_df <- slice(order_df, pt_indices)
-  }
+  # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
+  order_df <- left_join(tibble(name = list_of_pts), order_df, by = "name")
 
   # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
