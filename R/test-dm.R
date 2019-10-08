@@ -53,7 +53,7 @@ is_this_a_test <- function() {
     map(1) %>%
     map_chr(as_label)
 
-  is_test_call <- any(calls %in% c("devtools::test", "testthat::test_check"))
+  is_test_call <- any(calls %in% c("devtools::test", "testthat::test_check", "testthat::test_file", "testthis:::test_this"))
 
   is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
 
