@@ -53,6 +53,7 @@ abort_table_not_in_dm <- function(table_name, tables_in_dm) {
 }
 
 error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
+  FIXME
   if (table_name[[1]] == "") {
     "Table argument is missing."
   } else {
@@ -311,7 +312,9 @@ abort_need_named_vec <- function() {
 
 error_txt_need_named_vec <- function() {
   paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector, the names ",
-  "being the original table names, as in `src_tbls(dm)`")
+    "must be from the original table names returned by `src_tbls()`: ",
+    commas(tick(src_tbls(dm)))
+  )
 }
 
 abort_src_not_db <- function() {
@@ -468,5 +471,5 @@ abort_unique_table_names_or_table_names <- function() {
 }
 
 error_unique_table_names_or_table_names <- function() {
-  "Can't provide param `table_names` and have `unique_table_names = TRUE` at the same time."
+  "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
 }

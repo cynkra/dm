@@ -71,7 +71,7 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
 
     not_found <- setdiff(names2(table_names), src_tbls(dm))
     if (has_length(not_found)) {
-      if (unique(not_found)[1] == "") abort_need_named_vec()
+      if (any(not_found == "")) abort_need_named_vec()
       abort_table_not_in_dm(unique(not_found), src_tbls(dm))
     }
   }
@@ -89,7 +89,6 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
     copy_data = copy_data,
     temporary = temporary,
     overwrite = FALSE,
-    table_names = table_names,
     ...
   )
 
