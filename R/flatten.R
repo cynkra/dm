@@ -122,23 +122,9 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
     auto_detect,
     nrow(order_df) > 2)
 
-  # filters need to be empty, for the disambiguation to work
-  # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
-  red_dm <- cdm_reset_all_filters(dm) %>% cdm_select_tbl(order_df$name)
-
-  if (gotta_rename) {
-    recipe <- compute_disambiguate_cols_recipe(red_dm, order_df$name, sep = ".")
-    explain_col_rename(recipe)
-    # prepare `dm` by disambiguating columns (on a reduced dm)
-    clean_dm <-
-      col_rename(red_dm, recipe)
-    # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`,
-    # therefore we need a named variable containing the new and old names
-    renames <- recipe %>% filter(table == !!start) %>% pull() %>% flatten_chr()
-  } else { # for `anti_join()` and `semi_join()` no renaming necessary
-    clean_dm <- red_dm
-    renames <- character(0)
-  }
+  l_clean_dm_renames <- clean_up_dm(dm, order_df$name, gotta_rename)
+  clean_dm <- l_clean_dm_renames[[1]]
+  renames <- l_clean_dm_renames[[2]]
 
   # Drop first table in the list of join partners. (We have at least one table, `start`.)
   # (Working with `reduce2()` here and the `.init`-parameter is the first table)
