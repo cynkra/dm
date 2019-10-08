@@ -451,6 +451,7 @@ abort_no_flatten_with_nest_join <- function() {
 error_no_flatten_with_nest_join <- function() {
   paste0("`cdm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
   "cf. the help pages for these functions. Consider `join = left_join`")
+}
 
 # either explicit table names, or auto-unique ones ------------------------
 
