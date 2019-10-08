@@ -199,7 +199,7 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
 
   tibble(
     column = tbl_colnames,
-    why = map_chr(column, ~check_fk(dm, tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_pk))
+    why = map_chr(column, ~check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_pk))
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
@@ -208,7 +208,7 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
     select(-arrange_col)
 })
 
-check_fk <- function(dm, t1, t1_name, colname, t2, t2_name, pk) {
+check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 
   t1_join <- t1 %>% select(value = !!sym(colname))
   t2_join <- t2 %>% select(value = !!sym(pk)) %>% mutate(match = 1L)

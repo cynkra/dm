@@ -13,6 +13,10 @@
 #'
 #' @param dest A `src` or `con` object like e.g. a database.
 #' @param dm A `dm` object.
+#' @param table_names A named character vector, containing the names you want the tables in the `dm` to have
+#' after copying them to the database. The table names within the `dm` will remain unchanged.
+#' The name of each element of the vector needs to be one of the table names of the `dm`.
+#' Those tables of the `dm` that are not addressed will be called by their original name on the database.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
 #' @param unique_table_names Boolean, if `FALSE` (default), original table names will be used, if `TRUE`,
@@ -34,7 +38,9 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
                               types = NULL, overwrite = NULL,
                               indexes = NULL, unique_indexes = NULL,
                               set_key_constraints = TRUE, unique_table_names = FALSE,
-                              temporary = TRUE), ~ {
+                              table_names = NULL,
+                              temporary = TRUE), ~
+{
   # for now focusing on MSSQL
   # we expect the src (dest) to already point to the correct schema
   # we want to
@@ -58,13 +64,25 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
     abort_no_unique_indexes()
   }
 
+  if (!is.null(table_names)) {
+    if (unique_table_names) {
+      abort_unique_table_names_or_table_names()
+    }
+
+    not_found <- setdiff(names2(table_names), src_tbls(dm))
+    if (has_length(not_found)) {
+      if (any(not_found == "")) abort_need_named_vec(dm)
+      abort_table_not_in_dm(unique(not_found), dm)
+    }
+  }
+
   # FIXME: if same_src(), can use compute(), but need to set NOT NULL
   # constraints
 
   dest <- src_from_src_or_con(dest)
   dm <- collect(dm)
 
-  copy_data <- build_copy_data(dm, dest, unique_table_names)
+  copy_data <- build_copy_data(dm, dest, table_names, unique_table_names)
 
   new_tables <- copy_list_of_tables_to(
     dest,

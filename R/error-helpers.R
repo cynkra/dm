@@ -48,21 +48,17 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 # general error: table not part of `dm` -----------------------------------
 
 
-abort_table_not_in_dm <- function(table_name, tables_in_dm) {
-  abort(error_txt_table_not_in_dm(table_name, tables_in_dm), .subclass = cdm_error_full("table_not_in_dm"))
+abort_table_not_in_dm <- function(table_name, dm) {
+  abort(error_txt_table_not_in_dm(table_name, dm), .subclass = cdm_error_full("table_not_in_dm"))
 }
 
-error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
-  if (table_name == "") {
-    "Table argument is missing."
-  } else {
-    paste0(
-      "Table: ",
-      table_name,
-      " not in `dm` object. Available table names are: ",
-      paste0(tables_in_dm, collapse = ", ")
-    )
-  }
+error_txt_table_not_in_dm <- function(table_name, dm) {
+  paste0(
+    "Tables ",
+    commas(tick(table_name)),
+    " not in `dm` object. Available table names: ",
+    commas(tick(src_tbls(dm)))
+  )
 }
 
 
@@ -305,6 +301,17 @@ error_txt_no_unique_indexes <- function() {
   paste0("`cdm_copy_to()` does not support the `unique_indexes` argument.")
 }
 
+abort_need_named_vec <- function(dm) {
+  abort(error_txt_need_named_vec(dm), .subclass = cdm_error_full("need_named_vec"))
+}
+
+error_txt_need_named_vec <- function(dm) {
+  paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector, the names ",
+    "must be from the original table names returned by `src_tbls()`: ",
+    commas(tick(src_tbls(dm)))
+  )
+}
+
 abort_src_not_db <- function() {
   abort(error_src_not_db(), .subclass = cdm_error_full("src_not_db"))
 }
@@ -444,4 +451,13 @@ abort_no_flatten_with_nest_join <- function() {
 error_no_flatten_with_nest_join <- function() {
   paste0("`cdm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
   "cf. the help pages for these functions. Consider `join = left_join`")
+
+# either explicit table names, or auto-unique ones ------------------------
+
+abort_unique_table_names_or_table_names <- function() {
+  abort(error_unique_table_names_or_table_names(), .subclass = cdm_error_full("unique_table_names_or_table_names"))
+}
+
+error_unique_table_names_or_table_names <- function() {
+  "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
 }

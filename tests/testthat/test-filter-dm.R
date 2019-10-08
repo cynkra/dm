@@ -116,8 +116,7 @@ test_that("cdm_filter() fails when no table name is provided", {
     dm_for_filter_src,
     ~ expect_error(
       cdm_filter(.x),
-      class = cdm_error("table_not_in_dm"),
-      error_txt_table_not_in_dm("")
+      class = cdm_error("table_not_in_dm")
     )
   )
 })

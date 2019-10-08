@@ -417,7 +417,6 @@ result_from_flatten %<-% {
     left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
 }
 
-
 # 'bad' dm (no ref. integrity) for testing cdm_flatten_to_tbl() --------
 
 tbl_1 %<-% tibble(a = c(1, 2, 4, 5), b = a)
@@ -431,6 +430,21 @@ bad_dm %<-% {
     cdm_add_fk(tbl_1, a, tbl_2) %>%
     cdm_add_fk(tbl_1, b, tbl_3)
 }
+
+dm_nycflights_small %<-% {as_dm(
+  list(
+    flights = nycflights13::flights %>% slice(1:800),
+    planes = nycflights13::planes,
+    airlines = nycflights13::airlines,
+    airports = nycflights13::airports)
+  ) %>%
+  cdm_add_pk(planes, tailnum) %>%
+  cdm_add_pk(airlines, carrier) %>%
+  cdm_add_pk(airports, faa) %>%
+  cdm_add_fk(flights, tailnum, planes) %>%
+  cdm_add_fk(flights, carrier, airlines) %>%
+  cdm_add_fk(flights, dest, airports)
+  }
 
 # for database tests -------------------------------------------------
 
@@ -506,6 +520,8 @@ if (is_this_a_test()) {
   cdm_test_obj_2_src %<-% cdm_test_load(cdm_test_obj_2)
   dm_for_flatten_src %<-% cdm_test_load(dm_for_flatten)
   dm_more_complex_src %<-% cdm_test_load(dm_more_complex)
+  dm_for_disambiguate_src %<-% cdm_test_load(dm_for_disambiguate)
+  dm_nycflights_small_src %<-% cdm_test_load(dm_nycflights_small, set_key_constraints = FALSE)
 
   message("loading data frames into database")
 

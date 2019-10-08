@@ -12,11 +12,12 @@
 # cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
 cdm_test_load <- function(x,
                           srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
-                          ignore = character()) {
+                          ignore = character(),
+                          set_key_constraints = TRUE) {
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
 
-  map(srcs, ~ cdm_copy_to(., dm = x, unique_table_names = TRUE))
+  map(srcs, ~ cdm_copy_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
 }
 
 
@@ -28,7 +29,9 @@ check_correct_input <- function(dm, table) {
     abort("`table` must be a string.")
   }
   cdm_table_names <- src_tbls(dm)
-  if (!table %in% cdm_table_names) abort_table_not_in_dm(table, cdm_table_names)
+  if (!table %in% cdm_table_names) {
+    abort_table_not_in_dm(table, dm)
+  }
 }
 
 # validates, that the given column is indeed part of the table of the `dm` object.
