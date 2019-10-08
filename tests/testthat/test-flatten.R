@@ -54,7 +54,11 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
     class = cdm_error("only_parents")
   )
 
-
+  # table unreachable
+  expect_error(
+    cdm_flatten_to_tbl(dm_for_filter, t2, t3, t4),
+    class = cdm_error("tables_not_reachable_from_start")
+  )
 
 })
 
