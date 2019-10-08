@@ -24,7 +24,7 @@ cdm_test_load <- function(x,
 # internal helper functions:
 # validates, that object `dm` is of class `dm` and that `table` is character and is part of the `dm` object
 check_correct_input <- function(dm, table) {
-  if (!is_dm(dm)) abort("`dm` has to be of class `dm`")
+  if (!is_dm(dm)) abort_is_not_dm(class(dm))
   if (!is_string(table)) {
     abort("`table` must be a string.")
   }
