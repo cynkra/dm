@@ -212,7 +212,8 @@ enum_pk_candidates <- nse_function(c(table), ~ {
     mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none")))) %>%
     select(-data) %>%
     mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
-    select(-values)
+    select(-values) %>%
+    arrange(desc(candidate), column)
 })
 
 
