@@ -435,7 +435,9 @@ error_squash_limited <- function() {
 }
 
 abort_apply_filters_first <- function(join_name) {
-  abort(error_apply_filters_first(join_name), .subclass = cdm_error_full("apply_filters_first"))
+  aff <- "apply_filters_first"
+  sc <- paste0(aff, "_", join_name)
+  abort(error_apply_filters_first(join_name), .subclass = cdm_error_full(c(sc, aff)))
 }
 
 error_apply_filters_first <- function(join_name) {

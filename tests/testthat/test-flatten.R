@@ -134,8 +134,7 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'full_join()'", {
   # filtered `dm`
   expect_error(
     cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = full_join),
-    "to_tbl\\(\\)` with join method `full_join",
-    class = cdm_error("apply_filters_first")
+    class = cdm_error(c("apply_filters_first_full_join", "apply_filters_first"))
   )
 })
 
@@ -263,8 +262,7 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'right_join()'", {
   # filtered `dm`
   expect_error(
     cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = right_join),
-    "to_tbl\\(\\)` with join method `right_join",
-    class = cdm_error("apply_filters_first")
+    class = cdm_error(c("apply_filters_first_right_join", "apply_filters_first"))
   )
 })
 
