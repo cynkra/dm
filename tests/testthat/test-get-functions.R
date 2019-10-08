@@ -6,6 +6,12 @@ lookup <- tibble(
 )
 
 test_that("cdm_get_src() works", {
+
+  expect_error(
+    cdm_get_src(1),
+    class = cdm_error("is_not_dm")
+  )
+
   active_srcs_class <- semi_join(lookup, active_srcs, by = "src") %>% pull(class_src)
 
   walk2(
@@ -16,6 +22,11 @@ test_that("cdm_get_src() works", {
 })
 
 test_that("cdm_get_con() works", {
+
+  expect_error(
+    cdm_get_con(1),
+    class = cdm_error("is_not_dm")
+  )
 
   expect_error(
     cdm_get_con(dm_for_filter),
