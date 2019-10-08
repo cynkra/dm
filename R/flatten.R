@@ -118,13 +118,9 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
     join_name,
     (nrow(cdm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
     anyNA(order_df$name),
-    g)
-
-  # the result for `right_join()` depends on the order of the dim-tables in the `dm`
-  # if 2 or more of them are joined to the fact table and ellipsis is empty.
-  if (join_name == "right_join" && auto_detect && nrow(order_df) > 2) warning(
-    paste0("Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
-             "more than 2 tables involved and no explicit order given in `...`."))
+    g,
+    auto_detect,
+    nrow(order_df) > 2)
 
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here

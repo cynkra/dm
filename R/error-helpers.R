@@ -464,3 +464,33 @@ abort_unique_table_names_or_table_names <- function() {
 error_unique_table_names_or_table_names <- function() {
   "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
 }
+
+
+# error conditions evaluation for 'cdm_flatten_to_tbl_impl()' -------------
+
+dispatch_abort <- function(
+  join_name,
+  part_cond_abort_filters,
+  any_not_reachable,
+  g,
+  auto_detect,
+  more_than_1_pt) {
+  # argument checking, or filter and recompute induced subgraph
+  # for subsequent check
+  if (any_not_reachable) {
+    abort_tables_not_reachable_from_start()
+  }
+
+  # Cycles not yet supported
+  if (length(V(g)) - 1 != length(E(g))) {
+    abort_no_cycles()
+  }
+  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
+  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
+  # the result for `right_join()` depends on the order of the dim-tables in the `dm`
+  # if 2 or more of them are joined to the fact table and ellipsis is empty.
+  if (join_name == "right_join" && auto_detect && more_than_1_pt) warning(
+    paste0("Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
+           "more than 2 tables involved and no explicit order given in `...`."))
+
+}
