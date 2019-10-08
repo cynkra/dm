@@ -370,26 +370,16 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
-# `right_join()` might produce random result for `cdm_flatten_to_tbl()`
+# `cdm_flatten_to_tbl()` and `cdm_join_to_tbl()` only supported for parents
 
-abort_rj_not_wd <- function() {
-  abort(error_rj_not_wd(), .subclass = cdm_error_full("rj_not_wd"))
+abort_only_parents <- function() {
+  abort(error_only_parents(), .subclass = cdm_error_full("only_parents"))
 }
 
-error_rj_not_wd <- function() {
-  paste0("No well-defined result, when using `cdm_flatten_to_tbl()` with `right_join()` ",
-         "with more than 2 tables involved (depends on order of tables in `dm`)")
-}
-
-# `semi_join()` and `anti_join()` not supported for `cdm_flatten_to_tbl()` for deep hierarchy
-
-abort_semi_anti_nys <- function() {
-  abort(error_semi_anti_nys(), .subclass = cdm_error_full("semi_anti_nys"))
-}
-
-error_semi_anti_nys <- function() {
-  paste0("When flattening a `dm` with `semi_join()` or `anti_join()` all tables have to be ",
-  "directly connected to table `start`.")
+error_only_parents <- function() {
+  paste0("When using `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()` all join partners of table `start` ",
+         "have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
+         "use `cdm_squash_to_tbl()` as an alternative.")
 }
 
 # not all tables have the same src ----------------------------------------
@@ -414,28 +404,6 @@ error_what_a_weird_object <- function(class) {
          class)
 }
 
-# `right_join()` might produce random result for `cdm_flatten_to_tbl()`
-
-abort_rj_not_wd <- function() {
-  abort(error_rj_not_wd(), .subclass = cdm_error_full("rj_not_wd"))
-}
-
-error_rj_not_wd <- function() {
-  paste0("No well-defined result, when using `cdm_flatten_to_tbl()` with `right_join()` ",
-         "with more than 2 tables involved (depends on order of tables in `dm`)")
-}
-
-# `semi_join()` and `anti_join()` not supported for `cdm_flatten_to_tbl()` for deep hierarchy
-
-abort_semi_anti_nys <- function() {
-  abort(error_semi_anti_nys(), .subclass = cdm_error_full("semi_anti_nys"))
-}
-
-error_semi_anti_nys <- function() {
-  paste0("When flattening a `dm` with `semi_join()` or `anti_join()` all tables have to be ",
-  "directly connected to table `start` (at least currently).")
-}
-
 # not all tables have the same src ----------------------------------------
 
 
@@ -458,6 +426,32 @@ error_what_a_weird_object <- function(class) {
          class)
 }
 
+abort_squash_limited <- function() {
+  abort(error_squash_limited(), .subclass = cdm_error_full("squash_limited"))
+}
+
+error_squash_limited <- function() {
+  paste0("`cdm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
+}
+
+abort_apply_filters_first <- function(join_name) {
+  abort(error_apply_filters_first(join_name), .subclass = cdm_error_full("apply_filters_first"))
+}
+
+error_apply_filters_first <- function(join_name) {
+  glue("`cdm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
+       "produce the correct result when filters are set. ",
+       "Please consider calling `cdm_apply_filters()` first.")
+}
+
+abort_no_flatten_with_nest_join <- function() {
+  abort(error_no_flatten_with_nest_join(), .subclass = cdm_error_full("no_flatten_with_nest_join"))
+}
+
+error_no_flatten_with_nest_join <- function() {
+  paste0("`cdm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
+  "cf. the help pages for these functions. Consider `join = left_join`")
+}
 
 # either explicit table names, or auto-unique ones ------------------------
 

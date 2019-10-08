@@ -32,10 +32,11 @@ compute_disambiguate_cols_recipe <- function(dm, tables, sep) {
   }
 
   columns %>%
-    # key columns are supposed to remain unchanged, even if they are identical
-    # in case of flattening, only one column will remains for pk-fk-relations
+    # in case of flattening, primary key columns will never be responsible for the name
+    # of the resulting column in the end, so they do not need to be disambiguated
+    filter(key == 0) %>%
     add_count(column) %>%
-    filter(key == 0, is.na(ref), n > 1) %>%
+    filter(n > 1) %>%
     mutate(new_name = paste0(table, sep, column)) %>%
     select(table, new_name, column) %>%
     nest(renames = -table) %>%

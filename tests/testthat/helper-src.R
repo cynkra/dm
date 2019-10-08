@@ -234,13 +234,6 @@ rows_dm_obj <- 24L
 
 message("complicated dm")
 
-t4 %<-% tibble(
-  h = letters[1:5],
-  i = c("three", "four", "five", "six", "seven"),
-  j = c(LETTERS[3:6], LETTERS[6])
-)
-
-
 list_for_filter_2 %<-%
   modifyList(
     list_for_filter,
@@ -311,7 +304,7 @@ iris_1_dis %<-% {
 }
 iris_2_dis %<-% {
   iris_2 %>%
-    rename_at(2:7, ~ str_replace(., "^", "iris_2."))
+    rename_at(1:7, ~ str_replace(., "^", "iris_2."))
 }
 iris_3_dis %<-% {
   iris_3 %>%
@@ -328,7 +321,7 @@ dm_for_disambiguate %<-% {
 dm_for_disambiguate_2 %<-% {
   as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
     cdm_add_pk(iris_1, key) %>%
-    cdm_add_fk(iris_2, key, iris_1)
+    cdm_add_fk(iris_2, iris_2.key, iris_1)
 }
 
 # star schema data model for testing `cdm_flatten_to_tbl()`
@@ -424,6 +417,20 @@ result_from_flatten %<-% {
     left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
 }
 
+# 'bad' dm (no ref. integrity) for testing cdm_flatten_to_tbl() --------
+
+tbl_1 %<-% tibble(a = c(1, 2, 4, 5), b = a)
+tbl_2 %<-% tibble(id = 1:2, c = letters[1:2])
+tbl_3 %<-% tibble(id = 2:4, d = letters[2:4])
+
+bad_dm %<-% {
+  as_dm(list(tbl_1 = tbl_1, tbl_2 = tbl_2, tbl_3 = tbl_3)) %>%
+    cdm_add_pk(tbl_2, id) %>%
+    cdm_add_pk(tbl_3, id) %>%
+    cdm_add_fk(tbl_1, a, tbl_2) %>%
+    cdm_add_fk(tbl_1, b, tbl_3)
+}
+
 dm_nycflights_small %<-% {as_dm(
   list(
     flights = nycflights13::flights %>% slice(1:800),
@@ -438,8 +445,6 @@ dm_nycflights_small %<-% {as_dm(
   cdm_add_fk(flights, carrier, airlines) %>%
   cdm_add_fk(flights, dest, airports)
   }
-
-
 
 # for database tests -------------------------------------------------
 
