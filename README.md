@@ -9,7 +9,8 @@ status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.or
 coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/package=dm)
-[![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
+[![Launch
+rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
 # dm
@@ -39,11 +40,101 @@ splitting one table into multiple tables.
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
+This has a **hugh advantage**: The code becomes simpler.
+
+### Example
+
 As an example, we consider the
 [`nycflights13`](https://github.com/hadley/nycflights13) dataset. This
 dataset contains five tables: the main `flights` table with links into
 the `airlines`, `planes` and `airports` tables, and a `weather` table
 without an explicit link.
+
+Assume your task is to merge all tables (except the `weather` table).
+This cross-referencing is a common first step when modelling or plotting
+data.
+
+In {dm} the basic element is [a `dm`
+object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
+You can create it with `cdm_nycflights13()` for the example data. After
+that you can use the links between the tables as often as you wish -
+without explicitly referring to the relations ever again. The task of
+joining four tables (`flights`, `airlines`, `planes` and `airports`)
+boils down to:
+
+``` r
+cdm_nycflights13() %>%
+  cdm_flatten_to_tbl(start = flights)
+#> Renamed columns:
+#> * year -> flights$flights.year, planes$planes.year
+#> * name -> airlines$airlines.name, airports$airports.name
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 35</span><span>
+#&gt;    </span><span style='font-weight: bold;'>flights.year</span><span> </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>dep_time</span><span> </span><span style='font-weight: bold;'>sched_dep_time</span><span> </span><span style='font-weight: bold;'>dep_delay</span><span> </span><span style='font-weight: bold;'>arr_time</span><span>
+#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      517            515         2      830
+#&gt; </span><span style='color: #555555;'> 2</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      533            529         4      850
+#&gt; </span><span style='color: #555555;'> 3</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      542            540         2      923
+#&gt; </span><span style='color: #555555;'> 4</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      544            545        -</span><span style='color: #BB0000;'>1</span><span>     </span><span style='text-decoration: underline;'>1</span><span>004
+#&gt; </span><span style='color: #555555;'> 5</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            600        -</span><span style='color: #BB0000;'>6</span><span>      812
+#&gt; </span><span style='color: #555555;'> 6</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            558        -</span><span style='color: #BB0000;'>4</span><span>      740
+#&gt; </span><span style='color: #555555;'> 7</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      555            600        -</span><span style='color: #BB0000;'>5</span><span>      913
+#&gt; </span><span style='color: #555555;'> 8</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      709
+#&gt; </span><span style='color: #555555;'> 9</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      838
+#&gt; </span><span style='color: #555555;'>10</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      558            600        -</span><span style='color: #BB0000;'>2</span><span>      753
+#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 28 more variables: </span><span style='color: #555555;font-weight: bold;'>sched_arr_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>arr_delay</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>carrier</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>flight</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tailnum</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>origin</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>dest</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>air_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>distance</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>minute</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>time_hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>airlines.name</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>airports.name</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>lat</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>lon</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>alt</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tz</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>dst</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tzone</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>planes.year</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>type</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>manufacturer</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>model</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engines</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>seats</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>speed</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engine</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+</span></CODE></PRE>
+
+In contrast, using the classical {dplyr} notation you need three
+`left_join()` calls to merge the `flights` table gradually to
+`airlines`, `planes` and `airports` tables to create one wide data
+frame.
+
+``` r
+library(tidyverse)
+library(nycflights13)
+
+flights %>%
+  left_join(airlines, by = "carrier") %>%
+  left_join(planes, by = "tailnum") %>%
+  left_join(airports, by = c("origin" = "faa"))
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 35</span><span>
+#&gt;    </span><span style='font-weight: bold;'>year.x</span><span> </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>dep_time</span><span> </span><span style='font-weight: bold;'>sched_dep_time</span><span> </span><span style='font-weight: bold;'>dep_delay</span><span> </span><span style='font-weight: bold;'>arr_time</span><span>
+#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      517            515         2      830
+#&gt; </span><span style='color: #555555;'> 2</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      533            529         4      850
+#&gt; </span><span style='color: #555555;'> 3</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      542            540         2      923
+#&gt; </span><span style='color: #555555;'> 4</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      544            545        -</span><span style='color: #BB0000;'>1</span><span>     </span><span style='text-decoration: underline;'>1</span><span>004
+#&gt; </span><span style='color: #555555;'> 5</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            600        -</span><span style='color: #BB0000;'>6</span><span>      812
+#&gt; </span><span style='color: #555555;'> 6</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            558        -</span><span style='color: #BB0000;'>4</span><span>      740
+#&gt; </span><span style='color: #555555;'> 7</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      555            600        -</span><span style='color: #BB0000;'>5</span><span>      913
+#&gt; </span><span style='color: #555555;'> 8</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      709
+#&gt; </span><span style='color: #555555;'> 9</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      838
+#&gt; </span><span style='color: #555555;'>10</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      558            600        -</span><span style='color: #BB0000;'>2</span><span>      753
+#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 28 more variables: </span><span style='color: #555555;font-weight: bold;'>sched_arr_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>arr_delay</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>carrier</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>flight</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tailnum</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>origin</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>dest</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>air_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>distance</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>minute</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>time_hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>name.x</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>year.y</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>type</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>manufacturer</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>model</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engines</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>seats</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>speed</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engine</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>name.y</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>lat</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>lon</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>alt</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tz</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>dst</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tzone</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+</span></CODE></PRE>
+
+You can find more information and important terms to jump-start working
+with {dm} in the article [“Introduction to Relational Data
+Models”](dm-introduction-relational-data-models.html).
+
+### The Advantages in Brief
 
 The separation into multiple tables achieves several goals:
 
@@ -57,91 +148,71 @@ The separation into multiple tables achieves several goals:
   - **Segmentation**: information is organized by topic, individual
     tables are smaller and easier to handle
 
-### The case for a relational data models for dplyr users
-
-Users of the popular [dplyr](https://dplyr.tidyverse.org) package for
-data wrangling mainly rely on dataframes. However, flat file systems
-like spreadsheets and dataframes can result in bloated tables, that hold
-many repetitive values. Worst case, you have a dataframe with multiple
-columns and in each row only a single value is changing. These users can
-benefit from a better data organization. The separation into multiple
-tables helps data quality but poses a different challenge: for each
-flight, the location of the origin airport, or the details on the
-airplane, are not available immediately but must be *joined*/merged:
-
-``` r
-library(tidyverse)
-library(nycflights13)
-
-flights %>% 
-  select(month, day, origin, tailnum) %>% 
-  left_join(airports, by = c("origin" = "faa")) %>% 
-  left_join(planes, by = "tailnum")
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 19</span><span>
-#&gt;    </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>origin</span><span> </span><span style='font-weight: bold;'>tailnum</span><span> </span><span style='font-weight: bold;'>name</span><span>    </span><span style='font-weight: bold;'>lat</span><span>   </span><span style='font-weight: bold;'>lon</span><span>   </span><span style='font-weight: bold;'>alt</span><span>    </span><span style='font-weight: bold;'>tz</span><span> </span><span style='font-weight: bold;'>dst</span><span>   </span><span style='font-weight: bold;'>tzone</span><span>
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>     1     1 EWR    N14228  Newa…  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'> 2</span><span>     1     1 LGA    N24211  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'> 3</span><span>     1     1 JFK    N619AA  John…  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'> 4</span><span>     1     1 JFK    N804JB  John…  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'> 5</span><span>     1     1 LGA    N668DN  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'> 6</span><span>     1     1 EWR    N39463  Newa…  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'> 7</span><span>     1     1 EWR    N516JB  Newa…  40.7 -</span><span style='color: #BB0000;'>74.2</span><span>    18    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'> 8</span><span>     1     1 LGA    N829AS  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'> 9</span><span>     1     1 JFK    N593JB  John…  40.6 -</span><span style='color: #BB0000;'>73.8</span><span>    13    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'>10</span><span>     1     1 LGA    N3ALAA  La G…  40.8 -</span><span style='color: #BB0000;'>73.9</span><span>    22    -</span><span style='color: #BB0000;'>5</span><span> A     Amer…
-#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 8 more variables: </span><span style='color: #555555;font-weight: bold;'>year</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>type</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>manufacturer</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>model</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engines</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>seats</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>speed</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engine</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
-</span></CODE></PRE>
-
-This can result in long and inflated pipe chains full of `left_join()`,
-`anti_join()` and other forms of merging data.
-
-{dm} offers a more elegant and shorter way to combine values by
-establishing key relations (see next section [Good to
-Know](#good-to-know)) while augmenting {dplyr}/{dbplyr} workflows.
-
-You can have the best of both worlds: Manage your data with {dm} as
-linked tables, then flatten multiple tables into one for your analysis
-with {dplyr} on an as-needed basis.
-
 ## Good to Know
 
 Multiple, linked tables are a common concept in database management.
 Since many R users have a background in other disciplines, we present
-five important terms in relational data modeling to jump-start working
+six important terms in relational data modeling to jump-start working
 with {dm}.
 
-### 1\) Model
+### 1\) Data frames and tables
+
+A data frame is a fundamental data structure in R. If you imagine it
+visually, the result is a typical table structure. That’s why working
+with data from spreadsheets is so convenient and users of the the
+popular [{dplyr}](https://dplyr.tidyverse.org) package for data
+wrangling mainly rely on data frames.
+
+The downside: Data frames and flat file systems like spreadsheets can
+result in bloated tables, that hold many repetitive values. Worst case,
+you have a data frame with multiple columns and in each row only a
+single value is different.
+
+This calls for a better data organization by utilizing the resemblance
+between data frames and database tables, which consist of columns and
+rows, too. The elements are just called differently:
+
+| Data Frame | Table     |
+| ---------- | --------- |
+| Column     | Attribute |
+| Row        | Tuple     |
+
+Therefore, the separation into multiple tables is a first step that
+helps data quality. But without an associated data model you don’t take
+full advantage. For example, joining is more complicated than it should
+be. This is illustrated [above](#example).
+
+With {dm} you can have the best of both worlds: Manage your data as
+linked tables, then flatten multiple tables into one for your analysis
+with {dplyr} on an as-needed basis.
+
+### 2\) Model
 
 A data model shows the structure between multiple tables that can be
 linked together. The `nycflights13` relations can be transferred into
 the following graphical representation:
 
-<img src="man/figures/README-draw-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 The `flights` table is linked to three other tables: `airlines`,
 `planes` and `airports`. By using directed arrows the visualization
-explicitly shows the connection between different columns (they are
-called attributes in the relational data sphere). For example: The
-column `carrier` in `flights` can be joined with the column `carrier`
-from the `airlines` table. Further Reading: The {dm} methods for
-[visualizing data
+explicitly shows the connection between different columns/attributes.
+For example: The column `carrier` in `flights` can be joined with the
+column `carrier` from the `airlines` table. Further Reading: The {dm}
+methods for [visualizing data
 models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
 
 The links between the tables are established through *primary keys* and
 *foreign keys*.
 
-### 2\) Primary Keys
+### 3\) Primary Keys
 
 In a relational data model every table needs to have one
 column/attribute that uniquely identifies a row. This column is called
-primary key (abbreviated with pk). A primary key can be either an
-existing column that satifies the condition of being unique or a new
-column that assigns an identifier.
+primary key (abbreviated with pk). The primary key column has unique
+values and can’t contain `NA` or `NULL` values. If no such column
+exists, it is common practice to create a synthetic column of numeric or
+globally unique identifiers (surrogate key).
 
 In the `airlines` table of `nycflights13` the column `carrier` is the
 primary key.
@@ -150,7 +221,7 @@ Further Reading: The {dm} package offers several function for dealing
 with [primary
 keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
 
-### 3\) Foreign Keys
+### 4\) Foreign Keys
 
 The counterpart of a primary key in one table is the foreign key in
 another table. In order to join two tables, the primary key of the first
@@ -165,14 +236,14 @@ in the `flights` table.
 Further Reading: The {dm} functions for working with [foreign
 keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
 
-### 4\) Normalization
+### 5\) Normalization
 
-Normalization is the technical term that describes the central design
-principle of a relational data model: splitting data into multiple
-tables. A normalized data schema consists of several relations (tables)
-that are linked with attributes (columns) with primary and foreign keys.
 One main goal is to keep the data organization as clean and simple as
-possible by avoiding redundant data entries.
+possible by avoiding redundant data entries. Normalization is the
+technical term that describes this central design principle of a
+relational data model: splitting data into multiple tables. A normalized
+data schema consists of several relations (tables) that are linked with
+attributes (columns) with primary and foreign keys.
 
 For example, if you want to change the name of one airport in
 `nycflights13`, you have to change only a single data entry. Sometimes,
@@ -184,7 +255,7 @@ more details. Consider reviewing the [Simple English
 version](https://simple.wikipedia.org/wiki/Database_normalisation) for a
 gentle introduction.
 
-### 5\) Relational Databases
+### 6\) Relational Databases
 
 `dm` is built upon relational data models, but it is not a database
 itself. Databases are systems for data management and many of them are
@@ -260,7 +331,7 @@ The `cdm_draw()` function creates a visualization of the entity
 relationship model:
 
 ``` r
-cdm_nycflights13(cycle = TRUE) %>% 
+cdm_nycflights13(cycle = TRUE) %>%
   cdm_draw()
 ```
 
@@ -285,9 +356,9 @@ cdm_nycflights13(cycle = FALSE) %>%
 #> airlines airports  flights   planes  weather 
 #>       16     1458   336776     3322    26115
 
-cdm_nycflights13(cycle = FALSE) %>% 
+cdm_nycflights13(cycle = FALSE) %>%
   cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
-  cdm_apply_filters() %>% 
+  cdm_apply_filters() %>%
   cdm_get_tables() %>%
   map_int(nrow)
 #> airlines airports  flights   planes  weather 
@@ -375,6 +446,13 @@ to start. Further resources:
 
   - [Function
     reference](https://krlmlr.github.io/dm/reference/index.html)
+  - [Introduction to Relational Data
+    Models](https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-model.html)
+    article
+  - [Joining](https://krlmlr.github.io/dm/articles/dm-joining.html)
+    article
+  - [Filtering](https://krlmlr.github.io/dm/articles/dm-filtering.html)
+    article
   - [Class ‘dm’ and basic
     operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html)
     article
