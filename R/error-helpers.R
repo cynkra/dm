@@ -48,22 +48,17 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 # general error: table not part of `dm` -----------------------------------
 
 
-abort_table_not_in_dm <- function(table_name, tables_in_dm) {
-  abort(error_txt_table_not_in_dm(table_name, tables_in_dm), .subclass = cdm_error_full("table_not_in_dm"))
+abort_table_not_in_dm <- function(table_name, dm) {
+  abort(error_txt_table_not_in_dm(table_name, dm), .subclass = cdm_error_full("table_not_in_dm"))
 }
 
-error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
-  FIXME
-  if (table_name[[1]] == "") {
-    "Table argument is missing."
-  } else {
-    paste0(
-      "Table", if_else(length(table_name) > 1, "s", ""), ": ",
-      commas(tick(table_name)),
-      " not in `dm` object. Available table names are: ",
-      commas(tick(tables_in_dm))
-    )
-  }
+error_txt_table_not_in_dm <- function(table_name, dm) {
+  paste0(
+    "Tables ",
+    commas(tick(table_name)),
+    " not in `dm` object. Available table names: ",
+    commas(tick(src_tbls(dm)))
+  )
 }
 
 
@@ -306,11 +301,11 @@ error_txt_no_unique_indexes <- function() {
   paste0("`cdm_copy_to()` does not support the `unique_indexes` argument.")
 }
 
-abort_need_named_vec <- function() {
-  abort(error_txt_need_named_vec(), .subclass = cdm_error_full("need_named_vec"))
+abort_need_named_vec <- function(dm) {
+  abort(error_txt_need_named_vec(dm), .subclass = cdm_error_full("need_named_vec"))
 }
 
-error_txt_need_named_vec <- function() {
+error_txt_need_named_vec <- function(dm) {
   paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector, the names ",
     "must be from the original table names returned by `src_tbls()`: ",
     commas(tick(src_tbls(dm)))
