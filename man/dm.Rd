@@ -5,6 +5,7 @@
 \alias{new_dm}
 \alias{validate_dm}
 \alias{cdm_get_src}
+\alias{cdm_get_con}
 \alias{cdm_get_tables}
 \alias{cdm_get_data_model}
 \alias{cdm_get_filter}
@@ -19,6 +20,8 @@ new_dm(tables, data_model)
 validate_dm(x)
 
 cdm_get_src(x)
+
+cdm_get_con(x)
 
 cdm_get_tables(x)
 
@@ -52,6 +55,9 @@ and the \pkg{datamodelr} based specification of table relationships.
 This function is currently a no-op.
 
 \code{cdm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}
+object.
+
+\code{cdm_get_con()} returns the connection object (\code{con}-part of \pkg{dplyr} source component) of a \code{dm}
 object.
 
 \code{cdm_get_tables()} returns a named list with \pkg{dplyr} \link{tbl} objects
