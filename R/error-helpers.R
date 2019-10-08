@@ -472,3 +472,13 @@ abort_is_not_dm <- function(obj_class) {
 error_is_not_dm <- function(obj_class) {
   glue("Object of class {tick(obj_class)}, but needs to be of class `dm`")
 }
+
+
+# local `dm` has no con ---------------------------------------------------
+abort_no_con_if_local <- function() {
+  abort(error_no_con_if_local(), .subclass = cdm_error_full("no_con_if_local"))
+}
+
+error_no_con_if_local <- function() {
+  "A local `dm` doesn't have a DB connection"
+}
