@@ -474,7 +474,9 @@ dispatch_abort <- function(
   any_not_reachable,
   g,
   auto_detect,
-  more_than_1_pt) {
+  more_than_1_pt,
+  has_grandparent,
+  squash) {
   # argument checking, or filter and recompute induced subgraph
   # for subsequent check
   if (any_not_reachable) {
@@ -489,6 +491,14 @@ dispatch_abort <- function(
   if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
+
+
+  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
+  # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
+  if (!squash && has_grandparent) {
+    abort_only_parents()
+  }
+
   if (join_name == "right_join" && auto_detect && more_than_1_pt) warning(
     paste0("Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
            "more than 2 tables involved and no explicit order given in `...`."))

@@ -114,13 +114,16 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
       pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
     )
 
+  # function to detect any reason for abort()
   dispatch_abort(
     join_name,
     (nrow(cdm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
     anyNA(order_df$name),
     g,
     auto_detect,
-    nrow(order_df) > 2)
+    nrow(order_df) > 2,
+    any(dfs$dist > 1),
+    squash)
 
   l_clean_dm_renames <- clean_up_dm(dm, order_df$name, gotta_rename)
   clean_dm <- l_clean_dm_renames[[1]]
@@ -133,11 +136,6 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
   order_df <- left_join(tibble(name = list_of_pts), order_df, by = "name")
 
-  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
-  # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
-  if (!squash && any(dfs$dist > 1)) {
-    abort_only_parents()
-  }
 
   # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
