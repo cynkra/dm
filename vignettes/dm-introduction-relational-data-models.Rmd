@@ -133,8 +133,7 @@ Which columns of the `airlines` table can serve as a primary key?
 
 ```{r}
 dm %>% 
-  cdm_enum_pk_candidates(airports) %>% 
-  arrange(desc(candidate))
+  cdm_enum_pk_candidates(airports)
 ```
 
 Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
