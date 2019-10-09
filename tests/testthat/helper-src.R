@@ -148,11 +148,6 @@ dm_for_filter %<-% {
     cdm_select_tbl(-t7)
 }
 
-dm_for_filter_smaller %<-% {
-  dm_for_filter %>%
-    cdm_select_tbl(-t1, -t2, -t6)
-}
-
 message("for testing filter and semi_join (3)")
 
 output_1 %<-% list(
@@ -515,7 +510,6 @@ if (is_this_a_test()) {
 
   dm_for_filter_src %<-% cdm_test_load(dm_for_filter)
   dm_for_filter_rev_src %<-% cdm_test_load(dm_for_filter_rev)
-  dm_for_filter_smaller_src %<-% cdm_test_load(dm_for_filter_smaller)
   dm_for_filter_w_cycle_src %<-% cdm_test_load(dm_for_filter_w_cycle)
   cdm_test_obj_src %<-% cdm_test_load(cdm_test_obj)
   cdm_test_obj_2_src %<-% cdm_test_load(cdm_test_obj_2)

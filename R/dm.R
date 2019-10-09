@@ -131,7 +131,6 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
 
   # Legacy compatibility
   fks$column <- as.list(fks$column)
-  fks$ref_col <- as.list(fks$ref_col)
 
   fks <-
     fks %>%
@@ -139,12 +138,23 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
     nest(fks = -ref) %>%
     rename(name = ref)
 
+  fks <-
+    tibble(
+      name = setdiff(name, fks$name),
+      fks = vctrs::list_of(tibble(table = character(), column = list()))
+    ) %>%
+    vctrs::vec_rbind(fks)
+
   def <-
     tibble(table = unname(table), name, segment, display) %>%
     left_join(pks, by = "name") %>%
     left_join(fks, by = "name") %>%
     left_join(filters, by = "name")
 
+  new_dm3(def)
+}
+
+new_dm3 <- function(def) {
   structure(
     list(def = def),
     class = "dm"
@@ -234,22 +244,22 @@ cdm_get_data_model_fks <- function(x) {
     cdm_get_def(x) %>%
     select(ref = name, fks, pks) %>%
     filter(map_lgl(fks, has_length)) %>%
-    unnest(pks) %>%
+    unnest(pks)
+
+  if (nrow(fk_df) == 0) {
+    return(tibble(
+      table = character(), column = character(),
+      ref = character(), ref_col = character()
+    ))
+  }
+
+  fk_df %>%
     # This is expected to break with compound keys
     mutate(ref_col = flatten_chr(column)) %>%
     select(-column) %>%
     unnest(fks) %>%
     mutate(column = flatten_chr(column)) %>%
     select(ref, column, table, ref_col)
-
-  # if (nrow(fk_df) == 0) {
-  #   return(tibble(
-  #     table = character(), column = character(),
-  #     ref = character(), ref_col = character()
-  #   ))
-  # }
-
-  fk_df
 }
 
 #' Get data_model component

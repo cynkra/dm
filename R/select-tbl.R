@@ -17,21 +17,7 @@ cdm_select_tbl <- function(dm, ...) {
     abort_only_possible_wo_filters("cdm_select_tbl()")
   }
   table_list <- tidyselect_dm(dm, ...)
-
-  all_table_names <- table_list[[1]]
-  old_table_names <- table_list[[2]]
-  # named vector of tables; names are later used for renaming
-
-  list_of_removed_tables <- setdiff(all_table_names, old_table_names)
-
-  new_data_model <- rm_table_from_data_model(cdm_get_data_model(dm), list_of_removed_tables)
-  table_objs <- map(set_names(old_table_names), ~ tbl(dm, .))
-
-  new_dm(
-    tables = table_objs,
-    data_model = new_data_model
-  ) %>%
-    cdm_rename_tbl(., old_table_names)
+  cdm_restore_tbl(dm, table_list)
 }
 
 tidyselect_dm <- function(dm, ...) {
@@ -41,8 +27,8 @@ tidyselect_dm <- function(dm, ...) {
   )
 
   table_names <- tidyselect::vars_select(all_table_names, ...)
-  walk(table_names, ~ check_correct_input(dm, .))
-  list(all_table_names, table_names)
+  check_correct_input(dm, table_names)
+  table_names
 }
 
 #' Change names of tables in a `dm`
@@ -56,35 +42,32 @@ cdm_rename_tbl <- function(dm, ...) {
   if (nrow(cdm_get_filter(dm)) > 0) {
     abort_only_possible_wo_filters("cdm_rename_tbl()")
   }
-  table_list <- tidyselect_dm(dm, ...)
-
-  old_table_names <- table_list[[2]]
-  new_table_names <- names(old_table_names)
-
-  reduce2(
-    old_table_names,
-    new_table_names,
-    rename_table_of_dm,
-    .init = dm
-  )
+  table_list <- tidyrename_dm(dm, ...)
+  cdm_restore_tbl(dm, table_list)
 }
 
-rename_table_of_dm <- function(dm, old_name, new_name) {
-  old_name_q <- as_name(ensym(old_name))
-  check_correct_input(dm, old_name_q)
-
-  new_name_q <- as_name(ensym(new_name))
-  tables <- cdm_get_tables(dm)
-  table_names <- names(tables)
-  table_names[table_names == old_name_q] <- new_name_q
-  new_tables <- set_names(tables, table_names)
-
-  new_dm(
-    tables = new_tables,
-    data_model = datamodel_rename_table(
-      cdm_get_data_model(dm), old_name_q, new_name_q
-    )
+tidyrename_dm <- function(dm, ...) {
+  all_table_names <- structure(
+    src_tbls(dm),
+    type = c("table", "tables")
   )
+
+  table_names <- tidyselect::vars_rename(all_table_names, ...)
+  check_correct_input(dm, table_names)
+  table_names
+}
+
+cdm_restore_tbl <- function(dm, table_names) {
+  table_names_recode <- set_names(names(table_names), table_names)
+
+  def <-
+    cdm_get_def(dm) %>%
+    filter(name %in% !!table_names) %>%
+    mutate(name = recode(name, !!!table_names_recode)) %>%
+    mutate(fks = map(fks, ~ filter(.x, table %in% !!table_names))) %>%
+    mutate(fks = map(fks, ~ mutate(.x, table = recode(table, !!!table_names_recode))))
+
+  new_dm3(def)
 }
 
 datamodel_rename_table <- nse_function(c(data_model, old_name, new_name), ~ {
