@@ -1,3 +1,8 @@
+# dm 0.0.3.9001
+
+- Selection and renaming of tables and columns uses new storage format (#54).
+
+
 # dm 0.0.3.9000
 
 - A `dm` object is defined using a nested tibble, one row per table (#57).
