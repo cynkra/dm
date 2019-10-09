@@ -102,8 +102,8 @@ new_dm <- function(tables, data_model) {
   )
 }
 
-new_dm2 <- function(data = cdm_get_tables(base_dm),
-                    name = cdm_get_def(base_dm)$name,
+new_dm2 <- function(data = cdm_get_def(base_dm)$data,
+                    table = cdm_get_def(base_dm)$table,
                     segment = cdm_get_def(base_dm)$segment,
                     display = cdm_get_def(base_dm)$display,
                     pks = cdm_get_data_model_pks(base_dm),
@@ -116,7 +116,7 @@ new_dm2 <- function(data = cdm_get_tables(base_dm),
 
   filters <-
     filter %>%
-    rename(name = table, filter_quo = filter) %>%
+    rename(filter_quo = filter) %>%
     nest(filters = filter_quo)
 
   # Legacy
@@ -127,12 +127,11 @@ new_dm2 <- function(data = cdm_get_tables(base_dm),
 
   pks <-
     pks %>%
-    nest(pks = -table) %>%
-    rename(name = table)
+    nest(pks = -table)
 
   pks <-
     tibble(
-      name = setdiff(name, pks$name),
+      table = setdiff(table, pks$table),
       pks = vctrs::list_of(tibble(column = list()))
     ) %>%
     vctrs::vec_rbind(pks)
@@ -144,20 +143,20 @@ new_dm2 <- function(data = cdm_get_tables(base_dm),
     fks %>%
     select(-ref_col) %>%
     nest(fks = -ref) %>%
-    rename(name = ref)
+    rename(table = ref)
 
   fks <-
     tibble(
-      name = setdiff(name, fks$name),
+      table = setdiff(table, fks$table),
       fks = vctrs::list_of(tibble(table = character(), column = list()))
     ) %>%
     vctrs::vec_rbind(fks)
 
   def <-
-    tibble(name, data, segment, display) %>%
-    left_join(pks, by = "name") %>%
-    left_join(fks, by = "name") %>%
-    left_join(filters, by = "name")
+    tibble(table, data, segment, display) %>%
+    left_join(pks, by = "table") %>%
+    left_join(fks, by = "table") %>%
+    left_join(filters, by = "table")
 
   new_dm3(def)
 }
@@ -219,7 +218,7 @@ cdm_get_src <- function(x) {
 #' @export
 cdm_get_tables <- function(x) {
   def <- cdm_get_def(x)
-  set_names(def$data, def$name)
+  set_names(def$data, def$table)
 }
 
 cdm_get_def <- function(x) {
@@ -231,7 +230,7 @@ cdm_get_data_model_pks <- function(x) {
 
   pk_df <-
     cdm_get_def(x) %>%
-    select(table = name, pks) %>%
+    select(table, pks) %>%
     unnest(pks)
 
   # FIXME: Should work better with dplyr 0.9.0
@@ -250,7 +249,7 @@ cdm_get_data_model_fks <- function(x) {
 
   fk_df <-
     cdm_get_def(x) %>%
-    select(ref = name, fks, pks) %>%
+    select(ref = table, fks, pks) %>%
     filter(map_lgl(fks, has_length)) %>%
     unnest(pks)
 
@@ -282,7 +281,7 @@ cdm_get_data_model <- function(x) {
   def <- cdm_get_def(x)
 
   tables <- data.frame(
-    table = def$name,
+    table = def$table,
     segment = def$segment,
     display = def$display,
     stringsAsFactors = FALSE
@@ -336,7 +335,7 @@ cdm_get_filter <- function(x) {
 
   filter_df <-
     cdm_get_def(x) %>%
-    select(name, filters) %>%
+    select(table, filters) %>%
     unnest(filters)
 
   # FIXME: Should work better with dplyr 0.9.0
@@ -345,7 +344,7 @@ cdm_get_filter <- function(x) {
   }
 
   filter_df  %>%
-    rename(table = name, filter = filter_quo)
+    rename(filter = filter_quo)
 }
 
 #' Check class

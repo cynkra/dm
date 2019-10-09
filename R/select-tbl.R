@@ -62,8 +62,8 @@ cdm_restore_tbl <- function(dm, table_names) {
 
   def <-
     cdm_get_def(dm) %>%
-    filter(name %in% !!table_names) %>%
-    mutate(name = recode(name, !!!table_names_recode)) %>%
+    filter(table %in% !!table_names) %>%
+    mutate(table = recode(table, !!!table_names_recode)) %>%
     mutate(fks = map(fks, ~ filter(.x, table %in% !!table_names))) %>%
     mutate(fks = map(fks, ~ mutate(.x, table = recode(table, !!!table_names_recode))))
 

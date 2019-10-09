@@ -200,7 +200,7 @@ output_3 %<-% list(
 dm_for_filter_rev %<-%
   new_dm2(
     data = rev(cdm_get_tables(dm_for_filter)),
-    name = rev(cdm_get_def(dm_for_filter)$name),
+    table = rev(cdm_get_def(dm_for_filter)$table),
     base_dm = dm_for_filter
   )
 
