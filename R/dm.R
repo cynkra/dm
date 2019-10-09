@@ -39,8 +39,6 @@
 #'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm <- nse_function(c(src, data_model = NULL), ~ {
-  # TODO: add keys argument, if both data_model and keys are missing,
-  # create surrogate keys
   if (is.null(data_model)) {
     tbl_names <- src_tbls(src)
     tbls <- map(set_names(tbl_names), tbl, src = src)
