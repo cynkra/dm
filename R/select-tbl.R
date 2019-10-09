@@ -17,7 +17,7 @@ cdm_select_tbl <- function(dm, ...) {
     abort_only_possible_wo_filters("cdm_select_tbl()")
   }
   table_list <- tidyselect_dm(dm, ...)
-  cdm_restore_tbl(dm, table_list)
+  cdm_select_tbl_impl(dm, table_list)
 }
 
 tidyselect_dm <- function(dm, ...) {
@@ -43,7 +43,7 @@ cdm_rename_tbl <- function(dm, ...) {
     abort_only_possible_wo_filters("cdm_rename_tbl()")
   }
   table_list <- tidyrename_dm(dm, ...)
-  cdm_restore_tbl(dm, table_list)
+  cdm_select_tbl_impl(dm, table_list)
 }
 
 tidyrename_dm <- function(dm, ...) {
@@ -57,7 +57,7 @@ tidyrename_dm <- function(dm, ...) {
   table_names
 }
 
-cdm_restore_tbl <- function(dm, table_names) {
+cdm_select_tbl_impl <- function(dm, table_names) {
   def <-
     cdm_get_def(dm) %>%
     filter_recode_table(table_names) %>%
