@@ -22,14 +22,16 @@
 #'   cdm_rename(airports, code = faa, altitude = alt)
 #' @export
 cdm_rename <- function(dm, table, ...) {
+  # FIXME: Document on same page as cdm_select()
+
   check_no_filter(dm)
 
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
-
+  # tbl() is efficient because no filter is set
+  table_name <- as_string(ensym(table))
   old_cols <- colnames(tbl(dm, table_name))
-  renamed <- tidyselect::vars_rename(old_cols, ...)
-  select_cols(dm, table_name, renamed, check_keys = FALSE)
+  selected <- tidyselect::vars_rename(old_cols, ...)
+
+  cdm_select_impl(dm, table_name, selected, check_keys = FALSE)
 }
 
 #' Select and/or rename one or more columns of a [`dm`] table
@@ -48,22 +50,18 @@ cdm_rename <- function(dm, table, ...) {
 cdm_select <- function(dm, table, ...) {
   check_no_filter(dm)
 
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
-
+  # tbl() is efficient because no filter is set
+  table_name <- as_string(ensym(table))
   old_cols <- colnames(tbl(dm, table_name))
   selected <- tidyselect::vars_select(old_cols, ...)
 
-  select_cols(dm, table_name, selected)
+  cdm_select_impl(dm, table_name, selected)
 }
 
 # need to take care of
 # 1. adding key columns if they are deselected
 # 2. updating renamed key columns in data model
-select_cols <- function(dm, table_name, selected, check_keys = TRUE) {
-  list_of_tables <- cdm_get_tables(dm)
-  table <- list_of_tables[[table_name]]
-
+cdm_select_impl <- function(dm, table_name, selected, check_keys = TRUE) {
   # check keys only necessary for `cdm_select()`, rename preserves all columns
   if (check_keys) {
     all_keys <- get_all_keys(dm, table_name)
@@ -71,37 +69,43 @@ select_cols <- function(dm, table_name, selected, check_keys = TRUE) {
     # if the selection does not contain all keys, add the missing ones and inform the user
     if (!all(all_keys %in% selected)) {
       keys_to_add <- setdiff(all_keys, selected) %>% set_names()
-      message(paste0("Adding missing key columns: `", paste0(keys_to_add, collapse = ", "), "`"))
-      selected <- c(keys_to_add, selected)
+      message(paste0("Adding missing key columns: ", commas(tick(keys_to_add))))
+      selected <- c(selected, keys_to_add)
     }
   }
 
-  # create new table using `dplyr::select()`
-  new_table <- select(table, !!!selected)
-  list_of_tables[[table_name]] <- new_table
+  # FIXME: if key columns are removed, this can affect foreign and primary keys
 
-  update_dm_after_rename(dm, list_of_tables, table_name, selected)
+  # create new table using `dplyr::select()`
+  list_of_tables <- cdm_get_tables(dm)
+  table <- list_of_tables[[table_name]]
+  new_table <- select(table, !!!selected)
+
+  def <- cdm_get_def(dm)
+  table_idx <- which(def$table == table_name)
+  def$data[[table_idx]] <- new_table
+  def$pks[[table_idx]] <- apply_col_select(def$pks[[table_idx]], selected)
+  def$fks <- map(def$fks, apply_col_select_where, selected, table_name)
+  new_dm3(def)
 }
 
-update_dm_after_rename <- function(dm, list_of_tables, table_name, list_of_renames) {
-  pks_upd <-
-    upd_pks_after_rename(
-      cdm_get_data_model_pks(dm),
-      table_name,
-      list_of_renames
-    )
+get_all_keys <- function(dm, table_name) {
+  fks <- cdm_get_all_fks(dm) %>%
+    filter(child_table == !!table_name) %>%
+    pull(child_fk_col)
+  pk <- cdm_get_pk(dm, !!table_name)
+  c(pk, fks)
+}
 
-  fks_upd <-
-    upd_fks_after_rename(
-      cdm_get_data_model_fks(dm),
-      table_name,
-      list_of_renames
-    )
+apply_col_select <- function(df, selected) {
+  selected_recode <- prep_recode(selected)
+  df$column <- map(df$column, ~ recode(., !!!selected_recode))
+  df
+}
 
-  new_dm2(
-    data = list_of_tables,
-    pks = pks_upd,
-    fks = fks_upd,
-    base_dm = dm
-  )
+apply_col_select_where <- function(df, selected, table_name) {
+  selected_recode <- prep_recode(selected)
+  idx <- which(df$table == table_name)
+  df$column[idx] <- map(df$column[idx], ~ recode(., !!!selected_recode))
+  df
 }

@@ -520,7 +520,7 @@ str.dm <- function(object, ...) {
 tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
-  check_correct_input(dm, from)
+  check_correct_input(dm, from, 1)
 
   cdm_get_filtered_table(dm, from)
 }

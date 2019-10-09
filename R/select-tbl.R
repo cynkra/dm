@@ -58,9 +58,11 @@ cdm_select_tbl_impl <- function(dm, selected) {
 }
 
 filter_recode_table <- function(data, selected) {
-  selected_recode <- set_names(names(selected), selected)
-
   data %>%
     filter(table %in% !!selected) %>%
-    mutate(table = recode(table, !!!selected_recode))
+    mutate(table = recode(table, !!!prep_recode(selected)))
+}
+
+prep_recode <- function(x) {
+  set_names(names(x), x)
 }
