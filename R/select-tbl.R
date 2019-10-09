@@ -15,8 +15,8 @@
 cdm_select_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
-  table_list <- tidyselect_dm(dm, ...)
-  cdm_select_tbl_impl(dm, table_list)
+  selected <- tidyselect_dm(dm, ...)
+  cdm_select_tbl_impl(dm, selected)
 }
 
 tidyselect_dm <- function(dm, ...) {
@@ -25,9 +25,7 @@ tidyselect_dm <- function(dm, ...) {
     type = c("table", "tables")
   )
 
-  table_names <- tidyselect::vars_select(all_table_names, ...)
-  check_correct_input(dm, table_names)
-  table_names
+  tidyselect::vars_select(all_table_names, ...)
 }
 
 #' Change names of tables in a `dm`
@@ -40,8 +38,8 @@ tidyselect_dm <- function(dm, ...) {
 cdm_rename_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
-  table_list <- tidyrename_dm(dm, ...)
-  cdm_select_tbl_impl(dm, table_list)
+  selected <- tidyrename_dm(dm, ...)
+  cdm_select_tbl_impl(dm, selected)
 }
 
 tidyrename_dm <- function(dm, ...) {
@@ -50,24 +48,24 @@ tidyrename_dm <- function(dm, ...) {
     type = c("table", "tables")
   )
 
-  table_names <- tidyselect::vars_rename(all_table_names, ...)
-  check_correct_input(dm, table_names)
-  table_names
+  tidyselect::vars_rename(all_table_names, ...)
 }
 
-cdm_select_tbl_impl <- function(dm, table_names) {
+cdm_select_tbl_impl <- function(dm, selected) {
+  check_correct_input(dm, selected)
+
   def <-
     cdm_get_def(dm) %>%
-    filter_recode_table(table_names) %>%
-    mutate(fks = map(fks, filter_recode_table, table_names = table_names))
+    filter_recode_table(selected) %>%
+    mutate(fks = map(fks, filter_recode_table, selected = selected))
 
   new_dm3(def)
 }
 
-filter_recode_table <- function(data, table_names) {
-  table_names_recode <- set_names(names(table_names), table_names)
+filter_recode_table <- function(data, selected) {
+  selected_recode <- set_names(names(selected), selected)
 
   data %>%
-    filter(table %in% !!table_names) %>%
-    mutate(table = recode(table, !!!table_names_recode))
+    filter(table %in% !!selected) %>%
+    mutate(table = recode(table, !!!selected_recode))
 }
