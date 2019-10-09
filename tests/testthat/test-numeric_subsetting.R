@@ -15,7 +15,7 @@ test_that("numeric subsetting works", {
   # check if reducing `dm` size works on all sources
   walk(
     dm_for_filter_src,
-    ~ expect_equal(
+    ~ expect_equivalent_dm(
       .x[c(1, 3, 5)],
       cdm_select_tbl(.x, 1, 3, 5)
     )

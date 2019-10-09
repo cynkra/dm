@@ -11,8 +11,8 @@ test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?",
   )
 
   map(
-    dm_for_filter_src,
-    ~ expect_equal(
+    list(dm_for_filter),
+    ~ expect_equivalent_dm(
       cdm_select_tbl(.x, t1, t6),
       new_dm(
         tables = list("t1" = tbl(.x, "t1"), "t6" = tbl(.x, "t6")),
@@ -24,7 +24,7 @@ test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?",
 
   map(
     dm_for_filter_src,
-    ~ expect_equal(
+    ~ expect_equivalent_dm(
       cdm_select_tbl(.x, t1_new = t1, t6_new = t6),
       new_dm(
         tables = list("t1_new" = tbl(.x, "t1"), "t6_new" = tbl(.x, "t6")),
