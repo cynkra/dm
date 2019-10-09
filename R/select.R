@@ -22,7 +22,8 @@
 #'   cdm_rename(airports, code = faa, altitude = alt)
 #' @export
 cdm_rename <- function(dm, table, ...) {
-  if (nrow(cdm_get_filter(dm)) > 0) abort_only_possible_wo_filters("cdm_rename()")
+  check_no_filter(dm)
+
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
@@ -45,7 +46,8 @@ cdm_rename <- function(dm, table, ...) {
 #'
 #' @export
 cdm_select <- function(dm, table, ...) {
-  if (nrow(cdm_get_filter(dm)) > 0) abort_only_possible_wo_filters("cdm_select()")
+  check_no_filter(dm)
+
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 

@@ -119,6 +119,13 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
     rename(filter_quo = filter) %>%
     nest(filters = filter_quo)
 
+  filters <-
+    tibble(
+      name = setdiff(table, filters$table),
+      filters = vctrs::list_of(tibble(filter_quo = list()))
+    ) %>%
+    vctrs::vec_rbind(filters)
+
   # Legacy
   data <- unname(data)
 

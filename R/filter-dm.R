@@ -194,3 +194,13 @@ get_all_filtered_connected <- function(dm, table) {
   edges %>%
     arrange(-distance)
 }
+
+check_no_filter <- function(dm) {
+  def <-
+    cdm_get_def(dm)
+
+  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) return()
+
+  fun_name <- as_string(sys.call(-1)[[1]])
+  abort_only_possible_wo_filters(fun_name)
+}

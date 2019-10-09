@@ -13,9 +13,8 @@
 #'
 #' @export
 cdm_select_tbl <- function(dm, ...) {
-  if (nrow(cdm_get_filter(dm)) > 0) {
-    abort_only_possible_wo_filters("cdm_select_tbl()")
-  }
+  check_no_filter(dm)
+
   table_list <- tidyselect_dm(dm, ...)
   cdm_select_tbl_impl(dm, table_list)
 }
@@ -39,9 +38,8 @@ tidyselect_dm <- function(dm, ...) {
 #' @rdname cdm_select_tbl
 #' @export
 cdm_rename_tbl <- function(dm, ...) {
-  if (nrow(cdm_get_filter(dm)) > 0) {
-    abort_only_possible_wo_filters("cdm_rename_tbl()")
-  }
+  check_no_filter(dm)
+
   table_list <- tidyrename_dm(dm, ...)
   cdm_select_tbl_impl(dm, table_list)
 }
