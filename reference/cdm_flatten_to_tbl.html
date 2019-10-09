@@ -75,7 +75,7 @@ For more information please refer to vignette(&quot;dm-joining&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9000</span>
       </span>
     </div>
 
@@ -223,8 +223,8 @@ each nested column entry would be a tibble of 1 row), an error is thrown, if thi
     <pre class="examples"><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='cdm_select_tbl.html'>cdm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
-#&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year</span>
-#&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
+#&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span>
+#&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
 #&gt;  1         2013     1     1      517            515         2      830
