@@ -12,21 +12,43 @@ test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?",
     cdm_select_tbl(dm_for_filter, -t2, -t3, -t4, -t5),
     dm_for_filter_smaller
   )
-
-  expect_equivalent_dm(
-    cdm_select_tbl(dm_for_filter, t1_new = t1, t6_new = t6),
-    new_dm(
-      tables = list("t1_new" = dm_for_filter$t1, "t6_new" = dm_for_filter$t6),
-      data_model = cdm_get_data_model(dm_for_filter_smaller) %>%
-        datamodel_rename_table("t1", "t1_new") %>%
-        datamodel_rename_table("t6", "t6_new")
-    )
-  )
 })
 
 test_that("cdm_rename_tbl() renames a `dm`", {
+
+  dm_rename <-
+    as_dm(list(a = tibble(x = 1), b = tibble(y = 1))) %>%
+    cdm_add_pk(b, y) %>%
+    cdm_add_fk(a, x, b)
+
+  dm_rename_a <-
+    as_dm(list(c = tibble(x = 1), b = tibble(y = 1))) %>%
+    cdm_add_pk(b, y) %>%
+    cdm_add_fk(c, x, b)
+
+  dm_rename_b <-
+    as_dm(list(a = tibble(x = 1), e = tibble(y = 1))) %>%
+    cdm_add_pk(e, y) %>%
+    cdm_add_fk(a, x, e)
+
+  dm_rename_bd <-
+    as_dm(list(a = tibble(x = 1), d = tibble(y = 1))) %>%
+    cdm_add_pk(d, y) %>%
+    cdm_add_fk(a, x, d)
+
   expect_equivalent_dm(
-    cdm_rename_tbl(dm_for_filter, c = t3, x = t4, y = t5),
-    cdm_select_tbl(dm_for_filter, c = t3, x = t4, y = t5, everything())
+    cdm_rename_tbl(dm_rename, c = a),
+    dm_rename_a
+  )
+
+  expect_equivalent_dm(
+    cdm_rename_tbl(dm_rename, e = b),
+    dm_rename_b
+  )
+
+  skip("dm argument")
+  expect_equivalent_dm(
+    cdm_rename_tbl(dm_rename, d = b),
+    dm_rename_bd
   )
 })
