@@ -39,8 +39,6 @@
 #'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm <- nse_function(c(src, data_model = NULL), ~ {
-  # TODO: add keys argument, if both data_model and keys are missing,
-  # create surrogate keys
   if (is.null(data_model)) {
     tbl_names <- src_tbls(src)
     tbls <- map(set_names(tbl_names), tbl, src = src)
@@ -104,8 +102,8 @@ new_dm <- function(tables, data_model) {
   )
 }
 
-new_dm2 <- function(table = cdm_get_tables(base_dm),
-                    name = cdm_get_def(base_dm)$name,
+new_dm2 <- function(data = cdm_get_def(base_dm)$data,
+                    table = cdm_get_def(base_dm)$table,
                     segment = cdm_get_def(base_dm)$segment,
                     display = cdm_get_def(base_dm)$display,
                     pks = cdm_get_data_model_pks(base_dm),
@@ -118,33 +116,59 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
 
   filters <-
     filter %>%
-    rename(name = table, filter_quo = filter) %>%
+    rename(filter_quo = filter) %>%
     nest(filters = filter_quo)
+
+  filters <-
+    tibble(
+      name = setdiff(table, filters$table),
+      filters = vctrs::list_of(tibble(filter_quo = list()))
+    ) %>%
+    vctrs::vec_rbind(filters)
+
+  # Legacy
+  data <- unname(data)
 
   # Legacy compatibility
   pks$column <- as.list(pks$column)
 
   pks <-
     pks %>%
-    nest(pks = -table) %>%
-    rename(name = table)
+    nest(pks = -table)
+
+  pks <-
+    tibble(
+      table = setdiff(table, pks$table),
+      pks = vctrs::list_of(tibble(column = list()))
+    ) %>%
+    vctrs::vec_rbind(pks)
 
   # Legacy compatibility
   fks$column <- as.list(fks$column)
-  fks$ref_col <- as.list(fks$ref_col)
 
   fks <-
     fks %>%
     select(-ref_col) %>%
     nest(fks = -ref) %>%
-    rename(name = ref)
+    rename(table = ref)
+
+  fks <-
+    tibble(
+      table = setdiff(table, fks$table),
+      fks = vctrs::list_of(tibble(table = character(), column = list()))
+    ) %>%
+    vctrs::vec_rbind(fks)
 
   def <-
-    tibble(table = unname(table), name, segment, display) %>%
-    left_join(pks, by = "name") %>%
-    left_join(fks, by = "name") %>%
-    left_join(filters, by = "name")
+    tibble(table, data, segment, display) %>%
+    left_join(pks, by = "table") %>%
+    left_join(fks, by = "table") %>%
+    left_join(filters, by = "table")
 
+  new_dm3(def)
+}
+
+new_dm3 <- function(def) {
   structure(
     list(def = def),
     class = "dm"
@@ -201,7 +225,7 @@ cdm_get_src <- function(x) {
 #' @export
 cdm_get_tables <- function(x) {
   def <- cdm_get_def(x)
-  set_names(def$table, def$name)
+  set_names(def$data, def$table)
 }
 
 cdm_get_def <- function(x) {
@@ -213,7 +237,7 @@ cdm_get_data_model_pks <- function(x) {
 
   pk_df <-
     cdm_get_def(x) %>%
-    select(table = name, pks) %>%
+    select(table, pks) %>%
     unnest(pks)
 
   # FIXME: Should work better with dplyr 0.9.0
@@ -221,7 +245,7 @@ cdm_get_data_model_pks <- function(x) {
     pk_df$column <- character()
   } else {
     # This is expected to break with compound keys
-    pk_df$column <- unlist(pk_df$column)
+    pk_df$column <- flatten_chr(pk_df$column)
   }
 
   pk_df
@@ -232,24 +256,24 @@ cdm_get_data_model_fks <- function(x) {
 
   fk_df <-
     cdm_get_def(x) %>%
-    select(ref = name, fks, pks) %>%
+    select(ref = table, fks, pks) %>%
     filter(map_lgl(fks, has_length)) %>%
-    unnest(pks) %>%
+    unnest(pks)
+
+  if (nrow(fk_df) == 0) {
+    return(tibble(
+      table = character(), column = character(),
+      ref = character(), ref_col = character()
+    ))
+  }
+
+  fk_df %>%
     # This is expected to break with compound keys
     mutate(ref_col = flatten_chr(column)) %>%
     select(-column) %>%
     unnest(fks) %>%
     mutate(column = flatten_chr(column)) %>%
     select(ref, column, table, ref_col)
-
-  # if (nrow(fk_df) == 0) {
-  #   return(tibble(
-  #     table = character(), column = character(),
-  #     ref = character(), ref_col = character()
-  #   ))
-  # }
-
-  fk_df
 }
 
 #' Get data_model component
@@ -264,7 +288,7 @@ cdm_get_data_model <- function(x) {
   def <- cdm_get_def(x)
 
   tables <- data.frame(
-    table = def$name,
+    table = def$table,
     segment = def$segment,
     display = def$display,
     stringsAsFactors = FALSE
@@ -318,7 +342,7 @@ cdm_get_filter <- function(x) {
 
   filter_df <-
     cdm_get_def(x) %>%
-    select(name, filters) %>%
+    select(table, filters) %>%
     unnest(filters)
 
   # FIXME: Should work better with dplyr 0.9.0
@@ -327,7 +351,7 @@ cdm_get_filter <- function(x) {
   }
 
   filter_df  %>%
-    rename(table = name, filter = filter_quo)
+    rename(filter = filter_quo)
 }
 
 #' Check class
@@ -496,7 +520,7 @@ str.dm <- function(object, ...) {
 tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
-  check_correct_input(dm, from)
+  check_correct_input(dm, from, 1)
 
   cdm_get_filtered_table(dm, from)
 }
@@ -531,49 +555,6 @@ collect.dm <- function(x, ...) {
   )
 }
 
-
-rename_table_of_dm <- function(dm, old_name, new_name) {
-  old_name_q <- as_name(ensym(old_name))
-  check_correct_input(dm, old_name_q)
-
-  new_name_q <- as_name(ensym(new_name))
-  tables <- cdm_get_tables(dm)
-  table_names <- names(tables)
-  table_names[table_names == old_name_q] <- new_name_q
-  new_tables <- set_names(tables, table_names)
-
-  new_dm(
-    tables = new_tables,
-    data_model = datamodel_rename_table(
-      cdm_get_data_model(dm), old_name_q, new_name_q
-    )
-  )
-}
-
-#' Change names of tables in a `dm`
-#'
-#' @description `cdm_rename_tbl()` changes the names of one or more tables of a `dm`.
-#'
-#' @param dm A `dm` object
-#' @param ... Named character vector (new_name = old_name)
-#'
-#' @export
-cdm_rename_tbl <- function(dm, ...) {
-  if (nrow(cdm_get_filter(dm)) > 0) {
-    abort_only_possible_wo_filters("cdm_rename_tbl()")
-  }
-  table_list <- tidyselect_dm(dm, ...)
-
-  old_table_names <- table_list[[2]]
-  new_table_names <- names(old_table_names)
-
-  reduce2(
-    old_table_names,
-    new_table_names,
-    rename_table_of_dm,
-    .init = dm
-  )
-}
 
 cdm_reset_all_filters <- function(dm) {
   new_dm2(

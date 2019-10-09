@@ -201,35 +201,6 @@ datamodel_references_from_overview <- nse_function(c(overview), ~ {
     as.data.frame(stringsAsFactors = FALSE)
 })
 
-datamodel_rename_table <- nse_function(c(data_model, old_name, new_name), ~ {
-  tables <- data_model$tables
-  ind_tables <- tables$table == old_name
-  tables$table[ind_tables] <- new_name
-
-  columns <- data_model$columns
-  ind_columns_table <- columns$table == old_name
-  columns$table[ind_columns_table] <- new_name
-
-  ind_columns_ref <-
-    if_else(are_na(columns$ref == old_name), FALSE, columns$ref == old_name)
-  columns$ref[ind_columns_ref] <- new_name
-
-  references <- data_model$references
-  if (!is.null(references)) {
-    ind_references_table <- references$table == old_name
-    references$table[ind_references_table] <- new_name
-
-    ind_references_ref <- references$ref == old_name
-    references$ref[ind_references_ref] <- new_name
-  }
-
-  new_data_model(
-    tables = tables,
-    columns = columns,
-    references = references
-  )
-})
-
 data_model_db_types_to_R_types <- function(data_model) {
   type <- data_model$columns$type
   new_type <- if_else(str_detect(type, "char"), "character", type)
@@ -276,13 +247,5 @@ upd_table_fks <- function(fks, is_from, fks_xxx_table, list_of_renames, table_na
       values_for_replacing
     )
   fks
-}
-
-get_all_keys <- function(dm, table_name) {
-  fks <- cdm_get_all_fks(dm) %>%
-    filter(child_table == !!table_name) %>%
-    pull(child_fk_col)
-  pk <- cdm_get_pk(dm, !!table_name)
-  c(pk, fks)
 }
 
