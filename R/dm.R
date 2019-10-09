@@ -127,6 +127,13 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
     nest(pks = -table) %>%
     rename(name = table)
 
+  pks <-
+    tibble(
+      name = setdiff(name, pks$name),
+      pks = vctrs::list_of(tibble(column = list()))
+    ) %>%
+    vctrs::vec_rbind(pks)
+
   # Legacy compatibility
   fks$column <- as.list(fks$column)
 
@@ -229,7 +236,7 @@ cdm_get_data_model_pks <- function(x) {
     pk_df$column <- character()
   } else {
     # This is expected to break with compound keys
-    pk_df$column <- unlist(pk_df$column)
+    pk_df$column <- flatten_chr(pk_df$column)
   }
 
   pk_df
