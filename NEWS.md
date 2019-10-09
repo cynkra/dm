@@ -1,3 +1,8 @@
+# dm 0.0.3.9000
+
+- A `dm` object is defined using a nested tibble, one row per table (#57).
+
+
 # dm 0.0.3
 
 - `cdm_enum_pk_candidates()` and `cdm_enum_fk_candidates()` both show candidates first (#85).
