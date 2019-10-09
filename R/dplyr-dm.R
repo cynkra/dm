@@ -97,7 +97,7 @@ update_dm_after_rename <- function(dm, list_of_tables, table_name, list_of_renam
     )
 
   new_dm2(
-    table = list_of_tables,
+    data = list_of_tables,
     pks = pks_upd,
     fks = fks_upd,
     base_dm = dm

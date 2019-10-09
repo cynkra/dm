@@ -102,7 +102,7 @@ new_dm <- function(tables, data_model) {
   )
 }
 
-new_dm2 <- function(table = cdm_get_tables(base_dm),
+new_dm2 <- function(data = cdm_get_tables(base_dm),
                     name = cdm_get_def(base_dm)$name,
                     segment = cdm_get_def(base_dm)$segment,
                     display = cdm_get_def(base_dm)$display,
@@ -118,6 +118,9 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
     filter %>%
     rename(name = table, filter_quo = filter) %>%
     nest(filters = filter_quo)
+
+  # Legacy
+  data <- unname(data)
 
   # Legacy compatibility
   pks$column <- as.list(pks$column)
@@ -151,7 +154,7 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
     vctrs::vec_rbind(fks)
 
   def <-
-    tibble(table = unname(table), name, segment, display) %>%
+    tibble(name, data, segment, display) %>%
     left_join(pks, by = "name") %>%
     left_join(fks, by = "name") %>%
     left_join(filters, by = "name")
@@ -216,7 +219,7 @@ cdm_get_src <- function(x) {
 #' @export
 cdm_get_tables <- function(x) {
   def <- cdm_get_def(x)
-  set_names(def$table, def$name)
+  set_names(def$data, def$name)
 }
 
 cdm_get_def <- function(x) {

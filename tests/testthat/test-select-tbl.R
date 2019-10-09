@@ -1,7 +1,7 @@
 test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
   dm_for_filter_smaller <-
     new_dm2(
-      table = cdm_get_tables(dm_for_filter)[c("t1", "t6")],
+      data = cdm_get_tables(dm_for_filter)[c("t1", "t6")],
       name = c("t1", "t6"),
       segment = NA_character_,
       display = NA_character_,

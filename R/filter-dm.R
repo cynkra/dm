@@ -91,7 +91,7 @@ cdm_apply_filters <- function(dm) {
     map(set_names(table_names), ~ tbl(dm, .))
 
   new_dm2(
-    table = new_list_of_tables,
+    data = new_list_of_tables,
     filter = new_filters(),
     base_dm = dm
   )
