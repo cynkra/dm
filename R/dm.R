@@ -121,14 +121,24 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
     rename(name = table, filter_quo = filter) %>%
     nest(filters = filter_quo)
 
+  # Legacy compatibility
+  pks$column <- as.list(pks$column)
+  # fks$column <- as.list(fks$column)
+  # fks$ref_col <- as.list(fks$ref_col)
+
+  pks <-
+    pks %>%
+    nest(pks = -table) %>%
+    rename(name = table)
+
   def <-
     tibble(table = unname(table), name, segment, display) %>%
+    left_join(pks, by = "name") %>%
     left_join(filters, by = "name")
 
   structure(
     list(
       def = def,
-      data_model_pks = pks,
       data_model_fks = fks
     ),
     class = "dm"
@@ -192,7 +202,23 @@ cdm_get_def <- function(x) {
 }
 
 cdm_get_data_model_pks <- function(x) {
-  unclass(x)$data_model_pks
+  # FIXME: Obliterate
+
+  pk_df <-
+    cdm_get_def(x) %>%
+    select(name, pks) %>%
+    unnest(pks)
+
+  # FIXME: Should work better with dplyr 0.9.0
+  if (!("column" %in% names(pk_df))) {
+    pk_df$column <- character()
+  } else {
+    # This is expected to break with compound keys
+    pk_df$column <- unlist(pk_df$column)
+  }
+
+  pk_df  %>%
+    rename(table = name)
 }
 
 cdm_get_data_model_fks <- function(x) {
@@ -261,6 +287,8 @@ cdm_get_all_columns <- function(x) {
 #'
 #' @export
 cdm_get_filter <- function(x) {
+  # FIXME: Obliterate
+
   filter_df <-
     cdm_get_def(x) %>%
     select(name, filters) %>%
