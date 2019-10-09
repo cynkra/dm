@@ -58,14 +58,18 @@ tidyrename_dm <- function(dm, ...) {
 }
 
 cdm_restore_tbl <- function(dm, table_names) {
-  table_names_recode <- set_names(names(table_names), table_names)
-
   def <-
     cdm_get_def(dm) %>%
-    filter(table %in% !!table_names) %>%
-    mutate(table = recode(table, !!!table_names_recode)) %>%
-    mutate(fks = map(fks, ~ filter(.x, table %in% !!table_names))) %>%
-    mutate(fks = map(fks, ~ mutate(.x, table = recode(table, !!!table_names_recode))))
+    filter_recode_table(table_names) %>%
+    mutate(fks = map(fks, filter_recode_table, table_names = table_names))
 
   new_dm3(def)
+}
+
+filter_recode_table <- function(data, table_names) {
+  table_names_recode <- set_names(names(table_names), table_names)
+
+  data %>%
+    filter(table %in% !!table_names) %>%
+    mutate(table = recode(table, !!!table_names_recode))
 }
