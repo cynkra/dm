@@ -123,24 +123,30 @@ new_dm2 <- function(table = cdm_get_tables(base_dm),
 
   # Legacy compatibility
   pks$column <- as.list(pks$column)
-  # fks$column <- as.list(fks$column)
-  # fks$ref_col <- as.list(fks$ref_col)
 
   pks <-
     pks %>%
     nest(pks = -table) %>%
     rename(name = table)
 
+  # Legacy compatibility
+  fks$column <- as.list(fks$column)
+  fks$ref_col <- as.list(fks$ref_col)
+
+  fks <-
+    fks %>%
+    select(-ref_col) %>%
+    nest(fks = -ref) %>%
+    rename(name = ref)
+
   def <-
     tibble(table = unname(table), name, segment, display) %>%
     left_join(pks, by = "name") %>%
+    left_join(fks, by = "name") %>%
     left_join(filters, by = "name")
 
   structure(
-    list(
-      def = def,
-      data_model_fks = fks
-    ),
+    list(def = def),
     class = "dm"
   )
 }
@@ -206,7 +212,7 @@ cdm_get_data_model_pks <- function(x) {
 
   pk_df <-
     cdm_get_def(x) %>%
-    select(name, pks) %>%
+    select(table = name, pks) %>%
     unnest(pks)
 
   # FIXME: Should work better with dplyr 0.9.0
@@ -217,12 +223,32 @@ cdm_get_data_model_pks <- function(x) {
     pk_df$column <- unlist(pk_df$column)
   }
 
-  pk_df  %>%
-    rename(table = name)
+  pk_df
 }
 
 cdm_get_data_model_fks <- function(x) {
-  unclass(x)$data_model_fks
+  # FIXME: Obliterate
+
+  fk_df <-
+    cdm_get_def(x) %>%
+    select(ref = name, fks, pks) %>%
+    filter(map_lgl(fks, has_length)) %>%
+    unnest(pks) %>%
+    # This is expected to break with compound keys
+    mutate(ref_col = flatten_chr(column)) %>%
+    select(-column) %>%
+    unnest(fks) %>%
+    mutate(column = flatten_chr(column)) %>%
+    select(ref, column, table, ref_col)
+
+  # if (nrow(fk_df) == 0) {
+  #   return(tibble(
+  #     table = character(), column = character(),
+  #     ref = character(), ref_col = character()
+  #   ))
+  # }
+
+  fk_df
 }
 
 #' Get data_model component

@@ -65,7 +65,8 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 # only adds key, independent if it is unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
 cdm_add_pk_impl <- function(dm, table, column) {
-  new_data_model <- cdm_get_data_model(dm) %>%
+  new_data_model <-
+    cdm_get_data_model(dm) %>%
     datamodelr::dm_set_key(table, column)
 
   new_dm(cdm_get_tables(dm), new_data_model)
