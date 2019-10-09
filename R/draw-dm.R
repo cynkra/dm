@@ -115,9 +115,8 @@ color_quos_to_display <- function(...) {
 #' @rdname cdm_draw
 #' @export
 cdm_get_colors <- nse_function(c(dm), ~ {
-  data_model <- cdm_get_data_model(dm)
-  cdm_get_tables(data_model) %>%
-    select(table, display) %>%
+  cdm_get_def(dm) %>%
+    select(table = name, display) %>%
     as_tibble() %>%
     mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
     select(-display)

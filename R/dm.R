@@ -200,7 +200,8 @@ cdm_get_src <- function(x) {
 #'
 #' @export
 cdm_get_tables <- function(x) {
-  set_names(cdm_get_def(x)$table, cdm_get_def(x)$name)
+  def <- cdm_get_def(x)
+  set_names(def$table, def$name)
 }
 
 cdm_get_def <- function(x) {
