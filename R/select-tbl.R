@@ -15,17 +15,9 @@
 cdm_select_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
-  selected <- tidyselect_dm(dm, ...)
+  vars <- tidyselect_table_names(dm)
+  selected <- tidyselect::vars_select(vars, ...)
   cdm_select_tbl_impl(dm, selected)
-}
-
-tidyselect_dm <- function(dm, ...) {
-  all_table_names <- structure(
-    src_tbls(dm),
-    type = c("table", "tables")
-  )
-
-  tidyselect::vars_select(all_table_names, ...)
 }
 
 #' Change names of tables in a `dm`
@@ -38,17 +30,20 @@ tidyselect_dm <- function(dm, ...) {
 cdm_rename_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
-  selected <- tidyrename_dm(dm, ...)
+  vars <- tidyselect_table_names(dm)
+  selected <- tidyselect::vars_rename(vars, ...)
   cdm_select_tbl_impl(dm, selected)
 }
 
 tidyrename_dm <- function(dm, ...) {
-  all_table_names <- structure(
+  tidyselect::vars_rename(tidyselect_table_names(dm), ...)
+}
+
+tidyselect_table_names <- function(dm) {
+  structure(
     src_tbls(dm),
     type = c("table", "tables")
   )
-
-  tidyselect::vars_rename(all_table_names, ...)
 }
 
 cdm_select_tbl_impl <- function(dm, selected) {
