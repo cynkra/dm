@@ -27,6 +27,7 @@ reference:
   - cdm_get_tables
   - cdm_get_data_model
   - cdm_get_filter
+  - cdm_select_tbl
 
 - title: Primary keys
   contents:
@@ -92,8 +93,6 @@ reference:
 - title: Miscellaneous
   contents:
   - cdm_nycflights13
-  - cdm_select_tbl
-  - cdm_rename_tbl
   - cdm_nrow
 
 navbar:

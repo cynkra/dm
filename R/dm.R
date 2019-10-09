@@ -532,49 +532,6 @@ collect.dm <- function(x, ...) {
 }
 
 
-rename_table_of_dm <- function(dm, old_name, new_name) {
-  old_name_q <- as_name(ensym(old_name))
-  check_correct_input(dm, old_name_q)
-
-  new_name_q <- as_name(ensym(new_name))
-  tables <- cdm_get_tables(dm)
-  table_names <- names(tables)
-  table_names[table_names == old_name_q] <- new_name_q
-  new_tables <- set_names(tables, table_names)
-
-  new_dm(
-    tables = new_tables,
-    data_model = datamodel_rename_table(
-      cdm_get_data_model(dm), old_name_q, new_name_q
-    )
-  )
-}
-
-#' Change names of tables in a `dm`
-#'
-#' @description `cdm_rename_tbl()` changes the names of one or more tables of a `dm`.
-#'
-#' @param dm A `dm` object
-#' @param ... Named character vector (new_name = old_name)
-#'
-#' @export
-cdm_rename_tbl <- function(dm, ...) {
-  if (nrow(cdm_get_filter(dm)) > 0) {
-    abort_only_possible_wo_filters("cdm_rename_tbl()")
-  }
-  table_list <- tidyselect_dm(dm, ...)
-
-  old_table_names <- table_list[[2]]
-  new_table_names <- names(old_table_names)
-
-  reduce2(
-    old_table_names,
-    new_table_names,
-    rename_table_of_dm,
-    .init = dm
-  )
-}
-
 cdm_reset_all_filters <- function(dm) {
   new_dm2(
     filter = tibble(table = character(0), filter = list(0)),
