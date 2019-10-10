@@ -147,7 +147,7 @@ validate_dm <- function(x) {
 #'
 #' @export
 cdm_get_src <- function(x) {
-  if (!is_dm(x)) abort_is_not_dm(class(x))
+  check_dm(x)
   tables <- cdm_get_tables(x)
   tbl_src(tables[1][[1]])
 }
