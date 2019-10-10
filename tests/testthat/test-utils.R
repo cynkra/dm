@@ -8,3 +8,10 @@ test_that("commas() works", {
     1L
   )
 })
+
+test_that("default_local_src() works", {
+  expect_identical(
+    default_local_src(),
+    src_df(env = .GlobalEnv)
+  )
+})
