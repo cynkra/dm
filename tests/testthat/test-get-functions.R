@@ -30,7 +30,7 @@ test_that("cdm_get_con() works", {
 
   expect_error(
     cdm_get_con(dm_for_filter),
-    class = cdm_error("no_con_if_local")
+    class = cdm_error("con_only_for_dbi")
   )
 
   active_con_class <- semi_join(lookup, filter(active_srcs, src != "df"), by = "src") %>% pull(class_con)

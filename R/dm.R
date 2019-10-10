@@ -162,7 +162,7 @@ cdm_get_src <- function(x) {
 #' @export
 cdm_get_con <- function(x) {
   src <- cdm_get_src(x)
-  if (inherits(src, "src_local")) abort_no_con_if_local()
+  if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
   src$con
 }
 

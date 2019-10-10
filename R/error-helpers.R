@@ -475,10 +475,10 @@ error_is_not_dm <- function(obj_class) {
 
 
 # local `dm` has no con ---------------------------------------------------
-abort_no_con_if_local <- function() {
-  abort(error_no_con_if_local(), .subclass = cdm_error_full("no_con_if_local"))
+abort_con_only_for_dbi <- function() {
+  abort(error_con_only_for_dbi(), .subclass = cdm_error_full("con_only_for_dbi"))
 }
 
-error_no_con_if_local <- function() {
+error_con_only_for_dbi <- function() {
   "A local `dm` doesn't have a DB connection"
 }
