@@ -65,7 +65,8 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 # only adds key, independent if it is unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
 cdm_add_pk_impl <- function(dm, table, column) {
-  new_data_model <- cdm_get_data_model(dm) %>%
+  new_data_model <-
+    cdm_get_data_model(dm) %>%
     datamodelr::dm_set_key(table, column)
 
   new_dm(cdm_get_tables(dm), new_data_model)
@@ -231,11 +232,9 @@ enum_pk_candidates <- nse_function(c(table), ~ {
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
 cdm_enum_pk_candidates <- nse_function(c(dm, table), ~ {
-  if (nrow(cdm_get_filter(dm)) > 0) {
-    abort_only_possible_wo_filters("cdm_enum_pk_candidates()")
-  }
-  table_name <- as_name(ensym(table))
+  check_no_filter(dm)
 
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
   tbl <- cdm_get_tables(dm)[[table_name]]

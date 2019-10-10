@@ -1,38 +1,77 @@
-
-
-test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
-  map2(
-    dm_for_filter_src,
-    dm_for_filter_smaller_src,
-    ~ expect_equivalent_dm(
-      cdm_select_tbl(.x, t3, t4, t5),
-      .y
+test_that("cdm_rename() works for replacing pk", {
+  expect_identical(
+    cdm_rename(dm_for_filter, t3, new_f = f) %>%
+      cdm_get_all_pks(),
+    tribble(
+      ~table, ~pk_col,
+      "t1",   "a",
+      "t2",   "c",
+      "t3",   "new_f",
+      "t4",   "h",
+      "t5",   "k",
+      "t6",   "n"
     )
   )
+})
 
-  map(
-    dm_for_filter_src,
-    ~ expect_equal(
-      cdm_select_tbl(.x, t1, t6),
-      new_dm(
-        tables = list("t1" = tbl(.x, "t1"), "t6" = tbl(.x, "t6")),
-        data_model = cdm_get_data_model(.x) %>%
-          rm_table_from_data_model(c("t2", "t3", "t4", "t5"))
-      )
+test_that("cdm_rename() works for replacing fks", {
+  expect_identical(
+    cdm_rename(dm_for_filter, t2, new_d = d, new_e = e) %>%
+      cdm_get_all_fks(),
+    tribble(
+      ~child_table, ~child_fk_col, ~parent_table,
+      "t2",         "new_d",       "t1",
+      "t2",         "new_e",       "t3",
+      "t4",         "j",           "t3",
+      "t5",         "l",           "t4",
+      "t5",         "m",           "t6"
     )
   )
+})
 
-  map(
-    dm_for_filter_src,
-    ~ expect_equal(
-      cdm_select_tbl(.x, t1_new = t1, t6_new = t6),
-      new_dm(
-        tables = list("t1_new" = tbl(.x, "t1"), "t6_new" = tbl(.x, "t6")),
-        data_model = cdm_get_data_model(.x) %>%
-          rm_table_from_data_model(c("t2", "t3", "t4", "t5")) %>%
-          datamodel_rename_table("t1", "t1_new") %>%
-          datamodel_rename_table("t6", "t6_new")
-      )
+test_that("cdm_select() works for replacing pk", {
+  expect_identical(
+    cdm_select(dm_for_filter, t3, new_f = f) %>%
+      cdm_get_all_pks(),
+    tribble(
+      ~table, ~pk_col,
+      "t1",   "a",
+      "t2",   "c",
+      "t3",   "new_f",
+      "t4",   "h",
+      "t5",   "k",
+      "t6",   "n"
     )
+  )
+})
+
+test_that("cdm_select() avoids removing pks", {
+  expect_identical(
+    cdm_select(dm_for_filter, t3, new_g = g) %>%
+      cdm_get_all_pks(),
+    cdm_get_all_pks(dm_for_filter)
+  )
+})
+
+test_that("cdm_select() works for replacing fks", {
+  expect_identical(
+    cdm_select(dm_for_filter, t2, new_d = d) %>%
+      cdm_get_all_fks(),
+    tribble(
+      ~child_table, ~child_fk_col, ~parent_table,
+      "t2",         "new_d",       "t1",
+      "t2",         "e",           "t3",
+      "t4",         "j",           "t3",
+      "t5",         "l",           "t4",
+      "t5",         "m",           "t6"
+    )
+  )
+})
+
+test_that("cdm_select() avoids removing fks", {
+  expect_identical(
+    cdm_select(dm_for_filter, t2, c, e) %>%
+      cdm_get_all_fks(),
+    cdm_get_all_fks(dm_for_filter)
   )
 })
