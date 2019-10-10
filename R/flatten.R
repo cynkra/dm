@@ -78,7 +78,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
-  walk(list_of_pts, ~check_correct_input(dm, .))
+  check_correct_input(dm, list_of_pts)
+  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
   force(join)
   stopifnot(is_function(join))
