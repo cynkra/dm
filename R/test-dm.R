@@ -23,8 +23,7 @@ cdm_test_load <- function(x,
 
 # internal helper functions:
 # validates, that object `dm` is of class `dm` and that `table` is character and is part of the `dm` object
-
-check_correct_input <- function(dm, table) {
+check_correct_input <- function(dm, table, n = NULL) {
   check_dm(dm)
   if (!is_character(table, n)) {
     if (is.null(n)) {
