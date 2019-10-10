@@ -44,7 +44,7 @@ test_that("Learning from Postgres works?", {
   dm_postgres_learned_renamed <-
     cdm_rename_tbl(
       dm_for_filter_postgres_learned,
-      structure(src_tbls(dm_for_filter_postgres_learned), names = src_tbls(dm_for_filter))
+      !!!set_names(src_tbls(dm_for_filter_postgres_learned), src_tbls(dm_for_filter))
     )
 
   expect_equivalent_dm(
