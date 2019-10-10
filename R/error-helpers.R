@@ -439,7 +439,7 @@ abort_apply_filters_first <- function(join_name) {
 }
 
 cdm_error_apply_filters_first <- function(join_name) {
-  c(paste0("apply_filters_first_", join_name), "apply_filters_first")
+  cdm_error(c(paste0("apply_filters_first_", join_name), "apply_filters_first"))
 }
 
 error_apply_filters_first <- function(join_name) {
