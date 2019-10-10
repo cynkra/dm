@@ -20,13 +20,16 @@ default_local_src <- function() {
 }
 
 
-clean_up_dm <- function(dm, tables, gotta_rename) {
+prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   start <- tables[1]
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
   red_dm <-
     cdm_reset_all_filters(dm) %>%
     cdm_select_tbl(tables)
+  # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
+  # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
+  start_tbl <- tbl(dm, start)
 
   if (gotta_rename) {
     recipe <-
@@ -39,10 +42,15 @@ clean_up_dm <- function(dm, tables, gotta_rename) {
     # therefore we need a named variable containing the new and old names
     renames <-
       pluck(recipe$renames[recipe$table == start], 1)
+    start_tbl <- start_tbl %>% rename(!!!renames)
   } else {
     # for `anti_join()` and `semi_join()` no renaming necessary
     clean_dm <- red_dm
     renames <- character(0)
   }
-  list(clean_dm, renames)
+  tables <- cdm_get_tables(clean_dm)
+  tables[[start]] <- start_tbl
+  new_dm2(
+    data = tables,
+    base_dm = clean_dm)
 }

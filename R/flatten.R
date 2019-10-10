@@ -126,9 +126,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
     any(dfs$dist > 1),
     squash)
 
-  l_clean_dm_renames <- clean_up_dm(dm, order_df$name, gotta_rename)
-  clean_dm <- l_clean_dm_renames[[1]]
-  renames <- l_clean_dm_renames[[2]]
+  # rename dm and replace table `start` by its filtered, renamed version
+  prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename)
 
   # Drop first table in the list of join partners. (We have at least one table, `start`.)
   # (Working with `reduce2()` here and the `.init`-parameter is the first table)
@@ -137,17 +136,12 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
   order_df <- left_join(tibble(name = list_of_pts), order_df, by = "name")
 
-
-  # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
-  # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
-  start_tbl <- tbl(dm, start) %>% rename(!!!renames)
-
   # list of join partners
-  ordered_table_list <- clean_dm %>% cdm_get_tables() %>% extract(order_df$name)
-  by <- map2(order_df$pred, order_df$name, ~ get_by(clean_dm, .x, .y))
+  ordered_table_list <- prep_dm %>% cdm_get_tables() %>% extract(order_df$name)
+  by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
-  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = start_tbl)
+  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl(prep_dm, start))
 }
 
 #' Perform a join between two tables of a [`dm`]
