@@ -470,7 +470,7 @@ error_unique_table_names_or_table_names <- function() {
 
 # error conditions evaluation for 'cdm_flatten_to_tbl_impl()' -------------
 
-dispatch_abort <- function(
+check_flatten_to_tbl <- function(
   join_name,
   part_cond_abort_filters,
   any_not_reachable,
