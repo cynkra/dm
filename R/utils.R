@@ -25,7 +25,8 @@ clean_up_dm <- function(dm, tables, gotta_rename) {
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
   red_dm <-
-    cdm_reset_all_filters(dm) %>% cdm_select_tbl(tables)
+    cdm_reset_all_filters(dm) %>%
+    cdm_select_tbl(tables)
 
   if (gotta_rename) {
     recipe <-
