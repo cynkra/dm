@@ -38,7 +38,7 @@ clean_up_dm <- function(dm, tables, gotta_rename) {
     # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`,
     # therefore we need a named variable containing the new and old names
     renames <-
-      recipe %>% filter(table == !!start) %>% pull() %>% flatten_chr()
+      pluck(recipe$renames[recipe$table == start], 1)
   } else {
     # for `anti_join()` and `semi_join()` no renaming necessary
     clean_dm <- red_dm
