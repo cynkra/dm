@@ -22,11 +22,10 @@ test_that("cdm_add_tbls() works", {
     d1
   )
 
-  # do I get a warning in case I pipe the table? will the table's name be 'new_table' if I don't set an explicit name?
-  expect_warning(
-    expect_identical(
-      tbl(d1 %>% cdm_add_tbls(dm_for_filter, .), "new_table"),
-      d1)
+  # we accept even weird table names, as long as they are unique
+  expect_identical(
+    tbl(d1 %>% cdm_add_tbls(dm_for_filter, .), "."),
+    d1
   )
 
   # do I avoid the warning when piping the table but setting the name?
@@ -45,13 +44,22 @@ test_that("cdm_add_tbls() works", {
   # 2. Is the resulting order of the tables correct?
   expect_identical(
     src_tbls(cdm_add_tbls(dm_for_filter, d1, d2)),
-    c("d1", "d2", src_tbls(dm_for_filter))
-    )
+    c(src_tbls(dm_for_filter), "d1", "d2")
+  )
 
   # Is an error thrown in case I try to give the new table an old table's name?
   expect_error(
     cdm_add_tbls(dm_for_filter, t1 = d1),
-    class = cdm_error("table_already_exists")
+    class = "vctrs_error_names_must_be_unique"
+  )
+
+  expect_message(
+    expect_equivalent_dm(
+      cdm_add_tbls(dm_for_filter, t1 = d1, repair = "unique"),
+      dm_for_filter %>%
+        cdm_rename_tbl(t1...1 = t1) %>%
+        cdm_add_tbls(t1...7 = d1)
+    )
   )
 
   # error in case table srcs don't match

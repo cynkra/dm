@@ -6,41 +6,41 @@
 #' @return The inital `dm` with the additional table(s).
 #'
 #' @param dm A [`dm`] object
-#' @param ... One or more tibbles to add to the `dm`. If not named, the tables will retain their name within the `dm`
-#' (does not work in a pipe or in `map()`-style functions). Explicit naming is supported with the syntax `new_table_name = tbl`.
+#' @param ... One or more tibbles to add to the `dm`.
+#'   If no explicit name is given, the name of the expression is used.
+#' @inheritParams vctrs::vec_as_names
 #'
 #' @export
-cdm_add_tbls <- function(dm, ...) {
+cdm_add_tbls <- function(dm, ..., repair = "check_unique") {
   check_dm(dm)
 
   orig_tbls <- src_tbls(dm)
 
   new_names <- names(exprs(..., .named = TRUE))
   new_tables <- list(...)
-  # this function has a secondary effect and returns a value; generally not good style, but it is more convenient
-  new_names <- check_new_tbls(dm, new_tables, new_names)
-  if (any(new_names %in% src_tbls(dm))) abort_table_already_exists(new_names[new_names %in% src_tbls(dm)])
-  reduce2(
-    rev(new_tables),
-    rev(new_names),
-    ~ cdm_add_tbl_impl(cdm_get_def(..1), ..2, ..3),
-    .init = dm
-    )
+
+  check_new_tbls(dm, new_tables)
+
+  old_names <- src_tbls(dm)
+  all_names <- vctrs::vec_as_names(c(old_names, new_names), repair = repair)
+
+  new_old_names <- all_names[seq_along(old_names)]
+
+  selected <- set_names(old_names, new_old_names)
+  dm <- cdm_select_tbl_impl(dm, selected)
+
+  new_names <- all_names[seq2(length(old_names) + 1, length(all_names))]
+  cdm_add_tbl_impl(dm, new_tables, new_names)
 }
 
-cdm_add_tbl_impl <- function(def, tbl, table_name) {
-  def_0 <- tibble(
-    table = table_name,
-    data = list(tbl),
-    segment = NA,
-    display = NA_character_,
-    pks = vctrs::list_of(tibble(column = list())),
-    fks = vctrs::list_of(tibble(table = character(), column = list())),
-    name = NA_character_,
-    filters = vctrs::list_of(tibble(filter_quo = list()))
-    )
+cdm_add_tbl_impl <- function(dm, tbls, table_name) {
+  def <- cdm_get_def(dm)
 
-  new_dm3(vctrs::vec_rbind(def_0, def))
+  def_0 <- def[rep_along(table_name, NA_integer_), ]
+  def_0$table <- table_name
+  def_0$data <- tbls
+
+  new_dm3(vctrs::vec_rbind(def, def_0))
 }
 
 #' Remove one or more tables to a [`dm`]
@@ -68,20 +68,12 @@ cdm_rm_tbls <- function(dm, ...) {
 }
 
 
-check_new_tbls <- function(dm, tbls, name) {
+check_new_tbls <- function(dm, tbls) {
   orig_tbls <- cdm_get_tables(dm)
 
   # are all new tables on the same source as the original ones?
   if (has_length(orig_tbls) && !all_same_source(c(orig_tbls[1], tbls))) {
     abort_not_same_src()
   }
-
-  # test if a name "." is part of the new names, indicating a piped table that is not explicitly named
-  # or if table names of the kind ".x" or "..1" are present, which would indicate a `map()`-type operation
-  if ("." %in% name || any(str_detect(name, "^\\.[x-z]$")) || any(str_detect(name, "^\\.\\.[0-9][0-9]?$"))) {
-    if (length(name) > 1) abort("Please don't give names to your tables of the sort `.`, `.x`, `..1`.")
-    warning("New table called `new_table` introduced by adding table to `dm` in a pipe without giving it an explicit name.")
-    "new_table"
-  } else name
 }
 
