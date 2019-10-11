@@ -129,3 +129,26 @@ test_that("cdm_add_tbls() works", {
     )
   }
 })
+
+test_that("cdm_rm_tbls() works", {
+  # removes a table on all srcs
+  map(
+    dm_for_filter_w_cycle_src,
+    ~expect_equivalent_dm(
+      cdm_rm_tbls(., t7) %>% collect(),
+      dm_for_filter
+      )
+  )
+
+  # removes more than one table
+  expect_equivalent_dm(
+    cdm_rm_tbls(dm_for_filter_w_cycle, t7, t5, t3) %>% collect(),
+    cdm_select_tbl(dm_for_filter, t1, t2, t4, t6)
+  )
+
+  # fails when table name is wrong
+  expect_error(
+    cdm_rm_tbls(dm_for_filter, t7),
+    class = cdm_error("table_not_in_dm")
+  )
+})
