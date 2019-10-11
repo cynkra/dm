@@ -72,6 +72,18 @@ cdm_add_tbl_impl <- function(def, tbl, table_name) {
   new_dm3(vctrs::vec_rbind(def_0, def))
 }
 
+
+cdm_rm_tbls <- function(dm, ...) {
+  # FIXME: following line needs to be replaced using check_dm() after PR 86 merged
+  if (!is_dm(dm)) abort("First parameter in `cdm_add_tbl()` needs to be of class `dm`")
+  table_names <- names(exprs(..., .named = TRUE))
+  check_correct_input(dm, table_names)
+
+  cdm_select_tbl(dm, -one_of(!!!table_names))
+
+}
+
+
 check_new_tbls <- function(dm, tbls, name) {
   orig_tbls <- cdm_get_tables(dm)
   # are all new tables on the same source as the original ones?
@@ -84,3 +96,4 @@ check_new_tbls <- function(dm, tbls, name) {
     "new_table"
   } else name
 }
+
