@@ -9,7 +9,6 @@ cdm_add_tbls <- function(dm, ...) {
   # this function has a secondary effect and returns a value; generally not good style, but it is more convenient
   new_names <- check_new_tbls(dm, new_tables, new_names)
   if (any(new_names %in% src_tbls(dm))) abort_table_already_exists(new_names[new_names %in% src_tbls(dm)])
-
   reduce2(
     rev(new_tables),
     rev(new_names),
@@ -52,8 +51,10 @@ check_new_tbls <- function(dm, tbls, name) {
   orig_tbls <- cdm_get_tables(dm)
   # are all new tables on the same source as the original ones?
   if (!all_same_source(flatten(list(cdm_get_tables(dm), tbls)))) abort_not_same_src()
-
-  if ("." %in% name) {
+  # test if a name "." is part of the new names, indicating a piped table that is not explicitly named
+  # or if table names of the kind ".x" or "..1" are present, which would indicate a `map()`-type operation
+  if ("." %in% name || any(str_detect(name, "^\\.[x-z]$")) || any(str_detect(name, "^\\.\\.[0-9][0-9]?$"))) {
+    if (length(name) > 1) abort("Please don't give names to your tables of the sort `.`, `.x`, `..1`.")
     warning("New table called `new_table` introduced by adding table to `dm` in a pipe without giving it an explicit name.")
     "new_table"
   } else name
