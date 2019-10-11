@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9002</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@
 ## 3 engines     FALSE     has duplicate values: 1, 2, 3, 4                   
 ## 4 manufactur… FALSE     has duplicate values: AIRBUS, AIRBUS INDUSTRIE, AM…
 ## 5 model       FALSE     has duplicate values: 717-200, 737-301, 737-3G7, 7…
-## 6 seats       FALSE     has duplicate values: 2, 4, 5, 6, 7, 8, …          
+## 6 seats       FALSE     has duplicate values: 2, 4, 5, 6, 7, … (7 total)   
 ## 7 speed       FALSE     has duplicate values: 90, 105, 162, 432, NA        
 ## 8 type        FALSE     has duplicate values: Fixed wing multi engine, Fix…
 ## 9 year        FALSE     has duplicate values: 1959, 1963, 1975, 1976, 1977…</code></pre>
@@ -167,11 +167,10 @@
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
 ## src:  &lt;environment: R_GlobalEnv&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
-## Data model object:
-##   5 tables:  airlines, airports, flights, planes ... 
-##   53 columns
-##   3 primary keys
-##   0 references
+## Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+## Columns: 53
+## Primary keys: 3
+## Foreign keys: 0
 ## ── Filters ────────────────────────────────────────────────────────────────
 ## None</code></pre>
 <p>To get an overview of the primary keys after setting them, call <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code>.</p>
@@ -222,11 +221,10 @@
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
 ## src:  &lt;environment: R_GlobalEnv&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
-## Data model object:
-##   5 tables:  airlines, airports, flights, planes ... 
-##   53 columns
-##   3 primary keys
-##   3 references
+## Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+## Columns: 53
+## Primary keys: 3
+## Foreign keys: 3
 ## ── Filters ────────────────────────────────────────────────────────────────
 ## None</code></pre>
 </div>
@@ -246,11 +244,10 @@
 <pre><code>## ── Table source ───────────────────────────────────────────────────────────
 ## src:  &lt;environment: R_GlobalEnv&gt;
 ## ── Data model ─────────────────────────────────────────────────────────────
-## Data model object:
-##   5 tables:  airlines, airports, flights, planes ... 
-##   53 columns
-##   3 primary keys
-##   3 references
+## Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+## Columns: 53
+## Primary keys: 3
+## Foreign keys: 3
 ## ── Filters ────────────────────────────────────────────────────────────────
 ## None</code></pre>
 </div>

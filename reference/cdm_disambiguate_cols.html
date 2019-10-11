@@ -72,7 +72,7 @@ linked by a key relation are joined." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9002</span>
       </span>
     </div>
 
@@ -168,7 +168,7 @@ linked by a key relation are joined.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>cdm_disambiguate_cols</span>(<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>())</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
+    <pre class="examples"><div class='input'><span class='fu'>cdm_disambiguate_cols</span>(<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>())</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("table", "column")</span></div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span>
 #&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year, weather$weather.year</span>
 #&gt; <span class='message'>* month -&gt; flights$flights.month, weather$weather.month</span>
@@ -178,11 +178,10 @@ linked by a key relation are joined.</p>
 #&gt; <span class='message'>* time_hour -&gt; flights$flights.time_hour, weather$weather.time_hour</span></div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
-#&gt; Data model object:
-#&gt;   5 tables:  airlines, airports, flights, planes ... 
-#&gt;   53 columns
-#&gt;   3 primary keys
-#&gt;   3 references
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 3
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
 #&gt; None</div></pre>
   </div>

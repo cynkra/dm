@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9002</span>
       </span>
     </div>
 
@@ -172,7 +172,8 @@
 <p><strong>Add add a column with the full airline names from the <code>airlines</code> table to the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">dm_joined &lt;-<span class="st"> </span>dm <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(flights, airlines, <span class="dt">join =</span> left_join)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">dm_joined</a></code></pre></div>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Joining, by = c("table", "column")</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">dm_joined</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 20</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
@@ -236,7 +237,8 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airlines, name <span class="op">==</span><span class="st"> "Delta Air Lines Inc."</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(flights, month <span class="op">==</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_apply_filters</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(flights, airports, <span class="dt">join =</span> left_join)</a></code></pre></div>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(flights, airports, <span class="dt">join =</span> left_join)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; Joining, by = c("table", "column")</span></a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4,082 x 26</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
@@ -262,9 +264,10 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_select_tbl.html">cdm_select_tbl</a></span>(<span class="op">-</span>weather) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl</a></span>(<span class="dt">start =</span> flights)</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Renamed columns:</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; * name -&gt; airlines$airlines.name, airports$airports.name</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; * year -&gt; flights$flights.year, planes$planes.year</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Joining, by = c("table", "column")</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; Renamed columns:</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; * name -&gt; airlines$airlines.name, airports$airports.name</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; * year -&gt; flights$flights.year, planes$planes.year</span></a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 35</span><span>
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>

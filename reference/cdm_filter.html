@@ -73,7 +73,7 @@ all tables will be updated according to the filter conditions and the foreign ke
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9002</span>
       </span>
     </div>
 
@@ -240,22 +240,20 @@ This function is called by the <code><a href='https://dplyr.tidyverse.org/refere
   <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
-#&gt; Data model object:
-#&gt;   5 tables:  airlines, airports, flights, planes ... 
-#&gt;   53 columns
-#&gt;   3 primary keys
-#&gt;   3 references
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 3
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
 #&gt; None</div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
-#&gt; Data model object:
-#&gt;   5 tables:  airlines, airports, flights, planes ... 
-#&gt;   53 columns
-#&gt;   3 primary keys
-#&gt;   3 references
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 3
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
 #&gt; None</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
@@ -264,11 +262,10 @@ This function is called by the <code><a href='https://dplyr.tidyverse.org/refere
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
-#&gt; Data model object:
-#&gt;   5 tables:  airlines, airports, flights, planes ... 
-#&gt;   53 columns
-#&gt;   3 primary keys
-#&gt;   3 references
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 3
 #&gt; ── Filters ─────────────────────────────────────────────────────────────────────
 #&gt; None</div></pre>
   </div>
