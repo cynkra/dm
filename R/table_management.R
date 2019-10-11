@@ -1,3 +1,15 @@
+#' Add one or more tables to a [`dm`]
+#'
+#' @description
+#' Add one or more tibbles to a [`dm`], using tidyverse syntax.
+#'
+#' @return The inital `dm` with the additional table(s).
+#'
+#' @param dm A [`dm`] object
+#' @param ... One or more tibbles to add to the `dm`. If not named, the tables will retain their name within the `dm`
+#' (does not work in a pipe or in `map()`-style functions). Explicit naming is supported with the syntax `new_table_name = tbl`.
+#'
+#' @export
 cdm_add_tbls <- function(dm, ...) {
   # FIXME: following line needs to be replaced using check_dm() after PR 86 merged
   if (!is_dm(dm)) abort("First parameter in `cdm_add_tbls()` needs to be of class `dm`")
@@ -17,7 +29,20 @@ cdm_add_tbls <- function(dm, ...) {
     )
 }
 
-
+#' Add one or more tables to a [`dm`]
+#'
+#' @rdname cdm_select_tbl
+#' @description
+#' Add a tibble to a [`dm`].
+#'
+#' @return The inital `dm` with the additional table.
+#'
+#' @param dm A [`dm`] object
+#' @param table A tibble
+#' @param table_name The name for the new table. If left `NULL`, the new table will retain its original name
+#' (does not work in a pipe or in `map()`-style functions)
+#'
+#' @export
 cdm_add_tbl <- function(dm, table, table_name = NULL) {
   # FIXME: following line needs to be replaced using check_dm() after PR 86 merged
   if (!is_dm(dm)) abort("First parameter in `cdm_add_tbl()` needs to be of class `dm`")
