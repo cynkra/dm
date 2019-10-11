@@ -23,9 +23,9 @@ cdm_add_tbl <- function(dm, table, table_name = NULL) {
   # FIXME: following line needs to be replaced using check_dm() after PR 86 merged
   if (!is_dm(dm)) abort("First parameter in `cdm_add_tbl()` needs to be of class `dm`")
 
-  if (is_null(table_name)) {
+  if (!is_symbol(enexpr(table_name)) && !is_character(enexpr(table_name))) {
     table_name <- as_string(ensym(table))
-  }
+  } else table_name <- as_string(ensym(table_name))
   # this function has a secondary effect and returns a value; generally not good style, but it is more convenient
   table_name <- check_new_tbls(dm, table, table_name)
   if (table_name %in% src_tbls(dm)) abort_table_already_exists(table_name)
