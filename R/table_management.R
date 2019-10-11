@@ -4,11 +4,8 @@ cdm_add_tbl <- function(dm, table, table_name = NULL) {
 
   if (is_null(table_name)) {
     table_name <- deparse(substitute(table))
-    if (table_name == ".") {
-      warning("New table called 'new_table' introduced by adding table to `dm` in a pipe without giving it an explicit name.")
-      table_name <- "new_table"
-    }
   }
+  table_name <- check_for_pipe(table_name)
   if (table_name %in% src_tbls(dm)) abort_table_already_exists(table_name)
 
   cdm_add_tbl_impl(cdm_get_def(dm), table, table_name)
@@ -27,4 +24,11 @@ cdm_add_tbl_impl <- function(def, tbl, table_name) {
     )
 
   new_dm3(vctrs::vec_rbind(def_0, def))
+}
+
+check_for_pipe <- function(name) {
+  if ("." %in% name) {
+    warning("New table called `new_table` introduced by adding table to `dm` in a pipe without giving it an explicit name.")
+    "new_table"
+  } else name
 }
