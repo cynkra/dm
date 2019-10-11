@@ -82,9 +82,8 @@ cdm_apply_filters <- function(dm) {
   def <- cdm_get_def(dm)
 
   def$data <- map(def$table, ~ tbl(dm, .))
-  def$filters <- vctrs::list_of(new_filter())
 
-  new_dm3(def)
+  cdm_reset_all_filters(new_dm3(def))
 }
 
 

@@ -577,21 +577,19 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 
 #' @export
 collect.dm <- function(x, ...) {
-  list_of_rem_tbls <- cdm_apply_filters(x) %>% cdm_get_tables()
-  tables <- map(list_of_rem_tbls, collect)
+  x <-
+    x %>%
+    cdm_apply_filters()
 
-  new_dm(
-    tables,
-    cdm_get_data_model(x)
-  )
+  def <- cdm_get_def(x)
+  def$data <- map(def$data, collect, ...)
+  new_dm3(def)
 }
 
-
 cdm_reset_all_filters <- function(dm) {
-  new_dm2(
-    filter = tibble(table = character(0), filter = list(0)),
-    base_dm = dm
-  )
+  def <- cdm_get_def(dm)
+  def$filters <- vctrs::list_of(new_filter())
+  new_dm3(def)
 }
 
 all_same_source <- function(tables) {
