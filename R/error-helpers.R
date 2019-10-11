@@ -486,3 +486,14 @@ abort_con_only_for_dbi <- function() {
 error_con_only_for_dbi <- function() {
   "A local `dm` doesn't have a DB connection"
 }
+
+
+# table_name already exists  -------------------------------------------------
+
+abort_table_already_exists <- function(table_name) {
+  abort(error_table_already_exists(table_name), .subclass = cdm_error_full("table_already_exists"))
+}
+
+error_table_already_exists <- function(table_name) {
+  glue("A table with the name {table_name} already exists in the dm.")
+}

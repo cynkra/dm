@@ -9,6 +9,7 @@ cdm_add_tbl <- function(dm, table, table_name = NULL) {
       table_name <- "new_table"
     }
   }
+  if (table_name %in% src_tbls(dm)) abort_table_already_exists(table_name)
 
   cdm_add_tbl_impl(cdm_get_def(dm), table, table_name)
 }
