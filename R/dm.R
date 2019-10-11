@@ -209,8 +209,23 @@ validate_dm <- function(x) {
 #'
 #' @export
 cdm_get_src <- function(x) {
+  check_dm(x)
   tables <- cdm_get_tables(x)
   tbl_src(tables[1][[1]])
+}
+
+#' Get connection
+#'
+#' `cdm_get_con()` returns the connection object (`con`-part of \pkg{dplyr} source component) of a `dm`
+#' object.
+#'
+#' @rdname dm
+#'
+#' @export
+cdm_get_con <- function(x) {
+  src <- cdm_get_src(x)
+  if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
+  src$con
 }
 
 #' Get tables component

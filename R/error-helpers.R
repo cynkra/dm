@@ -466,3 +466,23 @@ abort_unique_table_names_or_table_names <- function() {
 error_unique_table_names_or_table_names <- function() {
   "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
 }
+
+
+# object is not a `dm` (but should be one) --------------------------------
+abort_is_not_dm <- function(obj_class) {
+  abort(error_is_not_dm(obj_class), .subclass = cdm_error_full("is_not_dm"))
+}
+
+error_is_not_dm <- function(obj_class) {
+  glue("Required class `dm` but instead is {tick(obj_class)}")
+}
+
+
+# local `dm` has no con ---------------------------------------------------
+abort_con_only_for_dbi <- function() {
+  abort(error_con_only_for_dbi(), .subclass = cdm_error_full("con_only_for_dbi"))
+}
+
+error_con_only_for_dbi <- function() {
+  "A local `dm` doesn't have a DB connection"
+}
