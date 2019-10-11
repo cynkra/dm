@@ -124,7 +124,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
     auto_detect,
     nrow(order_df) > 2,
     any(dfs$dist > 1),
-    squash)
+    squash
+  )
 
   # rename dm and replace table `start` by its filtered, renamed version
   prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename)
@@ -137,7 +138,9 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   order_df <- left_join(tibble(name = list_of_pts), order_df, by = "name")
 
   # list of join partners
-  ordered_table_list <- prep_dm %>% cdm_get_tables() %>% extract(order_df$name)
+  ordered_table_list <- prep_dm %>%
+    cdm_get_tables() %>%
+    extract(order_df$name)
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
@@ -196,4 +199,46 @@ parent_child_table <- function(dm, table_1, table_2) {
   }
 
   rel
+}
+
+check_flatten_to_tbl <- function(
+                                 join_name,
+                                 part_cond_abort_filters,
+                                 any_not_reachable,
+                                 g,
+                                 auto_detect,
+                                 more_than_1_pt,
+                                 has_grandparent,
+                                 squash) {
+
+  # argument checking, or filter and recompute induced subgraph
+  # for subsequent check
+  if (any_not_reachable) {
+    abort_tables_not_reachable_from_start()
+  }
+
+  # Cycles not yet supported
+  if (length(V(g)) - 1 != length(E(g))) {
+    abort_no_cycles()
+  }
+  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
+  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
+  # the result for `right_join()` depends on the order of the dim-tables in the `dm`
+  # if 2 or more of them are joined to the fact table and ellipsis is empty.
+
+
+  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
+  # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
+  if (!squash && has_grandparent) {
+    abort_only_parents()
+  }
+
+  if (join_name == "right_join" && auto_detect && more_than_1_pt) {
+    warning(
+      paste0(
+        "Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
+        "more than 2 tables involved and no explicit order given in `...`."
+      )
+    )
+  }
 }
