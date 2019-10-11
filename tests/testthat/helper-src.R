@@ -197,12 +197,10 @@ output_3 %<-% list(
   )
 )
 
+def_dm_for_filter <- cdm_get_def(dm_for_filter)
+
 dm_for_filter_rev %<-%
-  new_dm2(
-    data = rev(cdm_get_tables(dm_for_filter)),
-    table = rev(cdm_get_def(dm_for_filter)$table),
-    base_dm = dm_for_filter
-  )
+  new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
 
 # for tests on `dm` objects: cdm_add_pk(), cdm_add_fk() ------------------------
 
