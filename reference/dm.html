@@ -45,6 +45,8 @@ and the datamodelr based specification of table relationships.
 This function is currently a no-op.
 cdm_get_src() returns the dplyr source component of a dm
 object.
+cdm_get_con() returns the connection object (con-part of dplyr source component) of a dm
+object.
 cdm_get_tables() returns a named list with dplyr tbl objects
 of a dm object.
 The filter expressions are NOT evaluated at this stage.
@@ -165,6 +167,8 @@ and the <span class="pkg">datamodelr</span> based specification of table relatio
 This function is currently a no-op.</p>
 <p><code>cdm_get_src()</code> returns the <span class="pkg">dplyr</span> source component of a <code>dm</code>
 object.</p>
+<p><code>cdm_get_con()</code> returns the connection object (<code>con</code>-part of <span class="pkg">dplyr</span> source component) of a <code>dm</code>
+object.</p>
 <p><code>cdm_get_tables()</code> returns a named list with <span class="pkg">dplyr</span> tbl objects
 of a <code>dm</code> object.
 The filter expressions are NOT evaluated at this stage.
@@ -184,6 +188,8 @@ object, the set filter expressions.</p>
 <span class='fu'>validate_dm</span>(<span class='no'>x</span>)
 
 <span class='fu'>cdm_get_src</span>(<span class='no'>x</span>)
+
+<span class='fu'>cdm_get_con</span>(<span class='no'>x</span>)
 
 <span class='fu'>cdm_get_tables</span>(<span class='no'>x</span>)
 
