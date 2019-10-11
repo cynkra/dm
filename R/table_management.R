@@ -29,7 +29,7 @@ cdm_add_tbls <- function(dm, ...) {
     )
 }
 
-#' Add one or more tables to a [`dm`]
+#' Add a table to a [`dm`]
 #'
 #' @rdname cdm_select_tbl
 #' @description
