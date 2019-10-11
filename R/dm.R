@@ -156,7 +156,7 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
   fks <-
     tibble(
       table = setdiff(table, fks$table),
-      fks = vctrs::list_of(tibble(table = character(), column = list()))
+      fks = vctrs::list_of(new_fk())
     ) %>%
     vctrs::vec_rbind(fks)
 
@@ -174,6 +174,10 @@ new_dm3 <- function(def) {
     list(def = def),
     class = "dm"
   )
+}
+
+new_fk <- function(table = character(), column = list()) {
+  tibble(table = table, column = column)
 }
 
 new_filters <- function() {
