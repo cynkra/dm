@@ -11,7 +11,7 @@
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @export
-cdm_add_tbls <- function(dm, ..., repair = "check_unique") {
+cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
   check_dm(dm)
 
   orig_tbls <- src_tbls(dm)
@@ -55,7 +55,7 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name) {
 #' @param ... One or more unquoted tibble names to remove from the `dm`.
 #'
 #' @export
-cdm_rm_tbls <- function(dm, ...) {
+cdm_rm_tbl <- function(dm, ...) {
   check_dm(dm)
 
   table_names <-
