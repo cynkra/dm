@@ -548,4 +548,6 @@ if (is_this_a_test()) {
 
   t1_src %<-% dbplyr::test_load(t1)
   t3_src %<-% dbplyr::test_load(t3)
+
+  test_srcs <- dbplyr:::test_srcs$get()
 }
