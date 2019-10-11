@@ -24,7 +24,7 @@ cdm_add_tbl <- function(dm, table, table_name = NULL) {
   if (!is_dm(dm)) abort("First parameter in `cdm_add_tbl()` needs to be of class `dm`")
 
   if (is_null(table_name)) {
-    table_name <- deparse(substitute(table))
+    table_name <- as_string(ensym(table))
   }
   # this function has a secondary effect and returns a value; generally not good style, but it is more convenient
   table_name <- check_new_tbls(dm, table, table_name)
