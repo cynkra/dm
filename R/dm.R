@@ -31,7 +31,6 @@
 #' cdm_nycflights13() %>% src_tbls()
 #' cdm_nycflights13() %>% cdm_get_src()
 #' cdm_nycflights13() %>% cdm_get_tables()
-#' cdm_nycflights13() %>% cdm_get_data_model()
 #'
 #' cdm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports)
