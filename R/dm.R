@@ -115,18 +115,6 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
 
-  filters <-
-    filter %>%
-    rename(filter_quo = filter) %>%
-    nest(filters = filter_quo)
-
-  filters <-
-    tibble(
-      table = setdiff(table, filters$table),
-      filters = vctrs::list_of(tibble(filter_quo = list()))
-    ) %>%
-    vctrs::vec_rbind(filters)
-
   # Legacy
   data <- unname(data)
 
@@ -140,7 +128,7 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
   pks <-
     tibble(
       table = setdiff(table, pks$table),
-      pks = vctrs::list_of(tibble(column = list()))
+      pks = vctrs::list_of(new_pk())
     ) %>%
     vctrs::vec_rbind(pks)
 
@@ -160,6 +148,18 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
     ) %>%
     vctrs::vec_rbind(fks)
 
+  filters <-
+    filter %>%
+    rename(filter_quo = filter) %>%
+    nest(filters = filter_quo)
+
+  filters <-
+    tibble(
+      table = setdiff(table, filters$table),
+      filters = vctrs::list_of(new_filter())
+    ) %>%
+    vctrs::vec_rbind(filters)
+
   def <-
     tibble(table, data, segment, display) %>%
     left_join(pks, by = "table") %>%
@@ -176,10 +176,21 @@ new_dm3 <- function(def) {
   )
 }
 
+new_pk <- function(column = list()) {
+  stopifnot(is.list(column))
+  tibble(column = column)
+}
+
 new_fk <- function(table = character(), column = list()) {
+  stopifnot(is.list(column))
   tibble(table = table, column = column)
 }
 
+new_filter <- function(quos = list()) {
+  tibble(filter_quo = unclass(quos))
+}
+
+# Legacy!
 new_filters <- function() {
   tibble(table = character(), filter = list())
 }
