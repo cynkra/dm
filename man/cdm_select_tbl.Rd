@@ -23,8 +23,6 @@ for details on the semantics.}
 
 \item{table_name}{The name for the new table. If left \code{NULL}, the new table will retain its original name
 (does not work in a pipe or in \code{map()}-style functions)}
-
-\item{dm}{A \code{\link{dm}} object}
 }
 \value{
 The input \code{dm} with tables renamed or removed.

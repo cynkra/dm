@@ -37,7 +37,6 @@ cdm_add_tbls <- function(dm, ...) {
 #'
 #' @return The inital `dm` with the additional table.
 #'
-#' @param dm A [`dm`] object
 #' @param table A tibble
 #' @param table_name The name for the new table. If left `NULL`, the new table will retain its original name
 #' (does not work in a pipe or in `map()`-style functions)
