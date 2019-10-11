@@ -457,7 +457,11 @@ print.dm <- function(x, ...) {
 
   cat_rule("Data model", col = "violet")
 
-  print(cdm_get_data_model(x))
+  def <- cdm_get_def(x)
+  cat_line("Tables: ", commas(tick(def$table)))
+  cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
+  cat_line("Primary keys: ", sum(map_int(def$pks, NROW)))
+  cat_line("Foreign keys: ", sum(map_int(def$fks, NROW)))
 
   cat_rule("Filters", col = "orange")
 
