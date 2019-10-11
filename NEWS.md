@@ -1,3 +1,9 @@
+# dm 0.0.3.9002
+
+- New `cdm_add_tbl()` and `cdm_rm_tbl()` (#90).
+- New `cdm_get_con()` (#84).
+
+
 # dm 0.0.3.9001
 
 - Selection and renaming of tables and columns uses new storage format (#54).
