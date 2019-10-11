@@ -37,5 +37,5 @@ optionally renaming them.
 
 \code{cdm_rename_tbl()} renames tables.
 
-Add a tibble to a \code{\link{dm}}.
+Adds a tibble to a \code{\link{dm}}.
 }

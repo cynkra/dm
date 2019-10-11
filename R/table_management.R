@@ -1,7 +1,7 @@
 #' Add one or more tables to a [`dm`]
 #'
 #' @description
-#' Add one or more tibbles to a [`dm`], using tidyverse syntax.
+#' Adds one or more tibbles to a [`dm`], using tidyverse syntax.
 #'
 #' @return The inital `dm` with the additional table(s).
 #'
@@ -33,7 +33,7 @@ cdm_add_tbls <- function(dm, ...) {
 #'
 #' @rdname cdm_select_tbl
 #' @description
-#' Add a tibble to a [`dm`].
+#' Adds a tibble to a [`dm`].
 #'
 #' @return The inital `dm` with the additional table.
 #'
@@ -72,7 +72,18 @@ cdm_add_tbl_impl <- function(def, tbl, table_name) {
   new_dm3(vctrs::vec_rbind(def_0, def))
 }
 
-
+#' Remove one or more tables to a [`dm`]
+#'
+#' @description
+#' Removes one or more tibbles from a [`dm`] by wrapping `cdm_select_tbls()`. Mind, that all foreign keys are
+#' dropped that pointed to or from the removed table(s).
+#'
+#' @return The inital `dm` without the removed table(s).
+#'
+#' @param dm A [`dm`] object
+#' @param ... One or more unquoted tibble names to remove from the `dm`.
+#'
+#' @export
 cdm_rm_tbls <- function(dm, ...) {
   # FIXME: following line needs to be replaced using check_dm() after PR 86 merged
   if (!is_dm(dm)) abort("First parameter in `cdm_add_tbl()` needs to be of class `dm`")

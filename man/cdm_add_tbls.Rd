@@ -16,5 +16,5 @@ cdm_add_tbls(dm, ...)
 The inital \code{dm} with the additional table(s).
 }
 \description{
-Add one or more tibbles to a \code{\link{dm}}, using tidyverse syntax.
+Adds one or more tibbles to a \code{\link{dm}}, using tidyverse syntax.
 }
