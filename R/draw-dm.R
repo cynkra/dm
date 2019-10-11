@@ -74,13 +74,15 @@ cdm_draw <- function(
 #'   cdm_draw()
 #' @export
 cdm_set_colors <- function(dm, ...) {
-  data_model <- cdm_get_data_model(dm)
-  display <- color_quos_to_display(...)
+  display_df <- color_quos_to_display(...)
 
-  new_dm(
-    cdm_get_tables(dm),
-    dm_set_display(data_model, display)
-  )
+  def <-
+    cdm_get_def(dm) %>%
+    left_join(display_df, by = "table") %>%
+    mutate(display = coalesce(new_display, display)) %>%
+    select(-new_display)
+
+  new_dm3(def)
 }
 
 color_quos_to_display <- function(...) {
@@ -100,10 +102,7 @@ color_quos_to_display <- function(...) {
   }
   new_values <- rev(colors$datamodelr[match(values, colors$dm)])
 
-  tibble(tables = names(quos), colors = new_values[idx]) %>%
-    nest(data = -colors) %>%
-    deframe() %>%
-    map(pull)
+  tibble(table = names(quos), new_display = new_values[idx])
 }
 
 #' cdm_get_colors()
