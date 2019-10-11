@@ -9,20 +9,11 @@
 #'
 #' @export
 cdm_is_referenced <- function(dm, table) {
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
-
-  data_model <- cdm_get_data_model(dm)
-  is_referenced_data_model(data_model, table_name)
+  has_length(cdm_get_referencing_tables(dm, table))
 }
 
 is_referenced_data_model <- function(data_model, table_name) {
   which_ind <- data_model$references$ref == table_name
-  any(which_ind)
-}
-
-is_referencing_data_model <- function(data_model, table_name) {
-  which_ind <- data_model$references$table == table_name
   any(which_ind)
 }
 
@@ -37,13 +28,12 @@ is_referencing_data_model <- function(data_model, table_name) {
 #'
 #' @export
 cdm_get_referencing_tables <- function(dm, table) {
-  table_name <- as_name(ensym(table))
+  table <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  data_model <- cdm_get_data_model(dm)
-  references <- data_model$references
-  which_ind <- references$ref == table_name
-  as.character(references$table[which_ind])
+  def <- cdm_get_def()
+  i <- which(def$table == table)
+  def$fks[[i]]$table
 }
 
 calculate_join_list <- function(dm, table_name) {
@@ -76,13 +66,12 @@ calculate_join_list <- function(dm, table_name) {
 }
 
 create_graph_from_dm <- function(dm, directed = FALSE) {
-  ref_tables <- src_tbls(dm)
-  tables <- map(ref_tables, ~ cdm_get_referencing_tables(dm, !!.x))
-
-  tibble(tables, ref_tables) %>%
-    unnest(tables) %>%
-    select(tables, ref_tables) %>%
-    igraph::graph_from_data_frame(directed = directed, vertices = ref_tables)
+  def <- cdm_get_def(dm)
+  def %>%
+    select(ref_table = table, fks) %>%
+    unnest(fks) %>%
+    select(table, ref_table) %>%
+    igraph::graph_from_data_frame(directed = directed, vertices = def$table)
 }
 
 get_names_of_connected <- function(g, start) {
