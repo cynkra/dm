@@ -66,8 +66,8 @@ boils down to:
 cdm_nycflights13() %>%
   cdm_flatten_to_tbl(start = flights)
 #> Renamed columns:
-#> * year -> flights$flights.year, planes$planes.year
 #> * name -> airlines$airlines.name, airports$airports.name
+#> * year -> flights$flights.year, planes$planes.year
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 35</span><span>

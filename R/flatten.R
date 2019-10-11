@@ -75,7 +75,6 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 
 
 cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
-
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
   check_correct_input(dm, list_of_pts)
@@ -99,20 +98,14 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # If no tables are given, we use all reachable tables
   auto_detect <- is_empty(list_of_pts)
   if (auto_detect) {
-    # `purrr::discard()` in case `list_of_pts` is `NA`
-    list_of_pts <- get_names_of_connected(g, start) %>% discard(is.na)
+    list_of_pts <- get_names_of_connected(g, start)
   }
   # We use the induced subgraph right away
   g <- igraph::induced_subgraph(g, c(start, list_of_pts))
 
-  has_filters <- nrow(cdm_get_filter(dm)) > 0
-  if (has_filters && join_name %in% c("full_join", "right_join") && length(igraph::V(g)) > 1) {
-    abort_apply_filters_first(join_name)
-  }
-
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
-  dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE)
+  dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE, dist = TRUE)
 
   # compute all table names
   order_df <-
@@ -121,69 +114,36 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
       pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
     )
 
-  # argument checking, or filter and recompute induced subgraph
-  # for subsequent check
-  if (anyNA(order_df$name)) {
-    abort_tables_not_reachable_from_start()
-  }
+  # function to detect any reason for abort()
+  check_flatten_to_tbl(
+    join_name,
+    (nrow(cdm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
+    anyNA(order_df$name),
+    g,
+    auto_detect,
+    nrow(order_df) > 2,
+    any(dfs$dist > 1),
+    squash
+  )
 
-  # Cycles not yet supported
-  if (length(V(g)) - 1 != length(E(g))) {
-    abort_no_cycles()
-  }
-
-  # the result for `right_join()` depends on the order of the dim-tables in the `dm`
-  # if 2 or more of them are joined to the fact table and ellipsis is empty.
-  if (join_name == "right_join" && auto_detect && nrow(order_df) > 2) warning(
-    paste0("Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
-             "more than 2 tables involved and no explicit order given in `...`."))
-
-  # filters need to be empty, for the disambiguation to work
-  # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
-  red_dm <- cdm_reset_all_filters(dm) %>% cdm_select_tbl(order_df$name)
-
-  if (gotta_rename) {
-    recipe <- compute_disambiguate_cols_recipe(red_dm, order_df$name, sep = ".")
-    explain_col_rename(recipe)
-    # prepare `dm` by disambiguating columns (on a reduced dm)
-    clean_dm <-
-      col_rename(red_dm, recipe)
-    # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`,
-    # therefore we need a named variable containing the new and old names
-    renames <- recipe %>% filter(table == !!start) %>% pull() %>% flatten_chr()
-  } else { # for `anti_join()` and `semi_join()` no renaming necessary
-    clean_dm <- red_dm
-    renames <- character(0)
-  }
+  # rename dm and replace table `start` by its filtered, renamed version
+  prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename)
 
   # Drop first table in the list of join partners. (We have at least one table, `start`.)
   # (Working with `reduce2()` here and the `.init`-parameter is the first table)
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
-  # the order given in the ellipsis determines the join-list
-  if (!auto_detect) {
-    pt_names <- order_df$name
-    pt_indices <- match(pt_names, list_of_pts)
-    order_df <- slice(order_df, pt_indices)
-  }
-
-  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
-  # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
-  if (!squash && !all(map_lgl(order_df$name, ~{
-    cdm_has_fk(clean_dm, !!start, !!.) || cdm_has_fk(clean_dm, !!., !!start)}))) {
-    abort_only_parents()
-  }
-
-  # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
-  # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
-  start_tbl <- tbl(dm, start) %>% rename(!!!renames)
+  # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
+  order_df <- left_join(tibble(name = list_of_pts), order_df, by = "name")
 
   # list of join partners
-  ordered_table_list <- clean_dm %>% cdm_get_tables() %>% extract(order_df$name)
-  by <- map2(order_df$pred, order_df$name, ~ get_by(clean_dm, .x, .y))
+  ordered_table_list <- prep_dm %>%
+    cdm_get_tables() %>%
+    extract(order_df$name)
+  by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
-  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = start_tbl)
+  reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl(prep_dm, start))
 }
 
 #' Perform a join between two tables of a [`dm`]
@@ -238,4 +198,80 @@ parent_child_table <- function(dm, table_1, table_2) {
   }
 
   rel
+}
+
+check_flatten_to_tbl <- function(
+                                 join_name,
+                                 part_cond_abort_filters,
+                                 any_not_reachable,
+                                 g,
+                                 auto_detect,
+                                 more_than_1_pt,
+                                 has_grandparent,
+                                 squash) {
+
+  # argument checking, or filter and recompute induced subgraph
+  # for subsequent check
+  if (any_not_reachable) {
+    abort_tables_not_reachable_from_start()
+  }
+
+  # Cycles not yet supported
+  if (length(V(g)) - 1 != length(E(g))) {
+    abort_no_cycles()
+  }
+  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
+  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
+  # the result for `right_join()` depends on the order of the dim-tables in the `dm`
+  # if 2 or more of them are joined to the fact table and ellipsis is empty.
+
+
+  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
+  # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
+  if (!squash && has_grandparent) {
+    abort_only_parents()
+  }
+
+  if (join_name == "right_join" && auto_detect && more_than_1_pt) {
+    warning(
+      paste0(
+        "Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
+        "more than 2 tables involved and no explicit order given in `...`."
+      )
+    )
+  }
+}
+
+prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
+  start <- tables[1]
+  # filters need to be empty, for the disambiguation to work
+  # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
+  red_dm <-
+    cdm_reset_all_filters(dm) %>%
+    cdm_select_tbl(tables)
+  # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
+  # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
+  start_tbl <- tbl(dm, start)
+
+  if (gotta_rename) {
+    recipe <-
+      compute_disambiguate_cols_recipe(red_dm, tables, sep = ".")
+    explain_col_rename(recipe)
+    # prepare `dm` by disambiguating columns (on a reduced dm)
+    clean_dm <-
+      col_rename(red_dm, recipe)
+    # the column names of start_tbl need to be updated, since taken from `dm` and not `clean_dm`,
+    # therefore we need a named variable containing the new and old names
+    renames <-
+      pluck(recipe$renames[recipe$table == start], 1)
+    start_tbl <- start_tbl %>% rename(!!!renames)
+  } else {
+    # for `anti_join()` and `semi_join()` no renaming necessary
+    clean_dm <- red_dm
+    renames <- character(0)
+  }
+
+  def <- cdm_get_def(clean_dm)
+  def$data[[which(def$table == start)]] <- start_tbl
+  new_dm3(def)
 }
