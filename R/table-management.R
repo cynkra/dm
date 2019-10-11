@@ -28,32 +28,6 @@ cdm_add_tbls <- function(dm, ...) {
     )
 }
 
-#' Add a table to a [`dm`]
-#'
-#' @rdname cdm_select_tbl
-#' @description
-#' Adds a tibble to a [`dm`].
-#'
-#' @return The inital `dm` with the additional table.
-#'
-#' @param table A tibble
-#' @param table_name The name for the new table. If left `NULL`, the new table will retain its original name
-#' (does not work in a pipe or in `map()`-style functions)
-#'
-#' @export
-cdm_add_tbl <- function(dm, table, table_name = NULL) {
-  check_dm(dm)
-
-  if (!is_symbol(enexpr(table_name)) && !is_character(enexpr(table_name))) {
-    table_name <- as_string(ensym(table))
-  } else table_name <- as_string(ensym(table_name))
-  # this function has a secondary effect and returns a value; generally not good style, but it is more convenient
-  table_name <- check_new_tbls(dm, list(table), table_name)
-  if (table_name %in% src_tbls(dm)) abort_table_already_exists(table_name)
-
-  cdm_add_tbl_impl(cdm_get_def(dm), table, table_name)
-}
-
 cdm_add_tbl_impl <- function(def, tbl, table_name) {
   def_0 <- tibble(
     table = table_name,
