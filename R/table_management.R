@@ -97,7 +97,7 @@ cdm_rm_tbls <- function(dm, ...) {
 check_new_tbls <- function(dm, tbls, name) {
   orig_tbls <- cdm_get_tables(dm)
   # are all new tables on the same source as the original ones?
-  if (!all_same_source(flatten(list(cdm_get_tables(dm), tbls)))) abort_not_same_src()
+  if (has_length(cdm_get_tables(dm)) && !all_same_source(c(cdm_get_tables(dm)[1], tbls))) abort_not_same_src()
   # test if a name "." is part of the new names, indicating a piped table that is not explicitly named
   # or if table names of the kind ".x" or "..1" are present, which would indicate a `map()`-type operation
   if ("." %in% name || any(str_detect(name, "^\\.[x-z]$")) || any(str_detect(name, "^\\.\\.[0-9][0-9]?$"))) {
