@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select and rename tables — cdm_select_tbl • dm</title>
+<title>Add tables to a <code><a href='dm.html'>dm</a></code> — cdm_add_tbl • dm</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="Select and rename tables — cdm_select_tbl" />
-<meta property="og:description" content="cdm_select_tbl() keeps the selected tables and their relationships,
-optionally renaming them.
-cdm_rename_tbl() renames tables." />
+<meta property="og:title" content="Add tables to a <code><a href='dm.html'>dm</a></code> — cdm_add_tbl" />
+<meta property="og:description" content="cdm_add_tbl() adds one or more tibbles to a dm.
+It uses mutate() semantics." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -134,20 +133,17 @@ cdm_rename_tbl() renames tables." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select and rename tables</h1>
+    <h1>Add tables to a <code><a href='dm.html'>dm</a></code></h1>
     
-    <div class="hidden name"><code>cdm_select_tbl.Rd</code></div>
+    <div class="hidden name"><code>cdm_add_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>cdm_select_tbl()</code> keeps the selected tables and their relationships,
-optionally renaming them.</p>
-<p><code>cdm_rename_tbl()</code> renames tables.</p>
+    <p><code>cdm_add_tbl()</code> adds one or more tibbles to a <code><a href='dm.html'>dm</a></code>.
+It uses <code>mutate()</code> semantics.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_select_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)
-
-<span class='fu'>cdm_rename_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_add_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>repair</span> <span class='kw'>=</span> <span class='st'>"check_unique"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,15 +154,33 @@ optionally renaming them.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>One or more table names of the <code><a href='dm.html'>dm</a></code> object's tables.
-See <code><a href='https://rdrr.io/pkg/tidyselect/man/vars_select.html'>tidyselect::vars_select()</a></code> and <code><a href='https://rdrr.io/pkg/tidyselect/man/vars_select.html'>tidyselect::vars_rename()</a></code>
-for details on the semantics.</p></td>
+      <td><p>One or more tibbles to add to the <code>dm</code>.
+If no explicit name is given, the name of the expression is used.</p></td>
+    </tr>
+    <tr>
+      <th>repair</th>
+      <td><p>Either a string or a function. If a string, it must
+be one of <code>"check_unique"</code>, <code>"minimal"</code>, <code>"unique"</code>, or <code>"universal"</code>.
+If a function, it is invoked with a vector of minimal names and must
+return minimal names, otherwise an error is thrown.</p><ul>
+<li><p>Minimal names are never <code>NULL</code> or <code>NA</code>. When an element doesn't
+have a name, its minimal name is an empty string.</p></li>
+<li><p>Unique names are unique. A suffix is appended to duplicate
+names to make them unique.</p></li>
+<li><p>Universal names are unique and syntactic, meaning that you can
+safely use the names as variables without causing a syntax
+error.</p></li>
+</ul>
+
+<p>The <code>"check_unique"</code> option doesn't perform any name repair.
+Instead, an error is raised if the names don't suit the
+<code>"unique"</code> criteria.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The input <code>dm</code> with tables renamed or removed.</p>
+    <p>The inital <code>dm</code> with the additional table(s).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='cdm_rm_tbl.html'>cdm_rm_tbl()</a></code></p></div>

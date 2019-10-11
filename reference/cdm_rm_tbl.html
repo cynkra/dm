@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select and rename tables — cdm_select_tbl • dm</title>
+<title>Remove tables from a <code><a href='dm.html'>dm</a></code> — cdm_rm_tbl • dm</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,8 @@
 
 
 
-<meta property="og:title" content="Select and rename tables — cdm_select_tbl" />
-<meta property="og:description" content="cdm_select_tbl() keeps the selected tables and their relationships,
-optionally renaming them.
-cdm_rename_tbl() renames tables." />
+<meta property="og:title" content="Remove tables from a <code><a href='dm.html'>dm</a></code> — cdm_rm_tbl" />
+<meta property="og:description" content="Removes one or more tibbles from a dm." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -134,20 +132,16 @@ cdm_rename_tbl() renames tables." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select and rename tables</h1>
+    <h1>Remove tables from a <code><a href='dm.html'>dm</a></code></h1>
     
-    <div class="hidden name"><code>cdm_select_tbl.Rd</code></div>
+    <div class="hidden name"><code>cdm_rm_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>cdm_select_tbl()</code> keeps the selected tables and their relationships,
-optionally renaming them.</p>
-<p><code>cdm_rename_tbl()</code> renames tables.</p>
+    <p>Removes one or more tibbles from a <code><a href='dm.html'>dm</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_select_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)
-
-<span class='fu'>cdm_rename_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_rm_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,18 +152,16 @@ optionally renaming them.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>One or more table names of the <code><a href='dm.html'>dm</a></code> object's tables.
-See <code><a href='https://rdrr.io/pkg/tidyselect/man/vars_select.html'>tidyselect::vars_select()</a></code> and <code><a href='https://rdrr.io/pkg/tidyselect/man/vars_select.html'>tidyselect::vars_rename()</a></code>
-for details on the semantics.</p></td>
+      <td><p>One or more unquoted tibble names to remove from the <code>dm</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The input <code>dm</code> with tables renamed or removed.</p>
+    <p>The inital <code>dm</code> without the removed table(s).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='cdm_rm_tbl.html'>cdm_rm_tbl()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='cdm_add_tbl.html'>cdm_add_tbl()</a></code>, <code><a href='cdm_select_tbl.html'>cdm_select_tbl()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

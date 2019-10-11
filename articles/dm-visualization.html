@@ -188,13 +188,13 @@
 <polygon fill="#efebdd" stroke="transparent" points="3,-147 3,-167 51,-167 51,-147 3,-147"></polygon><text text-anchor="start" x="4.8492" y="-152.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-146 2,-168 52,-168 52,-146 2,-146"></polygon></g></g></svg><p>The colors can be queried with <code><a href="../reference/cdm_draw.html">cdm_get_colors()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_draw.html">cdm_get_colors</a></span>(flights_dm_w_many_keys_and_colors)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 5 x 2</span><span>
-#&gt;   table color   
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   
-#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #BB0000;">NA</span><span>    orange  
-#&gt; </span><span style="color: #555555;">2</span><span> </span><span style="color: #BB0000;">NA</span><span>    orange  
-#&gt; </span><span style="color: #555555;">3</span><span> </span><span style="color: #BB0000;">NA</span><span>    blue    
-#&gt; </span><span style="color: #555555;">4</span><span> </span><span style="color: #BB0000;">NA</span><span>    green_nb
-#&gt; </span><span style="color: #555555;">5</span><span> </span><span style="color: #BB0000;">NA</span><span>    </span><span style="color: #BB0000;">NA</span><span>
+#&gt;   table    color   
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   
+#&gt; </span><span style="color: #555555;">1</span><span> airlines orange  
+#&gt; </span><span style="color: #555555;">2</span><span> airports orange  
+#&gt; </span><span style="color: #555555;">3</span><span> flights  blue    
+#&gt; </span><span style="color: #555555;">4</span><span> planes   green_nb
+#&gt; </span><span style="color: #555555;">5</span><span> weather  </span><span style="color: #BB0000;">NA</span><span>
 </span></code></pre>
 <p>See the documentation for <code><a href="../reference/cdm_draw.html">cdm_draw()</a></code> for further options. One important argument is <code>view_type</code>. Besides the default <code>"keys_only"</code>, it accepts <code>"all"</code> to display all columns, and <code>"title_only"</code> to show only the title of the table.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">flights_dm_w_many_keys_and_colors <span class="op">%&gt;%</span><span class="st"> </span></a>

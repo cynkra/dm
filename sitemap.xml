@@ -13,6 +13,9 @@
     <loc>https://krlmlr.github.io/dm/reference/cdm_add_pk.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/cdm_add_tbl.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/reference/cdm_check_constraints.html</loc>
   </url>
   <url>
@@ -77,6 +80,9 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/cdm_rm_pk.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/cdm_rm_tbl.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/cdm_select.html</loc>
