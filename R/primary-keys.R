@@ -38,38 +38,29 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   col_name <- as_name(col_expr)
   check_col_input(dm, table_name, col_name)
 
-  old_key <- cdm_get_pk(dm, !!table_name)
-  if (has_length(old_key)) {
-    if (!force) {
-      if (old_key == col_name) {
-        return(dm)
-      }
-      abort_key_set_force_false()
-    }
-  }
-
   if (check) {
     table_from_dm <- tbl(dm, table_name)
     check_key(table_from_dm, !!col_expr)
   }
 
-  if (has_length(old_key)) {
-    dm <- cdm_rm_pk(dm, !!table_name)
-  }
-
-  cdm_add_pk_impl(dm, table_name, col_name)
+  cdm_add_pk_impl(dm, table_name, col_name, force)
 }
 
 # "table" and "column" has to be character
 # in {datamodelr} a primary key can also consists of more than one column
 # only adds key, independent if it is unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
-cdm_add_pk_impl <- function(dm, table, column) {
-  new_data_model <-
-    cdm_get_data_model(dm) %>%
-    datamodelr::dm_set_key(table, column)
+cdm_add_pk_impl <- function(dm, table, column, force) {
+  def <- cdm_get_def(dm)
+  i <- which(def$table == table)
 
-  new_dm(cdm_get_tables(dm), new_data_model)
+  if (!force && NROW(def$pks[[i]]) > 0) {
+    abort_key_set_force_false()
+  }
+
+  def$pks[[which(def$table == table)]] <- tibble(column = !!list(column))
+
+  new_dm3(def)
 }
 
 #' Does a table of a [`dm`] object have a column set as primary key?
@@ -160,36 +151,25 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #'   cdm_rm_pk(planes, rm_referencing_fks = TRUE) %>%
 #'   cdm_has_pk(planes)
 #' @export
-cdm_rm_pk <- nse_function(c(dm, table, rm_referencing_fks = FALSE), ~ {
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
+  table <- as_name(ensym(table))
+  check_correct_input(dm, table)
 
-  fks <- cdm_get_data_model_fks(dm)
-  affected_fks <-
-    fks %>%
-    filter(ref == !!table_name)
-  new_fks <- fks
+  def <- cdm_get_def(dm)
 
-  if (nrow(affected_fks) > 0) {
-    if (rm_referencing_fks) {
-      new_fks <-
-        fks %>%
-        filter(ref != !!table_name)
-    } else {
-      abort_first_rm_fks(affected_fks)
-    }
+  selected <- set_names(def$table)
+  selected <- selected[selected != table]
+  new_def <- filter_recode_table_fks(def, selected)
+
+  if (!rm_referencing_fks && !identical(def$fks, new_def$fks)) {
+    affected <- !map2_lgl(def$fks, new_def$fks, identical)
+    abort_first_rm_fks(table, def$table[affected])
   }
 
-  new_pks <-
-    cdm_get_data_model_pks(dm) %>%
-    filter(table != !!table_name)
+  new_def$pks[new_def$table == table] <- list(tibble(column = list()))
 
-  new_dm2(
-    pks = new_pks,
-    fks = new_fks,
-    base_dm = dm
-  )
-})
+  new_dm3(new_def)
+}
 
 
 #' Which columns are candidates for a primary key column?

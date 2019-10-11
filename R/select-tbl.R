@@ -54,11 +54,18 @@ cdm_select_tbl_impl <- function(dm, selected) {
   def <-
     cdm_get_def(dm) %>%
     filter_recode_table(selected) %>%
-    mutate(fks = map(fks, filter_recode_table, selected = selected)) %>%
-    # this is needed, so that column `fks` doesn't become a normal list
-    mutate(fks = vctrs::as_list_of(fks))
+    filter_recode_table_fks(selected)
 
   new_dm3(def)
+}
+
+filter_recode_table_fks <- function(def, selected) {
+  def$fks <-
+    # as_list_of() is needed so that `fks` doesn't become a normal list
+    vctrs::as_list_of(map(
+      def$fks, filter_recode_table, selected = selected
+    ))
+  def
 }
 
 filter_recode_table <- function(data, selected) {

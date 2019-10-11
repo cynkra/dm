@@ -1,5 +1,3 @@
-context("test-primary-key-functions")
-
 test_that("cdm_add_pk() works as intended?", {
   map(
     .x = cdm_test_obj_src,
