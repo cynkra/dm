@@ -31,3 +31,17 @@ test_that("bad color", {
     fixed = TRUE
   )
 })
+
+test_that("getter", {
+  expect_equal(
+    cdm_get_colors(cdm_nycflights13()),
+    tibble::tribble(
+      ~table,     ~color,
+      "airlines", "orange",
+      "airports", "orange",
+      "flights",  "blue",
+      "planes",   "orange",
+      "weather",  "green"
+    )
+  )
+})

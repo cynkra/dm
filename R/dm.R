@@ -95,7 +95,8 @@ new_dm <- function(tables, data_model) {
     tables[data_model_tables$table],
     data_model_tables$table,
     data_model_tables$segment,
-    data_model_tables$display,
+    # would be logical NA otherwise, but if set, it is class `character`
+    as.character(data_model_tables$display),
     keys,
     references,
     filter = new_filters()
@@ -121,7 +122,7 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
 
   filters <-
     tibble(
-      name = setdiff(table, filters$table),
+      table = setdiff(table, filters$table),
       filters = vctrs::list_of(tibble(filter_quo = list()))
     ) %>%
     vctrs::vec_rbind(filters)

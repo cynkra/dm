@@ -6,6 +6,8 @@
 #'
 #' @return The input `dm` with tables renamed or removed.
 #'
+#' @seealso [cdm_rm_tbl()]
+#'
 #' @param dm A [`dm`] object
 #' @param ... One or more table names of the [`dm`] object's tables.
 #'   See [tidyselect::vars_select()] and [tidyselect::vars_rename()]
@@ -52,7 +54,9 @@ cdm_select_tbl_impl <- function(dm, selected) {
   def <-
     cdm_get_def(dm) %>%
     filter_recode_table(selected) %>%
-    mutate(fks = map(fks, filter_recode_table, selected = selected))
+    mutate(fks = map(fks, filter_recode_table, selected = selected)) %>%
+    # this is needed, so that column `fks` doesn't become a normal list
+    mutate(fks = vctrs::as_list_of(fks))
 
   new_dm3(def)
 }
