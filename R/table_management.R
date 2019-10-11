@@ -6,7 +6,8 @@ cdm_add_tbls <- function(dm, ...) {
 
   new_names <- names(exprs(..., .named = TRUE))
   new_tables <- list(...)
-  new_names <- check_for_pipe(new_names)
+  # this function has a secondary effect and returns a value; generally not good style, but it is more convenient
+  new_names <- check_new_tbls(dm, new_tables, new_names)
   if (any(new_names %in% src_tbls(dm))) abort_table_already_exists(new_names[new_names %in% src_tbls(dm)])
 
   reduce2(
@@ -25,7 +26,8 @@ cdm_add_tbl <- function(dm, table, table_name = NULL) {
   if (is_null(table_name)) {
     table_name <- deparse(substitute(table))
   }
-  table_name <- check_for_pipe(table_name)
+  # this function has a secondary effect and returns a value; generally not good style, but it is more convenient
+  table_name <- check_new_tbls(dm, table, table_name)
   if (table_name %in% src_tbls(dm)) abort_table_already_exists(table_name)
 
   cdm_add_tbl_impl(cdm_get_def(dm), table, table_name)
@@ -46,7 +48,11 @@ cdm_add_tbl_impl <- function(def, tbl, table_name) {
   new_dm3(vctrs::vec_rbind(def_0, def))
 }
 
-check_for_pipe <- function(name) {
+check_new_tbls <- function(dm, tbls, name) {
+  orig_tbls <- cdm_get_tables(dm)
+  # are all new tables on the same source as the original ones?
+  if (!all_same_source(flatten(list(cdm_get_tables(dm), tbls)))) abort_not_same_src()
+
   if ("." %in% name) {
     warning("New table called `new_table` introduced by adding table to `dm` in a pipe without giving it an explicit name.")
     "new_table"
