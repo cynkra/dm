@@ -75,7 +75,6 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 
 
 cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
-
   check_correct_input(dm, start)
   list_of_pts <- as.character(enexprs(...))
   check_correct_input(dm, list_of_pts)
@@ -271,9 +270,8 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
     clean_dm <- red_dm
     renames <- character(0)
   }
-  tables <- cdm_get_tables(clean_dm)
-  tables[[start]] <- start_tbl
-  new_dm2(
-    data = tables,
-    base_dm = clean_dm)
+
+  def <- cdm_get_def(clean_dm)
+  def$data[[which(def$table == start)]] <- start_tbl
+  new_dm3(def)
 }
