@@ -40,29 +40,23 @@
 #'   cdm_apply_filters()
 #' @export
 cdm_filter <- function(dm, table, ...) {
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table <- as_name(ensym(table))
+  check_correct_input(dm, table)
 
-  # We remove the class here so that `bind_rows()` works without warning later
-  quos <- unclass(enquos(...))
+  quos <- enquos(...)
   if (is_empty(quos)) {
     return(dm)
   } # valid table and empty ellipsis provided
 
-  set_filter_for_table(dm, table_name, quos)
+  set_filter_for_table(dm, table, quos)
 }
 
-set_filter_for_table <- function(dm, table_name, quos) {
-  filter <- cdm_get_filter(dm)
+set_filter_for_table <- function(dm, table, quos) {
+  def <- cdm_get_def(dm)
 
-  new_filter <-
-    bind_rows(filter, tibble(table = table_name, filter = quos)) %>%
-    arrange(table)
-
-  new_dm2(
-    filter = new_filter,
-    base_dm = dm
-  )
+  i <- which(def$table == table)
+  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(quos))
+  new_dm3(def)
 }
 
 #' @details With `cdm_apply_filters()` all set filter conditions are applied and their
@@ -85,16 +79,11 @@ set_filter_for_table <- function(dm, table_name, quos) {
 #'   compute()
 #' @export
 cdm_apply_filters <- function(dm) {
-  table_names <- src_tbls(dm)
+  def <- cdm_get_def(dm)
 
-  new_list_of_tables <-
-    map(set_names(table_names), ~ tbl(dm, .))
+  def$data <- map(def$table, ~ tbl(dm, .))
 
-  new_dm2(
-    data = new_list_of_tables,
-    filter = new_filters(),
-    base_dm = dm
-  )
+  cdm_reset_all_filters(new_dm3(def))
 }
 
 

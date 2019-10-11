@@ -31,7 +31,6 @@
 #' cdm_nycflights13() %>% src_tbls()
 #' cdm_nycflights13() %>% cdm_get_src()
 #' cdm_nycflights13() %>% cdm_get_tables()
-#' cdm_nycflights13() %>% cdm_get_data_model()
 #'
 #' cdm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports)
@@ -115,18 +114,6 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
 
-  filters <-
-    filter %>%
-    rename(filter_quo = filter) %>%
-    nest(filters = filter_quo)
-
-  filters <-
-    tibble(
-      table = setdiff(table, filters$table),
-      filters = vctrs::list_of(tibble(filter_quo = list()))
-    ) %>%
-    vctrs::vec_rbind(filters)
-
   # Legacy
   data <- unname(data)
 
@@ -140,7 +127,7 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
   pks <-
     tibble(
       table = setdiff(table, pks$table),
-      pks = vctrs::list_of(tibble(column = list()))
+      pks = vctrs::list_of(new_pk())
     ) %>%
     vctrs::vec_rbind(pks)
 
@@ -156,9 +143,21 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
   fks <-
     tibble(
       table = setdiff(table, fks$table),
-      fks = vctrs::list_of(tibble(table = character(), column = list()))
+      fks = vctrs::list_of(new_fk())
     ) %>%
     vctrs::vec_rbind(fks)
+
+  filters <-
+    filter %>%
+    rename(filter_quo = filter) %>%
+    nest(filters = filter_quo)
+
+  filters <-
+    tibble(
+      table = setdiff(table, filters$table),
+      filters = vctrs::list_of(new_filter())
+    ) %>%
+    vctrs::vec_rbind(filters)
 
   def <-
     tibble(table, data, segment, display) %>%
@@ -176,6 +175,21 @@ new_dm3 <- function(def) {
   )
 }
 
+new_pk <- function(column = list()) {
+  stopifnot(is.list(column))
+  tibble(column = column)
+}
+
+new_fk <- function(table = character(), column = list()) {
+  stopifnot(is.list(column))
+  tibble(table = table, column = column)
+}
+
+new_filter <- function(quos = list()) {
+  tibble(filter_quo = unclass(quos))
+}
+
+# Legacy!
 new_filters <- function() {
   tibble(table = character(), filter = list())
 }
@@ -443,7 +457,11 @@ print.dm <- function(x, ...) {
 
   cat_rule("Data model", col = "violet")
 
-  print(cdm_get_data_model(x))
+  def <- cdm_get_def(x)
+  cat_line("Tables: ", commas(tick(def$table)))
+  cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
+  cat_line("Primary keys: ", sum(map_int(def$pks, NROW)))
+  cat_line("Foreign keys: ", sum(map_int(def$fks, NROW)))
 
   cat_rule("Filters", col = "orange")
 
@@ -562,21 +580,19 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 
 #' @export
 collect.dm <- function(x, ...) {
-  list_of_rem_tbls <- cdm_apply_filters(x) %>% cdm_get_tables()
-  tables <- map(list_of_rem_tbls, collect)
+  x <-
+    x %>%
+    cdm_apply_filters()
 
-  new_dm(
-    tables,
-    cdm_get_data_model(x)
-  )
+  def <- cdm_get_def(x)
+  def$data <- map(def$data, collect, ...)
+  new_dm3(def)
 }
 
-
 cdm_reset_all_filters <- function(dm) {
-  new_dm2(
-    filter = tibble(table = character(0), filter = list(0)),
-    base_dm = dm
-  )
+  def <- cdm_get_def(dm)
+  def$filters <- vctrs::list_of(new_filter())
+  new_dm3(def)
 }
 
 all_same_source <- function(tables) {

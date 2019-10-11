@@ -26,23 +26,29 @@ cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = FALSE), ~ {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
 
-  tbl_obj <- cdm_get_tables(dm)[[table_name]]
-  ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
+  if (check) {
+    tbl_obj <- cdm_get_tables(dm)[[table_name]]
+    ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
 
-  if (check && !is_subset(tbl_obj, !!column_name, ref_tbl_obj, !!ref_column_name)) {
-    abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
+    if (!is_subset(tbl_obj, !!column_name, ref_tbl_obj, !!ref_column_name)) {
+      abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
+    }
   }
 
-  cdm_add_fk_impl(dm, table_name, column_name, ref_table_name, ref_column_name)
+  cdm_add_fk_impl(dm, table_name, column_name, ref_table_name)
 })
 
 
-cdm_add_fk_impl <- function(dm, table, column, ref_table, ref_column) {
-  cdm_data_model <- cdm_get_data_model(dm)
+cdm_add_fk_impl <- function(dm, table, column, ref_table) {
+  def <- cdm_get_def(dm)
 
-  new_data_model <- upd_data_model_reference(cdm_data_model, table, column, ref_table, ref_column)
+  i <- which(def$table == ref_table)
+  def$fks[[i]] <- vctrs::vec_rbind(
+    def$fks[[i]],
+    new_fk(table, list(column))
+  )
 
-  new_dm(cdm_get_tables(dm), new_data_model)
+  new_dm3(def)
 }
 
 #' Does a reference from one table of a `dm` to another exist?
@@ -114,40 +120,44 @@ cdm_get_all_fks <- nse_function(c(dm), ~ {
 #'
 #' @export
 cdm_rm_fk <- function(dm, table, column, ref_table) {
-  table_name <- as_name(ensym(table))
-  ref_table_name <- as_name(ensym(ref_table))
+  table <- as_name(ensym(table))
+  ref_table <- as_name(ensym(ref_table))
 
-  check_correct_input(dm, eval_tidy(table_name))
-  check_correct_input(dm, eval_tidy(ref_table_name))
+  check_correct_input(dm, eval_tidy(table))
+  check_correct_input(dm, eval_tidy(ref_table))
 
-  fk_cols <- cdm_get_fk(dm, !!table_name, !!ref_table_name)
+  fk_cols <- cdm_get_fk(dm, !!table, !!ref_table)
   if (is_empty(fk_cols)) {
     return(dm)
   }
 
   column_quo <- enquo(column)
 
-  if (quo_is_null(column_quo)) {
-    col_names <- fk_cols
-  } else if (quo_is_missing(column_quo)) {
+  if (quo_is_missing(column_quo)) {
     abort_rm_fk_col_missing()
+  }
+
+  if (quo_is_null(column_quo)) {
+    cols <- fk_cols
   } else {
     # FIXME: Add tidyselect support
-    col_names <- as_name(ensym(column))
-    if (!all(col_names %in% fk_cols)) {
-      abort_is_not_fkc(table_name, col_names, ref_table_name, fk_cols)
+    cols <- as_name(ensym(column))
+    if (!all(cols %in% fk_cols)) {
+      abort_is_not_fkc(table, cols, ref_table, fk_cols)
     }
   }
 
-  new_dm(
-    cdm_get_tables(dm),
-    rm_data_model_reference(
-      cdm_get_data_model(dm),
-      table_name,
-      col_names,
-      ref_table_name
-    )
-  )
+  # FIXME: compound keys
+  colnames <- as.list(colnames)
+
+  def <- cdm_get_def(dm)
+  i <- which(def$table == ref_table)
+
+  fks <- def$fks[[i]]
+  fks <- fks[fks$table != table | !is.na(vctrs::vec_match(fks$column, colnames)), ]
+  def$fks[[i]] <- fks
+
+  new_dm3(def)
 }
 
 #' Find foreign key candidates in a table

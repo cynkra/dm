@@ -22,8 +22,6 @@ dm1 %>% cdm_get_tables()
 
 dm1 %>% cdm_get_tables() %>% map(nrow)
 
-dm1 %>% cdm_get_data_model()
-
 dm1 %>% tbl("airports") %>% sql_render()
 dm1 %>% tbl("flights") %>% sql_render()
 dm1 %>% tbl("weather") %>% sql_render()

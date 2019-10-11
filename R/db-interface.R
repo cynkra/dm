@@ -92,12 +92,9 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
     ...
   )
 
-  new_src <- src_from_src_or_con(dest)
-
-  remote_dm <- new_dm2(
-    data = new_tables,
-    base_dm = dm
-  )
+  def <- cdm_get_def(dm)
+  def$data <- new_tables
+  remote_dm <- new_dm3(def)
 
   if (set_key_constraints && is_src_db(remote_dm)) {
     cdm_set_key_constraints(remote_dm)

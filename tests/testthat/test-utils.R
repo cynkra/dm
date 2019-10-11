@@ -1,10 +1,10 @@
 test_that("commas() works", {
-  expect_identical(
+  expect_equal(
     str_count(commas(fact$fact), ","),
-    6L
+    MAX_COMMAS - 1
   )
   expect_identical(
-    str_count(commas(fact$fact), cli::symbol$ellipsis),
+    str_count(commas(fact$fact), fixed(cli::symbol$ellipsis)),
     1L
   )
 })

@@ -320,16 +320,13 @@ error_src_not_db <- function() {
   paste0("This does not work if `cdm_get_src(dm)` is not on a database.")
 }
 
-abort_first_rm_fks <- function(fks) {
-  abort(error_first_rm_fks(fks), .subclass = cdm_error_full("first_rm_fks"))
+abort_first_rm_fks <- function(table, fks) {
+  abort(error_first_rm_fks(table, fks), .subclass = cdm_error_full("first_rm_fks"))
 }
 
-error_first_rm_fks <- nse_function(c(fks), ~ {
-  child_tbls <- paste0(tick(pull(fks, table)), collapse = ", ")
-  parent_tbl <- tick(pull(fks, table)[[1]])
-
-  glue("There are foreign keys pointing from table(s) {child_tbls} to table {parent_tbl}. First remove those or set `rm_referencing_fks = TRUE`.")
-})
+error_first_rm_fks <- function(table, fks) {
+  glue("There are foreign keys pointing from table(s) {commas(tick(fks))} to table {tick(table)}. First remove those or set `rm_referencing_fks = TRUE`.")
+}
 
 
 abort_no_src_or_con <- function() {

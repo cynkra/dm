@@ -5,7 +5,10 @@ test_that("API", {
       airlines = ,
       airports = "orange",
       planes = "green_nb"
-    ),
+    ) %>%
+      nest(data = -new_display) %>%
+      deframe() %>%
+      map(pull),
     list(accent1 = "flights", accent2 = c("airlines", "airports"), accent4nb = "planes")
   )
 })
@@ -16,8 +19,7 @@ test_that("last", {
       flights = "blue",
       airlines =
       ),
-    class = cdm_error("last_col_missing"),
-    error_txt_last_col_missing()
+    class = cdm_error("last_col_missing")
   )
 })
 
@@ -26,9 +28,7 @@ test_that("bad color", {
     color_quos_to_display(
       flights = "mauve"
     ),
-    class = cdm_error("wrong_color"),
-    error_txt_wrong_color(paste0("`", colors$dm, "` ", colors$nb)),
-    fixed = TRUE
+    class = cdm_error("wrong_color")
   )
 })
 

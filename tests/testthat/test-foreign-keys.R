@@ -98,14 +98,16 @@ test_that("cdm_has_fk() and cdm_get_fk() work as intended?", {
 test_that("cdm_rm_fk() works as intended?", {
   map(
     .x = cdm_test_obj_src,
-    ~ expect_true(
-      .x %>%
-        cdm_add_pk(cdm_table_4, c) %>%
-        cdm_add_fk(cdm_table_1, a, cdm_table_4) %>%
-        cdm_add_fk(cdm_table_2, c, cdm_table_4) %>%
-        cdm_rm_fk(cdm_table_2, c, cdm_table_4) %>%
-        cdm_has_fk(cdm_table_1, cdm_table_4)
-    )
+    function(cdm_test_obj) {
+      expect_true(
+        cdm_test_obj %>%
+          cdm_add_pk(cdm_table_4, c) %>%
+          cdm_add_fk(cdm_table_1, a, cdm_table_4) %>%
+          cdm_add_fk(cdm_table_2, c, cdm_table_4) %>%
+          cdm_rm_fk(cdm_table_2, c, cdm_table_4) %>%
+          cdm_has_fk(cdm_table_1, cdm_table_4)
+      )
+    }
   )
 
   map(
