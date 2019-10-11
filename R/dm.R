@@ -122,7 +122,7 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
 
   filters <-
     tibble(
-      name = setdiff(table, filters$table),
+      table = setdiff(table, filters$table),
       filters = vctrs::list_of(tibble(filter_quo = list()))
     ) %>%
     vctrs::vec_rbind(filters)
