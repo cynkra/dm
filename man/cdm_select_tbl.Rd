@@ -25,3 +25,6 @@ optionally renaming them.
 
 \code{cdm_rename_tbl()} renames tables.
 }
+\seealso{
+\code{\link[=cdm_rm_tbl]{cdm_rm_tbl()}}
+}

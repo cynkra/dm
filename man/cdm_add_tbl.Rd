@@ -2,7 +2,7 @@
 % Please edit documentation in R/table-management.R
 \name{cdm_add_tbl}
 \alias{cdm_add_tbl}
-\title{Add one or more tables to a \code{\link{dm}}}
+\title{Add tables to a \code{\link{dm}}}
 \usage{
 cdm_add_tbl(dm, ..., repair = "check_unique")
 }
@@ -34,5 +34,9 @@ Instead, an error is raised if the names don't suit the
 The inital \code{dm} with the additional table(s).
 }
 \description{
-Adds one or more tibbles to a \code{\link{dm}}, using tidyverse syntax.
+\code{cdm_add_tbl()} adds one or more tibbles to a \code{\link{dm}}.
+It uses \code{\link[=mutate]{mutate()}} semantics.
+}
+\seealso{
+\code{\link[=cdm_rm_tbl]{cdm_rm_tbl()}}
 }

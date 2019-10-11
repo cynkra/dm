@@ -2,7 +2,7 @@
 % Please edit documentation in R/table-management.R
 \name{cdm_rm_tbl}
 \alias{cdm_rm_tbl}
-\title{Remove one or more tables to a \code{\link{dm}}}
+\title{Remove tables from a \code{\link{dm}}}
 \usage{
 cdm_rm_tbl(dm, ...)
 }
@@ -15,6 +15,8 @@ cdm_rm_tbl(dm, ...)
 The inital \code{dm} without the removed table(s).
 }
 \description{
-Removes one or more tibbles from a \code{\link{dm}} by wrapping \code{cdm_select_tbls()}. Mind, that all foreign keys are
-dropped that pointed to or from the removed table(s).
+Removes one or more tibbles from a \code{\link{dm}}.
+}
+\seealso{
+\code{\link[=cdm_add_tbl]{cdm_add_tbl()}}, \code{\link[=cdm_select_tbl]{cdm_select_tbl()}}
 }
