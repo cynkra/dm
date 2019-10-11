@@ -1,3 +1,23 @@
+cdm_add_tbls <- function(dm, ...) {
+  # FIXME: following line needs to be replaced using check_dm() after PR 86 merged
+  if (!is_dm(dm)) abort("First parameter in `cdm_add_tbls()` needs to be of class `dm`")
+
+  orig_tbls <- src_tbls(dm)
+
+  new_names <- names(exprs(..., .named = TRUE))
+  new_tables <- list(...)
+  new_names <- check_for_pipe(new_names)
+  if (any(new_names %in% src_tbls(dm))) abort_table_already_exists(new_names[new_names %in% src_tbls(dm)])
+
+  reduce2(
+    rev(new_tables),
+    rev(new_names),
+    ~ cdm_add_tbl_impl(cdm_get_def(..1), ..2, ..3),
+    .init = dm
+    )
+}
+
+
 cdm_add_tbl <- function(dm, table, table_name = NULL) {
   # FIXME: following line needs to be replaced using check_dm() after PR 86 merged
   if (!is_dm(dm)) abort("First parameter in `cdm_add_tbl()` needs to be of class `dm`")

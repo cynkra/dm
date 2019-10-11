@@ -495,5 +495,6 @@ abort_table_already_exists <- function(table_name) {
 }
 
 error_table_already_exists <- function(table_name) {
-  glue("A table with the name {table_name} already exists in the dm.")
+  names <- paste0(tick(table_name), collapse = ", ")
+  glue("Table(s) {names} already part of the `dm`.")
 }
