@@ -1,3 +1,8 @@
+# dm 0.0.3.9003
+
+- Use new storage format internally.
+
+
 # dm 0.0.3.9002
 
 - New `cdm_add_tbl()` and `cdm_rm_tbl()` (#90).
