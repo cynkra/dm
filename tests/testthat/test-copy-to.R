@@ -1,6 +1,6 @@
 test_that("cdm_copy_to() copies data frames to databases", {
   map(
-    dbplyr:::test_srcs$get(),
+    test_srcs,
     ~ expect_equivalent_dm(
       cdm_copy_to(., dm_for_filter, unique_table_names = TRUE),
       dm_for_filter
@@ -20,7 +20,7 @@ test_that("cdm_copy_to() copies data frames from databases", {
 
 test_that("cdm_copy_to() copies between sources", {
   map2(
-    dbplyr:::test_srcs$get(),
+    test_srcs,
     dm_for_filter_src,
     ~ expect_equivalent_dm(
       cdm_copy_to(.x, .y, unique_table_names = TRUE),

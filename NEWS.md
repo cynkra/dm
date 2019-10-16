@@ -1,3 +1,50 @@
+# dm 0.0.3.9003
+
+- Use new storage format internally.
+
+
+# dm 0.0.3.9002
+
+- New `cdm_add_tbl()` and `cdm_rm_tbl()` (#90).
+- New `cdm_get_con()` (#84).
+
+
+# dm 0.0.3.9001
+
+- Selection and renaming of tables and columns uses new storage format (#54).
+
+
+# dm 0.0.3.9000
+
+- A `dm` object is defined using a nested tibble, one row per table (#57).
+
+
+# dm 0.0.3
+
+- `cdm_enum_pk_candidates()` and `cdm_enum_fk_candidates()` both show candidates first (#85).
+- `cdm_flatten_to_tbl()` works only in the immediate neighborhood (#75).
+- New `cdm_squash_to_tbl()` implements recursive flattening for left, inner and full join (#75).
+- Updated readme and introduction vignette (#72, @cutterkom).
+- New `cdm_check_constraints()` to check referential integrity of a `dm` (#56).
+- `cdm_copy_to()` gains `table_names` argument (#79).
+- `check_key()` now deals correctly with named column lists (#83).
+- Improve error message when calling `cdm_add_pk()` with a missing column.
+
+
+# dm 0.0.2.9003
+
+- Fix `R CMD check`.
+
+
+# dm 0.0.2.9002
+
+- Use caching to improve loading times.
+- Run some tests only for one source (#76).
+- `cdm_enum_fk_candidates()` checks for class compatibility implicitly via `left_join()`.
+- `cdm_enum_fk_candidates()` contains a more detailed entry in column why if no error & no candidate (percentage of mismatched vals etc.).
+- Improve error messages for `cdm_join_to_tbl()` and `cdm_flatten_to_tbl()` in the presence of cycles or disconnected tables (#74).
+
+
 # dm 0.0.2.9001
 
 - Remove the `src` component from dm (#38).

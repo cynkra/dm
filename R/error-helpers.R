@@ -48,21 +48,17 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 # general error: table not part of `dm` -----------------------------------
 
 
-abort_table_not_in_dm <- function(table_name, tables_in_dm) {
-  abort(error_txt_table_not_in_dm(table_name, tables_in_dm), .subclass = cdm_error_full("table_not_in_dm"))
+abort_table_not_in_dm <- function(table_name, dm) {
+  abort(error_txt_table_not_in_dm(table_name, dm), .subclass = cdm_error_full("table_not_in_dm"))
 }
 
-error_txt_table_not_in_dm <- function(table_name, tables_in_dm) {
-  if (table_name == "") {
-    "Table argument is missing."
-  } else {
-    paste0(
-      "Table: ",
-      table_name,
-      " not in `dm` object. Available table names are: ",
-      paste0(tables_in_dm, collapse = ", ")
-    )
-  }
+error_txt_table_not_in_dm <- function(table_name, dm) {
+  paste0(
+    "Tables ",
+    commas(tick(table_name)),
+    " not in `dm` object. Available table names: ",
+    commas(tick(src_tbls(dm)))
+  )
 }
 
 
@@ -241,14 +237,16 @@ abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
 error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   if (length(wrong_colnames) > 1) {
     paste0(
-      "Not all specified variables `", paste(wrong_colnames, collapse = ", "),
-      "` are columns of `", table_name,
-      "`. Its columns are: \n`", paste(actual_colnames, collapse = ", "), "`."
+      "Not all specified variables ",
+      paste(tick(wrong_colnames), collapse = ", "), " ",
+      "are columns of ", tick(table_name), ". ",
+      "Its columns are: \n",
+      paste(tick(actual_colnames), collapse = ", "), "."
     )
   } else {
     paste0(
       tick(wrong_colnames), " is not a column of ",
-      tick(table_name), ". Its columns are: \n`",
+      tick(table_name), ". Its columns are: \n",
       commas(tick(actual_colnames)), "."
     )
   }
@@ -303,6 +301,17 @@ error_txt_no_unique_indexes <- function() {
   paste0("`cdm_copy_to()` does not support the `unique_indexes` argument.")
 }
 
+abort_need_named_vec <- function(dm) {
+  abort(error_txt_need_named_vec(dm), .subclass = cdm_error_full("need_named_vec"))
+}
+
+error_txt_need_named_vec <- function(dm) {
+  paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector, the names ",
+    "must be from the original table names returned by `src_tbls()`: ",
+    commas(tick(src_tbls(dm)))
+  )
+}
+
 abort_src_not_db <- function() {
   abort(error_src_not_db(), .subclass = cdm_error_full("src_not_db"))
 }
@@ -311,16 +320,13 @@ error_src_not_db <- function() {
   paste0("This does not work if `cdm_get_src(dm)` is not on a database.")
 }
 
-abort_first_rm_fks <- function(fks) {
-  abort(error_first_rm_fks(fks), .subclass = cdm_error_full("first_rm_fks"))
+abort_first_rm_fks <- function(table, fks) {
+  abort(error_first_rm_fks(table, fks), .subclass = cdm_error_full("first_rm_fks"))
 }
 
-error_first_rm_fks <- nse_function(c(fks), ~ {
-  child_tbls <- paste0(tick(pull(fks, table)), collapse = ", ")
-  parent_tbl <- tick(pull(fks, table)[[1]])
-
-  glue("There are foreign keys pointing from table(s) {child_tbls} to table {parent_tbl}. First remove those or set `rm_referencing_fks = TRUE`.")
-})
+error_first_rm_fks <- function(table, fks) {
+  glue("There are foreign keys pointing from table(s) {commas(tick(fks))} to table {tick(table)}. First remove those or set `rm_referencing_fks = TRUE`.")
+}
 
 
 abort_no_src_or_con <- function() {
@@ -347,7 +353,7 @@ abort_only_possible_wo_filters <- function(fun_name) {
 }
 
 error_only_possible_wo_filters <- function(fun_name) {
-  glue("You cannot call `{fun_name}` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.")
+  glue("You cannot call `{fun_name}()` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.")
 }
 
 
@@ -361,26 +367,16 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
-# `right_join()` might produce random result for `cdm_flatten_to_tbl()`
+# `cdm_flatten_to_tbl()` and `cdm_join_to_tbl()` only supported for parents
 
-abort_rj_not_wd <- function() {
-  abort(error_rj_not_wd(), .subclass = cdm_error_full("rj_not_wd"))
+abort_only_parents <- function() {
+  abort(error_only_parents(), .subclass = cdm_error_full("only_parents"))
 }
 
-error_rj_not_wd <- function() {
-  paste0("No well-defined result, when using `cdm_flatten_to_tbl()` with `right_join()` ",
-         "with more than 2 tables involved (depends on order of tables in `dm`)")
-}
-
-# `semi_join()` and `anti_join()` not supported for `cdm_flatten_to_tbl()` for deep hierarchy
-
-abort_semi_anti_nys <- function() {
-  abort(error_semi_anti_nys(), .subclass = cdm_error_full("semi_anti_nys"))
-}
-
-error_semi_anti_nys <- function() {
-  paste0("When flattening a `dm` with `semi_join()` or `anti_join()` all tables have to be ",
-  "directly connected to table `start`.")
+error_only_parents <- function() {
+  paste0("When using `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()` all join partners of table `start` ",
+         "have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
+         "use `cdm_squash_to_tbl()` as an alternative.")
 }
 
 # not all tables have the same src ----------------------------------------
@@ -405,28 +401,6 @@ error_what_a_weird_object <- function(class) {
          class)
 }
 
-# `right_join()` might produce random result for `cdm_flatten_to_tbl()`
-
-abort_rj_not_wd <- function() {
-  abort(error_rj_not_wd(), .subclass = cdm_error_full("rj_not_wd"))
-}
-
-error_rj_not_wd <- function() {
-  paste0("No well-defined result, when using `cdm_flatten_to_tbl()` with `right_join()` ",
-         "with more than 2 tables involved (depends on order of tables in `dm`)")
-}
-
-# `semi_join()` and `anti_join()` not supported for `cdm_flatten_to_tbl()` for deep hierarchy
-
-abort_semi_anti_nys <- function() {
-  abort(error_semi_anti_nys(), .subclass = cdm_error_full("semi_anti_nys"))
-}
-
-error_semi_anti_nys <- function() {
-  paste0("When flattening a `dm` with `semi_join()` or `anti_join()` all tables have to be ",
-  "directly connected to table `start` (at least currently).")
-}
-
 # not all tables have the same src ----------------------------------------
 
 
@@ -447,4 +421,65 @@ abort_what_a_weird_object <- function(class) {
 error_what_a_weird_object <- function(class) {
   paste0("Don't know how to determine table source for object of class ",
          class)
+}
+
+abort_squash_limited <- function() {
+  abort(error_squash_limited(), .subclass = cdm_error_full("squash_limited"))
+}
+
+error_squash_limited <- function() {
+  paste0("`cdm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
+}
+
+abort_apply_filters_first <- function(join_name) {
+  abort(error_apply_filters_first(join_name), .subclass = cdm_error_apply_filters_first(join_name))
+}
+
+cdm_error_apply_filters_first <- function(join_name) {
+  cdm_error(c(paste0("apply_filters_first_", join_name), "apply_filters_first"))
+}
+
+error_apply_filters_first <- function(join_name) {
+  glue("`cdm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
+       "produce the correct result when filters are set. ",
+       "Please consider calling `cdm_apply_filters()` first.")
+}
+
+abort_no_flatten_with_nest_join <- function() {
+  abort(error_no_flatten_with_nest_join(), .subclass = cdm_error_full("no_flatten_with_nest_join"))
+}
+
+error_no_flatten_with_nest_join <- function() {
+  paste0("`cdm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
+  "cf. the help pages for these functions. Consider `join = left_join`")
+}
+
+# either explicit table names, or auto-unique ones ------------------------
+
+abort_unique_table_names_or_table_names <- function() {
+  abort(error_unique_table_names_or_table_names(), .subclass = cdm_error_full("unique_table_names_or_table_names"))
+}
+
+error_unique_table_names_or_table_names <- function() {
+  "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
+}
+
+
+# object is not a `dm` (but should be one) --------------------------------
+abort_is_not_dm <- function(obj_class) {
+  abort(error_is_not_dm(obj_class), .subclass = cdm_error_full("is_not_dm"))
+}
+
+error_is_not_dm <- function(obj_class) {
+  glue("Required class `dm` but instead is {tick(obj_class)}")
+}
+
+
+# local `dm` has no con ---------------------------------------------------
+abort_con_only_for_dbi <- function() {
+  abort(error_con_only_for_dbi(), .subclass = cdm_error_full("con_only_for_dbi"))
+}
+
+error_con_only_for_dbi <- function() {
+  "A local `dm` doesn't have a DB connection"
 }

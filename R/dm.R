@@ -31,7 +31,6 @@
 #' cdm_nycflights13() %>% src_tbls()
 #' cdm_nycflights13() %>% cdm_get_src()
 #' cdm_nycflights13() %>% cdm_get_tables()
-#' cdm_nycflights13() %>% cdm_get_data_model()
 #'
 #' cdm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports)
@@ -39,8 +38,6 @@
 #'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm <- nse_function(c(src, data_model = NULL), ~ {
-  # TODO: add keys argument, if both data_model and keys are missing,
-  # create surrogate keys
   if (is.null(data_model)) {
     tbl_names <- src_tbls(src)
     tbls <- map(set_names(tbl_names), tbl, src = src)
@@ -71,6 +68,9 @@ new_dm <- function(tables, data_model) {
 
   data_model_tables <- data_model$tables
 
+  stopifnot(all(names(tables) %in% data_model_tables$table))
+  stopifnot(all(data_model_tables$table %in% names(tables)))
+
   keys <- columns %>%
     select(column, table, key) %>%
     filter(key > 0) %>%
@@ -90,31 +90,108 @@ new_dm <- function(tables, data_model) {
       as_tibble()
   }
 
-  new_dm2(tables, data_model_tables, keys, references, filter = NULL)
+  new_dm2(
+    tables[data_model_tables$table],
+    data_model_tables$table,
+    data_model_tables$segment,
+    # would be logical NA otherwise, but if set, it is class `character`
+    as.character(data_model_tables$display),
+    keys,
+    references,
+    filter = new_filters()
+  )
 }
 
-new_dm2 <- function(tables = cdm_get_tables(base_dm),
-                    data_model_tables = cdm_get_data_model_tables(base_dm),
+new_dm2 <- function(data = cdm_get_def(base_dm)$data,
+                    table = cdm_get_def(base_dm)$table,
+                    segment = cdm_get_def(base_dm)$segment,
+                    display = cdm_get_def(base_dm)$display,
                     pks = cdm_get_data_model_pks(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
                     filter = cdm_get_filter(base_dm),
                     base_dm) {
-  stopifnot(!is.null(tables))
-  stopifnot(!is.null(data_model_tables))
+  stopifnot(!is.null(table))
   stopifnot(!is.null(pks))
   stopifnot(!is.null(fks))
 
+  # Legacy
+  data <- unname(data)
 
+  # Legacy compatibility
+  pks$column <- as.list(pks$column)
+
+  pks <-
+    pks %>%
+    nest(pks = -table)
+
+  pks <-
+    tibble(
+      table = setdiff(table, pks$table),
+      pks = vctrs::list_of(new_pk())
+    ) %>%
+    vctrs::vec_rbind(pks)
+
+  # Legacy compatibility
+  fks$column <- as.list(fks$column)
+
+  fks <-
+    fks %>%
+    select(-ref_col) %>%
+    nest(fks = -ref) %>%
+    rename(table = ref)
+
+  fks <-
+    tibble(
+      table = setdiff(table, fks$table),
+      fks = vctrs::list_of(new_fk())
+    ) %>%
+    vctrs::vec_rbind(fks)
+
+  filters <-
+    filter %>%
+    rename(filter_quo = filter) %>%
+    nest(filters = filter_quo)
+
+  filters <-
+    tibble(
+      table = setdiff(table, filters$table),
+      filters = vctrs::list_of(new_filter())
+    ) %>%
+    vctrs::vec_rbind(filters)
+
+  def <-
+    tibble(table, data, segment, display) %>%
+    left_join(pks, by = "table") %>%
+    left_join(fks, by = "table") %>%
+    left_join(filters, by = "table")
+
+  new_dm3(def)
+}
+
+new_dm3 <- function(def) {
   structure(
-    list(
-      tables = tables,
-      data_model_tables = data_model_tables,
-      data_model_pks = pks,
-      data_model_fks = fks,
-      filter = filter
-    ),
+    list(def = def),
     class = "dm"
   )
+}
+
+new_pk <- function(column = list()) {
+  stopifnot(is.list(column))
+  tibble(column = column)
+}
+
+new_fk <- function(table = character(), column = list()) {
+  stopifnot(is.list(column))
+  tibble(table = table, column = column)
+}
+
+new_filter <- function(quos = list()) {
+  tibble(filter_quo = unclass(quos))
+}
+
+# Legacy!
+new_filters <- function() {
+  tibble(table = character(), filter = list())
 }
 
 #' Validator
@@ -147,8 +224,23 @@ validate_dm <- function(x) {
 #'
 #' @export
 cdm_get_src <- function(x) {
+  check_dm(x)
   tables <- cdm_get_tables(x)
   tbl_src(tables[1][[1]])
+}
+
+#' Get connection
+#'
+#' `cdm_get_con()` returns the connection object (`con`-part of \pkg{dplyr} source component) of a `dm`
+#' object.
+#'
+#' @rdname dm
+#'
+#' @export
+cdm_get_con <- function(x) {
+  src <- cdm_get_src(x)
+  if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
+  src$con
 }
 
 #' Get tables component
@@ -162,19 +254,56 @@ cdm_get_src <- function(x) {
 #'
 #' @export
 cdm_get_tables <- function(x) {
-  unclass(x)$tables
+  def <- cdm_get_def(x)
+  set_names(def$data, def$table)
 }
 
-cdm_get_data_model_tables <- function(x) {
-  unclass(x)$data_model_tables
+cdm_get_def <- function(x) {
+  unclass(x)$def
 }
 
 cdm_get_data_model_pks <- function(x) {
-  unclass(x)$data_model_pks
+  # FIXME: Obliterate
+
+  pk_df <-
+    cdm_get_def(x) %>%
+    select(table, pks) %>%
+    unnest(pks)
+
+  # FIXME: Should work better with dplyr 0.9.0
+  if (!("column" %in% names(pk_df))) {
+    pk_df$column <- character()
+  } else {
+    # This is expected to break with compound keys
+    pk_df$column <- flatten_chr(pk_df$column)
+  }
+
+  pk_df
 }
 
 cdm_get_data_model_fks <- function(x) {
-  unclass(x)$data_model_fks
+  # FIXME: Obliterate
+
+  fk_df <-
+    cdm_get_def(x) %>%
+    select(ref = table, fks, pks) %>%
+    filter(map_lgl(fks, has_length)) %>%
+    unnest(pks)
+
+  if (nrow(fk_df) == 0) {
+    return(tibble(
+      table = character(), column = character(),
+      ref = character(), ref_col = character()
+    ))
+  }
+
+  fk_df %>%
+    # This is expected to break with compound keys
+    mutate(ref_col = flatten_chr(column)) %>%
+    select(-column) %>%
+    unnest(fks) %>%
+    mutate(column = flatten_chr(column)) %>%
+    select(ref, column, table, ref_col)
 }
 
 #' Get data_model component
@@ -186,6 +315,15 @@ cdm_get_data_model_fks <- function(x) {
 #'
 #' @export
 cdm_get_data_model <- function(x) {
+  def <- cdm_get_def(x)
+
+  tables <- data.frame(
+    table = def$table,
+    segment = def$segment,
+    display = def$display,
+    stringsAsFactors = FALSE
+  )
+
   references_for_columns <- cdm_get_data_model_fks(x)
 
   references <-
@@ -207,7 +345,7 @@ cdm_get_data_model <- function(x) {
     as.data.frame()
 
   new_data_model(
-    cdm_get_data_model_tables(x),
+    tables,
     columns,
     references
   )
@@ -230,11 +368,20 @@ cdm_get_all_columns <- function(x) {
 #'
 #' @export
 cdm_get_filter <- function(x) {
-  filter <- unclass(x)$filter
-  if (!is_null(filter)) {
-    return(filter)
+  # FIXME: Obliterate
+
+  filter_df <-
+    cdm_get_def(x) %>%
+    select(table, filters) %>%
+    unnest(filters)
+
+  # FIXME: Should work better with dplyr 0.9.0
+  if (!("filter_quo" %in% names(filter_df))) {
+    filter_df$filter_quo <- list()
   }
-  tibble(table = character(0), filter = list(0))
+
+  filter_df  %>%
+    rename(filter = filter_quo)
 }
 
 #' Check class
@@ -310,7 +457,11 @@ print.dm <- function(x, ...) {
 
   cat_rule("Data model", col = "violet")
 
-  print(cdm_get_data_model(x))
+  def <- cdm_get_def(x)
+  cat_line("Tables: ", commas(tick(def$table)))
+  cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
+  cat_line("Primary keys: ", sum(map_int(def$pks, NROW)))
+  cat_line("Foreign keys: ", sum(map_int(def$fks, NROW)))
 
   cat_rule("Filters", col = "orange")
 
@@ -403,7 +554,7 @@ str.dm <- function(object, ...) {
 tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
-  check_correct_input(dm, from)
+  check_correct_input(dm, from, 1L)
 
   cdm_get_filtered_table(dm, from)
 }
@@ -429,64 +580,19 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
 
 #' @export
 collect.dm <- function(x, ...) {
-  list_of_rem_tbls <- cdm_apply_filters(x) %>% cdm_get_tables()
-  tables <- map(list_of_rem_tbls, collect)
+  x <-
+    x %>%
+    cdm_apply_filters()
 
-  new_dm(
-    tables,
-    cdm_get_data_model(x)
-  )
-}
-
-
-rename_table_of_dm <- function(dm, old_name, new_name) {
-  old_name_q <- as_name(ensym(old_name))
-  check_correct_input(dm, old_name_q)
-
-  new_name_q <- as_name(ensym(new_name))
-  tables <- cdm_get_tables(dm)
-  table_names <- names(tables)
-  table_names[table_names == old_name_q] <- new_name_q
-  new_tables <- set_names(tables, table_names)
-
-  new_dm(
-    tables = new_tables,
-    data_model = datamodel_rename_table(
-      cdm_get_data_model(dm), old_name_q, new_name_q
-    )
-  )
-}
-
-#' Change names of tables in a `dm`
-#'
-#' @description `cdm_rename_tbl()` changes the names of one or more tables of a `dm`.
-#'
-#' @param dm A `dm` object
-#' @param ... Named character vector (new_name = old_name)
-#'
-#' @export
-cdm_rename_tbl <- function(dm, ...) {
-  if (nrow(cdm_get_filter(dm)) > 0) {
-    abort_only_possible_wo_filters("cdm_rename_tbl()")
-  }
-  table_list <- tidyselect_dm(dm, ...)
-
-  old_table_names <- table_list[[2]]
-  new_table_names <- names(old_table_names)
-
-  reduce2(
-    old_table_names,
-    new_table_names,
-    rename_table_of_dm,
-    .init = dm
-  )
+  def <- cdm_get_def(x)
+  def$data <- map(def$data, collect, ...)
+  new_dm3(def)
 }
 
 cdm_reset_all_filters <- function(dm) {
-  new_dm2(
-    filter = tibble(table = character(0), filter = list(0)),
-    base_dm = dm
-  )
+  def <- cdm_get_def(dm)
+  def$filters <- vctrs::list_of(new_filter())
+  new_dm3(def)
 }
 
 all_same_source <- function(tables) {

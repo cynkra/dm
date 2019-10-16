@@ -12,23 +12,34 @@
 # cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
 cdm_test_load <- function(x,
                           srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
-                          ignore = character()) {
+                          ignore = character(),
+                          set_key_constraints = TRUE) {
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
 
-  map(srcs, ~ cdm_copy_to(., dm = x, unique_table_names = TRUE))
+  map(srcs, ~ cdm_copy_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
 }
 
 
 # internal helper functions:
 # validates, that object `dm` is of class `dm` and that `table` is character and is part of the `dm` object
-check_correct_input <- function(dm, table) {
-  if (!is_dm(dm)) abort("`dm` has to be of class `dm`")
-  if (!is_string(table)) {
-    abort("`table` must be a string.")
+check_correct_input <- function(dm, table, n = NULL) {
+  check_dm(dm)
+  if (!is_character(table, n)) {
+    if (is.null(n)) {
+      abort("`table` must be a character vector.")
+    } else {
+      abort(paste0("`table` must be a character vector of length ", n, "."))
+    }
+
   }
-  cdm_table_names <- src_tbls(dm)
-  if (!table %in% cdm_table_names) abort_table_not_in_dm(table, cdm_table_names)
+  if (!all(table %in% src_tbls(dm))) {
+    abort_table_not_in_dm(setdiff(table, src_tbls(dm)), dm)
+  }
+}
+
+check_dm <- function(dm) {
+  if (!is_dm(dm)) abort_is_not_dm(class(dm))
 }
 
 # validates, that the given column is indeed part of the table of the `dm` object.
@@ -50,7 +61,7 @@ is_this_a_test <- function() {
     map(1) %>%
     map_chr(as_label)
 
-  is_test_call <- any(calls %in% c("devtools::test", "testthat::test_check"))
+  is_test_call <- any(calls %in% c("devtools::test", "testthat::test_check", "testthat::test_file", "testthis:::test_this"))
 
   is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
 

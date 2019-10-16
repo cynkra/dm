@@ -1,3 +1,34 @@
+#' Validate your [`dm`]: are all key constraints met?
+#'
+#' This function returns a tibble with information, which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @return A tibble with 5 columns:
+#'   1. `table`: the table in the `dm`
+#'   1. `kind`: "PK" or "FK"
+#'   1. `column`: column of `table`
+#'   1. `is_key`: logical
+#'   1. `problem`: in case `is_key = FALSE` the reason for that
+#'
+#' @details For the primary key constraints it is tested, if the values in the respective columns are all unique.
+#' For the foreign key constraints the tests check, if for each foreign key constraint, the values of the foreign key column
+#' are a subset of those of the referenced column.
+#'
+#' @export
+#' @examples
+#' cdm_check_constraints(cdm_nycflights13())
+cdm_check_constraints <- function(dm) {
+  pk_results <- check_pk_constraints(dm)
+  fk_results <- check_fk_constraints(dm)
+  bind_rows(
+    pk_results,
+    fk_results
+  ) %>%
+    arrange(is_key, desc(kind), table, column)
+}
+
+
 #' Test if column (combination) is unique key of table
 #'
 #' @description `check_key()` accepts a data frame and optionally columns and throws an error,
@@ -27,14 +58,13 @@ check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
   args <- exprs(...)
-
-  if (any(!!args %in% "n")) count_col <- "nn" else count_col <- "n"
+  names(args) <- set_names(paste0("...", seq_along(args)))
 
   duplicate_rows <-
     .data %>%
     as_tibble() %>% # as_tibble works only, if as_tibble.sf()-method is available
     count(!!!args) %>%
-    filter(!!sym(count_col) != 1)
+    filter(n != 1)
 
   if (nrow(duplicate_rows) != 0) abort_not_unique_key(as_label(data_q), map_chr(args, as_label))
 
@@ -61,7 +91,6 @@ is_unique_key <- nse_function(c(.data, column), ~ {
 
   duplicate_rows
 })
-
 
 #' Test if the value sets of two different columns in two different tables are the same
 #'
@@ -172,4 +201,42 @@ is_subset <- function(t1, c1, t2, c2) {
   v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
 
   if (!all(v1 %in% v2)) FALSE else TRUE
+}
+
+check_pk_constraints <- function(dm) {
+  pks <- cdm_get_all_pks(dm)
+  if (nrow(pks) == 0) return(tibble(
+    table = character(0),
+    kind = character(0),
+    column = character(0),
+    is_key = logical(0),
+    problem = character(0)
+    )
+  )
+  table_names <- pull(pks, table)
+  tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
+    map2(syms(pks$pk_col), ~select(.x, !!.y))
+  tbl_is_pk <- map_dfr(tbls, enum_pk_candidates) %>%
+    rename(is_key = candidate, problem = why)
+
+  tibble(
+    table = table_names,
+    kind = "PK",
+    column = pks$pk_col
+  ) %>%
+    left_join(tbl_is_pk, by = "column")
+}
+
+check_fk_constraints <- function(dm) {
+  fks <-  left_join(cdm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
+  pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
+  cts <- pull(fks, child_table) %>% map(tbl, src = dm)
+  fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
+    select(t1, t1_name = child_table, colname = child_fk_col, t2, t2_name = parent_table, pk = pk_col)
+  mutate(
+    fks_tibble, problem = pmap_chr(fks_tibble, check_fk),
+    is_key = if_else(problem == "", TRUE, FALSE),
+    kind = "FK"
+  ) %>%
+    select(table = t1_name, kind, column = colname, is_key, problem)
 }

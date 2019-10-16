@@ -4,8 +4,8 @@ commas <- function(x) {
   if (is_empty(x)) {
     x <- ""
   } else if (length(x) > MAX_COMMAS) {
-    length(x) <- MAX_COMMAS + 1L
-    x[[MAX_COMMAS + 1L]] <- cli::symbol$ellipsis
+    x[[MAX_COMMAS]] <- paste0(cli::symbol$ellipsis, " (", length(x), " total)")
+    length(x) <- MAX_COMMAS
   }
 
   glue_collapse(x, sep = ", ")

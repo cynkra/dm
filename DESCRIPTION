@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational data models
-Version: 0.0.2.9001
-Date: 2019-09-23
+Version: 0.0.3.9003
+Date: 2019-10-13
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -17,8 +17,7 @@ Authors@R:
              email = "info@energie360.ch"),
       person(given = "cynkra GmbH",
              role = "fnd",
-             email = "mail@cynkra.com")
-             )
+             email = "mail@cynkra.com"))
 Description: Some actions and transformations that are
     frequently required when dealing with data models are covered by the
     functions of this package.
@@ -43,18 +42,20 @@ Imports:
     tidyselect,
     vctrs (>= 0.2.0)
 Suggests: 
-    dbplyr,
     DiagrammeR,
     DiagrammeRsvg,
+    dbplyr,
     fansi,
-    nycflights13,
-    rprojroot,
-    testthat (>= 2.1.0),
     knitr,
+    nycflights13,
     rmarkdown,
     RPostgres,
+    rprojroot,
     RSQLite,
+    testthat (>= 2.1.0),
     tidyverse
+VignetteBuilder: 
+    knitr
 Remotes: 
     bergant/datamodelr
 Encoding: UTF-8
@@ -62,4 +63,3 @@ LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
 RoxygenNote: 6.1.1
-VignetteBuilder: knitr

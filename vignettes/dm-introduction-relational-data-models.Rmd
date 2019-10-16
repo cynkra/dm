@@ -25,6 +25,9 @@ knit_print.grViz <- function(x, ...) {
     c("`````{=html}\n", ., "\n`````\n") %>% 
     knitr::asis_output()
 }
+
+library(tidyverse)
+library(dm)
 ```
 
 Multiple, linked tables are a common concept within computer science. 
@@ -71,7 +74,7 @@ This can result in long and inflated pipe chains full of `left_join()`, `anti_jo
 
 In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
 
-```{r warning=F, message=F}
+```{r}
 library(tidyverse)
 library(dm)
 library(nycflights13)
@@ -143,12 +146,11 @@ This second column is called the foreign key (abbreviated with fk).
 
 For example: If you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
 This is true, because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
-You can find foreign key candidates with the function `cdm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column and give a
+You can find foreign key candidates with the function `cdm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column.
 
 ```{r}
 dm %>% 
-  cdm_enum_fk_candidates(flights, airlines) %>% 
-  arrange(desc(candidate))
+  cdm_enum_fk_candidates(flights, airlines)
 ```
 
 After finding and assigning foreign keys, get the name of the set foreign key:

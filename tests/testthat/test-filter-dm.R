@@ -60,11 +60,15 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 
 test_that("cdm_filter() works as intended for reversed dm", {
   map(
-    .x = dm_for_filter_rev_src,
-    ~ expect_identical(
-      cdm_filter(.x, t1, a < 8, a > 3) %>% collect() %>% cdm_get_tables(),
-      rev(output_1)
-    )
+    dm_for_filter_rev_src,
+    function(dm_for_filter_rev) {
+      expect_identical(
+        cdm_filter(dm_for_filter_rev, t1, a < 8, a > 3) %>%
+          collect() %>%
+          cdm_get_tables(),
+        rev(output_1)
+      )
+    }
   )
 })
 
@@ -90,14 +94,16 @@ test_that("cdm_filter() works as intended for inbetween table", {
 
 test_that("cdm_filter() works without primary keys", {
   map(
-    .x = dm_for_filter_src,
-    ~ expect_error(
-      .x %>%
-        cdm_rm_pk(t5) %>%
-        cdm_filter(t5, l == "c") %>%
-        compute(),
-      NA
-    )
+    dm_for_filter_src,
+    function(dm_for_filter) {
+      expect_error(
+        dm_for_filter %>%
+          cdm_rm_pk(t5, rm_referencing_fks = TRUE) %>%
+          cdm_filter(t5, l == "c") %>%
+          compute(),
+        NA
+      )
+    }
   )
 })
 
@@ -116,8 +122,7 @@ test_that("cdm_filter() fails when no table name is provided", {
     dm_for_filter_src,
     ~ expect_error(
       cdm_filter(.x),
-      class = cdm_error("table_not_in_dm"),
-      error_txt_table_not_in_dm("")
+      class = cdm_error("table_not_in_dm")
     )
   )
 })

@@ -12,20 +12,21 @@ test_that("Learning from MSSQL works?", {
 
   dm_for_filter_mssql_learned <- cdm_learn_from_db(con_mssql)
 
-  data_model_mssql_learned_renamed_reclassed <-
+  def_learned_renamed_reclassed <-
     cdm_rename_tbl(
       dm_for_filter_mssql_learned,
       structure(src_tbls(dm_for_filter_mssql_learned), names = src_tbls(dm_for_filter))
     ) %>%
-    cdm_get_data_model() %>%
-    data_model_db_types_to_R_types()
+    cdm_get_def() %>%
+    select(-data)
 
-  data_model_original <-
-    cdm_get_data_model(dm_for_filter)
+  def_original <-
+    cdm_get_def(dm_for_filter) %>%
+    select(-data)
 
   expect_identical(
-    data_model_mssql_learned_renamed_reclassed,
-    data_model_original
+    def_learned_renamed_reclassed,
+    def_original
   )
 })
 
@@ -44,7 +45,7 @@ test_that("Learning from Postgres works?", {
   dm_postgres_learned_renamed <-
     cdm_rename_tbl(
       dm_for_filter_postgres_learned,
-      structure(src_tbls(dm_for_filter_postgres_learned), names = src_tbls(dm_for_filter))
+      !!!set_names(src_tbls(dm_for_filter_postgres_learned), src_tbls(dm_for_filter))
     )
 
   expect_equivalent_dm(
