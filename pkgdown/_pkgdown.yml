@@ -109,7 +109,7 @@ navbar:
     - text: Class 'dm' and basic operations
       href: articles/dm-class-and-basic-operations.html
     - text: Introduction to Relational Data Models
-      href: articles/dm-introduction-relational-data-model.html
+      href: articles/dm-introduction-relational-data-models.html
     - text: Joining in Relational Data Models
       href: articles/dm-joining.html
     - text: Filtering in Relational Data Models
