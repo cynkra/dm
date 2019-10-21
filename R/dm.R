@@ -600,3 +600,18 @@ all_same_source <- function(tables) {
   first_table <- tables[1][[1]]
   is.null(detect(tables[-1], ~ !same_src(., first_table)))
 }
+
+# creates an empty `dm`-object, `src` is defined by implementation of `cdm_get_src()`.
+empty_dm <- function() {
+  new_dm3(
+    tibble(
+      table = character(),
+      data = list(),
+      segment = logical(),
+      display = character(),
+      pks =vctrs::list_of(new_pk()),
+      fks = vctrs::list_of(new_fk()),
+      filters = vctrs::list_of(new_filter())
+    )
+  )
+}
