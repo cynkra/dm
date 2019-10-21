@@ -4,7 +4,7 @@
 #' The `dm` class wraps [dplyr::src] and adds a description of table relationships
 #' based on [datamodelr::datamodelr-package].
 #'
-#' `dm()` coerces its inputs. If called without parameters, an empty `dm` object is created.
+#' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
 #'
 #' @param src A \pkg{dplyr} table source object.
 #' @param data_model A \pkg{datamodelr} data model object, or `NULL`.
@@ -57,7 +57,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
 #' Low-level constructor
 #'
 #' `new_dm()` only checks if the inputs are of the correct class.
-#' If called without parameters, an empty `dm` object is created.
+#' If called without arguments, an empty `dm` object is created.
 #'
 #' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm` object
 #'
