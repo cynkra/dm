@@ -38,8 +38,9 @@
 <meta property="og:title" content="Data model class — dm" />
 <meta property="og:description" content="The dm class wraps dplyr::src and adds a description of table relationships
 based on datamodelr::datamodelr-package.
-dm() coerces its inputs.
+dm() coerces its inputs. If called without parameters, an empty dm object is created.
 new_dm() only checks if the inputs are of the correct class.
+If called without parameters, an empty dm object is created.
 validate_dm() checks consistency between the dplyr source
 and the datamodelr based specification of table relationships.
 This function is currently a no-op.
@@ -160,8 +161,9 @@ as_dm() coerces objects to the dm class" />
     <div class="ref-description">
     <p>The <code>dm</code> class wraps <a href='https://dplyr.tidyverse.org/reference/src.html'>dplyr::src</a> and adds a description of table relationships
 based on <a href='https://rdrr.io/pkg/datamodelr/man/datamodelr-package.html'>datamodelr::datamodelr-package</a>.</p>
-<p><code>dm()</code> coerces its inputs.</p>
-<p><code>new_dm()</code> only checks if the inputs are of the correct class.</p>
+<p><code>dm()</code> coerces its inputs. If called without parameters, an empty <code>dm</code> object is created.</p>
+<p><code>new_dm()</code> only checks if the inputs are of the correct class.
+If called without parameters, an empty <code>dm</code> object is created.</p>
 <p><code>validate_dm()</code> checks consistency between the <span class="pkg">dplyr</span> source
 and the <span class="pkg">datamodelr</span> based specification of table relationships.
 This function is currently a no-op.</p>
