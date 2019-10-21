@@ -62,6 +62,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
 #' @rdname dm
 #' @export
 new_dm <- function(tables, data_model) {
+  if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
   if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(datamodelr::is.data_model(data_model))
 
