@@ -15,9 +15,8 @@
 #'
 #' @export
 cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
-  check_dm(dm)
 
-  orig_tbls <- src_tbls(dm)
+  check_dm(dm)
 
   new_names <- names(exprs(..., .named = TRUE))
   new_tables <- list(...)
