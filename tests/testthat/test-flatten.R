@@ -62,6 +62,7 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   # deeper hierarchy available and `auto_detect = TRUE`
   # for flatten: columns from t5 + t4 + t4_2 + t6 are combined in one table, 8 cols in total
+  # FIXME: expect_length(...)
   expect_identical(
     length(colnames(cdm_flatten_to_tbl(dm_more_complex, t5))),
     8L
@@ -288,6 +289,7 @@ test_that("`cdm_squash_to_tbl()` does the right things", {
 
   # deeper hierarchy available and `auto_detect = TRUE`
   # for flatten: columns from t5 + t4 + t3 + t4_2 + t6 are combined in one table, 9 cols in total
+  # FIXME: expect_length(...)
   expect_identical(
     length(colnames(cdm_squash_to_tbl(dm_more_complex, t5))),
     9L

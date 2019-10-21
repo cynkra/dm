@@ -80,6 +80,7 @@ get_names_of_connected <- function(g, start, squash) {
   if (squash) {
     setdiff(names(dfs[["order"]]), start) %>% discard(is.na)
   } else {
+    # FIXME: Enumerate outgoing edges
     setdiff(names(dfs[["order"]]), c(start, names(dfs$dist[dfs$dist > 1]))) %>% discard(is.na)
   }
 }
