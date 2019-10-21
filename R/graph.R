@@ -74,8 +74,12 @@ create_graph_from_dm <- function(dm, directed = FALSE) {
     igraph::graph_from_data_frame(directed = directed, vertices = def$table)
 }
 
-get_names_of_connected <- function(g, start) {
-  dfs <- igraph::dfs(g, start, unreachable = FALSE)
+get_names_of_connected <- function(g, start, squash) {
+  dfs <- igraph::dfs(g, start, unreachable = FALSE, dist = TRUE)
   # `purrr::discard()` in case `list_of_pts` is `NA`
-  setdiff(names(dfs[["order"]]), start) %>% discard(is.na)
+  if (squash) {
+    setdiff(names(dfs[["order"]]), start) %>% discard(is.na)
+  } else {
+    setdiff(names(dfs[["order"]]), c(start, names(dfs$dist[dfs$dist > 1]))) %>% discard(is.na)
+  }
 }

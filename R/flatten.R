@@ -98,7 +98,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # If no tables are given, we use all reachable tables
   auto_detect <- is_empty(list_of_pts)
   if (auto_detect) {
-    list_of_pts <- get_names_of_connected(g, start)
+    list_of_pts <- get_names_of_connected(g, start, squash)
   }
   # We use the induced subgraph right away
   g <- igraph::induced_subgraph(g, c(start, list_of_pts))
