@@ -13,3 +13,10 @@ cdm_zoom_to_tbl <- function(dm, table) {
 is_zoomed <- function(dm) {
   !all(cdm_get_zoomed_tbl(dm) %>% pull(zoom) %>% map_lgl(is_null))
 }
+
+cdm_zoom_out <- function(dm) {
+  new_dm2(
+    zoom = new_zoom(),
+    base_dm = dm
+  )
+}
