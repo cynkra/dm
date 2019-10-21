@@ -60,6 +60,14 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
     class = cdm_error("tables_not_reachable_from_start")
   )
 
+  # deeper hierarchy available and `auto_detect = TRUE`
+  # for flatten: columns from t5 + t4 + t4_2 + t6 are combined in one table, 8 cols in total
+  # FIXME: expect_length(...)
+  expect_identical(
+    length(colnames(cdm_flatten_to_tbl(dm_more_complex, t5))),
+    8L
+  )
+
 })
 
 test_that("`cdm_flatten_to_tbl()` does the right things for 'inner_join()'", {
@@ -278,6 +286,14 @@ test_that("`cdm_squash_to_tbl()` does the right things", {
     left_join(t5, t4, by = c("l" = "h")) %>%
       left_join(t3, by = c("j" = "f"))
     )
+
+  # deeper hierarchy available and `auto_detect = TRUE`
+  # for flatten: columns from t5 + t4 + t3 + t4_2 + t6 are combined in one table, 9 cols in total
+  # FIXME: expect_length(...)
+  expect_identical(
+    length(colnames(cdm_squash_to_tbl(dm_more_complex, t5))),
+    9L
+  )
 
   # full_join:
   expect_identical(
