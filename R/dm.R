@@ -465,6 +465,8 @@ format.dm <- function(x, ...) {
 #' @export
 #' @import cli
 print.dm <- function(x, ...) {
+  if (is_zoomed(x)) return(print_zoomed(x))
+
   cat_rule("Table source", col = "green")
   src <- cdm_get_src(x)
 
@@ -498,6 +500,18 @@ print.dm <- function(x, ...) {
   invisible(x)
 }
 
+print_zoomed <- function(x) {
+  # so far only 1 table can be zoomed on
+  zoom <- cdm_get_zoomed_tbl(x)
+  tbl <- zoom %>% pull(zoom) %>% pluck(1)
+  name <- zoom %>% pull(table)
+  # FIXME: how do I get the text to be in grey colour (like above `tibble` print output)?
+  cat_line("# From `dm` containing tables: ", commas(tick(src_tbls(x))))
+  cat_line("# Zoomed on table: ", commas(tick(name)))
+  print(tbl)
+  # returning `dm`, not zoomed table
+  invisible(x)
+}
 
 #' @export
 `$.dm` <- function(x, name) {
