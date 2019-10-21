@@ -45,7 +45,7 @@ compute_disambiguate_cols_recipe <- function(dm, tables, sep) {
   table_colnames %>%
     # in case of flattening, primary key columns will never be responsible for the name
     # of the resulting column in the end, so they do not need to be disambiguated
-    anti_join(pks) %>%
+    anti_join(pks, by = c("table", "column")) %>%
     add_count(column) %>%
     filter(n > 1) %>%
     mutate(new_name = paste0(table, sep, column)) %>%
