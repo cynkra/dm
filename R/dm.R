@@ -4,7 +4,7 @@
 #' The `dm` class wraps [dplyr::src] and adds a description of table relationships
 #' based on [datamodelr::datamodelr-package].
 #'
-#' `dm()` coerces its inputs.
+#' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
 #'
 #' @param src A \pkg{dplyr} table source object.
 #' @param data_model A \pkg{datamodelr} data model object, or `NULL`.
@@ -38,6 +38,7 @@
 #'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm <- nse_function(c(src, data_model = NULL), ~ {
+  if (is_missing(src)) return(empty_dm())
   if (is.null(data_model)) {
     tbl_names <- src_tbls(src)
     tbls <- map(set_names(tbl_names), tbl, src = src)
@@ -56,11 +57,14 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
 #' Low-level constructor
 #'
 #' `new_dm()` only checks if the inputs are of the correct class.
+#' If called without arguments, an empty `dm` object is created.
+#'
 #' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm` object
 #'
 #' @rdname dm
 #' @export
 new_dm <- function(tables, data_model) {
+  if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
   if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(datamodelr::is.data_model(data_model))
 
@@ -599,4 +603,19 @@ all_same_source <- function(tables) {
   # Use `NULL` if `tables` is empty
   first_table <- tables[1][[1]]
   is.null(detect(tables[-1], ~ !same_src(., first_table)))
+}
+
+# creates an empty `dm`-object, `src` is defined by implementation of `cdm_get_src()`.
+empty_dm <- function() {
+  new_dm3(
+    tibble(
+      table = character(),
+      data = list(),
+      segment = logical(),
+      display = character(),
+      pks =vctrs::list_of(new_pk()),
+      fks = vctrs::list_of(new_fk()),
+      filters = vctrs::list_of(new_filter())
+    )
+  )
 }

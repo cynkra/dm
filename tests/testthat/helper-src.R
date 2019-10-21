@@ -473,7 +473,7 @@ if (is_this_a_test()) {
 
   message("connecting")
 
-  dbplyr::test_register_src("df", src_df(env = new_environment()))
+  dbplyr::test_register_src("df", src_df(env = .GlobalEnv))
 
   if (packageVersion("RSQLite") >= "2.1.1.9003") {
     try(dbplyr::test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
