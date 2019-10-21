@@ -13,3 +13,13 @@ test_that("can create dm with as_dm()", {
     cdm_test_obj_src, ~ expect_equivalent_dm(as_dm(cdm_get_tables(.)), test_obj_df)
   )
 })
+
+test_that("creation of empty `dm` works", {
+  expect_true(
+    is_empty(dm())
+  )
+
+  expect_true(
+    is_empty(new_dm())
+  )
+})

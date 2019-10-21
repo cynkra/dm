@@ -73,6 +73,16 @@ test_that("cdm_add_tbl() works", {
       )
     )
   }
+
+  # adding tables to an empty `dm` works for all sources
+  walk2(
+    data_1_src,
+    test_srcs,
+    ~expect_identical(
+      cdm_add_tbl(dm(), test = ..1) %>% cdm_get_src(),
+      ..2
+    )
+  )
 })
 
 test_that("cdm_rm_tbl() works", {
