@@ -50,6 +50,7 @@ tidyselect_table_names <- function(dm) {
 
 cdm_select_tbl_impl <- function(dm, selected) {
 
+  # Required to avoid error further below
   if (is_empty(selected)) return(empty_dm())
   check_correct_input(dm, selected)
 
