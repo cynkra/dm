@@ -46,9 +46,10 @@ as_dm(x)
 The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships
 based on \link[datamodelr:datamodelr-package]{datamodelr::datamodelr-package}.
 
-\code{dm()} coerces its inputs.
+\code{dm()} coerces its inputs. If called without parameters, an empty \code{dm} object is created.
 
 \code{new_dm()} only checks if the inputs are of the correct class.
+If called without parameters, an empty \code{dm} object is created.
 
 \code{validate_dm()} checks consistency between the \pkg{dplyr} source
 and the \pkg{datamodelr} based specification of table relationships.
