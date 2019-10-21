@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Joining in Relational Data Models • dm</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Joining in Relational Data Models">
 <meta property="og:description" content="">
@@ -97,7 +97,7 @@
       <h1>Joining in Relational Data Models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2019-10-16</h4>
+            <h4 class="date">2019-10-21</h4>
       
       
       <div class="hidden name"><code>dm-joining.Rmd</code></div>
@@ -172,8 +172,7 @@
 <p><strong>Add add a column with the full airline names from the <code>airlines</code> table to the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">dm_joined &lt;-<span class="st"> </span>dm <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(flights, airlines, <span class="dt">join =</span> left_join)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Joining, by = c("table", "column")</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">dm_joined</a></code></pre></div>
+<a class="sourceLine" id="cb5-3" data-line-number="3">dm_joined</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 20</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
@@ -237,8 +236,7 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airlines, name <span class="op">==</span><span class="st"> "Delta Air Lines Inc."</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(flights, month <span class="op">==</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_apply_filters</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(flights, airports, <span class="dt">join =</span> left_join)</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; Joining, by = c("table", "column")</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(flights, airports, <span class="dt">join =</span> left_join)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4,082 x 26</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
@@ -264,10 +262,9 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_select_tbl.html">cdm_select_tbl</a></span>(<span class="op">-</span>weather) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl</a></span>(<span class="dt">start =</span> flights)</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Joining, by = c("table", "column")</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; Renamed columns:</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; * name -&gt; airlines$airlines.name, airports$airports.name</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; * year -&gt; flights$flights.year, planes$planes.year</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Renamed columns:</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; * name -&gt; airlines$airlines.name, airports$airports.name</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; * year -&gt; flights$flights.year, planes$planes.year</span></a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 35</span><span>
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
