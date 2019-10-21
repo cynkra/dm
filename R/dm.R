@@ -102,7 +102,8 @@ new_dm <- function(tables, data_model) {
     as.character(data_model_tables$display),
     keys,
     references,
-    filter = new_filters()
+    filter = new_filters(),
+    zoom = new_zoom()
   )
 }
 
@@ -113,6 +114,7 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
                     pks = cdm_get_data_model_pks(base_dm),
                     fks = cdm_get_data_model_fks(base_dm),
                     filter = cdm_get_filter(base_dm),
+                    zoom = cdm_get_zoomed_tbl(base_dm),
                     base_dm) {
   stopifnot(!is.null(table))
   stopifnot(!is.null(pks))
@@ -167,7 +169,8 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
     tibble(table, data, segment, display) %>%
     left_join(pks, by = "table") %>%
     left_join(fks, by = "table") %>%
-    left_join(filters, by = "table")
+    left_join(filters, by = "table") %>%
+    left_join(zoom, by = "table")
 
   new_dm3(def)
 }
@@ -196,6 +199,10 @@ new_filter <- function(quos = list()) {
 # Legacy!
 new_filters <- function() {
   tibble(table = character(), filter = list())
+}
+
+new_zoom <- function() {
+  tibble(table = character(), zoom = list())
 }
 
 #' Validator
@@ -386,6 +393,12 @@ cdm_get_filter <- function(x) {
 
   filter_df  %>%
     rename(filter = filter_quo)
+}
+
+cdm_get_zoomed_tbl <- function(x) {
+  cdm_get_def(x) %>%
+    filter(!map_lgl(zoom, is_null)) %>%
+    select(table, zoom)
 }
 
 #' Check class
