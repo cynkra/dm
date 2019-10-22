@@ -446,7 +446,6 @@ format.dm <- function(x, ...) {
 #' @export
 #' @import cli
 print.dm <- function(x, ...) {
-  if (is_zoomed(x)) return(print_zoomed(x))
 
   cat_rule("Table source", col = "green")
   src <- cdm_get_src(x)
@@ -481,17 +480,28 @@ print.dm <- function(x, ...) {
   invisible(x)
 }
 
-print_zoomed <- function(x) {
+print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+
+  df <- get_zoomed_tbl(x)
   # so far only 1 table can be zoomed on
-  zoom <- cdm_get_zoomed_tbl(x)
-  tbl <- zoom %>% pull(zoom) %>% pluck(1)
-  name <- zoom %>% pull(table)
-  # FIXME: how do I get the text to be in grey colour (like above `tibble` print output)?
-  cat_line("# From `dm` containing tables: ", commas(tick(src_tbls(x))))
-  cat_line("# Zoomed on table: ", commas(tick(name)))
-  print(tbl)
-  # returning `dm`, not zoomed table
+  zoomed_df <- structure(
+    df,
+    class = c("zoomed_df", class(df)),
+    name_df = cdm_get_zoomed_tbl(x)$table
+    )
+
+  cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
+}
+
+# this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
+# therefore, we need to have an own subclass, but the main class needs to be `tbl`
+tbl_sum.zoomed_df <- function(x) {
+  paste0("A zoomed table from a `dm`: ", attr(x, "name_df"))
+}
+
+format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+  NextMethod()
 }
 
 #' @export
