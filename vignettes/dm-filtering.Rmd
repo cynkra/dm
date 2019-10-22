@@ -142,7 +142,7 @@ rows_per_table
 sum(rows_per_table)
 ```
 
-The total number of rows drops from  367 687 to 138 786 (the only unaffected table is the disconnected `weather` table).
+The total number of rows in the `dm` drops from `r format(sum(cdm_nrow(dm)), big.mark = " ")` to `r format(sum(cdm_nrow(cdm_apply_filters(filtered_dm))), big.mark = " ")` (the only unaffected table is the disconnected `weather` table).
 
 Next example:
 
