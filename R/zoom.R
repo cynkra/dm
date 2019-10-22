@@ -3,21 +3,24 @@ cdm_zoom_to_tbl <- function(dm, table) {
   zoom <- as_string(ensym(table))
   check_correct_input(dm, zoom)
 
-  new_dm3(
-    cdm_get_def(dm) %>%
-      mutate(zoom = if_else(table == !!zoom, data, list(NULL)))
-  )
+  structure(
+    new_dm3(
+      cdm_get_def(dm) %>%
+        mutate(zoom = if_else(table == !!zoom, data, list(NULL)))
+      ),
+    class = c("zoomed_dm", "dm")
+    )
 }
 
 is_zoomed <- function(dm) {
-  !is_null(get_zoomed_tbl(dm))
+  inherits(dm, "zoomed_dm")
 }
 
 cdm_zoom_out <- function(dm) {
   new_dm3(
     cdm_get_def(dm) %>%
       mutate(zoom = list(NULL))
-  )
+    )
 }
 
 get_zoomed_tbl <- function(dm) {
