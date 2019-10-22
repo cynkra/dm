@@ -12,7 +12,8 @@
 #' The conditions are only evaluated in one of the following scenarios:
 #' 1. Calling `cdm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
 #' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
-#' with the corresponding key values. Isolated (in terms of foreign key constraints) and unfiltered tables are left untouched.
+#' with the corresponding key values.
+#' Tables that are not connected to any table with an active filter are left unchanged.
 #' This results in a new `dm` class object.
 #' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated based on the
 #' filter conditions and the foreign key conditions (similar to 1. but only for one table)
