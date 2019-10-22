@@ -36,18 +36,12 @@ The conditions are only evaluated in one of the following scenarios:
 \enumerate{
 \item Calling \code{cdm_apply_filters()} or \code{compute()} (method for \code{dm} objects) on a \code{dm}: each filtered table potentially
 reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
-with the corresponding key values. Isolated (in terms of foreign key constraints) and unfiltered tables are left untouched.
+with the corresponding key values.
+Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new \code{dm} class object.
 \item Calling one of \code{tbl()}, \code{[[.dm()}, \code{$.dm()}: the remaining rows of the requested table are calculated based on the
 filter conditions and the foreign key conditions (similar to 1. but only for one table)
 }
-
-It should be mentioned, that if an UNFILTERED table had a potential effect on other tables -- since it lacks key
-values from connected tables --, these other tables are in general NOT affected by them when applying the filters.
-If you want to enforce the effect of the reduction of rows to those rows, that have a reference value in a specific table,
-you can set a filter condition like \code{1 == 1} in this table. The example with the \code{1 == 1} filter condition on this
-help page illustrates this: when the \code{TRUE} (\code{1 == 1}) filter is set for table \code{flights}, it affects table \code{airports}.
-In general all other tables of a relational data model could be affected by such a filter.
 
 Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
 }
