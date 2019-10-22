@@ -1,6 +1,6 @@
 #' Filtering a [`dm`] object
 #'
-#' Filtering one table of a [`dm`] object affects all tables connected to this table
+#' Filtering one table of a [`dm`] object may affect all tables connected to this table
 #' via one or more steps of foreign key relations. Firstly, one or more filter conditions for
 #' one or more tables can be defined using `cdm_filter()`, with a syntax similar to `dplyr::filter()`.
 #' These conditions will be stored in the [`dm`] and not immediately executed. With `cdm_apply_filters()`
