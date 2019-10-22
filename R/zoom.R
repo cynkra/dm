@@ -31,3 +31,13 @@ get_zoomed_tbl <- function(dm) {
     pull(zoom) %>%
     pluck(1)
 }
+
+cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
+  if (!is_zoomed(dm)) abort_no_table_zoomed()
+  new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
+  if (new_tbl_name_chr == "") abort_table_needs_name()
+  new_tbl <- list(get_zoomed_tbl(dm))
+
+  cdm_add_tbl_impl(dm, new_tbl, new_tbl_name_chr) %>%
+    cdm_zoom_out()
+}

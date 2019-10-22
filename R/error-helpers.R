@@ -495,7 +495,6 @@ error_no_zoom_allowed <- function() {
          "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.")
 }
 
-
 # general abort with customized msg ---------------------------------------
 
 abort_w_message <- function(msg) {
@@ -503,3 +502,24 @@ abort_w_message <- function(msg) {
 }
 
 abort_w_message
+
+# no zoom allowed for `cdm_zoom_to_tbl()` ---------------------------------
+
+abort_no_table_zoomed <- function() {
+  abort(error_no_table_zoomed(), .subclass = cdm_error_full("no_table_zoomed"))
+}
+
+error_no_table_zoomed <- function() {
+  "`cdm_insert_tbl()` only works for zoomed `dm`"
+}
+
+
+# new table needs a name --------------------------------------------------
+
+abort_table_needs_name <- function() {
+  abort(error_table_needs_name(), .subclass = cdm_error_full("table_needs_name"))
+}
+
+error_table_needs_name <- function() {
+  "The new table to insert with `cdm_insert_zoomed_tbl()` must have a name"
+}
