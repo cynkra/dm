@@ -41,3 +41,17 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
   cdm_add_tbl_impl(dm, new_tbl, new_tbl_name_chr) %>%
     cdm_zoom_out()
 }
+
+# FIXME: this is a very basic implementation:
+# it does not care at all about potential changes in the key columns of the table
+# this needs to be tracked though
+cdm_update_zoomed_tbl <- function(dm) {
+  if (!is_zoomed(dm)) return(dm)
+  table_name <- cdm_get_zoomed_tbl(dm) %>% pull(table)
+  new_def <- cdm_get_def(dm) %>%
+    mutate(
+      data = if_else(table != !!table_name, data, zoom),
+      zoom = list(NULL)
+      )
+  new_dm3(new_def)
+}
