@@ -1,4 +1,7 @@
 cdm_zoom_to_tbl <- function(dm, table) {
+  if (is_zoomed(dm)) abort_no_zoom_allowed()
+  check_no_filter(dm)
+
   # for now only one table can be zoomed on
   zoom <- as_string(ensym(table))
   check_correct_input(dm, zoom)

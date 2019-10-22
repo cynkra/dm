@@ -483,3 +483,13 @@ abort_con_only_for_dbi <- function() {
 error_con_only_for_dbi <- function() {
   "A local `dm` doesn't have a DB connection"
 }
+
+# no zoom allowed for `cdm_zoom_to_tbl()` ---------------------------------
+
+abort_no_zoom_allowed <- function() {
+  abort(error_no_zoom_allowed(), .subclass = cdm_error_full("no_zoom_allowed"))
+}
+
+error_no_zoom_allowed <- function() {
+  "`cdm_zoom_to_tbl()` only works for unzoomed `dm`"
+}
