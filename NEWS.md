@@ -1,3 +1,10 @@
+# dm 0.0.3.9004
+
+- More accurate documentation of filtering operation (#98).
+- Support empty `dm` objects via `dm()` and `new_dm()` (#96).
+- `cdm_flatten_to_tbl()` now flattens all immediate neighbors by default (#95).
+
+
 # dm 0.0.3.9003
 
 - Use new storage format internally.
