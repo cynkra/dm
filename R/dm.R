@@ -75,53 +75,34 @@ new_dm <- function(tables, data_model) {
   stopifnot(all(names(tables) %in% data_model_tables$table))
   stopifnot(all(data_model_tables$table %in% names(tables)))
 
-  keys <- columns %>%
+  pks <- columns %>%
     select(column, table, key) %>%
     filter(key > 0) %>%
     select(-key)
 
   if (is.null(data_model$references)) {
-    references <- tibble(
+    fks <- tibble(
       table = character(),
       column = character(),
       ref = character(),
       ref_col = character()
     )
   } else {
-    references <-
+    fks <-
       data_model$references %>%
       select(table, column, ref, ref_col) %>%
       as_tibble()
   }
 
-  new_dm2(
-    tables[data_model_tables$table],
-    data_model_tables$table,
-    data_model_tables$segment,
-    # would be logical NA otherwise, but if set, it is class `character`
-    as.character(data_model_tables$display),
-    keys,
-    references,
-    filter = new_filters(),
-    zoom = new_zoom()
-  )
-}
-
-new_dm2 <- function(data = cdm_get_def(base_dm)$data,
-                    table = cdm_get_def(base_dm)$table,
-                    segment = cdm_get_def(base_dm)$segment,
-                    display = cdm_get_def(base_dm)$display,
-                    pks = cdm_get_data_model_pks(base_dm),
-                    fks = cdm_get_data_model_fks(base_dm),
-                    filter = cdm_get_filter(base_dm),
-                    zoom = cdm_get_zoomed_tbl(base_dm),
-                    base_dm) {
-  stopifnot(!is.null(table))
-  stopifnot(!is.null(pks))
-  stopifnot(!is.null(fks))
-
   # Legacy
-  data <- unname(data)
+  data <- unname(tables[data_model_tables$table])
+
+  table <- data_model_tables$table
+  segment <- data_model_tables$segment
+  # would be logical NA otherwise, but if set, it is class `character`
+  display <- as.character(data_model_tables$display)
+  filter <- new_filters()
+  zoom <- new_zoom()
 
   # Legacy compatibility
   pks$column <- as.list(pks$column)
