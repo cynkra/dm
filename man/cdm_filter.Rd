@@ -23,7 +23,7 @@ the data frame. They support unquoting and splicing. See \code{vignette("program
 for an introduction to these concepts.}
 }
 \description{
-Filtering one table of a \code{\link{dm}} object has an effect on all tables connected to this table
+Filtering one table of a \code{\link{dm}} object may affect all tables connected to this table
 via one or more steps of foreign key relations. Firstly, one or more filter conditions for
 one or more tables can be defined using \code{cdm_filter()}, with a syntax similar to \code{dplyr::filter()}.
 These conditions will be stored in the \code{\link{dm}} and not immediately executed. With \code{cdm_apply_filters()}
@@ -32,14 +32,18 @@ all tables will be updated according to the filter conditions and the foreign ke
 \details{
 \code{cdm_filter()} allows you to set one or more filter conditions for one table
 of a \code{\link{dm}} object. These conditions will be stored in the \code{\link{dm}} for when they are needed.
-Once executed, the filtering the will affect all tables connected to the filtered one by
-foreign key constraints, leaving only the rows with the corresponding key values. The filtering
-implicitly takes place, once a table is requested from the \code{\link{dm}} by using one of \code{tbl()}, \code{[[.dm()}, \code{$.dm()}.
+The conditions are only evaluated in one of the following scenarios:
+\enumerate{
+\item Calling \code{cdm_apply_filters()} or \code{compute()} (method for \code{dm} objects) on a \code{dm}: each filtered table potentially
+reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
+with the corresponding key values.
+Tables that are not connected to any table with an active filter are left unchanged.
+This results in a new \code{dm} class object.
+\item Calling one of \code{tbl()}, \code{[[.dm()}, \code{$.dm()}: the remaining rows of the requested table are calculated based on the
+filter conditions and the foreign key conditions (similar to 1. but only for one table)
+}
 
-With \code{cdm_apply_filters()} all set filter conditions are applied and their
-combined cascading effect on each table of the \code{\link{dm}} is taken into account, producing a new
-\code{dm} object.
-This function is called by the \code{compute()} method for \code{dm} class objects.
+Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
 }
 \examples{
 library(dplyr)
@@ -55,6 +59,18 @@ dm_nyc_filtered$airlines
 cdm_nycflights13() \%>\%
   cdm_filter(airports, name == "John F Kennedy Intl") \%>\%
   cdm_apply_filters()
+
+# If you want to only keep those rows in the parent tables
+# whose primary key values appear as foreign key values in
+# `flights`, you can set a `TRUE` filter in `flights`:
+cdm_nycflights13() \%>\%
+  cdm_filter(flights, 1 == 1) \%>\%
+  cdm_apply_filters() \%>\%
+  cdm_nrow()
+# note, that in this example the only affected table is
+# `airports` (since the departure airports in `flights` are
+# only the 3 NYC ones).
+
 cdm_nycflights13() \%>\%
   cdm_filter(flights, month == 3) \%>\%
   cdm_apply_filters()

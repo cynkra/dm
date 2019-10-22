@@ -5,6 +5,7 @@
 #' @param dm A [`dm`] object
 #' @export
 cdm_nrow <- function(dm) {
+  check_no_filter(dm)
   map_dbl(cdm_get_tables(dm), ~ as.numeric(pull(collect(count(.)))))
 }
 

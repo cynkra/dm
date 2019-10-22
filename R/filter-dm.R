@@ -1,6 +1,6 @@
 #' Filtering a [`dm`] object
 #'
-#' Filtering one table of a [`dm`] object has an effect on all tables connected to this table
+#' Filtering one table of a [`dm`] object may affect all tables connected to this table
 #' via one or more steps of foreign key relations. Firstly, one or more filter conditions for
 #' one or more tables can be defined using `cdm_filter()`, with a syntax similar to `dplyr::filter()`.
 #' These conditions will be stored in the [`dm`] and not immediately executed. With `cdm_apply_filters()`
@@ -9,10 +9,16 @@
 #'
 #' @details `cdm_filter()` allows you to set one or more filter conditions for one table
 #' of a [`dm`] object. These conditions will be stored in the [`dm`] for when they are needed.
-#' Once executed, the filtering the will affect all tables connected to the filtered one by
-#' foreign key constraints, leaving only the rows with the corresponding key values. The filtering
-#' implicitly takes place, once a table is requested from the [`dm`] by using one of `tbl()`, `[[.dm()`, `$.dm()`.
+#' The conditions are only evaluated in one of the following scenarios:
+#' 1. Calling `cdm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
+#' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
+#' with the corresponding key values.
+#' Tables that are not connected to any table with an active filter are left unchanged.
+#' This results in a new `dm` class object.
+#' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated based on the
+#' filter conditions and the foreign key conditions (similar to 1. but only for one table)
 #'
+#' Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
@@ -38,6 +44,18 @@
 #' cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
 #'   cdm_apply_filters()
+#'
+#' # If you want to only keep those rows in the parent tables
+#' # whose primary key values appear as foreign key values in
+#' # `flights`, you can set a `TRUE` filter in `flights`:
+#' cdm_nycflights13() %>%
+#'   cdm_filter(flights, 1 == 1) %>%
+#'   cdm_apply_filters() %>%
+#'   cdm_nrow()
+#' # note, that in this example the only affected table is
+#' # `airports` (since the departure airports in `flights` are
+#' # only the 3 NYC ones).
+#'
 #' @export
 cdm_filter <- function(dm, table, ...) {
   table <- as_name(ensym(table))
@@ -59,11 +77,7 @@ set_filter_for_table <- function(dm, table, quos) {
   new_dm3(def)
 }
 
-#' @details With `cdm_apply_filters()` all set filter conditions are applied and their
-#' combined cascading effect on each table of the [`dm`] is taken into account, producing a new
-#' `dm` object.
-#' This function is called by the `compute()` method for `dm` class objects.
-#'
+
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
