@@ -18,8 +18,11 @@
 #' filter conditions and the foreign key conditions (similar to 1. but only for one table)
 #'
 #' It should be mentioned, that if an UNFILTERED table had a potential effect on other tables -- since it lacks key
-#' values from foreign tables --, these other tables are in general NOT affected by them. If you want to explore this effect
-#' you can set a filter condition like `1 == 1` to enforce this effect.
+#' values from connected tables --, these other tables are in general NOT affected by them when applying the filters.
+#' If you want to enforce the effect of the reduction of rows to those rows, that have a reference value in a specific table,
+#' you can set a filter condition like `1 == 1` in this table. The example with the `1 == 1` filter condition on this
+#' help page illustrates this: when the `TRUE` (`1 == 1`) filter is set for table `flights`, it affects table `airports`.
+#' In general all other tables of a relational data model could be affected by such a filter.
 #'
 #' Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
 #' @rdname cdm_filter
@@ -47,6 +50,18 @@
 #' cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
 #'   cdm_apply_filters()
+#'
+#' # If you want to only keep those rows in the parent tables
+#' # whose primary key values appear as foreign key values in
+#' # `flights`, you can set a `TRUE` filter in `flights`:
+#' cdm_nycflights13() %>%
+#'   cdm_filter(flights, 1 == 1) %>%
+#'   cdm_apply_filters() %>%
+#'   cdm_nrow()
+#' # note, that in this example the only affected table is
+#' # `airports` (since the departure airports in `flights` are
+#' # only the 3 NYC ones).
+#'
 #' @export
 cdm_filter <- function(dm, table, ...) {
   table <- as_name(ensym(table))
