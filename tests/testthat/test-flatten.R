@@ -398,4 +398,11 @@ test_that("tidyselect works for flatten", {
     cdm_flatten_to_tbl(dm_for_filter, t2, -t1),
     class = cdm_error("tables_not_reachable_from_start")
   )
+
+  # trying to deselect table that doesn't exist:
+  expect_error(
+    cdm_flatten_to_tbl(dm_for_filter, t2, -t101),
+    class = cdm_error("w_message")
+  )
+
 })
