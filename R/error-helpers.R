@@ -491,5 +491,6 @@ abort_no_zoom_allowed <- function() {
 }
 
 error_no_zoom_allowed <- function() {
-  "`cdm_zoom_to_tbl()` only works for unzoomed `dm`"
+  paste0("`cdm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `cdm_update_zoomed_tbl()`, ",
+         "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.")
 }
