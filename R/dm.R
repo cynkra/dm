@@ -500,7 +500,8 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
 # therefore, we need to have an own subclass, but the main class needs to be `tbl`
 tbl_sum.zoomed_df <- function(x) {
-  paste0("A zoomed table from a `dm`: ", attr(x, "name_df"))
+  c(structure(attr(x, "name_df"), names = "A zoomed table from a dm"),
+    NextMethod())
 }
 
 format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
