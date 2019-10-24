@@ -35,6 +35,12 @@ test_that("cdm_get_zoomed_tbl() works", {
            zoom = list(t2))
   )
 
+# function for getting only the tibble itself works
+  expect_identical(
+    dm_for_filter %>% cdm_zoom_to_tbl(t3) %>% get_zoomed_tbl(),
+    t3
+  )
+
 })
 
 test_that("zooming works also on DBs", {
