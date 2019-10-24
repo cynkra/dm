@@ -76,8 +76,9 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 
 cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   check_correct_input(dm, start)
-  list_of_pts <- as.character(enexprs(...))
-  check_correct_input(dm, list_of_pts)
+  vars <- setdiff(tidyselect_table_names(dm), start)
+  list_of_pts <- tidyselect::vars_select(vars, ...)
+
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
   force(join)
