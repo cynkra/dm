@@ -175,7 +175,8 @@ for example a fact table in a star schema.</p></td>
       <td><p>Unquoted table names to include in addition to <code>start</code>. The order of the tables here determines
 the order of the joins. If empty, all tables that can be reached are included.
 If this includes tables which aren't direct neighbours of <code>start</code>,
-it will only work with <code>cdm_squash_to_tbl()</code> (given one of the allowed join-methods).</p></td>
+it will only work with <code>cdm_squash_to_tbl()</code> (given one of the allowed join-methods).
+<code>tidyselect</code> is supported, cf. <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code>.</p></td>
     </tr>
     <tr>
       <th>join</th>
