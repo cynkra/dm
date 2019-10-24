@@ -487,15 +487,8 @@ print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   df <- get_zoomed_tbl(x)
   # so far only 1 table can be zoomed on
-  zoomed_df <- structure(
-    df,
-    class = c("zoomed_df", class(df)),
-    name_df = cdm_get_zoomed_tbl(x)$table
-    )
-  # FIXME: not sure why, but when changing the class to `zoomed_df`, the dataframe suddenly
-  # has `tibble::has_rownames(zoomed_df) = TRUE`, leading to an asterisk in front of the column
-  # types in the `print()` method
-  if (!has_rownames(df)) rownames(zoomed_df) <- NULL
+  zoomed_df <- new_tibble(df, nrow = nrow(df), class = "zoomed_df")
+  attr(zoomed_df, "name_df") <- cdm_get_zoomed_tbl(x)$table
 
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
