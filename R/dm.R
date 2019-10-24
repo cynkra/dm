@@ -481,7 +481,10 @@ print.dm <- function(x, ...) {
 }
 
 print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+  format(x, ..., n = NULL, width = NULL, n_extra = NULL)
+}
 
+format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   df <- get_zoomed_tbl(x)
   # so far only 1 table can be zoomed on
   zoomed_df <- structure(
