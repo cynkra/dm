@@ -75,51 +75,34 @@ new_dm <- function(tables, data_model) {
   stopifnot(all(names(tables) %in% data_model_tables$table))
   stopifnot(all(data_model_tables$table %in% names(tables)))
 
-  keys <- columns %>%
+  pks <- columns %>%
     select(column, table, key) %>%
     filter(key > 0) %>%
     select(-key)
 
   if (is.null(data_model$references)) {
-    references <- tibble(
+    fks <- tibble(
       table = character(),
       column = character(),
       ref = character(),
       ref_col = character()
     )
   } else {
-    references <-
+    fks <-
       data_model$references %>%
       select(table, column, ref, ref_col) %>%
       as_tibble()
   }
 
-  new_dm2(
-    tables[data_model_tables$table],
-    data_model_tables$table,
-    data_model_tables$segment,
-    # would be logical NA otherwise, but if set, it is class `character`
-    as.character(data_model_tables$display),
-    keys,
-    references,
-    filter = new_filters()
-  )
-}
-
-new_dm2 <- function(data = cdm_get_def(base_dm)$data,
-                    table = cdm_get_def(base_dm)$table,
-                    segment = cdm_get_def(base_dm)$segment,
-                    display = cdm_get_def(base_dm)$display,
-                    pks = cdm_get_data_model_pks(base_dm),
-                    fks = cdm_get_data_model_fks(base_dm),
-                    filter = cdm_get_filter(base_dm),
-                    base_dm) {
-  stopifnot(!is.null(table))
-  stopifnot(!is.null(pks))
-  stopifnot(!is.null(fks))
-
   # Legacy
-  data <- unname(data)
+  data <- unname(tables[data_model_tables$table])
+
+  table <- data_model_tables$table
+  segment <- data_model_tables$segment
+  # would be logical NA otherwise, but if set, it is class `character`
+  display <- as.character(data_model_tables$display)
+  filter <- new_filters()
+  zoom <- new_zoom()
 
   # Legacy compatibility
   pks$column <- as.list(pks$column)
@@ -167,7 +150,8 @@ new_dm2 <- function(data = cdm_get_def(base_dm)$data,
     tibble(table, data, segment, display) %>%
     left_join(pks, by = "table") %>%
     left_join(fks, by = "table") %>%
-    left_join(filters, by = "table")
+    left_join(filters, by = "table") %>%
+    left_join(zoom, by = "table")
 
   new_dm3(def)
 }
@@ -196,6 +180,10 @@ new_filter <- function(quos = list()) {
 # Legacy!
 new_filters <- function() {
   tibble(table = character(), filter = list())
+}
+
+new_zoom <- function() {
+  tibble(table = character(), zoom = list())
 }
 
 #' Validator
@@ -388,6 +376,12 @@ cdm_get_filter <- function(x) {
     rename(filter = filter_quo)
 }
 
+cdm_get_zoomed_tbl <- function(x) {
+  cdm_get_def(x) %>%
+    filter(!map_lgl(zoom, is_null)) %>%
+    select(table, zoom)
+}
+
 #' Check class
 #'
 #' `is_dm()` returns `TRUE` if the input is of class `dm`.
@@ -452,6 +446,7 @@ format.dm <- function(x, ...) {
 #' @export
 #' @import cli
 print.dm <- function(x, ...) {
+
   cat_rule("Table source", col = "green")
   src <- cdm_get_src(x)
 
@@ -485,6 +480,33 @@ print.dm <- function(x, ...) {
   invisible(x)
 }
 
+print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+  format(x, ..., n = NULL, width = NULL, n_extra = NULL)
+}
+
+format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+  df <- get_zoomed_tbl(x)
+  # so far only 1 table can be zoomed on
+  zoomed_df <- structure(
+    df,
+    class = c("zoomed_df", class(df)),
+    name_df = cdm_get_zoomed_tbl(x)$table
+    )
+
+  cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
+  invisible(x)
+}
+
+# this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
+# therefore, we need to have an own subclass, but the main class needs to be `tbl`
+tbl_sum.zoomed_df <- function(x) {
+  c(structure(attr(x, "name_df"), names = "A zoomed table of a dm"),
+    NextMethod())
+}
+
+format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+  NextMethod()
+}
 
 #' @export
 `$.dm` <- function(x, name) {
