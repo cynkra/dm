@@ -16,6 +16,7 @@
 #' the order of the joins. If empty, all tables that can be reached are included.
 #' If this includes tables which aren't direct neighbours of `start`,
 #' it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
+#' `tidyselect` is supported, cf. [dplyr::select()].
 #' @family flattening functions
 #'
 #' @details With the `...` left empty, this function joins all the tables of your [`dm`]
@@ -76,8 +77,20 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 
 cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   check_correct_input(dm, start)
-  list_of_pts <- as.character(enexprs(...))
-  check_correct_input(dm, list_of_pts)
+  vars <- setdiff(tidyselect_table_names(dm), start)
+  list_of_pts <- tryCatch(
+    tidyselect::vars_select(vars, ...),
+    error = identity)
+  if (is_condition(list_of_pts)) {
+    abort_w_message(
+      paste0(
+        conditionMessage(list_of_pts),
+        ". Available tables in `dm`: ",
+        commas(tick(src_tbls(dm)))
+        )
+    )
+  }
+
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
   force(join)

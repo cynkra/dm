@@ -373,3 +373,36 @@ test_that("prepare_dm_for_flatten() works", {
     cdm_select_tbl(dm_for_flatten, fact, dim_1, dim_3)
   )
 })
+
+test_that("tidyselect works for flatten", {
+  # test if deselecting works
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, -dim_2, dim_3, -dim_4, dim_1),
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_3)
+  )
+
+  # test if select helpers work
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, ends_with("3"), ends_with("1")),
+    cdm_flatten_to_tbl(dm_for_flatten, fact, dim_3, dim_1)
+  )
+
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact, everything()),
+    cdm_flatten_to_tbl(dm_for_flatten, fact)
+  )
+
+  # if only deselecting one potential candidate for flattening, the tables that are not
+  # candidates will generally be part of the choice
+  expect_error(
+    cdm_flatten_to_tbl(dm_for_filter, t2, -t1),
+    class = cdm_error("tables_not_reachable_from_start")
+  )
+
+  # trying to deselect table that doesn't exist:
+  expect_error(
+    cdm_flatten_to_tbl(dm_for_filter, t2, -t101),
+    class = cdm_error("w_message")
+  )
+
+})
