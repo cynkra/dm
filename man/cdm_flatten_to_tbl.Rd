@@ -20,7 +20,7 @@ for example a fact table in a star schema.}
 the order of the joins. If empty, all tables that can be reached are included.
 If this includes tables which aren't direct neighbours of \code{start},
 it will only work with \code{cdm_squash_to_tbl()} (given one of the allowed join-methods).
-\code{tidyselect} is supported.}
+\code{tidyselect} is supported, cf. \code{\link[dplyr:select]{dplyr::select()}}.}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}}
 }

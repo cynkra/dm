@@ -16,7 +16,7 @@
 #' the order of the joins. If empty, all tables that can be reached are included.
 #' If this includes tables which aren't direct neighbours of `start`,
 #' it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
-#' `tidyselect` is supported.
+#' `tidyselect` is supported, cf. [dplyr::select()].
 #' @family flattening functions
 #'
 #' @details With the `...` left empty, this function joins all the tables of your [`dm`]
