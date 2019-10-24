@@ -494,3 +494,12 @@ error_no_zoom_allowed <- function() {
   paste0("`cdm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `cdm_update_zoomed_tbl()`, ",
          "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.")
 }
+
+
+# general abort with customized msg ---------------------------------------
+
+abort_w_message <- function(msg) {
+  abort(msg, .subclass = cdm_error_full("w_message"))
+}
+
+abort_w_message
