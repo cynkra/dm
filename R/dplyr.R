@@ -67,3 +67,14 @@ transmute.zoomed_dm <- function(.data, ...) {
 
   replace_zoomed_tbl(zoomed_dm, transmuted_tbl)
 }
+
+select.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("select")
+}
+
+select.zoomed_dm <- function(.data, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  selected_tbl <- select(tbl, ...)
+
+  replace_zoomed_tbl(zoomed_dm, selected_tbl)
+}
