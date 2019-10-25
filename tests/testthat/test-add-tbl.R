@@ -83,6 +83,11 @@ test_that("cdm_add_tbl() works", {
       ..2
     )
   )
+
+  # can I use cdm_select_tbl(), selecting among others the new table?
+  expect_silent(
+    cdm_add_tbl(dm_for_filter, t7_new = t7) %>% cdm_select_tbl(t1, t7_new, everything())
+  )
 })
 
 test_that("cdm_rm_tbl() works", {
