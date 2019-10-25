@@ -31,6 +31,7 @@ summarise_.dm <- function(.data, ...) {
   abort_no_table_zoomed_dplyr("summarise")
 }
 
+# without this method a list of <lazy> in a '.dots' column is created
 summarise.zoomed_dm <- function(.data, ...) {
   summarise_.zoomed_dm(.data, ...)
 }
