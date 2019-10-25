@@ -68,3 +68,27 @@ test_that("zooming works also on DBs", {
       )
   )
 })
+
+test_that("cdm_insert_tbl() works", {
+  # test that a new tbl is inserted, based on the requested one
+  expect_equivalent_dm(
+    cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4_new),
+    dm_for_filter %>% cdm_add_tbl(t4_new = t4)
+  )
+})
+
+test_that("cdm_update_tbl() works", {
+  # setting table t7 as zoomed table for t3 and removing its primary key and foreign keys pointing to it
+  new_dm_for_filter <- cdm_get_def(dm_for_filter) %>%
+    mutate(
+      zoom = if_else(table == "t3", list(t7), NULL),
+      pks = if_else(table == "t3", vctrs::list_of(new_pk()), pks),
+      fks = if_else(table == "t3", vctrs::list_of(new_fk()), fks)) %>%
+    new_dm3()
+
+  # test that the old table is updated correctly
+  expect_equivalent_dm(
+    cdm_update_zoomed_tbl(new_dm_for_filter),
+    dm_for_filter %>% cdm_rm_tbl(t3) %>% cdm_add_tbl(t3 = t7) %>% cdm_select_tbl(t1, t2, t3, everything())
+  )
+})
