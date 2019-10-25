@@ -480,10 +480,12 @@ print.dm <- function(x, ...) {
   invisible(x)
 }
 
+#' @export
 print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   format(x, ..., n = NULL, width = NULL, n_extra = NULL)
 }
 
+#' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   zoom <- cdm_get_zoomed_tbl(x)
   df <- pluck(zoom$zoom, 1)
@@ -496,11 +498,13 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
 # therefore, we need to have an own subclass, but the main class needs to be `tbl`
+#' @export
 tbl_sum.zoomed_df <- function(x) {
   c(structure(attr(x, "name_df"), names = "A zoomed table of a dm"),
     NextMethod())
 }
 
+#' @export
 format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   NextMethod()
 }
