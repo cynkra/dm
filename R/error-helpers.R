@@ -503,7 +503,7 @@ abort_w_message <- function(msg) {
 
 abort_w_message
 
-# no zoom allowed for `cdm_zoom_to_tbl()` ---------------------------------
+# no table zoomed, but 'cdm_insert_tbl()' called ---------------------------------
 
 abort_no_table_zoomed <- function() {
   abort(error_no_table_zoomed(), .subclass = cdm_error_full("no_table_zoomed"))
@@ -522,4 +522,15 @@ abort_table_needs_name <- function() {
 
 error_table_needs_name <- function() {
   "The new table to insert with `cdm_insert_zoomed_tbl()` must have a name"
+}
+
+# no table zoomed, but dplyr-function called ---------------------------------
+
+abort_no_table_zoomed_dplyr <- function(fun) {
+  abort(error_no_table_zoomed_dplyr(fun), .subclass = cdm_error_full("no_table_zoomed_dplyr"))
+}
+
+error_no_table_zoomed_dplyr <- function(fun) {
+  glue("Please specify the table first that you want to manipulate, using `cdm_zoom_to_tbl()`, ",
+       "when calling {tick(paste0(fun, '()'))} on a `dm`")
 }
