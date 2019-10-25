@@ -54,10 +54,13 @@ cdm_select_tbl_impl <- function(dm, selected) {
   if (is_empty(selected)) return(empty_dm())
   check_correct_input(dm, selected)
 
+  order_tbl <- tibble(table = names(selected))
+
   def <-
     cdm_get_def(dm) %>%
     filter_recode_table(selected) %>%
-    filter_recode_table_fks(selected)
+    filter_recode_table_fks(selected) %>%
+    right_join(order_tbl, by = "table")
 
   new_dm3(def)
 }
