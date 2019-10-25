@@ -55,3 +55,10 @@ cdm_update_zoomed_tbl <- function(dm) {
       )
   new_dm3(new_def)
 }
+
+replace_zoomed_tbl <- function(dm, new_zoomed_tbl) {
+  table <- cdm_get_zoomed_tbl(dm)$table
+  def <- cdm_get_def(dm)
+  def$zoom[def$table == table] <- list(new_zoomed_tbl)
+  new_dm3(def)
+}
