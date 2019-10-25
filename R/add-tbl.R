@@ -41,6 +41,9 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name) {
   def_0 <- def[rep_along(table_name, NA_integer_), ]
   def_0$table <- table_name
   def_0$data <- tbls
+  def_0$pks <- vctrs::list_of(new_pk())
+  def_0$fks <- vctrs::list_of(new_fk())
+  def_0$filters <- vctrs::list_of(new_filter())
 
   new_dm3(vctrs::vec_rbind(def, def_0))
 }

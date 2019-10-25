@@ -480,18 +480,17 @@ print.dm <- function(x, ...) {
   invisible(x)
 }
 
+#' @export
 print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   format(x, ..., n = NULL, width = NULL, n_extra = NULL)
 }
 
+#' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  df <- get_zoomed_tbl(x)
+  zoom <- cdm_get_zoomed_tbl(x)
+  df <- pluck(zoom$zoom, 1)
   # so far only 1 table can be zoomed on
-  zoomed_df <- structure(
-    df,
-    class = c("zoomed_df", class(df)),
-    name_df = cdm_get_zoomed_tbl(x)$table
-    )
+  zoomed_df <- new_tibble(df, nrow = nrow(df), class = "zoomed_df", name_df = zoom$table)
 
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
@@ -499,11 +498,13 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
 # therefore, we need to have an own subclass, but the main class needs to be `tbl`
+#' @export
 tbl_sum.zoomed_df <- function(x) {
   c(structure(attr(x, "name_df"), names = "A zoomed table of a dm"),
     NextMethod())
 }
 
+#' @export
 format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   NextMethod()
 }
