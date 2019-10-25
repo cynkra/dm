@@ -34,3 +34,14 @@ summarise_.dm <- function(.data, ...) {
 summarise.zoomed_dm <- function(.data, ...) {
   summarise_.zoomed_dm(.data, ...)
 }
+
+filter.dm <- function(.data, ..., .preserve = FALSE) {
+  abort_no_table_zoomed_dplyr("filter")
+}
+
+filter.zoomed_dm <- function(.data, ..., .preserve = FALSE) {
+  tbl <- get_zoomed_tbl(.data)
+  filtered_tbl <- filter(tbl, ..., .preserve = .preserve)
+
+  replace_zoomed_tbl(zoomed_dm, filtered_tbl)
+}
