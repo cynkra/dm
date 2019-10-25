@@ -156,11 +156,18 @@ new_dm <- function(tables, data_model) {
   new_dm3(def)
 }
 
-new_dm3 <- function(def) {
-  structure(
-    list(def = def),
-    class = "dm"
-  )
+new_dm3 <- function(def, zoomed = FALSE) {
+  if (!zoomed) {
+    structure(
+      list(def = def),
+      class = "dm"
+      )
+  } else {
+    structure(
+      list(def = def),
+      class = c("zoomed_dm", "dm")
+    )
+  }
 }
 
 new_pk <- function(column = list()) {
