@@ -45,3 +45,15 @@ filter.zoomed_dm <- function(.data, ..., .preserve = FALSE) {
 
   replace_zoomed_tbl(zoomed_dm, filtered_tbl)
 }
+
+mutate.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("mutate")
+}
+
+mutate.zoomed_dm <- function(.data, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  mutated_tbl <- mutate(tbl, ...)
+
+  replace_zoomed_tbl(zoomed_dm, mutated_tbl)
+}
+
