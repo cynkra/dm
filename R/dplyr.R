@@ -57,3 +57,13 @@ mutate.zoomed_dm <- function(.data, ...) {
   replace_zoomed_tbl(zoomed_dm, mutated_tbl)
 }
 
+transmute.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("transmute")
+}
+
+transmute.zoomed_dm <- function(.data, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  transmuted_tbl <- transmute(tbl, ...)
+
+  replace_zoomed_tbl(zoomed_dm, transmuted_tbl)
+}
