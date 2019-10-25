@@ -78,24 +78,22 @@ test_that("cdm_insert_tbl() works", {
 })
 
 test_that("cdm_update_tbl() works", {
-  # setting table t7 as zoomed table for t3 and removing its primary key and foreign keys pointing to it
-  skip("test needs PR #105 in order to work")
+  # setting table t7 as zoomed table for t6 and removing its primary key and foreign keys pointing to it
   new_dm_for_filter <- cdm_get_def(dm_for_filter) %>%
     mutate(
-      zoom = if_else(table == "t3", list(t7), NULL),
-      pks = if_else(table == "t3", vctrs::list_of(new_pk()), pks),
-      fks = if_else(table == "t3", vctrs::list_of(new_fk()), fks)) %>%
+      zoom = if_else(table == "t6", list(t7), NULL),
+      pks = if_else(table == "t6", vctrs::list_of(new_pk()), pks),
+      fks = if_else(table == "t6", vctrs::list_of(new_fk()), fks)) %>%
     new_dm3()
+  class(new_dm_for_filter) <- c("zoomed_dm", "dm")
 
   # test that the old table is updated correctly
   expect_equivalent_dm(
     cdm_update_zoomed_tbl(new_dm_for_filter),
     dm_for_filter %>%
-      cdm_rm_tbl(t3) %>%
-      cdm_add_tbl(t3 = t7) %>%
-      # FIXME: with PR #106 this would be much easier
+      cdm_rm_tbl(t6) %>%
+      cdm_add_tbl(t6 = t7) %>%
       cdm_get_def() %>%
-      arrange(c(1, 2, 6, 4, 5)) %>%
       new_dm3()
   )
 })
