@@ -78,3 +78,14 @@ select.zoomed_dm <- function(.data, ...) {
 
   replace_zoomed_tbl(zoomed_dm, selected_tbl)
 }
+
+rename.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("rename")
+}
+
+rename.zoomed_dm <- function(.data, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  renamed_tbl <- rename(tbl, ...)
+
+  replace_zoomed_tbl(zoomed_dm, renamed_tbl)
+}
