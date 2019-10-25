@@ -81,9 +81,7 @@ test_that("cdm_update_tbl() works", {
   # setting table t7 as zoomed table for t6 and removing its primary key and foreign keys pointing to it
   new_dm_for_filter <- cdm_get_def(dm_for_filter) %>%
     mutate(
-      zoom = if_else(table == "t6", list(t7), NULL),
-      pks = if_else(table == "t6", vctrs::list_of(new_pk()), pks),
-      fks = if_else(table == "t6", vctrs::list_of(new_fk()), fks)) %>%
+      zoom = if_else(table == "t6", list(t7), NULL)) %>%
     new_dm3()
   class(new_dm_for_filter) <- c("zoomed_dm", "dm")
 

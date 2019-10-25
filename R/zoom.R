@@ -44,14 +44,24 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
 
 # FIXME: this is a very basic implementation:
 # it does not care at all about potential changes in the key columns of the table
-# this needs to be tracked though
+# it just erases the old keys; this needs to be tracked though
 cdm_update_zoomed_tbl <- function(dm) {
   if (!is_zoomed(dm)) return(dm)
   table_name <- cdm_get_zoomed_tbl(dm) %>% pull(table)
   new_def <- cdm_get_def(dm) %>%
     mutate(
       data = if_else(table != !!table_name, data, zoom),
+      pks = if_else(table != !!table_name, pks, update_zoomed_pk(dm)),
+      fks = if_else(table != !!table_name, fks, update_zoomed_fks(dm)),
       zoom = list(NULL)
       )
   new_dm3(new_def)
+}
+
+update_zoomed_pk <- function(dm) {
+  vctrs::list_of(new_pk())
+}
+
+update_zoomed_fks <- function(dm) {
+  vctrs::list_of(new_fk())
 }
