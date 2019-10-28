@@ -9,7 +9,7 @@
 #'
 #' @export
 cdm_is_referenced <- function(dm, table) {
-  has_length(cdm_get_referencing_tables(dm, table))
+  has_length(cdm_get_referencing_tables(dm, !!ensym(table)))
 }
 
 is_referenced_data_model <- function(data_model, table_name) {
@@ -29,9 +29,9 @@ is_referenced_data_model <- function(data_model, table_name) {
 #' @export
 cdm_get_referencing_tables <- function(dm, table) {
   table <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  check_correct_input(dm, table)
 
-  def <- cdm_get_def()
+  def <- cdm_get_def(dm)
   i <- which(def$table == table)
   def$fks[[i]]$table
 }
