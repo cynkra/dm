@@ -146,7 +146,7 @@ key_tracker_zoom <- tibble(table = character(), key_tracker_zoom = list())
 airports_new <- airports %>% 
   rename(code = faa)
 
-cdm_add_tbl(cdm_nycflights13(), airports_new) %>%
+(new_def <- cdm_add_tbl(cdm_nycflights13(), airports_new) %>%
   dm:::cdm_get_def() %>% 
   mutate(
     filters = if_else(
@@ -164,6 +164,9 @@ cdm_add_tbl(cdm_nycflights13(), airports_new) %>%
       fks)
     ) %>% 
   left_join(key_tracker_zoom, by = "table")
+)
+
+cdm_draw(dm:::new_dm3(new_def))
 ```
 
 ## Updating "airports" with zoomed table
@@ -189,7 +192,7 @@ key_tracker_zoom <- tibble(table = character(), key_tracker_zoom = list())
 airports_new <- airports %>% 
   rename(code = faa)
 
-dm:::cdm_get_def(cdm_nycflights13()) %>% 
+(new_def <- dm:::cdm_get_def(cdm_nycflights13()) %>% 
   mutate(
     data = if_else(
       table == "airports",
@@ -207,5 +210,8 @@ dm:::cdm_get_def(cdm_nycflights13()) %>%
       )
     ) %>% 
   left_join(key_tracker_zoom, by = "table")
+)
+
+cdm_draw(dm:::new_dm3(new_def))
 ```
 
