@@ -1,0 +1,211 @@
+---
+title: "Zoomed table in `def`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{zoomed_table_in_def}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(tibble.width = 70)
+```
+
+```{r setup, include = FALSE}
+library(dm)
+library(dplyr)
+library(nycflights13)
+library(rlang)
+```
+
+Without a zoomed table, `def` could look like this:
+
+```{r}
+key_tracker_zoom <- tibble(table = character(), key_tracker_zoom = list())
+
+dm:::cdm_get_def(cdm_nycflights13()) %>% 
+  left_join(key_tracker_zoom, by = "table")
+```
+
+## Zooming to airports
+
+### {dm} code
+
+```{r}
+cdm_nycflights13() %>% dm:::cdm_zoom_to_tbl(airports)
+```
+
+### state of `def`
+
+```{r}
+key_tracker_zoom <- tibble(
+  table = "airports", 
+  key_tracker_zoom = list(set_names(dm:::get_all_keys(cdm_nycflights13(), "airports")))
+  )
+key_tracker_zoom %>% pull(key_tracker_zoom)
+# names of columns are the potential new names; adapted when manipulating the zoomed table
+
+dm:::cdm_get_def(cdm_nycflights13()) %>% 
+  mutate(zoom = if_else(
+    table == "airports",
+    data,
+    list(NULL)
+  )) %>% 
+  left_join(key_tracker_zoom, by = "table")
+```
+
+## Filtering the zoomed table (airports)
+
+### {dm} code
+
+```{r, eval=FALSE}
+cdm_nycflights13() %>% dm:::cdm_zoom_to_tbl(airports) %>% filter(lat < 40.)
+```
+
+### state of `def`
+
+```{r}
+key_tracker_zoom <- tibble(
+  table = "airports", 
+  key_tracker_zoom = list(set_names(dm:::get_all_keys(cdm_nycflights13(), "airports")))
+  )
+key_tracker_zoom %>% pull(key_tracker_zoom)
+
+dm:::cdm_get_def(cdm_nycflights13()) %>% 
+  mutate(
+    zoom = if_else(
+      table == "airports",
+      data,
+      list(NULL)),
+    filters = if_else(
+      table == "airports",
+      vctrs::list_of(dm:::new_filter(list(quo(lat < 40.)))),
+      vctrs::list_of(dm:::new_filter()))
+  ) %>% 
+  left_join(key_tracker_zoom, by = "table")
+```
+
+## Changing the primary key column name from "faa" to "code"
+
+### {dm} code
+
+```{r, eval=FALSE}
+cdm_nycflights13() %>% 
+  dm:::cdm_zoom_to_tbl(airports) %>% 
+  filter(lat < 40.) %>% 
+  rename(code = faa)
+```
+
+### state of `def`
+
+```{r}
+key_tracker_zoom <- tibble(
+  table = "airports", 
+  key_tracker_zoom = list(set_names(dm:::get_all_keys(cdm_nycflights13(), "airports"), "code"))
+  )
+key_tracker_zoom %>% pull(key_tracker_zoom)
+
+dm:::cdm_get_def(cdm_nycflights13()) %>% 
+  mutate(
+    zoom = if_else(
+      table == "airports",
+      data,
+      list(NULL)),
+    filters = if_else(
+      table == "airports",
+      vctrs::list_of(dm:::new_filter(list(quo(lat < 40.)))),
+      vctrs::list_of(dm:::new_filter()))
+  ) %>% 
+  left_join(key_tracker_zoom, by = "table")
+```
+
+## Inserting a new table "airports_new"
+
+### {dm} code
+
+```{r, eval=FALSE}
+cdm_nycflights13() %>% 
+  dm:::cdm_zoom_to_tbl(airports) %>% 
+  filter(lat < 40.) %>% 
+  rename(code = faa) %>% 
+  cdm_insert_zoomed_tbl(airports_new)
+```
+
+### state of `def`
+
+FKs pointing to the old table are also pointing to the new one.
+New PK has now the new name.
+Display accent is not copied.
+
+```{r}
+key_tracker_zoom <- tibble(table = character(), key_tracker_zoom = list())
+airports_new <- airports %>% 
+  rename(code = faa)
+
+cdm_add_tbl(cdm_nycflights13(), airports_new) %>%
+  dm:::cdm_get_def() %>% 
+  mutate(
+    filters = if_else(
+      table == "airports_new",
+      vctrs::list_of(dm:::new_filter(list(quo(lat < 40.)))),
+      vctrs::list_of(dm:::new_filter())),
+    pks = if_else(
+      table == "airports_new",
+      vctrs::list_of(dm:::new_pk(list("code"))),
+      pks
+      ),
+    fks = if_else(
+      table == "airports_new",
+      vctrs::list_of(dm:::new_fk(table = "flights", column = list("origin"))),
+      fks)
+    ) %>% 
+  left_join(key_tracker_zoom, by = "table")
+```
+
+## Updating "airports" with zoomed table
+
+### {dm} code
+
+```{r, eval=FALSE}
+cdm_nycflights13() %>% 
+  dm:::cdm_zoom_to_tbl(airports) %>% 
+  filter(lat < 40.) %>% 
+  rename(code = faa) %>% 
+  cdm_update_zoomed_tbl(airports_new)
+```
+
+### state of `def`
+
+FKs pointing to the old table are also pointing to the new one.
+New PK has now the new name.
+Display accent stays the same.
+
+```{r}
+key_tracker_zoom <- tibble(table = character(), key_tracker_zoom = list())
+airports_new <- airports %>% 
+  rename(code = faa)
+
+dm:::cdm_get_def(cdm_nycflights13()) %>% 
+  mutate(
+    data = if_else(
+      table == "airports",
+      list(airports_new),
+      data
+    ),
+    filters = if_else(
+      table == "airports",
+      vctrs::list_of(dm:::new_filter(list(quo(lat < 40.)))),
+      vctrs::list_of(dm:::new_filter())),
+    pks = if_else(
+      table == "airports",
+      vctrs::list_of(dm:::new_pk(list("code"))),
+      pks
+      )
+    ) %>% 
+  left_join(key_tracker_zoom, by = "table")
+```
+
