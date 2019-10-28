@@ -347,7 +347,7 @@ flights_new <- flights %>%
       vctrs::list_of(dm:::new_filter())),
     fks = if_else(
       table == "planes",
-      vctrs::list_of(dm:::new_fk(table = "flights", column = list("plane_code"))),
+      vctrs::list_of(dm:::new_fk(table = c("flights_new", "flights"), column = list("plane_code", "tailnum"))),
       fks)
     ) %>% 
   left_join(key_tracker_zoom, by = "table")
