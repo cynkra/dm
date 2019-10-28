@@ -68,6 +68,10 @@ cdm_nycflights13() %>% dm:::cdm_zoom_to_tbl(airports) %>% filter(lat < 40.)
 
 ### state of `def`
 
+We need to decide if we want an extra column in `def` for the filter condition of the zoomed table.
+In this vignette we currently don't have an extra column, the condition is written into the filter column of the table that the zoomed table is based on.
+This would also imply that `cdm_apply_filters()` and the methods for `tbl()`, `[[.dm()`, `$.dm()` should not be allowed to work with a `zoomed_dm`.
+
 ```{r}
 key_tracker_zoom <- tibble(
   table = "airports", 
