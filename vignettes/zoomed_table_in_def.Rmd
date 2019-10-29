@@ -403,4 +403,122 @@ flights_new <- flights %>%
 cdm_draw(dm:::new_dm3(new_def))
 ```
 
+## Example for `group_by()` followed by `mutate()` or `summarize()`
+
+When grouped by key columns, these columns should remain keys in the resulting table.
+Otherwise keys are dropped, when key columns are changed/dropped/etc.
+
+### {dm} code
+
+```{r, eval=FALSE}
+cdm_nycflights13(cycle = TRUE) %>% 
+  dm:::cdm_zoom_to_tbl(flights) %>% 
+  group_by(carrier, dest) %>% 
+  summarize(numbers_of_flights = n())
+```
+
+### state of `def`
+
+```{r}
+key_tracker_zoom <- tibble(
+  table = "flights", 
+  key_tracker_zoom = list(set_names(c("carrier", "dest")))
+  )
+key_tracker_zoom %>% pull(key_tracker_zoom)
+
+flights_new <- group_by(flights, carrier, dest) %>% summarize(num_flights = n())
+
+dm:::cdm_get_def(cdm_nycflights13(cycle = TRUE)) %>% 
+  mutate(
+    zoom = if_else(
+      table == "flights",
+      list(flights_new),
+      list(NULL))
+    ) %>% 
+  left_join(key_tracker_zoom, by = "table")
+```
+
+## Inserting after `group_by() + summarize()`
+
+### {dm} code
+
+```{r, eval=FALSE}
+cdm_nycflights13(cycle = TRUE) %>% 
+  dm:::cdm_zoom_to_tbl(flights) %>% 
+  group_by(carrier, dest) %>% 
+  summarize(numbers_of_flights = n()) %>% 
+  cdm_insert_zoomed_tbl(flights_summarized)
+```
+
+### state of `def`
+
+```{r}
+key_tracker_zoom <- tibble(table = character(), key_tracker_zoom = list())
+
+(new_def <- cdm_add_tbl(cdm_nycflights13(cycle = TRUE), flights_summarized = flights_new) %>%
+  dm:::cdm_get_def() %>% 
+  mutate(
+    fks = case_when(
+      table == "planes" ~ vctrs::list_of(dm:::new_fk(table = c("flights"), column = list("tailnum"))),
+      table == "airports" ~ vctrs::list_of(
+        dm:::new_fk(
+          table = c("flights", "flights_summarized", "flights"), 
+          column = list("origin", "dest", "dest"))
+        ),
+      table == "airlines" ~ vctrs::list_of(
+        dm:::new_fk(
+          table = c("flights_summarized", "flights"), 
+          column = list("carrier", "carrier"))),
+      TRUE ~ fks)
+    ) %>% 
+  left_join(key_tracker_zoom, by = "table")
+)
+
+cdm_draw(dm:::new_dm3(new_def))
+```
+
+
+
+## Updating after `group_by() + summarize()`
+
+### {dm} code
+
+```{r, eval=FALSE}
+cdm_nycflights13(cycle = TRUE) %>% 
+  dm:::cdm_zoom_to_tbl(flights) %>% 
+  group_by(carrier, dest) %>% 
+  summarize(numbers_of_flights = n()) %>% 
+  cdm_update_zoomed_tbl()
+```
+
+### state of `def`
+
+```{r}
+key_tracker_zoom <- tibble(table = character(), key_tracker_zoom = list())
+
+(new_def <- cdm_nycflights13(cycle = TRUE) %>%
+  dm:::cdm_get_def() %>% 
+  mutate(
+    data = if_else(
+      table == "flights",
+      list(flights_new),
+      data
+    ),
+    fks = case_when(
+      table == "airports" ~ vctrs::list_of(
+        dm:::new_fk(
+          table = c("flights"), 
+          column = list("dest"))
+        ),
+      table == "airlines" ~ vctrs::list_of(
+        dm:::new_fk(
+          table = c("flights"), 
+          column = list("carrier"))),
+      TRUE ~ vctrs::list_of(dm:::new_fk()))
+    ) %>% 
+  left_join(key_tracker_zoom, by = "table")
+)
+
+cdm_draw(dm:::new_dm3(new_def))
+```
 
