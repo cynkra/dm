@@ -5,10 +5,15 @@ cdm_zoom_to_tbl <- function(dm, table) {
   zoom <- as_string(ensym(table))
   check_correct_input(dm, zoom)
 
+  keys <- list(get_all_keys(dm, zoom))
+
   structure(
     new_dm3(
       cdm_get_def(dm) %>%
-        mutate(zoom = if_else(table == !!zoom, data, list(NULL)))
+        mutate(
+          zoom = if_else(table == !!zoom, data, list(NULL)),
+          key_tracker_zoom = if_else(table == !!zoom, keys, list(NULL))
+          )
       ),
     class = c("zoomed_dm", "dm")
     )
