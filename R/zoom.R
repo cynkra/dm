@@ -138,9 +138,10 @@ orig_name_zoomed <- function(dm) {
   cdm_get_zoomed_tbl(dm) %>% pull(table)
 }
 
-replace_zoomed_tbl <- function(dm, new_zoomed_tbl) {
+replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_keys = NULL) {
   table <- cdm_get_zoomed_tbl(dm)$table
   def <- cdm_get_def(dm)
   def$zoom[def$table == table] <- list(new_zoomed_tbl)
+  if (!is_null(tracked_keys)) def$key_tracker_zoom[def$table == table] <- list(tracked_keys)
   new_dm3(def, zoomed = TRUE)
 }
