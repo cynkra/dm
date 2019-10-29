@@ -25,10 +25,9 @@ test_that("functions working with graphs do the right thing?", {
     join_list_tbl_3
   )
 
-  expect_error(
+  expect_cdm_error(
     calculate_join_list(dm_for_filter_w_cycle, "t3"),
-    class = cdm_error("no_cycles"),
-    error_txt_no_cycles()
+    class = "no_cycles"
   )
 
   expect_identical_graph(

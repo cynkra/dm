@@ -120,9 +120,9 @@ test_that("cdm_filter() returns original `dm` object when ellipsis empty", {
 test_that("cdm_filter() fails when no table name is provided", {
   map(
     dm_for_filter_src,
-    ~ expect_error(
+    ~ expect_cdm_error(
       cdm_filter(.x),
-      class = cdm_error("table_not_in_dm")
+      class = "table_not_in_dm"
     )
   )
 })
