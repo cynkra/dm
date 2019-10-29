@@ -240,3 +240,16 @@ check_fk_constraints <- function(dm) {
   ) %>%
     select(table = t1_name, kind, column = colname, is_key, problem)
 }
+
+new_tracked_keys <- function(dm, selected) {
+  tracked_keys <- get_tracked_keys(dm)
+  old_tracked_names <- names(tracked_keys)
+  # the new tracked keys need to be the remaining original column names
+  # and their name needs to be the newest one (tidyselect-syntax)
+  # `intersect(selected, old_tracked_names)` is empty, return `NULL`
+  if (is_null(intersect(selected, old_tracked_names))) NULL else
+  set_names(
+    tracked_keys[selected[selected == intersect(selected, old_tracked_names)]],
+    names(selected[selected == intersect(selected, old_tracked_names)])
+  )
+}
