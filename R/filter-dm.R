@@ -211,5 +211,6 @@ check_no_filter <- function(dm) {
 get_filter_for_table <- function(dm, table_name) {
   cdm_get_def(dm) %>%
     filter(table == table_name) %>%
-    pull(filters)
+    pull(filters) %>%
+    pluck(1)
 }
