@@ -66,14 +66,14 @@ cdm_filter <- function(dm, table, ...) {
     return(dm)
   } # valid table and empty ellipsis provided
 
-  set_filter_for_table(dm, table, quos)
+  set_filter_for_table(dm, table, quos, FALSE)
 }
 
-set_filter_for_table <- function(dm, table, quos) {
+set_filter_for_table <- function(dm, table, quos, zoomed) {
   def <- cdm_get_def(dm)
 
   i <- which(def$table == table)
-  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(quos))
+  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(quos, zoomed))
   new_dm3(def)
 }
 
