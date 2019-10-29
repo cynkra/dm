@@ -103,6 +103,7 @@ new_dm <- function(tables, data_model) {
   display <- as.character(data_model_tables$display)
   filter <- new_filters()
   zoom <- new_zoom()
+  key_tracker_zoom <- new_key_tracker_zoom()
 
   # Legacy compatibility
   pks$column <- as.list(pks$column)
@@ -151,7 +152,8 @@ new_dm <- function(tables, data_model) {
     left_join(pks, by = "table") %>%
     left_join(fks, by = "table") %>%
     left_join(filters, by = "table") %>%
-    left_join(zoom, by = "table")
+    left_join(zoom, by = "table") %>%
+    left_join(key_tracker_zoom, by = "table")
 
   new_dm3(def)
 }
@@ -184,6 +186,10 @@ new_filters <- function() {
 
 new_zoom <- function() {
   tibble(table = character(), zoom = list())
+}
+
+new_key_tracker_zoom <- function() {
+  tibble(table = character(), key_tracker_zoom = list())
 }
 
 #' Validator
