@@ -64,3 +64,8 @@ update_zoomed_pk <- function(dm) {
 update_zoomed_fks <- function(dm) {
   vctrs::list_of(new_fk())
 }
+
+orig_name_zoomed <- function(dm) {
+  cdm_get_def(dm) %>%
+    filter(map_lgl(zoom, ~!is_null(.))) %>%
+    pull(table)
