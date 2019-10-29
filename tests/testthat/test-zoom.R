@@ -72,8 +72,12 @@ test_that("cdm_insert_tbl() works", {
   # test that a new tbl is inserted, based on the requested one
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4_new),
-    dm_for_filter %>% cdm_add_tbl(t4_new = t4)
-  )
+    dm_for_filter %>%
+      cdm_add_tbl(t4_new = t4) %>%
+      cdm_add_pk(t4_new, h) %>%
+      cdm_add_fk(t4_new, j, t3) %>%
+      cdm_add_fk(t5, l, t4_new)
+      )
 })
 
 test_that("cdm_update_tbl() works", {
