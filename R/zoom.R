@@ -26,7 +26,7 @@ is_zoomed <- function(dm) {
 cdm_zoom_out <- function(dm) {
   new_dm3(
     cdm_get_def(dm) %>%
-      mutate(zoom = list(NULL))
+      mutate(zoom = list(NULL), key_tracker_zoom = list(NULL))
     )
 }
 
