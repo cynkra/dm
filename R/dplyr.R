@@ -70,9 +70,12 @@ select.dm <- function(.data, ...) {
 
 select.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  selected_tbl <- select(tbl, ...)
+  selected <- tidyselect::vars_select(colnames(tbl), ...)
+  selected_tbl <- select(tbl, !!!selected)
 
-  replace_zoomed_tbl(.data, selected_tbl)
+  new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
+
+  replace_zoomed_tbl(.data, selected_tbl, new_tracked_keys_zoom)
 }
 
 rename.dm <- function(.data, ...) {
@@ -81,7 +84,11 @@ rename.dm <- function(.data, ...) {
 
 rename.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  renamed_tbl <- rename(tbl, ...)
+  renamed <- tidyselect::vars_rename(colnames(tbl), ...)
+  renamed_tbl <- rename(tbl, !!!renamed)
 
-  replace_zoomed_tbl(.data, renamed_tbl)
+  new_tracked_keys_zoom <- new_tracked_keys(.data, renamed)
+
+  replace_zoomed_tbl(.data, renamed_tbl, new_tracked_keys_zoom)
 }
+
