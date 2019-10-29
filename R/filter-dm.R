@@ -145,7 +145,7 @@ cdm_get_filtered_table <- function(dm, from) {
 
     filter_quos <- recipe$filter[[i]]
     if (!is_null(filter_quos)) {
-      filter_quos <- pull(filter_quos)
+      filter_quos <- pull(filter_quos, filter)
       table <- filter(table, !!!filter_quos)
     }
 
