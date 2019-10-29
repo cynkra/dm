@@ -173,8 +173,8 @@ new_fk <- function(table = character(), column = list()) {
   tibble(table = table, column = column)
 }
 
-new_filter <- function(quos = list()) {
-  tibble(filter_quo = unclass(quos))
+new_filter <- function(quos = list(), zoomed = logical()) {
+  tibble(filter_quo = unclass(quos), zoomed = zoomed)
 }
 
 # Legacy!
