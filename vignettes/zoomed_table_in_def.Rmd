@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-options(tibble.width = 70)
+options(width = 120, tibble.width = 100)
 ```
 
 ```{r setup, include = FALSE}
@@ -68,9 +68,9 @@ cdm_nycflights13() %>% dm:::cdm_zoom_to_tbl(airports) %>% filter(lat < 40.)
 
 ### state of `def`
 
-We need to decide if we want an extra column in `def` for the filter condition of the zoomed table.
-In this vignette we currently don't have an extra column, the condition is written into the filter column of the table that the zoomed table is based on.
-This would also imply that `cdm_apply_filters()` and the methods for `tbl()`, `[[.dm()`, `$.dm()` should not be allowed to work with a `zoomed_dm`.
+We are changing the column `filters` slightly, adding a new column in the dataframe: a logical column `zoomed`. This indicates for each filter condition, if it is an "old" one or a new one.
+`select()` and `rename()` will (for now) be forbidden on filtered tables, independent if `zoomed` is `TRUE` or `FALSE`.
+`cdm_apply_filters()` and the methods for `tbl()`, `[[.dm()`, `$.dm()` need to (at least) be adapted for a `zoomed_dm`.
 
 ```{r}
 key_tracker_zoom <- tibble(
@@ -141,7 +141,7 @@ cdm_nycflights13() %>%
 
 ### state of `def`
 
-FKs pointing to the old table are NOT pointing to the new one.
+All keys that could be tracked are staying, including FKs pointing to the old table.
 New PK has now the new name.
 Display accent is not copied.
 
@@ -183,7 +183,7 @@ cdm_nycflights13() %>%
 
 ### state of `def`
 
-FKs pointing to the old table ARE ALSO pointing to the new one.
+All keys that could be tracked.
 New PK has now the new name.
 Display accent stays the same.
 
@@ -345,10 +345,11 @@ flights_new <- flights %>%
       table == "flights_new",
       vctrs::list_of(dm:::new_filter(list(quo(dep_time < 1200)))),
       vctrs::list_of(dm:::new_filter())),
-    fks = if_else(
-      table == "planes",
-      vctrs::list_of(dm:::new_fk(table = c("flights_new", "flights"), column = list("plane_code", "tailnum"))),
-      fks)
+    fks = case_when(
+      table == "planes" ~ vctrs::list_of(dm:::new_fk(table = c("flights_new", "flights"), column = list("plane_code", "tailnum"))),
+      table == "airports" ~ vctrs::list_of(dm:::new_fk(table = c("flights_new", "flights"), column = list("origin", "origin"))),
+      table == "airlines" ~ vctrs::list_of(dm:::new_fk(table = c("flights_new", "flights"), column = list("carrier", "carrier"))),
+      TRUE ~ fks)
     ) %>% 
   left_join(key_tracker_zoom, by = "table")
 )
@@ -401,4 +402,5 @@ flights_new <- flights %>%
 
 cdm_draw(dm:::new_dm3(new_def))
 ```
+
 
