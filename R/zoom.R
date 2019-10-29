@@ -111,16 +111,20 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   tracked_keys <- get_tracked_keys(dm)
   old_out_keys <- cdm_get_all_fks(dm) %>%
     filter(child_table == old_tbl_name) %>%
-    select(table = parent_table, column = child_fk_col) %>%
-    mutate(new_column = names(tracked_keys[tracked_keys == column]))
+    select(table = parent_table, column = child_fk_col)
+  old_and_new_out_keys <-
+    if (nrow(old_out_keys) > 0) {
+      mutate(old_out_keys, new_column = names(tracked_keys[tracked_keys == column]))
+      } else mutate(old_out_keys, new_column = NA_character_)
+
   if (is_upd) {
     dm <- reduce2(
-      old_out_keys$column,
-      old_out_keys$table,
+      old_and_new_out_keys$column,
+      old_and_new_out_keys$table,
       ~cdm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3), .init = dm
       )
   }
-  reduce2(old_out_keys$new_column, old_out_keys$table, ~cdm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm)
+  reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~cdm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm)
 }
 
 get_tracked_keys <- function(dm) {
