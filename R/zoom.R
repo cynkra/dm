@@ -35,9 +35,15 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
   new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
   if (new_tbl_name_chr == "") abort_table_needs_name()
+  old_tbl_name <- orig_name_zoomed(dm)
   new_tbl <- list(get_zoomed_tbl(dm))
+  # filters need to be split: old_filters belong to old table, new ones to the inserted one
+  all_filters <- get_filter_for_table(dm, old_tbl_name)
+  old_filters <- all_filters %>% filter(!zoomed)
+  new_filters <- all_filters %>% filter(zoomed) %>% mutate(zoomed = FALSE)
 
-  cdm_add_tbl_impl(dm, new_tbl, new_tbl_name_chr) %>%
+  update_filter(dm, old_tbl_name, vctrs::list_of(old_filters)) %>%
+    cdm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
     cdm_zoom_out()
 }
 
@@ -47,11 +53,13 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
 cdm_update_zoomed_tbl <- function(dm) {
   if (!is_zoomed(dm)) return(dm)
   table_name <- cdm_get_zoomed_tbl(dm) %>% pull(table)
+  upd_filter <- vctrs::list_of(get_filter_for_table(dm, table_name) %>% mutate(zoomed = FALSE))
   new_def <- cdm_get_def(dm) %>%
     mutate(
       data = if_else(table != !!table_name, data, zoom),
       pks = if_else(table != !!table_name, pks, update_zoomed_pk(dm)),
       fks = if_else(table != !!table_name, fks, update_zoomed_fks(dm)),
+      filters = if_else(table != !!table_name, filters, upd_filter),
       zoom = list(NULL)
       )
   new_dm3(new_def)
@@ -69,3 +77,4 @@ orig_name_zoomed <- function(dm) {
   cdm_get_def(dm) %>%
     filter(map_lgl(zoom, ~!is_null(.))) %>%
     pull(table)
+}
