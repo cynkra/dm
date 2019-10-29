@@ -35,7 +35,7 @@ cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
   cdm_add_tbl_impl(dm, new_tables, new_names)
 }
 
-cdm_add_tbl_impl <- function(dm, tbls, table_name) {
+cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter())) {
   def <- cdm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
@@ -43,7 +43,7 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name) {
   def_0$data <- tbls
   def_0$pks <- vctrs::list_of(new_pk())
   def_0$fks <- vctrs::list_of(new_fk())
-  def_0$filters <- vctrs::list_of(new_filter())
+  def_0$filters <- filters
 
   new_dm3(vctrs::vec_rbind(def, def_0))
 }

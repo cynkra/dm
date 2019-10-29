@@ -72,17 +72,19 @@ test_that("cdm_insert_tbl() works", {
   # test that a new tbl is inserted, based on the requested one
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4_new),
-    dm_for_filter %>% cdm_add_tbl(t4_new = t4)
-  )
+    dm_for_filter %>%
+      cdm_add_tbl(t4_new = t4) %>%
+      cdm_add_pk(t4_new, h) %>%
+      cdm_add_fk(t4_new, j, t3) %>%
+      cdm_add_fk(t5, l, t4_new)
+      )
 })
 
 test_that("cdm_update_tbl() works", {
   # setting table t7 as zoomed table for t6 and removing its primary key and foreign keys pointing to it
   new_dm_for_filter <- cdm_get_def(dm_for_filter) %>%
     mutate(
-      zoom = if_else(table == "t6", list(t7), NULL),
-      pks = if_else(table == "t6", vctrs::list_of(new_pk()), pks),
-      fks = if_else(table == "t6", vctrs::list_of(new_fk()), fks)) %>%
+      zoom = if_else(table == "t6", list(t7), NULL)) %>%
     new_dm3()
   class(new_dm_for_filter) <- c("zoomed_dm", "dm")
 

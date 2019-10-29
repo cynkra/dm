@@ -94,7 +94,7 @@ get_all_keys <- function(dm, table_name) {
     filter(child_table == !!table_name) %>%
     pull(child_fk_col)
   pk <- cdm_get_pk(dm, !!table_name)
-  c(pk, fks)
+  set_names(c(pk, fks))
 }
 
 apply_col_select <- function(df, selected) {
