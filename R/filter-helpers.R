@@ -26,3 +26,9 @@ get_by <- function(dm, lhs_name, rhs_name) {
   names(by) <- lhs_col
   by
 }
+
+update_filter <- function(dm, table_name, filters) {
+  def <- cdm_get_def(dm)
+  def$filters[def$table == table_name] <- filters
+  new_dm3(def)
+}
