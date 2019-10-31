@@ -1,12 +1,12 @@
 #' @export
-group_by.dm <- function(.data, ..., add = FALSE, .drop = group_by_drop_default(.data)) {
+group_by.dm <- function(.data, ...) {
   abort_no_table_zoomed_dplyr("group_by")
 }
 
 #' @export
-group_by.zoomed_dm <- function(.data, ..., add = FALSE, .drop = group_by_drop_default(.data)) {
+group_by.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  grouped_tbl <- group_by(tbl, ..., add = add, .drop = .drop)
+  grouped_tbl <- group_by(tbl, ...)
 
   replace_zoomed_tbl(.data, grouped_tbl)
 }
