@@ -503,14 +503,18 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   zoomed_filters <- cdm_get_filter(x) %>%
     filter(zoomed == TRUE)
   filters <- if_else(nrow(zoomed_filters) > 0, TRUE, FALSE)
-
   # so far only 1 table can be zoomed on
-  zoomed_df <- new_tibble(df, nrow = nrow(df),
-                          class = c("zoomed_df", class(df)),
-                          name_df = orig_name_zoomed(x),
-                          filters = filters)
+  zoomed_df <- new_zoomed_df(
+    df,
+    name_df = orig_name_zoomed(x),
+    filters = filters
+  )
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
+}
+
+new_zoomed_df <- function(x, ...) {
+  structure(x, class = c("zoomed_df", class(x)), ...)
 }
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
