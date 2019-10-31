@@ -221,4 +221,20 @@ test_that("key tracking works", {
     set_names("e_new")
   )
 
+  # FKs that point to a PK that vanished, should also vanish
+  pk_gone_dm <- zoomed_grouped_in_dm %>%
+    select(g_new = g) %>%
+    cdm_update_zoomed_tbl()
+
+  expect_identical(
+    pk_gone_dm %>%
+      cdm_get_fk(t2, t3),
+    character()
+  )
+
+  expect_identical(
+    pk_gone_dm %>%
+      cdm_get_fk(t4, t3),
+    character()
+  )
 })
