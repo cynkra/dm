@@ -476,7 +476,6 @@ print.dm <- function(x, ...) {
   cat_line("Foreign keys: ", sum(map_int(def$fks, NROW)))
 
   cat_rule("Filters", col = "orange")
-
   filters <- cdm_get_filter(x)
 
   if (nrow(filters) > 0) {
@@ -500,11 +499,16 @@ print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  zoom <- cdm_get_zoomed_tbl(x)
-  df <- pluck(zoom$zoom, 1)
-  # so far only 1 table can be zoomed on
-  zoomed_df <- new_tibble(df, nrow = nrow(df), class = c("zoomed_df", class(df)), name_df = zoom$table)
+  df <- get_zoomed_tbl(x)
+  zoomed_filters <- cdm_get_filter(x) %>%
+    filter(zoomed == TRUE)
+  filters <- if_else(nrow(zoomed_filters) > 0, TRUE, FALSE)
 
+  # so far only 1 table can be zoomed on
+  zoomed_df <- new_tibble(df, nrow = nrow(df),
+                          class = c("zoomed_df", class(df)),
+                          name_df = orig_name_zoomed(x),
+                          filters = filters)
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
 }
@@ -514,6 +518,7 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 tbl_sum.zoomed_df <- function(x) {
   c(structure(attr(x, "name_df"), names = "A zoomed table of a dm"),
+    structure(attr(x, "filters"), names = "Filters for zoomed"),
     NextMethod())
 }
 
