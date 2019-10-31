@@ -13,6 +13,17 @@ test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?",
   )
 })
 
+test_that("cdm_select_tbl() can reorder the tables in a `dm`", {
+  reordered_dm_for_filter <- cdm_get_def(dm_for_filter) %>%
+    arrange(c(3:1, 6:4)) %>%
+    new_dm3()
+
+  expect_equivalent_dm(
+    cdm_select_tbl(dm_for_filter, t3:t1, t6:t4),
+    reordered_dm_for_filter
+  )
+})
+
 test_that("cdm_rename_tbl() renames a `dm`", {
 
   dm_rename <-
