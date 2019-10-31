@@ -200,6 +200,7 @@ replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_keys = NULL) {
 }
 
 check_zoomed <- function(dm) {
+  check_dm(dm)
   if (is_zoomed(dm)) return()
 
   fun_name <- as_string(sys.call(-1)[[1]])
@@ -207,6 +208,7 @@ check_zoomed <- function(dm) {
 }
 
 check_not_zoomed <- function(dm) {
+  check_dm(dm)
   if (!is_zoomed(dm)) return()
 
   fun_name <- as_string(sys.call(-1)[[1]])
