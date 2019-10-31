@@ -22,9 +22,11 @@ ungroup.zoomed_dm <- function(x, ...) {
 
 summarise.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
+  # groups are "selected"; key tracking will continue for them
+  groups <- set_names(map_chr(groups(tbl), as_string))
   summarized_tbl <- summarize(tbl, ...)
-
-  replace_zoomed_tbl(.data, summarized_tbl)
+  new_tracked_keys_zoom <- new_tracked_keys(.data, groups)
+  replace_zoomed_tbl(.data, summarized_tbl, new_tracked_keys_zoom)
 }
 
 summarise.dm <- function(.data, ...) {
@@ -61,9 +63,12 @@ transmute.dm <- function(.data, ...) {
 
 transmute.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
+  # groups are "selected"; key tracking will continue for them
+  groups <- set_names(map_chr(groups(tbl), as_string))
   transmuted_tbl <- transmute(tbl, ...)
+  new_tracked_keys_zoom <- new_tracked_keys(.data, groups)
 
-  replace_zoomed_tbl(.data, transmuted_tbl)
+  replace_zoomed_tbl(.data, transmuted_tbl, new_tracked_keys_zoom)
 }
 
 select.dm <- function(.data, ...) {
