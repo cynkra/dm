@@ -18,11 +18,9 @@ test_that("check_set_equality() checks properly if 2 sets of values are equal?",
       check_set_equality_1a_2a_names
     ),
     ~ expect_known_output(
-      expect_error(
+      expect_cdm_error(
         check_set_equality(..1, a, ..2, a),
-        class = cdm_error("sets_not_equal"),
-        error_txt_not_subset_of("..2", "a", "..1", "a"),
-        fixed = TRUE
+        class = "sets_not_equal"
       ),
       ..3
     )
