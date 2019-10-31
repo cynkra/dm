@@ -45,22 +45,22 @@ test_that("cdm_select() works for replacing pk", {
   )
 })
 
-test_that("cdm_select() avoids removing pks", {
+test_that("cdm_select() keeps pks up to date", {
   expect_identical(
-    cdm_select(dm_for_filter, t3, new_g = g) %>%
+    cdm_select(dm_for_filter, t3, new_f = f) %>%
       cdm_get_all_pks(),
-    cdm_get_all_pks(dm_for_filter)
+    cdm_get_all_pks(dm_for_filter) %>%
+      mutate(pk_col = if_else(table == "t3", "new_f", pk_col))
   )
 })
 
-test_that("cdm_select() works for replacing fks", {
+test_that("cdm_select() works for replacing fks, and removes missing ones", {
   expect_identical(
     cdm_select(dm_for_filter, t2, new_d = d) %>%
       cdm_get_all_fks(),
     tribble(
       ~child_table, ~child_fk_col, ~parent_table,
       "t2",         "new_d",       "t1",
-      "t2",         "e",           "t3",
       "t4",         "j",           "t3",
       "t5",         "l",           "t4",
       "t5",         "m",           "t6"
@@ -68,10 +68,11 @@ test_that("cdm_select() works for replacing fks", {
   )
 })
 
-test_that("cdm_select() avoids removing fks", {
-  expect_identical(
+test_that("cdm_select() removes fks if not in selection", {
+  expect_equivalent(
     cdm_select(dm_for_filter, t2, c, e) %>%
       cdm_get_all_fks(),
-    cdm_get_all_fks(dm_for_filter)
+    cdm_get_all_fks(dm_for_filter) %>%
+      filter(!child_fk_col == "d")
   )
 })
