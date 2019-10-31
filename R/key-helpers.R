@@ -249,7 +249,7 @@ new_tracked_keys <- function(dm, selected) {
   # `intersect(selected, old_tracked_names)` is empty, return `NULL`
   if (is_null(intersect(selected, old_tracked_names))) NULL else
   set_names(
-    tracked_keys[selected[selected == intersect(selected, old_tracked_names)]],
-    names(selected[selected == intersect(selected, old_tracked_names)])
+    tracked_keys[selected[selected %in% old_tracked_names]],
+    names(selected[selected %in% old_tracked_names])
   )
 }
