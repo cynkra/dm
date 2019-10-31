@@ -33,15 +33,17 @@ summarise.dm <- function(.data, ...) {
   abort_no_table_zoomed_dplyr("summarise")
 }
 
-filter.dm <- function(.data, ..., .preserve = FALSE) {
+filter.dm <- function(.data, ...) {
   abort_no_table_zoomed_dplyr("filter")
 }
 
-filter.zoomed_dm <- function(.data, ..., .preserve = FALSE) {
-  tbl <- get_zoomed_tbl(.data)
-  filtered_tbl <- filter(tbl, ..., .preserve = .preserve)
+filter.zoomed_dm <- function(.data, ...) {
+  quos <- enquos(...)
+  if (is_empty(quos)) {
+    return(.data)
+  } # valid table and empty ellipsis provided
 
-  replace_zoomed_tbl(.data, filtered_tbl)
+  set_filter_for_table(.data, orig_name_zoomed(.data), quos, TRUE)
 }
 
 mutate.dm <- function(.data, ...) {

@@ -74,7 +74,7 @@ set_filter_for_table <- function(dm, table, quos, zoomed) {
 
   i <- which(def$table == table)
   def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(quos, zoomed))
-  new_dm3(def)
+  new_dm3(def, zoomed = zoomed)
 }
 
 
