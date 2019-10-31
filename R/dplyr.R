@@ -78,6 +78,7 @@ select.dm <- function(.data, ...) {
 }
 
 select.zoomed_dm <- function(.data, ...) {
+  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   selected <- tidyselect::vars_select(colnames(tbl), ...)
   selected_tbl <- select(tbl, !!!selected)
@@ -92,6 +93,7 @@ rename.dm <- function(.data, ...) {
 }
 
 rename.zoomed_dm <- function(.data, ...) {
+  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   renamed <- tidyselect::vars_rename(colnames(tbl), ...)
   renamed_tbl <- rename(tbl, !!!renamed)
