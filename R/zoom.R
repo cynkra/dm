@@ -24,9 +24,17 @@ is_zoomed <- function(dm) {
 }
 
 cdm_zoom_out <- function(dm) {
+  if (!is_zoomed(dm)) {
+    return(dm)
+  }
+  old_tbl_name <- orig_name_zoomed(dm)
+  upd_filter <- get_filter_for_table(dm, old_tbl_name) %>%
+    filter(zoomed == FALSE)
   new_dm3(
     cdm_get_def(dm) %>%
-      mutate(zoom = list(NULL), key_tracker_zoom = list(NULL))
+      mutate(zoom = list(NULL),
+             key_tracker_zoom = list(NULL),
+             filters = if_else(table == old_tbl_name, vctrs::list_of(upd_filter), filters))
     )
 }
 
