@@ -546,3 +546,25 @@ error_no_filters_rename_select <- function() {
   paste0("No existing filter conditions allowed for both the zoomed table or the original table that was zoomed ",
          "when calling `rename.zoomed_dm()` or `select.zoomed_dm()`.")
 }
+
+# when zoomed and it shouldn't be ------------------------------
+
+abort_only_possible_wo_zoom <- function(fun_name) {
+  abort(error_only_possible_wo_zoom(fun_name), .subclass = cdm_error_full("only_possible_wo_zoom"))
+}
+
+error_only_possible_wo_zoom <- function(fun_name) {
+  glue("You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `cdm_update_zoomed_tbl()`, ",
+       "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.")
+}
+
+# when not zoomed and it should be ------------------------------
+
+abort_only_possible_w_zoom <- function(fun_name) {
+  abort(error_only_possible_w_zoom(fun_name), .subclass = cdm_error_full("only_possible_w_zoom"))
+}
+
+error_only_possible_w_zoom <- function(fun_name) {
+  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
+}
+

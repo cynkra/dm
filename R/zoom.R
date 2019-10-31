@@ -198,3 +198,17 @@ replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_keys = NULL) {
   if (!is_null(tracked_keys)) def$key_tracker_zoom[def$table == table] <- list(tracked_keys)
   new_dm3(def, zoomed = TRUE)
 }
+
+check_zoomed <- function(dm) {
+  if (is_zoomed(dm)) return()
+
+  fun_name <- as_string(sys.call(-1)[[1]])
+  abort_only_possible_w_zoom(fun_name)
+}
+
+check_not_zoomed <- function(dm) {
+  if (!is_zoomed(dm)) return()
+
+  fun_name <- as_string(sys.call(-1)[[1]])
+  abort_only_possible_wo_zoom(fun_name)
+}
