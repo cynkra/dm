@@ -1,3 +1,37 @@
+
+#' Single out a table of a `dm`
+#'
+#' Zooming to a table of a [`dm`] allows for the use of many `dplyr`-verbs directly on this table, while retaining the
+#' context of the `dm` object.
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @details `cdm_zoom_to_tbl()`: zooms to the given table
+#'
+#' `cdm_update_zoomed_tbl()`: overwrites the originally zoomed table with the manipulated table.
+#' The filter conditions for the zoomed table are added to the original filter conditions.
+#'
+#' `cdm_insert_zoomed_tbl()`: adds a new table to the `dm`.
+#'
+#' `cdm_zoom_out()`: discards the zoomed table, returning the `dm` from before zooming
+#'
+#' Whenever possible, the key relations of the original table are transferred to the resulting table
+#' when using `cdm_insert_zoomed_tbl()` or `cdm_update_zoomed_tbl()`.
+#'
+#' Functions from `dplyr`, that are supported for a `zoomed_dm`: `group_by()`, `summarise()`, `mutate()`,
+#' `transmute()`, `select()`, `rename()` and `ungroup()`. You can use these functions just like you would
+#' with a normal table.
+#'
+#' `filter()` is also supported, but treated in a special way: the filter expression for the zoomed table is
+#' stored in the `dm` and is treated depending on which function you use to return to a normal `dm`:
+#'
+#' 1. `cdm_zoom_out()`: all filter conditions for the zoomed table are discarded
+#' 1. `cdm_update_zoomed_tbl()`: the filter conditions of the original table and those of the zoomed table are combined
+#' 1. `cdm_insert_zoomed_tbl()`: the filter conditions of the original table stay there and those of the zoomed table are
+#' transferred to the new table of the `dm`
+#'
+#' @rdname cdm_zoom_to_tbl
+#' @export
 cdm_zoom_to_tbl <- function(dm, table) {
   if (is_zoomed(dm)) abort_no_zoom_allowed()
 
@@ -23,27 +57,16 @@ is_zoomed <- function(dm) {
   inherits(dm, "zoomed_dm")
 }
 
-cdm_zoom_out <- function(dm) {
-  if (!is_zoomed(dm)) {
-    return(dm)
-  }
-  old_tbl_name <- orig_name_zoomed(dm)
-  upd_filter <- get_filter_for_table(dm, old_tbl_name) %>%
-    filter(zoomed == FALSE)
-  new_dm3(
-    cdm_get_def(dm) %>%
-      mutate(zoom = list(NULL),
-             key_tracker_zoom = list(NULL),
-             filters = if_else(table == old_tbl_name, vctrs::list_of(upd_filter), filters))
-    )
-}
-
 get_zoomed_tbl <- function(dm) {
   cdm_get_zoomed_tbl(dm) %>%
     pull(zoom) %>%
     pluck(1)
 }
 
+#' @rdname cdm_zoom_to_tbl
+#' @param new_tbl_name Name of the new table
+#'
+#' @export
 cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
   new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
@@ -77,6 +100,8 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
     cdm_zoom_out()
 }
 
+#' @rdname cdm_zoom_to_tbl
+#' @export
 cdm_update_zoomed_tbl <- function(dm) {
   if (!is_zoomed(dm)) return(dm)
   table_name <- orig_name_zoomed(dm)
@@ -91,6 +116,23 @@ cdm_update_zoomed_tbl <- function(dm) {
   new_dm3(new_def, zoomed = TRUE) %>%
     dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
     cdm_zoom_out()
+}
+
+#' @rdname cdm_zoom_to_tbl
+#' @export
+cdm_zoom_out <- function(dm) {
+  if (!is_zoomed(dm)) {
+    return(dm)
+  }
+  old_tbl_name <- orig_name_zoomed(dm)
+  upd_filter <- get_filter_for_table(dm, old_tbl_name) %>%
+    filter(zoomed == FALSE)
+  new_dm3(
+    cdm_get_def(dm) %>%
+      mutate(zoom = list(NULL),
+             key_tracker_zoom = list(NULL),
+             filters = if_else(table == old_tbl_name, vctrs::list_of(upd_filter), filters))
+  )
 }
 
 update_zoomed_pk <- function(dm) {
