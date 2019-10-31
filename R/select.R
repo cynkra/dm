@@ -50,12 +50,11 @@ cdm_rename <- function(dm, table, ...) {
 cdm_select <- function(dm, table, ...) {
   check_no_filter(dm)
 
-  # tbl() is efficient because no filter is set
   table_name <- as_string(ensym(table))
-  old_cols <- colnames(tbl(dm, table_name))
-  selected <- tidyselect::vars_select(old_cols, ...)
 
-  cdm_select_impl(dm, table_name, selected)
+  cdm_zoom_to_tbl(dm, !!table_name) %>%
+    select(...) %>%
+    cdm_update_zoomed_tbl()
 }
 
 # need to take care of
