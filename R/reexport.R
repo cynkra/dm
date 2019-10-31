@@ -11,7 +11,7 @@ dplyr::mutate
 dplyr::transmute
 
 #' @export
-dplyr::summarise_
+dplyr::summarise
 
 #' @export
 dplyr::select
