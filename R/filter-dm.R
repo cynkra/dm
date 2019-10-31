@@ -93,6 +93,7 @@ set_filter_for_table <- function(dm, table, quos, zoomed) {
 #'   compute()
 #' @export
 cdm_apply_filters <- function(dm) {
+  check_not_zoomed(dm)
   def <- cdm_get_def(dm)
 
   def$data <- map(def$table, ~ tbl(dm, .))
