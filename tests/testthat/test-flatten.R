@@ -49,15 +49,15 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
   )
 
   # with grandparent table
-  expect_error(
+  expect_cdm_error(
     cdm_flatten_to_tbl(dm_more_complex, t5, t4, t3),
-    class = cdm_error("only_parents")
+    class = "only_parents"
   )
 
   # table unreachable
-  expect_error(
+  expect_cdm_error(
     cdm_flatten_to_tbl(dm_for_filter, t2, t3, t4),
-    class = cdm_error("tables_not_reachable_from_start")
+    class = "tables_not_reachable_from_start"
   )
 
   # deeper hierarchy available and `auto_detect = TRUE`
@@ -144,9 +144,9 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'full_join()'", {
   )
 
   # filtered `dm`
-  expect_error(
+  expect_cdm_error(
     cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = full_join),
-    class = cdm_error(c("apply_filters_first_full_join", "apply_filters_first"))
+    class = c("apply_filters_first_full_join", "apply_filters_first")
   )
 })
 
@@ -219,10 +219,9 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'anti_join()'", {
 })
 
 test_that("`cdm_flatten_to_tbl()` does the right things for 'nest_join()'", {
-  expect_error(
+  expect_cdm_error(
     cdm_flatten_to_tbl(dm_for_flatten, fact, join = nest_join),
-    "nest_join",
-    class = cdm_error("no_flatten_with_nest_join")
+    class = "no_flatten_with_nest_join"
   )
 
 })
@@ -272,9 +271,9 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'right_join()'", {
   )
 
   # filtered `dm`
-  expect_error(
+  expect_cdm_error(
     cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = right_join),
-    class = cdm_error(c("apply_filters_first_right_join", "apply_filters_first"))
+    class = c("apply_filters_first_right_join", "apply_filters_first")
   )
 })
 
@@ -310,24 +309,21 @@ test_that("`cdm_squash_to_tbl()` does the right things", {
     )
 
   # right_join:
-  expect_error(
+  expect_cdm_error(
     cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = right_join),
-    "`left_join`, `inner_join`, `full_join`",
-    class = cdm_error("squash_limited")
+    class = "squash_limited"
   )
 
   # semi_join:
-  expect_error(
+  expect_cdm_error(
     cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = semi_join),
-    "`left_join`, `inner_join`, `full_join`",
-    class = cdm_error("squash_limited")
+    class = "squash_limited"
   )
 
   # anti_join:
-  expect_error(
+  expect_cdm_error(
     cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = anti_join),
-    "`left_join`, `inner_join`, `full_join`",
-    class = cdm_error("squash_limited")
+    class = "squash_limited"
   )
 })
 
@@ -394,15 +390,15 @@ test_that("tidyselect works for flatten", {
 
   # if only deselecting one potential candidate for flattening, the tables that are not
   # candidates will generally be part of the choice
-  expect_error(
+  expect_cdm_error(
     cdm_flatten_to_tbl(dm_for_filter, t2, -t1),
-    class = cdm_error("tables_not_reachable_from_start")
+    class = "tables_not_reachable_from_start"
   )
 
   # trying to deselect table that doesn't exist:
-  expect_error(
+  expect_cdm_error(
     cdm_flatten_to_tbl(dm_for_filter, t2, -t101),
-    class = cdm_error("w_message")
+    class = "w_message"
   )
 
 })

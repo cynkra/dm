@@ -67,9 +67,9 @@ test_that("cdm_add_tbl() works", {
     d1_db <- d1_src[-1]
     walk(
       d1_db,
-      ~expect_error(
+      ~expect_cdm_error(
         cdm_add_tbl(dm_for_filter, .),
-        class = cdm_error("not_same_src")
+        "not_same_src"
       )
     )
   }
@@ -107,8 +107,8 @@ test_that("cdm_rm_tbl() works", {
   )
 
   # fails when table name is wrong
-  expect_error(
+  expect_cdm_error(
     cdm_rm_tbl(dm_for_filter, t7),
-    class = cdm_error("table_not_in_dm")
+    "table_not_in_dm"
   )
 })

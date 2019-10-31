@@ -16,26 +16,26 @@ test_that("cdm_add_pk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_error(
+    ~ expect_cdm_error(
       cdm_add_pk(.x, cdm_table_1, qq),
-      class = cdm_error("wrong_col_names")
+      class = "wrong_col_names"
     )
   )
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_error(
+    ~ expect_cdm_error(
       cdm_add_pk(.x, cdm_table_1, a) %>%
         cdm_add_pk(cdm_table_1, b),
-      class = cdm_error("key_set_force_false")
+      class = "key_set_force_false"
     )
   )
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_error(
+    ~ expect_cdm_error(
       cdm_add_pk(.x, cdm_table_2, c, check = TRUE),
-      class = cdm_error("not_unique_key")
+      class = "not_unique_key"
     )
   )
 
@@ -68,10 +68,10 @@ test_that("cdm_rm_pk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_error(
+    ~ expect_cdm_error(
       cdm_add_pk(.x, cdm_table_1, a) %>%
         cdm_rm_pk(cdm_table_5),
-      class = cdm_error("table_not_in_dm")
+      class = "table_not_in_dm"
     )
   )
 })
@@ -113,11 +113,11 @@ test_that("cdm_get_pk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_error(
+    ~ expect_cdm_error(
       .x %>%
         cdm_add_pk(cdm_table_1, a) %>%
         cdm_add_pk(cdm_table_1, b),
-      class = cdm_error("key_set_force_false")
+      class = "key_set_force_false"
     )
   )
 
