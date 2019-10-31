@@ -112,15 +112,18 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   old_out_keys <- cdm_get_all_fks(dm) %>%
     filter(child_table == old_tbl_name) %>%
     select(table = parent_table, column = child_fk_col)
+
   old_and_new_out_keys <-
-    if (nrow(old_out_keys) > 0) {
-      mutate(old_out_keys, new_column = names(tracked_keys[tracked_keys == column]))
-      } else mutate(old_out_keys, new_column = NA_character_)
+    if (nrow(old_out_keys) > 0 && any(old_out_keys$column %in% tracked_keys)) {
+      filter(old_out_keys, column %in% tracked_keys) %>%
+        mutate(new_column = names(tracked_keys[tracked_keys %in% column]))
+      } else filter(old_out_keys, 0 == 1) %>% mutate(new_column = character(0))
 
   if (is_upd) {
+    # need to remove the old keys
     dm <- reduce2(
-      old_and_new_out_keys$column,
-      old_and_new_out_keys$table,
+      old_out_keys$column,
+      old_out_keys$table,
       ~cdm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3), .init = dm
       )
   }
