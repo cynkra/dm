@@ -1,44 +1,14 @@
-# dm 0.0.3.9005
+# dm 0.0.4
 
 - Many {dplyr} verbs now work on tables in a `dm`. Zooming to a table vie `cdm_zoom_to_tbl()` creates a zoomed `dm` on which the {dplyr} verbs can be applied. The resulting table can be put back into the `dm` with `cdm_update_zoomed_tbl()` (overwriting the original table) or `cdm_insert_zoomed_tbl()` (creating a new table), respectively (#89).
 - `cdm_select_to_tbl()` removes foreign key constraints if the corresponding columns are removed.
 - Integrate code from {datamodelr} in this package (@bergant, #111).
 - Reorder tables in `"dm"` using `cdm_select_tbl()` (#108).
-- Internal: function to test {dm} errors.
-- Repair rownames problem in print output of `"zoomed_dm"` class.
-- Bugfix for `cdm_add_tbl()`: new table now satisfies type criteria in `def`.
-- Support {tidyselect}-syntax for `cdm_flatten_to_tbl()` and `cdm_squash_to_tbl()` (#101).
-- Zoom to table using `cdm_zoom_to_tbl()`.
-- Zoom out using `cdm_zoom_out()`.
-- Add subclass `"zoomed_dm"` and methods for `print()` and `format()`
-- Internal: discard `new_dm2()`.
-
-
-# dm 0.0.3.9004
-
 - More accurate documentation of filtering operation (#98).
 - Support empty `dm` objects via `dm()` and `new_dm()` (#96).
 - `cdm_flatten_to_tbl()` now flattens all immediate neighbors by default (#95).
-
-
-# dm 0.0.3.9003
-
-- Use new storage format internally.
-
-
-# dm 0.0.3.9002
-
 - New `cdm_add_tbl()` and `cdm_rm_tbl()` (#90).
 - New `cdm_get_con()` (#84).
-
-
-# dm 0.0.3.9001
-
-- Selection and renaming of tables and columns uses new storage format (#54).
-
-
-# dm 0.0.3.9000
-
 - A `dm` object is defined using a nested tibble, one row per table (#57).
 
 
