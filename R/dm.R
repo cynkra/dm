@@ -45,7 +45,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
     tbl_heads <- map(tbls, head, 0)
     tbl_structures <- map(tbl_heads, collect)
 
-    data_model <- datamodelr::dm_from_data_frames(tbl_structures)
+    data_model <- bdm_from_data_frames(tbl_structures)
   }
 
   table_names <- set_names(data_model$tables$table)
@@ -66,7 +66,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
 new_dm <- function(tables, data_model) {
   if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
   if (!all_same_source(tables)) abort_not_same_src()
-  stopifnot(datamodelr::is.data_model(data_model))
+  stopifnot(is.data_model(data_model))
 
   columns <- as_tibble(data_model$columns)
 
@@ -298,59 +298,6 @@ cdm_get_data_model_fks <- function(x) {
     select(ref, column, table, ref_col)
 }
 
-#' Get data_model component
-#'
-#' `cdm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
-#' object.
-#'
-#' @rdname dm
-#'
-#' @export
-cdm_get_data_model <- function(x) {
-  def <- cdm_get_def(x)
-
-  tables <- data.frame(
-    table = def$table,
-    segment = def$segment,
-    display = def$display,
-    stringsAsFactors = FALSE
-  )
-
-  references_for_columns <- cdm_get_data_model_fks(x)
-
-  references <-
-    references_for_columns %>%
-    mutate(ref_id = row_number(), ref_col_num = 1L)
-
-  keys <-
-    cdm_get_data_model_pks(x) %>%
-    mutate(key = 1L)
-
-  columns <-
-    cdm_get_all_columns(x) %>%
-    # Hack: datamodelr requires `type` column
-    mutate(type = "integer") %>%
-    left_join(keys, by = c("table", "column")) %>%
-    mutate(key = coalesce(key, 0L)) %>%
-    left_join(references_for_columns, by = c("table", "column")) %>%
-    # for compatibility with print method from {datamodelr}
-    as.data.frame()
-
-  new_data_model(
-    tables,
-    columns,
-    references
-  )
-}
-
-cdm_get_all_columns <- function(x) {
-  cdm_get_tables(x) %>%
-    map(colnames) %>%
-    map(~ enframe(., "id", "column")) %>%
-    enframe("table") %>%
-    unnest(value)
-}
-
 #' Get filter expressions
 #'
 #' `cdm_get_filter()` returns the filter component of a `dm`
@@ -418,7 +365,7 @@ as_dm.default <- function(x) {
   # Empty tibbles as proxy, we don't need to know the columns
   # and we don't have keys yet
   proxies <- map(x, ~ tibble(a = 0))
-  data_model <- datamodelr::dm_from_data_frames(proxies)
+  data_model <- bdm_from_data_frames(proxies)
 
   new_dm(x, data_model)
 }

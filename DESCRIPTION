@@ -12,6 +12,10 @@ Authors@R:
              role = c("aut", "cre"),
              email = "kirill@cynkra.com",
              comment = c(ORCID = "0000-0002-1416-3412")),
+      person(given = "Darko",
+             family = "Bergant",
+             role = "aut",
+             email = "darko.bergant@gmail.com"),       
       person(given = "energie360° AG",
              role = "fnd",
              email = "info@energie360.ch"),
@@ -25,7 +29,6 @@ License: MIT + file LICENSE
 Imports:
     backports,
     cli,
-    datamodelr,
     DBI,
     dplyr,
     DT (>= 0.5),
@@ -56,8 +59,6 @@ Suggests:
     tidyverse
 VignetteBuilder: 
     knitr
-Remotes: 
-    bergant/datamodelr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",

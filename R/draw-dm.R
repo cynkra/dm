@@ -6,16 +6,22 @@
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
 #'   It defines the level of details for the table rendering
 #'   (only primary and foreign keys, all columns or no columns)
-#' @inheritParams datamodelr::dm_create_graph
-#'
+#' @param rankdir Graph attribute for direction (eg. 'BT' = bottom --> top)
+#' @param graph_name A graph name
+#' @param graph_attrs Additional graph attributes
+#' @param node_attrs Additional node attributes
+#' @param edge_attrs Additional edge attributes
+#' @param focus A list of parameters for rendering (table filter)
+#' @param col_attr Column atributes to display.
+#'   Only column name (\code{column}) is included by default.
+#' @param columnArrows Edges from column to column (default: FALSE)
 #' @export
 #'
 #' @examples
 #' library(dplyr)
 #' cdm_draw(cdm_nycflights13())
 #' cdm_draw(cdm_nycflights13(cycle = TRUE))
-cdm_draw <- function(
-                     dm,
+cdm_draw <- function(dm,
                      rankdir = "LR",
                      col_attr = "column",
                      view_type = "keys_only",
@@ -26,9 +32,13 @@ cdm_draw <- function(
                      focus = NULL,
                      graph_name = "Data Model") {
 
+  # FIXME: here the color scheme is set with an options(...)-call;
+  # should have some schemes available for the user to choose from
+  if (is_null(getOption("datamodelr.scheme"))) bdm_set_color_scheme(bdm_color_scheme)
+
   data_model <- cdm_get_data_model(dm)
 
-  graph <- dm_create_graph(
+  graph <- bdm_create_graph(
     data_model,
     rankdir = rankdir,
     col_attr = col_attr,
@@ -40,9 +50,59 @@ cdm_draw <- function(
     focus = focus,
     graph_name = graph_name
   )
-  dm_render_graph(graph)
+  bdm_render_graph(graph)
 }
 
+#' Get data_model component
+#'
+#' `cdm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
+#' object.
+#'
+#' @noRd
+cdm_get_data_model <- function(x) {
+  def <- cdm_get_def(x)
+
+  tables <- data.frame(
+    table = def$table,
+    segment = def$segment,
+    display = def$display,
+    stringsAsFactors = FALSE
+  )
+
+  references_for_columns <- cdm_get_data_model_fks(x)
+
+  references <-
+    references_for_columns %>%
+    mutate(ref_id = row_number(), ref_col_num = 1L)
+
+  keys <-
+    cdm_get_data_model_pks(x) %>%
+    mutate(key = 1L)
+
+  columns <-
+    cdm_get_all_columns(x) %>%
+    # Hack: datamodelr requires `type` column
+    mutate(type = "integer") %>%
+    left_join(keys, by = c("table", "column")) %>%
+    mutate(key = coalesce(key, 0L)) %>%
+    left_join(references_for_columns, by = c("table", "column")) %>%
+    # for compatibility with print method from {datamodelr}
+    as.data.frame()
+
+  new_data_model(
+    tables,
+    columns,
+    references
+  )
+}
+
+cdm_get_all_columns <- function(x) {
+  cdm_get_tables(x) %>%
+    map(colnames) %>%
+    map(~ enframe(., "id", "column")) %>%
+    enframe("table") %>%
+    unnest(value)
+}
 
 #' cdm_set_colors()
 #'
