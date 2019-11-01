@@ -6,8 +6,15 @@
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
 #'   It defines the level of details for the table rendering
 #'   (only primary and foreign keys, all columns or no columns)
-#' @inheritParams datamodelr::dm_create_graph
-#'
+#' @param rankdir Graph attribute for direction (eg. 'BT' = bottom --> top)
+#' @param graph_name A graph name
+#' @param graph_attrs Additional graph attributes
+#' @param node_attrs Additional node attributes
+#' @param edge_attrs Additional edge attributes
+#' @param focus A list of parameters for rendering (table filter)
+#' @param col_attr Column atributes to display.
+#'   Only column name (\code{column}) is included by default.
+#' @param columnArrows Edges from column to column (default: FALSE)
 #' @export
 #'
 #' @examples
@@ -15,16 +22,20 @@
 #' cdm_draw(cdm_nycflights13())
 #' cdm_draw(cdm_nycflights13(cycle = TRUE))
 cdm_draw <- function(
-                     dm,
-                     rankdir = "LR",
-                     col_attr = "column",
-                     view_type = "keys_only",
-                     columnArrows = TRUE,
-                     graph_attrs = "",
-                     node_attrs = "",
-                     edge_attrs = "",
-                     focus = NULL,
-                     graph_name = "Data Model") {
+  dm,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model") {
+
+  # FIXME: here the color scheme is set with an options(...)-call;
+  # should have some schemes available for the user to choose from
+  if (is_null(getOption("datamodelr.scheme"))) dm_set_color_scheme(dm_color_scheme)
 
   data_model <- cdm_get_data_model(dm)
 
@@ -154,3 +165,4 @@ colors <- tibble::tribble(
   "light_grey", "accent6", "(border)",
   "grey", "accent7", "(border)"
 )
+
