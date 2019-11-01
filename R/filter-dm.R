@@ -66,15 +66,15 @@ cdm_filter <- function(dm, table, ...) {
     return(dm)
   } # valid table and empty ellipsis provided
 
-  set_filter_for_table(dm, table, quos)
+  set_filter_for_table(dm, table, quos, FALSE)
 }
 
-set_filter_for_table <- function(dm, table, quos) {
+set_filter_for_table <- function(dm, table, quos, zoomed) {
   def <- cdm_get_def(dm)
 
   i <- which(def$table == table)
-  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(quos))
-  new_dm3(def)
+  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(quos, zoomed))
+  new_dm3(def, zoomed = zoomed)
 }
 
 
@@ -93,6 +93,7 @@ set_filter_for_table <- function(dm, table, quos) {
 #'   compute()
 #' @export
 cdm_apply_filters <- function(dm) {
+  check_not_zoomed(dm)
   def <- cdm_get_def(dm)
 
   def$data <- map(def$table, ~ tbl(dm, .))
@@ -145,7 +146,7 @@ cdm_get_filtered_table <- function(dm, from) {
 
     filter_quos <- recipe$filter[[i]]
     if (!is_null(filter_quos)) {
-      filter_quos <- pull(filter_quos)
+      filter_quos <- pull(filter_quos, filter)
       table <- filter(table, !!!filter_quos)
     }
 
@@ -206,4 +207,11 @@ check_no_filter <- function(dm) {
 
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_filters(fun_name)
+}
+
+get_filter_for_table <- function(dm, table_name) {
+  cdm_get_def(dm) %>%
+    filter(table == table_name) %>%
+    pull(filters) %>%
+    pluck(1)
 }

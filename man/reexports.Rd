@@ -4,6 +4,14 @@
 \name{reexports}
 \alias{reexports}
 \alias{\%>\%}
+\alias{filter}
+\alias{mutate}
+\alias{transmute}
+\alias{summarise}
+\alias{select}
+\alias{rename}
+\alias{group_by}
+\alias{ungroup}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -11,6 +19,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{\%>\%}}}
+  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{transmute}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr]{select}}, \code{\link[dplyr]{rename}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr]{ungroup}}}
 }}
 

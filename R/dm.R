@@ -103,6 +103,7 @@ new_dm <- function(tables, data_model) {
   display <- as.character(data_model_tables$display)
   filter <- new_filters()
   zoom <- new_zoom()
+  key_tracker_zoom <- new_key_tracker_zoom()
 
   # Legacy compatibility
   pks$column <- as.list(pks$column)
@@ -151,16 +152,24 @@ new_dm <- function(tables, data_model) {
     left_join(pks, by = "table") %>%
     left_join(fks, by = "table") %>%
     left_join(filters, by = "table") %>%
-    left_join(zoom, by = "table")
+    left_join(zoom, by = "table") %>%
+    left_join(key_tracker_zoom, by = "table")
 
   new_dm3(def)
 }
 
-new_dm3 <- function(def) {
-  structure(
-    list(def = def),
-    class = "dm"
-  )
+new_dm3 <- function(def, zoomed = FALSE) {
+  if (!zoomed) {
+    structure(
+      list(def = def),
+      class = "dm"
+      )
+  } else {
+    structure(
+      list(def = def),
+      class = c("zoomed_dm", "dm")
+    )
+  }
 }
 
 new_pk <- function(column = list()) {
@@ -173,8 +182,8 @@ new_fk <- function(table = character(), column = list()) {
   tibble(table = table, column = column)
 }
 
-new_filter <- function(quos = list()) {
-  tibble(filter_quo = unclass(quos))
+new_filter <- function(quos = list(), zoomed = logical()) {
+  tibble(filter_quo = unclass(quos), zoomed = zoomed)
 }
 
 # Legacy!
@@ -184,6 +193,10 @@ new_filters <- function() {
 
 new_zoom <- function() {
   tibble(table = character(), zoom = list())
+}
+
+new_key_tracker_zoom <- function() {
+  tibble(table = character(), key_tracker_zoom = list())
 }
 
 #' Validator
@@ -410,7 +423,6 @@ print.dm <- function(x, ...) {
   cat_line("Foreign keys: ", sum(map_int(def$fks, NROW)))
 
   cat_rule("Filters", col = "orange")
-
   filters <- cdm_get_filter(x)
 
   if (nrow(filters) > 0) {
@@ -434,13 +446,22 @@ print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  zoom <- cdm_get_zoomed_tbl(x)
-  df <- pluck(zoom$zoom, 1)
+  df <- get_zoomed_tbl(x)
+  zoomed_filters <- cdm_get_filter(x) %>%
+    filter(zoomed == TRUE)
+  filters <- if_else(nrow(zoomed_filters) > 0, TRUE, FALSE)
   # so far only 1 table can be zoomed on
-  zoomed_df <- new_tibble(df, nrow = nrow(df), class = c("zoomed_df", class(df)), name_df = zoom$table)
-
+  zoomed_df <- new_zoomed_df(
+    df,
+    name_df = orig_name_zoomed(x),
+    filters = filters
+  )
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
+}
+
+new_zoomed_df <- function(x, ...) {
+  structure(x, class = c("zoomed_df", class(x)), ...)
 }
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
@@ -448,6 +469,7 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 tbl_sum.zoomed_df <- function(x) {
   c(structure(attr(x, "name_df"), names = "A zoomed table of a dm"),
+    structure(attr(x, "filters"), names = "Filters for zoomed"),
     NextMethod())
 }
 
@@ -528,6 +550,7 @@ str.dm <- function(object, ...) {
 tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
+  check_not_zoomed(dm)
   check_correct_input(dm, from, 1L)
 
   cdm_get_filtered_table(dm, from)
@@ -536,6 +559,14 @@ tbl.dm <- function(src, from, ...) {
 #' @export
 compute.dm <- function(x) {
   cdm_apply_filters(x)
+}
+
+#' @export
+compute.zoomed_dm <- function(x, ...) {
+  # FIXME: zoomed table has to be filtered
+  zoomed_df <- get_zoomed_tbl(x) %>%
+    compute(zoomed_df, ...)
+  replace_zoomed_tbl(x, zoomed_df)
 }
 
 

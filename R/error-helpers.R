@@ -495,7 +495,6 @@ error_no_zoom_allowed <- function() {
          "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.")
 }
 
-
 # general abort with customized msg ---------------------------------------
 
 abort_w_message <- function(msg) {
@@ -503,3 +502,70 @@ abort_w_message <- function(msg) {
 }
 
 abort_w_message
+
+# no table zoomed, but 'cdm_insert_tbl()' called ---------------------------------
+
+abort_no_table_zoomed <- function() {
+  abort(error_no_table_zoomed(), .subclass = cdm_error_full("no_table_zoomed"))
+}
+
+error_no_table_zoomed <- function() {
+  "`cdm_insert_tbl()` only works for zoomed `dm`"
+}
+
+
+# new table needs a name --------------------------------------------------
+
+abort_table_needs_name <- function() {
+  abort(error_table_needs_name(), .subclass = cdm_error_full("table_needs_name"))
+}
+
+error_table_needs_name <- function() {
+  "The new table to insert with `cdm_insert_zoomed_tbl()` must have a name"
+}
+
+# no table zoomed, but dplyr-function called ---------------------------------
+
+abort_no_table_zoomed_dplyr <- function(fun) {
+  abort(error_no_table_zoomed_dplyr(fun), .subclass = cdm_error_full("no_table_zoomed_dplyr"))
+}
+
+error_no_table_zoomed_dplyr <- function(fun) {
+  glue("Please specify the table first that you want to manipulate, using `cdm_zoom_to_tbl()`, ",
+       "when calling {tick(paste0(fun, '()'))} on a `dm`")
+}
+
+
+# no filters can exist for zoomed table for 'rename()' and 'select --------
+
+abort_no_filters_rename_select <- function() {
+  abort(error_no_filters_rename_select(), .subclass = cdm_error_full("no_filters_rename_select"))
+}
+
+error_no_filters_rename_select <- function() {
+  paste0("No existing filter conditions allowed for both the zoomed table or the original table that was zoomed ",
+         "when calling `rename.zoomed_dm()`, `select.zoomed_dm()`, `mutate.zoomed_dm()`, `summarise.zoomed_dm()` or ",
+         "`transmute.zoomed_dm()`.")
+}
+
+# when zoomed and it shouldn't be ------------------------------
+
+abort_only_possible_wo_zoom <- function(fun_name) {
+  abort(error_only_possible_wo_zoom(fun_name), .subclass = cdm_error_full("only_possible_wo_zoom"))
+}
+
+error_only_possible_wo_zoom <- function(fun_name) {
+  glue("You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `cdm_update_zoomed_tbl()`, ",
+       "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.")
+}
+
+# when not zoomed and it should be ------------------------------
+
+abort_only_possible_w_zoom <- function(fun_name) {
+  abort(error_only_possible_w_zoom(fun_name), .subclass = cdm_error_full("only_possible_w_zoom"))
+}
+
+error_only_possible_w_zoom <- function(fun_name) {
+  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
+}
+
