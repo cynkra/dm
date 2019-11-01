@@ -544,7 +544,8 @@ abort_no_filters_rename_select <- function() {
 
 error_no_filters_rename_select <- function() {
   paste0("No existing filter conditions allowed for both the zoomed table or the original table that was zoomed ",
-         "when calling `rename.zoomed_dm()` or `select.zoomed_dm()`.")
+         "when calling `rename.zoomed_dm()`, `select.zoomed_dm()`, `mutate.zoomed_dm()`, `summarise.zoomed_dm()` or ",
+         "`transmute.zoomed_dm()`.")
 }
 
 # when zoomed and it shouldn't be ------------------------------

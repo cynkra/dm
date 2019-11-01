@@ -26,6 +26,7 @@ ungroup.zoomed_dm <- function(x, ...) {
 
 #' @export
 summarise.zoomed_dm <- function(.data, ...) {
+  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
@@ -61,6 +62,7 @@ mutate.dm <- function(.data, ...) {
 
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
+  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   mutated_tbl <- mutate(tbl, ...)
   # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
@@ -76,6 +78,7 @@ transmute.dm <- function(.data, ...) {
 
 #' @export
 transmute.zoomed_dm <- function(.data, ...) {
+  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
