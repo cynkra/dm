@@ -98,10 +98,10 @@ A data model shows the structure between multiple tables, that can be linked tog
 The `nycflights13` relations can be transferred into the following graphical representation:
 
 ```{r warning=F, message=F}
-dm <- cdm_nycflights13(cycle = TRUE) 
+dm <- dm_nycflights13(cycle = TRUE) 
 
 dm %>% 
-  cdm_draw()
+  dm_draw()
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.
@@ -121,19 +121,19 @@ A primary key can be either an existing column that satifies the condition of be
 
 Example: In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
 
-You can get all primary keys in a `dm` by calling `cdm_get_all_pks()`:
+You can get all primary keys in a `dm` by calling `dm_get_all_pks()`:
 
 ```{r}
 dm %>%
-  cdm_get_all_pks()
+  dm_get_all_pks()
 ```
 
-If an attribute is suitable as a primary key, it can be checked with `cdm_enum_pk_candidates()`.
+If an attribute is suitable as a primary key, it can be checked with `dm_enum_pk_candidates()`.
 Which columns of the `airlines` table can serve as a primary key?
 
 ```{r}
 dm %>% 
-  cdm_enum_pk_candidates(airports)
+  dm_enum_pk_candidates(airports)
 ```
 
 Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
@@ -146,18 +146,18 @@ This second column is called the foreign key (abbreviated with fk).
 
 For example: If you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
 This is true, because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
-You can find foreign key candidates with the function `cdm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column.
+You can find foreign key candidates with the function `dm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column.
 
 ```{r}
 dm %>% 
-  cdm_enum_fk_candidates(flights, airlines)
+  dm_enum_fk_candidates(flights, airlines)
 ```
 
 After finding and assigning foreign keys, get the name of the set foreign key:
 
 ```{r}
 dm %>% 
-  cdm_get_fk(flights, airlines)
+  dm_get_fk(flights, airlines)
 ```
 
 
@@ -220,7 +220,7 @@ For example, let's create a local Sqlite database and copy the `dm` object to it
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-cdm_copy_to(src_sqlite, dm)
+dm_copy_to(src_sqlite, dm)
 src_sqlite
 ```
 
@@ -228,5 +228,5 @@ In the opposite direction, `dm` can also be populated with data from a DB. Unfor
 Therefore, we cannot show the results here yet:
 
 ```{r eval=FALSE}
-cdm_learn_from_db(src_sqlite)
+dm_learn_from_db(src_sqlite)
 ```

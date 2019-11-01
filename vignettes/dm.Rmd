@@ -75,51 +75,51 @@ flights_dm
 ```
 
 The fairly verbose output shows the three components of a `dm` object: the table source, the metadata, and row counts.
-These components can be accessed with `cdm_get_src()`, `cdm_get_tables()` and `cdm_get_data_model()`.
+These components can be accessed with `dm_get_src()`, `dm_get_tables()` and `dm_get_data_model()`.
 
 ```{r}
-cdm_get_src(flights_dm)
+dm_get_src(flights_dm)
 ```
 
 
 ```{r}
 # Querying nrow() for each table, to suppress otherwise huge output
-cdm_get_tables(flights_dm) %>% 
+dm_get_tables(flights_dm) %>% 
   map_int(nrow)
 ```
 
 
 ```{r}
-cdm_get_data_model(flights_dm)
+dm_get_data_model(flights_dm)
 ```
 
 
 ## Keys and visualization {#keys}
 
 As you can see in the "Data model" part of the output above, so far no keys are set.
-We use `cdm_add_pk()` and `cdm_add_fk()` to add primary keys (pk) and foreign keys (fk):
+We use `dm_add_pk()` and `dm_add_fk()` to add primary keys (pk) and foreign keys (fk):
 
 ```{r}
 flights_dm_with_one_key <- 
   flights_dm %>% 
-  cdm_add_pk(airlines, carrier) %>% 
-  cdm_add_fk(flights, carrier, airlines)
+  dm_add_pk(airlines, carrier) %>% 
+  dm_add_fk(flights, carrier, airlines)
 ```
 
-Once you set the keys and established relations, you can show a graphical representation of your data model with `cdm_draw()`:
+Once you set the keys and established relations, you can show a graphical representation of your data model with `dm_draw()`:
 
 ```{r}
 flights_dm_with_one_key %>% 
-  cdm_draw()
+  dm_draw()
 ```
 
-The `cdm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables, defines all primary and foreign keys and even assigns colors to the different types of tables.
+The `dm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables, defines all primary and foreign keys and even assigns colors to the different types of tables.
 We will be using the `dm` object created by this function from here on.
 
 ```{r}
-flights_dm_with_keys <- cdm_nycflights13(cycle = TRUE)
+flights_dm_with_keys <- dm_nycflights13(cycle = TRUE)
 flights_dm_with_keys %>% 
-  cdm_draw()
+  dm_draw()
 ```
 
 
@@ -132,12 +132,12 @@ The idea of a filter on a `dm` object:
 1. Once you access a table, the relevant filter conditions are applied to the respective tables and the necessary joins are performed along the fk relations.
 What you get out is a table containing only rows related to the filter operations
 
-Currently, this only works if the graph induced by the fk relations is cycle free, the default for `cdm_nycflights13()`:
+Currently, this only works if the graph induced by the fk relations is cycle free, the default for `dm_nycflights13()`:
 
 ```{r}
-flights_dm_acyclic <- cdm_nycflights13()
+flights_dm_acyclic <- dm_nycflights13()
 flights_dm_acyclic %>% 
-  cdm_draw()
+  dm_draw()
 ```
 
 Let's set two filters:
@@ -145,18 +145,18 @@ Let's set two filters:
 ```{r}
 us_flights_from_jfk_prepared <- 
   flights_dm_acyclic %>%
-  cdm_filter(airports, name == "John F Kennedy Intl") %>% 
-  cdm_filter(airlines, name == "US Airways Inc.")
+  dm_filter(airports, name == "John F Kennedy Intl") %>% 
+  dm_filter(airlines, name == "US Airways Inc.")
 us_flights_from_jfk_prepared
 ```
 
-With `cdm_apply_filters()` you can apply all filters and therefore update all tables in the `dm`, so that they contain only the rows relevant to the filters. 
+With `dm_apply_filters()` you can apply all filters and therefore update all tables in the `dm`, so that they contain only the rows relevant to the filters. 
 Counting the rows you can see the effect of the filters:
 
 ```{r}
-us_flights_from_jfk <- cdm_apply_filters(us_flights_from_jfk_prepared)
+us_flights_from_jfk <- dm_apply_filters(us_flights_from_jfk_prepared)
 us_flights_from_jfk %>% 
-  cdm_get_tables() %>% 
+  dm_get_tables() %>% 
   map_int(nrow)
 ```
 
@@ -190,12 +190,12 @@ The {dm} code is leaner, because the fk information is encoded in the object.
 
 ### Joining two tables {#join}
 
-The `cdm_join_to_tbl()` function joins two immediately related tables in a data model.
+The `dm_join_to_tbl()` function joins two immediately related tables in a data model.
 The definition of the primary and foreign key constraints is used to define the relationship.
 
 ```{r}
 flights_dm_with_keys %>%
-  cdm_join_to_tbl(airlines, flights, join = left_join)
+  dm_join_to_tbl(airlines, flights, join = left_join)
 ```
 
 The same operation using {dplyr} syntax looks like this:
@@ -211,12 +211,12 @@ Omitting the `by` argument leads to a warning
 ## Copy a `dm` object to a DB or learn from it {#copy}
 
 `dm` objects can be transferred from one `src` to another.
-The relevant verb is `cdm_copy_to()`, which will copy both data and key constraints.
+The relevant verb is `dm_copy_to()`, which will copy both data and key constraints.
 
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
+flights_dm_with_keys_remote <- dm_copy_to(src_sqlite, flights_dm_with_keys)
 ```
 
 As a result, the tables are transferred to the target data source, and the returned data model contains all keys.
@@ -230,7 +230,7 @@ In the opposite direction, `dm` objects can also be "learned" from a DB, includi
 Unfortunately, this currently works only for MSSQL and Postgres, we cannot show the results here yet:
 
 ```{r eval=FALSE}
-flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
+flights_dm_from_remote <- dm_learn_from_db(src_sqlite)
 ```
 
 ## Further reading

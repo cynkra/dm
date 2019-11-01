@@ -3,7 +3,7 @@ context("test-check-key")
 test_that("check_key() checks primary key properly?", {
   map(
     .x = data_check_key_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       check_key(.x, c1, c2),
       class = "not_unique_key"
     )

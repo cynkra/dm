@@ -17,7 +17,7 @@ test_that("numeric subsetting works", {
     dm_for_filter_src,
     ~ expect_equivalent_dm(
       .x[c(1, 3, 5)],
-      cdm_select_tbl(.x, 1, 3, 5)
+      dm_select_tbl(.x, 1, 3, 5)
     )
   )
 })

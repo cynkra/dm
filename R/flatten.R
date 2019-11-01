@@ -8,14 +8,14 @@
 #' (number of rows equal to or larger than those of `start`)).
 #' For more information please refer to `vignette("dm-joining")`.
 #'
-#' @inheritParams cdm_join_to_tbl
+#' @inheritParams dm_join_to_tbl
 #' @param start Table to start from. From this table all outgoing foreign key relations are
 #' considered to establish a processing order for the joins. An interesting choice could be
 #' for example a fact table in a star schema.
 #' @param ... Unquoted table names to include in addition to `start`. The order of the tables here determines
 #' the order of the joins. If empty, all tables that can be reached are included.
 #' If this includes tables which aren't direct neighbours of `start`,
-#' it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
+#' it will only work with `dm_squash_to_tbl()` (given one of the allowed join-methods).
 #' `tidyselect` is supported, cf. [dplyr::select()].
 #' @family flattening functions
 #'
@@ -39,11 +39,11 @@
 #' that the effect of the filters on this table is taken into account. For `right_join`, `full_join` and `nest_join` an error
 #' is thrown in case filters are set, because the filters won't affect right hand side tables and thus the result will be
 #' incorrect in general (and calculating the effects on all RHS-tables would be time-consuming and is not supported;
-#' if desired call `cdm_apply_filters()` first to achieve this effect.).
+#' if desired call `dm_apply_filters()` first to achieve this effect.).
 #' For all other join types filtering only `start` is enough, since the effect is passed on by the
 #' successive joins.
 #'
-#' Mind, that calling `cdm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...`
+#' Mind, that calling `dm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...`
 #' would not lead to a well-defined result, if two or more foreign tables are to be joined to `start`. The resulting
 #' table would depend on the order the tables are listed in the `dm`. Therefore trying this results
 #' in a warning.
@@ -55,27 +55,27 @@
 #' all tables involved to table `start`.
 #'
 #' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_select_tbl(-weather) %>%
-#'   cdm_flatten_to_tbl(flights)
+#' dm_nycflights13() %>%
+#'   dm_select_tbl(-weather) %>%
+#'   dm_flatten_to_tbl(flights)
 #' @export
-cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   start <- as_string(ensym(start))
-  cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
-#' @rdname cdm_flatten_to_tbl
+#' @rdname dm_flatten_to_tbl
 #' @export
-cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- as_string(ensym(start))
-  cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
 }
 
 
-cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
+dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   check_correct_input(dm, start)
   vars <- setdiff(tidyselect_table_names(dm), start)
   list_of_pts <- tryCatch(
@@ -102,7 +102,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # early returns for some of the possible joins would be possible for "perfect" key relations,
   # but since it is generally possible to have imperfect FK relations, `semi_join` and `anti_join` might
   # produce results, that are of interest, e.g.
-  # cdm_flatten_to_tbl(cdm_nycflights13(cycle = TRUE) %>% cdm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
+  # dm_flatten_to_tbl(dm_nycflights13(cycle = TRUE) %>% dm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
 
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
@@ -130,7 +130,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # function to detect any reason for abort()
   check_flatten_to_tbl(
     join_name,
-    (nrow(cdm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
+    (nrow(dm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
     anyNA(order_df$name),
     g,
     auto_detect,
@@ -151,7 +151,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   # list of join partners
   ordered_table_list <- prep_dm %>%
-    cdm_get_tables() %>%
+    dm_get_tables() %>%
     extract(order_df$name)
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
@@ -163,7 +163,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #'
 #' @description A join of desired type is performed between table `table_1` and
 #' table `table_2`. The two tables need to be directly connected by a foreign key
-#' relation. Since this function is a wrapper around [cdm_flatten_to_tbl()], the LHS of
+#' relation. Since this function is a wrapper around [dm_flatten_to_tbl()], the LHS of
 #' the join will always be the "child table", the table referencing the other table.
 #'
 #' @param dm A [`dm`] object
@@ -176,7 +176,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #' @family flattening functions
 #'
 #' @export
-cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   force(join)
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))
@@ -188,7 +188,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  cdm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
@@ -196,7 +196,7 @@ parent_child_table <- function(dm, table_1, table_2) {
   t2_name <- as_string(ensym(table_2))
 
   rel <-
-    cdm_get_all_fks(dm) %>%
+    dm_get_all_fks(dm) %>%
     filter(
       (child_table == t1_name & parent_table == t2_name) |
         (child_table == t2_name & parent_table == t1_name)
@@ -239,7 +239,7 @@ check_flatten_to_tbl <- function(
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
 
 
-  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
+  # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the parameter `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
   if (!squash && has_grandparent) {
     abort_only_parents()
@@ -248,7 +248,7 @@ check_flatten_to_tbl <- function(
   if (join_name == "right_join" && auto_detect && more_than_1_pt) {
     warning(
       paste0(
-        "Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
+        "Result for `dm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
         "more than 2 tables involved and no explicit order given in `...`."
       )
     )
@@ -260,9 +260,9 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   # filters need to be empty, for the disambiguation to work
   # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
   red_dm <-
-    cdm_reset_all_filters(dm) %>%
-    cdm_select_tbl(tables)
-  # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
+    dm_reset_all_filters(dm) %>%
+    dm_select_tbl(tables)
+  # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
   start_tbl <- tbl(dm, start)
 
@@ -284,7 +284,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
     renames <- character(0)
   }
 
-  def <- cdm_get_def(clean_dm)
+  def <- dm_get_def(clean_dm)
   def$data[[which(def$table == start)]] <- start_tbl
   new_dm3(def)
 }

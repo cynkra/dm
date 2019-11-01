@@ -1,6 +1,6 @@
 #' Is a [`dm`]'s table referenced by another table?
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @return `TRUE`, if at least one foreign key exists, pointing to the primary
 #' key of parameter `table`, `FALSE` otherwise.
@@ -8,8 +8,8 @@
 #' @family functions utilizing foreign key relations
 #'
 #' @export
-cdm_is_referenced <- function(dm, table) {
-  has_length(cdm_get_referencing_tables(dm, !!ensym(table)))
+dm_is_referenced <- function(dm, table) {
+  has_length(dm_get_referencing_tables(dm, !!ensym(table)))
 }
 
 is_referenced_data_model <- function(data_model, table_name) {
@@ -19,7 +19,7 @@ is_referenced_data_model <- function(data_model, table_name) {
 
 #' Get the names of a [`dm`]'s tables referencing a given table.
 #'
-#' @inheritParams cdm_is_referenced
+#' @inheritParams dm_is_referenced
 #'
 #' @return Character vector of the names of the tables pointing to the primary
 #' key of parameter `table`.
@@ -27,11 +27,11 @@ is_referenced_data_model <- function(data_model, table_name) {
 #' @family functions utilizing foreign key relations
 #'
 #' @export
-cdm_get_referencing_tables <- function(dm, table) {
+dm_get_referencing_tables <- function(dm, table) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   i <- which(def$table == table)
   def$fks[[i]]$table
 }
@@ -66,7 +66,7 @@ calculate_join_list <- function(dm, table_name) {
 }
 
 create_graph_from_dm <- function(dm, directed = FALSE) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   def %>%
     select(ref_table = table, fks) %>%
     unnest(fks) %>%

@@ -5,10 +5,10 @@ lookup <- tibble(
   class_con = c(NA_character_, "SQLiteConnection", "PqConnection", "Microsoft SQL Server")
 )
 
-test_that("cdm_get_src() works", {
+test_that("dm_get_src() works", {
 
-  expect_cdm_error(
-    cdm_get_src(1),
+  expect_dm_error(
+    dm_get_src(1),
     class = "is_not_dm"
   )
 
@@ -17,19 +17,19 @@ test_that("cdm_get_src() works", {
   walk2(
     dm_for_filter_src,
     active_srcs_class,
-    ~expect_true(inherits(cdm_get_src(.x), .y))
+    ~expect_true(inherits(dm_get_src(.x), .y))
   )
 })
 
-test_that("cdm_get_con() works", {
+test_that("dm_get_con() works", {
 
-  expect_cdm_error(
-    cdm_get_con(1),
+  expect_dm_error(
+    dm_get_con(1),
     class = "is_not_dm"
   )
 
-  expect_cdm_error(
-    cdm_get_con(dm_for_filter),
+  expect_dm_error(
+    dm_get_con(dm_for_filter),
     class = "con_only_for_dbi"
   )
 
@@ -39,6 +39,6 @@ test_that("cdm_get_con() works", {
   walk2(
     dm_for_filter_src_red,
     active_con_class,
-    ~expect_true(inherits(cdm_get_con(.x), .y))
+    ~expect_true(inherits(dm_get_con(.x), .y))
   )
 })

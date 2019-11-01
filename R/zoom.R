@@ -1,4 +1,4 @@
-cdm_zoom_to_tbl <- function(dm, table) {
+dm_zoom_to_tbl <- function(dm, table) {
   if (is_zoomed(dm)) abort_no_zoom_allowed()
   check_no_filter(dm)
 
@@ -8,7 +8,7 @@ cdm_zoom_to_tbl <- function(dm, table) {
 
   structure(
     new_dm3(
-      cdm_get_def(dm) %>%
+      dm_get_def(dm) %>%
         mutate(zoom = if_else(table == !!zoom, data, list(NULL)))
       ),
     class = c("zoomed_dm", "dm")
@@ -19,15 +19,15 @@ is_zoomed <- function(dm) {
   inherits(dm, "zoomed_dm")
 }
 
-cdm_zoom_out <- function(dm) {
+dm_zoom_out <- function(dm) {
   new_dm3(
-    cdm_get_def(dm) %>%
+    dm_get_def(dm) %>%
       mutate(zoom = list(NULL))
     )
 }
 
 get_zoomed_tbl <- function(dm) {
-  cdm_get_zoomed_tbl(dm) %>%
+  dm_get_zoomed_tbl(dm) %>%
     pull(zoom) %>%
     pluck(1)
 }

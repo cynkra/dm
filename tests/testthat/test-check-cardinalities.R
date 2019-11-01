@@ -64,7 +64,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
       card_0_n_d1_d2_names
     ),
     ~ expect_known_output(
-      expect_cdm_error(
+      expect_dm_error(
         check_cardinality_0_n(
           parent_table = ..1,
           pk_column = a,
@@ -85,7 +85,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
       card_0_1_d1_d2_names
     ),
     ~ expect_known_output(
-      expect_cdm_error(
+      expect_dm_error(
         check_cardinality_0_1(
           parent_table = ..1,
           pk_column = a,
@@ -101,7 +101,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   map2(
     .x = d5_src,
     .y = d4_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       check_cardinality_1_1(.x, a, .y, c),
       class = "not_bijective"
     )
@@ -110,7 +110,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   map2(
     .x = d4_src,
     .y = d5_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       check_cardinality_1_1(.x, c, .y, a),
       class = "not_unique_key"
     )
@@ -119,7 +119,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   map2(
     .x = d4_src,
     .y = d1_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       check_cardinality_1_1(.x, c, .y, a),
       class = "not_unique_key"
     )
@@ -128,7 +128,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   map2(
     .x = d1_src,
     .y = d4_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       check_cardinality_0_1(.x, a, .y, c),
       class = "not_injective"
     )
@@ -137,7 +137,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   map2(
     .x = d4_src,
     .y = d1_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       check_cardinality_0_n(.x, c, .y, a),
       class = "not_unique_key"
     )
@@ -146,7 +146,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   map2(
     .x = d4_src,
     .y = d1_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       check_cardinality_1_1(.x, c, .y, a),
       class = "not_unique_key"
     )
@@ -155,7 +155,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   map2(
     .x = d1_src,
     .y = d4_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       check_cardinality_1_1(.x, a, .y, c),
       class = "not_bijective"
     )

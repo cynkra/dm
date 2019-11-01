@@ -56,15 +56,15 @@ data.
 
 In {dm} the basic element is [a `dm`
 object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
-You can create it with `cdm_nycflights13()` for the example data. After
+You can create it with `dm_nycflights13()` for the example data. After
 that you can use the links between the tables as often as you wish -
 without explicitly referring to the relations ever again. The task of
 joining four tables (`flights`, `airlines`, `planes` and `airports`)
 boils down to:
 
 ``` r
-cdm_nycflights13() %>%
-  cdm_flatten_to_tbl(start = flights)
+dm_nycflights13() %>%
+  dm_flatten_to_tbl(start = flights)
 #> Renamed columns:
 #> * name -> airlines$airlines.name, airports$airports.name
 #> * year -> flights$flights.year, planes$planes.year
@@ -312,7 +312,7 @@ A readymade `dm` object with preset keys is included in the package:
 ``` r
 library(dm)
 
-cdm_nycflights13()
+dm_nycflights13()
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
@@ -327,50 +327,50 @@ cdm_nycflights13()
 #&gt; None
 </span></CODE></PRE>
 
-The `cdm_draw()` function creates a visualization of the entity
+The `dm_draw()` function creates a visualization of the entity
 relationship model:
 
 ``` r
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
+dm_nycflights13(cycle = TRUE) %>%
+  dm_draw()
 ```
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
 ### Filtering and joining
 
-Similarly to `dplyr::filter()`, a filtering function `cdm_filter()` is
+Similarly to `dplyr::filter()`, a filtering function `dm_filter()` is
 available for `dm` objects. You need to provide the `dm` object, the
 table whose rows you want to filter, and the filter expression. The
 actual effect of the filtering will only be realized once you use
-`cdm_apply_filters`. Before that, the filter conditions are merely
-stored within the `dm`. After using `cdm_apply_filters()` a `dm` object
+`dm_apply_filters`. Before that, the filter conditions are merely
+stored within the `dm`. After using `dm_apply_filters()` a `dm` object
 is returned whose tables only contain rows that are related to the
 reduced rows in the filtered table. This currently only works for
 cycle-free relationships between the tables.
 
 ``` r
-cdm_nycflights13(cycle = FALSE) %>%
-  cdm_get_tables() %>%
+dm_nycflights13(cycle = FALSE) %>%
+  dm_get_tables() %>%
   map_int(nrow)
 #> airlines airports  flights   planes  weather 
 #>       16     1458   336776     3322    26115
 
-cdm_nycflights13(cycle = FALSE) %>%
-  cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
-  cdm_apply_filters() %>%
-  cdm_get_tables() %>%
+dm_nycflights13(cycle = FALSE) %>%
+  dm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
+  dm_apply_filters() %>%
+  dm_get_tables() %>%
   map_int(nrow)
 #> airlines airports  flights   planes  weather 
 #>        4        3     7301      134    26115
 ```
 
 For joining two tables using their relationship defined in the `dm`, you
-can use `cdm_join_tbl()`:
+can use `dm_join_tbl()`:
 
 ``` r
-cdm_nycflights13(cycle = FALSE) %>%
-  cdm_join_to_tbl(airports, flights, join = semi_join)
+dm_nycflights13(cycle = FALSE) %>%
+  dm_join_to_tbl(airports, flights, join = semi_join)
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 19</span><span>
@@ -399,14 +399,14 @@ only these airports are included in the semi-join.
 ### From and to databases
 
 In order to transfer an existing `dm` object to a DB, you can call
-`cdm_copy_to()` with the target DB and the `dm` object:
+`dm_copy_to()` with the target DB and the `dm` object:
 
 ``` r
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
 #> src:  sqlite 3.29.0 [:memory:]
 #> tbls:
-nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13(cycle = TRUE))
+nycflights13_remote <- dm_copy_to(src_sqlite, dm_nycflights13(cycle = TRUE))
 nycflights13_remote
 ```
 
@@ -424,7 +424,7 @@ nycflights13_remote
 
 The key constraints from the original object are also copied to the
 newly created object. With the default setting `set_key_constraints =
-TRUE` for `cdm_copy_to()`, key constraints are also established on the
+TRUE` for `dm_copy_to()`, key constraints are also established on the
 target DB. Currently this feature is only supported for MSSQL and
 Postgres database management systems (DBMS).
 
@@ -435,7 +435,7 @@ support for other DBMS will be implemented in a future update.
 
 ``` r
 src_postgres <- src_postgres()
-nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
+nycflights13_from_remote <- dm_learn_from_db(src_postgres)
 ```
 
 ## More information

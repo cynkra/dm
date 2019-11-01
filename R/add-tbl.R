@@ -1,12 +1,12 @@
 #' Add tables to a [`dm`]
 #'
 #' @description
-#' `cdm_add_tbl()` adds one or more tibbles to a [`dm`].
+#' `dm_add_tbl()` adds one or more tibbles to a [`dm`].
 #' It uses [mutate()] semantics.
 #'
 #' @return The inital `dm` with the additional table(s).
 #'
-#' @seealso [cdm_rm_tbl()]
+#' @seealso [dm_rm_tbl()]
 #'
 #' @param dm A [`dm`] object
 #' @param ... One or more tibbles to add to the `dm`.
@@ -14,7 +14,7 @@
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @export
-cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
+dm_add_tbl <- function(dm, ..., repair = "check_unique") {
 
   check_dm(dm)
 
@@ -29,14 +29,14 @@ cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
   new_old_names <- all_names[seq_along(old_names)]
 
   selected <- set_names(old_names, new_old_names)
-  dm <- cdm_select_tbl_impl(dm, selected)
+  dm <- dm_select_tbl_impl(dm, selected)
 
   new_names <- all_names[seq2(length(old_names) + 1, length(all_names))]
-  cdm_add_tbl_impl(dm, new_tables, new_names)
+  dm_add_tbl_impl(dm, new_tables, new_names)
 }
 
-cdm_add_tbl_impl <- function(dm, tbls, table_name) {
-  def <- cdm_get_def(dm)
+dm_add_tbl_impl <- function(dm, tbls, table_name) {
+  def <- dm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
   def_0$table <- table_name
@@ -55,13 +55,13 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name) {
 #'
 #' @return The inital `dm` without the removed table(s).
 #'
-#' @seealso [cdm_add_tbl()], [cdm_select_tbl()]
+#' @seealso [dm_add_tbl()], [dm_select_tbl()]
 #'
 #' @param dm A [`dm`] object
 #' @param ... One or more unquoted tibble names to remove from the `dm`.
 #'
 #' @export
-cdm_rm_tbl <- function(dm, ...) {
+dm_rm_tbl <- function(dm, ...) {
   check_dm(dm)
 
   table_names <-
@@ -70,12 +70,12 @@ cdm_rm_tbl <- function(dm, ...) {
 
   check_correct_input(dm, table_names)
 
-  cdm_select_tbl(dm, -one_of(!!!table_names))
+  dm_select_tbl(dm, -one_of(!!!table_names))
 }
 
 
 check_new_tbls <- function(dm, tbls) {
-  orig_tbls <- cdm_get_tables(dm)
+  orig_tbls <- dm_get_tables(dm)
 
   # are all new tables on the same source as the original ones?
   if (has_length(orig_tbls) && !all_same_source(c(orig_tbls[1], tbls))) {

@@ -1,155 +1,155 @@
-test_that("cdm_add_pk() works as intended?", {
+test_that("dm_add_pk() works as intended?", {
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_silent(
-      cdm_add_pk(.x, cdm_table_1, a)
+      dm_add_pk(.x, dm_table_1, a)
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_silent(
-      cdm_add_pk(.x, cdm_table_1, a) %>%
-        cdm_add_pk(cdm_table_1, b, force = TRUE)
+      dm_add_pk(.x, dm_table_1, a) %>%
+        dm_add_pk(dm_table_1, b, force = TRUE)
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
-      cdm_add_pk(.x, cdm_table_1, qq),
+    .x = dm_test_obj_src,
+    ~ expect_dm_error(
+      dm_add_pk(.x, dm_table_1, qq),
       class = "wrong_col_names"
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
-      cdm_add_pk(.x, cdm_table_1, a) %>%
-        cdm_add_pk(cdm_table_1, b),
+    .x = dm_test_obj_src,
+    ~ expect_dm_error(
+      dm_add_pk(.x, dm_table_1, a) %>%
+        dm_add_pk(dm_table_1, b),
       class = "key_set_force_false"
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
-      cdm_add_pk(.x, cdm_table_2, c, check = TRUE),
+    .x = dm_test_obj_src,
+    ~ expect_dm_error(
+      dm_add_pk(.x, dm_table_2, c, check = TRUE),
       class = "not_unique_key"
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_silent(
-      cdm_add_pk(.x, cdm_table_2, c)
+      dm_add_pk(.x, dm_table_2, c)
     )
   )
 })
 
 
-test_that("cdm_rm_pk() works as intended?", {
+test_that("dm_rm_pk() works as intended?", {
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_silent(
-      cdm_add_pk(.x, cdm_table_1, a) %>%
-        cdm_rm_pk(cdm_table_1)
+      dm_add_pk(.x, dm_table_1, a) %>%
+        dm_rm_pk(dm_table_1)
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_true(
-      cdm_add_pk(.x, cdm_table_1, a) %>%
-        cdm_rm_pk(cdm_table_2) %>% # still does its job, even if there was no key in the first place :)
-        cdm_has_pk(cdm_table_1)
+      dm_add_pk(.x, dm_table_1, a) %>%
+        dm_rm_pk(dm_table_2) %>% # still does its job, even if there was no key in the first place :)
+        dm_has_pk(dm_table_1)
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
-      cdm_add_pk(.x, cdm_table_1, a) %>%
-        cdm_rm_pk(cdm_table_5),
+    .x = dm_test_obj_src,
+    ~ expect_dm_error(
+      dm_add_pk(.x, dm_table_1, a) %>%
+        dm_rm_pk(dm_table_5),
       class = "table_not_in_dm"
     )
   )
 })
 
-test_that("cdm_has_pk() works as intended?", {
+test_that("dm_has_pk() works as intended?", {
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_false(
-      cdm_has_pk(.x, cdm_table_2)
+      dm_has_pk(.x, dm_table_2)
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_true(
-      cdm_add_pk(.x, cdm_table_1, a) %>%
-        cdm_has_pk(cdm_table_1)
+      dm_add_pk(.x, dm_table_1, a) %>%
+        dm_has_pk(dm_table_1)
     )
   )
 })
 
-test_that("cdm_get_pk() works as intended?", {
+test_that("dm_get_pk() works as intended?", {
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_identical(
-      cdm_get_pk(.x, cdm_table_1),
+      dm_get_pk(.x, dm_table_1),
       character(0)
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_identical(
-      cdm_add_pk(.x, cdm_table_1, a) %>%
-        cdm_get_pk(cdm_table_1),
+      dm_add_pk(.x, dm_table_1, a) %>%
+        dm_get_pk(dm_table_1),
       "a"
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    .x = dm_test_obj_src,
+    ~ expect_dm_error(
       .x %>%
-        cdm_add_pk(cdm_table_1, a) %>%
-        cdm_add_pk(cdm_table_1, b),
+        dm_add_pk(dm_table_1, a) %>%
+        dm_add_pk(dm_table_1, b),
       class = "key_set_force_false"
     )
   )
 
   map(
-    .x = cdm_test_obj_src,
+    .x = dm_test_obj_src,
     ~ expect_equivalent_dm(
       .x %>%
-        cdm_add_pk(cdm_table_1, a) %>%
-        cdm_add_pk(cdm_table_1, b, force = TRUE),
+        dm_add_pk(dm_table_1, a) %>%
+        dm_add_pk(dm_table_1, b, force = TRUE),
       .x %>%
-        cdm_add_pk(cdm_table_1, b)
+        dm_add_pk(dm_table_1, b)
     )
   )
 })
 
-test_that("cdm_enum_pk_candidates() works properly?", {
+test_that("dm_enum_pk_candidates() works properly?", {
   candidates_table_1 <- tibble(column = c("a", "b"), candidate = c(TRUE, TRUE), why = c("", ""))
   candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE), why = "has duplicate values: 5")
 
   iwalk(
-    cdm_test_obj_src,
+    dm_test_obj_src,
     ~ expect_identical(
-      cdm_enum_pk_candidates(.x, cdm_table_1),
+      dm_enum_pk_candidates(.x, dm_table_1),
       candidates_table_1,
       label = .y
     )
   )
 
   iwalk(
-    cdm_test_obj_src,
+    dm_test_obj_src,
     ~ expect_identical(
-      cdm_enum_pk_candidates(.x, cdm_table_2),
+      dm_enum_pk_candidates(.x, dm_table_2),
       candidates_table_2,
       label = .y
     )

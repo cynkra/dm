@@ -2,7 +2,7 @@
 #'
 #' This function returns a tibble with information, which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @return A tibble with 5 columns:
 #'   1. `table`: the table in the `dm`
@@ -17,8 +17,8 @@
 #'
 #' @export
 #' @examples
-#' cdm_check_constraints(cdm_nycflights13())
-cdm_check_constraints <- function(dm) {
+#' dm_check_constraints(dm_nycflights13())
+dm_check_constraints <- function(dm) {
   pk_results <- check_pk_constraints(dm)
   fk_results <- check_fk_constraints(dm)
   bind_rows(
@@ -204,7 +204,7 @@ is_subset <- function(t1, c1, t2, c2) {
 }
 
 check_pk_constraints <- function(dm) {
-  pks <- cdm_get_all_pks(dm)
+  pks <- dm_get_all_pks(dm)
   if (nrow(pks) == 0) return(tibble(
     table = character(0),
     kind = character(0),
@@ -228,7 +228,7 @@ check_pk_constraints <- function(dm) {
 }
 
 check_fk_constraints <- function(dm) {
-  fks <-  left_join(cdm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
+  fks <-  left_join(dm_get_all_fks(dm), dm_get_all_pks(dm), by = c("parent_table" = "table"))
   pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
   fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%

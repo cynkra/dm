@@ -56,8 +56,8 @@ The motivation for the {dm} package is a more sophisticated data management.
 {dm} uses the relational data model and its core concept of splitting one table into multiple tables.
 
 ```{r draw, echo = FALSE}
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
+dm_nycflights13(cycle = TRUE) %>%
+  dm_draw()
 ```
 
 This has a **hugh advantage**:
@@ -72,13 +72,13 @@ Assume your task is to merge all tables (except the `weather` table).
 This cross-referencing is a common first step when modelling or plotting data.
 
 In {dm} the basic element is [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
-You can create it with `cdm_nycflights13()` for the example data.
+You can create it with `dm_nycflights13()` for the example data.
 After that you can use the links between the tables as often as you wish - without explicitly referring to the relations ever again.
 The task of joining four tables (`flights`, `airlines`, `planes` and `airports`) boils down to:
 
 ```{r}
-cdm_nycflights13() %>%
-  cdm_flatten_to_tbl(start = flights)
+dm_nycflights13() %>%
+  dm_flatten_to_tbl(start = flights)
 ```
 
 In contrast, using the classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
@@ -141,8 +141,8 @@ A data model shows the structure between multiple tables that can be linked toge
 The `nycflights13` relations can be transferred into the following graphical representation:
 
 ```{r, echo = FALSE}
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
+dm_nycflights13(cycle = TRUE) %>%
+  dm_draw()
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.
@@ -232,40 +232,40 @@ A readymade `dm` object with preset keys is included in the package:
 ```{r dm}
 library(dm)
 
-cdm_nycflights13()
+dm_nycflights13()
 ```
 
-The `cdm_draw()` function creates a visualization of the entity relationship model:
+The `dm_draw()` function creates a visualization of the entity relationship model:
 
 ```{r draw, echo = TRUE}
 ```
 
 ### Filtering and joining {#filter}
 
-Similarly to `dplyr::filter()`, a filtering function `cdm_filter()` is available for `dm` objects.
+Similarly to `dplyr::filter()`, a filtering function `dm_filter()` is available for `dm` objects.
 You need to provide the `dm` object, the table whose rows you want to filter, and the filter expression.
-The actual effect of the filtering will only be realized once you use `cdm_apply_filters`.
+The actual effect of the filtering will only be realized once you use `dm_apply_filters`.
 Before that, the filter conditions are merely stored within the `dm`.
-After using `cdm_apply_filters()` a `dm` object is returned whose tables only contain rows that are related to the reduced rows in the filtered table.
+After using `dm_apply_filters()` a `dm` object is returned whose tables only contain rows that are related to the reduced rows in the filtered table.
 This currently only works for cycle-free relationships between the tables.
 
 ```{r}
-cdm_nycflights13(cycle = FALSE) %>%
-  cdm_get_tables() %>%
+dm_nycflights13(cycle = FALSE) %>%
+  dm_get_tables() %>%
   map_int(nrow)
 
-cdm_nycflights13(cycle = FALSE) %>%
-  cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
-  cdm_apply_filters() %>%
-  cdm_get_tables() %>%
+dm_nycflights13(cycle = FALSE) %>%
+  dm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
+  dm_apply_filters() %>%
+  dm_get_tables() %>%
   map_int(nrow)
 ```
 
-For joining two tables using their relationship defined in the `dm`, you can use `cdm_join_tbl()`:
+For joining two tables using their relationship defined in the `dm`, you can use `dm_join_tbl()`:
 
 ```{r}
-cdm_nycflights13(cycle = FALSE) %>%
-  cdm_join_to_tbl(airports, flights, join = semi_join)
+dm_nycflights13(cycle = FALSE) %>%
+  dm_join_to_tbl(airports, flights, join = semi_join)
 ```
 
 In our `dm`, the `origin` column of the `flights` table points to the `airports` table.
@@ -273,17 +273,17 @@ Since all `nycflights13`-flights depart from New York, only these airports are i
 
 ### From and to databases
 
-In order to transfer an existing `dm` object to a DB, you can call `cdm_copy_to()` with the target DB and the `dm` object:
+In order to transfer an existing `dm` object to a DB, you can call `dm_copy_to()` with the target DB and the `dm` object:
 
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13(cycle = TRUE))
+nycflights13_remote <- dm_copy_to(src_sqlite, dm_nycflights13(cycle = TRUE))
 nycflights13_remote
 ```
 
 The key constraints from the original object are also copied to the newly created object.
-With the default setting `set_key_constraints = TRUE` for `cdm_copy_to()`, key constraints are also established on the target DB.
+With the default setting `set_key_constraints = TRUE` for `dm_copy_to()`, key constraints are also established on the target DB.
 Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).
 
 It is also possible to automatically create a `dm` object from the permanent tables of a DB.
@@ -292,7 +292,7 @@ The support for other DBMS will be implemented in a future update.
 
 ```{r eval=FALSE}
 src_postgres <- src_postgres()
-nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
+nycflights13_from_remote <- dm_learn_from_db(src_postgres)
 ```
 
 ## More information

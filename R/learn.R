@@ -13,7 +13,7 @@
 #' @return A [`dm`] object with the tables from the DB and the respective key relations.
 #'
 #' @export
-cdm_learn_from_db <- function(dest) {
+dm_learn_from_db <- function(dest) {
   # assuming we do not try to learn from temporary tables (which do not appear in sys.table (at least not the globally temporary ones))
 
   con <- con_from_src_or_con(dest)

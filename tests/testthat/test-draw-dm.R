@@ -14,7 +14,7 @@ test_that("API", {
 })
 
 test_that("last", {
-  expect_cdm_error(
+  expect_dm_error(
     color_quos_to_display(
       flights = "blue",
       airlines =
@@ -24,7 +24,7 @@ test_that("last", {
 })
 
 test_that("bad color", {
-  expect_cdm_error(
+  expect_dm_error(
     color_quos_to_display(
       flights = "mauve"
     ),
@@ -34,7 +34,7 @@ test_that("bad color", {
 
 test_that("getter", {
   expect_equal(
-    cdm_get_colors(cdm_nycflights13()),
+    dm_get_colors(dm_nycflights13()),
     tibble::tribble(
       ~table,     ~color,
       "airlines", "orange",

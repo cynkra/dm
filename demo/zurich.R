@@ -16,8 +16,8 @@ options(rlang_backtrace_on_error = "none")
 ##
 
 # Teaser
-dm::cdm_nycflights13(cycle = TRUE) %>%
-  dm::cdm_draw()
+dm::dm_nycflights13(cycle = TRUE) %>%
+  dm::dm_draw()
 
 # Poll: Who has worked with a software that has
 #       a concept of "THE DATASET"?
@@ -142,24 +142,24 @@ flights_base %>%
 library(dm)
 
 # Compound object: tables, relationships, data
-dm_flights <- cdm_nycflights13(cycle = TRUE)
+dm_flights <- dm_nycflights13(cycle = TRUE)
 dm_flights
 
 dm_flights %>%
-  cdm_draw()
+  dm_draw()
 
 # Selection of tables
 dm_flights %>%
-  cdm_select_tbl(flights, airlines) %>%
-  cdm_draw()
+  dm_select_tbl(flights, airlines) %>%
+  dm_draw()
 
 dm_flights %>%
-  cdm_select_tbl(airports, airlines) %>%
-  cdm_draw()
+  dm_select_tbl(airports, airlines) %>%
+  dm_draw()
 
 try(
   dm_flights %>%
-    cdm_select_tbl(bogus)
+    dm_select_tbl(bogus)
 )
 
 # Accessing tables
@@ -181,16 +181,16 @@ dm_flights %>%
 ##
 ##
 
-dm_flights <- cdm_nycflights13()
+dm_flights <- dm_nycflights13()
 dm_flights %>%
-  cdm_draw()
+  dm_draw()
 
 dm_flights %>%
-  cdm_join_to_tbl(airlines, flights)
+  dm_join_to_tbl(airlines, flights)
 
 try(
   dm_flights %>%
-    cdm_join_to_tbl(airports, airlines)
+    dm_join_to_tbl(airports, airlines)
 )
 
 ##
@@ -203,7 +203,7 @@ try(
 ##
 
 dm_flights %>%
-  cdm_flatten_to_tbl(flights)
+  dm_flatten_to_tbl(flights)
 
 ##
 ##
@@ -217,7 +217,7 @@ dm_flights %>%
 # All operations are designed to work locally and on the database
 dm_flights_sqlite <-
   dm_flights %>%
-  cdm_copy_to(
+  dm_copy_to(
     dbplyr::src_memdb(), .,
     unique_table_names = TRUE, set_key_constraints = FALSE
   )
@@ -225,32 +225,32 @@ dm_flights_sqlite <-
 dm_flights_sqlite
 
 dm_flights_sqlite %>%
-  cdm_draw()
+  dm_draw()
 
 dm_flights_sqlite %>%
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map(dbplyr::sql_render)
 
 dm_flights_sqlite %>%
-  cdm_join_to_tbl(airlines, flights) %>%
+  dm_join_to_tbl(airlines, flights) %>%
   dbplyr::sql_render()
 
 dm_flights_sqlite %>%
-  cdm_flatten_to_tbl(flights) %>%
+  dm_flatten_to_tbl(flights) %>%
   dbplyr::sql_render()
 
 # Filtering on the database
 dm_flights_sqlite %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, day == 1) %>%
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(flights, day == 1) %>%
   tbl("flights")
 
 # ... and the corresponding SQL statement and query plan
 dm_flights_sqlite %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, day == 1) %>%
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(flights, day == 1) %>%
   tbl("flights") %>%
   dbplyr::sql_render()
 
@@ -266,20 +266,20 @@ dm_flights_sqlite %>%
 # Filtering on a table returns a dm object
 # with the filter condition(s) stored
 dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.")
+  dm_filter(airlines, name == "Delta Air Lines Inc.")
 
 # ... which then can be filtered on another table
 dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl")
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl")
 
 # ... and stored in another dm variable
 delta_non_jfk_january <-
   dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(planes, year < 2000) %>%
-  cdm_filter(flights, month == 1)
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(planes, year < 2000) %>%
+  dm_filter(flights, month == 1)
 delta_non_jfk_january
 
 # Querying a table applies the filters
@@ -289,11 +289,11 @@ delta_non_jfk_january %>%
 # FIXME: Can this work without applying all filters?
 
 delta_non_jfk_january %>%
-  cdm_apply_filters() %>%
-  cdm_join_to_tbl(flights, airlines)
+  dm_apply_filters() %>%
+  dm_join_to_tbl(flights, airlines)
 
 delta_non_jfk_january %>%
-  cdm_flatten_to_tbl(flights)
+  dm_flatten_to_tbl(flights)
 
 
 ##
@@ -363,41 +363,41 @@ nycflights13_tbl <- as_dm(list(
 nycflights13_tbl
 
 nycflights13_tbl %>%
-  cdm_draw()
+  dm_draw()
 
 # Adding primary keys
 nycflights13_pk <-
   nycflights13_tbl %>%
-  cdm_add_pk(weather, origin_slot_id) %>%
-  cdm_add_pk(planes, tailnum) %>%
-  cdm_add_pk(airports, faa) %>%
-  cdm_add_pk(airlines, carrier)
+  dm_add_pk(weather, origin_slot_id) %>%
+  dm_add_pk(planes, tailnum) %>%
+  dm_add_pk(airports, faa) %>%
+  dm_add_pk(airlines, carrier)
 
 nycflights13_pk %>%
-  cdm_draw()
+  dm_draw()
 
 # FIXME: Model weak constraints, show differently in diagram (#4)
 
 # Adding foreign keys
 nycflights13_fk <-
   nycflights13_pk %>%
-  cdm_add_fk(flights, origin_slot_id, weather) %>%
-  cdm_add_fk(flights, tailnum, planes) %>%
-  cdm_add_fk(flights, origin, airports) %>%
-  cdm_add_fk(flights, dest, airports) %>%
-  cdm_add_fk(flights, carrier, airlines)
+  dm_add_fk(flights, origin_slot_id, weather) %>%
+  dm_add_fk(flights, tailnum, planes) %>%
+  dm_add_fk(flights, origin, airports) %>%
+  dm_add_fk(flights, dest, airports) %>%
+  dm_add_fk(flights, carrier, airlines)
 
 nycflights13_fk %>%
-  cdm_draw()
+  dm_draw()
 
 # Color it!
-cdm_get_available_colors()
+dm_get_available_colors()
 
 nycflights13_fk %>%
-  cdm_set_colors(
+  dm_set_colors(
     airlines = , planes = , weather = , airports = "blue"
   ) %>%
-  cdm_draw()
+  dm_draw()
 
 ##
 ##
@@ -427,15 +427,15 @@ try({
   # Import
   dm_flights_pq <-
     dm_flights %>%
-    cdm_filter(planes, TRUE) %>%
-    cdm_filter(flights, month == 1, day == 1) %>%
-    cdm_copy_to(con_pq, ., temporary = FALSE)
+    dm_filter(planes, TRUE) %>%
+    dm_filter(flights, month == 1, day == 1) %>%
+    dm_copy_to(con_pq, ., temporary = FALSE)
 
   dm_flights_from_pq <-
-    cdm_learn_from_db(con_pq)
+    dm_learn_from_db(con_pq)
 
   dm_flights_from_pq %>%
-    cdm_draw()
+    dm_draw()
 })
 
 ##

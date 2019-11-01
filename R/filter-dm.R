@@ -2,15 +2,15 @@
 #'
 #' Filtering one table of a [`dm`] object may affect all tables connected to this table
 #' via one or more steps of foreign key relations. Firstly, one or more filter conditions for
-#' one or more tables can be defined using `cdm_filter()`, with a syntax similar to `dplyr::filter()`.
-#' These conditions will be stored in the [`dm`] and not immediately executed. With `cdm_apply_filters()`
+#' one or more tables can be defined using `dm_filter()`, with a syntax similar to `dplyr::filter()`.
+#' These conditions will be stored in the [`dm`] and not immediately executed. With `dm_apply_filters()`
 #' all tables will be updated according to the filter conditions and the foreign key relations.
 #'
 #'
-#' @details `cdm_filter()` allows you to set one or more filter conditions for one table
+#' @details `dm_filter()` allows you to set one or more filter conditions for one table
 #' of a [`dm`] object. These conditions will be stored in the [`dm`] for when they are needed.
 #' The conditions are only evaluated in one of the following scenarios:
-#' 1. Calling `cdm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
+#' 1. Calling `dm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
 #' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
 #' with the corresponding key values.
 #' Tables that are not connected to any table with an active filter are left unchanged.
@@ -19,9 +19,9 @@
 #' filter conditions and the foreign key conditions (similar to 1. but only for one table)
 #'
 #' Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
-#' @rdname cdm_filter
+#' @rdname dm_filter
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
 #' Multiple conditions are combined with `&` or `,`. Only rows where the condition evaluates
 #' to TRUE are kept.
@@ -34,30 +34,30 @@
 #' library(dplyr)
 #'
 #' dm_nyc_filtered <-
-#'   cdm_nycflights13() %>%
-#'   cdm_filter(airports, name == "John F Kennedy Intl")
+#'   dm_nycflights13() %>%
+#'   dm_filter(airports, name == "John F Kennedy Intl")
 #'
 #' tbl(dm_nyc_filtered, "flights")
 #' dm_nyc_filtered[["planes"]]
 #' dm_nyc_filtered$airlines
 #'
-#' cdm_nycflights13() %>%
-#'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
-#'   cdm_apply_filters()
+#' dm_nycflights13() %>%
+#'   dm_filter(airports, name == "John F Kennedy Intl") %>%
+#'   dm_apply_filters()
 #'
 #' # If you want to only keep those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
-#' cdm_nycflights13() %>%
-#'   cdm_filter(flights, 1 == 1) %>%
-#'   cdm_apply_filters() %>%
-#'   cdm_nrow()
+#' dm_nycflights13() %>%
+#'   dm_filter(flights, 1 == 1) %>%
+#'   dm_apply_filters() %>%
+#'   dm_nrow()
 #' # note, that in this example the only affected table is
 #' # `airports` (since the departure airports in `flights` are
 #' # only the 3 NYC ones).
 #'
 #' @export
-cdm_filter <- function(dm, table, ...) {
+dm_filter <- function(dm, table, ...) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 
@@ -70,7 +70,7 @@ cdm_filter <- function(dm, table, ...) {
 }
 
 set_filter_for_table <- function(dm, table, quos) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   i <- which(def$table == table)
   def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(quos))
@@ -78,33 +78,33 @@ set_filter_for_table <- function(dm, table, quos) {
 }
 
 
-#' @rdname cdm_filter
+#' @rdname dm_filter
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_filter(flights, month == 3) %>%
-#'   cdm_apply_filters()
+#' dm_nycflights13() %>%
+#'   dm_filter(flights, month == 3) %>%
+#'   dm_apply_filters()
 #'
 #' library(dplyr)
-#' cdm_nycflights13() %>%
-#'   cdm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
+#' dm_nycflights13() %>%
+#'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #' @export
-cdm_apply_filters <- function(dm) {
-  def <- cdm_get_def(dm)
+dm_apply_filters <- function(dm) {
+  def <- dm_get_def(dm)
 
   def$data <- map(def$table, ~ tbl(dm, .))
 
-  cdm_reset_all_filters(new_dm3(def))
+  dm_reset_all_filters(new_dm3(def))
 }
 
 
-cdm_get_filtered_table <- function(dm, from) {
-  filters <- cdm_get_filter(dm)
+dm_get_filtered_table <- function(dm, from) {
+  filters <- dm_get_filter(dm)
   if (nrow(filters) == 0) {
-    return(cdm_get_tables(dm)[[from]])
+    return(dm_get_tables(dm)[[from]])
   }
 
   fc <- get_all_filtered_connected(dm, from)
@@ -125,7 +125,7 @@ cdm_get_filtered_table <- function(dm, from) {
     left_join(fc_children, by = "table") %>%
     left_join(f_quos, by = "table")
 
-  list_of_tables <- cdm_get_tables(dm)
+  list_of_tables <- dm_get_tables(dm)
 
   for (i in seq_len(nrow(recipe))) {
     table_name <- recipe$table[i]
@@ -155,7 +155,7 @@ cdm_get_filtered_table <- function(dm, from) {
 }
 
 get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- unique(cdm_get_filter(dm)$table)
+  filtered_tables <- unique(dm_get_filter(dm)$table)
   graph <- create_graph_from_dm(dm)
 
   # Computation of distances and shortest paths uses the same algorithm
@@ -200,7 +200,7 @@ get_all_filtered_connected <- function(dm, table) {
 
 check_no_filter <- function(dm) {
   def <-
-    cdm_get_def(dm)
+    dm_get_def(dm)
 
   if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) return()
 

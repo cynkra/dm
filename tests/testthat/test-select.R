@@ -1,7 +1,7 @@
-test_that("cdm_rename() works for replacing pk", {
+test_that("dm_rename() works for replacing pk", {
   expect_identical(
-    cdm_rename(dm_for_filter, t3, new_f = f) %>%
-      cdm_get_all_pks(),
+    dm_rename(dm_for_filter, t3, new_f = f) %>%
+      dm_get_all_pks(),
     tribble(
       ~table, ~pk_col,
       "t1",   "a",
@@ -14,10 +14,10 @@ test_that("cdm_rename() works for replacing pk", {
   )
 })
 
-test_that("cdm_rename() works for replacing fks", {
+test_that("dm_rename() works for replacing fks", {
   expect_identical(
-    cdm_rename(dm_for_filter, t2, new_d = d, new_e = e) %>%
-      cdm_get_all_fks(),
+    dm_rename(dm_for_filter, t2, new_d = d, new_e = e) %>%
+      dm_get_all_fks(),
     tribble(
       ~child_table, ~child_fk_col, ~parent_table,
       "t2",         "new_d",       "t1",
@@ -29,10 +29,10 @@ test_that("cdm_rename() works for replacing fks", {
   )
 })
 
-test_that("cdm_select() works for replacing pk", {
+test_that("dm_select() works for replacing pk", {
   expect_identical(
-    cdm_select(dm_for_filter, t3, new_f = f) %>%
-      cdm_get_all_pks(),
+    dm_select(dm_for_filter, t3, new_f = f) %>%
+      dm_get_all_pks(),
     tribble(
       ~table, ~pk_col,
       "t1",   "a",
@@ -45,18 +45,18 @@ test_that("cdm_select() works for replacing pk", {
   )
 })
 
-test_that("cdm_select() avoids removing pks", {
+test_that("dm_select() avoids removing pks", {
   expect_identical(
-    cdm_select(dm_for_filter, t3, new_g = g) %>%
-      cdm_get_all_pks(),
-    cdm_get_all_pks(dm_for_filter)
+    dm_select(dm_for_filter, t3, new_g = g) %>%
+      dm_get_all_pks(),
+    dm_get_all_pks(dm_for_filter)
   )
 })
 
-test_that("cdm_select() works for replacing fks", {
+test_that("dm_select() works for replacing fks", {
   expect_identical(
-    cdm_select(dm_for_filter, t2, new_d = d) %>%
-      cdm_get_all_fks(),
+    dm_select(dm_for_filter, t2, new_d = d) %>%
+      dm_get_all_fks(),
     tribble(
       ~child_table, ~child_fk_col, ~parent_table,
       "t2",         "new_d",       "t1",
@@ -68,10 +68,10 @@ test_that("cdm_select() works for replacing fks", {
   )
 })
 
-test_that("cdm_select() avoids removing fks", {
+test_that("dm_select() avoids removing fks", {
   expect_identical(
-    cdm_select(dm_for_filter, t2, c, e) %>%
-      cdm_get_all_fks(),
-    cdm_get_all_fks(dm_for_filter)
+    dm_select(dm_for_filter, t2, c, e) %>%
+      dm_get_all_fks(),
+    dm_get_all_fks(dm_for_filter)
   )
 })

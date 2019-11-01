@@ -2,7 +2,7 @@
 #'
 #' Rename columns of your [`dm`] with a similar syntax to `dplyr::rename()`.
 #'
-#' @inheritParams cdm_filter
+#' @inheritParams dm_filter
 #' @param ... One or more unquoted expressions separated by commas. You can treat
 #' variable names like they are positions, so you can use expressions like x:y
 #' to select ranges of variables.
@@ -18,11 +18,11 @@
 #' @details If key columns are renamed the meta-information of the `dm` is updated accordingly
 #'
 #' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_rename(airports, code = faa, altitude = alt)
+#' dm_nycflights13() %>%
+#'   dm_rename(airports, code = faa, altitude = alt)
 #' @export
-cdm_rename <- function(dm, table, ...) {
-  # FIXME: Document on same page as cdm_select()
+dm_rename <- function(dm, table, ...) {
+  # FIXME: Document on same page as dm_select()
 
   check_no_filter(dm)
 
@@ -31,23 +31,23 @@ cdm_rename <- function(dm, table, ...) {
   old_cols <- colnames(tbl(dm, table_name))
   selected <- tidyselect::vars_rename(old_cols, ...)
 
-  cdm_select_impl(dm, table_name, selected, check_keys = FALSE)
+  dm_select_impl(dm, table_name, selected, check_keys = FALSE)
 }
 
 #' Select and/or rename one or more columns of a [`dm`] table
 #'
 #' Select columns of your [`dm`] with a similar syntax to `dplyr::select()`.
 #'
-#' @inheritParams cdm_rename
+#' @inheritParams dm_rename
 #'
 #' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_select(airports, code = faa, altitude = alt)
+#' dm_nycflights13() %>%
+#'   dm_select(airports, code = faa, altitude = alt)
 #' @details If key columns are renamed the meta-information of the `dm` is updated accordingly.
-#' If key columns would be removed, `cdm_select()` makes sure they are re-added to the table.
+#' If key columns would be removed, `dm_select()` makes sure they are re-added to the table.
 #'
 #' @export
-cdm_select <- function(dm, table, ...) {
+dm_select <- function(dm, table, ...) {
   check_no_filter(dm)
 
   # tbl() is efficient because no filter is set
@@ -55,14 +55,14 @@ cdm_select <- function(dm, table, ...) {
   old_cols <- colnames(tbl(dm, table_name))
   selected <- tidyselect::vars_select(old_cols, ...)
 
-  cdm_select_impl(dm, table_name, selected)
+  dm_select_impl(dm, table_name, selected)
 }
 
 # need to take care of
 # 1. adding key columns if they are deselected
 # 2. updating renamed key columns in data model
-cdm_select_impl <- function(dm, table_name, selected, check_keys = TRUE) {
-  # check keys only necessary for `cdm_select()`, rename preserves all columns
+dm_select_impl <- function(dm, table_name, selected, check_keys = TRUE) {
+  # check keys only necessary for `dm_select()`, rename preserves all columns
   if (check_keys) {
     all_keys <- get_all_keys(dm, table_name)
 
@@ -77,11 +77,11 @@ cdm_select_impl <- function(dm, table_name, selected, check_keys = TRUE) {
   # FIXME: if key columns are removed, this can affect foreign and primary keys
 
   # create new table using `dplyr::select()`
-  list_of_tables <- cdm_get_tables(dm)
+  list_of_tables <- dm_get_tables(dm)
   table <- list_of_tables[[table_name]]
   new_table <- select(table, !!!selected)
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   table_idx <- which(def$table == table_name)
   def$data[[table_idx]] <- new_table
   def$pks[[table_idx]] <- apply_col_select(def$pks[[table_idx]], selected)
@@ -90,10 +90,10 @@ cdm_select_impl <- function(dm, table_name, selected, check_keys = TRUE) {
 }
 
 get_all_keys <- function(dm, table_name) {
-  fks <- cdm_get_all_fks(dm) %>%
+  fks <- dm_get_all_fks(dm) %>%
     filter(child_table == !!table_name) %>%
     pull(child_fk_col)
-  pk <- cdm_get_pk(dm, !!table_name)
+  pk <- dm_get_pk(dm, !!table_name)
   c(pk, fks)
 }
 

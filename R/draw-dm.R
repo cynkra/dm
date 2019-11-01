@@ -1,6 +1,6 @@
 #' Draw schema of a [`dm`]-object's data model
 #'
-#' `cdm_draw()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`).
+#' `dm_draw()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`).
 #'
 #' @param dm A [`dm`] object
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
@@ -12,9 +12,9 @@
 #'
 #' @examples
 #' library(dplyr)
-#' cdm_draw(cdm_nycflights13())
-#' cdm_draw(cdm_nycflights13(cycle = TRUE))
-cdm_draw <- function(
+#' dm_draw(dm_nycflights13())
+#' dm_draw(dm_nycflights13(cycle = TRUE))
+dm_draw <- function(
                      dm,
                      rankdir = "LR",
                      col_attr = "column",
@@ -26,7 +26,7 @@ cdm_draw <- function(
                      focus = NULL,
                      graph_name = "Data Model") {
 
-  data_model <- cdm_get_data_model(dm)
+  data_model <- dm_get_data_model(dm)
 
   graph <- dm_create_graph(
     data_model,
@@ -44,40 +44,40 @@ cdm_draw <- function(
 }
 
 
-#' cdm_set_colors()
+#' dm_set_colors()
 #'
-#' `cdm_set_colors()` allows to define the colors in which to display the tables of the data model.
+#' `dm_set_colors()` allows to define the colors in which to display the tables of the data model.
 #'
 #' @param ... Colors to set in the form `table = "<color>"` . Fall-through syntax similarly to
 #'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
 #'   and `table2` . This argument supports splicing.
-#' @return For `cdm_set_colors()`: the updated data model.
+#' @return For `dm_set_colors()`: the updated data model.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @examples
-#' cdm_nycflights13(color = FALSE) %>%
-#'   cdm_set_colors(
+#' dm_nycflights13(color = FALSE) %>%
+#'   dm_set_colors(
 #'     airports = ,
 #'     airlines = ,
 #'     planes = "yellow",
 #'     weather = "dark_blue"
 #'   ) %>%
-#'   cdm_draw()
+#'   dm_draw()
 #'
 #' # Splicing is supported:
 #' new_colors <- c(
 #'   airports = "yellow", airlines = "yellow", planes = "yellow",
 #'   weather = "dark_blue"
 #' )
-#' cdm_nycflights13(color = FALSE) %>%
-#'   cdm_set_colors(!!!new_colors) %>%
-#'   cdm_draw()
+#' dm_nycflights13(color = FALSE) %>%
+#'   dm_set_colors(!!!new_colors) %>%
+#'   dm_draw()
 #' @export
-cdm_set_colors <- function(dm, ...) {
+dm_set_colors <- function(dm, ...) {
   display_df <- color_quos_to_display(...)
 
   def <-
-    cdm_get_def(dm) %>%
+    dm_get_def(dm) %>%
     left_join(display_df, by = "table") %>%
     mutate(display = coalesce(new_display, display)) %>%
     select(-new_display)
@@ -105,34 +105,34 @@ color_quos_to_display <- function(...) {
   tibble(table = names(quos), new_display = new_values[idx])
 }
 
-#' cdm_get_colors()
+#' dm_get_colors()
 #'
-#' `cdm_get_colors()` returns the colors defined for a data model.
+#' `dm_get_colors()` returns the colors defined for a data model.
 #'
-#' @return For `cdm_get_colors()`, a two-column tibble with one row per table.
+#' @return For `dm_get_colors()`, a two-column tibble with one row per table.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @export
-cdm_get_colors <- nse_function(c(dm), ~ {
-  cdm_get_def(dm) %>%
+dm_get_colors <- nse_function(c(dm), ~ {
+  dm_get_def(dm) %>%
     select(table, display) %>%
     as_tibble() %>%
     mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
     select(-display)
 })
 
-#' cdm_get_available_colors()
+#' dm_get_available_colors()
 #'
-#' `cdm_get_available_colors()` returns an overview of the available colors and their names
+#' `dm_get_available_colors()` returns an overview of the available colors and their names
 #' as a tibble.
 
 #'
-#' @return For `cdm_get_available_colors()`, a tibble with the color in the first
+#' @return For `dm_get_available_colors()`, a tibble with the color in the first
 #'   column and auxiliary information in other columns.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @export
-cdm_get_available_colors <- function() {
+dm_get_available_colors <- function() {
   colors
 }
 

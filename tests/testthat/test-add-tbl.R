@@ -1,64 +1,64 @@
-test_that("cdm_add_tbl() works", {
+test_that("dm_add_tbl() works", {
 
   # is a table added on all sources?
   walk2(
     dm_for_filter_src,
     d1_src,
     ~expect_identical(
-      length(cdm_get_tables(cdm_add_tbl(..1, d1 = ..2))),
+      length(dm_get_tables(dm_add_tbl(..1, d1 = ..2))),
       7L
     )
   )
 
   # can I retrieve the tibble under its old name?
   expect_identical(
-    tbl(cdm_add_tbl(dm_for_filter, d1), "d1"),
+    tbl(dm_add_tbl(dm_for_filter, d1), "d1"),
     d1
   )
 
   # can I retrieve the tibble under a new name?
   expect_identical(
-    tbl(cdm_add_tbl(dm_for_filter, test = d1), "test"),
+    tbl(dm_add_tbl(dm_for_filter, test = d1), "test"),
     d1
   )
 
   # we accept even weird table names, as long as they are unique
   expect_identical(
-    tbl(d1 %>% cdm_add_tbl(dm_for_filter, .), "."),
+    tbl(d1 %>% dm_add_tbl(dm_for_filter, .), "."),
     d1
   )
 
   # do I avoid the warning when piping the table but setting the name?
   expect_silent(
     expect_identical(
-      tbl(d1 %>% cdm_add_tbl(dm_for_filter, new_name = .), "new_name"),
+      tbl(d1 %>% dm_add_tbl(dm_for_filter, new_name = .), "new_name"),
       d1)
   )
 
   # adding more than 1 table:
   # 1. Is the resulting number of tables correct?
   expect_identical(
-    length(cdm_get_tables(cdm_add_tbl(dm_for_filter, d1, d2))),
+    length(dm_get_tables(dm_add_tbl(dm_for_filter, d1, d2))),
     8L)
 
   # 2. Is the resulting order of the tables correct?
   expect_identical(
-    src_tbls(cdm_add_tbl(dm_for_filter, d1, d2)),
+    src_tbls(dm_add_tbl(dm_for_filter, d1, d2)),
     c(src_tbls(dm_for_filter), "d1", "d2")
   )
 
   # Is an error thrown in case I try to give the new table an old table's name?
   expect_error(
-    cdm_add_tbl(dm_for_filter, t1 = d1),
+    dm_add_tbl(dm_for_filter, t1 = d1),
     class = "vctrs_error_names_must_be_unique"
   )
 
   expect_message(
     expect_equivalent_dm(
-      cdm_add_tbl(dm_for_filter, t1 = d1, repair = "unique"),
+      dm_add_tbl(dm_for_filter, t1 = d1, repair = "unique"),
       dm_for_filter %>%
-        cdm_rename_tbl(t1...1 = t1) %>%
-        cdm_add_tbl(t1...7 = d1)
+        dm_rename_tbl(t1...1 = t1) %>%
+        dm_add_tbl(t1...7 = d1)
     )
   )
 
@@ -67,8 +67,8 @@ test_that("cdm_add_tbl() works", {
     d1_db <- d1_src[-1]
     walk(
       d1_db,
-      ~expect_cdm_error(
-        cdm_add_tbl(dm_for_filter, .),
+      ~expect_dm_error(
+        dm_add_tbl(dm_for_filter, .),
         "not_same_src"
       )
     )
@@ -79,36 +79,36 @@ test_that("cdm_add_tbl() works", {
     data_1_src,
     test_srcs,
     ~expect_identical(
-      cdm_add_tbl(dm(), test = ..1) %>% cdm_get_src(),
+      dm_add_tbl(dm(), test = ..1) %>% dm_get_src(),
       ..2
     )
   )
 
-  # can I use cdm_select_tbl(), selecting among others the new table?
+  # can I use dm_select_tbl(), selecting among others the new table?
   expect_silent(
-    cdm_add_tbl(dm_for_filter, t7_new = t7) %>% cdm_select_tbl(t1, t7_new, everything())
+    dm_add_tbl(dm_for_filter, t7_new = t7) %>% dm_select_tbl(t1, t7_new, everything())
   )
 })
 
-test_that("cdm_rm_tbl() works", {
+test_that("dm_rm_tbl() works", {
   # removes a table on all srcs
   map(
     dm_for_filter_w_cycle_src,
     ~expect_equivalent_dm(
-      cdm_rm_tbl(., t7) %>% collect(),
+      dm_rm_tbl(., t7) %>% collect(),
       dm_for_filter
       )
   )
 
   # removes more than one table
   expect_equivalent_dm(
-    cdm_rm_tbl(dm_for_filter_w_cycle, t7, t5, t3) %>% collect(),
-    cdm_select_tbl(dm_for_filter, t1, t2, t4, t6)
+    dm_rm_tbl(dm_for_filter_w_cycle, t7, t5, t3) %>% collect(),
+    dm_select_tbl(dm_for_filter, t1, t2, t4, t6)
   )
 
   # fails when table name is wrong
-  expect_cdm_error(
-    cdm_rm_tbl(dm_for_filter, t7),
+  expect_dm_error(
+    dm_rm_tbl(dm_for_filter, t7),
     "table_not_in_dm"
   )
 })
