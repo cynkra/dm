@@ -101,7 +101,8 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @export
 cdm_get_all_fks <- nse_function(c(dm), ~ {
   cdm_get_data_model_fks(dm) %>%
-    select(child_table = table, child_fk_col = column, parent_table = ref)
+    select(child_table = table, child_fk_col = column, parent_table = ref) %>%
+    arrange(child_table, child_fk_col)
 })
 
 
