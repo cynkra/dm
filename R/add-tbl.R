@@ -36,7 +36,7 @@ cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
 }
 
 cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter())) {
-  if (inherits(tbls, "data.frame")) tbls <- list(tbls)
+  if (inherits(tbls, "data.frame") || inherits(tbls, "tbl_dbi")) tbls <- list(tbls)
   def <- cdm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
