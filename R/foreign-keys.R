@@ -123,8 +123,8 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   table <- as_name(ensym(table))
   ref_table <- as_name(ensym(ref_table))
 
-  check_correct_input(dm, eval_tidy(table))
-  check_correct_input(dm, eval_tidy(ref_table))
+  check_correct_input(dm, table)
+  check_correct_input(dm, ref_table)
 
   fk_cols <- cdm_get_fk(dm, !!table, !!ref_table)
   if (is_empty(fk_cols)) {
@@ -148,13 +148,13 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   }
 
   # FIXME: compound keys
-  colnames <- as.list(colnames)
+  cols <- as.list(cols)
 
   def <- cdm_get_def(dm)
   i <- which(def$table == ref_table)
 
   fks <- def$fks[[i]]
-  fks <- fks[fks$table != table | !is.na(vctrs::vec_match(fks$column, colnames)), ]
+  fks <- fks[fks$table != table | is.na(vctrs::vec_match(fks$column, cols)), ]
   def$fks[[i]] <- fks
 
   new_dm3(def)
