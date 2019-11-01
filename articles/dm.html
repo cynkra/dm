@@ -160,12 +160,79 @@
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">map_int</span>(nrow)</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;       16     1458   336776     3322    26115</span></a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/dm.html">cdm_get_data_model</a></span>(flights_dm)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; Data model object:</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;   5 tables:  airlines, airports, flights, planes ... </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   53 columns</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;   0 primary keys</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;   0 references</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/dm.html">cdm_get_data_model</a></span>(flights_dm)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; $tables
+#&gt;      table segment display
+#&gt; 1 airlines      NA    &lt;NA&gt;
+#&gt; 2 airports      NA    &lt;NA&gt;
+#&gt; 3  flights      NA    &lt;NA&gt;
+#&gt; 4   planes      NA    &lt;NA&gt;
+#&gt; 5  weather      NA    &lt;NA&gt;
+#&gt; 
+#&gt; $columns
+#&gt;       table id         column    type key  ref ref_col
+#&gt; 1  airlines  1        carrier integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 2  airlines  2           name integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 3  airports  1            faa integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 4  airports  2           name integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 5  airports  3            lat integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 6  airports  4            lon integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 7  airports  5            alt integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 8  airports  6             tz integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 9  airports  7            dst integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 10 airports  8          tzone integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 11  flights  1           year integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 12  flights  2          month integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 13  flights  3            day integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 14  flights  4       dep_time integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 15  flights  5 sched_dep_time integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 16  flights  6      dep_delay integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 17  flights  7       arr_time integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 18  flights  8 sched_arr_time integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 19  flights  9      arr_delay integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 20  flights 10        carrier integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 21  flights 11         flight integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 22  flights 12        tailnum integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 23  flights 13         origin integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 24  flights 14           dest integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 25  flights 15       air_time integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 26  flights 16       distance integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 27  flights 17           hour integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 28  flights 18         minute integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 29  flights 19      time_hour integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 30   planes  1        tailnum integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 31   planes  2           year integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 32   planes  3           type integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 33   planes  4   manufacturer integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 34   planes  5          model integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 35   planes  6        engines integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 36   planes  7          seats integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 37   planes  8          speed integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 38   planes  9         engine integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 39  weather  1         origin integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 40  weather  2           year integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 41  weather  3          month integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 42  weather  4            day integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 43  weather  5           hour integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 44  weather  6           temp integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 45  weather  7           dewp integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 46  weather  8          humid integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 47  weather  9       wind_dir integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 48  weather 10     wind_speed integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 49  weather 11      wind_gust integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 50  weather 12         precip integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 51  weather 13       pressure integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 52  weather 14          visib integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 53  weather 15      time_hour integer   0 &lt;NA&gt;    &lt;NA&gt;
+#&gt; 
+#&gt; $references
+#&gt; <span style="color: #555555;"># A tibble: 0 x 6</span><span>
+#&gt; </span><span style="color: #555555;"># … with 6 variables: table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, column </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, ref </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, ref_col </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,
+#&gt; #   ref_id </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, ref_col_num </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "data_model"
+</span></code></pre>
 </div>
 <div id="keys" class="section level2">
 <h2 class="hasAnchor">
@@ -387,7 +454,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, <a href="https://www.energie360.ch"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
