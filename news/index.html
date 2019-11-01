@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.3.9005</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.4</span>
       </span>
     </div>
 
@@ -134,62 +134,21 @@
       
     </div>
 
-    <div id="dm-0-0-3-9005" class="section level1">
+    <div id="dm-0-0-4" class="section level1">
 <h1 class="page-header">
-<a href="#dm-0-0-3-9005" class="anchor"></a>dm 0.0.3.9005</h1>
+<a href="#dm-0-0-4" class="anchor"></a>dm 0.0.4</h1>
 <ul>
 <li>Many {dplyr} verbs now work on tables in a <code>dm</code>. Zooming to a table vie <code><a href="../reference/cdm_zoom_to_tbl.html">cdm_zoom_to_tbl()</a></code> creates a zoomed <code>dm</code> on which the {dplyr} verbs can be applied. The resulting table can be put back into the <code>dm</code> with <code><a href="../reference/cdm_zoom_to_tbl.html">cdm_update_zoomed_tbl()</a></code> (overwriting the original table) or <code><a href="../reference/cdm_zoom_to_tbl.html">cdm_insert_zoomed_tbl()</a></code> (creating a new table), respectively (#89).</li>
 <li>
 <code>cdm_select_to_tbl()</code> removes foreign key constraints if the corresponding columns are removed.</li>
 <li>Integrate code from {datamodelr} in this package (<a href='https://github.com/bergant'>@bergant</a>, #111).</li>
 <li>Reorder tables in <code>"dm"</code> using <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code> (#108).</li>
-<li>Internal: function to test {dm} errors.</li>
-<li>Repair rownames problem in print output of <code>"zoomed_dm"</code> class.</li>
-<li>Bugfix for <code><a href="../reference/cdm_add_tbl.html">cdm_add_tbl()</a></code>: new table now satisfies type criteria in <code>def</code>.</li>
-<li>Support {tidyselect}-syntax for <code><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl()</a></code> and <code><a href="../reference/cdm_flatten_to_tbl.html">cdm_squash_to_tbl()</a></code> (#101).</li>
-<li>Zoom to table using <code><a href="../reference/cdm_zoom_to_tbl.html">cdm_zoom_to_tbl()</a></code>.</li>
-<li>Zoom out using <code><a href="../reference/cdm_zoom_to_tbl.html">cdm_zoom_out()</a></code>.</li>
-<li>Add subclass <code>"zoomed_dm"</code> and methods for <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/base/format.html">format()</a></code>
-</li>
-<li>Internal: discard <code>new_dm2()</code>.</li>
-</ul>
-</div>
-    <div id="dm-0-0-3-9004" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-3-9004" class="anchor"></a>dm 0.0.3.9004</h1>
-<ul>
 <li>More accurate documentation of filtering operation (#98).</li>
 <li>Support empty <code>dm</code> objects via <code><a href="../reference/dm.html">dm()</a></code> and <code><a href="../reference/dm.html">new_dm()</a></code> (#96).</li>
 <li>
 <code><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl()</a></code> now flattens all immediate neighbors by default (#95).</li>
-</ul>
-</div>
-    <div id="dm-0-0-3-9003" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-3-9003" class="anchor"></a>dm 0.0.3.9003</h1>
-<ul>
-<li>Use new storage format internally.</li>
-</ul>
-</div>
-    <div id="dm-0-0-3-9002" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-3-9002" class="anchor"></a>dm 0.0.3.9002</h1>
-<ul>
 <li>New <code><a href="../reference/cdm_add_tbl.html">cdm_add_tbl()</a></code> and <code><a href="../reference/cdm_rm_tbl.html">cdm_rm_tbl()</a></code> (#90).</li>
 <li>New <code><a href="../reference/dm.html">cdm_get_con()</a></code> (#84).</li>
-</ul>
-</div>
-    <div id="dm-0-0-3-9001" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-3-9001" class="anchor"></a>dm 0.0.3.9001</h1>
-<ul>
-<li>Selection and renaming of tables and columns uses new storage format (#54).</li>
-</ul>
-</div>
-    <div id="dm-0-0-3-9000" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-3-9000" class="anchor"></a>dm 0.0.3.9000</h1>
-<ul>
 <li>A <code>dm</code> object is defined using a nested tibble, one row per table (#57).</li>
 </ul>
 </div>
@@ -473,12 +432,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#dm-0-0-3-9005">0.0.3.9005</a></li>
-        <li><a href="#dm-0-0-3-9004">0.0.3.9004</a></li>
-        <li><a href="#dm-0-0-3-9003">0.0.3.9003</a></li>
-        <li><a href="#dm-0-0-3-9002">0.0.3.9002</a></li>
-        <li><a href="#dm-0-0-3-9001">0.0.3.9001</a></li>
-        <li><a href="#dm-0-0-3-9000">0.0.3.9000</a></li>
+        <li><a href="#dm-0-0-4">0.0.4</a></li>
         <li><a href="#dm-0-0-3">0.0.3</a></li>
         <li><a href="#dm-0-0-2-9003">0.0.2.9003</a></li>
         <li><a href="#dm-0-0-2-9002">0.0.2.9002</a></li>
