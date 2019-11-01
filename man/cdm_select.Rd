@@ -28,7 +28,7 @@ Select columns of your \code{\link{dm}} with a similar syntax to \code{dplyr::se
 }
 \details{
 If key columns are renamed the meta-information of the \code{dm} is updated accordingly.
-If key columns would be removed, \code{cdm_select()} makes sure they are re-added to the table.
+If key columns are removed, all related relations are dropped as well.
 }
 \examples{
 cdm_nycflights13() \%>\%

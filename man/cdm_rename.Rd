@@ -27,7 +27,7 @@ See select helpers for more details and examples about tidyselect helpers such a
 Rename columns of your \code{\link{dm}} with a similar syntax to \code{dplyr::rename()}.
 }
 \details{
-If key columns are renamed the meta-information of the \code{dm} is updated accordingly
+If key columns are renamed the meta-information of the \code{dm} is updated accordingly.
 }
 \examples{
 cdm_nycflights13() \%>\%
