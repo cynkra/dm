@@ -440,6 +440,28 @@ dm_nycflights_small %<-% {as_dm(
   cdm_add_fk(flights, dest, airports)
   }
 
+dm_nycflights_small_cycle %<-% {as_dm(
+  list(
+    flights = nycflights13::flights %>% slice(1:800),
+    airports = nycflights13::airports,
+    planes = nycflights13::planes,
+    airlines = nycflights13::airlines)
+) %>%
+    cdm_add_pk(planes, tailnum) %>%
+    cdm_add_pk(airlines, carrier) %>%
+    cdm_add_pk(airports, faa) %>%
+    cdm_add_fk(flights, tailnum, planes) %>%
+    cdm_add_fk(flights, carrier, airlines) %>%
+    cdm_add_fk(flights, origin, airports) %>%
+    cdm_add_fk(flights, dest, airports) %>%
+    cdm_set_colors(
+      flights = "blue",
+      airlines = ,
+      planes = ,
+      airports = "orange"
+    )
+}
+
 # for database tests -------------------------------------------------
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test
@@ -515,6 +537,7 @@ if (is_this_a_test()) {
   dm_more_complex_src %<-% cdm_test_load(dm_more_complex)
   dm_for_disambiguate_src %<-% cdm_test_load(dm_for_disambiguate)
   dm_nycflights_small_src %<-% cdm_test_load(dm_nycflights_small, set_key_constraints = FALSE)
+  dm_nycflights_small_cycle_src %<-% cdm_test_load(dm_nycflights_small_cycle, set_key_constraints = FALSE)
 
   message("loading data frames into database")
 
