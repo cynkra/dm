@@ -34,11 +34,11 @@ cdm_draw <- function(dm,
 
   # FIXME: here the color scheme is set with an options(...)-call;
   # should have some schemes available for the user to choose from
-  if (is_null(getOption("datamodelr.scheme"))) dm_set_color_scheme(dm_color_scheme)
+  if (is_null(getOption("datamodelr.scheme"))) bdm_set_color_scheme(bdm_color_scheme)
 
   data_model <- cdm_get_data_model(dm)
 
-  graph <- dm_create_graph(
+  graph <- bdm_create_graph(
     data_model,
     rankdir = rankdir,
     col_attr = col_attr,
@@ -50,7 +50,7 @@ cdm_draw <- function(dm,
     focus = focus,
     graph_name = graph_name
   )
-  dm_render_graph(graph)
+  bdm_render_graph(graph)
 }
 
 #' Get data_model component

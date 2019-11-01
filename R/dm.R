@@ -45,7 +45,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
     tbl_heads <- map(tbls, head, 0)
     tbl_structures <- map(tbl_heads, collect)
 
-    data_model <- dm_from_data_frames(tbl_structures)
+    data_model <- bdm_from_data_frames(tbl_structures)
   }
 
   table_names <- set_names(data_model$tables$table)
@@ -365,7 +365,7 @@ as_dm.default <- function(x) {
   # Empty tibbles as proxy, we don't need to know the columns
   # and we don't have keys yet
   proxies <- map(x, ~ tibble(a = 0))
-  data_model <- dm_from_data_frames(proxies)
+  data_model <- bdm_from_data_frames(proxies)
 
   new_dm(x, data_model)
 }

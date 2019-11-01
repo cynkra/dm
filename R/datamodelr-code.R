@@ -1,7 +1,7 @@
 
 # data_model code directly from {datamodelr} --------------------------------------
 
-dm_from_data_frames <- function(...) {
+bdm_from_data_frames <- function(...) {
 
   df_list <- list(...)
   if(length(df_list) == 1 && inherits(df_list[[1]], "list")) {
@@ -59,7 +59,7 @@ as.data_model <- function(x) {
 
 
   # create references from ref and keys
-  ref_table <- dm_create_references(x)
+  ref_table <- bdm_create_references(x)
 
   table_attrs <- attr(x, "tables")
   if(is.null(table_attrs)) {
@@ -98,7 +98,7 @@ is.data_model <- function(x) {
   inherits(x, "data_model")
 }
 
-dm_create_references <- function(col_table) {
+bdm_create_references <- function(col_table) {
 
   if(!inherits(col_table, "data.frame")) stop("Input must be a data frame.")
 
@@ -166,7 +166,7 @@ dm_create_references <- function(col_table) {
 
 # graph code directly from {datamodelr} -----------------------------------------
 
-dm_create_graph <- function(
+bdm_create_graph <- function(
   data_model,
   rankdir = "BT",
   graph_name = "Data Model",
@@ -179,9 +179,9 @@ dm_create_graph <- function(
   columnArrows = FALSE) {
 
   g_list <-
-    dm_create_graph_list(data_model = data_model, view_type = view_type,
-                         focus = focus, col_attr = col_attr,
-                         columnArrows = columnArrows)
+    bdm_create_graph_list(data_model = data_model, view_type = view_type,
+                          focus = focus, col_attr = col_attr,
+                          columnArrows = columnArrows)
   if(length(g_list$nodes$nodes) == 0) {
     warning("The number of tables to render is 0.")
   }
@@ -203,7 +203,7 @@ dm_create_graph <- function(
 
 }
 
-dm_render_graph <- function (graph, width = NULL, height = NULL) {
+bdm_render_graph <- function (graph, width = NULL, height = NULL) {
 
   if( !requireNamespace("DiagrammeR", quietly = TRUE)) {
     stop("DiagrammeR package needed for this function to work. Please install it.",
@@ -217,7 +217,7 @@ dm_render_graph <- function (graph, width = NULL, height = NULL) {
   DiagrammeR::grViz(graph$dot_code, allow_subst = FALSE, width, height)
 }
 
-dm_create_graph_list <- function(
+bdm_create_graph_list <- function(
   data_model,
   view_type = "all",
   focus = NULL,
@@ -424,22 +424,22 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     palette_id <- "default"
   }
 
-  border = ifelse(is.null(dm_color(palette_id, "line_color")), 0, 1)
+  border = ifelse(is.null(bdm_color(palette_id, "line_color")), 0, 1)
 
   attr_table <- list(
     ALIGN="LEFT", BORDER=border, CELLBORDER=0, CELLSPACING=0
   )
-  if(!is.null(dm_color(palette_id, "line_color"))) {
-    attr_table[["COLOR"]] <- dm_color(palette_id, "line_color")
+  if(!is.null(bdm_color(palette_id, "line_color"))) {
+    attr_table[["COLOR"]] <- bdm_color(palette_id, "line_color")
   }
   attr_header <- list(
-    COLSPAN=length(cols) - columnArrows, BGCOLOR=dm_color(palette_id, "header_bgcolor"), BORDER=0
+    COLSPAN=length(cols) - columnArrows, BGCOLOR=bdm_color(palette_id, "header_bgcolor"), BORDER=0
   )
   attr_font <- list()
-  attr_font <- list(COLOR = dm_color(palette_id, "header_font"))
+  attr_font <- list(COLOR = bdm_color(palette_id, "header_font"))
 
   attr_td <- function(col_name, row_values, value) {
-    ret <- list(ALIGN="LEFT", BGCOLOR = dm_color(palette_id, "bgcolor"))
+    ret <- list(ALIGN="LEFT", BGCOLOR = bdm_color(palette_id, "bgcolor"))
     if(col_name == "column" && columnArrows) {
       key <- row_values[["key"]];
       reference <- row_values[["ref"]];
@@ -479,15 +479,15 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   ret
 }
 
-dm_set_color_scheme <- function(color_scheme) {
+bdm_set_color_scheme <- function(color_scheme) {
   options(datamodelr.scheme = color_scheme)
 }
 
-dm_get_color_scheme <- function() {
+bdm_get_color_scheme <- function() {
   getOption("datamodelr.scheme")
 }
 
-dm_palette <- function(line_color = NULL, header_bgcolor, header_font, bgcolor) {
+bdm_palette <- function(line_color = NULL, header_bgcolor, header_font, bgcolor) {
   list(
     line_color = line_color,
     header_bgcolor = header_bgcolor,
@@ -496,86 +496,86 @@ dm_palette <- function(line_color = NULL, header_bgcolor, header_font, bgcolor) 
   )
 }
 
-dm_color <- function(palette_id, what) {
-  color_scheme <- dm_get_color_scheme()
+bdm_color <- function(palette_id, what) {
+  color_scheme <- bdm_get_color_scheme()
   if(is.null(color_scheme[[palette_id]])) {
     palette_id <- "default"
   }
   color_scheme[[palette_id]][[what]]
 }
 
-dm_color_scheme <- list(
-  default = dm_palette(
+bdm_color_scheme <- list(
+  default = bdm_palette(
     line_color = "#555555",
     header_bgcolor = "#EFEBDD",
     header_font = "#000000",
     bgcolor = "#FFFFFF"
   ),
-  accent1nb = dm_palette(
+  accent1nb = bdm_palette(
     header_bgcolor = "#5B9BD5",
     header_font = "#FFFFFF",
     bgcolor = "#D6E1F1"),
-  accent2nb = dm_palette(
+  accent2nb = bdm_palette(
     header_bgcolor = "#ED7D31",
     header_font = "#FFFFFF",
     bgcolor = "#F9DBD2"),
-  accent3nb = dm_palette(
+  accent3nb = bdm_palette(
     header_bgcolor = "#FFC000",
     header_font = "#FFFFFF",
     bgcolor = "#FFEAD0"),
-  accent4nb = dm_palette(
+  accent4nb = bdm_palette(
     header_bgcolor = "#70AD47",
     header_font = "#FFFFFF",
     bgcolor = "#D9E6D4"),
-  accent5nb = dm_palette(
+  accent5nb = bdm_palette(
     header_bgcolor = "#4472C4",
     header_font = "#FFFFFF",
     bgcolor = "#D4D9EC"),
-  accent6nb = dm_palette(
+  accent6nb = bdm_palette(
     header_bgcolor = "#A5A5A5",
     header_font = "#FFFFFF",
     bgcolor = "#E4E4E4"),
-  accent7nb = dm_palette(
+  accent7nb = bdm_palette(
     header_bgcolor = "#787878",
     header_font = "#FFFFFF",
     bgcolor = "#D8D8D8"),
-  accent1 = dm_palette(
+  accent1 = bdm_palette(
     line_color = "#41719C",
     header_bgcolor = "#5B9BD5",
     header_font = "#FFFFFF",
     bgcolor = "#D6E1F1"
   ),
-  accent2 = dm_palette(
+  accent2 = bdm_palette(
     line_color = "#AE5A21",
     header_bgcolor = "#ED7D31",
     header_font = "#FFFFFF",
     bgcolor = "#F9DBD2"
   ),
-  accent3 = dm_palette(
+  accent3 = bdm_palette(
     line_color = "#BC8C00",
     header_bgcolor = "#FFC000",
     header_font = "#FFFFFF",
     bgcolor = "#FFEAD0"
   ),
-  accent4 = dm_palette(
+  accent4 = bdm_palette(
     line_color = "#507E32",
     header_bgcolor = "#70AD47",
     header_font = "#FFFFFF",
     bgcolor = "#D9E6D4"
   ),
-  accent5 = dm_palette(
+  accent5 = bdm_palette(
     line_color = "#2F528F",
     header_bgcolor = "#4472C4",
     header_font = "#FFFFFF",
     bgcolor = "#D4D9EC"
   ),
-  accent6 = dm_palette(
+  accent6 = bdm_palette(
     line_color = "#787878",
     header_bgcolor = "#A5A5A5",
     header_font = "#FFFFFF",
     bgcolor = "#E4E4E4"
   ),
-  accent7 = dm_palette(
+  accent7 = bdm_palette(
     line_color = "#000000",
     header_bgcolor = "#787878",
     header_font = "#FFFFFF",
