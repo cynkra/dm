@@ -13,7 +13,7 @@ cdm_disentangle(dm, child_table)
 }
 \description{
 A normalized data model does not contain multiple key relations pointing from one table to another.
-If this situation should occur anyway, this function can help to untie this knot.
+If such a situation should occur anyway, this function can help to untie the knot.
 }
 \details{
 Sometimes a table points with more than one column to another table.

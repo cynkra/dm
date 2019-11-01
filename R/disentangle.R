@@ -1,7 +1,7 @@
 #' Disentangle relationships
 #'
 #' A normalized data model does not contain multiple key relations pointing from one table to another.
-#' If this situation should occur anyway, this function can help to untie this knot.
+#' If such a situation should occur anyway, this function can help to untie the knot.
 #'
 #' @inheritParams cdm_add_pk
 #' @param child_table Table from which multiple foreign keys are pointing to another table
