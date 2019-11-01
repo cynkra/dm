@@ -20,3 +20,10 @@ test_that("disentangling works", {
       )
   )
 })
+
+test_that("disentangling doesn't do anything when not needed", {
+  expect_equivalent_dm(
+    cdm_disentangle(dm_for_filter, t2),
+    dm_for_filter
+  )
+})
