@@ -63,9 +63,9 @@ cdm_disentangle <- function(dm, child_table) {
 # get all entangled relations in a tibble
 get_all_entangled_rels <- function(dm, table_name) {
   cdm_get_all_fks(dm) %>%
-    filter(child_table == table_name,
-           # finds those direct neighbours that are referenced from table more than once (directed)
-           map_lgl(parent_table, ~ sum(. == parent_table) > 1)) %>%
+    filter(child_table == table_name) %>%
+    # finds those direct neighbours that are referenced from table more than once (directed)
+    filter(map_lgl(parent_table, ~ sum(. == parent_table) > 1)) %>%
     mutate(new_parent_table = paste0(child_fk_col, ".", parent_table)) %>%
     # each set of duplicate references will be handled separately
     group_split(parent_table)
