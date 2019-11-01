@@ -280,7 +280,7 @@
 <a class="sourceLine" id="cb7-2" data-line-number="2">airlines[airlines<span class="op">$</span>carrier <span class="op">==</span><span class="st"> "UA"</span>, <span class="st">"name"</span>] &lt;-<span class="st"> "United broke my guitar"</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">airlines <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(carrier <span class="op">==</span><span class="st"> "UA"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(carrier <span class="op">==</span><span class="st"> "UA"</span>)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
 #&gt;   carrier name                  
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 
@@ -290,7 +290,7 @@
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co"># ...propagates to all related records</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">flights <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">left_join</span>(airlines) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw">select</span>(flight, name)</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(flight, name)</a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Joining, by = "carrier"</span></a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 2</span><span>
 #&gt;    flight name                    

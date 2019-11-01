@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Objects exported from other packages — reexports • dm</title>
+<title>Single out a table of a <code>dm</code> — cdm_zoom_to_tbl • dm</title>
 
 
 <!-- jquery -->
@@ -35,13 +35,9 @@
 
 
 
-<meta property="og:title" content="Objects exported from other packages — reexports" />
-<meta property="og:description" content="These objects are imported from other packages. Follow the links
-below to see their documentation.
-
-  dplyr%&amp;gt;%, filter, mutate, transmute, summarise, select, rename, group_by, ungroup
-
-" />
+<meta property="og:title" content="Single out a table of a <code>dm</code> — cdm_zoom_to_tbl" />
+<meta property="og:description" content="Zooming to a table of a dm allows for the use of many dplyr-verbs directly on this table, while retaining the
+context of the dm object." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,27 +133,68 @@ below to see their documentation.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Objects exported from other packages</h1>
+    <h1>Single out a table of a <code>dm</code></h1>
     
-    <div class="hidden name"><code>reexports.Rd</code></div>
+    <div class="hidden name"><code>cdm_zoom_to_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These objects are imported from other packages. Follow the links
-below to see their documentation.</p>
-<dl class='dl-horizontal'>
-  <dt>dplyr</dt><dd><p><code>%&gt;%</code>, <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></code></p></dd>
-
-</dl>
+    <p>Zooming to a table of a <code><a href='dm.html'>dm</a></code> allows for the use of many <code>dplyr</code>-verbs directly on this table, while retaining the
+context of the <code>dm</code> object.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>cdm_zoom_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
 
+<span class='fu'>cdm_insert_zoomed_tbl</span>(<span class='no'>dm</span>, <span class='no'>new_tbl_name</span>)
+
+<span class='fu'>cdm_update_zoomed_tbl</span>(<span class='no'>dm</span>)
+
+<span class='fu'>cdm_zoom_out</span>(<span class='no'>dm</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>table</th>
+      <td><p>A table in the <code>dm</code></p></td>
+    </tr>
+    <tr>
+      <th>new_tbl_name</th>
+      <td><p>Name of the new table</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>cdm_zoom_to_tbl()</code>: zooms to the given table</p>
+<p><code>cdm_update_zoomed_tbl()</code>: overwrites the originally zoomed table with the manipulated table.
+The filter conditions for the zoomed table are added to the original filter conditions.</p>
+<p><code>cdm_insert_zoomed_tbl()</code>: adds a new table to the <code>dm</code>.</p>
+<p><code>cdm_zoom_out()</code>: discards the zoomed table, returning the <code>dm</code> from before zooming</p>
+<p>Whenever possible, the key relations of the original table are transferred to the resulting table
+when using <code>cdm_insert_zoomed_tbl()</code> or <code>cdm_update_zoomed_tbl()</code>.</p>
+<p>Functions from <code>dplyr</code>, that are supported for a <code>zoomed_dm</code>: <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate()</a></code>,
+<code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>. You can use these functions just like you would
+with a normal table.</p>
+<p><code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> is also supported, but treated in a special way: the filter expression for the zoomed table is
+stored in the <code>dm</code> and is treated depending on which function you use to return to a normal <code>dm</code>:</p><ol>
+<li><p><code>cdm_zoom_out()</code>: all filter conditions for the zoomed table are discarded</p></li>
+<li><p><code>cdm_update_zoomed_tbl()</code>: the filter conditions of the original table and those of the zoomed table are combined</p></li>
+<li><p><code>cdm_insert_zoomed_tbl()</code>: the filter conditions of the original table stay there and those of the zoomed table are
+transferred to the new table of the <code>dm</code></p></li>
+</ol>
 
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>
