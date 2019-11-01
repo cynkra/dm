@@ -4,19 +4,20 @@
 #' If this situation should occur anyway, this function can help to untie this knot.
 #'
 #' @inheritParams cdm_add_pk
+#' @param child_table Table from which multiple foreign keys are pointing to another table
 #'
 #' @details Sometimes a table points with more than one column to another table.
 #' Usually these two columns have a different meaning, but refer to the same primary key values
 #' of the parent table, as e.g. in `cdm_nycflights13(cycle = TRUE)`.
-#' `cdm_disentangle()` will insert as many new parent tables, as there are duplicate key relations between
-#' any two tables, replace the old parent tables with them and install new foreign key relations, thus
+#' `cdm_disentangle()` will insert as many copies of the old parent table(s), as there are duplicate key relations between
+#' the two tables, replace the old parent table(s) with them and install new foreign key relations, thus
 #' removing the cycles in the relationship graph that were introduced in this way.
 #'
 #' @export
 #' @examples
 #' cdm_disentangle(cdm_nycflights13(cycle = TRUE), flights)
-cdm_disentangle <- function(dm, table) {
-  table_name <- as_string(ensym(table))
+cdm_disentangle <- function(dm, child_table) {
+  table_name <- as_string(ensym(child_table))
   check_correct_input(dm, table_name)
   check_no_filter(dm)
 
