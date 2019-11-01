@@ -25,7 +25,6 @@ reference:
   - as_dm
   - cdm_get_src
   - cdm_get_tables
-  - cdm_get_data_model
   - cdm_get_filter
   - cdm_select_tbl
 

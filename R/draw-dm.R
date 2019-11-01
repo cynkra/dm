@@ -21,17 +21,16 @@
 #' library(dplyr)
 #' cdm_draw(cdm_nycflights13())
 #' cdm_draw(cdm_nycflights13(cycle = TRUE))
-cdm_draw <- function(
-  dm,
-  rankdir = "LR",
-  col_attr = "column",
-  view_type = "keys_only",
-  columnArrows = TRUE,
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  focus = NULL,
-  graph_name = "Data Model") {
+cdm_draw <- function(dm,
+                     rankdir = "LR",
+                     col_attr = "column",
+                     view_type = "keys_only",
+                     columnArrows = TRUE,
+                     graph_attrs = "",
+                     node_attrs = "",
+                     edge_attrs = "",
+                     focus = NULL,
+                     graph_name = "Data Model") {
 
   # FIXME: here the color scheme is set with an options(...)-call;
   # should have some schemes available for the user to choose from
@@ -54,6 +53,56 @@ cdm_draw <- function(
   dm_render_graph(graph)
 }
 
+#' Get data_model component
+#'
+#' `cdm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
+#' object.
+#'
+#' @noRd
+cdm_get_data_model <- function(x) {
+  def <- cdm_get_def(x)
+
+  tables <- data.frame(
+    table = def$table,
+    segment = def$segment,
+    display = def$display,
+    stringsAsFactors = FALSE
+  )
+
+  references_for_columns <- cdm_get_data_model_fks(x)
+
+  references <-
+    references_for_columns %>%
+    mutate(ref_id = row_number(), ref_col_num = 1L)
+
+  keys <-
+    cdm_get_data_model_pks(x) %>%
+    mutate(key = 1L)
+
+  columns <-
+    cdm_get_all_columns(x) %>%
+    # Hack: datamodelr requires `type` column
+    mutate(type = "integer") %>%
+    left_join(keys, by = c("table", "column")) %>%
+    mutate(key = coalesce(key, 0L)) %>%
+    left_join(references_for_columns, by = c("table", "column")) %>%
+    # for compatibility with print method from {datamodelr}
+    as.data.frame()
+
+  new_data_model(
+    tables,
+    columns,
+    references
+  )
+}
+
+cdm_get_all_columns <- function(x) {
+  cdm_get_tables(x) %>%
+    map(colnames) %>%
+    map(~ enframe(., "id", "column")) %>%
+    enframe("table") %>%
+    unnest(value)
+}
 
 #' cdm_set_colors()
 #'
@@ -165,4 +214,3 @@ colors <- tibble::tribble(
   "light_grey", "accent6", "(border)",
   "grey", "accent7", "(border)"
 )
-

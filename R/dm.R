@@ -298,59 +298,6 @@ cdm_get_data_model_fks <- function(x) {
     select(ref, column, table, ref_col)
 }
 
-#' Get data_model component
-#'
-#' `cdm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
-#' object.
-#'
-#' @rdname dm
-#'
-#' @export
-cdm_get_data_model <- function(x) {
-  def <- cdm_get_def(x)
-
-  tables <- data.frame(
-    table = def$table,
-    segment = def$segment,
-    display = def$display,
-    stringsAsFactors = FALSE
-  )
-
-  references_for_columns <- cdm_get_data_model_fks(x)
-
-  references <-
-    references_for_columns %>%
-    mutate(ref_id = row_number(), ref_col_num = 1L)
-
-  keys <-
-    cdm_get_data_model_pks(x) %>%
-    mutate(key = 1L)
-
-  columns <-
-    cdm_get_all_columns(x) %>%
-    # Hack: datamodelr requires `type` column
-    mutate(type = "integer") %>%
-    left_join(keys, by = c("table", "column")) %>%
-    mutate(key = coalesce(key, 0L)) %>%
-    left_join(references_for_columns, by = c("table", "column")) %>%
-    # for compatibility with print method from {datamodelr}
-    as.data.frame()
-
-  new_data_model(
-    tables,
-    columns,
-    references
-  )
-}
-
-cdm_get_all_columns <- function(x) {
-  cdm_get_tables(x) %>%
-    map(colnames) %>%
-    map(~ enframe(., "id", "column")) %>%
-    enframe("table") %>%
-    unnest(value)
-}
-
 #' Get filter expressions
 #'
 #' `cdm_get_filter()` returns the filter component of a `dm`
