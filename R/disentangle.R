@@ -18,6 +18,7 @@
 cdm_disentangle <- function(dm, table) {
   table_name <- as_string(ensym(table))
   check_correct_input(dm, table_name)
+  check_no_filter(dm)
 
   all_entangled_rels <- get_all_entangled_rels(dm, table_name)
 
