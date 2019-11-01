@@ -45,7 +45,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
     tbl_heads <- map(tbls, head, 0)
     tbl_structures <- map(tbl_heads, collect)
 
-    data_model <- datamodelr::dm_from_data_frames(tbl_structures)
+    data_model <- dm_from_data_frames(tbl_structures)
   }
 
   table_names <- set_names(data_model$tables$table)
@@ -66,7 +66,7 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
 new_dm <- function(tables, data_model) {
   if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
   if (!all_same_source(tables)) abort_not_same_src()
-  stopifnot(datamodelr::is.data_model(data_model))
+  stopifnot(is.data_model(data_model))
 
   columns <- as_tibble(data_model$columns)
 
@@ -418,7 +418,7 @@ as_dm.default <- function(x) {
   # Empty tibbles as proxy, we don't need to know the columns
   # and we don't have keys yet
   proxies <- map(x, ~ tibble(a = 0))
-  data_model <- datamodelr::dm_from_data_frames(proxies)
+  data_model <- dm_from_data_frames(proxies)
 
   new_dm(x, data_model)
 }
