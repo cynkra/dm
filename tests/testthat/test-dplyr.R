@@ -244,6 +244,19 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     zoomed_dm %>% mutate(e = e) %>% left_join(t3),
     "fk_not_tracked"
   )
+
+  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
+  expect_identical(
+    left_join(zoomed_dm, t3, select = c(d = g, f), suffix = c("_suffix", "_suffiy")) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    "d_suffix"
+  )
+
+  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
+  expect_identical(
+    semi_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    "d"
+  )
+
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
