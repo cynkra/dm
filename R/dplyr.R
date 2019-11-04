@@ -213,7 +213,7 @@ prepare_join <- function(x, y_name, by, select_expr) {
   all_cols_y <- colnames(y_tbl)
   selected <- if (is_null(select_expr))
     tidyselect::vars_select(all_cols_y, everything()) else
-    tidyselect::vars_select(all_cols_y, !!!select_expr)
+    tidyselect::vars_select(all_cols_y, !!select_expr)
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
     x_by <- names(by)
