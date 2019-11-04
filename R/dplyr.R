@@ -226,10 +226,10 @@ inner_join.dm <- function(x, ...) {
 inner_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select))
+  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1])
   if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
-  replace_zoomed_tbl(x, joined_tbl)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
 #' @export
@@ -241,10 +241,10 @@ full_join.dm <- function(x, ...) {
 full_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select))
+  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1])
   if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
-  replace_zoomed_tbl(x, joined_tbl)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
 #' @export
@@ -256,10 +256,10 @@ semi_join.dm <- function(x, ...) {
 semi_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select))
+  join_data <- prepare_join(x, y_name, by, enexpr(select), NULL)
   if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   joined_tbl <-semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
 #' @export
@@ -271,10 +271,10 @@ anti_join.dm <- function(x, ...) {
 anti_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select))
+  join_data <- prepare_join(x, y_name, by, enexpr(select), NULL)
   if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   joined_tbl <-anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
 #' @export
@@ -286,10 +286,10 @@ right_join.dm <- function(x, ...) {
 right_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select))
+  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1])
   if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   joined_tbl <-right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
-  replace_zoomed_tbl(x, joined_tbl)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
 prepare_join <- function(x, y_name, by, select_expr, suffix) {
@@ -319,6 +319,6 @@ repair_tracking <- function(tracked_keys, selected, suffix, lhs_by) {
   # 1. are selected in table 'y'
   # 2. are NOT the column that the join is performed by
   indices <- old_names %in% names(selected) & old_names != lhs_by
-  new_names <- if_else(indices, paste0(old_names, suffix), old_names)
+  new_names <- if_else(!is_null(suffix) & indices, paste0(old_names, suffix), old_names)
   set_names(tracked_keys, new_names)
 }
