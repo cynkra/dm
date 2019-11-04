@@ -130,9 +130,15 @@ left_join.dm <- function(.data, ...) {
 #' @export
 left_join.zoomed_dm <- function(x, y, by = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
+  y_name <- as_string(enexpr(y))
+  join_data <- prepare_join(x, y_name, by)
+  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
+  replace_zoomed_tbl(x, joined_tbl)
+}
+
+prepare_join <- function(x, y_name, by) {
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
-  y_name <- as_string(enexpr(y))
   y_tbl <- cdm_get_tables(x)[[y_name]]
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
@@ -140,6 +146,5 @@ left_join.zoomed_dm <- function(x, y, by = NULL, ...) {
     names(by) <- names(get_tracked_keys(x)[get_tracked_keys(x) == x_by])
     if (is_na(names(by))) abort_fk_not_tracked(x_orig_name, y_name)
   }
-  left_joined_tbl <- left_join(x_tbl, y_tbl, by, ...)
-  replace_zoomed_tbl(x, left_joined_tbl)
+  list(x_tbl = x_tbl, y_tbl = y_tbl, by = by)
 }
