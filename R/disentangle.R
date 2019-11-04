@@ -23,50 +23,49 @@ cdm_disentangle <- function(dm, child_table) {
 
   all_entangled_rels <- get_all_entangled_rels(dm, table_name)
 
-  new_dm <- dm
-  for (i in seq_along(all_entangled_rels)) {
-    fk_rels <- all_entangled_rels[[i]]
-    orig_pt_vec <- fk_rels$parent_table
-    # name of original parent table
-    orig_pt <- unique(orig_pt_vec)
-    # original PK or parent table: will be set for each of the new tables
-    orig_pt_pk <- cdm_get_pk(new_dm, !!orig_pt)
-    # original color of parent table: will be set for each of the new tables
-    old_color <- cdm_get_colors(dm) %>%
-      filter(table == orig_pt) %>%
-      pull(color)
-    # list with the new parent tables, already with the new names
-    new_pts <- map(orig_pt_vec, ~tbl(new_dm, .)) %>% set_names(fk_rels$new_parent_table)
-    new_colors <- set_names(rep(old_color, length(new_pts)), names(new_pts))
+  old_pts <- all_entangled_rels$parent_table
+  old_fk_cols <- all_entangled_rels$child_fk_col
+  new_pts <- all_entangled_rels$new_parent_table
+  new_order <- new_tbl_order(dm, all_entangled_rels)
+  new_colors <- all_entangled_rels$color
 
-    # order in the old version of the dm: the new tables will be inserted right where the old parent table was
-    old_order <- src_tbls(new_dm)
-    old_ind <- which(orig_pt == old_order) - 1
-    new_order <- append(setdiff(old_order, orig_pt), names(new_pts), after = old_ind)
-
-    # in next loop step we start with `new_dm`
-    new_dm <-
-      # add the new parent tables (duplicates of the old one) with the new names
-      reduce2(new_pts, names(new_pts), cdm_add_tbl_impl, .init = new_dm) %>%
-      # deselect the old parent table (key relations are dropped) and get things into the right order
-      cdm_select_tbl(!!!new_order) %>%
-      # each of the new tables gets the same PK
-      reduce(names(new_pts), ~cdm_add_pk(..1, !!..2, !!orig_pt_pk), .init = .) %>%
-      # set the new FKs pointing from the child table to the new parent tables
-      reduce2(fk_rels$child_fk_col, names(new_pts), ~cdm_add_fk(..1, !!table_name, !!..2, !!..3), .init = .) %>%
-      # set the old color for all new parent tables
-      cdm_set_colors(!!!new_colors)
-    }
-  new_dm
+  # remove old multiple fks between given table and parent table(s)
+  reduce2(old_fk_cols, old_pts, ~cdm_rm_fk(..1, !!table_name, !!..2, !!..3), .init = dm) %>%
+    # add two new tables, pks are installed, fks are not available (at least not those from given table)
+    reduce2(old_pts, new_pts, ~cdm_zoom_to_tbl(..1, !!..2) %>% cdm_insert_zoomed_tbl(!!..3), .init = .) %>%
+    # old parent table is deselected, new ones take its place
+    cdm_select_tbl(!!!new_order) %>%
+    cdm_set_colors(!!!set_names(new_colors, new_pts)) %>%
+    # implement the FKs
+    reduce2(old_fk_cols, new_pts, ~cdm_add_fk(..1, !!table_name, !!..2, !!..3), .init = .)
 }
 
 # get all entangled relations in a tibble
 get_all_entangled_rels <- function(dm, table_name) {
+  colors <- select(cdm_get_colors(cdm_nycflights13()), table, color)
+
   cdm_get_all_fks(dm) %>%
     filter(child_table == table_name) %>%
     # finds those direct neighbours that are referenced from table more than once (directed)
     filter(map_lgl(parent_table, ~ sum(. == parent_table) > 1)) %>%
     mutate(new_parent_table = paste0(child_fk_col, ".", parent_table)) %>%
-    # each set of duplicate references will be handled separately
-    group_split(parent_table)
+    left_join(colors, by = c("parent_table" = "table"))
+}
+
+new_tbl_order <- function(dm, all_entangled_rels) {
+  # order in the old version of the dm: the new tables will be inserted right where the old parent table was
+  old_order <- src_tbls(dm)
+  red_all_entangled_rels <- select(all_entangled_rels, pt = parent_table, npt = new_parent_table) %>%
+    group_by(pt) %>%
+    summarize(npt = list(npt))
+  pt <- red_all_entangled_rels$pt
+  npt <- red_all_entangled_rels$npt
+  reduce2(
+    pt,
+    npt,
+    ~append(
+      setdiff(..1, ..2),
+      ..3,
+      after = which(pt == ..1) - 1),
+    .init = old_order)
 }
