@@ -123,86 +123,86 @@ rename.zoomed_dm <- function(.data, ...) {
 }
 
 #' @export
-left_join.dm <- function(.data, ...) {
+left_join.dm <- function(x, ...) {
   abort_no_table_zoomed_dplyr("left_join")
 }
 
 #' @export
-left_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
+left_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, y_name, by, enexpr(select))
-  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
+  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = copy, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
 
 #' @export
-inner_join.dm <- function(.data, ...) {
+inner_join.dm <- function(x, ...) {
   abort_no_table_zoomed_dplyr("inner_join")
 }
 
 #' @export
-inner_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
+inner_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, y_name, by, enexpr(select))
-  joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
+  joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = copy, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
 
 #' @export
-full_join.dm <- function(.data, ...) {
+full_join.dm <- function(x, ...) {
   abort_no_table_zoomed_dplyr("inner_join")
 }
 
 #' @export
-full_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
+full_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, y_name, by, enexpr(select))
-  joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
+  joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = copy, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
 
 #' @export
-semi_join.dm <- function(.data, ...) {
+semi_join.dm <- function(x, ...) {
   abort_no_table_zoomed_dplyr("inner_join")
 }
 
 #' @export
-semi_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
+semi_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, y_name, by, enexpr(select))
-  joined_tbl <-semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
+  joined_tbl <-semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = copy, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
 
 #' @export
-anti_join.dm <- function(.data, ...) {
+anti_join.dm <- function(x, ...) {
   abort_no_table_zoomed_dplyr("inner_join")
 }
 
 #' @export
-anti_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
+anti_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, y_name, by, enexpr(select))
-  joined_tbl <-anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
+  joined_tbl <-anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = copy, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
 
 #' @export
-right_join.dm <- function(.data, ...) {
+right_join.dm <- function(x, ...) {
   abort_no_table_zoomed_dplyr("inner_join")
 }
 
 #' @export
-right_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
+right_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, y_name, by, enexpr(select))
-  joined_tbl <-right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
+  joined_tbl <-right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = copy, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
 
