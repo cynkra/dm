@@ -1,4 +1,5 @@
 zoomed_dm <- cdm_zoom_to_tbl(dm_for_filter, t2)
+zoomed_dm_2 <- cdm_zoom_to_tbl(dm_for_filter, t3)
 
 # basic tests -------------------------------------------------------------
 
@@ -131,9 +132,31 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     right_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
     right_join(t2, t1, by = c("d" = "a"))
   )
+
+  # fails if RHS not linked to zoomed table and no by is given
+  expect_cdm_error(
+    left_join(zoomed_dm, t4),
+    "tables_not_neighbours"
+  )
+
+  # works, if by is given
+  expect_identical(
+    left_join(zoomed_dm, t4, by = c("e" = "j")) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    left_join(t2, t4, by = c("e" = "j"))
+  )
+
+  # explicitly select columns from RHS using argument `select`
+  expect_identical(
+    left_join(zoomed_dm_2, t2, select = c(starts_with("c"), e)) %>% cdm_update_zoomed_tbl() %>% tbl("t3"),
+    left_join(t3, select(t2, c, e), by = c("f" = "e"))
+  )
+
+  # a former FK-relation could not be tracked
+  expect_cdm_error(
+    zoomed_dm %>% mutate(e = e) %>% left_join(t3),
+    "fk_not_tracked"
+  )
 })
-
-
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
 
