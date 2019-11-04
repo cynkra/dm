@@ -131,10 +131,10 @@ left_join.dm <- function(x, ...) {
 left_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select))
+  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1])
   if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
-  replace_zoomed_tbl(x, joined_tbl)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
 #' @export
@@ -212,7 +212,7 @@ right_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x",
   replace_zoomed_tbl(x, joined_tbl)
 }
 
-prepare_join <- function(x, y_name, by, select_expr) {
+prepare_join <- function(x, y_name, by, select_expr, suffix) {
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
   y_tbl <- cdm_get_tables(x)[[y_name]]
@@ -226,5 +226,19 @@ prepare_join <- function(x, y_name, by, select_expr) {
     names(by) <- names(get_tracked_keys(x)[get_tracked_keys(x) == x_by])
     if (is_na(names(by))) abort_fk_not_tracked(x_orig_name, y_name)
   }
-  list(x_tbl = x_tbl, y_tbl = select(y_tbl, !!!selected), by = by)
+  # in case key columns of x_tbl have the same name as selected columns of y_tbl
+  # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
+  # We can track the new column names
+  new_key_names <- repair_tracking(get_tracked_keys(x), selected, suffix, names(by))
+  list(x_tbl = x_tbl, y_tbl = select(y_tbl, !!!selected), by = by, new_key_names = new_key_names)
+}
+
+repair_tracking <- function(tracked_keys, selected, suffix, lhs_by) {
+  old_names <- names(tracked_keys)
+  # change those column names from table 'x' that
+  # 1. are selected in table 'y'
+  # 2. are NOT the column that the join is performed by
+  indices <- old_names %in% names(selected) & old_names != lhs_by
+  new_names <- if_else(indices, paste0(old_names, suffix), old_names)
+  set_names(tracked_keys, new_names)
 }
