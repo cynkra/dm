@@ -462,6 +462,24 @@ dm_nycflights_small_cycle %<-% {as_dm(
     )
 }
 
+entangled_dm %<-% {
+  as_dm(list(
+    "first" = transmute(t4, j, other_j = j, another_j = j, and_one_more_j = j),
+    "second" = t3,
+    "third" = t3,
+    "fourth" = transmute(t4, j, other_j = j),
+    "fifth" = t3)) %>%
+    cdm_add_pk(second, f) %>%
+    cdm_add_pk(third, f) %>%
+    cdm_add_pk(fifth, f) %>%
+    cdm_add_fk(first, j, second) %>%
+    cdm_add_fk(first, other_j, second) %>%
+    cdm_add_fk(first, another_j, third) %>%
+    cdm_add_fk(first, and_one_more_j, third) %>%
+    cdm_add_fk(fourth, j, fifth) %>%
+    cdm_add_fk(fourth, other_j, fifth)
+}
+
 # for database tests -------------------------------------------------
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test
