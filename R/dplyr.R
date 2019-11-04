@@ -201,3 +201,26 @@ separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = 
   new_tracked_keys_zoom <- new_tracked_keys(data, selected)
   replace_zoomed_tbl(data, separated_tbl, new_tracked_keys_zoom)
 }
+
+#' @export
+left_join.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("left_join")
+}
+
+#' @export
+left_join.zoomed_dm <- function(x, y, by = NULL, ...) {
+  # FIXME: abort_no_filters_rename_select() needs to be updated with joins... or just not be so specific
+  if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
+  x_tbl <- get_zoomed_tbl(x)
+  x_orig_name <- orig_name_zoomed(x)
+  y_name <- as_string(enexpr(y))
+  y_tbl <- cdm_get_tables(x)[[y_name]]
+  if (is_null(by)) {
+    by <- get_by(x, x_orig_name, y_name)
+    x_by <- names(by)
+    names(by) <- names(get_tracked_keys(x)[get_tracked_keys(x) == x_by])
+    if (is_na(names(by))) abort_fk_not_tracked(x_orig_name, y_name)
+  }
+  left_joined_tbl <- left_join(x_tbl, y_tbl, by, ...)
+  replace_zoomed_tbl(x, left_joined_tbl)
+}
