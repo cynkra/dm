@@ -151,6 +151,12 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     left_join(t3, select(t2, c, e), by = c("f" = "e"))
   )
 
+  # explicitly select and rename columns from RHS using argument `select`
+  expect_identical(
+    left_join(zoomed_dm_2, t2, select = c(starts_with("c"), d_new = d, e)) %>% cdm_update_zoomed_tbl() %>% tbl("t3"),
+    left_join(t3, select(t2, c, d_new = d, e), by = c("f" = "e"))
+  )
+
   # a former FK-relation could not be tracked
   expect_cdm_error(
     zoomed_dm %>% mutate(e = e) %>% left_join(t3),
