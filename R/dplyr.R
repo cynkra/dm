@@ -208,10 +208,10 @@ left_join.dm <- function(.data, ...) {
 }
 
 #' @export
-left_join.zoomed_dm <- function(x, y, by = NULL, ...) {
+left_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by)
+  join_data <- prepare_join(x, y_name, by, enexpr(select))
   joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
@@ -222,10 +222,10 @@ inner_join.dm <- function(.data, ...) {
 }
 
 #' @export
-inner_join.zoomed_dm <- function(x, y, by = NULL, ...) {
+inner_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by)
+  join_data <- prepare_join(x, y_name, by, enexpr(select))
   joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
@@ -236,10 +236,10 @@ full_join.dm <- function(.data, ...) {
 }
 
 #' @export
-full_join.zoomed_dm <- function(x, y, by = NULL, ...) {
+full_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by)
+  join_data <- prepare_join(x, y_name, by, enexpr(select))
   joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
@@ -250,10 +250,10 @@ semi_join.dm <- function(.data, ...) {
 }
 
 #' @export
-semi_join.zoomed_dm <- function(x, y, by = NULL, ...) {
+semi_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by)
+  join_data <- prepare_join(x, y_name, by, enexpr(select))
   joined_tbl <-semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
@@ -264,10 +264,10 @@ anti_join.dm <- function(.data, ...) {
 }
 
 #' @export
-anti_join.zoomed_dm <- function(x, y, by = NULL, ...) {
+anti_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by)
+  join_data <- prepare_join(x, y_name, by, enexpr(select))
   joined_tbl <-anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
@@ -278,23 +278,27 @@ right_join.dm <- function(.data, ...) {
 }
 
 #' @export
-right_join.zoomed_dm <- function(x, y, by = NULL, ...) {
+right_join.zoomed_dm <- function(x, y, by = NULL, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by)
+  join_data <- prepare_join(x, y_name, by, enexpr(select))
   joined_tbl <-right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, ...)
   replace_zoomed_tbl(x, joined_tbl)
 }
 
-prepare_join <- function(x, y_name, by) {
+prepare_join <- function(x, y_name, by, select_expr) {
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
   y_tbl <- cdm_get_tables(x)[[y_name]]
+  all_cols_y <- colnames(y_tbl)
+  selected <- if (is_null(select_expr))
+    tidyselect::vars_select(all_cols_y, everything()) else
+    tidyselect::vars_select(all_cols_y, !!!select_expr)
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
     x_by <- names(by)
     names(by) <- names(get_tracked_keys(x)[get_tracked_keys(x) == x_by])
     if (is_na(names(by))) abort_fk_not_tracked(x_orig_name, y_name)
   }
-  list(x_tbl = x_tbl, y_tbl = y_tbl, by = by)
+  list(x_tbl = x_tbl, y_tbl = select(y_tbl, !!!selected), by = by)
 }
