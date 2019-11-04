@@ -101,6 +101,74 @@ test_that("basic test: 'filter()'-methods work", {
 })
 
 
+test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
+  expect_identical(
+    left_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    left_join(t2, t1, by = c("d" = "a"))
+    )
+
+  expect_identical(
+    inner_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    inner_join(t2, t1, by = c("d" = "a"))
+  )
+
+  expect_identical(
+    full_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    full_join(t2, t1, by = c("d" = "a"))
+  )
+
+  expect_identical(
+    semi_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    semi_join(t2, t1, by = c("d" = "a"))
+  )
+
+  expect_identical(
+    anti_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    anti_join(t2, t1, by = c("d" = "a"))
+  )
+
+  expect_identical(
+    right_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    right_join(t2, t1, by = c("d" = "a"))
+  )
+})
+
+
+
+test_that("basic test: 'join()'-methods for `dm` throws error", {
+
+    expect_cdm_error(
+      left_join(dm_for_filter),
+      "no_table_zoomed_dplyr"
+    )
+
+    expect_cdm_error(
+      inner_join(dm_for_filter),
+      "no_table_zoomed_dplyr"
+    )
+
+    expect_cdm_error(
+      full_join(dm_for_filter),
+      "no_table_zoomed_dplyr"
+    )
+
+    expect_cdm_error(
+      semi_join(dm_for_filter),
+      "no_table_zoomed_dplyr"
+    )
+
+    expect_cdm_error(
+      anti_join(dm_for_filter),
+      "no_table_zoomed_dplyr"
+    )
+
+    expect_cdm_error(
+      right_join(dm_for_filter),
+      "no_table_zoomed_dplyr"
+    )
+})
+
+
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter, zoomed to t2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
