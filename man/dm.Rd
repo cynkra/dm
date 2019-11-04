@@ -7,7 +7,6 @@
 \alias{cdm_get_src}
 \alias{cdm_get_con}
 \alias{cdm_get_tables}
-\alias{cdm_get_data_model}
 \alias{cdm_get_filter}
 \alias{is_dm}
 \alias{as_dm}
@@ -24,8 +23,6 @@ cdm_get_src(x)
 cdm_get_con(x)
 
 cdm_get_tables(x)
-
-cdm_get_data_model(x)
 
 cdm_get_filter(x)
 
@@ -65,9 +62,6 @@ object.
 of a \code{dm} object.
 The filter expressions are NOT evaluated at this stage.
 To get the filtered tables, use \code{tbl.dm()}
-
-\code{cdm_get_data_model()} returns the \pkg{datamodelr} data model component of a \code{dm}
-object.
 
 \code{cdm_get_filter()} returns the filter component of a \code{dm}
 object, the set filter expressions.
