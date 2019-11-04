@@ -42,7 +42,7 @@ cdm_disentangle <- function(dm, child_table) {
 
 # get all entangled relations in a tibble
 get_all_entangled_rels <- function(dm, table_name) {
-  colors <- select(cdm_get_colors(cdm_nycflights13()), table, color)
+  colors <- cdm_get_colors(dm) %>% mutate(color = coalesce(color, "default"))
 
   cdm_get_all_fks(dm) %>%
     filter(child_table == table_name) %>%
@@ -66,6 +66,6 @@ new_tbl_order <- function(dm, all_entangled_rels) {
     ~append(
       setdiff(..1, ..2),
       ..3,
-      after = which(pt == ..1) - 1),
+      after = which(..2 == ..1) - 1),
     .init = old_order)
 }
