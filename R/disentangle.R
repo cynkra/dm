@@ -21,6 +21,7 @@ cdm_disentangle <- function(dm) {
   check_no_filter(dm)
 
   all_entangled_rels <- get_all_entangled_rels(dm)
+  if (is_empty(all_entangled_rels)) return(dm)
   new_order <- new_tbl_order(dm, all_entangled_rels)
 
   reduce(all_entangled_rels, disentangle, .init = dm) %>%
