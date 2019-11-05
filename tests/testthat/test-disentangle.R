@@ -36,7 +36,19 @@ disentangled_entangled_dm <-
   cdm_add_fk(fourth, j, j.fifth) %>%
   cdm_add_fk(fourth, other_j, other_j.fifth) %>%
   cdm_add_pk(id_pt, f) %>%
-  cdm_add_fk(id_ct, j, id_pt)
+  cdm_add_fk(id_ct, j, id_pt) %>%
+  cdm_set_colors(
+    first = ,
+    fourth = "blue",
+    id_ct = ,
+    id_pt = ,
+    j.second = ,
+    other_j.second = "orange",
+    another_j.third = ,
+    and_one_more_j.third = ,
+    j.fifth = ,
+    other_j.fifth = "green"
+  )
 
 test_that("disentangling works", {
   walk2(
