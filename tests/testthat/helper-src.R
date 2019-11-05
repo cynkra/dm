@@ -468,7 +468,9 @@ entangled_dm %<-% {
     "second" = t3,
     "third" = t3,
     "fourth" = transmute(t4, j, other_j = j),
-    "fifth" = t3)) %>%
+    "fifth" = t3,
+    "id_ct" = transmute(t4, j),
+    "id_pt" = t3)) %>%
     cdm_add_pk(second, f) %>%
     cdm_add_pk(third, f) %>%
     cdm_add_pk(fifth, f) %>%
@@ -477,7 +479,9 @@ entangled_dm %<-% {
     cdm_add_fk(first, another_j, third) %>%
     cdm_add_fk(first, and_one_more_j, third) %>%
     cdm_add_fk(fourth, j, fifth) %>%
-    cdm_add_fk(fourth, other_j, fifth)
+    cdm_add_fk(fourth, other_j, fifth) %>%
+    cdm_add_pk(id_pt, f) %>%
+    cdm_add_fk(id_ct, j, id_pt)
 }
 
 # for database tests -------------------------------------------------
