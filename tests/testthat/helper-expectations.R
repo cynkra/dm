@@ -11,6 +11,8 @@ expect_equivalent_dm <- function(dm1, dm2) {
 
   expect_equal(cdm_get_all_pks(dm1), cdm_get_all_pks(dm2))
   expect_equal(cdm_get_all_fks(dm1), cdm_get_all_fks(dm2))
+
+  expect_equal(cdm_get_colors(dm1), cdm_get_colors(dm2))
 }
 
 expect_cdm_error <- function(expr, class) {
