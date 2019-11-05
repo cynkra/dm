@@ -4,12 +4,10 @@
 \alias{cdm_disentangle}
 \title{Disentangle relationships}
 \usage{
-cdm_disentangle(dm, child_table)
+cdm_disentangle(dm)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
-
-\item{child_table}{Table from which multiple foreign keys are pointing to another table}
 }
 \description{
 A normalized data model does not contain multiple key relations pointing from one table to another.
