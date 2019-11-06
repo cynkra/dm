@@ -96,7 +96,7 @@
     <div class="page-header toc-ignore">
       <h1>Getting Started</h1>
             
-            <h4 class="date">2019-11-04</h4>
+            <h4 class="date">2019-11-06</h4>
       
       
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -151,87 +151,22 @@
 #&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
 #&gt; None
 </span></code></pre>
-<p>The fairly verbose output shows the three components of a <code>dm</code> object: the table source, the metadata, and row counts. These components can be accessed with <code><a href="../reference/dm.html">cdm_get_src()</a></code>, <code><a href="../reference/dm.html">cdm_get_tables()</a></code> and <code><a href="../reference/dm.html">cdm_get_data_model()</a></code>.</p>
+<p>The fairly verbose output shows an overview of various components of a <code>dm</code> object: the table source, the metadata, and filter conditions. These components can be individually accessed with several {dm}-functions, e.g. <code><a href="../reference/dm.html">cdm_get_src()</a></code>, <code><a href="../reference/dm.html">cdm_get_filter()</a></code>, <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code> and <code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/dm.html">cdm_get_src</a></span>(flights_dm)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; src:  &lt;environment: R_GlobalEnv&gt;</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; tbls:</span></a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Querying nrow() for each table, to suppress otherwise huge output</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="../reference/dm.html">cdm_get_tables</a></span>(flights_dm) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">map_int</span>(nrow)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;       16     1458   336776     3322    26115</span></a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/dm.html">cdm_get_data_model</a></span>(flights_dm)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; $tables
-#&gt;      table segment display
-#&gt; 1 airlines      NA    &lt;NA&gt;
-#&gt; 2 airports      NA    &lt;NA&gt;
-#&gt; 3  flights      NA    &lt;NA&gt;
-#&gt; 4   planes      NA    &lt;NA&gt;
-#&gt; 5  weather      NA    &lt;NA&gt;
-#&gt; 
-#&gt; $columns
-#&gt;       table id         column    type key  ref ref_col
-#&gt; 1  airlines  1        carrier integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 2  airlines  2           name integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 3  airports  1            faa integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 4  airports  2           name integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 5  airports  3            lat integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 6  airports  4            lon integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 7  airports  5            alt integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 8  airports  6             tz integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 9  airports  7            dst integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 10 airports  8          tzone integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 11  flights  1           year integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 12  flights  2          month integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 13  flights  3            day integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 14  flights  4       dep_time integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 15  flights  5 sched_dep_time integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 16  flights  6      dep_delay integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 17  flights  7       arr_time integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 18  flights  8 sched_arr_time integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 19  flights  9      arr_delay integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 20  flights 10        carrier integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 21  flights 11         flight integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 22  flights 12        tailnum integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 23  flights 13         origin integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 24  flights 14           dest integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 25  flights 15       air_time integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 26  flights 16       distance integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 27  flights 17           hour integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 28  flights 18         minute integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 29  flights 19      time_hour integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 30   planes  1        tailnum integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 31   planes  2           year integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 32   planes  3           type integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 33   planes  4   manufacturer integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 34   planes  5          model integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 35   planes  6        engines integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 36   planes  7          seats integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 37   planes  8          speed integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 38   planes  9         engine integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 39  weather  1         origin integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 40  weather  2           year integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 41  weather  3          month integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 42  weather  4            day integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 43  weather  5           hour integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 44  weather  6           temp integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 45  weather  7           dewp integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 46  weather  8          humid integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 47  weather  9       wind_dir integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 48  weather 10     wind_speed integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 49  weather 11      wind_gust integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 50  weather 12         precip integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 51  weather 13       pressure integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 52  weather 14          visib integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 53  weather 15      time_hour integer   0 &lt;NA&gt;    &lt;NA&gt;
-#&gt; 
-#&gt; $references
-#&gt; <span style="color: #555555;"># A tibble: 0 x 6</span><span>
-#&gt; </span><span style="color: #555555;"># … with 6 variables: table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, column </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, ref </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, ref_col </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,
-#&gt; #   ref_id </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, ref_col_num </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "data_model"
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; tbls:</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="../reference/dm.html">cdm_get_filter</a></span>(flights_dm)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 3</span><span>
+#&gt; </span><span style="color: #555555;"># … with 3 variables: table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, filter </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span style="color: #555555;">, zoomed </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>
+</span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(flights_dm)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 2</span><span>
+#&gt; </span><span style="color: #555555;"># … with 2 variables: table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, pk_col </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
+</span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks</a></span>(flights_dm)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 3</span><span>
+#&gt; </span><span style="color: #555555;"># … with 3 variables: child_table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, child_fk_col </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,
+#&gt; #   parent_table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
 </div>
 <div id="keys" class="section level2">
