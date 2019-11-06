@@ -579,8 +579,17 @@ src_tbls.dm <- function(src, ...) {
 
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
-  # TODO: How to add a table to a dm?
-  abort("`dm` objects are immutable, please use ...")
+  df_list <- if (
+    inherits(df, "list") && all(map_lgl(df, ~inherits(., "data.frame")))) df else if (
+      inherits(df, "data.frame")) list(df) else {
+        abort_only_data_frames_supported()
+      }
+  if (length(df_list) != length(name)) abort_one_name_for_each_table()
+
+  # FIXME: should we allow `overwrite` argument?
+  names_list <- figure_out_names(src_tbls(dest), name)
+  # `repair` argument is always `check_unique`, so old table names currently cannot be updated
+  cdm_add_tbl_impl(dest, df_list, names_list$new_names)
 }
 
 #' @export

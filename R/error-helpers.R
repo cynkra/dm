@@ -569,3 +569,14 @@ error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
 }
 
+
+# errors for `copy_to.dm()` ----------------------------------------------
+
+abort_only_data_frames_supported <- function() {
+  abort("`copy_to.dm()` only supports `data.frame` or a list of `data.frame`", .subclass = cdm_error_full("only_data_frames_supported"))
+}
+
+abort_one_name_for_each_table <- function() {
+  abort("If supplying more than one table to `copy_to.dm()` in a list, you need to provide a name vector of the same length.",
+        .subclass = cdm_error_full("one_name_for_each_table"))
+}
