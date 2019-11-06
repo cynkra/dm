@@ -74,23 +74,14 @@ flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
-The fairly verbose output shows the three components of a `dm` object: the table source, the metadata, and row counts.
-These components can be accessed with `cdm_get_src()`, `cdm_get_tables()` and `cdm_get_data_model()`.
+The fairly verbose output shows an overview of various components of a `dm` object: the table source, the metadata, and filter conditions.
+These components can be individually accessed with several {dm}-functions, e.g. `cdm_get_src()`, `cdm_get_filter()`, `cdm_get_all_pks()` and `cdm_get_all_fks()`.
 
 ```{r}
 cdm_get_src(flights_dm)
-```
-
-
-```{r}
-# Querying nrow() for each table, to suppress otherwise huge output
-cdm_get_tables(flights_dm) %>% 
-  map_int(nrow)
-```
-
-
-```{r}
-cdm_get_data_model(flights_dm)
+cdm_get_filter(flights_dm)
+cdm_get_all_pks(flights_dm)
+cdm_get_all_fks(flights_dm)
 ```
 
 
