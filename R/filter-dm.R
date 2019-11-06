@@ -18,7 +18,7 @@
 #' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
 #' (similar to 1. but only for one table).
 #'
-#' Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
+#' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk

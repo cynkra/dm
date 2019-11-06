@@ -44,7 +44,7 @@ of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from 
 (similar to 1. but only for one table).
 }
 
-Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
+Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
 }
 \examples{
 library(dplyr)
