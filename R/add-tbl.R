@@ -79,3 +79,18 @@ check_new_tbls <- function(dm, tbls) {
   }
 }
 
+dm_try_tables <- function(quo, table_names) {
+  selected <- tryCatch(
+    eval_tidy(quo),
+    error = identity)
+  if (is_condition(selected)) {
+    abort_w_message(
+      paste0(
+        conditionMessage(selected),
+        ". Available tables in `dm`: ",
+        commas(tick(table_names))
+      )
+    )
+  }
+  selected
+}
