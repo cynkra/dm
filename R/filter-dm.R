@@ -98,7 +98,8 @@ cdm_apply_filters <- function(dm) {
   cdm_reset_all_filters(new_dm3(def))
 }
 
-
+# calculates the necessary semi-joins from all tables that were filtered to
+# the requested table
 cdm_get_filtered_table <- function(dm, from) {
   filters <- cdm_get_filter(dm)
   if (nrow(filters) == 0) {
@@ -106,9 +107,6 @@ cdm_get_filtered_table <- function(dm, from) {
   }
 
   fc <- get_all_filtered_connected(dm, from)
-
-  f_quos <- filters %>%
-    nest(filter = -table)
 
   fc_children <-
     fc %>%
@@ -120,8 +118,7 @@ cdm_get_filtered_table <- function(dm, from) {
   recipe <-
     fc %>%
     select(table = node) %>%
-    left_join(fc_children, by = "table") %>%
-    left_join(f_quos, by = "table")
+    left_join(fc_children, by = "table")
 
   list_of_tables <- cdm_get_tables(dm)
 
@@ -140,13 +137,6 @@ cdm_get_filtered_table <- function(dm, from) {
           .init = table
         )
     }
-
-    filter_quos <- recipe$filter[[i]]
-    if (!is_null(filter_quos)) {
-      filter_quos <- pull(filter_quos, filter)
-      table <- filter(table, !!!filter_quos)
-    }
-
     list_of_tables[[table_name]] <- table
   }
   list_of_tables[[from]]
