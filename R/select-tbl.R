@@ -18,7 +18,7 @@ cdm_select_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
   vars <- tidyselect_table_names(dm)
-  selected <- tidyselect::vars_select(vars, ...)
+  selected <- dm_try_tables(quo(tidyselect::vars_select(vars, ...)), vars)
   cdm_select_tbl_impl(dm, selected)
 }
 
@@ -33,7 +33,7 @@ cdm_rename_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
   vars <- tidyselect_table_names(dm)
-  selected <- tidyselect::vars_rename(vars, ...)
+  selected <- dm_try_tables(quo(tidyselect::vars_rename(vars, ...)), vars)
   cdm_select_tbl_impl(dm, selected)
 }
 

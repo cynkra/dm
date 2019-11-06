@@ -64,11 +64,10 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
   check_dm(dm)
-  selected <- setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...))
+  selected <- dm_try_tables(quo(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...))), src_tbls(dm))
 
   cdm_select_tbl(dm, !!!selected)
 }
-
 
 check_new_tbls <- function(dm, tbls) {
   orig_tbls <- cdm_get_tables(dm)
