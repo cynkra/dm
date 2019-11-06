@@ -109,6 +109,12 @@ test_that("cdm_rm_tbl() works", {
   # fails when table name is wrong
   expect_cdm_error(
     cdm_rm_tbl(dm_for_filter, t7),
-    "table_not_in_dm"
+    "w_message"
+  )
+
+  # select-helpers work for 'cdm_rm_tbl()'
+  expect_identical(
+    cdm_rm_tbl(dm_for_disambiguate, everything()),
+    empty_dm()
   )
 })
