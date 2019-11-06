@@ -59,18 +59,14 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #'
 #' @param dm A [`dm`] object
 #' @param ... One or more unquoted tibble names to remove from the `dm`.
+#' `tidyselect` functions are supported.
 #'
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
   check_dm(dm)
+  selected <- setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...))
 
-  table_names <-
-    ensyms(..., .named = FALSE) %>%
-    map_chr(~ as_name(.))
-
-  check_correct_input(dm, table_names)
-
-  cdm_select_tbl(dm, -one_of(!!!table_names))
+  cdm_select_tbl(dm, !!!selected)
 }
 
 

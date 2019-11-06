@@ -9,7 +9,8 @@ cdm_rm_tbl(dm, ...)
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
 
-\item{...}{One or more unquoted tibble names to remove from the \code{dm}.}
+\item{...}{One or more unquoted tibble names to remove from the \code{dm}.
+\code{tidyselect} functions are supported.}
 }
 \value{
 The inital \code{dm} without the removed table(s).
