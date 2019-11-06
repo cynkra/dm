@@ -24,3 +24,18 @@ dplyr::group_by
 
 #' @export
 dplyr::ungroup
+
+#' @export
+dplyr::collect
+
+#' @export
+dplyr::compute
+
+#' @export
+dplyr::copy_to
+
+#' @export
+dplyr::src_tbls
+
+#' @export
+dplyr::tbl
