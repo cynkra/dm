@@ -2,21 +2,21 @@
 #'
 #' Filtering one table of a [`dm`] object may affect all tables connected to this table
 #' via one or more steps of foreign key relations. Firstly, one or more filter conditions for
-#' one or more tables can be defined using `cdm_filter()`, with a syntax similar to `dplyr::filter()`.
-#' These conditions will be stored in the [`dm`] and not immediately executed. With `cdm_apply_filters()`
-#' all tables will be updated according to the filter conditions and the foreign key relations.
+#' one or more tables can be defined using `cdm_filter()`, with a syntax similar to [`dplyr::filter()`].
+#' Each condition will only be immediately executed for the table it is referring to.
+#' Furthermore all conditions are stored in the [`dm`].
+#' With `cdm_apply_filters()` all tables will be updated according to the filter conditions and the foreign key relations.
 #'
-#'
-#' @details `cdm_filter()` allows you to set one or more filter conditions for one table
-#' of a [`dm`] object. These conditions will be stored in the [`dm`] for when they are needed.
-#' The conditions are only evaluated in one of the following scenarios:
+#' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
+#' in one of the following scenarios:
 #' 1. Calling `cdm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
 #' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
 #' with the corresponding key values.
 #' Tables that are not connected to any table with an active filter are left unchanged.
-#' This results in a new `dm` class object.
-#' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated based on the
-#' filter conditions and the foreign key conditions (similar to 1. but only for one table)
+#' This results in a new `dm` class object without any filter conditions.
+#' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated by performing a sequence
+#' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
+#' (similar to 1. but only for one table).
 #'
 #' Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
 #' @rdname cdm_filter
