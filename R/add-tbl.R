@@ -24,15 +24,23 @@ cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
   check_new_tbls(dm, new_tables)
 
   old_names <- src_tbls(dm)
-  all_names <- vctrs::vec_as_names(c(old_names, new_names), repair = repair)
+  names_list <- figure_out_names(old_names, new_names, repair)
+  # rename old tables in case name repair changed their names
+  dm <- cdm_select_tbl_impl(dm, set_names(old_names, names_list$new_old_names))
+
+  cdm_add_tbl_impl(dm, new_tables, names_list$new_names)
+}
+
+figure_out_names <- function(old_names, new_names, repair = "check_unique") {
+
+  all_names <-
+    vctrs::vec_as_names(c(old_names, new_names), repair = repair)
 
   new_old_names <- all_names[seq_along(old_names)]
 
-  selected <- set_names(old_names, new_old_names)
-  dm <- cdm_select_tbl_impl(dm, selected)
-
-  new_names <- all_names[seq2(length(old_names) + 1, length(all_names))]
-  cdm_add_tbl_impl(dm, new_tables, new_names)
+  new_names <-
+    all_names[seq2(length(old_names) + 1, length(all_names))]
+  list(new_old_names = new_old_names, new_names = new_names)
 }
 
 cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter())) {
