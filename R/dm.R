@@ -578,14 +578,31 @@ src_tbls.dm <- function(src, ...) {
 }
 
 #' @export
-copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
+copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, ...) {
   df_list <- if (
-    inherits(df, "list") && all(map_lgl(df, ~inherits(., "data.frame")))) df else if (
-      inherits(df, "data.frame")) list(df) else {
+    inherits(df, "list") &&
+    # if list than it better be a list of `data.frame` or `tbl_dbi` (mix is currently not allowed)
+    (all(map_lgl(df, ~inherits(., "data.frame"))) || all(map_lgl(df, ~inherits(., "tbl_dbi"))))) df else if (
+      inherits(df, "data.frame") || inherits(df, "tbl_dbi")) list(df) else {
         abort_only_data_frames_supported()
       }
-  if (length(df_list) != length(name)) abort_one_name_for_each_table()
-
+  # names: if `name` argument has same length as `df_list`, then use those names
+  # if `df_list` is named and has different length than `name` then use names of list elements
+  # if `df_list` is not named and has different length than `name` throw an error
+  if (is_named(df_list)) {
+    if (length(df_list) != length(name)) name <- names(df_list)
+  } else {
+    if (length(df_list) != length(name)) abort_one_name_for_each_table()
+  }
+  # src: if `df` on a different src:
+  # if `df_list` is on DB and `dest` is local, collect `df_list`
+  # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
+  if (!all_same_source(append(cdm_get_tables(dest), df_list))) {
+    if (inherits(cdm_get_src(dest), "src_local")) {
+      df_list <- map(df_list, collect)} else {
+        df_list <- map2(df_list, unique_db_table_name(name), ~copy_to(cdm_get_src(dest), ..1, ..2, temporary = temporary))
+    }
+  }
   # FIXME: should we allow `overwrite` argument?
   names_list <- figure_out_names(src_tbls(dest), name)
   # `repair` argument is always `check_unique`, so old table names currently cannot be updated
