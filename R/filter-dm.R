@@ -61,12 +61,9 @@ cdm_filter <- function(dm, table, ...) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 
-  quos <- enquos(...)
-  if (is_empty(quos)) {
-    return(dm)
-  } # valid table and empty ellipsis provided
-
-  set_filter_for_table(dm, table, quos, FALSE)
+  cdm_zoom_to_tbl(dm, !!table) %>%
+    filter(...) %>%
+    cdm_update_zoomed_tbl()
 }
 
 set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
