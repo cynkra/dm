@@ -193,7 +193,7 @@
 </span></code></pre>
 <p>As you can see below, the <code>dm_joined</code> dataframe has one additional column than the <code>flights</code> table. The difference is the <code>name</code> column from the <code>airlines</code> table.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">tbl</span>(<span class="st">"flights"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="st">"flights"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>()</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;  [1] "year"           "month"          "day"            "dep_time"      </span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt;  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"</span></a>
@@ -202,7 +202,7 @@
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [17] "hour"           "minute"         "time_hour"</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb6-10" data-line-number="10">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="st">  </span><span class="kw">tbl</span>(<span class="st">"airlines"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="st">"airlines"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>()</a>
 <a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; [1] "carrier" "name"</span></a>
 <a class="sourceLine" id="cb6-14" data-line-number="14"></a>

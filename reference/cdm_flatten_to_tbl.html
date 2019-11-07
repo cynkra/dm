@@ -203,7 +203,7 @@ The necessary disambiguations of the column names are performed first. Then all
 involved foreign tables are joined to table <code>start</code> successively with the join function given in
 parameter <code>join</code>.</p>
 <p><strong>Case 2</strong>, filter conditions are set for at least one table connected to <code>start</code>:
-Disambiguation is performed initially if necessary. Table <code>start</code> is calculated using <code>tbl(dm, "start")</code>. This implies
+Disambiguation is performed initially if necessary. Table <code>start</code> is calculated using <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl(dm, "start")</a></code>. This implies
 that the effect of the filters on this table is taken into account. For <code>right_join</code>, <code>full_join</code> and <code>nest_join</code> an error
 is thrown in case filters are set, because the filters won't affect right hand side tables and thus the result will be
 incorrect in general (and calculating the effects on all RHS-tables would be time-consuming and is not supported;
