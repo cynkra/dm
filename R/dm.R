@@ -2,7 +2,7 @@
 #'
 #' @description
 #' The `dm` class wraps [dplyr::src] and adds a description of table relationships
-#' based on [datamodelr::datamodelr-package].
+#' inspired by [datamodelr](https://github.com/bergant/datamodelr), of which it also borrows code.
 #'
 #' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
 #'
