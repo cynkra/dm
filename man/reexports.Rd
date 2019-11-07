@@ -8,6 +8,7 @@
 \alias{mutate}
 \alias{transmute}
 \alias{summarise}
+\alias{summarize}
 \alias{select}
 \alias{rename}
 \alias{group_by}
@@ -24,6 +25,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{transmute}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr]{select}}, \code{\link[dplyr]{rename}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr]{ungroup}}, \code{\link[dplyr]{collect}}, \code{\link[dplyr]{compute}}, \code{\link[dplyr]{copy_to}}, \code{\link[dplyr]{src_tbls}}, \code{\link[dplyr]{tbl}}}
+  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{transmute}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr]{summarize}}, \code{\link[dplyr]{select}}, \code{\link[dplyr]{rename}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr]{ungroup}}, \code{\link[dplyr]{collect}}, \code{\link[dplyr]{compute}}, \code{\link[dplyr]{copy_to}}, \code{\link[dplyr]{src_tbls}}, \code{\link[dplyr]{tbl}}}
 }}
 
