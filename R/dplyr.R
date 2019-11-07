@@ -46,17 +46,17 @@ filter.dm <- function(.data, ...) {
 
 #' @export
 filter.zoomed_dm <- function(.data, ...) {
-  filter_exprs <- enexprs(...)
-  if (is_empty(filter_exprs)) {
+  filter_quos <- enquos(...)
+  if (is_empty(filter_quos)) {
     return(.data)
   } # valid table and empty ellipsis provided
 
   tbl <- get_zoomed_tbl(.data)
-  filtered_tbl <- filter(tbl, ...)
+  filtered_tbl <- filter(tbl, !!!filter_quos)
 
   # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
   # in case of `cdm_insert_zoomed_tbl()` the filter exprs needs to be transferred
-  set_filter_for_table(.data, orig_name_zoomed(.data), filter_exprs, TRUE) %>%
+  set_filter_for_table(.data, orig_name_zoomed(.data), map(filter_quos, quo_get_expr), TRUE) %>%
     replace_zoomed_tbl(filtered_tbl)
 }
 
