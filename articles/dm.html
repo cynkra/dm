@@ -105,16 +105,16 @@
 
     
     
-<p>The goal of both the package {dm} and its <code>dm</code> class is to facilitate work with multiple related tables. An object of the <code>dm</code> class contains all relevant information about the tables in a data model:</p>
+<p>The goal of the package {dm} and its <code>dm</code> class is to facilitate work with multiple related tables. An object of the <code>dm</code> class contains all relevant information about the tables in a data model:</p>
 <ol style="list-style-type: decimal">
 <li>the place where the tables live (i.e., the <code>src</code>: a database (DB) or locally in your R session)</li>
-<li>the meta-data from the data model: the tables, columns, and key constraints</li>
+<li>the metadata from the data model: the tables, columns and key constraints</li>
 <li>the data in the tables</li>
 </ol>
-<p>This package augments {dplyr}/{dbplyr} workflows:</p>
+<p>This package augments <a href="https://dplyr.tidyverse.org/">{dplyr}</a>/<a href="https://dbplyr.tidyverse.org/">{dbplyr}</a> workflows:</p>
 <ul>
-<li>multiple related tables are kept in a single compound object,</li>
-<li>joins across multiple tables are available by stating the tables involved, no need to memorize column names or relationships</li>
+<li>multiple related tables are kept in a single compound object</li>
+<li>joins across multiple tables are available by specifying the tables involved, no need to memorize column names or relationships</li>
 </ul>
 <p>In addition, a battery of utilities is provided that helps with creating a tidy data model.</p>
 <p>This package follows several of the “tidyverse” rules:</p>
@@ -124,8 +124,8 @@
 <li>many functions used on <code>dm</code> objects are pipeable (i.e., return new <code>dm</code> objects)</li>
 <li>tidy evaluation is used (unquoted function parameters are supported)</li>
 </ul>
-<p>The {dm} package builds heavily upon the <a href="https://github.com/bergant/datamodelr">{datamodelr} package</a>, and upon the <a href="https://www.tidyverse.org/">tidyverse</a>. We’re looking forward to a good collaboration!</p>
-<p>We will showcase here some of the features of {dm}:</p>
+<p>The {dm} package builds heavily upon the <a href="https://github.com/bergant/datamodelr">{datamodelr} package</a>, and upon the <a href="https://www.tidyverse.org/">tidyverse</a>. We’re looking forward to a great collaboration!</p>
+<p>We will now demonstrate some of the features of {dm}:</p>
 <ol style="list-style-type: decimal">
 <li><a href="#create">Creation of <code>dm</code> objects</a></li>
 <li><a href="#keys">Setting keys and drawing</a></li>
@@ -138,7 +138,7 @@
 <div id="create" class="section level2">
 <h2 class="hasAnchor">
 <a href="#create" class="anchor"></a>Creating <code>dm</code> objects:</h2>
-<p>The {nycflights13}-package offers a nice example for interconnected tables. The most straightforward way of squeezing them into a <code>dm</code> object is:</p>
+<p>The <a href="https://github.com/hadley/nycflights13">{nycflights13}</a> package offers a nice example of interconnected tables. The most straightforward way of squeezing those tables into a <code>dm</code> object is:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">dm</a></span>(<span class="kw">src_df</span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">flights_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
@@ -151,7 +151,7 @@
 #&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
 #&gt; None
 </span></code></pre>
-<p>The fairly verbose output shows an overview of various components of a <code>dm</code> object: the table source, the metadata, and filter conditions. These components can be individually accessed with several {dm}-functions, e.g. <code><a href="../reference/dm.html">cdm_get_src()</a></code>, <code><a href="../reference/dm.html">cdm_get_filter()</a></code>, <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code> and <code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code>.</p>
+<p>This fairly verbose output shows the three components of a <code>dm</code> object: the table source, the metadata, and row counts. These components can be accessed with <code><a href="../reference/dm.html">cdm_get_src()</a></code> and <code><a href="../reference/dm.html">cdm_get_tables()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/dm.html">cdm_get_src</a></span>(flights_dm)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; src:  &lt;environment: R_GlobalEnv&gt;</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; tbls:</span></a>
@@ -172,12 +172,12 @@
 <div id="keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#keys" class="anchor"></a>Keys and visualization</h2>
-<p>As you can see in the “Data model” part of the output above, so far no keys are set. We use <code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code> and <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> to add primary keys (pk) and foreign keys (fk):</p>
+<p>As you can see in the “Data model” part of the output above, no keys have been set so far. We will use <code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code> and <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> to add primary keys (pk) and foreign keys (fk):</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">flights_dm_with_one_key &lt;-<span class="st"> </span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span>flights_dm <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(airlines, carrier) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, carrier, airlines)</a></code></pre></div>
-<p>Once you set the keys and established relations, you can show a graphical representation of your data model with <code><a href="../reference/cdm_draw.html">cdm_draw()</a></code>:</p>
+<p>After you set the keys and establish relations, you can create a graphical representation of your data model with <code><a href="../reference/cdm_draw.html">cdm_draw()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">flights_dm_with_one_key <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_draw.html">cdm_draw</a></span>()</a></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -190,7 +190,7 @@
 <polygon fill="#efebdd" stroke="transparent" points="7,-21 7,-41 47,-41 47,-21 7,-21"></polygon><text text-anchor="start" x="9.1115" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">flights</text><polygon fill="#ffffff" stroke="transparent" points="7,-1 7,-21 47,-21 47,-1 7,-1"></polygon><text text-anchor="start" x="8.7419" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text><polygon fill="none" stroke="#555555" points="6,0 6,-42 48,-42 48,0 6,0"></polygon></g><!-- flights&#45;&gt;airlines --><g id="edge1" class="edge"><title>flights:carrier-&gt;airlines:carrier</title>
 <path fill="none" stroke="#555555" d="M47,-11C64.5,-11 71.2334,-11 84.8642,-11"></path><polygon fill="#555555" stroke="#555555" points="85,-14.5001 95,-11 85,-7.5001 85,-14.5001"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#efebdd" stroke="transparent" points="8,-122 8,-142 47,-142 47,-122 8,-122"></polygon><text text-anchor="start" x="9.6178" y="-127.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="none" stroke="#555555" points="6.5,-121 6.5,-143 47.5,-143 47.5,-121 6.5,-121"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#efebdd" stroke="transparent" points="3,-176 3,-196 51,-196 51,-176 3,-176"></polygon><text text-anchor="start" x="4.8492" y="-181.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-175 2,-197 52,-197 52,-175 2,-175"></polygon></g></g></svg><p>The <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> function provides a shortcut: the <code>dm</code> object returned by this function contains all tables, defines all primary and foreign keys and even assigns colors to the different types of tables. We will be using the <code>dm</code> object created by this function from here on.</p>
+<polygon fill="#efebdd" stroke="transparent" points="3,-176 3,-196 51,-196 51,-176 3,-176"></polygon><text text-anchor="start" x="4.8492" y="-181.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-175 2,-197 52,-197 52,-175 2,-175"></polygon></g></g></svg><p>The <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> function provides a shortcut: the <code>dm</code> object returned by this function contains all tables, defines all primary and foreign keys, and even assigns colors to the different types of tables. We will be using the <code>dm</code> object created by this function from now on.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">flights_dm_with_keys &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">flights_dm_with_keys <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_draw.html">cdm_draw</a></span>()</a></code></pre></div>
@@ -214,9 +214,9 @@
 <a href="#filter" class="anchor"></a>Filtering a table of a <code>dm</code> object</h2>
 <p>The idea of a filter on a <code>dm</code> object:</p>
 <ol style="list-style-type: decimal">
-<li>You filter one or more of <code>dm</code>’s tables, just like with normal <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> calls</li>
-<li>The filter conditions are stored in the <code>dm</code> object, but not immediately executed</li>
-<li>Once you access a table, the relevant filter conditions are applied to the respective tables and the necessary joins are performed along the fk relations. What you get out is a table containing only rows related to the filter operations</li>
+<li>You can filter one or more of <code>dm</code>’s tables, just like with normal <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> calls</li>
+<li>Filtering conditions are stored in the <code>dm</code> object but not immediately executed</li>
+<li>Once you access a table, all relevant filtering conditions are applied to the respective tables, and the necessary joins are performed along the fk relations. This results in a table that contains only rows related to the filtering operations</li>
 </ol>
 <p>Currently, this only works if the graph induced by the fk relations is cycle free, the default for <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">flights_dm_acyclic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>()</a>
@@ -251,14 +251,14 @@
 #&gt; airlines: name == "US Airways Inc."
 #&gt; airports: name == "John F Kennedy Intl"
 </span></code></pre>
-<p>With <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> you can apply all filters and therefore update all tables in the <code>dm</code>, so that they contain only the rows relevant to the filters. Counting the rows you can see the effect of the filters:</p>
+<p>With <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code>, you can apply all filters and therefore update all tables in the <code>dm</code>, so that they contain only the rows that are relevant to the filters. The effect of the filters can be seen when counting the rows:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">us_flights_from_jfk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_apply_filters</a></span>(us_flights_from_jfk_prepared)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">us_flights_from_jfk <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/dm.html">cdm_get_tables</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw">map_int</span>(nrow)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;        1        1     2995      224    26115</span></a></code></pre></div>
-<p>Or you can just pull out one of the tables from the <code>dm</code>, answering the question which planes were used to service US Airways flights having started from JFK airport:</p>
+<p>Alternatively, you can just pull out one of the tables from <code>dm</code> to answer the question which planes were used to service the US Airways flights that departed from JFK airport:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(us_flights_from_jfk, <span class="st">"planes"</span>)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 224 x 9</span><span>
 #&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
@@ -275,7 +275,7 @@
 #&gt; </span><span style="color: #555555;">10</span><span> N112US   </span><span style="text-decoration: underline;">1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style="color: #BB0000;">NA</span><span> Turbo…
 #&gt; </span><span style="color: #555555;"># … with 214 more rows</span><span>
 </span></code></pre>
-<p>Each of the planes in the result set above was part in at least one US Airways flight departing from JFK. Do they have common characteristics?</p>
+<p>Each of the planes in the result set above was a part of at least one US Airways flight departing from JFK. Do they have any common characteristics?</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(us_flights_from_jfk, <span class="st">"planes"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">count</span>(model)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 x 2</span><span>
@@ -290,7 +290,7 @@
 #&gt; </span><span style="color: #555555;">7</span><span> A321-231           48
 #&gt; </span><span style="color: #555555;">8</span><span> ERJ 190-100 IGW    15
 </span></code></pre>
-<p>For comparison, let’s review the equivalent manual query in {dplyr} syntax:</p>
+<p>For comparison, let’s look at the equivalent manual query in {dplyr} syntax:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">flights <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">left_join</span>(airports, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> =<span class="st"> "faa"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(name <span class="op">==</span><span class="st"> "John F Kennedy Intl"</span>) <span class="op">%&gt;%</span></a>
@@ -298,7 +298,7 @@
 <a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(name.y <span class="op">==</span><span class="st"> "US Airways Inc."</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw">semi_join</span>(planes, ., <span class="dt">by =</span> <span class="st">"tailnum"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">count</span>(model)</a></code></pre></div>
-<p>The {dm} code is leaner, because the fk information is encoded in the object.</p>
+<p>The {dm} code is leaner because the fk information is encoded in the object.</p>
 <div id="join" class="section level3">
 <h3 class="hasAnchor">
 <a href="#join" class="anchor"></a>Joining two tables</h3>
@@ -327,7 +327,7 @@
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">airlines <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw">left_join</span>(flights, <span class="dt">by =</span> <span class="st">"carrier"</span>)</a></code></pre></div>
-<p>Omitting the <code>by</code> argument leads to a warning</p>
+<p>Omitting the <code>by</code> argument leads to a warning.</p>
 </div>
 </div>
 <div id="copy" class="section level2">
@@ -339,7 +339,7 @@
 <a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.29.0 [:memory:]</span></a>
 <a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt; tbls:</span></a>
 <a class="sourceLine" id="cb17-5" data-line-number="5">flights_dm_with_keys_remote &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_copy_to.html">cdm_copy_to</a></span>(src_sqlite, flights_dm_with_keys)</a></code></pre></div>
-<p>As a result, the tables are transferred to the target data source, and the returned data model contains all keys.</p>
+<p>As a result, the tables are transferred to the target data source, and all keys will be contained in the returned data model.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">src_sqlite</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co">#&gt; src:  sqlite 3.29.0 [:memory:]</span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">#&gt; tbls: airlines, airports, flights, planes, sqlite_stat1, sqlite_stat4,</span></a>
@@ -355,7 +355,7 @@
 #&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
 #&gt; None
 </span></code></pre>
-<p>In the opposite direction, <code>dm</code> objects can also be “learned” from a DB, including the key constraints, by utilizing the DB’s meta-information tables. Unfortunately, this currently works only for MSSQL and Postgres, we cannot show the results here yet:</p>
+<p>In the opposite direction, <code>dm</code> objects can also be “learned” from a DB, including the key constraints, by utilizing the DB’s meta-information tables. Unfortunately, this currently only works for MSSQL and Postgres, so we cannot show the results here just yet:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">flights_dm_from_remote &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_learn_from_db.html">cdm_learn_from_db</a></span>(src_sqlite)</a></code></pre></div>
 </div>
 <div id="further-reading" class="section level2">

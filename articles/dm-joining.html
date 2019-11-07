@@ -107,9 +107,9 @@
     
     
 <p>The {dm} package offers functions to work with relational data models in R. A common task for multiple, separated tables that have a shared attribute is merging the data.</p>
-<p>This document introduces you to the joining functions of {dm} and shows you how to apply them using data from the {nycflights13} package.</p>
+<p>This document introduces you to the joining functions of {dm} and shows how to apply them using data from the <a href="https://github.com/hadley/nycflights13">{nycflights13}</a> package.</p>
 <p><a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#model">Relational data models</a> consist of multiple tables that are linked with <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#fk">foreign keys</a>. They are the building blocks for joining tables. Read more about relational data models in the vignette <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models">“Introduction to Relational Data Models”</a>.</p>
-<p>First, we load the packages we need:</p>
+<p>First, we load the packages that we need:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dm)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</a></code></pre></div>
@@ -117,23 +117,23 @@
 <h2 class="hasAnchor">
 <a href="#data-nycflights13" class="anchor"></a>Data: nycflights13</h2>
 <p>To explore filtering with {dm}, we’ll use the {nycflights13} data with its tables <code>flights</code>, <code>planes</code>, <code>airlines</code> and <code>airports</code>.</p>
-<p>This dataset contains all 336 776 flights that departed from New York City in 2013 with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code>?nycflights13</code>.</p>
-<p>First of all, we have to create a <code>dm</code> object from the {nycflights13} data. This is implmeneted with <code><a href="../reference/cdm_nycflights13.html">dm::cdm_nycflights13</a></code>.</p>
-<p>A <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm">data model object</a> contains the data as well as metda data.</p>
-<p>If you want to create a <code>dm</code> from other tables, please look at <code><a href="../reference/dm.html">?dm</a></code> and the function <code><a href="../reference/dm.html">new_dm()</a></code>.</p>
+<p>This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code>?nycflights13</code>.</p>
+<p>First, we have to create a <code>dm</code> object from the {nycflights13} data. This is implmeneted with <code><a href="../reference/cdm_nycflights13.html">dm::cdm_nycflights13</a></code>.</p>
+<p>A <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm">data model object</a> contains the data as well as metadata.</p>
+<p>If you would like to create a <code>dm</code> from other tables, please look at <code><a href="../reference/dm.html">?dm</a></code> and the function <code><a href="../reference/dm.html">new_dm()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>()</a></code></pre></div>
 </div>
 <div id="join" class="section level2">
 <h2 class="hasAnchor">
 <a href="#join" class="anchor"></a>Joining a <code>dm</code> object</h2>
-<p>{dm} allows you to join two tables of a <code>dm</code> object based on a shared column. You can use all join functions you know from the <a href="https://dplyr.tidyverse.org/reference/join.html">{dplyr} package</a>. Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join. See <code><a href="https://dplyr.tidyverse.org/reference/join.html">?dplyr::join</a></code> for details.</p>
+<p>{dm} allows you to join two tables of a <code>dm</code> object based on a shared column. You can use all join functions that you know from the <a href="https://dplyr.tidyverse.org/reference/join.html">{dplyr} package</a>. Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join. See <code><a href="https://dplyr.tidyverse.org/reference/join.html">?dplyr::join</a></code> for details.</p>
 <div id="how-it-works" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-it-works" class="anchor"></a>How it works</h3>
-<p>A join is the combination of two tables based on shared information. In technical terms we merge tables that need to be directly connected by a <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#fk">foreign key relation</a>.</p>
-<p>You can inspect the existing links in two ways:</p>
+<p>A join is the combination of two tables based on shared information. In technical terms, we merge the tables that need to be directly connected by a <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#fk">foreign key relation</a>.</p>
+<p>The existing links can be inspected in two ways:</p>
 <ol style="list-style-type: decimal">
-<li>Visually by drawing the data model with <code><a href="../reference/cdm_draw.html">cdm_draw()</a></code>
+<li>Visually, by drawing the data model with <code><a href="../reference/cdm_draw.html">cdm_draw()</a></code>
 </li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -152,7 +152,7 @@
 <path fill="none" stroke="#555555" d="M50,-71C65.5833,-71 71.8532,-71 83.6529,-71"></path><polygon fill="#555555" stroke="#555555" points="84,-74.5001 94,-71 84,-67.5001 84,-74.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="3,-148 3,-168 51,-168 51,-148 3,-148"></polygon><text text-anchor="start" x="4.8492" y="-153.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#507e32" points="2,-147 2,-169 52,-169 52,-147 2,-147"></polygon></g></g></svg><p>The directed arrows show explicitly the relation between different columns.</p>
 <ol start="2" style="list-style-type: decimal">
-<li>Printed in the console by calling <code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code>
+<li>Printed to the console by calling <code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code>
 </li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -169,7 +169,7 @@
 <h3 class="hasAnchor">
 <a href="#joining-examples" class="anchor"></a>Joining Examples</h3>
 <p>Let’s look at some examples:</p>
-<p><strong>Add add a column with the full airline names from the <code>airlines</code> table to the <code>flights</code> table.</strong></p>
+<p><strong>Add a column with airline names from the <code>airlines</code> table to the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">dm_joined &lt;-<span class="st"> </span>dm <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(flights, airlines, <span class="dt">join =</span> left_join)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">dm_joined</a></code></pre></div>
@@ -191,7 +191,7 @@
 #&gt; #   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,
 #&gt; #   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span style="color: #555555;">, name </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
-<p>As you can see below, the <code>dm_joined</code> dataframe has one additional column than the <code>flights</code> table. The difference is the <code>name</code> column from the <code>airlines</code> table.</p>
+<p>As you can see below, the <code>dm_joined</code> dataframe has one more column than the <code>flights</code> table. The difference is the <code>name</code> column from the <code>airlines</code> table.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="st">"flights"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>()</a>
@@ -219,7 +219,7 @@
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; [1] "tbl_df"     "tbl"        "data.frame"</span></a></code></pre></div>
 <p>Another example:</p>
 <p><strong>Get all flights that can’t be matched with airlines names.</strong></p>
-<p>We expect the flights data from {nycflights13} package to be clean and well organised, so no flights should remain. You can check this with an <code>anti_join</code>:</p>
+<p>We expect the flights data from {nycflights13} package to be clean and well organized, so no flights should remain. You can check this with an <code>anti_join</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_join_to_tbl.html">cdm_join_to_tbl</a></span>(flights, airlines, <span class="dt">join =</span> anti_join)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 19</span><span>
@@ -231,7 +231,7 @@
 </span></code></pre>
 <p>An example with filtering on a <code>dm</code> and then merging:</p>
 <p><strong>Get all flights from Delta Air Lines which didn’t depart from John F. Kennedy International Airport in May 2013 - and join all the airports data into the <code>flights</code> table.</strong></p>
-<p>Currently, it is important to call <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> after piping your conditions. Only then the underlying tables and key relations are updated and you can perform a join on the filtered data. We’re working towards removing this inconvenience <a href="https://github.com/krlmlr/dm/issues/62">#62</a>.</p>
+<p>Currently, it is important to call <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> after piping your conditions. Only then the underlying tables and key relations are updated and you can perform a join on the filtered data. We are working towards removing this inconvenience <a href="https://github.com/krlmlr/dm/issues/62">#62</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(airlines, name <span class="op">==</span><span class="st"> "Delta Air Lines Inc."</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_filter.html">cdm_filter</a></span>(flights, month <span class="op">==</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -287,7 +287,7 @@
 #&gt; #   manufacturer </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, model </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, engines </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, seats </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,
 #&gt; #   speed </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, engine </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
-<p>Be aware that all column names need to be unique. The <code>cdm_flatten_to_tbl</code> cares about by automatically renaming the relevant columns and prints if something was changed, e.g. <code>name -&gt; airlines.name</code>.</p>
+<p>Be aware that all column names need to be unique. The <code>cdm_flatten_to_tbl</code> cares about automatically renaming the relevant columns and prints if something was changed, e.g. <code>name -&gt; airlines.name</code>.</p>
 </div>
 </div>
   </div>

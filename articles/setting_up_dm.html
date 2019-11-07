@@ -105,39 +105,40 @@
 
     
     
-<p>This document describes how you can get your data into a <code>dm</code> object. Though this example is also built in already — just run <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code> — here, we’ll go through the process step by step.</p>
-<p>The five tables we are working with contain information on flights from airports of the North-American city of New York to other destinations in the United States in 2013 and are available through the package <a href="https://github.com/hadley/nycflights13"><code>nycflights13</code></a>.</p>
+<p>This document describes how you can get your data into a <code>dm</code> object.</p>
+<p>Although the example that we will be using is included in <code>dm</code>, and you can see it by running <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code>, we will be going through the built-in example one more time here, step by step.</p>
+<p>The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013, and are available through the <a href="https://github.com/hadley/nycflights13"><code>nycflights13</code></a> package:</p>
 <ul>
 <li>
-<code>flights</code> represents the journeys taken by planes,</li>
+<code>flights</code> represents the trips taken by planes</li>
 <li>
 <code>airlines</code> includes
 <ul>
-<li>transport organizations’ names (<code>name</code>)</li>
-<li>their shortcuts (<code>carrier</code>)</li>
+<li>the names of transport organizations (<code>name</code>)</li>
+<li>their abbreviated codes (<code>carrier</code>)</li>
 </ul>
 </li>
 <li>
 <code>airports</code> indicates the ports of departure (<code>origin</code>) and of destination (<code>dest</code>)</li>
 <li>
-<code>weater</code> the meterological context at each hour</li>
+<code>weather</code> contains meterological information at each hour</li>
 <li>
-<code>planes</code> describes aircrafts’ characteristics</li>
+<code>planes</code> describes characteristics of aircrafts</li>
 </ul>
-<p>Once we’ve loaded <code>nycflights13</code>, the aforementioned tables are all in our work environment, ready for being accessed.</p>
+<p>Once we’ve loaded <code>nycflights13</code>, the aforementioned tables are all in our work environment, ready to be accessed.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dm)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</a></code></pre></div>
 <div id="adding-tables" class="section level1">
 <h1 class="hasAnchor">
 <a href="#adding-tables" class="anchor"></a>Adding Tables</h1>
-<p>First, we will tell <code>dm</code> what tables we want to work with and how they’re connected. For this, we can use <code>dm</code> or <code><a href="../reference/dm.html">as_dm()</a></code>. <code><a href="../reference/dm.html">as_dm()</a></code> accepts lists of objects. You must explicitly name the objects if you use <code><a href="https://rdrr.io/r/base/list.html">list()</a></code> (f.e. <code><a href="https://rdrr.io/r/base/list.html">list("airlines" = airlines, "flights" = flights)</a></code>) — here we use <code><a href="https://tibble.tidyverse.org/reference/lst.html">tibble::lst()</a></code> which automatically names the list components.</p>
+<p>First, we will tell <code>dm</code> which tables we want to work with and how they are connected. For that, we can use <code>dm</code> or <code><a href="../reference/dm.html">as_dm()</a></code>, which accepts lists of objects. You must explicitly name the objects if you use <code><a href="https://rdrr.io/r/base/list.html">list()</a></code> (e.g., <code><a href="https://rdrr.io/r/base/list.html">list("airlines" = airlines, "flights" = flights)</a></code>) — here we use <code><a href="https://tibble.tidyverse.org/reference/lst.html">tibble::lst()</a></code>, which automatically names the components of the list.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">flights_dm_no_keys &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/lst.html">lst</a></span>(airlines, airports, flights, planes, weather) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/dm.html">as_dm</a></span>()</a></code></pre></div>
 </div>
 <div id="defining-keys" class="section level1">
 <h1 class="hasAnchor">
 <a href="#defining-keys" class="anchor"></a>Defining Keys</h1>
-<p>Though you now have a new <code>dm</code> object, containing all your data, a key detail is missing still: How your five tables are connected the foreign keys) and which column(s) uniquely identify observation (the primary keys).</p>
+<p>Even though you now have a new <code>dm</code> object that contains all your data, some key details are still missing that determine how your five tables are connected (the foreign keys), and which column(s) uniquely identify the observations (the primary keys).</p>
 <div id="primary-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#primary-keys" class="anchor"></a>Primary Keys</h2>
@@ -158,7 +159,7 @@
 ## 7 speed       FALSE     has duplicate values: 90, 105, 162, 432, NA        
 ## 8 type        FALSE     has duplicate values: Fixed wing multi engine, Fix…
 ## 9 year        FALSE     has duplicate values: 1959, 1963, 1975, 1976, 1977…</code></pre>
-<p>Now, add any primary keys you may have identified:</p>
+<p>Now, add the primary keys that you have identified:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">flights_dm_only_pks &lt;-<span class="st"> </span>flights_dm_no_keys <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(<span class="dt">table =</span> airlines, <span class="dt">column =</span> carrier) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(airports, faa) <span class="op">%&gt;%</span></a>
@@ -173,7 +174,7 @@
 ## Foreign keys: 0
 ## ── Filters ────────────────────────────────────────────────────────────────
 ## None</code></pre>
-<p>To get an overview of the primary keys after setting them, call <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code>.</p>
+<p>To review the primary keys after setting them, call <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(flights_dm_only_pks)</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 2
 ##   table    pk_col 
@@ -212,7 +213,8 @@
 ## 17 sched_dep_t… FALSE     Can't join on 'value' x 'value' because of incom…
 ## 18 time_hour    FALSE     cannot join a POSIXct object with an object that…
 ## 19 year         FALSE     Can't join on 'value' x 'value' because of incom…</code></pre>
-<p>You define how your tables relate using <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code>. First, define the tables you wish to connect to another using the function’s options <code>table</code> and <code>ref_table</code>. Then indicate in <code>column</code> which column of <code>table</code> refers to <code>ref_table</code>’s primary key, which you’ve defined above. Use <code>check = FALSE</code> to omit consistency checks.</p>
+<p>To define how your tables are related, use <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> to add foreign keys. First, define the tables that you wish to connect by parameterizing the <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> function with <code>table</code> and <code>ref_table</code> options.</p>
+<p>Then indicate in <code>column</code> which column of <code>table</code> refers to <code>ref_table</code>’s primary key, which you’ve defined above. Use <code>check = FALSE</code> to omit consistency checks.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">flights_dm_all_keys &lt;-<span class="st"> </span>flights_dm_only_pks <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(<span class="dt">table =</span> flights, <span class="dt">column =</span> tailnum, <span class="dt">ref_table =</span> planes, <span class="dt">check =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, carrier, airlines) <span class="op">%&gt;%</span></a>
@@ -231,7 +233,7 @@
 <div id="retrieving-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#retrieving-keys" class="anchor"></a>Retrieving Keys</h2>
-<p>To retrieve your keys later on, use <code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code> or <code><a href="../reference/cdm_get_fk.html">cdm_get_fk()</a></code> for its singular version.</p>
+<p>To retrieve your keys later on, use <code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code>, or <code><a href="../reference/cdm_get_fk.html">cdm_get_fk()</a></code> for its singular version.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(flights_dm_all_keys)</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 2
 ##   table    pk_col 

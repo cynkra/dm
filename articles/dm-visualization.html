@@ -105,7 +105,7 @@
 
     
     
-<p>Once you have all primary keys set and all foreign key relations defined, a graphical representation of your data model offers a condensed view over the tables and relationships. Relevant functions for visualising the <code>dm</code> object’s data model are:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>Once you have all your primary keys set and all foreign key relations defined, a graphical representation of your data model offers a condensed view of the tables and the relationships between the tables. The following functions can be used to visualize the data model of a <code>dm</code> object:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/cdm_draw.html">cdm_draw()</a></code></li>
 <li><code><a href="../reference/cdm_draw.html">cdm_set_colors()</a></code></li>
@@ -145,7 +145,7 @@
 <path fill="none" stroke="#555555" d="M50,-51C72.2991,-51 69.4778,-22.5234 83.9268,-13.6245"></path><polygon fill="#555555" stroke="#555555" points="85.2055,-16.9083 94,-11 83.4406,-10.1344 85.2055,-16.9083"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#efebdd" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M50,-71C65.5833,-71 71.8532,-71 83.6529,-71"></path><polygon fill="#555555" stroke="#555555" points="84,-74.5001 94,-71 84,-67.5001 84,-74.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#efebdd" stroke="transparent" points="3,-148 3,-168 51,-168 51,-148 3,-148"></polygon><text text-anchor="start" x="4.8492" y="-153.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-147 2,-169 52,-169 52,-147 2,-147"></polygon></g></g></svg><p>You can use colors to visually group your tables into families (which could reflect their logical grouping). Currently, there are only eight different colors available (plus optional borders around the tables). To find out which colors exist, use <code><a href="../reference/cdm_draw.html">cdm_get_available_colors()</a></code>:</p>
+<polygon fill="#efebdd" stroke="transparent" points="3,-148 3,-168 51,-168 51,-148 3,-148"></polygon><text text-anchor="start" x="4.8492" y="-153.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-147 2,-169 52,-169 52,-147 2,-147"></polygon></g></g></svg><p>You can use colors to visually group your tables into families to reflect their logical grouping. Currently, eight different colors are available, plus optional borders around tables. To find out which colors exist, use <code><a href="../reference/cdm_draw.html">cdm_get_available_colors()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_draw.html">cdm_get_available_colors</a></span>()</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span><span>
 #&gt;    dm            datamodelr nb         
@@ -166,7 +166,7 @@
 #&gt; </span><span style="color: #555555;">14</span><span> light_grey    accent6    (border)   
 #&gt; </span><span style="color: #555555;">15</span><span> grey          accent7    (border)
 </span></code></pre>
-<p>The assignment is carried out with <code><a href="../reference/cdm_draw.html">cdm_set_colors()</a></code>, using a syntax similar to <code><a href="https://rdrr.io/r/base/switch.html">switch()</a></code>. Any table you don’t specifically assign will not be altered. The result of <code><a href="../reference/cdm_draw.html">cdm_set_colors()</a></code> is a <code>dm</code> object. The information about the color is stored in its <code>data_model</code>-part.</p>
+<p>Colors are assigned with <code><a href="../reference/cdm_draw.html">cdm_set_colors()</a></code> using syntax that is similar to <code><a href="https://rdrr.io/r/base/switch.html">switch()</a></code>. Any table to which you do not specifically assign a color will not be altered. The result of <code><a href="../reference/cdm_draw.html">cdm_set_colors()</a></code> is a <code>dm</code> object. The information about the color is stored in its <code>data_model</code>-part.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">flights_dm_w_many_keys_and_colors &lt;-</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span>flights_dm_w_many_keys <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_draw.html">cdm_set_colors</a></span>(</a>
@@ -215,7 +215,7 @@
 <path fill="none" stroke="#555555" d="M54.003,-72C62.0277,-72 70.9665,-72 79.5309,-72"></path><polygon fill="#555555" stroke="#555555" points="79.7051,-75.5001 89.705,-72 79.705,-68.5001 79.7051,-75.5001"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#70ad47" stroke="transparent" points="98,-8 98,-28 137,-28 137,-8 98,-8"></polygon><text text-anchor="start" x="99.6178" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M54.003,-55.7982C62.4686,-50.7188 71.9516,-45.029 80.9389,-39.6366"></path><polygon fill="#555555" stroke="#555555" points="82.9308,-42.5232 89.705,-34.377 79.3293,-36.5208 82.9308,-42.5232"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#efebdd" stroke="transparent" points="3,-116 3,-136 51,-136 51,-116 3,-116"></polygon><text text-anchor="start" x="4.8492" y="-121.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-115 2,-137 52,-137 52,-115 2,-115"></polygon></g></g></svg><p>In case you would like to only see a subset of the whole data model, use <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code> before drawing:</p>
+<polygon fill="#efebdd" stroke="transparent" points="3,-116 3,-136 51,-136 51,-116 3,-116"></polygon><text text-anchor="start" x="4.8492" y="-121.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-115 2,-137 52,-137 52,-115 2,-115"></polygon></g></g></svg><p>If you would like to see only a subset of the whole data model, use <code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code> before drawing:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">flights_dm_w_many_keys_and_colors <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_select_tbl.html">cdm_select_tbl</a></span>(flights, airports, planes) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_draw.html">cdm_draw</a></span>()</a></code></pre></div>
@@ -231,7 +231,7 @@
 <path fill="none" stroke="#555555" d="M50,-50C67.4533,-50 71.4111,-63.2031 83.8035,-68.1543"></path><polygon fill="#555555" stroke="#555555" points="83.5365,-71.6628 94,-70 84.7834,-64.7747 83.5365,-71.6628"></polygon></g></g></svg><div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>The functions in this section rely heavily on related functions of {datamodelr}.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>The functions in this section rely heavily on related functions of <a href="https://github.com/bergant/datamodelr">{datamodelr}</a>.<a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
   </div>
