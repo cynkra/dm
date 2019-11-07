@@ -64,7 +64,7 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
   check_dm(dm)
-  selected <- dm_try_tables(quo(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...))), src_tbls(dm))
+  selected <- dm_try_tables(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...)), src_tbls(dm))
 
   cdm_select_tbl(dm, !!!selected)
 }
@@ -78,9 +78,9 @@ check_new_tbls <- function(dm, tbls) {
   }
 }
 
-dm_try_tables <- function(quo, table_names) {
+dm_try_tables <- function(code, table_names) {
   selected <- tryCatch(
-    eval_tidy(quo),
+    force(code),
     error = identity)
   if (is_condition(selected)) {
     abort_w_message(
