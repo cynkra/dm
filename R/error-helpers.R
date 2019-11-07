@@ -569,3 +569,13 @@ error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
 }
 
+
+# table not on src --------------------------------------------------------
+
+abort_req_tbl_not_avail <- function(avail, missing) {
+  abort(error_req_tbl_not_avail(avail, missing), .subclass = cdm_error_full("req_tbl_not_avail"))
+}
+
+error_req_tbl_not_avail <- function(avail, missing) {
+  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
+}

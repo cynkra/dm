@@ -12,7 +12,7 @@
 \alias{as_dm}
 \title{Data model class}
 \usage{
-dm(src, data_model = NULL)
+dm(src, table_names = NULL)
 
 new_dm(tables, data_model)
 
@@ -33,9 +33,9 @@ as_dm(x)
 \arguments{
 \item{src}{A \pkg{dplyr} table source object.}
 
-\item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
-
 \item{tables}{A list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
+
+\item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
 
 \item{x}{An object.}
 }

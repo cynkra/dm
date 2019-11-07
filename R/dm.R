@@ -37,21 +37,16 @@
 #' cdm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
-dm <- nse_function(c(src, data_model = NULL), ~ {
+dm <- nse_function(c(src, table_names = NULL), ~ {
   if (is_missing(src)) return(empty_dm())
-  if (is.null(data_model)) {
-    tbl_names <- src_tbls(src)
-    tbls <- map(set_names(tbl_names), tbl, src = src)
-    tbl_heads <- map(tbls, head, 0)
-    tbl_structures <- map(tbl_heads, collect)
+  src_tbl_names <- src_tbls(src)
+  if (is_null(table_names)) table_names <- src_tbl_names else if (
+    !all(table_names %in% src_tbl_names)
+    ) abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
 
-    data_model <- bdm_from_data_frames(tbl_structures)
-  }
+  tbls <- map(set_names(table_names), tbl, src = src)
 
-  table_names <- set_names(data_model$tables$table)
-  tables <- map(table_names, tbl, src = src)
-
-  new_dm(tables, data_model)
+  new_dm(tbls)
 })
 
 #' Low-level constructor
