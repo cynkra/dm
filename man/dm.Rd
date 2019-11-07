@@ -41,7 +41,7 @@ as_dm(x)
 }
 \description{
 The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships
-based on \link[datamodelr:datamodelr-package]{datamodelr::datamodelr-package}.
+inspired by \href{https://github.com/bergant/datamodelr}{datamodelr}, of which it also borrows code.
 
 \code{dm()} coerces its inputs. If called without arguments, an empty \code{dm} object is created.
 
