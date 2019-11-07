@@ -72,16 +72,19 @@ filter_recode_table_fks <- function(def, selected) {
 }
 
 filter_recode_table_def <- function(data, selected) {
+  # We want to keep the order mentioned in `selected` here.
+  # data$table only contains unique values by definition.
   idx <- match(selected, data$table, nomatch = 0L)
+
   data[idx, ] %>%
     mutate(table = recode(table, !!!prep_recode(selected)))
 }
 
 filter_recode_fks_of_table <- function(data, selected) {
+  # data$table can have multiple entries, we don't care about the order
   idx <- data$table %in% selected
   data[idx, ] %>%
     mutate(table = recode(table, !!!prep_recode(selected)))
-
 }
 
 prep_recode <- function(x) {
