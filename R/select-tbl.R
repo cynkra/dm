@@ -56,7 +56,7 @@ cdm_select_tbl_impl <- function(dm, selected) {
 
   def <-
     cdm_get_def(dm) %>%
-    filter_recode_table(selected) %>%
+    filter_recode_table_def(selected) %>%
     filter_recode_table_fks(selected)
 
   new_dm3(def)
@@ -66,17 +66,22 @@ filter_recode_table_fks <- function(def, selected) {
   def$fks <-
     # as_list_of() is needed so that `fks` doesn't become a normal list
     vctrs::as_list_of(map(
-      def$fks, filter_recode_table, selected = selected
+      def$fks, filter_recode_fks_of_table, selected = selected
     ))
   def
 }
 
-filter_recode_table <- function(data, selected) {
-  filter(data, table %in% selected) %>%
-    mutate(table_fct = ordered(table, levels = selected)) %>%
-    arrange(sort.int(table_fct, index.return = TRUE)$ix) %>%
-    mutate(table = recode(table, !!!prep_recode(selected))) %>%
-    select(-table_fct)
+filter_recode_table_def <- function(data, selected) {
+  idx <- map_int(selected, ~which(data$table == .))
+  data[idx, ] %>%
+    mutate(table = recode(table, !!!prep_recode(selected)))
+}
+
+filter_recode_fks_of_table <- function(data, selected) {
+  idx <- data$table %in% selected
+  data[idx, ] %>%
+    mutate(table = recode(table, !!!prep_recode(selected)))
+
 }
 
 prep_recode <- function(x) {
