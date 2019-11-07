@@ -72,7 +72,7 @@ filter_recode_table_fks <- function(def, selected) {
 }
 
 filter_recode_table_def <- function(data, selected) {
-  idx <- map_int(selected, ~which(data$table == .))
+  idx <- match(selected, data$table, nomatch = 0L)
   data[idx, ] %>%
     mutate(table = recode(table, !!!prep_recode(selected)))
 }
