@@ -72,9 +72,11 @@ filter_recode_table_fks <- function(def, selected) {
 }
 
 filter_recode_table <- function(data, selected) {
-  idx <- map(unname(selected), ~which(data$table == .)) %>% flatten_int()
-  data[idx, ] %>%
-    mutate(table = recode(table, !!!prep_recode(selected)))
+  filter(data, table %in% selected) %>%
+    mutate(table_fct = ordered(table, levels = selected)) %>%
+    arrange(sort.int(table_fct, index.return = TRUE)$ix) %>%
+    mutate(table = recode(table, !!!prep_recode(selected))) %>%
+    select(-table_fct)
 }
 
 prep_recode <- function(x) {
