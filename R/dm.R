@@ -557,7 +557,7 @@ tbl.dm <- function(src, from, ...) {
 }
 
 #' @export
-compute.dm <- function(x) {
+compute.dm <- function(x, name, ...) {
   cdm_apply_filters(x)
 }
 
@@ -571,9 +571,9 @@ compute.zoomed_dm <- function(x, ...) {
 
 
 #' @export
-src_tbls.dm <- function(src, ...) {
-  # The src argument here is a dm object
-  dm <- src
+src_tbls.dm <- function(x) {
+  # The x argument here is a dm object
+  dm <- x
   names(cdm_get_tables(dm))
 }
 

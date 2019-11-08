@@ -24,6 +24,21 @@ test_that("cdm_select_tbl() can reorder the tables in a `dm`", {
   )
 })
 
+test_that("cdm_select_tbl() remembers all FKs", {
+  reordered_dm_nycflights_small_cycle <- cdm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
+    cdm_get_def() %>%
+    filter(!(table %in% c("airlines", "planes"))) %>%
+    arrange(2:1) %>%
+    new_dm3()
+
+  expect_equivalent_dm(
+    cdm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
+    cdm_select_tbl(airports, flights),
+    reordered_dm_nycflights_small_cycle
+  )
+})
+
+
 test_that("cdm_rename_tbl() renames a `dm`", {
 
   dm_rename <-
