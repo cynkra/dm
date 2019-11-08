@@ -33,9 +33,12 @@ cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
 
 figure_out_names <- function(old_names, new_names, repair = "check_unique") {
 
-  all_names <-
-    vctrs::vec_as_names(c(old_names, new_names), repair = repair)
-
+  all_names <- tryCatch(
+    vctrs::vec_as_names(c(old_names, new_names), repair = repair),
+    error = function(e) {
+      abort_need_unique_names(intersect(old_names, new_names))
+    }
+  )
   new_old_names <- all_names[seq_along(old_names)]
 
   new_names <-

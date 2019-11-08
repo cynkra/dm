@@ -569,7 +569,6 @@ error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
 }
 
-
 # errors for `copy_to.dm()` ----------------------------------------------
 
 abort_only_data_frames_supported <- function() {
@@ -579,4 +578,15 @@ abort_only_data_frames_supported <- function() {
 abort_one_name_for_each_table <- function() {
   abort("If supplying more than one table to `copy_to.dm()` in a list, you need to provide a name vector of the same length.",
         .subclass = cdm_error_full("one_name_for_each_table"))
+}
+
+# new table name needs to be unique ---------------------------------------
+
+abort_need_unique_names <- function(duplicate_names) {
+  abort(error_need_unique_names(duplicate_names), .subclass = cdm_error_full("need_unique_names"))
+}
+
+error_need_unique_names <- function(duplicate_names) {
+  glue("Each new table needs to have a unique name. Duplicate new name(s): ",
+       "{commas(tick(duplicate_names))}.")
 }
