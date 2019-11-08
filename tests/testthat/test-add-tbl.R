@@ -48,9 +48,9 @@ test_that("cdm_add_tbl() works", {
   )
 
   # Is an error thrown in case I try to give the new table an old table's name?
-  expect_error(
+  expect_cdm_error(
     cdm_add_tbl(dm_for_filter, t1 = d1),
-    class = "vctrs_error_names_must_be_unique"
+    "need_unique_names"
   )
 
   expect_message(
