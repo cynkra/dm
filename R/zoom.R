@@ -5,6 +5,7 @@
 #' context of the `dm` object.
 #'
 #' @inheritParams cdm_add_pk
+#' @inheritParams vctrs::vec_as_names
 #'
 #' @details `cdm_zoom_to_tbl()`: zooms to the given table
 #'
