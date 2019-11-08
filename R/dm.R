@@ -461,7 +461,16 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 new_zoomed_df <- function(x, ...) {
-  structure(x, class = c("zoomed_df", class(x)), ...)
+  if (inherits(x, "tbl_dbi")) return(structure(x, class = c("zoomed_df", class(x)), ...))
+  # need this in order to avoid star (from rownames, automatic from `structure(...)`)
+  # in print method for local tibbles
+  new_tibble(
+    x,
+    # need setdiff(...), because we want to keep everything "special" (like groups etc.) but drop
+    # all classes, that a `tbl` has anyway
+    class = c("zoomed_df", setdiff(class(x), c("tbl_df", "tbl", "data.frame"))),
+    nrow = nrow(x),
+    ...)
 }
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
