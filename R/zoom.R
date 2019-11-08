@@ -71,6 +71,8 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
   new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
   if (new_tbl_name_chr == "") abort_table_needs_name()
+  new_tbl_name_chr <-
+    figure_out_names(old_names = names(dm), new_names = new_tbl_name_chr)$new_names
   old_tbl_name <- orig_name_zoomed(dm)
   new_tbl <- list(get_zoomed_tbl(dm))
   # filters need to be split: old_filters belong to old table, new ones to the inserted one
