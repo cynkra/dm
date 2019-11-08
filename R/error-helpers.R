@@ -556,6 +556,16 @@ error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
 }
 
+# new table name needs to be unique ---------------------------------------
+
+abort_need_unique_names <- function(duplicate_names) {
+  abort(error_need_unique_names(duplicate_names), .subclass = cdm_error_full("need_unique_names"))
+}
+
+error_need_unique_names <- function(duplicate_names) {
+  glue("Each new table needs to have a unique name. Duplicate new name(s): ",
+       "{commas(tick(duplicate_names))}.")
+}
 
 # lost track of by-column (FK-relation) -----------------------------------
 
@@ -567,7 +577,6 @@ error_fk_not_tracked <- function(x_orig_name, y_name) {
   glue("The foreign key that existed between the originally zoomed table {tick(x_orig_name)} ",
        "and {tick(y_name)} got lost in transformations. Please explicitly provide the `by` argument.")
 }
-
 
 # RHS-by column not selected ----------------------------------------------
 
