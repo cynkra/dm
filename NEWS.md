@@ -1,3 +1,10 @@
+# dm 0.0.4.9000
+
+- `cdm_filter()` and `filter.zoomed_dm()` apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in `cdm_apply_filters()`. This now allows using a variety of operations on filtered `dm` objects (#124).
+- `cdm_select_tbl()` works again when multiple foreign keys are defined between two tables (#122).
+- `collect()`, `compute()`, `copy_to()`, `tbl()` and `src_tbls()` (all from {dplyr}) are now reexported as well.
+
+
 # dm 0.0.4
 
 - Many {dplyr} verbs now work on tables in a `dm`. Zooming to a table vie `cdm_zoom_to_tbl()` creates a zoomed `dm` on which the {dplyr} verbs can be applied. The resulting table can be put back into the `dm` with `cdm_update_zoomed_tbl()` (overwriting the original table) or `cdm_insert_zoomed_tbl()` (creating a new table), respectively (#89).
