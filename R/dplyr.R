@@ -211,7 +211,7 @@ left_join.dm <- function(x, ...) {
 left_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1], copy)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix[1], copy)
   joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -225,7 +225,7 @@ inner_join.dm <- function(x, ...) {
 inner_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1], copy)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix[1], copy)
   joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -239,7 +239,7 @@ full_join.dm <- function(x, ...) {
 full_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1], copy)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix[1], copy)
   joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -253,7 +253,7 @@ semi_join.dm <- function(x, ...) {
 semi_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), NULL, copy)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, NULL, copy)
   joined_tbl <-semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -267,7 +267,7 @@ anti_join.dm <- function(x, ...) {
 anti_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), NULL, copy)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, NULL, copy)
   joined_tbl <-anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -281,20 +281,22 @@ right_join.dm <- function(x, ...) {
 right_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   if (nrow(cdm_get_filter(x) %>% filter(table == !!orig_name_zoomed(x)))) abort_no_filters_rename_select()
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1], copy)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix[1], copy)
   joined_tbl <-right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
-prepare_join <- function(x, y_name, by, select_expr, suffix, copy) {
+prepare_join <- function(x, y, by, selected, suffix, copy) {
+  y_name <- as_string(ensym(y))
+  select_quo <- enquo(selected)
   if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
   y_tbl <- cdm_get_tables(x)[[y_name]]
   all_cols_y <- colnames(y_tbl)
-  selected <- if (is_null(select_expr))
+  selected <- if (quo_is_null(select_quo))
     tidyselect::vars_select(all_cols_y, everything()) else
-    tidyselect::vars_select(all_cols_y, !!select_expr)
+    tidyselect::vars_select(all_cols_y, !!select_quo)
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
     if (!any(selected == by)) abort_need_to_select_rhs_by(y_name, unname(by))
