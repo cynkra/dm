@@ -212,6 +212,7 @@ prepare_join <- function(x, y_name, by, select_expr, suffix, copy) {
     tidyselect::vars_select(all_cols_y, !!select_expr)
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
+    if (!any(selected == by)) abort_need_to_select_rhs_by(y_name, unname(by))
     # in case user is renaming RHS-by during the join
     by <- set_names(names(selected[selected == by]), names(by))
     x_by <- names(by)
