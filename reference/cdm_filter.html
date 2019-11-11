@@ -39,8 +39,9 @@
 <meta property="og:description" content="Filtering one table of a dm object may affect all tables connected to this table
 via one or more steps of foreign key relations. Firstly, one or more filter conditions for
 one or more tables can be defined using cdm_filter(), with a syntax similar to dplyr::filter().
-These conditions will be stored in the dm and not immediately executed. With cdm_apply_filters()
-all tables will be updated according to the filter conditions and the foreign key relations." />
+Each condition will only be immediately executed for the table it is referring to.
+Furthermore all conditions are stored in the dm.
+With cdm_apply_filters() all tables will be updated according to the filter conditions and the foreign key relations." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -145,8 +146,9 @@ all tables will be updated according to the filter conditions and the foreign ke
     <p>Filtering one table of a <code><a href='dm.html'>dm</a></code> object may affect all tables connected to this table
 via one or more steps of foreign key relations. Firstly, one or more filter conditions for
 one or more tables can be defined using <code>cdm_filter()</code>, with a syntax similar to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
-These conditions will be stored in the <code><a href='dm.html'>dm</a></code> and not immediately executed. With <code>cdm_apply_filters()</code>
-all tables will be updated according to the filter conditions and the foreign key relations.</p>
+Each condition will only be immediately executed for the table it is referring to.
+Furthermore all conditions are stored in the <code><a href='dm.html'>dm</a></code>.
+With <code>cdm_apply_filters()</code> all tables will be updated according to the filter conditions and the foreign key relations.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
@@ -177,19 +179,19 @@ for an introduction to these concepts.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>cdm_filter()</code> allows you to set one or more filter conditions for one table
-of a <code><a href='dm.html'>dm</a></code> object. These conditions will be stored in the <code><a href='dm.html'>dm</a></code> for when they are needed.
-The conditions are only evaluated in one of the following scenarios:</p><ol>
+    <p>The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
+in one of the following scenarios:</p><ol>
 <li><p>Calling <code>cdm_apply_filters()</code> or <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> (method for <code>dm</code> objects) on a <code>dm</code>: each filtered table potentially
 reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
 with the corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
-This results in a new <code>dm</code> class object.</p></li>
-<li><p>Calling one of <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>: the remaining rows of the requested table are calculated based on the
-filter conditions and the foreign key conditions (similar to 1. but only for one table)</p></li>
+This results in a new <code>dm</code> class object without any filter conditions.</p></li>
+<li><p>Calling one of <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>: the remaining rows of the requested table are calculated by performing a sequence
+of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::semi_join()</a></code>) starting from each table that has been filtered to the requested table
+(similar to 1. but only for one table).</p></li>
 </ol>
 
-<p>Several functions of the dm package will throw an error if unevaluated filter conditions exist when they are called.</p>
+<p>Several functions of the dm package will throw an error if filter conditions exist when they are called.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
