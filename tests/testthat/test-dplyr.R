@@ -175,6 +175,12 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     "d"
   )
 
+  # multi-column "by" argument
+  expect_identical(
+    cdm_zoom_to_tbl(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
+    left_join(iris_2, iris_2, by = c("key", "Sepal.Width", "other_col"))
+  )
+
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
