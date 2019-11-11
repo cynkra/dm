@@ -315,10 +315,10 @@ prepare_join <- function(x, y, by, selected, suffix, copy) {
 
 repair_tracking <- function(tracked_keys, selected, suffix, lhs_by) {
   old_names <- names(tracked_keys)
-  # change those column names from table 'x' that
-  # 1. are selected in table 'y'
-  # 2. are NOT the column that the join is performed by
-  indices <- old_names %in% names(selected) & old_names != lhs_by
+  # change those column names from table 'x' which
+  # 1. correspond to one of those columns that are selected in table 'y'
+  # 2. are NOT one of the columns that the join is performed by
+  indices <- old_names %in% names(selected) & !(old_names %in% lhs_by)
   new_names <- if_else(!is_null(suffix) & indices, paste0(old_names, suffix), old_names)
   set_names(tracked_keys, new_names)
 }
