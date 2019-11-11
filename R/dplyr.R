@@ -212,6 +212,8 @@ prepare_join <- function(x, y_name, by, select_expr, suffix, copy) {
     tidyselect::vars_select(all_cols_y, !!select_expr)
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
+    # in case user is renaming RHS-by during the join
+    by <- set_names(names(selected[selected == by]), names(by))
     x_by <- names(by)
     names(by) <- names(get_tracked_keys(x)[get_tracked_keys(x) == x_by])
     if (is_na(names(by))) abort_fk_not_tracked(x_orig_name, y_name)
