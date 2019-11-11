@@ -2,7 +2,7 @@
 #'
 #' @description
 #' The `dm` class wraps [dplyr::src] and adds a description of table relationships
-#' based on [datamodelr::datamodelr-package].
+#' inspired by [datamodelr](https://github.com/bergant/datamodelr), of which it also borrows code.
 #'
 #' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
 #'
@@ -137,8 +137,8 @@ new_dm <- function(tables, data_model) {
 
   filters <-
     filter %>%
-    rename(filter_quo = filter) %>%
-    nest(filters = filter_quo)
+    rename(filter_expr = filter) %>%
+    nest(filters = filter_expr)
 
   filters <-
     tibble(
@@ -183,7 +183,7 @@ new_fk <- function(table = character(), column = list()) {
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
-  tibble(filter_quo = unclass(quos), zoomed = zoomed)
+  tibble(filter_expr = unclass(quos), zoomed = zoomed)
 }
 
 # Legacy!
@@ -328,12 +328,12 @@ cdm_get_filter <- function(x) {
     unnest(filters)
 
   # FIXME: Should work better with dplyr 0.9.0
-  if (!("filter_quo" %in% names(filter_df))) {
-    filter_df$filter_quo <- list()
+  if (!("filter_expr" %in% names(filter_df))) {
+    filter_df$filter_expr <- list()
   }
 
   filter_df  %>%
-    rename(filter = filter_quo)
+    rename(filter = filter_expr)
 }
 
 cdm_get_zoomed_tbl <- function(x) {
@@ -557,7 +557,7 @@ tbl.dm <- function(src, from, ...) {
 }
 
 #' @export
-compute.dm <- function(x) {
+compute.dm <- function(x, name, ...) {
   cdm_apply_filters(x)
 }
 
@@ -571,14 +571,14 @@ compute.zoomed_dm <- function(x, ...) {
 
 
 #' @export
-src_tbls.dm <- function(src, ...) {
-  # The src argument here is a dm object
-  dm <- src
+src_tbls.dm <- function(x) {
+  # The x argument here is a dm object
+  dm <- x
   names(cdm_get_tables(dm))
 }
 
 #' @export
-copy_to.dm <- function(dest, df, name = deparse(substitute(df))) {
+copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, ...) {
   # TODO: How to add a table to a dm?
   abort("`dm` objects are immutable, please use ...")
 }

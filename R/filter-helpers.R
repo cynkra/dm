@@ -5,6 +5,8 @@
 #' @param dm A [`dm`] object
 #' @export
 cdm_nrow <- function(dm) {
+  # FIXME: with "direct" filter maybe no check necessary: but do we want to issue
+  # a message in case the filters haven't been applied yet?
   check_no_filter(dm)
   map_dbl(cdm_get_tables(dm), ~ as.numeric(pull(collect(count(.)))))
 }
@@ -20,6 +22,7 @@ get_by <- function(dm, lhs_name, rhs_name) {
     abort_tables_not_neighbours(lhs_name, rhs_name)
   }
 
+  if (length(lhs_col) > 1 || length(rhs_col) > 1) abort_no_cycles()
   # Construct a `by` argument of the form `c("lhs_col[1]" = "rhs_col[1]", ...)`
   # as required by `*_join()`
   by <- rhs_col

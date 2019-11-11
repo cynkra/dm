@@ -347,4 +347,14 @@ test_that("key tracking works", {
       cdm_get_fk(t4, t3),
     character()
   )
+
+  # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
+  expect_equivalent_dm(
+    cdm_zoom_to_tbl(dm_for_filter, t2) %>%
+      filter(d < 6) %>%
+      rename(c_new = c, d_new = d) %>%
+      cdm_update_zoomed_tbl(),
+    cdm_filter(dm_for_filter, t2, d < 6) %>%
+      cdm_rename(t2, c_new = c, d_new = d)
+  )
 })

@@ -535,20 +535,6 @@ error_no_table_zoomed_dplyr <- function(fun) {
        "when calling {tick(paste0(fun, '()'))} on a `dm`")
 }
 
-
-# no filters can exist for zoomed table for 'rename()' and 'select --------
-
-abort_no_filters_rename_select <- function() {
-  abort(error_no_filters_rename_select(), .subclass = cdm_error_full("no_filters_rename_select"))
-}
-
-error_no_filters_rename_select <- function() {
-  paste0("No existing filter conditions allowed for both the zoomed table or the original table that was zoomed ",
-         "when calling `rename.zoomed_dm()`, `select.zoomed_dm()`, `mutate.zoomed_dm()`, `summarise.zoomed_dm()`, ",
-         "`transmute.zoomed_dm()`, `left_join.zoomed_dm()`, `inner_join.zoomed_dm()`, `full_join.zoomed_dm()`, ",
-         "`semi_join.zoomed_dm()`, `anti_join.zoomed_dm()` and `right_join.zoomed_dm()`.")
-}
-
 # when zoomed and it shouldn't be ------------------------------
 
 abort_only_possible_wo_zoom <- function(fun_name) {

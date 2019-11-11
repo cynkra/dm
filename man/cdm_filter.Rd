@@ -25,25 +25,26 @@ for an introduction to these concepts.}
 \description{
 Filtering one table of a \code{\link{dm}} object may affect all tables connected to this table
 via one or more steps of foreign key relations. Firstly, one or more filter conditions for
-one or more tables can be defined using \code{cdm_filter()}, with a syntax similar to \code{dplyr::filter()}.
-These conditions will be stored in the \code{\link{dm}} and not immediately executed. With \code{cdm_apply_filters()}
-all tables will be updated according to the filter conditions and the foreign key relations.
+one or more tables can be defined using \code{cdm_filter()}, with a syntax similar to \code{\link[dplyr:filter]{dplyr::filter()}}.
+Each condition will only be immediately executed for the table it is referring to.
+Furthermore all conditions are stored in the \code{\link{dm}}.
+With \code{cdm_apply_filters()} all tables will be updated according to the filter conditions and the foreign key relations.
 }
 \details{
-\code{cdm_filter()} allows you to set one or more filter conditions for one table
-of a \code{\link{dm}} object. These conditions will be stored in the \code{\link{dm}} for when they are needed.
-The conditions are only evaluated in one of the following scenarios:
+The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
+in one of the following scenarios:
 \enumerate{
 \item Calling \code{cdm_apply_filters()} or \code{compute()} (method for \code{dm} objects) on a \code{dm}: each filtered table potentially
 reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
 with the corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
-This results in a new \code{dm} class object.
-\item Calling one of \code{tbl()}, \code{[[.dm()}, \code{$.dm()}: the remaining rows of the requested table are calculated based on the
-filter conditions and the foreign key conditions (similar to 1. but only for one table)
+This results in a new \code{dm} class object without any filter conditions.
+\item Calling one of \code{tbl()}, \code{[[.dm()}, \code{$.dm()}: the remaining rows of the requested table are calculated by performing a sequence
+of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from each table that has been filtered to the requested table
+(similar to 1. but only for one table).
 }
 
-Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
+Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
 }
 \examples{
 library(dplyr)
