@@ -100,6 +100,17 @@ test_that("basic test: 'filter()'-methods work", {
   )
 })
 
+test_that("basic test: 'filter()'-methods work", {
+  expect_identical(
+    distinct(zoomed_dm, d_new = d) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    distinct(t2, d_new = d)
+  )
+
+  expect_cdm_error(
+    distinct(dm_for_filter),
+    "no_table_zoomed_dplyr"
+  )
+})
 
 # test key tracking for all methods ---------------------------------------
 
@@ -248,3 +259,4 @@ test_that("key tracking works", {
       cdm_rename(t2, c_new = c, d_new = d)
   )
 })
+
