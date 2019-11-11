@@ -123,3 +123,18 @@ rename.zoomed_dm <- function(.data, ...) {
   replace_zoomed_tbl(.data, renamed_tbl, new_tracked_keys_zoom)
 }
 
+#' @export
+distinct.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("distinct")
+}
+
+#' @export
+distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
+  tbl <- get_zoomed_tbl(.data)
+  distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
+  if (.keep_all || is_empty(enexprs(...))) selected <- get_tracked_keys(.data) else {
+    selected <- tidyselect::vars_select(colnames(tbl), ...)
+  }
+  new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
+  replace_zoomed_tbl(.data, distinct_tbl, new_tracked_keys_zoom)
+}
