@@ -212,6 +212,8 @@ enum_pk_candidates <- nse_function(c(table), ~ {
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
 cdm_enum_pk_candidates <- nse_function(c(dm, table), ~ {
+  # FIXME: with "direct" filter maybe no check necessary: but do we want to check
+  # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
   check_no_filter(dm)
 
   table_name <- as_name(ensym(table))
