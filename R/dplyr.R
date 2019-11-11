@@ -131,8 +131,7 @@ left_join.dm <- function(x, ...) {
 #' @export
 left_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1])
-  if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1], copy)
   joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -145,8 +144,7 @@ inner_join.dm <- function(x, ...) {
 #' @export
 inner_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1])
-  if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1], copy)
   joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -159,8 +157,7 @@ full_join.dm <- function(x, ...) {
 #' @export
 full_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1])
-  if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1], copy)
   joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -173,8 +170,7 @@ semi_join.dm <- function(x, ...) {
 #' @export
 semi_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), NULL)
-  if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  join_data <- prepare_join(x, y_name, by, enexpr(select), NULL, copy)
   joined_tbl <-semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -187,8 +183,7 @@ anti_join.dm <- function(x, ...) {
 #' @export
 anti_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), NULL)
-  if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  join_data <- prepare_join(x, y_name, by, enexpr(select), NULL, copy)
   joined_tbl <-anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
@@ -201,13 +196,13 @@ right_join.dm <- function(x, ...) {
 #' @export
 right_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1])
-  if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  join_data <- prepare_join(x, y_name, by, enexpr(select), suffix[1], copy)
   joined_tbl <-right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
-prepare_join <- function(x, y_name, by, select_expr, suffix) {
+prepare_join <- function(x, y_name, by, select_expr, suffix, copy) {
+  if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
   y_tbl <- cdm_get_tables(x)[[y_name]]
