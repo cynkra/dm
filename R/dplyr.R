@@ -138,3 +138,16 @@ distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_keys_zoom)
 }
+
+
+#' @export
+arrange.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("arrange")
+}
+
+#' @export
+arrange.zoomed_dm <- function(.data, ..., .by_group = FALSE) {
+  tbl <- get_zoomed_tbl(.data)
+  if (is_grouped_df(tbl)) arranged_tbl <- arrange(tbl, ..., .by_group = .by_group) else arranged_tbl <- arrange(tbl, ...)
+  replace_zoomed_tbl(.data, arranged_tbl)
+}
