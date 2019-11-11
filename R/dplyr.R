@@ -204,7 +204,7 @@ separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = 
 
 #' @export
 left_join.dm <- function(x, ...) {
-  abort_no_table_zoomed_dplyr("left_join")
+  check_zoomed(x)
 }
 
 #' @export
@@ -219,7 +219,7 @@ left_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", 
 
 #' @export
 inner_join.dm <- function(x, ...) {
-  abort_no_table_zoomed_dplyr("inner_join")
+  check_zoomed(x)
 }
 
 #' @export
@@ -234,7 +234,7 @@ inner_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x",
 
 #' @export
 full_join.dm <- function(x, ...) {
-  abort_no_table_zoomed_dplyr("inner_join")
+  check_zoomed(x)
 }
 
 #' @export
@@ -249,7 +249,7 @@ full_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", 
 
 #' @export
 semi_join.dm <- function(x, ...) {
-  abort_no_table_zoomed_dplyr("inner_join")
+  check_zoomed(x)
 }
 
 #' @export
@@ -264,7 +264,7 @@ semi_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ..
 
 #' @export
 anti_join.dm <- function(x, ...) {
-  abort_no_table_zoomed_dplyr("inner_join")
+  check_zoomed(x)
 }
 
 #' @export
@@ -279,7 +279,7 @@ anti_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ..
 
 #' @export
 right_join.dm <- function(x, ...) {
-  abort_no_table_zoomed_dplyr("inner_join")
+  check_zoomed(x)
 }
 
 #' @export
