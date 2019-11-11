@@ -181,32 +181,32 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
 
     expect_cdm_error(
       left_join(dm_for_filter),
-      "no_table_zoomed_dplyr"
+      "only_possible_w_zoom"
     )
 
     expect_cdm_error(
       inner_join(dm_for_filter),
-      "no_table_zoomed_dplyr"
+      "only_possible_w_zoom"
     )
 
     expect_cdm_error(
       full_join(dm_for_filter),
-      "no_table_zoomed_dplyr"
+      "only_possible_w_zoom"
     )
 
     expect_cdm_error(
       semi_join(dm_for_filter),
-      "no_table_zoomed_dplyr"
+      "only_possible_w_zoom"
     )
 
     expect_cdm_error(
       anti_join(dm_for_filter),
-      "no_table_zoomed_dplyr"
+      "only_possible_w_zoom"
     )
 
     expect_cdm_error(
       right_join(dm_for_filter),
-      "no_table_zoomed_dplyr"
+      "only_possible_w_zoom"
     )
 })
 
