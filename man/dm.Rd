@@ -33,11 +33,11 @@ as_dm(x)
 \arguments{
 \item{src}{A \pkg{dplyr} table source object.}
 
+\item{table_names}{A character vector of the table names to include.}
+
 \item{tables}{A named list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
 
 \item{x}{An object.}
-
-\item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
 }
 \description{
 The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships

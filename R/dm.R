@@ -7,7 +7,7 @@
 #' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
 #'
 #' @param src A \pkg{dplyr} table source object.
-#' @param data_model A \pkg{datamodelr} data model object, or `NULL`.
+#' @param table_names A character vector of the table names to include.
 #'
 #' @seealso
 #'
