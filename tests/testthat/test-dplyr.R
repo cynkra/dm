@@ -100,10 +100,29 @@ test_that("basic test: 'filter()'-methods work", {
   )
 })
 
-test_that("basic test: 'filter()'-methods work", {
+test_that("basic test: 'distinct()'-methods work", {
   expect_identical(
     distinct(zoomed_dm, d_new = d) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
     distinct(t2, d_new = d)
+  )
+
+  expect_cdm_error(
+    distinct(dm_for_filter),
+    "no_table_zoomed_dplyr"
+  )
+})
+
+test_that("basic test: 'arrange()'-methods work", {
+  # standard arrange
+  expect_identical(
+    arrange(zoomed_dm, e) %>% get_zoomed_tbl(),
+    arrange(t2, e)
+  )
+
+  # arrange within groups
+  expect_identical(
+    group_by(zoomed_dm, e) %>% arrange(desc(e), .by_group = TRUE) %>% get_zoomed_tbl(),
+    arrange(group_by(t2, e), desc(e), .by_group = TRUE)
   )
 
   expect_cdm_error(
