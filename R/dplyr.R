@@ -145,10 +145,8 @@ arrange.dm <- function(.data, ...) {
 }
 
 #' @export
-arrange.zoomed_dm <- function(.data, ..., .by_group = FALSE) {
-  tbl <- get_zoomed_tbl(.data)
-  if (is_grouped_df(tbl)) arranged_tbl <- arrange(tbl, ..., .by_group = .by_group) else arranged_tbl <- arrange(tbl, ...)
-  replace_zoomed_tbl(.data, arranged_tbl)
+arrange.zoomed_dm <- function(.data, ...) {
+  replace_zoomed_tbl(.data, arrange(get_zoomed_tbl(.data), ...))
 }
 
 #' @export
