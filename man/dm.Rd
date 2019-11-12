@@ -14,7 +14,7 @@
 \usage{
 dm(src, table_names = NULL)
 
-new_dm(tables, data_model)
+new_dm(tables)
 
 validate_dm(x)
 
@@ -33,11 +33,11 @@ as_dm(x)
 \arguments{
 \item{src}{A \pkg{dplyr} table source object.}
 
-\item{tables}{A list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
-
-\item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
+\item{tables}{A named list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
 
 \item{x}{An object.}
+
+\item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
 }
 \description{
 The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships
@@ -45,7 +45,7 @@ inspired by \href{https://github.com/bergant/datamodelr}{datamodelr}, of which i
 
 \code{dm()} coerces its inputs. If called without arguments, an empty \code{dm} object is created.
 
-\code{new_dm()} only checks if the inputs are of the correct class.
+\code{new_dm()} only checks if all tables in the list are on the same
 If called without arguments, an empty \code{dm} object is created.
 
 \code{validate_dm()} checks consistency between the \pkg{dplyr} source
