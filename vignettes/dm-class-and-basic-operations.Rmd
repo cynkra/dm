@@ -59,22 +59,42 @@ The relevant functions for creating `dm` objects are:
 2. `as_dm()`
 3. `new_dm()`
 
-We will use tables from the popular  [{nycflights13}](https://github.com/hadley/nycflights13) package:
-```{r message=FALSE}
+There are currently three options available for creating a `dm` object.
+To illustrate these, we will now create the same `dm` using each of these.
+We can use the tables from the famous package {nycflights13}.
+
+### Start with empty `dm`
+
+Start from an empty `dm` object (created with `dm()` or `new_dm()`) and add tables to it:
+```{r}
+library(nycflights13)
 library(dm)
-library(dplyr)
+empty_dm <- dm()
+empty_dm
+cdm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
+```
+
+### Coerce a list of tables
+
+Turn a named list of tables into a `dm` with `as_dm()`:
+```{r}
+as_dm(list(airlines = airlines, 
+           airports = airports, 
+           flights = flights, 
+           planes = planes, 
+           weather = weather))
+```
+
+### Turn tables from a `src` into a `dm`
+
+Squeeze all (or a subset of) tables belonging to a `src` object into a `dm` using `dm()`:
+```{r message=FALSE}
 flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
 Here we are making use of the fact that the function `dm(src, data_model = NULL)` includes all available tables on a source in the `dm` object, should the `data_model`-argument be left `NULL`. 
 This means that you can use this, for example, on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
-
-Another way of creating a `dm` object is calling `as_dm()` on a list of `tbls`, e.g., the tables included in the well-known [`iris`](https://www.rdocumentation.org/packages/datasets/versions/3.6.1/topics/iris) dataset:
-```{r}
-iris_dm <- as_dm(list("iris1" = iris, "iris2" = iris))
-iris_dm
-```
 
 <!-- And lastly, with `new_dm()` you can create a `dm` by providing the three individual parts that it consists of: -->
 <!-- ```{r} -->
