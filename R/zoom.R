@@ -68,10 +68,10 @@ get_zoomed_tbl <- function(dm) {
 #' @param new_tbl_name Name of the new table
 #'
 #' @export
-cdm_insert_zoomed_tbl <- function(dm, new_tbl_name, repair = "check_unique") {
+cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique") {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
-  new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
-  if (new_tbl_name_chr == "") abort_table_needs_name()
+  new_tbl_name_chr <-
+    if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else as_string(enexpr(new_tbl_name))
   names_list <-
     repair_table_names(old_names = names(dm), new_names = new_tbl_name_chr, repair)
   # rename dm in case of name repair
