@@ -73,7 +73,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name, repair = "check_unique") {
   new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
   if (new_tbl_name_chr == "") abort_table_needs_name()
   names_list <-
-    figure_out_names(old_names = names(dm), new_names = new_tbl_name_chr, repair)
+    repair_table_names(old_names = names(dm), new_names = new_tbl_name_chr, repair)
   # rename dm in case of name repair
   dm <- cdm_select_tbl_impl(dm, names_list$new_old_names)
 
