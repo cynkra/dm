@@ -600,6 +600,10 @@ dim.zoomed_dm <- function(x) {
   dim(get_zoomed_tbl(x))
 }
 
+#' @export
+dimnames.zoomed_dm <- function(x) {
+  dimnames(get_zoomed_tbl(x))
+}
 
 cdm_reset_all_filters <- function(dm) {
   def <- cdm_get_def(dm)
