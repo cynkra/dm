@@ -579,3 +579,15 @@ abort_req_tbl_not_avail <- function(avail, missing) {
 error_req_tbl_not_avail <- function(avail, missing) {
   glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
 }
+
+
+# table for which key should be set not in list of tables when creating dm -----------------------
+
+abort_unnamed_table_list <- function() {
+  abort(error_unnamed_table_list(), .subclass = cdm_error_full("unnamed_table_list"))
+}
+
+error_unnamed_table_list <- function() {
+  "Table list in `new_dm()` needs to be named."
+}
+
