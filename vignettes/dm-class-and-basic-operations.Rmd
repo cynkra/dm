@@ -11,6 +11,7 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
+library(dm)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -89,6 +90,7 @@ as_dm(list(airlines = airlines,
 
 Squeeze all (or a subset of) tables belonging to a `src` object into a `dm` using `dm()`:
 ```{r message=FALSE}
+library(dplyr)
 flights_dm <- dm(src_df(pkg = "nycflights13"))
 flights_dm
 ```
@@ -206,9 +208,9 @@ flights_dm_with_fk <- cdm_add_fk(flights_dm_with_key, flights, origin, airports)
 ```
 What if we tried to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, since it also contains airport codes:
 ```{r error=TRUE}
-flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports)
+flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports, check = TRUE)
 ```
-As you can see, behind the scenes, checks are executed automatically by the functions of `dm` to prevent steps that do not comply with the logic of data models.
+As you can see, behind the scenes, checks are executed automatically (unless `check = FALSE`) by the functions of `dm` to prevent steps that do not comply with the logic of data models.
 
 Use `cdm_has_fk()` for checking if a foreign key exists that is pointing from one table to another:
 ```{r}
