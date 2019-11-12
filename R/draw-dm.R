@@ -32,6 +32,7 @@ cdm_draw <- function(dm,
                      focus = NULL,
                      graph_name = "Data Model") {
 
+  check_dm(dm)
   if (is_empty(dm)) {
     message("Cannot draw empty `dm`.")
     return(invisible(NULL))
