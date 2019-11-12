@@ -541,10 +541,18 @@ length.dm <- function(x) {
 
 #' @export
 str.dm <- function(object, ...) {
-  object <- unclass(object)
-  NextMethod()
+  object <- cdm_get_def(object) %>%
+    select(table, pks, fks, filters)
+  str(object)
 }
 
+#' @export
+str.zoomed_dm <- function(object, ...) {
+  object <- cdm_get_def(object) %>%
+    mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
+    select(zoom, table, pks, fks, filters)
+  str(object)
+}
 
 #' @export
 tbl.dm <- function(src, from, ...) {
