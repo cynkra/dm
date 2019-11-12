@@ -150,6 +150,16 @@ arrange.zoomed_dm <- function(.data, ...) {
 }
 
 #' @export
+slice.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("slice")
+}
+
+#' @export
+slice.zoomed_dm <- function(.data, ...) {
+  replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), ...))
+}
+
+#' @export
 pull.dm <- function(.data, ...) {
   abort_no_table_zoomed_dplyr("pull")
 }
