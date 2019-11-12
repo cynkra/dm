@@ -24,14 +24,14 @@ cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
   check_new_tbls(dm, new_tables)
 
   old_names <- src_tbls(dm)
-  names_list <- figure_out_names(old_names, new_names, repair)
+  names_list <- repair_table_names(old_names, new_names, repair)
   # rename old tables in case name repair changed their names
   dm <- cdm_select_tbl_impl(dm, names_list$new_old_names)
 
   cdm_add_tbl_impl(dm, new_tables, names_list$new_names)
 }
 
-figure_out_names <- function(old_names, new_names, repair = "check_unique") {
+repair_table_names <- function(old_names, new_names, repair = "check_unique") {
   all_names <- tryCatch(
     vctrs::vec_as_names(c(old_names, new_names), repair = repair),
     error = function(e) {
