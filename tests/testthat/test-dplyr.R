@@ -126,12 +126,12 @@ test_that("basic test: 'arrange()'-methods work", {
   )
 
   expect_cdm_error(
-    distinct(dm_for_filter),
+    arrange(dm_for_filter),
     "no_table_zoomed_dplyr"
   )
 })
 
-test_that("basic test: 'distinct()'-methods work", {
+test_that("basic test: 'pull()'-methods work", {
   expect_identical(
     pull(zoomed_dm, d),
     pull(t2, d)
@@ -139,6 +139,18 @@ test_that("basic test: 'distinct()'-methods work", {
 
   expect_cdm_error(
     pull(dm_for_filter),
+    "no_table_zoomed_dplyr"
+  )
+})
+
+test_that("basic test: 'slice()'-methods work", {
+  expect_identical(
+    slice(zoomed_dm, 3:6) %>% get_zoomed_tbl(),
+    slice(t2, 3:6)
+  )
+
+  expect_cdm_error(
+    slice(dm_for_filter, 2),
     "no_table_zoomed_dplyr"
   )
 })
