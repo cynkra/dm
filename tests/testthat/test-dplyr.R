@@ -131,6 +131,18 @@ test_that("basic test: 'arrange()'-methods work", {
   )
 })
 
+test_that("basic test: 'distinct()'-methods work", {
+  expect_identical(
+    pull(zoomed_dm, d),
+    pull(t2, d)
+  )
+
+  expect_cdm_error(
+    pull(dm_for_filter),
+    "no_table_zoomed_dplyr"
+  )
+})
+
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter, zoomed to t2; PK: c; 2 outgoing FKs: d, e; no incoming FKS

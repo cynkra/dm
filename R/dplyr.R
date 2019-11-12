@@ -150,3 +150,13 @@ arrange.zoomed_dm <- function(.data, ..., .by_group = FALSE) {
   if (is_grouped_df(tbl)) arranged_tbl <- arrange(tbl, ..., .by_group = .by_group) else arranged_tbl <- arrange(tbl, ...)
   replace_zoomed_tbl(.data, arranged_tbl)
 }
+
+#' @export
+pull.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("pull")
+}
+
+#' @export
+pull.zoomed_dm <- function(.data, var = -1) {
+  pull(get_zoomed_tbl(.data), !!enquo(var))
+}
