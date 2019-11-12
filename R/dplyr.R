@@ -132,13 +132,12 @@ distinct.dm <- function(.data, ...) {
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- get_zoomed_tbl(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
-  if (.keep_all || is_empty(enexprs(...))) selected <- get_tracked_keys(.data) else {
-    selected <- tidyselect::vars_select(colnames(tbl), ...)
-  }
+  # when keeping all columns or empty ellipsis (use all columns for distinct) all keys columns remain
+  if (.keep_all || is_empty(enexprs(...))) return(replace_zoomed_tbl(.data, distinct_tbl))
+  selected <- tidyselect::vars_select(colnames(tbl), ...)
   new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_keys_zoom)
 }
-
 
 #' @export
 arrange.dm <- function(.data, ...) {
