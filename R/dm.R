@@ -311,16 +311,7 @@ as_dm.default <- function(x) {
 
   # Automatic name repair
   names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
-
-  # Check if all sources are identical
-  if (!all_same_source(x)) abort_not_same_src()
-
-  # Empty tibbles as proxy, we don't need to know the columns
-  # and we don't have keys yet
-  proxies <- map(x, ~ tibble(a = 0))
-  data_model <- bdm_from_data_frames(proxies)
-
-  new_dm(x, data_model)
+  new_dm(x)
 }
 
 tbl_src <- function(x) {
