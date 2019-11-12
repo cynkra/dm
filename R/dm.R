@@ -557,8 +557,11 @@ tbl.dm <- function(src, from, ...) {
 }
 
 #' @export
-compute.dm <- function(x, name, ...) {
-  cdm_apply_filters(x)
+compute.dm <- function(x, ...) {
+  cdm_apply_filters(x) %>%
+    cdm_get_def() %>%
+    mutate(data = map(data, compute, ...)) %>%
+    new_dm3()
 }
 
 #' @export
