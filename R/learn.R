@@ -32,7 +32,7 @@ cdm_learn_from_db <- function(dest) {
     distinct(table) %>%
     pull()
 
-  new_dm(
+  legacy_new_dm(
     tables = map(table_names, ~ tbl(con, .)) %>% set_names(table_names),
     data_model = get_datamodel_from_overview(overview)
   )
