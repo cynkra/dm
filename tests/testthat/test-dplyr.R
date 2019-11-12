@@ -268,6 +268,18 @@ test_that("key tracking works", {
     character()
   )
 
+  expect_identical(
+    distinct(zoomed_dm, d_new = d) %>% cdm_update_zoomed_tbl() %>% cdm_get_all_fks(),
+    cdm_get_all_fks(dm_for_filter) %>%
+      filter(child_fk_col != "e") %>%
+      mutate(child_fk_col = if_else(child_fk_col == "d", "d_new", child_fk_col))
+  )
+
+  expect_identical(
+    arrange(zoomed_dm, e) %>% cdm_update_zoomed_tbl() %>% cdm_get_all_fks(),
+    cdm_get_all_fks(dm_for_filter)
+  )
+
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t2) %>%
