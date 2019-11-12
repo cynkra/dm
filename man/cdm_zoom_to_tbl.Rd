@@ -9,7 +9,8 @@
 \usage{
 cdm_zoom_to_tbl(dm, table)
 
-cdm_insert_zoomed_tbl(dm, new_tbl_name, repair = "check_unique")
+cdm_insert_zoomed_tbl(dm, new_tbl_name = NULL, repair = "unique",
+  quiet = FALSE)
 
 cdm_update_zoomed_tbl(dm)
 
@@ -39,6 +40,11 @@ error.
 The \code{"check_unique"} option doesn't perform any name repair.
 Instead, an error is raised if the names don't suit the
 \code{"unique"} criteria.}
+
+\item{quiet}{By default, the user is informed of any renaming
+caused by repairing the names. This only concerns unique and
+universal repairing. Set \code{quiet} to \code{TRUE} to silence the
+messages.}
 }
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
