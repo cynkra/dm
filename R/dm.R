@@ -422,7 +422,7 @@ tbl_src <- function(x) {
 
 #' @export
 as_dm.src <- function(x) {
-  dm(src = x, data_model = NULL)
+  dm(src = x, table_names = NULL)
 }
 
 #' @export
