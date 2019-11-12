@@ -563,7 +563,6 @@ compute.dm <- function(x, name, ...) {
 
 #' @export
 compute.zoomed_dm <- function(x, ...) {
-  # FIXME: zoomed table has to be filtered
   zoomed_df <- get_zoomed_tbl(x) %>%
     compute(zoomed_df, ...)
   replace_zoomed_tbl(x, zoomed_df)
