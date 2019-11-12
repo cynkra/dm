@@ -191,6 +191,8 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #'
 #' @export
 cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
+  # FIXME: with "direct" filter maybe no check necessary: but do we want to check
+  # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
   check_no_filter(dm)
 
   table_name <- as_string(ensym(table))

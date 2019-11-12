@@ -26,7 +26,6 @@ ungroup.zoomed_dm <- function(x, ...) {
 
 #' @export
 summarise.zoomed_dm <- function(.data, ...) {
-  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
@@ -47,12 +46,18 @@ filter.dm <- function(.data, ...) {
 
 #' @export
 filter.zoomed_dm <- function(.data, ...) {
-  quos <- enquos(...)
-  if (is_empty(quos)) {
+  filter_quos <- enquos(...)
+  if (is_empty(filter_quos)) {
     return(.data)
   } # valid table and empty ellipsis provided
 
-  set_filter_for_table(.data, orig_name_zoomed(.data), quos, TRUE)
+  tbl <- get_zoomed_tbl(.data)
+  filtered_tbl <- filter(tbl, !!!filter_quos)
+
+  # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
+  # in case of `cdm_insert_zoomed_tbl()` the filter exprs needs to be transferred
+  set_filter_for_table(.data, orig_name_zoomed(.data), map(filter_quos, quo_get_expr), TRUE) %>%
+    replace_zoomed_tbl(filtered_tbl)
 }
 
 #' @export
@@ -62,7 +67,6 @@ mutate.dm <- function(.data, ...) {
 
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
-  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   mutated_tbl <- mutate(tbl, ...)
   # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
@@ -78,7 +82,6 @@ transmute.dm <- function(.data, ...) {
 
 #' @export
 transmute.zoomed_dm <- function(.data, ...) {
-  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
@@ -95,7 +98,6 @@ select.dm <- function(.data, ...) {
 
 #' @export
 select.zoomed_dm <- function(.data, ...) {
-  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   selected <- tidyselect::vars_select(colnames(tbl), ...)
   selected_tbl <- select(tbl, !!!selected)
@@ -112,7 +114,6 @@ rename.dm <- function(.data, ...) {
 
 #' @export
 rename.zoomed_dm <- function(.data, ...) {
-  if (nrow(cdm_get_filter(.data) %>% filter(table == !!orig_name_zoomed(.data)))) abort_no_filters_rename_select()
   tbl <- get_zoomed_tbl(.data)
   renamed <- tidyselect::vars_rename(colnames(tbl), ...)
   renamed_tbl <- rename(tbl, !!!renamed)

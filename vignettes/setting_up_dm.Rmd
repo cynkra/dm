@@ -11,19 +11,20 @@ editor_options:
 ---
 
 This document describes how you can get your data into a `dm` object. 
-Though this example is also built in already — just run `cdm_nycflights13()` — here, we'll go through the process step by step.
 
-The five tables we are working with contain information on flights from airports of the North-American city of New York to other destinations in the United States in 2013 and are available through the package [`nycflights13`](https://github.com/hadley/nycflights13). 
+Although the example that we will be using is included in `dm`, and you can see it by running `cdm_nycflights13()`, we will be going through the built-in example one more time here, step by step.
 
-- `flights` represents the journeys taken by planes, 
+The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013, and are available through the [`nycflights13`](https://github.com/hadley/nycflights13) package: 
+
+- `flights` represents the trips taken by planes 
 - `airlines` includes 
-  - transport organizations' names (`name`) 
-  - their shortcuts (`carrier`)
+  - the names of transport organizations (`name`) 
+  - their abbreviated codes (`carrier`)
 - `airports` indicates the ports of departure (`origin`) and of destination (`dest`)
-- `weater` the meterological context at each hour
-- `planes` describes aircrafts' characteristics
+- `weather` contains meterological information at each hour
+- `planes` describes characteristics of aircrafts
 
-Once we've loaded `nycflights13`, the aforementioned tables are all in our work environment, ready for being accessed.
+Once we've loaded `nycflights13`, the aforementioned tables are all in our work environment, ready to be accessed.
 
 ```{r setup, message=FALSE}
 library(dm)
@@ -32,10 +33,9 @@ library(nycflights13)
 
 # Adding Tables
 
-First, we will tell `dm` what tables we want to work with and how they're connected. 
-For this, we can use `dm` or `as_dm()`. 
-`as_dm()` accepts lists of objects. 
-You must explicitly name the objects if you use `list()` (f.e. `list("airlines" = airlines, "flights" = flights)`) — here we use `tibble::lst()` which automatically names the list components.
+First, we will tell `dm` which tables we want to work with and how they are connected. 
+For that, we can use `dm` or `as_dm()`, which accepts lists of objects. 
+You must explicitly name the objects if you use `list()` (e.g., `list("airlines" = airlines, "flights" = flights)`) — here we use `tibble::lst()`, which automatically names the components of the list.
 
 ```{r}
 flights_dm_no_keys <- tibble::lst(airlines, airports, flights, planes, weather) %>%
@@ -44,8 +44,7 @@ flights_dm_no_keys <- tibble::lst(airlines, airports, flights, planes, weather) 
 
 # Defining Keys
 
-Though you now have a new `dm` object, containing all your data, a key detail is missing still: 
-How your five tables are connected the foreign keys) and which column(s) uniquely identify observation (the primary keys).
+Even though you now have a new `dm` object that contains all your data, some key details are still missing that determine how your five tables are connected (the foreign keys), and which column(s) uniquely identify the observations (the primary keys).
 
 ## Primary Keys
 
@@ -58,7 +57,7 @@ cdm_enum_pk_candidates(
 )
 ```
 
-Now, add any primary keys you may have identified:
+Now, add the primary keys that you have identified:
 
 ```{r}
 flights_dm_only_pks <- flights_dm_no_keys %>%
@@ -68,7 +67,7 @@ flights_dm_only_pks <- flights_dm_no_keys %>%
 flights_dm_only_pks
 ```
 
-To get an overview of the primary keys after setting them, call `cdm_get_all_pks()`.
+To review the primary keys after setting them, call `cdm_get_all_pks()`.
 
 ```{r}
 cdm_get_all_pks(flights_dm_only_pks)
@@ -84,8 +83,8 @@ cdm_enum_fk_candidates(
 )
 ```
 
-You define how your tables relate using `cdm_add_fk()`. 
-First, define the tables you wish to connect to another using the function's options `table` and `ref_table`. 
+To define how your tables are related, use `cdm_add_fk()` to add foreign keys. First, define the tables that you wish to connect by parameterizing the `cdm_add_fk()` function with `table` and `ref_table` options. 
+
 Then indicate in `column` which column of `table` refers to `ref_table`'s primary key, which you've defined above. 
 Use `check = FALSE` to omit consistency checks.
 
@@ -99,7 +98,7 @@ flights_dm_all_keys
 
 ## Retrieving Keys
 
-To retrieve your keys later on, use `cdm_get_all_fks()` or `cdm_get_fk()` for its singular version. 
+To retrieve your keys later on, use `cdm_get_all_fks()`, or `cdm_get_fk()` for its singular version. 
 
 ```{r}
 cdm_get_all_pks(flights_dm_all_keys)

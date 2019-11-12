@@ -219,7 +219,7 @@ new_fk <- function(table = character(), column = list()) {
 }
 
 new_filter <- function(quos = list(), zoomed = logical()) {
-  tibble(filter_quo = unclass(quos), zoomed = zoomed)
+  tibble(filter_expr = unclass(quos), zoomed = zoomed)
 }
 
 # Legacy!
@@ -364,12 +364,12 @@ cdm_get_filter <- function(x) {
     unnest(filters)
 
   # FIXME: Should work better with dplyr 0.9.0
-  if (!("filter_quo" %in% names(filter_df))) {
-    filter_df$filter_quo <- list()
+  if (!("filter_expr" %in% names(filter_df))) {
+    filter_df$filter_expr <- list()
   }
 
   filter_df  %>%
-    rename(filter = filter_quo)
+    rename(filter = filter_expr)
 }
 
 cdm_get_zoomed_tbl <- function(x) {
