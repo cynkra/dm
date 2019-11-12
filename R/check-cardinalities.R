@@ -140,12 +140,8 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   check_key(!!pt, !!pkc)
   check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
-  min_1 <- tryCatch(!is_empty(check_set_equality(!!ct, !!fkc, !!pt, !!pkc, verbose = FALSE)),
-                    error = function(e) FALSE)
-
-  max_1 <- tryCatch(!is_empty(check_key(!!ct, !!fkc)),
-           silent = TRUE,
-           error = function(e) FALSE)
+  min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
+  max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
 
   if (min_1 && max_1) return("bijective relationship (child: 1 -> parent: 1)") else
     if (min_1) return("surjective relationship (child: 1 to n -> parent: 1)") else
