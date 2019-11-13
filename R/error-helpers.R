@@ -535,19 +535,6 @@ error_no_table_zoomed_dplyr <- function(fun) {
        "when calling {tick(paste0(fun, '()'))} on a `dm`")
 }
 
-
-# no filters can exist for zoomed table for 'rename()' and 'select --------
-
-abort_no_filters_rename_select <- function() {
-  abort(error_no_filters_rename_select(), .subclass = cdm_error_full("no_filters_rename_select"))
-}
-
-error_no_filters_rename_select <- function() {
-  paste0("No existing filter conditions allowed for both the zoomed table or the original table that was zoomed ",
-         "when calling `rename.zoomed_dm()`, `select.zoomed_dm()`, `mutate.zoomed_dm()`, `summarise.zoomed_dm()` or ",
-         "`transmute.zoomed_dm()`.")
-}
-
 # when zoomed and it shouldn't be ------------------------------
 
 abort_only_possible_wo_zoom <- function(fun_name) {
@@ -569,7 +556,6 @@ error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
 }
 
-
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
@@ -581,3 +567,23 @@ error_need_unique_names <- function(duplicate_names) {
        "{commas(tick(duplicate_names))}.")
 }
 
+# lost track of by-column (FK-relation) -----------------------------------
+
+abort_fk_not_tracked <- function(x_orig_name, y_name) {
+ abort(error_fk_not_tracked(x_orig_name, y_name), .subclass = cdm_error_full("fk_not_tracked"))
+}
+
+error_fk_not_tracked <- function(x_orig_name, y_name) {
+  glue("The foreign key that existed between the originally zoomed table {tick(x_orig_name)} ",
+       "and {tick(y_name)} got lost in transformations. Please explicitly provide the `by` argument.")
+}
+
+# RHS-by column not selected ----------------------------------------------
+
+abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
+  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = "need_to_select_rhs_by")
+}
+
+error_need_to_select_rhs_by <- function(y_name, rhs_by) {
+  glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
+}
