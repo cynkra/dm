@@ -162,17 +162,6 @@ slice.zoomed_dm <- function(.data, ...) {
 }
 
 #' @export
-pull.dm <- function(.data, ...) {
-  # could think of pulling table from `dm`, maybe at some point
-  check_zoomed(.data)
-}
-
-#' @export
-pull.zoomed_dm <- function(.data, var = -1) {
-  pull(get_zoomed_tbl(.data), !!enquo(var))
-}
-
-#' @export
 left_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
