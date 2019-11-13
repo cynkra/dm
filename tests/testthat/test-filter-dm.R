@@ -126,3 +126,18 @@ test_that("cdm_filter() fails when no table name is provided", {
     )
   )
 })
+
+test_that("'cdm_apply_filters()' works", {
+  expect_identical(
+    cdm_filter(dm_for_filter, t2, e %in% LETTERS[5:6]) %>% cdm_apply_filters() %>% cdm_get_tables(),
+    output_4
+  )
+
+  # 'cdm_apply_filters()' only applies the filters only to specified tables"
+  expect_identical(
+    cdm_filter(dm_for_filter, t2, e %in% LETTERS[5:6]) %>% cdm_apply_filters(t3, t6) %>% cdm_get_tables(),
+    output_5
+  )
+
+})
+

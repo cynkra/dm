@@ -197,6 +197,21 @@ output_3 %<-% list(
   )
 )
 
+output_4 %<-% list(t1 = tibble(a = c(3L, 4L, 6L, 7L), b = c("C", "D", "F", "G")),
+                   t2 = tibble(c = c("lion", "seal", "dog", "cat"), d = c(3L, 4L, 6L, 7L), e = c("E", "F", "E", "F")),
+                   t3 = tibble(f = c("E", "F"), g = c("four", "five")),
+                   t4 = tibble(h = c("c", "d", "e"), i = c("five", "six", "seven"), j = c("E", "F", "F")),
+                   t5 = tibble(k = 2L:4L, l = c("c", "d", "e"), m = c("tree", "streetlamp", "streetlamp")),
+                   t6 = tibble(n = c("tree", "streetlamp"), o = c("f", "h")))
+
+output_5 %<-% list(t1 = t1,
+                   t2 = tibble(c = c("lion", "seal", "dog", "cat"), d = c(3L, 4L, 6L, 7L), e = c("E", "F", "E", "F")),
+                   t3 = tibble(f = c("E", "F"), g = c("four", "five")),
+                   t4 = t4,
+                   t5 = t5,
+                   t6 = tibble(n = c("tree", "streetlamp"), o = c("f", "h")))
+
+
 def_dm_for_filter <- cdm_get_def(dm_for_filter)
 
 dm_for_filter_rev %<-%
