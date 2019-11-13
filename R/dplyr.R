@@ -1,6 +1,6 @@
 #' @export
 group_by.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("group_by")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -13,7 +13,7 @@ group_by.zoomed_dm <- function(.data, ...) {
 
 #' @export
 ungroup.dm <- function(x, ...) {
-  abort_no_table_zoomed_dplyr("ungroup")
+  check_zoomed(x)
 }
 
 #' @export
@@ -36,12 +36,12 @@ summarise.zoomed_dm <- function(.data, ...) {
 
 #' @export
 summarise.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("summarise")
+  check_zoomed(.data)
 }
 
 #' @export
 filter.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("filter")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -62,7 +62,7 @@ filter.zoomed_dm <- function(.data, ...) {
 
 #' @export
 mutate.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("mutate")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -79,7 +79,7 @@ mutate.zoomed_dm <- function(.data, ...) {
 
 #' @export
 transmute.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("transmute")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -95,7 +95,7 @@ transmute.zoomed_dm <- function(.data, ...) {
 
 #' @export
 select.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("select")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -111,7 +111,7 @@ select.zoomed_dm <- function(.data, ...) {
 
 #' @export
 rename.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("rename")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -123,6 +123,53 @@ rename.zoomed_dm <- function(.data, ...) {
   new_tracked_keys_zoom <- new_tracked_keys(.data, renamed)
 
   replace_zoomed_tbl(.data, renamed_tbl, new_tracked_keys_zoom)
+}
+
+#' @export
+distinct.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @export
+distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
+  tbl <- get_zoomed_tbl(.data)
+  distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
+  # when keeping all columns or empty ellipsis (use all columns for distinct) all keys columns remain
+  if (.keep_all || is_empty(enexprs(...))) return(replace_zoomed_tbl(.data, distinct_tbl))
+  selected <- tidyselect::vars_select(colnames(tbl), ...)
+  new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
+  replace_zoomed_tbl(.data, distinct_tbl, new_tracked_keys_zoom)
+}
+
+#' @export
+arrange.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @export
+arrange.zoomed_dm <- function(.data, ...) {
+  replace_zoomed_tbl(.data, arrange(get_zoomed_tbl(.data), ...))
+}
+
+#' @export
+slice.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @export
+slice.zoomed_dm <- function(.data, ...) {
+  replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), ...))
+}
+
+#' @export
+pull.dm <- function(.data, ...) {
+  # could think of pulling table from `dm`, maybe at some point
+  check_zoomed(.data)
+}
+
+#' @export
+pull.zoomed_dm <- function(.data, var = -1) {
+  pull(get_zoomed_tbl(.data), !!enquo(var))
 }
 
 #' @export

@@ -604,6 +604,17 @@ collect.dm <- function(x, ...) {
   new_dm3(def)
 }
 
+# FIXME: what about 'dim.dm()'?
+#' @export
+dim.zoomed_dm <- function(x) {
+  dim(get_zoomed_tbl(x))
+}
+
+#' @export
+dimnames.zoomed_dm <- function(x) {
+  dimnames(get_zoomed_tbl(x))
+}
+
 cdm_reset_all_filters <- function(dm) {
   def <- cdm_get_def(dm)
   def$filters <- vctrs::list_of(new_filter())

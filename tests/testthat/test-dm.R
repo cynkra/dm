@@ -23,3 +23,15 @@ test_that("creation of empty `dm` works", {
     is_empty(new_dm())
   )
 })
+
+test_that("some methods/functions for `zoomed_dm` work", {
+  expect_identical(
+    colnames(cdm_zoom_to_tbl(dm_for_filter, t1)),
+    c("a", "b")
+  )
+
+  expect_identical(
+    dim(cdm_zoom_to_tbl(dm_for_filter, t1)),
+    c(10L, 2L)
+  )
+})
