@@ -407,19 +407,27 @@ nycflights13_fk %>%
 # A single table of a `dm` can be activated (or zoomed to), and subsequently be manipulated by many {dplyr}-verbs.
 # Eventually, either the original table can be updated or the manipulated table can be inserted as a new table.
 
-nycflights13_v2 <-
+nycflights13_weather_link <-
   cdm_nycflights13() %>%
   cdm_zoom_to_tbl(weather) %>%
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   # FIXME: method `unite.zoomed_dm()` missing
   mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
+  # here the original 'weather' table is updated with the manipulated one
   cdm_update_zoomed_tbl() %>%
-  cdm_add_pk(weather, origin_slot_id) %>%
-  cdm_zoom_to_tbl(flights) %>%
+  cdm_add_pk(weather, origin_slot_id)
+
+nycflights13_weather_flights_link <-
+  # same procedure with 'flights' table
+  # FIXME: this would be more efficient if zooming to multiple tables was supported
+  cdm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
   cdm_update_zoomed_tbl() %>%
-  cdm_add_fk(flights, origin_slot_id, weather) %>%
+  cdm_add_fk(flights, origin_slot_id, weather)
+
+nycflights13_v2 <-
+  nycflights13_weather_flights_link %>%
   cdm_set_colors(
     flights = "default",
     airlines = , planes = , weather = , airports = "blue"
