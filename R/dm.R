@@ -461,7 +461,7 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 new_zoomed_df <- function(x, ...) {
-  if (inherits(x, "tbl_dbi")) return(structure(x, class = c("zoomed_df", class(x)), ...))
+  if (!is.data.frame(x)) return(structure(x, class = c("zoomed_df", class(x)), ...))
   # need this in order to avoid star (from rownames, automatic from `structure(...)`)
   # in print method for local tibbles
   new_tibble(
