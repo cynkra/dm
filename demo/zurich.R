@@ -374,23 +374,36 @@ flights_link <-
 
 flights_link
 
-# one option to create a `dm` is to use `as_dm()`:
-nycflights13_tbl <- as_dm(list(
-  airlines = airlines,
-  airports = airports,
-  flights = flights_link,
-  planes = planes,
-  weather = weather_link
-))
+# Linking the weather table, working with the `dm` from earlier (`nycflights13_tbl`)
 
-nycflights13_tbl
+# A single table of a `dm` can be activated (or zoomed to), and subsequently be manipulated by many {dplyr}-verbs.
+# Eventually, either the original table can be updated or the manipulated table can be inserted as a new table.
 
-nycflights13_tbl %>%
+nycflights13_weather_link <-
+  nycflights13_tbl %>%
+  cdm_zoom_to_tbl(weather) %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  # FIXME: method `unite.zoomed_dm()` missing until #138
+  mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
+  # here the original 'weather' table is updated with the manipulated one
+  cdm_update_zoomed_tbl()
+
+nycflights13_weather_flights_link <-
+  # same procedure with 'flights' table
+  # FIXME: this would be more efficient if zooming to multiple tables was supported
+  cdm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
+  cdm_update_zoomed_tbl()
+
+nycflights13_weather_flights_link
+
+nycflights13_weather_flights_link %>%
   cdm_draw()
 
 # Adding primary keys
 nycflights13_pk <-
-  nycflights13_tbl %>%
+  nycflights13_weather_flights_link %>%
   cdm_add_pk(weather, origin_slot_id) %>%
   cdm_add_pk(planes, tailnum) %>%
   cdm_add_pk(airports, faa) %>%
@@ -423,36 +436,6 @@ nycflights13_fk %>%
   cdm_draw()
 
 
-# Linking the weather table only working with the original `dm` from the function `cdm_nycflights13()`
-
-# A single table of a `dm` can be activated (or zoomed to), and subsequently be manipulated by many {dplyr}-verbs.
-# Eventually, either the original table can be updated or the manipulated table can be inserted as a new table.
-
-nycflights13_weather_link <-
-  cdm_nycflights13() %>%
-  cdm_zoom_to_tbl(weather) %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  # FIXME: method `unite.zoomed_dm()` missing
-  mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
-  # here the original 'weather' table is updated with the manipulated one
-  cdm_update_zoomed_tbl() %>%
-  cdm_add_pk(weather, origin_slot_id)
-
-nycflights13_weather_flights_link <-
-  # same procedure with 'flights' table
-  # FIXME: this would be more efficient if zooming to multiple tables was supported
-  cdm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
-  cdm_update_zoomed_tbl() %>%
-  cdm_add_fk(flights, origin_slot_id, weather)
-
-nycflights13_v2 <-
-  nycflights13_weather_flights_link %>%
-  cdm_set_colors(
-    flights = "default",
-    airlines = , planes = , weather = , airports = "blue"
-  )
 
 ##
 ##
