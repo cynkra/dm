@@ -163,6 +163,7 @@ slice.zoomed_dm <- function(.data, ...) {
 
 #' @export
 pull.dm <- function(.data, ...) {
+  # could think of pulling table from `dm`, maybe at some point
   abort_no_table_zoomed_dplyr("pull")
 }
 
