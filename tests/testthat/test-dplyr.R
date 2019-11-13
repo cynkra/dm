@@ -129,18 +129,6 @@ test_that("basic test: 'arrange()'-methods work", {
   )
 })
 
-test_that("basic test: 'pull()'-methods work", {
-  expect_identical(
-    pull(zoomed_dm, d),
-    pull(t2, d)
-  )
-
-  expect_cdm_error(
-    pull(dm_for_filter),
-    "only_possible_w_zoom"
-  )
-})
-
 test_that("basic test: 'slice()'-methods work", {
   expect_identical(
     slice(zoomed_dm, 3:6) %>% get_zoomed_tbl(),
