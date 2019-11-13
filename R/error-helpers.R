@@ -556,3 +556,25 @@ error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
 }
 
+
+# lost track of by-column (FK-relation) -----------------------------------
+
+abort_fk_not_tracked <- function(x_orig_name, y_name) {
+ abort(error_fk_not_tracked(x_orig_name, y_name), .subclass = cdm_error_full("fk_not_tracked"))
+}
+
+error_fk_not_tracked <- function(x_orig_name, y_name) {
+  glue("The foreign key that existed between the originally zoomed table {tick(x_orig_name)} ",
+       "and {tick(y_name)} got lost in transformations. Please explicitly provide the `by` argument.")
+}
+
+
+# RHS-by column not selected ----------------------------------------------
+
+abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
+  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = "need_to_select_rhs_by")
+}
+
+error_need_to_select_rhs_by <- function(y_name, rhs_by) {
+  glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
+}

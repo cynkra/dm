@@ -204,6 +204,8 @@ check_zoomed <- function(dm) {
   if (is_zoomed(dm)) return()
 
   fun_name <- as_string(sys.call(-1)[[1]])
+  # if a method for `zoomed_dm()` is used for a `dm`, we don't want `fun_name = method.dm` but rather `fun_name = method`
+  fun_name <- str_replace(fun_name, "\\.dm", "")
   abort_only_possible_w_zoom(fun_name)
 }
 
