@@ -264,11 +264,13 @@ dm_flights_sqlite %>%
 ##
 
 # Filtering on a table returns a dm object
-# with the filter condition(s) stored
+# with
+# 1. the filter applied to the table in question
+# 2. the filter condition(s) stored
 dm_flights %>%
   cdm_filter(airlines, name == "Delta Air Lines Inc.")
 
-# ... which then can be filtered on another table
+# the resulting `dm` can then be filtered on another table
 dm_flights %>%
   cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   cdm_filter(airports, name != "John F Kennedy Intl")
@@ -282,7 +284,7 @@ delta_non_jfk_january <-
   cdm_filter(flights, month == 1)
 delta_non_jfk_january
 
-# Querying a table applies the filters
+# Querying a table applies the filters via semi-joins along the FK constraints to the requested table
 delta_non_jfk_january %>%
   tbl("planes")
 
@@ -398,6 +400,30 @@ nycflights13_fk %>%
     airlines = , planes = , weather = , airports = "blue"
   ) %>%
   cdm_draw()
+
+
+# Linking the weather table only working with the original `dm` from the function `cdm_nycflights13()`
+
+# A single table of a `dm` can be activated (or zoomed to), and subsequently be manipulated by many {dplyr}-verbs.
+# Eventually, either the original table can be updated or the manipulated table can be inserted as a new table.
+
+nycflights13_v2 <-
+  cdm_nycflights13() %>%
+  cdm_zoom_to_tbl(weather) %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  # FIXME: method `unite.zoomed_dm()` missing
+  mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
+  cdm_update_zoomed_tbl() %>%
+  cdm_add_pk(weather, origin_slot_id) %>%
+  cdm_zoom_to_tbl(flights) %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
+  cdm_update_zoomed_tbl() %>%
+  cdm_add_fk(flights, origin_slot_id, weather) %>%
+  cdm_set_colors(
+    flights = "default",
+    airlines = , planes = , weather = , airports = "blue"
+  )
 
 ##
 ##
