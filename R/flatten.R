@@ -267,8 +267,8 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   start_tbl <- tbl(dm, start)
 
   if (gotta_rename) {
-    recipe <-
-      compute_disambiguate_cols_recipe(red_dm, tables, sep = ".")
+    table_colnames <- get_table_colnames(red_dm)
+    recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
     explain_col_rename(recipe)
     # prepare `dm` by disambiguating columns (on a reduced dm)
     clean_dm <-
