@@ -145,7 +145,8 @@ context of the <code>dm</code> object.</p>
 
     <pre class="usage"><span class='fu'>cdm_zoom_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
 
-<span class='fu'>cdm_insert_zoomed_tbl</span>(<span class='no'>dm</span>, <span class='no'>new_tbl_name</span>)
+<span class='fu'>cdm_insert_zoomed_tbl</span>(<span class='no'>dm</span>, <span class='kw'>new_tbl_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repair</span> <span class='kw'>=</span> <span class='st'>"unique"</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>cdm_update_zoomed_tbl</span>(<span class='no'>dm</span>)
 
@@ -165,6 +166,32 @@ context of the <code>dm</code> object.</p>
     <tr>
       <th>new_tbl_name</th>
       <td><p>Name of the new table</p></td>
+    </tr>
+    <tr>
+      <th>repair</th>
+      <td><p>Either a string or a function. If a string, it must
+be one of <code>"check_unique"</code>, <code>"minimal"</code>, <code>"unique"</code>, or <code>"universal"</code>.
+If a function, it is invoked with a vector of minimal names and must
+return minimal names, otherwise an error is thrown.</p><ul>
+<li><p>Minimal names are never <code>NULL</code> or <code>NA</code>. When an element doesn't
+have a name, its minimal name is an empty string.</p></li>
+<li><p>Unique names are unique. A suffix is appended to duplicate
+names to make them unique.</p></li>
+<li><p>Universal names are unique and syntactic, meaning that you can
+safely use the names as variables without causing a syntax
+error.</p></li>
+</ul>
+
+<p>The <code>"check_unique"</code> option doesn't perform any name repair.
+Instead, an error is raised if the names don't suit the
+<code>"unique"</code> criteria.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>By default, the user is informed of any renaming
+caused by repairing the names. This only concerns unique and
+universal repairing. Set <code>quiet</code> to <code>TRUE</code> to silence the
+messages.</p></td>
     </tr>
     </table>
 
