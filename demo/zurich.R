@@ -307,7 +307,28 @@ delta_non_jfk_january %>%
 ##
 ##
 
-# Linking the weather table
+
+# one option to create a `dm` is to use `as_dm()`:
+nycflights13_tbl <- as_dm(list(
+  airlines = airlines,
+  airports = airports,
+  flights = flights,
+  planes = planes,
+  weather = weather
+))
+nycflights13_tbl
+
+# alternatively, you can start from an empty `dm` (`dm()`, `new_dm()`) and add tables via `cdm_add_tbl()`
+nycflights13_tbl_2 <- dm() %>%
+  cdm_add_tbl(
+    airlines = airlines,
+    airports = airports,
+    flights = flights,
+    planes = planes,
+    weather = weather
+  )
+
+# Linking the weather table (these tests can also be performed in `dm` object after #138)
 
 # Determine key candidates
 weather %>%
