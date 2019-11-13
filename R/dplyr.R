@@ -206,7 +206,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   select_quo <- enquo(selected)
 
   if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")
-  if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = NULL`.")
+  if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
 
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
@@ -260,7 +260,6 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
     if (has_length(y_renames)) {
       y_tbl <- y_tbl %>% rename(!!!y_renames[[1]])
-      by[] <- recode(by, !!!prep_recode(y_renames[[1]]))
       selected[] <- recode(selected, !!!prep_recode(y_renames[[1]]))
     }
   }
