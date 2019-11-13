@@ -6,7 +6,7 @@ test_that("basic test: 'unite()'-methods work", {
 
   expect_cdm_error(
     unite(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -21,7 +21,7 @@ test_that("basic test: 'separate()'-methods work", {
 
   expect_cdm_error(
     separate(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 
 })

@@ -1,6 +1,6 @@
 #' @export
 unite.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("pull")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -16,7 +16,7 @@ unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
 
 #' @export
 separate.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("pull")
+  check_zoomed(.data)
 }
 
 #' @export

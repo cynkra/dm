@@ -9,7 +9,7 @@ test_that("basic test: 'group_by()'-methods work", {
 
   expect_cdm_error(
     group_by(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -21,7 +21,7 @@ test_that("basic test: 'select()'-methods work", {
 
   expect_cdm_error(
     select(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -33,7 +33,7 @@ test_that("basic test: 'rename()'-methods work", {
 
   expect_cdm_error(
     rename(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -45,7 +45,7 @@ test_that("basic test: 'mutate()'-methods work", {
 
   expect_cdm_error(
     mutate(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -58,7 +58,7 @@ test_that("basic test: 'transmute()'-methods work", {
 
   expect_cdm_error(
     transmute(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -70,7 +70,7 @@ test_that("basic test: 'ungroup()'-methods work", {
 
   expect_cdm_error(
     ungroup(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -82,7 +82,7 @@ test_that("basic test: 'summarise()'-methods work", {
 
   expect_cdm_error(
     summarise(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -94,7 +94,7 @@ test_that("basic test: 'filter()'-methods work", {
 
   expect_cdm_error(
     filter(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -106,7 +106,7 @@ test_that("basic test: 'distinct()'-methods work", {
 
   expect_cdm_error(
     distinct(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -125,7 +125,7 @@ test_that("basic test: 'arrange()'-methods work", {
 
   expect_cdm_error(
     arrange(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -137,7 +137,7 @@ test_that("basic test: 'pull()'-methods work", {
 
   expect_cdm_error(
     pull(dm_for_filter),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 
@@ -149,7 +149,7 @@ test_that("basic test: 'slice()'-methods work", {
 
   expect_cdm_error(
     slice(dm_for_filter, 2),
-    "no_table_zoomed_dplyr"
+    "only_possible_w_zoom"
   )
 })
 

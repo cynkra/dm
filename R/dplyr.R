@@ -1,6 +1,6 @@
 #' @export
 group_by.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("group_by")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -13,7 +13,7 @@ group_by.zoomed_dm <- function(.data, ...) {
 
 #' @export
 ungroup.dm <- function(x, ...) {
-  abort_no_table_zoomed_dplyr("ungroup")
+  check_zoomed(x)
 }
 
 #' @export
@@ -36,12 +36,12 @@ summarise.zoomed_dm <- function(.data, ...) {
 
 #' @export
 summarise.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("summarise")
+  check_zoomed(.data)
 }
 
 #' @export
 filter.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("filter")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -62,7 +62,7 @@ filter.zoomed_dm <- function(.data, ...) {
 
 #' @export
 mutate.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("mutate")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -79,7 +79,7 @@ mutate.zoomed_dm <- function(.data, ...) {
 
 #' @export
 transmute.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("transmute")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -95,7 +95,7 @@ transmute.zoomed_dm <- function(.data, ...) {
 
 #' @export
 select.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("select")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -111,7 +111,7 @@ select.zoomed_dm <- function(.data, ...) {
 
 #' @export
 rename.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("rename")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -127,7 +127,7 @@ rename.zoomed_dm <- function(.data, ...) {
 
 #' @export
 distinct.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("distinct")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -143,7 +143,7 @@ distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
 
 #' @export
 arrange.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("arrange")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -153,7 +153,7 @@ arrange.zoomed_dm <- function(.data, ...) {
 
 #' @export
 slice.dm <- function(.data, ...) {
-  abort_no_table_zoomed_dplyr("slice")
+  check_zoomed(.data)
 }
 
 #' @export
@@ -164,7 +164,7 @@ slice.zoomed_dm <- function(.data, ...) {
 #' @export
 pull.dm <- function(.data, ...) {
   # could think of pulling table from `dm`, maybe at some point
-  abort_no_table_zoomed_dplyr("pull")
+  check_zoomed(.data)
 }
 
 #' @export
