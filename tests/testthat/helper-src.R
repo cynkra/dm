@@ -430,7 +430,8 @@ dm_nycflights_small %<-% {as_dm(
     flights = nycflights13::flights %>% slice(1:800),
     planes = nycflights13::planes,
     airlines = nycflights13::airlines,
-    airports = nycflights13::airports)
+    airports = nycflights13::airports,
+    weather = nycflights13::weather %>% slice(1:800))
   ) %>%
   cdm_add_pk(planes, tailnum) %>%
   cdm_add_pk(airlines, carrier) %>%

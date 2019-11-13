@@ -192,7 +192,7 @@ get_tracked_keys <- function(dm) {
   cdm_get_def(dm) %>%
     filter(table == orig_name_zoomed(dm)) %>%
     pull(key_tracker_zoom) %>%
-    pluck(1)
+    extract2(1)
 }
 
 orig_name_zoomed <- function(dm) {
