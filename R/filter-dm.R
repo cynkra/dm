@@ -25,15 +25,16 @@
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
-#' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
-#'   Multiple conditions are combined with `&` or `,`.
-#'   Only the rows where the condition evaluates
-#'   to `TRUE` are kept.
+#' @param ... For `cdm_filter()`: Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
+#' Multiple conditions are combined with `&` or `,`. Only rows where the condition evaluates
+#' to TRUE are kept.
 #'
 #'   The arguments in ... are automatically quoted and evaluated in the context of
 #'   the data frame. They support unquoting and splicing.
 #'   See `vignette("programming", package = "dplyr")`
 #'   for an introduction to these concepts.
+#'
+#' For `cdm_apply_filters()`: Unquoted names of the tables to apply the filters to.
 #'
 #' @examples
 #' library(dplyr)

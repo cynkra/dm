@@ -7,22 +7,23 @@
 \usage{
 cdm_filter(dm, table, ...)
 
-cdm_apply_filters(dm)
+cdm_apply_filters(dm, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{...}{Logical predicates defined in terms of the variables in \code{.data}, passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
-Multiple conditions are combined with \verb{&} or \verb{,}.
-Only the rows where the condition evaluates
-to \code{TRUE} are kept.
+\item{...}{For \code{cdm_filter()}: Logical predicates defined in terms of the variables in \code{.data}, passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
+Multiple conditions are combined with \verb{&} or \verb{,}. Only rows where the condition evaluates
+to TRUE are kept.
 
 The arguments in ... are automatically quoted and evaluated in the context of
 the data frame. They support unquoting and splicing.
 See \code{vignette("programming", package = "dplyr")}
-for an introduction to these concepts.}
+for an introduction to these concepts.
+
+For \code{cdm_apply_filters()}: Unquoted names of the tables to apply the filters to.}
 }
 \description{
 Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it
