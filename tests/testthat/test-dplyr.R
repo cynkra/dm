@@ -238,6 +238,28 @@ test_that("key tracking works", {
     character()
   )
 
+  # keys tracking when there are no keys to track
+  expect_identical(
+    cdm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+      mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small, "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
+  )
+
+  expect_identical(
+    cdm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+      summarize(avg_wind_speed = mean(wind_speed)) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small, "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
+  )
+
+  expect_identical(
+    cdm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+      transmute(celsius_temp = (temp - 32) * 5/9) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5/9)
+  )
+
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t2) %>%
