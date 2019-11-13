@@ -129,10 +129,10 @@ left_join.dm <- function(x, ...) {
 }
 
 #' @export
-left_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
+left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix[1], copy)
-  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
+  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
@@ -142,10 +142,10 @@ inner_join.dm <- function(x, ...) {
 }
 
 #' @export
-inner_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
+inner_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix[1], copy)
-  joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
+  joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
@@ -155,36 +155,10 @@ full_join.dm <- function(x, ...) {
 }
 
 #' @export
-full_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
+full_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix[1], copy)
-  joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
-}
-
-#' @export
-semi_join.dm <- function(x, ...) {
-  check_zoomed(x)
-}
-
-#' @export
-semi_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
-  y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, NULL, copy)
-  joined_tbl <-semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
-}
-
-#' @export
-anti_join.dm <- function(x, ...) {
-  check_zoomed(x)
-}
-
-#' @export
-anti_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, select = NULL, ...) {
-  y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, NULL, copy)
-  joined_tbl <-anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
+  joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
@@ -194,46 +168,105 @@ right_join.dm <- function(x, ...) {
 }
 
 #' @export
-right_join.zoomed_dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), select = NULL, ...) {
+right_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
-  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix[1], copy)
-  joined_tbl <-right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, suffix = suffix, ...)
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
+  joined_tbl <- right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
 }
 
-prepare_join <- function(x, y, by, selected, suffix, copy) {
+#' @export
+semi_join.dm <- function(x, ...) {
+  check_zoomed(x)
+}
+
+#' @export
+semi_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
+  y_name <- as_string(enexpr(y))
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
+  joined_tbl <- semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
+}
+
+#' @export
+anti_join.dm <- function(x, ...) {
+  check_zoomed(x)
+}
+
+#' @export
+anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
+  y_name <- as_string(enexpr(y))
+  join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
+  joined_tbl <- anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
+}
+
+prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) {
   y_name <- as_string(ensym(y))
   select_quo <- enquo(selected)
-  if (copy) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+
+  if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")
+  if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = NULL`.")
+
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
   y_tbl <- cdm_get_tables(x)[[y_name]]
   all_cols_y <- colnames(y_tbl)
-  selected <- if (quo_is_null(select_quo))
-    tidyselect::vars_select(all_cols_y, everything()) else
-    tidyselect::vars_select(all_cols_y, !!select_quo)
+
+  if (quo_is_null(select_quo)) {
+    selected <- tidyselect::vars_select(all_cols_y, everything())
+  } else {
+    selected <- tidyselect::vars_select(all_cols_y, !!select_quo)
+  }
+
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
     if (!any(selected == by)) abort_need_to_select_rhs_by(y_name, unname(by))
-    # in case user is renaming RHS-by during the join
-    by <- set_names(names(selected[selected == by]), names(by))
-    x_by <- names(by)
-    names(by) <- names(get_tracked_keys(x)[get_tracked_keys(x) == x_by])
-    if (is_na(names(by))) abort_fk_not_tracked(x_orig_name, y_name)
+
+    if (!all(names(by) %in% get_tracked_keys(x))) abort_fk_not_tracked(x_orig_name, y_name)
   }
+
+  by <- repair_by(by)
+
+  new_key_names <- get_tracked_keys(x)
+
+  y_tbl <- select(y_tbl, !!!selected)
+
+  if (disambiguate) {
+    x_disambig_name <- x_orig_name
+    y_disambig_name <- y_name
+    if (x_disambig_name == y_disambig_name) {
+      x_disambig_name <- paste0(x_disambig_name, ".x")
+      y_disambig_name <- paste0(y_disambig_name, ".y")
+    }
+
+    table_colnames <-
+      vctrs::vec_rbind(
+        tibble(table = x_disambig_name, column = colnames(x_tbl)),
+        tibble(table = y_disambig_name, column = colnames(y_tbl)) %>% filter(!(column %in% by))
+      )
+
+    recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
+    explain_col_rename(recipe)
+
+    x_renames <- recipe %>% filter(table == x_disambig_name) %>% pull(renames)
+    y_renames <- recipe %>% filter(table == y_disambig_name) %>% pull(renames)
+
+    if (has_length(x_renames)) {
+      x_tbl <- x_tbl %>% rename(!!!x_renames[[1]])
+      names(by) <- recode(names2(by), !!!prep_recode(x_renames[[1]]))
+      names(new_key_names) <- recode(names(new_key_names), !!!prep_recode(x_renames[[1]]))
+    }
+
+    if (has_length(y_renames)) {
+      y_tbl <- y_tbl %>% rename(!!!y_renames[[1]])
+      by[] <- recode(by, !!!prep_recode(y_renames[[1]]))
+      selected[] <- recode(selected, !!!prep_recode(y_renames[[1]]))
+    }
+  }
+
   # in case key columns of x_tbl have the same name as selected columns of y_tbl
   # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
   # We can track the new column names
-  new_key_names <- repair_tracking(get_tracked_keys(x), selected, suffix, names(by))
-  list(x_tbl = x_tbl, y_tbl = select(y_tbl, !!!selected), by = by, new_key_names = new_key_names)
-}
-
-repair_tracking <- function(tracked_keys, selected, suffix, lhs_by) {
-  old_names <- names(tracked_keys)
-  # change those column names from table 'x' which
-  # 1. correspond to one of those columns that are selected in table 'y'
-  # 2. are NOT one of the columns that the join is performed by
-  indices <- old_names %in% names(selected) & !(old_names %in% lhs_by)
-  new_names <- if_else(!is_null(suffix) & indices, paste0(old_names, suffix), old_names)
-  set_names(tracked_keys, new_names)
+  list(x_tbl = x_tbl, y_tbl = y_tbl, by = by, new_key_names = new_key_names)
 }

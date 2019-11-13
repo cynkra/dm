@@ -165,8 +165,8 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
-    left_join(zoomed_dm, t3, select = c(d = g, f), suffix = c("_suffix", "_suffiy")) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
-    "d_suffix"
+    left_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    "t2.d"
   )
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
@@ -178,7 +178,11 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   # multi-column "by" argument
   expect_identical(
     cdm_zoom_to_tbl(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
-    left_join(iris_2, iris_2, by = c("key", "Sepal.Width", "other_col"))
+    left_join(
+      iris_2 %>% rename_at(vars(matches("^[PS]")), ~paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
+      iris_2 %>% rename_at(vars(matches("^[PS]")), ~paste0("iris_2.y.", .)),
+      by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
+    )
   )
 
 })

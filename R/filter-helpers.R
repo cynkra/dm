@@ -30,6 +30,12 @@ get_by <- function(dm, lhs_name, rhs_name) {
   by
 }
 
+repair_by <- function(by) {
+  bad <- which(names2(by) == "")
+  names(by)[bad] <- by[bad]
+  by
+}
+
 update_filter <- function(dm, table_name, filters) {
   def <- cdm_get_def(dm)
   def$filters[def$table == table_name] <- filters
