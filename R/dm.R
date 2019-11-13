@@ -468,6 +468,7 @@ new_zoomed_df <- function(x, ...) {
     x,
     # need setdiff(...), because we want to keep everything "special" (like groups etc.) but drop
     # all classes, that a `tbl` has anyway
+    # FIXME: Remove setdiff() when tibble >= 3.0.0 is on CRAN
     class = c("zoomed_df", setdiff(class(x), c("tbl_df", "tbl", "data.frame"))),
     nrow = nrow(x),
     ...)
