@@ -68,7 +68,7 @@ mutate.dm <- function(.data, ...) {
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  quos <- enquos(...)
+  quos <- enquos(..., .named = TRUE)
   mutated_tbl <- mutate(tbl, !!!quos)
   # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
   # in case no keys are tracked, `set_names(NULL)` would throw an error
