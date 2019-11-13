@@ -594,7 +594,7 @@ collect.dm <- function(x, ...) {
   new_dm3(def)
 }
 
-
+# FIXME: what about 'dim.dm()'?
 #' @export
 dim.zoomed_dm <- function(x) {
   dim(get_zoomed_tbl(x))
