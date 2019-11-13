@@ -272,6 +272,125 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
 })
 
 
+test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
+  expect_identical(
+    left_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    left_join(t2, t1, by = c("d" = "a"))
+    )
+
+  expect_identical(
+    inner_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    inner_join(t2, t1, by = c("d" = "a"))
+  )
+
+  expect_identical(
+    full_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    full_join(t2, t1, by = c("d" = "a"))
+  )
+
+  expect_identical(
+    semi_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    semi_join(t2, t1, by = c("d" = "a"))
+  )
+
+  expect_identical(
+    anti_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    anti_join(t2, t1, by = c("d" = "a"))
+  )
+
+  expect_identical(
+    right_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    right_join(t2, t1, by = c("d" = "a"))
+  )
+
+  # fails if RHS not linked to zoomed table and no by is given
+  expect_cdm_error(
+    left_join(zoomed_dm, t4),
+    "tables_not_neighbours"
+  )
+
+  # works, if by is given
+  expect_identical(
+    left_join(zoomed_dm, t4, by = c("e" = "j")) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
+    left_join(t2, t4, by = c("e" = "j"))
+  )
+
+  # explicitly select columns from RHS using argument `select`
+  expect_identical(
+    left_join(zoomed_dm_2, t2, select = c(starts_with("c"), e)) %>% cdm_update_zoomed_tbl() %>% tbl("t3"),
+    left_join(t3, select(t2, c, e), by = c("f" = "e"))
+  )
+
+  # explicitly select and rename columns from RHS using argument `select`
+  expect_identical(
+    left_join(zoomed_dm_2, t2, select = c(starts_with("c"), d_new = d, e)) %>% cdm_update_zoomed_tbl() %>% tbl("t3"),
+    left_join(t3, select(t2, c, d_new = d, e), by = c("f" = "e"))
+  )
+
+  # a former FK-relation could not be tracked
+  expect_cdm_error(
+    zoomed_dm %>% mutate(e = e) %>% left_join(t3),
+    "fk_not_tracked"
+  )
+
+  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
+  expect_identical(
+    left_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    "t2.d"
+  )
+
+  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
+  expect_identical(
+    semi_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    "d"
+  )
+
+  # multi-column "by" argument
+  expect_identical(
+    cdm_zoom_to_tbl(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
+    left_join(
+      iris_2 %>% rename_at(vars(matches("^[PS]")), ~paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
+      iris_2 %>% rename_at(vars(matches("^[PS]")), ~paste0("iris_2.y.", .)),
+      by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
+    )
+  )
+
+})
+
+test_that("basic test: 'join()'-methods for `dm` throws error", {
+
+    expect_cdm_error(
+      left_join(dm_for_filter),
+      "only_possible_w_zoom"
+    )
+
+    expect_cdm_error(
+      inner_join(dm_for_filter),
+      "only_possible_w_zoom"
+    )
+
+    expect_cdm_error(
+      full_join(dm_for_filter),
+      "only_possible_w_zoom"
+    )
+
+    expect_cdm_error(
+      semi_join(dm_for_filter),
+      "only_possible_w_zoom"
+    )
+
+    expect_cdm_error(
+      anti_join(dm_for_filter),
+      "only_possible_w_zoom"
+    )
+
+    expect_cdm_error(
+      right_join(dm_for_filter),
+      "only_possible_w_zoom"
+    )
+})
+
+
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter, zoomed to t2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
@@ -419,6 +538,28 @@ test_that("key tracking works", {
   expect_identical(
     arrange(zoomed_dm, e) %>% cdm_update_zoomed_tbl() %>% cdm_get_all_fks(),
     cdm_get_all_fks(dm_for_filter)
+  )
+
+  # keys tracking when there are no keys to track
+  expect_identical(
+    cdm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+      mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small, "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
+  )
+
+  expect_identical(
+    cdm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+      summarize(avg_wind_speed = mean(wind_speed)) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small, "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
+  )
+
+  expect_identical(
+    cdm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+      transmute(celsius_temp = (temp - 32) * 5/9) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5/9)
   )
 
   # keys tracking when there are no keys to track
