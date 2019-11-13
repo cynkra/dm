@@ -68,7 +68,7 @@ test_that("zooming works also on DBs", {
   )
 })
 
-test_that("cdm_insert_tbl() works", {
+test_that("cdm_insert_zoomed_tbl() works", {
   # test that a new tbl is inserted, based on the requested one
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4_new),
@@ -78,6 +78,23 @@ test_that("cdm_insert_tbl() works", {
       cdm_add_fk(t4_new, j, t3) %>%
       cdm_add_fk(t5, l, t4_new)
       )
+
+  # test that an error is thrown if 'repair = check_unique' and duplicate table names
+  expect_cdm_error(
+    cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4, repair = "check_unique"),
+    "need_unique_names"
+  )
+
+  # test that in case of 'repair = unique' and duplicate table names -> renames of old and new
+  expect_equivalent_dm(
+    expect_silent(cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4, repair = "unique", quiet = TRUE)),
+    dm_for_filter %>%
+      cdm_rename_tbl(t4...4 = t4) %>%
+      cdm_add_tbl(t4...7 = t4) %>%
+      cdm_add_pk(t4...7, h) %>%
+      cdm_add_fk(t4...7, j, t3) %>%
+      cdm_add_fk(t5, l, t4...7)
+  )
 })
 
 test_that("cdm_update_tbl() works", {
