@@ -168,3 +168,19 @@ pull.dm <- function(.data, ...) {
 pull.zoomed_dm <- function(.data, var = -1) {
   pull(get_zoomed_tbl(.data), !!enquo(var))
 }
+
+#' @export
+unite.dm <- function(.data, ...) {
+  abort_no_table_zoomed_dplyr("pull")
+}
+
+#' @export
+unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
+  tbl <- get_zoomed_tbl(data)
+  united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
+  # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
+  if (remove) deselected <- tidyselect::vars_select(colnames(tbl), ...) else deselected <- character()
+  selected <- set_names(setdiff(names(get_tracked_keys(data)), deselected))
+  new_tracked_keys_zoom <- new_tracked_keys(data, selected)
+  replace_zoomed_tbl(data, united_tbl, new_tracked_keys_zoom)
+}

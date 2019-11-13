@@ -155,6 +155,18 @@ test_that("basic test: 'slice()'-methods work", {
   )
 })
 
+test_that("basic test: 'unite()'-methods work", {
+  expect_identical(
+    unite(zoomed_dm, "new_col", c, e) %>% get_zoomed_tbl(),
+    unite(t2, "new_col", c, e)
+  )
+
+  expect_cdm_error(
+    unite(dm_for_filter),
+    "no_table_zoomed_dplyr"
+  )
+})
+
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter, zoomed to t2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
@@ -302,6 +314,16 @@ test_that("key tracking works", {
   expect_identical(
     arrange(zoomed_dm, e) %>% cdm_update_zoomed_tbl() %>% cdm_get_all_fks(),
     cdm_get_all_fks(dm_for_filter)
+  )
+
+  expect_identical(
+    unite(zoomed_dm, "new_col", c, e) %>% cdm_update_zoomed_tbl() %>% get_all_keys("t2"),
+    set_names("d")
+  )
+
+  expect_identical(
+    unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>% cdm_update_zoomed_tbl() %>% get_all_keys("t2"),
+    set_names(c("c", "d", "e"))
   )
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
