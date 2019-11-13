@@ -264,11 +264,13 @@ dm_flights_sqlite %>%
 ##
 
 # Filtering on a table returns a dm object
-# with the filter condition(s) stored
+# with
+# 1. the filter applied to the table in question
+# 2. the filter condition(s) stored
 dm_flights %>%
   cdm_filter(airlines, name == "Delta Air Lines Inc.")
 
-# ... which then can be filtered on another table
+# the resulting `dm` can then be filtered on another table
 dm_flights %>%
   cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   cdm_filter(airports, name != "John F Kennedy Intl")
@@ -282,7 +284,7 @@ delta_non_jfk_january <-
   cdm_filter(flights, month == 1)
 delta_non_jfk_january
 
-# Querying a table applies the filters
+# Querying a table applies the filters via semi-joins along the FK constraints to the requested table
 delta_non_jfk_january %>%
   tbl("planes")
 
