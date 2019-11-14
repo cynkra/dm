@@ -184,6 +184,9 @@ validate_dm <- function(x) {
   # FIXME: Are all data objects tbl-s?
   if (!all_same_source(def$data)) abort_not_same_src()
 
+  # FIXME: Remove special case
+  if (nrow(def) == 0) return(invisible(x))
+
   fks <- def$fks %>%
     map_dfr(I) %>%
     unnest(column)
@@ -607,11 +610,13 @@ empty_dm <- function() {
     tibble(
       table = character(),
       data = list(),
-      segment = logical(),
+      segment = character(),
       display = character(),
       pks =vctrs::list_of(new_pk()),
       fks = vctrs::list_of(new_fk()),
-      filters = vctrs::list_of(new_filter())
+      filters = vctrs::list_of(new_filter()),
+      zoom = list(),
+      key_tracker_zoom = list()
     )
   )
 }
