@@ -34,7 +34,7 @@ cdm_draw <- function(dm,
 
   check_dm(dm)
   if (is_empty(dm)) {
-    message("Cannot draw empty `dm`.")
+    message("The dm cannot be drawn because it is empty.")
     return(invisible(NULL))
   }
   # FIXME: here the color scheme is set with an options(...)-call;
