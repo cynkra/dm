@@ -12,7 +12,8 @@
 \alias{as_dm}
 \title{Data model class}
 \usage{
-dm(src, table_names = NULL)
+dm(..., .name_repair = c("check_unique", "unique", "universal",
+  "minimal"))
 
 new_dm(tables)
 
@@ -31,13 +32,19 @@ is_dm(x)
 as_dm(x)
 }
 \arguments{
-\item{src}{A \pkg{dplyr} table source object.}
+\item{...}{Tables to add to the \code{dm}.  If no names are provided, the tables
+are auto-named.}
 
-\item{table_names}{A character vector of the table names to include.}
+\item{.name_repair}{Options for name repair.
+Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
 
 \item{tables}{A named list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
 
 \item{x}{An object.}
+
+\item{src}{A \pkg{dplyr} table source object.}
+
+\item{table_names}{A character vector of the table names to include.}
 }
 \description{
 The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships
@@ -72,7 +79,9 @@ object, the set filter expressions.
 }
 \examples{
 library(dplyr)
-dm(dplyr::src_df(pkg = "nycflights13"))
+dm(iris, mtcars)
+dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+new_dm(list(iris = iris, mtcars = mtcars))
 as_dm(list(iris = iris, mtcars = mtcars))
 
 cdm_nycflights13() \%>\% tbl("airports")

@@ -6,6 +6,10 @@
 #'
 #' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
 #'
+#' @param ... Tables to add to the `dm`.  If no names are provided, the tables
+#'   are auto-named.
+#' @param .name_repair Options for name repair.
+#'   Forwarded as `repair` to [vctrs::vec_as_names()].
 #' @param src A \pkg{dplyr} table source object.
 #' @param table_names A character vector of the table names to include.
 #'
@@ -24,7 +28,9 @@
 #'
 #' @examples
 #' library(dplyr)
-#' dm(dplyr::src_df(pkg = "nycflights13"))
+#' dm(iris, mtcars)
+#' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+#' new_dm(list(iris = iris, mtcars = mtcars))
 #' as_dm(list(iris = iris, mtcars = mtcars))
 #'
 #' cdm_nycflights13() %>% tbl("airports")
@@ -37,12 +43,33 @@
 #' cdm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
-dm <- nse_function(c(src, table_names = NULL), ~ {
+dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
+  quos <- enquos(...)
+
+  tbls <- map(quos, eval_tidy)
+
+  if (has_length(quos)) {
+    src_index <- c(which(names(quos) == "src"), 1)[[1]]
+    if (is.src(tbls[[src_index]])) {
+      lifecycle::deprecate_soft("0.0.4.9001", "dm::dm(src = )", "dm_from_src()")
+      return(invoke(dm_from_src, tbls))
+    }
+  }
+
+  names(tbls) <- vctrs::vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
+  new_dm(tbls)
+}
+
+#' @export
+dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
   if (is_missing(src)) return(empty_dm())
   src_tbl_names <- src_tbls(src)
-  if (is_null(table_names)) table_names <- src_tbl_names else if (
-    !all(table_names %in% src_tbl_names)
-    ) abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
+
+  if (is_null(table_names)) {
+    table_names <- src_tbl_names
+  } else if (!all(table_names %in% src_tbl_names)) {
+    abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
+  }
 
   tbls <- map(set_names(table_names), tbl, src = src)
 
@@ -326,7 +353,7 @@ tbl_src <- function(x) {
 
 #' @export
 as_dm.src <- function(x) {
-  dm(src = x, table_names = NULL)
+  dm_from_src(src = x, table_names = NULL)
 }
 
 #' @export

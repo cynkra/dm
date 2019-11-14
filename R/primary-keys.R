@@ -20,7 +20,7 @@
 #' library(dplyr)
 #'
 #'
-#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
 #' cdm_add_pk(nycflights_dm, planes, tailnum)
