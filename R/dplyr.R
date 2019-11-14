@@ -157,8 +157,20 @@ slice.dm <- function(.data, ...) {
 }
 
 #' @export
-slice.zoomed_dm <- function(.data, ...) {
-  replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), ...))
+slice.zoomed_dm <- function(.data, idx) {
+
+  if (!inherits(idx, "integer")) {
+    # numeric vector only accepted if identical to itself as integer
+    if (inherits(idx, "numeric") && !all(as.integer(idx) == idx)) abort_need_int(class(idx))
+  }
+  # FIXME: will be easier if we have an extra row in `def` for the zoomed table
+  if (cdm_has_pk(.data, !!orig_name_zoomed(.data))) {
+    orig_pk <- cdm_get_pk(.data, !!orig_name_zoomed(.data))
+    tracked_keys <- get_tracked_keys(.data)
+    # drop tracking PK if duplicated positive indices exist
+    new_tracked_keys_zoom <- if (anyDuplicated(idx) && idx[1] > 0) discard(tracked_keys, tracked_keys == orig_pk) else tracked_keys
+    replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), idx), new_tracked_keys_zoom)
+  } else replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), idx))
 }
 
 #' @export
