@@ -1,8 +1,9 @@
 #' Data model class
 #'
 #' @description
-#' The `dm` class stores a named list of tables and their relationships.
-#' It is inspired by [datamodelr](https://github.com/bergant/datamodelr).
+#' The `dm` class holds a list of tables and their relationships.
+#' It is inspired by [datamodelr](https://github.com/bergant/datamodelr),
+#' and extends the idea by offering operations to access the data in the tables.
 #'
 #' `dm()` creates a `dm` object from one or multiple [tbl] objects
 #' (tibbles or lazy data objects).
@@ -65,7 +66,8 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 
 #' dm_from_src()
 #'
-#' `dm_from_src()` creates a `dm` from some or all tables in a [src].
+#' `dm_from_src()` creates a `dm` from some or all tables in a [src]
+#' (a database or an environment).
 #'
 #' @rdname dm
 #' @export
@@ -89,7 +91,8 @@ dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
 #' `new_dm()` doesn't perform any checks on the input.
 #' You may need to double-check the returned object with `validate_dm()`.
 #'
-#' @param tables A named list of the tables (tibble-objects, not names) to be included in the `dm` object
+#' @param tables A named list of the tables (tibble-objects, not names)
+#'   to be included in the `dm` object.
 #'
 #' @rdname dm
 #' @export
@@ -166,7 +169,7 @@ new_key_tracker_zoom <- function() {
 
 #' Validator
 #'
-#' `validate_dm()` checks internal consistency of a `dm` object.
+#' `validate_dm()` checks the internal consistency of a `dm` object.
 #'
 #' @param x An object.
 #' @rdname dm

@@ -44,23 +44,26 @@ Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_name
 
 \item{table_names}{A character vector of the table names to include.}
 
-\item{tables}{A named list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
+\item{tables}{A named list of the tables (tibble-objects, not names)
+to be included in the \code{dm} object.}
 
 \item{x}{An object.}
 }
 \description{
-The \code{dm} class stores a named list of tables and their relationships.
-It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr}.
+The \code{dm} class holds a list of tables and their relationships.
+It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
+and extends the idea by offering operations to access the data in the tables.
 
 \code{dm()} creates a \code{dm} object from one or multiple \link{tbl} objects
 (tibbles or lazy data objects).
 
-\code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}.
+\code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}
+(a database or an environment).
 
 \code{new_dm()} doesn't perform any checks on the input.
 You may need to double-check the returned object with \code{validate_dm()}.
 
-\code{validate_dm()} checks internal consistency of a \code{dm} object.
+\code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
 \code{cdm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}
 object.
