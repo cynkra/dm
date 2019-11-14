@@ -586,5 +586,5 @@ abort_need_int <- function(class) {
 
 error_need_int <- function(class) {
   glue("The method `slice.zoomed_dm()` only accepts `integer` (or `numeric` with `0` in all decimal places) ",
-       "vectors as an argument, not {commas(tick(class))}.")
+       "vectors as an argument, not class: {commas(tick(class))}.")
 }
