@@ -30,9 +30,12 @@ get_by <- function(dm, lhs_name, rhs_name) {
   by
 }
 
-repair_by <- function(by) {
+repair_by <- function(by, selected, rename_rhs_by) {
   bad <- which(names2(by) == "")
   names(by)[bad] <- by[bad]
+  # if the user renamed the `dm` key column (RHS `by`-column) of the rhs table of the join
+  # we need to rename the value of `by` with the new names
+  if (rename_rhs_by) by <- set_names(recode(by, !!!prep_recode(selected[match(by, selected, nomatch = 0)])), names(by))
   by
 }
 

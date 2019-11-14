@@ -576,3 +576,15 @@ abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
 error_need_to_select_rhs_by <- function(y_name, rhs_by) {
   glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
 }
+
+
+# join logic problem: duplicates when auto-readding RHS-by-column --------
+
+abort_duplicated_cols_introduced <- function(duplicates) {
+  abort(error_duplicated_cols_introduced(duplicates), .subclass = cdm_error_full("duplicated_cols_introduced"))
+}
+
+error_duplicated_cols_introduced <- function(duplicates) {
+  glue("When re-adding RHS `by`-column taken from `dm` key relations, duplicated column names were created: {tick(duplicates)}. ",
+  "Please review the renaming performed in parameter `select`.")
+}

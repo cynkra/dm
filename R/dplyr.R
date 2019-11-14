@@ -265,13 +265,31 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   }
 
   if (is_null(by)) {
+    rename_rhs_by <- TRUE
     by <- get_by(x, x_orig_name, y_name)
-    if (!any(selected == by)) abort_need_to_select_rhs_by(y_name, unname(by))
-
     if (!all(names(by) %in% get_tracked_keys(x))) abort_fk_not_tracked(x_orig_name, y_name)
+    # here we need to check if the RHS `by`-column taken directly from the `dm` key relations
+    # is part of the values of `selected` (even if it is renamed)
+    if (has_length(setdiff(by, selected))) {
+      message(glue("Adding missing `by` variable(s) of RHS table: {commas(tick(setdiff(by, selected)))}"))
+      # re-add RHS-`by` column if not selected:
+      selected <- c(selected, set_names(setdiff(by, selected)))
+      if (anyDuplicated(names(selected))) abort_duplicated_cols_introduced(names(selected[anyDuplicated(names(selected))]))
+    }
+  } else {
+    rename_rhs_by <- FALSE
+    # if the user has chosen `by` explicitly, we need to check if the RHS `by`-column
+    # is part of the names of `selected` (the potentially new column names that they chose)
+    if (has_length(setdiff(by, names(selected)))) {
+      message(glue("Adding missing `by` variable(s) of RHS table: {commas(tick(setdiff(by, names(selected))))}"))
+      # values of `by` is RHS column names. Those need to be in selected, in order for the join to work
+      # re-add RHS-`by` column if not selected:
+      selected <- c(selected, set_names(setdiff(by, names(selected))))
+    }
   }
 
-  by <- repair_by(by)
+  by <- repair_by(by, selected, rename_rhs_by)
+
 
   new_key_names <- get_tracked_keys(x)
 
@@ -284,10 +302,10 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
       x_disambig_name <- paste0(x_disambig_name, ".x")
       y_disambig_name <- paste0(y_disambig_name, ".y")
     }
-
     table_colnames <-
       vctrs::vec_rbind(
         tibble(table = x_disambig_name, column = colnames(x_tbl)),
+        # potentially `by` column was renamed by the user. We need its new name
         tibble(table = y_disambig_name, column = colnames(y_tbl)) %>% filter(!(column %in% by))
       )
 
@@ -302,7 +320,6 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
       names(by) <- recode(names2(by), !!!prep_recode(x_renames[[1]]))
       names(new_key_names) <- recode(names(new_key_names), !!!prep_recode(x_renames[[1]]))
     }
-
     if (has_length(y_renames)) {
       y_tbl <- y_tbl %>% rename(!!!y_renames[[1]])
       selected[] <- recode(selected, !!!prep_recode(y_renames[[1]]))
