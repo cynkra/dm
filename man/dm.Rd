@@ -63,6 +63,8 @@ and extends the idea by offering operations to access the data in the tables.
 \code{new_dm()} doesn't perform any checks on the input.
 You may need to double-check the returned object with \code{validate_dm()}.
 
+All constructors create an empty \code{dm} if called without arguments.
+
 \code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
 \code{cdm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}

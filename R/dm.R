@@ -88,8 +88,11 @@ dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
 
 #' Low-level constructor
 #'
+#' @description
 #' `new_dm()` doesn't perform any checks on the input.
 #' You may need to double-check the returned object with `validate_dm()`.
+#'
+#' All constructors create an empty `dm` if called without arguments.
 #'
 #' @param tables A named list of the tables (tibble-objects, not names)
 #'   to be included in the `dm` object.
