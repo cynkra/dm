@@ -61,12 +61,12 @@ The relevant functions for creating `dm` objects are:
 3. `new_dm()`
 
 There are currently three options available for creating a `dm` object.
-To illustrate these, we will now create the same `dm` using each of these.
-We can use the tables from the famous package {nycflights13}.
+To illustrate these options, we will now create the same `dm` in three different ways.
+We can use the tables from the well-known {nycflights13} package.
 
-### Start with empty `dm`
+### Start with an empty `dm`
 
-Start from an empty `dm` object (created with `dm()` or `new_dm()`) and add tables to it:
+Start with an empty `dm` object that has been created with `dm()` or `new_dm()`, and add tables to that object:
 ```{r}
 library(nycflights13)
 library(dm)
@@ -137,7 +137,7 @@ Currently `dm` objects only support one-column primary keys. If your tables have
 If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 
-`cdm_add_pk()` has an option to check if the column of the table given by the user is a unique key (for performance reasons check is turned off by default).
+`cdm_add_pk()` has an option to check if the column of the table given by the user is a unique key; for performance reasons, the check will not be executed unless requested.
 Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm` from above.
 
 ```{r}
