@@ -158,6 +158,7 @@ slice.dm <- function(.data, ...) {
 
 #' @export
 slice.zoomed_dm <- function(.data, idx) {
+  if (is_missing(idx)) return(.data)
 
   if (!inherits(idx, "integer")) {
     # numeric vector only accepted if identical to itself as integer
