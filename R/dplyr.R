@@ -159,19 +159,17 @@ slice.dm <- function(.data, ...) {
 #' @export
 slice.zoomed_dm <- function(.data, idx) {
   if (is_missing(idx)) return(.data)
-
+  # we want to exclude errors triggered from {vctrs}, since hard to interpret and catching would need case differentiation, i.e. check first
   if (!inherits(idx, "integer")) {
-    # numeric vector only accepted if identical to itself as integer
-    if (!inherits(idx, "numeric") || !all(as.integer(idx) == idx)) abort_need_int(class(idx))
+    if (!inherits(idx, "numeric") || !all(as.integer(idx) == idx)) abort_need_int(class(idx)) else idx <- as.integer(idx)
   }
+  idx <- vctrs::vec_as_index(idx, nrow(.data))
   # FIXME: will be easier if we have an extra row in `def` for the zoomed table
-  if (cdm_has_pk(.data, !!orig_name_zoomed(.data))) {
-    orig_pk <- cdm_get_pk(.data, !!orig_name_zoomed(.data))
-    tracked_keys <- get_tracked_keys(.data)
-    # drop tracking PK if duplicated positive indices exist
-    new_tracked_keys_zoom <- if (anyDuplicated(idx) && idx[1] > 0) discard(tracked_keys, tracked_keys == orig_pk) else tracked_keys
-    replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), idx), new_tracked_keys_zoom)
-  } else replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), idx))
+  orig_pk <- cdm_get_pk(.data, !!orig_name_zoomed(.data))
+  tracked_keys <- get_tracked_keys(.data)
+  # drop tracking PK if duplicated positive indices exist
+  new_tracked_keys_zoom <- if (anyDuplicated(idx)) discard(tracked_keys, tracked_keys == orig_pk) else tracked_keys
+  replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), idx), new_tracked_keys_zoom)
 }
 
 #' @export
