@@ -441,6 +441,9 @@ dm_nycflights_small %<-% {as_dm(
   cdm_add_fk(flights, dest, airports)
   }
 
+zoomed_dm <- cdm_zoom_to_tbl(dm_for_filter, t2)
+zoomed_dm_2 <- cdm_zoom_to_tbl(dm_for_filter, t3)
+
 # for database tests -------------------------------------------------
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test
