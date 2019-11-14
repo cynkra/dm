@@ -157,19 +157,15 @@ slice.dm <- function(.data, ...) {
 }
 
 #' @export
-slice.zoomed_dm <- function(.data, idx) {
-  if (is_missing(idx)) return(.data)
-  # we want to exclude errors triggered from {vctrs}, since hard to interpret and catching would need case differentiation, i.e. check first
-  if (!inherits(idx, "integer")) {
-    if (!inherits(idx, "numeric") || !all(as.integer(idx) == idx)) abort_need_int(class(idx)) else idx <- as.integer(idx)
-  }
-  idx <- vctrs::vec_as_index(idx, nrow(.data))
-  # FIXME: will be easier if we have an extra row in `def` for the zoomed table
+slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
+  sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
   orig_pk <- cdm_get_pk(.data, !!orig_name_zoomed(.data))
   tracked_keys <- get_tracked_keys(.data)
-  # drop tracking PK if duplicated positive indices exist
-  new_tracked_keys_zoom <- if (anyDuplicated(idx)) discard(tracked_keys, tracked_keys == orig_pk) else tracked_keys
-  replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), idx), new_tracked_keys_zoom)
+  if (is_null(.keep_pk)) {if (has_length(orig_pk) && orig_pk %in% tracked_keys) message(
+    paste("Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices).",
+          "Set parameter `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended.")
+    )} else if (!.keep_pk) {tracked_keys <- discard(tracked_keys, tracked_keys == orig_pk)}
+  replace_zoomed_tbl(.data, sliced_tbl, tracked_keys)
 }
 
 #' @export

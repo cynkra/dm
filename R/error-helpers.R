@@ -576,15 +576,3 @@ abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
 error_need_to_select_rhs_by <- function(y_name, rhs_by) {
   glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
 }
-
-
-# slice needs integers ----------------------------------------------------
-
-abort_need_int <- function(class) {
-  abort(error_need_int(class), .subclass = cdm_error_full("need_int"))
-}
-
-error_need_int <- function(class) {
-  glue("The method `slice.zoomed_dm()` only accepts `integer` (or `numeric` with `0` in all decimal places) ",
-       "vectors as an argument, not class: {commas(tick(class))}.")
-}
