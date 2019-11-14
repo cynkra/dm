@@ -580,7 +580,11 @@ error_need_to_select_rhs_by <- function(y_name, rhs_by) {
 
 # join logic problem: duplicates when auto-readding RHS-by-column --------
 
-abort_duplicated_cols_introduced <- function(duplicates) {
+abort_duplicated_cols_introduced <- function(selected) {
+  duplicates <- tibble(selected = selected) %>%
+    count(selected) %>%
+    filter(n > 1) %>%
+    pull(selected)
   abort(error_duplicated_cols_introduced(duplicates), .subclass = cdm_error_full("duplicated_cols_introduced"))
 }
 

@@ -275,7 +275,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
       message(glue("Adding missing `by` variable(s) of RHS table: {commas(tick(setdiff(by, selected)))}"))
       # re-add RHS-`by` column if not selected:
       selected <- c(selected, set_names(setdiff(by, selected)))
-      if (anyDuplicated(names(selected))) abort_duplicated_cols_introduced(names(selected[anyDuplicated(names(selected))]))
+      if (anyDuplicated(names(selected))) abort_duplicated_cols_introduced(names(selected))
     }
   } else {
     rename_rhs_by <- FALSE
