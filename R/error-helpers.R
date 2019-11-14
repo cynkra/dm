@@ -545,6 +545,27 @@ error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
 }
 
+# table not on src --------------------------------------------------------
+
+abort_req_tbl_not_avail <- function(avail, missing) {
+  abort(error_req_tbl_not_avail(avail, missing), .subclass = cdm_error_full("req_tbl_not_avail"))
+}
+
+error_req_tbl_not_avail <- function(avail, missing) {
+  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
+}
+
+
+# table for which key should be set not in list of tables when creating dm -----------------------
+
+abort_unnamed_table_list <- function() {
+  abort(error_unnamed_table_list(), .subclass = cdm_error_full("unnamed_table_list"))
+}
+
+error_unnamed_table_list <- function() {
+  "Table list in `new_dm()` needs to be named."
+}
+
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
@@ -575,4 +596,15 @@ abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
 
 error_need_to_select_rhs_by <- function(y_name, rhs_by) {
   glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
+}
+
+
+# dm invalid --------------------------------------------------------------
+
+abort_dm_invalid <- function(why) {
+  abort(error_dm_invalid(why), .subclass = "dm_invalid")
+}
+
+error_dm_invalid <- function(why) {
+  paste0("This `dm` is invalid, reason: ", why)
 }
