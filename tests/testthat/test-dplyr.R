@@ -136,6 +136,16 @@ test_that("basic test: 'slice()'-methods work", {
   )
 
   expect_cdm_error(
+    slice(zoomed_dm, t2),
+    "need_int"
+  )
+
+  expect_cdm_error(
+    slice(zoomed_dm, 1.1),
+    "need_int"
+  )
+
+  expect_cdm_error(
     slice(dm_for_filter, 2),
     "only_possible_w_zoom"
   )
