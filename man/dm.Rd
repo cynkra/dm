@@ -17,7 +17,7 @@ dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
 
 dm_from_src(src, table_names = NULL)
 
-new_dm(tables)
+new_dm(tables = list())
 
 validate_dm(x)
 
@@ -49,17 +49,18 @@ Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_name
 \item{x}{An object.}
 }
 \description{
-The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships
-inspired by \href{https://github.com/bergant/datamodelr}{datamodelr}, of which it also borrows code.
+The \code{dm} class stores a named list of tables and their relationships.
+It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr}.
 
-\code{dm()} coerces its inputs. If called without arguments, an empty \code{dm} object is created.
+\code{dm()} creates a \code{dm} object from one or multiple \link{tbl} objects
+(tibbles or lazy data objects).
 
-\code{new_dm()} only checks if all tables in the list are on the same
-If called without arguments, an empty \code{dm} object is created.
+\code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}.
 
-\code{validate_dm()} checks consistency between the \pkg{dplyr} source
-and the \pkg{datamodelr} based specification of table relationships.
-This function is currently a no-op.
+\code{new_dm()} doesn't perform any checks on the input.
+You may need to double-check the returned object with \code{validate_dm()}.
+
+\code{validate_dm()} checks internal consistency of a \code{dm} object.
 
 \code{cdm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}
 object.

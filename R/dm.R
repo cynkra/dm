@@ -1,10 +1,11 @@
 #' Data model class
 #'
 #' @description
-#' The `dm` class wraps [dplyr::src] and adds a description of table relationships
-#' inspired by [datamodelr](https://github.com/bergant/datamodelr), of which it also borrows code.
+#' The `dm` class stores a named list of tables and their relationships.
+#' It is inspired by [datamodelr](https://github.com/bergant/datamodelr).
 #'
-#' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
+#' `dm()` creates a `dm` object from one or multiple [tbl] objects
+#' (tibbles or lazy data objects).
 #'
 #' @param ... Tables to add to the `dm`.  If no names are provided, the tables
 #'   are auto-named.
@@ -57,9 +58,15 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
   }
 
   names(tbls) <- vctrs::vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
-  new_dm(tbls)
+  dm <- new_dm(tbls)
+  validate_dm(dm)
+  dm
 }
 
+#' dm_from_src()
+#'
+#' `dm_from_src()` creates a `dm` from some or all tables in a [src].
+#'
 #' @rdname dm
 #' @export
 dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
@@ -79,21 +86,17 @@ dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
 
 #' Low-level constructor
 #'
-#' `new_dm()` only checks if all tables in the list are on the same
-#' If called without arguments, an empty `dm` object is created.
+#' `new_dm()` doesn't perform any checks on the input.
+#' You may need to double-check the returned object with `validate_dm()`.
 #'
 #' @param tables A named list of the tables (tibble-objects, not names) to be included in the `dm` object
 #'
 #' @rdname dm
 #' @export
-new_dm <- function(tables) {
-  if (is_missing(tables)) return(empty_dm())
-  if (!is_named(tables)) abort_unnamed_table_list()
-  if (!all_same_source(tables)) abort_not_same_src()
-
+new_dm <- function(tables = list()) {
   # Legacy
   data <- unname(tables)
-  table <- names(tables)
+  table <- names2(tables)
   zoom <- new_zoom()
   key_tracker_zoom <- new_key_tracker_zoom()
 
@@ -163,17 +166,24 @@ new_key_tracker_zoom <- function() {
 
 #' Validator
 #'
-#' `validate_dm()` checks consistency between the \pkg{dplyr} source
-#' and the \pkg{datamodelr} based specification of table relationships.
-#' This function is currently a no-op.
+#' `validate_dm()` checks internal consistency of a `dm` object.
 #'
 #' @param x An object.
 #' @rdname dm
 #' @export
 validate_dm <- function(x) {
   check_dm(x)
+
+  # FIXME: Classed errors
+  stopifnot(identical(names(unclass(x)), "def"))
   def <- cdm_get_def(x)
+
   table_names <- def$table
+  if (any(table_names == "")) abort_unnamed_table_list()
+
+  # FIXME: Are all data objects tbl-s?
+  if (!all_same_source(def$data)) abort_not_same_src()
+
   fks <- def$fks %>%
     map_dfr(I) %>%
     unnest(column)
@@ -184,12 +194,11 @@ validate_dm <- function(x) {
     unnest(pks) %>%
     unnest(column)
   check_colnames(pks, dm_col_names, "PK")
-  # check that all column classes are correct
+  # check that all column classes of def are correct
   # check that (for now) only maximally one `zoom` element is not `NULL`
   # same with `key_tracker_zoom`
   # TODO: check consistency
   # - tables in data_model must be a subset of tables in src
-  # - all tables in src must exist in data model
   # - class membership
   # - DO NOT check primary and foreign key constraints here by default,
   #   perhaps optionally or in a different verb
@@ -349,7 +358,9 @@ as_dm.default <- function(x) {
 
   # Automatic name repair
   names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
-  new_dm(x)
+  dm <- new_dm(x)
+  validate_dm(dm)
+  dm
 }
 
 tbl_src <- function(x) {
