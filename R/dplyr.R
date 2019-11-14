@@ -261,6 +261,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   if (quo_is_null(select_quo)) {
     selected <- tidyselect::vars_select(all_cols_y, everything())
   } else {
+    # FIXME: should we complain, if the user wishes to rename two or more columns to the same name?
     selected <- tidyselect::vars_select(all_cols_y, !!select_quo)
   }
 
