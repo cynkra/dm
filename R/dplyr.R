@@ -266,7 +266,6 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   }
 
   if (is_null(by)) {
-    rename_rhs_by <- TRUE
     by <- get_by(x, x_orig_name, y_name)
     if (!all(names(by) %in% get_tracked_keys(x))) abort_fk_not_tracked(x_orig_name, y_name)
     # here we need to check if the RHS `by`-column taken directly from the `dm` key relations
@@ -277,8 +276,8 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
       selected <- c(selected, set_names(setdiff(by, selected)))
       if (anyDuplicated(names(selected))) abort_duplicated_cols_introduced(names(selected))
     }
+    by <- repair_by(by, selected, TRUE)
   } else {
-    rename_rhs_by <- FALSE
     # if the user has chosen `by` explicitly, we need to check if the RHS `by`-column
     # is part of the names of `selected` (the potentially new column names that they chose)
     if (has_length(setdiff(by, names(selected)))) {
@@ -287,10 +286,8 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
       # re-add RHS-`by` column if not selected:
       selected <- c(selected, set_names(setdiff(by, names(selected))))
     }
+    by <- repair_by(by, selected, FALSE)
   }
-
-  by <- repair_by(by, selected, rename_rhs_by)
-
 
   new_key_names <- get_tracked_keys(x)
 
