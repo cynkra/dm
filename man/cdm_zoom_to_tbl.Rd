@@ -9,7 +9,12 @@
 \usage{
 cdm_zoom_to_tbl(dm, table)
 
-cdm_insert_zoomed_tbl(dm, new_tbl_name)
+cdm_insert_zoomed_tbl(
+  dm,
+  new_tbl_name = NULL,
+  repair = "unique",
+  quiet = FALSE
+)
 
 cdm_update_zoomed_tbl(dm)
 
@@ -21,6 +26,29 @@ cdm_zoom_out(dm)
 \item{table}{A table in the \code{dm}}
 
 \item{new_tbl_name}{Name of the new table}
+
+\item{repair}{Either a string or a function. If a string, it must
+be one of \code{"check_unique"}, \code{"minimal"}, \code{"unique"}, or \code{"universal"}.
+If a function, it is invoked with a vector of minimal names and must
+return minimal names, otherwise an error is thrown.
+\itemize{
+\item Minimal names are never \code{NULL} or \code{NA}. When an element doesn't
+have a name, its minimal name is an empty string.
+\item Unique names are unique. A suffix is appended to duplicate
+names to make them unique.
+\item Universal names are unique and syntactic, meaning that you can
+safely use the names as variables without causing a syntax
+error.
+}
+
+The \code{"check_unique"} option doesn't perform any name repair.
+Instead, an error is raised if the names don't suit the
+\code{"unique"} criteria.}
+
+\item{quiet}{By default, the user is informed of any renaming
+caused by repairing the names. This only concerns unique and
+universal repairing. Set \code{quiet} to \code{TRUE} to silence the
+messages.}
 }
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the

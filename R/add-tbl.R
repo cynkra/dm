@@ -14,7 +14,7 @@
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @export
-cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
+cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 
   check_dm(dm)
 
@@ -24,15 +24,26 @@ cdm_add_tbl <- function(dm, ..., repair = "check_unique") {
   check_new_tbls(dm, new_tables)
 
   old_names <- src_tbls(dm)
-  all_names <- vctrs::vec_as_names(c(old_names, new_names), repair = repair)
+  names_list <- repair_table_names(old_names, new_names, repair, quiet)
+  # rename old tables in case name repair changed their names
+  dm <- cdm_select_tbl_impl(dm, names_list$new_old_names)
 
-  new_old_names <- all_names[seq_along(old_names)]
+  cdm_add_tbl_impl(dm, new_tables, names_list$new_names)
+}
 
-  selected <- set_names(old_names, new_old_names)
-  dm <- cdm_select_tbl_impl(dm, selected)
+repair_table_names <- function(old_names, new_names, repair = "check_unique", quiet = FALSE) {
+  all_names <- tryCatch(
+    vctrs::vec_as_names(c(old_names, new_names), repair = repair, quiet = quiet),
+    error = function(e) {
+      if (inherits(e, "vctrs_error_names_must_be_unique")) abort_need_unique_names(intersect(old_names, new_names))
+      abort(e)
+    }
+  )
+  new_old_names <- set_names(old_names, all_names[seq_along(old_names)])
 
-  new_names <- all_names[seq2(length(old_names) + 1, length(all_names))]
-  cdm_add_tbl_impl(dm, new_tables, new_names)
+  new_names <-
+    all_names[seq2(length(old_names) + 1, length(all_names))]
+  list(new_old_names = new_old_names, new_names = new_names)
 }
 
 cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter())) {

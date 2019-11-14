@@ -15,7 +15,7 @@ cdm_apply_filters(dm)
 \item{table}{A table in the \code{dm}}
 
 \item{...}{Logical predicates defined in terms of the variables in \code{.data}, passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
-Multiple conditions are combined with \code{&} or \code{,}. Only rows where the condition evaluates
+Multiple conditions are combined with \verb{&} or \verb{,}. Only rows where the condition evaluates
 to TRUE are kept.
 
 The arguments in ... are automatically quoted and evaluated in the context of
@@ -39,7 +39,7 @@ reduces the rows of all other tables connected to it by foreign key relations (c
 with the corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new \code{dm} class object without any filter conditions.
-\item Calling one of \code{tbl()}, \code{[[.dm()}, \code{$.dm()}: the remaining rows of the requested table are calculated by performing a sequence
+\item Calling one of \code{tbl()}, \verb{[[.dm()}, \verb{$.dm()}: the remaining rows of the requested table are calculated by performing a sequence
 of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from each table that has been filtered to the requested table
 (similar to 1. but only for one table).
 }

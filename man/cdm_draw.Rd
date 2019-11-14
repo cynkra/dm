@@ -7,10 +7,18 @@
 \alias{cdm_get_available_colors}
 \title{Draw schema of a \code{\link{dm}}-object's data model}
 \usage{
-cdm_draw(dm, rankdir = "LR", col_attr = "column",
-  view_type = "keys_only", columnArrows = TRUE, graph_attrs = "",
-  node_attrs = "", edge_attrs = "", focus = NULL,
-  graph_name = "Data Model")
+cdm_draw(
+  dm,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model"
+)
 
 cdm_set_colors(dm, ...)
 
@@ -43,7 +51,7 @@ It defines the level of details for the table rendering
 \item{graph_name}{A graph name}
 
 \item{...}{Colors to set in the form \code{table = "<color>"} . Fall-through syntax similarly to
-\code{\link[=switch]{switch()}} is supported: \code{table1 = , table2 = "<color>"} sets the color for both \code{table1}
+\code{\link[=switch]{switch()}} is supported: \verb{table1 = , table2 = "<color>"} sets the color for both \code{table1}
 and \code{table2} . This argument supports splicing.}
 }
 \value{

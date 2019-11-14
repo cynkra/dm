@@ -4,9 +4,19 @@
 \alias{cdm_copy_to}
 \title{Copy a \code{dm}-object to a \code{src}/\code{con}}
 \usage{
-cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
-  indexes = NULL, unique_indexes = NULL, set_key_constraints = TRUE,
-  unique_table_names = FALSE, table_names = NULL, temporary = TRUE)
+cdm_copy_to(
+  dest,
+  dm,
+  ...,
+  types = NULL,
+  overwrite = NULL,
+  indexes = NULL,
+  unique_indexes = NULL,
+  set_key_constraints = TRUE,
+  unique_table_names = FALSE,
+  table_names = NULL,
+  temporary = TRUE
+)
 }
 \arguments{
 \item{dest}{A \code{src} or \code{con} object like e.g. a database.}
@@ -51,6 +61,7 @@ iris_dm <- cdm_copy_to(
 )
 }
 \seealso{
-Other DB interaction functions: \code{\link{cdm_learn_from_db}}
+Other DB interaction functions: 
+\code{\link{cdm_learn_from_db}()}
 }
 \concept{DB interaction functions}

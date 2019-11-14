@@ -25,6 +25,7 @@ relation. Since this function is a wrapper around \code{\link[=cdm_flatten_to_tb
 the join will always be the "child table", the table referencing the other table.
 }
 \seealso{
-Other flattening functions: \code{\link{cdm_flatten_to_tbl}}
+Other flattening functions: 
+\code{\link{cdm_flatten_to_tbl}()}
 }
 \concept{flattening functions}

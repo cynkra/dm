@@ -91,12 +91,19 @@ as_dm(list(airlines = airlines,
 Squeeze all (or a subset of) tables belonging to a `src` object into a `dm` using `dm()`:
 ```{r message=FALSE}
 library(dplyr)
-flights_dm <- dm(src_df(pkg = "nycflights13"))
+flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
-Here we are making use of the fact that the function `dm(src, data_model = NULL)` includes all available tables on a source in the `dm` object, should the `data_model`-argument be left `NULL`. 
+
+Here we are making use of the fact that the function `dm(src, table_names = NULL)` includes all available tables on a source in the `dm` object, should the `table_names`-argument be left `NULL`. 
 This means that you can use this, for example, on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
+
+Another way of creating a `dm` object is calling `new_dm()` on a list of `tbls`, e.g., the tables included in the well-known [`iris`](https://www.rdocumentation.org/packages/datasets/versions/3.6.1/topics/iris) dataset:
+```{r}
+iris_dm <- new_dm(list("iris1" = iris, "iris2" = iris))
+iris_dm
+```
 
 <!-- And lastly, with `new_dm()` you can create a `dm` by providing the three individual parts that it consists of: -->
 <!-- ```{r} -->

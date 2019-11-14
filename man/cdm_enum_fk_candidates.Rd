@@ -2,9 +2,12 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_enum_fk_candidates}
 \alias{cdm_enum_fk_candidates}
+\alias{enum_fk_candidates}
 \title{Find foreign key candidates in a table}
 \usage{
 cdm_enum_fk_candidates(dm, table, ref_table)
+
+enum_fk_candidates(zoomed_dm, ref_table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -12,6 +15,8 @@ cdm_enum_fk_candidates(dm, table, ref_table)
 \item{table}{The table whose columns should be tested for foreign key candidate potential}
 
 \item{ref_table}{A table with a primary key.}
+
+\item{zoomed_dm}{A \code{dm} with a zoomed table.}
 }
 \value{
 A table with an overview which columns of \code{table} would be suitable candidates as
@@ -33,14 +38,19 @@ entry in the result column \code{why} is:
 respective column in table \code{table} and the primary column entries in table \code{ref_table}.
 \item the error message triggered by the error (often stating the mismatched column types)
 }
+
+\code{enum_fk_candidates()} works like \code{cdm_enum_fk_candidates()} with the zoomed table as \code{table}.
 }
 \examples{
 cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
 
 }
 \seealso{
-Other foreign key functions: \code{\link{cdm_add_fk}},
-  \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
-  \code{\link{cdm_has_fk}}, \code{\link{cdm_rm_fk}}
+Other foreign key functions: 
+\code{\link{cdm_add_fk}()},
+\code{\link{cdm_get_all_fks}()},
+\code{\link{cdm_get_fk}()},
+\code{\link{cdm_has_fk}()},
+\code{\link{cdm_rm_fk}()}
 }
 \concept{foreign key functions}

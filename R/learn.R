@@ -32,7 +32,7 @@ cdm_learn_from_db <- function(dest) {
     distinct(table) %>%
     pull()
 
-  new_dm(
+  legacy_new_dm(
     tables = map(table_names, ~ tbl(con, .)) %>% set_names(table_names),
     data_model = get_datamodel_from_overview(overview)
   )
@@ -129,4 +129,100 @@ postgres_learn_query <- function() {
   where
   c.table_schema = 'public'
   and t.table_type = 'BASE TABLE'"
+}
+
+# FIXME: only needed for `cdm_learn_from_db()` <- needs to be implemented in a different manner
+legacy_new_dm <- function(tables, data_model) {
+  if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
+  if (!all_same_source(tables)) abort_not_same_src()
+  stopifnot(is.data_model(data_model))
+
+  columns <- as_tibble(data_model$columns)
+
+  data_model_tables <- data_model$tables
+
+  stopifnot(all(names(tables) %in% data_model_tables$table))
+  stopifnot(all(data_model_tables$table %in% names(tables)))
+
+  pks <- columns %>%
+    select(column, table, key) %>%
+    filter(key > 0) %>%
+    select(-key)
+
+  if (is.null(data_model$references)) {
+    fks <- tibble(
+      table = character(),
+      column = character(),
+      ref = character(),
+      ref_col = character()
+    )
+  } else {
+    fks <-
+      data_model$references %>%
+      select(table, column, ref, ref_col) %>%
+      as_tibble()
+  }
+
+  # Legacy
+  data <- unname(tables[data_model_tables$table])
+
+  table <- data_model_tables$table
+  segment <- data_model_tables$segment
+  # would be logical NA otherwise, but if set, it is class `character`
+  display <- as.character(data_model_tables$display)
+  filter <- new_filters()
+  zoom <- new_zoom()
+  key_tracker_zoom <- new_key_tracker_zoom()
+
+  # Legacy compatibility
+  pks$column <- as.list(pks$column)
+
+  pks <-
+    pks %>%
+    nest(pks = -table)
+
+  pks <-
+    tibble(
+      table = setdiff(table, pks$table),
+      pks = vctrs::list_of(new_pk())
+    ) %>%
+    vctrs::vec_rbind(pks)
+
+  # Legacy compatibility
+  fks$column <- as.list(fks$column)
+
+  fks <-
+    fks %>%
+    select(-ref_col) %>%
+    nest(fks = -ref) %>%
+    rename(table = ref)
+
+  fks <-
+    tibble(
+      table = setdiff(table, fks$table),
+      fks = vctrs::list_of(new_fk())
+    ) %>%
+    vctrs::vec_rbind(fks)
+
+  filters <-
+    filter %>%
+    rename(filter_expr = filter) %>%
+    nest(filters = filter_expr)
+
+  filters <-
+    tibble(
+      table = setdiff(table, filters$table),
+      filters = vctrs::list_of(new_filter())
+    ) %>%
+    vctrs::vec_rbind(filters)
+
+  def <-
+    tibble(table, data, segment, display) %>%
+    left_join(pks, by = "table") %>%
+    left_join(fks, by = "table") %>%
+    left_join(filters, by = "table") %>%
+    left_join(zoom, by = "table") %>%
+    left_join(key_tracker_zoom, by = "table")
+
+  new_dm3(def)
 }

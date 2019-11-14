@@ -34,11 +34,11 @@ Imports:
     DT (>= 0.5),
     glue,
     igraph,
+    lifecycle,
     magrittr,
     methods,
     purrr,
     rlang (>= 0.4.0),
-    shiny,
     stringr,
     tibble,
     tidyr (>= 1.0.0),
@@ -63,4 +63,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
