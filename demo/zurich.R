@@ -338,11 +338,10 @@ nycflights13_tbl_2 <- dm() %>%
 zoomed_weather <- cdm_zoom_to_tbl(nycflights13_tbl, weather)
 zoomed_weather
 
-nycflights13_tbl %>%
-  cdm_enum_pk_candidates(weather)
+# `enum_pk_candidates()` works for both `tibbles` and `zoomed_dm`
+enum_pk_candidates(zoomed_weather)
 
-nycflights13_tbl %>%
-  cdm_enum_pk_candidates(weather) %>%
+enum_pk_candidates(zoomed_weather) %>%
   count(candidate)
 
 # It's tricky:
@@ -372,14 +371,16 @@ nycflights13_weather_link <-
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   unite("origin_slot_id", origin, time_hour_fmt) %>%
   # here the original 'weather' table is updated with the manipulated one
-  cdm_update_zoomed_tbl()
+  cdm_update_zoomed_tbl() %>%
+  # here we are adding a PK for the "enhanced" weather table
+  cdm_add_pk(weather, origin_slot_id)
 
 nycflights13_weather_link$weather
 
 nycflights13_weather_flights_link <-
+  cdm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
   # same procedure with 'flights' table
   # FIXME: this would be more efficient if zooming to multiple tables was supported
-  cdm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   # for flights we need to keep the column `origin`, since it is a FK pointing to `airports`
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
@@ -388,13 +389,16 @@ nycflights13_weather_flights_link <-
 
 nycflights13_weather_flights_link$flights
 
+# `cdm_enum_fk_candidates()` of a `dm` gives info about potential FK columns from one table to another
+cdm_enum_fk_candidates(nycflights13_weather_flights_link, flights, weather)
+# well, it's almost perfect, let's add the FK anyway...
+
 nycflights13_weather_flights_link %>%
   cdm_draw()
 
-# Adding primary keys
+# Adding primary keys (weather already has one)
 nycflights13_pk <-
   nycflights13_weather_flights_link %>%
-  cdm_add_pk(weather, origin_slot_id) %>%
   cdm_add_pk(planes, tailnum) %>%
   cdm_add_pk(airports, faa) %>%
   cdm_add_pk(airlines, carrier)
