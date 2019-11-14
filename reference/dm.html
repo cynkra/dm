@@ -36,14 +36,17 @@
 
 
 <meta property="og:title" content="Data model class — dm" />
-<meta property="og:description" content="The dm class wraps dplyr::src and adds a description of table relationships
-inspired by datamodelr, of which it also borrows code.
-dm() coerces its inputs. If called without arguments, an empty dm object is created.
-new_dm() only checks if the inputs are of the correct class.
-If called without arguments, an empty dm object is created.
-validate_dm() checks consistency between the dplyr source
-and the datamodelr based specification of table relationships.
-This function is currently a no-op.
+<meta property="og:description" content="The dm class holds a list of tables and their relationships.
+It is inspired by datamodelr,
+and extends the idea by offering operations to access the data in the tables.
+dm() creates a dm object from one or multiple tbl objects
+(tibbles or lazy data objects).
+dm_from_src() creates a dm from some or all tables in a src
+(a database or an environment).
+new_dm() doesn't perform any checks on the input.
+You may need to double-check the returned object with validate_dm().
+All constructors create an empty dm if called without arguments.
+validate_dm() checks the internal consistency of a dm object.
 cdm_get_src() returns the dplyr source component of a dm
 object.
 cdm_get_con() returns the connection object (con-part of dplyr source component) of a dm
@@ -157,14 +160,17 @@ as_dm() coerces objects to the dm class" />
     </div>
 
     <div class="ref-description">
-    <p>The <code>dm</code> class wraps <a href='https://dplyr.tidyverse.org/reference/src.html'>dplyr::src</a> and adds a description of table relationships
-inspired by <a href='https://github.com/bergant/datamodelr'>datamodelr</a>, of which it also borrows code.</p>
-<p><code>dm()</code> coerces its inputs. If called without arguments, an empty <code>dm</code> object is created.</p>
-<p><code>new_dm()</code> only checks if the inputs are of the correct class.
-If called without arguments, an empty <code>dm</code> object is created.</p>
-<p><code>validate_dm()</code> checks consistency between the <span class="pkg">dplyr</span> source
-and the <span class="pkg">datamodelr</span> based specification of table relationships.
-This function is currently a no-op.</p>
+    <p>The <code>dm</code> class holds a list of tables and their relationships.
+It is inspired by <a href='https://github.com/bergant/datamodelr'>datamodelr</a>,
+and extends the idea by offering operations to access the data in the tables.</p>
+<p><code>dm()</code> creates a <code>dm</code> object from one or multiple <a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a> objects
+(tibbles or lazy data objects).</p>
+<p><code>dm_from_src()</code> creates a <code>dm</code> from some or all tables in a src
+(a database or an environment).</p>
+<p><code>new_dm()</code> doesn't perform any checks on the input.
+You may need to double-check the returned object with <code>validate_dm()</code>.</p>
+<p>All constructors create an empty <code>dm</code> if called without arguments.</p>
+<p><code>validate_dm()</code> checks the internal consistency of a <code>dm</code> object.</p>
 <p><code>cdm_get_src()</code> returns the <span class="pkg">dplyr</span> source component of a <code>dm</code>
 object.</p>
 <p><code>cdm_get_con()</code> returns the connection object (<code>con</code>-part of <span class="pkg">dplyr</span> source component) of a <code>dm</code>
@@ -179,9 +185,11 @@ object, the set filter expressions.</p>
 <p><code>as_dm()</code> coerces objects to the <code>dm</code> class</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm</span>(<span class='no'>src</span>, <span class='kw'>data_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>dm</span>(<span class='no'>...</span>, <span class='kw'>.name_repair</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span>))
 
-<span class='fu'>new_dm</span>(<span class='no'>tables</span>, <span class='no'>data_model</span>)
+<span class='fu'>dm_from_src</span>(<span class='no'>src</span>, <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>new_dm</span>(<span class='kw'>tables</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
 
 <span class='fu'>validate_dm</span>(<span class='no'>x</span>)
 
@@ -201,16 +209,27 @@ object, the set filter expressions.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>...</th>
+      <td><p>Tables to add to the <code>dm</code>.  If no names are provided, the tables
+are auto-named.</p></td>
+    </tr>
+    <tr>
+      <th>.name_repair</th>
+      <td><p>Options for name repair.
+Forwarded as <code>repair</code> to <code><a href='https://rdrr.io/pkg/vctrs/man/vec_as_names.html'>vctrs::vec_as_names()</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>src</th>
       <td><p>A <span class="pkg">dplyr</span> table source object.</p></td>
     </tr>
     <tr>
-      <th>data_model</th>
-      <td><p>A <span class="pkg">datamodelr</span> data model object, or <code>NULL</code>.</p></td>
+      <th>table_names</th>
+      <td><p>A character vector of the table names to include.</p></td>
     </tr>
     <tr>
       <th>tables</th>
-      <td><p>A list of the tables (tibble-objects, not names) to be included in the <code>dm</code> object</p></td>
+      <td><p>A named list of the tables (tibble-objects, not names)
+to be included in the <code>dm</code> object.</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -237,11 +256,23 @@ object, the set filter expressions.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'>dm</span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+<span class='fu'>dm</span>(<span class='no'>iris</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
+#&gt; ── Data model ──────────────────────────────────────────────────────────────────
+#&gt; Tables: `iris`, `mtcars`
+#&gt; Columns: 16
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>dm_from_src</span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>new_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
+#&gt; ── Data model ──────────────────────────────────────────────────────────────────
+#&gt; Tables: `iris`, `mtcars`
+#&gt; Columns: 16
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;

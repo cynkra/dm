@@ -139,7 +139,7 @@
 <h2 class="hasAnchor">
 <a href="#create" class="anchor"></a>Creating <code>dm</code> objects:</h2>
 <p>The <a href="https://github.com/hadley/nycflights13">{nycflights13}</a> package offers a nice example of interconnected tables. The most straightforward way of squeezing those tables into a <code>dm</code> object is:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">dm</a></span>(<span class="kw">src_df</span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">dm_from_src</a></span>(<span class="kw">src_df</span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">flights_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
