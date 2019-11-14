@@ -408,8 +408,8 @@ print.dm <- function(x, ...) {
   def <- cdm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
-  cat_line("Primary keys: ", sum(map_int(def$pks, NROW)))
-  cat_line("Foreign keys: ", sum(map_int(def$fks, NROW)))
+  cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
+  cat_line("Foreign keys: ", sum(map_int(def$fks, vctrs::vec_size)))
 
   filters <- cdm_get_filter(x)
   if (nrow(filters) > 0) {
