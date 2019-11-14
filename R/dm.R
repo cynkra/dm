@@ -567,13 +567,15 @@ tbl.dm <- function(src, from, ...) {
 }
 
 #' @export
-compute.dm <- function(x, name, ...) {
-  cdm_apply_filters(x)
+compute.dm <- function(x, ...) {
+  cdm_apply_filters(x) %>%
+    cdm_get_def() %>%
+    mutate(data = map(data, compute, ...)) %>%
+    new_dm3()
 }
 
 #' @export
 compute.zoomed_dm <- function(x, ...) {
-  # FIXME: zoomed table has to be filtered
   zoomed_df <- get_zoomed_tbl(x) %>%
     compute(zoomed_df, ...)
   replace_zoomed_tbl(x, zoomed_df)
