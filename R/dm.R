@@ -13,7 +13,7 @@
 #' @param .name_repair Options for name repair.
 #'   Forwarded as `repair` to [vctrs::vec_as_names()].
 #' @param src A \pkg{dplyr} table source object.
-#' @param table_names A character vector of the table names to include.
+#' @param table_names A character vector of the names of the tables to include.
 #'
 #' @seealso
 #'
