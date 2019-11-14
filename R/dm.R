@@ -60,6 +60,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
   new_dm(tbls)
 }
 
+#' @rdname dm
 #' @export
 dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
   if (is_missing(src)) return(empty_dm())
