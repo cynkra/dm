@@ -328,75 +328,65 @@ nycflights13_tbl_2 <- dm() %>%
     weather = weather
   )
 
-# Linking the weather table (these tests can also be performed in `dm` object after #138)
+# Linking the weather table, working within a `dm`
+
+# A single table of a `dm` can be activated (or zoomed to), and subsequently be manipulated by many {dplyr}-verbs.
+# Eventually, either the original table can be updated or the manipulated table can be inserted as a new table.
+
 
 # Determine key candidates
-weather %>%
-  enum_pk_candidates()
+zoomed_weather <- cdm_zoom_to_tbl(nycflights13_tbl, weather)
+zoomed_weather
 
-weather %>%
-  enum_pk_candidates() %>%
+nycflights13_tbl %>%
+  cdm_enum_pk_candidates(weather)
+
+nycflights13_tbl %>%
+  cdm_enum_pk_candidates(weather) %>%
   count(candidate)
 
 # It's tricky:
-weather %>%
+zoomed_weather %>%
   unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
   count(slot_id) %>%
   filter(n > 1)
 
-weather %>%
+zoomed_weather %>%
   count(origin, time_hour) %>%
   filter(n > 1)
 
-weather %>%
+zoomed_weather %>%
   count(origin, format(time_hour)) %>%
   filter(n > 1)
 
 # This looks like a good candidate:
-weather %>%
+zoomed_weather %>%
   count(origin, format(time_hour, tz = "UTC")) %>%
   filter(n > 1)
 
 # FIXME: Support compound keys (#3)
 
 # Currently, we need to create surrogate keys:
-weather_link <-
-  weather %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
-
-weather_link
-
-flights_link <-
-  flights %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
-
-flights_link
-
-# Linking the weather table, working with the `dm` from earlier (`nycflights13_tbl`)
-
-# A single table of a `dm` can be activated (or zoomed to), and subsequently be manipulated by many {dplyr}-verbs.
-# Eventually, either the original table can be updated or the manipulated table can be inserted as a new table.
-
 nycflights13_weather_link <-
-  nycflights13_tbl %>%
-  cdm_zoom_to_tbl(weather) %>%
+  zoomed_weather %>%
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  # FIXME: method `unite.zoomed_dm()` missing until #138
-  mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
+  unite("origin_slot_id", origin, time_hour_fmt) %>%
   # here the original 'weather' table is updated with the manipulated one
   cdm_update_zoomed_tbl()
+
+nycflights13_weather_link$weather
 
 nycflights13_weather_flights_link <-
   # same procedure with 'flights' table
   # FIXME: this would be more efficient if zooming to multiple tables was supported
   cdm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  mutate(origin_slot_id = paste0(origin, "_", time_hour_fmt)) %>%
+  # for flights we need to keep the column `origin`, since it is a FK pointing to `airports`
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
+  select(origin_slot_id, everything(), -time_hour_fmt) %>%
   cdm_update_zoomed_tbl()
 
-nycflights13_weather_flights_link
+nycflights13_weather_flights_link$flights
 
 nycflights13_weather_flights_link %>%
   cdm_draw()
