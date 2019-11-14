@@ -572,6 +572,22 @@ test_that("key tracking works", {
     tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5/9)
   )
 
+  # slice retains all keys when no positive indices are duplicated
+  expect_identical(
+    zoomed_dm %>% slice(1:5) %>% cdm_update_zoomed_tbl() %>% get_all_keys("t2"),
+    get_all_keys(dm_for_filter, "t2")
+  )
+
+  expect_identical(
+    zoomed_dm %>% slice(rep(1:3, 2)) %>% cdm_update_zoomed_tbl() %>% get_all_keys("t2"),
+    set_names(c("d", "e"))
+  )
+
+  expect_identical(
+    zoomed_dm %>% slice(rep(-1:-3, 2)) %>% cdm_update_zoomed_tbl() %>% get_all_keys("t2"),
+    get_all_keys(dm_for_filter, "t2")
+  )
+
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t2) %>%
