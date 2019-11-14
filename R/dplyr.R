@@ -157,8 +157,15 @@ slice.dm <- function(.data, ...) {
 }
 
 #' @export
-slice.zoomed_dm <- function(.data, ...) {
-  replace_zoomed_tbl(.data, slice(get_zoomed_tbl(.data), ...))
+slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
+  sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
+  orig_pk <- cdm_get_pk(.data, !!orig_name_zoomed(.data))
+  tracked_keys <- get_tracked_keys(.data)
+  if (is_null(.keep_pk)) {if (has_length(orig_pk) && orig_pk %in% tracked_keys) message(
+    paste("Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices).",
+          "Set parameter `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended.")
+    )} else if (!.keep_pk) {tracked_keys <- discard(tracked_keys, tracked_keys == orig_pk)}
+  replace_zoomed_tbl(.data, sliced_tbl, tracked_keys)
 }
 
 #' @export

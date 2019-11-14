@@ -130,10 +130,29 @@ test_that("basic test: 'arrange()'-methods work", {
 })
 
 test_that("basic test: 'slice()'-methods work", {
-  expect_identical(
-    slice(zoomed_dm, 3:6) %>% get_zoomed_tbl(),
-    slice(t2, 3:6)
+  expect_message(
+    expect_identical(slice(zoomed_dm, 3:6) %>% get_zoomed_tbl(), slice(t2, 3:6)),
+    "`slice.zoomed_dm\\(\\)` can potentially"
   )
+
+  # silent when no PK available
+  expect_silent(
+    expect_identical(
+      slice(cdm_zoom_to_tbl(dm_for_disambiguate, iris_3), 1:3) %>% get_zoomed_tbl(),
+      slice(iris_3, 1:3)
+    )
+  )
+
+  # silent when no PK available anymore
+  expect_silent(
+    mutate(zoomed_dm, c = 1) %>% slice(1:3)
+  )
+
+  expect_silent(
+    expect_identical(
+      slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_zoomed_tbl(),
+      slice(t2, if_else(d < 5, 1:6, 7:2)))
+    )
 
   expect_cdm_error(
     slice(dm_for_filter, 2),
@@ -571,6 +590,10 @@ test_that("key tracking works", {
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5/9)
   )
+
+  expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_keys(), set_names(c("d", "e")))
+  expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2)) %>% get_tracked_keys(), set_names(c("c", "d", "e")))
+  expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% get_tracked_keys(), set_names(c("c", "d", "e")))
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
