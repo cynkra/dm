@@ -39,7 +39,7 @@ respective column in table \code{table} and the primary column entries in table 
 \item the error message triggered by the error (often stating the mismatched column types)
 }
 
-\code{enum_fk_candidates()} works like \code{cdm_enum_fk_candidates()} but uses the zoomed table by default.
+\code{enum_fk_candidates()} works like \code{cdm_enum_fk_candidates()} with the zoomed table as \code{table}.
 }
 \examples{
 cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
