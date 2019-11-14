@@ -32,8 +32,10 @@ The function is almost exactly the inverse of \code{decompose_table()} (the orde
 of the columns is not retained and original rownames are lost).
 }
 \seealso{
-Other table surgery functions: \code{\link{decompose_table}}
+Other table surgery functions: 
+\code{\link{decompose_table}()}
 
-Other table surgery functions: \code{\link{decompose_table}}
+Other table surgery functions: 
+\code{\link{decompose_table}()}
 }
 \concept{table surgery functions}
