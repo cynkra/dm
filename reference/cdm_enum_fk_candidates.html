@@ -143,7 +143,9 @@ the primary key column of another dm object's table?" />
 the primary key column of another <code><a href='dm.html'>dm</a></code> object's table?</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_enum_fk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)</pre>
+    <pre class="usage"><span class='fu'>cdm_enum_fk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)
+
+<span class='fu'>enum_fk_candidates</span>(<span class='no'>zoomed_dm</span>, <span class='no'>ref_table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,6 +161,10 @@ the primary key column of another <code><a href='dm.html'>dm</a></code> object's
     <tr>
       <th>ref_table</th>
       <td><p>A table with a primary key.</p></td>
+    </tr>
+    <tr>
+      <th>zoomed_dm</th>
+      <td><p>A <code>dm</code> with a zoomed table.</p></td>
     </tr>
     </table>
 
@@ -179,6 +185,7 @@ respective column in table <code>table</code> and the primary column entries in 
 <li><p>the error message triggered by the error (often stating the mismatched column types)</p></li>
 </ul>
 
+<p><code>enum_fk_candidates()</code> works like <code>cdm_enum_fk_candidates()</code> but uses the zoomed table by default.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other foreign key functions: <code><a href='cdm_add_fk.html'>cdm_add_fk</a></code>,

@@ -147,8 +147,6 @@
 #&gt; Columns: 53
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <p>Here we are making use of the fact that the function <code><a href="../reference/dm.html">dm(src, data_model = NULL)</a></code> includes all available tables on a source in the <code>dm</code> object, should the <code>data_model</code>-argument be left <code>NULL</code>. This means that you can use this, for example, on a postgres database that you access via <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_postgres()</a></code> (with the appropriate arguments <code>dbname</code>, <code>host</code>, <code>port</code>, …), to produce a <code>dm</code> object with all the tables on the database.</p>
 <p>Another way of creating a <code>dm</code> object is calling <code><a href="../reference/dm.html">as_dm()</a></code> on a list of <code>tbls</code>, e.g., the tables included in the well-known <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.1/topics/iris"><code>iris</code></a> dataset:</p>
@@ -161,8 +159,6 @@
 #&gt; Columns: 10
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <!-- And lastly, with `new_dm()` you can create a `dm` by providing the three individual parts that it consists of: -->
 <!-- ```{r} -->
@@ -221,8 +217,6 @@
 #&gt; Columns: 53
 #&gt; Primary keys: 1
 #&gt; Foreign keys: 0
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <p>The <code>dm</code> model now has a primary key. Let’s check:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_has_pk.html">cdm_has_pk</a></span>(flights_dm_with_key, airports)</a>
@@ -288,8 +282,6 @@
 #&gt; Columns: 53
 #&gt; Primary keys: 1
 #&gt; Foreign keys: 1
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <p>This will throw an error:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">flights_dm <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports)</a>
@@ -305,8 +297,6 @@
 #&gt; Columns: 53
 #&gt; Primary keys: 1
 #&gt; Foreign keys: 2
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <p>As you can see, behind the scenes, checks are executed automatically by the functions of <code>dm</code> to prevent steps that do not comply with the logic of data models.</p>
 <p>Use <code><a href="../reference/cdm_has_fk.html">cdm_has_fk()</a></code> for checking if a foreign key exists that is pointing from one table to another:</p>

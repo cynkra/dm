@@ -148,8 +148,6 @@
 #&gt; Columns: 53
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <p>This fairly verbose output shows the three components of a <code>dm</code> object: the table source, the metadata, and row counts. These components can be accessed with <code><a href="../reference/dm.html">cdm_get_src()</a></code> and <code><a href="../reference/dm.html">cdm_get_tables()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/dm.html">cdm_get_src</a></span>(flights_dm)</a>
@@ -352,8 +350,6 @@
 #&gt; Columns: 53
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 4
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <p>In the opposite direction, <code>dm</code> objects can also be “learned” from a DB, including the key constraints, by utilizing the DB’s meta-information tables. Unfortunately, this currently only works for MSSQL and Postgres, so we cannot show the results here just yet:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">flights_dm_from_remote &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_learn_from_db.html">cdm_learn_from_db</a></span>(src_sqlite)</a></code></pre></div>
