@@ -127,17 +127,11 @@ new_dm <- function(tables) {
 }
 
 new_dm3 <- function(def, zoomed = FALSE) {
-  if (!zoomed) {
-    structure(
-      list(def = def),
-      class = "dm"
-      )
-  } else {
-    structure(
-      list(def = def),
-      class = c("zoomed_dm", "dm")
-    )
-  }
+  class <- c(
+    if (zoomed) "zoomed_dm",
+    "dm"
+  )
+  structure(list(def = def), class = class)
 }
 
 new_pk <- function(column = list()) {
@@ -397,18 +391,10 @@ print.dm <- function(x, ...) {
   cat_line("Primary keys: ", sum(map_int(def$pks, NROW)))
   cat_line("Foreign keys: ", sum(map_int(def$fks, NROW)))
 
-  cat_rule("Filters", col = "orange")
   filters <- cdm_get_filter(x)
-
   if (nrow(filters) > 0) {
-    names <- pull(filters, table)
-    filter_exprs <- pull(filters, filter) %>%
-      as.character() %>%
-      str_replace("^~", "")
-
-    walk2(names, filter_exprs, ~ cat_line(paste0(.x, ": ", .y)))
-  } else {
-    cat_line("None")
+    cat_rule("Filters", col = "orange")
+    walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
   }
 
   invisible(x)

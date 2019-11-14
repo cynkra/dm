@@ -20,9 +20,11 @@ A boolean value: \code{TRUE}, if a reference from \code{table} to \code{ref_tabl
 Does a reference from one table of a \code{dm} to another exist?
 }
 \seealso{
-Other foreign key functions: \code{\link{cdm_add_fk}},
-  \code{\link{cdm_enum_fk_candidates}},
-  \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
-  \code{\link{cdm_rm_fk}}
+Other foreign key functions: 
+\code{\link{cdm_add_fk}()},
+\code{\link{cdm_enum_fk_candidates}()},
+\code{\link{cdm_get_all_fks}()},
+\code{\link{cdm_get_fk}()},
+\code{\link{cdm_rm_fk}()}
 }
 \concept{foreign key functions}

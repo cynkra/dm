@@ -20,6 +20,7 @@ account.
 So far this only works for MSSQL and Postgres. Also, you can not specify a schema to learn from.
 }
 \seealso{
-Other DB interaction functions: \code{\link{cdm_copy_to}}
+Other DB interaction functions: 
+\code{\link{cdm_copy_to}()}
 }
 \concept{DB interaction functions}

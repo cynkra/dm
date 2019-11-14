@@ -183,6 +183,7 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' nycflights13::flights %>% enum_pk_candidates()
 enum_pk_candidates <- nse_function(c(table), ~ {
   # list of ayes and noes:
+  if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
   map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
     enframe("column") %>%
