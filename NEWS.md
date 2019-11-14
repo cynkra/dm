@@ -1,3 +1,18 @@
+# dm 0.0.4.9001
+
+- Add explanation for empty `dm` (#100).
+- Redesign constructors and validators (#69).
+- `enum_pk_candidates()` works with zoomed dm-s (#156).
+- New `enum_fk_candidates()` (#156).
+- `compute.dm()` applies filters and calls `compute()` on all tables (#135).
+- `slice.zoomed_dm()`: user decides in arg `.keep_pk` if PK column is tracked or not (#152).
+- `dimnames()`, `colnames()`, `dim()`, `distinct()`, `arrange()`, `slice()`, `separate()` and `unite()` implemented for zoomed dm-s (#130).
+- Avoid asterisk when printing local `zoomed_dm` (#131).
+- Joins use the same column name disambiguation algorithm as `cdm_flatten_to_tbl()` (#147).
+- Add name repair argument for both `cdm_insert_zoomed_tbl()` and `cdm_add_tbl()`, defaulting to renaming of old and new tables when adding tables with duplicate names (#132).
+- Joins on zoomed dm objects now supported (#121).
+
+
 # dm 0.0.4.9000
 
 - `cdm_filter()` and `filter.zoomed_dm()` apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in `cdm_apply_filters()`. This now allows using a variety of operations on filtered `dm` objects (#124).
