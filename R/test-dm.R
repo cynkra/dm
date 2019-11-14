@@ -72,6 +72,8 @@ check_fk_child_tables <- function(child_tables, dm_tables) {
   if (!all(map_lgl(child_tables, ~{. %in% dm_tables}))) {abort_dm_invalid("FK child table names not in `dm` table names.")}
 }
 
-check_colnames <- function(fks, dm_col_names, which) {
-  if (!all(map2_lgl(fks$table, fks$column, ~{..2 %in% dm_col_names[[..1]]}))) abort_dm_invalid(glue("At least one {which} column name(s) not in `dm` tables' column names."))
+check_colnames <- function(key_tibble, dm_col_names, which) {
+  if (!all(map2_lgl(key_tibble$table, key_tibble$column, ~{..2 %in% dm_col_names[[..1]]}))) {
+    abort_dm_invalid(glue("At least one {which} column name(s) not in `dm` tables' column names."))
+    }
 }
