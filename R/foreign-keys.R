@@ -194,7 +194,6 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
   check_no_filter(dm)
-
   table_name <- as_string(ensym(table))
   ref_table_name <- as_string(ensym(ref_table))
 
@@ -202,11 +201,36 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   check_correct_input(dm, ref_table_name)
 
   ref_tbl_pk <- cdm_get_pk(dm, !!ref_table_name)
+
+  ref_tbl <- tbl(dm, ref_table_name)
+  tbl <- tbl(dm, table_name)
+
+  enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk)
+})
+
+#' @details `enum_fk_candidates()` works like `cdm_enum_fk_candidates()` with the zoomed table as `table`.
+#'
+#' @rdname cdm_enum_fk_candidates
+#' @param zoomed_dm A `dm` with a zoomed table.
+#' @export
+enum_fk_candidates <- function(zoomed_dm, ref_table) {
+  check_dm(zoomed_dm)
+  check_zoomed(zoomed_dm)
+
+  table_name <- orig_name_zoomed(zoomed_dm)
+  ref_table_name <- as_string(ensym(ref_table))
+  check_correct_input(zoomed_dm, ref_table_name)
+
+  ref_tbl_pk <- cdm_get_pk(zoomed_dm, !!ref_table_name)
+
+  ref_tbl <- cdm_get_filtered_table(zoomed_dm, ref_table_name)
+  enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk)
+}
+
+enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) {
   if (is_empty(ref_tbl_pk)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
-  ref_tbl <- tbl(dm, ref_table_name)
-  tbl <- tbl(dm, table_name)
   tbl_colnames <- colnames(tbl)
 
   tibble(
@@ -218,7 +242,8 @@ cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
     mutate(arrange_col = as.integer(str_extract(why, "^[0-9]*"))) %>%
     arrange(desc(candidate), arrange_col, column) %>%
     select(-arrange_col)
-})
+
+}
 
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 
