@@ -362,6 +362,36 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     )
   )
 
+  # if `by = NULL` and in `select` user chooses to rename a normal column as a key column and at the same time renames the key column
+  expect_message(
+    expect_identical(
+      cdm_zoom_to_tbl(dm_for_disambiguate, iris_1) %>% left_join(iris_2, select = c(Species_new = key, key = Sepal.Width)) %>% get_zoomed_tbl(),
+      left_join(rename(iris_1, iris_1.key = key), select(iris_2, Species_new = key, iris_2.key = Sepal.Width), by = c("iris_1.key" = "Species_new"))
+      ),
+    "Renamed columns"
+    )
+
+  # if user doesn't select `by` column of RHS table it has to be re-added
+  expect_message(
+    expect_identical(
+    zoomed_dm %>% left_join(t3, select = g) %>% get_zoomed_tbl(),
+    left_join(t2, t3, by = c("e" = "f"))),
+    "Adding missing"
+  )
+
+  # if user provides `by` columns but doesn't select `by` column of RHS table it has to be re-added
+  expect_message(
+    expect_identical(
+      cdm_zoom_to_tbl(dm_for_disambiguate, iris_1) %>%
+        left_join(iris_2, select = c(key, other_col), by = c("Sepal.Width", "Sepal.Length")) %>%
+        get_zoomed_tbl(),
+      left_join(
+        rename(iris_1, iris_1.key = key),
+        select(iris_2, iris_2.key = key, other_col, Sepal.Width, Sepal.Length),
+        by = c("Sepal.Width", "Sepal.Length"))
+      ),
+    "`Sepal.Width`, `Sepal.Length`"
+  )
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
@@ -394,6 +424,11 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     expect_cdm_error(
       right_join(dm_for_filter),
       "only_possible_w_zoom"
+    )
+
+    expect_cdm_error(
+      cdm_zoom_to_tbl(dm_for_disambiguate, iris_1) %>% left_join(iris_2, select = c(key = Sepal.Width)),
+      "duplicated_cols_introduced"
     )
 })
 
