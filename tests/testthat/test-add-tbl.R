@@ -47,10 +47,16 @@ test_that("cdm_add_tbl() works", {
     c(src_tbls(dm_for_filter), "d1", "d2")
   )
 
-  # Is an error thrown in case I try to give the new table an old table's name?
-  expect_error(
-    cdm_add_tbl(dm_for_filter, t1 = d1),
-    class = "vctrs_error_names_must_be_unique"
+  # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
+  expect_cdm_error(
+    cdm_add_tbl(dm_for_filter, t1 = d1, repair = "check_unique"),
+    "need_unique_names"
+  )
+
+  # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
+  expect_identical(
+    cdm_add_tbl(dm_for_filter, t1 = d1, quiet = TRUE) %>% src_tbls(),
+    c("t1...1", "t2", "t3", "t4", "t5", "t6", "t1...7")
   )
 
   expect_message(

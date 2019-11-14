@@ -4,7 +4,7 @@
 \alias{cdm_add_tbl}
 \title{Add tables to a \code{\link{dm}}}
 \usage{
-cdm_add_tbl(dm, ..., repair = "check_unique")
+cdm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object}
@@ -29,6 +29,11 @@ error.
 The \code{"check_unique"} option doesn't perform any name repair.
 Instead, an error is raised if the names don't suit the
 \code{"unique"} criteria.}
+
+\item{quiet}{By default, the user is informed of any renaming
+caused by repairing the names. This only concerns unique and
+universal repairing. Set \code{quiet} to \code{TRUE} to silence the
+messages.}
 }
 \value{
 The inital \code{dm} with the additional table(s).
