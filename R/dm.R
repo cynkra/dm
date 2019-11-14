@@ -176,6 +176,22 @@ new_key_tracker_zoom <- function() {
 #' @rdname dm
 #' @export
 validate_dm <- function(x) {
+  check_dm(x)
+  def <- cdm_get_def(x)
+  table_names <- def$table
+  fks <- def$fks %>%
+    map_dfr(I) %>%
+    unnest(column)
+  check_fk_child_tables(fks$table, table_names)
+  dm_col_names <- set_names(map(def$data, colnames), table_names)
+  check_colnames(fks, dm_col_names, "FK")
+  pks <- select(def, table, pks) %>%
+    unnest(pks) %>%
+    unnest(column)
+  check_colnames(pks, dm_col_names, "PK")
+  # check that all column classes are correct
+  # check that (for now) only maximally one `zoom` element is not `NULL`
+  # same with `key_tracker_zoom`
   # TODO: check consistency
   # - tables in data_model must be a subset of tables in src
   # - all tables in src must exist in data model
