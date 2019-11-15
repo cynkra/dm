@@ -30,8 +30,6 @@ cdm_select_tbl <- function(dm, ...) {
 #' @rdname cdm_select_tbl
 #' @export
 cdm_rename_tbl <- function(dm, ...) {
-  check_no_filter(dm)
-
   vars <- tidyselect_table_names(dm)
   selected <- tidyselect::vars_rename(vars, ...)
   cdm_select_tbl_impl(dm, selected)

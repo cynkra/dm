@@ -20,9 +20,11 @@ A tibble with columns:
 Get an overview about all foreign key relations in a \code{\link{dm}}
 }
 \seealso{
-Other foreign key functions: \code{\link{cdm_add_fk}},
-  \code{\link{cdm_enum_fk_candidates}},
-  \code{\link{cdm_get_fk}}, \code{\link{cdm_has_fk}},
-  \code{\link{cdm_rm_fk}}
+Other foreign key functions: 
+\code{\link{cdm_add_fk}()},
+\code{\link{cdm_enum_fk_candidates}()},
+\code{\link{cdm_get_fk}()},
+\code{\link{cdm_has_fk}()},
+\code{\link{cdm_rm_fk}()}
 }
 \concept{foreign key functions}

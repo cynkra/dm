@@ -17,26 +17,26 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
 }
 
 cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
-  recipe <- compute_disambiguate_cols_recipe(dm, tables = tables, sep = sep)
+  table_colnames <- get_table_colnames(dm, tables)
+  recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = sep)
   if (!quiet) explain_col_rename(recipe)
   col_rename(dm, recipe)
 }
 
-compute_disambiguate_cols_recipe <- function(dm, tables, sep) {
+get_table_colnames <- function(dm, tables = NULL) {
   def <- cdm_get_def(dm)
+
+  if (!is.null(tables)) {
+    def <-
+      def %>%
+      filter(table %in% !!tables)
+  }
 
   table_colnames <-
     def %>%
-    mutate(colnames = map(data, colnames)) %>%
-    select(table, colnames) %>%
-    unnest(colnames) %>%
-    rename(column = colnames)
-
-  if (!is.null(tables)) {
-    table_colnames <-
-      table_colnames %>%
-      filter(table %in% !!tables)
-  }
+    mutate(column = map(data, colnames)) %>%
+    select(table, column) %>%
+    unnest(column)
 
   pks <-
     cdm_get_all_pks(dm) %>%
@@ -45,7 +45,11 @@ compute_disambiguate_cols_recipe <- function(dm, tables, sep) {
   table_colnames %>%
     # in case of flattening, the primary key columns will never be responsible for the name
     # of the resulting column in the end, so they do not need to be disambiguated
-    anti_join(pks, by = c("table", "column")) %>%
+    anti_join(pks, by = c("table", "column"))
+}
+
+compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
+  table_colnames %>%
     add_count(column) %>%
     filter(n > 1) %>%
     mutate(new_name = paste0(table, sep, column)) %>%

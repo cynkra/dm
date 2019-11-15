@@ -22,8 +22,6 @@
 #'   cdm_rename(airports, code = faa, altitude = alt)
 #' @export
 cdm_rename <- function(dm, table, ...) {
-  check_no_filter(dm)
-
   table_name <- as_string(ensym(table))
 
   cdm_zoom_to_tbl(dm, !!table_name) %>%
@@ -45,8 +43,6 @@ cdm_rename <- function(dm, table, ...) {
 #'
 #' @export
 cdm_select <- function(dm, table, ...) {
-  check_no_filter(dm)
-
   table_name <- as_string(ensym(table))
 
   cdm_zoom_to_tbl(dm, !!table_name) %>%

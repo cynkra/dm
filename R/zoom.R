@@ -5,6 +5,7 @@
 #' context of the `dm` object.
 #'
 #' @inheritParams cdm_add_pk
+#' @inheritParams vctrs::vec_as_names
 #'
 #' @details `cdm_zoom_to_tbl()`: zooms to the given table.
 #'
@@ -65,12 +66,19 @@ get_zoomed_tbl <- function(dm) {
 
 #' @rdname cdm_zoom_to_tbl
 #' @param new_tbl_name Name of the new table
+#' @inheritParams vctrs::vec_as_names
 #'
 #' @export
-cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
+cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
-  new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
-  if (new_tbl_name_chr == "") abort_table_needs_name()
+  new_tbl_name_chr <-
+    if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else as_string(enexpr(new_tbl_name))
+  names_list <-
+    repair_table_names(old_names = names(dm), new_names = new_tbl_name_chr, repair, quiet)
+  # rename dm in case of name repair
+  dm <- cdm_select_tbl_impl(dm, names_list$new_old_names)
+
+  new_tbl_name_chr <- names_list$new_names
   old_tbl_name <- orig_name_zoomed(dm)
   new_tbl <- list(get_zoomed_tbl(dm))
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
@@ -184,7 +192,7 @@ get_tracked_keys <- function(dm) {
   cdm_get_def(dm) %>%
     filter(table == orig_name_zoomed(dm)) %>%
     pull(key_tracker_zoom) %>%
-    pluck(1)
+    extract2(1)
 }
 
 orig_name_zoomed <- function(dm) {
@@ -204,6 +212,8 @@ check_zoomed <- function(dm) {
   if (is_zoomed(dm)) return()
 
   fun_name <- as_string(sys.call(-1)[[1]])
+  # if a method for `zoomed_dm()` is used for a `dm`, we don't want `fun_name = method.dm` but rather `fun_name = method`
+  fun_name <- str_replace(fun_name, "\\.dm", "")
   abort_only_possible_w_zoom(fun_name)
 }
 

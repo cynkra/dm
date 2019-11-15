@@ -23,8 +23,11 @@ nycflights_dm \%>\%
   cdm_has_pk(planes)
 }
 \seealso{
-Other primary key functions: \code{\link{cdm_add_pk}},
-  \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
-  \code{\link{cdm_rm_pk}}, \code{\link{enum_pk_candidates}}
+Other primary key functions: 
+\code{\link{cdm_add_pk}()},
+\code{\link{cdm_get_all_pks}()},
+\code{\link{cdm_get_pk}()},
+\code{\link{cdm_rm_pk}()},
+\code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

@@ -2,6 +2,7 @@
 % Please edit documentation in R/dm.R
 \name{dm}
 \alias{dm}
+\alias{dm_from_src}
 \alias{new_dm}
 \alias{validate_dm}
 \alias{cdm_get_src}
@@ -12,9 +13,11 @@
 \alias{as_dm}
 \title{Data model class}
 \usage{
-dm(src, data_model = NULL)
+dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
 
-new_dm(tables, data_model)
+dm_from_src(src, table_names = NULL)
+
+new_dm(tables = list())
 
 validate_dm(x)
 
@@ -31,26 +34,38 @@ is_dm(x)
 as_dm(x)
 }
 \arguments{
+\item{...}{Tables to add to the \code{dm}.  If no names are provided, the tables
+are auto-named.}
+
+\item{.name_repair}{Options for name repair.
+Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
+
 \item{src}{A \pkg{dplyr} table source object.}
 
-\item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
+\item{table_names}{A character vector of the names of the tables to include.}
 
-\item{tables}{A list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
+\item{tables}{A named list of the tables (tibble-objects, not names)
+to be included in the \code{dm} object.}
 
 \item{x}{An object.}
 }
 \description{
-The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships
-inspired by \href{https://github.com/bergant/datamodelr}{datamodelr}, of which it also borrows code.
+The \code{dm} class holds a list of tables and their relationships.
+It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
+and extends the idea by offering operations to access the data in the tables.
 
-\code{dm()} coerces its inputs. If called without arguments, an empty \code{dm} object is created.
+\code{dm()} creates a \code{dm} object from one or multiple \link{tbl} objects
+(tibbles or lazy data objects).
 
-\code{new_dm()} only checks if the inputs are of the correct class.
-If called without arguments, an empty \code{dm} object is created.
+\code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}
+(a database or an environment).
 
-\code{validate_dm()} checks consistency between the \pkg{dplyr} source
-and the \pkg{datamodelr} based specification of table relationships.
-This function is currently a no-op.
+\code{new_dm()} doesn't perform any checks on the input.
+You may need to double-check the returned object with \code{validate_dm()}.
+
+All constructors create an empty \code{dm} if called without arguments.
+
+\code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
 \code{cdm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}
 object.
@@ -72,7 +87,9 @@ object, the set filter expressions.
 }
 \examples{
 library(dplyr)
-dm(dplyr::src_df(pkg = "nycflights13"))
+dm(iris, mtcars)
+dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+new_dm(list(iris = iris, mtcars = mtcars))
 as_dm(list(iris = iris, mtcars = mtcars))
 
 cdm_nycflights13() \%>\% tbl("airports")
