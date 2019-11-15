@@ -196,7 +196,7 @@ try(
 ##
 ##
 ##
-## NEW NEW NEW: Joining many tables
+## Joining many tables
 ## --------------------------------------------------------------------
 ##
 ##
@@ -264,11 +264,13 @@ dm_flights_sqlite %>%
 ##
 
 # Filtering on a table returns a dm object
-# with the filter condition(s) stored
+# with
+# 1. the filter applied to the table in question
+# 2. the filter condition(s) stored
 dm_flights %>%
   cdm_filter(airlines, name == "Delta Air Lines Inc.")
 
-# ... which then can be filtered on another table
+# the resulting `dm` can then be filtered on another table
 dm_flights %>%
   cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   cdm_filter(airports, name != "John F Kennedy Intl")
@@ -282,7 +284,8 @@ delta_non_jfk_january <-
   cdm_filter(flights, month == 1)
 delta_non_jfk_january
 
-# Querying a table applies the filters
+# Querying a table applies the filters via semi-joins
+# along the FK constraints to the requested table
 delta_non_jfk_january %>%
   tbl("planes")
 
@@ -305,70 +308,23 @@ delta_non_jfk_january %>%
 ##
 ##
 
-# Linking the weather table
 
-# Determine key candidates
-weather %>%
-  enum_pk_candidates()
-
-weather %>%
-  enum_pk_candidates() %>%
-  count(candidate)
-
-# It's tricky:
-weather %>%
-  unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
-  count(slot_id) %>%
-  filter(n > 1)
-
-weather %>%
-  count(origin, time_hour) %>%
-  filter(n > 1)
-
-weather %>%
-  count(origin, format(time_hour)) %>%
-  filter(n > 1)
-
-# This looks like a good candidate:
-weather %>%
-  count(origin, format(time_hour, tz = "UTC")) %>%
-  filter(n > 1)
-
-# FIXME: Support compound keys (#3)
-
-# Currently, we need to create surrogate keys:
-weather_link <-
-  weather %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
-
-weather_link
-
-flights_link <-
-  flights %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
-
-flights_link
-
-# one option to create a `dm` is to use `as_dm()`:
-nycflights13_tbl <- as_dm(list(
-  airlines = airlines,
-  airports = airports,
-  flights = flights_link,
-  planes = planes,
-  weather = weather_link
-))
-
+# Use `dm()` with a syntax similar to `tibble()`:
+nycflights13_tbl <- dm(airlines, airports, flights, planes, weather)
 nycflights13_tbl
 
+# Alternatively, start from an empty `dm`
+# and add tables via `cdm_add_tbl()`:
+dm() %>%
+  cdm_add_tbl(airlines, airports, flights, planes, weather)
+
+# Tables are not connected yet:
 nycflights13_tbl %>%
   cdm_draw()
 
-# Adding primary keys
+# Adding primary keys:
 nycflights13_pk <-
   nycflights13_tbl %>%
-  cdm_add_pk(weather, origin_slot_id) %>%
   cdm_add_pk(planes, tailnum) %>%
   cdm_add_pk(airports, faa) %>%
   cdm_add_pk(airlines, carrier)
@@ -381,7 +337,6 @@ nycflights13_pk %>%
 # Adding foreign keys
 nycflights13_fk <-
   nycflights13_pk %>%
-  cdm_add_fk(flights, origin_slot_id, weather) %>%
   cdm_add_fk(flights, tailnum, planes) %>%
   cdm_add_fk(flights, origin, airports) %>%
   cdm_add_fk(flights, dest, airports) %>%
@@ -393,11 +348,108 @@ nycflights13_fk %>%
 # Color it!
 cdm_get_available_colors()
 
-nycflights13_fk %>%
+nycflights13_base <-
+  nycflights13_fk %>%
   cdm_set_colors(
     airlines = , planes = , weather = , airports = "blue"
-  ) %>%
+  )
+
+nycflights13_base %>%
   cdm_draw()
+
+
+##
+##
+##
+## NEW NEW NEW: Data manipulation in a dm
+## --------------------------------------------------------------------
+##
+##
+##
+
+
+# A single table of a `dm` can be activated (or zoomed to),
+# and subsequently be manipulated by many {dplyr}-verbs.
+# Eventually, either the original table can be updated
+# or the manipulated table can be inserted as a new table.
+
+
+# Determine key candidates
+zoomed_weather <- cdm_zoom_to_tbl(nycflights13_base, weather)
+zoomed_weather
+
+# `enum_pk_candidates()` works for both `tibbles` and `zoomed_dm`
+enum_pk_candidates(zoomed_weather)
+
+enum_pk_candidates(zoomed_weather) %>%
+  count(candidate)
+
+# It's tricky:
+zoomed_weather %>%
+  unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
+  count(slot_id) %>%
+  filter(n > 1)
+
+zoomed_weather %>%
+  count(origin, time_hour) %>%
+  filter(n > 1)
+
+zoomed_weather %>%
+  count(origin, format(time_hour)) %>%
+  filter(n > 1)
+
+# This looks like a good candidate:
+zoomed_weather %>%
+  count(origin, format(time_hour, tz = "UTC")) %>%
+  filter(n > 1)
+
+# FIXME: Support compound keys (#3)
+
+# Currently, we need to create surrogate keys:
+nycflights13_weather_link <-
+  zoomed_weather %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  unite("origin_slot_id", origin, time_hour_fmt) %>%
+  # here the original 'weather' table is updated with the manipulated one
+  cdm_update_zoomed_tbl() %>%
+  # here we are adding a PK for the "enhanced" weather table
+  cdm_add_pk(weather, origin_slot_id)
+
+nycflights13_weather_link$weather
+
+nycflights13_weather_link %>%
+  cdm_draw()
+
+# FIXME: zoom to multiple tables
+
+nycflights13_weather_flights_link <-
+  cdm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
+  # same procedure with `flights` table
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  # for flights we need to keep the column `origin`,
+  # since it is a FK pointing to `airports`
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
+  select(origin_slot_id, everything(), -time_hour_fmt) %>%
+  cdm_update_zoomed_tbl()
+
+# `cdm_enum_fk_candidates()` of a `dm` gives info
+# about potential FK columns from one table to another
+cdm_enum_fk_candidates(nycflights13_weather_flights_link, flights, weather)
+
+# well, it's almost perfect, let's add the FK anyway...
+
+nycflights13_perfect <-
+  nycflights13_weather_flights_link %>%
+  cdm_add_fk(flights, origin_slot_id, weather)
+
+nycflights13_perfect %>%
+  cdm_draw()
+
+# What are the missings?
+nycflights13_perfect %>%
+  cdm_zoom_to_tbl(flights) %>%
+  anti_join(weather) %>%
+  count(origin_slot_id)
 
 ##
 ##
