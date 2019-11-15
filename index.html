@@ -317,8 +317,6 @@
 #&gt; Columns: 53
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <p>The <code><a href="reference/cdm_draw.html">cdm_draw()</a></code> function creates a visualization of the entity relationship model:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/cdm_nycflights13.html">cdm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
@@ -381,8 +379,6 @@
 #&gt; Columns: 53
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 4
-#&gt; </span><span style="color: #BBBB00;">──</span><span> </span><span style="color: #BBBB00;">Filters</span><span> </span><span style="color: #BBBB00;">────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></code></pre>
 <p>The key constraints from the original object are also copied to the newly created object. With the default setting <code>set_key_constraints = TRUE</code> for <code><a href="reference/cdm_copy_to.html">cdm_copy_to()</a></code>, key constraints are also established on the target DB. Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).</p>
 <p>It is also possible to automatically create a <code>dm</code> object from the permanent tables of a DB. Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated. The support for other DBMS will be implemented in a future update.</p>
