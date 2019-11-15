@@ -22,7 +22,7 @@
 #' }
 cdm_nycflights13 <- nse_function(c(cycle = FALSE, color = TRUE), ~ {
   dm <-
-    dm(
+    dm_from_src(
       src_df("nycflights13")
     ) %>%
     cdm_add_pk(planes, tailnum) %>%

@@ -9,8 +9,12 @@
 \usage{
 cdm_zoom_to_tbl(dm, table)
 
-cdm_insert_zoomed_tbl(dm, new_tbl_name = NULL, repair = "unique",
-  quiet = FALSE)
+cdm_insert_zoomed_tbl(
+  dm,
+  new_tbl_name = NULL,
+  repair = "unique",
+  quiet = FALSE
+)
 
 cdm_update_zoomed_tbl(dm)
 

@@ -39,15 +39,18 @@ respective column in table \code{table} and the primary column entries in table 
 \item the error message triggered by the error (often stating the mismatched column types)
 }
 
-\code{enum_fk_candidates()} works like \code{cdm_enum_fk_candidates()} but uses the zoomed table by default.
+\code{enum_fk_candidates()} works like \code{cdm_enum_fk_candidates()} with the zoomed table as \code{table}.
 }
 \examples{
 cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
 
 }
 \seealso{
-Other foreign key functions: \code{\link{cdm_add_fk}},
-  \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
-  \code{\link{cdm_has_fk}}, \code{\link{cdm_rm_fk}}
+Other foreign key functions: 
+\code{\link{cdm_add_fk}()},
+\code{\link{cdm_get_all_fks}()},
+\code{\link{cdm_get_fk}()},
+\code{\link{cdm_has_fk}()},
+\code{\link{cdm_rm_fk}()}
 }
 \concept{foreign key functions}

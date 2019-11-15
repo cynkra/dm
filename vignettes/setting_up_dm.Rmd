@@ -10,6 +10,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+
 This document describes how you can get your data into a `dm` object. 
 
 Although the example that we will be using is included in `dm`, and you can see it by running `cdm_nycflights13()`, we will be going through the built-in example one more time here, step by step.

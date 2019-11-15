@@ -116,7 +116,6 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 #' The function is almost exactly the inverse of `decompose_table()` (the order
 #' of the columns is not retained and original rownames are lost).
 #'
-#' @inheritParams reunite_parent_child
 #' @param list_of_parent_child_tables Cf arguments `child_table` and `parent_table` from
 #' `reunite_parent_child()`, but both in a named list (as created by `decompose_table()`).
 #'

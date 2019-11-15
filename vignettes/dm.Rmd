@@ -70,7 +70,7 @@ The [{nycflights13}](https://github.com/hadley/nycflights13) package offers a ni
 The most straightforward way of squeezing those tables into a `dm` object is:
 
 ```{r message=FALSE}
-flights_dm <- dm(src_df(pkg = "nycflights13"))
+flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 

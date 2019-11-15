@@ -60,7 +60,7 @@ We can use the tables from the famous package {nycflights13}:
 ```{r message=FALSE}
 library(dm)
 library(dplyr)
-flights_dm <- dm(src_df(pkg = "nycflights13"))
+flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 

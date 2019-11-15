@@ -1,13 +1,19 @@
 #' Data model class
 #'
 #' @description
-#' The `dm` class wraps [dplyr::src] and adds a description of table relationships
-#' inspired by [datamodelr](https://github.com/bergant/datamodelr), of which it also borrows code.
+#' The `dm` class holds a list of tables and their relationships.
+#' It is inspired by [datamodelr](https://github.com/bergant/datamodelr),
+#' and extends the idea by offering operations to access the data in the tables.
 #'
-#' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
+#' `dm()` creates a `dm` object from one or multiple [tbl] objects
+#' (tibbles or lazy data objects).
 #'
+#' @param ... Tables to add to the `dm`.  If no names are provided, the tables
+#'   are auto-named.
+#' @param .name_repair Options for name repair.
+#'   Forwarded as `repair` to [vctrs::vec_as_names()].
 #' @param src A \pkg{dplyr} table source object.
-#' @param data_model A \pkg{datamodelr} data model object, or `NULL`.
+#' @param table_names A character vector of the names of the tables to include.
 #'
 #' @seealso
 #'
@@ -24,7 +30,9 @@
 #'
 #' @examples
 #' library(dplyr)
-#' dm(dplyr::src_df(pkg = "nycflights13"))
+#' dm(iris, mtcars)
+#' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+#' new_dm(list(iris = iris, mtcars = mtcars))
 #' as_dm(list(iris = iris, mtcars = mtcars))
 #'
 #' cdm_nycflights13() %>% tbl("airports")
@@ -37,118 +45,87 @@
 #' cdm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
-dm <- nse_function(c(src, data_model = NULL), ~ {
-  if (is_missing(src)) return(empty_dm())
-  if (is.null(data_model)) {
-    tbl_names <- src_tbls(src)
-    tbls <- map(set_names(tbl_names), tbl, src = src)
-    tbl_heads <- map(tbls, head, 0)
-    tbl_structures <- map(tbl_heads, collect)
+dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
+  quos <- enquos(...)
 
-    data_model <- bdm_from_data_frames(tbl_structures)
+  tbls <- map(quos, eval_tidy)
+
+  if (has_length(quos)) {
+    src_index <- c(which(names(quos) == "src"), 1)[[1]]
+    if (is.src(tbls[[src_index]])) {
+      lifecycle::deprecate_soft("0.0.4.9001", "dm::dm(src = )", "dm_from_src()")
+      return(invoke(dm_from_src, tbls))
+    }
   }
 
-  table_names <- set_names(data_model$tables$table)
-  tables <- map(table_names, tbl, src = src)
+  names(tbls) <- vctrs::vec_as_names(names(quos_auto_name(quos)), repair = .name_repair)
+  dm <- new_dm(tbls)
+  validate_dm(dm)
+  dm
+}
 
-  new_dm(tables, data_model)
+#' dm_from_src()
+#'
+#' `dm_from_src()` creates a `dm` from some or all tables in a [src]
+#' (a database or an environment).
+#'
+#' @rdname dm
+#' @export
+dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
+  if (is_missing(src)) return(empty_dm())
+  src_tbl_names <- src_tbls(src)
+
+  if (is_null(table_names)) {
+    table_names <- src_tbl_names
+  } else if (!all(table_names %in% src_tbl_names)) {
+    abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
+  }
+
+  tbls <- map(set_names(table_names), tbl, src = src)
+
+  new_dm(tbls)
 })
 
 #' Low-level constructor
 #'
-#' `new_dm()` only checks if the inputs are of the correct class.
-#' If called without arguments, an empty `dm` object is created.
+#' @description
+#' `new_dm()` doesn't perform any checks on the input.
+#' You may need to double-check the returned object with `validate_dm()`.
 #'
-#' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm` object
+#' All constructors create an empty `dm` if called without arguments.
+#'
+#' @param tables A named list of the tables (tibble-objects, not names)
+#'   to be included in the `dm` object.
 #'
 #' @rdname dm
 #' @export
-new_dm <- function(tables, data_model) {
-  if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
-  if (!all_same_source(tables)) abort_not_same_src()
-  stopifnot(is.data_model(data_model))
-
-  columns <- as_tibble(data_model$columns)
-
-  data_model_tables <- data_model$tables
-
-  stopifnot(all(names(tables) %in% data_model_tables$table))
-  stopifnot(all(data_model_tables$table %in% names(tables)))
-
-  pks <- columns %>%
-    select(column, table, key) %>%
-    filter(key > 0) %>%
-    select(-key)
-
-  if (is.null(data_model$references)) {
-    fks <- tibble(
-      table = character(),
-      column = character(),
-      ref = character(),
-      ref_col = character()
-    )
-  } else {
-    fks <-
-      data_model$references %>%
-      select(table, column, ref, ref_col) %>%
-      as_tibble()
-  }
-
+new_dm <- function(tables = list()) {
   # Legacy
-  data <- unname(tables[data_model_tables$table])
-
-  table <- data_model_tables$table
-  segment <- data_model_tables$segment
-  # would be logical NA otherwise, but if set, it is class `character`
-  display <- as.character(data_model_tables$display)
-  filter <- new_filters()
+  data <- unname(tables)
+  table <- names2(tables)
   zoom <- new_zoom()
   key_tracker_zoom <- new_key_tracker_zoom()
 
-  # Legacy compatibility
-  pks$column <- as.list(pks$column)
-
-  pks <-
-    pks %>%
-    nest(pks = -table)
-
   pks <-
     tibble(
-      table = setdiff(table, pks$table),
+      table = table,
       pks = vctrs::list_of(new_pk())
-    ) %>%
-    vctrs::vec_rbind(pks)
-
-  # Legacy compatibility
-  fks$column <- as.list(fks$column)
-
-  fks <-
-    fks %>%
-    select(-ref_col) %>%
-    nest(fks = -ref) %>%
-    rename(table = ref)
+    )
 
   fks <-
     tibble(
-      table = setdiff(table, fks$table),
+      table = table,
       fks = vctrs::list_of(new_fk())
-    ) %>%
-    vctrs::vec_rbind(fks)
-
-  filters <-
-    filter %>%
-    rename(filter_expr = filter) %>%
-    nest(filters = filter_expr)
+    )
 
   filters <-
     tibble(
-      table = setdiff(table, filters$table),
+      table = table,
       filters = vctrs::list_of(new_filter())
-    ) %>%
-    vctrs::vec_rbind(filters)
+    )
 
   def <-
-    tibble(table, data, segment, display) %>%
+    tibble(table, data, segment = NA_character_, display = NA_character_) %>%
     left_join(pks, by = "table") %>%
     left_join(fks, by = "table") %>%
     left_join(filters, by = "table") %>%
@@ -195,17 +172,42 @@ new_key_tracker_zoom <- function() {
 
 #' Validator
 #'
-#' `validate_dm()` checks consistency between the \pkg{dplyr} source
-#' and the \pkg{datamodelr} based specification of table relationships.
-#' This function is currently a no-op.
+#' `validate_dm()` checks the internal consistency of a `dm` object.
 #'
 #' @param x An object.
 #' @rdname dm
 #' @export
 validate_dm <- function(x) {
+  check_dm(x)
+
+  # FIXME: Classed errors
+  stopifnot(identical(names(unclass(x)), "def"))
+  def <- cdm_get_def(x)
+
+  table_names <- def$table
+  if (any(table_names == "")) abort_unnamed_table_list()
+
+  # FIXME: Are all data objects tbl-s?
+  if (!all_same_source(def$data)) abort_not_same_src()
+
+  # FIXME: Remove special case
+  if (nrow(def) == 0) return(invisible(x))
+
+  fks <- def$fks %>%
+    map_dfr(I) %>%
+    unnest(column)
+  check_fk_child_tables(fks$table, table_names)
+  dm_col_names <- set_names(map(def$data, colnames), table_names)
+  check_colnames(fks, dm_col_names, "FK")
+  pks <- select(def, table, pks) %>%
+    unnest(pks) %>%
+    unnest(column)
+  check_colnames(pks, dm_col_names, "PK")
+  # check that all column classes of def are correct
+  # check that (for now) only maximally one `zoom` element is not `NULL`
+  # same with `key_tracker_zoom`
   # TODO: check consistency
   # - tables in data_model must be a subset of tables in src
-  # - all tables in src must exist in data model
   # - class membership
   # - DO NOT check primary and foreign key constraints here by default,
   #   perhaps optionally or in a different verb
@@ -365,16 +367,9 @@ as_dm.default <- function(x) {
 
   # Automatic name repair
   names(x) <- vctrs::vec_as_names(names2(x), repair = "unique")
-
-  # Check if all sources are identical
-  if (!all_same_source(x)) abort_not_same_src()
-
-  # Empty tibbles as proxy, we don't need to know the columns
-  # and we don't have keys yet
-  proxies <- map(x, ~ tibble(a = 0))
-  data_model <- bdm_from_data_frames(proxies)
-
-  new_dm(x, data_model)
+  dm <- new_dm(x)
+  validate_dm(dm)
+  dm
 }
 
 tbl_src <- function(x) {
@@ -389,7 +384,7 @@ tbl_src <- function(x) {
 
 #' @export
 as_dm.src <- function(x) {
-  dm(src = x, data_model = NULL)
+  dm_from_src(src = x, table_names = NULL)
 }
 
 #' @export
@@ -413,8 +408,8 @@ print.dm <- function(x, ...) {
   def <- cdm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
-  cat_line("Primary keys: ", sum(map_int(def$pks, NROW)))
-  cat_line("Foreign keys: ", sum(map_int(def$fks, NROW)))
+  cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
+  cat_line("Foreign keys: ", sum(map_int(def$fks, vctrs::vec_size)))
 
   filters <- cdm_get_filter(x)
   if (nrow(filters) > 0) {
@@ -621,11 +616,13 @@ empty_dm <- function() {
     tibble(
       table = character(),
       data = list(),
-      segment = logical(),
+      segment = character(),
       display = character(),
       pks =vctrs::list_of(new_pk()),
       fks = vctrs::list_of(new_fk()),
-      filters = vctrs::list_of(new_filter())
+      filters = vctrs::list_of(new_filter()),
+      zoom = list(),
+      key_tracker_zoom = list()
     )
   )
 }
