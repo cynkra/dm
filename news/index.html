@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.4.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.5</span>
       </span>
     </div>
 
@@ -134,38 +134,47 @@
       
     </div>
 
-    <div id="dm-0-0-4-9001" class="section level1">
+    <div id="dm-0-0-5" class="section level1">
 <h1 class="page-header">
-<a href="#dm-0-0-4-9001" class="anchor"></a>dm 0.0.4.9001</h1>
-<ul>
-<li>Add explanation for empty <code>dm</code> (#100).</li>
-<li>Redesign constructors and validators (#69).</li>
-<li>
-<code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> works with zoomed dm-s (#156).</li>
-<li>New <code><a href="../reference/cdm_enum_fk_candidates.html">enum_fk_candidates()</a></code> (#156).</li>
-<li>
-<code>compute.dm()</code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> on all tables (#135).</li>
-<li>
-<code>slice.zoomed_dm()</code>: user decides in arg <code>.keep_pk</code> if PK column is tracked or not (#152).</li>
-<li>
-<code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code>, <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code>, <code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code>, <code>distinct()</code>, <code>arrange()</code>, <code>slice()</code>, <code>separate()</code> and <code>unite()</code> implemented for zoomed dm-s (#130).</li>
-<li>Avoid asterisk when printing local <code>zoomed_dm</code> (#131).</li>
-<li>Joins use the same column name disambiguation algorithm as <code><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl()</a></code> (#147).</li>
-<li>Add name repair argument for both <code><a href="../reference/cdm_zoom_to_tbl.html">cdm_insert_zoomed_tbl()</a></code> and <code><a href="../reference/cdm_add_tbl.html">cdm_add_tbl()</a></code>, defaulting to renaming of old and new tables when adding tables with duplicate names (#132).</li>
-<li>Joins on zoomed dm objects now supported (#121).</li>
-</ul>
-</div>
-    <div id="dm-0-0-4-9000" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-4-9000" class="anchor"></a>dm 0.0.4.9000</h1>
+<a href="#dm-0-0-5" class="anchor"></a>dm 0.0.5</h1>
+<div id="features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code><a href="../reference/cdm_filter.html">cdm_filter()</a></code> and <code>filter.zoomed_dm()</code> apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code>. This now allows using a variety of operations on filtered <code>dm</code> objects (#124).</li>
 <li>
-<code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code> works again when multiple foreign keys are defined between two tables (#122).</li>
+<code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code>, <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code>, <code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code>, <code>distinct()</code>, <code>arrange()</code>, <code>slice()</code>, <code>separate()</code> and <code>unite()</code> implemented for zoomed dm-s (#130).</li>
+<li>Joins on zoomed dm objects now supported (#121). Joins use the same column name disambiguation algorithm as <code><a href="../reference/cdm_flatten_to_tbl.html">cdm_flatten_to_tbl()</a></code> (#147).</li>
 <li>
-<code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/src_tbls.html">src_tbls()</a></code> (all from {dplyr}) are now reexported as well.</li>
+<code>slice.zoomed_dm()</code>: user decides in arg <code>.keep_pk</code> if PK column is tracked or not (#152).</li>
+<li>Supported {dplyr} and {tidyr} verbs are reexported.</li>
+<li>
+<code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> works with zoomed dm-s (#156).</li>
+<li>New <code><a href="../reference/cdm_enum_fk_candidates.html">enum_fk_candidates()</a></code> (#156).</li>
+<li>Add name repair argument for both <code><a href="../reference/cdm_zoom_to_tbl.html">cdm_insert_zoomed_tbl()</a></code> and <code><a href="../reference/cdm_add_tbl.html">cdm_add_tbl()</a></code>, defaulting to renaming of old and new tables when adding tables with duplicate names (#132).</li>
+<li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code>tibble()</code>, <code><a href="../reference/dm.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/dm.html">validate_dm()</a></code> checks internal consistency (#69).</li>
+<li>
+<code>compute.dm()</code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> on all tables (#135).</li>
 </ul>
+</div>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<ul>
+<li>New demo.</li>
+<li>Add explanation for empty <code>dm</code> (#100).</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Avoid asterisk when printing local <code>zoomed_dm</code> (#131).</li>
+<li>
+<code><a href="../reference/cdm_select_tbl.html">cdm_select_tbl()</a></code> works again when multiple foreign keys are defined between two tables (#122).</li>
+</ul>
+</div>
 </div>
     <div id="dm-0-0-4" class="section level1">
 <h1 class="page-header">
@@ -321,9 +330,9 @@
 <code><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl()</a></code> now fails if the table is not part of the data model.</li>
 </ul>
 </div>
-<div id="documentation" class="section level2">
+<div id="documentation-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h2>
+<a href="#documentation-1" class="anchor"></a>Documentation</h2>
 <ul>
 <li>Add setup article (#7).</li>
 </ul>
@@ -465,8 +474,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#dm-0-0-4-9001">0.0.4.9001</a></li>
-        <li><a href="#dm-0-0-4-9000">0.0.4.9000</a></li>
+        <li><a href="#dm-0-0-5">0.0.5</a></li>
         <li><a href="#dm-0-0-4">0.0.4</a></li>
         <li><a href="#dm-0-0-3">0.0.3</a></li>
         <li><a href="#dm-0-0-2-9003">0.0.2.9003</a></li>
