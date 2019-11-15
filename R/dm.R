@@ -459,8 +459,7 @@ new_zoomed_df <- function(x, ...) {
 # therefore, we need to have an own subclass, but the main class needs to be `tbl`
 #' @export
 tbl_sum.zoomed_df <- function(x) {
-  c(structure(attr(x, "name_df"), names = "A zoomed table of a dm"),
-    structure(attr(x, "filters"), names = "Filters for zoomed"),
+  c(structure(attr(x, "name_df"), names = "Zoomed table"),
     NextMethod())
 }
 
