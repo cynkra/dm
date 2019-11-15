@@ -42,7 +42,7 @@ Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_name
 
 \item{src}{A \pkg{dplyr} table source object.}
 
-\item{table_names}{A character vector of the table names to include.}
+\item{table_names}{A character vector of the names of the tables to include.}
 
 \item{tables}{A named list of the tables (tibble-objects, not names)
 to be included in the \code{dm} object.}
