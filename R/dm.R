@@ -2,9 +2,9 @@
 #'
 #' @description
 #' The `dm` class wraps [dplyr::src] and adds a description of table relationships
-#' inspired by [datamodelr](https://github.com/bergant/datamodelr), of which it also borrows code.
+#' inspired by [datamodelr](https://github.com/bergant/datamodelr), from which it also borrows code.
 #'
-#' `dm()` coerces its inputs. If called without arguments, an empty `dm` object is created.
+#' `dm()` coerces its inputs. If called without arguments, an empty `dm` object will be created.
 #'
 #' @param src A \pkg{dplyr} table source object.
 #' @param data_model A \pkg{datamodelr} data model object, or `NULL`.
@@ -54,12 +54,12 @@ dm <- nse_function(c(src, data_model = NULL), ~ {
   new_dm(tables, data_model)
 })
 
-#' Low-level constructor
+#' A low-level constructor
 #'
-#' `new_dm()` only checks if the inputs are of the correct class.
-#' If called without arguments, an empty `dm` object is created.
+#' `new_dm()` checks if the inputs are of the expected class; no other validation checks are made.
+#' If called without arguments, an empty `dm` object will be created.
 #'
-#' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm` object
+#' @param tables A list of the tables (tibble-objects, not names) to be included in the `dm` object.
 #'
 #' @rdname dm
 #' @export
@@ -202,7 +202,7 @@ new_key_tracker_zoom <- function() {
 #' Validator
 #'
 #' `validate_dm()` checks consistency between the \pkg{dplyr} source
-#' and the \pkg{datamodelr} based specification of table relationships.
+#' and the \pkg{datamodelr}-based specification of table relationships.
 #' This function is currently a no-op.
 #'
 #' @param x An object.
@@ -248,12 +248,12 @@ cdm_get_con <- function(x) {
   src$con
 }
 
-#' Get tables component
+#' Get the tables component
 #'
-#' `cdm_get_tables()` returns a named list with \pkg{dplyr} [tbl] objects
+#' `cdm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
-#' The filter expressions are NOT evaluated at this stage.
-#' To get the filtered tables, use `tbl.dm()`
+#' Filtering expressions are NOT evaluated at this stage.
+#' To get filtered tables, use `tbl.dm()`
 #'
 #' @rdname dm
 #'
@@ -314,7 +314,7 @@ cdm_get_data_model_fks <- function(x) {
 #' Get filter expressions
 #'
 #' `cdm_get_filter()` returns the filter component of a `dm`
-#' object, the set filter expressions.
+#' object, i.e. the filter expressions that have been set by the user.
 #'
 #' @rdname dm
 #'
@@ -376,7 +376,7 @@ as_dm.default <- function(x) {
   if (!all_same_source(x)) abort_not_same_src()
 
   # Empty tibbles as proxy, we don't need to know the columns
-  # and we don't have keys yet
+  # and we do not have the keys yet
   proxies <- map(x, ~ tibble(a = 0))
   data_model <- bdm_from_data_frames(proxies)
 
@@ -465,7 +465,7 @@ new_zoomed_df <- function(x, ...) {
 }
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
-# therefore, we need to have an own subclass, but the main class needs to be `tbl`
+# therefore, we need to have our own subclass but the main class needs to be `tbl`
 #' @export
 tbl_sum.zoomed_df <- function(x) {
   c(structure(attr(x, "name_df"), names = "A zoomed table of a dm"),

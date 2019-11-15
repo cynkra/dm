@@ -1,14 +1,14 @@
 #' Creates a [`dm`] object for the \pkg{nycflights13} data
 #'
-#' @description Creates an exemplary [`dm`] object from the tables in \pkg{nycflights13}
+#' @description Creates an example [`dm`] object from the tables in \pkg{nycflights13},
 #' along with the references.
 #' See [nycflights13::flights] for a description of the data.
 #' As described in [nycflights13::planes], the relationship
-#' between the `flights` and `planes` tables is "weak", it does not satisfy
+#' between the `flights` table and the `planes` tables is "weak", it does not satisfy
 #' data integrity constraints.
 #'
 #' @param cycle Boolean. If `FALSE` (default), only one foreign key relation
-#'   (from `flights$origin` to `airports$faa`) between `flights` and `airports` is
+#'   (from `flights$origin` to `airports$faa`) between the `flights` table and the `airports` table is
 #'   established. If `TRUE`, a `dm` object with a double reference
 #'   between those tables will be produced.
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will have

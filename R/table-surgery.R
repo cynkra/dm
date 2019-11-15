@@ -1,24 +1,24 @@
 #' Decompose a table into two linked tables
 #'
-#' @description Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.
+#' @description Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
 #'
-#' `decompose_table()` accepts a data frame, a name for an 'ID column' that will be newly created, and the names
-#' of the columns which will be extracted into the new data frame.
+#' `decompose_table()` accepts a data frame, a name for the 'ID column' that will be newly created, and the names
+#' of the columns that will be extracted into the new data frame.
 #'
-#' It creates the 'parent table', consisting of the columns specified in the ellipsis and the new 'ID column'. Then it removes the
-#' said columns from the now called 'child table' (the original table) and also adds the 'ID column' here appropriately.
+#' It creates a 'parent table', which consists of the columns specified in the ellipsis, and a new 'ID column'. Then it removes those
+#' columns from the original table, which is now called the 'child table, and adds the 'ID column'.
 #'
 #' @param .data Data frame from which columns `...` are to be extracted.
 #' @param new_id_column Name of the identifier column (primary key column) for the parent table. A column of this name is also added in 'child table'.
 #' @param ... The columns to be extracted from the `.data`.
 #'
-#' One or more unquoted expressions separated by commas. You can treat variable names like they are positions, so you
+#' One or more unquoted expressions separated by commas. You can treat variable names as if they were positions, so you
 #' can use expressions like x:y to select ranges of variables.
 #'
 #' The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
-#' unquoting and splicing. See vignette("programming") for an introduction to these concepts.
+#' unquoting and splicing. See vignette("programming") for an introduction to those concepts.
 #'
-#' See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
+#' See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...
 #'
 #' @family table surgery functions
 #'
@@ -82,16 +82,16 @@ decompose_table <- function(.data, new_id_column, ...) {
   list("child_table" = child_table, "parent_table" = parent_table)
 }
 
-#' Merge two tables linked by a foreign key relation
+#' Merge two tables that are linked by a foreign key relation
 #'
-#' @description Perform table fusion by combining two tables by a common (key) column and then removing this column.
+#' @description Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 #'
-#' `reunite_parent_child()`: After joining the two tables by the column `id_column`, this column is removed. The transformation is roughly the
+#' `reunite_parent_child()`: After joining the two tables by the column `id_column`, this column will be removed. The transformation is roughly the
 #' inverse of what `decompose_table()` does.
 #'
 #' @param child_table Table (possibly created by `decompose_table()`) that references `parent_table`
 #' @param parent_table Table (possibly created by `decompose_table()`).
-#' @param id_column Identical name of referencing/referenced column in `child_table`/`parent_table`
+#' @param id_column Identical name of referencing / referenced column in `child_table`/`parent_table`
 #'
 #' @family table surgery functions
 #'
@@ -108,13 +108,13 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
     select(-!!id_col_q)
 }
 
-#' Merge two tables linked by a foreign key relation
+#' Merge two tables that are linked by a foreign key relation
 #'
 #' @description `reunite_parent_child_from_list()`: After joining the two tables
-#' by the column `id_column`, this column is removed.
+#' by the column `id_column`, `id_column` is removed.
 #'
-#' The function is almost exactly the inverse of `decompose_table()` (the order
-#' of the columns is not retained and original rownames are lost).
+#' This function is almost exactly the inverse of `decompose_table()` (the order
+#' of the columns is not retained, and the original row names are lost).
 #'
 #' @inheritParams reunite_parent_child
 #' @param list_of_parent_child_tables Cf arguments `child_table` and `parent_table` from
