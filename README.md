@@ -322,8 +322,6 @@ cdm_nycflights13()
 #&gt; Columns: 53
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Filters</span><span> </span><span style='color: #BBBB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></CODE></PRE>
 
 The `cdm_draw()` function creates a visualization of the entity
@@ -416,8 +414,6 @@ nycflights13_remote
 #&gt; Columns: 53
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 4
-#&gt; </span><span style='color: #BBBB00;'>──</span><span> </span><span style='color: #BBBB00;'>Filters</span><span> </span><span style='color: #BBBB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; None
 </span></CODE></PRE>
 
 The key constraints from the original object are also copied to the
