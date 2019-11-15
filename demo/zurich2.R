@@ -643,7 +643,7 @@ try(
     check_key(name)
 )
 
-# NEW NEW NEW: Friendly description
+# Friendly description
 airports %>%
   enum_pk_candidates()
 
