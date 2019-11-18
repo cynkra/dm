@@ -8,7 +8,6 @@
 #' For more information please refer to `vignette("dm-joining")`.
 #'
 #' @inheritParams cdm_join_to_tbl
-#' @param start The table from which all outgoing foreign key relations are considered
 #' in order to establish a processing order for the joins.
 #' An interesting choice would be, e.g. a fact table in a star schema.
 #' @param ... Unquoted names of the tables to be included in addition to the `start` table. The order of the tables here determines
