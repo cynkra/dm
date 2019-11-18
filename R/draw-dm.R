@@ -13,7 +13,7 @@
 #' @param edge_attrs Additional edge attributes
 #' @param focus A list of parameters for rendering (table filter)
 #' @param col_attr Column atributes to display.
-#'   Only column names (\code{column}) are included by default.
+#'   By default only the column name (\code{"column"}) is displayed.
 #' @param columnArrows Edges from columns to columns (default: FALSE)
 #' @export
 #'
