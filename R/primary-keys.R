@@ -83,7 +83,7 @@ cdm_has_pk <- function(dm, table) {
   has_length(cdm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the name of the column that is marked as the primary key of a table of a [`dm`] object
+#' Retrieve the name of the primary key column of a `dm` table 
 #'
 #' @description `cdm_get_pk()` returns the name of the
 #' column marked as primary key of a table of a [`dm`] object. If no primary key is
