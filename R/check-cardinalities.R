@@ -1,6 +1,11 @@
 #' Test if the relation between two tables of a data model meet the requirements
 #'
-#' @description All `check_cardinality()` functions test if `pk_column` is a unique key for `parent_table` and if
+#' @description All `check_cardinality()` functions test the following conditions:
+#' 1. Is `pk_column` is a unique key for `parent_table`?
+#' 1. Is the set of values in `fk_column` of `child_table` a subset of the set of values of `pk_column`?
+#' 1. Does the relation between the two tables of the data model meet the cardinality requirements?
+#`
+#` Please see below for details.
 #'
 #' @details All `check_cardinality` functions accept a `parent table` (data frame), a column name of this table,
 #' a `child table`, and a column name of the child table. The given column of the `parent table` has to be one of its
