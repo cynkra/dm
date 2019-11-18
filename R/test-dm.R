@@ -4,6 +4,7 @@
 #'
 #' @param x
 #'
+#' @noRd
 #' @examples
 #' dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
 #' dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE))
