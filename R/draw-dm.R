@@ -1,6 +1,6 @@
 #' Draw a schema of a [`dm`]-object's data model
 #'
-#' `cdm_draw()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`).
+#' `cdm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'
 #' @param dm A [`dm`] object
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
