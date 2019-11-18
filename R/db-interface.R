@@ -1,4 +1,4 @@
-#' Copy a `dm`-object to a `src` / `con`
+#' Copy a `dm`-object to a different data source
 #'
 #' `cdm_copy_to()` takes a `src`-object or a `con`-object as its first argument
 #' and a [`dm`] object as its second argument. The latter is copied to the former.
