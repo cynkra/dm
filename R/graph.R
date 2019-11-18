@@ -24,7 +24,7 @@ is_referenced_data_model <- function(data_model, table_name) {
 #' @return Character vector of the names of the tables that point to the primary
 #' key of `table`.
 #'
-#' @family functions that utilize foreign key relations
+#' @family functions utilizing foreign key relation
 #'
 #' @export
 cdm_get_referencing_tables <- function(dm, table) {
