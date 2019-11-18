@@ -2,7 +2,7 @@
 
 #' Mark a column of a table in a [`dm`] object as its primary key
 #'
-#' @description `cdm_add_pk()` marks the specified column as the primary key of the specified table
+#' @description `cdm_add_pk()` marks the specified column as the primary key of the specified table.
 #' in the `data_model`-part of the [`dm`] object. If `check == TRUE`, then it will first check if
 #' the given column is a unique key of the table. If `force == TRUE`, the function will replace an already
 #' set key.
