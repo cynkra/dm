@@ -3,7 +3,7 @@
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
 #'
-#' `cdm_filter()` can be used to define filter conditions for tables using syntax that is similar to `dplyr::filter()`.
+#' `cdm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
 #' These conditions will be stored in the [`dm`], and executed immediately for the tables that they are referring to.
 #'
 #' With `cdm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
