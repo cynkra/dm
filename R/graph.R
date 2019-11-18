@@ -17,7 +17,7 @@ is_referenced_data_model <- function(data_model, table_name) {
   any(which_ind)
 }
 
-#' Get the names of the tables of a [`dm`]'s that reference a given table.
+#' Get the names of the tables of a [`dm`] that reference a given table.
 #'
 #' @inheritParams cdm_is_referenced
 #'
