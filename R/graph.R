@@ -1,4 +1,4 @@
-#' Is a table of a [`dm`]'s referenced by another table?
+#' Is a table of a [`dm`] referenced by another table?
 #'
 #' @inheritParams cdm_add_pk
 #'
