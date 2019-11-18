@@ -2,7 +2,6 @@
 #'
 #' @description All `check_cardinality()` functions test if `pk_column` is a unique key for `parent_table` and if
 #' the set of values of `fk_column` of `child_table` is a subset of the set of values of `pk_column`.
-#' Additionally, the cardinality of the relation is tested; see below for details.
 #'
 #' @details All `check_cardinality` functions accept a `parent table` (data frame), a column name of this table,
 #' a `child table`, and a column name of the child table. The given column of the `parent table` has to be one of its
