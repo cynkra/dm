@@ -11,7 +11,7 @@
 #' The arguments are included in the signature to avoid passing them via the
 #' `...` ellipsis.
 #'
-#' @param dest A `src` or a `con` object, e.g. a database.
+#' @param dest An object of class `"src"` or `"DBIConnection"`
 #' @param dm A `dm` object.
 #' @param table_names A named character vector, containing the names that you want the tables in the `dm` to have
 #' after copying them to the database. The table names within the `dm` will remain unchanged.
