@@ -1,6 +1,6 @@
 #' Copy a `dm`-object to a different data source
 #'
-#' `cdm_copy_to()` takes a `src`-object or a `con`-object as its first argument
+#' `cdm_copy_to()` takes a [dplyr::src_dbi] object or a [DBI::DBIConnection] object as its first argument
 #' and a [`dm`] object as its second argument. The latter is copied to the former.
 #' By default, temporary tables will be created and the key constraints will be set
 #' (currently only on MSSQL and Postgres databases).
