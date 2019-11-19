@@ -86,16 +86,19 @@ dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
   new_dm(tbls)
 })
 
-#' Low-level constructor
+#' A low-level constructor
 #'
 #' @description
-#' `new_dm()` doesn't perform any checks on the input.
-#' You may need to double-check the returned object with `validate_dm()`.
+#' `new_dm()` is a low-level constructor that creates a new `dm` object. 
 #'
-#' All constructors create an empty `dm` if called without arguments.
+#' If called without arguments, it will create an empty `dm`.
 #'
-#' @param tables A named list of the tables (tibble-objects, not names)
-#'   to be included in the `dm` object.
+#' If called with arguments, no validation checks will be made to ascertain that 
+#' the inputs are of the expected class and internally consistent; 
+#' use `validate_dm()` to double-check the returned object.
+#' 
+#' @param tables A named list of the tables (tibble-objects, not names) 
+#' to be included in the `dm` object.
 #'
 #' @rdname dm
 #' @export
@@ -249,10 +252,10 @@ cdm_get_con <- function(x) {
 
 #' Get tables
 #'
-#' `cdm_get_tables()` returns a named list with \pkg{dplyr} [tbl] objects
+#' `cdm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
-#' The filter expressions are NOT evaluated at this stage.
-#' To get the filtered tables, use `tbl.dm()`
+#' Filtering expressions are NOT evaluated at this stage.
+#' To get filtered tables, use `tbl.dm()`
 #'
 #' @rdname dm
 #'
@@ -312,7 +315,7 @@ cdm_get_data_model_fks <- function(x) {
 
 #' Get filter expressions
 #'
-#' `cdm_get_filter()` returns the filter expressions applied to a `dm` object.
+#' `cdm_get_filter()` returns the filter expressions that have been applied to a `dm` object.
 #' These filter expressions are not intended for evaluation, only for
 #' information.
 #'
@@ -460,7 +463,7 @@ new_zoomed_df <- function(x, ...) {
 }
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
-# therefore, we need to have an own subclass, but the main class needs to be `tbl`
+# therefore, we need to have our own subclass but the main class needs to be `tbl`
 #' @export
 tbl_sum.zoomed_df <- function(x) {
   c(structure(attr(x, "name_df"), names = "Zoomed table"),

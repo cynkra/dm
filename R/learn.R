@@ -1,10 +1,11 @@
 #' Learn a [`dm`] object from a database (DB)
 #'
-#' @description Assuming, there are permament tables on a DB, you can turn these
-#' into a [`dm`] object. The key constraints are also learned from the DB and taken into
-#' account.
+#' @description If there are any permament tables on a DB, a new [`dm`] object can be created that contains those tables,
+#' along with their primary and foreign key constraints.
 #'
-#' So far this only works for MSSQL and Postgres. Also, you can not specify a schema to learn from.
+#' Currently this only works with MSSQL and Postgres databases.
+#'
+#' The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #'
@@ -14,7 +15,7 @@
 #'
 #' @export
 cdm_learn_from_db <- function(dest) {
-  # assuming we do not try to learn from temporary tables (which do not appear in sys.table (at least not the globally temporary ones))
+  # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
 
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)

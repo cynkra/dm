@@ -1,3 +1,4 @@
+# Cf. https://github.com/krlmlr/dm/issues/144 (Review error messages)
 
 # error class generator ---------------------------------------------------
 
@@ -346,7 +347,7 @@ error_update_not_supported <- function() {
   paste0('Updating "dm" objects not supported.')
 }
 
-# when filters are set and they shouldn't be ------------------------------
+# errors when filters are set but they shouldn't be ------------------------------
 
 abort_only_possible_wo_filters <- function(fun_name) {
   abort(error_only_possible_wo_filters(fun_name), .subclass = cdm_error_full("only_possible_wo_filters"))

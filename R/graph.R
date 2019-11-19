@@ -1,9 +1,9 @@
-#' Is a [`dm`]'s table referenced by another table?
+#' Is a table of a [`dm`] referenced by another table?
 #'
 #' @inheritParams cdm_add_pk
 #'
-#' @return `TRUE`, if at least one foreign key exists, pointing to the primary
-#' key of parameter `table`, `FALSE` otherwise.
+#' @return `TRUE` if at least one foreign key exists that points to the primary
+#' key of the parameter `table`, `FALSE` otherwise.
 #'
 #' @family functions utilizing foreign key relations
 #'
@@ -17,12 +17,12 @@ is_referenced_data_model <- function(data_model, table_name) {
   any(which_ind)
 }
 
-#' Get the names of a [`dm`]'s tables referencing a given table.
+#' Get the names of the tables of a [`dm`] that reference a given table.
 #'
 #' @inheritParams cdm_is_referenced
 #'
-#' @return Character vector of the names of the tables pointing to the primary
-#' key of parameter `table`.
+#' @return Character vector of the names of the tables that point to the primary
+#' key of `table`.
 #'
 #' @family functions utilizing foreign key relations
 #'

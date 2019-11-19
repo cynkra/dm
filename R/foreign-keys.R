@@ -1,11 +1,11 @@
 #' Add a reference from one table of a [`dm`] to another
 #'
 #' @inheritParams cdm_add_pk
-#' @param column The column of `table` which is to become the foreign key column
-#' referencing the primary key of `ref_table`.
+#' @param column The column of `table` which is to become the foreign key column and
+#' reference the primary key of `ref_table`.
 #' @param ref_table The table which `table` is referencing. This table needs to have
 #' a primary key set.
-#' @param check Boolean, if `TRUE` (default), a check is performed, if the values of
+#' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
 #' `column` are a subset of the values of the primary key column of `ref_table`.
 #'
 #' @family foreign key functions
@@ -51,12 +51,12 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table) {
   new_dm3(def)
 }
 
-#' Does a reference from one table of a `dm` to another exist?
+#' Does there exist a reference from one table of a `dm` to another?
 #'
 #' @inheritParams cdm_add_fk
-#' @param ref_table The table which `table` is potentially referencing.
+#' @param ref_table The table that `table` is potentially referencing.
 #'
-#' @return A boolean value: `TRUE`, if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
+#' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
 #'
 #' @family foreign key functions
 #'
@@ -65,10 +65,10 @@ cdm_has_fk <- function(dm, table, ref_table) {
   has_length(cdm_get_fk(dm, {{ table }}, {{ ref_table }}))
 }
 
-#' Retrieve the name of the column marked as foreign key, pointing from one table of a [`dm`] to another
+#' Retrieve the name of the column marked as a foreign key, pointing from one table of a [`dm`] to another table.
 #'
 #' @inheritParams cdm_has_fk
-#' @param ref_table The table which is referenced from `table`.
+#' @param ref_table The table that is referenced from `table`.
 #'
 #' @family foreign key functions
 #'
@@ -86,13 +86,13 @@ cdm_get_fk <- function(dm, table, ref_table) {
 
 #' Retrieve all foreign key constraints in a [`dm`]
 #'
-#' @description Get an overview about all foreign key relations in a [`dm`]
+#' @description Get a summary of all foreign key relations in a [`dm`]
 #'
 #' @return A tibble with columns:
 #'
 #' "child_table": child table,
 #' "child_fk_col": foreign key column in child table,
-#' "parent_table": parent table,
+#' "parent_table": parent table
 #'
 #' @inheritParams cdm_has_fk
 #'
@@ -106,16 +106,15 @@ cdm_get_all_fks <- nse_function(c(dm), ~ {
 })
 
 
-#' Remove reference(s) from one table of a [`dm`] to another
+#' Remove the reference(s) from one [`dm`] table to another
 #'
-#' @description Can either remove one reference between the two tables or all at once if parameter `column = NULL`.
-#' All parameters can be provided unquoted or quoted.
+#' @description This function can remove either one reference between two tables, or all references at once, if parameter `column = NULL`.
+#' All parameters may be provided quoted or unquoted.
 #'
 #' @inheritParams cdm_add_fk
-#' @param column The column of `table` which should no longer be referencing the primary
-#'   key of `ref_table`.
-#'   If `NULL`, all columns will be considered.
-#' @param ref_table The table which `table` was referencing.
+#' @param column The column of `table` that should no longer be referencing the primary key of `ref_table`.
+#'   If `NULL`, all columns will be evaluated.
+#' @param ref_table The table that `table` was referencing.
 #'
 #' @family foreign key functions
 #'
@@ -163,15 +162,15 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 
 #' Find foreign key candidates in a table
 #'
-#' Which columns are good candidates as a foreign key of a table, referencing
-#' the primary key column of another [`dm`] object's table?
+#' Determine which columns would be good candidates to be used as foreign keys of a table,
+#' and reference the primary key column of another [`dm`] object's table.
 #'
 #' @inheritParams cdm_add_fk
-#' @param table The table whose columns should be tested for foreign key candidate potential
+#' @param table The table whose columns should be tested for suitability of use as foreign keys.
 #' @param ref_table A table with a primary key.
 #'
-#' @details `cdm_enum_fk_candidates()` checks first, if `ref_table` has a primary key set.
-#' For each column of `table` a join operation is then tried, with parameter `by` matching
+#' @details `cdm_enum_fk_candidates()` first checks if `ref_table` has a primary key set.
+#' Then, for each column of `table`, a join operation will be tried, with parameter `by` matching
 #' the respective column with the primary key of `ref_table`. This tests implicitly for
 #' type compatibility (on most sources). Based on the result of the join, the
 #' entry in the result column `why` is:
@@ -181,8 +180,8 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' respective column in table `table` and the primary column entries in table `ref_table`.
 #' - the error message triggered by the error (often stating the mismatched column types)
 #'
-#' @return A table with an overview which columns of `table` would be suitable candidates as
-#' foreign key columns referencing `ref_table` and which columns would not.
+#' @return A table that lists which columns of `table` would be suitable candidates for
+#' foreign key columns to reference `ref_table`, and which columns would not be suitable.
 #'
 #' @family foreign key functions
 #'
