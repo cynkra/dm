@@ -1,6 +1,7 @@
 #' Flatten a part of a `dm` into a wide table
 #'
-#' Gather all information of interest in one place in a wide table - a temporary table that will be created on a database-[`dm`].
+#' `cdm_flatten_to_tbl()` and `cdm_squash_to_tbl()` gather all information of interest in one place in a wide table.
+#' Both functions perform a disambiguation of column names and a cascade of joins.
 #' If referential integrity is specified for the tables of the data model, the table that results from the flattening function
 #' will contain as many rows as the `start` table does (exceptions are
 #' `join = anti_join` (the result is an empty table with the same columns as `start`) and `join = right_join`
