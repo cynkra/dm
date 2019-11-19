@@ -1,4 +1,4 @@
-# Demo for presentation at Energie 360°, November 2019
+# Demo for presentation at Energie 360, November 2019
 
 # {dm} facilitates working with multiple tables
 
@@ -165,6 +165,8 @@ try(
 # Accessing tables
 dm_flights %>%
   tbl("airlines")
+
+dm_flights$airlines
 
 # Table names
 dm_flights %>%
@@ -340,7 +342,7 @@ nycflights13_fk <-
   cdm_add_fk(flights, tailnum, planes) %>%
   cdm_add_fk(flights, origin, airports) %>%
   cdm_add_fk(flights, dest, airports) %>%
-  cdm_add_fk(flights, carrier, airlines)
+  cdm_add_fk(flights, carrier, airlines, check = TRUE)
 
 nycflights13_fk %>%
   cdm_draw()
@@ -450,6 +452,13 @@ nycflights13_perfect %>%
   cdm_zoom_to_tbl(flights) %>%
   anti_join(weather) %>%
   count(origin_slot_id)
+
+# Create table of aggregates, and insert it into the dm
+nycflights13_perfect %>%
+  cdm_zoom_to_tbl(flights) %>%
+  count(origin) %>%
+  cdm_insert_zoomed_tbl("flights_agg") %>%
+  cdm_draw()
 
 ##
 ##
