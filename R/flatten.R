@@ -2,7 +2,9 @@
 #'
 #' `cdm_flatten_to_tbl()` and `cdm_squash_to_tbl()` gather all information of interest in one place in a wide table.
 #' Both functions perform a disambiguation of column names and a cascade of joins.
-#' If referential integrity is specified for the tables of the data model, the table that results from the flattening function
+#` Disambiguates column names and a cascade of joins.
+#`
+#` Please see below for more details.
 #' will contain as many rows as the `start` table does (exceptions are
 #' `join = anti_join` (the result is an empty table with the same columns as `start`) and `join = right_join`
 #' (the number of rows is equal to or larger than those of `start`)).
