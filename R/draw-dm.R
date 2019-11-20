@@ -58,10 +58,10 @@ cdm_draw <- function(dm,
   bdm_render_graph(graph)
 }
 
-#' Get data_model component
+#' Get data_model
 #'
-#' `cdm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
-#' object.
+#' `cdm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
+#' data model object for drawing.
 #'
 #' @noRd
 cdm_get_data_model <- function(x) {

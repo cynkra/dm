@@ -216,10 +216,12 @@ validate_dm <- function(x) {
   invisible(x)
 }
 
-#' Get source component
+#' Get source
 #'
-#' `cdm_get_src()` returns the \pkg{dplyr} source component of a `dm`
-#' object.
+#' `cdm_get_src()` returns the \pkg{dplyr} source for a `dm` object.
+#' All tables in a `dm` object must be from the same source,
+#' i.e. either they are all data frames, or they all are stored on the same
+#' database.
 #'
 #' @rdname dm
 #'
@@ -232,8 +234,9 @@ cdm_get_src <- function(x) {
 
 #' Get connection
 #'
-#' `cdm_get_con()` returns the connection object (`con`-part of \pkg{dplyr} source component) of a `dm`
-#' object.
+#' `cdm_get_con()` returns the [DBI::DBIConnection] for `dm` objects.
+#' This works only if the tables are stored on a database, otherwise an error
+#' is thrown.
 #'
 #' @rdname dm
 #'
@@ -244,7 +247,7 @@ cdm_get_con <- function(x) {
   src$con
 }
 
-#' Get tables component
+#' Get tables
 #'
 #' `cdm_get_tables()` returns a named list with \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
@@ -309,8 +312,9 @@ cdm_get_data_model_fks <- function(x) {
 
 #' Get filter expressions
 #'
-#' `cdm_get_filter()` returns the filter component of a `dm`
-#' object, the set filter expressions.
+#' `cdm_get_filter()` returns the filter expressions applied to a `dm` object.
+#' These filter expressions are not intended for evaluation, only for
+#' information.
 #'
 #' @rdname dm
 #'
