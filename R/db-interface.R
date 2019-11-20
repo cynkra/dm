@@ -1,7 +1,8 @@
 #' Copy a `dm`-object to a different data source
 #'
 #' `cdm_copy_to()` takes a [dplyr::src_dbi] object or a [DBI::DBIConnection] object as its first argument
-#' and a [`dm`] object as its second argument. The latter is copied to the former.
+#' and a [`dm`] object as its second argument.
+#' The latter is copied to the former.
 #' By default, temporary tables will be created and the key constraints will be set
 #' (currently only on MSSQL and Postgres databases).
 #'
@@ -14,14 +15,16 @@
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
 #' @param table_names A named character vector, containing the names that you want the tables in the `dm` to have
-#'   after copying them to the database. The table names within the `dm` will remain unchanged.
+#'   after copying them to the database.
+#'   The table names within the `dm` will remain unchanged.
 #'   The name of each element of the vector needs to be one of the table names of the `dm`.
 #'   Those tables of the `dm` that are not addressed will be called by their original name on the database.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
 #' @param unique_table_names Boolean, if `FALSE` (default), the original table names will be used, if `TRUE`,
 #'   unique table names will be created based on the original table names.
-#' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created. These tables will vanish when disconnecting from the database.
+#' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
+#'   These tables will vanish when disconnecting from the database.
 #' @param ... Possible further arguments passed to [dplyr::copy_to()], which is used on each table.
 #'
 #' @family DB interaction functions

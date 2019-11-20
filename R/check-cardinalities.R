@@ -8,29 +8,35 @@
 #` Please see below for details.
 #'
 #' @details All `check_cardinality` functions accept a `parent table` (data frame), a column name of this table,
-#' a `child table`, and a column name of the child table. The given column of the `parent table` has to be one of its
+#' a `child table`, and a column name of the child table.
+#' The given column of the `parent table` has to be one of its
 #' unique keys (no duplicates are allowed).
 #' Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
 #' the parent table's column.
 #'
 #' The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the expected relation that the child table has with the parent table.
 #' The numbers `0`, `1` and `n` refer to the number of values in the column of the child table that correspond to each value of the
-#' column of the parent table. `n` means "more than one" in this context, with no upper limit.
+#' column of the parent table.
+#' `n` means "more than one" in this context, with no upper limit.
 #'
 #' `0_n` means, that for each value of the `pk_column`, at least `0` and at most
 #' `n` values have to correspond to it in the column of the child table (which translates to no further restrictions).
 #'
 #' `1_n` means, that for each value of the `pk_column`, at least `1` and at most
-#' `n` values have to correspond to it in the column of the child table. This means that there is a "surjective" mapping from the child table
+#' `n` values have to correspond to it in the column of the child table.
+#' This means that there is a "surjective" mapping from the child table
 #' to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 #'
 #' `0_1` means, that for each value of the `pk_column`, at least `0` and at most
-#' `1` value has to correspond to it in the column of the child table. This means that there is a "injective" mapping from the child table
-#' to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table
+#' `1` value has to correspond to it in the column of the child table.
+#' This means that there is a "injective" mapping from the child table
+#' to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
+#' But not all of the parent table
 #' column values have to be referred to.
 #'
 #' `1_1` means, that for each value of the `pk_column`, exactly
-#' `1` value has to correspond to it in the column of the child table. This means that there is a "bijective" ("injective" AND "surjective") mapping
+#' `1` value has to correspond to it in the column of the child table.
+#' This means that there is a "bijective" ("injective" AND "surjective") mapping
 #' between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 #' there are no duplicates in either of them.
 #'

@@ -6,7 +6,7 @@
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
 #'   It defines the level of details for rendering tables
 #'   (only primary and foreign keys, all columns, or no columns).
-#' @param rankdir Graph attribute for direction (eg. 'BT' = bottom --> top).
+#' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
 #' @param graph_name The name of the graph.
 #' @param graph_attrs Additional graph attributes.
 #' @param node_attrs Additional node attributes.
@@ -113,9 +113,11 @@ cdm_get_all_columns <- function(x) {
 #'
 #' `cdm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
 #'
-#' @param ... Colors to set in the form `table = "<color>"` . Fall-through syntax similarly to
+#' @param ... Colors to set in the form `table = "<color>"` .
+#'   Fall-through syntax similarly to
 #'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
-#'   and `table2` . This argument supports splicing.
+#'   and `table2` .
+#'   This argument supports splicing.
 #' @return For `cdm_set_colors()`: the updated data model.
 #'
 #' @rdname cdm_draw

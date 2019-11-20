@@ -4,7 +4,8 @@
 #'
 #' @description `cdm_add_pk()` marks the specified column as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
-#' the given column is a unique key of the table. If `force == TRUE`, the function will replace an already
+#' the given column is a unique key of the table.
+#' If `force == TRUE`, the function will replace an already
 #' set key.
 #'
 #' @param dm A `dm` object.
@@ -12,7 +13,8 @@
 #' @param column A column of that table.
 #' @param check Boolean, if `TRUE`, a check is made if the column is a unique key of the table.
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
-#'   set for this table. If `TRUE`, a potential old `pk` is deleted before setting a new one.
+#'   set for this table.
+#'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
 #'
 #' @family primary key functions
 #' @export
@@ -86,7 +88,8 @@ cdm_has_pk <- function(dm, table) {
 #' Retrieve the name of the primary key column of a `dm` table 
 #'
 #' @description `cdm_get_pk()` returns the name of the
-#' column marked as primary key of a table of a [`dm`] object. If no primary key is
+#' column marked as primary key of a table of a [`dm`] object.
+#' If no primary key is
 #' set for the table, an empty character vector is returned.
 #'
 #' @family primary key functions
@@ -135,7 +138,8 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #'
 #' @inheritParams cdm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
-#'   there are foreign keys addressing the primary key that is to be removed. If `TRUE`, the function will
+#'   there are foreign keys addressing the primary key that is to be removed.
+#'   If `TRUE`, the function will
 #'   remove, in addition to the primary key of the parameter `table`, also all foreign key constraints
 #'   that are pointing to it.
 #'

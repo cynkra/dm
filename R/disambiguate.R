@@ -7,7 +7,8 @@
 #'
 #' @inheritParams cdm_add_pk
 #' @param sep The character variable that separates the names of the table and the names of the ambiguous columns.
-#' @param quiet Boolean. By default, this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
+#' @param quiet Boolean.
+#'   By default, this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
 #'
 #' @examples
 #' cdm_disambiguate_cols(cdm_nycflights13())

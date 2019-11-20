@@ -20,7 +20,8 @@
 #' when using `cdm_insert_zoomed_tbl()` or `cdm_update_zoomed_tbl()`.
 #'
 #' Functions from `dplyr` that are supported for a `zoomed_dm`: `group_by()`, `summarise()`, `mutate()`,
-#' `transmute()`, `select()`, `rename()` and `ungroup()`. You can use these functions just like you would
+#' `transmute()`, `select()`, `rename()` and `ungroup()`.
+#' You can use these functions just like you would
 #' with a normal table.
 #'
 #' `filter()` is also supported, but treated in a special way: the filter expression for the zoomed table is

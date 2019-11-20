@@ -8,7 +8,8 @@
 #' `dm()` creates a `dm` object from one or multiple [tbl] objects
 #' (tibbles or lazy data objects).
 #'
-#' @param ... Tables to add to the `dm` object. If no names are provided, the tables
+#' @param ... Tables to add to the `dm` object.
+#'   If no names are provided, the tables
 #'   are auto-named.
 #' @param .name_repair Options for name repair.
 #'   Forwarded as `repair` to [vctrs::vec_as_names()].
@@ -89,7 +90,7 @@ dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
 #' A low-level constructor
 #'
 #' @description
-#' `new_dm()` is a low-level constructor that creates a new `dm` object. 
+#' `new_dm()` is a low-level constructor that creates a new `dm` object.
 #'
 #' If called without arguments, it will create an empty `dm`.
 #'

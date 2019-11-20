@@ -31,18 +31,23 @@ cdm_check_constraints <- function(dm) {
 
 #' Test if a column (combination) is unique key of a table
 #'
-#' @description `check_key()` accepts a data frame and, optionally, columns. It throws an error
+#' @description `check_key()` accepts a data frame and, optionally, columns.
+#' It throws an error
 #' if the specified columns (or all columns, if no columns are specified) are NOT a unique key of the data frame.
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 #'
 #' @param .data The data frame whose columns should be tested for key properties.
-#' @param ... The names of the columns to be checked. If none are specified, then all columns together are tested for the key property.
+#' @param ... The names of the columns to be checked.
+#'   If none are specified, then all columns together are tested for the key property.
 #'
-#'   One or more unquoted expressions separated by commas. Variable names can be treated as if they were positions, so you
+#'   One or more unquoted expressions separated by commas.
+#'   Variable names can be treated as if they were positions, so you
 #'   can use expressions like x:y to select ranges of variables.
 #'
-#'   The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
-#'   unquoting and splicing. See vignette("programming") for an introduction to these concepts.
+#'   The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+#'   They also support
+#'   unquoting and splicing.
+#'   See vignette("programming") for an introduction to these concepts.
 #'
 #'   See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
 #'
@@ -94,8 +99,8 @@ is_unique_key <- nse_function(c(.data, column), ~ {
 
 #' Test if the value sets of two different columns in two different tables are the same
 #'
-#' @description `check_set_equality()` is a wrapper of `check_if_subset()`. It tests if
-#' one value set is a subset of another and vice versa, i.e., if both sets are the same.
+#' @description `check_set_equality()` is a wrapper of `check_if_subset()`.
+#' It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
 #' If not, it throws an error.
 #'
 #' @param t1 The data frame that contains column `c1`.
