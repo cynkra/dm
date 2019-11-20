@@ -12,7 +12,7 @@
 #' @param column A column of that table.
 #' @param check Boolean, if `TRUE`, a check is made if the column is a unique key of the table.
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
-#' set for this table. If `TRUE`, a potential old `pk` is deleted before setting a new one.
+#'   set for this table. If `TRUE`, a potential old `pk` is deleted before setting a new one.
 #'
 #' @family primary key functions
 #' @export
@@ -135,9 +135,9 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #'
 #' @inheritParams cdm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
-#' there are foreign keys addressing the primary key that is to be removed. If `TRUE`, the function will
-#' remove, in addition to the primary key of the parameter `table`, also all foreign key constraints
-#' that are pointing to it.
+#'   there are foreign keys addressing the primary key that is to be removed. If `TRUE`, the function will
+#'   remove, in addition to the primary key of the parameter `table`, also all foreign key constraints
+#'   that are pointing to it.
 #'
 #' @examples
 #' library(dplyr)

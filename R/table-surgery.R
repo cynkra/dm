@@ -12,13 +12,13 @@
 #' @param new_id_column Name of the identifier column (primary key column) for the parent table. A column of this name is also added in 'child table'.
 #' @param ... The columns to be extracted from the `.data`.
 #'
-#' One or more unquoted expressions separated by commas. You can treat variable names as if they were positions, so you
-#' can use expressions like x:y to select ranges of variables.
+#'   One or more unquoted expressions separated by commas. You can treat variable names as if they were positions, so you
+#'   can use expressions like x:y to select ranges of variables.
 #'
-#' The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
-#' unquoting and splicing. See vignette("programming") for an introduction to those concepts.
+#'   The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
+#'   unquoting and splicing. See vignette("programming") for an introduction to those concepts.
 #'
-#' See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...
+#'   See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...
 #'
 #' @family table surgery functions
 #'
@@ -117,7 +117,7 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 #' of the columns is not retained, and the original row names are lost).
 #'
 #' @param list_of_parent_child_tables Cf arguments `child_table` and `parent_table` from
-#' `reunite_parent_child()`, but both in a named list (as created by `decompose_table()`).
+#'   `reunite_parent_child()`, but both in a named list (as created by `decompose_table()`).
 #'
 #' @family table surgery functions
 #'

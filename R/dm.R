@@ -98,7 +98,7 @@ dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
 #' use `validate_dm()` to double-check the returned object.
 #' 
 #' @param tables A named list of the tables (tibble-objects, not names) 
-#' to be included in the `dm` object.
+#'   to be included in the `dm` object.
 #'
 #' @rdname dm
 #' @export

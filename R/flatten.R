@@ -12,10 +12,10 @@
 #'   An interesting choice could be
 #'   for example a fact table in a star schema.
 #' @param ... Unquoted names of the tables to be included in addition to the `start` table. The order of the tables here determines
-#' the order of the joins. If the argument is empty, all tables that can be reached will be included.
-#' If this includes tables that are not direct neighbours of `start`,
-#' it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
-#' `tidyselect` is supported, cf. [dplyr::select()].
+#'   the order of the joins. If the argument is empty, all tables that can be reached will be included.
+#'   If this includes tables that are not direct neighbours of `start`,
+#'   it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
+#'   `tidyselect` is supported, cf. [dplyr::select()].
 #' @family flattening functions
 #'
 #' @details With `...` left empty, this function will join together all the tables of your [`dm`]

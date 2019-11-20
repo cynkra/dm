@@ -38,13 +38,13 @@ cdm_check_constraints <- function(dm) {
 #' @param .data The data frame whose columns should be tested for key properties.
 #' @param ... The names of the columns to be checked. If none are specified, then all columns together are tested for the key property.
 #'
-#' One or more unquoted expressions separated by commas. Variable names can be treated as if they were positions, so you
-#' can use expressions like x:y to select ranges of variables.
+#'   One or more unquoted expressions separated by commas. Variable names can be treated as if they were positions, so you
+#'   can use expressions like x:y to select ranges of variables.
 #'
-#' The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
-#' unquoting and splicing. See vignette("programming") for an introduction to these concepts.
+#'   The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
+#'   unquoting and splicing. See vignette("programming") for an introduction to these concepts.
 #'
-#' See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
+#'   See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
 #'
 #' @export
 #' @examples

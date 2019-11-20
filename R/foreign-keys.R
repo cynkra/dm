@@ -2,11 +2,11 @@
 #'
 #' @inheritParams cdm_add_pk
 #' @param column The column of `table` which is to become the foreign key column and
-#' reference the primary key of `ref_table`.
+#'   reference the primary key of `ref_table`.
 #' @param ref_table The table which `table` is referencing. This table needs to have
-#' a primary key set.
+#'   a primary key set.
 #' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
-#' `column` are a subset of the values of the primary key column of `ref_table`.
+#'   `column` are a subset of the values of the primary key column of `ref_table`.
 #'
 #' @family foreign key functions
 #'
