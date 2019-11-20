@@ -31,10 +31,10 @@
 #' between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 #' there are no duplicates in either of them.
 #'
-#' @param parent_table Data frame
+#' @param parent_table Data frame.
 #' @param pk_column Column of `parent_table` that has to be one of its unique keys.
-#' @param child_table Data frame
-#' @param fk_column Column of `child_table` that has to be a foreign key to `pk_column` in `parent_table`
+#' @param child_table Data frame.
+#' @param fk_column Column of `child_table` that has to be a foreign key to `pk_column` in `parent_table`.
 #'
 #' @name check_cardinality
 #'
