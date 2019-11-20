@@ -11,7 +11,7 @@
 #' The arguments are included in the signature to avoid passing them via the
 #' `...` ellipsis.
 #'
-#' @param dest An object of class `"src"` or `"DBIConnection"`
+#' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
 #' @param table_names A named character vector, containing the names that you want the tables in the `dm` to have
 #'   after copying them to the database. The table names within the `dm` will remain unchanged.
@@ -22,7 +22,7 @@
 #' @param unique_table_names Boolean, if `FALSE` (default), the original table names will be used, if `TRUE`,
 #'   unique table names will be created based on the original table names.
 #' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created. These tables will vanish when disconnecting from the database.
-#' @param ... Possible further arguments passed to [dplyr::copy_to()], which is used on each table
+#' @param ... Possible further arguments passed to [dplyr::copy_to()], which is used on each table.
 #'
 #' @family DB interaction functions
 #'

@@ -161,10 +161,10 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #' Since this function is a wrapper around [cdm_flatten_to_tbl()], the LHS of
 #' the join will always be a "child table", i.e. a table referencing the other table.
 #'
-#' @param dm A [`dm`] object
-#' @param table_1 One of the tables involved in the join
-#' @param table_2 The second table of the join
-#' @param join The type of join to be performed, see [dplyr::join()]
+#' @param dm A [`dm`] object.
+#' @param table_1 One of the tables involved in the join.
+#' @param table_2 The second table of the join.
+#' @param join The type of join to be performed, see [dplyr::join()].
 #'
 #' @return The resulting table of the join.
 #'

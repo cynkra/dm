@@ -2,16 +2,16 @@
 #'
 #' `cdm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'
-#' @param dm A [`dm`] object
+#' @param dm A [`dm`] object.
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
 #'   It defines the level of details for rendering tables
 #'   (only primary and foreign keys, all columns, or no columns).
-#' @param rankdir Graph attribute for direction (eg. 'BT' = bottom --> top)
-#' @param graph_name The name of the graph
-#' @param graph_attrs Additional graph attributes
-#' @param node_attrs Additional node attributes
-#' @param edge_attrs Additional edge attributes
-#' @param focus A list of parameters for rendering (table filter)
+#' @param rankdir Graph attribute for direction (eg. 'BT' = bottom --> top).
+#' @param graph_name The name of the graph.
+#' @param graph_attrs Additional graph attributes.
+#' @param node_attrs Additional node attributes.
+#' @param edge_attrs Additional edge attributes.
+#' @param focus A list of parameters for rendering (table filter).
 #' @param col_attr Column atributes to display.
 #'   By default only the column name (\code{"column"}) is displayed.
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).

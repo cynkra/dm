@@ -91,7 +91,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 #'
 #' @param child_table Table (possibly created by `decompose_table()`) that references `parent_table`
 #' @param parent_table Table (possibly created by `decompose_table()`).
-#' @param id_column Identical name of referencing / referenced column in `child_table`/`parent_table`
+#' @param id_column Identical name of referencing / referenced column in `child_table`/`parent_table`.
 #'
 #' @family table surgery functions
 #'

@@ -2,8 +2,6 @@
 #'
 #' @description Works like `dbplyr::test_load()`, just for `dm`_objects.
 #'
-#' @param x
-#'
 #' @noRd
 #' @examples
 #' dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))

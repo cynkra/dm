@@ -65,7 +65,7 @@ get_zoomed_tbl <- function(dm) {
 }
 
 #' @rdname cdm_zoom_to_tbl
-#' @param new_tbl_name Name of the new table
+#' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @export
