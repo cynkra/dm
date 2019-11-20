@@ -9,7 +9,7 @@
 #'
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
-#' @param column A column of that table
+#' @param column A column of that table.
 #' @param check Boolean, if `TRUE` (default), a check is made if the column is a unique key of the table.
 #' @param force Boolean, if `FALSE` (default), an error will be thrown, if there is
 #' already a primary key set for this table. If `TRUE` a potential old `pk` is deleted before setting the new one.
