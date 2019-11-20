@@ -8,7 +8,7 @@
 #'
 #' @seealso [cdm_rm_tbl()]
 #'
-#' @param dm A [`dm`] object
+#' @param dm A [`dm`] object.
 #' @param ... One or more table names of the [`dm`] object's tables.
 #'   See [tidyselect::vars_select()] and [tidyselect::vars_rename()]
 #'   for details on the semantics.
