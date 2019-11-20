@@ -8,7 +8,7 @@
 #' `dm()` creates a `dm` object from one or multiple [tbl] objects
 #' (tibbles or lazy data objects).
 #'
-#' @param ... Tables to add to the `dm`.  If no names are provided, the tables
+#' @param ... Tables to add to the `dm`. If no names are provided, the tables
 #'   are auto-named.
 #' @param .name_repair Options for name repair.
 #'   Forwarded as `repair` to [vctrs::vec_as_names()].

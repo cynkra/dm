@@ -8,7 +8,7 @@
 #'
 #' @seealso [cdm_rm_tbl()]
 #'
-#' @param dm A [`dm`] object
+#' @param dm A [`dm`] object.
 #' @param ... One or more tibbles to add to the `dm`.
 #'   If no explicit name is given, the name of the expression is used.
 #' @inheritParams vctrs::vec_as_names
@@ -68,7 +68,7 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #'
 #' @seealso [cdm_add_tbl()], [cdm_select_tbl()]
 #'
-#' @param dm A [`dm`] object
+#' @param dm A [`dm`] object.
 #' @param ... One or more unquoted tibble names to remove from the `dm`.
 #'
 #' @export
