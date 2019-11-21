@@ -189,7 +189,7 @@ validate_dm <- function(x) {
 
   if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
   if (!all(map_lgl(def$data, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi")}))) abort_dm_invalid(
-    "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`")
+    "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`.")
 
   if (nrow(def) == 0) return(invisible(x))
   if (ncol(def) != 9) abort_dm_invalid(
@@ -208,6 +208,8 @@ validate_dm <- function(x) {
     unnest(column)
   check_colnames(pks, dm_col_names, "PK")
   check_one_zoom(def, is_zoomed(x))
+  if (!all(map_lgl(def$zoom, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")}))) abort_dm_invalid(
+    "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`.")
   invisible(x)
 }
 
