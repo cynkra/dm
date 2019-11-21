@@ -161,18 +161,14 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 
   def <- cdm_get_def(dm)
 
-  selected <- set_names(def$table)
-  selected <- selected[selected != table]
-  new_def <- filter_recode_table_fks(def, selected)
-
-  if (!rm_referencing_fks && !identical(def$fks, new_def$fks)) {
-    affected <- !map2_lgl(def$fks, new_def$fks, identical)
-    abort_first_rm_fks(table, def$table[affected])
+  if (!rm_referencing_fks && cdm_is_referenced(dm, !!table)) {
+    affected <- cdm_get_referencing_tables(dm, !!table)
+    abort_first_rm_fks(table, affected)
   }
+  def$pks[def$table == table] <- list(new_pk())
+  def$fks[def$table == table] <- list(new_fk())
 
-  new_def$pks[new_def$table == table] <- list(tibble(column = list()))
-
-  new_dm3(new_def)
+  new_dm3(def)
 }
 
 
