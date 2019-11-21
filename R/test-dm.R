@@ -108,20 +108,20 @@ check_one_zoom <- function(def, zoomed) {
       abort_dm_invalid("More than one table is zoomed.")
     }
     if (sum(!map_lgl(def$zoom, is_null)) < 1) {
-      abort_dm_invalid("`dm` is supposed to be `zoomed_dm` but no zoomed table available.")
+      abort_dm_invalid("Class is `zoomed_dm` but no zoomed table available.")
     }
     if (sum(!map_lgl(def$key_tracker_zoom, is_null)) > 1) {
       abort_dm_invalid("Key tracking is active for more than one zoomed table.")
     }
     if (sum(!map_lgl(def$key_tracker_zoom, is_null)) < 1) {
-      abort_dm_invalid("No key tracking is active despite `dm` being `zoomed_dm`.")
+      abort_dm_invalid("No key tracking is active despite `dm` a `zoomed_dm`.")
     }
   } else {
     if (sum(!map_lgl(def$zoom, is_null)) != 0) {
-      abort_dm_invalid("Zoomed table(s) available despite `dm` not being `zoomed_dm`.")
+      abort_dm_invalid("Zoomed table(s) available despite `dm` not a `zoomed_dm`.")
     }
     if (sum(!map_lgl(def$key_tracker_zoom, is_null)) != 0) {
-      abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not being `zoomed_dm`.")
+      abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not a `zoomed_dm`.")
     }
   }
 }
