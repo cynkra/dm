@@ -180,8 +180,7 @@ new_key_tracker_zoom <- function() {
 validate_dm <- function(x) {
   check_dm(x)
 
-  # FIXME: Classed errors
-  stopifnot(identical(names(unclass(x)), "def"))
+  if (!identical(names(unclass(x)), "def")) abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
   def <- cdm_get_def(x)
 
   table_names <- def$table
@@ -193,7 +192,7 @@ validate_dm <- function(x) {
   # FIXME: Remove special case
   if (nrow(def) == 0) return(invisible(x))
   if (ncol(def) != 9) abort_dm_invalid(
-    glue("Number of columns of tibble underlying `dm` is wrong: {as.character(ncol(def))} ",
+    glue("Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
          "instead of 9.")
     )
 
@@ -209,9 +208,6 @@ validate_dm <- function(x) {
   check_colnames(pks, dm_col_names, "PK")
   check_col_classes(def)
   check_one_zoom(def, is_zoomed(x))
-  # check that all column classes of def are correct
-  # check that (for now) only maximally one `zoom` element is not `NULL`
-  # same with `key_tracker_zoom`
   # TODO: check consistency
   # - tables in data_model must be a subset of tables in src
   # - class membership
