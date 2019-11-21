@@ -602,7 +602,7 @@ error_need_to_select_rhs_by <- function(y_name, rhs_by) {
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
-  abort(error_dm_invalid(why), .subclass = "dm_invalid")
+  abort(error_dm_invalid(why), .subclass = cdm_error_full("dm_invalid"))
 }
 
 error_dm_invalid <- function(why) {
