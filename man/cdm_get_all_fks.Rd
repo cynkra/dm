@@ -14,10 +14,10 @@ A tibble with columns:
 
 "child_table": child table,
 "child_fk_col": foreign key column in child table,
-"parent_table": parent table,
+"parent_table": parent table
 }
 \description{
-Get an overview about all foreign key relations in a \code{\link{dm}}
+Get a summary of all foreign key relations in a \code{\link{dm}}
 }
 \seealso{
 Other foreign key functions: 

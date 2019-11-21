@@ -94,10 +94,10 @@ dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
 #'
 #' If called without arguments, it will create an empty `dm`.
 #'
-#' If called with arguments, no validation checks will be made to ascertain that 
-#' the inputs are of the expected class and internally consistent; 
+#' If called with arguments, no validation checks will be made to ascertain that
+#' the inputs are of the expected class and internally consistent;
 #' use `validate_dm()` to double-check the returned object.
-#' 
+#'
 #' @param tables A named list of the tables (tibble-objects, not names) .
 #'   to be included in the `dm` object.
 #'
@@ -238,7 +238,7 @@ cdm_get_src <- function(x) {
 
 #' Get connection
 #'
-#' `cdm_get_con()` returns the [DBI::DBIConnection] for `dm` objects.
+#' `cdm_get_con()` returns the [`DBI::DBIConnection-class`] for `dm` objects.
 #' This works only if the tables are stored on a database, otherwise an error
 #' is thrown.
 #'

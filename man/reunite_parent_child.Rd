@@ -3,7 +3,7 @@
 \name{reunite_parent_child}
 \alias{reunite_parent_child}
 \alias{reunite_parent_child_from_list}
-\title{Merge two tables linked by a foreign key relation}
+\title{Merge two tables that are linked by a foreign key relation}
 \usage{
 reunite_parent_child(child_table, parent_table, id_column)
 
@@ -14,22 +14,23 @@ reunite_parent_child_from_list(list_of_parent_child_tables, id_column)
 
 \item{parent_table}{Table (possibly created by \code{decompose_table()}).}
 
-\item{id_column}{Identical name of referencing/referenced column in \code{child_table}/\code{parent_table}}
+\item{id_column}{Identical name of referencing / referenced column in \code{child_table}/\code{parent_table}.}
 
 \item{list_of_parent_child_tables}{Cf arguments \code{child_table} and \code{parent_table} from
 \code{reunite_parent_child()}, but both in a named list (as created by \code{decompose_table()}).}
 }
 \description{
-Perform table fusion by combining two tables by a common (key) column and then removing this column.
+Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 
-\code{reunite_parent_child()}: After joining the two tables by the column \code{id_column}, this column is removed. The transformation is roughly the
+\code{reunite_parent_child()}: After joining the two tables by the column \code{id_column}, this column will be removed.
+The transformation is roughly the
 inverse of what \code{decompose_table()} does.
 
 \code{reunite_parent_child_from_list()}: After joining the two tables
-by the column \code{id_column}, this column is removed.
+by the column \code{id_column}, \code{id_column} is removed.
 
-The function is almost exactly the inverse of \code{decompose_table()} (the order
-of the columns is not retained and original rownames are lost).
+This function is almost exactly the inverse of \code{decompose_table()} (the order
+of the columns is not retained, and the original row names are lost).
 }
 \seealso{
 Other table surgery functions: 

@@ -2,24 +2,23 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_rm_fk}
 \alias{cdm_rm_fk}
-\title{Remove reference(s) from one table of a \code{\link{dm}} to another}
+\title{Remove the reference(s) from one \code{\link{dm}} table to another}
 \usage{
 cdm_rm_fk(dm, table, column, ref_table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 
-\item{column}{The column of \code{table} which should no longer be referencing the primary
-key of \code{ref_table}.
-If \code{NULL}, all columns will be considered.}
+\item{column}{The column of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
+If \code{NULL}, all columns will be evaluated.}
 
-\item{ref_table}{The table which \code{table} was referencing.}
+\item{ref_table}{The table that \code{table} was referencing.}
 }
 \description{
-Can either remove one reference between the two tables or all at once if parameter \code{column = NULL}.
-All parameters can be provided unquoted or quoted.
+This function can remove either one reference between two tables, or all references at once, if argument \code{column = NULL}.
+All arguments may be provided quoted or unquoted.
 }
 \seealso{
 Other foreign key functions: 

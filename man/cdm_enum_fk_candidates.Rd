@@ -12,25 +12,27 @@ enum_fk_candidates(zoomed_dm, ref_table)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{The table whose columns should be tested for foreign key candidate potential}
+\item{table}{The table whose columns should be tested for suitability of use as foreign keys.}
 
 \item{ref_table}{A table with a primary key.}
 
 \item{zoomed_dm}{A \code{dm} with a zoomed table.}
 }
 \value{
-A table with an overview which columns of \code{table} would be suitable candidates as
-foreign key columns referencing \code{ref_table} and which columns would not.
+A table that lists which columns of \code{table} would be suitable candidates for
+foreign key columns to reference \code{ref_table}, and which columns would not be suitable.
 }
 \description{
-Which columns are good candidates as a foreign key of a table, referencing
-the primary key column of another \code{\link{dm}} object's table?
+Determine which columns would be good candidates to be used as foreign keys of a table,
+and reference the primary key column of another \code{\link{dm}} object's table.
 }
 \details{
-\code{cdm_enum_fk_candidates()} checks first, if \code{ref_table} has a primary key set.
-For each column of \code{table} a join operation is then tried, with parameter \code{by} matching
-the respective column with the primary key of \code{ref_table}. This tests implicitly for
-type compatibility (on most sources). Based on the result of the join, the
+\code{cdm_enum_fk_candidates()} first checks if \code{ref_table} has a primary key set.
+Then, for each column of \code{table}, a join operation will be tried, with argument \code{by} matching
+the respective column with the primary key of \code{ref_table}.
+This tests implicitly for
+type compatibility (on most sources).
+Based on the result of the join, the
 entry in the result column \code{why} is:
 \itemize{
 \item an empty entry, if the column is a candidate

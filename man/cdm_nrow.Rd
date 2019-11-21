@@ -7,7 +7,7 @@
 cdm_nrow(dm)
 }
 \arguments{
-\item{dm}{A \code{\link{dm}} object}
+\item{dm}{A \code{\link{dm}} object.}
 }
 \description{
 Returns a named vector with the number of rows for each table.

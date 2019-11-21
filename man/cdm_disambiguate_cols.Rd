@@ -2,21 +2,22 @@
 % Please edit documentation in R/disambiguate.R
 \name{cdm_disambiguate_cols}
 \alias{cdm_disambiguate_cols}
-\title{Avoid column name conflicts}
+\title{Avoid conflicts in column names}
 \usage{
 cdm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{sep}{The character variable separating the table names and the ambiguous column names}
+\item{sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
 
-\item{quiet}{Boolean. By default this function lists the renamed columns in a message, pass \code{FALSE} to suppress this message.}
+\item{quiet}{Boolean.
+By default, this function lists the renamed columns in a message, pass \code{FALSE} to suppress this message.}
 }
 \description{
-This function checks all tables for column names that are not unique (across the entire \code{dm} object) and renames
+This function checks all tables for column names that are not unique (across the entire \code{dm} object), and renames
 those columns by prefixing the respective table name and a separator.
-Key columns will not be renamed, since only one column should remain, when two tables
+Key columns will not be renamed because only one column should remain when two tables that are
 linked by a key relation are joined.
 }
 \examples{

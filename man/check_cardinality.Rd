@@ -17,44 +17,53 @@ check_cardinality_1_1(parent_table, pk_column, child_table, fk_column)
 check_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
 }
 \arguments{
-\item{parent_table}{Data frame}
+\item{parent_table}{Data frame.}
 
 \item{pk_column}{Column of \code{parent_table} that has to be one of its unique keys.}
 
-\item{child_table}{Data frame}
+\item{child_table}{Data frame.}
 
-\item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}}
+\item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}.}
 }
 \description{
-All \code{check_cardinality()} functions test, if the \code{pk_column} is a unique key for \code{parent_table} and if
-the set of values of \code{fk_column} of \code{child_table} is a subset of the set of values of \code{pk_column}.
-Furthermore the cardinality of the relation is tested, see below for details.
+All \code{check_cardinality()} functions test the following conditions:
+\enumerate{
+\item Is \code{pk_column} is a unique key for \code{parent_table}?
+\item Is the set of values in \code{fk_column} of \code{child_table} a subset of the set of values of \code{pk_column}?
+\item Does the relation between the two tables of the data model meet the cardinality requirements?
+}
 }
 \details{
 All \code{check_cardinality} functions accept a \verb{parent table} (data frame), a column name of this table,
-a \verb{child table}, and a column name of the child table. The given column of the \verb{parent table} has to be one of its
-unique keys (no duplicates allowed).
+a \verb{child table}, and a column name of the child table.
+The given column of the \verb{parent table} has to be one of its
+unique keys (no duplicates are allowed).
 Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
 the parent table's column.
 
 The cardinality specifications \verb{0_n}, \verb{1_n}, \verb{0_1}, \verb{1_1} refer to the expected relation that the child table has with the parent table.
-The numbers \code{0}, \code{1} and \code{n} refer to the number of values in the child table's column that correspond to each value of the
-parent table's column. \code{n} means more than one in this context, with no upper limit.
+The numbers \code{0}, \code{1} and \code{n} refer to the number of values in the column of the child table that correspond to each value of the
+column of the parent table.
+\code{n} means "more than one" in this context, with no upper limit.
 
-\verb{0_n} means, that for each value of the \code{pk_column}, minimally \code{0} and maximally
-\code{n} values have to correspond to it in the child table's column (which translates to no further restriction).
+\verb{0_n} means, that for each value of the \code{pk_column}, at least \code{0} and at most
+\code{n} values have to correspond to it in the column of the child table (which translates to no further restrictions).
 
-\verb{1_n} means, that for each value of the \code{pk_column}, minimally \code{1} and maximally
-\code{n} values have to correspond to it in the child table's column. This means that there is a "surjective" relation from the child table
+\verb{1_n} means, that for each value of the \code{pk_column}, at least \code{1} and at most
+\code{n} values have to correspond to it in the column of the child table.
+This means that there is a "surjective" mapping from the child table
 to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 
-\verb{0_1} means, that for each value of the \code{pk_column}, minimally \code{0} and maximally
-\code{1} value has to correspond to it in the child table's column. This means that there is a "injective" relation from the child table
-to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table
+\verb{0_1} means, that for each value of the \code{pk_column}, at least \code{0} and at most
+\code{1} value has to correspond to it in the column of the child table.
+This means that there is a "injective" mapping from the child table
+to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
+But not all of the parent table
 column values have to be referred to.
 
-\verb{1_1} means, that for each value of the \code{pk_column}, precisely
-\code{1} value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
+\verb{1_1} means, that for each value of the \code{pk_column}, exactly
+\code{1} value has to correspond to it in the column of the child table.
+This means that there is a "bijective" ("injective" AND "surjective") mapping
 between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 there are no duplicates in either of them.
 }

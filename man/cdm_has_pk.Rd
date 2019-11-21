@@ -9,11 +9,11 @@ cdm_has_pk(dm, table)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 }
 \description{
 \code{cdm_has_pk()} checks in the \code{data_model} part
-of the \code{\link{dm}} object if a given table has a column marked as primary key.
+of the \code{\link{dm}} object if a given table has a column marked as its primary key.
 }
 \examples{
 library(dplyr)

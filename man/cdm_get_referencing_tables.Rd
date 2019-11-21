@@ -2,21 +2,21 @@
 % Please edit documentation in R/graph.R
 \name{cdm_get_referencing_tables}
 \alias{cdm_get_referencing_tables}
-\title{Get the names of a \code{\link{dm}}'s tables referencing a given table.}
+\title{Get the names of the tables of a \code{\link{dm}} that reference a given table.}
 \usage{
 cdm_get_referencing_tables(dm, table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 }
 \value{
-Character vector of the names of the tables pointing to the primary
-key of parameter \code{table}.
+Character vector of the names of the tables that point to the primary
+key of \code{table}.
 }
 \description{
-Get the names of a \code{\link{dm}}'s tables referencing a given table.
+Get the names of the tables of a \code{\link{dm}} that reference a given table.
 }
 \seealso{
 Other functions utilizing foreign key relations: 

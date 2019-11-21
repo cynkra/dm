@@ -592,7 +592,7 @@ error_fk_not_tracked <- function(x_orig_name, y_name) {
 # RHS-by column not selected ----------------------------------------------
 
 abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = "need_to_select_rhs_by")
+  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = cdm_error_full("need_to_select_rhs_by"))
 }
 
 error_need_to_select_rhs_by <- function(y_name, rhs_by) {

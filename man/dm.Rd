@@ -34,7 +34,8 @@ is_dm(x)
 as_dm(x)
 }
 \arguments{
-\item{...}{Tables to add to the \code{dm}.  If no names are provided, the tables
+\item{...}{Tables to add to the \code{dm} object.
+If no names are provided, the tables
 are auto-named.}
 
 \item{.name_repair}{Options for name repair.
@@ -44,7 +45,7 @@ Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_name
 
 \item{table_names}{A character vector of the names of the tables to include.}
 
-\item{tables}{A named list of the tables (tibble-objects, not names)
+\item{tables}{A named list of the tables (tibble-objects, not names) .
 to be included in the \code{dm} object.}
 
 \item{x}{An object.}
@@ -60,26 +61,33 @@ and extends the idea by offering operations to access the data in the tables.
 \code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}
 (a database or an environment).
 
-\code{new_dm()} doesn't perform any checks on the input.
-You may need to double-check the returned object with \code{validate_dm()}.
+\code{new_dm()} is a low-level constructor that creates a new \code{dm} object.
 
-All constructors create an empty \code{dm} if called without arguments.
+If called without arguments, it will create an empty \code{dm}.
+
+If called with arguments, no validation checks will be made to ascertain that
+the inputs are of the expected class and internally consistent;
+use \code{validate_dm()} to double-check the returned object.
 
 \code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
-\code{cdm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}
-object.
+\code{cdm_get_src()} returns the \pkg{dplyr} source for a \code{dm} object.
+All tables in a \code{dm} object must be from the same source,
+i.e. either they are all data frames, or they all are stored on the same
+database.
 
-\code{cdm_get_con()} returns the connection object (\code{con}-part of \pkg{dplyr} source component) of a \code{dm}
-object.
+\code{cdm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
+This works only if the tables are stored on a database, otherwise an error
+is thrown.
 
-\code{cdm_get_tables()} returns a named list with \pkg{dplyr} \link{tbl} objects
+\code{cdm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
-The filter expressions are NOT evaluated at this stage.
-To get the filtered tables, use \code{tbl.dm()}
+Filtering expressions are NOT evaluated at this stage.
+To get filtered tables, use \code{tbl.dm()}
 
-\code{cdm_get_filter()} returns the filter component of a \code{dm}
-object, the set filter expressions.
+\code{cdm_get_filter()} returns the filter expressions that have been applied to a \code{dm} object.
+These filter expressions are not intended for evaluation, only for
+information.
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 

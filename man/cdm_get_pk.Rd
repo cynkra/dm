@@ -2,18 +2,19 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_get_pk}
 \alias{cdm_get_pk}
-\title{Retrieve the name of the column marked as primary key of a table of a \code{\link{dm}} object}
+\title{Retrieve the name of the primary key column of a \code{dm} table}
 \usage{
 cdm_get_pk(dm, table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 }
 \description{
 \code{cdm_get_pk()} returns the name of the
-column marked as primary key of a table of a \code{\link{dm}} object. If no primary key is
+column marked as primary key of a table of a \code{\link{dm}} object.
+If no primary key is
 set for the table, an empty character vector is returned.
 }
 \examples{

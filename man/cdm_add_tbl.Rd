@@ -7,9 +7,9 @@
 cdm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 }
 \arguments{
-\item{dm}{A \code{\link{dm}} object}
+\item{dm}{A \code{\link{dm}} object.}
 
-\item{...}{One or more tibbles to add to the \code{dm}.
+\item{...}{One or more tables to add to the \code{dm}.
 If no explicit name is given, the name of the expression is used.}
 
 \item{repair}{Either a string or a function. If a string, it must
@@ -36,10 +36,10 @@ universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
 }
 \value{
-The inital \code{dm} with the additional table(s).
+The initial \code{dm} with the additional table(s).
 }
 \description{
-\code{cdm_add_tbl()} adds one or more tibbles to a \code{\link{dm}}.
+\code{cdm_add_tbl()} adds one or more tables to a \code{\link{dm}}.
 It uses \code{\link[=mutate]{mutate()}} semantics.
 }
 \seealso{

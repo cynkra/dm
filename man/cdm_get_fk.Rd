@@ -2,19 +2,19 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_get_fk}
 \alias{cdm_get_fk}
-\title{Retrieve the name of the column marked as foreign key, pointing from one table of a \code{\link{dm}} to another}
+\title{Retrieve the name of the column marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.}
 \usage{
 cdm_get_fk(dm, table, ref_table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 
-\item{ref_table}{The table which is referenced from \code{table}.}
+\item{ref_table}{The table that is referenced from \code{table}.}
 }
 \description{
-Retrieve the name of the column marked as foreign key, pointing from one table of a \code{\link{dm}} to another
+Retrieve the name of the column marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.
 }
 \seealso{
 Other foreign key functions: 

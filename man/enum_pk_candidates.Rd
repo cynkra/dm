@@ -10,14 +10,14 @@ enum_pk_candidates(table)
 cdm_enum_pk_candidates(dm, table)
 }
 \arguments{
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 
 \item{dm}{A \code{dm} object.}
 }
 \description{
 \code{enum_pk_candidates()} checks for each column of a
-table if this column contains only unique values and is therefore
-a candidate for a primary key of this table.
+table if the column contains only unique values, and is thus
+a suitable candidate for a primary key of the table.
 
 \code{cdm_enum_pk_candidates()} performs these checks
 for a table in a \link{dm} object.
