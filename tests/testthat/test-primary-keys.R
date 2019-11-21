@@ -74,6 +74,19 @@ test_that("cdm_rm_pk() works as intended?", {
       class = "table_not_in_dm"
     )
   )
+
+  # test if error is thrown if FK points to PK that is about to be removed
+  expect_cdm_error(
+    cdm_rm_pk(dm_for_filter, t4),
+    "first_rm_fks"
+  )
+
+  # test logic if argument `rm_referencing_fks = TRUE`
+  expect_equivalent_dm(
+    cdm_rm_pk(dm_for_filter, t4, rm_referencing_fks = TRUE),
+    cdm_rm_fk(dm_for_filter, t5, l, t4) %>%
+      cdm_rm_pk(t4)
+  )
 })
 
 test_that("cdm_has_pk() works as intended?", {
