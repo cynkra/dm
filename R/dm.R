@@ -186,8 +186,9 @@ validate_dm <- function(x) {
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
 
-  # FIXME: Are all data objects tbl-s?
   if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
+  if (!all(map_lgl(def$data, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi")}))) abort_dm_invalid(
+    "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`")
 
   # FIXME: Remove special case
   if (nrow(def) == 0) return(invisible(x))
