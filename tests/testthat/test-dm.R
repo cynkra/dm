@@ -59,3 +59,35 @@ test_that("validator is silent", {
     dm_for_filter_w_cycle
   )
 })
+
+test_that("validator speaks up (postgres)", {
+  skip_if_not("postgres" %in% src_names) {
+    expect_cdm_error(
+      new_dm3(cdm_get_def(dm_for_filter) %>%
+                mutate(data = if_else(table == "t1", list(dm_for_filter_src$postgres$t1), data))) %>%
+        validate_dm(),
+      "dm_invalid"
+      )
+  }
+})
+
+test_that("validator speaks up (sqlite)", {
+  skip_if_not("sqlite" %in% src_names) {
+    expect_cdm_error(
+      new_dm3(cdm_get_def(dm_for_filter) %>%
+                mutate(data = if_else(table == "t1", list(dm_for_filter_src$sqlite$t1), data))) %>%
+        validate_dm(),
+      "dm_invalid"
+    )
+  }
+})
+
+
+
+# new_dm3(cdm_get_def(dm_for_filter) %>% mutate(key_tracker_zoom = list(1))) %>% validate_dm()
+# new_dm3(cdm_get_def(dm_for_filter %>% cdm_zoom_to_tbl(t1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm()
+# new_dm3(cdm_get_def(dm_for_filter %>% cdm_zoom_to_tbl(t1)) %>% mutate(key_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm()
+# new_dm3(cdm_get_def(dm_for_filter) %>% mutate(table = "")) %>% validate_dm()
+# new_dm3(cdm_get_def(dm_for_filter) %>% mutate(zoom = list(1))) %>% validate_dm()
+# new_dm3(cdm_get_def(dm_for_filter) %>% mutate(key_tracker_zoom = list(1))) %>% validate_dm()
+#
