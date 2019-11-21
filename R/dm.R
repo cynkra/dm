@@ -185,13 +185,17 @@ validate_dm <- function(x) {
   def <- cdm_get_def(x)
 
   table_names <- def$table
-  if (any(table_names == "")) abort_unnamed_table_list()
+  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
 
   # FIXME: Are all data objects tbl-s?
-  if (!all_same_source(def$data)) abort_not_same_src()
+  if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
 
   # FIXME: Remove special case
   if (nrow(def) == 0) return(invisible(x))
+  if (ncol(def) != 9) abort_dm_invalid(
+    glue("Number of columns of tibble underlying `dm` is wrong: {as.character(ncol(def))} ",
+         "instead of 9.")
+    )
 
   fks <- def$fks %>%
     map_dfr(I) %>%
@@ -203,6 +207,8 @@ validate_dm <- function(x) {
     unnest(pks) %>%
     unnest(column)
   check_colnames(pks, dm_col_names, "PK")
+  check_col_classes(def)
+  check_one_zoom(def, is_zoomed(x))
   # check that all column classes of def are correct
   # check that (for now) only maximally one `zoom` element is not `NULL`
   # same with `key_tracker_zoom`
