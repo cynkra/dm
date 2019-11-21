@@ -187,9 +187,9 @@ validate_dm <- function(x) {
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
   check_col_classes(def)
 
-  if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
   if (!all(map_lgl(def$data, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi")}))) abort_dm_invalid(
     "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`.")
+  if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
 
   if (nrow(def) == 0) return(invisible(x))
   if (ncol(def) != 9) abort_dm_invalid(
