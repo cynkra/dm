@@ -36,11 +36,11 @@
 
 
 <meta property="og:title" content="Creates a <code><a href='dm.html'>dm</a></code> object for the <span class="pkg">nycflights13</span> data — cdm_nycflights13" />
-<meta property="og:description" content="Creates an exemplary dm object from the tables in nycflights13
+<meta property="og:description" content="Creates an example dm object from the tables in nycflights13,
 along with the references.
 See nycflights13::flights for a description of the data.
 As described in nycflights13::planes, the relationship
-between the flights and planes tables is &quot;weak&quot;, it does not satisfy
+between the flights table and the planes tables is &quot;weak&quot;, it does not satisfy
 data integrity constraints." />
 <meta name="twitter:card" content="summary" />
 
@@ -143,11 +143,11 @@ data integrity constraints." />
     </div>
 
     <div class="ref-description">
-    <p>Creates an exemplary <code><a href='dm.html'>dm</a></code> object from the tables in <span class="pkg">nycflights13</span>
+    <p>Creates an example <code><a href='dm.html'>dm</a></code> object from the tables in <span class="pkg">nycflights13</span>,
 along with the references.
 See <a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>nycflights13::flights</a> for a description of the data.
 As described in <a href='https://rdrr.io/pkg/nycflights13/man/planes.html'>nycflights13::planes</a>, the relationship
-between the <code>flights</code> and <code>planes</code> tables is "weak", it does not satisfy
+between the <code>flights</code> table and the <code>planes</code> tables is "weak", it does not satisfy
 data integrity constraints.</p>
     </div>
 
@@ -158,9 +158,11 @@ data integrity constraints.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>cycle</th>
-      <td><p>Boolean. If <code>FALSE</code> (default), only one foreign key relation
-(from <code>flights$origin</code> to <code>airports$faa</code>) between <code>flights</code> and <code>airports</code> is
-established. If <code>TRUE</code>, a <code>dm</code> object with a double reference
+      <td><p>Boolean.
+If <code>FALSE</code> (default), only one foreign key relation
+(from <code>flights$origin</code> to <code>airports$faa</code>) between the <code>flights</code> table and the <code>airports</code> table is
+established.
+If <code>TRUE</code>, a <code>dm</code> object with a double reference
 between those tables will be produced.</p></td>
     </tr>
     <tr>

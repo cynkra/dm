@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Avoid column name conflicts — cdm_disambiguate_cols • dm</title>
+<title>Avoid conflicts in column names — cdm_disambiguate_cols • dm</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,10 @@
 
 
 
-<meta property="og:title" content="Avoid column name conflicts — cdm_disambiguate_cols" />
-<meta property="og:description" content="This function checks all tables for column names that are not unique (across the entire dm object) and renames
+<meta property="og:title" content="Avoid conflicts in column names — cdm_disambiguate_cols" />
+<meta property="og:description" content="This function checks all tables for column names that are not unique (across the entire dm object), and renames
 those columns by prefixing the respective table name and a separator.
-Key columns will not be renamed, since only one column should remain, when two tables
+Key columns will not be renamed because only one column should remain when two tables that are
 linked by a key relation are joined." />
 <meta name="twitter:card" content="summary" />
 
@@ -135,15 +135,15 @@ linked by a key relation are joined." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Avoid column name conflicts</h1>
+    <h1>Avoid conflicts in column names</h1>
     
     <div class="hidden name"><code>cdm_disambiguate_cols.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function checks all tables for column names that are not unique (across the entire <code>dm</code> object) and renames
+    <p>This function checks all tables for column names that are not unique (across the entire <code>dm</code> object), and renames
 those columns by prefixing the respective table name and a separator.
-Key columns will not be renamed, since only one column should remain, when two tables
+Key columns will not be renamed because only one column should remain when two tables that are
 linked by a key relation are joined.</p>
     </div>
 
@@ -158,11 +158,12 @@ linked by a key relation are joined.</p>
     </tr>
     <tr>
       <th>sep</th>
-      <td><p>The character variable separating the table names and the ambiguous column names</p></td>
+      <td><p>The character variable that separates the names of the table and the names of the ambiguous columns.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>Boolean. By default this function lists the renamed columns in a message, pass <code>FALSE</code> to suppress this message.</p></td>
+      <td><p>Boolean.
+By default, this function lists the renamed columns in a message, pass <code>FALSE</code> to suppress this message.</p></td>
     </tr>
     </table>
 

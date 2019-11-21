@@ -36,9 +36,10 @@
 
 
 <meta property="og:title" content="Mark a column of a table in a <code><a href='dm.html'>dm</a></code> object as its primary key — cdm_add_pk" />
-<meta property="og:description" content="cdm_add_pk() marks the given column as the given table's primary key
-in the data_model-part of the dm object. If check == TRUE, it also first checks if
-the given column is a unique key of the table. If force == TRUE, it replaces an already
+<meta property="og:description" content="cdm_add_pk() marks the specified column as the primary key of the specified table.
+If check == TRUE, then it will first check if
+the given column is a unique key of the table.
+If force == TRUE, the function will replace an already
 set key." />
 <meta name="twitter:card" content="summary" />
 
@@ -141,9 +142,10 @@ set key." />
     </div>
 
     <div class="ref-description">
-    <p><code>cdm_add_pk()</code> marks the given column as the given table's primary key
-in the <code>data_model</code>-part of the <code><a href='dm.html'>dm</a></code> object. If <code>check == TRUE</code>, it also first checks if
-the given column is a unique key of the table. If <code>force == TRUE</code>, it replaces an already
+    <p><code>cdm_add_pk()</code> marks the specified column as the primary key of the specified table.
+If <code>check == TRUE</code>, then it will first check if
+the given column is a unique key of the table.
+If <code>force == TRUE</code>, the function will replace an already
 set key.</p>
     </div>
 
@@ -158,20 +160,21 @@ set key.</p>
     </tr>
     <tr>
       <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
+      <td><p>A table in the <code>dm</code>.</p></td>
     </tr>
     <tr>
       <th>column</th>
-      <td><p>A column of that table</p></td>
+      <td><p>A column of that table.</p></td>
     </tr>
     <tr>
       <th>check</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), a check is made if the column is a unique key of the table.</p></td>
+      <td><p>Boolean, if <code>TRUE</code>, a check is made if the column is a unique key of the table.</p></td>
     </tr>
     <tr>
       <th>force</th>
-      <td><p>Boolean, if <code>FALSE</code> (default), an error will be thrown, if there is
-already a primary key set for this table. If <code>TRUE</code> a potential old <code>pk</code> is deleted before setting the new one.</p></td>
+      <td><p>Boolean, if <code>FALSE</code> (default), an error will be thrown if there is already a primary key
+set for this table.
+If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting a new one.</p></td>
     </tr>
     </table>
 
@@ -214,7 +217,7 @@ already a primary key set for this table. If <code>TRUE</code> a potential old <
 #&gt; Columns: 53
 #&gt; Primary keys: 1
 #&gt; Foreign keys: 0</div><div class='input'>
-<span class='co'># the following does not work</span>
+<span class='co'># the following does not work (throws an error)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cdm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Data model ──────────────────────────────────────────────────────────────────

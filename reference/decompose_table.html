@@ -36,11 +36,12 @@
 
 
 <meta property="og:title" content="Decompose a table into two linked tables — decompose_table" />
-<meta property="og:description" content="Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.
-decompose_table() accepts a data frame, a name for an 'ID column' that will be newly created, and the names
-of the columns which will be extracted into the new data frame.
-It creates the 'parent table', consisting of the columns specified in the ellipsis and the new 'ID column'. Then it removes the
-said columns from the now called 'child table' (the original table) and also adds the 'ID column' here appropriately." />
+<meta property="og:description" content="Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
+decompose_table() accepts a data frame, a name for the 'ID column' that will be newly created, and the names
+of the columns that will be extracted into the new data frame.
+It creates a 'parent table', which consists of the columns specified in the ellipsis, and a new 'ID column'.
+Then it removes those
+columns from the original table, which is now called the 'child table, and adds the 'ID column'." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -142,11 +143,12 @@ said columns from the now called 'child table' (the original table) and also add
     </div>
 
     <div class="ref-description">
-    <p>Perform table surgery by extracting a 'parent table' from a table, linking original and new table by a key and returning both.</p>
-<p><code>decompose_table()</code> accepts a data frame, a name for an 'ID column' that will be newly created, and the names
-of the columns which will be extracted into the new data frame.</p>
-<p>It creates the 'parent table', consisting of the columns specified in the ellipsis and the new 'ID column'. Then it removes the
-said columns from the now called 'child table' (the original table) and also adds the 'ID column' here appropriately.</p>
+    <p>Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.</p>
+<p><code>decompose_table()</code> accepts a data frame, a name for the 'ID column' that will be newly created, and the names
+of the columns that will be extracted into the new data frame.</p>
+<p>It creates a 'parent table', which consists of the columns specified in the ellipsis, and a new 'ID column'.
+Then it removes those
+columns from the original table, which is now called the 'child table, and adds the 'ID column'.</p>
     </div>
 
     <pre class="usage"><span class='fu'>decompose_table</span>(<span class='no'>.data</span>, <span class='no'>new_id_column</span>, <span class='no'>...</span>)</pre>
@@ -160,16 +162,20 @@ said columns from the now called 'child table' (the original table) and also add
     </tr>
     <tr>
       <th>new_id_column</th>
-      <td><p>Name of the identifier column (primary key column) for the parent table. A column of this name is also added in 'child table'.</p></td>
+      <td><p>Name of the identifier column (primary key column) for the parent table.
+A column of this name is also added in 'child table'.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>The columns to be extracted from the <code>.data</code>.</p>
-<p>One or more unquoted expressions separated by commas. You can treat variable names like they are positions, so you
+<p>One or more unquoted expressions separated by commas.
+You can treat variable names as if they were positions, so you
 can use expressions like x:y to select ranges of variables.</p>
-<p>The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions. They also support
-unquoting and splicing. See vignette("programming") for an introduction to these concepts.</p>
-<p>See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...</p></td>
+<p>The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+They also support
+unquoting and splicing.
+See vignette("programming") for an introduction to those concepts.</p>
+<p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></td>
     </tr>
     </table>
 

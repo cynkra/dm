@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Copy a <code>dm</code>-object to a <code>src</code>/<code>con</code> — cdm_copy_to • dm</title>
+<title>Copy a <code>dm</code>-object to a different data source — cdm_copy_to • dm</title>
 
 
 <!-- jquery -->
@@ -35,11 +35,12 @@
 
 
 
-<meta property="og:title" content="Copy a <code>dm</code>-object to a <code>src</code>/<code>con</code> — cdm_copy_to" />
-<meta property="og:description" content="cdm_copy_to() takes a src- or con-object as a first argument,
-and a dm object as a second. The latter is copied to the former. By default
-the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
-By default temporary tables will be created." />
+<meta property="og:title" content="Copy a <code>dm</code>-object to a different data source — cdm_copy_to" />
+<meta property="og:description" content="cdm_copy_to() takes a dplyr::src_dbi object or a DBI::DBIConnection object as its first argument
+and a dm object as its second argument.
+The latter is copied to the former.
+By default, temporary tables will be created and the key constraints will be set
+(currently only on MSSQL and Postgres databases)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -135,16 +136,17 @@ By default temporary tables will be created." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Copy a <code>dm</code>-object to a <code>src</code>/<code>con</code></h1>
+    <h1>Copy a <code>dm</code>-object to a different data source</h1>
     
     <div class="hidden name"><code>cdm_copy_to.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>cdm_copy_to()</code> takes a <code>src</code>- or <code>con</code>-object as a first argument,
-and a <code><a href='dm.html'>dm</a></code> object as a second. The latter is copied to the former. By default
-the key constraints will be set (for now only on MSSQL- and Postgres-DBs).
-By default temporary tables will be created.</p>
+    <p><code>cdm_copy_to()</code> takes a <a href='https://dplyr.tidyverse.org/reference/src_dbi.html'>dplyr::src_dbi</a> object or a <code><a href='https://rdrr.io/pkg/DBI/man/DBIConnection-class.html'>DBI::DBIConnection</a></code> object as its first argument
+and a <code><a href='dm.html'>dm</a></code> object as its second argument.
+The latter is copied to the former.
+By default, temporary tables will be created and the key constraints will be set
+(currently only on MSSQL and Postgres databases).</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_copy_to</span>(
@@ -166,7 +168,7 @@ By default temporary tables will be created.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dest</th>
-      <td><p>A <code>src</code> or <code>con</code> object like e.g. a database.</p></td>
+      <td><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></td>
     </tr>
     <tr>
       <th>dm</th>
@@ -174,7 +176,7 @@ By default temporary tables will be created.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Possible further arguments passed to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code> (which is used on each table)</p></td>
+      <td><p>Possible further arguments passed to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code>, which is used on each table.</p></td>
     </tr>
     <tr>
       <th>overwrite, types, indexes, unique_indexes</th>
@@ -186,27 +188,29 @@ By default temporary tables will be created.</p>
     </tr>
     <tr>
       <th>unique_table_names</th>
-      <td><p>Boolean, if <code>FALSE</code> (default), original table names will be used, if <code>TRUE</code>,
+      <td><p>Boolean, if <code>FALSE</code> (default), the original table names will be used, if <code>TRUE</code>,
 unique table names will be created based on the original table names.</p></td>
     </tr>
     <tr>
       <th>table_names</th>
-      <td><p>A named character vector, containing the names you want the tables in the <code>dm</code> to have
-after copying them to the database. The table names within the <code>dm</code> will remain unchanged.
+      <td><p>A named character vector, containing the names that you want the tables in the <code>dm</code> to have
+after copying them to the database.
+The table names within the <code>dm</code> will remain unchanged.
 The name of each element of the vector needs to be one of the table names of the <code>dm</code>.
 Those tables of the <code>dm</code> that are not addressed will be called by their original name on the database.</p></td>
     </tr>
     <tr>
       <th>temporary</th>
-      <td><p>Boolean variable, if <code>TRUE</code> will only create temporary tables, which will vanish when connection is interrupted.</p></td>
+      <td><p>Boolean variable, if <code>TRUE</code>, only temporary tables will be created.
+These tables will vanish when disconnecting from the database.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>No tables will be overwritten, passing <code>overwrite = TRUE</code> gives an error.
-Types are determined separately for each table, setting the <code>types</code> argument
-also gives an error.
+    <p>No tables will be overwritten; passing <code>overwrite = TRUE</code> to the function will give an error.
+Types are determined separately for each table, setting the <code>types</code> argument will
+also throw an error.
 The arguments are included in the signature to avoid passing them via the
 <code>...</code> ellipsis.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

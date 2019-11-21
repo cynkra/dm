@@ -36,10 +36,10 @@
 
 
 <meta property="og:title" content="Learn a <code><a href='dm.html'>dm</a></code> object from a database (DB) — cdm_learn_from_db" />
-<meta property="og:description" content="Assuming, there are permament tables on a DB, you can turn these
-into a dm object. The key constraints are also learned from the DB and taken into
-account.
-So far this only works for MSSQL and Postgres. Also, you can not specify a schema to learn from." />
+<meta property="og:description" content="If there are any permament tables on a DB, a new dm object can be created that contains those tables,
+along with their primary and foreign key constraints.
+Currently this only works with MSSQL and Postgres databases.
+The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -141,10 +141,10 @@ So far this only works for MSSQL and Postgres. Also, you can not specify a schem
     </div>
 
     <div class="ref-description">
-    <p>Assuming, there are permament tables on a DB, you can turn these
-into a <code><a href='dm.html'>dm</a></code> object. The key constraints are also learned from the DB and taken into
-account.</p>
-<p>So far this only works for MSSQL and Postgres. Also, you can not specify a schema to learn from.</p>
+    <p>If there are any permament tables on a DB, a new <code><a href='dm.html'>dm</a></code> object can be created that contains those tables,
+along with their primary and foreign key constraints.</p>
+<p>Currently this only works with MSSQL and Postgres databases.</p>
+<p>The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_learn_from_db</span>(<span class='no'>dest</span>)</pre>

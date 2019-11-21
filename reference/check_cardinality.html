@@ -36,9 +36,12 @@
 
 
 <meta property="og:title" content="Test if the relation between two tables of a data model meet the requirements — check_cardinality" />
-<meta property="og:description" content="All check_cardinality() functions test, if the pk_column is a unique key for parent_table and if
-the set of values of fk_column of child_table is a subset of the set of values of pk_column.
-Furthermore the cardinality of the relation is tested, see below for details." />
+<meta property="og:description" content="All check_cardinality() functions test the following conditions:
+Is pk_column is a unique key for parent_table?
+Is the set of values in fk_column of child_table a subset of the set of values of pk_column?
+Does the relation between the two tables of the data model meet the cardinality requirements?
+
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,9 +143,12 @@ Furthermore the cardinality of the relation is tested, see below for details." /
     </div>
 
     <div class="ref-description">
-    <p>All <code>check_cardinality()</code> functions test, if the <code>pk_column</code> is a unique key for <code>parent_table</code> and if
-the set of values of <code>fk_column</code> of <code>child_table</code> is a subset of the set of values of <code>pk_column</code>.
-Furthermore the cardinality of the relation is tested, see below for details.</p>
+    <p>All <code>check_cardinality()</code> functions test the following conditions:</p><ol>
+<li><p>Is <code>pk_column</code> is a unique key for <code>parent_table</code>?</p></li>
+<li><p>Is the set of values in <code>fk_column</code> of <code>child_table</code> a subset of the set of values of <code>pk_column</code>?</p></li>
+<li><p>Does the relation between the two tables of the data model meet the cardinality requirements?</p></li>
+</ol>
+
     </div>
 
     <pre class="usage"><span class='fu'>check_cardinality_0_n</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
@@ -158,7 +164,7 @@ Furthermore the cardinality of the relation is tested, see below for details.</p
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>parent_table</th>
-      <td><p>Data frame</p></td>
+      <td><p>Data frame.</p></td>
     </tr>
     <tr>
       <th>pk_column</th>
@@ -166,35 +172,41 @@ Furthermore the cardinality of the relation is tested, see below for details.</p
     </tr>
     <tr>
       <th>child_table</th>
-      <td><p>Data frame</p></td>
+      <td><p>Data frame.</p></td>
     </tr>
     <tr>
       <th>fk_column</th>
-      <td><p>Column of <code>child_table</code> that has to be a foreign key to <code>pk_column</code> in <code>parent_table</code></p></td>
+      <td><p>Column of <code>child_table</code> that has to be a foreign key to <code>pk_column</code> in <code>parent_table</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>All <code>check_cardinality</code> functions accept a <code>parent table</code> (data frame), a column name of this table,
-a <code>child table</code>, and a column name of the child table. The given column of the <code>parent table</code> has to be one of its
-unique keys (no duplicates allowed).
+a <code>child table</code>, and a column name of the child table.
+The given column of the <code>parent table</code> has to be one of its
+unique keys (no duplicates are allowed).
 Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
 the parent table's column.</p>
 <p>The cardinality specifications <code>0_n</code>, <code>1_n</code>, <code>0_1</code>, <code>1_1</code> refer to the expected relation that the child table has with the parent table.
-The numbers <code>0</code>, <code>1</code> and <code>n</code> refer to the number of values in the child table's column that correspond to each value of the
-parent table's column. <code>n</code> means more than one in this context, with no upper limit.</p>
-<p><code>0_n</code> means, that for each value of the <code>pk_column</code>, minimally <code>0</code> and maximally
-<code>n</code> values have to correspond to it in the child table's column (which translates to no further restriction).</p>
-<p><code>1_n</code> means, that for each value of the <code>pk_column</code>, minimally <code>1</code> and maximally
-<code>n</code> values have to correspond to it in the child table's column. This means that there is a "surjective" relation from the child table
+The numbers <code>0</code>, <code>1</code> and <code>n</code> refer to the number of values in the column of the child table that correspond to each value of the
+column of the parent table.
+<code>n</code> means "more than one" in this context, with no upper limit.</p>
+<p><code>0_n</code> means, that for each value of the <code>pk_column</code>, at least <code>0</code> and at most
+<code>n</code> values have to correspond to it in the column of the child table (which translates to no further restrictions).</p>
+<p><code>1_n</code> means, that for each value of the <code>pk_column</code>, at least <code>1</code> and at most
+<code>n</code> values have to correspond to it in the column of the child table.
+This means that there is a "surjective" mapping from the child table
 to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.</p>
-<p><code>0_1</code> means, that for each value of the <code>pk_column</code>, minimally <code>0</code> and maximally
-<code>1</code> value has to correspond to it in the child table's column. This means that there is a "injective" relation from the child table
-to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table
+<p><code>0_1</code> means, that for each value of the <code>pk_column</code>, at least <code>0</code> and at most
+<code>1</code> value has to correspond to it in the column of the child table.
+This means that there is a "injective" mapping from the child table
+to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
+But not all of the parent table
 column values have to be referred to.</p>
-<p><code>1_1</code> means, that for each value of the <code>pk_column</code>, precisely
-<code>1</code> value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
+<p><code>1_1</code> means, that for each value of the <code>pk_column</code>, exactly
+<code>1</code> value has to correspond to it in the column of the child table.
+This means that there is a "bijective" ("injective" AND "surjective") mapping
 between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 there are no duplicates in either of them.</p>
 

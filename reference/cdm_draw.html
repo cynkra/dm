@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Draw schema of a <code><a href='dm.html'>dm</a></code>-object's data model — cdm_draw • dm</title>
+<title>Draw a diagram of a <code><a href='dm.html'>dm</a></code>-object's data model — cdm_draw • dm</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Draw schema of a <code><a href='dm.html'>dm</a></code>-object's data model — cdm_draw" />
-<meta property="og:description" content="cdm_draw() draws a schema of the data model using datamodelr (which in turn uses DiagrammeR).
-cdm_set_colors() allows to define the colors in which to display the tables of the data model.
+<meta property="og:title" content="Draw a diagram of a <code><a href='dm.html'>dm</a></code>-object's data model — cdm_draw" />
+<meta property="og:description" content="cdm_draw() uses DiagrammeR to draw diagrams.
+cdm_set_colors() allows to define the colors that will be used to display the tables of the data model.
 cdm_get_colors() returns the colors defined for a data model.
 cdm_get_available_colors() returns an overview of the available colors and their names
 as a tibble." />
@@ -136,14 +136,14 @@ as a tibble." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Draw schema of a <code><a href='dm.html'>dm</a></code>-object's data model</h1>
+    <h1>Draw a diagram of a <code><a href='dm.html'>dm</a></code>-object's data model</h1>
     
     <div class="hidden name"><code>cdm_draw.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>cdm_draw()</code> draws a schema of the data model using <code>datamodelr</code> (which in turn uses <code>DiagrammeR</code>).</p>
-<p><code>cdm_set_colors()</code> allows to define the colors in which to display the tables of the data model.</p>
+    <p><code>cdm_draw()</code> uses <span class="pkg">DiagrammeR</span> to draw diagrams.</p>
+<p><code>cdm_set_colors()</code> allows to define the colors that will be used to display the tables of the data model.</p>
 <p><code>cdm_get_colors()</code> returns the colors defined for a data model.</p>
 <p><code>cdm_get_available_colors()</code> returns an overview of the available colors and their names
 as a tibble.</p>
@@ -173,52 +173,54 @@ as a tibble.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dm</th>
-      <td><p>A <code><a href='dm.html'>dm</a></code> object</p></td>
+      <td><p>A <code><a href='dm.html'>dm</a></code> object.</p></td>
     </tr>
     <tr>
       <th>rankdir</th>
-      <td><p>Graph attribute for direction (eg. 'BT' = bottom --&gt; top)</p></td>
+      <td><p>Graph attribute for direction (e.g., 'BT' = bottom --&gt; top).</p></td>
     </tr>
     <tr>
       <th>col_attr</th>
       <td><p>Column atributes to display.
-Only column name (<code>column</code>) is included by default.</p></td>
+By default only the column name (<code>"column"</code>) is displayed.</p></td>
     </tr>
     <tr>
       <th>view_type</th>
       <td><p>Can be "keys_only" (default), "all" or "title_only".
-It defines the level of details for the table rendering
-(only primary and foreign keys, all columns or no columns)</p></td>
+It defines the level of details for rendering tables
+(only primary and foreign keys, all columns, or no columns).</p></td>
     </tr>
     <tr>
       <th>columnArrows</th>
-      <td><p>Edges from column to column (default: FALSE)</p></td>
+      <td><p>Edges from columns to columns (default: <code>TRUE</code>).</p></td>
     </tr>
     <tr>
       <th>graph_attrs</th>
-      <td><p>Additional graph attributes</p></td>
+      <td><p>Additional graph attributes.</p></td>
     </tr>
     <tr>
       <th>node_attrs</th>
-      <td><p>Additional node attributes</p></td>
+      <td><p>Additional node attributes.</p></td>
     </tr>
     <tr>
       <th>edge_attrs</th>
-      <td><p>Additional edge attributes</p></td>
+      <td><p>Additional edge attributes.</p></td>
     </tr>
     <tr>
       <th>focus</th>
-      <td><p>A list of parameters for rendering (table filter)</p></td>
+      <td><p>A list of parameters for rendering (table filter).</p></td>
     </tr>
     <tr>
       <th>graph_name</th>
-      <td><p>A graph name</p></td>
+      <td><p>The name of the graph.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Colors to set in the form <code>table = "&lt;color&gt;"</code> . Fall-through syntax similarly to
+      <td><p>Colors to set in the form <code>table = "&lt;color&gt;"</code> .
+Fall-through syntax similarly to
 <code><a href='https://rdrr.io/r/base/switch.html'>switch()</a></code> is supported: <code>table1 = , table2 = "&lt;color&gt;"</code> sets the color for both <code>table1</code>
-and <code>table2</code> . This argument supports splicing.</p></td>
+and <code>table2</code> .
+This argument supports splicing.</p></td>
     </tr>
     </table>
 

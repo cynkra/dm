@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove reference(s) from one table of a <code><a href='dm.html'>dm</a></code> to another — cdm_rm_fk • dm</title>
+<title>Remove the reference(s) from one <code><a href='dm.html'>dm</a></code> table to another — cdm_rm_fk • dm</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Remove reference(s) from one table of a <code><a href='dm.html'>dm</a></code> to another — cdm_rm_fk" />
-<meta property="og:description" content="Can either remove one reference between the two tables or all at once if parameter column = NULL.
-All parameters can be provided unquoted or quoted." />
+<meta property="og:title" content="Remove the reference(s) from one <code><a href='dm.html'>dm</a></code> table to another — cdm_rm_fk" />
+<meta property="og:description" content="This function can remove either one reference between two tables, or all references at once, if argument column = NULL.
+All arguments may be provided quoted or unquoted." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -133,14 +133,14 @@ All parameters can be provided unquoted or quoted." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove reference(s) from one table of a <code><a href='dm.html'>dm</a></code> to another</h1>
+    <h1>Remove the reference(s) from one <code><a href='dm.html'>dm</a></code> table to another</h1>
     
     <div class="hidden name"><code>cdm_rm_fk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Can either remove one reference between the two tables or all at once if parameter <code>column = NULL</code>.
-All parameters can be provided unquoted or quoted.</p>
+    <p>This function can remove either one reference between two tables, or all references at once, if argument <code>column = NULL</code>.
+All arguments may be provided quoted or unquoted.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_rm_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>)</pre>
@@ -154,17 +154,16 @@ All parameters can be provided unquoted or quoted.</p>
     </tr>
     <tr>
       <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
+      <td><p>A table in the <code>dm</code>.</p></td>
     </tr>
     <tr>
       <th>column</th>
-      <td><p>The column of <code>table</code> which should no longer be referencing the primary
-key of <code>ref_table</code>.
-If <code>NULL</code>, all columns will be considered.</p></td>
+      <td><p>The column of <code>table</code> that should no longer be referencing the primary key of <code>ref_table</code>.
+If <code>NULL</code>, all columns will be evaluated.</p></td>
     </tr>
     <tr>
       <th>ref_table</th>
-      <td><p>The table which <code>table</code> was referencing.</p></td>
+      <td><p>The table that <code>table</code> was referencing.</p></td>
     </tr>
     </table>
 

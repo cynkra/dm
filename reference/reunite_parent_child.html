@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Merge two tables linked by a foreign key relation — reunite_parent_child • dm</title>
+<title>Merge two tables that are linked by a foreign key relation — reunite_parent_child • dm</title>
 
 
 <!-- jquery -->
@@ -35,14 +35,15 @@
 
 
 
-<meta property="og:title" content="Merge two tables linked by a foreign key relation — reunite_parent_child" />
-<meta property="og:description" content="Perform table fusion by combining two tables by a common (key) column and then removing this column.
-reunite_parent_child(): After joining the two tables by the column id_column, this column is removed. The transformation is roughly the
+<meta property="og:title" content="Merge two tables that are linked by a foreign key relation — reunite_parent_child" />
+<meta property="og:description" content="Perform table fusion by combining two tables by a common (key) column, and then removing this column.
+reunite_parent_child(): After joining the two tables by the column id_column, this column will be removed.
+The transformation is roughly the
 inverse of what decompose_table() does.
 reunite_parent_child_from_list(): After joining the two tables
-by the column id_column, this column is removed.
-The function is almost exactly the inverse of decompose_table() (the order
-of the columns is not retained and original rownames are lost)." />
+by the column id_column, id_column is removed.
+This function is almost exactly the inverse of decompose_table() (the order
+of the columns is not retained, and the original row names are lost)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,19 +139,20 @@ of the columns is not retained and original rownames are lost)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Merge two tables linked by a foreign key relation</h1>
+    <h1>Merge two tables that are linked by a foreign key relation</h1>
     
     <div class="hidden name"><code>reunite_parent_child.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Perform table fusion by combining two tables by a common (key) column and then removing this column.</p>
-<p><code>reunite_parent_child()</code>: After joining the two tables by the column <code>id_column</code>, this column is removed. The transformation is roughly the
+    <p>Perform table fusion by combining two tables by a common (key) column, and then removing this column.</p>
+<p><code>reunite_parent_child()</code>: After joining the two tables by the column <code>id_column</code>, this column will be removed.
+The transformation is roughly the
 inverse of what <code><a href='decompose_table.html'>decompose_table()</a></code> does.</p>
 <p><code>reunite_parent_child_from_list()</code>: After joining the two tables
-by the column <code>id_column</code>, this column is removed.</p>
-<p>The function is almost exactly the inverse of <code><a href='decompose_table.html'>decompose_table()</a></code> (the order
-of the columns is not retained and original rownames are lost).</p>
+by the column <code>id_column</code>, <code>id_column</code> is removed.</p>
+<p>This function is almost exactly the inverse of <code><a href='decompose_table.html'>decompose_table()</a></code> (the order
+of the columns is not retained, and the original row names are lost).</p>
     </div>
 
     <pre class="usage"><span class='fu'>reunite_parent_child</span>(<span class='no'>child_table</span>, <span class='no'>parent_table</span>, <span class='no'>id_column</span>)
@@ -170,7 +172,7 @@ of the columns is not retained and original rownames are lost).</p>
     </tr>
     <tr>
       <th>id_column</th>
-      <td><p>Identical name of referencing/referenced column in <code>child_table</code>/<code>parent_table</code></p></td>
+      <td><p>Identical name of referencing / referenced column in <code>child_table</code>/<code>parent_table</code>.</p></td>
     </tr>
     <tr>
       <th>list_of_parent_child_tables</th>

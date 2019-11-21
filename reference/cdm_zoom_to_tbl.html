@@ -165,11 +165,11 @@ context of the <code>dm</code> object.</p>
     </tr>
     <tr>
       <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
+      <td><p>A table in the <code>dm</code>.</p></td>
     </tr>
     <tr>
       <th>new_tbl_name</th>
-      <td><p>Name of the new table</p></td>
+      <td><p>Name of the new table.</p></td>
     </tr>
     <tr>
       <th>repair</th>
@@ -201,18 +201,19 @@ messages.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>cdm_zoom_to_tbl()</code>: zooms to the given table</p>
+    <p><code>cdm_zoom_to_tbl()</code>: zooms to the given table.</p>
 <p><code>cdm_update_zoomed_tbl()</code>: overwrites the originally zoomed table with the manipulated table.
 The filter conditions for the zoomed table are added to the original filter conditions.</p>
 <p><code>cdm_insert_zoomed_tbl()</code>: adds a new table to the <code>dm</code>.</p>
-<p><code>cdm_zoom_out()</code>: discards the zoomed table, returning the <code>dm</code> from before zooming</p>
+<p><code>cdm_zoom_out()</code>: discards the zoomed table and returns the <code>dm</code> as it was before zooming.</p>
 <p>Whenever possible, the key relations of the original table are transferred to the resulting table
 when using <code>cdm_insert_zoomed_tbl()</code> or <code>cdm_update_zoomed_tbl()</code>.</p>
-<p>Functions from <code>dplyr</code>, that are supported for a <code>zoomed_dm</code>: <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate()</a></code>,
-<code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>. You can use these functions just like you would
+<p>Functions from <code>dplyr</code> that are supported for a <code>zoomed_dm</code>: <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate()</a></code>,
+<code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>.
+You can use these functions just like you would
 with a normal table.</p>
 <p><code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> is also supported, but treated in a special way: the filter expression for the zoomed table is
-stored in the <code>dm</code> and is treated depending on which function you use to return to a normal <code>dm</code>:</p><ol>
+stored in the <code>dm</code> and is treated in a way that depends on which function you use to return to a normal <code>dm</code>:</p><ol>
 <li><p><code>cdm_zoom_out()</code>: all filter conditions for the zoomed table are discarded</p></li>
 <li><p><code>cdm_update_zoomed_tbl()</code>: the filter conditions of the original table and those of the zoomed table are combined</p></li>
 <li><p><code>cdm_insert_zoomed_tbl()</code>: the filter conditions of the original table stay there and those of the zoomed table are

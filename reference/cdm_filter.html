@@ -36,12 +36,8 @@
 
 
 <meta property="og:title" content="Filtering a <code><a href='dm.html'>dm</a></code> object — cdm_filter" />
-<meta property="og:description" content="Filtering one table of a dm object may affect all tables connected to this table
-via one or more steps of foreign key relations. Firstly, one or more filter conditions for
-one or more tables can be defined using cdm_filter(), with a syntax similar to dplyr::filter().
-Each condition will only be immediately executed for the table it is referring to.
-Furthermore all conditions are stored in the dm.
-With cdm_apply_filters() all tables will be updated according to the filter conditions and the foreign key relations." />
+<meta property="og:description" content="Filtering a table of a dm object may affect other tables that are connected to it
+directly or indirectly via foreign key relations." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -143,12 +139,8 @@ With cdm_apply_filters() all tables will be updated according to the filter cond
     </div>
 
     <div class="ref-description">
-    <p>Filtering one table of a <code><a href='dm.html'>dm</a></code> object may affect all tables connected to this table
-via one or more steps of foreign key relations. Firstly, one or more filter conditions for
-one or more tables can be defined using <code>cdm_filter()</code>, with a syntax similar to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
-Each condition will only be immediately executed for the table it is referring to.
-Furthermore all conditions are stored in the <code><a href='dm.html'>dm</a></code>.
-With <code>cdm_apply_filters()</code> all tables will be updated according to the filter conditions and the foreign key relations.</p>
+    <p>Filtering a table of a <code><a href='dm.html'>dm</a></code> object may affect other tables that are connected to it
+directly or indirectly via foreign key relations.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
@@ -164,26 +156,31 @@ With <code>cdm_apply_filters()</code> all tables will be updated according to th
     </tr>
     <tr>
       <th>table</th>
-      <td><p>A table in the <code>dm</code></p></td>
+      <td><p>A table in the <code>dm</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Logical predicates defined in terms of the variables in <code>.data</code>, passed on to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
-Multiple conditions are combined with <code>&amp;</code> or <code>,</code>. Only rows where the condition evaluates
-to TRUE are kept.</p>
+Multiple conditions are combined with <code>&amp;</code> or <code>,</code>.
+Only the rows where the condition evaluates
+to <code>TRUE</code> are kept.</p>
 <p>The arguments in ... are automatically quoted and evaluated in the context of
-the data frame. They support unquoting and splicing. See <code><a href='https://dplyr.tidyverse.org/articles/programming.html'>vignette("programming", package = "dplyr")</a></code>
+the data frame. They support unquoting and splicing.
+See <code><a href='https://dplyr.tidyverse.org/articles/programming.html'>vignette("programming", package = "dplyr")</a></code>
 for an introduction to these concepts.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
+    <p><code>cdm_filter()</code> can be used to define filter conditions for tables using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
+These conditions will be stored in the <code><a href='dm.html'>dm</a></code>, and executed immediately for the tables that they are referring to.</p>
+<p>With <code>cdm_apply_filters()</code>, all tables will be updated according to the filter conditions and the foreign key relations.</p>
+<p>The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 in one of the following scenarios:</p><ol>
 <li><p>Calling <code>cdm_apply_filters()</code> or <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> (method for <code>dm</code> objects) on a <code>dm</code>: each filtered table potentially
-reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
-with the corresponding key values.
+reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
+with corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new <code>dm</code> class object without any filter conditions.</p></li>
 <li><p>Calling one of <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>: the remaining rows of the requested table are calculated by performing a sequence
@@ -250,16 +247,16 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
 #&gt; Columns: 53
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3</div><div class='input'>
-<span class='co'># If you want to only keep those rows in the parent tables</span>
+<span class='co'># If you want to keep only those rows in the parent tables</span>
 <span class='co'># whose primary key values appear as foreign key values in</span>
 <span class='co'># `flights`, you can set a `TRUE` filter in `flights`:</span>
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='fl'>1</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_apply_filters</span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='cdm_nrow.html'>cdm_nrow</a></span>()</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16        3   336776     3322    26115 </div><div class='input'><span class='co'># note, that in this example the only affected table is</span>
-<span class='co'># `airports` (since the departure airports in `flights` are</span>
-<span class='co'># only the 3 NYC ones).</span>
+#&gt;       16        3   336776     3322    26115 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
+<span class='co'># `airports` because the departure airports in `flights` are</span>
+<span class='co'># only the three New York airports.</span>
 
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>

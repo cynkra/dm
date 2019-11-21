@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Flatten part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl • dm</title>
+<title>Flatten a part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl • dm</title>
 
 
 <!-- jquery -->
@@ -35,14 +35,9 @@
 
 
 
-<meta property="og:title" content="Flatten part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl" />
-<meta property="og:description" content="Gather all information of interest in one place in a wide table (on a database-dm a
-temporary table will be created).
-If referential integrity is given among the tables of the data model, the resulting
-table of this function will contain as many rows as the table start does (exceptions are
-join = anti_join (result is empty table with same columns as start) and join = right_join
-(number of rows equal to or larger than those of start)).
-For more information please refer to vignette(&quot;dm-joining&quot;)." />
+<meta property="og:title" content="Flatten a part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl" />
+<meta property="og:description" content="cdm_flatten_to_tbl() and cdm_squash_to_tbl() gather all information of interest in one place in a wide table.
+Both functions perform a disambiguation of column names and a cascade of joins." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,19 +133,14 @@ For more information please refer to vignette(&quot;dm-joining&quot;)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Flatten part of a <code>dm</code> into a wide table</h1>
+    <h1>Flatten a part of a <code>dm</code> into a wide table</h1>
     
     <div class="hidden name"><code>cdm_flatten_to_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Gather all information of interest in one place in a wide table (on a database-<code><a href='dm.html'>dm</a></code> a
-temporary table will be created).
-If referential integrity is given among the tables of the data model, the resulting
-table of this function will contain as many rows as the table <code>start</code> does (exceptions are
-<code>join = anti_join</code> (result is empty table with same columns as <code>start</code>) and <code>join = right_join</code>
-(number of rows equal to or larger than those of <code>start</code>)).
-For more information please refer to <code><a href='../articles/dm-joining.html'>vignette("dm-joining")</a></code>.</p>
+    <p><code>cdm_flatten_to_tbl()</code> and <code>cdm_squash_to_tbl()</code> gather all information of interest in one place in a wide table.
+Both functions perform a disambiguation of column names and a cascade of joins.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)
@@ -162,60 +152,63 @@ For more information please refer to <code><a href='../articles/dm-joining.html'
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dm</th>
-      <td><p>A <code><a href='dm.html'>dm</a></code> object</p></td>
+      <td><p>A <code><a href='dm.html'>dm</a></code> object.</p></td>
     </tr>
     <tr>
       <th>start</th>
-      <td><p>Table to start from. From this table all outgoing foreign key relations are
-considered to establish a processing order for the joins. An interesting choice could be
+      <td><p>The table from which all outgoing foreign key relations are considered
+when establishing a processing order for the joins.
+An interesting choice could be
 for example a fact table in a star schema.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Unquoted table names to include in addition to <code>start</code>. The order of the tables here determines
-the order of the joins. If empty, all tables that can be reached are included.
-If this includes tables which aren't direct neighbours of <code>start</code>,
+      <td><p>Unquoted names of the tables to be included in addition to the <code>start</code> table.
+The order of the tables here determines
+the order of the joins.
+If the argument is empty, all tables that can be reached will be included.
+If this includes tables that are not direct neighbours of <code>start</code>,
 it will only work with <code>cdm_squash_to_tbl()</code> (given one of the allowed join-methods).
 <code>tidyselect</code> is supported, cf. <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code>.</p></td>
     </tr>
     <tr>
       <th>join</th>
-      <td><p>The type of join to be performed, see <code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::join()</a></code></p></td>
+      <td><p>The type of join to be performed, see <code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::join()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A single table, resulting of consecutively joining
-all tables involved to table <code>start</code>.</p>
+    <p>A single table that results from consecutively joining all affected tables to the <code>start</code> table.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>With the <code>...</code> left empty, this function joins all the tables of your <code><a href='dm.html'>dm</a></code>
-object together, that can be reached from table <code>start</code> in the direction of the foreign
-key relations (pointing from child table to parent table), using the foreign key relations to
-determine the parameter <code>by</code> for the necessary joins.
+    <p>With <code>...</code> left empty, this function will join together all the tables of your <code><a href='dm.html'>dm</a></code>
+object that can be reached from the <code>start</code> table, in the direction of the foreign key relations
+(pointing from the child tables to the parent tables), using the foreign key relations to
+determine the argument <code>by</code> for the necessary joins.
 The result is one table with unique column names.
-Use the <code>...</code> if you want to control which tables should be joined to table <code>start</code>.</p>
+Use the <code>...</code> argument if you would like to control which tables should be joined to the <code>start</code> table.</p>
 <p>How does filtering affect the result?</p>
-<p><strong>Case 1</strong>, either no filter conditions are set in the <code>dm</code>, or only in a part unconnected to
-table <code>start</code>:
-The necessary disambiguations of the column names are performed first. Then all
-involved foreign tables are joined to table <code>start</code> successively with the join function given in
-parameter <code>join</code>.</p>
-<p><strong>Case 2</strong>, filter conditions are set for at least one table connected to <code>start</code>:
-Disambiguation is performed initially if necessary. Table <code>start</code> is calculated using <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl(dm, "start")</a></code>. This implies
-that the effect of the filters on this table is taken into account. For <code>right_join</code>, <code>full_join</code> and <code>nest_join</code> an error
-is thrown in case filters are set, because the filters won't affect right hand side tables and thus the result will be
-incorrect in general (and calculating the effects on all RHS-tables would be time-consuming and is not supported;
-if desired call <code><a href='cdm_filter.html'>cdm_apply_filters()</a></code> first to achieve this effect.).
-For all other join types filtering only <code>start</code> is enough, since the effect is passed on by the
+<p><strong>Case 1</strong>, either no filter conditions are set in the <code>dm</code>, or set only in the part that is unconnected to the <code>start</code> table:
+The necessary disambiguations of the column names are performed first.
+Then all involved foreign tables are joined to the <code>start</code> table successively, with the join function given in the <code>join</code> argument.</p>
+<p><strong>Case 2</strong>, filter conditions are set for at least one table that is connected to <code>start</code>:
+First, disambiguation will be performed if necessary. The <code>start</code> table is then calculated using <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl(dm, "start")</a></code>.
+This implies
+that the effect of the filters on this table is taken into account.
+For <code>right_join</code>, <code>full_join</code> and <code>nest_join</code>, an error
+is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
+incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
+if desired, call <code><a href='cdm_filter.html'>cdm_apply_filters()</a></code> first to achieve that effect).
+For all other join types, filtering only the <code>start</code> table is enough because the effect is passed on by
 successive joins.</p>
-<p>Mind, that calling <code>cdm_flatten_to_tbl()</code> with <code>join = right_join</code> and no table order determined in the <code>...</code>
-would not lead to a well-defined result, if two or more foreign tables are to be joined to <code>start</code>. The resulting
-table would depend on the order the tables are listed in the <code>dm</code>. Therefore trying this results
-in a warning.</p>
+<p>Mind that calling <code>cdm_flatten_to_tbl()</code> with <code>join = right_join</code> and no table order determined in the <code>...</code> argument
+will not lead to a well-defined result if two or more foreign tables are to be joined to <code>start</code>.
+The resulting
+table would depend on the order the tables that are listed in the <code>dm</code>.
+Therefore, trying this will result in a warning.</p>
 <p>Since <code>join = nest_join()</code> does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
-each nested column entry would be a tibble of 1 row), an error is thrown, if this method is chosen.</p>
+each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other flattening functions: 
