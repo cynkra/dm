@@ -1,7 +1,7 @@
 ---
 output:
   github_document:
-    html_preview: false
+    html_preview: true
 ---
 
 ```{r setup, include = FALSE}
@@ -38,21 +38,36 @@ knit_print.grViz <- function(x, ...) {
 
 The goal of {dm} is to provide tools for working with multiple tables.
 
-Skip to the [Features section](#features) if you are familiar with
-relational data models.
+Skip to the [Features section](#features) if you are familiar with relational data models.
 
+- [Installation](#installation) explains how to install the package
 - [Why?](#why) gives a short motivation, especially for {dplyr} users
 - [Good to Know](#good-to-know) explains important terms of relational data models
-- [Features](#features) gives a one-page overview over the scope of this package
+- [Features](#features) gives a one-page overview of the scope of this package
 - [Example](#example) outlines some of the features in a short example
 - [More information](#more-information) offers links to more detailed articles
-- [Standing on the shoulders of giants](#standing-on-the-shoulders-of-giants) shows related work
-- [Installation](#installation) describes how to install the package
+- [Standing on the shoulders of giants](#standing-on-the-shoulders-of-giants) gives credit to related work
+
+
+## Installation
+
+The latest (development) version of {dm} can be installed from GitHub. It is not enough just clone or download the package, you will need to use a package manager from your R session to configure necessary dependencies and to bind file locations to your local environment: 
+
+```r
+# install.packages("devtools")
+devtools::install_github("krlmlr/dm")
+```
+
+The {dm} package will also be made available on [CRAN](https://cran.r-project.org/web/packages/), where it can be installed with the command
+
+```r
+install.packages("dm")
+```
 
 
 ## Why?
 
-The motivation for the {dm} package is a more sophisticated data management.
+The motivation for creating the {dm} package is to provide more sophisticated data management for R users.
 {dm} uses the relational data model and its core concept of splitting one table into multiple tables.
 
 ```{r draw, echo = FALSE}
@@ -60,20 +75,20 @@ cdm_nycflights13(cycle = TRUE) %>%
   cdm_draw()
 ```
 
-This has a **hugh advantage**:
+This has a **huge advantage**:
 The code becomes simpler.
 
 ### Example {#example}
 
 As an example, we consider the [`nycflights13`](https://github.com/hadley/nycflights13) dataset.
-This dataset contains five tables: the main `flights` table with links into the `airlines`, `planes` and `airports` tables, and a `weather` table without an explicit link.
+This dataset contains five tables: the main `flights` table with links to the `airlines`, `planes` and `airports` tables, and a `weather` table without an explicit link.
 
-Assume your task is to merge all tables (except the `weather` table).
+Assume that your task is to merge all tables, except the `weather` table.
 This cross-referencing is a common first step when modelling or plotting data.
 
 In {dm} the basic element is [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
 You can create it with `cdm_nycflights13()` for the example data.
-After that you can use the links between the tables as often as you wish - without explicitly referring to the relations ever again.
+After that you can use the links between the tables as often as you wish,  without explicitly referring to the relations ever again.
 The task of joining four tables (`flights`, `airlines`, `planes` and `airports`) boils down to:
 
 ```{r}
@@ -81,7 +96,7 @@ cdm_nycflights13() %>%
   cdm_flatten_to_tbl(start = flights)
 ```
 
-In contrast, using the classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
+In contrast, using the classical {dplyr} notation, you will need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
 
 ```{r}
 library(tidyverse)
@@ -93,17 +108,17 @@ flights %>%
   left_join(airports, by = c("origin" = "faa"))
 ```
 
-You can find more information and important terms to jump-start working with {dm} in the article ["Introduction to Relational Data Models"](dm-introduction-relational-data-models.html).
+You can find more information to jump-start working with {dm} in the article ["Introduction to Relational Data Models"](https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html).
 
 ### The Advantages in Brief
 
-The separation into multiple tables achieves several goals:
+The separation of one large table into multiple tables achieves several goals:
 
-- **Avoid repetition, conserve memory**: the information related to each airline, airport, and airplane are stored only once
-    - name of each airline
-    - name, location and altitude of each airport
-    - manufacturer and number of seats for each airplane
-- **Improve consistency**: for updating any information (e.g. the name of an airport), it is sufficient to update in only one place
+- **Avoid repetition, conserve memory**: all information needs to be stored only once
+    - the name of each airline
+    - the name, location and altitude of each airport
+    - the manufacturer and number of seats for each airplane
+- **Improve consistency**: all information needs to be updated only once and in one place, avoiding errors that  result from inconsistent updating in different tables
 - **Segmentation**: information is organized by topic, individual tables are smaller and easier to handle
 
 ## Good to Know
@@ -113,12 +128,11 @@ Since many R users have a background in other disciplines, we present six import
 
 ### 1) Data frames and tables
 
-A data frame is a fundamental data structure in R.
+A _data frame_ is a fundamental data structure in R.
 If you imagine it visually, the result is a typical table structure.
-That's why working with data from spreadsheets is so convenient and users of the the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
+That's why working with data from spreadsheets is so convenient and the users of the the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
 
-The downside: Data frames and flat file systems like spreadsheets can result in bloated tables, that hold many repetitive values.
-Worst case, you have a data frame with multiple columns and in each row only a single value is different.
+The disadvantage of data frames and flat file systems like spreadsheets is that they can result in bloated tables that repeat the same values multiple times. In the worst case scenario, you may have a data frame with many rows and columns but with only a single value different in each row.
 
 This calls for a better data organization by utilizing the resemblance between data frames and database tables, which consist of columns and rows, too.
 The elements are just called differently:
@@ -137,7 +151,7 @@ With {dm} you can have the best of both worlds: Manage your data as linked table
 
 ### 2) Model
 
-A data model shows the structure between multiple tables that can be linked together.
+A _data model_ shows the structure between multiple tables that can be linked together.
 The `nycflights13` relations can be transferred into the following graphical representation:
 
 ```{r, echo = FALSE}
@@ -146,7 +160,7 @@ cdm_nycflights13(cycle = TRUE) %>%
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.
-By using directed arrows the visualization explicitly shows the connection between different columns/attributes.
+By using directed arrows, the visualization explicitly shows the connection between different columns/attributes.
 For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
 Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
 
@@ -154,8 +168,8 @@ The links between the tables are established through *primary keys* and *foreign
 
 ### 3) Primary Keys
 
-In a relational data model every table needs to have one column/attribute that uniquely identifies a row.
-This column is called primary key (abbreviated with pk).
+In a relational data model, every table needs to have one column/attribute that uniquely identifies a row.
+This column is called a _primary key_ (abbreviated with pk).
 The primary key column has unique values and can't contain `NA` or `NULL` values.
 If no such column exists, it is common practice to create a synthetic column of numeric or globally unique identifiers (surrogate key).
 
@@ -165,7 +179,7 @@ Further Reading: The {dm} package offers several function for dealing with [prim
 
 ### 4) Foreign Keys
 
-The counterpart of a primary key in one table is the foreign key in another table.
+The counterpart of a primary key in one table is the _foreign key_ in another table.
 In order to join two tables, the primary key of the first table needs to be available in the second table, too.
 This second column is called the foreign key (abbreviated with fk).
 
@@ -176,7 +190,7 @@ Further Reading: The {dm} functions for working with [foreign keys](https://krlm
 ### 5) Normalization
 
 One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries.
-Normalization is the technical term that describes this central design principle of a relational data model: splitting data into multiple tables.
+_Normalization_ is the technical term that describes this central design principle of a relational data model: splitting data into multiple tables.
 A normalized data schema consists of several relations (tables) that are linked with attributes (columns) with primary and foreign keys.
 
 For example, if you want to change the name of one airport in `nycflights13`, you have to change only a single data entry.
@@ -187,15 +201,15 @@ Consider reviewing the [Simple English version](https://simple.wikipedia.org/wik
 
 ### 6) Relational Databases
 
-`dm` is built upon relational data models, but it is not a database itself.
-Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres.
+`dm` is built upon relational data models but it is not a database itself.
+Databases are systems for data management and many of them are constructed as _relational databases_, e.g. SQLite, MySQL, MSSQL, Postgres.
 As you can guess from the names of the databases SQL, the **s**tructured **q**uerying **l**anguage plays an important role: It was invented for the purpose of querying relational databases.
 
 Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works transparently with both in-memory data and with relational database systems.
 
 ## Features
 
-This package helps with many challenges that arise when working with relational data models.
+The {dm} package helps with many challenges that arise with working with relational data models.
 
 ### Compound object
 
@@ -331,20 +345,6 @@ The [{tidygraph} package](https://github.com/thomasp85/tidygraph) stores a netwo
 In object-oriented programming languages, [object-relational mapping](https://en.wikipedia.org/wiki/Object-relational_mapping) is a similar concept that attempts to map a set of related tables to a class hierarchy.
 
 
-## Installation
-
-Once on CRAN, the package can be installed with
-
-```r
-install.packages("dm")
-```
-
-Install the latest development version with
-
-```r
-# install.packages("devtools")
-devtools::install_github("krlmlr/dm")
-```
 
 ---
 
