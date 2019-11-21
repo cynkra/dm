@@ -185,12 +185,12 @@ validate_dm <- function(x) {
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
+  check_col_classes(def)
 
   if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
   if (!all(map_lgl(def$data, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi")}))) abort_dm_invalid(
     "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`")
 
-  # FIXME: Remove special case
   if (nrow(def) == 0) return(invisible(x))
   if (ncol(def) != 9) abort_dm_invalid(
     glue("Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
@@ -207,15 +207,7 @@ validate_dm <- function(x) {
     unnest(pks) %>%
     unnest(column)
   check_colnames(pks, dm_col_names, "PK")
-  check_col_classes(def)
   check_one_zoom(def, is_zoomed(x))
-  # TODO: check consistency
-  # - tables in data_model must be a subset of tables in src
-  # - class membership
-  # - DO NOT check primary and foreign key constraints here by default,
-  #   perhaps optionally or in a different verb
-  #
-  #
   invisible(x)
 }
 
