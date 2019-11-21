@@ -109,8 +109,8 @@ cdm_get_all_fks <- nse_function(c(dm), ~ {
 
 #' Remove the reference(s) from one [`dm`] table to another
 #'
-#' @description This function can remove either one reference between two tables, or all references at once, if parameter `column = NULL`.
-#' All parameters may be provided quoted or unquoted.
+#' @description This function can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
+#' All arguments may be provided quoted or unquoted.
 #'
 #' @inheritParams cdm_add_fk
 #' @param column The column of `table` that should no longer be referencing the primary key of `ref_table`.
@@ -171,7 +171,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' @param ref_table A table with a primary key.
 #'
 #' @details `cdm_enum_fk_candidates()` first checks if `ref_table` has a primary key set.
-#' Then, for each column of `table`, a join operation will be tried, with parameter `by` matching
+#' Then, for each column of `table`, a join operation will be tried, with argument `by` matching
 #' the respective column with the primary key of `ref_table`.
 #' This tests implicitly for
 #' type compatibility (on most sources).

@@ -23,15 +23,15 @@
 #' @details With `...` left empty, this function will join together all the tables of your [`dm`]
 #' object that can be reached from the `start` table, in the direction of the foreign key relations
 #' (pointing from the child tables to the parent tables), using the foreign key relations to
-#' determine the parameter `by` for the necessary joins.
+#' determine the argument `by` for the necessary joins.
 #' The result is one table with unique column names.
-#' Use the `...` parameter if you would like to control which tables should be joined to the `start` table.
+#' Use the `...` argument if you would like to control which tables should be joined to the `start` table.
 #'
 #' How does filtering affect the result?
 #'
 #' **Case 1**, either no filter conditions are set in the `dm`, or set only in the part that is unconnected to the `start` table:
 #' The necessary disambiguations of the column names are performed first.
-#' Then all involved foreign tables are joined to the `start` table successively, with the join function given in the `join` parameter.
+#' Then all involved foreign tables are joined to the `start` table successively, with the join function given in the `join` argument.
 #'
 #' **Case 2**, filter conditions are set for at least one table that is connected to `start`:
 #' First, disambiguation will be performed if necessary. The `start` table is then calculated using `tbl(dm, "start")`.
@@ -44,7 +44,7 @@
 #' For all other join types, filtering only the `start` table is enough because the effect is passed on by
 #' successive joins.
 #'
-#' Mind that calling `cdm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...` parameter
+#' Mind that calling `cdm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...` argument
 #' will not lead to a well-defined result if two or more foreign tables are to be joined to `start`.
 #' The resulting
 #' table would depend on the order the tables that are listed in the `dm`.
@@ -144,7 +144,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename)
 
   # Drop the first table in the list of join partners. (We have at least one table, `start`.)
-  # (Working with `reduce2()` here and the `.init`-parameter is the first table)
+  # (Working with `reduce2()` here and the `.init`-argument is the first table)
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
@@ -240,7 +240,7 @@ check_flatten_to_tbl <- function(
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
 
 
-  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
+  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the argument `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
   if (!squash && has_grandparent) {
     abort_only_parents()

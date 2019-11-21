@@ -140,7 +140,7 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
 #'   there are foreign keys addressing the primary key that is to be removed.
 #'   If `TRUE`, the function will
-#'   remove, in addition to the primary key of the parameter `table`, also all foreign key constraints
+#'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
 #'   that are pointing to it.
 #'
 #' @examples

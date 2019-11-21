@@ -3,7 +3,7 @@
 #' @inheritParams cdm_add_pk
 #'
 #' @return `TRUE` if at least one foreign key exists that points to the primary
-#' key of the parameter `table`, `FALSE` otherwise.
+#' key of the `table` argument, `FALSE` otherwise.
 #'
 #' @family functions utilizing foreign key relations
 #'
