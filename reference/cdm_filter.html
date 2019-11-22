@@ -242,7 +242,7 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
   <span class='fu'>cdm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Data model ──────────────────────────────────────────────────────────────────
+#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -262,7 +262,7 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
   <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Data model ──────────────────────────────────────────────────────────────────
+#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -272,7 +272,7 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
   <span class='fu'>cdm_filter</span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Data model ──────────────────────────────────────────────────────────────────
+#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
