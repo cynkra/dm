@@ -1,0 +1,48 @@
+---
+title: "Zooming and manipulating tables"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Zooming and manipulating tables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(dm)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+
+knit_print.grViz <- function(x, ...) {
+  x %>% 
+    DiagrammeRsvg::export_svg() %>% 
+    c("`````{=html}\n", ., "\n`````\n") %>% 
+    knitr::asis_output()
+}
+```
+
+This vignette covers how to deal with the following situation: You have a `dm` with a set of tables and their relations.
+Now you would like to include another table which is based on one or more of those tables, maybe a summary of sorts.
+There are two straightforward solutions to the problem:
+1. individually access the tables relevant for the calculation, perform the necessary transformations and then add the result to the `dm`.
+1. do all this within the `dm` object by zooming to a table and manipulate it while maintaining the key relations whenever possible before.
+
+The first approach is rather self-explanatory, so let us have a closer look at the second way.
+
+## Enabling {dplyr}-workflow within a `dm`
+
+Some general information about "zooming" to a table of a `dm`:
+- all information stored in the original `dm` is kept, including the originally zoomed table
+- an object of class `zoomed_dm` is produced
+- a copy of the original table is available for transformations
+
+{dm} provides methods for many of the {dplyr}-verbs for a `zoomed_dm` which behave the way you are used to, affecting only the zoomed table and leaving the rest of the `dm` untouched.
+When you are finished with transforming the table, there are three ways to proceed:
+1. use `cdm_update_zoomed_tbl()` if you want to replace the originally zoomed table with the new table
+1. with `cdm_insert_zoomed_tbl()` you are creating a new table for your `dm`
+1. use `cdm_zoom_out()` if you do not need the result and want to discard it
+
+When employing one of the first two options, the resulting table in the `dm` will have all (primary as well as foreign) keys available, that could be tracked from the originally zoomed table.
