@@ -129,3 +129,41 @@ extended_flights_dm <-
   cdm_add_fk(flights, origin_slot_id, weather)
 extended_flights_dm %>% cdm_draw()
 ```
+
+
+### Use case 3: Disentangle `dm`
+
+If you look at the `dm` created by `cdm_nycflights13(cycle = TRUE)`, you see that two columns of `flights` relate to one and the same table, `airports`.
+One column stands for the departure airport and the for the arrival airport.
+
+```{r}
+cdm_draw(cdm_nycflights13(cycle = TRUE))
+```
+In such cases it can be beneficial, to disentangle the `dm` by duplicating the referred table.
+One way to do this in {dm}-framework is the following:
+```{r}
+disentangled_flights_dm <- 
+  cdm_nycflights13(cycle = TRUE) %>% 
+  # remove both foreign keys (otherwise they would be tracked when zooming the table)
+  cdm_rm_fk(flights, dest, airports) %>% 
+  cdm_rm_fk(flights, origin, airports) %>% 
+  cdm_rename_tbl(origin.airports = airports) %>% 
+  # zooming essentially creates a copy of the original table
+  cdm_zoom_to_tbl(origin.airports) %>% 
+  # `cdm_insert_zoomed_tbl()` adds the copy as a new table to the `dm`
+  cdm_insert_zoomed_tbl(dest.airports) %>% 
+  # implement the foreign key relations
+  cdm_add_fk(flights, origin, origin.airports) %>%
+  cdm_add_fk(flights, dest, dest.airports)
+cdm_draw(disentangled_flights_dm)
+```
+
+In a future update we will provide a more convenient way to "disentangle" `dm` objects, so that the individual steps will be done at least semi-automatically.
+
+### Use case 4: Add summary table to `dm`
+
+Adding a summary of a table as a new table to a `dm` works like this:
+
+```{r}
+
+```
