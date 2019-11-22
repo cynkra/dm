@@ -9,6 +9,8 @@ vignette: >
 
 ```{r setup, include = FALSE}
 library(dm)
+library(dplyr)
+library(tidyr)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -46,3 +48,84 @@ When you are finished with transforming the table, there are three ways to proce
 1. use `cdm_zoom_out()` if you do not need the result and want to discard it
 
 When employing one of the first two options, the resulting table in the `dm` will have all (primary as well as foreign) keys available, that could be tracked from the originally zoomed table.
+
+## Examples
+
+So much to the theory, but how does it look and feel?
+To explore this, we once more make use of our trusted {nycflights13} data.
+
+### Use case 1: Add a new column to an existing table
+
+Imagine you want to have a column in `flights`, specifying if a flight left before noon or after. 
+Just like with {dplyr}, we can tackle this with `mutate()`.
+Let us do this step by step:
+
+```{r zoom}
+library(dm)
+library(dplyr)
+flights_dm <- cdm_nycflights13()
+flights_dm
+flights_zoomed <- 
+  flights_dm %>% 
+  cdm_zoom_to_tbl(flights)
+# The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
+flights_zoomed
+
+flights_zoomed_mutate <- 
+  flights_zoomed %>% 
+  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>% 
+  # in order to see the change we use `select()` for reordering the columns
+  select(year:dep_time, am_pm_dep, everything())
+flights_zoomed_mutate
+
+# In order to update the original `dm` with a new `flights` table we use `cdm_update_zoomed_tbl()`:
+updated_flights_dm <- 
+  flights_zoomed_mutate %>% 
+  cdm_update_zoomed_tbl()
+# The only difference in the `dm` print output is the increased number of columns
+updated_flights_dm
+# The schematic view of the data model remains unchanged
+cdm_draw(updated_flights_dm)
+```
+
+### Use case 2: Creation of a surrogate key
+
+Exactly such a course of action could for example be employed to create a surrogate key for a table.
+We can do this for the `weather` table.
+
+```{r}
+library(tidyr)
+weather_zoomed <- 
+  flights_dm %>% 
+  cdm_zoom_to_tbl(weather)
+weather_zoomed
+# Maybe there is some hidden candidate for a primary key that we overlooked
+enum_pk_candidates(weather_zoomed)
+# Seems we have to construct a column with unique values
+# This can be done by combining columns `origin` with `time_hour`, if the latter 
+# is converted to one time zone first; all within the `dm`:
+weather_zoomed_mutate <- 
+  weather_zoomed %>% 
+  # first convert all times to the same time zone:
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>% 
+  # paste together as character the airport code and the time
+  unite("origin_slot_id", origin, time_hour_fmt) %>% 
+  select(origin_slot_id, everything())
+# check if we the result is as expected:
+enum_pk_candidates(weather_zoomed_mutate) %>% filter(candidate)
+flights_upd_weather_dm <- 
+  weather_zoomed_mutate %>% 
+  cdm_update_zoomed_tbl() %>% 
+  cdm_add_pk(weather, origin_slot_id)
+flights_upd_weather_dm
+# creating the coveted FK relation between `flights` and `weather`
+extended_flights_dm <- 
+  flights_upd_weather_dm %>% 
+  cdm_zoom_to_tbl(flights) %>% 
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>% 
+  # paste together as character the airport code and the time
+  unite("origin_slot_id", origin, time_hour_fmt) %>% 
+  cdm_update_zoomed_tbl() %>% 
+  cdm_add_fk(flights, origin_slot_id, weather)
+extended_flights_dm %>% cdm_draw()
+```
