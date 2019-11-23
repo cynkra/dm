@@ -26,9 +26,8 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
-
 Once you have all your primary keys set and all foreign key relations defined, a graphical representation of your data model offers a condensed view of the tables and the relationships between the tables.
-The following functions can be used to visualize the data model of a `dm` object:^[The functions in this section rely heavily on related functions of [{datamodelr}](https://github.com/bergant/datamodelr).]
+The following functions can be used to visualize the `dm` object:^[The functions in this section rely heavily on related functions of [{datamodelr}](https://github.com/bergant/datamodelr).]
 
 1. `cdm_draw()`
 1. `cdm_set_colors()`
@@ -57,7 +56,7 @@ cdm_get_available_colors()
 Colors are assigned with `cdm_set_colors()` using syntax that is similar to `switch()`.
 Any table to which you do not specifically assign a color will not be altered. 
 The result of `cdm_set_colors()` is a `dm` object.
-The information about the color is stored in its `data_model`-part.
+The information about the color is stored together with the rest of the metadata.
 ```{r}
 flights_dm_w_many_keys_and_colors <-
   flights_dm_w_many_keys %>% 
@@ -88,7 +87,7 @@ flights_dm_w_many_keys_and_colors %>%
   cdm_draw(view_type = "title_only")
 ```
 
-If you would like to see only a subset of the whole data model, use `cdm_select_tbl()` before drawing:
+If you would like to visualize only a some of the tables, use `cdm_select_tbl()` before drawing:
 
 ```{r}
 flights_dm_w_many_keys_and_colors %>% 
