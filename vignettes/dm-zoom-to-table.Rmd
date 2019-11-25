@@ -139,26 +139,22 @@ One column stands for the departure airport and the for the arrival airport.
 ```{r}
 cdm_draw(cdm_nycflights13(cycle = TRUE))
 ```
-In such cases it can be beneficial, to disentangle the `dm` by duplicating the referred table.
-One way to do this in {dm}-framework is the following:
+In such cases it can be beneficial, to "disentangle" the `dm` by duplicating the referred table.
+One way to do this in the {dm}-framework is as follows:
 ```{r}
 disentangled_flights_dm <- 
   cdm_nycflights13(cycle = TRUE) %>% 
-  # remove both foreign keys (otherwise they would be tracked when zooming the table)
-  cdm_rm_fk(flights, dest, airports) %>% 
-  cdm_rm_fk(flights, origin, airports) %>% 
-  cdm_rename_tbl(origin.airports = airports) %>% 
-  # zooming essentially creates a copy of the original table
-  cdm_zoom_to_tbl(origin.airports) %>% 
-  # `cdm_insert_zoomed_tbl()` adds the copy as a new table to the `dm`
+  # zooming and immediately inserting essentially creates a copy of the original table
+  cdm_zoom_to_tbl(airports) %>% 
   cdm_insert_zoomed_tbl(dest.airports) %>% 
-  # establish the foreign key relations
-  cdm_add_fk(flights, origin, origin.airports) %>%
-  cdm_add_fk(flights, dest, dest.airports)
+  cdm_rename_tbl(origin.airports = airports) %>% 
+  # Key relations are also duplicated, so the wrong ones need to be removed
+  cdm_rm_fk(flights, dest, origin.airports) %>% 
+  cdm_rm_fk(flights, origin, dest.airports)
 cdm_draw(disentangled_flights_dm)
 ```
 
-In a future update we will provide a more convenient way to "disentangle" `dm` objects, so that the individual steps will be done at least semi-automatically.
+In a future update we will provide a more convenient way to "disentangle" `dm` objects, so that the individual steps will be done automatically.
 
 ### Use case 4: Add summary table to `dm`
 
