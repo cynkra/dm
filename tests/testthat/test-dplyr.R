@@ -591,6 +591,17 @@ test_that("key tracking works", {
     tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5/9)
   )
 
+  expect_identical(
+    dm_for_flatten %>%
+      cdm_zoom_to_tbl(fact) %>%
+      select(dim_1_key, dim_3_key, dim_2_key) %>%
+      cdm_update_zoomed_tbl() %>%
+      cdm_get_all_fks(),
+    dm_for_flatten %>%
+      cdm_get_all_fks() %>%
+      filter(child_fk_col != "dim_4_key")
+  )
+
   expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_keys(), set_names(c("d", "e")))
   expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2)) %>% get_tracked_keys(), set_names(c("c", "d", "e")))
   expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% get_tracked_keys(), set_names(c("c", "d", "e")))
