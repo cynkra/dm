@@ -1,3 +1,8 @@
+# dm 0.0.5.9000
+
+- Remove {stringr} dependency (#183).
+
+
 # dm 0.0.5
 
 ## Features
