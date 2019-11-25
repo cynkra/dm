@@ -39,7 +39,6 @@ Imports:
     methods,
     purrr,
     rlang (>= 0.4.0),
-    stringr,
     tibble,
     tidyr (>= 1.0.0),
     tidyselect,

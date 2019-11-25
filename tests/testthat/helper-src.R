@@ -294,15 +294,15 @@ iris_3 %<-% {
 
 iris_1_dis %<-% {
   iris_1 %>%
-    rename_at(2:6, ~ str_replace(., "^", "iris_1."))
+    rename_at(2:6, ~ sub("^", "iris_1.", .))
 }
 iris_2_dis %<-% {
   iris_2 %>%
-    rename_at(1:7, ~ str_replace(., "^", "iris_2."))
+    rename_at(1:7, ~ sub("^", "iris_2.", .))
 }
 iris_3_dis %<-% {
   iris_3 %>%
-    rename_at(1:7, ~ str_replace(., "^", "iris_3."))
+    rename_at(1:7, ~ sub("^", "iris_3.", .))
 }
 
 
@@ -453,7 +453,7 @@ get_test_tables_from_postgres <- function() {
 
   dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
     as_tibble() %>%
-    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
+    filter(grepl("^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
 }
 
 is_postgres_empty <- function() {
