@@ -1,10 +1,11 @@
 test_that("commas() works", {
   expect_equal(
-    str_count(commas(fact$fact), ","),
-    MAX_COMMAS - 1
+    # `strsplit()` creates vector, which is 1 longer than number of split-characters found
+    length(strsplit(commas(fact$fact), ",")[[1]]),
+    MAX_COMMAS
   )
   expect_identical(
-    str_count(commas(fact$fact), fixed(cli::symbol$ellipsis)),
+    length(strsplit(commas(fact$fact), cli::symbol$ellipsis)[[1]]) - 1L,
     1L
   )
 })
