@@ -5,7 +5,7 @@ test_that("commas() works", {
     MAX_COMMAS
   )
   expect_identical(
-    length(strsplit(commas(fact$fact), cli::symbol$ellipsis)[[1]]) - 1L,
+    length(strsplit(commas(fact$fact), cli::symbol$ellipsis, fixed = TRUE)[[1]]) - 1L,
     1L
   )
 })
