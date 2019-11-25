@@ -26,11 +26,11 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
-This vignette covers how to deal with the following situation: You have a `dm` with a set of tables and their relations.
+Among others, this vignette covers how to deal with the following situation: You have a `dm` with a set of tables and their relations.
 Now you would like to include another table which is based on one or more of those tables, maybe a summary of sorts.
 There are two straightforward solutions to the problem:
 1. individually access the tables relevant for the calculation, perform the necessary transformations and then add the result to the `dm`.
-1. do all this within the `dm` object by zooming to a table and manipulate it while maintaining the key relations whenever possible before.
+1. do all this within the `dm` object by zooming to a table and manipulate it while maintaining the key relations whenever possible.
 
 The first approach is rather self-explanatory, so let us have a closer look at the second way.
 
@@ -103,7 +103,7 @@ weather_zoomed
 enum_pk_candidates(weather_zoomed)
 # Seems we have to construct a column with unique values
 # This can be done by combining columns `origin` with `time_hour`, if the latter 
-# is converted to one time zone first; all within the `dm`:
+# is converted to a single time zone first; all within the `dm`:
 weather_zoomed_mutate <- 
   weather_zoomed %>% 
   # first convert all times to the same time zone:
@@ -134,7 +134,7 @@ extended_flights_dm %>% cdm_draw()
 ### Use case 3: Disentangle `dm`
 
 If you look at the `dm` created by `cdm_nycflights13(cycle = TRUE)`, you see that two columns of `flights` relate to one and the same table, `airports`.
-One column stands for the departure airport and the for the arrival airport.
+One column stands for the departure airport and the other for the arrival airport.
 
 ```{r}
 cdm_draw(cdm_nycflights13(cycle = TRUE))
@@ -146,11 +146,11 @@ disentangled_flights_dm <-
   cdm_nycflights13(cycle = TRUE) %>% 
   # zooming and immediately inserting essentially creates a copy of the original table
   cdm_zoom_to_tbl(airports) %>% 
-  cdm_insert_zoomed_tbl(dest.airports) %>% 
-  cdm_rename_tbl(origin.airports = airports) %>% 
+  cdm_insert_zoomed_tbl(destination) %>% 
+  cdm_rename_tbl(origin = airports) %>% 
   # Key relations are also duplicated, so the wrong ones need to be removed
-  cdm_rm_fk(flights, dest, origin.airports) %>% 
-  cdm_rm_fk(flights, origin, dest.airports)
+  cdm_rm_fk(flights, dest, origin) %>% 
+  cdm_rm_fk(flights, origin, destination)
 cdm_draw(disentangled_flights_dm)
 ```
 
@@ -158,14 +158,13 @@ In a future update we will provide a more convenient way to "disentangle" `dm` o
 
 ### Use case 4: Add summary table to `dm`
 
-Here is an example for adding a summary of a table as a new table to a `dm`:
+Here is an example for adding a summary of a table as a new table to a `dm` (FK-relations are taken care of automatically):
 
 ```{r}
 dm_with_summary <- 
   flights_dm %>% 
   cdm_zoom_to_tbl(flights) %>% 
-  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>% 
-  count(origin, am_pm_dep) %>% 
-  cdm_insert_zoomed_tbl(am_pm_dep_count)
+  count(origin, carrier) %>% 
+  cdm_insert_zoomed_tbl(dep_carrier_count)
 cdm_draw(dm_with_summary)
 ```
