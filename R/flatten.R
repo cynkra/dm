@@ -265,7 +265,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
     cdm_select_tbl(tables)
   # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
-  start_tbl <- tbl(dm, start)
+  start_tbl <-cdm_get_filtered_table(dm, start)
 
   if (gotta_rename) {
     table_colnames <- get_table_colnames(red_dm)

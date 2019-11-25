@@ -551,7 +551,7 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(dm)
   check_correct_input(dm, from, 1L)
 
-  cdm_get_filtered_table(dm, from)
+  cdm_get_tables(dm)[[from]]
 }
 
 #' @export

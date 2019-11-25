@@ -41,7 +41,7 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   check_col_input(dm, table_name, col_name)
 
   if (check) {
-    table_from_dm <- tbl(dm, table_name)
+    table_from_dm <- cdm_get_filtered_table(dm, table_name)
     check_key(table_from_dm, !!col_expr)
   }
 
@@ -85,7 +85,7 @@ cdm_has_pk <- function(dm, table) {
   has_length(cdm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the name of the primary key column of a `dm` table 
+#' Retrieve the name of the primary key column of a `dm` table
 #'
 #' @description `cdm_get_pk()` returns the name of the
 #' column marked as primary key of a table of a [`dm`] object.

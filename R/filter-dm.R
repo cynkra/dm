@@ -8,6 +8,8 @@
 #'
 #' With `cdm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
 #'
+#' `cdm_apply_filters_to_tbl()` retrieves one specific table of the `dm` that is updated according to the filter conditions and the foreign key relations.
+#'
 #' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 #' in one of the following scenarios:
 #'
@@ -98,10 +100,28 @@ cdm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
   def <- cdm_get_def(dm)
 
-  def$data <- map(def$table, ~ tbl(dm, .))
+  def$data <- map(def$table, ~ cdm_get_filtered_table(dm, .))
 
   cdm_reset_all_filters(new_dm3(def))
 }
+
+#' @rdname cdm_filter
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_filter(flights, month == 3) %>%
+#'   cdm_apply_filters_to_tbl(planes)
+#' @export
+cdm_apply_filters_to_tbl <- function(dm, table) {
+  check_not_zoomed(dm)
+  table_name <- as_string(ensym(table))
+  check_correct_input(dm, table_name)
+
+  cdm_get_filtered_table(dm, table_name)
+}
+
 
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
