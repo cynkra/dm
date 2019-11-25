@@ -256,7 +256,7 @@ cdm_get_con <- function(x) {
 #' `cdm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
 #' Filtering expressions are NOT evaluated at this stage.
-#' To get filtered tables, use `tbl.dm()`
+#' To get a filtered table, use `cdm_apply_filters_to_tbl()`, to apply filters to all tables use `cdm_apply_filters()`
 #'
 #' @rdname dm
 #'

@@ -19,7 +19,7 @@
 #' Tables that are not connected to any table with an active filter are left unchanged.
 #' This results in a new `dm` class object without any filter conditions.
 #'
-#' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated by performing a sequence
+#' 1. Calling `cdm_apply_filters_to_tbl()`: the remaining rows of the requested table are calculated by performing a sequence
 #' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
 #' (similar to 1. but only for one table).
 #'
@@ -44,9 +44,7 @@
 #'   cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl")
 #'
-#' tbl(dm_nyc_filtered, "flights")
-#' dm_nyc_filtered[["planes"]]
-#' dm_nyc_filtered$airlines
+#' cdm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
 #' cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
@@ -121,7 +119,6 @@ cdm_apply_filters_to_tbl <- function(dm, table) {
 
   cdm_get_filtered_table(dm, table_name)
 }
-
 
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
