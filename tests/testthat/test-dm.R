@@ -32,7 +32,7 @@ test_that("'compute.dm()' computes tables on DB", {
     ~expect_true({
         def <- dm_for_filter_src[[.x]] %>% cdm_filter(t1, a > 3) %>% compute() %>% cdm_get_def()
         test <- map_chr(map(def$data, sql_render), as.character)
-        all(map_lgl(test, ~ !str_detect(., "WHERE")))})
+        all(map_lgl(test, ~ !grepl("WHERE", .)))})
   )
 })
 
