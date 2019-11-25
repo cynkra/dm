@@ -152,7 +152,7 @@ disentangled_flights_dm <-
   cdm_zoom_to_tbl(origin.airports) %>% 
   # `cdm_insert_zoomed_tbl()` adds the copy as a new table to the `dm`
   cdm_insert_zoomed_tbl(dest.airports) %>% 
-  # implement the foreign key relations
+  # establish the foreign key relations
   cdm_add_fk(flights, origin, origin.airports) %>%
   cdm_add_fk(flights, dest, dest.airports)
 cdm_draw(disentangled_flights_dm)
@@ -162,8 +162,14 @@ In a future update we will provide a more convenient way to "disentangle" `dm` o
 
 ### Use case 4: Add summary table to `dm`
 
-Adding a summary of a table as a new table to a `dm` works like this:
+Here is an example for adding a summary of a table as a new table to a `dm`:
 
 ```{r}
-
+dm_with_summary <- 
+  flights_dm %>% 
+  cdm_zoom_to_tbl(flights) %>% 
+  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>% 
+  count(origin, am_pm_dep) %>% 
+  cdm_insert_zoomed_tbl(am_pm_dep_count)
+cdm_draw(dm_with_summary)
 ```
