@@ -175,7 +175,7 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   old_and_new_out_keys <-
     if (nrow(old_out_keys) > 0 && any(old_out_keys$column %in% tracked_keys)) {
       filter(old_out_keys, column %in% tracked_keys) %>%
-        mutate(new_column = names(tracked_keys[tracked_keys %in% column]))
+        mutate(new_column = names(tracked_keys[match(column, tracked_keys, nomatch = 0L)]))
       } else filter(old_out_keys, 0 == 1) %>% mutate(new_column = character(0))
 
   if (is_upd) {

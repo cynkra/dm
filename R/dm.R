@@ -411,7 +411,7 @@ print.dm <- function(x, ...) {
 
   cat_line(db_info)
 
-  cat_rule("Data model", col = "violet")
+  cat_rule("Metadata", col = "violet")
 
   def <- cdm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
