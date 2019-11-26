@@ -37,29 +37,19 @@ abort_not_unique_key <- function(table_name, column_names) {
 }
 
 error_txt_not_unique_key <- function(table_name, column_names) {
-  paste0(
-    "`",
-    paste(column_names, collapse = ", "),
-    "` not a unique key of `",
-    table_name, "`."
-  )
+  glue("({commas(tick(column_names))}) not a unique key of {tick(table_name)}.")
 }
 
 
 # general error: table not part of `dm` -----------------------------------
 
 
-abort_table_not_in_dm <- function(table_name, dm) {
-  abort(error_txt_table_not_in_dm(table_name, dm), .subclass = cdm_error_full("table_not_in_dm"))
+abort_table_not_in_dm <- function(table_name, dm_tables) {
+  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = cdm_error_full("table_not_in_dm"))
 }
 
-error_txt_table_not_in_dm <- function(table_name, dm) {
-  paste0(
-    "Tables ",
-    commas(tick(table_name)),
-    " not in `dm` object. Available table names: ",
-    commas(tick(src_tbls(dm)))
-  )
+error_txt_table_not_in_dm <- function(table_name, dm_tables) {
+  glue("Tables {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}")
 }
 
 
@@ -74,17 +64,8 @@ abort_not_subset_of <- function(table_name_1, colname_1,
 
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
-  paste0(
-    "Column `",
-    colname_1,
-    "` in table `",
-    table_name_1,
-    "` contains values (see above) that are not present in column `",
-    colname_2,
-    "` in table `",
-    table_name_2,
-    "`"
-  )
+  glue("Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see above) that are not present in column ",
+    "{tick(colname_2)} of table {tick(table_name_2)}")
 }
 
 
@@ -108,13 +89,8 @@ abort_not_bijective <- function(child_table_name, fk_col_name) {
 }
 
 error_txt_not_bijective <- function(child_table_name, fk_col_name) {
-  paste0(
-    "1..1 cardinality (bijectivity) is not given: Column `",
-    fk_col_name,
-    "` in table `",
-    child_table_name,
-    "` contains duplicate values."
-  )
+  glue("1..1 cardinality (bijectivity) is not given: Column {tick(fk_col_name)} in table ",
+    "{tick(child_table_name)} contains duplicate values.")
 }
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
@@ -124,13 +100,8 @@ abort_not_injective <- function(child_table_name, fk_col_name) {
 }
 
 error_txt_not_injective <- function(child_table_name, fk_col_name) {
-  paste0(
-    "0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
-    fk_col_name,
-    "` in table `",
-    child_table_name,
-    "` contains duplicate values."
-  )
+  glue("0..1 cardinality (injectivity from child table to parent table) is not given: Column {tick(fk_col_name)}",
+    " in table {tick(child_table_name)} contains duplicate values.")
 }
 
 
@@ -143,8 +114,7 @@ abort_ref_tbl_has_no_pk <- function(ref_table_name) {
 }
 
 error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
-  paste0(
-    "ref_table ", tick(ref_table_name), " needs a primary key first. ",
+  glue("ref_table {tick(ref_table_name)} needs a primary key first. ",
     "Use `cdm_enum_pk_candidates()` to find candidates, and `cdm_add_pk()` define a primary key."
   )
 }
@@ -161,16 +131,9 @@ abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
 
 error_txt_is_not_fk <- function(child_table_name, wrong_fk_colnames,
                                 parent_table_name, actual_fk_colnames) {
-  paste0(
-    "The given combination of columns ",
-    paste0(tick(wrong_fk_colnames), collapse = ", "), " ",
-    "is not a foreign key of table ",
-    tick(child_table_name), " ",
-    "with regards to ref_table ",
-    tick(parent_table_name), ". ",
-    "Foreign key columns are: ",
-    commas(tick(actual_fk_colnames)), "."
-  )
+  glue("The given combination of columns ({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
+    "{tick(child_table_name)} with regards to ref_table {tick(parent_table_name)}. ",
+    "Foreign key columns are: ({commas(tick(actual_fk_colnames))}).")
 }
 
 abort_rm_fk_col_missing <- function() {
@@ -221,7 +184,7 @@ abort_tables_not_reachable_from_start <- function() {
   abort(error_txt_tables_not_reachable_from_start(), .subclass = cdm_error_full("tables_not_reachable_from_start"))
 }
 
-error_txt_tables_not_reachable_from_start <- function(fun_name, param) {
+error_txt_tables_not_reachable_from_start <- function() {
   glue("All selected tables must be reachable from `start`.")
 }
 

@@ -1,0 +1,25 @@
+outpath <- here::here("tests/testthat/out/error-msgs.txt")
+
+test_that("error messages do not change", {
+  verify_output(outpath, {
+    error_txt_wrong_col_args()
+    error_txt_key_set_force_false()
+    error_txt_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
+    error_txt_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus", "overhours"))
+    error_txt_not_subset_of("playing", "game", "hunting", "game")
+    error_txt_sets_not_equal(c("problem", "another problem"))
+    error_txt_not_bijective("child_table_name", "fk_col_name")
+    error_txt_not_injective("child_table_name", "fk_col_name")
+    error_txt_ref_tbl_has_no_pk("parent_table")
+    error_txt_is_not_fk("child_table_name", c("wrong_fk_colname", "and_one_more"),
+                        "parent_table_name", c("actual_fk_colname", "and_one_more"))
+    error_txt_rm_fk_col_missing()
+    error_txt_last_col_missing()
+    error_txt_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
+    error_txt_no_cycles()
+    error_txt_tables_not_reachable_from_start()
+    error_txt_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one", "col_2"))
+    error_txt_wrong_col_names("table_name", c("col_1", "col_2"), "col_one")
+    error_txt_dupl_new_id_col_name("tibbletable")
+  })
+})
