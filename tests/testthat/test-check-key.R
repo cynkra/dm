@@ -31,4 +31,8 @@ test_that("check_key() checks primary key properly?", {
   expect_silent(
     check_key(test_tbl, !!!c(sym("n"), sym("nn")))
   )
+
+  expect_silent(
+    check_key(test_tbl, everything())
+  )
 })
