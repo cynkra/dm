@@ -29,6 +29,8 @@
 #'
 #' @family DB interaction functions
 #'
+#' @return A `dm` object on the given `src`
+#'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
 #' iris_dm <- cdm_copy_to(
@@ -108,13 +110,14 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
 
 #' Set key constraints on a DB for a `dm`-obj with keys
 #'
-#' @description `cdm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database
-#' (this is currently only implemented for MSSQL and Postgres databases), and mirrors the `dm` key constraints
-#' on the database.
+#' @description `cdm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database,
+#' and mirrors the `dm` key constraints on the database (this is currently only implemented for MSSQL and Postgres databases).
 #'
 #' @inheritParams cdm_copy_to
 #'
 #' @family DB interaction functions
+#'
+#' @return Invisibly returns the `dm`. Side effect: installing key constraints on DB.
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
