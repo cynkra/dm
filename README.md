@@ -15,88 +15,89 @@ rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rst
 
 # dm
 
-The goal of {dm} is to provide tools for working with multiple tables.
+{dm} is an R package that provides tools for working with multiple
+related tables, such as the tables used in relational databases.
 
-Skip to the [Features section](#features) if you are familiar with
-relational data models.
+**Contents**
 
-  - [Why?](#why) gives a short motivation, especially for {dplyr} users
-  - [Good to Know](#good-to-know) explains important terms of relational
-    data models
-  - [Features](#features) gives a one-page overview over the scope of
-    this package
-  - [Example](#example) outlines some of the features in a short example
-  - [More information](#more-information) offers links to more detailed
-    articles
-  - [Standing on the shoulders of
-    giants](#standing-on-the-shoulders-of-giants) shows related work
+  - [Background](#background) explains the philosophy behind the package
+    and the problem that it tries to solve
+  - [Example](#example) illustrates the general concept with a simple
+    example
+  - [Features](#features) gives an overview of the scope of the package
   - [Installation](#installation) describes how to install the package
+  - [More information](#more-information) lists more detailed
+    documentation sources
+  - [Standing on the shoulders of
+    giants](#standing-on-the-shoulders-of-giants) credits related work
 
-## Why?
+## Background
 
-The motivation for the {dm} package is a more sophisticated data
-management. {dm} uses the relational data model and its core concept of
-splitting one table into multiple tables.
+Relational databases and flat tables, like data frames or spreadsheets,
+present data in fundamentally different ways.
+
+In data frames and spreadsheets, all data is presented together in one
+large table with many rows and columns. This means that the data is
+accessible in one location but has the disadvantage that the same values
+may be repeated multiple times, resulting in bloated tables with
+redundant data. In the worst case scenario, a data frame may have many
+rows and columns but only a single value different in each row.
+
+Relational databases, on the other hand, do not keep all data together
+but split it into multiple smaller tables. That separation into
+sub-tables has several advantages:
+
+  - all information is stored only once, avoiding repetition and
+    conserving memory
+  - all information is updated only once and in one place, improving
+    consistency and avoiding errors that may result from updating the
+    same value in multiple locations
+  - all information is organized by topic and segmented into smaller
+    tables that are easier to handle
+
+Separation of data, thus, helps with data quality, and explains the
+continuing popularity of relational databases in production-level data
+management.
+
+The downside of this approach is that it is harder to merge together
+information from different data sources and to identify which entities
+refer to the same object, a common task when modelling or plotting data.
+To be mapped uniquely, the entities would need to be designated as
+*keys*, and the separate tables collated together through a process
+called *joining*.
+
+In R, there already exist packages that support handling inter-linked
+tables but the code is complex and requires multiple command sequences.
+The goal of the {dm} package is to simplify the data management
+processes in R while keeping the advantages of relational data models
+and the core concept of splitting one table into multiple tables. In
+this way, you can have the best of both worlds: manage your data as a
+collection of linked tables, then flatten multiple tables into one for
+an analysis with {dplyr} or other packages, on an as-needed basis.
+
+Although {dm} is built upon relational data models, it is not a database
+itself. It can work transparently with both relational database systems
+and in-memory data, and copy data [from and to
+databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
+
+## Example
+
+As an example, consider the
+[`nycflights13`](https://github.com/hadley/nycflights13) dataset about
+the flights that departed New York City airports in 2013. The dataset
+contains five tables: the main `flights` table with links to the
+`airlines`, `planes` and `airports` tables, and the `weather` table
+without explicit links.
+
+Assume that your task is to merge all tables, except the `weather`
+table.
 
 <img src="man/figures/README-draw-1.png" width="100%" />
 
-This has a **hugh advantage**: The code becomes simpler.
-
-### Example
-
-As an example, we consider the
-[`nycflights13`](https://github.com/hadley/nycflights13) dataset. This
-dataset contains five tables: the main `flights` table with links into
-the `airlines`, `planes` and `airports` tables, and a `weather` table
-without an explicit link.
-
-Assume your task is to merge all tables (except the `weather` table).
-This cross-referencing is a common first step when modelling or plotting
-data.
-
-In {dm} the basic element is [a `dm`
-object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
-You can create it with `cdm_nycflights13()` for the example data. After
-that you can use the links between the tables as often as you wish -
-without explicitly referring to the relations ever again. The task of
-joining four tables (`flights`, `airlines`, `planes` and `airports`)
-boils down to:
-
-``` r
-cdm_nycflights13() %>%
-  cdm_flatten_to_tbl(start = flights)
-#> Renamed columns:
-#> * year -> flights$flights.year, planes$planes.year
-#> * name -> airlines$airlines.name, airports$airports.name
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 35</span><span>
-#&gt;    </span><span style='font-weight: bold;'>flights.year</span><span> </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>dep_time</span><span> </span><span style='font-weight: bold;'>sched_dep_time</span><span> </span><span style='font-weight: bold;'>dep_delay</span><span> </span><span style='font-weight: bold;'>arr_time</span><span>
-#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      517            515         2      830
-#&gt; </span><span style='color: #555555;'> 2</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      533            529         4      850
-#&gt; </span><span style='color: #555555;'> 3</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      542            540         2      923
-#&gt; </span><span style='color: #555555;'> 4</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      544            545        -</span><span style='color: #BB0000;'>1</span><span>     </span><span style='text-decoration: underline;'>1</span><span>004
-#&gt; </span><span style='color: #555555;'> 5</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            600        -</span><span style='color: #BB0000;'>6</span><span>      812
-#&gt; </span><span style='color: #555555;'> 6</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            558        -</span><span style='color: #BB0000;'>4</span><span>      740
-#&gt; </span><span style='color: #555555;'> 7</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      555            600        -</span><span style='color: #BB0000;'>5</span><span>      913
-#&gt; </span><span style='color: #555555;'> 8</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      709
-#&gt; </span><span style='color: #555555;'> 9</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      838
-#&gt; </span><span style='color: #555555;'>10</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      558            600        -</span><span style='color: #BB0000;'>2</span><span>      753
-#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 28 more variables: </span><span style='color: #555555;font-weight: bold;'>sched_arr_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>arr_delay</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>carrier</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>flight</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tailnum</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>origin</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>dest</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>air_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>distance</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>minute</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>time_hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>airlines.name</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>airports.name</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>lat</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>lon</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>alt</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tz</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>dst</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tzone</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>planes.year</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>type</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>manufacturer</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>model</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engines</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>seats</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   </span><span style='color: #555555;font-weight: bold;'>speed</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engine</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
-</span></CODE></PRE>
-
-In contrast, using the classical {dplyr} notation you need three
-`left_join()` calls to merge the `flights` table gradually to
-`airlines`, `planes` and `airports` tables to create one wide data
-frame.
+In the classical [{dplyr}](https://dplyr.tidyverse.org) notation, you
+would need three `left_join()` calls to merge the `flights` table
+gradually to the `airlines`, `planes` and `airports` tables to create
+one wide data frame:
 
 ``` r
 library(tidyverse)
@@ -130,157 +131,68 @@ flights %>%
 #&gt; #   </span><span style='color: #555555;font-weight: bold;'>lon</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>alt</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tz</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>dst</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tzone</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 </span></CODE></PRE>
 
-You can find more information and important terms to jump-start working
-with {dm} in the article [“Introduction to Relational Data
-Models”](dm-introduction-relational-data-models.html).
+With the {dm} package, you would create [a `dm`
+object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
+After that you would be able to use the links between the tables as
+often as you wish, without explicitly referring to the relations ever
+again.
 
-### The Advantages in Brief
+For the example data set, you can use `cdm_nycflights13()` to create the
+`dm` object, and a single command for merging the tables. The task of
+joining the four `flights`, `airlines`, `planes` and `airports` tables
+then boils down to:
 
-The separation into multiple tables achieves several goals:
+``` r
+library(dm)
 
-  - **Avoid repetition, conserve memory**: the information related to
-    each airline, airport, and airplane are stored only once
-      - name of each airline
-      - name, location and altitude of each airport
-      - manufacturer and number of seats for each airplane
-  - **Improve consistency**: for updating any information (e.g. the name
-    of an airport), it is sufficient to update in only one place
-  - **Segmentation**: information is organized by topic, individual
-    tables are smaller and easier to handle
+cdm_nycflights13() %>%
+  cdm_flatten_to_tbl(start = flights)
+#> Note: Using an external vector in selections is brittle.
+#> [34mℹ[39m If the data contains `tables` it will be selected instead.
+#> [34mℹ[39m Use `all_of(tables)` instead of just `tables` to silence this message.
+#> Renamed columns:
+#> * year -> flights$flights.year, planes$planes.year
+#> * name -> airlines$airlines.name, airports$airports.name
+```
 
-## Good to Know
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 35</span><span>
+#&gt;    </span><span style='font-weight: bold;'>flights.year</span><span> </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>dep_time</span><span> </span><span style='font-weight: bold;'>sched_dep_time</span><span> </span><span style='font-weight: bold;'>dep_delay</span><span> </span><span style='font-weight: bold;'>arr_time</span><span>
+#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      517            515         2      830
+#&gt; </span><span style='color: #555555;'> 2</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      533            529         4      850
+#&gt; </span><span style='color: #555555;'> 3</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      542            540         2      923
+#&gt; </span><span style='color: #555555;'> 4</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      544            545        -</span><span style='color: #BB0000;'>1</span><span>     </span><span style='text-decoration: underline;'>1</span><span>004
+#&gt; </span><span style='color: #555555;'> 5</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            600        -</span><span style='color: #BB0000;'>6</span><span>      812
+#&gt; </span><span style='color: #555555;'> 6</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            558        -</span><span style='color: #BB0000;'>4</span><span>      740
+#&gt; </span><span style='color: #555555;'> 7</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      555            600        -</span><span style='color: #BB0000;'>5</span><span>      913
+#&gt; </span><span style='color: #555555;'> 8</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      709
+#&gt; </span><span style='color: #555555;'> 9</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      838
+#&gt; </span><span style='color: #555555;'>10</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1     1      558            600        -</span><span style='color: #BB0000;'>2</span><span>      753
+#&gt; </span><span style='color: #555555;'># … with 336,766 more rows, and 28 more variables: </span><span style='color: #555555;font-weight: bold;'>sched_arr_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>arr_delay</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>carrier</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>flight</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tailnum</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>origin</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>dest</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>air_time</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>distance</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>minute</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>time_hour</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>airlines.name</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>airports.name</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>lat</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>lon</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>alt</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tz</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>dst</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>tzone</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>planes.year</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>type</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>manufacturer</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>model</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engines</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>seats</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   </span><span style='color: #555555;font-weight: bold;'>speed</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, </span><span style='color: #555555;font-weight: bold;'>engine</span><span style='color: #555555;'> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+</span></CODE></PRE>
 
-Multiple, linked tables are a common concept in database management.
-Since many R users have a background in other disciplines, we present
-six important terms in relational data modeling to jump-start working
-with {dm}.
-
-### 1\) Data frames and tables
-
-A data frame is a fundamental data structure in R. If you imagine it
-visually, the result is a typical table structure. That’s why working
-with data from spreadsheets is so convenient and users of the the
-popular [{dplyr}](https://dplyr.tidyverse.org) package for data
-wrangling mainly rely on data frames.
-
-The downside: Data frames and flat file systems like spreadsheets can
-result in bloated tables, that hold many repetitive values. Worst case,
-you have a data frame with multiple columns and in each row only a
-single value is different.
-
-This calls for a better data organization by utilizing the resemblance
-between data frames and database tables, which consist of columns and
-rows, too. The elements are just called differently:
-
-| Data Frame | Table     |
-| ---------- | --------- |
-| Column     | Attribute |
-| Row        | Tuple     |
-
-Therefore, the separation into multiple tables is a first step that
-helps data quality. But without an associated data model you don’t take
-full advantage. For example, joining is more complicated than it should
-be. This is illustrated [above](#example).
-
-With {dm} you can have the best of both worlds: Manage your data as
-linked tables, then flatten multiple tables into one for your analysis
-with {dplyr} on an as-needed basis.
-
-### 2\) Model
-
-A data model shows the structure between multiple tables that can be
-linked together. The `nycflights13` relations can be transferred into
-the following graphical representation:
-
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
-
-The `flights` table is linked to three other tables: `airlines`,
-`planes` and `airports`. By using directed arrows the visualization
-explicitly shows the connection between different columns/attributes.
-For example: The column `carrier` in `flights` can be joined with the
-column `carrier` from the `airlines` table. Further Reading: The {dm}
-methods for [visualizing data
-models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
-
-The links between the tables are established through *primary keys* and
-*foreign keys*.
-
-### 3\) Primary Keys
-
-In a relational data model every table needs to have one
-column/attribute that uniquely identifies a row. This column is called
-primary key (abbreviated with pk). The primary key column has unique
-values and can’t contain `NA` or `NULL` values. If no such column
-exists, it is common practice to create a synthetic column of numeric or
-globally unique identifiers (surrogate key).
-
-In the `airlines` table of `nycflights13` the column `carrier` is the
-primary key.
-
-Further Reading: The {dm} package offers several function for dealing
-with [primary
-keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
-
-### 4\) Foreign Keys
-
-The counterpart of a primary key in one table is the foreign key in
-another table. In order to join two tables, the primary key of the first
-table needs to be available in the second table, too. This second column
-is called the foreign key (abbreviated with fk).
-
-For example, if you want to link the `airlines` table in the
-`nycflights13` data to the `flights` table, the primary key in the
-`airlines` table is `carrier` which is present as foreign key `carrier`
-in the `flights` table.
-
-Further Reading: The {dm} functions for working with [foreign
-keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
-
-### 5\) Normalization
-
-One main goal is to keep the data organization as clean and simple as
-possible by avoiding redundant data entries. Normalization is the
-technical term that describes this central design principle of a
-relational data model: splitting data into multiple tables. A normalized
-data schema consists of several relations (tables) that are linked with
-attributes (columns) with primary and foreign keys.
-
-For example, if you want to change the name of one airport in
-`nycflights13`, you have to change only a single data entry. Sometimes,
-this principle is called “single point of truth”.
-
-See the [Wikipedia article on database
-normalization](https://en.wikipedia.org/wiki/Database_normalisation) for
-more details. Consider reviewing the [Simple English
-version](https://simple.wikipedia.org/wiki/Database_normalisation) for a
-gentle introduction.
-
-### 6\) Relational Databases
-
-`dm` is built upon relational data models, but it is not a database
-itself. Databases are systems for data management and many of them are
-constructed as relational databases, e.g. SQLite, MySQL, MSSQL,
-Postgres. As you can guess from the names of the databases SQL, the
-**s**tructured **q**uerying **l**anguage plays an important role: It was
-invented for the purpose of querying relational databases.
-
-Therefore, {dm} can copy data [from and to
-databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works
-transparently with both in-memory data and with relational database
-systems.
+The example data model for {nycflights13} is integrated in {dm} and
+defines primary and foreign keys to identify the common points between
+the tables. For data other than the example data, the `dm` object would
+need to be created by using the `dm()` constructor and by adding keys
+using `cdm_add_pk()` and `cdm_add_fk()`.
 
 ## Features
 
-This package helps with many challenges that arise when working with
+The {dm} package helps with the challenges that arise with working with
 relational data models.
 
 ### Compound object
 
 The `dm` class manages several related tables. It stores both the
-**data** and the **metadata** in a compound object, and defines
-operations on that object. These operations either affect the data
-(e.g., a filter), or the metadata (e.g., definition of keys or creation
-of a new table), or both.
+**data** and the **metadata** in a compound object.
 
   - data: a table source storing all tables
   - metadata: table names, column names, primary and foreign keys
@@ -288,6 +200,10 @@ of a new table), or both.
 This concept helps separating the join logic from the code: declare your
 relationships once, as part of your data, then use them in your code
 without repeating yourself.
+
+Various operations on `dm` objects are implemented. They either affect
+the data (e.g., a filter), or the metadata (e.g., definition of keys),
+or both (e.g., creation of a new table).
 
 ### Storage agnostic
 
@@ -304,35 +220,6 @@ A battery of utilities helps with creating a tidy relational data model.
   - Splitting and rejoining tables
   - Determining key candidates
   - Checking keys and cardinalities
-
-## Example
-
-A readymade `dm` object with preset keys is included in the package:
-
-``` r
-library(dm)
-
-cdm_nycflights13()
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Data model</span><span> </span><span style='color: #555555;'>─────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-</span></CODE></PRE>
-
-The `cdm_draw()` function creates a visualization of the entity
-relationship model:
-
-``` r
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
-```
-
-<img src="man/figures/README-draw-1.png" width="100%" />
 
 ### Filtering and joining
 
@@ -368,6 +255,10 @@ can use `cdm_join_tbl()`:
 ``` r
 cdm_nycflights13(cycle = FALSE) %>%
   cdm_join_to_tbl(airports, flights, join = semi_join)
+#> Note: Using an external vector in selections is brittle.
+#> [34mℹ[39m If the data contains `tables` it will be selected instead.
+#> [34mℹ[39m Use `all_of(tables)` instead of just `tables` to silence this message.
+#> Warning: Column `name` has different attributes on LHS and RHS of join
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 19</span><span>
@@ -432,11 +323,35 @@ src_postgres <- src_postgres()
 nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
 ```
 
+## Installation
+
+The latest (development) version of {dm} can be installed from GitHub.
+
+``` r
+# install.packages("devtools")
+devtools::install_github("krlmlr/dm")
+```
+
+The {dm} package will also be made available on
+[CRAN](https://cran.r-project.org/web/packages/), from where it can be
+installed with the command
+
+``` r
+install.packages("dm")
+```
+
 ## More information
+
+For an introduction into relational data models and to jump-start
+working with {dm}, please see the article [“Introduction to Relational
+Data
+Models”](https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html).
 
 If you would like to learn more about {dm}, the [Intro
 article](https://krlmlr.github.io/dm/articles/dm.html) is a good place
-to start. Further resources:
+to start.
+
+Further resources:
 
   - [Function
     reference](https://krlmlr.github.io/dm/reference/index.html)
@@ -460,7 +375,7 @@ to start. Further resources:
 
 ## Standing on the shoulders of giants
 
-This package follows the tidyverse principles:
+The {dm} package follows the tidyverse principles:
 
   - `dm` objects are immutable (your data will never be overwritten in
     place)
@@ -495,21 +410,6 @@ In object-oriented programming languages, [object-relational
 mapping](https://en.wikipedia.org/wiki/Object-relational_mapping) is a
 similar concept that attempts to map a set of related tables to a class
 hierarchy.
-
-## Installation
-
-Once on CRAN, the package can be installed with
-
-``` r
-install.packages("dm")
-```
-
-Install the latest development version with
-
-``` r
-# install.packages("devtools")
-devtools::install_github("krlmlr/dm")
-```
 
 -----
 
