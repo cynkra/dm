@@ -30,10 +30,9 @@ cdm_paste <- function(dm, select = FALSE, env = .GlobalEnv) {
   # code for including the tables
   code <- paste0("dm(", paste(table_names, collapse = ", "), ") %>%\n")
 
-
   if (!all(tables_exist)) {
     tables_not_existing <- names(tables_exist[tables_exist == FALSE])
-    message(glue("The following tables do not exist in given environment: {commas(tick(tables_not_existing))}. ",
+    warning(glue("The following tables do not exist in given environment: {commas(tick(tables_not_existing))}. ",
                  "Therefore, the code won't work out of the box."))
     if (select) {
       # FIXME: should we ignore `select` only for those tables that do not exist
