@@ -54,6 +54,9 @@
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
+      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
       <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
     </li>
     <li>
@@ -196,7 +199,7 @@
 <path fill="none" stroke="#555555" d="M50,-21C66.1374,-21 71.8091,-14.5248 83.8583,-11.9954"></path><polygon fill="#555555" stroke="#555555" points="84.3897,-15.4601 94,-11 83.7059,-8.4936 84.3897,-15.4601"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#ed7d31" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#f9dbd2" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#ae5a21" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge4" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M50,-61C66.1374,-61 71.8091,-67.4752 83.8583,-70.0046"></path><polygon fill="#555555" stroke="#555555" points="83.7059,-73.5064 94,-71 84.3897,-66.5399 83.7059,-73.5064"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#70ad47" stroke="transparent" points="3,-138 3,-158 51,-158 51,-138 3,-138"></polygon><text text-anchor="start" x="4.8492" y="-143.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#507e32" points="2,-137 2,-159 52,-159 52,-137 2,-137"></polygon></g></g></svg><p>The <code>flights</code> table is linked to three other tables: <code>airlines</code>, <code>planes</code> and <code>airports</code>. By using directed arrows, the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere).</p>
+<polygon fill="#70ad47" stroke="transparent" points="3,-138 3,-158 51,-158 51,-138 3,-138"></polygon><text text-anchor="start" x="4.8492" y="-143.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#507e32" points="2,-137 2,-159 52,-159 52,-137 2,-137"></polygon></g></g></svg><p>The <code>flights</code> table is linked to three other tables: <code>airlines</code>, <code>planes</code> and <code>airports</code>. By using directed arrows, the visualization shows explicitly the connection between different columns (they are called attributes in the relational data sphere).</p>
 <p>For example: The column <code>carrier</code> in <code>flights</code> can be joined with the column <code>carrier</code> from the <code>airlines</code> table.</p>
 <p>The links between the tables are established through <a href="#pk">primary keys</a> and <a href="#fk">foreign keys</a>.</p>
 <p>Further Reading: The {dm} methods for <a href="https://krlmlr.github.io/dm/articles/dm-visualization.html">visualizing data models</a>.</p>

@@ -7,13 +7,14 @@ articles:
   dm-introduction-relational-data-models: dm-introduction-relational-data-models.html
   dm-joining: dm-joining.html
   dm-low-level: dm-low-level.html
+  dm-setup: dm-setup.html
   dm-visualization: dm-visualization.html
   dm: dm.html
-  setting_up_dm: setting_up_dm.html
   dm-db: wip/dm-db.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
   dm-zoom-to-table: wip/dm-zoom-to-table.html
+  good-to-know: wip/good-to-know.html
 urls:
   reference: https://krlmlr.github.io/dm/reference
   article: https://krlmlr.github.io/dm/articles

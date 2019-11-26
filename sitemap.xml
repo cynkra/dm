@@ -136,13 +136,13 @@
     <loc>https://krlmlr.github.io/dm/articles/dm-low-level.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-setup.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-visualization.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/setting_up_dm.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-db.html</loc>
@@ -155,5 +155,8 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-zoom-to-table.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/wip/good-to-know.html</loc>
   </url>
 </urlset>
