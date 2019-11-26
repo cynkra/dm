@@ -13,6 +13,7 @@ articles:
   dm-db: wip/dm-db.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
+  dm-zoom-to-table: wip/dm-zoom-to-table.html
 urls:
   reference: https://krlmlr.github.io/dm/reference
   article: https://krlmlr.github.io/dm/articles
