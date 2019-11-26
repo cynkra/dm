@@ -209,7 +209,7 @@ Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/d
 
 ## Features
 
-The {dm} package helps with many challenges that arise with working with relational data models.
+The {dm} package helps with the challenges that arise with working with relational data models.
 
 ### Compound object
 
@@ -312,6 +312,7 @@ nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
 ## More information
 
 If you would like to learn more about {dm}, the [Intro article](https://krlmlr.github.io/dm/articles/dm.html) is a good place to start.
+
 Further resources:
 
 - [Function reference](https://krlmlr.github.io/dm/reference/index.html)
@@ -325,7 +326,7 @@ Further resources:
 
 ## Standing on the shoulders of giants
 
-This package follows the tidyverse principles:
+The {dm} package follows the tidyverse principles:
 
 - `dm` objects are immutable (your data will never be overwritten in place)
 - many functions used on `dm` objects are pipeable (i.e., return new `dm` objects)

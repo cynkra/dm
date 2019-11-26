@@ -54,9 +54,11 @@ Relational databases and flat tables, like data frames or spreadsheets, present 
 
 In data frames and spreadsheets, all data is presented together in one large table with many rows and columns.
 
-This means that the data is accessible in one location but has the disadvantage that the same values may be repeated multiple times, resulting in bloated tables with redundant data. In the worst case scenario, a data frame may have many rows and columns but only a single value different in each row.
+This means that the data is accessible in one location but has the disadvantage that the same values may be repeated multiple times, resulting in bloated tables with redundant data.
+In the worst case scenario, a data frame may have many rows and columns but only a single value different in each row.
 
-Relational databases, on the other hand, do not keep all data together but split it into multiple smaller tables. That separation into sub-tables has several advantages:
+Relational databases, on the other hand, do not keep all data together but split it into multiple smaller tables.
+That separation into sub-tables has several advantages:
 
 - all information is stored only once, avoiding repetition and conserving memory
 - all information is updated only once and in one place, improving consistency and avoiding errors that may result from updating the same value in multiple locations
@@ -64,20 +66,21 @@ Relational databases, on the other hand, do not keep all data together but split
 
 Separation of data, thus, helps with data quality, and explains the continuing popularity of relational databases in production-level data management.
 
-The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modelling or plotting data. To be mapped uniquely, the entities would need to be designated as _keys_, and the separate tables collated together through a process called _joining_. 
+The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modelling or plotting data.
+To be mapped uniquely, the entities would need to be designated as _keys_, and the separate tables collated together through a process called _joining_. 
 
-In R, there already exist packages that support handling inter-linked tables but the code is complex and requires multiple command sequences. 
-
+In R, there already exist packages that support handling inter-linked tables but the code is complex and requires multiple command sequences.
 The goal of the {dm} package is to simplify the data management processes in R while keeping the advantages of relational data models and the core concept of splitting one table into multiple tables.
-
 In this way, you can have the best of both worlds: manage your data as a collection of linked tables, then flatten multiple tables into one for an analysis with {dplyr} or other packages, on an as-needed basis.
 
-Although {dm} is built upon relational data models, it is not a database itself. Therefore, it can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and work transparently with both  relational database systems and in-memory data.
+Although {dm} is built upon relational data models, it is not a database itself. It can
+work transparently with both relational database systems and in-memory data, and copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
 
 
 ## Example {#example}
 
-As an example, consider the [`nycflights13`](https://github.com/hadley/nycflights13) dataset about the flights that departed New York City airports in 2013. The dataset contains five tables: the main `flights` table with links to the `airlines`, `planes` and `airports` tables, and the `weather` table without explicit links.
+As an example, consider the [`nycflights13`](https://github.com/hadley/nycflights13) dataset about the flights that departed New York City airports in 2013.
+The dataset contains five tables: the main `flights` table with links to the `airlines`, `planes` and `airports` tables, and the `weather` table without explicit links.
 
 Assume that your task is to merge all tables, except the `weather` table.
 
@@ -98,18 +101,20 @@ flights %>%
   left_join(airports, by = c("origin" = "faa"))
 ```
 
-With the {dm} package, you would create [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html), and after that be able to use the links between the tables as often as you wish, without explicitly referring to the relations ever again.
+With the {dm} package, you would create [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
+After that you would be able to use the links between the tables as often as you wish, without explicitly referring to the relations ever again.
 
-For the example data set, you can use `cdm_nycflights13() `to create the `dm` object, and a single command for merging the tables. The task of joining the four `flights`, `airlines`, `planes` and `airports` tables then boils down to:
+For the example data set, you can use `cdm_nycflights13()` to create the `dm` object, and a single command for merging the tables. The task of joining the four `flights`, `airlines`, `planes` and `airports` tables then boils down to:
 
-``````{r dm}
+```{r dm}
 library(dm)
 
 cdm_nycflights13() %>%
   cdm_flatten_to_tbl(start = flights)
 ```
 
-The example data in {nycflights13} is integrated in `dm` and comes with preset primary and foreign keys to identify the common points between the tables. For data other than the example data, the `dm` object would need to be created by using the `dm()` constructor. 
+The example data in {nycflights13} is integrated in `dm` and comes with preset primary and foreign keys to identify the common points between the tables.
+For data other than the example data, the `dm` object would need to be created by using the `dm()` constructor.
 
 
 ## Features
@@ -201,7 +206,8 @@ nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
 
 ## Installation
 
-The latest (development) version of {dm} can be installed from GitHub. For the package to work correctly, it is not enough to just clone or download the package, you will need to use a package manager in your R session to configure the necessary dependencies and to bind file locations to your local environment: 
+The latest (development) version of {dm} can be installed from GitHub.
+For the package to work correctly, it is not enough to just clone or download the package, you will need to use a package manager in your R session to configure the necessary dependencies and to bind file locations to your local environment:
 
 ```r
 # install.packages("devtools")
