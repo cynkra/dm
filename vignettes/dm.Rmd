@@ -30,10 +30,10 @@ The goal of the package {dm} and its `dm` class is to facilitate working with mu
 
 An object of the `dm` class contains the data in the tables, and metadata about the tables, such as
 
-- the names and physical locations of the tables (a database, or a data frame in your R session)
+- the names of the tables
 - the names of the columns of the tables
 - the key constraints to link the tables together
-- the number of rows in the tables
+- the data (either as data frames or as references to database tables)
 
 This package augments [{dplyr}](https://dplyr.tidyverse.org/)/[{dbplyr}](https://dbplyr.tidyverse.org/) workflows:
 

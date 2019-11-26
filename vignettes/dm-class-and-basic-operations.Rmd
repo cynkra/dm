@@ -35,12 +35,12 @@ Let's take a look at the `dm` class.
 
 The `dm` class consists of a collection of tables and metadata about the tables, such as 
 
-- the names and physical locations of the tables
+- the names of the tables
 - the names of the columns of the tables
 - the primary and foreign keys of the tables to link the tables together
-- the number of rows in the tables
+- the data (either as data frames or as references to database tables)
 
-All tables in a `dm` must be obtained from the same data source, either the same database or a local data frame; 
+All tables in a `dm` must be obtained from the same data source;
 csv files and spreadsheets would need to be imported to data frames in R.
 
 
