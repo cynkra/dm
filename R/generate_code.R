@@ -39,9 +39,14 @@ cdm_paste <- function(dm, select = FALSE, env = .GlobalEnv) {
       warning("Ignoring `select = TRUE`, since not all tables are available.")
     }
   } else {
+    tables_from_dm <- cdm_get_tables(dm)
+    tables_from_envir <- set_names(map(table_names, ~ eval_tidy(sym(..1), env = env)), table_names)
+    if (!all_same_source(append(tables_from_dm, tables_from_envir))) {
+      warning(paste0("Tables with the same names as the `dm` tables were found in given environment, but ",
+              "they do not refer to tables on the same `src`. Therefore, the code will not produce an identical `dm`.")
+              )
+    }
     if (select) {
-      tables_from_dm <- cdm_get_tables(dm)
-      tables_from_envir <- set_names(map(table_names, ~eval_tidy(sym(..1), env = env)), table_names)
       code_select <- calc_code_select(tables_from_dm, tables_from_envir)
       # code for selection of columns (if available)
       code <- paste0(code, code_select)
