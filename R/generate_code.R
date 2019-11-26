@@ -28,7 +28,9 @@ cdm_paste <- function(dm, select = FALSE) {
       code <- paste0(code, glue("  cdm_add_fk({ct[i]}, {fk_col[i]}, {pt[i]}) %>%"), "\n")
     }
   }
-  cat(strtrim(code, nchar(code) - 5))
+
+  # without "\n" in the end it looks weird when a warning is issued
+  cat(strtrim(code, nchar(code) - 5), "\n")
   invisible(dm)
 }
 
