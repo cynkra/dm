@@ -77,3 +77,52 @@ check_colnames <- function(key_tibble, dm_col_names, which) {
     abort_dm_invalid(glue("At least one {which} column name(s) not in `dm` tables' column names."))
     }
 }
+
+check_col_classes <- function(def) {
+  expected <-
+    list(table = "character",
+         data = "list",
+         segment = "character",
+         display = "character",
+         pks = c("vctrs_list_of", "vctrs_vctr"),
+         fks = c("vctrs_list_of", "vctrs_vctr"),
+         filters = c("vctrs_list_of", "vctrs_vctr"),
+         zoom = "list",
+         key_tracker_zoom = "list"
+         )
+  actual <- map(def, class)
+  if (!identical(actual, expected)) {
+    why_col <- names(expected[which(!map2_lgl(actual, expected, identical))])
+    why_expected <- expected[[why_col]]
+    why_actual <- actual[[why_col]]
+    abort_dm_invalid(
+      glue("Column {tick(why_col)} of tibble underlying `dm` has wrong class: ",
+           "{tick(why_actual)} instead of {tick(why_expected)}.")
+      )
+  }
+}
+
+check_one_zoom <- function(def, zoomed) {
+  if (zoomed) {
+    if (sum(!map_lgl(def$zoom, is_null)) > 1) {
+      abort_dm_invalid("More than one table is zoomed.")
+    }
+    if (sum(!map_lgl(def$zoom, is_null)) < 1) {
+      abort_dm_invalid("Class is `zoomed_dm` but no zoomed table available.")
+    }
+    if (sum(!map_lgl(def$key_tracker_zoom, is_null)) > 1) {
+      abort_dm_invalid("Key tracking is active for more than one zoomed table.")
+    }
+    if (sum(!map_lgl(def$key_tracker_zoom, is_null)) < 1) {
+      abort_dm_invalid("No key tracking is active despite `dm` a `zoomed_dm`.")
+    }
+  } else {
+    if (sum(!map_lgl(def$zoom, is_null)) != 0) {
+      abort_dm_invalid("Zoomed table(s) available despite `dm` not a `zoomed_dm`.")
+    }
+    if (sum(!map_lgl(def$key_tracker_zoom, is_null)) != 0) {
+      abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not a `zoomed_dm`.")
+    }
+  }
+}
+

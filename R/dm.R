@@ -184,18 +184,22 @@ new_key_tracker_zoom <- function() {
 validate_dm <- function(x) {
   check_dm(x)
 
-  # FIXME: Classed errors
-  stopifnot(identical(names(unclass(x)), "def"))
+  if (!identical(names(unclass(x)), "def")) abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
   def <- cdm_get_def(x)
 
   table_names <- def$table
-  if (any(table_names == "")) abort_unnamed_table_list()
+  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
+  check_col_classes(def)
 
-  # FIXME: Are all data objects tbl-s?
-  if (!all_same_source(def$data)) abort_not_same_src()
+  if (!all(map_lgl(def$data, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi")}))) abort_dm_invalid(
+    "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`.")
+  if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
 
-  # FIXME: Remove special case
   if (nrow(def) == 0) return(invisible(x))
+  if (ncol(def) != 9) abort_dm_invalid(
+    glue("Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
+         "instead of 9.")
+    )
 
   fks <- def$fks %>%
     map_dfr(I) %>%
@@ -207,16 +211,9 @@ validate_dm <- function(x) {
     unnest(pks) %>%
     unnest(column)
   check_colnames(pks, dm_col_names, "PK")
-  # check that all column classes of def are correct
-  # check that (for now) only maximally one `zoom` element is not `NULL`
-  # same with `key_tracker_zoom`
-  # TODO: check consistency
-  # - tables in data_model must be a subset of tables in src
-  # - class membership
-  # - DO NOT check primary and foreign key constraints here by default,
-  #   perhaps optionally or in a different verb
-  #
-  #
+  check_one_zoom(def, is_zoomed(x))
+  if (!all(map_lgl(def$zoom, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")}))) abort_dm_invalid(
+    "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`.")
   invisible(x)
 }
 
