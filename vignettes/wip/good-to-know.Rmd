@@ -1,9 +1,19 @@
-## Good to Know
+---
+title: "A brief introduction to relational data models"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A brief introduction to relational data models}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
 
 Multiple, linked tables are a common concept in database management.
 Since many R users have a background in other disciplines, we present six important terms in relational data modeling to jump-start working with {dm}.
 
-### 1) Data frames and tables
+## 1) Data frames and tables
 
 A _data frame_ is a fundamental data structure in R.
 If you imagine it visually, the result is a typical table structure.
@@ -26,7 +36,7 @@ This is illustrated [above](#example).
 
 With {dm} you can have the best of both worlds: Manage your data as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.
 
-### 2) Model
+## 2) Model
 
 A _data model_ shows the structure between multiple tables that can be linked together.
 The `nycflights13` relations can be transferred into the following graphical representation:
@@ -43,7 +53,7 @@ Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.g
 
 The links between the tables are established through *primary keys* and *foreign keys*.
 
-### 3) Primary Keys
+## 3) Primary Keys
 
 In a relational data model, every table needs to have one column/attribute that uniquely identifies a row.
 This column is called a _primary key_ (abbreviated with pk).
@@ -54,7 +64,7 @@ In the `airlines` table of `nycflights13` the column `carrier` is the primary ke
 
 Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
 
-### 4) Foreign Keys
+## 4) Foreign Keys
 
 The counterpart of a primary key in one table is the _foreign key_ in another table.
 In order to join two tables, the primary key of the first table needs to be available in the second table, too.
@@ -64,7 +74,7 @@ For example, if you want to link the `airlines` table in the `nycflights13` data
 
 Further Reading: The {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
 
-### 5) Normalization
+## 5) Normalization
 
 One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries.
 _Normalization_ is the technical term that describes this central design principle of a relational data model: splitting data into multiple tables.
@@ -76,7 +86,7 @@ Sometimes, this principle is called "single point of truth".
 See the [Wikipedia article on database normalization](https://en.wikipedia.org/wiki/Database_normalisation) for more details.
 Consider reviewing the [Simple English version](https://simple.wikipedia.org/wiki/Database_normalisation) for a gentle introduction.
 
-### 6) Relational Databases
+## 6) Relational Databases
 
 `dm` is built upon relational data models but it is not a database itself.
 Databases are systems for data management and many of them are constructed as _relational databases_, e.g. SQLite, MySQL, MSSQL, Postgres.
