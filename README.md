@@ -16,7 +16,7 @@ rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rst
 # dm
 
 {dm} is an R package that provides tools for working with multiple
-related tables, such as the tables used in relational databases.
+related tables, stored as data frames or in a relational database.
 
 **Contents**
 
