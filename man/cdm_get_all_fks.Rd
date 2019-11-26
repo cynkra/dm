@@ -14,15 +14,17 @@ A tibble with columns:
 
 "child_table": child table,
 "child_fk_col": foreign key column in child table,
-"parent_table": parent table,
+"parent_table": parent table
 }
 \description{
-Get an overview about all foreign key relations in a \code{\link{dm}}
+Get a summary of all foreign key relations in a \code{\link{dm}}
 }
 \seealso{
-Other foreign key functions: \code{\link{cdm_add_fk}},
-  \code{\link{cdm_enum_fk_candidates}},
-  \code{\link{cdm_get_fk}}, \code{\link{cdm_has_fk}},
-  \code{\link{cdm_rm_fk}}
+Other foreign key functions: 
+\code{\link{cdm_add_fk}()},
+\code{\link{cdm_enum_fk_candidates}()},
+\code{\link{cdm_get_fk}()},
+\code{\link{cdm_has_fk}()},
+\code{\link{cdm_rm_fk}()}
 }
 \concept{foreign key functions}

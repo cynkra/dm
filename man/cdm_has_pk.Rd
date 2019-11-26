@@ -9,11 +9,11 @@ cdm_has_pk(dm, table)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 }
 \description{
 \code{cdm_has_pk()} checks in the \code{data_model} part
-of the \code{\link{dm}} object if a given table has a column marked as primary key.
+of the \code{\link{dm}} object if a given table has a column marked as its primary key.
 }
 \examples{
 library(dplyr)
@@ -23,8 +23,11 @@ nycflights_dm \%>\%
   cdm_has_pk(planes)
 }
 \seealso{
-Other primary key functions: \code{\link{cdm_add_pk}},
-  \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
-  \code{\link{cdm_rm_pk}}, \code{\link{enum_pk_candidates}}
+Other primary key functions: 
+\code{\link{cdm_add_pk}()},
+\code{\link{cdm_get_all_pks}()},
+\code{\link{cdm_get_pk}()},
+\code{\link{cdm_rm_pk}()},
+\code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

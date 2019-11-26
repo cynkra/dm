@@ -1,3 +1,4 @@
+# Cf. https://github.com/krlmlr/dm/issues/144 (Review error messages)
 
 # error class generator ---------------------------------------------------
 
@@ -346,7 +347,7 @@ error_update_not_supported <- function() {
   paste0('Updating "dm" objects not supported.')
 }
 
-# when filters are set and they shouldn't be ------------------------------
+# errors when filters are set but they shouldn't be ------------------------------
 
 abort_only_possible_wo_filters <- function(fun_name) {
   abort(error_only_possible_wo_filters(fun_name), .subclass = cdm_error_full("only_possible_wo_filters"))
@@ -545,6 +546,27 @@ error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
 }
 
+# table not on src --------------------------------------------------------
+
+abort_req_tbl_not_avail <- function(avail, missing) {
+  abort(error_req_tbl_not_avail(avail, missing), .subclass = cdm_error_full("req_tbl_not_avail"))
+}
+
+error_req_tbl_not_avail <- function(avail, missing) {
+  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
+}
+
+
+# table for which key should be set not in list of tables when creating dm -----------------------
+
+abort_unnamed_table_list <- function() {
+  abort(error_unnamed_table_list(), .subclass = cdm_error_full("unnamed_table_list"))
+}
+
+error_unnamed_table_list <- function() {
+  "Table list in `new_dm()` needs to be named."
+}
+
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
@@ -570,13 +592,12 @@ error_fk_not_tracked <- function(x_orig_name, y_name) {
 # RHS-by column not selected ----------------------------------------------
 
 abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = "need_to_select_rhs_by")
+  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = cdm_error_full("need_to_select_rhs_by"))
 }
 
 error_need_to_select_rhs_by <- function(y_name, rhs_by) {
   glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
 }
-
 
 # join logic problem: duplicates when auto-readding RHS-by-column --------
 
@@ -591,4 +612,14 @@ abort_duplicated_cols_introduced <- function(selected) {
 error_duplicated_cols_introduced <- function(duplicates) {
   glue("When re-adding RHS `by`-column taken from `dm` key relations, duplicated column names were created: {tick(duplicates)}. ",
   "Please review the renaming performed in parameter `select`.")
+}
+
+# dm invalid --------------------------------------------------------------
+
+abort_dm_invalid <- function(why) {
+  abort(error_dm_invalid(why), .subclass = "dm_invalid")
+}
+
+error_dm_invalid <- function(why) {
+  paste0("This `dm` is invalid, reason: ", why)
 }

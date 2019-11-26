@@ -32,7 +32,7 @@ test_that("'compute.dm()' computes tables on DB", {
     ~expect_true({
         def <- dm_for_filter_src[[.x]] %>% cdm_filter(t1, a > 3) %>% compute() %>% cdm_get_def()
         test <- map_chr(map(def$data, sql_render), as.character)
-        all(map_lgl(test, ~ !str_detect(., "WHERE")))})
+        all(map_lgl(test, ~ !grepl("WHERE", .)))})
   )
 })
 
@@ -45,5 +45,17 @@ test_that("some methods/functions for `zoomed_dm` work", {
   expect_identical(
     dim(cdm_zoom_to_tbl(dm_for_filter, t1)),
     c(10L, 2L)
+  )
+})
+
+test_that("validator is silent", {
+  expect_identical(
+    validate_dm(new_dm()),
+    empty_dm()
+  )
+
+  expect_identical(
+    validate_dm(dm_for_filter_w_cycle),
+    dm_for_filter_w_cycle
   )
 })

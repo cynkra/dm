@@ -9,8 +9,12 @@
 \usage{
 cdm_zoom_to_tbl(dm, table)
 
-cdm_insert_zoomed_tbl(dm, new_tbl_name = NULL, repair = "unique",
-  quiet = FALSE)
+cdm_insert_zoomed_tbl(
+  dm,
+  new_tbl_name = NULL,
+  repair = "unique",
+  quiet = FALSE
+)
 
 cdm_update_zoomed_tbl(dm)
 
@@ -19,9 +23,9 @@ cdm_zoom_out(dm)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 
-\item{new_tbl_name}{Name of the new table}
+\item{new_tbl_name}{Name of the new table.}
 
 \item{repair}{Either a string or a function. If a string, it must
 be one of \code{"check_unique"}, \code{"minimal"}, \code{"unique"}, or \code{"universal"}.
@@ -51,24 +55,25 @@ Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}
 context of the \code{dm} object.
 }
 \details{
-\code{cdm_zoom_to_tbl()}: zooms to the given table
+\code{cdm_zoom_to_tbl()}: zooms to the given table.
 
 \code{cdm_update_zoomed_tbl()}: overwrites the originally zoomed table with the manipulated table.
 The filter conditions for the zoomed table are added to the original filter conditions.
 
 \code{cdm_insert_zoomed_tbl()}: adds a new table to the \code{dm}.
 
-\code{cdm_zoom_out()}: discards the zoomed table, returning the \code{dm} from before zooming
+\code{cdm_zoom_out()}: discards the zoomed table and returns the \code{dm} as it was before zooming.
 
 Whenever possible, the key relations of the original table are transferred to the resulting table
 when using \code{cdm_insert_zoomed_tbl()} or \code{cdm_update_zoomed_tbl()}.
 
-Functions from \code{dplyr}, that are supported for a \code{zoomed_dm}: \code{group_by()}, \code{summarise()}, \code{mutate()},
-\code{transmute()}, \code{select()}, \code{rename()} and \code{ungroup()}. You can use these functions just like you would
+Functions from \code{dplyr} that are supported for a \code{zoomed_dm}: \code{group_by()}, \code{summarise()}, \code{mutate()},
+\code{transmute()}, \code{select()}, \code{rename()} and \code{ungroup()}.
+You can use these functions just like you would
 with a normal table.
 
 \code{filter()} is also supported, but treated in a special way: the filter expression for the zoomed table is
-stored in the \code{dm} and is treated depending on which function you use to return to a normal \code{dm}:
+stored in the \code{dm} and is treated in a way that depends on which function you use to return to a normal \code{dm}:
 \enumerate{
 \item \code{cdm_zoom_out()}: all filter conditions for the zoomed table are discarded
 \item \code{cdm_update_zoomed_tbl()}: the filter conditions of the original table and those of the zoomed table are combined

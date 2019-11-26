@@ -14,18 +14,18 @@ A tibble with 5 columns:
 \enumerate{
 \item \code{table}: the table in the \code{dm}
 \item \code{kind}: "PK" or "FK"
-\item \code{column}: column of \code{table}
+\item \code{column}: a column of \code{table}
 \item \code{is_key}: logical
-\item \code{problem}: in case \code{is_key = FALSE} the reason for that
+\item \code{problem}: if \code{is_key = FALSE}, the reason for that
 }
 }
 \description{
-This function returns a tibble with information, which key constraints are met (\code{is_key = TRUE}) or violated (\code{FALSE}).
+This function returns a tibble with information about which key constraints are met (\code{is_key = TRUE}) or violated (\code{FALSE}).
 }
 \details{
-For the primary key constraints it is tested, if the values in the respective columns are all unique.
-For the foreign key constraints the tests check, if for each foreign key constraint, the values of the foreign key column
-are a subset of those of the referenced column.
+For the primary key constraints, it is tested if the values in the respective columns are all unique.
+For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column
+form a subset of the values of the referenced column.
 }
 \examples{
 cdm_check_constraints(cdm_nycflights13())

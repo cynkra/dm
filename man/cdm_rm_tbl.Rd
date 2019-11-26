@@ -7,15 +7,15 @@
 cdm_rm_tbl(dm, ...)
 }
 \arguments{
-\item{dm}{A \code{\link{dm}} object}
+\item{dm}{A \code{\link{dm}} object.}
 
-\item{...}{One or more unquoted tibble names to remove from the \code{dm}.}
+\item{...}{One or more unquoted table names to remove from the \code{dm}.}
 }
 \value{
-The inital \code{dm} without the removed table(s).
+The dm without the removed table(s) that were present in the initial \code{dm}.
 }
 \description{
-Removes one or more tibbles from a \code{\link{dm}}.
+Removes one or more tables from a \code{\link{dm}}.
 }
 \seealso{
 \code{\link[=cdm_add_tbl]{cdm_add_tbl()}}, \code{\link[=cdm_select_tbl]{cdm_select_tbl()}}

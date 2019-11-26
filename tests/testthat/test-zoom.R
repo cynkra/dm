@@ -30,12 +30,12 @@ test_that("cdm_zoom_out() works", {
 test_that("print() and format() methods for subclass `zoomed_dm` work", {
   expect_output(
     dm_for_filter %>% cdm_zoom_to_tbl(t5) %>% print(),
-    "# A zoomed table of a dm: t5"
+    "# Zoomed table: t5"
   )
 
   expect_output(
     dm_for_filter %>% cdm_zoom_to_tbl(t2) %>% format(),
-    "# A zoomed table of a dm: t2"
+    "# Zoomed table: t2"
   )
 })
 

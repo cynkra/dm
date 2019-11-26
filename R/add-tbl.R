@@ -1,15 +1,15 @@
 #' Add tables to a [`dm`]
 #'
 #' @description
-#' `cdm_add_tbl()` adds one or more tibbles to a [`dm`].
+#' `cdm_add_tbl()` adds one or more tables to a [`dm`].
 #' It uses [mutate()] semantics.
 #'
-#' @return The inital `dm` with the additional table(s).
+#' @return The initial `dm` with the additional table(s).
 #'
 #' @seealso [cdm_rm_tbl()]
 #'
-#' @param dm A [`dm`] object
-#' @param ... One or more tibbles to add to the `dm`.
+#' @param dm A [`dm`] object.
+#' @param ... One or more tables to add to the `dm`.
 #'   If no explicit name is given, the name of the expression is used.
 #' @inheritParams vctrs::vec_as_names
 #'
@@ -62,14 +62,14 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #' Remove tables from a [`dm`]
 #'
 #' @description
-#' Removes one or more tibbles from a [`dm`].
+#' Removes one or more tables from a [`dm`].
 #'
-#' @return The inital `dm` without the removed table(s).
+#' @return The dm without the removed table(s) that were present in the initial `dm`.
 #'
 #' @seealso [cdm_add_tbl()], [cdm_select_tbl()]
 #'
-#' @param dm A [`dm`] object
-#' @param ... One or more unquoted tibble names to remove from the `dm`.
+#' @param dm A [`dm`] object.
+#' @param ... One or more unquoted table names to remove from the `dm`.
 #'
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
