@@ -118,7 +118,7 @@ The separation of one large table into multiple tables achieves several goals:
     - the name of each airline
     - the name, location and altitude of each airport
     - the manufacturer and number of seats for each airplane
-- **Improve consistency**: all information needs to be updated only once and in one place, avoiding errors that  result from inconsistent updating in different tables
+- **Improve consistency**: all information needs to be updated only once and in one place, avoiding errors that result from inconsistent updating in different tables
 - **Segmentation**: information is organized by topic, individual tables are smaller and easier to handle
 
 ## Good to Know

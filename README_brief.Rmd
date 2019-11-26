@@ -64,7 +64,7 @@ Relational databases, on the other hand, do not keep all data together but split
 
 Separation of data, thus, helps with data quality, and explains the continuing popularity of relational databases in production-level data management.
 
-The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modelling or plotting data. To be mapped uniquley, the entities would need to be designated as _keys_, and the separate tables collated together through a process called _joining_. 
+The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modelling or plotting data. To be mapped uniquely, the entities would need to be designated as _keys_, and the separate tables collated together through a process called _joining_. 
 
 In R, there already exist packages that support handling inter-linked tables but the code is complex and requires multiple command sequences. 
 
