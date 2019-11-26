@@ -174,15 +174,13 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #'
 #' If `ref_table` does have a primary key, then a join operation will be tried using
 #' that key as the `by` argument of join() to match it to each column of `table`.
-#'
-#' On most data sources, this operation implicitly also tests for type compatibility
-#' between the columns of the two tables.
+#' Attempting to join incompatible columns triggers an error.
 #'
 #' The outcome of the join operation determines the value of the `why` column in the result:
 #'
 #' - an empty value for a column of `table` that is a suitable foreign key candidate
 #' - the count and percentage of missing matches for a column that is not suitable
-#' - a triggered error message that may include the types of mismatched columns
+#' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
 #' @return A table that lists which columns of `table` would be suitable candidates for
 #' foreign key columns to reference `ref_table`, which columns would not be suitable,

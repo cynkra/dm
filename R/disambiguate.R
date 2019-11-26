@@ -3,12 +3,11 @@
 #' This function ensures that all columns in `dm` have unique names.
 #'
 #' The function first checks if there are any column names that are not unique.
-#'
 #' If there are, those columns will be assigned new, unique, names by prefixing their existing name
 #' with the name of their table and a separator.
-#'
-#' Columns that act as primary or foreign keys will not be renamed because only the foreign key column will remain
-#' when two tables that are linked by a key relation are joined, essentially making that column name "unique" as well.
+#' Columns that act as primary or foreign keys will not be renamed
+#' because only the foreign key column will remain when two tables are joined,
+#' making that column name "unique" as well.
 #'
 #' @inheritParams cdm_add_pk
 #' @param sep The character variable that separates the names of the table and the names of the ambiguous columns.
