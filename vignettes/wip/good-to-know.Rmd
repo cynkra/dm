@@ -10,6 +10,23 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r setup, include = FALSE}
+library(dm)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+
+knit_print.grViz <- function(x, ...) {
+  x %>% 
+    DiagrammeRsvg::export_svg() %>% 
+    c("`````{=html}\n", ., "\n`````\n") %>% 
+    knitr::asis_output()
+}
+```
+
 Multiple, linked tables are a common concept in database management.
 Since many R users have a background in other disciplines, we present six important terms in relational data modeling to jump-start working with {dm}.
 
