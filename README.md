@@ -192,10 +192,7 @@ relational data models.
 ### Compound object
 
 The `dm` class manages several related tables. It stores both the
-**data** and the **metadata** in a compound object, and defines
-operations on that object. These operations either affect the data
-(e.g., a filter), or the metadata (e.g., definition of keys or creation
-of a new table), or both.
+**data** and the **metadata** in a compound object.
 
   - data: a table source storing all tables
   - metadata: table names, column names, primary and foreign keys
@@ -203,6 +200,10 @@ of a new table), or both.
 This concept helps separating the join logic from the code: declare your
 relationships once, as part of your data, then use them in your code
 without repeating yourself.
+
+Various operations on `dm` objects are implemented. They either affect
+the data (e.g., a filter), or the metadata (e.g., definition of keys),
+or both (e.g., creation of a new table).
 
 ### Storage agnostic
 
