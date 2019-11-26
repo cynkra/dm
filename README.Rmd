@@ -51,7 +51,7 @@ Skip to the [Features section](#features) if you are familiar with relational da
 
 ## Installation
 
-The latest (development) version of {dm} can be installed from GitHub. It is not enough just clone or download the package, you will need to use a package manager from your R session to configure necessary dependencies and to bind file locations to your local environment: 
+The latest (development) version of {dm} can be installed from GitHub. It is not enough to just clone or download the package, you will need to use a package manager from your R session to configure necessary dependencies and to bind file locations to your local environment: 
 
 ```r
 # install.packages("devtools")
