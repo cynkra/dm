@@ -68,16 +68,22 @@ Whenever possible, the key relations of the original table are transferred to th
 when using \code{cdm_insert_zoomed_tbl()} or \code{cdm_update_zoomed_tbl()}.
 
 Functions from \code{dplyr} that are supported for a \code{zoomed_dm}: \code{group_by()}, \code{summarise()}, \code{mutate()},
-\code{transmute()}, \code{select()}, \code{rename()} and \code{ungroup()}.
+\code{transmute()}, \code{filter()}, \code{select()}, \code{rename()} and \code{ungroup()}.
 You can use these functions just like you would
 with a normal table.
 
-\code{filter()} is also supported, but treated in a special way: the filter expression for the zoomed table is
-stored in the \code{dm} and is treated in a way that depends on which function you use to return to a normal \code{dm}:
+In addition to filtering the zoomed table, the filter condition from \code{filter()} is also stored in the \code{dm}.
+Depending on which function you use to return to a normal \code{dm}, one of the following happens:
 \enumerate{
 \item \code{cdm_zoom_out()}: all filter conditions for the zoomed table are discarded
 \item \code{cdm_update_zoomed_tbl()}: the filter conditions of the original table and those of the zoomed table are combined
 \item \code{cdm_insert_zoomed_tbl()}: the filter conditions of the original table stay there and those of the zoomed table are
 transferred to the new table of the \code{dm}
 }
+
+Furthermore, the different \code{join()}-variants from {dplyr} are also supported (apart from \code{nest_join()}).
+The join-methods for \code{zoomed_dm} have an extra argument \code{select} that let's you choose the columns of the RHS table
+in a {tidyselect} manner.
+
+And -- last but not least -- also the {tidyr}-functions \code{unite()} and \code{separate()} are supported for \code{zoomed_dm}.
 }
