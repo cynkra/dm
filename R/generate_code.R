@@ -1,4 +1,5 @@
-cdm_paste <- function(dm) {
+# FIXME: maybe argument `envir` so we can better search for the tables?
+cdm_paste <- function(dm, select = FALSE) {
   check_dm(dm)
   check_no_filter(dm)
   check_not_zoomed(dm)
