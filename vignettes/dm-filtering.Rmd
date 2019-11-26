@@ -60,7 +60,7 @@ See `vignette("dm-setup")` for details.
 dm <- cdm_nycflights13()
 ```
 
-The console output of the 'dm` object shows its data and metadata, and is colored for a clarity:
+The console output of the 'dm` object shows its data and metadata, and is colored for clarity:
 
 ```{r}
 dm
