@@ -40,29 +40,13 @@ The goal of {dm} is to provide tools for working with multiple tables.
 
 Skip to the [Features section](#features) if you are familiar with relational data models.
 
-- [Installation](#installation) explains how to install the package
 - [Why?](#why) gives a short motivation, especially for {dplyr} users
 - [Good to Know](#good-to-know) explains important terms of relational data models
 - [Features](#features) gives a one-page overview of the scope of this package
 - [Example](#example) outlines some of the features in a short example
+- [Installation](#installation) explains how to install the package
 - [More information](#more-information) offers links to more detailed articles
 - [Standing on the shoulders of giants](#standing-on-the-shoulders-of-giants) gives credit to related work
-
-
-## Installation
-
-The latest (development) version of {dm} can be installed from GitHub. It is not enough to just clone or download the package, you will need to use a package manager from your R session to configure necessary dependencies and to bind file locations to your local environment: 
-
-```r
-# install.packages("devtools")
-devtools::install_github("krlmlr/dm")
-```
-
-The {dm} package will also be made available on [CRAN](https://cran.r-project.org/web/packages/), where it can be installed with the command
-
-```r
-install.packages("dm")
-```
 
 
 ## Why?
@@ -308,6 +292,24 @@ The support for other DBMS will be implemented in a future update.
 src_postgres <- src_postgres()
 nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
 ```
+
+
+
+## Installation
+
+The latest (development) version of {dm} can be installed from GitHub.
+
+```r
+# install.packages("devtools")
+devtools::install_github("krlmlr/dm")
+```
+
+The {dm} package will also be made available on [CRAN](https://cran.r-project.org/web/packages/), where it can be installed with the command
+
+```r
+install.packages("dm")
+```
+
 
 ## More information
 

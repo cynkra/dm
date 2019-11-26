@@ -207,7 +207,6 @@ nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
 ## Installation
 
 The latest (development) version of {dm} can be installed from GitHub.
-For the package to work correctly, it is not enough to just clone or download the package, you will need to use a package manager in your R session to configure the necessary dependencies and to bind file locations to your local environment:
 
 ```r
 # install.packages("devtools")
