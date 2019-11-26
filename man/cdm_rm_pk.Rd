@@ -17,6 +17,9 @@ If \code{TRUE}, the function will
 remove, in addition to the primary key of the \code{table} argument, also all foreign key constraints
 that are pointing to it.}
 }
+\value{
+An updated \code{dm} without the indicated primary key
+}
 \description{
 \code{cdm_rm_pk()} removes a potentially set primary key from a table in the
 underlying \code{data_model}-object; leaves the \code{\link{dm}} object unaltered otherwise.

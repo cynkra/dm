@@ -14,6 +14,10 @@ cdm_enum_pk_candidates(dm, table)
 
 \item{dm}{A \code{dm} object.}
 }
+\value{
+A table that lists which columns of \code{table} would be suitable candidates for
+primary key columns and which columns would not be suitable.
+}
 \description{
 \code{enum_pk_candidates()} checks for each column of a
 table if the column contains only unique values, and is thus

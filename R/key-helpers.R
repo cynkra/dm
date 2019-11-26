@@ -51,6 +51,8 @@ cdm_check_constraints <- function(dm) {
 #'
 #'   See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
 #'
+#' @return Invisibly returns `.data`, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+#'
 #' @export
 #' @examples
 #' data <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
@@ -108,6 +110,8 @@ is_unique_key <- nse_function(c(.data, column), ~ {
 #' @param t2 The data frame that contains column `c2`.
 #' @param c2 The column of `t2` that should only contain values that are also present in column `c1` of data frame `t1`.
 #'
+#' @return Invisibly returns `t1`, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+#'
 #' @export
 #' @examples
 #' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
@@ -157,6 +161,8 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' @param c1 The column of `t1` that should only contain the values that are also present in column `c2` of data frame `t2`.
 #' @param t2 The data frame that contains column `c2`.
 #' @param c2 The column of the second data frame that has to contain all values of `c1` to avoid an error.
+#'
+#' @return Invisibly returns `t1`, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
 #' @examples

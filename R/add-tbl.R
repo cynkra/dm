@@ -64,7 +64,7 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #' @description
 #' Removes one or more tables from a [`dm`].
 #'
-#' @return The dm without the removed table(s) that were present in the initial `dm`.
+#' @return The `dm` without the removed table(s) that were present in the initial `dm`.
 #'
 #' @seealso [cdm_add_tbl()], [cdm_select_tbl()]
 #'

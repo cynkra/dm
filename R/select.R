@@ -19,6 +19,8 @@
 #'
 #' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
 #'
+#' @return An updated `dm` with the columns of `table` potentially renamed
+#'
 #' @examples
 #' cdm_nycflights13() %>%
 #'   cdm_rename(airports, code = faa, altitude = alt)
@@ -42,6 +44,8 @@ cdm_rename <- function(dm, table, ...) {
 #'   cdm_select(airports, code = faa, altitude = alt)
 #' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
 #' If key columns are removed, then all related relations are dropped as well.
+#'
+#' @return An updated `dm` with the columns of `table` potentially reduced and/or renamed
 #'
 #' @export
 cdm_select <- function(dm, table, ...) {

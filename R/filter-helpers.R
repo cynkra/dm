@@ -3,6 +3,9 @@
 #' Returns a named vector with the number of rows for each table.
 #'
 #' @param dm A [`dm`] object.
+#'
+#' @return A named vector with the number of rows for each table
+#'
 #' @export
 cdm_nrow <- function(dm) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to issue

@@ -50,6 +50,11 @@ caused by repairing the names. This only concerns unique and
 universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
 }
+\value{
+For \code{cdm_zoom_to_tbl()}: A \code{zoomed_dm} object
+
+For \code{cdm_insert_zoomed_tbl()}, \code{cdm_update_zoomed_tbl()} and \code{cdm_zoomed_out()}: A \code{dm} object
+}
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
 context of the \code{dm} object.

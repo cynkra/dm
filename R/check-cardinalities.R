@@ -47,6 +47,8 @@
 #'
 #' @name check_cardinality
 #'
+#' @return Functions invisibly return `TRUE`, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+#'
 #' @export
 #' @examples
 #' d1 <- tibble::tibble(a = 1:5)

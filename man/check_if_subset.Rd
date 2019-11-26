@@ -15,6 +15,9 @@ check_if_subset(t1, c1, t2, c2)
 
 \item{c2}{The column of the second data frame that has to contain all values of \code{c1} to avoid an error.}
 }
+\value{
+Invisibly returns \code{t1}, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+}
 \description{
 \code{check_if_subset()} tests if the values of the chosen column \code{c1} of data frame \code{t1} are a subset of the values
 of column \code{c2} of data frame \code{t2}.

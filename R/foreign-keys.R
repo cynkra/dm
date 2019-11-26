@@ -11,6 +11,8 @@
 #'
 #' @family foreign key functions
 #'
+#' @return An updated `dm` with an additional foreign key relation
+#'
 #' @export
 cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = FALSE), ~ {
   table_name <- as_name(ensym(table))
@@ -73,6 +75,8 @@ cdm_has_fk <- function(dm, table, ref_table) {
 #'
 #' @family foreign key functions
 #'
+#' @return A character vector with the column name(s) of `table`, pointing to the primary key of `ref_table`
+#'
 #' @export
 cdm_get_fk <- function(dm, table, ref_table) {
   table_name <- as_name(ensym(table))
@@ -118,6 +122,8 @@ cdm_get_all_fks <- nse_function(c(dm), ~ {
 #' @param ref_table The table that `table` was referencing.
 #'
 #' @family foreign key functions
+#'
+#' @return An updated `dm` without the given foreign key relation
 #'
 #' @export
 cdm_rm_fk <- function(dm, table, column, ref_table) {

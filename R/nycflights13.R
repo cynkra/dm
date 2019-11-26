@@ -16,6 +16,8 @@
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will have
 #'   colors assigned to different tables for visualization with `cdm_draw()`
 #'
+#' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
+#'
 #' @export
 #' @examples
 #' if (rlang::is_installed("nycflights13")) {

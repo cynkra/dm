@@ -19,6 +19,9 @@ cdm_add_pk(dm, table, column, check = FALSE, force = FALSE)
 set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 }
+\value{
+An updated \code{dm} with an additional primary key
+}
 \description{
 \code{cdm_add_pk()} marks the specified column as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if

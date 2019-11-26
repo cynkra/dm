@@ -27,6 +27,10 @@
 #'
 #' @family table surgery functions
 #'
+#' @return A named list of two:
+#'   - entry "child_table": the child table with column `new_id_column` referring to the same column in `parent_table`
+#'   - entry "parent_table": the "lookup table" for `child_table`
+#'
 #' @examples
 #' library(magrittr)
 #'
@@ -100,6 +104,8 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' @param id_column Identical name of referencing / referenced column in `child_table`/`parent_table`.
 #'
 #' @family table surgery functions
+#'
+#' @return A wide table produced by joining the two given tables
 #'
 #' @name reunite_parent_child
 #' @export

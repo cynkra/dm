@@ -12,7 +12,7 @@ cdm_rm_tbl(dm, ...)
 \item{...}{One or more unquoted table names to remove from the \code{dm}.}
 }
 \value{
-The dm without the removed table(s) that were present in the initial \code{dm}.
+The \code{dm} without the removed table(s) that were present in the initial \code{dm}.
 }
 \description{
 Removes one or more tables from a \code{\link{dm}}.

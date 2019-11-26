@@ -13,6 +13,9 @@ cdm_get_fk(dm, table, ref_table)
 
 \item{ref_table}{The table that is referenced from \code{table}.}
 }
+\value{
+A character vector with the column name(s) of \code{table}, pointing to the primary key of \code{ref_table}
+}
 \description{
 Retrieve the name of the column marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.
 }

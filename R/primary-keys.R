@@ -17,6 +17,9 @@
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
 #'
 #' @family primary key functions
+#'
+#' @return An updated `dm` with an additional primary key
+#'
 #' @export
 #' @examples
 #' library(dplyr)
@@ -74,6 +77,8 @@ cdm_add_pk_impl <- function(dm, table, column, force) {
 #'
 #' @family primary key functions
 #'
+#' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise
+#'
 #' @examples
 #' library(dplyr)
 #' nycflights_dm <- cdm_nycflights13()
@@ -85,7 +90,7 @@ cdm_has_pk <- function(dm, table) {
   has_length(cdm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the name of the primary key column of a `dm` table 
+#' Retrieve the name of the primary key column of a `dm` table
 #'
 #' @description `cdm_get_pk()` returns the name of the
 #' column marked as primary key of a table of a [`dm`] object.
@@ -93,6 +98,8 @@ cdm_has_pk <- function(dm, table) {
 #' set for the table, an empty character vector is returned.
 #'
 #' @family primary key functions
+#'
+#' @return A character vector with the column name(s) of the primary key of `table`
 #'
 #' @inheritParams cdm_add_pk
 #'
@@ -111,7 +118,6 @@ cdm_get_pk <- function(dm, table) {
   pks$column[pks$table == table_name]
 }
 
-# FIXME: export?
 #' Get all primary keys of a [`dm`] object
 #'
 #' @description `cdm_get_all_pks()` checks the `dm` object for set primary keys and
@@ -120,6 +126,10 @@ cdm_get_pk <- function(dm, table) {
 #' @family primary key functions
 #'
 #' @inheritParams cdm_add_pk
+#'
+#' @return A tibble with columns:
+#'
+#' "table": table name, "pk_col": column name(s) of primary key
 #'
 #' @export
 cdm_get_all_pks <- nse_function(c(dm), ~ {
@@ -142,6 +152,8 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #'   If `TRUE`, the function will
 #'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
 #'   that are pointing to it.
+#'
+#' @return An updated `dm` without the indicated primary key
 #'
 #' @examples
 #' library(dplyr)
@@ -181,6 +193,9 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' @description `enum_pk_candidates()` checks for each column of a
 #' table if the column contains only unique values, and is thus
 #' a suitable candidate for a primary key of the table.
+#'
+#' @return A table that lists which columns of `table` would be suitable candidates for
+#' primary key columns and which columns would not be suitable.
 #'
 #' @export
 #' @examples

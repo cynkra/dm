@@ -33,6 +33,9 @@
 #' transferred to the new table of the `dm`
 #'
 #' @rdname cdm_zoom_to_tbl
+#'
+#' @return For `cdm_zoom_to_tbl()`: A `zoomed_dm` object
+#'
 #' @export
 cdm_zoom_to_tbl <- function(dm, table) {
   if (is_zoomed(dm)) abort_no_zoom_allowed()
@@ -68,6 +71,8 @@ get_zoomed_tbl <- function(dm) {
 #' @rdname cdm_zoom_to_tbl
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
+#'
+#' @return For `cdm_insert_zoomed_tbl()`, `cdm_update_zoomed_tbl()` and `cdm_zoomed_out()`: A `dm` object
 #'
 #' @export
 cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {

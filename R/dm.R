@@ -16,6 +16,8 @@
 #' @param src A \pkg{dplyr} table source object.
 #' @param table_names A character vector of the names of the tables to include.
 #'
+#' @return For `dm()`, `dm_from_src()`, `new_dm()`, `as_dm()`: A `dm` object
+#'
 #' @seealso
 #'
 #' - [cdm_add_pk()] and [cdm_add_fk()] add primary and foreign keys
@@ -179,6 +181,9 @@ new_key_tracker_zoom <- function() {
 #' `validate_dm()` checks the internal consistency of a `dm` object.
 #'
 #' @param x An object.
+#'
+#' @return For `validate_dm()`: Invisibly returns the `dm` after finishing all checks
+#'
 #' @rdname dm
 #' @export
 validate_dm <- function(x) {
@@ -229,6 +234,8 @@ validate_dm <- function(x) {
 #'
 #' @rdname dm
 #'
+#' @return For `cdm_get_src()`: the \pkg{dplyr} source for a `dm` object
+#'
 #' @export
 cdm_get_src <- function(x) {
   check_dm(x)
@@ -243,6 +250,8 @@ cdm_get_src <- function(x) {
 #' is thrown.
 #'
 #' @rdname dm
+#'
+#' @return For `cdm_get_con()`: The [`DBI::DBIConnection-class`] for `dm` objects
 #'
 #' @export
 cdm_get_con <- function(x) {
@@ -259,6 +268,8 @@ cdm_get_con <- function(x) {
 #' To get filtered tables, use `tbl.dm()`
 #'
 #' @rdname dm
+#'
+#' @return For `cdm_get_tables()`: A named list with the tables constituing the `dm`
 #'
 #' @export
 cdm_get_tables <- function(x) {
@@ -322,6 +333,12 @@ cdm_get_data_model_fks <- function(x) {
 #'
 #' @rdname dm
 #'
+#' @return For `cdm_get_filter()`: A tibble with columns:
+#'
+#' - "table": table that was filtered,
+#' - "filter": the filter expression,
+#' - "zoomed": logical, does the filter condition relate to the zoomed table
+#'
 #' @export
 cdm_get_filter <- function(x) {
   # FIXME: Obliterate
@@ -351,6 +368,9 @@ cdm_get_zoomed_tbl <- function(x) {
 #' `is_dm()` returns `TRUE` if the input is of class `dm`.
 #'
 #' @rdname dm
+#'
+#' @return For `is_dm()`: Boolean, is this object a `dm`
+#'
 #' @export
 is_dm <- function(x) {
   inherits(x, "dm")

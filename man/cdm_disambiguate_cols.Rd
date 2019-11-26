@@ -14,6 +14,9 @@ cdm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 \item{quiet}{Boolean.
 By default, this function lists the renamed columns in a message, pass \code{FALSE} to suppress this message.}
 }
+\value{
+A \code{dm} whose column names are unambiguous.
+}
 \description{
 This function checks all tables for column names that are not unique (across the entire \code{dm} object), and renames
 those columns by prefixing the respective table name and a separator.
