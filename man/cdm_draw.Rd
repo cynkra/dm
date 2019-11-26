@@ -57,6 +57,9 @@ and \code{table2} .
 This argument supports splicing.}
 }
 \value{
+For \code{cdm_draw()}: returns an object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,
+when printed, produces the output seen in the viewer as a side effect.
+
 For \code{cdm_set_colors()}: the updated data model.
 
 For \code{cdm_get_colors()}, a two-column tibble with one row per table.

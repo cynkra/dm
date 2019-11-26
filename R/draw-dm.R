@@ -17,6 +17,9 @@
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
 #' @export
 #'
+#' @return For `cdm_draw()`: returns an object of class `grViz` (see also [DiagrammeR::grViz()]), which,
+#' when printed, produces the output seen in the viewer as a side effect.
+#'
 #' @examples
 #' library(dplyr)
 #' cdm_draw(cdm_nycflights13())
