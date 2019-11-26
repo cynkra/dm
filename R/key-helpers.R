@@ -65,6 +65,8 @@ check_key <- function(.data, ...) {
 
   cols_avail <- colnames(.data)
   cols_chosen <- tidyselect::vars_select(cols_avail, ...)
+  # if no column is chosen, all columns are used for the check
+  if (is_empty(cols_chosen)) cols_chosen <- cols_avail
   names(cols_chosen) <- set_names(paste0("...", seq_along(cols_chosen)))
 
   duplicate_rows <-
