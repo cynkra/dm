@@ -22,9 +22,10 @@ Authors@R:
       person(given = "cynkra GmbH",
              role = "fnd",
              email = "mail@cynkra.com"))
-Description: Some actions and transformations that are
-    frequently required when dealing with data models are covered by the
-    functions of this package.
+Description: Provides tools for working with multiple related tables,
+    stored as data frames or in a relational database.
+    Multiple tables (data and metadata) are stored in a compound object,
+    which can then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
 Imports:
     backports,
