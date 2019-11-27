@@ -585,14 +585,7 @@ src_tbls.dm <- function(x) {
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
   df_list <- if (inherits(df, "data.frame") || inherits(df, "tbl_dbi")) list(df) else abort_only_data_frames_supported()
-  # names: if `name` argument has same length as `df_list`, then use those names
-  # if `df_list` is named and has different length than `name` then use names of list elements
-  # if `df_list` is not named and has different length than `name` throw an error
-  if (is_named(df_list)) {
-    if (length(df_list) != length(name)) name <- names(df_list)
-  } else {
-    if (length(df_list) != length(name)) abort_one_name_for_each_table()
-  }
+  if (length(name) != 1) abort_one_name_for_copy_to(name)
   # src: if `df` on a different src:
   # if `df_list` is on DB and `dest` is local, collect `df_list`
   # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB

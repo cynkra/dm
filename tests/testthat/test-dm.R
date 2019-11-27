@@ -26,12 +26,12 @@ test_that("creation of empty `dm` works", {
 
 test_that("'copy_to.dm()' works", {
   expect_cdm_error(
-    copy_to(dm_for_filter, list(mtcars, iris)),
-    "one_name_for_each_table"
+    copy_to(dm_for_filter, letters[1:5], name = "letters"),
+    "only_data_frames_supported"
   )
 
   expect_cdm_error(
-    copy_to(dm_for_filter, letters[1:5], name = "letters"),
+    copy_to(dm_for_filter, list(mtcars, iris)),
     "only_data_frames_supported"
   )
 
@@ -48,12 +48,13 @@ test_that("'copy_to.dm()' works", {
       )
   )
 
-  # copying list of postgres `tibbles` to local `dm`
+  # copying postgres `tibble` to local `dm`
   skip_if_error(
-    expect_equivalent_dm(
-      copy_to(dm_for_filter_src$df, list(d1_src$postgres, d2_src$postgres), c("test_table_1", "test_table_2")),
-      cdm_add_tbl(dm_for_filter_src$df, test_table_1 = d1_src$df, test_table_2 = d2_src$df)
-    )
+      expect_equivalent_dm(
+        copy_to(dm_for_filter_src$df, d1_src$postgres, "test_table_1"),
+        cdm_add_tbl(dm_for_filter_src$df, test_table_1 = d1_src$df)
+        )
+
   )
 })
 

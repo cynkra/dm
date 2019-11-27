@@ -549,12 +549,12 @@ error_only_possible_w_zoom <- function(fun_name) {
 # errors for `copy_to.dm()` ----------------------------------------------
 
 abort_only_data_frames_supported <- function() {
-  abort("`copy_to.dm()` only supports `data.frame` or a list of `data.frame`", .subclass = cdm_error_full("only_data_frames_supported"))
+  abort("`copy_to.dm()` only supports class `data.frame` for argument `df`", .subclass = cdm_error_full("only_data_frames_supported"))
 }
 
-abort_one_name_for_each_table <- function() {
-  abort("If supplying more than one table to `copy_to.dm()` in a list, you need to provide a name vector of the same length.",
-        .subclass = cdm_error_full("one_name_for_each_table"))
+abort_one_name_for_copy_to <- function(name) {
+  abort(glue("Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"),
+        .subclass = cdm_error_full("one_name_for_copy_to"))
 }
 
 # table not on src --------------------------------------------------------
