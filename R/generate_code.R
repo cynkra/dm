@@ -4,7 +4,6 @@
 #'
 #' @inheritParams cdm_add_pk
 #' @param select Boolean, default `FALSE`. If `TRUE` will try to produce code for reducing to necessary columns.
-#' @param env The environment to search for the tables for the creation of the `dm`. Defaults to the global environment.
 #'
 #' @details At the very least (if no keys exist in the given [`dm`]) a `dm()` statement is produced that -- when executed --
 #' produces the same `dm`. In addition, the code for setting the existing primary keys as well as the relations between the
@@ -17,74 +16,42 @@
 #' @return Code for producing the given `dm`
 #'
 #' @export
-cdm_paste <- function(dm, select = FALSE, env = .GlobalEnv) {
+cdm_paste <- function(dm, select = FALSE) {
   check_dm(dm)
   check_no_filter(dm)
   check_not_zoomed(dm)
 
-  table_names <- src_tbls(dm)
-  pks <- cdm_get_all_pks(dm)
-  fks <- cdm_get_all_fks(dm)
-
-  tables_exist <- set_names(map_lgl(table_names, ~ exists(..1, envir = env)), table_names)
+  # we assume the tables exist and have the necessary columns
   # code for including the tables
-  code <- paste0("dm(", paste(table_names, collapse = ", "), ") %>%\n")
+  code <- glue("dm({paste(tibble:::tick_if_needed({src_tbls(dm)}), collapse = ', ')})")
 
-  if (!all(tables_exist)) {
-    tables_not_existing <- names(tables_exist[tables_exist == FALSE])
-    warning(glue("The following tables do not exist in given environment: {commas(tick(tables_not_existing))}. ",
-                 "Therefore, the code won't work out of the box."))
-    if (select) {
-      # FIXME: should we ignore `select` only for those tables that do not exist
-      warning("Ignoring `select = TRUE`, since not all tables are available.")
-    }
-  } else {
-    tables_from_dm <- cdm_get_tables(dm)
-    tables_from_envir <- set_names(map(table_names, ~ eval_tidy(sym(..1), env = env)), table_names)
-    if (!all_same_source(append(tables_from_dm, tables_from_envir))) {
-      warning(paste0("Tables with the same names as the `dm` tables were found in given environment, but ",
-              "they do not refer to tables on the same `src`. Therefore, the code will not produce an identical `dm`.")
-              )
-    }
-    if (select) {
-      code_select <- calc_code_select(tables_from_dm, tables_from_envir)
-      # code for selection of columns (if available)
-      code <- paste0(code, code_select)
-    }
+  if (select) {
+    # adding code for selection of columns
+    code_select <- tibble(tbl_name = src_tbls(dm), tbls = cdm_get_tables(dm)) %>%
+      mutate(cols = map(tbls, colnames)) %>%
+      mutate(code = map2_chr(
+        tbl_name,
+        cols,
+        ~glue("{paste0(' %>% \n')}  cdm_select({..1}, {paste0(tibble:::tick_if_needed(..2), collapse = ', ')})"))
+        ) %>%
+      summarize(code = glue_collapse(code)) %>%
+      pull()
+    code <- paste0(code, code_select)
   }
-
 
   # adding code for establishing PKs
-  code <- reduce2(pks$table, pks$pk_col, ~ paste0(..1, glue("  cdm_add_pk({..2}, {..3}) %>%"), "\n"), .init = code)
-  if (nrow(fks)) {
-    ct <- fks$child_table
-    fk_col <- fks$child_fk_col
-    pt <- fks$parent_table
+  code_pks <- cdm_get_all_pks(dm) %>%
+    mutate(code = glue("{paste0(' %>% \n')}  cdm_add_pk({table}, {pk_col})")) %>%
+    summarize(code = glue_collapse(code)) %>%
+    pull()
 
-    for (i in seq_along(ct)) {
-      code <- paste0(code, glue("  cdm_add_fk({ct[i]}, {fk_col[i]}, {pt[i]}) %>%"), "\n")
-    }
-  }
+  # adding code for establishing FKs
+  code_fks <- cdm_get_all_fks(dm) %>%
+    mutate(code = glue("{paste0(' %>% \n')}  cdm_add_fk({child_table}, {child_fk_col}, {parent_table})")) %>%
+    summarize(code = glue_collapse(code)) %>%
+    pull()
 
   # without "\n" in the end it looks weird when a warning is issued
-  cat(strtrim(code, nchar(code) - 5), "\n")
+  cat(code, code_pks, code_fks)
   invisible(dm)
-}
-
-calc_code_select <- function(tbl_dm, tbl_envir) {
-  code_select <- ""
-  for (i in names(tbl_dm)) {
-    t_dm <- tbl_dm[[i]]
-    t_envir <- tbl_envir[[i]]
-    cols_dm <- colnames(t_dm)
-    cols_envir <- colnames(t_envir)
-    if (!identical(cols_dm, cols_envir)) {
-      if (all(cols_dm %in% cols_envir)) {
-        code_select <- paste0(glue("{code_select}  cdm_select({i}, {paste0(cols_dm, collapse = ', ')}) %>%"), "\n")
-      } else {warning(glue(
-        "Not all columns of table {tick(i)} available in given environment. ",
-        "Skipping `select` for this table, code won't work out of the box."))}
-    }
-  }
-  code_select
 }
