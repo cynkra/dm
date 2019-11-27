@@ -5,12 +5,20 @@
 \alias{cdm_set_colors}
 \alias{cdm_get_colors}
 \alias{cdm_get_available_colors}
-\title{Draw schema of a \code{\link{dm}}-object's data model}
+\title{Draw a diagram of a \code{\link{dm}}-object's data model}
 \usage{
-cdm_draw(dm, rankdir = "LR", col_attr = "column",
-  view_type = "keys_only", columnArrows = TRUE, graph_attrs = "",
-  node_attrs = "", edge_attrs = "", focus = NULL,
-  graph_name = "Data Model")
+cdm_draw(
+  dm,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model"
+)
 
 cdm_set_colors(dm, ...)
 
@@ -19,32 +27,34 @@ cdm_get_colors(dm)
 cdm_get_available_colors()
 }
 \arguments{
-\item{dm}{A \code{\link{dm}} object}
+\item{dm}{A \code{\link{dm}} object.}
 
-\item{rankdir}{Graph attribute for direction (eg. 'BT' = bottom --> top)}
+\item{rankdir}{Graph attribute for direction (e.g., 'BT' = bottom --> top).}
 
 \item{col_attr}{Column atributes to display.
-Only column name (\code{column}) is included by default.}
+By default only the column name (\code{"column"}) is displayed.}
 
 \item{view_type}{Can be "keys_only" (default), "all" or "title_only".
-It defines the level of details for the table rendering
-(only primary and foreign keys, all columns or no columns)}
+It defines the level of details for rendering tables
+(only primary and foreign keys, all columns, or no columns).}
 
-\item{columnArrows}{Edges from column to column (default: FALSE)}
+\item{columnArrows}{Edges from columns to columns (default: \code{TRUE}).}
 
-\item{graph_attrs}{Additional graph attributes}
+\item{graph_attrs}{Additional graph attributes.}
 
-\item{node_attrs}{Additional node attributes}
+\item{node_attrs}{Additional node attributes.}
 
-\item{edge_attrs}{Additional edge attributes}
+\item{edge_attrs}{Additional edge attributes.}
 
-\item{focus}{A list of parameters for rendering (table filter)}
+\item{focus}{A list of parameters for rendering (table filter).}
 
-\item{graph_name}{A graph name}
+\item{graph_name}{The name of the graph.}
 
-\item{...}{Colors to set in the form \code{table = "<color>"} . Fall-through syntax similarly to
-\code{\link[=switch]{switch()}} is supported: \code{table1 = , table2 = "<color>"} sets the color for both \code{table1}
-and \code{table2} . This argument supports splicing.}
+\item{...}{Colors to set in the form \code{table = "<color>"} .
+Fall-through syntax similarly to
+\code{\link[=switch]{switch()}} is supported: \verb{table1 = , table2 = "<color>"} sets the color for both \code{table1}
+and \code{table2} .
+This argument supports splicing.}
 }
 \value{
 For \code{cdm_set_colors()}: the updated data model.
@@ -55,9 +65,9 @@ For \code{cdm_get_available_colors()}, a tibble with the color in the first
 column and auxiliary information in other columns.
 }
 \description{
-\code{cdm_draw()} draws a schema of the data model using \code{datamodelr} (which in turn uses \code{DiagrammeR}).
+\code{cdm_draw()} uses \pkg{DiagrammeR} to draw diagrams.
 
-\code{cdm_set_colors()} allows to define the colors in which to display the tables of the data model.
+\code{cdm_set_colors()} allows to define the colors that will be used to display the tables of the data model.
 
 \code{cdm_get_colors()} returns the colors defined for a data model.
 

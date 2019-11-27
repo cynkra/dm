@@ -1,58 +1,59 @@
-#' Flatten part of a `dm` into a wide table
+#' Flatten a part of a `dm` into a wide table
 #'
-#' Gather all information of interest in one place in a wide table (on a database-[`dm`] a
-#' temporary table will be created).
-#' If referential integrity is given among the tables of the data model, the resulting
-#' table of this function will contain as many rows as the table `start` does (exceptions are
-#' `join = anti_join` (result is empty table with same columns as `start`) and `join = right_join`
-#' (number of rows equal to or larger than those of `start`)).
-#' For more information please refer to `vignette("dm-joining")`.
+#' `cdm_flatten_to_tbl()` and `cdm_squash_to_tbl()` gather all information of interest in one place in a wide table.
+#' Both functions perform a disambiguation of column names and a cascade of joins.
+#` Disambiguates column names and a cascade of joins.
+#`
+#` Please see below for more details.
 #'
 #' @inheritParams cdm_join_to_tbl
-#' @param start Table to start from. From this table all outgoing foreign key relations are
-#' considered to establish a processing order for the joins. An interesting choice could be
-#' for example a fact table in a star schema.
-#' @param ... Unquoted table names to include in addition to `start`. The order of the tables here determines
-#' the order of the joins. If empty, all tables that can be reached are included.
-#' If this includes tables which aren't direct neighbours of `start`,
-#' it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
-#' `tidyselect` is supported, cf. [dplyr::select()].
+#' @param start The table from which all outgoing foreign key relations are considered
+#'   when establishing a processing order for the joins.
+#'   An interesting choice could be
+#'   for example a fact table in a star schema.
+#' @param ... Unquoted names of the tables to be included in addition to the `start` table.
+#' The order of the tables here determines
+#'   the order of the joins.
+#'   If the argument is empty, all tables that can be reached will be included.
+#'   If this includes tables that are not direct neighbours of `start`,
+#'   it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
+#'   `tidyselect` is supported, cf. [dplyr::select()].
 #' @family flattening functions
 #'
-#' @details With the `...` left empty, this function joins all the tables of your [`dm`]
-#' object together, that can be reached from table `start` in the direction of the foreign
-#' key relations (pointing from child table to parent table), using the foreign key relations to
-#' determine the parameter `by` for the necessary joins.
+#' @details With `...` left empty, this function will join together all the tables of your [`dm`]
+#' object that can be reached from the `start` table, in the direction of the foreign key relations
+#' (pointing from the child tables to the parent tables), using the foreign key relations to
+#' determine the argument `by` for the necessary joins.
 #' The result is one table with unique column names.
-#' Use the `...` if you want to control which tables should be joined to table `start`.
+#' Use the `...` argument if you would like to control which tables should be joined to the `start` table.
 #'
 #' How does filtering affect the result?
 #'
-#' **Case 1**, either no filter conditions are set in the `dm`, or only in a part unconnected to
-#' table `start`:
-#' The necessary disambiguations of the column names are performed first. Then all
-#' involved foreign tables are joined to table `start` successively with the join function given in
-#' parameter `join`.
+#' **Case 1**, either no filter conditions are set in the `dm`, or set only in the part that is unconnected to the `start` table:
+#' The necessary disambiguations of the column names are performed first.
+#' Then all involved foreign tables are joined to the `start` table successively, with the join function given in the `join` argument.
 #'
-#' **Case 2**, filter conditions are set for at least one table connected to `start`:
-#' Disambiguation is performed initially if necessary. Table `start` is calculated using `tbl(dm, "start")`. This implies
-#' that the effect of the filters on this table is taken into account. For `right_join`, `full_join` and `nest_join` an error
-#' is thrown in case filters are set, because the filters won't affect right hand side tables and thus the result will be
-#' incorrect in general (and calculating the effects on all RHS-tables would be time-consuming and is not supported;
-#' if desired call `cdm_apply_filters()` first to achieve this effect.).
-#' For all other join types filtering only `start` is enough, since the effect is passed on by the
+#' **Case 2**, filter conditions are set for at least one table that is connected to `start`:
+#' First, disambiguation will be performed if necessary. The `start` table is then calculated using `tbl(dm, "start")`.
+#' This implies
+#' that the effect of the filters on this table is taken into account.
+#' For `right_join`, `full_join` and `nest_join`, an error
+#' is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
+#' incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
+#' if desired, call `cdm_apply_filters()` first to achieve that effect).
+#' For all other join types, filtering only the `start` table is enough because the effect is passed on by
 #' successive joins.
 #'
-#' Mind, that calling `cdm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...`
-#' would not lead to a well-defined result, if two or more foreign tables are to be joined to `start`. The resulting
-#' table would depend on the order the tables are listed in the `dm`. Therefore trying this results
-#' in a warning.
+#' Mind that calling `cdm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...` argument
+#' will not lead to a well-defined result if two or more foreign tables are to be joined to `start`.
+#' The resulting
+#' table would depend on the order the tables that are listed in the `dm`.
+#' Therefore, trying this will result in a warning.
 #'
 #' Since `join = nest_join()` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
-#' each nested column entry would be a tibble of 1 row), an error is thrown, if this method is chosen.
+#' each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 #'
-#' @return A single table, resulting of consecutively joining
-#' all tables involved to table `start`.
+#' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
 #' @examples
 #' cdm_nycflights13() %>%
@@ -131,8 +132,8 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # rename dm and replace table `start` by its filtered, renamed version
   prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename)
 
-  # Drop first table in the list of join partners. (We have at least one table, `start`.)
-  # (Working with `reduce2()` here and the `.init`-parameter is the first table)
+  # Drop the first table in the list of join partners. (We have at least one table, `start`.)
+  # (Working with `reduce2()` here and the `.init`-argument is the first table)
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
@@ -150,15 +151,15 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
 #' Perform a join between two tables of a [`dm`]
 #'
-#' @description A join of desired type is performed between table `table_1` and
-#' table `table_2`. The two tables need to be directly connected by a foreign key
-#' relation. Since this function is a wrapper around [cdm_flatten_to_tbl()], the LHS of
-#' the join will always be the "child table", the table referencing the other table.
+#' @description A join of a desired type is performed between `table_1` and `table_2`.
+#' The two tables need to be directly connected by a foreign key relation.
+#' Since this function is a wrapper around [cdm_flatten_to_tbl()], the LHS of
+#' the join will always be a "child table", i.e. a table referencing the other table.
 #'
-#' @param dm A [`dm`] object
-#' @param table_1 One of the tables involved in the join
-#' @param table_2 The second table of the join
-#' @param join The type of join to be performed, see [dplyr::join()]
+#' @param dm A [`dm`] object.
+#' @param table_1 One of the tables involved in the join.
+#' @param table_2 The second table of the join.
+#' @param join The type of join to be performed, see [dplyr::join()].
 #'
 #' @return The resulting table of the join.
 #'
@@ -228,7 +229,7 @@ check_flatten_to_tbl <- function(
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
 
 
-  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the parameter `squash = FALSE`.
+  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the argument `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
   if (!squash && has_grandparent) {
     abort_only_parents()
@@ -247,7 +248,7 @@ check_flatten_to_tbl <- function(
 prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   start <- tables[1]
   # filters need to be empty, for the disambiguation to work
-  # the renaming will be minimized, if we reduce the `dm` to the necessary tables here
+  # renaming will be minimized if we reduce the `dm` to the necessary tables here
   red_dm <-
     cdm_reset_all_filters(dm) %>%
     cdm_select_tbl(tables)
@@ -256,8 +257,8 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   start_tbl <- tbl(dm, start)
 
   if (gotta_rename) {
-    recipe <-
-      compute_disambiguate_cols_recipe(red_dm, tables, sep = ".")
+    table_colnames <- get_table_colnames(red_dm)
+    recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
     explain_col_rename(recipe)
     # prepare `dm` by disambiguating columns (on a reduced dm)
     clean_dm <-

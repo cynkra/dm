@@ -3,72 +3,70 @@
 \name{cdm_flatten_to_tbl}
 \alias{cdm_flatten_to_tbl}
 \alias{cdm_squash_to_tbl}
-\title{Flatten part of a \code{dm} into a wide table}
+\title{Flatten a part of a \code{dm} into a wide table}
 \usage{
 cdm_flatten_to_tbl(dm, start, ..., join = left_join)
 
 cdm_squash_to_tbl(dm, start, ..., join = left_join)
 }
 \arguments{
-\item{dm}{A \code{\link{dm}} object}
+\item{dm}{A \code{\link{dm}} object.}
 
-\item{start}{Table to start from. From this table all outgoing foreign key relations are
-considered to establish a processing order for the joins. An interesting choice could be
+\item{start}{The table from which all outgoing foreign key relations are considered
+when establishing a processing order for the joins.
+An interesting choice could be
 for example a fact table in a star schema.}
 
-\item{...}{Unquoted table names to include in addition to \code{start}. The order of the tables here determines
-the order of the joins. If empty, all tables that can be reached are included.
-If this includes tables which aren't direct neighbours of \code{start},
+\item{...}{Unquoted names of the tables to be included in addition to the \code{start} table.
+The order of the tables here determines
+the order of the joins.
+If the argument is empty, all tables that can be reached will be included.
+If this includes tables that are not direct neighbours of \code{start},
 it will only work with \code{cdm_squash_to_tbl()} (given one of the allowed join-methods).
 \code{tidyselect} is supported, cf. \code{\link[dplyr:select]{dplyr::select()}}.}
 
-\item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}}
+\item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
 }
 \value{
-A single table, resulting of consecutively joining
-all tables involved to table \code{start}.
+A single table that results from consecutively joining all affected tables to the \code{start} table.
 }
 \description{
-Gather all information of interest in one place in a wide table (on a database-\code{\link{dm}} a
-temporary table will be created).
-If referential integrity is given among the tables of the data model, the resulting
-table of this function will contain as many rows as the table \code{start} does (exceptions are
-\code{join = anti_join} (result is empty table with same columns as \code{start}) and \code{join = right_join}
-(number of rows equal to or larger than those of \code{start})).
-For more information please refer to \code{vignette("dm-joining")}.
+\code{cdm_flatten_to_tbl()} and \code{cdm_squash_to_tbl()} gather all information of interest in one place in a wide table.
+Both functions perform a disambiguation of column names and a cascade of joins.
 }
 \details{
-With the \code{...} left empty, this function joins all the tables of your \code{\link{dm}}
-object together, that can be reached from table \code{start} in the direction of the foreign
-key relations (pointing from child table to parent table), using the foreign key relations to
-determine the parameter \code{by} for the necessary joins.
+With \code{...} left empty, this function will join together all the tables of your \code{\link{dm}}
+object that can be reached from the \code{start} table, in the direction of the foreign key relations
+(pointing from the child tables to the parent tables), using the foreign key relations to
+determine the argument \code{by} for the necessary joins.
 The result is one table with unique column names.
-Use the \code{...} if you want to control which tables should be joined to table \code{start}.
+Use the \code{...} argument if you would like to control which tables should be joined to the \code{start} table.
 
 How does filtering affect the result?
 
-\strong{Case 1}, either no filter conditions are set in the \code{dm}, or only in a part unconnected to
-table \code{start}:
-The necessary disambiguations of the column names are performed first. Then all
-involved foreign tables are joined to table \code{start} successively with the join function given in
-parameter \code{join}.
+\strong{Case 1}, either no filter conditions are set in the \code{dm}, or set only in the part that is unconnected to the \code{start} table:
+The necessary disambiguations of the column names are performed first.
+Then all involved foreign tables are joined to the \code{start} table successively, with the join function given in the \code{join} argument.
 
-\strong{Case 2}, filter conditions are set for at least one table connected to \code{start}:
-Disambiguation is performed initially if necessary. Table \code{start} is calculated using \code{tbl(dm, "start")}. This implies
-that the effect of the filters on this table is taken into account. For \code{right_join}, \code{full_join} and \code{nest_join} an error
-is thrown in case filters are set, because the filters won't affect right hand side tables and thus the result will be
-incorrect in general (and calculating the effects on all RHS-tables would be time-consuming and is not supported;
-if desired call \code{cdm_apply_filters()} first to achieve this effect.).
-For all other join types filtering only \code{start} is enough, since the effect is passed on by the
+\strong{Case 2}, filter conditions are set for at least one table that is connected to \code{start}:
+First, disambiguation will be performed if necessary. The \code{start} table is then calculated using \code{tbl(dm, "start")}.
+This implies
+that the effect of the filters on this table is taken into account.
+For \code{right_join}, \code{full_join} and \code{nest_join}, an error
+is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
+incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
+if desired, call \code{cdm_apply_filters()} first to achieve that effect).
+For all other join types, filtering only the \code{start} table is enough because the effect is passed on by
 successive joins.
 
-Mind, that calling \code{cdm_flatten_to_tbl()} with \code{join = right_join} and no table order determined in the \code{...}
-would not lead to a well-defined result, if two or more foreign tables are to be joined to \code{start}. The resulting
-table would depend on the order the tables are listed in the \code{dm}. Therefore trying this results
-in a warning.
+Mind that calling \code{cdm_flatten_to_tbl()} with \code{join = right_join} and no table order determined in the \code{...} argument
+will not lead to a well-defined result if two or more foreign tables are to be joined to \code{start}.
+The resulting
+table would depend on the order the tables that are listed in the \code{dm}.
+Therefore, trying this will result in a warning.
 
 Since \code{join = nest_join()} does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
-each nested column entry would be a tibble of 1 row), an error is thrown, if this method is chosen.
+each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 }
 \examples{
 cdm_nycflights13() \%>\%
@@ -76,6 +74,7 @@ cdm_nycflights13() \%>\%
   cdm_flatten_to_tbl(flights)
 }
 \seealso{
-Other flattening functions: \code{\link{cdm_join_to_tbl}}
+Other flattening functions: 
+\code{\link{cdm_join_to_tbl}()}
 }
 \concept{flattening functions}

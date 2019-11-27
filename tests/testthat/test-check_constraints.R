@@ -1,11 +1,11 @@
 nyc_check <- tibble::tribble(
-  ~table,     ~kind,   ~column,   ~is_key,  ~problem,
-  "flights",  "FK",    "dest",    FALSE,    "<reason>",
-  "flights",  "FK",    "tailnum", FALSE,    "<reason>",
-  "airlines", "PK",    "carrier", TRUE,     "",
-  "airports", "PK",    "faa",     TRUE,     "",
-  "planes",   "PK",    "tailnum", TRUE,     "",
-  "flights",  "FK",    "carrier", TRUE,     ""
+  ~table,     ~kind,   ~column,   ~ref_table, ~is_key,  ~problem,
+  "flights",  "FK",    "dest",    "airports", FALSE,    "<reason>",
+  "flights",  "FK",    "tailnum", "planes",   FALSE,    "<reason>",
+  "airlines", "PK",    "carrier", NA,         TRUE,     "",
+  "airports", "PK",    "faa",     NA,         TRUE,     "",
+  "planes",   "PK",    "tailnum", NA,         TRUE,     "",
+  "flights",  "FK",    "carrier", "airlines", TRUE,     ""
 )
 
 test_that("`cdm_check_constraints()` works", {
@@ -17,6 +17,7 @@ test_that("`cdm_check_constraints()` works", {
       table = character(0),
       kind = character(0),
       column = character(0),
+      ref_table = character(0),
       is_key = logical(0),
       problem = character(0)
     )
@@ -30,6 +31,7 @@ test_that("`cdm_check_constraints()` works", {
       tibble(table = c("iris_1", "iris_2"),
              kind = c("PK", "FK"),
              column = "key",
+             ref_table = c(NA, "iris_1"),
              is_key = TRUE,
              problem = "")
       )

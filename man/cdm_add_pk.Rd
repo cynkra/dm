@@ -9,38 +9,43 @@ cdm_add_pk(dm, table, column, check = FALSE, force = FALSE)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 
-\item{column}{A column of that table}
+\item{column}{A column of that table.}
 
-\item{check}{Boolean, if \code{TRUE} (default), a check is made if the column is a unique key of the table.}
+\item{check}{Boolean, if \code{TRUE}, a check is made if the column is a unique key of the table.}
 
-\item{force}{Boolean, if \code{FALSE} (default), an error will be thrown, if there is
-already a primary key set for this table. If \code{TRUE} a potential old \code{pk} is deleted before setting the new one.}
+\item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
+set for this table.
+If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 }
 \description{
-\code{cdm_add_pk()} marks the given column as the given table's primary key
-in the \code{data_model}-part of the \code{\link{dm}} object. If \code{check == TRUE}, it also first checks if
-the given column is a unique key of the table. If \code{force == TRUE}, it replaces an already
+\code{cdm_add_pk()} marks the specified column as the primary key of the specified table.
+If \code{check == TRUE}, then it will first check if
+the given column is a unique key of the table.
+If \code{force == TRUE}, the function will replace an already
 set key.
 }
 \examples{
 library(dplyr)
 
 
-nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 
 # the following works
 cdm_add_pk(nycflights_dm, planes, tailnum)
 cdm_add_pk(nycflights_dm, airports, faa)
 cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 
-# the following does not work
+# the following does not work (throws an error)
 try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 }
 \seealso{
-Other primary key functions: \code{\link{cdm_get_all_pks}},
-  \code{\link{cdm_get_pk}}, \code{\link{cdm_has_pk}},
-  \code{\link{cdm_rm_pk}}, \code{\link{enum_pk_candidates}}
+Other primary key functions: 
+\code{\link{cdm_get_all_pks}()},
+\code{\link{cdm_get_pk}()},
+\code{\link{cdm_has_pk}()},
+\code{\link{cdm_rm_pk}()},
+\code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

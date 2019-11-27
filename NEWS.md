@@ -1,3 +1,34 @@
+# dm 0.0.5.9000
+
+- Remove {stringr} dependency (#183).
+
+
+# dm 0.0.5
+
+## Features
+
+- `cdm_filter()` and `filter.zoomed_dm()` apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in `cdm_apply_filters()`. This now allows using a variety of operations on filtered `dm` objects (#124).
+- `dimnames()`, `colnames()`, `dim()`, `distinct()`, `arrange()`, `slice()`, `separate()` and `unite()` implemented for zoomed dm-s (#130).
+- Joins on zoomed dm objects now supported (#121). Joins use the same column name disambiguation algorithm as `cdm_flatten_to_tbl()` (#147).
+- `slice.zoomed_dm()`: user decides in arg `.keep_pk` if PK column is tracked or not (#152).
+- Supported {dplyr} and {tidyr} verbs are reexported.
+- `enum_pk_candidates()` works with zoomed dm-s (#156).
+- New `enum_fk_candidates()` (#156).
+- Add name repair argument for both `cdm_insert_zoomed_tbl()` and `cdm_add_tbl()`, defaulting to renaming of old and new tables when adding tables with duplicate names (#132).
+- Redesign constructors and validators: `dm()` is akin to `tibble()`, `dm_from_src()` works like `dm()` did previously, `new_dm()` only accepts a list of tables and no longer validates, `validate_dm()` checks internal consistency (#69).
+- `compute.dm()` applies filters and calls `compute()` on all tables (#135).
+
+## Documentation
+
+- New demo.
+- Add explanation for empty `dm` (#100).
+
+## Bug fixes
+
+- Avoid asterisk when printing local `zoomed_dm` (#131).
+- `cdm_select_tbl()` works again when multiple foreign keys are defined between two tables (#122).
+
+
 # dm 0.0.4
 
 - Many {dplyr} verbs now work on tables in a `dm`. Zooming to a table vie `cdm_zoom_to_tbl()` creates a zoomed `dm` on which the {dplyr} verbs can be applied. The resulting table can be put back into the `dm` with `cdm_update_zoomed_tbl()` (overwriting the original table) or `cdm_insert_zoomed_tbl()` (creating a new table), respectively (#89).

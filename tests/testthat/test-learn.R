@@ -6,7 +6,7 @@ test_that("Learning from MSSQL works?", {
 
   # create an object on the MSSQL-DB that can be learned
   if (!any(src_tbls(src_mssql) %>%
-    str_detect(., "^t1_"))) {
+    grepl("^t1_", .))) {
     cdm_copy_to(con_mssql, dm_for_filter, unique_table_names = TRUE, temporary = FALSE)
   }
 

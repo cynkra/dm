@@ -294,15 +294,15 @@ iris_3 %<-% {
 
 iris_1_dis %<-% {
   iris_1 %>%
-    rename_at(2:6, ~ str_replace(., "^", "iris_1."))
+    rename_at(2:6, ~ sub("^", "iris_1.", .))
 }
 iris_2_dis %<-% {
   iris_2 %>%
-    rename_at(1:7, ~ str_replace(., "^", "iris_2."))
+    rename_at(1:7, ~ sub("^", "iris_2.", .))
 }
 iris_3_dis %<-% {
   iris_3 %>%
-    rename_at(1:7, ~ str_replace(., "^", "iris_3."))
+    rename_at(1:7, ~ sub("^", "iris_3.", .))
 }
 
 
@@ -430,7 +430,8 @@ dm_nycflights_small %<-% {as_dm(
     flights = nycflights13::flights %>% slice(1:800),
     planes = nycflights13::planes,
     airlines = nycflights13::airlines,
-    airports = nycflights13::airports)
+    airports = nycflights13::airports,
+    weather = nycflights13::weather %>% slice(1:800))
   ) %>%
   cdm_add_pk(planes, tailnum) %>%
   cdm_add_pk(airlines, carrier) %>%
@@ -439,6 +440,9 @@ dm_nycflights_small %<-% {as_dm(
   cdm_add_fk(flights, carrier, airlines) %>%
   cdm_add_fk(flights, dest, airports)
   }
+
+zoomed_dm <- cdm_zoom_to_tbl(dm_for_filter, t2)
+zoomed_dm_2 <- cdm_zoom_to_tbl(dm_for_filter, t3)
 
 # for database tests -------------------------------------------------
 
@@ -449,7 +453,7 @@ get_test_tables_from_postgres <- function() {
 
   dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
     as_tibble() %>%
-    filter(str_detect(table_name, "^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+"))
+    filter(grepl("^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
 }
 
 is_postgres_empty <- function() {

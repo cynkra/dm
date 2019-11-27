@@ -2,25 +2,26 @@
 % Please edit documentation in R/primary-keys.R
 \name{cdm_rm_pk}
 \alias{cdm_rm_pk}
-\title{Remove primary key from a table in a \code{\link{dm}} object}
+\title{Remove a primary key from a table in a \code{\link{dm}} object}
 \usage{
 cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 
-\item{rm_referencing_fks}{Boolean: if \code{FALSE} (default), will throw an error, if
-there are foreign keys addressing the primary key to be removed. If \code{TRUE}, will
-in addition to the primary key of parameter \code{table}, also remove all foreign key constraints
+\item{rm_referencing_fks}{Boolean: if \code{FALSE} (default), will throw an error if
+there are foreign keys addressing the primary key that is to be removed.
+If \code{TRUE}, the function will
+remove, in addition to the primary key of the \code{table} argument, also all foreign key constraints
 that are pointing to it.}
 }
 \description{
 \code{cdm_rm_pk()} removes a potentially set primary key from a table in the
-underlying \code{data_model}-object and otherwise leaves the \code{\link{dm}} object untouched.
+underlying \code{data_model}-object; leaves the \code{\link{dm}} object unaltered otherwise.
 
-Foreign keys pointing to the table from other tables can optionally be removed as well.
+Foreign keys that point to the table from other tables, can be optionally removed as well.
 }
 \examples{
 library(dplyr)
@@ -35,9 +36,11 @@ nycflights_dm \%>\%
   cdm_has_pk(planes)
 }
 \seealso{
-Other primary key functions: \code{\link{cdm_add_pk}},
-  \code{\link{cdm_get_all_pks}}, \code{\link{cdm_get_pk}},
-  \code{\link{cdm_has_pk}},
-  \code{\link{enum_pk_candidates}}
+Other primary key functions: 
+\code{\link{cdm_add_pk}()},
+\code{\link{cdm_get_all_pks}()},
+\code{\link{cdm_get_pk}()},
+\code{\link{cdm_has_pk}()},
+\code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

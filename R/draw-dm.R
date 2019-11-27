@@ -1,20 +1,20 @@
-#' Draw schema of a [`dm`]-object's data model
+#' Draw a diagram of a [`dm`]-object's data model 
 #'
-#' `cdm_draw()` draws a schema of the data model using `datamodelr` (which in turn uses `DiagrammeR`).
+#' `cdm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'
-#' @param dm A [`dm`] object
+#' @param dm A [`dm`] object.
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
-#'   It defines the level of details for the table rendering
-#'   (only primary and foreign keys, all columns or no columns)
-#' @param rankdir Graph attribute for direction (eg. 'BT' = bottom --> top)
-#' @param graph_name A graph name
-#' @param graph_attrs Additional graph attributes
-#' @param node_attrs Additional node attributes
-#' @param edge_attrs Additional edge attributes
-#' @param focus A list of parameters for rendering (table filter)
+#'   It defines the level of details for rendering tables
+#'   (only primary and foreign keys, all columns, or no columns).
+#' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
+#' @param graph_name The name of the graph.
+#' @param graph_attrs Additional graph attributes.
+#' @param node_attrs Additional node attributes.
+#' @param edge_attrs Additional edge attributes.
+#' @param focus A list of parameters for rendering (table filter).
 #' @param col_attr Column atributes to display.
-#'   Only column name (\code{column}) is included by default.
-#' @param columnArrows Edges from column to column (default: FALSE)
+#'   By default only the column name (\code{"column"}) is displayed.
+#' @param columnArrows Edges from columns to columns (default: `TRUE`).
 #' @export
 #'
 #' @examples
@@ -32,6 +32,11 @@ cdm_draw <- function(dm,
                      focus = NULL,
                      graph_name = "Data Model") {
 
+  check_dm(dm)
+  if (is_empty(dm)) {
+    message("The dm cannot be drawn because it is empty.")
+    return(invisible(NULL))
+  }
   # FIXME: here the color scheme is set with an options(...)-call;
   # should have some schemes available for the user to choose from
   if (is_null(getOption("datamodelr.scheme"))) bdm_set_color_scheme(bdm_color_scheme)
@@ -53,10 +58,10 @@ cdm_draw <- function(dm,
   bdm_render_graph(graph)
 }
 
-#' Get data_model component
+#' Get data_model
 #'
-#' `cdm_get_data_model()` returns the \pkg{datamodelr} data model component of a `dm`
-#' object.
+#' `cdm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
+#' data model object for drawing.
 #'
 #' @noRd
 cdm_get_data_model <- function(x) {
@@ -106,11 +111,13 @@ cdm_get_all_columns <- function(x) {
 
 #' cdm_set_colors()
 #'
-#' `cdm_set_colors()` allows to define the colors in which to display the tables of the data model.
+#' `cdm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
 #'
-#' @param ... Colors to set in the form `table = "<color>"` . Fall-through syntax similarly to
+#' @param ... Colors to set in the form `table = "<color>"` .
+#'   Fall-through syntax similarly to
 #'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
-#'   and `table2` . This argument supports splicing.
+#'   and `table2` .
+#'   This argument supports splicing.
 #' @return For `cdm_set_colors()`: the updated data model.
 #'
 #' @rdname cdm_draw

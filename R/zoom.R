@@ -5,25 +5,27 @@
 #' context of the `dm` object.
 #'
 #' @inheritParams cdm_add_pk
+#' @inheritParams vctrs::vec_as_names
 #'
-#' @details `cdm_zoom_to_tbl()`: zooms to the given table
+#' @details `cdm_zoom_to_tbl()`: zooms to the given table.
 #'
 #' `cdm_update_zoomed_tbl()`: overwrites the originally zoomed table with the manipulated table.
 #' The filter conditions for the zoomed table are added to the original filter conditions.
 #'
 #' `cdm_insert_zoomed_tbl()`: adds a new table to the `dm`.
 #'
-#' `cdm_zoom_out()`: discards the zoomed table, returning the `dm` from before zooming
+#' `cdm_zoom_out()`: discards the zoomed table and returns the `dm` as it was before zooming.
 #'
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
 #' when using `cdm_insert_zoomed_tbl()` or `cdm_update_zoomed_tbl()`.
 #'
-#' Functions from `dplyr`, that are supported for a `zoomed_dm`: `group_by()`, `summarise()`, `mutate()`,
-#' `transmute()`, `select()`, `rename()` and `ungroup()`. You can use these functions just like you would
+#' Functions from `dplyr` that are supported for a `zoomed_dm`: `group_by()`, `summarise()`, `mutate()`,
+#' `transmute()`, `select()`, `rename()` and `ungroup()`.
+#' You can use these functions just like you would
 #' with a normal table.
 #'
 #' `filter()` is also supported, but treated in a special way: the filter expression for the zoomed table is
-#' stored in the `dm` and is treated depending on which function you use to return to a normal `dm`:
+#' stored in the `dm` and is treated in a way that depends on which function you use to return to a normal `dm`:
 #'
 #' 1. `cdm_zoom_out()`: all filter conditions for the zoomed table are discarded
 #' 1. `cdm_update_zoomed_tbl()`: the filter conditions of the original table and those of the zoomed table are combined
@@ -47,7 +49,7 @@ cdm_zoom_to_tbl <- function(dm, table) {
         mutate(
           zoom = if_else(table == !!zoom, data, list(NULL)),
           key_tracker_zoom = if_else(table == !!zoom, keys, list(NULL))
-          )
+        )
       ),
     class = c("zoomed_dm", "dm")
     )
@@ -64,26 +66,33 @@ get_zoomed_tbl <- function(dm) {
 }
 
 #' @rdname cdm_zoom_to_tbl
-#' @param new_tbl_name Name of the new table
+#' @param new_tbl_name Name of the new table.
+#' @inheritParams vctrs::vec_as_names
 #'
 #' @export
-cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
+cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
-  new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
-  if (new_tbl_name_chr == "") abort_table_needs_name()
+  new_tbl_name_chr <-
+    if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else as_string(enexpr(new_tbl_name))
+  names_list <-
+    repair_table_names(old_names = names(dm), new_names = new_tbl_name_chr, repair, quiet)
+  # rename dm in case of name repair
+  dm <- cdm_select_tbl_impl(dm, names_list$new_old_names)
+
+  new_tbl_name_chr <- names_list$new_names
   old_tbl_name <- orig_name_zoomed(dm)
   new_tbl <- list(get_zoomed_tbl(dm))
-  # filters need to be split: old_filters belong to old table, new ones to the inserted one
+  # filters need to be split: old_filters belong to the old table, new filters to the inserted table
   all_filters <- get_filter_for_table(dm, old_tbl_name)
   old_filters <- all_filters %>% filter(!zoomed)
   new_filters <- all_filters %>% filter(zoomed) %>% mutate(zoomed = FALSE)
 
-  # PK: either same as in old table, renamed in new table, or no PK if none available
+  # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
   upd_pk <- update_zoomed_pk(dm)
 
-  # incoming FKs: in the new row, based on old table;
-  # if PK available, FK relations can be copied from old table
-  # if PK vanished, empty entry
+  # incoming FKs: in the new row, based on the old table;
+  # if PK available, foreign key relations can be copied from the old table
+  # if PK vanished, the entry will be empty
   upd_inc_fks <- update_zoomed_incoming_fks(dm)
 
   dm_wo_outgoing_fks <-
@@ -94,8 +103,8 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name) {
            fks = if_else(table == new_tbl_name_chr, upd_inc_fks, fks)) %>%
     new_dm3(zoomed = TRUE)
 
-  # outgoing FKs: potentially in several rows, based on old table;
-  # renamed(?) FK columns, if they still exist
+  # outgoing FKs: potentially in several rows, based on the old table;
+  # renamed(?) FK columns if they still exist
   dm_update_zoomed_outgoing_fks(dm_wo_outgoing_fks, new_tbl_name_chr, is_upd = FALSE) %>%
     cdm_zoom_out()
 }
@@ -155,7 +164,7 @@ update_zoomed_incoming_fks <- function(dm) {
 }
 
 # is_upd is logical: either update (TRUE) or insert (FALSE)
-# if `is_upd`, new_tbl_name needs to be same as old_tbl_name
+# if `is_upd`, new_tbl_name needs to be the same as old_tbl_name
 dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
@@ -166,7 +175,7 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   old_and_new_out_keys <-
     if (nrow(old_out_keys) > 0 && any(old_out_keys$column %in% tracked_keys)) {
       filter(old_out_keys, column %in% tracked_keys) %>%
-        mutate(new_column = names(tracked_keys[tracked_keys %in% column]))
+        mutate(new_column = names(tracked_keys[match(column, tracked_keys, nomatch = 0L)]))
       } else filter(old_out_keys, 0 == 1) %>% mutate(new_column = character(0))
 
   if (is_upd) {
@@ -184,7 +193,7 @@ get_tracked_keys <- function(dm) {
   cdm_get_def(dm) %>%
     filter(table == orig_name_zoomed(dm)) %>%
     pull(key_tracker_zoom) %>%
-    pluck(1)
+    extract2(1)
 }
 
 orig_name_zoomed <- function(dm) {
@@ -204,6 +213,8 @@ check_zoomed <- function(dm) {
   if (is_zoomed(dm)) return()
 
   fun_name <- as_string(sys.call(-1)[[1]])
+  # if a method for `zoomed_dm()` is used for a `dm`, we don't want `fun_name = method.dm` but rather `fun_name = method`
+  fun_name <- sub("\\.dm", "", fun_name)
   abort_only_possible_w_zoom(fun_name)
 }
 

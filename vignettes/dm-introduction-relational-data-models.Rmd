@@ -30,30 +30,28 @@ library(tidyverse)
 library(dm)
 ```
 
-Multiple, linked tables are a common concept within computer science. 
-Since many R users have a background in other disciplines, we present **six important terms in relational data modeling** to jump-start working with {dm}.
-
-It's good to have at least basic knowledge about the following terms:
+Multiple, linked tables are common within computer science. 
+Because many R users have backgrounds in other disciplines, we present **six important terms in relational data modeling** to help you to jump-start working with {dm}. These terms are:
 
 1) [Data Frames and Tables](#tables)
 2) [Data Model](#model)
 3) [Primary Keys](#pk)
 4) [Foreign Keys](#fk)
-5) [Normalisation](#normalisation)
+5) [Normalization](#normalisation)
 6) [Relational Databases](#relational-databases)
 
 ## 1. Data Frames and Tables
 
 A data frame is a fundamental data structure in R.
-Columns represent the variables, the rows the observations.
-In more technical terms: It is a list of variables of the same length and unique row names.
+Columns represent variables, rows represent observations.
+In more technical terms: a data frame is a list of variables of identical length and unique row names.
 If you imagine it visually, the result is a typical table structure.
-That's why working with data from spreadsheets is so convenient and users of the the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
+That is why working with data from spreadsheets is so convenient and the users of the the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
 
-The downside: Data frames and flat file systems like spreadsheets can result in bloated tables, that hold many repetitive values.
-Worst case, you have a data frame with multiple columns and in each row only a single value is different.
+The downside is that data frames and flat file systems like spreadsheets can result in bloated tables because they hold many repetitive values.
+In the worst case, a data frame can contain multiple columns with only a single value different in each row.
 
-This calls for a better data organization by utilizing the resemblance between data frames and database tables, which consist of columns and rows, too.
+This calls for better data organization by utilizing the resemblance between data frames and database tables, which also consist of columns and rows.
 The elements are just called differently:
 
 | Data Frame | Table |
@@ -61,18 +59,15 @@ The elements are just called differently:
 | Column     | Attribute  |
 | Row        | Tuple     |
 
-Therefore, the separation into multiple tables is a first step that helps data quality.
-But without an associated data model you don't take full advantage.
-For example, joining is more complicated than it should be.
+The separation of data into multiple tables helps to improve data quality but in order to take full advantage of the approach, an associated data model is needed to overcome the difficulties that arise with joining multiple tables. 
 
-Let's illustrate this challenge with data from the [`nycflights13` dataset](https://github.com/hadley/nycflights13).
-It contains detailed information of 336776 flights that departed from New York City in 2013.
+Let's illustrate this challenge with the data from the [`nycflights13` dataset](https://github.com/hadley/nycflights13) that
+contains detailed information about the 336776 flights that departed from New York City in 2013.
 The information is stored in five tables.
 
-Details like the full name of an airport are not available immediately but must be joined/merged.
-This can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other  forms of merging data.
+Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other  forms of data merging.
 
-In classical {dplyr} notation you need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
+In classical {dplyr} notation, you will need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
 
 ```{r}
 library(tidyverse)
@@ -87,13 +82,13 @@ flights %>%
 
 {dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.
 
-You can have the best of both worlds: Manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.
+It is possible to have the best of both worlds: manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.
 
 The next step is to create a [data model](#model) based on multiple tables:
 
 ## 2. Data Model {#model}
 
-A data model shows the structure between multiple tables, that can be linked together.
+A data model shows the structure between multiple tables that can be linked together.
 
 The `nycflights13` relations can be transferred into the following graphical representation:
 
@@ -105,7 +100,7 @@ dm %>%
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.
-By using directed arrows the visualization explicitly shows the connection between different columns (they are called attributes in the relational data sphere).
+By using directed arrows, the visualization shows explicitly the connection between different columns (they are called attributes in the relational data sphere).
 
 For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
 
@@ -115,9 +110,9 @@ Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.g
 
 ## 3. Primary Keys {#pk}
 
-In a relational data model every table needs to have **one column or attribute that uniquely identifies a row**.
-This column is called primary key (abbreviated with pk).
-A primary key can be either an existing column that satifies the condition of being unique or a new column that assigns an identifier.
+In a relational data model, every table needs to have **one column or attribute that uniquely identifies a row**.
+This column is called the *primary key* (abbreviated with pk).
+A primary key can be either an existing column that satifies the condition of being unique, or a new column that assigns an identifier.
 
 Example: In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
 
@@ -141,11 +136,11 @@ Further Reading: The {dm} package offers several function for dealing with [prim
 ## 4. Foreign Keys {#fk}
 
 The **counterpart of a primary key in one table is the foreign key in another table**.
-In order to join two tables, the primary key of the first table needs to be available in the second table, too.
-This second column is called the foreign key (abbreviated with fk).
+In order to join two tables, the primary key of the first table needs to be available in the second table as well.
+This second column is called the *foreign key* (abbreviated with fk).
 
-For example: If you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
-This is true, because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
+For example, if you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
+This condition is satisfied because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
 You can find foreign key candidates with the function `cdm_enum_fk_candidates()`, they are marked with `TRUE` in the `candidate` column.
 
 ```{r}
@@ -163,17 +158,17 @@ dm %>%
 
 Further Reading: All {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
 
-## 5. Normalisation {#normalisation}
+## 5. Normalization {#normalisation}
 
-Normalisation is the technical term that describes the **central design principle of a relational data model**:
+Normalization is a technical term that describes the **central design principle of a relational data model**:
 splitting data into multiple tables.
 
 A normalized data schema consists of several relations (tables) that are linked with attributes (columns).
-The joining works with [primary](#pk) and [foreign keys](#fk).
-One main goal is to keep the data organization as clean and simple as possible by avoiding redundant data entries.
+The relations can be joined together by means of [primary](#pk) and [foreign keys](#fk).
+The main goal of normalization is to keep data organization as clean and simple as possible by avoiding redundant data entries.
 
-For example: If you want to change the name of one airport in the `nycflights13` dataset, you have to update just a single data entry.
-Sometimes, this principle is called "single point of truth".
+For example, if you want to change the name of one airport in the `nycflights13` dataset, you will only need to update a single data value.
+This principle is sometimes called the *single point of truth*.
 
 ```{r}
 #  Update in one single location...
@@ -188,7 +183,7 @@ flights %>%
   select(flight, name)
 ```
 
-Another way to demonstrate normalisation is splitting a table in two parts.
+Another way to demonstrate normalization is splitting a table in two parts.
 
 Let's look at the `planes` table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.
 
@@ -201,16 +196,15 @@ planes %>%
   decompose_table(model_id, model, manufacturer, type, engines, seats, manufacturer, speed)
 ```
  
-While `child_table` contains 3322 unique `tailnum` rows and therefore consists of 3322 rows, just like the original `planes` table, the `parent_table` shrunk to just 147 rows.
-They are enough to store all relevant combinations and avoids storing redundant information.
+While `child_table` contains 3322 unique `tailnum` rows and therefore consists of 3322 rows, just like the original `planes` table, the `parent_table` shrunk to just 147 rows, enough to store all relevant combinations and avoid storing redundant information.
 
 Further Reading: See the [Simple English Wikipedia article on database normalisation](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
 
 ## 6. Relational Databases {#relational-databases}
 
-{dm} is built upon relational data models, but it is not a database itself.
+{dm} is built upon relational data models but it is not a database itself.
 Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres.
-As you can guess from the names of the databases SQL, short for **s**tructured **q**uerying **l**anguage, plays an important role: It was invented for the purpose of querying relational databases.
+As you can guess from the names of the databases, SQL, short for **s**tructured **q**uerying **l**anguage, plays an important role: it was invented for the purpose of querying relational databases.
 
 In production, the data is stored in a relational database and {dm} is used to work with the data.
 
@@ -224,8 +218,8 @@ cdm_copy_to(src_sqlite, dm)
 src_sqlite
 ```
 
-In the opposite direction, `dm` can also be populated with data from a DB. Unfortunately, this currently works just for MSSQL and Postgres, but not for Sqlite.
-Therefore, we cannot show the results here yet:
+In the opposite direction, `dm` can also be populated with data from a DB. Unfortunately, this currently works only for MSSQL and Postgres, but not for Sqlite.
+Therefore, we cannot show the results here just yet:
 
 ```{r eval=FALSE}
 cdm_learn_from_db(src_sqlite)

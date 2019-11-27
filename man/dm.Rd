@@ -2,6 +2,7 @@
 % Please edit documentation in R/dm.R
 \name{dm}
 \alias{dm}
+\alias{dm_from_src}
 \alias{new_dm}
 \alias{validate_dm}
 \alias{cdm_get_src}
@@ -12,9 +13,11 @@
 \alias{as_dm}
 \title{Data model class}
 \usage{
-dm(src, data_model = NULL)
+dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
 
-new_dm(tables, data_model)
+dm_from_src(src, table_names = NULL)
+
+new_dm(tables = list())
 
 validate_dm(x)
 
@@ -31,40 +34,60 @@ is_dm(x)
 as_dm(x)
 }
 \arguments{
+\item{...}{Tables to add to the \code{dm} object.
+If no names are provided, the tables
+are auto-named.}
+
+\item{.name_repair}{Options for name repair.
+Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
+
 \item{src}{A \pkg{dplyr} table source object.}
 
-\item{data_model}{A \pkg{datamodelr} data model object, or \code{NULL}.}
+\item{table_names}{A character vector of the names of the tables to include.}
 
-\item{tables}{A list of the tables (tibble-objects, not names) to be included in the \code{dm} object}
+\item{tables}{A named list of the tables (tibble-objects, not names) .
+to be included in the \code{dm} object.}
 
 \item{x}{An object.}
 }
 \description{
-The \code{dm} class wraps \link[dplyr:src]{dplyr::src} and adds a description of table relationships
-inspired by \href{https://github.com/bergant/datamodelr}{datamodelr}, of which it also borrows code.
+The \code{dm} class holds a list of tables and their relationships.
+It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
+and extends the idea by offering operations to access the data in the tables.
 
-\code{dm()} coerces its inputs. If called without arguments, an empty \code{dm} object is created.
+\code{dm()} creates a \code{dm} object from one or multiple \link{tbl} objects
+(tibbles or lazy data objects).
 
-\code{new_dm()} only checks if the inputs are of the correct class.
-If called without arguments, an empty \code{dm} object is created.
+\code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}
+(a database or an environment).
 
-\code{validate_dm()} checks consistency between the \pkg{dplyr} source
-and the \pkg{datamodelr} based specification of table relationships.
-This function is currently a no-op.
+\code{new_dm()} is a low-level constructor that creates a new \code{dm} object.
 
-\code{cdm_get_src()} returns the \pkg{dplyr} source component of a \code{dm}
-object.
+If called without arguments, it will create an empty \code{dm}.
 
-\code{cdm_get_con()} returns the connection object (\code{con}-part of \pkg{dplyr} source component) of a \code{dm}
-object.
+If called with arguments, no validation checks will be made to ascertain that
+the inputs are of the expected class and internally consistent;
+use \code{validate_dm()} to double-check the returned object.
 
-\code{cdm_get_tables()} returns a named list with \pkg{dplyr} \link{tbl} objects
+\code{validate_dm()} checks the internal consistency of a \code{dm} object.
+
+\code{cdm_get_src()} returns the \pkg{dplyr} source for a \code{dm} object.
+All tables in a \code{dm} object must be from the same source,
+i.e. either they are all data frames, or they all are stored on the same
+database.
+
+\code{cdm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
+This works only if the tables are stored on a database, otherwise an error
+is thrown.
+
+\code{cdm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
-The filter expressions are NOT evaluated at this stage.
-To get the filtered tables, use \code{tbl.dm()}
+Filtering expressions are NOT evaluated at this stage.
+To get filtered tables, use \code{tbl.dm()}
 
-\code{cdm_get_filter()} returns the filter component of a \code{dm}
-object, the set filter expressions.
+\code{cdm_get_filter()} returns the filter expressions that have been applied to a \code{dm} object.
+These filter expressions are not intended for evaluation, only for
+information.
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
@@ -72,7 +95,9 @@ object, the set filter expressions.
 }
 \examples{
 library(dplyr)
-dm(dplyr::src_df(pkg = "nycflights13"))
+dm(iris, mtcars)
+dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+new_dm(list(iris = iris, mtcars = mtcars))
 as_dm(list(iris = iris, mtcars = mtcars))
 
 cdm_nycflights13() \%>\% tbl("airports")

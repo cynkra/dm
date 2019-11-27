@@ -378,7 +378,7 @@ airports_global <- airports
 planes_global <- planes
 
 global <-
-  dm(src_df(env = .GlobalEnv))
+  dm_from_src(src_df(env = .GlobalEnv))
 global
 
 global %>%

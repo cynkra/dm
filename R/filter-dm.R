@@ -1,34 +1,39 @@
 #' Filtering a [`dm`] object
 #'
-#' Filtering one table of a [`dm`] object may affect all tables connected to this table
-#' via one or more steps of foreign key relations. Firstly, one or more filter conditions for
-#' one or more tables can be defined using `cdm_filter()`, with a syntax similar to `dplyr::filter()`.
-#' These conditions will be stored in the [`dm`] and not immediately executed. With `cdm_apply_filters()`
-#' all tables will be updated according to the filter conditions and the foreign key relations.
+#' Filtering a table of a [`dm`] object may affect other tables that are connected to it
+#' directly or indirectly via foreign key relations.
 #'
+#' `cdm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
+#' These conditions will be stored in the [`dm`], and executed immediately for the tables that they are referring to.
 #'
-#' @details `cdm_filter()` allows you to set one or more filter conditions for one table
-#' of a [`dm`] object. These conditions will be stored in the [`dm`] for when they are needed.
-#' The conditions are only evaluated in one of the following scenarios:
+#' With `cdm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
+#'
+#' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
+#' in one of the following scenarios:
+#'
 #' 1. Calling `cdm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
-#' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
-#' with the corresponding key values.
+#' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
+#' with corresponding key values.
 #' Tables that are not connected to any table with an active filter are left unchanged.
-#' This results in a new `dm` class object.
-#' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated based on the
-#' filter conditions and the foreign key conditions (similar to 1. but only for one table)
+#' This results in a new `dm` class object without any filter conditions.
 #'
-#' Several functions of the {dm} package will throw an error if unevaluated filter conditions exist when they are called.
+#' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated by performing a sequence
+#' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
+#' (similar to 1. but only for one table).
+#'
+#' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
 #' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
-#' Multiple conditions are combined with `&` or `,`. Only rows where the condition evaluates
-#' to TRUE are kept.
+#'   Multiple conditions are combined with `&` or `,`.
+#'   Only the rows where the condition evaluates
+#'   to `TRUE` are kept.
 #'
-#' The arguments in ... are automatically quoted and evaluated in the context of
-#' the data frame. They support unquoting and splicing. See `vignette("programming", package = "dplyr")`
-#' for an introduction to these concepts.
+#'   The arguments in ... are automatically quoted and evaluated in the context of
+#'   the data frame. They support unquoting and splicing.
+#'   See `vignette("programming", package = "dplyr")`
+#'   for an introduction to these concepts.
 #'
 #' @examples
 #' library(dplyr)
@@ -45,35 +50,32 @@
 #'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
 #'   cdm_apply_filters()
 #'
-#' # If you want to only keep those rows in the parent tables
+#' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
 #' cdm_nycflights13() %>%
 #'   cdm_filter(flights, 1 == 1) %>%
 #'   cdm_apply_filters() %>%
 #'   cdm_nrow()
-#' # note, that in this example the only affected table is
-#' # `airports` (since the departure airports in `flights` are
-#' # only the 3 NYC ones).
+#' # note that in this example, the only affected table is
+#' # `airports` because the departure airports in `flights` are
+#' # only the three New York airports.
 #'
 #' @export
 cdm_filter <- function(dm, table, ...) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 
-  quos <- enquos(...)
-  if (is_empty(quos)) {
-    return(dm)
-  } # valid table and empty ellipsis provided
-
-  set_filter_for_table(dm, table, quos, FALSE)
+  cdm_zoom_to_tbl(dm, !!table) %>%
+    filter(...) %>%
+    cdm_update_zoomed_tbl()
 }
 
-set_filter_for_table <- function(dm, table, quos, zoomed) {
+set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
   def <- cdm_get_def(dm)
 
   i <- which(def$table == table)
-  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(quos, zoomed))
+  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
   new_dm3(def, zoomed = zoomed)
 }
 
@@ -101,7 +103,8 @@ cdm_apply_filters <- function(dm) {
   cdm_reset_all_filters(new_dm3(def))
 }
 
-
+# calculates the necessary semi-joins from all tables that were filtered to
+# the requested table
 cdm_get_filtered_table <- function(dm, from) {
   filters <- cdm_get_filter(dm)
   if (nrow(filters) == 0) {
@@ -109,9 +112,6 @@ cdm_get_filtered_table <- function(dm, from) {
   }
 
   fc <- get_all_filtered_connected(dm, from)
-
-  f_quos <- filters %>%
-    nest(filter = -table)
 
   fc_children <-
     fc %>%
@@ -123,8 +123,7 @@ cdm_get_filtered_table <- function(dm, from) {
   recipe <-
     fc %>%
     select(table = node) %>%
-    left_join(fc_children, by = "table") %>%
-    left_join(f_quos, by = "table")
+    left_join(fc_children, by = "table")
 
   list_of_tables <- cdm_get_tables(dm)
 
@@ -143,13 +142,6 @@ cdm_get_filtered_table <- function(dm, from) {
           .init = table
         )
     }
-
-    filter_quos <- recipe$filter[[i]]
-    if (!is_null(filter_quos)) {
-      filter_quos <- pull(filter_quos, filter)
-      table <- filter(table, !!!filter_quos)
-    }
-
     list_of_tables[[table_name]] <- table
   }
   list_of_tables[[from]]

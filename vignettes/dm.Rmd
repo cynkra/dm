@@ -26,17 +26,19 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
-The goal of both the package {dm} and its `dm` class is to facilitate work with multiple related tables.
-An object of the `dm` class contains all relevant information about the tables in a data model:
+The goal of the package {dm} and its `dm` class is to facilitate working with multiple related tables.
 
-1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
-1. the meta-data from the data model: the tables, columns, and key constraints
-1. the data in the tables
+An object of the `dm` class contains the data in the tables, and metadata about the tables, such as
 
-This package augments {dplyr}/{dbplyr} workflows:
+- the names of the tables
+- the names of the columns of the tables
+- the key constraints to link the tables together
+- the data (either as data frames or as references to database tables)
 
-- multiple related tables are kept in a single compound object,
-- joins across multiple tables are available by stating the tables involved, no need to memorize column names or relationships
+This package augments [{dplyr}](https://dplyr.tidyverse.org/)/[{dbplyr}](https://dbplyr.tidyverse.org/) workflows:
+
+- multiple related tables are kept in a single compound object
+- joins across multiple tables are available by specifying the tables involved, without a need to memorize column names or relationships
 
 In addition, a battery of utilities is provided that helps with creating a tidy data model.
 
@@ -47,9 +49,9 @@ This package follows several of the "tidyverse" rules:
 - tidy evaluation is used (unquoted function parameters are supported)
 
 The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
-We're looking forward to a good collaboration!
+We're looking forward to a great collaboration!
 
-We will showcase here some of the features of {dm}:
+We will now demonstrate some of the features of {dm}:
 
 1. [Creation of `dm` objects](#create)
 1. [Setting keys and drawing](#keys)
@@ -66,16 +68,16 @@ library(tidyverse)
 
 ## Creating `dm` objects: {#create}
 
-The {nycflights13}-package offers a nice example for interconnected tables.
-The most straightforward way of squeezing them into a `dm` object is:
+The [{nycflights13}](https://github.com/hadley/nycflights13) package offers a nice example of interconnected tables.
+The most straightforward way of squeezing those tables into a `dm` object is:
 
 ```{r message=FALSE}
-flights_dm <- dm(src_df(pkg = "nycflights13"))
+flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
-The fairly verbose output shows an overview of various components of a `dm` object: the table source, the metadata, and filter conditions.
-These components can be individually accessed with several {dm}-functions, e.g. `cdm_get_src()`, `cdm_get_filter()`, `cdm_get_all_pks()` and `cdm_get_all_fks()`.
+This fairly verbose output shows the data and metadata of a `dm` object.
+These components can be accessed with `cdm_get_src()` and `cdm_get_tables()`.
 
 ```{r}
 cdm_get_src(flights_dm)
@@ -87,8 +89,8 @@ cdm_get_all_fks(flights_dm)
 
 ## Keys and visualization {#keys}
 
-As you can see in the "Data model" part of the output above, so far no keys are set.
-We use `cdm_add_pk()` and `cdm_add_fk()` to add primary keys (pk) and foreign keys (fk):
+As you can see in the output above, no keys have been set so far.
+We will use `cdm_add_pk()` and `cdm_add_fk()` to add primary keys (pk) and foreign keys (fk):
 
 ```{r}
 flights_dm_with_one_key <- 
@@ -97,15 +99,15 @@ flights_dm_with_one_key <-
   cdm_add_fk(flights, carrier, airlines)
 ```
 
-Once you set the keys and established relations, you can show a graphical representation of your data model with `cdm_draw()`:
+After you set the keys and establish relations, you can create a graphical representation of your data model with `cdm_draw()`:
 
 ```{r}
 flights_dm_with_one_key %>% 
   cdm_draw()
 ```
 
-The `cdm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables, defines all primary and foreign keys and even assigns colors to the different types of tables.
-We will be using the `dm` object created by this function from here on.
+The `cdm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables, defines all primary and foreign keys, and even assigns colors to the different types of tables.
+We will be using the `dm` object created by this function from now on.
 
 ```{r}
 flights_dm_with_keys <- cdm_nycflights13(cycle = TRUE)
@@ -118,10 +120,10 @@ flights_dm_with_keys %>%
 
 The idea of a filter on a `dm` object:
 
-1. You filter one or more of `dm`'s tables, just like with normal `dplyr::filter()` calls
-1. The filter conditions are stored in the `dm` object, but not immediately executed
-1. Once you access a table, the relevant filter conditions are applied to the respective tables and the necessary joins are performed along the fk relations.
-What you get out is a table containing only rows related to the filter operations
+1. You can filter one or more of `dm`'s tables, just like with normal `dplyr::filter()` calls
+1. Filtering conditions are stored in the `dm` object but not immediately executed
+1. Once you access a table, all relevant filtering conditions are applied to the respective tables, and the necessary joins are performed along the fk relations.
+This results in a table that contains only rows related to the filtering operations
 
 Currently, this only works if the graph induced by the fk relations is cycle free, the default for `cdm_nycflights13()`:
 
@@ -141,8 +143,8 @@ us_flights_from_jfk_prepared <-
 us_flights_from_jfk_prepared
 ```
 
-With `cdm_apply_filters()` you can apply all filters and therefore update all tables in the `dm`, so that they contain only the rows relevant to the filters. 
-Counting the rows you can see the effect of the filters:
+With `cdm_apply_filters()`, you can apply all filters and therefore update all tables in the `dm`, so that they contain only the rows that are relevant to the filters. 
+The effect of the filters can be seen when counting the rows:
 
 ```{r}
 us_flights_from_jfk <- cdm_apply_filters(us_flights_from_jfk_prepared)
@@ -151,21 +153,21 @@ us_flights_from_jfk %>%
   map_int(nrow)
 ```
 
-Or you can just pull out one of the tables from the `dm`, answering the question which planes were used to service US Airways flights having started from JFK airport:
+Alternatively, you can just pull out one of the tables from `dm` to answer the question which planes were used to service the US Airways flights that departed from JFK airport:
 
 ```{r}
 tbl(us_flights_from_jfk, "planes")
 ```
 
-Each of the planes in the result set above was part in at least one US Airways flight departing from JFK.
-Do they have common characteristics?
+Each of the planes in the result set above was a part of at least one US Airways flight departing from JFK.
+Do they have any common characteristics?
 
 ```{r}
 tbl(us_flights_from_jfk, "planes") %>% 
   count(model)
 ```
 
-For comparison, let's review the equivalent manual query in {dplyr} syntax:
+For comparison, let's look at the equivalent manual query in {dplyr} syntax:
 
 ```{r eval=FALSE}
 flights %>% 
@@ -177,7 +179,7 @@ flights %>%
   count(model)
 ```
 
-The {dm} code is leaner, because the fk information is encoded in the object.
+The {dm} code is leaner because the fk information is encoded in the object.
 
 ### Joining two tables {#join}
 
@@ -197,7 +199,7 @@ airlines %>%
   left_join(flights, by = "carrier")
 ```
 
-Omitting the `by` argument leads to a warning
+Omitting the `by` argument leads to a warning.
 
 ## Copy a `dm` object to a DB or learn from it {#copy}
 
@@ -210,7 +212,7 @@ src_sqlite
 flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
 ```
 
-As a result, the tables are transferred to the target data source, and the returned data model contains all keys.
+As a result, the tables are transferred to the target data source, and all keys will be contained in the returned data model.
 
 ```{r}
 src_sqlite
@@ -218,7 +220,7 @@ flights_dm_with_keys_remote
 ```
 
 In the opposite direction, `dm` objects can also be "learned" from a DB, including the key constraints, by utilizing the DB's meta-information tables.
-Unfortunately, this currently works only for MSSQL and Postgres, we cannot show the results here yet:
+Unfortunately, this currently only works for MSSQL and Postgres, so we cannot show the results here just yet:
 
 ```{r eval=FALSE}
 flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)

@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational data models
-Version: 0.0.4
-Date: 2019-11-01
+Version: 0.0.5.9000
+Date: 2019-11-25
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -22,9 +22,10 @@ Authors@R:
       person(given = "cynkra GmbH",
              role = "fnd",
              email = "mail@cynkra.com"))
-Description: Some actions and transformations that are
-    frequently required when dealing with data models are covered by the
-    functions of this package.
+Description: Provides tools for working with multiple related tables,
+    stored as data frames or in a relational database.
+    Multiple tables (data and metadata) are stored in a compound object,
+    which can then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
 Imports:
     backports,
@@ -34,12 +35,11 @@ Imports:
     DT (>= 0.5),
     glue,
     igraph,
+    lifecycle,
     magrittr,
     methods,
     purrr,
     rlang (>= 0.4.0),
-    shiny,
-    stringr,
     tibble,
     tidyr (>= 1.0.0),
     tidyselect,
@@ -63,4 +63,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
