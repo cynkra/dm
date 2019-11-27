@@ -4,14 +4,12 @@
 \alias{cdm_paste}
 \title{Reverse engineer code for creation of a \code{\link{dm}}}
 \usage{
-cdm_paste(dm, select = FALSE, env = .GlobalEnv)
+cdm_paste(dm, select = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{select}{Boolean, default \code{FALSE}. If \code{TRUE} will try to produce code for reducing to necessary columns.}
-
-\item{env}{The environment to search for the tables for the creation of the \code{dm}. Defaults to the global environment.}
 }
 \value{
 Code for producing the given \code{dm}
@@ -22,11 +20,6 @@ Code for producing the given \code{dm}
 \details{
 At the very least (if no keys exist in the given \code{\link{dm}}) a \code{dm()} statement is produced that -- when executed --
 produces the same \code{dm}. In addition, the code for setting the existing primary keys as well as the relations between the
-tables is produced. Should the tables not be available in the given environment, a warning is issued. The code won't work
-as is in this case. If \code{select = TRUE}, the column names of the \code{dm} tables are compared with the column names
-of the tables of the same name in the given environment. For each table:
-\enumerate{
-\item If the \code{dm} tables have less columns and all of them exist in the tables in the given environment, appropriate \code{cdm_select()} statements are created
-\item If the \code{dm} tables have extra columns, the table is skipped and a warning is issued.
-}
+tables is produced. If \code{select = TRUE}, statements are included to select the respective columns of each table of the \code{dm} (useful if
+only a subset of the columns of the original tables is used for the \code{dm}).
 }
