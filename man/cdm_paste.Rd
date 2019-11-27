@@ -22,4 +22,7 @@ At the very least (if no keys exist in the given \code{\link{dm}}) a \code{dm()}
 produces the same \code{dm}. In addition, the code for setting the existing primary keys as well as the relations between the
 tables is produced. If \code{select = TRUE}, statements are included to select the respective columns of each table of the \code{dm} (useful if
 only a subset of the columns of the original tables is used for the \code{dm}).
+
+Mind, that it is assumed, that the tables of the existing \code{dm} are available in the global environment under their names
+within the \code{dm}.
 }

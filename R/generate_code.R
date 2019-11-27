@@ -10,6 +10,9 @@
 #' tables is produced. If `select = TRUE`, statements are included to select the respective columns of each table of the `dm` (useful if
 #' only a subset of the columns of the original tables is used for the `dm`).
 #'
+#' Mind, that it is assumed, that the tables of the existing `dm` are available in the global environment under their names
+#' within the `dm`.
+#'
 #' @return Code for producing the given `dm`
 #'
 #' @export
