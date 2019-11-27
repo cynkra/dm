@@ -13,13 +13,15 @@ cdm_learn_from_db(dest)
 A \code{\link{dm}} object with the tables from the DB and the respective key relations.
 }
 \description{
-Assuming, there are permament tables on a DB, you can turn these
-into a \code{\link{dm}} object. The key constraints are also learned from the DB and taken into
-account.
+If there are any permament tables on a DB, a new \code{\link{dm}} object can be created that contains those tables,
+along with their primary and foreign key constraints.
 
-So far this only works for MSSQL and Postgres. Also, you can not specify a schema to learn from.
+Currently this only works with MSSQL and Postgres databases.
+
+The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
 }
 \seealso{
-Other DB interaction functions: \code{\link{cdm_copy_to}}
+Other DB interaction functions: 
+\code{\link{cdm_copy_to}()}
 }
 \concept{DB interaction functions}

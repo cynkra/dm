@@ -2,23 +2,24 @@
 % Please edit documentation in R/graph.R
 \name{cdm_is_referenced}
 \alias{cdm_is_referenced}
-\title{Is a \code{\link{dm}}'s table referenced by another table?}
+\title{Is a table of a \code{\link{dm}} referenced by another table?}
 \usage{
 cdm_is_referenced(dm, table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 }
 \value{
-\code{TRUE}, if at least one foreign key exists, pointing to the primary
-key of parameter \code{table}, \code{FALSE} otherwise.
+\code{TRUE} if at least one foreign key exists that points to the primary
+key of the \code{table} argument, \code{FALSE} otherwise.
 }
 \description{
-Is a \code{\link{dm}}'s table referenced by another table?
+Is a table of a \code{\link{dm}} referenced by another table?
 }
 \seealso{
-Other functions utilizing foreign key relations: \code{\link{cdm_get_referencing_tables}}
+Other functions utilizing foreign key relations: 
+\code{\link{cdm_get_referencing_tables}()}
 }
 \concept{functions utilizing foreign key relations}

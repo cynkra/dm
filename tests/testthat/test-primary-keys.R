@@ -74,6 +74,26 @@ test_that("cdm_rm_pk() works as intended?", {
       class = "table_not_in_dm"
     )
   )
+
+  # test if error is thrown if FK points to PK that is about to be removed
+  expect_cdm_error(
+    cdm_rm_pk(dm_for_filter, t4),
+    "first_rm_fks"
+  )
+
+  # test logic if argument `rm_referencing_fks = TRUE`
+  expect_equivalent_dm(
+    cdm_rm_pk(dm_for_filter, t4, rm_referencing_fks = TRUE),
+    cdm_rm_fk(dm_for_filter, t5, l, t4) %>%
+      cdm_rm_pk(t4)
+  )
+
+  expect_equivalent_dm(
+    cdm_rm_pk(dm_for_filter, t3, rm_referencing_fks = TRUE),
+    cdm_rm_fk(dm_for_filter, t4, j, t3) %>%
+      cdm_rm_fk(t2, e, t3) %>%
+      cdm_rm_pk(t3)
+  )
 })
 
 test_that("cdm_has_pk() works as intended?", {
@@ -152,6 +172,15 @@ test_that("cdm_enum_pk_candidates() works properly?", {
       cdm_enum_pk_candidates(.x, cdm_table_2),
       candidates_table_2,
       label = .y
+    )
+  )
+})
+
+test_that("enum_pk_candidates() works properly", {
+  expect_silent(
+    expect_identical(
+      enum_pk_candidates(zoomed_dm),
+      enum_pk_candidates(t2)
     )
   )
 })

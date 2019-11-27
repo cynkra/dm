@@ -1,43 +1,50 @@
 #' Test if the relation between two tables of a data model meet the requirements
 #'
-#' @description All `check_cardinality()` functions test, if the `pk_column` is a unique key for `parent_table` and if
-#' the set of values of `fk_column` of `child_table` is a subset of the set of values of `pk_column`.
-#' Furthermore the cardinality of the relation is tested, see below for details.
+#' @description All `check_cardinality()` functions test the following conditions:
+#' 1. Is `pk_column` is a unique key for `parent_table`?
+#' 1. Is the set of values in `fk_column` of `child_table` a subset of the set of values of `pk_column`?
+#' 1. Does the relation between the two tables of the data model meet the cardinality requirements?
+#`
+#` Please see below for details.
 #'
 #' @details All `check_cardinality` functions accept a `parent table` (data frame), a column name of this table,
-#' a `child table`, and a column name of the child table. The given column of the `parent table` has to be one of its
-#' unique keys (no duplicates allowed).
+#' a `child table`, and a column name of the child table.
+#' The given column of the `parent table` has to be one of its
+#' unique keys (no duplicates are allowed).
 #' Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
 #' the parent table's column.
 #'
 #' The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the expected relation that the child table has with the parent table.
-#' The numbers `0`, `1` and `n` refer to the number of values in the child table's column that correspond to each value of the
-#' parent table's column. `n` means more than one in this context, with no upper limit.
+#' The numbers `0`, `1` and `n` refer to the number of values in the column of the child table that correspond to each value of the
+#' column of the parent table.
+#' `n` means "more than one" in this context, with no upper limit.
 #'
-#' `0_n` means, that for each value of the `pk_column`, minimally `0` and maximally
-#' `n` values have to correspond to it in the child table's column (which translates to no further restriction).
+#' `0_n` means, that for each value of the `pk_column`, at least `0` and at most
+#' `n` values have to correspond to it in the column of the child table (which translates to no further restrictions).
 #'
-#' `1_n` means, that for each value of the `pk_column`, minimally `1` and maximally
-#' `n` values have to correspond to it in the child table's column. This means that there is a "surjective" relation from the child table
+#' `1_n` means, that for each value of the `pk_column`, at least `1` and at most
+#' `n` values have to correspond to it in the column of the child table.
+#' This means that there is a "surjective" mapping from the child table
 #' to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 #'
-#' `0_1` means, that for each value of the `pk_column`, minimally `0` and maximally
-#' `1` value has to correspond to it in the child table's column. This means that there is a "injective" relation from the child table
-#' to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table
+#' `0_1` means, that for each value of the `pk_column`, at least `0` and at most
+#' `1` value has to correspond to it in the column of the child table.
+#' This means that there is a "injective" mapping from the child table
+#' to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
+#' But not all of the parent table
 #' column values have to be referred to.
 #'
-#' `1_1` means, that for each value of the `pk_column`, precisely
-#' `1` value has to correspond to it in the child table's column. This means that there is a "bijective" ("injective" AND "surjective") relation
+#' `1_1` means, that for each value of the `pk_column`, exactly
+#' `1` value has to correspond to it in the column of the child table.
+#' This means that there is a "bijective" ("injective" AND "surjective") mapping
 #' between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 #' there are no duplicates in either of them.
 #'
 #' Finally, `check_cardinality()` tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these) between the two given columns.
-#'
-#' @param parent_table Data frame
+#' @param parent_table Data frame.
 #' @param pk_column Column of `parent_table` that has to be one of its unique keys.
-#' @param child_table Data frame
-#' @param fk_column Column of `child_table` that has to be a foreign key to `pk_column` in `parent_table`
-#' @inheritParams check_set_equality
+#' @param child_table Data frame.
+#' @param fk_column Column of `child_table` that has to be a foreign key to `pk_column` in `parent_table`.
 #'
 #' @name check_cardinality
 #'

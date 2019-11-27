@@ -12,34 +12,37 @@ cdm_apply_filters(dm)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 
 \item{...}{Logical predicates defined in terms of the variables in \code{.data}, passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
-Multiple conditions are combined with \code{&} or \code{,}. Only rows where the condition evaluates
-to TRUE are kept.
+Multiple conditions are combined with \verb{&} or \verb{,}.
+Only the rows where the condition evaluates
+to \code{TRUE} are kept.
 
 The arguments in ... are automatically quoted and evaluated in the context of
-the data frame. They support unquoting and splicing. See \code{vignette("programming", package = "dplyr")}
+the data frame. They support unquoting and splicing.
+See \code{vignette("programming", package = "dplyr")}
 for an introduction to these concepts.}
 }
 \description{
-Filtering one table of a \code{\link{dm}} object may affect all tables connected to this table
-via one or more steps of foreign key relations. Firstly, one or more filter conditions for
-one or more tables can be defined using \code{cdm_filter()}, with a syntax similar to \code{\link[dplyr:filter]{dplyr::filter()}}.
-Each condition will only be immediately executed for the table it is referring to.
-Furthermore all conditions are stored in the \code{\link{dm}}.
-With \code{cdm_apply_filters()} all tables will be updated according to the filter conditions and the foreign key relations.
+Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it
+directly or indirectly via foreign key relations.
 }
 \details{
+\code{cdm_filter()} can be used to define filter conditions for tables using syntax that is similar to \code{\link[dplyr:filter]{dplyr::filter()}}.
+These conditions will be stored in the \code{\link{dm}}, and executed immediately for the tables that they are referring to.
+
+With \code{cdm_apply_filters()}, all tables will be updated according to the filter conditions and the foreign key relations.
+
 The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 in one of the following scenarios:
 \enumerate{
 \item Calling \code{cdm_apply_filters()} or \code{compute()} (method for \code{dm} objects) on a \code{dm}: each filtered table potentially
-reduces the rows of all other tables connected to it by foreign key relations (cascading effect), only leaving the rows
-with the corresponding key values.
+reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
+with corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new \code{dm} class object without any filter conditions.
-\item Calling one of \code{tbl()}, \code{[[.dm()}, \code{$.dm()}: the remaining rows of the requested table are calculated by performing a sequence
+\item Calling one of \code{tbl()}, \verb{[[.dm()}, \verb{$.dm()}: the remaining rows of the requested table are calculated by performing a sequence
 of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from each table that has been filtered to the requested table
 (similar to 1. but only for one table).
 }
@@ -61,16 +64,16 @@ cdm_nycflights13() \%>\%
   cdm_filter(airports, name == "John F Kennedy Intl") \%>\%
   cdm_apply_filters()
 
-# If you want to only keep those rows in the parent tables
+# If you want to keep only those rows in the parent tables
 # whose primary key values appear as foreign key values in
 # `flights`, you can set a `TRUE` filter in `flights`:
 cdm_nycflights13() \%>\%
   cdm_filter(flights, 1 == 1) \%>\%
   cdm_apply_filters() \%>\%
   cdm_nrow()
-# note, that in this example the only affected table is
-# `airports` (since the departure airports in `flights` are
-# only the 3 NYC ones).
+# note that in this example, the only affected table is
+# `airports` because the departure airports in `flights` are
+# only the three New York airports.
 
 cdm_nycflights13() \%>\%
   cdm_filter(flights, month == 3) \%>\%

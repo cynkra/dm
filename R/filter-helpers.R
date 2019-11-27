@@ -2,7 +2,7 @@
 #'
 #' Returns a named vector with the number of rows for each table.
 #'
-#' @param dm A [`dm`] object
+#' @param dm A [`dm`] object.
 #' @export
 cdm_nrow <- function(dm) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to issue
@@ -27,6 +27,12 @@ get_by <- function(dm, lhs_name, rhs_name) {
   # as required by `*_join()`
   by <- rhs_col
   names(by) <- lhs_col
+  by
+}
+
+repair_by <- function(by) {
+  bad <- which(names2(by) == "")
+  names(by)[bad] <- by[bad]
   by
 }
 

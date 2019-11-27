@@ -247,3 +247,12 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
     )
   )
 })
+
+test_that("enum_fk_candidates() works properly", {
+  expect_silent(
+    expect_identical(
+      enum_fk_candidates(zoomed_dm, t3),
+      cdm_enum_fk_candidates(dm_for_filter, t2, t3)
+    )
+  )
+})

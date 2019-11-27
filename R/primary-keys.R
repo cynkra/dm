@@ -1,18 +1,20 @@
-# for external users: also checks if really is primary key
+# for external users: also checks if a column really is primary key
 
 #' Mark a column of a table in a [`dm`] object as its primary key
 #'
-#' @description `cdm_add_pk()` marks the given column as the given table's primary key
-#' in the `data_model`-part of the [`dm`] object. If `check == TRUE`, it also first checks if
-#' the given column is a unique key of the table. If `force == TRUE`, it replaces an already
+#' @description `cdm_add_pk()` marks the specified column as the primary key of the specified table.
+#' If `check == TRUE`, then it will first check if
+#' the given column is a unique key of the table.
+#' If `force == TRUE`, the function will replace an already
 #' set key.
 #'
 #' @param dm A `dm` object.
-#' @param table A table in the `dm`
-#' @param column A column of that table
-#' @param check Boolean, if `TRUE` (default), a check is made if the column is a unique key of the table.
-#' @param force Boolean, if `FALSE` (default), an error will be thrown, if there is
-#' already a primary key set for this table. If `TRUE` a potential old `pk` is deleted before setting the new one.
+#' @param table A table in the `dm`.
+#' @param column A column of that table.
+#' @param check Boolean, if `TRUE`, a check is made if the column is a unique key of the table.
+#' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
+#'   set for this table.
+#'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
 #'
 #' @family primary key functions
 #' @export
@@ -20,14 +22,14 @@
 #' library(dplyr)
 #'
 #'
-#' nycflights_dm <- dm(src_df(pkg = "nycflights13"))
+#' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
 #' cdm_add_pk(nycflights_dm, planes, tailnum)
 #' cdm_add_pk(nycflights_dm, airports, faa)
 #' cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 #'
-#' # the following does not work
+#' # the following does not work (throws an error)
 #' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
 cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   table_name <- as_name(ensym(table))
@@ -46,9 +48,9 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   cdm_add_pk_impl(dm, table_name, col_name, force)
 }
 
-# "table" and "column" has to be character
-# in {datamodelr} a primary key can also consists of more than one column
-# only adds key, independent if it is unique key or not; not to be exported
+# both "table" and "column" must be characters
+# in {datamodelr}, a primary key may consist of more than one columns
+# a key will be added, regardless of whether it is a unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
 cdm_add_pk_impl <- function(dm, table, column, force) {
   def <- cdm_get_def(dm)
@@ -66,7 +68,7 @@ cdm_add_pk_impl <- function(dm, table, column, force) {
 #' Does a table of a [`dm`] object have a column set as primary key?
 #'
 #' @description `cdm_has_pk()` checks in the `data_model` part
-#' of the [`dm`] object if a given table has a column marked as primary key.
+#' of the [`dm`] object if a given table has a column marked as its primary key.
 #'
 #' @inheritParams cdm_add_pk
 #'
@@ -83,10 +85,11 @@ cdm_has_pk <- function(dm, table) {
   has_length(cdm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the name of the column marked as primary key of a table of a [`dm`] object
+#' Retrieve the name of the primary key column of a `dm` table 
 #'
 #' @description `cdm_get_pk()` returns the name of the
-#' column marked as primary key of a table of a [`dm`] object. If no primary key is
+#' column marked as primary key of a table of a [`dm`] object.
+#' If no primary key is
 #' set for the table, an empty character vector is returned.
 #'
 #' @family primary key functions
@@ -124,20 +127,21 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
     select(table = table, pk_col = column)
 })
 
-#' Remove primary key from a table in a [`dm`] object
+#' Remove a primary key from a table in a [`dm`] object
 #'
 #' @description `cdm_rm_pk()` removes a potentially set primary key from a table in the
-#' underlying `data_model`-object and otherwise leaves the [`dm`] object untouched.
+#' underlying `data_model`-object; leaves the [`dm`] object unaltered otherwise.
 #'
-#' Foreign keys pointing to the table from other tables can optionally be removed as well.
+#' Foreign keys that point to the table from other tables, can be optionally removed as well.
 #'
 #' @family primary key functions
 #'
 #' @inheritParams cdm_add_pk
-#' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error, if
-#' there are foreign keys addressing the primary key to be removed. If `TRUE`, will
-#' in addition to the primary key of parameter `table`, also remove all foreign key constraints
-#' that are pointing to it.
+#' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
+#'   there are foreign keys addressing the primary key that is to be removed.
+#'   If `TRUE`, the function will
+#'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
+#'   that are pointing to it.
 #'
 #' @examples
 #' library(dplyr)
@@ -157,32 +161,29 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 
   def <- cdm_get_def(dm)
 
-  selected <- set_names(def$table)
-  selected <- selected[selected != table]
-  new_def <- filter_recode_table_fks(def, selected)
-
-  if (!rm_referencing_fks && !identical(def$fks, new_def$fks)) {
-    affected <- !map2_lgl(def$fks, new_def$fks, identical)
-    abort_first_rm_fks(table, def$table[affected])
+  if (!rm_referencing_fks && cdm_is_referenced(dm, !!table)) {
+    affected <- cdm_get_referencing_tables(dm, !!table)
+    abort_first_rm_fks(table, affected)
   }
+  def$pks[def$table == table] <- list(new_pk())
+  def$fks[def$table == table] <- list(new_fk())
 
-  new_def$pks[new_def$table == table] <- list(tibble(column = list()))
-
-  new_dm3(new_def)
+  new_dm3(def)
 }
 
 
 #' Which columns are candidates for a primary key column?
 #'
 #' @description `enum_pk_candidates()` checks for each column of a
-#' table if this column contains only unique values and is therefore
-#' a candidate for a primary key of this table.
+#' table if the column contains only unique values, and is thus
+#' a suitable candidate for a primary key of the table.
 #'
 #' @export
 #' @examples
 #' nycflights13::flights %>% enum_pk_candidates()
 enum_pk_candidates <- nse_function(c(table), ~ {
-  # list of ayes and noes:
+  # a list of ayes and noes:
+  if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
   map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
     enframe("column") %>%

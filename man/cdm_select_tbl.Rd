@@ -10,9 +10,9 @@ cdm_select_tbl(dm, ...)
 cdm_rename_tbl(dm, ...)
 }
 \arguments{
-\item{dm}{A \code{\link{dm}} object}
+\item{dm}{A \code{\link{dm}} object.}
 
-\item{...}{One or more table names of the \code{\link{dm}} object's tables.
+\item{...}{One or more table names of the tables of the \code{\link{dm}} object.
 See \code{\link[tidyselect:vars_select]{tidyselect::vars_select()}} and \code{\link[tidyselect:vars_rename]{tidyselect::vars_rename()}}
 for details on the semantics.}
 }

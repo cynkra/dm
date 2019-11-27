@@ -66,8 +66,8 @@ as.data_model <- function(x) {
     table_attrs <-
       data.frame(
         table = unique(x[["table"]]),
-        segment = NA,
-        display = NA,
+        segment = NA_character_,
+        display = NA_character_,
         row.names = NULL,
         stringsAsFactors = FALSE
       )
