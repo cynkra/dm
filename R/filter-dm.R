@@ -11,7 +11,7 @@
 #' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 #' in one of the following scenarios:
 #'
-#' 1. Calling `cdm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
+#' 1. Calling [`cdm_apply_filters()`] or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
 #' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
 #' with corresponding key values.
 #' Tables that are not connected to any table with an active filter are left unchanged.
@@ -25,7 +25,7 @@
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
-#' @param ... For `cdm_filter()`: Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
+#' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
 #' Multiple conditions are combined with `&` or `,`. Only rows where the condition evaluates
 #' to TRUE are kept.
 #'
@@ -34,8 +34,7 @@
 #'   See `vignette("programming", package = "dplyr")`
 #'   for an introduction to these concepts.
 #'
-#' For `cdm_apply_filters()`: Unquoted names of the tables to apply the filters to. {tidyselect}-helpers are supported.
-#' In case `...` is left empty, the filters will be applied to all tables.
+#' @seealso [cdm_apply_filters()]
 #'
 #' @examples
 #' library(dplyr)
@@ -82,14 +81,33 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 }
 
 
-#' @rdname cdm_filter
+#' Apply filters to related tables
+#'
+#' If filter conditions are stored in the `dm`, you can make sure with this function that only values in related tables
+#' are left, which refer to the remaining key values in the filtered table(s).
 #'
 #' @inheritParams cdm_add_pk
+#' @param ... Unquoted names of the tables to apply the filters to. {tidyselect}-helpers are supported.
+#' In case `...` is left empty, the filters will be applied to all tables.
+#'
+#' @details Each filtered table potentially
+#' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
+#' with corresponding key values.
+#' Tables that are not connected to any table with an active filter are left unchanged.
+#' This results in a new `dm` class object without any filter conditions.
+#'
+#' @return An updated `dm`.
+#'
+#' @seealso [cdm_filter()]
 #'
 #' @examples
 #' cdm_nycflights13() %>%
 #'   cdm_filter(flights, month == 3) %>%
 #'   cdm_apply_filters()
+#'
+#' cdm_nycflights13() %>%
+#'   cdm_filter(flights, month == 3) %>%
+#'   cdm_apply_filters(planes)
 #'
 #' library(dplyr)
 #' cdm_nycflights13() %>%
