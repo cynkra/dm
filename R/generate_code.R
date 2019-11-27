@@ -23,7 +23,7 @@ cdm_paste <- function(dm, select = FALSE) {
 
   # we assume the tables exist and have the necessary columns
   # code for including the tables
-  code <- glue("dm({paste(tibble:::tick_if_needed({src_tbls(dm)}), collapse = ', ')})")
+  code <- glue("dm({paste(tick_if_needed({src_tbls(dm)}), collapse = ', ')})")
 
   if (select) {
     # adding code for selection of columns
@@ -32,7 +32,7 @@ cdm_paste <- function(dm, select = FALSE) {
       mutate(code = map2_chr(
         tbl_name,
         cols,
-        ~glue("  cdm_select({..1}, {paste0(tibble:::tick_if_needed(..2), collapse = ', ')})"))
+        ~glue("  cdm_select({..1}, {paste0(tick_if_needed(..2), collapse = ', ')})"))
         )
     code_select <- if (nrow(tbl_select)) summarize(tbl_select, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
     code <- glue_collapse(c(code, code_select), sep = " %>%\n")
