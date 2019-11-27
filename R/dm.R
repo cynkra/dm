@@ -583,7 +583,7 @@ src_tbls.dm <- function(x) {
 }
 
 #' @export
-copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, ...) {
+copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
   df_list <- if (
     inherits(df, "list") &&
     # if list than it better be a list of `data.frame` or `tbl_dbi` (mix is currently not allowed)
@@ -609,8 +609,8 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
     }
   }
   # FIXME: should we allow `overwrite` argument?
-  names_list <- figure_out_names(src_tbls(dest), name)
-  # `repair` argument is always `check_unique`, so old table names currently cannot be updated
+  names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
+  # `repair` argument is `unique` by default
   cdm_add_tbl_impl(dest, df_list, names_list$new_names)
 }
 
