@@ -2,21 +2,21 @@
 % Please edit documentation in R/key-helpers.R
 \name{check_if_subset}
 \alias{check_if_subset}
-\title{Test if values of one column are a subset of values of another column}
+\title{Test if the values of one column are a subset of the values of another column}
 \usage{
 check_if_subset(t1, c1, t2, c2)
 }
 \arguments{
-\item{t1}{Data frame containing the column \code{c1}.}
+\item{t1}{The data frame that contains column \code{c1}.}
 
-\item{c1}{Column of \code{t1} that should only contain values that are also in \code{c2} of data frame \code{t2}.}
+\item{c1}{The column of \code{t1} that should only contain the values that are also present in column \code{c2} of data frame \code{t2}.}
 
-\item{t2}{Data frame containing the column \code{c2}.}
+\item{t2}{The data frame that contains column \code{c2}.}
 
-\item{c2}{Column of second data frame which has to contain all values of \code{c1} to avoid an error.}
+\item{c2}{The column of the second data frame that has to contain all values of \code{c1} to avoid an error.}
 }
 \description{
-\code{check_if_subset()} tests, if the values of the chosen column \code{c1} of data frame \code{t1} are a subset of the values
+\code{check_if_subset()} tests if the values of the chosen column \code{c1} of data frame \code{t1} are a subset of the values
 of column \code{c2} of data frame \code{t2}.
 }
 \examples{

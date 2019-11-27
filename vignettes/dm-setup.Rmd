@@ -1,5 +1,5 @@
 ---
-title: "Preparing Your Data"
+title: "Defining a 'dm' object for your data"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -9,6 +9,7 @@ vignette: >
 editor_options: 
   chunk_output_type: console
 ---
+
 
 This document describes how you can get your data into a `dm` object. 
 

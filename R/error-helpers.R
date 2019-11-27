@@ -1,3 +1,4 @@
+# Cf. https://github.com/krlmlr/dm/issues/144 (Review error messages)
 
 # error class generator ---------------------------------------------------
 
@@ -346,7 +347,7 @@ error_update_not_supported <- function() {
   paste0('Updating "dm" objects not supported.')
 }
 
-# when filters are set and they shouldn't be ------------------------------
+# errors when filters are set but they shouldn't be ------------------------------
 
 abort_only_possible_wo_filters <- function(fun_name) {
   abort(error_only_possible_wo_filters(fun_name), .subclass = cdm_error_full("only_possible_wo_filters"))
@@ -524,30 +525,6 @@ error_table_needs_name <- function() {
   "The new table to insert with `cdm_insert_zoomed_tbl()` must have a name"
 }
 
-# no table zoomed, but dplyr-function called ---------------------------------
-
-abort_no_table_zoomed_dplyr <- function(fun) {
-  abort(error_no_table_zoomed_dplyr(fun), .subclass = cdm_error_full("no_table_zoomed_dplyr"))
-}
-
-error_no_table_zoomed_dplyr <- function(fun) {
-  glue("Please specify the table first that you want to manipulate, using `cdm_zoom_to_tbl()`, ",
-       "when calling {tick(paste0(fun, '()'))} on a `dm`")
-}
-
-
-# no filters can exist for zoomed table for 'rename()' and 'select --------
-
-abort_no_filters_rename_select <- function() {
-  abort(error_no_filters_rename_select(), .subclass = cdm_error_full("no_filters_rename_select"))
-}
-
-error_no_filters_rename_select <- function() {
-  paste0("No existing filter conditions allowed for both the zoomed table or the original table that was zoomed ",
-         "when calling `rename.zoomed_dm()`, `select.zoomed_dm()`, `mutate.zoomed_dm()`, `summarise.zoomed_dm()` or ",
-         "`transmute.zoomed_dm()`.")
-}
-
 # when zoomed and it shouldn't be ------------------------------
 
 abort_only_possible_wo_zoom <- function(fun_name) {
@@ -580,6 +557,27 @@ abort_one_name_for_each_table <- function() {
         .subclass = cdm_error_full("one_name_for_each_table"))
 }
 
+# table not on src --------------------------------------------------------
+
+abort_req_tbl_not_avail <- function(avail, missing) {
+  abort(error_req_tbl_not_avail(avail, missing), .subclass = cdm_error_full("req_tbl_not_avail"))
+}
+
+error_req_tbl_not_avail <- function(avail, missing) {
+  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
+}
+
+
+# table for which key should be set not in list of tables when creating dm -----------------------
+
+abort_unnamed_table_list <- function() {
+  abort(error_unnamed_table_list(), .subclass = cdm_error_full("unnamed_table_list"))
+}
+
+error_unnamed_table_list <- function() {
+  "Table list in `new_dm()` needs to be named."
+}
+
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
@@ -589,4 +587,36 @@ abort_need_unique_names <- function(duplicate_names) {
 error_need_unique_names <- function(duplicate_names) {
   glue("Each new table needs to have a unique name. Duplicate new name(s): ",
        "{commas(tick(duplicate_names))}.")
+}
+
+# lost track of by-column (FK-relation) -----------------------------------
+
+abort_fk_not_tracked <- function(x_orig_name, y_name) {
+ abort(error_fk_not_tracked(x_orig_name, y_name), .subclass = cdm_error_full("fk_not_tracked"))
+}
+
+error_fk_not_tracked <- function(x_orig_name, y_name) {
+  glue("The foreign key that existed between the originally zoomed table {tick(x_orig_name)} ",
+       "and {tick(y_name)} got lost in transformations. Please explicitly provide the `by` argument.")
+}
+
+# RHS-by column not selected ----------------------------------------------
+
+abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
+  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = cdm_error_full("need_to_select_rhs_by"))
+}
+
+error_need_to_select_rhs_by <- function(y_name, rhs_by) {
+  glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
+}
+
+
+# dm invalid --------------------------------------------------------------
+
+abort_dm_invalid <- function(why) {
+  abort(error_dm_invalid(why), .subclass = cdm_error_full("dm_invalid"))
+}
+
+error_dm_invalid <- function(why) {
+  paste0("This `dm` is invalid, reason: ", why)
 }

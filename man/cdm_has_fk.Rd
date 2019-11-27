@@ -2,27 +2,29 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_has_fk}
 \alias{cdm_has_fk}
-\title{Does a reference from one table of a \code{dm} to another exist?}
+\title{Does there exist a reference from one table of a \code{dm} to another?}
 \usage{
 cdm_has_fk(dm, table, ref_table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{A table in the \code{dm}}
+\item{table}{A table in the \code{dm}.}
 
-\item{ref_table}{The table which \code{table} is potentially referencing.}
+\item{ref_table}{The table that \code{table} is potentially referencing.}
 }
 \value{
-A boolean value: \code{TRUE}, if a reference from \code{table} to \code{ref_table} exists, \code{FALSE} otherwise.
+A boolean value: \code{TRUE} if a reference from \code{table} to \code{ref_table} exists, \code{FALSE} otherwise.
 }
 \description{
-Does a reference from one table of a \code{dm} to another exist?
+Does there exist a reference from one table of a \code{dm} to another?
 }
 \seealso{
-Other foreign key functions: \code{\link{cdm_add_fk}},
-  \code{\link{cdm_enum_fk_candidates}},
-  \code{\link{cdm_get_all_fks}}, \code{\link{cdm_get_fk}},
-  \code{\link{cdm_rm_fk}}
+Other foreign key functions: 
+\code{\link{cdm_add_fk}()},
+\code{\link{cdm_enum_fk_candidates}()},
+\code{\link{cdm_get_all_fks}()},
+\code{\link{cdm_get_fk}()},
+\code{\link{cdm_rm_fk}()}
 }
 \concept{foreign key functions}
