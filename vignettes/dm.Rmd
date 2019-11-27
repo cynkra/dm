@@ -180,7 +180,7 @@ flights %>%
 
 The {dm} code is leaner because the fk information is encoded in the object.
 
-Mind, that if you access a table via `tbl.dm()`, `$.dm()` or `[[.dm()` you get requested the table without any effect of filter conditions set for other tables.
+Mind, that if you access a table via `tbl.dm()`, `$.dm()` or `[[.dm()`, filter conditions set for other tables are ignored.
 
 ### Joining two tables {#join}
 
