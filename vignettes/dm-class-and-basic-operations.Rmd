@@ -27,30 +27,22 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
-The goal of the {dm} package and the `dm` class that comes with it, is to make your life easier when you are dealing with data and data models.
+The goal of the {dm} package and the `dm` class that comes with it, is to make your life easier when you are dealing with data from several different tables.
 
 Let's take a look at the `dm` class.
 
 ## Class `dm`
 
-The `dm` class contains a set of tables, as well as information about their primary keys and the relations between the tables. 
-You can have your `dm` object based on different data sources, such as a local environment or a database.
+The `dm` class consists of a collection of tables and metadata about the tables, such as 
 
-`dm` is a wrapper around two classes that are independent from each other:
+- the names of the tables
+- the names of the columns of the tables
+- the primary and foreign keys of the tables to link the tables together
+- the data (either as data frames or as references to database tables)
 
-1. one part of the object is a [`src` object](https://dplyr.tidyverse.org/reference/src.html) from [{dplyr}](https://dplyr.tidyverse.org/)
-2. the other part is an object of the `data_model` class
- from the [{datamodelr}](https://github.com/bergant/datamodelr) package
+All tables in a `dm` must be obtained from the same data source;
+csv files and spreadsheets would need to be imported to data frames in R.
 
-The `src` object contains information about where the tables of your data model are physically stored. 
-The `data_model` object contains meta-information about your data, such as:
-
-- what the primary keys in your schema are
-- how the tables are related to each other, i.e. what the foreign key relations are
-
-Last but not least, the third part of the object is a named list that contains the tables on the `src`.
-
-So much about theory, let us now see how to construct such an object and how it looks like in `R`:
 
 ## Examples of `dm` objects {#ex_dm}
 
@@ -72,7 +64,7 @@ library(nycflights13)
 library(dm)
 empty_dm <- dm()
 empty_dm
-cdm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
+cdm_add_tbl(empty_dm, airlines, airports, flights, planes, weather) 
 ```
 
 ### Coerce a list of tables
@@ -105,20 +97,6 @@ iris_dm <- new_dm(list("iris1" = iris, "iris2" = iris))
 iris_dm
 ```
 
-<!-- And lastly, with `new_dm()` you can create a `dm` by providing the three individual parts that it consists of: -->
-<!-- ```{r} -->
-<!-- local_src <- src_df(env = new.env()) -->
-<!-- tables <- list("iris1" = iris, "iris2" = iris) -->
-<!-- data_model <- cdm_get_data_model(iris_dm) -->
-<!-- another_iris_dm <-  -->
-<!--   new_dm( -->
-<!--     tables = tables, -->
-<!--     data_model = data_model -->
-<!--     ) -->
-<!-- another_iris_dm -->
-<!-- ``` -->
-
-<!--You noticed above that by using the `cdm_get_data_model()` function, we were able to access the `data_model` part of a `dm`.-->
 
 We can get the list of tables with `cdm_get_tables()` and the `src` object with `cdm_get_src()`.
 
@@ -152,7 +130,7 @@ cdm_has_pk(flights_dm, airports)
 flights_dm_with_key <- cdm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
-The `dm` model now has a primary key. Let's check:
+The `dm` now has a primary key. Let's check:
 ```{r}
 cdm_has_pk(flights_dm_with_key, airports)
 ```
@@ -198,7 +176,7 @@ Useful functions for managing foreign key relations include:
 Now it gets (even more) interesting: we want to define relations between different tables.
 With the `cdm_add_fk()` function you can define which column of which table points to another table's column.
 
-When dealing with data models, a foreign key from one table has to always point to a primary key of another table.
+This is done by choosing a foreign key from one table that will point to a primary key of another table.
 The primary key of the referred table must be set with `cdm_add_pk()`.
 `cdm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
 
@@ -217,7 +195,7 @@ What if we tried to add another foreign key relation from `flights` to `airports
 ```{r error=TRUE}
 flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports, check = TRUE)
 ```
-As you can see, behind the scenes, checks are executed automatically (unless `check = FALSE`) by the functions of `dm` to prevent steps that do not comply with the logic of data models.
+As you can see, behind the scenes, checks are executed automatically (unless `check = FALSE`) by the functions of `dm` to prevent steps that would result in inconsistent representations.
 
 Use `cdm_has_fk()` for checking if a foreign key exists that is pointing from one table to another:
 ```{r}
@@ -242,7 +220,7 @@ flights_dm_with_fk %>%
 flights_dm_with_fk %>% 
   cdm_rm_fk(flights, NULL, airports) %>% 
   cdm_get_fk(flights, airports)
-```
+``` 
 
 Since the primary keys are defined in the `dm` object, you do not need to provide the referenced column name of `ref_table`.
 This is always the primary key column of the table.
@@ -253,7 +231,7 @@ Another function for getting to know your data better (cf. `cdm_enum_pk_candidat
 cdm_enum_fk_candidates(flights_dm_with_key, weather, airports)
 ```
 
-Get an overview of all foreign key relations in your data model with`cdm_get_all_fks()`:
+Get an overview of all foreign key relations with`cdm_get_all_fks()`:
 
 ```{r}
 cdm_get_all_fks(cdm_nycflights13(cycle = TRUE))

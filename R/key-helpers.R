@@ -7,7 +7,8 @@
 #' @return A tibble with 5 columns:
 #'   1. `table`: the table in the `dm`
 #'   1. `kind`: "PK" or "FK"
-#'   1. `column`: a column of `table`
+#'   1. `column`: a column of the table
+#'   1. `ref_table`: for foreign keys, the referenced table
 #'   1. `is_key`: logical
 #'   1. `problem`: if `is_key = FALSE`, the reason for that
 #'
@@ -227,7 +228,8 @@ check_pk_constraints <- function(dm) {
   tibble(
     table = table_names,
     kind = "PK",
-    column = pks$pk_col
+    column = pks$pk_col,
+    ref_table = NA_character_
   ) %>%
     left_join(tbl_is_pk, by = "column")
 }
@@ -243,7 +245,7 @@ check_fk_constraints <- function(dm) {
     is_key = if_else(problem == "", TRUE, FALSE),
     kind = "FK"
   ) %>%
-    select(table = t1_name, kind, column = colname, is_key, problem)
+    select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
 }
 
 new_tracked_keys <- function(dm, selected) {

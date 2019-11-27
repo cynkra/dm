@@ -26,17 +26,19 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
-The goal of the package {dm} and its `dm` class is to facilitate work with multiple related tables.
-An object of the `dm` class contains all relevant information about the tables in a data model:
+The goal of the package {dm} and its `dm` class is to facilitate working with multiple related tables.
 
-1. the place where the tables live (i.e., the `src`: a database (DB) or locally in your R session)
-1. the metadata from the data model: the tables, columns and key constraints
-1. the data in the tables
+An object of the `dm` class contains the data in the tables, and metadata about the tables, such as
+
+- the names of the tables
+- the names of the columns of the tables
+- the key constraints to link the tables together
+- the data (either as data frames or as references to database tables)
 
 This package augments [{dplyr}](https://dplyr.tidyverse.org/)/[{dbplyr}](https://dbplyr.tidyverse.org/) workflows:
 
 - multiple related tables are kept in a single compound object
-- joins across multiple tables are available by specifying the tables involved, no need to memorize column names or relationships
+- joins across multiple tables are available by specifying the tables involved, without a need to memorize column names or relationships
 
 In addition, a battery of utilities is provided that helps with creating a tidy data model.
 
@@ -74,7 +76,7 @@ flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 flights_dm
 ```
 
-This fairly verbose output shows the three components of a `dm` object: the table source, the metadata, and row counts.
+This fairly verbose output shows the data and metadata of a `dm` object.
 These components can be accessed with `cdm_get_src()` and `cdm_get_tables()`.
 
 ```{r}
@@ -87,7 +89,7 @@ cdm_get_all_fks(flights_dm)
 
 ## Keys and visualization {#keys}
 
-As you can see in the "Data model" part of the output above, no keys have been set so far.
+As you can see in the output above, no keys have been set so far.
 We will use `cdm_add_pk()` and `cdm_add_fk()` to add primary keys (pk) and foreign keys (fk):
 
 ```{r}

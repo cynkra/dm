@@ -57,5 +57,5 @@ get_all_keys <- function(dm, table_name) {
     filter(child_table == !!table_name) %>%
     pull(child_fk_col)
   pk <- cdm_get_pk(dm, !!table_name)
-  set_names(c(pk, fks))
+  set_names(unique(c(pk, fks)))
 }
