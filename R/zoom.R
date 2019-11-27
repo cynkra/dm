@@ -49,7 +49,7 @@ cdm_zoom_to_tbl <- function(dm, table) {
         mutate(
           zoom = if_else(table == !!zoom, data, list(NULL)),
           key_tracker_zoom = if_else(table == !!zoom, keys, list(NULL))
-          )
+        )
       ),
     class = c("zoomed_dm", "dm")
     )
