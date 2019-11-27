@@ -64,10 +64,9 @@ check_key <- function(.data, ...) {
   .data <- eval_tidy(data_q)
 
   cols_avail <- colnames(.data)
-  cols_chosen <- tidyselect::vars_select(cols_avail, ...)
   # if no column is chosen, all columns are used for the check
-  if (is_empty(cols_chosen)) cols_chosen <- cols_avail
-  names(cols_chosen) <- set_names(paste0("...", seq_along(cols_chosen)))
+  cols_chosen <- if (is_empty(enexprs(...))) cols_avail else tidyselect::vars_select(cols_avail, ...)
+  if (has_length(cols_chosen)) names(cols_chosen) <- set_names(paste0("...", seq_along(cols_chosen)))
 
   duplicate_rows <-
     .data %>%
