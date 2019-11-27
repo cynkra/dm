@@ -169,7 +169,7 @@ dm_delta_may %>%
   cdm_nrow()
 ```
 
-You can inspect the filtered tables with `cdm_apply_filters_to_tbl`.
+You can inspect the filtered tables with `cdm_apply_filters_to_tbl()`.
 
 In the `airlines` table, Delta is the only remaining carrier:
 
