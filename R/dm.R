@@ -584,13 +584,7 @@ src_tbls.dm <- function(x) {
 
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
-  df_list <- if (
-    inherits(df, "list") &&
-    # if list than it better be a list of `data.frame` or `tbl_dbi` (mix is currently not allowed)
-    (all(map_lgl(df, ~inherits(., "data.frame"))) || all(map_lgl(df, ~inherits(., "tbl_dbi"))))) df else if (
-      inherits(df, "data.frame") || inherits(df, "tbl_dbi")) list(df) else {
-        abort_only_data_frames_supported()
-      }
+  df_list <- if (inherits(df, "data.frame") || inherits(df, "tbl_dbi")) list(df) else abort_only_data_frames_supported()
   # names: if `name` argument has same length as `df_list`, then use those names
   # if `df_list` is named and has different length than `name` then use names of list elements
   # if `df_list` is not named and has different length than `name` throw an error
