@@ -34,7 +34,8 @@
 #'   See `vignette("programming", package = "dplyr")`
 #'   for an introduction to these concepts.
 #'
-#' For `cdm_apply_filters()`: Unquoted names of the tables to apply the filters to.
+#' For `cdm_apply_filters()`: Unquoted names of the tables to apply the filters to. {tidyselect}-helpers are supported.
+#' In case `...` is left empty, the filters will be applied to all tables.
 #'
 #' @examples
 #' library(dplyr)
@@ -100,7 +101,7 @@ cdm_apply_filters <- function(dm, ...) {
   vars <- tidyselect_table_names(dm)
   selected <- tidyselect::vars_select(vars, ...)
   # in case of empty ellipsis all tables should be in selection
-  if (is_empty(selected)) selected <- names(dm)
+  if (is_empty(enexprs(...))) selected <- names(dm)
   new_def <- cdm_get_def(dm) %>%
     mutate(data = map(table, ~if_else(.x %in% selected, list(tbl(dm, .x)), data[.x == table])) %>% flatten)
 

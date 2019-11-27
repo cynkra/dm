@@ -23,7 +23,8 @@ the data frame. They support unquoting and splicing.
 See \code{vignette("programming", package = "dplyr")}
 for an introduction to these concepts.
 
-For \code{cdm_apply_filters()}: Unquoted names of the tables to apply the filters to.}
+For \code{cdm_apply_filters()}: Unquoted names of the tables to apply the filters to. {tidyselect}-helpers are supported.
+In case \code{...} is left empty, the filters will be applied to all tables.}
 }
 \description{
 Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it
