@@ -103,6 +103,7 @@ cdm_apply_filters <- function(dm) {
   cdm_reset_all_filters(new_dm3(def))
 }
 
+# FIXME: 'cdm_apply_filters()' should get an own doc-page which 'cdm_apply_filters_to_tbl()' should share (cf. #145)
 #' @rdname cdm_filter
 #'
 #' @inheritParams cdm_add_pk
