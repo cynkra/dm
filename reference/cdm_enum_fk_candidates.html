@@ -44,7 +44,7 @@
 
 <meta property="og:title" content="Find foreign key candidates in a table — cdm_enum_fk_candidates" />
 <meta property="og:description" content="Determine which columns would be good candidates to be used as foreign keys of a table,
-and reference the primary key column of another dm object's table." />
+to reference the primary key column of another table of the dm object." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -151,7 +151,7 @@ and reference the primary key column of another dm object's table." />
 
     <div class="ref-description">
     <p>Determine which columns would be good candidates to be used as foreign keys of a table,
-and reference the primary key column of another <code><a href='dm.html'>dm</a></code> object's table.</p>
+to reference the primary key column of another table of the <code><a href='dm.html'>dm</a></code> object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_enum_fk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)
@@ -167,7 +167,7 @@ and reference the primary key column of another <code><a href='dm.html'>dm</a></
     </tr>
     <tr>
       <th>table</th>
-      <td><p>The table whose columns should be tested for suitability of use as foreign keys.</p></td>
+      <td><p>The table whose columns should be tested for suitability as foreign keys.</p></td>
     </tr>
     <tr>
       <th>ref_table</th>
@@ -182,20 +182,19 @@ and reference the primary key column of another <code><a href='dm.html'>dm</a></
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A table that lists which columns of <code>table</code> would be suitable candidates for
-foreign key columns to reference <code>ref_table</code>, and which columns would not be suitable.</p>
+foreign key columns to reference <code>ref_table</code>, which columns would not be suitable,
+and the reason <code>why</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>cdm_enum_fk_candidates()</code> first checks if <code>ref_table</code> has a primary key set.
-Then, for each column of <code>table</code>, a join operation will be tried, with argument <code>by</code> matching
-the respective column with the primary key of <code>ref_table</code>.
-This tests implicitly for
-type compatibility (on most sources).
-Based on the result of the join, the
-entry in the result column <code>why</code> is:</p><ul>
-<li><p>an empty entry, if the column is a candidate</p></li>
-<li><p>the total percentage and individual numbers of missing matches between the entries of the
-respective column in table <code>table</code> and the primary column entries in table <code>ref_table</code>.</p></li>
-<li><p>the error message triggered by the error (often stating the mismatched column types)</p></li>
+    <p><code>cdm_enum_fk_candidates()</code> first checks if <code>ref_table</code> has a primary key set,
+if not, an error is thrown.</p>
+<p>If <code>ref_table</code> does have a primary key, then a join operation will be tried using
+that key as the <code>by</code> argument of join() to match it to each column of <code>table</code>.
+Attempting to join incompatible columns triggers an error.</p>
+<p>The outcome of the join operation determines the value of the <code>why</code> column in the result:</p><ul>
+<li><p>an empty value for a column of <code>table</code> that is a suitable foreign key candidate</p></li>
+<li><p>the count and percentage of missing matches for a column that is not suitable</p></li>
+<li><p>the error message triggered for unsuitable candidates that may include the types of mismatched columns</p></li>
 </ul>
 
 <p><code>enum_fk_candidates()</code> works like <code>cdm_enum_fk_candidates()</code> with the zoomed table as <code>table</code>.</p>

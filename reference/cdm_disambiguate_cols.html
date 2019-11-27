@@ -43,10 +43,7 @@
 
 
 <meta property="og:title" content="Avoid conflicts in column names — cdm_disambiguate_cols" />
-<meta property="og:description" content="This function checks all tables for column names that are not unique (across the entire dm object), and renames
-those columns by prefixing the respective table name and a separator.
-Key columns will not be renamed because only one column should remain when two tables that are
-linked by a key relation are joined." />
+<meta property="og:description" content="This function ensures that all columns in dm have unique names." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -152,10 +149,7 @@ linked by a key relation are joined." />
     </div>
 
     <div class="ref-description">
-    <p>This function checks all tables for column names that are not unique (across the entire <code>dm</code> object), and renames
-those columns by prefixing the respective table name and a separator.
-Key columns will not be renamed because only one column should remain when two tables that are
-linked by a key relation are joined.</p>
+    <p>This function ensures that all columns in <code>dm</code> have unique names.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cdm_disambiguate_cols</span>(<span class='no'>dm</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -178,6 +172,14 @@ By default, this function lists the renamed columns in a message, pass <code>FAL
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function first checks if there are any column names that are not unique.
+If there are, those columns will be assigned new, unique, names by prefixing their existing name
+with the name of their table and a separator.
+Columns that act as primary or foreign keys will not be renamed
+because only the foreign key column will remain when two tables are joined,
+making that column name "unique" as well.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>cdm_disambiguate_cols</span>(<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>())</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
@@ -199,6 +201,7 @@ By default, this function lists the renamed columns in a message, pass <code>FAL
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
