@@ -116,14 +116,14 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #' @export
 cdm_apply_filters <- function(dm, ...) {
   check_not_zoomed(dm)
+  def <- cdm_get_def(dm)
   vars <- tidyselect_table_names(dm)
-  selected <- tidyselect::vars_select(vars, ...)
   # in case of empty ellipsis all tables should be in selection
-  if (is_empty(enexprs(...))) selected <- names(dm)
-  new_def <- cdm_get_def(dm) %>%
-    mutate(data = map(table, ~if_else(.x %in% selected, list(tbl(dm, .x)), data[.x == table])) %>% flatten)
+  selected <- if (is_empty(enexprs(...))) names(dm) else tidyselect::vars_select(vars, ...)
+  # update "selected" tables
+  def$data[match(selected, def$table, nomatch = 0)] <- map(selected, cdm_get_filtered_table, dm = dm)
 
-  cdm_reset_all_filters(new_dm3(new_def))
+  cdm_reset_all_filters(new_dm3(def))
 }
 
 # calculates the necessary semi-joins from all tables that were filtered to
