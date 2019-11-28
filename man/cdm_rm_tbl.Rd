@@ -10,7 +10,8 @@ cdm_rm_tbl(dm, ...)
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{...}{One or more unquoted table names to remove from the \code{dm}.
-\code{tidyselect} functions are supported.}
+\code{tidyselect} is supported, see \code{\link[tidyselect:vars_select]{tidyselect::vars_select()}} and \code{\link[tidyselect:vars_rename]{tidyselect::vars_rename()}}
+for details on the semantics.}
 }
 \value{
 The dm without the removed table(s) that were present in the initial \code{dm}.
