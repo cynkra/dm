@@ -1,4 +1,4 @@
-#' Draw a diagram of a [`dm`]-object's data model 
+#' Draw a diagram of a [`dm`]-object's data model
 #'
 #' `cdm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'
@@ -170,6 +170,29 @@ color_quos_to_display <- function(...) {
   new_values <- rev(colors$datamodelr[match(values, colors$dm)])
 
   tibble(table = names(quos), new_display = new_values[idx])
+}
+
+cdm_set_colors2 <- function(dm, ...) {
+  avail_tables <- src_tbls(dm)
+  selected_tables <- tidyselect::vars_select(avail_tables, ...) %>%
+    # names will get integer suffixes if duplicated ("blue1", "blue2", ...)
+    set_names(gsub("[0-9]*", "", names(.)))
+  sel_colors <- names(selected_tables)
+  if (!all(sel_colors %in% colors$dm)) {
+    abort_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
+  }
+
+  display_df <- tibble(
+    table = selected_tables,
+    new_display = colors$datamodelr[match(sel_colors, colors$dm)])
+
+  def <-
+    cdm_get_def(dm) %>%
+    left_join(display_df, by = "table") %>%
+    mutate(display = coalesce(new_display, display)) %>%
+    select(-new_display)
+
+  new_dm3(def)
 }
 
 #' cdm_get_colors()
