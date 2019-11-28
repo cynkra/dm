@@ -115,7 +115,7 @@ abort_ref_tbl_has_no_pk <- function(ref_table_name) {
 
 error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
   glue("ref_table {tick(ref_table_name)} needs a primary key first. ",
-    "Use `cdm_enum_pk_candidates()` to find candidates, and `cdm_add_pk()` define a primary key."
+    "Use `cdm_enum_pk_candidates()` to find appropriate columns and `cdm_add_pk()` to define a primary key."
   )
 }
 
@@ -230,7 +230,7 @@ abort_too_many_cols <- function(table_name) {
 }
 
 error_txt_too_many_cols <- function(table_name) {
-  paste0("Number of columns to be extracted has to be less than total number of columns of ", table_name)
+  glue("Number of columns to be extracted has to be less than total number of columns of {tick(table_name)}")
 }
 
 abort_no_overwrite <- function() {
@@ -265,14 +265,14 @@ error_txt_no_unique_indexes <- function() {
   paste0("`cdm_copy_to()` does not support the `unique_indexes` argument.")
 }
 
-abort_need_named_vec <- function(dm) {
-  abort(error_txt_need_named_vec(dm), .subclass = cdm_error_full("need_named_vec"))
+abort_need_named_vec <- function(table_names) {
+  abort(error_txt_need_named_vec(table_names), .subclass = cdm_error_full("need_named_vec"))
 }
 
-error_txt_need_named_vec <- function(dm) {
-  paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector, the names ",
-    "must be from the original table names returned by `src_tbls()`: ",
-    commas(tick(src_tbls(dm)))
+error_txt_need_named_vec <- function(table_names) {
+  paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector whose names ",
+    "are the original table names (returned by e.g. `src_tbls()`): ",
+    commas(tick(table_names))
   )
 }
 
@@ -281,33 +281,32 @@ abort_src_not_db <- function() {
 }
 
 error_src_not_db <- function() {
-  paste0("This does not work if `cdm_get_src(dm)` is not on a database.")
+  paste0("This does not work if the tables of the `dm` are not on a database.")
 }
 
-abort_first_rm_fks <- function(table, fks) {
-  abort(error_first_rm_fks(table, fks), .subclass = cdm_error_full("first_rm_fks"))
+abort_first_rm_fks <- function(table, fk_tables) {
+  abort(error_first_rm_fks(table, fk_tables), .subclass = cdm_error_full("first_rm_fks"))
 }
 
-error_first_rm_fks <- function(table, fks) {
-  glue("There are foreign keys pointing from table(s) {commas(tick(fks))} to table {tick(table)}. First remove those or set `rm_referencing_fks = TRUE`.")
+error_first_rm_fks <- function(table, fk_tables) {
+  glue("There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
+       "First remove those or set `rm_referencing_fks = TRUE`.")
 }
-
 
 abort_no_src_or_con <- function() {
   abort(error_no_src_or_con(), .subclass = cdm_error_full("no_src_or_con"))
 }
 
 error_no_src_or_con <- function() {
-  paste0('`src` needs to be a "src" or a "con" object.')
+  'Argument `src` needs to be a `src` or a `con` object.'
 }
-
 
 abort_update_not_supported <- function() {
   abort(error_update_not_supported(), .subclass = cdm_error_full("update_not_supported"))
 }
 
 error_update_not_supported <- function() {
-  paste0('Updating "dm" objects not supported.')
+  paste0('Updating `dm` objects not supported.')
 }
 
 # errors when filters are set but they shouldn't be ------------------------------
@@ -319,7 +318,6 @@ abort_only_possible_wo_filters <- function(fun_name) {
 error_only_possible_wo_filters <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.")
 }
-
 
 # no foreign key relation -------------------------------------------------
 
@@ -361,30 +359,7 @@ abort_what_a_weird_object <- function(class) {
 }
 
 error_what_a_weird_object <- function(class) {
-  paste0("Don't know how to determine table source for object of class ",
-         class)
-}
-
-# not all tables have the same src ----------------------------------------
-
-
-abort_not_same_src <- function() {
-  abort(error_not_same_src(), .subclass = cdm_error_full("not_same_src"))
-}
-
-error_not_same_src <- function() {
-  "Not all tables in the object share the same `src`"
-}
-
-# Something other than tables are put in a `dm` ------------------
-
-abort_what_a_weird_object <- function(class) {
-  abort(error_what_a_weird_object(class), .subclass = cdm_error_full("what_a_weird_object"))
-}
-
-error_what_a_weird_object <- function(class) {
-  paste0("Don't know how to determine table source for object of class ",
-         class)
+  glue("Don't know how to determine table source for object of class {commas(tick(class))}")
 }
 
 abort_squash_limited <- function() {
@@ -464,8 +439,6 @@ error_no_zoom_allowed <- function() {
 abort_w_message <- function(msg) {
   abort(msg, .subclass = cdm_error_full("w_message"))
 }
-
-abort_w_message
 
 # no table zoomed, but 'cdm_insert_tbl()' called ---------------------------------
 
