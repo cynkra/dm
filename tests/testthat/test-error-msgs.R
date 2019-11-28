@@ -1,4 +1,4 @@
-outpath <- here::here("tests/testthat/out/error-msgs.txt")
+outpath <- find_testthat_root_file("out/error-msgs.txt")
 
 test_that("error messages do not change", {
   verify_output(outpath, {
