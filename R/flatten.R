@@ -17,7 +17,7 @@
 #'   If the argument is empty, all tables that can be reached will be included.
 #'   If this includes tables that are not direct neighbours of `start`,
 #'   it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
-#'   `tidyselect` is supported, cf. [dplyr::select()].
+#'   `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @family flattening functions
 #'
 #' @details With `...` left empty, this function will join together all the tables of your [`dm`]

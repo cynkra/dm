@@ -10,8 +10,7 @@
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more table names of the tables of the [`dm`] object.
-#'   See [tidyselect::vars_select()] and [tidyselect::vars_rename()]
-#'   for details on the semantics.
+#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
 #' @examples
 #' cdm_nycflights13() %>%
