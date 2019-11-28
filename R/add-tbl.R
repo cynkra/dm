@@ -70,8 +70,7 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more unquoted table names to remove from the `dm`.
-#' `tidyselect` is supported, see [tidyselect::vars_select()] and [tidyselect::vars_rename()]
-#' for details on the semantics.
+#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
