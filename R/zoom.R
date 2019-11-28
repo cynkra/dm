@@ -52,7 +52,7 @@ cdm_zoom_to_tbl <- function(dm, table) {
         mutate(
           zoom = if_else(table == !!zoom, data, list(NULL)),
           key_tracker_zoom = if_else(table == !!zoom, keys, list(NULL))
-          )
+        )
       ),
     class = c("zoomed_dm", "dm")
     )
@@ -191,8 +191,12 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
       ~cdm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3), .init = dm
       )
   }
-  reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~cdm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm)
+  structure(
+    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~cdm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm),
+    class = c("zoomed_dm", "dm")
+  )
 }
+
 
 get_tracked_keys <- function(dm) {
   cdm_get_def(dm) %>%

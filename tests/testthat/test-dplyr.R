@@ -617,3 +617,22 @@ test_that("key tracking works", {
   )
 })
 
+
+test_that("can use column as primary and foreign key", {
+  f <- tibble(d1 = 1:3)
+  d1 <- tibble(d1 = 1:3)
+
+  dm <-
+    dm(f, d1) %>%
+    cdm_add_pk(f, d1) %>%
+    cdm_add_pk(d1, d1) %>%
+    cdm_add_fk(f, d1, d1)
+
+  expect_equivalent_dm(
+    dm %>%
+      cdm_zoom_to_tbl(f) %>%
+      cdm_update_zoomed_tbl(),
+    dm
+  )
+})
+

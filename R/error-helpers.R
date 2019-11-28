@@ -74,17 +74,9 @@ abort_not_subset_of <- function(table_name_1, colname_1,
 
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
-  paste0(
-    "Column `",
-    colname_1,
-    "` in table `",
-    table_name_1,
-    "` contains values (see above) that are not present in column `",
-    colname_2,
-    "` in table `",
-    table_name_2,
-    "`"
-  )
+  glue("Column `{colname_1}` in table `{table_name_1}` ",
+       "contains values (see above) that are not present in ",
+       "column `{colname_2}`  in table `{table_name_2}`")
 }
 
 
@@ -603,7 +595,7 @@ error_need_to_select_rhs_by <- function(y_name, rhs_by) {
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
-  abort(error_dm_invalid(why), .subclass = "dm_invalid")
+  abort(error_dm_invalid(why), .subclass = cdm_error_full("dm_invalid"))
 }
 
 error_dm_invalid <- function(why) {

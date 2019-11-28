@@ -37,6 +37,26 @@ d8 %<-% tibble::tibble(c = c(1:6))
 # for check_key() ---------------------------------------------------------
 
 message("for check_fk() and check_set_equality()")
+# for check_cardinality...() ----------------------------------------------
+d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
+d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
+d3 <- tibble::tibble(c = 1:5)
+d4 <- tibble::tibble(c = c(1:5, 5))
+d5 <- tibble::tibble(a = 1:5)
+d6 <- tibble::tibble(c = 1:4)
+d7 <- tibble::tibble(c = c(1:5, 5, 6))
+d8 <- tibble::tibble(c = c(1:6))
+
+d1_src <- test_load(d1)
+d2_src <- test_load(d2)
+d3_src <- test_load(d3)
+d4_src <- test_load(d4)
+d5_src <- test_load(d5)
+d6_src <- test_load(d6)
+d8_src <- test_load(d8)
+
+# names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
+src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
 
 data %<-%
   tribble(
