@@ -4,18 +4,6 @@ template:
   assets:
   - pkgdown/assets
 
-articles:
-- title: All vignettes
-  desc: ~
-  class: ~
-  contents:
-  - dm-introduction-relational-data-model
-  - dm-class-and-basic-operations
-  - dm-joining
-  - setting_up_dm
-  - dm-visualization
-  - dm-low-level
-
 reference:
 - title: Creating `dm` objects and basic functions
   contents:
@@ -84,6 +72,7 @@ reference:
   - check_key
   - check_if_subset
   - check_set_equality
+  - check_cardinality
   - check_cardinality_0_n
   - check_cardinality_1_n
   - check_cardinality_0_1
@@ -106,6 +95,8 @@ navbar:
     menu:
     - text: Class 'dm' and basic operations
       href: articles/dm-class-and-basic-operations.html
+    - text: Defining a 'dm' object for your data
+      href: articles/dm-setup.html
     - text: Introduction to Relational Data Models
       href: articles/dm-introduction-relational-data-models.html
     - text: Joining in Relational Data Models

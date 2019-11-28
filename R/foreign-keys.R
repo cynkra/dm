@@ -4,8 +4,7 @@
 #' @param column The column of `table` which is to become the foreign key column and
 #'   reference the primary key of `ref_table`.
 #' @param ref_table The table which `table` is referencing.
-#'   This table needs to have
-#'   a primary key set.
+#'   This table needs to have a primary key set.
 #' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
 #'   `column` are a subset of the values of the primary key column of `ref_table`.
 #'
@@ -164,27 +163,28 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' Find foreign key candidates in a table
 #'
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
-#' and reference the primary key column of another [`dm`] object's table.
+#' to reference the primary key column of another table of the [`dm`] object.
 #'
 #' @inheritParams cdm_add_fk
-#' @param table The table whose columns should be tested for suitability of use as foreign keys.
+#' @param table The table whose columns should be tested for suitability as foreign keys.
 #' @param ref_table A table with a primary key.
 #'
-#' @details `cdm_enum_fk_candidates()` first checks if `ref_table` has a primary key set.
-#' Then, for each column of `table`, a join operation will be tried, with argument `by` matching
-#' the respective column with the primary key of `ref_table`.
-#' This tests implicitly for
-#' type compatibility (on most sources).
-#' Based on the result of the join, the
-#' entry in the result column `why` is:
+#' @details `cdm_enum_fk_candidates()` first checks if `ref_table` has a primary key set,
+#' if not, an error is thrown.
 #'
-#' - an empty entry, if the column is a candidate
-#' - the total percentage and individual numbers of missing matches between the entries of the
-#' respective column in table `table` and the primary column entries in table `ref_table`.
-#' - the error message triggered by the error (often stating the mismatched column types)
+#' If `ref_table` does have a primary key, then a join operation will be tried using
+#' that key as the `by` argument of join() to match it to each column of `table`.
+#' Attempting to join incompatible columns triggers an error.
+#'
+#' The outcome of the join operation determines the value of the `why` column in the result:
+#'
+#' - an empty value for a column of `table` that is a suitable foreign key candidate
+#' - the count and percentage of missing matches for a column that is not suitable
+#' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
 #' @return A table that lists which columns of `table` would be suitable candidates for
-#' foreign key columns to reference `ref_table`, and which columns would not be suitable.
+#' foreign key columns to reference `ref_table`, which columns would not be suitable,
+#' and the reason `why`.
 #'
 #' @family foreign key functions
 #'

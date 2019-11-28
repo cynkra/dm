@@ -1,5 +1,5 @@
 ---
-title: "Preparing Your Data"
+title: "Defining a 'dm' object for your data"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

@@ -10,7 +10,6 @@ cdm_error_full <- function(x) {
   c(cdm_error(x), "dm_error")
 }
 
-
 # abort and text for primary key handling errors --------------------------
 
 abort_wrong_col_args <- function() {
@@ -29,7 +28,6 @@ error_txt_key_set_force_false <- function() {
   "If you want to change the existing primary key for a table, set `force` == TRUE."
 }
 
-
 # abort and text for key-helper functions ---------------------------------
 
 abort_not_unique_key <- function(table_name, column_names) {
@@ -40,9 +38,7 @@ error_txt_not_unique_key <- function(table_name, column_names) {
   glue("({commas(tick(column_names))}) not a unique key of {tick(table_name)}.")
 }
 
-
 # general error: table not part of `dm` -----------------------------------
-
 
 abort_table_not_in_dm <- function(table_name, dm_tables) {
   abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = cdm_error_full("table_not_in_dm"))
@@ -51,7 +47,6 @@ abort_table_not_in_dm <- function(table_name, dm_tables) {
 error_txt_table_not_in_dm <- function(table_name, dm_tables) {
   glue("Tables {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}")
 }
-
 
 # error: is not subset of -------------------------------------------------
 
@@ -68,7 +63,6 @@ error_txt_not_subset_of <- function(table_name_1, colname_1,
     "{tick(colname_2)} of table {tick(table_name_2)}")
 }
 
-
 # error sets not equal ----------------------------------------------------
 
 abort_sets_not_equal <- function(error_msgs) {
@@ -78,7 +72,6 @@ abort_sets_not_equal <- function(error_msgs) {
 error_txt_sets_not_equal <- function(error_msgs) {
   paste0(error_msgs, collapse = "\n  ")
 }
-
 
 # cardinality check errors ------------------------------------------------
 
@@ -103,7 +96,6 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
   glue("0..1 cardinality (injectivity from child table to parent table) is not given: Column {tick(fk_col_name)}",
     " in table {tick(child_table_name)} contains duplicate values.")
 }
-
 
 # errors in fk handling --------------------------------------------------
 
@@ -143,7 +135,6 @@ abort_rm_fk_col_missing <- function() {
 error_txt_rm_fk_col_missing <- function() {
   "Parameter `column` has to be set. Pass `NULL` for removing all references."
 }
-
 
 # error helpers for draw_dm -----------------------------------------------
 
@@ -539,7 +530,7 @@ error_need_to_select_rhs_by <- function(y_name, rhs_by) {
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
-  abort(error_dm_invalid(why), .subclass = "dm_invalid")
+  abort(error_dm_invalid(why), .subclass = cdm_error_full("dm_invalid"))
 }
 
 error_dm_invalid <- function(why) {
