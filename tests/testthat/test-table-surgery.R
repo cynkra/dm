@@ -16,6 +16,28 @@ test_that("decompose_table() decomposes tables nicely on all sources?", {
       .y
     )
   )
+
+})
+
+test_that("decomposition works with {tidyselect}", {
+  pt_iris <- select(iris, starts_with("Sepal")) %>%
+    distinct() %>%
+    arrange(Sepal.Length, Sepal.Width) %>%
+    mutate(Sepal_id = row_number()) %>%
+    select(Sepal_id, everything())
+
+  ct_iris <- left_join(iris, pt_iris, by = c("Sepal.Length", "Sepal.Width")) %>%
+    select(-Sepal.Length, -Sepal.Width)
+
+  reference_flower_object <- list(
+    child_table = ct_iris,
+    parent_table = pt_iris
+  )
+
+  expect_identical(
+    decompose_table(iris, Sepal_id, starts_with("Sepal")),
+    reference_flower_object
+    )
 })
 
 test_that("reunite_parent_child() reunites parent and child nicely on all sources?", {
