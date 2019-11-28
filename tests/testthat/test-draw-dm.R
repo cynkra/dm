@@ -13,6 +13,18 @@ test_that("API", {
   )
 })
 
+test_that("'cdm_set_colors2()' works",  {
+  expect_identical(
+    cdm_set_colors2(
+      dm_nycflights_small,
+      blue = starts_with("air"),
+      green = contains("h")) %>%
+      cdm_get_colors(),
+    tibble(table = src_tbls(dm_nycflights_small),
+           color = c("green", NA_character_, "blue", "blue", "green"))
+  )
+})
+
 test_that("last", {
   expect_cdm_error(
     color_quos_to_display(
