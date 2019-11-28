@@ -26,6 +26,15 @@ An updated \code{dm} with an additional foreign key relation
 \description{
 Add a reference from one table of a \code{\link{dm}} to another
 }
+\examples{
+library(dplyr)
+iris_key <- mutate(iris, key = row_number()) \%>\%
+  select(key, everything())
+dm(iris_1 = iris_key, iris_2 = iris_key) \%>\%
+  cdm_add_pk(iris_2, key) \%>\%
+  cdm_add_fk(iris_1, key, iris_2)
+
+}
 \seealso{
 Other foreign key functions: 
 \code{\link{cdm_enum_fk_candidates}()},

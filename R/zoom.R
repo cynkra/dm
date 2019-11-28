@@ -36,6 +36,29 @@
 #'
 #' @return For `cdm_zoom_to_tbl()`: A `zoomed_dm` object
 #'
+#' @examples
+#' library(dplyr)
+#' flights_zoomed <- cdm_zoom_to_tbl(cdm_nycflights13(), flights)
+#'
+#' flights_zoomed
+#'
+#' flights_zoomed_transformed <-
+#'   flights_zoomed %>%
+#'   mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
+#'   # `by`-argument of `left_join()` can be explicitly given
+#'   # otherwise the key-relation is used
+#'   left_join(airports) %>%
+#'   select(year:dep_time, am_pm_dep, everything())
+#'
+#' # replace table `flights` with the zoomed table
+#' cdm_update_zoomed_tbl(flights_zoomed_transformed)
+#'
+#' # insert the zoomed table as a new table
+#' cdm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+#'
+#' # discard the zoomed table
+#' cdm_zoom_out(flights_zoomed_transformed)
+#'
 #' @export
 cdm_zoom_to_tbl <- function(dm, table) {
   if (is_zoomed(dm)) abort_no_zoom_allowed()

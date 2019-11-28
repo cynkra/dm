@@ -6,6 +6,12 @@
 #'
 #' @return A named vector with the number of rows for each table
 #'
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_filter(airports, faa %in% c("EWR", "LGA")) %>%
+#'   cdm_apply_filters() %>%
+#'   cdm_nrow()
+#'
 #' @export
 cdm_nrow <- function(dm) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to issue

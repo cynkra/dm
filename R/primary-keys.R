@@ -24,16 +24,15 @@
 #' @examples
 #' library(dplyr)
 #'
-#'
 #' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
 #' cdm_add_pk(nycflights_dm, planes, tailnum)
-#' cdm_add_pk(nycflights_dm, airports, faa)
-#' cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
+#' cdm_add_pk(nycflights_dm, airports, faa, check = TRUE)
+#' cdm_add_pk(nycflights_dm, planes, manufacturer)
 #'
 #' # the following does not work (throws an error)
-#' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
+#' try(cdm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
 cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   table_name <- as_name(ensym(table))
 

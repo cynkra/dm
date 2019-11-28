@@ -176,6 +176,13 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #'
 #' @family flattening functions
 #'
+#' @examples
+#'
+#' cdm_join_to_tbl(cdm_nycflights13(), airports, flights)
+#' # same result is achieved with:
+#' cdm_join_to_tbl(cdm_nycflights13(), flights, airports)
+#' # this gives an error:
+#' try(cdm_join_to_tbl(cdm_nycflights13(), airlines, airports))
 #' @export
 cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   force(join)

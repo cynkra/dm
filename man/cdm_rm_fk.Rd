@@ -23,6 +23,14 @@ An updated \code{dm} without the given foreign key relation
 This function can remove either one reference between two tables, or all references at once, if argument \code{column = NULL}.
 All arguments may be provided quoted or unquoted.
 }
+\examples{
+cdm_rm_fk(
+  cdm_nycflights13(cycle = TRUE),
+  flights,
+  dest,
+  airports)
+
+}
 \seealso{
 Other foreign key functions: 
 \code{\link{cdm_add_fk}()},

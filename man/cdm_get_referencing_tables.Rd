@@ -18,6 +18,11 @@ key of \code{table}.
 \description{
 Get the names of the tables of a \code{\link{dm}} that reference a given table.
 }
+\examples{
+cdm_get_referencing_tables(cdm_nycflights13(), airports)
+cdm_get_referencing_tables(cdm_nycflights13(), flights)
+
+}
 \seealso{
 Other functions utilizing foreign key relations: 
 \code{\link{cdm_is_referenced}()}

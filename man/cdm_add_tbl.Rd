@@ -42,6 +42,15 @@ The initial \code{dm} with the additional table(s).
 \code{cdm_add_tbl()} adds one or more tables to a \code{\link{dm}}.
 It uses \code{\link[=mutate]{mutate()}} semantics.
 }
+\examples{
+cdm_nycflights13() \%>\%
+  cdm_add_tbl(cars = mtcars, flowers = iris)
+
+# renaming table names if necessary (depending on argument `repair`)
+cdm_nycflights13() \%>\%
+  cdm_add_tbl(new_tbl = mtcars, new_tbl = iris)
+
+}
 \seealso{
 \code{\link[=cdm_rm_tbl]{cdm_rm_tbl()}}
 }

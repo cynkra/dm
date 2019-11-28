@@ -19,6 +19,10 @@ A character vector with the column name(s) of \code{table}, pointing to the prim
 \description{
 Retrieve the name of the column marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.
 }
+\examples{
+cdm_get_fk(cdm_nycflights13(), flights, airports)
+
+}
 \seealso{
 Other foreign key functions: 
 \code{\link{cdm_add_fk}()},

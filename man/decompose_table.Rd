@@ -43,8 +43,6 @@ Then it removes those
 columns from the original table, which is now called the 'child table, and adds the 'ID column'.
 }
 \examples{
-library(magrittr)
-
 decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
 decomposed_table$child_table
 decomposed_table$parent_table

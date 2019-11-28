@@ -20,6 +20,27 @@ Currently this only works with MSSQL and Postgres databases.
 
 The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
 }
+\examples{
+\dontrun{
+library(dplyr)
+src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
+iris_key <- mutate(iris, key = row_number())
+
+# setting key constraints currently doesn't work on
+# SQLite but this would be the code to set the PK
+# constraint on the DB
+iris_dm <- cdm_copy_to(
+  src_sqlite,
+  dm(iris = iris_key),
+  set_key_constraints = TRUE
+)
+
+# and this would be the code to learn
+# the `dm` from the SQLite DB
+iris_dm_learned <- cdm_learn_from_db(src_sqlite)
+
+}
+}
 \seealso{
 Other DB interaction functions: 
 \code{\link{cdm_copy_to}()}

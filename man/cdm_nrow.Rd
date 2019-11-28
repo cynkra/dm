@@ -15,3 +15,10 @@ A named vector with the number of rows for each table
 \description{
 Returns a named vector with the number of rows for each table.
 }
+\examples{
+cdm_nycflights13() \%>\%
+  cdm_filter(airports, faa \%in\% c("EWR", "LGA")) \%>\%
+  cdm_apply_filters() \%>\%
+  cdm_nrow()
+
+}

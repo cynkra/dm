@@ -47,6 +47,9 @@ The outcome of the join operation determines the value of the \code{why} column 
 \examples{
 cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
 
+cdm_zoom_to_tbl(cdm_nycflights13(), flights) \%>\%
+  enum_fk_candidates(airports)
+
 }
 \seealso{
 Other foreign key functions: 

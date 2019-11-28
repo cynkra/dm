@@ -41,12 +41,15 @@
 #' cdm_nycflights13() %>% tbl("airports")
 #' cdm_nycflights13() %>% src_tbls()
 #' cdm_nycflights13() %>% cdm_get_src()
+#' # this works only when tables of `dm` are on DB
+#' try(cdm_nycflights13() %>% cdm_get_con())
 #' cdm_nycflights13() %>% cdm_get_tables()
-#'
-#' cdm_nycflights13() %>%
-#'   cdm_rename_tbl(ap = airports)
-#' cdm_nycflights13() %>%
-#'   cdm_rename_tbl(ap = airports, fl = flights)
+#' cdm_nycflights13() %>% cdm_get_filter()
+#' cdm_nycflights13() %>% validate_dm()
+#' is_dm(cdm_nycflights13())
+#' cdm_nycflights13()["airports"]
+#' cdm_nycflights13()[["airports"]]
+#' cdm_nycflights13()$airports
 #' @export
 dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
   quos <- enquos(...)

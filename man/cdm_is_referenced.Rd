@@ -18,6 +18,11 @@ key of the \code{table} argument, \code{FALSE} otherwise.
 \description{
 Is a table of a \code{\link{dm}} referenced by another table?
 }
+\examples{
+cdm_is_referenced(cdm_nycflights13(), airports)
+cdm_is_referenced(cdm_nycflights13(), flights)
+
+}
 \seealso{
 Other functions utilizing foreign key relations: 
 \code{\link{cdm_get_referencing_tables}()}

@@ -12,6 +12,14 @@
 #'
 #' @return An updated `dm` with an additional foreign key relation
 #'
+#' @examples
+#' library(dplyr)
+#' iris_key <- mutate(iris, key = row_number()) %>%
+#'   select(key, everything())
+#' dm(iris_1 = iris_key, iris_2 = iris_key) %>%
+#'   cdm_add_pk(iris_2, key) %>%
+#'   cdm_add_fk(iris_1, key, iris_2)
+#'
 #' @export
 cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = FALSE), ~ {
   table_name <- as_name(ensym(table))
@@ -53,7 +61,7 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table) {
   new_dm3(def)
 }
 
-#' Does there exist a reference from one table of a `dm` to another?
+#' Does a reference exist from one table of a `dm` to another?
 #'
 #' @inheritParams cdm_add_fk
 #' @param ref_table The table that `table` is potentially referencing.
@@ -61,6 +69,10 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
 #'
 #' @family foreign key functions
+#'
+#' @examples
+#' cdm_has_fk(cdm_nycflights13(), flights, airports)
+#' cdm_has_fk(cdm_nycflights13(), airports, flights)
 #'
 #' @export
 cdm_has_fk <- function(dm, table, ref_table) {
@@ -75,6 +87,9 @@ cdm_has_fk <- function(dm, table, ref_table) {
 #' @family foreign key functions
 #'
 #' @return A character vector with the column name(s) of `table`, pointing to the primary key of `ref_table`
+#'
+#' @examples
+#' cdm_get_fk(cdm_nycflights13(), flights, airports)
 #'
 #' @export
 cdm_get_fk <- function(dm, table, ref_table) {
@@ -102,6 +117,9 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #'
 #' @family foreign key functions
 #'
+#' @examples
+#' cdm_get_all_fks(cdm_nycflights13())
+#'
 #' @export
 cdm_get_all_fks <- nse_function(c(dm), ~ {
   cdm_get_data_model_fks(dm) %>%
@@ -123,6 +141,13 @@ cdm_get_all_fks <- nse_function(c(dm), ~ {
 #' @family foreign key functions
 #'
 #' @return An updated `dm` without the given foreign key relation
+#'
+#' @examples
+#' cdm_rm_fk(
+#'   cdm_nycflights13(cycle = TRUE),
+#'   flights,
+#'   dest,
+#'   airports)
 #'
 #' @export
 cdm_rm_fk <- function(dm, table, column, ref_table) {
@@ -196,6 +221,9 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #'
 #' @examples
 #' cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
+#'
+#' cdm_zoom_to_tbl(cdm_nycflights13(), flights) %>%
+#'   enum_fk_candidates(airports)
 #'
 #' @export
 cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {

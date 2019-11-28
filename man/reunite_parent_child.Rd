@@ -35,6 +35,15 @@ by the column \code{id_column}, \code{id_column} is removed.
 This function is almost exactly the inverse of \code{decompose_table()} (the order
 of the columns is not retained, and the original row names are lost).
 }
+\examples{
+decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
+ct <- decomposed_table$child_table
+pt <- decomposed_table$parent_table
+
+reunite_parent_child(ct, pt, new_id)
+reunite_parent_child_from_list(decomposed_table, new_id)
+
+}
 \seealso{
 Other table surgery functions: 
 \code{\link{decompose_table}()}

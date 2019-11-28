@@ -15,7 +15,7 @@ cdm_apply_filters(dm)
 \item{table}{A table in the \code{dm}.}
 
 \item{...}{Logical predicates defined in terms of the variables in \code{.data}, passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
-Multiple conditions are combined with \verb{&} or \verb{,}.
+Multiple conditions are combined with \code{&} or \verb{,}.
 Only the rows where the condition evaluates
 to \code{TRUE} are kept.
 

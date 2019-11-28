@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{cdm_has_fk}
 \alias{cdm_has_fk}
-\title{Does there exist a reference from one table of a \code{dm} to another?}
+\title{Does a reference exist from one table of a \code{dm} to another?}
 \usage{
 cdm_has_fk(dm, table, ref_table)
 }
@@ -17,7 +17,12 @@ cdm_has_fk(dm, table, ref_table)
 A boolean value: \code{TRUE} if a reference from \code{table} to \code{ref_table} exists, \code{FALSE} otherwise.
 }
 \description{
-Does there exist a reference from one table of a \code{dm} to another?
+Does a reference exist from one table of a \code{dm} to another?
+}
+\examples{
+cdm_has_fk(cdm_nycflights13(), flights, airports)
+cdm_has_fk(cdm_nycflights13(), airports, flights)
+
 }
 \seealso{
 Other foreign key functions: 

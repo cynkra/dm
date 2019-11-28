@@ -32,8 +32,6 @@
 #'   - entry "parent_table": the "lookup table" for `child_table`
 #'
 #' @examples
-#' library(magrittr)
-#'
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
 #' decomposed_table$child_table
 #' decomposed_table$parent_table
@@ -106,6 +104,14 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' @family table surgery functions
 #'
 #' @return A wide table produced by joining the two given tables
+#'
+#' @examples
+#' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
+#' ct <- decomposed_table$child_table
+#' pt <- decomposed_table$parent_table
+#'
+#' reunite_parent_child(ct, pt, new_id)
+#' reunite_parent_child_from_list(decomposed_table, new_id)
 #'
 #' @name reunite_parent_child
 #' @export

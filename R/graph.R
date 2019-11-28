@@ -7,6 +7,10 @@
 #'
 #' @family functions utilizing foreign key relations
 #'
+#' @examples
+#' cdm_is_referenced(cdm_nycflights13(), airports)
+#' cdm_is_referenced(cdm_nycflights13(), flights)
+#'
 #' @export
 cdm_is_referenced <- function(dm, table) {
   has_length(cdm_get_referencing_tables(dm, !!ensym(table)))
@@ -25,6 +29,10 @@ is_referenced_data_model <- function(data_model, table_name) {
 #' key of `table`.
 #'
 #' @family functions utilizing foreign key relations
+#'
+#' @examples
+#' cdm_get_referencing_tables(cdm_nycflights13(), airports)
+#' cdm_get_referencing_tables(cdm_nycflights13(), flights)
 #'
 #' @export
 cdm_get_referencing_tables <- function(dm, table) {

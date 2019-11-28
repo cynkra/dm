@@ -81,6 +81,9 @@ as a tibble.
 library(dplyr)
 cdm_draw(cdm_nycflights13())
 cdm_draw(cdm_nycflights13(cycle = TRUE))
+cdm_get_available_colors()
+cdm_get_colors(cdm_nycflights13())
+
 cdm_nycflights13(color = FALSE) \%>\%
   cdm_set_colors(
     airports = ,

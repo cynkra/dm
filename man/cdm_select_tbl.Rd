@@ -25,6 +25,14 @@ optionally renaming them.
 
 \code{cdm_rename_tbl()} renames tables.
 }
+\examples{
+cdm_nycflights13() \%>\%
+  cdm_select_tbl(ap = airports)
+cdm_nycflights13() \%>\%
+  cdm_select_tbl(ap = airports, fl = flights)
+cdm_nycflights13() \%>\%
+  cdm_rename_tbl(ap = airports, fl = flights)
+}
 \seealso{
 \code{\link[=cdm_rm_tbl]{cdm_rm_tbl()}}
 }

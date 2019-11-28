@@ -24,6 +24,14 @@ The two tables need to be directly connected by a foreign key relation.
 Since this function is a wrapper around \code{\link[=cdm_flatten_to_tbl]{cdm_flatten_to_tbl()}}, the LHS of
 the join will always be a "child table", i.e. a table referencing the other table.
 }
+\examples{
+
+cdm_join_to_tbl(cdm_nycflights13(), airports, flights)
+# same result is achieved with:
+cdm_join_to_tbl(cdm_nycflights13(), flights, airports)
+# this gives an error:
+try(cdm_join_to_tbl(cdm_nycflights13(), airlines, airports))
+}
 \seealso{
 Other flattening functions: 
 \code{\link{cdm_flatten_to_tbl}()}

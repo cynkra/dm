@@ -38,14 +38,14 @@ cdm_rename <- function(dm, table, ...) {
 #' Select columns of your [`dm`] using syntax that is similar to `dplyr::select()`.
 #'
 #' @inheritParams cdm_rename
-#'
-#' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_select(airports, code = faa, altitude = alt)
 #' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
 #' If key columns are removed, then all related relations are dropped as well.
 #'
 #' @return An updated `dm` with the columns of `table` potentially reduced and/or renamed
+#'
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_select(airports, code = faa, altitude = alt)
 #'
 #' @export
 cdm_select <- function(dm, table, ...) {
