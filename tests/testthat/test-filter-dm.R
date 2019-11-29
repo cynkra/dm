@@ -52,6 +52,19 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
   expect_pred_chain(fc_t4, c("t4_2", "t5", "t4"))
   expect_pred_chain(fc_t4, c("t6", "t5", "t4"))
   expect_not_pred(fc_t4, c("t6_2", "t3", "t2", "t1"))
+
+  # fails when cycle is present
+  expect_cdm_error(
+    dm_for_filter_w_cycle %>% cdm_filter(t1, a > 3) %>% cdm_get_filtered_table("t3"),
+    "no_cycles"
+  )
+
+  # FIXME: fails, when it could actually work (check diagram of `dm_for_filter_w_cycle`)
+  # expect_identical(
+  #   dm_for_filter_w_cycle %>% cdm_filter(t1, a > 3) %>% cdm_get_filtered_table("t2"),
+  #   semi_join(t2, filter(t1, a > 3))
+  # )
+
 })
 
 

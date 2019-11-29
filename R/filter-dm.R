@@ -160,6 +160,12 @@ get_all_filtered_connected <- function(dm, table) {
   # Using only nodes with finite distances (=in the same connected component)
   # as target. This avoids a warning.
   target_tables <- names(finite_distances)
+
+  # use only subgraph to
+  # 1. speed things up
+  # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
+  graph <- igraph::induced_subgraph(graph, target_tables)
+  if (length(E(graph)) >= length(V(graph))) abort_no_cycles()
   paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
 
   # All edges with finite distance as tidy data frame
@@ -167,16 +173,16 @@ get_all_filtered_connected <- function(dm, table) {
     tibble(
       node = names(V(graph)),
       parent = names(paths$predecessors),
-      distance = distances
-    ) %>%
-    filter(is.finite(distance))
+      # both `graph` and `paths` are based on order of `finite_distances`,
+      # hence the resulting tibble is correct
+      distance = finite_distances
+    )
 
   # Edges of interest, will be grown until source node `table` is reachable
   # from all nodes
   edges <-
     all_edges %>%
     filter(node %in% !!c(filtered_tables, table))
-
   # Recursive join
   repeat {
     missing <- setdiff(edges$parent, edges$node)
