@@ -14,6 +14,16 @@ test_that("generating code for creation of existing 'dm' works", {
     fixed = TRUE
   )
 
+  # changing the tab width
+  expect_output(
+    cdm_paste(dm_for_filter, FALSE, 4),
+    paste0("dm(t1, t2, t3, t4, t5, t6) %>%\n    cdm_add_pk(t1, a) %>%\n    cdm_add_pk(t2, c) %>%",
+           "\n    cdm_add_pk(t3, f) %>%\n    cdm_add_pk(t4, h) %>%\n    cdm_add_pk(t5, k) %>%\n    ",
+           "cdm_add_pk(t6, n) %>%\n    cdm_add_fk(t2, d, t1) %>%\n    cdm_add_fk(t2, e, t3) %>%\n    ",
+           "cdm_add_fk(t4, j, t3) %>%\n    cdm_add_fk(t5, l, t4) %>%\n    cdm_add_fk(t5, m, t6)"),
+    fixed = TRUE
+  )
+
   # we don't care if the tables really exist
   expect_output(
     cdm_paste(dm_for_filter %>% cdm_rename_tbl(t1_new = t1)),
