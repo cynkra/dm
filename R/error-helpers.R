@@ -271,11 +271,12 @@ error_txt_too_many_cols <- function(table_name) {
 }
 
 abort_no_overwrite <- function() {
-  abort(error_txt_no_overwrite(), .subclass = cdm_error_full("no_overwrite"))
+  fun_name <- as_string(sys.call(-1)[[1]])
+  abort(error_txt_no_overwrite(fun_name), .subclass = cdm_error_full("no_overwrite"))
 }
 
-error_txt_no_overwrite <- function() {
-  paste0("`cdm_copy_to()` does not support the `overwrite` argument.")
+error_txt_no_overwrite <- function(fun_name) {
+  glue("`{fun_name}()` does not support the `overwrite` argument.")
 }
 
 abort_no_types <- function() {

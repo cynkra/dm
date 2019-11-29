@@ -584,16 +584,17 @@ src_tbls.dm <- function(x) {
 
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
-  df_list <- if (inherits(df, "data.frame") || inherits(df, "tbl_dbi")) list(df) else abort_only_data_frames_supported()
+  if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
+  if (overwrite) abort_no_overwrite()
   if (length(name) != 1) abort_one_name_for_copy_to(name)
   # src: if `df` on a different src:
   # if `df_list` is on DB and `dest` is local, collect `df_list`
   # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
-  df_list <- map2(df_list, unique_db_table_name(name), ~copy_to(cdm_get_src(dest), ..1, ..2, temporary = temporary))
+  df <- copy_to(cdm_get_src(dest), df, unique_db_table_name(name), temporary = temporary)
   # FIXME: should we allow `overwrite` argument?
   names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
   # `repair` argument is `unique` by default
-  cdm_add_tbl_impl(dest, df_list, names_list$new_names)
+  cdm_add_tbl_impl(dest, list(df), names_list$new_names)
 }
 
 #' @export
