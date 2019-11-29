@@ -593,6 +593,8 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
   df <- copy_to(cdm_get_src(dest), df, unique_db_table_name(name), temporary = temporary)
   # FIXME: should we allow `overwrite` argument?
   names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
+  # rename old tables with potentially new names
+  dest <- cdm_rename_tbl(dest, !!!names_list$new_old_names)
   # `repair` argument is `unique` by default
   cdm_add_tbl_impl(dest, list(df), names_list$new_names)
 }
