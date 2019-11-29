@@ -36,7 +36,7 @@ repair_table_names <- function(old_names, new_names, repair = "check_unique", qu
     vctrs::vec_as_names(c(old_names, new_names), repair = repair, quiet = quiet),
     error = function(e) {
       if (inherits(e, "vctrs_error_names_must_be_unique")) abort_need_unique_names(intersect(old_names, new_names))
-      abort(e)
+      abort(e$message)
     }
   )
   new_old_names <- set_names(old_names, all_names[seq_along(old_names)])
