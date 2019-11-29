@@ -35,10 +35,49 @@ test_that("'copy_to.dm()' works", {
     "only_data_frames_supported"
   )
 
+  expect_cdm_error(
+    copy_to(dm_for_filter, mtcars, overwrite = TRUE),
+    "no_overwrite"
+  )
+
   expect_equivalent_dm(
     copy_to(dm_for_filter, mtcars, "car_table"),
     cdm_add_tbl(dm_for_filter, car_table = mtcars)
   )
+
+  expect_cdm_error(
+    copy_to(dm_for_filter, mtcars, c("car_table", "another_table")),
+    "one_name_for_copy_to"
+  )
+
+  expect_equivalent_dm(
+    expect_message(
+      copy_to(dm_for_filter, mtcars, ""),
+      "New names"
+    ),
+    cdm_add_tbl(dm_for_filter, ...7 = mtcars)
+  )
+
+  # rename old and new tables if `repair = unique`
+  expect_equivalent_dm(
+    expect_message(
+      dm(mtcars) %>% copy_to(mtcars),
+      "New names:"
+    ),
+    dm(mtcars...1 = mtcars, mtcars...2 = mtcars)
+  )
+
+  expect_equivalent_dm(
+    expect_silent(
+      dm(mtcars) %>% copy_to(mtcars, quiet = TRUE)
+    ),
+    dm(mtcars...1 = mtcars, mtcars...2 = mtcars)
+  )
+
+  # throw error if duplicate table names and `repair = check_unique`
+  expect_cdm_error(
+    dm(mtcars) %>% copy_to(mtcars, repair = "check_unique"),
+    "need_unique_names")
 
   # copying local `tibble` to postgres `dm`
   skip_if_error(
