@@ -173,7 +173,7 @@ get_all_filtered_connected <- function(dm, table) {
     tibble(
       node = names(V(graph)),
       parent = names(paths$predecessors),
-      # both `graph` and `paths` are based on order of `finite_distances`,
+      # all of `graph`, `paths` and `finite_distances` are based on the same subset of tables,
       # hence the resulting tibble is correct
       distance = finite_distances
     )
