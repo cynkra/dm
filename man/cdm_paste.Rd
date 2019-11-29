@@ -4,12 +4,14 @@
 \alias{cdm_paste}
 \title{Reverse engineer code for creation of a \code{\link{dm}}}
 \usage{
-cdm_paste(dm, select = FALSE)
+cdm_paste(dm, select = FALSE, tab_width = 2)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{select}{Boolean, default \code{FALSE}. If \code{TRUE} will try to produce code for reducing to necessary columns.}
+
+\item{tab_width}{Indentation width for code from the second line onwards}
 }
 \value{
 Code for producing the given \code{dm}
