@@ -19,3 +19,14 @@ tick <- function(x) {
 default_local_src <- function() {
   src_df(env = .GlobalEnv)
 }
+
+# next 2 are borrowed from {tibble}:
+tick_if_needed <- function(x) {
+  needs_ticks <- !is_syntactic(x)
+  x[needs_ticks] <- tick(x[needs_ticks])
+  x
+}
+
+is_syntactic <- function(x) {
+  x == make.names(x)
+}
