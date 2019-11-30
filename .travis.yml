@@ -37,8 +37,6 @@ latex: false
 #stages: test, full
 stages:
 - name: test
-- name: full
-  if: branch = master
 
 #jobs
 jobs:
@@ -48,8 +46,7 @@ jobs:
     - TIC_DEV_VERSIONS=TRUE
     - TIC_ONLY_TESTS=TRUE
   - r: 3.2
-  - stage: full
-    os: osx
+  - os: osx
   - r: devel
   - r: release
     env:
