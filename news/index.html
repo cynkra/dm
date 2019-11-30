@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.5.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.5.9002</span>
       </span>
     </div>
 
@@ -146,6 +146,24 @@
       
     </div>
 
+    <div id="dm-0-0-5-9002" class="section level1">
+<h1 class="page-header">
+<a href="#dm-0-0-5-9002" class="anchor"></a>dm 0.0.5.9002</h1>
+<ul>
+<li>New <code><a href="../reference/cdm_filter.html">cdm_apply_filters_to_tbl()</a></code> that applies filters in related tables to a table, similar to <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code>; <code><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl()</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> no longer apply filter conditions defined in related tables (#161).</li>
+<li>
+<code><a href="../reference/check_key.html">check_key()</a></code> no longer maps empty selection list to all columns.</li>
+<li>
+<code><a href="../reference/check_key.html">check_key()</a></code> supports tidyselect (#188).</li>
+<li>
+<code><a href="../reference/cdm_rm_tbl.html">cdm_rm_tbl()</a></code> supports tidyselect (#127).</li>
+<li>
+<code><a href="../reference/decompose_table.html">decompose_table()</a></code> uses tidyselect (#194).</li>
+<li>Implement <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to()</a></code> for <code>dm</code> objects (#129).</li>
+<li>Relax test for cycles in relationship graph (#198).</li>
+<li>New <code><a href="../reference/cdm_paste.html">cdm_paste()</a></code> (#160).</li>
+</ul>
+</div>
     <div id="dm-0-0-5-9001" class="section level1">
 <h1 class="page-header">
 <a href="#dm-0-0-5-9001" class="anchor"></a>dm 0.0.5.9001</h1>
@@ -508,6 +526,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dm-0-0-5-9002">0.0.5.9002</a></li>
         <li><a href="#dm-0-0-5-9001">0.0.5.9001</a></li>
         <li><a href="#dm-0-0-5-9000">0.0.5.9000</a></li>
         <li><a href="#dm-0-0-5">0.0.5</a></li>
