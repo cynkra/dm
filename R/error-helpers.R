@@ -263,11 +263,12 @@ error_txt_too_many_cols <- function(table_name) {
 }
 
 abort_no_overwrite <- function() {
-  abort(error_txt_no_overwrite(), .subclass = cdm_error_full("no_overwrite"))
+  fun_name <- as_string(sys.call(-1)[[1]])
+  abort(error_txt_no_overwrite(fun_name), .subclass = cdm_error_full("no_overwrite"))
 }
 
-error_txt_no_overwrite <- function() {
-  paste0("`cdm_copy_to()` does not support the `overwrite` argument.")
+error_txt_no_overwrite <- function(fun_name) {
+  glue("`{fun_name}()` does not support the `overwrite` argument.")
 }
 
 abort_no_types <- function() {
@@ -536,6 +537,17 @@ abort_only_possible_w_zoom <- function(fun_name) {
 
 error_only_possible_w_zoom <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
+}
+
+# errors for `copy_to.dm()` ----------------------------------------------
+
+abort_only_data_frames_supported <- function() {
+  abort("`copy_to.dm()` only supports class `data.frame` for argument `df`", .subclass = cdm_error_full("only_data_frames_supported"))
+}
+
+abort_one_name_for_copy_to <- function(name) {
+  abort(glue("Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"),
+        .subclass = cdm_error_full("one_name_for_copy_to"))
 }
 
 # table not on src --------------------------------------------------------
