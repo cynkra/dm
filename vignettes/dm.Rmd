@@ -121,9 +121,10 @@ flights_dm_with_keys %>%
 The idea of a filter on a `dm` object:
 
 1. You can filter one or more of `dm`'s tables, just like with normal `dplyr::filter()` calls
-1. Filtering conditions are stored in the `dm` object but not immediately executed
-1. Once you access a table, all relevant filtering conditions are applied to the respective tables, and the necessary joins are performed along the fk relations.
-This results in a table that contains only rows related to the filtering operations
+1. Filtering conditions are immediately executed for the table in question and additionally stored in the `dm` object
+1. If you access a table via `cdm_apply_filters_to_tbl()`, a sequence of `semi_join()` calls is performed to retrieve the requested table with only those values in the key columns which correspond to the remaining values in the filtered tables
+
+The function `cdm_apply_filters()` essentially calls `cdm_apply_filters_to_tbl()` for each table of the `dm` and creates a new `dm` object from the result.
 
 Currently, this only works if the graph induced by the fk relations is cycle free, the default for `cdm_nycflights13()`:
 
@@ -156,14 +157,14 @@ us_flights_from_jfk %>%
 Alternatively, you can just pull out one of the tables from `dm` to answer the question which planes were used to service the US Airways flights that departed from JFK airport:
 
 ```{r}
-tbl(us_flights_from_jfk, "planes")
+cdm_apply_filters_to_tbl(us_flights_from_jfk, "planes")
 ```
 
 Each of the planes in the result set above was a part of at least one US Airways flight departing from JFK.
 Do they have any common characteristics?
 
 ```{r}
-tbl(us_flights_from_jfk, "planes") %>% 
+cdm_apply_filters_to_tbl(us_flights_from_jfk, "planes") %>% 
   count(model)
 ```
 
@@ -180,6 +181,8 @@ flights %>%
 ```
 
 The {dm} code is leaner because the fk information is encoded in the object.
+
+Mind, that if you access a table via `tbl.dm()`, `$.dm()` or `[[.dm()`, filter conditions set for other tables are ignored.
 
 ### Joining two tables {#join}
 

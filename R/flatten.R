@@ -79,18 +79,7 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   check_correct_input(dm, start)
   vars <- setdiff(tidyselect_table_names(dm), start)
-  list_of_pts <- tryCatch(
-    tidyselect::vars_select(vars, ...),
-    error = identity)
-  if (is_condition(list_of_pts)) {
-    abort_w_message(
-      paste0(
-        conditionMessage(list_of_pts),
-        ". Available tables in `dm`: ",
-        commas(tick(src_tbls(dm)))
-        )
-    )
-  }
+  list_of_pts <- dm_try_tables(tidyselect::vars_select(vars, ...), src_tbls(dm))
 
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 
@@ -265,7 +254,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
     cdm_select_tbl(tables)
   # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
-  start_tbl <- tbl(dm, start)
+  start_tbl <-cdm_get_filtered_table(dm, start)
 
   if (gotta_rename) {
     table_colnames <- get_table_colnames(red_dm)

@@ -9,7 +9,8 @@ cdm_rm_tbl(dm, ...)
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
 
-\item{...}{One or more unquoted table names to remove from the \code{dm}.}
+\item{...}{One or more unquoted table names to remove from the \code{dm}.
+\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 }
 \value{
 The dm without the removed table(s) that were present in the initial \code{dm}.

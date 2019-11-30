@@ -24,6 +24,79 @@ test_that("creation of empty `dm` works", {
   )
 })
 
+test_that("'copy_to.dm()' works", {
+  expect_cdm_error(
+    copy_to(dm_for_filter, letters[1:5], name = "letters"),
+    "only_data_frames_supported"
+  )
+
+  expect_cdm_error(
+    copy_to(dm_for_filter, list(mtcars, iris)),
+    "only_data_frames_supported"
+  )
+
+  expect_cdm_error(
+    copy_to(dm_for_filter, mtcars, overwrite = TRUE),
+    "no_overwrite"
+  )
+
+  expect_equivalent_dm(
+    copy_to(dm_for_filter, mtcars, "car_table"),
+    cdm_add_tbl(dm_for_filter, car_table = mtcars)
+  )
+
+  expect_cdm_error(
+    copy_to(dm_for_filter, mtcars, c("car_table", "another_table")),
+    "one_name_for_copy_to"
+  )
+
+  expect_equivalent_dm(
+    expect_message(
+      copy_to(dm_for_filter, mtcars, ""),
+      "New names"
+    ),
+    cdm_add_tbl(dm_for_filter, ...7 = mtcars)
+  )
+
+  # rename old and new tables if `repair = unique`
+  expect_equivalent_dm(
+    expect_message(
+      dm(mtcars) %>% copy_to(mtcars),
+      "New names:"
+    ),
+    dm(mtcars...1 = mtcars, mtcars...2 = mtcars)
+  )
+
+  expect_equivalent_dm(
+    expect_silent(
+      dm(mtcars) %>% copy_to(mtcars, quiet = TRUE)
+    ),
+    dm(mtcars...1 = mtcars, mtcars...2 = mtcars)
+  )
+
+  # throw error if duplicate table names and `repair = check_unique`
+  expect_cdm_error(
+    dm(mtcars) %>% copy_to(mtcars, repair = "check_unique"),
+    "need_unique_names")
+
+  # copying local `tibble` to postgres `dm`
+  skip_if_error(
+    expect_equivalent_dm(
+      copy_to(dm_for_filter_src$postgres, d1_src$df, "test_table"),
+      cdm_add_tbl(dm_for_filter_src$postgres, test_table = d1_src$postgres)
+      )
+  )
+
+  # copying postgres `tibble` to local `dm`
+  skip_if_error(
+      expect_equivalent_dm(
+        copy_to(dm_for_filter_src$df, d1_src$postgres, "test_table_1"),
+        cdm_add_tbl(dm_for_filter_src$df, test_table_1 = d1_src$df)
+        )
+
+  )
+})
+
 test_that("'compute.dm()' computes tables on DB", {
   db_src_names <- setdiff(src_names, c("df"))
   skip_if(is_empty(db_src_names))

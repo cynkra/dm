@@ -3,11 +3,14 @@
 \name{cdm_filter}
 \alias{cdm_filter}
 \alias{cdm_apply_filters}
+\alias{cdm_apply_filters_to_tbl}
 \title{Filtering a \code{\link{dm}} object}
 \usage{
 cdm_filter(dm, table, ...)
 
 cdm_apply_filters(dm)
+
+cdm_apply_filters_to_tbl(dm, table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -15,7 +18,7 @@ cdm_apply_filters(dm)
 \item{table}{A table in the \code{dm}.}
 
 \item{...}{Logical predicates defined in terms of the variables in \code{.data}, passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
-Multiple conditions are combined with \verb{&} or \verb{,}.
+Multiple conditions are combined with \code{&} or \verb{,}.
 Only the rows where the condition evaluates
 to \code{TRUE} are kept.
 
@@ -34,6 +37,8 @@ These conditions will be stored in the \code{\link{dm}}, and executed immediatel
 
 With \code{cdm_apply_filters()}, all tables will be updated according to the filter conditions and the foreign key relations.
 
+\code{cdm_apply_filters_to_tbl()} retrieves one specific table of the \code{dm} that is updated according to the filter conditions and the foreign key relations.
+
 The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 in one of the following scenarios:
 \enumerate{
@@ -42,7 +47,7 @@ reduces the rows of all other tables connected to it by foreign key relations (c
 with corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new \code{dm} class object without any filter conditions.
-\item Calling one of \code{tbl()}, \verb{[[.dm()}, \verb{$.dm()}: the remaining rows of the requested table are calculated by performing a sequence
+\item Calling \code{cdm_apply_filters_to_tbl()}: the remaining rows of the requested table are calculated by performing a sequence
 of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from each table that has been filtered to the requested table
 (similar to 1. but only for one table).
 }
@@ -56,9 +61,7 @@ dm_nyc_filtered <-
   cdm_nycflights13() \%>\%
   cdm_filter(airports, name == "John F Kennedy Intl")
 
-tbl(dm_nyc_filtered, "flights")
-dm_nyc_filtered[["planes"]]
-dm_nyc_filtered$airlines
+cdm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 
 cdm_nycflights13() \%>\%
   cdm_filter(airports, name == "John F Kennedy Intl") \%>\%
@@ -83,4 +86,7 @@ library(dplyr)
 cdm_nycflights13() \%>\%
   cdm_filter(planes, engine \%in\% c("Reciprocating", "4 Cycle")) \%>\%
   compute()
+cdm_nycflights13() \%>\%
+  cdm_filter(flights, month == 3) \%>\%
+  cdm_apply_filters_to_tbl(planes)
 }

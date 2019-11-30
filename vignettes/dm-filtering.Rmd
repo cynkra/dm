@@ -89,26 +89,23 @@ tbl(dm, "airports")
 
 Filtering a `dm` object is not that different from filtering a dataframe or tibble with `dplyr::filter()`.
 
-The corresponding {dm} function is `dm::cdm_filter()`. 
+The corresponding {dm} function is `dm::cdm_filter()`.
 With this function one or more filtering conditions can be set for one of the tables of the `dm` object.
-These conditions are not immediately evaluated but stored in the object until they are needed.
-There are essentially two ways of causing the filter conditions to take effect:
+These conditions are immediately evaluated for their respective tables and in addition they are stored in the `dm`.
+There are two ways in which a condition on one table could affect another table:
 
-1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`, i.e. accessing one of the tables of the `dm`. 
-In this case, all tables that are connected to the requested table and have filter conditions set, are taken into account in the following way:
-    - the filter conditions for each of those tables are evaluated (the requested table can be filtered as well, of course), reducing the number of rows in the respective tables
-    - filtering semi-joins are successively performed along the paths from each of the filtered to the requested table, each join reducing the left-hand side tables of the joins to only those of their rows with key values that have corresponding values in key columns of the right-hand side tables of the join.
+1. Calling `cdm_apply_filters_to_tbl()`, i.e. requesting a table from a `dm` after the filter conditions are applied.
+In this case, all tables that are connected to the requested table and have stored filter conditions associated with them are taken into account in the following way:
+    - filtering semi-joins are successively performed along the paths from each of the filtered tables to the requested table, each join reducing the left-hand side tables of the joins to only those of their rows with key values that have corresponding values in key columns of the right-hand side tables of the join.
     - eventually the requested table is returned, containing only the the remaining rows after the filtering joins
 1. Calling `cdm_apply_filters()` or `compute()` methods for `dm` objects on a `dm`: this results in a new `dm` that contains the same tables as before. 
-Each table is the result of a `tbl()` call, meaning that the effects of the filter conditions on each of the tables are taken into account.
+Each table is the result of a `cdm_apply_filters_to_tbl()` call, meaning that the effects of the filter conditions on each of the tables are taken into account.
 
 Currently, this only works if the graph induced by the foreign key relations is cycle free.
 Fortunately, this is the default for `cdm_nycflights13()`.
 
 Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. `cdm_enum_fk_candidates()`, `cdm_enum_pk_candidates()`, `cdm_select_tbl()`, `cdm_rename_tbl()`, `cdm_select()`, `cdm_rename()` and `cdm_nrow()`.
 In these cases consider applying the filters with `cdm_apply_filters()` first.
-
-It is also important to note that `cdm_get_tables()` will NOT evaluate any filter conditions and will just return the original tables.
 
 ### Filtering Examples
 
@@ -167,27 +164,27 @@ dm_delta_may %>%
   cdm_nrow()
 ```
 
-You can inspect the filtered tables with `tbl`.
+You can inspect the filtered tables with `cdm_apply_filters_to_tbl()`.
 
 In the `airlines` table, Delta is the only remaining carrier:
 
 ```{r}
 dm_delta_may %>% 
-  tbl("airlines")
+  cdm_apply_filters_to_tbl("airlines")
 ```
 
 Which planes were used to service these flights?
 
 ```{r}
 dm_delta_may %>% 
-  tbl("planes")
+  cdm_apply_filters_to_tbl("planes")
 ```
 
 And indeed, all included flights departed in May (`month == 5`):
 
 ```{r}
 dm_delta_may %>% 
-  tbl("flights")
+  cdm_apply_filters_to_tbl("flights")
 ```
 
 For comparison, let's review the equivalent manual query for `flights` in `dplyr` syntax:

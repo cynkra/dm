@@ -56,11 +56,8 @@ All selected tables must be reachable from `start`.
 > error_txt_dupl_new_id_col_name("tibbletable")
 [1] "`new_id_column` can not have an identical name as one of the columns of `tibbletable`."
 
-> error_txt_too_many_cols("tibbletable")
-Number of columns to be extracted has to be less than total number of columns of `tibbletable`
-
-> error_txt_no_overwrite()
-[1] "`cdm_copy_to()` does not support the `overwrite` argument."
+> error_txt_no_overwrite("fun")
+`fun()` does not support the `overwrite` argument.
 
 > error_txt_no_types()
 [1] "`cdm_copy_to()` does not support the `types` argument."

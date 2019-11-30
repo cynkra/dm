@@ -275,6 +275,14 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'right_join()'", {
     cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = right_join),
     class = c("apply_filters_first_right_join", "apply_filters_first")
   )
+
+  # fails when there is a cycle
+  expect_cdm_error(
+    dm_nycflights_small %>%
+      cdm_add_fk(flights, origin, airports) %>%
+      cdm_flatten_to_tbl(flights),
+    "no_cycles"
+    )
 })
 
 test_that("`cdm_squash_to_tbl()` does the right things", {
@@ -324,6 +332,12 @@ test_that("`cdm_squash_to_tbl()` does the right things", {
   expect_cdm_error(
     cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = anti_join),
     class = "squash_limited"
+  )
+
+  # fails when there is a cycle:
+  expect_cdm_error(
+    cdm_squash_to_tbl(dm_for_filter_w_cycle, t5),
+    "no_cycles"
   )
 })
 

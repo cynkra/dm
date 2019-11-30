@@ -1,3 +1,15 @@
+# dm 0.0.5.9001
+
+- New `check_cardinality()` returns the nature of the relationship between `parent_table$pk_col` and `child_table$fk_col` (#15).
+- Fix zooming into table that uses an FK column as primary key (#193).
+- Return `ref_table` column in `cdm_check_constraints()` (#178).
+- `str()` shows simpified views (#123).
+- Edits to README (#172, @bbecane).
+- Extend `validate_dm()` (#173).
+- Fix corner case in `cdm_rm_fk()` (#175).
+- New zoom vignette (#171).
+
+
 # dm 0.0.5.9000
 
 - Remove {stringr} dependency (#183).

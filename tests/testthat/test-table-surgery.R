@@ -16,6 +16,28 @@ test_that("decompose_table() decomposes tables nicely on all sources?", {
       .y
     )
   )
+
+})
+
+test_that("decomposition works with {tidyselect}", {
+  pt_iris <- select(iris, starts_with("Sepal")) %>%
+    distinct() %>%
+    arrange(Sepal.Length, Sepal.Width) %>%
+    mutate(Sepal_id = row_number()) %>%
+    select(Sepal_id, everything())
+
+  ct_iris <- left_join(iris, pt_iris, by = c("Sepal.Length", "Sepal.Width")) %>%
+    select(-Sepal.Length, -Sepal.Width)
+
+  reference_flower_object <- list(
+    child_table = ct_iris,
+    parent_table = pt_iris
+  )
+
+  expect_identical(
+    decompose_table(iris, Sepal_id, starts_with("Sepal")),
+    reference_flower_object
+    )
 })
 
 test_that("reunite_parent_child() reunites parent and child nicely on all sources?", {
@@ -43,15 +65,15 @@ test_that("reunite_parent_child_from_list() reunites parent and child nicely on 
 
 
 test_that("table surgery functions fail in the expected ways?", {
-  map(
+  walk(
     data_ts_src,
-    ~ expect_cdm_error(
+    ~ expect_error(
       decompose_table(., aex_id, a, e, x),
-      class = "wrong_col_names"
+      "."
     )
   )
 
-  map(
+  walk(
     data_ts_src,
     ~ expect_cdm_error(
       decompose_table(., a, a, e, x),
@@ -59,11 +81,16 @@ test_that("table surgery functions fail in the expected ways?", {
     )
   )
 
-  map(
+  walk(
     data_ts_src,
-    ~ expect_cdm_error(
-      decompose_table(., abcdef_id, a, b, c, d, e, f),
-      class = "too_many_cols"
-    )
+    function(data_ts) {
+      expect_equal(
+        decompose_table(data_ts, abcdef_id, a, b, c, d, e, f)$parent_table %>%
+          select(-abcdef_id) %>%
+          collect(),
+        data_ts %>%
+          collect()
+      )
+    }
   )
 })

@@ -253,7 +253,7 @@ cdm_get_con <- function(x) {
 #' `cdm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
 #' Filtering expressions are NOT evaluated at this stage.
-#' To get filtered tables, use `tbl.dm()`
+#' To get a filtered table, use `cdm_apply_filters_to_tbl()`, to apply filters to all tables use `cdm_apply_filters()`
 #'
 #' @rdname dm
 #'
@@ -556,7 +556,7 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(dm)
   check_correct_input(dm, from, 1L)
 
-  cdm_get_filtered_table(dm, from)
+  cdm_get_tables(dm)[[from]]
 }
 
 #' @export
@@ -583,9 +583,25 @@ src_tbls.dm <- function(x) {
 }
 
 #' @export
-copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, ...) {
-  # TODO: How to add a table to a dm?
-  abort("`dm` objects are immutable, please use ...")
+copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
+  if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
+  if (overwrite) abort_no_overwrite()
+  if (length(name) != 1) abort_one_name_for_copy_to(name)
+  # src: if `df` on a different src:
+  # if `df_list` is on DB and `dest` is local, collect `df_list`
+  # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
+  df <- copy_to(cdm_get_src(dest), df, unique_db_table_name(name), temporary = temporary, ...)
+  # FIXME: should we allow `overwrite` argument?
+  names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
+  # rename old tables with potentially new names
+  dest <- cdm_rename_tbl(dest, !!!names_list$new_old_names)
+  # `repair` argument is `unique` by default
+  cdm_add_tbl_impl(dest, list(df), names_list$new_names)
+}
+
+#' @export
+copy_to.zoomed_dm <- function(dest, df, name, overwrite, ...) {
+  check_not_zoomed(.data)
 }
 
 #' @export

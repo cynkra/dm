@@ -34,7 +34,7 @@ cdm_check_constraints <- function(dm) {
 #'
 #' @description `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
-#' if the specified columns (or all columns, if no columns are specified) are NOT a unique key of the data frame.
+#' if the specified columns are NOT a unique key of the data frame.
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 #'
 #' @param .data The data frame whose columns should be tested for key properties.
@@ -63,16 +63,22 @@ cdm_check_constraints <- function(dm) {
 check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
-  args <- exprs(...)
-  names(args) <- set_names(paste0("...", seq_along(args)))
+
+  cols_avail <- colnames(.data)
+  # if no column is chosen, all columns are used for the check
+  cols_chosen <- tidyselect::vars_select(cols_avail, ...)
+  names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 
   duplicate_rows <-
     .data %>%
-    as_tibble() %>% # as_tibble works only, if as_tibble.sf()-method is available
-    count(!!!args) %>%
-    filter(n != 1)
+    count(!!!syms(cols_chosen)) %>%
+    count(n) %>%
+    filter(n > 1) %>%
+    collect()
 
-  if (nrow(duplicate_rows) != 0) abort_not_unique_key(as_label(data_q), map_chr(args, as_label))
+  if (nrow(duplicate_rows) != 0) {
+    abort_not_unique_key(as_label(data_q), cols_chosen)
+  }
 
   invisible(.data)
 }

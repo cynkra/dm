@@ -79,27 +79,10 @@ check_colnames <- function(key_tibble, dm_col_names, which) {
 }
 
 check_col_classes <- function(def) {
-  expected <-
-    list(table = "character",
-         data = "list",
-         segment = "character",
-         display = "character",
-         pks = c("vctrs_list_of", "vctrs_vctr"),
-         fks = c("vctrs_list_of", "vctrs_vctr"),
-         filters = c("vctrs_list_of", "vctrs_vctr"),
-         zoom = "list",
-         key_tracker_zoom = "list"
-         )
-  actual <- map(def, class)
-  if (!identical(actual, expected)) {
-    why_col <- names(expected[which(!map2_lgl(actual, expected, identical))])
-    why_expected <- expected[[why_col]]
-    why_actual <- actual[[why_col]]
-    abort_dm_invalid(
-      glue("Column {tick(why_col)} of tibble underlying `dm` has wrong class: ",
-           "{tick(why_actual)} instead of {tick(why_expected)}.")
-      )
-  }
+  # Called for its side effect of checking type compatibility
+  vctrs::vec_ptype2(def, cdm_get_def(new_dm()))
+
+  invisible()
 }
 
 check_one_zoom <- function(def, zoomed) {
