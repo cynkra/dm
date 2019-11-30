@@ -26,7 +26,7 @@ See select helpers for more details and examples about tidyselect helpers such a
 \description{
 \code{check_key()} accepts a data frame and, optionally, columns.
 It throws an error
-if the specified columns (or all columns, if no columns are specified) are NOT a unique key of the data frame.
+if the specified columns are NOT a unique key of the data frame.
 If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 }
 \examples{
