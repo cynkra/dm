@@ -15,21 +15,6 @@ test_that("functions working with graphs do the right thing?", {
     "t6", "t5",     6,        TRUE
   )
 
-  expect_equivalent(
-    calculate_join_list(dm_for_filter, "t1"),
-    join_list_tbl_1
-  )
-
-  expect_equivalent(
-    calculate_join_list(dm_for_filter, "t3"),
-    join_list_tbl_3
-  )
-
-  expect_cdm_error(
-    calculate_join_list(dm_for_filter_w_cycle, "t3"),
-    class = "no_cycles"
-  )
-
   expect_identical_graph(
     igraph::graph_from_data_frame(
       tibble(
