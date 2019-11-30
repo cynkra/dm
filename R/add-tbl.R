@@ -70,20 +70,15 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more unquoted table names to remove from the `dm`.
+#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
 #' @export
 cdm_rm_tbl <- function(dm, ...) {
   check_dm(dm)
+  selected <- dm_try_tables(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...)), src_tbls(dm))
 
-  table_names <-
-    ensyms(..., .named = FALSE) %>%
-    map_chr(~ as_name(.))
-
-  check_correct_input(dm, table_names)
-
-  cdm_select_tbl(dm, -one_of(!!!table_names))
+  cdm_select_tbl(dm, !!!selected)
 }
-
 
 check_new_tbls <- function(dm, tbls) {
   orig_tbls <- cdm_get_tables(dm)
@@ -94,3 +89,26 @@ check_new_tbls <- function(dm, tbls) {
   }
 }
 
+dm_try_tables <- function(code, table_names) {
+  selected <- tryCatch(
+    force(code),
+    error = function(e) {
+      error_class <- class(e)
+      if (inherits(e, "rlang_error")) {
+      abort_w_message(
+        # error like "Unknown column `wrong_column` "
+        # FIXME: which other "rlang_error"s are possible?
+        glue("{trimws(sub('column', 'table', conditionMessage(e), fixed = TRUE))}. ",
+           "Available tables in `dm`: {commas(tick(table_names))}")
+      )} else if (inherits(e, "simpleError")) {
+        # error like "object 'wrong_object' not found"
+        # FIXME: which other "simpleError"s are possible?
+        wrong_table <- gsub("^.*'(.*)'.*$", "\\1", e$message)
+        abort_w_message(
+          glue("Unknown table {tick(wrong_table)}. ",
+               "Available tables in `dm`: {commas(tick(table_names))}"))
+      } else {
+        abort(e$message)}
+    })
+  selected
+}
