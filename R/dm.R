@@ -600,6 +600,11 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
 }
 
 #' @export
+copy_to.zoomed_dm <- function(.data, ...) {
+  check_not_zoomed(.data)
+}
+
+#' @export
 collect.dm <- function(x, ...) {
   x <-
     x %>%
