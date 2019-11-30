@@ -229,7 +229,7 @@ there are no duplicates in either of them.</p>
 <span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>5</span>))
 <span class='no'>d3</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>)
 <span class='co'># This does not pass, `c` is not unique key of d2:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_cardinality_0_n</span>(<span class='no'>d2</span>, <span class='no'>c</span>, <span class='no'>d1</span>, <span class='no'>a</span>))</div><div class='output co'>#&gt; Error : `c` not a unique key of `d2`.</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_cardinality_0_n</span>(<span class='no'>d2</span>, <span class='no'>c</span>, <span class='no'>d1</span>, <span class='no'>a</span>))</div><div class='output co'>#&gt; Error : (`c`) not a unique key of `d2`.</div><div class='input'>
 <span class='co'># This passes, multiple values in d2$c are allowed:</span>
 <span class='fu'>check_cardinality_0_n</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)
 
