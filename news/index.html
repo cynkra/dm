@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.5.9001</span>
       </span>
     </div>
 
@@ -146,6 +146,21 @@
       
     </div>
 
+    <div id="dm-0-0-5-9001" class="section level1">
+<h1 class="page-header">
+<a href="#dm-0-0-5-9001" class="anchor"></a>dm 0.0.5.9001</h1>
+<ul>
+<li>New <code><a href="../reference/check_cardinality.html">check_cardinality()</a></code> returns the nature of the relationship between <code>parent_table$pk_col</code> and <code>child_table$fk_col</code> (#15).</li>
+<li>Fix zooming into table that uses an FK column as primary key (#193).</li>
+<li>Return <code>ref_table</code> column in <code><a href="../reference/cdm_check_constraints.html">cdm_check_constraints()</a></code> (#178).</li>
+<li>
+<code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> shows simpified views (#123).</li>
+<li>Edits to README (#172, <a href='https://github.com/bbecane'>@bbecane</a>).</li>
+<li>Extend <code><a href="../reference/dm.html">validate_dm()</a></code> (#173).</li>
+<li>Fix corner case in <code><a href="../reference/cdm_rm_fk.html">cdm_rm_fk()</a></code> (#175).</li>
+<li>New zoom vignette (#171).</li>
+</ul>
+</div>
     <div id="dm-0-0-5-9000" class="section level1">
 <h1 class="page-header">
 <a href="#dm-0-0-5-9000" class="anchor"></a>dm 0.0.5.9000</h1>
@@ -493,6 +508,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dm-0-0-5-9001">0.0.5.9001</a></li>
         <li><a href="#dm-0-0-5-9000">0.0.5.9000</a></li>
         <li><a href="#dm-0-0-5">0.0.5</a></li>
         <li><a href="#dm-0-0-4">0.0.4</a></li>
