@@ -156,7 +156,9 @@ directly or indirectly via foreign key relations.</p>
 
     <pre class="usage"><span class='fu'>cdm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
 
-<span class='fu'>cdm_apply_filters</span>(<span class='no'>dm</span>)</pre>
+<span class='fu'>cdm_apply_filters</span>(<span class='no'>dm</span>)
+
+<span class='fu'>cdm_apply_filters_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,6 +189,7 @@ for an introduction to these concepts.</p></td>
     <p><code>cdm_filter()</code> can be used to define filter conditions for tables using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
 These conditions will be stored in the <code><a href='dm.html'>dm</a></code>, and executed immediately for the tables that they are referring to.</p>
 <p>With <code>cdm_apply_filters()</code>, all tables will be updated according to the filter conditions and the foreign key relations.</p>
+<p><code>cdm_apply_filters_to_tbl()</code> retrieves one specific table of the <code>dm</code> that is updated according to the filter conditions and the foreign key relations.</p>
 <p>The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 in one of the following scenarios:</p><ol>
 <li><p>Calling <code>cdm_apply_filters()</code> or <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> (method for <code>dm</code> objects) on a <code>dm</code>: each filtered table potentially
@@ -194,7 +197,7 @@ reduces the rows of all other tables connected to it by foreign key relations (c
 with corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new <code>dm</code> class object without any filter conditions.</p></li>
-<li><p>Calling one of <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>: the remaining rows of the requested table are calculated by performing a sequence
+<li><p>Calling <code>cdm_apply_filters_to_tbl()</code>: the remaining rows of the requested table are calculated by performing a sequence
 of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::semi_join()</a></code>) starting from each table that has been filtered to the requested table
 (similar to 1. but only for one table).</p></li>
 </ol>
@@ -208,7 +211,7 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
   <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>)
 
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span>(<span class='no'>dm_nyc_filtered</span>, <span class='st'>"flights"</span>)</div><div class='output co'>#&gt; # A tibble: 111,279 x 19
+<span class='fu'>cdm_apply_filters_to_tbl</span>(<span class='no'>dm_nyc_filtered</span>, <span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 111,279 x 19
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
 #&gt;  1  2013     1     1      542            540         2      923            850
@@ -223,32 +226,7 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
 #&gt; 10  2013     1     1      613            610         3      925            921
 #&gt; # … with 111,269 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
 #&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
-#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</div><div class='input'><span class='no'>dm_nyc_filtered</span><span class='kw'>[[</span><span class='st'>"planes"</span>]]</div><div class='output co'>#&gt; # A tibble: 1,381 x 9
-#&gt;    tailnum  year type          manufacturer   model  engines seats speed engine 
-#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
-#&gt;  1 N102UW   1998 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  2 N103US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  3 N104UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  4 N105UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  5 N107US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  6 N108UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  7 N109UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  8 N110UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  9 N111US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt; 10 N112US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt; # … with 1,371 more rows</div><div class='input'><span class='no'>dm_nyc_filtered</span>$<span class='no'>airlines</span></div><div class='output co'>#&gt; # A tibble: 10 x 2
-#&gt;    carrier name                    
-#&gt;    &lt;chr&gt;   &lt;chr&gt;                   
-#&gt;  1 9E      Endeavor Air Inc.       
-#&gt;  2 AA      American Airlines Inc.  
-#&gt;  3 B6      JetBlue Airways         
-#&gt;  4 DL      Delta Air Lines Inc.    
-#&gt;  5 EV      ExpressJet Airlines Inc.
-#&gt;  6 HA      Hawaiian Airlines Inc.  
-#&gt;  7 MQ      Envoy Air               
-#&gt;  8 UA      United Air Lines Inc.   
-#&gt;  9 US      US Airways Inc.         
-#&gt; 10 VX      Virgin America          </div><div class='input'>
+#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</div><div class='input'>
 <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
@@ -287,7 +265,22 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div></pre>
+#&gt; Foreign keys: 3</div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>cdm_apply_filters_to_tbl</span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; # A tibble: 2,619 x 9
+#&gt;    tailnum  year type          manufacturer   model  engines seats speed engine 
+#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
+#&gt;  1 N10156   2004 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…
+#&gt;  2 N102UW   1998 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+#&gt;  3 N103US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+#&gt;  4 N104UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+#&gt;  5 N10575   2002 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…
+#&gt;  6 N105UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+#&gt;  7 N107US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+#&gt;  8 N108UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+#&gt;  9 N109UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+#&gt; 10 N110UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+#&gt; # … with 2,609 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

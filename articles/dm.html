@@ -225,9 +225,10 @@
 <p>The idea of a filter on a <code>dm</code> object:</p>
 <ol style="list-style-type: decimal">
 <li>You can filter one or more of <code>dm</code>’s tables, just like with normal <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> calls</li>
-<li>Filtering conditions are stored in the <code>dm</code> object but not immediately executed</li>
-<li>Once you access a table, all relevant filtering conditions are applied to the respective tables, and the necessary joins are performed along the fk relations. This results in a table that contains only rows related to the filtering operations</li>
+<li>Filtering conditions are immediately executed for the table in question and additionally stored in the <code>dm</code> object</li>
+<li>If you access a table via <code><a href="../reference/cdm_filter.html">cdm_apply_filters_to_tbl()</a></code>, a sequence of <code><a href="https://dplyr.tidyverse.org/reference/join.html">semi_join()</a></code> calls is performed to retrieve the requested table with only those values in the key columns which correspond to the remaining values in the filtered tables</li>
 </ol>
+<p>The function <code><a href="../reference/cdm_filter.html">cdm_apply_filters()</a></code> essentially calls <code><a href="../reference/cdm_filter.html">cdm_apply_filters_to_tbl()</a></code> for each table of the <code>dm</code> and creates a new <code>dm</code> object from the result.</p>
 <p>Currently, this only works if the graph induced by the fk relations is cycle free, the default for <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">flights_dm_acyclic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cdm_nycflights13.html">cdm_nycflights13</a></span>()</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">flights_dm_acyclic <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -269,7 +270,7 @@
 <a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; airlines airports  flights   planes  weather </span></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;        1        1     2995      224    26115</span></a></code></pre></div>
 <p>Alternatively, you can just pull out one of the tables from <code>dm</code> to answer the question which planes were used to service the US Airways flights that departed from JFK airport:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(us_flights_from_jfk, <span class="st">"planes"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_filter.html">cdm_apply_filters_to_tbl</a></span>(us_flights_from_jfk, <span class="st">"planes"</span>)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 224 x 9</span><span>
 #&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>         </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
@@ -286,7 +287,7 @@
 #&gt; </span><span style="color: #555555;"># … with 214 more rows</span><span>
 </span></code></pre>
 <p>Each of the planes in the result set above was a part of at least one US Airways flight departing from JFK. Do they have any common characteristics?</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(us_flights_from_jfk, <span class="st">"planes"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_filter.html">cdm_apply_filters_to_tbl</a></span>(us_flights_from_jfk, <span class="st">"planes"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">count</span>(model)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 x 2</span><span>
 #&gt;   model               n
@@ -309,6 +310,7 @@
 <a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">semi_join</a></span>(planes, ., <span class="dt">by =</span> <span class="st">"tailnum"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">count</span>(model)</a></code></pre></div>
 <p>The {dm} code is leaner because the fk information is encoded in the object.</p>
+<p>Mind, that if you access a table via <code>tbl.dm()</code>, <code>$.dm()</code> or <code>[[.dm()</code>, filter conditions set for other tables are ignored.</p>
 <div id="join" class="section level3">
 <h3 class="hasAnchor">
 <a href="#join" class="anchor"></a>Joining two tables</h3>

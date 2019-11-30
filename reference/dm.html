@@ -66,7 +66,7 @@ is thrown.
 cdm_get_tables() returns a named list of dplyr tbl objects
 of a dm object.
 Filtering expressions are NOT evaluated at this stage.
-To get filtered tables, use tbl.dm()
+To get a filtered table, use cdm_apply_filters_to_tbl(), to apply filters to all tables use cdm_apply_filters()
 cdm_get_filter() returns the filter expressions that have been applied to a dm object.
 These filter expressions are not intended for evaluation, only for
 information.
@@ -200,7 +200,7 @@ is thrown.</p>
 <p><code>cdm_get_tables()</code> returns a named list of <span class="pkg">dplyr</span> <a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a> objects
 of a <code>dm</code> object.
 Filtering expressions are NOT evaluated at this stage.
-To get filtered tables, use <code>tbl.dm()</code></p>
+To get a filtered table, use <code><a href='cdm_filter.html'>cdm_apply_filters_to_tbl()</a></code>, to apply filters to all tables use <code><a href='cdm_filter.html'>cdm_apply_filters()</a></code></p>
 <p><code>cdm_get_filter()</code> returns the filter expressions that have been applied to a <code>dm</code> object.
 These filter expressions are not intended for evaluation, only for
 information.</p>
