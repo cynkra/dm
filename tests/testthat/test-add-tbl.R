@@ -81,13 +81,16 @@ test_that("cdm_add_tbl() works", {
   }
 
   # adding tables to an empty `dm` works for all sources
-  walk2(
+  walk(
     data_1_src,
-    test_srcs,
-    ~expect_identical(
-      cdm_add_tbl(dm(), test = ..1) %>% cdm_get_src(),
-      ..2
-    )
+    function(data_1) {
+      expect_equal(
+        cdm_add_tbl(dm(), test = data_1)$test %>%
+          collect(),
+        data_1 %>%
+          collect()
+      )
+    }
   )
 
   # can I use cdm_select_tbl(), selecting among others the new table?
