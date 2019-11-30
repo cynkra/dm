@@ -6,7 +6,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
       "r-dbi/DBI",
       "tidyverse/dplyr",
       "rstudio/DT",
-      "r-lib/glue",
+      "tidyverse/glue",
       "igraph/rigraph",
       "r-lib/lifecycle",
       "tidyverse/magrittr",
