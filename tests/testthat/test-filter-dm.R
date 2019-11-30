@@ -67,6 +67,38 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 
 })
 
+test_that("we get filtered/unfiltered tables with respective funs", {
+  expect_identical(
+    cdm_filter(dm_for_filter, t1, a > 4) %>% tbl("t2"),
+    t2
+  )
+
+  expect_identical(
+    cdm_filter(dm_for_filter, t1, a > 4) %>% cdm_apply_filters_to_tbl("t2"),
+    t2 %>% semi_join(filter(t1, a > 4), by = c("d" = "a"))
+  )
+
+  expect_identical(
+    cdm_filter(dm_for_filter, t1, a > 4) %>% tbl("t1"),
+    filter(t1, a > 4)
+  )
+
+  expect_equivalent_dm(
+    cdm_filter(dm_for_filter, t1, a > 3, a < 8) %>% cdm_apply_filters(),
+    as_dm(output_1) %>%
+      cdm_add_pk(t1, a) %>%
+      cdm_add_pk(t2, c) %>%
+      cdm_add_pk(t3, f) %>%
+      cdm_add_pk(t4, h) %>%
+      cdm_add_pk(t5, k) %>%
+      cdm_add_pk(t6, n) %>%
+      cdm_add_fk(t2, d, t1) %>%
+      cdm_add_fk(t2, e, t3) %>%
+      cdm_add_fk(t4, j, t3) %>%
+      cdm_add_fk(t5, l, t4) %>%
+      cdm_add_fk(t5, m, t6)
+  )
+})
 
 
 
