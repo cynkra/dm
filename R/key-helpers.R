@@ -63,16 +63,19 @@ cdm_check_constraints <- function(dm) {
 check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
-  args <- exprs(...)
-  names(args) <- set_names(paste0("...", seq_along(args)))
+
+  cols_avail <- colnames(.data)
+  # if no column is chosen, all columns are used for the check
+  cols_chosen <- if (is_empty(enexprs(...))) cols_avail else tidyselect::vars_select(cols_avail, ...)
+  if (has_length(cols_chosen)) names(cols_chosen) <- set_names(paste0("...", seq_along(cols_chosen)))
 
   duplicate_rows <-
     .data %>%
     as_tibble() %>% # as_tibble works only, if as_tibble.sf()-method is available
-    count(!!!args) %>%
+    count(!!!syms(cols_chosen)) %>%
     filter(n != 1)
 
-  if (nrow(duplicate_rows) != 0) abort_not_unique_key(as_label(data_q), map_chr(args, as_label))
+  if (nrow(duplicate_rows) != 0) abort_not_unique_key(as_label(data_q), cols_chosen)
 
   invisible(.data)
 }

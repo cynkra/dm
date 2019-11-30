@@ -31,4 +31,18 @@ test_that("check_key() checks primary key properly?", {
   expect_silent(
     check_key(test_tbl, !!!c(sym("n"), sym("nn")))
   )
+
+  expect_silent(
+    check_key(test_tbl, everything())
+  )
+
+  expect_silent(
+    check_key(test_tbl)
+  )
+
+  # if {tidyselect} selects nothing
+  expect_cdm_error(
+    check_key(data, starts_with("d")),
+    "not_unique_key"
+  )
 })
