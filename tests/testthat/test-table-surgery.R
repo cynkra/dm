@@ -65,15 +65,15 @@ test_that("reunite_parent_child_from_list() reunites parent and child nicely on 
 
 
 test_that("table surgery functions fail in the expected ways?", {
-  map(
+  walk(
     data_ts_src,
-    ~ expect_cdm_error(
+    ~ expect_error(
       decompose_table(., aex_id, a, e, x),
-      class = "wrong_col_names"
+      "."
     )
   )
 
-  map(
+  walk(
     data_ts_src,
     ~ expect_cdm_error(
       decompose_table(., a, a, e, x),
@@ -81,11 +81,16 @@ test_that("table surgery functions fail in the expected ways?", {
     )
   )
 
-  map(
+  walk(
     data_ts_src,
-    ~ expect_cdm_error(
-      decompose_table(., abcdef_id, a, b, c, d, e, f),
-      class = "too_many_cols"
-    )
+    function(data_ts) {
+      expect_equal(
+        decompose_table(data_ts, abcdef_id, a, b, c, d, e, f)$parent_table %>%
+          select(-abcdef_id) %>%
+          collect(),
+        data_ts %>%
+          collect()
+      )
+    }
   )
 })

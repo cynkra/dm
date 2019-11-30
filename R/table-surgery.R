@@ -43,15 +43,7 @@ decompose_table <- function(.data, new_id_column, ...) {
     abort_dupl_new_id_col_name(table_name)
   }
 
-  sel_vars <- tryCatch(
-    tidyselect::vars_select(avail_cols, ...),
-    error = function(e) {
-      if (inherits(e, "simpleError")) {
-        # FIXME: what if a different `simpleError` occurs?
-        wrong_col <- gsub("^.*'(.*)'.*$", "\\1", e$message)
-        abort_wrong_col_names(table_name, avail_cols, wrong_col)
-      } else abort(e$message)
-    })
+  sel_vars <- tidyselect::vars_select(avail_cols, ...)
 
   parent_table <-
     select(.data, !!!sel_vars) %>%

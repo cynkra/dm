@@ -254,14 +254,6 @@ error_txt_dupl_new_id_col_name <- function(table_name) {
   paste0("`new_id_column` can not have an identical name as one of the columns of `", table_name, "`.")
 }
 
-abort_too_many_cols <- function(table_name) {
-  abort(error_txt_too_many_cols(table_name), .subclass = cdm_error_full("too_many_cols"))
-}
-
-error_txt_too_many_cols <- function(table_name) {
-  paste0("Number of columns to be extracted has to be less than total number of columns of ", table_name)
-}
-
 abort_no_overwrite <- function() {
   fun_name <- as_string(sys.call(-1)[[1]])
   abort(error_txt_no_overwrite(fun_name), .subclass = cdm_error_full("no_overwrite"))
@@ -494,8 +486,6 @@ error_no_zoom_allowed <- function() {
 abort_w_message <- function(msg) {
   abort(msg, .subclass = cdm_error_full("w_message"))
 }
-
-abort_w_message
 
 # no table zoomed, but 'cdm_insert_tbl()' called ---------------------------------
 
