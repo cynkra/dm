@@ -10,7 +10,6 @@ cdm_error_full <- function(x) {
   c(cdm_error(x), "dm_error")
 }
 
-
 # abort and text for primary key handling errors --------------------------
 
 abort_wrong_col_args <- function() {
@@ -29,7 +28,6 @@ error_txt_key_set_force_false <- function() {
   "If you want to change the existing primary key for a table, set `force` == TRUE."
 }
 
-
 # abort and text for key-helper functions ---------------------------------
 
 abort_not_unique_key <- function(table_name, column_names) {
@@ -37,31 +35,18 @@ abort_not_unique_key <- function(table_name, column_names) {
 }
 
 error_txt_not_unique_key <- function(table_name, column_names) {
-  paste0(
-    "`",
-    paste(column_names, collapse = ", "),
-    "` not a unique key of `",
-    table_name, "`."
-  )
+  glue("({commas(tick(column_names))}) not a unique key of {tick(table_name)}.")
 }
-
 
 # general error: table not part of `dm` -----------------------------------
 
-
-abort_table_not_in_dm <- function(table_name, dm) {
-  abort(error_txt_table_not_in_dm(table_name, dm), .subclass = cdm_error_full("table_not_in_dm"))
+abort_table_not_in_dm <- function(table_name, dm_tables) {
+  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = cdm_error_full("table_not_in_dm"))
 }
 
-error_txt_table_not_in_dm <- function(table_name, dm) {
-  paste0(
-    "Tables ",
-    commas(tick(table_name)),
-    " not in `dm` object. Available table names: ",
-    commas(tick(src_tbls(dm)))
-  )
+error_txt_table_not_in_dm <- function(table_name, dm_tables) {
+  glue("Tables {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}")
 }
-
 
 # error: is not subset of -------------------------------------------------
 
@@ -74,11 +59,9 @@ abort_not_subset_of <- function(table_name_1, colname_1,
 
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
-  glue("Column `{colname_1}` in table `{table_name_1}` ",
-       "contains values (see above) that are not present in ",
-       "column `{colname_2}`  in table `{table_name_2}`")
+  glue("Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see above) that are not present in column ",
+    "{tick(colname_2)} of table {tick(table_name_2)}")
 }
-
 
 # error sets not equal ----------------------------------------------------
 
@@ -90,7 +73,6 @@ error_txt_sets_not_equal <- function(error_msgs) {
   paste0(error_msgs, collapse = "\n  ")
 }
 
-
 # cardinality check errors ------------------------------------------------
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
@@ -100,13 +82,8 @@ abort_not_bijective <- function(child_table_name, fk_col_name) {
 }
 
 error_txt_not_bijective <- function(child_table_name, fk_col_name) {
-  paste0(
-    "1..1 cardinality (bijectivity) is not given: Column `",
-    fk_col_name,
-    "` in table `",
-    child_table_name,
-    "` contains duplicate values."
-  )
+  glue("1..1 cardinality (bijectivity) is not given: Column {tick(fk_col_name)} in table ",
+    "{tick(child_table_name)} contains duplicate values.")
 }
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
@@ -116,15 +93,9 @@ abort_not_injective <- function(child_table_name, fk_col_name) {
 }
 
 error_txt_not_injective <- function(child_table_name, fk_col_name) {
-  paste0(
-    "0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
-    fk_col_name,
-    "` in table `",
-    child_table_name,
-    "` contains duplicate values."
-  )
+  glue("0..1 cardinality (injectivity from child table to parent table) is not given: Column {tick(fk_col_name)}",
+    " in table {tick(child_table_name)} contains duplicate values.")
 }
-
 
 # errors in fk handling --------------------------------------------------
 
@@ -135,9 +106,8 @@ abort_ref_tbl_has_no_pk <- function(ref_table_name) {
 }
 
 error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
-  paste0(
-    "ref_table ", tick(ref_table_name), " needs a primary key first. ",
-    "Use `cdm_enum_pk_candidates()` to find candidates, and `cdm_add_pk()` define a primary key."
+  glue("ref_table {tick(ref_table_name)} needs a primary key first. ",
+    "Use `cdm_enum_pk_candidates()` to find appropriate columns and `cdm_add_pk()` to define a primary key."
   )
 }
 
@@ -153,16 +123,9 @@ abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
 
 error_txt_is_not_fk <- function(child_table_name, wrong_fk_colnames,
                                 parent_table_name, actual_fk_colnames) {
-  paste0(
-    "The given combination of columns ",
-    paste0(tick(wrong_fk_colnames), collapse = ", "), " ",
-    "is not a foreign key of table ",
-    tick(child_table_name), " ",
-    "with regards to ref_table ",
-    tick(parent_table_name), ". ",
-    "Foreign key columns are: ",
-    commas(tick(actual_fk_colnames)), "."
-  )
+  glue("The given combination of columns ({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
+    "{tick(child_table_name)} with regards to ref_table {tick(parent_table_name)}. ",
+    "Foreign key columns are: ({commas(tick(actual_fk_colnames))}).")
 }
 
 abort_rm_fk_col_missing <- function() {
@@ -172,7 +135,6 @@ abort_rm_fk_col_missing <- function() {
 error_txt_rm_fk_col_missing <- function() {
   "Parameter `column` has to be set. Pass `NULL` for removing all references."
 }
-
 
 # error helpers for draw_dm -----------------------------------------------
 
@@ -213,7 +175,7 @@ abort_tables_not_reachable_from_start <- function() {
   abort(error_txt_tables_not_reachable_from_start(), .subclass = cdm_error_full("tables_not_reachable_from_start"))
 }
 
-error_txt_tables_not_reachable_from_start <- function(fun_name, param) {
+error_txt_tables_not_reachable_from_start <- function() {
   glue("All selected tables must be reachable from `start`.")
 }
 
@@ -287,14 +249,14 @@ error_txt_no_unique_indexes <- function() {
   paste0("`cdm_copy_to()` does not support the `unique_indexes` argument.")
 }
 
-abort_need_named_vec <- function(dm) {
-  abort(error_txt_need_named_vec(dm), .subclass = cdm_error_full("need_named_vec"))
+abort_need_named_vec <- function(table_names) {
+  abort(error_txt_need_named_vec(table_names), .subclass = cdm_error_full("need_named_vec"))
 }
 
-error_txt_need_named_vec <- function(dm) {
-  paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector, the names ",
-    "must be from the original table names returned by `src_tbls()`: ",
-    commas(tick(src_tbls(dm)))
+error_txt_need_named_vec <- function(table_names) {
+  paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector whose names ",
+    "are the original table names (returned by e.g. `src_tbls()`): ",
+    commas(tick(table_names))
   )
 }
 
@@ -303,33 +265,32 @@ abort_src_not_db <- function() {
 }
 
 error_src_not_db <- function() {
-  paste0("This does not work if `cdm_get_src(dm)` is not on a database.")
+  paste0("This does not work if the tables of the `dm` are not on a database.")
 }
 
-abort_first_rm_fks <- function(table, fks) {
-  abort(error_first_rm_fks(table, fks), .subclass = cdm_error_full("first_rm_fks"))
+abort_first_rm_fks <- function(table, fk_tables) {
+  abort(error_first_rm_fks(table, fk_tables), .subclass = cdm_error_full("first_rm_fks"))
 }
 
-error_first_rm_fks <- function(table, fks) {
-  glue("There are foreign keys pointing from table(s) {commas(tick(fks))} to table {tick(table)}. First remove those or set `rm_referencing_fks = TRUE`.")
+error_first_rm_fks <- function(table, fk_tables) {
+  glue("There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
+       "First remove those or set `rm_referencing_fks = TRUE`.")
 }
-
 
 abort_no_src_or_con <- function() {
   abort(error_no_src_or_con(), .subclass = cdm_error_full("no_src_or_con"))
 }
 
 error_no_src_or_con <- function() {
-  paste0('`src` needs to be a "src" or a "con" object.')
+  'Argument `src` needs to be a `src` or a `con` object.'
 }
-
 
 abort_update_not_supported <- function() {
   abort(error_update_not_supported(), .subclass = cdm_error_full("update_not_supported"))
 }
 
 error_update_not_supported <- function() {
-  paste0('Updating "dm" objects not supported.')
+  paste0('Updating `dm` objects not supported.')
 }
 
 # errors when filters are set but they shouldn't be ------------------------------
@@ -341,7 +302,6 @@ abort_only_possible_wo_filters <- function(fun_name) {
 error_only_possible_wo_filters <- function(fun_name) {
   glue("You cannot call `{fun_name}()` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.")
 }
-
 
 # no foreign key relation -------------------------------------------------
 
@@ -383,30 +343,7 @@ abort_what_a_weird_object <- function(class) {
 }
 
 error_what_a_weird_object <- function(class) {
-  paste0("Don't know how to determine table source for object of class ",
-         class)
-}
-
-# not all tables have the same src ----------------------------------------
-
-
-abort_not_same_src <- function() {
-  abort(error_not_same_src(), .subclass = cdm_error_full("not_same_src"))
-}
-
-error_not_same_src <- function() {
-  "Not all tables in the object share the same `src`"
-}
-
-# Something other than tables are put in a `dm` ------------------
-
-abort_what_a_weird_object <- function(class) {
-  abort(error_what_a_weird_object(class), .subclass = cdm_error_full("what_a_weird_object"))
-}
-
-error_what_a_weird_object <- function(class) {
-  paste0("Don't know how to determine table source for object of class ",
-         class)
+  glue("Don't know how to determine table source for object of class {commas(tick(class))}")
 }
 
 abort_squash_limited <- function() {

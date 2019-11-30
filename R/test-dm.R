@@ -34,7 +34,7 @@ check_correct_input <- function(dm, table, n = NULL) {
 
   }
   if (!all(table %in% src_tbls(dm))) {
-    abort_table_not_in_dm(setdiff(table, src_tbls(dm)), dm)
+    abort_table_not_in_dm(setdiff(table, src_tbls(dm)), src_tbls(dm))
   }
 }
 
