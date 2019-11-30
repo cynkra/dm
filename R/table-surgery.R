@@ -52,7 +52,6 @@ decompose_table <- function(.data, new_id_column, ...) {
         abort_wrong_col_names(table_name, avail_cols, wrong_col)
       } else abort(e$message)
     })
-  if (length(unique(sel_vars)) >= length(avail_cols)) abort_too_many_cols(table_name)
 
   parent_table <-
     select(.data, !!!sel_vars) %>%
