@@ -590,7 +590,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
   # src: if `df` on a different src:
   # if `df_list` is on DB and `dest` is local, collect `df_list`
   # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
-  df <- copy_to(cdm_get_src(dest), df, unique_db_table_name(name), temporary = temporary)
+  df <- copy_to(cdm_get_src(dest), df, unique_db_table_name(name), temporary = temporary, ...)
   # FIXME: should we allow `overwrite` argument?
   names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
   # rename old tables with potentially new names
