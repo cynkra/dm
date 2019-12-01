@@ -12,7 +12,7 @@ test_that("decompose_table() decomposes tables nicely on all sources?", {
     data_ts_src,
     decompose_table_data_ts_names,
     ~ expect_known_output(
-      print(decompose_table(.x, aef_id, a, e, f)),
+      print(decompose_table(.x, aef_id, a, e, f) %>% map(arrange_all)),
       .y
     )
   )
@@ -31,10 +31,11 @@ test_that("decomposition works with {tidyselect}", {
   reference_flower_object <- list(
     child_table = ct_iris,
     parent_table = pt_iris
-  )
+  ) %>%
+    map(arrange_all)
 
   expect_identical(
-    decompose_table(iris, Sepal_id, starts_with("Sepal")),
+    decompose_table(iris, Sepal_id, starts_with("Sepal")) %>% map(arrange_all),
     reference_flower_object
   )
 })
@@ -86,8 +87,10 @@ test_that("table surgery functions fail in the expected ways?", {
       expect_equal(
         decompose_table(data_ts, abcdef_id, a, b, c, d, e, f)$parent_table %>%
           select(-abcdef_id) %>%
+          arrange_all() %>%
           collect(),
         data_ts %>%
+          arrange_all() %>%
           collect()
       )
     }
