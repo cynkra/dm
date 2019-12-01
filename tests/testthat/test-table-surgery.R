@@ -16,7 +16,6 @@ test_that("decompose_table() decomposes tables nicely on all sources?", {
       .y
     )
   )
-
 })
 
 test_that("decomposition works with {tidyselect}", {
@@ -37,7 +36,7 @@ test_that("decomposition works with {tidyselect}", {
   expect_identical(
     decompose_table(iris, Sepal_id, starts_with("Sepal")),
     reference_flower_object
-    )
+  )
 })
 
 test_that("reunite_parent_child() reunites parent and child nicely on all sources?", {

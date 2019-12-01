@@ -41,30 +41,32 @@ test_that("print() and format() methods for subclass `zoomed_dm` work", {
 
 
 test_that("cdm_get_zoomed_tbl() works", {
-# get zoomed tbl works
+  # get zoomed tbl works
   expect_identical(
     dm_for_filter %>% cdm_zoom_to_tbl(t2) %>% cdm_get_zoomed_tbl(),
-    tibble(table = "t2",
-           zoom = list(t2))
+    tibble(
+      table = "t2",
+      zoom = list(t2)
+    )
   )
 
-# function for getting only the tibble itself works
+  # function for getting only the tibble itself works
   expect_identical(
     dm_for_filter %>% cdm_zoom_to_tbl(t3) %>% get_zoomed_tbl(),
     t3
   )
-
 })
 
 test_that("zooming works also on DBs", {
   walk(
     dm_for_filter_src,
-    ~expect_identical(
+    ~ expect_identical(
       cdm_zoom_to_tbl(., t3) %>% cdm_get_zoomed_tbl(),
-      tibble(table = "t3",
-             zoom = list(tbl(., "t3"))
-             )
+      tibble(
+        table = "t3",
+        zoom = list(tbl(., "t3"))
       )
+    )
   )
 })
 
@@ -77,7 +79,7 @@ test_that("cdm_insert_zoomed_tbl() works", {
       cdm_add_pk(t4_new, h) %>%
       cdm_add_fk(t4_new, j, t3) %>%
       cdm_add_fk(t5, l, t4_new)
-      )
+  )
 
   # test that an error is thrown if 'repair = check_unique' and duplicate table names
   expect_cdm_error(
@@ -101,7 +103,8 @@ test_that("cdm_update_tbl() works", {
   # setting table t7 as zoomed table for t6 and removing its primary key and foreign keys pointing to it
   new_dm_for_filter <- cdm_get_def(dm_for_filter) %>%
     mutate(
-      zoom = if_else(table == "t6", list(t7), NULL)) %>%
+      zoom = if_else(table == "t6", list(t7), NULL)
+    ) %>%
     new_dm3()
   class(new_dm_for_filter) <- c("zoomed_dm", "dm")
 

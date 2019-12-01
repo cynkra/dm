@@ -190,7 +190,6 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #'
 #' @examples
 #' cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
-#'
 #' @export
 cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
@@ -236,40 +235,45 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
   tbl_colnames <- colnames(tbl)
   tibble(
     column = tbl_colnames,
-    why = map_chr(column, ~check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_pk))
+    why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_pk))
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
     mutate(arrange_col = as.integer(gsub("(^[0-9]*).*$", "\\1", why))) %>%
     arrange(desc(candidate), arrange_col, column) %>%
     select(-arrange_col)
-
 }
 
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
-
   t1_join <- t1 %>% select(value = !!sym(colname))
-  t2_join <- t2 %>% select(value = !!sym(pk)) %>% mutate(match = 1L)
+  t2_join <- t2 %>%
+    select(value = !!sym(pk)) %>%
+    mutate(match = 1L)
 
   res_tbl <- tryCatch(
     left_join(t1_join, t2_join, by = "value") %>%
-    # if value is NULL, this also counts as a match -- consistent with fk semantics
-    mutate(mismatch_or_null = if_else(is.na(match), value, NULL)) %>%
-    count(mismatch_or_null) %>%
-    ungroup() %>% # dbplyr problem?
-    mutate(n_mismatch = sum(if_else(is.na(mismatch_or_null), 0L, n), na.rm = TRUE)) %>%
-    mutate(n_total = sum(n, na.rm = TRUE)) %>%
-    arrange(desc(n)) %>%
-    filter(!is.na(mismatch_or_null)) %>%
-    head(MAX_COMMAS + 1L) %>%
-    collect(),
-    error = identity)
+      # if value is NULL, this also counts as a match -- consistent with fk semantics
+      mutate(mismatch_or_null = if_else(is.na(match), value, NULL)) %>%
+      count(mismatch_or_null) %>%
+      ungroup() %>% # dbplyr problem?
+      mutate(n_mismatch = sum(if_else(is.na(mismatch_or_null), 0L, n), na.rm = TRUE)) %>%
+      mutate(n_total = sum(n, na.rm = TRUE)) %>%
+      arrange(desc(n)) %>%
+      filter(!is.na(mismatch_or_null)) %>%
+      head(MAX_COMMAS + 1L) %>%
+      collect(),
+    error = identity
+  )
 
   # return error message if error occurred (possibly types didn't match etc.)
-  if (is_condition(res_tbl)) return(conditionMessage(res_tbl))
+  if (is_condition(res_tbl)) {
+    return(conditionMessage(res_tbl))
+  }
   n_mismatch <- pull(head(res_tbl, 1), n_mismatch)
   # return empty character if candidate
-  if (is_empty(n_mismatch)) return("")
+  if (is_empty(n_mismatch)) {
+    return("")
+  }
   # calculate percentage and compose detailed description for missing values
   n_total <- pull(head(res_tbl, 1), n_total)
 
@@ -280,6 +284,8 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     # mutate(num_mismatch = glue("{as.character(mismatch_or_null)} ({as.character(n)})")) %>%
     pull()
   vals_formatted <- commas(format(vals_extended, trim = TRUE, justify = "none"))
-  glue("{as.character(n_mismatch)} entries ({percentage_missing}%) of ",
-       "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}")
+  glue(
+    "{as.character(n_mismatch)} entries ({percentage_missing}%) of ",
+    "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}"
+  )
 }

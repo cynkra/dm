@@ -15,7 +15,7 @@
 \usage{
 dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
 
-dm_from_src(src, table_names = NULL)
+dm_from_src(src = NULL, table_names = NULL)
 
 new_dm(tables = list())
 

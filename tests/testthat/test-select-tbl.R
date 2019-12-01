@@ -33,14 +33,13 @@ test_that("cdm_select_tbl() remembers all FKs", {
 
   expect_equivalent_dm(
     cdm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
-    cdm_select_tbl(airports, flights),
+      cdm_select_tbl(airports, flights),
     reordered_dm_nycflights_small_cycle
   )
 })
 
 
 test_that("cdm_rename_tbl() renames a `dm`", {
-
   dm_rename <-
     as_dm(list(a = tibble(x = 1), b = tibble(y = 1))) %>%
     cdm_add_pk(b, y) %>%

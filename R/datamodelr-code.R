@@ -2,47 +2,45 @@
 # data_model code directly from {datamodelr} --------------------------------------
 
 bdm_from_data_frames <- function(...) {
-
   df_list <- list(...)
-  if(length(df_list) == 1 && inherits(df_list[[1]], "list")) {
+  if (length(df_list) == 1 && inherits(df_list[[1]], "list")) {
     df_list <- df_list[[1]]
   } else {
-    if(length(names(df_list)) < length(df_list)) {
-      names(df_list) <- as.list(match.call( expand.dots = TRUE)[-1])
+    if (length(names(df_list)) < length(df_list)) {
+      names(df_list) <- as.list(match.call(expand.dots = TRUE)[-1])
     }
   }
   tables <- df_list
   names(tables) <- make.names(names(tables))
   dfdm <-
-    do.call(rbind,
-            lapply(names(tables), function(table_name) {
-              t1 <- tables[[table_name]]
-              columns <- data.frame(
-                column = names(t1),
-                type = sapply(t1[0, , drop = FALSE], function(x) paste(class(x), collapse = ", ")),
-                stringsAsFactors = FALSE)
-              columns$table <- table_name
-              columns
-            })
+    do.call(
+      rbind,
+      lapply(names(tables), function(table_name) {
+        t1 <- tables[[table_name]]
+        columns <- data.frame(
+          column = names(t1),
+          type = sapply(t1[0, , drop = FALSE], function(x) paste(class(x), collapse = ", ")),
+          stringsAsFactors = FALSE
+        )
+        columns$table <- table_name
+        columns
+      })
     )
   as.data_model(dfdm)
-
 }
 
 as.data_model <- function(x) {
+  if (!inherits(x, "data.frame")) stop("Not a data.frame")
 
-  if(!inherits(x, "data.frame")) stop("Not a data.frame")
-
-  if(!all(c("column", "table") %in% names(x)))
-  {
+  if (!all(c("column", "table") %in% names(x))) {
     stop("Data frame must have elements named 'table' and 'column'.")
   }
 
   # set key to 0 if NA or add key if NULL:
-  if(!is.null(x[["key"]])) {
-    x[is.na(x[,"key"]), "key"] <- FALSE
+  if (!is.null(x[["key"]])) {
+    x[is.na(x[, "key"]), "key"] <- FALSE
   } else {
-    x[,"key"] <- FALSE
+    x[, "key"] <- FALSE
   }
 
   # convert logical key markers to numeric (column order in a key)
@@ -55,14 +53,14 @@ as.data_model <- function(x) {
   #   x$key <- unlist(keys)
   # }
 
-  if(is.null(x[["ref"]])) x[["ref"]] <- NA
+  if (is.null(x[["ref"]])) x[["ref"]] <- NA
 
 
   # create references from ref and keys
   ref_table <- bdm_create_references(x)
 
   table_attrs <- attr(x, "tables")
-  if(is.null(table_attrs)) {
+  if (is.null(table_attrs)) {
     table_attrs <-
       data.frame(
         table = unique(x[["table"]]),
@@ -82,11 +80,10 @@ as.data_model <- function(x) {
 }
 
 as.data_model_list <- function(x) {
-
-  if(mode(x) != "list"){
+  if (mode(x) != "list") {
     stop("Not a list")
   }
-  if(!all(c("columns", "references") %in% (names(x)))) {
+  if (!all(c("columns", "references") %in% (names(x)))) {
     stop("Input must have columns and references")
   }
 
@@ -99,52 +96,53 @@ is.data_model <- function(x) {
 }
 
 bdm_create_references <- function(col_table) {
+  if (!inherits(col_table, "data.frame")) stop("Input must be a data frame.")
 
-  if(!inherits(col_table, "data.frame")) stop("Input must be a data frame.")
-
-  if(!all(c("table", "column") %in% names(col_table))) {
+  if (!all(c("table", "column") %in% names(col_table))) {
     stop("Column info table must have table, column and ref variables.")
   }
-  if(!"ref" %in% names(col_table)) {
+  if (!"ref" %in% names(col_table)) {
     return(NULL)
   }
-  if(all(is.na(col_table[,"ref"]))) {
+  if (all(is.na(col_table[, "ref"]))) {
     return(NULL)
   }
 
 
-  if(is.null(col_table[["ref_col"]])) {
+  if (is.null(col_table[["ref_col"]])) {
     col_table[["ref_col"]] <- NA
   }
   ref_table <- col_table[
-    !is.na(col_table[["ref"]]),  # take only rows with reference
-    c("table", "column", "ref", "ref_col")]
+    !is.na(col_table[["ref"]]), # take only rows with reference
+    c("table", "column", "ref", "ref_col")
+  ]
   col_table[is.na(col_table$key), "key"] <- FALSE
 
   ref_col <-
-    with(ref_table,
-         ifelse(is.na(ref_col),
-                sapply(ref_table$ref, function(x)
-                  col_table[col_table$table == x & col_table$key, "column"][1]
-                ),
-                ref_col
-         )
+    with(
+      ref_table,
+      ifelse(is.na(ref_col),
+        sapply(ref_table$ref, function(x) {
+          col_table[col_table$table == x & col_table$key, "column"][1]
+        }),
+        ref_col
+      )
     )
   ref_table[["ref_col"]] <- ref_col
 
   # number of columns in primary key
-  num_col = sapply(ref_table$ref, function(x)
+  num_col <- sapply(ref_table$ref, function(x) {
     length(col_table[col_table$table == x & col_table$key, ][["column"]])
-  )
+  })
   num_col[num_col == 0L] <- 1L
 
-  key_col_num = {
+  key_col_num <- {
 
     # create column index number
     rle1 <- rle(num_col)
-    if(lengths(rle1)[1] > 0) {
+    if (lengths(rle1)[1] > 0) {
       col_list <- sapply(1:lengths(rle1)[1], function(i) {
-        rep(1 : rle1$values[i], rle1$lengths[i] / rle1$values[i])
+        rep(1:rle1$values[i], rle1$lengths[i] / rle1$values[i])
       })
       col_list[lengths(col_list) == 0] <- 1
       unlist(col_list)
@@ -154,7 +152,7 @@ bdm_create_references <- function(col_table) {
   }
 
   dim(key_col_num) <- NULL
-  if(nrow(ref_table) == length(key_col_num)) {
+  if (nrow(ref_table) == length(key_col_num)) {
     ref_table$ref_id <- cumsum(key_col_num == 1)
     ref_table$ref_col_num <- key_col_num
   } else {
@@ -167,22 +165,23 @@ bdm_create_references <- function(col_table) {
 # graph code directly from {datamodelr} -----------------------------------------
 
 bdm_create_graph <- function(
-  data_model,
-  rankdir = "BT",
-  graph_name = "Data Model",
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  view_type = "all",
-  focus = NULL,
-  col_attr = "column",
-  columnArrows = FALSE) {
-
+                             data_model,
+                             rankdir = "BT",
+                             graph_name = "Data Model",
+                             graph_attrs = "",
+                             node_attrs = "",
+                             edge_attrs = "",
+                             view_type = "all",
+                             focus = NULL,
+                             col_attr = "column",
+                             columnArrows = FALSE) {
   g_list <-
-    bdm_create_graph_list(data_model = data_model, view_type = view_type,
-                          focus = focus, col_attr = col_attr,
-                          columnArrows = columnArrows)
-  if(length(g_list$nodes$nodes) == 0) {
+    bdm_create_graph_list(
+      data_model = data_model, view_type = view_type,
+      focus = focus, col_attr = col_attr,
+      columnArrows = columnArrows
+    )
+  if (length(g_list$nodes$nodes) == 0) {
     warning("The number of tables to render is 0.")
   }
   graph <-
@@ -191,7 +190,7 @@ bdm_create_graph <- function(
       node_attrs = sprintf('margin=0 fontcolor = "#444444" %s', node_attrs),
       nodes_df = g_list$nodes,
       edges_df = g_list$edges,
-      edge_attrs = c('color = "#555555"',"arrowsize = 1", edge_attrs)
+      edge_attrs = c('color = "#555555"', "arrowsize = 1", edge_attrs)
     )
   class(graph) <- c("datamodelr_graph", class(graph))
 
@@ -200,17 +199,16 @@ bdm_create_graph <- function(
   graph$dot_code <- dot_graph(graph, columnArrows)
 
   graph
-
 }
 
-bdm_render_graph <- function (graph, width = NULL, height = NULL) {
-
-  if( !requireNamespace("DiagrammeR", quietly = TRUE)) {
+bdm_render_graph <- function(graph, width = NULL, height = NULL) {
+  if (!requireNamespace("DiagrammeR", quietly = TRUE)) {
     stop("DiagrammeR package needed for this function to work. Please install it.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
 
-  if(is.null(graph$dot_code)) {
+  if (is.null(graph$dot_code)) {
     graph$dot_code <- dot_graph(graph)
   }
 
@@ -218,35 +216,37 @@ bdm_render_graph <- function (graph, width = NULL, height = NULL) {
 }
 
 bdm_create_graph_list <- function(
-  data_model,
-  view_type = "all",
-  focus = NULL,
-  col_attr = "column",
-  columnArrows = FALSE) {
+                                  data_model,
+                                  view_type = "all",
+                                  focus = NULL,
+                                  col_attr = "column",
+                                  columnArrows = FALSE) {
 
   # hidden tables
 
-  if(!is.null(focus) && is.list(focus)) {
-    if(!is.null(focus[["tables"]])) {
-      data_model$tables <- data_model$tables[data_model$tables$table %in% focus$tables,  ]
-      data_model$columns <- data_model$columns[data_model$columns$table %in% focus$tables,  ]
-      if(is.null(focus[["external_ref"]]) || !focus[["external_ref"]]) {
+  if (!is.null(focus) && is.list(focus)) {
+    if (!is.null(focus[["tables"]])) {
+      data_model$tables <- data_model$tables[data_model$tables$table %in% focus$tables, ]
+      data_model$columns <- data_model$columns[data_model$columns$table %in% focus$tables, ]
+      if (is.null(focus[["external_ref"]]) || !focus[["external_ref"]]) {
         data_model$references <- data_model$references[
           data_model$references$table %in% focus$tables &
-            data_model$references$ref %in% focus$tables, ]
+            data_model$references$ref %in% focus$tables,
+        ]
       }
     }
   } else {
     # hide tables with display == "hide" attribute
-    if(is.null(data_model$tables$display)) data_model$tables$display <- NA
+    if (is.null(data_model$tables$display)) data_model$tables$display <- NA
     data_model$tables$display[is.na(data_model$tables$display)] <- "show"
     hidden_tables <- data_model$tables[data_model$tables$display == "hide", "table"]
-    if(!is.null(hidden_tables)) {
-      data_model$tables <- data_model$tables[!data_model$tables$table %in% hidden_tables,  ]
-      data_model$columns <- data_model$columns[!data_model$columns$table %in% hidden_tables,  ]
+    if (!is.null(hidden_tables)) {
+      data_model$tables <- data_model$tables[!data_model$tables$table %in% hidden_tables, ]
+      data_model$columns <- data_model$columns[!data_model$columns$table %in% hidden_tables, ]
       data_model$references <- data_model$references[
         !data_model$references$table %in% hidden_tables &
-          !data_model$references$ref %in% hidden_tables, ]
+          !data_model$references$ref %in% hidden_tables,
+      ]
     }
   }
 
@@ -257,18 +257,21 @@ bdm_create_graph_list <- function(
 
   tables <- split(data_model$columns, data_model$columns$table)
 
-  switch( view_type,
-          all = {},
+  switch(view_type,
+    all = {},
 
-          keys_only = {
-            tables <- lapply(tables, function(tab)
-              tab[tab[["key"]] > 0 | !is.na(tab[,"ref"]), ])
-          },
+    keys_only = {
+      tables <- lapply(tables, function(tab) {
+        tab[tab[["key"]] > 0 | !is.na(tab[, "ref"]), ]
+      })
+    },
 
-          title_only = {
-            tables <- lapply(tables, function(tab)
-              tab[0L,])
-          })
+    title_only = {
+      tables <- lapply(tables, function(tab) {
+        tab[0L, ]
+      })
+    }
+  )
 
   g_labels <-
     sapply(names(tables), function(x) {
@@ -277,7 +280,8 @@ bdm_create_graph_list <- function(
         title = x,
         palette_id = data_model$tables[data_model$tables$table == x, "display"],
         col_attr = col_attr,
-        columnArrows = columnArrows)
+        columnArrows = columnArrows
+      )
     })
 
   nodes <-
@@ -292,15 +296,18 @@ bdm_create_graph_list <- function(
     )
 
 
-  if(!is.null(data_model$references)) {
+  if (!is.null(data_model$references)) {
     edges <-
-      with(data_model$references[data_model$references$ref_col_num == 1,],
-           data.frame(
-             from = table,
-             to = ref,
-             fromCol = column,
-             toCol = ref_col,
-             stringsAsFactors = FALSE))
+      with(
+        data_model$references[data_model$references$ref_col_num == 1, ],
+        data.frame(
+          from = table,
+          to = ref,
+          fromCol = column,
+          toCol = ref_col,
+          stringsAsFactors = FALSE
+        )
+      )
   } else {
     edges <- NULL
   }
@@ -312,7 +319,6 @@ bdm_create_graph_list <- function(
 }
 
 dot_graph <- function(graph, columnArrows = FALSE) {
-
   graph_type <- "digraph"
 
   dot_attr <- paste0(
@@ -325,28 +331,29 @@ dot_graph <- function(graph, columnArrows = FALSE) {
   segments <- stats::setNames(1:(length(segments)), segments)
 
   dot_nodes <- sapply(seq_len(nrow(graph$nodes_df)), function(n) {
-    node <- graph$nodes_df[n,]
+    node <- graph$nodes_df[n, ]
     dot_node <- sprintf("  '%s' [label = %s, shape = '%s'] \n", node$nodes, node$label, node$shape)
-    if(!is.na(node[["segment"]])) {
-      dot_node <- sprintf("subgraph cluster_%s {\nlabel='%s'\ncolor=\"#DDDDDD\"\n%s\n}\n",
-                          segments[node[["segment"]]],
-                          node[["segment"]],
-                          dot_node
+    if (!is.na(node[["segment"]])) {
+      dot_node <- sprintf(
+        "subgraph cluster_%s {\nlabel='%s'\ncolor=\"#DDDDDD\"\n%s\n}\n",
+        segments[node[["segment"]]],
+        node[["segment"]],
+        dot_node
       )
-
     }
     dot_node
   })
 
   dot_seg_nodes <- paste(dot_nodes, collapse = "\n")
-  dot_edges <- "";
-  if(columnArrows) {
+  dot_edges <- ""
+  if (columnArrows) {
     dot_edges <- paste(
-      sprintf("'%s':'%s'->'%s':'%s'",
-              graph$edges_df$from,
-              graph$edges_df$fromCol,
-              graph$edges_df$to,
-              graph$edges_df$toCol
+      sprintf(
+        "'%s':'%s'->'%s':'%s'",
+        graph$edges_df$from,
+        graph$edges_df$fromCol,
+        graph$edges_df$to,
+        graph$edges_df$toCol
       ),
       collapse = "\n"
     )
@@ -356,28 +363,30 @@ dot_graph <- function(graph, columnArrows = FALSE) {
       collapse = "\n"
     )
   }
-  ret <- sprintf("#data_model\n%s {\n%s\n%s\n%s\n}",
-                 graph_type,
-                 dot_attr,
-                 dot_seg_nodes,
-                 dot_edges)
+  ret <- sprintf(
+    "#data_model\n%s {\n%s\n%s\n%s\n}",
+    graph_type,
+    dot_attr,
+    dot_seg_nodes,
+    dot_edges
+  )
   ret
 }
 
 html_table <- function(x, ...) html_tag(x, tag = "TABLE", ident = 1, ...)
-html_tr <- function(x, ...)    html_tag(x, tag = "TR", ident = 2, ...)
-html_td <- function(x, ...)    html_tag(x, tag = "TD", ident = 3, nl = FALSE, ...)
-html_font <- function(x, ...)    html_tag(x, tag = "FONT", ident = 0, nl = FALSE, ...)
+html_tr <- function(x, ...) html_tag(x, tag = "TR", ident = 2, ...)
+html_td <- function(x, ...) html_tag(x, tag = "TD", ident = 3, nl = FALSE, ...)
+html_font <- function(x, ...) html_tag(x, tag = "FONT", ident = 0, nl = FALSE, ...)
 
 html_tag <- function(x, tag, ident = 0, nl = TRUE, atrs = NULL, collapse = "") {
-  if(length(x) > 1 && !is.null(collapse)) {
+  if (length(x) > 1 && !is.null(collapse)) {
     x <- paste(x, collapse = collapse)
   }
   space <- paste(rep("  ", ident), collapse = "")
   atrs <- paste(sprintf('%s="%s"', names(atrs), atrs), collapse = " ")
-  if(nchar(atrs) > 0) atrs <- paste0(" ", atrs)
+  if (nchar(atrs) > 0) atrs <- paste0(" ", atrs)
   htext <-
-    if(nl) {
+    if (nl) {
       sprintf("%s<%s%s>\n%s%s</%s>\n", space, tag, atrs, x, space, tag)
     } else {
       sprintf("%s<%s%s>%s</%s>\n", space, tag, atrs, x, tag)
@@ -385,15 +394,14 @@ html_tag <- function(x, tag, ident = 0, nl = TRUE, atrs = NULL, collapse = "") {
   paste(htext, collapse = "")
 }
 
-to_html_table <- function (x,
-                           title = "Table",
-                           attr_table,
-                           attr_header,
-                           attr_font,
-                           attr_td = NULL,
-                           trans = NULL,
-                           cols = names(x)) {
-
+to_html_table <- function(x,
+                          title = "Table",
+                          attr_table,
+                          attr_header,
+                          attr_font,
+                          attr_td = NULL,
+                          trans = NULL,
+                          cols = names(x)) {
   html_table(atrs = attr_table, c(
     # header
     html_tr(
@@ -404,76 +412,78 @@ to_html_table <- function (x,
       )
     ),
     # rows
-    sapply(seq_len(nrow(x)), function(r)
+    sapply(seq_len(nrow(x)), function(r) {
       html_tr(c(
         # cells
         sapply(cols, function(col_name) {
           value <- x[r, col_name]
-          if(!is.null(trans)) value <- trans(col_name, x[r,], value)
-          html_td(value, if(is.null(attr_td)) NULL else attr_td(col_name, x[r,], value))
+          if (!is.null(trans)) value <- trans(col_name, x[r, ], value)
+          html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
         })
       ))
-    )
+    })
   ))
 }
 
 dot_html_label <- function(x, title, palette_id = "default", col_attr = c("column"),
-                           columnArrows = FALSE ) {
+                           columnArrows = FALSE) {
   cols <- c("ref", col_attr)
-  if(is.null(palette_id)) {
+  if (is.null(palette_id)) {
     palette_id <- "default"
   }
 
-  border = ifelse(is.null(bdm_color(palette_id, "line_color")), 0, 1)
+  border <- ifelse(is.null(bdm_color(palette_id, "line_color")), 0, 1)
 
   attr_table <- list(
-    ALIGN="LEFT", BORDER=border, CELLBORDER=0, CELLSPACING=0
+    ALIGN = "LEFT", BORDER = border, CELLBORDER = 0, CELLSPACING = 0
   )
-  if(!is.null(bdm_color(palette_id, "line_color"))) {
+  if (!is.null(bdm_color(palette_id, "line_color"))) {
     attr_table[["COLOR"]] <- bdm_color(palette_id, "line_color")
   }
   attr_header <- list(
-    COLSPAN=length(cols) - columnArrows, BGCOLOR=bdm_color(palette_id, "header_bgcolor"), BORDER=0
+    COLSPAN = length(cols) - columnArrows, BGCOLOR = bdm_color(palette_id, "header_bgcolor"), BORDER = 0
   )
   attr_font <- list()
   attr_font <- list(COLOR = bdm_color(palette_id, "header_font"))
 
   attr_td <- function(col_name, row_values, value) {
-    ret <- list(ALIGN="LEFT", BGCOLOR = bdm_color(palette_id, "bgcolor"))
-    if(col_name == "column" && columnArrows) {
-      key <- row_values[["key"]];
-      reference <- row_values[["ref"]];
-      if(!is.na(reference) || key) {
-        ret$PORT = row_values[["column"]];
+    ret <- list(ALIGN = "LEFT", BGCOLOR = bdm_color(palette_id, "bgcolor"))
+    if (col_name == "column" && columnArrows) {
+      key <- row_values[["key"]]
+      reference <- row_values[["ref"]]
+      if (!is.na(reference) || key) {
+        ret$PORT <- row_values[["column"]]
       }
     }
-    ret;
+    ret
   }
 
   # value presentation transformation
   trans <- function(col_name, row_values, value) {
-    if(col_name == "ref") {
+    if (col_name == "ref") {
       value <- ifelse(is.na(value), "", "~")
-      if(columnArrows) {
-        value <- NULL;
+      if (columnArrows) {
+        value <- NULL
       }
     }
-    if(col_name == "column" && row_values[["key"]]) {
+    if (col_name == "column" && row_values[["key"]]) {
       value <- sprintf("<U>%s</U>", value)
     }
-    if(!is.null(value) && is.na(value)) {
-      value = "";
+    if (!is.null(value) && is.na(value)) {
+      value <- ""
     }
-    return(value);
+    return(value)
   }
 
-  ret <- to_html_table(x, title = title,
-                       attr_table = attr_table,
-                       attr_header = attr_header,
-                       attr_font = attr_font,
-                       attr_td = attr_td,
-                       cols = cols,
-                       trans = trans)
+  ret <- to_html_table(x,
+    title = title,
+    attr_table = attr_table,
+    attr_header = attr_header,
+    attr_font = attr_font,
+    attr_td = attr_td,
+    cols = cols,
+    trans = trans
+  )
 
   ret <- sprintf("<%s>", trimws(ret))
   ret
@@ -498,7 +508,7 @@ bdm_palette <- function(line_color = NULL, header_bgcolor, header_font, bgcolor)
 
 bdm_color <- function(palette_id, what) {
   color_scheme <- bdm_get_color_scheme()
-  if(is.null(color_scheme[[palette_id]])) {
+  if (is.null(color_scheme[[palette_id]])) {
     palette_id <- "default"
   }
   color_scheme[[palette_id]][[what]]
@@ -514,31 +524,38 @@ bdm_color_scheme <- list(
   accent1nb = bdm_palette(
     header_bgcolor = "#5B9BD5",
     header_font = "#FFFFFF",
-    bgcolor = "#D6E1F1"),
+    bgcolor = "#D6E1F1"
+  ),
   accent2nb = bdm_palette(
     header_bgcolor = "#ED7D31",
     header_font = "#FFFFFF",
-    bgcolor = "#F9DBD2"),
+    bgcolor = "#F9DBD2"
+  ),
   accent3nb = bdm_palette(
     header_bgcolor = "#FFC000",
     header_font = "#FFFFFF",
-    bgcolor = "#FFEAD0"),
+    bgcolor = "#FFEAD0"
+  ),
   accent4nb = bdm_palette(
     header_bgcolor = "#70AD47",
     header_font = "#FFFFFF",
-    bgcolor = "#D9E6D4"),
+    bgcolor = "#D9E6D4"
+  ),
   accent5nb = bdm_palette(
     header_bgcolor = "#4472C4",
     header_font = "#FFFFFF",
-    bgcolor = "#D4D9EC"),
+    bgcolor = "#D4D9EC"
+  ),
   accent6nb = bdm_palette(
     header_bgcolor = "#A5A5A5",
     header_font = "#FFFFFF",
-    bgcolor = "#E4E4E4"),
+    bgcolor = "#E4E4E4"
+  ),
   accent7nb = bdm_palette(
     header_bgcolor = "#787878",
     header_font = "#FFFFFF",
-    bgcolor = "#D8D8D8"),
+    bgcolor = "#D8D8D8"
+  ),
   accent1 = bdm_palette(
     line_color = "#41719C",
     header_bgcolor = "#5B9BD5",

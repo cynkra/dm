@@ -64,7 +64,6 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
   #   dm_for_filter_w_cycle %>% cdm_filter(t1, a > 3) %>% cdm_get_filtered_table("t2"),
   #   semi_join(t2, filter(t1, a > 3))
   # )
-
 })
 
 test_that("we get filtered/unfiltered tables with respective funs", {

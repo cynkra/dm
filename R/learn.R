@@ -134,7 +134,9 @@ postgres_learn_query <- function() {
 
 # FIXME: only needed for `cdm_learn_from_db()` <- needs to be implemented in a different manner
 legacy_new_dm <- function(tables, data_model) {
-  if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
+  if (is_missing(tables) && is_missing(data_model)) {
+    return(empty_dm())
+  }
   if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(is.data_model(data_model))
 

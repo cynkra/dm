@@ -4,7 +4,7 @@ test_that("cdm_add_tbl() works", {
   walk2(
     dm_for_filter_src,
     d1_src,
-    ~expect_identical(
+    ~ expect_identical(
       length(cdm_get_tables(cdm_add_tbl(..1, d1 = ..2))),
       7L
     )
@@ -32,14 +32,16 @@ test_that("cdm_add_tbl() works", {
   expect_silent(
     expect_identical(
       tbl(d1 %>% cdm_add_tbl(dm_for_filter, new_name = .), "new_name"),
-      d1)
+      d1
+    )
   )
 
   # adding more than 1 table:
   # 1. Is the resulting number of tables correct?
   expect_identical(
     length(cdm_get_tables(cdm_add_tbl(dm_for_filter, d1, d2))),
-    8L)
+    8L
+  )
 
   # 2. Is the resulting order of the tables correct?
   expect_identical(
@@ -73,7 +75,7 @@ test_that("cdm_add_tbl() works", {
     d1_db <- d1_src[-1]
     walk(
       d1_db,
-      ~expect_cdm_error(
+      ~ expect_cdm_error(
         cdm_add_tbl(dm_for_filter, .),
         "not_same_src"
       )
@@ -103,10 +105,10 @@ test_that("cdm_rm_tbl() works", {
   # removes a table on all srcs
   map(
     dm_for_filter_w_cycle_src,
-    ~expect_equivalent_dm(
+    ~ expect_equivalent_dm(
       cdm_rm_tbl(., t7) %>% collect(),
       dm_for_filter
-      )
+    )
   )
 
   # removes more than one table

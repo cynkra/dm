@@ -230,13 +230,15 @@ cdm_test_obj %<-% as_dm(list(
   cdm_table_1 = d2,
   cdm_table_2 = d4,
   cdm_table_3 = d7,
-  cdm_table_4 = d8))
+  cdm_table_4 = d8
+))
 
 cdm_test_obj_2 %<-% as_dm(list(
   cdm_table_1 = d4,
   cdm_table_2 = d7,
   cdm_table_3 = d8,
-  cdm_table_4 = d6))
+  cdm_table_4 = d6
+))
 
 
 # for `dm_nrow()` ---------------------------------------------------------
@@ -445,21 +447,23 @@ bad_dm %<-% {
     cdm_add_fk(tbl_1, b, tbl_3)
 }
 
-dm_nycflights_small %<-% {as_dm(
-  list(
-    flights = nycflights13::flights %>% slice(1:800),
-    planes = nycflights13::planes,
-    airlines = nycflights13::airlines,
-    airports = nycflights13::airports,
-    weather = nycflights13::weather %>% slice(1:800))
+dm_nycflights_small %<-% {
+  as_dm(
+    list(
+      flights = nycflights13::flights %>% slice(1:800),
+      planes = nycflights13::planes,
+      airlines = nycflights13::airlines,
+      airports = nycflights13::airports,
+      weather = nycflights13::weather %>% slice(1:800)
+    )
   ) %>%
-  cdm_add_pk(planes, tailnum) %>%
-  cdm_add_pk(airlines, carrier) %>%
-  cdm_add_pk(airports, faa) %>%
-  cdm_add_fk(flights, tailnum, planes) %>%
-  cdm_add_fk(flights, carrier, airlines) %>%
-  cdm_add_fk(flights, dest, airports)
-  }
+    cdm_add_pk(planes, tailnum) %>%
+    cdm_add_pk(airlines, carrier) %>%
+    cdm_add_pk(airports, faa) %>%
+    cdm_add_fk(flights, tailnum, planes) %>%
+    cdm_add_fk(flights, carrier, airlines) %>%
+    cdm_add_fk(flights, dest, airports)
+}
 
 zoomed_dm <- cdm_zoom_to_tbl(dm_for_filter, t2)
 zoomed_dm_2 <- cdm_zoom_to_tbl(dm_for_filter, t3)
@@ -506,7 +510,8 @@ if (is_this_a_test()) {
   local(try(
     {
       con <- DBI::dbConnect(
-        RPostgres::Postgres(), dbname = "postgres", host = "localhost", port = 5432,
+        RPostgres::Postgres(),
+        dbname = "postgres", host = "localhost", port = 5432,
         user = "postgres", bigint = "integer"
       )
       src <- src_dbi(con, auto_disconnect = TRUE)

@@ -46,7 +46,6 @@ The outcome of the join operation determines the value of the \code{why} column 
 }
 \examples{
 cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
-
 }
 \seealso{
 Other foreign key functions: 

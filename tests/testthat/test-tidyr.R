@@ -23,7 +23,6 @@ test_that("basic test: 'separate()'-methods work", {
     separate(dm_for_filter),
     "only_possible_w_zoom"
   )
-
 })
 
 test_that("key tracking works", {

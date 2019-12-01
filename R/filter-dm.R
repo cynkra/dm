@@ -60,7 +60,6 @@
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
 #' # only the three New York airports.
-#'
 #' @export
 cdm_filter <- function(dm, table, ...) {
   table <- as_name(ensym(table))
@@ -85,6 +84,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #' @inheritParams cdm_add_pk
 #'
 #' @examples
+#'
 #' cdm_nycflights13() %>%
 #'   cdm_filter(flights, month == 3) %>%
 #'   cdm_apply_filters()
@@ -219,7 +219,9 @@ check_no_filter <- function(dm) {
   def <-
     cdm_get_def(dm)
 
-  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) return()
+  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) {
+    return()
+  }
 
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_filters(fun_name)

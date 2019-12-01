@@ -6,23 +6,25 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
     dm_for_flatten_src,
     ~ expect_equal(
       cdm_flatten_to_tbl(., fact) %>% collect(),
-      result_from_flatten)
+      result_from_flatten
+    )
   )
 
   # a one-table-dm
-    expect_equivalent(
-      dm_for_flatten %>%
-        cdm_select_tbl(fact) %>%
-        cdm_flatten_to_tbl(fact),
-      fact
-    )
+  expect_equivalent(
+    dm_for_flatten %>%
+      cdm_select_tbl(fact) %>%
+      cdm_flatten_to_tbl(fact),
+    fact
+  )
 
   # explicitly choose parent tables
   expect_identical(
     cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2),
     left_join(
       rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
-      by = c("dim_1_key" = "dim_1_pk")) %>%
+      by = c("dim_1_key" = "dim_1_pk")
+    ) %>%
       left_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
   )
 
@@ -31,7 +33,8 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
     cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1),
     left_join(
       rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
-      by = c("dim_2_key" = "dim_2_pk")) %>%
+      by = c("dim_2_key" = "dim_2_pk")
+    ) %>%
       left_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
   )
 
@@ -67,7 +70,6 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
     length(colnames(cdm_flatten_to_tbl(dm_more_complex, t5))),
     8L
   )
-
 })
 
 test_that("`cdm_flatten_to_tbl()` does the right things for 'inner_join()'", {
@@ -81,7 +83,8 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'inner_join()'", {
     cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = inner_join),
     inner_join(
       rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
-      by = c("dim_1_key" = "dim_1_pk")) %>%
+      by = c("dim_1_key" = "dim_1_pk")
+    ) %>%
       inner_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
   )
 
@@ -90,7 +93,8 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'inner_join()'", {
     cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = inner_join),
     inner_join(
       rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
-      by = c("dim_2_key" = "dim_2_pk")) %>%
+      by = c("dim_2_key" = "dim_2_pk")
+    ) %>%
       inner_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
   )
 
@@ -106,7 +110,6 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'inner_join()'", {
     cdm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = inner_join),
     cdm_apply_filters(bad_filtered_dm) %>% cdm_flatten_to_tbl(tbl_1, join = inner_join)
   )
-
 })
 
 test_that("`cdm_flatten_to_tbl()` does the right things for 'full_join()'", {
@@ -123,7 +126,8 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'full_join()'", {
     cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = full_join),
     full_join(
       rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
-      by = c("dim_1_key" = "dim_1_pk")) %>%
+      by = c("dim_1_key" = "dim_1_pk")
+    ) %>%
       full_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
   )
 
@@ -132,7 +136,8 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'full_join()'", {
     cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = full_join),
     full_join(
       rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
-      by = c("dim_2_key" = "dim_2_pk")) %>%
+      by = c("dim_2_key" = "dim_2_pk")
+    ) %>%
       full_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
   )
 
@@ -223,7 +228,6 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'nest_join()'", {
     cdm_flatten_to_tbl(dm_for_flatten, fact, join = nest_join),
     class = "no_flatten_with_nest_join"
   )
-
 })
 
 
@@ -231,7 +235,8 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'right_join()'", {
   expect_identical(
     expect_warning(
       cdm_flatten_to_tbl(dm_for_flatten, fact, join = right_join),
-      "right_join()"),
+      "right_join()"
+    ),
     right_join(fact_clean, dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
       right_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
       right_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
@@ -243,7 +248,8 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'right_join()'", {
     cdm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = right_join),
     right_join(
       rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
-      by = c("dim_1_key" = "dim_1_pk")) %>%
+      by = c("dim_1_key" = "dim_1_pk")
+    ) %>%
       right_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
   )
 
@@ -252,7 +258,8 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'right_join()'", {
     cdm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = right_join),
     right_join(
       rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
-      by = c("dim_2_key" = "dim_2_pk")) %>%
+      by = c("dim_2_key" = "dim_2_pk")
+    ) %>%
       right_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
   )
 
@@ -282,7 +289,7 @@ test_that("`cdm_flatten_to_tbl()` does the right things for 'right_join()'", {
       cdm_add_fk(flights, origin, airports) %>%
       cdm_flatten_to_tbl(flights),
     "no_cycles"
-    )
+  )
 })
 
 test_that("`cdm_squash_to_tbl()` does the right things", {
@@ -292,7 +299,7 @@ test_that("`cdm_squash_to_tbl()` does the right things", {
     cdm_squash_to_tbl(dm_more_complex, t5, t4, t3),
     left_join(t5, t4, by = c("l" = "h")) %>%
       left_join(t3, by = c("j" = "f"))
-    )
+  )
 
   # deeper hierarchy available and `auto_detect = TRUE`
   # for flatten: columns from t5 + t4 + t3 + t4_2 + t6 are combined in one table, 9 cols in total
@@ -307,14 +314,14 @@ test_that("`cdm_squash_to_tbl()` does the right things", {
     cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = full_join),
     full_join(t5, t4, by = c("l" = "h")) %>%
       full_join(t3, by = c("j" = "f"))
-    )
+  )
 
   # inner_join:
   expect_identical(
     cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = inner_join),
     inner_join(t5, t4, by = c("l" = "h")) %>%
       inner_join(t3, by = c("j" = "f"))
-    )
+  )
 
   # right_join:
   expect_cdm_error(
@@ -415,5 +422,4 @@ test_that("tidyselect works for flatten", {
     cdm_flatten_to_tbl(dm_for_filter, t2, -t101),
     class = "w_message"
   )
-
 })

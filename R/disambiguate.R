@@ -64,7 +64,9 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
 }
 
 explain_col_rename <- function(recipe) {
-  if (nrow(recipe) == 0) return()
+  if (nrow(recipe) == 0) {
+    return()
+  }
 
   msg_core <-
     recipe %>%

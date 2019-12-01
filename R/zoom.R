@@ -50,9 +50,9 @@ cdm_zoom_to_tbl <- function(dm, table) {
           zoom = if_else(table == !!zoom, data, list(NULL)),
           key_tracker_zoom = if_else(table == !!zoom, keys, list(NULL))
         )
-      ),
+    ),
     class = c("zoomed_dm", "dm")
-    )
+  )
 }
 
 is_zoomed <- function(dm) {
@@ -85,7 +85,9 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
   all_filters <- get_filter_for_table(dm, old_tbl_name)
   old_filters <- all_filters %>% filter(!zoomed)
-  new_filters <- all_filters %>% filter(zoomed) %>% mutate(zoomed = FALSE)
+  new_filters <- all_filters %>%
+    filter(zoomed) %>%
+    mutate(zoomed = FALSE)
 
   # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
   upd_pk <- update_zoomed_pk(dm)
@@ -99,8 +101,10 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     update_filter(dm, old_tbl_name, vctrs::list_of(old_filters)) %>%
     cdm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
     cdm_get_def() %>%
-    mutate(pks = if_else(table == new_tbl_name_chr, upd_pk, pks),
-           fks = if_else(table == new_tbl_name_chr, upd_inc_fks, fks)) %>%
+    mutate(
+      pks = if_else(table == new_tbl_name_chr, upd_pk, pks),
+      fks = if_else(table == new_tbl_name_chr, upd_inc_fks, fks)
+    ) %>%
     new_dm3(zoomed = TRUE)
 
   # outgoing FKs: potentially in several rows, based on the old table;
@@ -112,7 +116,9 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
 #' @rdname cdm_zoom_to_tbl
 #' @export
 cdm_update_zoomed_tbl <- function(dm) {
-  if (!is_zoomed(dm)) return(dm)
+  if (!is_zoomed(dm)) {
+    return(dm)
+  }
   table_name <- orig_name_zoomed(dm)
   upd_filter <- vctrs::list_of(get_filter_for_table(dm, table_name) %>% mutate(zoomed = FALSE))
   new_def <- cdm_get_def(dm) %>%
@@ -121,7 +127,7 @@ cdm_update_zoomed_tbl <- function(dm) {
       pks = if_else(table == table_name, update_zoomed_pk(dm), pks),
       fks = if_else(table == table_name, update_zoomed_incoming_fks(dm), fks),
       filters = if_else(table == table_name, upd_filter, filters)
-      )
+    )
   new_dm3(new_def, zoomed = TRUE) %>%
     dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
     cdm_zoom_out()
@@ -138,9 +144,11 @@ cdm_zoom_out <- function(dm) {
     filter(zoomed == FALSE)
   new_dm3(
     cdm_get_def(dm) %>%
-      mutate(zoom = list(NULL),
-             key_tracker_zoom = list(NULL),
-             filters = if_else(table == old_tbl_name, vctrs::list_of(upd_filter), filters))
+      mutate(
+        zoom = list(NULL),
+        key_tracker_zoom = list(NULL),
+        filters = if_else(table == old_tbl_name, vctrs::list_of(upd_filter), filters)
+      )
   )
 }
 
@@ -150,7 +158,9 @@ update_zoomed_pk <- function(dm) {
   orig_pk <- cdm_get_pk(dm, !!old_tbl_name)
   upd_pk <- if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
     new_pk(list(names(tracked_keys[tracked_keys == orig_pk])))
-  } else new_pk()
+  } else {
+    new_pk()
+  }
   vctrs::list_of(upd_pk)
 }
 
@@ -160,7 +170,9 @@ update_zoomed_incoming_fks <- function(dm) {
   orig_pk <- cdm_get_pk(dm, !!old_tbl_name)
   if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
     filter(cdm_get_def(dm), table == old_tbl_name) %>% pull(fks)
-  } else vctrs::list_of(new_fk())
+  } else {
+    vctrs::list_of(new_fk())
+  }
 }
 
 # is_upd is logical: either update (TRUE) or insert (FALSE)
@@ -176,18 +188,21 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
     if (nrow(old_out_keys) > 0 && any(old_out_keys$column %in% tracked_keys)) {
       filter(old_out_keys, column %in% tracked_keys) %>%
         mutate(new_column = names(tracked_keys[match(column, tracked_keys, nomatch = 0L)]))
-      } else filter(old_out_keys, 0 == 1) %>% mutate(new_column = character(0))
+    } else {
+      filter(old_out_keys, 0 == 1) %>% mutate(new_column = character(0))
+    }
 
   if (is_upd) {
     # need to remove the old keys
     dm <- reduce2(
       old_out_keys$column,
       old_out_keys$table,
-      ~cdm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3), .init = dm
-      )
+      ~ cdm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3),
+      .init = dm
+    )
   }
   structure(
-    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~cdm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm),
+    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ cdm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm),
     class = c("zoomed_dm", "dm")
   )
 }
@@ -214,7 +229,9 @@ replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_keys = NULL) {
 
 check_zoomed <- function(dm) {
   check_dm(dm)
-  if (is_zoomed(dm)) return()
+  if (is_zoomed(dm)) {
+    return()
+  }
 
   fun_name <- as_string(sys.call(-1)[[1]])
   # if a method for `zoomed_dm()` is used for a `dm`, we don't want `fun_name = method.dm` but rather `fun_name = method`
@@ -224,7 +241,9 @@ check_zoomed <- function(dm) {
 
 check_not_zoomed <- function(dm) {
   check_dm(dm)
-  if (!is_zoomed(dm)) return()
+  if (!is_zoomed(dm)) {
+    return()
+  }
 
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_zoom(fun_name)

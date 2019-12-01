@@ -132,18 +132,20 @@ check_set_equality <- function(t1, c1, t2, c2) {
   c1q <- ensym(c1)
   c2q <- ensym(c2)
 
-  catcher_1 <- tryCatch({
-    check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
-    NULL
-  },
-  error = identity
+  catcher_1 <- tryCatch(
+    {
+      check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
+      NULL
+    },
+    error = identity
   )
 
-  catcher_2 <- tryCatch({
-    check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)
-    NULL
-  },
-  error = identity
+  catcher_2 <- tryCatch(
+    {
+      check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)
+      NULL
+    },
+    error = identity
   )
 
   catchers <- compact(list(catcher_1, catcher_2))
@@ -196,7 +198,6 @@ check_if_subset <- function(t1, c1, t2, c2) {
   print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
 
   abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q))
-
 }
 
 # similar to `check_if_subset()`, but evaluates to a boolean
@@ -219,17 +220,18 @@ is_subset <- function(t1, c1, t2, c2) {
 
 check_pk_constraints <- function(dm) {
   pks <- cdm_get_all_pks(dm)
-  if (nrow(pks) == 0) return(tibble(
-    table = character(0),
-    kind = character(0),
-    column = character(0),
-    is_key = logical(0),
-    problem = character(0)
-    )
-  )
+  if (nrow(pks) == 0) {
+    return(tibble(
+      table = character(0),
+      kind = character(0),
+      column = character(0),
+      is_key = logical(0),
+      problem = character(0)
+    ))
+  }
   table_names <- pull(pks, table)
   tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
-    map2(syms(pks$pk_col), ~select(.x, !!.y))
+    map2(syms(pks$pk_col), ~ select(.x, !!.y))
   tbl_is_pk <- map_dfr(tbls, enum_pk_candidates) %>%
     rename(is_key = candidate, problem = why)
 
@@ -243,13 +245,14 @@ check_pk_constraints <- function(dm) {
 }
 
 check_fk_constraints <- function(dm) {
-  fks <-  left_join(cdm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
+  fks <- left_join(cdm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
   pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
   fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_col, t2, t2_name = parent_table, pk = pk_col)
   mutate(
-    fks_tibble, problem = pmap_chr(fks_tibble, check_fk),
+    fks_tibble,
+    problem = pmap_chr(fks_tibble, check_fk),
     is_key = if_else(problem == "", TRUE, FALSE),
     kind = "FK"
   ) %>%
@@ -262,9 +265,12 @@ new_tracked_keys <- function(dm, selected) {
   # the new tracked keys need to be the remaining original column names
   # and their name needs to be the newest one (tidyselect-syntax)
   # `intersect(selected, old_tracked_names)` is empty, return `NULL`
-  if (is_null(intersect(selected, old_tracked_names))) NULL else
-  set_names(
-    tracked_keys[selected[selected %in% old_tracked_names]],
-    names(selected[selected %in% old_tracked_names])
-  )
+  if (is_null(intersect(selected, old_tracked_names))) {
+    NULL
+  } else {
+    set_names(
+      tracked_keys[selected[selected %in% old_tracked_names]],
+      names(selected[selected %in% old_tracked_names])
+    )
+  }
 }

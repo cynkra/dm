@@ -57,9 +57,10 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   walk2(
     d8_src,
     d2_src,
-      ~ expect_identical(
-        check_cardinality(.x, c, .y, a),
-        "injective relationship ( child: 0 or 1 -> parent: 1)")
+    ~ expect_identical(
+      check_cardinality(.x, c, .y, a),
+      "injective relationship ( child: 0 or 1 -> parent: 1)"
+    )
   )
 
   walk2(
@@ -67,7 +68,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     d4_src,
     ~ expect_identical(
       check_cardinality(.x, a, .y, c),
-      "surjective relationship (child: 1 to n -> parent: 1)")
+      "surjective relationship (child: 1 to n -> parent: 1)"
+    )
   )
 
   walk2(
@@ -75,7 +77,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     d4_src,
     ~ expect_identical(
       check_cardinality(.x, c, .y, c),
-      "no special relationship (child: 0 to n -> parent: 1)")
+      "no special relationship (child: 0 to n -> parent: 1)"
+    )
   )
 
   walk2(
@@ -83,7 +86,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     d3_src,
     ~ expect_identical(
       check_cardinality(.x, a, .y, c),
-      "bijective relationship (child: 1 -> parent: 1)")
+      "bijective relationship (child: 1 -> parent: 1)"
+    )
   )
 
   # expect specific errors and sometimes specific output due to errors ---------------

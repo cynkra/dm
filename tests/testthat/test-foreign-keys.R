@@ -163,9 +163,9 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
 
   # `anti_join()` doesn't distinguish between `dbl` and `int`
   tbl_fk_candidates_t1_t4 <- tribble(
-    ~column, ~candidate,  ~why,
-    "a",     TRUE,       "",
-    "b",     FALSE,      "<reason>"
+    ~column, ~candidate, ~why,
+    "a", TRUE, "",
+    "b", FALSE, "<reason>"
   )
 
   map(
@@ -181,8 +181,8 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
   )
 
   tbl_t3_t4 <- tibble::tribble(
-    ~column, ~candidate,  ~why,
-    "c",      FALSE,      "<reason>"
+    ~column, ~candidate, ~why,
+    "c", FALSE, "<reason>"
   )
 
   map(
@@ -197,7 +197,7 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
 
   tbl_t4_t3 <- tibble::tribble(
     ~column, ~candidate, ~why,
-    "c",     TRUE,       ""
+    "c", TRUE, ""
   )
 
   map(
@@ -210,7 +210,7 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
     )
   )
 
-  nycflights_example <-     tibble::tribble(
+  nycflights_example <- tibble::tribble(
     ~column,          ~candidate, ~why,
     "origin",         TRUE,       "",
     "dest",           FALSE,      "<reason>",
