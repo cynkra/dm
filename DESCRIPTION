@@ -27,6 +27,7 @@ Description: Provides tools for working with multiple related tables,
     Multiple tables (data and metadata) are stored in a compound object,
     which can then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
+Depends: R (>= 3.3)
 Imports:
     backports,
     cli,
