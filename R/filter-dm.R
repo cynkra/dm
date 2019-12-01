@@ -62,10 +62,7 @@
 #' # only the three New York airports.
 #' @export
 cdm_filter <- function(dm, table, ...) {
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
-
-  cdm_zoom_to_tbl(dm, !!table) %>%
+  cdm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
     cdm_update_zoomed_tbl()
 }
