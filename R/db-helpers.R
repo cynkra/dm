@@ -88,7 +88,7 @@ build_copy_data <- nse_function(c(dm, dest, table_names, unique_table_names), ~ 
 # Not exported, to give us flexibility to change easily
 copy_list_of_tables_to <- function(dest, copy_data,
                                    ..., overwrite = FALSE, df = NULL, name = NULL, types = NULL) {
-
+  #
   tables <- pmap(copy_data, copy_to, dest = dest, overwrite = overwrite, ...)
   set_names(tables, copy_data$source_name)
 }
