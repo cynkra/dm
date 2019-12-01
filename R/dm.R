@@ -214,6 +214,11 @@ validate_dm <- function(x) {
     )
   }
 
+  inner_names <- map(def, names)
+  if (!all(map_lgl(inner_names, is.null))) {
+    abort_dm_invalid("`def` must not have inner names.")
+  }
+
   fks <- def$fks %>%
     map_dfr(I) %>%
     unnest(column)
