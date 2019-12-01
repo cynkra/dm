@@ -14,7 +14,7 @@ systime_convenient <- function() {
 }
 
 # Internal copy helper functions
-build_copy_data <- nse_function(c(dm, dest, table_names, unique_table_names), ~ {
+build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
   source <-
     dm %>%
     cdm_apply_filters() %>%

@@ -72,7 +72,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #'
 #' @rdname dm
 #' @export
-dm_from_src <- nse_function(c(src = NULL, table_names = NULL), ~ {
+dm_from_src <- nse(function(src = NULL, table_names = NULL) {
   if (is_null(src)) {
     return(empty_dm())
   }

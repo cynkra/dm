@@ -11,7 +11,7 @@
 #' @family foreign key functions
 #'
 #' @export
-cdm_add_fk <- nse_function(c(dm, table, column, ref_table, check = FALSE), ~ {
+cdm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
@@ -99,7 +99,7 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @family foreign key functions
 #'
 #' @export
-cdm_get_all_fks <- nse_function(c(dm), ~ {
+cdm_get_all_fks <- nse(function(dm) {
   cdm_get_data_model_fks(dm) %>%
     select(child_table = table, child_fk_col = column, parent_table = ref) %>%
     arrange(child_table, child_fk_col)
@@ -191,7 +191,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' @examples
 #' cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
 #' @export
-cdm_enum_fk_candidates <- nse_function(c(dm, table, ref_table), ~ {
+cdm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
   check_no_filter(dm)

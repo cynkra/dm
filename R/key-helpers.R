@@ -84,7 +84,7 @@ check_key <- function(.data, ...) {
 }
 
 # an internal function to check if a column is a unique key of a table
-is_unique_key <- nse_function(c(.data, column), ~ {
+is_unique_key <- nse(function(.data, column) {
   col_expr <- ensym(column)
   col_name <- as_name(col_expr)
 

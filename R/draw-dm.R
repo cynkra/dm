@@ -180,7 +180,7 @@ color_quos_to_display <- function(...) {
 #'
 #' @rdname cdm_draw
 #' @export
-cdm_get_colors <- nse_function(c(dm), ~ {
+cdm_get_colors <- nse(function(dm) {
   cdm_get_def(dm) %>%
     select(table, display) %>%
     as_tibble() %>%

@@ -122,7 +122,7 @@ cdm_get_pk <- function(dm, table) {
 #' @inheritParams cdm_add_pk
 #'
 #' @export
-cdm_get_all_pks <- nse_function(c(dm), ~ {
+cdm_get_all_pks <- nse(function(dm) {
   cdm_get_data_model_pks(dm) %>%
     select(table = table, pk_col = column)
 })
@@ -181,7 +181,7 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' @export
 #' @examples
 #' nycflights13::flights %>% enum_pk_candidates()
-enum_pk_candidates <- nse_function(c(table), ~ {
+enum_pk_candidates <- nse(function(table) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
@@ -212,7 +212,7 @@ enum_pk_candidates <- nse_function(c(table), ~ {
 #'
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
-cdm_enum_pk_candidates <- nse_function(c(dm, table), ~ {
+cdm_enum_pk_candidates <- nse(function(dm, table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
   check_no_filter(dm)
