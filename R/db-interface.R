@@ -102,7 +102,7 @@ cdm_copy_to <- function(dest, dm, ...,
     cdm_set_key_constraints(remote_dm)
   }
 
-  invisible(remote_dm)
+  invisible(debug_validate_dm(remote_dm))
 }
 
 #' Set key constraints on a DB for a `dm`-obj with keys

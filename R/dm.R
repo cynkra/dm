@@ -240,6 +240,12 @@ validate_dm <- function(x) {
   invisible(x)
 }
 
+debug_validate_dm <- function(dm) {
+  # Uncomment to enable validation for troubleshooting
+  # validate_dm(dm)
+  dm
+}
+
 #' Get source
 #'
 #' `cdm_get_src()` returns the \pkg{dplyr} source for a `dm` object.
