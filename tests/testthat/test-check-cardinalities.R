@@ -77,7 +77,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     d4_src,
     ~ expect_identical(
       check_cardinality(.x, c, .y, c),
-      "no special mapping (child: 0 to n -> parent: 1)"
+      "generic mapping (child: 0 to n -> parent: 1)"
     )
   )
 
