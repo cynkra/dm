@@ -1,3 +1,15 @@
+# dm 0.0.5.9002
+
+- New `cdm_apply_filters_to_tbl()` that applies filters in related tables to a table, similar to `cdm_apply_filters()`; `tbl()`, `$` and `[[` no longer apply filter conditions defined in related tables (#161).
+- `check_key()` no longer maps empty selection list to all columns.
+- `check_key()` supports tidyselect (#188).
+- `cdm_rm_tbl()` supports tidyselect (#127).
+- `decompose_table()` uses tidyselect (#194).
+- Implement `copy_to()` for `dm` objects (#129).
+- Relax test for cycles in relationship graph (#198).
+- New `cdm_paste()` (#160).
+
+
 # dm 0.0.5.9001
 
 - New `check_cardinality()` returns the nature of the relationship between `parent_table$pk_col` and `child_table$fk_col` (#15).

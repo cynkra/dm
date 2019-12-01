@@ -37,13 +37,12 @@
 #'   set_key_constraints = FALSE
 #' )
 #' @export
-cdm_copy_to <- nse_function(c(dest, dm, ...,
-                              types = NULL, overwrite = NULL,
-                              indexes = NULL, unique_indexes = NULL,
-                              set_key_constraints = TRUE, unique_table_names = FALSE,
-                              table_names = NULL,
-                              temporary = TRUE), ~
-{
+cdm_copy_to <- function(dest, dm, ...,
+                        types = NULL, overwrite = NULL,
+                        indexes = NULL, unique_indexes = NULL,
+                        set_key_constraints = TRUE, unique_table_names = FALSE,
+                        table_names = NULL,
+                        temporary = TRUE) {
   # for the time being, we will be focusing on MSSQL
   # we expect the src (dest) to already point to the correct schema
   # we want to
@@ -74,8 +73,8 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
 
     not_found <- setdiff(names2(table_names), src_tbls(dm))
     if (has_length(not_found)) {
-      if (any(not_found == "")) abort_need_named_vec(dm)
-      abort_table_not_in_dm(unique(not_found), dm)
+      if (any(not_found == "")) abort_need_named_vec(src_tbls(dm))
+      abort_table_not_in_dm(unique(not_found), src_tbls(dm))
     }
   }
 
@@ -103,8 +102,8 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
     cdm_set_key_constraints(remote_dm)
   }
 
-  invisible(remote_dm)
-})
+  invisible(debug_validate_dm(remote_dm))
+}
 
 #' Set key constraints on a DB for a `dm`-obj with keys
 #'
@@ -129,7 +128,7 @@ cdm_copy_to <- nse_function(c(dest, dm, ...,
 #' # constraints for SQLite, the following command would do something:
 #' cdm_set_key_constraints(iris_dm)
 #' @noRd
-cdm_set_key_constraints <- nse_function(c(dm), ~ {
+cdm_set_key_constraints <- nse(function(dm) {
   if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
   db_table_names <- get_db_table_names(dm)
 

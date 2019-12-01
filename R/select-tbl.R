@@ -49,7 +49,9 @@ tidyselect_table_names <- function(dm) {
 cdm_select_tbl_impl <- function(dm, selected) {
 
   # Required to avoid an error further on
-  if (is_empty(selected)) return(empty_dm())
+  if (is_empty(selected)) {
+    return(empty_dm())
+  }
   check_correct_input(dm, selected)
 
   def <-
@@ -64,7 +66,8 @@ filter_recode_table_fks <- function(def, selected) {
   def$fks <-
     # as_list_of() is needed so that `fks` doesn't become a normal list
     vctrs::as_list_of(map(
-      def$fks, filter_recode_fks_of_table, selected = selected
+      def$fks, filter_recode_fks_of_table,
+      selected = selected
     ))
   def
 }

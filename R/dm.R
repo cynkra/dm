@@ -72,8 +72,10 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #'
 #' @rdname dm
 #' @export
-dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
-  if (is_missing(src)) return(empty_dm())
+dm_from_src <- nse(function(src = NULL, table_names = NULL) {
+  if (is_null(src)) {
+    return(empty_dm())
+  }
   src_tbl_names <- src_tbls(src)
 
   if (is_null(table_names)) {
@@ -191,15 +193,31 @@ validate_dm <- function(x) {
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
   check_col_classes(def)
 
-  if (!all(map_lgl(def$data, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi")}))) abort_dm_invalid(
-    "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`.")
+  if (!all(map_lgl(def$data, ~ {
+    inherits(., "data.frame") || inherits(., "tbl_dbi")
+  }))) {
+    abort_dm_invalid(
+      "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`."
+    )
+  }
   if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
 
-  if (nrow(def) == 0) return(invisible(x))
-  if (ncol(def) != 9) abort_dm_invalid(
-    glue("Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
-         "instead of 9.")
+  if (nrow(def) == 0) {
+    return(invisible(x))
+  }
+  if (ncol(def) != 9) {
+    abort_dm_invalid(
+      glue(
+        "Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
+        "instead of 9."
+      )
     )
+  }
+
+  inner_names <- map(def, names)
+  if (!all(map_lgl(inner_names, is.null))) {
+    abort_dm_invalid("`def` must not have inner names.")
+  }
 
   fks <- def$fks %>%
     map_dfr(I) %>%
@@ -212,9 +230,20 @@ validate_dm <- function(x) {
     unnest(column)
   check_colnames(pks, dm_col_names, "PK")
   check_one_zoom(def, is_zoomed(x))
-  if (!all(map_lgl(def$zoom, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")}))) abort_dm_invalid(
-    "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`.")
+  if (!all(map_lgl(def$zoom, ~ {
+    inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")
+  }))) {
+    abort_dm_invalid(
+      "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`."
+    )
+  }
   invisible(x)
+}
+
+debug_validate_dm <- function(dm) {
+  # Uncomment to enable validation for troubleshooting
+  # validate_dm(dm)
+  dm
 }
 
 #' Get source
@@ -253,7 +282,7 @@ cdm_get_con <- function(x) {
 #' `cdm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
 #' Filtering expressions are NOT evaluated at this stage.
-#' To get filtered tables, use `tbl.dm()`
+#' To get a filtered table, use `cdm_apply_filters_to_tbl()`, to apply filters to all tables use `cdm_apply_filters()`
 #'
 #' @rdname dm
 #'
@@ -333,7 +362,7 @@ cdm_get_filter <- function(x) {
     filter_df$filter_expr <- list()
   }
 
-  filter_df  %>%
+  filter_df %>%
     rename(filter = filter_expr)
 }
 
@@ -400,7 +429,6 @@ format.dm <- function(x, ...) {
 #' @export
 #' @import cli
 print.dm <- function(x, ...) {
-
   cat_rule("Table source", col = "green")
   src <- cdm_get_src(x)
 
@@ -447,7 +475,9 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 new_zoomed_df <- function(x, ...) {
-  if (!is.data.frame(x)) return(structure(x, class = c("zoomed_df", class(x)), ...))
+  if (!is.data.frame(x)) {
+    return(structure(x, class = c("zoomed_df", class(x)), ...))
+  }
   # need this in order to avoid star (from rownames, automatic from `structure(...)`)
   # in print method for local tibbles
   new_tibble(
@@ -457,15 +487,18 @@ new_zoomed_df <- function(x, ...) {
     # FIXME: Remove setdiff() when tibble >= 3.0.0 is on CRAN
     class = c("zoomed_df", setdiff(class(x), c("tbl_df", "tbl", "data.frame"))),
     nrow = nrow(x),
-    ...)
+    ...
+  )
 }
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
 # therefore, we need to have our own subclass but the main class needs to be `tbl`
 #' @export
 tbl_sum.zoomed_df <- function(x) {
-  c(structure(attr(x, "name_df"), names = "Zoomed table"),
-    NextMethod())
+  c(
+    structure(attr(x, "name_df"), names = "Zoomed table"),
+    NextMethod()
+  )
 }
 
 #' @export
@@ -556,7 +589,7 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(dm)
   check_correct_input(dm, from, 1L)
 
-  cdm_get_filtered_table(dm, from)
+  cdm_get_tables(dm)[[from]]
 }
 
 #' @export
@@ -646,7 +679,7 @@ empty_dm <- function() {
       data = list(),
       segment = character(),
       display = character(),
-      pks =vctrs::list_of(new_pk()),
+      pks = vctrs::list_of(new_pk()),
       fks = vctrs::list_of(new_fk()),
       filters = vctrs::list_of(new_filter()),
       zoom = list(),

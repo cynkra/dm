@@ -15,7 +15,7 @@
 \usage{
 dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
 
-dm_from_src(src, table_names = NULL)
+dm_from_src(src = NULL, table_names = NULL)
 
 new_dm(tables = list())
 
@@ -83,7 +83,7 @@ is thrown.
 \code{cdm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
 Filtering expressions are NOT evaluated at this stage.
-To get filtered tables, use \code{tbl.dm()}
+To get a filtered table, use \code{cdm_apply_filters_to_tbl()}, to apply filters to all tables use \code{cdm_apply_filters()}
 
 \code{cdm_get_filter()} returns the filter expressions that have been applied to a \code{dm} object.
 These filter expressions are not intended for evaluation, only for

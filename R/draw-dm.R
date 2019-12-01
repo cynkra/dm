@@ -1,4 +1,4 @@
-#' Draw a diagram of a [`dm`]-object's data model 
+#' Draw a diagram of a [`dm`]-object's data model
 #'
 #' `cdm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'
@@ -31,7 +31,7 @@ cdm_draw <- function(dm,
                      edge_attrs = "",
                      focus = NULL,
                      graph_name = "Data Model") {
-
+  #
   check_dm(dm)
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
@@ -180,7 +180,7 @@ color_quos_to_display <- function(...) {
 #'
 #' @rdname cdm_draw
 #' @export
-cdm_get_colors <- nse_function(c(dm), ~ {
+cdm_get_colors <- nse(function(dm) {
   cdm_get_def(dm) %>%
     select(table, display) %>%
     as_tibble() %>%

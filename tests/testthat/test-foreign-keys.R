@@ -163,9 +163,9 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
 
   # `anti_join()` doesn't distinguish between `dbl` and `int`
   tbl_fk_candidates_t1_t4 <- tribble(
-    ~column, ~candidate,  ~why,
-    "a",     TRUE,       "",
-    "b",     FALSE,      "<reason>"
+    ~column, ~candidate, ~why,
+    "a", TRUE, "",
+    "b", FALSE, "<reason>"
   )
 
   map(
@@ -181,8 +181,8 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
   )
 
   tbl_t3_t4 <- tibble::tribble(
-    ~column, ~candidate,  ~why,
-    "c",      FALSE,      "<reason>"
+    ~column, ~candidate, ~why,
+    "c", FALSE, "<reason>"
   )
 
   map(
@@ -197,7 +197,7 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
 
   tbl_t4_t3 <- tibble::tribble(
     ~column, ~candidate, ~why,
-    "c",     TRUE,       ""
+    "c", TRUE, ""
   )
 
   map(
@@ -210,27 +210,27 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
     )
   )
 
-  nycflights_example <-     tibble::tribble(
-    ~column,          ~candidate, ~why,
-    "origin",         TRUE,       "",
-    "dest",           FALSE,      "<reason>",
-    "tailnum",        FALSE,      "<reason>",
-    "carrier",        FALSE,      "<reason>",
-    "air_time",       FALSE,      "<reason>",
-    "arr_delay",      FALSE,      "<reason>",
-    "arr_time",       FALSE,      "<reason>",
-    "day",            FALSE,      "<reason>",
-    "dep_delay",      FALSE,      "<reason>",
-    "dep_time",       FALSE,      "<reason>",
-    "distance",       FALSE,      "<reason>",
-    "flight",         FALSE,      "<reason>",
-    "hour",           FALSE,      "<reason>",
-    "minute",         FALSE,      "<reason>",
-    "month",          FALSE,      "<reason>",
-    "sched_arr_time", FALSE,      "<reason>",
-    "sched_dep_time", FALSE,      "<reason>",
-    "time_hour",      FALSE,      "<reason>",
-    "year",           FALSE,      "<reason>"
+  nycflights_example <- tibble::tribble(
+    ~column,     ~candidate,       ~why,
+    "origin",          TRUE,         "",
+    "dest",           FALSE, "<reason>",
+    "tailnum",        FALSE, "<reason>",
+    "carrier",        FALSE, "<reason>",
+    "air_time",       FALSE, "<reason>",
+    "arr_delay",      FALSE, "<reason>",
+    "arr_time",       FALSE, "<reason>",
+    "day",            FALSE, "<reason>",
+    "dep_delay",      FALSE, "<reason>",
+    "dep_time",       FALSE, "<reason>",
+    "distance",       FALSE, "<reason>",
+    "flight",         FALSE, "<reason>",
+    "hour",           FALSE, "<reason>",
+    "minute",         FALSE, "<reason>",
+    "month",          FALSE, "<reason>",
+    "sched_arr_time", FALSE, "<reason>",
+    "sched_dep_time", FALSE, "<reason>",
+    "time_hour",      FALSE, "<reason>",
+    "year",           FALSE, "<reason>"
   )
 
   expect_identical(

@@ -6,7 +6,6 @@ lookup <- tibble(
 )
 
 test_that("cdm_get_src() works", {
-
   expect_cdm_error(
     cdm_get_src(1),
     class = "is_not_dm"
@@ -17,12 +16,11 @@ test_that("cdm_get_src() works", {
   walk2(
     dm_for_filter_src,
     active_srcs_class,
-    ~expect_true(inherits(cdm_get_src(.x), .y))
+    ~ expect_true(inherits(cdm_get_src(.x), .y))
   )
 })
 
 test_that("cdm_get_con() works", {
-
   expect_cdm_error(
     cdm_get_con(1),
     class = "is_not_dm"
@@ -39,6 +37,6 @@ test_that("cdm_get_con() works", {
   walk2(
     dm_for_filter_src_red,
     active_con_class,
-    ~expect_true(inherits(cdm_get_con(.x), .y))
+    ~ expect_true(inherits(cdm_get_con(.x), .y))
   )
 })

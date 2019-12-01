@@ -135,7 +135,9 @@ distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- get_zoomed_tbl(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
   # when keeping all columns or empty ellipsis (use all columns for distinct) all keys columns remain
-  if (.keep_all || is_empty(enexprs(...))) return(replace_zoomed_tbl(.data, distinct_tbl))
+  if (.keep_all || is_empty(enexprs(...))) {
+    return(replace_zoomed_tbl(.data, distinct_tbl))
+  }
   selected <- tidyselect::vars_select(colnames(tbl), ...)
   new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_keys_zoom)
@@ -161,10 +163,18 @@ slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
   sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
   orig_pk <- cdm_get_pk(.data, !!orig_name_zoomed(.data))
   tracked_keys <- get_tracked_keys(.data)
-  if (is_null(.keep_pk)) {if (has_length(orig_pk) && orig_pk %in% tracked_keys) message(
-    paste("Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices).",
-          "Set argument `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended.")
-    )} else if (!.keep_pk) {tracked_keys <- discard(tracked_keys, tracked_keys == orig_pk)}
+  if (is_null(.keep_pk)) {
+    if (has_length(orig_pk) && orig_pk %in% tracked_keys) {
+      message(
+        paste(
+          "Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices).",
+          "Set argument `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended."
+        )
+      )
+    }
+  } else if (!.keep_pk) {
+    tracked_keys <- discard(tracked_keys, tracked_keys == orig_pk)
+  }
   replace_zoomed_tbl(.data, sliced_tbl, tracked_keys)
 }
 
@@ -294,8 +304,12 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
     explain_col_rename(recipe)
 
-    x_renames <- recipe %>% filter(table == x_disambig_name) %>% pull(renames)
-    y_renames <- recipe %>% filter(table == y_disambig_name) %>% pull(renames)
+    x_renames <- recipe %>%
+      filter(table == x_disambig_name) %>%
+      pull(renames)
+    y_renames <- recipe %>%
+      filter(table == y_disambig_name) %>%
+      pull(renames)
 
     if (has_length(x_renames)) {
       x_tbl <- x_tbl %>% rename(!!!x_renames[[1]])

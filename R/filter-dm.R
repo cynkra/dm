@@ -8,6 +8,8 @@
 #'
 #' With `cdm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
 #'
+#' `cdm_apply_filters_to_tbl()` retrieves one specific table of the `dm` that is updated according to the filter conditions and the foreign key relations.
+#'
 #' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 #' in one of the following scenarios:
 #'
@@ -17,7 +19,7 @@
 #' Tables that are not connected to any table with an active filter are left unchanged.
 #' This results in a new `dm` class object without any filter conditions.
 #'
-#' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated by performing a sequence
+#' 1. Calling `cdm_apply_filters_to_tbl()`: the remaining rows of the requested table are calculated by performing a sequence
 #' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
 #' (similar to 1. but only for one table).
 #'
@@ -42,9 +44,7 @@
 #'   cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl")
 #'
-#' tbl(dm_nyc_filtered, "flights")
-#' dm_nyc_filtered[["planes"]]
-#' dm_nyc_filtered$airlines
+#' cdm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
 #' cdm_nycflights13() %>%
 #'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
@@ -60,13 +60,9 @@
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
 #' # only the three New York airports.
-#'
 #' @export
 cdm_filter <- function(dm, table, ...) {
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
-
-  cdm_zoom_to_tbl(dm, !!table) %>%
+  cdm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
     cdm_update_zoomed_tbl()
 }
@@ -85,6 +81,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #' @inheritParams cdm_add_pk
 #'
 #' @examples
+#'
 #' cdm_nycflights13() %>%
 #'   cdm_filter(flights, month == 3) %>%
 #'   cdm_apply_filters()
@@ -98,9 +95,27 @@ cdm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
   def <- cdm_get_def(dm)
 
-  def$data <- map(def$table, ~ tbl(dm, .))
+  def$data <- map(def$table, ~ cdm_get_filtered_table(dm, .))
 
   cdm_reset_all_filters(new_dm3(def))
+}
+
+# FIXME: 'cdm_apply_filters()' should get an own doc-page which 'cdm_apply_filters_to_tbl()' should share (cf. #145)
+#' @rdname cdm_filter
+#'
+#' @inheritParams cdm_add_pk
+#'
+#' @examples
+#' cdm_nycflights13() %>%
+#'   cdm_filter(flights, month == 3) %>%
+#'   cdm_apply_filters_to_tbl(planes)
+#' @export
+cdm_apply_filters_to_tbl <- function(dm, table) {
+  check_not_zoomed(dm)
+  table_name <- as_string(ensym(table))
+  check_correct_input(dm, table_name)
+
+  cdm_get_filtered_table(dm, table_name)
 }
 
 # calculates the necessary semi-joins from all tables that were filtered to
@@ -201,7 +216,9 @@ check_no_filter <- function(dm) {
   def <-
     cdm_get_def(dm)
 
-  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) return()
+  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) {
+    return()
+  }
 
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_filters(fun_name)

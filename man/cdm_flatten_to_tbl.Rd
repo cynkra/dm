@@ -33,6 +33,7 @@ A single table that results from consecutively joining all affected tables to th
 \description{
 \code{cdm_flatten_to_tbl()} and \code{cdm_squash_to_tbl()} gather all information of interest in one place in a wide table.
 Both functions perform a disambiguation of column names and a cascade of joins.
+Disambiguates column names and a cascade of joins.
 }
 \details{
 With \code{...} left empty, this function will join together all the tables of your \code{\link{dm}}

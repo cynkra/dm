@@ -34,8 +34,8 @@ cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
       mutate(code = map2_chr(
         tbl_name,
         cols,
-        ~glue("{tab}cdm_select({..1}, {paste0(tick_if_needed(..2), collapse = ', ')})"))
-        )
+        ~ glue("{tab}cdm_select({..1}, {paste0(tick_if_needed(..2), collapse = ', ')})")
+      ))
     code_select <- if (nrow(tbl_select)) summarize(tbl_select, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
     code <- glue_collapse(c(code, code_select), sep = " %>%\n")
   }

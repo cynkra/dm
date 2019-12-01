@@ -12,7 +12,9 @@ commas <- function(x) {
 }
 
 tick <- function(x) {
-  if (is_empty(x)) return(character())
+  if (is_empty(x)) {
+    return(character())
+  }
   paste0("`", x, "`")
 }
 

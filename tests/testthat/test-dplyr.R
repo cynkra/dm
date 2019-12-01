@@ -151,8 +151,9 @@ test_that("basic test: 'slice()'-methods work", {
   expect_silent(
     expect_identical(
       slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_zoomed_tbl(),
-      slice(t2, if_else(d < 5, 1:6, 7:2)))
+      slice(t2, if_else(d < 5, 1:6, 7:2))
     )
+  )
 
   expect_cdm_error(
     slice(dm_for_filter, 2),
@@ -164,7 +165,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   expect_identical(
     left_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
     left_join(t2, t1, by = c("d" = "a"))
-    )
+  )
 
   expect_identical(
     inner_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
@@ -237,45 +238,43 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   expect_identical(
     cdm_zoom_to_tbl(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
     left_join(
-      iris_2 %>% rename_at(vars(matches("^[PS]")), ~paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
-      iris_2 %>% rename_at(vars(matches("^[PS]")), ~paste0("iris_2.y.", .)),
+      iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
+      iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
       by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
     )
   )
-
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
+  expect_cdm_error(
+    left_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      left_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    inner_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      inner_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    full_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      full_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    semi_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      semi_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    anti_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      anti_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
-
-    expect_cdm_error(
-      right_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    right_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 })
 
 
@@ -283,7 +282,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   expect_identical(
     left_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
     left_join(t2, t1, by = c("d" = "a"))
-    )
+  )
 
   expect_identical(
     inner_join(zoomed_dm, t1) %>% cdm_update_zoomed_tbl() %>% tbl("t2"),
@@ -356,45 +355,43 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   expect_identical(
     cdm_zoom_to_tbl(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
     left_join(
-      iris_2 %>% rename_at(vars(matches("^[PS]")), ~paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
-      iris_2 %>% rename_at(vars(matches("^[PS]")), ~paste0("iris_2.y.", .)),
+      iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
+      iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
       by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
     )
   )
-
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
+  expect_cdm_error(
+    left_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      left_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    inner_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      inner_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    full_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      full_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    semi_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      semi_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    anti_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 
-    expect_cdm_error(
-      anti_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
-
-    expect_cdm_error(
-      right_join(dm_for_filter),
-      "only_possible_w_zoom"
-    )
+  expect_cdm_error(
+    right_join(dm_for_filter),
+    "only_possible_w_zoom"
+  )
 })
 
 
@@ -564,9 +561,9 @@ test_that("key tracking works", {
 
   expect_identical(
     cdm_zoom_to_tbl(dm_nycflights_small, weather) %>%
-      transmute(celsius_temp = (temp - 32) * 5/9) %>%
+      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5/9)
+    tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   # keys tracking when there are no keys to track
@@ -586,9 +583,9 @@ test_that("key tracking works", {
 
   expect_identical(
     cdm_zoom_to_tbl(dm_nycflights_small, weather) %>%
-      transmute(celsius_temp = (temp - 32) * 5/9) %>%
+      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5/9)
+    tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   expect_identical(
@@ -635,4 +632,3 @@ test_that("can use column as primary and foreign key", {
     dm
   )
 })
-

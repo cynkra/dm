@@ -77,23 +77,23 @@ test_that("'copy_to.dm()' works", {
   # throw error if duplicate table names and `repair = check_unique`
   expect_cdm_error(
     dm(mtcars) %>% copy_to(mtcars, repair = "check_unique"),
-    "need_unique_names")
+    "need_unique_names"
+  )
 
   # copying local `tibble` to postgres `dm`
   skip_if_error(
     expect_equivalent_dm(
       copy_to(dm_for_filter_src$postgres, d1_src$df, "test_table"),
       cdm_add_tbl(dm_for_filter_src$postgres, test_table = d1_src$postgres)
-      )
+    )
   )
 
   # copying postgres `tibble` to local `dm`
   skip_if_error(
-      expect_equivalent_dm(
-        copy_to(dm_for_filter_src$df, d1_src$postgres, "test_table_1"),
-        cdm_add_tbl(dm_for_filter_src$df, test_table_1 = d1_src$df)
-        )
-
+    expect_equivalent_dm(
+      copy_to(dm_for_filter_src$df, d1_src$postgres, "test_table_1"),
+      cdm_add_tbl(dm_for_filter_src$df, test_table_1 = d1_src$df)
+    )
   )
 })
 
@@ -102,10 +102,14 @@ test_that("'compute.dm()' computes tables on DB", {
   skip_if(is_empty(db_src_names))
   walk(
     db_src_names,
-    ~expect_true({
-        def <- dm_for_filter_src[[.x]] %>% cdm_filter(t1, a > 3) %>% compute() %>% cdm_get_def()
-        test <- map_chr(map(def$data, sql_render), as.character)
-        all(map_lgl(test, ~ !grepl("WHERE", .)))})
+    ~ expect_true({
+      def <- dm_for_filter_src[[.x]] %>%
+        cdm_filter(t1, a > 3) %>%
+        compute() %>%
+        cdm_get_def()
+      test <- map_chr(map(def$data, sql_render), as.character)
+      all(map_lgl(test, ~ !grepl("WHERE", .)))
+    })
   )
 })
 
@@ -137,18 +141,17 @@ test_that("validator speaks up (postgres)", {
   skip_if_not("postgres" %in% src_names)
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter) %>%
-              mutate(data = if_else(table == "t1", list(dm_for_filter_src$postgres$t1), data))) %>%
+      mutate(data = if_else(table == "t1", list(dm_for_filter_src$postgres$t1), data))) %>%
       validate_dm(),
     "dm_invalid"
   )
-
 })
 
 test_that("validator speaks up (sqlite)", {
   skip_if_not("sqlite" %in% src_names)
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter) %>%
-              mutate(data = if_else(table == "t1", list(dm_for_filter_src$sqlite$t1), data))) %>%
+      mutate(data = if_else(table == "t1", list(dm_for_filter_src$sqlite$t1), data))) %>%
       validate_dm(),
     "dm_invalid"
   )
@@ -158,50 +161,58 @@ test_that("validator speaks up when something's wrong", {
   # key tracker of non-zoomed dm contains entries
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter) %>% mutate(key_tracker_zoom = list(1))) %>% validate_dm(),
-    "dm_invalid")
+    "dm_invalid"
+  )
 
   # zoom column of `zoomed_dm` is empty
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter %>% cdm_zoom_to_tbl(t1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
-    "dm_invalid")
+    "dm_invalid"
+  )
 
   # key tracker of zoomed dm is empty
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter %>% cdm_zoom_to_tbl(t1)) %>% mutate(key_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
-    "dm_invalid")
+    "dm_invalid"
+  )
 
   # table name is missing
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter) %>% mutate(table = "")) %>% validate_dm(),
-    "dm_invalid")
+    "dm_invalid"
+  )
 
   # zoom column of un-zoomed dm contains a (nonsensical) entry
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter) %>% mutate(zoom = list(1))) %>% validate_dm(),
-    "dm_invalid")
+    "dm_invalid"
+  )
 
   # zoom column of a zoomed dm contains a nonsensical entry
   expect_cdm_error(
     new_dm3(dm_for_filter %>%
-              cdm_zoom_to_tbl(t1) %>%
-              cdm_get_def() %>%
-              mutate(zoom = if_else(table == "t1", list(1), NULL)), zoomed = TRUE) %>%
+      cdm_zoom_to_tbl(t1) %>%
+      cdm_get_def() %>%
+      mutate(zoom = if_else(table == "t1", list(1), NULL)), zoomed = TRUE) %>%
       validate_dm(),
-    "dm_invalid")
+    "dm_invalid"
+  )
 
   # zoom column of a zoomed dm contains more than one entry
   expect_cdm_error(
     new_dm3(dm_for_filter %>%
-            cdm_zoom_to_tbl(t1) %>%
-            cdm_get_def() %>%
-            mutate(zoom = list(t1)), zoomed = TRUE) %>%
-    validate_dm(),
-    "dm_invalid")
+      cdm_zoom_to_tbl(t1) %>%
+      cdm_get_def() %>%
+      mutate(zoom = list(t1)), zoomed = TRUE) %>%
+      validate_dm(),
+    "dm_invalid"
+  )
 
   # data column of un-zoomed dm contains non-tibble entries
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter) %>% mutate(data = list(1, 2, 3, 4, 5, 6))) %>% validate_dm(),
-    "dm_invalid")
+    "dm_invalid"
+  )
 
   # PK metadata wrong (colname doesn't exist)
   expect_cdm_error(
@@ -213,9 +224,8 @@ test_that("validator speaks up when something's wrong", {
   # FK metadata wrong (table doesn't exist)
   expect_cdm_error(
     new_dm3(cdm_get_def(dm_for_filter) %>%
-              mutate(fks = if_else(table == "t3", vctrs::list_of(new_fk(table = "t8", list("z"))), fks))) %>%
+      mutate(fks = if_else(table == "t3", vctrs::list_of(new_fk(table = "t8", list("z"))), fks))) %>%
       validate_dm(),
     "dm_invalid"
   )
-
 })

@@ -15,7 +15,6 @@
 #'
 #' @export
 cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
-
   check_dm(dm)
 
   new_names <- names(exprs(..., .named = TRUE))
@@ -95,20 +94,28 @@ dm_try_tables <- function(code, table_names) {
     error = function(e) {
       error_class <- class(e)
       if (inherits(e, "rlang_error")) {
-      abort_w_message(
-        # error like "Unknown column `wrong_column` "
-        # FIXME: which other "rlang_error"s are possible?
-        glue("{trimws(sub('column', 'table', conditionMessage(e), fixed = TRUE))}. ",
-           "Available tables in `dm`: {commas(tick(table_names))}")
-      )} else if (inherits(e, "simpleError")) {
+        abort_w_message(
+          # error like "Unknown column `wrong_column` "
+          # FIXME: which other "rlang_error"s are possible?
+          glue(
+            "{trimws(sub('column', 'table', conditionMessage(e), fixed = TRUE))}. ",
+            "Available tables in `dm`: {commas(tick(table_names))}"
+          )
+        )
+      } else if (inherits(e, "simpleError")) {
         # error like "object 'wrong_object' not found"
         # FIXME: which other "simpleError"s are possible?
         wrong_table <- gsub("^.*'(.*)'.*$", "\\1", e$message)
         abort_w_message(
-          glue("Unknown table {tick(wrong_table)}. ",
-               "Available tables in `dm`: {commas(tick(table_names))}"))
+          glue(
+            "Unknown table {tick(wrong_table)}. ",
+            "Available tables in `dm`: {commas(tick(table_names))}"
+          )
+        )
       } else {
-        abort(e$message)}
-    })
+        abort(e$message)
+      }
+    }
+  )
   selected
 }

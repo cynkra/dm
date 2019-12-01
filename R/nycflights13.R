@@ -22,7 +22,7 @@
 #'   cdm_nycflights13() %>%
 #'     cdm_draw()
 #' }
-cdm_nycflights13 <- nse_function(c(cycle = FALSE, color = TRUE), ~ {
+cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
   dm <-
     dm_from_src(
       src_df("nycflights13")
