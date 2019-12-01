@@ -211,7 +211,7 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
   )
 
   nycflights_example <- tibble::tribble(
-    ~column,      candidate,       ~why,
+    ~column,     ~candidate,       ~why,
     "origin",          TRUE,         "",
     "dest",           FALSE, "<reason>",
     "tailnum",        FALSE, "<reason>",
