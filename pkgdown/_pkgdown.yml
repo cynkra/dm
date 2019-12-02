@@ -12,6 +12,7 @@ reference:
   - is_dm
   - as_dm
   - dm_get_src
+  - dm_get_con
   - cdm_get_tables
   - cdm_get_filter
   - cdm_select_tbl

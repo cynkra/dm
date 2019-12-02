@@ -264,14 +264,14 @@ dm_get_src <- function(x) {
 
 #' Get connection
 #'
-#' `cdm_get_con()` returns the [`DBI::DBIConnection-class`] for `dm` objects.
+#' `dm_get_con()` returns the [`DBI::DBIConnection-class`] for `dm` objects.
 #' This works only if the tables are stored on a database, otherwise an error
 #' is thrown.
 #'
 #' @rdname dm
 #'
 #' @export
-cdm_get_con <- function(x) {
+dm_get_con <- function(x) {
   src <- dm_get_src(x)
   if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
   src$con

@@ -6,7 +6,7 @@
 \alias{new_dm}
 \alias{validate_dm}
 \alias{dm_get_src}
-\alias{cdm_get_con}
+\alias{dm_get_con}
 \alias{cdm_get_tables}
 \alias{cdm_get_filter}
 \alias{is_dm}
@@ -23,7 +23,7 @@ validate_dm(x)
 
 dm_get_src(x)
 
-cdm_get_con(x)
+dm_get_con(x)
 
 cdm_get_tables(x)
 
@@ -71,12 +71,12 @@ use \code{validate_dm()} to double-check the returned object.
 
 \code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
-\code{cdm_get_src()} returns the \pkg{dplyr} source for a \code{dm} object.
+\code{dm_get_src()} returns the \pkg{dplyr} source for a \code{dm} object.
 All tables in a \code{dm} object must be from the same source,
 i.e. either they are all data frames, or they all are stored on the same
 database.
 
-\code{cdm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
+\code{dm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.
 
@@ -102,7 +102,7 @@ as_dm(list(iris = iris, mtcars = mtcars))
 
 cdm_nycflights13() \%>\% tbl("airports")
 cdm_nycflights13() \%>\% src_tbls()
-cdm_nycflights13() \%>\% cdm_get_src()
+cdm_nycflights13() \%>\% dm_get_src()
 cdm_nycflights13() \%>\% cdm_get_tables()
 
 cdm_nycflights13() \%>\%

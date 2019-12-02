@@ -3,9 +3,12 @@
 \name{deprecated}
 \alias{deprecated}
 \alias{cdm_get_src}
+\alias{cdm_get_con}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
+
+cdm_get_con(x)
 }
 \description{
 These functions are deprecated in favor of better alternatives.
