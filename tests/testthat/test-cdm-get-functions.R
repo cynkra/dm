@@ -54,3 +54,17 @@ test_that("cdm_get_tables() works", {
     dm_get_tables(dm_for_filter)
   )
 })
+
+test_that("cdm_get_filter() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_get_filter(dm_for_filter),
+    dm_get_filter(dm_for_filter)
+  )
+
+  expect_identical(
+    cdm_get_filter(cdm_filter(dm_for_filter, t1, a > 3, a < 8)),
+    dm_get_filter(cdm_filter(dm_for_filter, t1, a > 3, a < 8))
+  )
+
+})

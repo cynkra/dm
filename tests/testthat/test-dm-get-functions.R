@@ -40,3 +40,15 @@ test_that("dm_get_con() works", {
     ~ expect_true(inherits(dm_get_con(.x), .y))
   )
 })
+
+test_that("dm_get_filter() works", {
+  expect_identical(
+    dm_get_filter(dm_for_filter),
+    tibble(table = character(), filter = list(), zoomed = logical())
+    )
+
+  expect_identical(
+    dm_get_filter(cdm_filter(dm_for_filter, t1, a > 3, a < 8)),
+    tibble(table = "t1", filter = unname(exprs(a > 3, a < 8)), zoomed = FALSE)
+  )
+})
