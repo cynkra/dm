@@ -99,7 +99,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
 
   dm_wo_outgoing_fks <-
     update_filter(dm, old_tbl_name, vctrs::list_of(old_filters)) %>%
-    cdm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
+    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
     dm_get_def() %>%
     mutate(
       pks = if_else(table == new_tbl_name_chr, upd_pk, pks),

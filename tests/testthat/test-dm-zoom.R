@@ -75,7 +75,7 @@ test_that("cdm_insert_zoomed_tbl() works", {
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4_new),
     dm_for_filter %>%
-      cdm_add_tbl(t4_new = t4) %>%
+      dm_add_tbl(t4_new = t4) %>%
       cdm_add_pk(t4_new, h) %>%
       cdm_add_fk(t4_new, j, t3) %>%
       cdm_add_fk(t5, l, t4_new)
@@ -92,7 +92,7 @@ test_that("cdm_insert_zoomed_tbl() works", {
     expect_silent(cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4, repair = "unique", quiet = TRUE)),
     dm_for_filter %>%
       cdm_rename_tbl(t4...4 = t4) %>%
-      cdm_add_tbl(t4...7 = t4) %>%
+      dm_add_tbl(t4...7 = t4) %>%
       cdm_add_pk(t4...7, h) %>%
       cdm_add_fk(t4...7, j, t3) %>%
       cdm_add_fk(t5, l, t4...7)
@@ -113,7 +113,7 @@ test_that("cdm_update_tbl() works", {
     cdm_update_zoomed_tbl(new_dm_for_filter),
     dm_for_filter %>%
       cdm_rm_tbl(t6) %>%
-      cdm_add_tbl(t6 = t7) %>%
+      dm_add_tbl(t6 = t7) %>%
       dm_get_def() %>%
       new_dm3()
   )

@@ -19,5 +19,5 @@ The dm without the removed table(s) that were present in the initial \code{dm}.
 Removes one or more tables from a \code{\link{dm}}.
 }
 \seealso{
-\code{\link[=cdm_add_tbl]{cdm_add_tbl()}}, \code{\link[=cdm_select_tbl]{cdm_select_tbl()}}
+\code{\link[=dm_add_tbl]{dm_add_tbl()}}, \code{\link[=cdm_select_tbl]{cdm_select_tbl()}}
 }

@@ -42,7 +42,7 @@ test_that("'copy_to.dm()' works", {
 
   expect_equivalent_dm(
     copy_to(dm_for_filter, mtcars, "car_table"),
-    cdm_add_tbl(dm_for_filter, car_table = mtcars)
+    dm_add_tbl(dm_for_filter, car_table = mtcars)
   )
 
   expect_cdm_error(
@@ -55,7 +55,7 @@ test_that("'copy_to.dm()' works", {
       copy_to(dm_for_filter, mtcars, ""),
       "New names"
     ),
-    cdm_add_tbl(dm_for_filter, ...7 = mtcars)
+    dm_add_tbl(dm_for_filter, ...7 = mtcars)
   )
 
   # rename old and new tables if `repair = unique`
@@ -84,7 +84,7 @@ test_that("'copy_to.dm()' works", {
   skip_if_error(
     expect_equivalent_dm(
       copy_to(dm_for_filter_src$postgres, d1_src$df, "test_table"),
-      cdm_add_tbl(dm_for_filter_src$postgres, test_table = d1_src$postgres)
+      dm_add_tbl(dm_for_filter_src$postgres, test_table = d1_src$postgres)
     )
   )
 
@@ -92,7 +92,7 @@ test_that("'copy_to.dm()' works", {
   skip_if_error(
     expect_equivalent_dm(
       copy_to(dm_for_filter_src$df, d1_src$postgres, "test_table_1"),
-      cdm_add_tbl(dm_for_filter_src$df, test_table_1 = d1_src$df)
+      dm_add_tbl(dm_for_filter_src$df, test_table_1 = d1_src$df)
     )
   )
 })

@@ -316,9 +316,9 @@ nycflights13_tbl <- dm(airlines, airports, flights, planes, weather)
 nycflights13_tbl
 
 # Alternatively, start from an empty `dm`
-# and add tables via `cdm_add_tbl()`:
+# and add tables via `dm_add_tbl()`:
 dm() %>%
-  cdm_add_tbl(airlines, airports, flights, planes, weather)
+  dm_add_tbl(airlines, airports, flights, planes, weather)
 
 # Tables are not connected yet:
 nycflights13_tbl %>%

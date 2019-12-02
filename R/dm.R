@@ -629,7 +629,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
   # rename old tables with potentially new names
   dest <- cdm_rename_tbl(dest, !!!names_list$new_old_names)
   # `repair` argument is `unique` by default
-  cdm_add_tbl_impl(dest, list(df), names_list$new_names)
+  dm_add_tbl_impl(dest, list(df), names_list$new_names)
 }
 
 #' @export

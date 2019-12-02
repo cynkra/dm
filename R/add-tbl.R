@@ -1,7 +1,7 @@
 #' Add tables to a [`dm`]
 #'
 #' @description
-#' `cdm_add_tbl()` adds one or more tables to a [`dm`].
+#' `dm_add_tbl()` adds one or more tables to a [`dm`].
 #' It uses [mutate()] semantics.
 #'
 #' @return The initial `dm` with the additional table(s).
@@ -14,7 +14,7 @@
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @export
-cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
+dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   check_dm(dm)
 
   new_names <- names(exprs(..., .named = TRUE))
@@ -27,7 +27,7 @@ cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   # rename old tables in case name repair changed their names
   dm <- cdm_select_tbl_impl(dm, names_list$new_old_names)
 
-  cdm_add_tbl_impl(dm, new_tables, names_list$new_names)
+  dm_add_tbl_impl(dm, new_tables, names_list$new_names)
 }
 
 repair_table_names <- function(old_names, new_names, repair = "check_unique", quiet = FALSE) {
@@ -45,7 +45,7 @@ repair_table_names <- function(old_names, new_names, repair = "check_unique", qu
   list(new_old_names = new_old_names, new_names = new_names)
 }
 
-cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter())) {
+dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter())) {
   def <- dm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
@@ -65,7 +65,7 @@ cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_
 #'
 #' @return The dm without the removed table(s) that were present in the initial `dm`.
 #'
-#' @seealso [cdm_add_tbl()], [cdm_select_tbl()]
+#' @seealso [dm_add_tbl()], [cdm_select_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more unquoted table names to remove from the `dm`.
