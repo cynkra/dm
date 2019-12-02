@@ -15,13 +15,13 @@
 #'   By default, this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
 #'
 #' @examples
-#' cdm_disambiguate_cols(cdm_nycflights13())
+#' dm_disambiguate_cols(cdm_nycflights13())
 #' @export
-cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
-  cdm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
+dm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
+  dm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
 }
 
-cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
+dm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
   table_colnames <- get_table_colnames(dm, tables)
   recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = sep)
   if (!quiet) explain_col_rename(recipe)

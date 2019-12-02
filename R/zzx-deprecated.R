@@ -32,3 +32,8 @@ cdm_rm_tbl <- new_cdm_forward(dm_rm_tbl)
 #' @keywords internal
 #' @export
 cdm_copy_to <- new_cdm_forward(dm_copy_to)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_disambiguate_cols <- new_cdm_forward(dm_disambiguate_cols)

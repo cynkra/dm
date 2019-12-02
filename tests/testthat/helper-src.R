@@ -296,9 +296,9 @@ dm_more_complex %<-% {
     cdm_add_fk(e, b_1, b)
 }
 
-# for testing `cdm_disambiguate_cols()` ----------------------------------------
+# for testing `dm_disambiguate_cols()` ----------------------------------------
 
-message("for cdm_disambiguate_cols()")
+message("for dm_disambiguate_cols()")
 
 iris_1 %<-% {
   as_tibble(iris) %>%

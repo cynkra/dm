@@ -9,6 +9,7 @@
 \alias{cdm_add_tbl}
 \alias{cdm_rm_tbl}
 \alias{cdm_copy_to}
+\alias{cdm_disambiguate_cols}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -36,6 +37,8 @@ cdm_copy_to(
   table_names = NULL,
   temporary = TRUE
 )
+
+cdm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

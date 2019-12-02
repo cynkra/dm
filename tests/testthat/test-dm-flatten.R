@@ -352,7 +352,7 @@ test_that("prepare_dm_for_flatten() works", {
   # unfiltered with rename
   expect_equivalent_dm(
     prepare_dm_for_flatten(dm_for_flatten, c("fact", "dim_1", "dim_3"), gotta_rename = TRUE),
-    cdm_select_tbl(dm_for_flatten, fact, dim_1, dim_3) %>% cdm_disambiguate_cols(quiet = TRUE)
+    cdm_select_tbl(dm_for_flatten, fact, dim_1, dim_3) %>% dm_disambiguate_cols(quiet = TRUE)
   )
 
   # filtered with rename
@@ -364,7 +364,7 @@ test_that("prepare_dm_for_flatten() works", {
   def <- dm_get_def(red_dm)
   def$data <- tables
   prep_dm <- new_dm3(def)
-  prep_dm_renamed <- cdm_disambiguate_cols(prep_dm, quiet = TRUE)
+  prep_dm_renamed <- dm_disambiguate_cols(prep_dm, quiet = TRUE)
 
   expect_equivalent_dm(
     prepare_dm_for_flatten(
