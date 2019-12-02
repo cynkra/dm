@@ -41,6 +41,11 @@ cdm_disambiguate_cols <- new_cdm_forward(dm_disambiguate_cols)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
+cdm_draw <- new_cdm_forward(dm_draw)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
 cdm_set_colors <- new_cdm_forward(dm_set_colors)
 
 #' @rdname deprecated
@@ -56,13 +61,14 @@ cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME: name of table comes from {{ table }}, which is not available anymore
-# when passed by `new_cdm_forward(dm_filter)`
+# FIXME:
+# when using `new_cdm_forward`: error
+# when using `new_cdm_forward_2`: note in R CMD check
 cdm_filter <- function(dm, table, ...) {
-  deprecate_soft("0.1.0", paste0("dm::cdm_filter()"))
+  deprecate_soft("0.1.0", "dm::cdm_filter()")
   cdm_zoom_to_tbl(dm, {{ table }}) %>%
-  filter(...) %>%
-  cdm_update_zoomed_tbl()
+    filter(...) %>%
+    cdm_update_zoomed_tbl()
 }
 
 #' @rdname deprecated
@@ -73,9 +79,9 @@ cdm_nrow <- new_cdm_forward(dm_nrow)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME: name of `start` comes from {{ start }} (deparse(substitute()), which is not available anymore
-# when passed by `new_cdm_forward(dm_flatten_to_tbl)`
+# FIXME: both `new_cdm_forward_2(dm_flatten_to_tbl)` and `new_cdm_forward_2(dm_flatten_to_tbl)` don't work
 cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+  deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()")
   join_name <- deparse(substitute(join))
   start <- as_string(ensym(start))
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
@@ -84,10 +90,22 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME: name of `table_1` (etc.) comes from {{ table_1 }} (deparse(substitute()), which is not available anymore
-# when passed by `new_cdm_forward(dm_join_to_tbl)`
+# FIXME: both `new_cdm_forward_2(dm_squash_to_tbl)` and `new_cdm_forward_2(dm_squash_to_tbl)` don't work
+cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+  deprecate_soft("0.1.0", "dm::dm_squash_to_tbl()")
+  join_name <- deparse(substitute(join))
+  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  start <- as_string(ensym(start))
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+}
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+# FIXME: both `new_cdm_forward_2(dm_join_to_tbl)` and `new_cdm_forward_2(dm_join_to_tbl)` don't work
 cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   force(join)
+  deprecate_soft("0.1.0", "dm::dm_join_to_tbl()")
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))
 
@@ -100,3 +118,13 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
 
   dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
 }
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_apply_filters <- new_cdm_forward(dm_apply_filters)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_apply_filters_to_tbl <- new_cdm_forward_2(dm_apply_filters_to_tbl)

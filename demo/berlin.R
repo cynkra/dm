@@ -204,7 +204,7 @@ cdm_nycflights13()
 
 # Apply all filters and retrieve an "updated" `dm`
 dm_nyc_filtered %>%
-  cdm_apply_filters()
+  dm_apply_filters()
 
 # If a filter condition is phrased wrongly it will only fail, once the filter is being applied
 (dm_nyc_fail <- cdm_nycflights13() %>%
@@ -218,20 +218,20 @@ tbl(dm_nyc_fail, "weather")
 
 cdm_nycflights13() %>%
   dm_filter(flights, origin == "EWR") %>%
-  cdm_apply_filters()
+  dm_apply_filters()
 
 # ... which then can be filtered on another table
 cdm_nycflights13() %>%
   dm_filter(airlines, name == "American Airlines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_apply_filters()
+  dm_apply_filters()
 
 aa_non_jfk_january <-
   cdm_nycflights13() %>%
   dm_filter(airlines, name == "American Airlines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
   dm_filter(flights, month == 1) %>%
-  cdm_apply_filters()
+  dm_apply_filters()
 aa_non_jfk_january
 
 # ... and processed further
@@ -258,7 +258,7 @@ nycflights13_sqlite <-
   cdm_nycflights13() %>%
   cdm_select_tbl(-planes) %>%
   dm_filter(flights, month == 1) %>%
-  cdm_apply_filters() %>%
+  dm_apply_filters() %>%
   dm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
 
 nycflights13_sqlite

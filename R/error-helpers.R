@@ -312,7 +312,7 @@ abort_only_possible_wo_filters <- function(fun_name) {
 }
 
 error_only_possible_wo_filters <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.")
+  glue("You cannot call `{fun_name}()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.")
 }
 
 # no foreign key relation -------------------------------------------------
@@ -335,7 +335,7 @@ error_only_parents <- function() {
   paste0(
     "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` ",
     "have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
-    "use `cdm_squash_to_tbl()` as an alternative."
+    "use `dm_squash_to_tbl()` as an alternative."
   )
 }
 
@@ -365,7 +365,7 @@ abort_squash_limited <- function() {
 }
 
 error_squash_limited <- function() {
-  paste0("`cdm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
+  paste0("`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
 }
 
 abort_apply_filters_first <- function(join_name) {
@@ -380,7 +380,7 @@ error_apply_filters_first <- function(join_name) {
   glue(
     "`cdm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
     "produce the correct result when filters are set. ",
-    "Please consider calling `cdm_apply_filters()` first."
+    "Please consider calling `dm_apply_filters()` first."
   )
 }
 

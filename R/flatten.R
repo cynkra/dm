@@ -1,6 +1,6 @@
 #' Flatten a part of a `dm` into a wide table
 #'
-#' `dm_flatten_to_tbl()` and `cdm_squash_to_tbl()` gather all information of interest in one place in a wide table.
+#' `dm_flatten_to_tbl()` and `dm_squash_to_tbl()` gather all information of interest in one place in a wide table.
 #' Both functions perform a disambiguation of column names and a cascade of joins.
 #' Disambiguates column names and a cascade of joins.
 #'
@@ -14,7 +14,7 @@
 #'   the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
 #'   If this includes tables that are not direct neighbours of `start`,
-#'   it will only work with `cdm_squash_to_tbl()` (given one of the allowed join-methods).
+#'   it will only work with `dm_squash_to_tbl()` (given one of the allowed join-methods).
 #'   `tidyselect` is supported, cf. [dplyr::select()].
 #' @family flattening functions
 #'
@@ -38,7 +38,7 @@
 #' For `right_join`, `full_join` and `nest_join`, an error
 #' is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
 #' incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
-#' if desired, call `cdm_apply_filters()` first to achieve that effect).
+#' if desired, call `dm_apply_filters()` first to achieve that effect).
 #' For all other join types, filtering only the `start` table is enough because the effect is passed on by
 #' successive joins.
 #'
@@ -66,7 +66,7 @@ dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 
 #' @rdname dm_flatten_to_tbl
 #' @export
-cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- as_string(ensym(start))
@@ -250,7 +250,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   red_dm <-
     dm_reset_all_filters(dm) %>%
     cdm_select_tbl(tables)
-  # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
+  # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
   start_tbl <- dm_get_filtered_table(dm, start)
 

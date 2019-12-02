@@ -2,12 +2,12 @@
 % Please edit documentation in R/flatten.R
 \name{dm_flatten_to_tbl}
 \alias{dm_flatten_to_tbl}
-\alias{cdm_squash_to_tbl}
+\alias{dm_squash_to_tbl}
 \title{Flatten a part of a \code{dm} into a wide table}
 \usage{
 dm_flatten_to_tbl(dm, start, ..., join = left_join)
 
-cdm_squash_to_tbl(dm, start, ..., join = left_join)
+dm_squash_to_tbl(dm, start, ..., join = left_join)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
@@ -22,7 +22,7 @@ The order of the tables here determines
 the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
 If this includes tables that are not direct neighbours of \code{start},
-it will only work with \code{cdm_squash_to_tbl()} (given one of the allowed join-methods).
+it will only work with \code{dm_squash_to_tbl()} (given one of the allowed join-methods).
 \code{tidyselect} is supported, cf. \code{\link[dplyr:select]{dplyr::select()}}.}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
@@ -31,7 +31,7 @@ it will only work with \code{cdm_squash_to_tbl()} (given one of the allowed join
 A single table that results from consecutively joining all affected tables to the \code{start} table.
 }
 \description{
-\code{dm_flatten_to_tbl()} and \code{cdm_squash_to_tbl()} gather all information of interest in one place in a wide table.
+\code{dm_flatten_to_tbl()} and \code{dm_squash_to_tbl()} gather all information of interest in one place in a wide table.
 Both functions perform a disambiguation of column names and a cascade of joins.
 Disambiguates column names and a cascade of joins.
 }
@@ -56,7 +56,7 @@ that the effect of the filters on this table is taken into account.
 For \code{right_join}, \code{full_join} and \code{nest_join}, an error
 is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
 incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
-if desired, call \code{cdm_apply_filters()} first to achieve that effect).
+if desired, call \code{dm_apply_filters()} first to achieve that effect).
 For all other join types, filtering only the \code{start} table is enough because the effect is passed on by
 successive joins.
 

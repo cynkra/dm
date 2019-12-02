@@ -2,15 +2,15 @@
 % Please edit documentation in R/filter-dm.R
 \name{dm_filter}
 \alias{dm_filter}
-\alias{cdm_apply_filters}
-\alias{cdm_apply_filters_to_tbl}
+\alias{dm_apply_filters}
+\alias{dm_apply_filters_to_tbl}
 \title{Filtering a \code{\link{dm}} object}
 \usage{
 dm_filter(dm, table, ...)
 
-cdm_apply_filters(dm)
+dm_apply_filters(dm)
 
-cdm_apply_filters_to_tbl(dm, table)
+dm_apply_filters_to_tbl(dm, table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -35,19 +35,19 @@ directly or indirectly via foreign key relations.
 \code{dm_filter()} can be used to define filter conditions for tables using syntax that is similar to \code{\link[dplyr:filter]{dplyr::filter()}}.
 These conditions will be stored in the \code{\link{dm}}, and executed immediately for the tables that they are referring to.
 
-With \code{cdm_apply_filters()}, all tables will be updated according to the filter conditions and the foreign key relations.
+With \code{dm_apply_filters()}, all tables will be updated according to the filter conditions and the foreign key relations.
 
-\code{cdm_apply_filters_to_tbl()} retrieves one specific table of the \code{dm} that is updated according to the filter conditions and the foreign key relations.
+\code{dm_apply_filters_to_tbl()} retrieves one specific table of the \code{dm} that is updated according to the filter conditions and the foreign key relations.
 
 The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 in one of the following scenarios:
 \enumerate{
-\item Calling \code{cdm_apply_filters()} or \code{compute()} (method for \code{dm} objects) on a \code{dm}: each filtered table potentially
+\item Calling \code{dm_apply_filters()} or \code{compute()} (method for \code{dm} objects) on a \code{dm}: each filtered table potentially
 reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
 with corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new \code{dm} class object without any filter conditions.
-\item Calling \code{cdm_apply_filters_to_tbl()}: the remaining rows of the requested table are calculated by performing a sequence
+\item Calling \code{dm_apply_filters_to_tbl()}: the remaining rows of the requested table are calculated by performing a sequence
 of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from each table that has been filtered to the requested table
 (similar to 1. but only for one table).
 }
@@ -61,18 +61,18 @@ dm_nyc_filtered <-
   cdm_nycflights13() \%>\%
   dm_filter(airports, name == "John F Kennedy Intl")
 
-cdm_apply_filters_to_tbl(dm_nyc_filtered, flights)
+dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 
 cdm_nycflights13() \%>\%
   dm_filter(airports, name == "John F Kennedy Intl") \%>\%
-  cdm_apply_filters()
+  dm_apply_filters()
 
 # If you want to keep only those rows in the parent tables
 # whose primary key values appear as foreign key values in
 # `flights`, you can set a `TRUE` filter in `flights`:
 cdm_nycflights13() \%>\%
   dm_filter(flights, 1 == 1) \%>\%
-  cdm_apply_filters() \%>\%
+  dm_apply_filters() \%>\%
   dm_nrow()
 # note that in this example, the only affected table is
 # `airports` because the departure airports in `flights` are
@@ -80,7 +80,7 @@ cdm_nycflights13() \%>\%
 
 cdm_nycflights13() \%>\%
   dm_filter(flights, month == 3) \%>\%
-  cdm_apply_filters()
+  dm_apply_filters()
 
 library(dplyr)
 cdm_nycflights13() \%>\%
@@ -88,5 +88,5 @@ cdm_nycflights13() \%>\%
   compute()
 cdm_nycflights13() \%>\%
   dm_filter(flights, month == 3) \%>\%
-  cdm_apply_filters_to_tbl(planes)
+  dm_apply_filters_to_tbl(planes)
 }

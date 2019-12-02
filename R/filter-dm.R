@@ -6,20 +6,20 @@
 #' `dm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
 #' These conditions will be stored in the [`dm`], and executed immediately for the tables that they are referring to.
 #'
-#' With `cdm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
+#' With `dm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
 #'
-#' `cdm_apply_filters_to_tbl()` retrieves one specific table of the `dm` that is updated according to the filter conditions and the foreign key relations.
+#' `dm_apply_filters_to_tbl()` retrieves one specific table of the `dm` that is updated according to the filter conditions and the foreign key relations.
 #'
 #' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 #' in one of the following scenarios:
 #'
-#' 1. Calling `cdm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
+#' 1. Calling `dm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
 #' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
 #' with corresponding key values.
 #' Tables that are not connected to any table with an active filter are left unchanged.
 #' This results in a new `dm` class object without any filter conditions.
 #'
-#' 1. Calling `cdm_apply_filters_to_tbl()`: the remaining rows of the requested table are calculated by performing a sequence
+#' 1. Calling `dm_apply_filters_to_tbl()`: the remaining rows of the requested table are calculated by performing a sequence
 #' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
 #' (similar to 1. but only for one table).
 #'
@@ -44,18 +44,18 @@
 #'   cdm_nycflights13() %>%
 #'   dm_filter(airports, name == "John F Kennedy Intl")
 #'
-#' cdm_apply_filters_to_tbl(dm_nyc_filtered, flights)
+#' dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
 #' cdm_nycflights13() %>%
 #'   dm_filter(airports, name == "John F Kennedy Intl") %>%
-#'   cdm_apply_filters()
+#'   dm_apply_filters()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
 #' cdm_nycflights13() %>%
 #'   dm_filter(flights, 1 == 1) %>%
-#'   cdm_apply_filters() %>%
+#'   dm_apply_filters() %>%
 #'   dm_nrow()
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
@@ -84,14 +84,14 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' cdm_nycflights13() %>%
 #'   dm_filter(flights, month == 3) %>%
-#'   cdm_apply_filters()
+#'   dm_apply_filters()
 #'
 #' library(dplyr)
 #' cdm_nycflights13() %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #' @export
-cdm_apply_filters <- function(dm) {
+dm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
   def <- dm_get_def(dm)
 
@@ -100,7 +100,7 @@ cdm_apply_filters <- function(dm) {
   dm_reset_all_filters(new_dm3(def))
 }
 
-# FIXME: 'cdm_apply_filters()' should get an own doc-page which 'cdm_apply_filters_to_tbl()' should share (cf. #145)
+# FIXME: 'dm_apply_filters()' should get an own doc-page which 'dm_apply_filters_to_tbl()' should share (cf. #145)
 #' @rdname dm_filter
 #'
 #' @inheritParams cdm_add_pk
@@ -108,9 +108,9 @@ cdm_apply_filters <- function(dm) {
 #' @examples
 #' cdm_nycflights13() %>%
 #'   dm_filter(flights, month == 3) %>%
-#'   cdm_apply_filters_to_tbl(planes)
+#'   dm_apply_filters_to_tbl(planes)
 #' @export
-cdm_apply_filters_to_tbl <- function(dm, table) {
+dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)
   table_name <- as_string(ensym(table))
   check_correct_input(dm, table_name)

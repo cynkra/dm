@@ -289,7 +289,7 @@ delta_non_jfk_january %>%
 # FIXME: Can this work without applying all filters?
 
 delta_non_jfk_january %>%
-  cdm_apply_filters() %>%
+  dm_apply_filters() %>%
   dm_join_to_tbl(flights, airlines)
 
 delta_non_jfk_january %>%

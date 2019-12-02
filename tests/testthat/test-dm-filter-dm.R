@@ -73,7 +73,7 @@ test_that("we get filtered/unfiltered tables with respective funs", {
   )
 
   expect_identical(
-    dm_filter(dm_for_filter, t1, a > 4) %>% cdm_apply_filters_to_tbl(t2),
+    dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2),
     t2 %>% semi_join(filter(t1, a > 4), by = c("d" = "a"))
   )
 
@@ -83,7 +83,7 @@ test_that("we get filtered/unfiltered tables with respective funs", {
   )
 
   expect_equivalent_dm(
-    dm_filter(dm_for_filter, t1, a > 3, a < 8) %>% cdm_apply_filters(),
+    dm_filter(dm_for_filter, t1, a > 3, a < 8) %>% dm_apply_filters(),
     as_dm(output_1) %>%
       cdm_add_pk(t1, a) %>%
       cdm_add_pk(t2, c) %>%

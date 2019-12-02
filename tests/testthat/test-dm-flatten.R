@@ -48,7 +48,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # filtered `dm`
   expect_identical(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1),
-    cdm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1)
+    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1)
   )
 
   # with grandparent table
@@ -108,7 +108,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
   # filtered `dm`
   expect_identical(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = inner_join),
-    cdm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = inner_join)
+    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = inner_join)
   )
 })
 
@@ -185,7 +185,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'semi_join()'", {
   # filtered `dm`
   expect_identical(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = semi_join),
-    cdm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
+    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
   )
 })
 
@@ -219,7 +219,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'anti_join()'", {
   # filtered `dm`
   expect_identical(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = anti_join),
-    cdm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = anti_join)
+    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = anti_join)
   )
 })
 
@@ -292,11 +292,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   )
 })
 
-test_that("`cdm_squash_to_tbl()` does the right things", {
+test_that("`dm_squash_to_tbl()` does the right things", {
   # with grandparent table
   # left_join:
   expect_identical(
-    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3),
+    dm_squash_to_tbl(dm_more_complex, t5, t4, t3),
     left_join(t5, t4, by = c("l" = "h")) %>%
       left_join(t3, by = c("j" = "f"))
   )
@@ -305,45 +305,45 @@ test_that("`cdm_squash_to_tbl()` does the right things", {
   # for flatten: columns from t5 + t4 + t3 + t4_2 + t6 are combined in one table, 9 cols in total
   # FIXME: expect_length(...)
   expect_identical(
-    length(colnames(cdm_squash_to_tbl(dm_more_complex, t5))),
+    length(colnames(dm_squash_to_tbl(dm_more_complex, t5))),
     9L
   )
 
   # full_join:
   expect_identical(
-    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = full_join),
+    dm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = full_join),
     full_join(t5, t4, by = c("l" = "h")) %>%
       full_join(t3, by = c("j" = "f"))
   )
 
   # inner_join:
   expect_identical(
-    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = inner_join),
+    dm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = inner_join),
     inner_join(t5, t4, by = c("l" = "h")) %>%
       inner_join(t3, by = c("j" = "f"))
   )
 
   # right_join:
   expect_dm_error(
-    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = right_join),
+    dm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = right_join),
     class = "squash_limited"
   )
 
   # semi_join:
   expect_dm_error(
-    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = semi_join),
+    dm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = semi_join),
     class = "squash_limited"
   )
 
   # anti_join:
   expect_dm_error(
-    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = anti_join),
+    dm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = anti_join),
     class = "squash_limited"
   )
 
   # fails when there is a cycle:
   expect_dm_error(
-    cdm_squash_to_tbl(dm_for_filter_w_cycle, t5),
+    dm_squash_to_tbl(dm_for_filter_w_cycle, t5),
     "no_cycles"
   )
 })

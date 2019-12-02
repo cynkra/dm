@@ -10,13 +10,17 @@
 \alias{cdm_rm_tbl}
 \alias{cdm_copy_to}
 \alias{cdm_disambiguate_cols}
+\alias{cdm_draw}
 \alias{cdm_set_colors}
 \alias{cdm_get_colors}
 \alias{cdm_get_available_colors}
 \alias{cdm_filter}
 \alias{cdm_nrow}
 \alias{cdm_flatten_to_tbl}
+\alias{cdm_squash_to_tbl}
 \alias{cdm_join_to_tbl}
+\alias{cdm_apply_filters}
+\alias{cdm_apply_filters_to_tbl}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -47,6 +51,19 @@ cdm_copy_to(
 
 cdm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 
+cdm_draw(
+  dm,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model"
+)
+
 cdm_set_colors(dm, ...)
 
 cdm_get_colors(dm)
@@ -59,7 +76,13 @@ cdm_nrow(dm)
 
 cdm_flatten_to_tbl(dm, start, ..., join = left_join)
 
+cdm_squash_to_tbl(dm, start, ..., join = left_join)
+
 cdm_join_to_tbl(dm, table_1, table_2, join = left_join)
+
+cdm_apply_filters(dm)
+
+cdm_apply_filters_to_tbl(dm = dm, table = table)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

@@ -224,8 +224,8 @@ Similarly to `dplyr::filter()`, a filtering function `dm_filter()` is
 available for `dm` objects. You need to provide the `dm` object, the
 table whose rows you want to filter, and the filter expression. The
 actual effect of the filtering will only be realized once you use
-`cdm_apply_filters`. Before that, the filter conditions are merely
-stored within the `dm`. After using `cdm_apply_filters()` a `dm` object
+`dm_apply_filters`. Before that, the filter conditions are merely
+stored within the `dm`. After using `dm_apply_filters()` a `dm` object
 is returned whose tables only contain rows that are related to the
 reduced rows in the filtered table. This currently only works for
 cycle-free relationships between the tables.
@@ -239,7 +239,7 @@ cdm_nycflights13(cycle = FALSE) %>%
 
 cdm_nycflights13(cycle = FALSE) %>%
   dm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
-  cdm_apply_filters() %>%
+  dm_apply_filters() %>%
   dm_get_tables() %>%
   map_int(nrow)
 #> airlines airports  flights   planes  weather 

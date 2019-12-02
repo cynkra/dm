@@ -17,7 +17,7 @@ systime_convenient <- function() {
 build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
   source <-
     dm %>%
-    cdm_apply_filters() %>%
+    dm_apply_filters() %>%
     dm_get_tables()
 
   # Also need table names for local src (?)

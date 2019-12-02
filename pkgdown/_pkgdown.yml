@@ -50,7 +50,7 @@ reference:
 - title: Filtering
   contents:
   - dm_filter
-  - cdm_apply_filters
+  - dm_apply_filters
 
 - title: Interaction with DBs
   contents:
