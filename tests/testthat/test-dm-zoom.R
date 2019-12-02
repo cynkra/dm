@@ -112,7 +112,7 @@ test_that("cdm_update_tbl() works", {
   expect_equivalent_dm(
     cdm_update_zoomed_tbl(new_dm_for_filter),
     dm_for_filter %>%
-      cdm_rm_tbl(t6) %>%
+      dm_rm_tbl(t6) %>%
       dm_add_tbl(t6 = t7) %>%
       dm_get_def() %>%
       new_dm3()

@@ -43,5 +43,5 @@ The initial \code{dm} with the additional table(s).
 It uses \code{\link[=mutate]{mutate()}} semantics.
 }
 \seealso{
-\code{\link[=cdm_rm_tbl]{cdm_rm_tbl()}}
+\code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
 }

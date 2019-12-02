@@ -7,6 +7,7 @@
 \alias{cdm_get_tables}
 \alias{cdm_get_filter}
 \alias{cdm_add_tbl}
+\alias{cdm_rm_tbl}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -18,6 +19,8 @@ cdm_get_tables(x)
 cdm_get_filter(x)
 
 cdm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
+
+cdm_rm_tbl(dm, ...)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

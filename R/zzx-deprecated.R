@@ -22,3 +22,8 @@ cdm_get_filter <- new_cdm_forward(dm_get_filter)
 #' @keywords internal
 #' @export
 cdm_add_tbl <- new_cdm_forward(dm_add_tbl)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_rm_tbl <- new_cdm_forward(dm_rm_tbl)

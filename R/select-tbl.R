@@ -6,7 +6,7 @@
 #'
 #' @return The input `dm` with tables renamed or removed.
 #'
-#' @seealso [cdm_rm_tbl()]
+#' @seealso [dm_rm_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more table names of the tables of the [`dm`] object.

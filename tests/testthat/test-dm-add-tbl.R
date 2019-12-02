@@ -101,31 +101,31 @@ test_that("dm_add_tbl() works", {
   )
 })
 
-test_that("cdm_rm_tbl() works", {
+test_that("dm_rm_tbl() works", {
   # removes a table on all srcs
   map(
     dm_for_filter_w_cycle_src,
     ~ expect_equivalent_dm(
-      cdm_rm_tbl(., t7) %>% collect(),
+      dm_rm_tbl(., t7) %>% collect(),
       dm_for_filter
     )
   )
 
   # removes more than one table
   expect_equivalent_dm(
-    cdm_rm_tbl(dm_for_filter_w_cycle, t7, t5, t3) %>% collect(),
+    dm_rm_tbl(dm_for_filter_w_cycle, t7, t5, t3) %>% collect(),
     cdm_select_tbl(dm_for_filter, t1, t2, t4, t6)
   )
 
   # fails when table name is wrong
   expect_cdm_error(
-    cdm_rm_tbl(dm_for_filter, t7),
+    dm_rm_tbl(dm_for_filter, t7),
     "w_message"
   )
 
-  # select-helpers work for 'cdm_rm_tbl()'
+  # select-helpers work for 'dm_rm_tbl()'
   expect_identical(
-    cdm_rm_tbl(dm_for_disambiguate, everything()),
+    dm_rm_tbl(dm_for_disambiguate, everything()),
     empty_dm()
   )
 })

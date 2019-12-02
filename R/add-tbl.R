@@ -6,7 +6,7 @@
 #'
 #' @return The initial `dm` with the additional table(s).
 #'
-#' @seealso [cdm_rm_tbl()]
+#' @seealso [dm_rm_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to add to the `dm`.
@@ -72,7 +72,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
 #' @export
-cdm_rm_tbl <- function(dm, ...) {
+dm_rm_tbl <- function(dm, ...) {
   check_dm(dm)
   selected <- dm_try_tables(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...)), src_tbls(dm))
 
