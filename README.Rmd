@@ -173,7 +173,7 @@ dm_nycflights13(cycle = FALSE) %>%
   map_int(nrow)
 ```
 
-For joining two tables using their relationship defined in the `dm`, you can use `cdm_join_tbl()`:
+For joining two tables using their relationship defined in the `dm`, you can use `dm_join_to_tbl()`:
 
 ```{r}
 dm_nycflights13(cycle = FALSE) %>%

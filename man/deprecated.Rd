@@ -43,6 +43,10 @@
 \alias{cdm_rename_tbl}
 \alias{cdm_select}
 \alias{cdm_rename}
+\alias{cdm_zoom_to_tbl}
+\alias{cdm_insert_zoomed_tbl}
+\alias{cdm_update_zoomed_tbl}
+\alias{cdm_zoom_out}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -149,6 +153,19 @@ cdm_rename_tbl(dm, ...)
 cdm_select(dm, table, ...)
 
 cdm_rename(dm, table, ...)
+
+cdm_zoom_to_tbl(dm, table)
+
+cdm_insert_zoomed_tbl(
+  dm,
+  new_tbl_name = NULL,
+  repair = "unique",
+  quiet = FALSE
+)
+
+cdm_update_zoomed_tbl(dm)
+
+cdm_zoom_out(dm)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

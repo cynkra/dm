@@ -51,7 +51,6 @@ dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 # both "table" and "column" must be characters
 # in {datamodelr}, a primary key may consist of more than one columns
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
-# the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
 dm_add_pk_impl <- function(dm, table, column, force) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)

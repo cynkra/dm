@@ -378,7 +378,7 @@ dm_error_apply_filters_first <- function(join_name) {
 
 error_apply_filters_first <- function(join_name) {
   glue(
-    "`cdm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
+    "`dm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
     "produce the correct result when filters are set. ",
     "Please consider calling `dm_apply_filters()` first."
   )
@@ -390,7 +390,7 @@ abort_no_flatten_with_nest_join <- function() {
 
 error_no_flatten_with_nest_join <- function() {
   paste0(
-    "`cdm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
+    "`dm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
     "cf. the help pages for these functions. Consider `join = left_join`"
   )
 }
@@ -444,14 +444,14 @@ abort_w_message <- function(msg) {
   abort(msg, .subclass = dm_error_full("w_message"))
 }
 
-# no table zoomed, but 'cdm_insert_tbl()' called ---------------------------------
+# no table zoomed, but 'dm_insert_zoomed_tbl()' called ---------------------------------
 
 abort_no_table_zoomed <- function() {
   abort(error_no_table_zoomed(), .subclass = dm_error_full("no_table_zoomed"))
 }
 
 error_no_table_zoomed <- function() {
-  "`cdm_insert_tbl()` only works for zoomed `dm`"
+  "`dm_insert_zoomed_tbl()` only works for zoomed `dm`"
 }
 
 

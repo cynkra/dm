@@ -99,7 +99,7 @@ test_that("dm_insert_zoomed_tbl() works", {
   )
 })
 
-test_that("cdm_update_tbl() works", {
+test_that("dm_update_tbl() works", {
   # setting table t7 as zoomed table for t6 and removing its primary key and foreign keys pointing to it
   new_dm_for_filter <- dm_get_def(dm_for_filter) %>%
     mutate(

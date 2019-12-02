@@ -159,15 +159,15 @@ test_that("cdm_get_filter() works", {
 test_that("cdm_add_pk() and cdm_add_fk() work", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equivalent_dm(
-    cdm_add_pk(dm_test_obj, cdm_table_4, c),
-    dm_add_pk(dm_test_obj, cdm_table_4, c)
+    cdm_add_pk(dm_test_obj, dm_table_4, c),
+    dm_add_pk(dm_test_obj, dm_table_4, c)
   )
 
   expect_equivalent_dm(
-    dm_add_pk(dm_test_obj, cdm_table_4, c) %>%
-      cdm_add_fk(cdm_table_1, a, cdm_table_4),
-    dm_add_pk(dm_test_obj, cdm_table_4, c) %>%
-      dm_add_fk(cdm_table_1, a, cdm_table_4)
+    dm_add_pk(dm_test_obj, dm_table_4, c) %>%
+      cdm_add_fk(dm_table_1, a, dm_table_4),
+    dm_add_pk(dm_test_obj, dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4)
   )
 })
 

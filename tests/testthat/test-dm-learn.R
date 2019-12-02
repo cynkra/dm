@@ -1,7 +1,7 @@
 test_that("Learning from MSSQL works?", {
 
 
-  # cdm_learn_from_mssql() --------------------------------------------------
+  # dm_learn_from_mssql() --------------------------------------------------
   con_mssql <- skip_if_error(src_test("mssql"))
 
   # create an object on the MSSQL-DB that can be learned
@@ -30,7 +30,7 @@ test_that("Learning from MSSQL works?", {
   )
 })
 
-# cdm_learn_from_postgres() --------------------------------------------------
+# dm_learn_from_postgres() --------------------------------------------------
 test_that("Learning from Postgres works?", {
   src_postgres <- skip_if_error(src_test("postgres"))
   con_postgres <- src_postgres$con

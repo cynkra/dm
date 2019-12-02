@@ -31,6 +31,6 @@ This vignette is not yet written, but will be available in a future update.
 
 Relevant functions for interaction with DBs:
 
-- `cdm_copy_to()`
-- `cdm_set_key_constraints()`
-- `cdm_learn_from_db()`
+- `dm_copy_to()`
+- `dm_set_key_constraints()`
+- `dm_learn_from_db()`

@@ -224,11 +224,11 @@ Similarly to `dplyr::filter()`, a filtering function `dm_filter()` is
 available for `dm` objects. You need to provide the `dm` object, the
 table whose rows you want to filter, and the filter expression. The
 actual effect of the filtering will only be realized once you use
-`dm_apply_filters`. Before that, the filter conditions are merely
-stored within the `dm`. After using `dm_apply_filters()` a `dm` object
-is returned whose tables only contain rows that are related to the
-reduced rows in the filtered table. This currently only works for
-cycle-free relationships between the tables.
+`dm_apply_filters`. Before that, the filter conditions are merely stored
+within the `dm`. After using `dm_apply_filters()` a `dm` object is
+returned whose tables only contain rows that are related to the reduced
+rows in the filtered table. This currently only works for cycle-free
+relationships between the tables.
 
 ``` r
 dm_nycflights13(cycle = FALSE) %>%
@@ -247,7 +247,7 @@ dm_nycflights13(cycle = FALSE) %>%
 ```
 
 For joining two tables using their relationship defined in the `dm`, you
-can use `cdm_join_tbl()`:
+can use `dm_join_to_tbl()`:
 
 ``` r
 dm_nycflights13(cycle = FALSE) %>%
