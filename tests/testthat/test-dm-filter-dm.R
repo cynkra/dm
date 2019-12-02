@@ -55,13 +55,13 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 
   # fails when cycle is present
   expect_cdm_error(
-    dm_for_filter_w_cycle %>% cdm_filter(t1, a > 3) %>% cdm_get_filtered_table("t3"),
+    dm_for_filter_w_cycle %>% cdm_filter(t1, a > 3) %>% dm_get_filtered_table("t3"),
     "no_cycles"
   )
 
   # FIXME: fails, when it could actually work (check diagram of `dm_for_filter_w_cycle`)
   # expect_identical(
-  #   dm_for_filter_w_cycle %>% cdm_filter(t1, a > 3) %>% cdm_get_filtered_table("t2"),
+  #   dm_for_filter_w_cycle %>% cdm_filter(t1, a > 3) %>% dm_get_filtered_table("t2"),
   #   semi_join(t2, filter(t1, a > 3))
   # )
 })

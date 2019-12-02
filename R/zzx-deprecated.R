@@ -12,3 +12,8 @@ cdm_get_con <- new_cdm_forward(dm_get_con)
 #' @keywords internal
 #' @export
 cdm_get_tables <- new_cdm_forward(dm_get_tables)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_get_filter <- new_cdm_forward(dm_get_filter)

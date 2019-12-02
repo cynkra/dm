@@ -14,7 +14,7 @@ reference:
   - dm_get_src
   - dm_get_con
   - dm_get_tables
-  - cdm_get_filter
+  - dm_get_filter
   - cdm_select_tbl
 
 - title: Primary keys

@@ -8,7 +8,7 @@
 \alias{dm_get_src}
 \alias{dm_get_con}
 \alias{dm_get_tables}
-\alias{cdm_get_filter}
+\alias{dm_get_filter}
 \alias{is_dm}
 \alias{as_dm}
 \title{Data model class}
@@ -27,7 +27,7 @@ dm_get_con(x)
 
 dm_get_tables(x)
 
-cdm_get_filter(x)
+dm_get_filter(x)
 
 is_dm(x)
 
@@ -85,7 +85,7 @@ of a \code{dm} object.
 Filtering expressions are NOT evaluated at this stage.
 To get a filtered table, use \code{cdm_apply_filters_to_tbl()}, to apply filters to all tables use \code{cdm_apply_filters()}
 
-\code{cdm_get_filter()} returns the filter expressions that have been applied to a \code{dm} object.
+\code{dm_get_filter()} returns the filter expressions that have been applied to a \code{dm} object.
 These filter expressions are not intended for evaluation, only for
 information.
 

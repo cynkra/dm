@@ -118,7 +118,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # function to detect any reason for abort()
   check_flatten_to_tbl(
     join_name,
-    (nrow(cdm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
+    (nrow(dm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
     anyNA(order_df$name),
     g,
     auto_detect,
@@ -252,7 +252,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
     cdm_select_tbl(tables)
   # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
-  start_tbl <- cdm_get_filtered_table(dm, start)
+  start_tbl <- dm_get_filtered_table(dm, start)
 
   if (gotta_rename) {
     table_colnames <- get_table_colnames(red_dm)

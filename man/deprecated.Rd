@@ -5,6 +5,7 @@
 \alias{cdm_get_src}
 \alias{cdm_get_con}
 \alias{cdm_get_tables}
+\alias{cdm_get_filter}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -12,6 +13,8 @@ cdm_get_src(x)
 cdm_get_con(x)
 
 cdm_get_tables(x)
+
+cdm_get_filter(x)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

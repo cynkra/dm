@@ -41,7 +41,7 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   check_col_input(dm, table_name, col_name)
 
   if (check) {
-    table_from_dm <- cdm_get_filtered_table(dm, table_name)
+    table_from_dm <- dm_get_filtered_table(dm, table_name)
     check_key(table_from_dm, !!col_expr)
   }
 

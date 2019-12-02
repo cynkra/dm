@@ -95,7 +95,7 @@ cdm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
   def <- dm_get_def(dm)
 
-  def$data <- map(def$table, ~ cdm_get_filtered_table(dm, .))
+  def$data <- map(def$table, ~ dm_get_filtered_table(dm, .))
 
   cdm_reset_all_filters(new_dm3(def))
 }
@@ -115,13 +115,13 @@ cdm_apply_filters_to_tbl <- function(dm, table) {
   table_name <- as_string(ensym(table))
   check_correct_input(dm, table_name)
 
-  cdm_get_filtered_table(dm, table_name)
+  dm_get_filtered_table(dm, table_name)
 }
 
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
-cdm_get_filtered_table <- function(dm, from) {
-  filters <- cdm_get_filter(dm)
+dm_get_filtered_table <- function(dm, from) {
+  filters <- dm_get_filter(dm)
   if (nrow(filters) == 0) {
     return(dm_get_tables(dm)[[from]])
   }
@@ -163,7 +163,7 @@ cdm_get_filtered_table <- function(dm, from) {
 }
 
 get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- unique(cdm_get_filter(dm)$table)
+  filtered_tables <- unique(dm_get_filter(dm)$table)
   graph <- create_graph_from_dm(dm)
 
   # Computation of distances and shortest paths uses the same algorithm
