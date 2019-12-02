@@ -41,19 +41,19 @@
 #' library(dplyr)
 #'
 #' dm_nyc_filtered <-
-#'   cdm_nycflights13() %>%
+#'   dm_nycflights13() %>%
 #'   dm_filter(airports, name == "John F Kennedy Intl")
 #'
 #' dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
-#' cdm_nycflights13() %>%
+#' dm_nycflights13() %>%
 #'   dm_filter(airports, name == "John F Kennedy Intl") %>%
 #'   dm_apply_filters()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
-#' cdm_nycflights13() %>%
+#' dm_nycflights13() %>%
 #'   dm_filter(flights, 1 == 1) %>%
 #'   dm_apply_filters() %>%
 #'   dm_nrow()
@@ -82,12 +82,12 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' @examples
 #'
-#' cdm_nycflights13() %>%
+#' dm_nycflights13() %>%
 #'   dm_filter(flights, month == 3) %>%
 #'   dm_apply_filters()
 #'
 #' library(dplyr)
-#' cdm_nycflights13() %>%
+#' dm_nycflights13() %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #' @export
@@ -106,7 +106,7 @@ dm_apply_filters <- function(dm) {
 #' @inheritParams dm_add_pk
 #'
 #' @examples
-#' cdm_nycflights13() %>%
+#' dm_nycflights13() %>%
 #'   dm_filter(flights, month == 3) %>%
 #'   dm_apply_filters_to_tbl(planes)
 #' @export

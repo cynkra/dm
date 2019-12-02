@@ -36,8 +36,8 @@ test_that("cdm_disambiguate_cols() works as intended", {
 test_that("cdm_get_colors() behaves as intended", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equal(
-    cdm_get_colors(cdm_nycflights13()),
-    dm_get_colors(cdm_nycflights13())
+    cdm_get_colors(dm_nycflights13()),
+    dm_get_colors(dm_nycflights13())
   )
 })
 
@@ -218,6 +218,7 @@ test_that("graph-functions work", {
 })
 
 test_that("cdm_learn_from_db() works from PG", {
+  skip("not testing deprecated learning from DB: test too slow")
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   src_postgres <- skip_if_error(src_test("postgres"))
   con_postgres <- src_postgres$con
@@ -239,5 +240,14 @@ test_that("cdm_check_constraints() works", {
   expect_identical(
     cdm_check_constraints(bad_dm),
     dm_check_constraints(bad_dm)
+  )
+})
+
+test_that("cdm_nycflights13() works", {
+  skip("not testing deprecated cdm_nycflights13(): test too slow")
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_equivalent_dm(
+    cdm_nycflights13(),
+    dm_nycflights13()
   )
 })

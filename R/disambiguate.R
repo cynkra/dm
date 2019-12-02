@@ -15,7 +15,7 @@
 #'   By default, this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
 #'
 #' @examples
-#' dm_disambiguate_cols(cdm_nycflights13())
+#' dm_disambiguate_cols(dm_nycflights13())
 #' @export
 dm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   dm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)

@@ -93,7 +93,7 @@ A data model shows the structure between multiple tables that can be linked toge
 The `nycflights13` relations can be transferred into the following graphical representation:
 
 ```{r warning=F, message=F}
-dm <- cdm_nycflights13(cycle = TRUE) 
+dm <- dm_nycflights13(cycle = TRUE) 
 
 dm %>% 
   dm_draw()

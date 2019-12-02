@@ -19,10 +19,10 @@
 #' @export
 #' @examples
 #' if (rlang::is_installed("nycflights13")) {
-#'   cdm_nycflights13() %>%
+#'   dm_nycflights13() %>%
 #'     dm_draw()
 #' }
-cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
+dm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
   dm <-
     dm_from_src(
       src_df("nycflights13")

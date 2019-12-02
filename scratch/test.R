@@ -2,7 +2,7 @@ library(tidyverse)
 library(dbplyr)
 pkgload::load_all()
 
-dm <- cdm_nycflights13(cycle = FALSE)
+dm <- dm_nycflights13(cycle = FALSE)
 
 src <- src_sqlite(":memory:", create = TRUE)
 

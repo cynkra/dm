@@ -19,8 +19,8 @@
 #'
 #' @examples
 #' library(dplyr)
-#' dm_draw(cdm_nycflights13())
-#' dm_draw(cdm_nycflights13(cycle = TRUE))
+#' dm_draw(dm_nycflights13())
+#' dm_draw(dm_nycflights13(cycle = TRUE))
 dm_draw <- function(dm,
                      rankdir = "LR",
                      col_attr = "column",
@@ -122,7 +122,7 @@ dm_get_all_columns <- function(x) {
 #'
 #' @rdname dm_draw
 #' @examples
-#' cdm_nycflights13(color = FALSE) %>%
+#' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
 #'     airports = ,
 #'     airlines = ,
@@ -136,7 +136,7 @@ dm_get_all_columns <- function(x) {
 #'   airports = "yellow", airlines = "yellow", planes = "yellow",
 #'   weather = "dark_blue"
 #' )
-#' cdm_nycflights13(color = FALSE) %>%
+#' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(!!!new_colors) %>%
 #'   dm_draw()
 #' @export

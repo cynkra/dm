@@ -13,7 +13,7 @@ editor_options:
 
 This document describes how you can get your data into a `dm` object. 
 
-Although the example that we will be using is included in `dm`, and you can see it by running `cdm_nycflights13()`, we will be going through the built-in example one more time here, step by step.
+Although the example that we will be using is included in `dm`, and you can see it by running `dm_nycflights13()`, we will be going through the built-in example one more time here, step by step.
 
 The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013, and are available through the [`nycflights13`](https://github.com/hadley/nycflights13) package: 
 

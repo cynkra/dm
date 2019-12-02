@@ -76,7 +76,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'
 #' @examples
 #' library(dplyr)
-#' nycflights_dm <- cdm_nycflights13()
+#' nycflights_dm <- dm_nycflights13()
 #'
 #' nycflights_dm %>%
 #'   cdm_has_pk(planes)
@@ -98,7 +98,7 @@ cdm_has_pk <- function(dm, table) {
 #'
 #' @examples
 #' library(dplyr)
-#' nycflights_dm <- cdm_nycflights13()
+#' nycflights_dm <- dm_nycflights13()
 #'
 #' nycflights_dm %>%
 #'   cdm_get_pk(planes)
@@ -145,7 +145,7 @@ cdm_get_all_pks <- nse(function(dm) {
 #'
 #' @examples
 #' library(dplyr)
-#' nycflights_dm <- cdm_nycflights13()
+#' nycflights_dm <- dm_nycflights13()
 #'
 #' nycflights_dm %>%
 #'   cdm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
@@ -210,8 +210,8 @@ enum_pk_candidates <- nse(function(table) {
 #' @export
 #' @examples
 #'
-#' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
-#' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
+#' dm_nycflights13() %>% cdm_enum_pk_candidates(flights)
+#' dm_nycflights13() %>% cdm_enum_pk_candidates(airports)
 cdm_enum_pk_candidates <- nse(function(dm, table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`

@@ -81,7 +81,7 @@ reference:
 
 - title: Miscellaneous
   contents:
-  - cdm_nycflights13
+  - dm_nycflights13
   - dm_nrow
 
 navbar:

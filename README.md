@@ -137,7 +137,7 @@ After that you would be able to use the links between the tables as
 often as you wish, without explicitly referring to the relations ever
 again.
 
-For the example data set, you can use `cdm_nycflights13()` to create the
+For the example data set, you can use `dm_nycflights13()` to create the
 `dm` object, and a single command for merging the tables. The task of
 joining the four `flights`, `airlines`, `planes` and `airports` tables
 then boils down to:
@@ -145,7 +145,7 @@ then boils down to:
 ``` r
 library(dm)
 
-cdm_nycflights13() %>%
+dm_nycflights13() %>%
   dm_flatten_to_tbl(start = flights)
 #> Renamed columns:
 #> * year -> flights$flights.year, planes$planes.year
@@ -231,13 +231,13 @@ reduced rows in the filtered table. This currently only works for
 cycle-free relationships between the tables.
 
 ``` r
-cdm_nycflights13(cycle = FALSE) %>%
+dm_nycflights13(cycle = FALSE) %>%
   dm_get_tables() %>%
   map_int(nrow)
 #> airlines airports  flights   planes  weather 
 #>       16     1458   336776     3322    26115
 
-cdm_nycflights13(cycle = FALSE) %>%
+dm_nycflights13(cycle = FALSE) %>%
   dm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
   dm_apply_filters() %>%
   dm_get_tables() %>%
@@ -250,7 +250,7 @@ For joining two tables using their relationship defined in the `dm`, you
 can use `cdm_join_tbl()`:
 
 ``` r
-cdm_nycflights13(cycle = FALSE) %>%
+dm_nycflights13(cycle = FALSE) %>%
   dm_join_to_tbl(airports, flights, join = semi_join)
 ```
 
@@ -287,7 +287,7 @@ src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
 #> src:  sqlite 3.29.0 [:memory:]
 #> tbls:
-nycflights13_remote <- dm_copy_to(src_sqlite, cdm_nycflights13(cycle = TRUE))
+nycflights13_remote <- dm_copy_to(src_sqlite, dm_nycflights13(cycle = TRUE))
 nycflights13_remote
 ```
 

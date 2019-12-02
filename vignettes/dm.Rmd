@@ -106,11 +106,11 @@ flights_dm_with_one_key %>%
   dm_draw()
 ```
 
-The `cdm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables, defines all primary and foreign keys, and even assigns colors to the different types of tables.
+The `dm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables, defines all primary and foreign keys, and even assigns colors to the different types of tables.
 We will be using the `dm` object created by this function from now on.
 
 ```{r}
-flights_dm_with_keys <- cdm_nycflights13(cycle = TRUE)
+flights_dm_with_keys <- dm_nycflights13(cycle = TRUE)
 flights_dm_with_keys %>% 
   dm_draw()
 ```
@@ -126,10 +126,10 @@ The idea of a filter on a `dm` object:
 
 The function `dm_apply_filters()` essentially calls `dm_apply_filters_to_tbl()` for each table of the `dm` and creates a new `dm` object from the result.
 
-Currently, this only works if the graph induced by the fk relations is cycle free, the default for `cdm_nycflights13()`:
+Currently, this only works if the graph induced by the fk relations is cycle free, the default for `dm_nycflights13()`:
 
 ```{r}
-flights_dm_acyclic <- cdm_nycflights13()
+flights_dm_acyclic <- dm_nycflights13()
 flights_dm_acyclic %>% 
   dm_draw()
 ```

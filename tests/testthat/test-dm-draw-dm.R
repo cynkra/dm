@@ -34,7 +34,7 @@ test_that("bad color", {
 
 test_that("getter", {
   expect_equal(
-    dm_get_colors(cdm_nycflights13()),
+    dm_get_colors(dm_nycflights13()),
     tibble::tribble(
       ~table,       ~color,
       "airlines", "orange",

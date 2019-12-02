@@ -156,10 +156,10 @@ cdm_enum_pk_candidates(flights_dm_with_key, flights) %>% count(candidate)
 To get an overview over all tables with primary keys, use `cdm_get_all_pks()`:
 
 ```{r}
-cdm_get_all_pks(cdm_nycflights13(cycle = TRUE))
+cdm_get_all_pks(dm_nycflights13(cycle = TRUE))
 ```
 
-Here we used the prepared `dm` object `cdm_nycflights13(cycle = TRUE)` as an example. 
+Here we used the prepared `dm` object `dm_nycflights13(cycle = TRUE)` as an example. 
 This object already has all keys pre-set.
 
 ## Foreign keys
@@ -234,5 +234,5 @@ dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
 Get an overview of all foreign key relations with`dm_get_all_fks()`:
 
 ```{r}
-dm_get_all_fks(cdm_nycflights13(cycle = TRUE))
+dm_get_all_fks(dm_nycflights13(cycle = TRUE))
 ```

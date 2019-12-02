@@ -16,7 +16,7 @@ options(rlang_backtrace_on_error = "none")
 ##
 
 # Teaser
-dm::cdm_nycflights13(cycle = TRUE) %>%
+dm::dm_nycflights13(cycle = TRUE) %>%
   dm::dm_draw()
 
 # Poll: Who has worked with a software that has
@@ -142,7 +142,7 @@ flights_base %>%
 library(dm)
 
 # Compound object: tables, relationships, data
-dm_flights <- cdm_nycflights13(cycle = TRUE)
+dm_flights <- dm_nycflights13(cycle = TRUE)
 dm_flights
 
 dm_flights %>%
@@ -183,7 +183,7 @@ dm_flights %>%
 ##
 ##
 
-dm_flights <- cdm_nycflights13()
+dm_flights <- dm_nycflights13()
 dm_flights %>%
   dm_draw()
 

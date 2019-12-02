@@ -27,7 +27,7 @@
 #' - [decompose_table()] as one example of the table surgery family
 #' - [check_key()] and [check_if_subset()] for checking for key properties
 #' - [check_cardinality()] for checking the cardinality of the relation between two tables
-#' - [cdm_nycflights13()]  for creating an example `dm` object
+#' - [dm_nycflights13()]  for creating an example `dm` object
 #'
 #' @examples
 #' library(dplyr)
@@ -36,14 +36,14 @@
 #' new_dm(list(iris = iris, mtcars = mtcars))
 #' as_dm(list(iris = iris, mtcars = mtcars))
 #'
-#' cdm_nycflights13() %>% tbl("airports")
-#' cdm_nycflights13() %>% src_tbls()
-#' cdm_nycflights13() %>% dm_get_src()
-#' cdm_nycflights13() %>% dm_get_tables()
+#' dm_nycflights13() %>% tbl("airports")
+#' dm_nycflights13() %>% src_tbls()
+#' dm_nycflights13() %>% dm_get_src()
+#' dm_nycflights13() %>% dm_get_tables()
 #'
-#' cdm_nycflights13() %>%
+#' dm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports)
-#' cdm_nycflights13() %>%
+#' dm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {

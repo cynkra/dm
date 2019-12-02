@@ -189,7 +189,7 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
 #' @family foreign key functions
 #'
 #' @examples
-#' dm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
+#' dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
 #' @export
 dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check

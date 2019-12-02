@@ -85,7 +85,7 @@ The dataset contains five tables: the main `flights` table with links to the `ai
 Assume that your task is to merge all tables, except the `weather` table.
 
 ```{r draw, echo = FALSE}
-cdm_nycflights13(cycle = TRUE) %>%
+dm_nycflights13(cycle = TRUE) %>%
   dm_draw()
 ```
 
@@ -104,13 +104,13 @@ flights %>%
 With the {dm} package, you would create [a `dm` object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html).
 After that you would be able to use the links between the tables as often as you wish, without explicitly referring to the relations ever again.
 
-For the example data set, you can use `cdm_nycflights13()` to create the `dm` object, and a single command for merging the tables.
+For the example data set, you can use `dm_nycflights13()` to create the `dm` object, and a single command for merging the tables.
 The task of joining the four `flights`, `airlines`, `planes` and `airports` tables then boils down to:
 
 ```{r dm}
 library(dm)
 
-cdm_nycflights13() %>%
+dm_nycflights13() %>%
   dm_flatten_to_tbl(start = flights)
 ```
 
@@ -162,11 +162,11 @@ After using `dm_apply_filters()` a `dm` object is returned whose tables only con
 This currently only works for cycle-free relationships between the tables.
 
 ```{r}
-cdm_nycflights13(cycle = FALSE) %>%
+dm_nycflights13(cycle = FALSE) %>%
   dm_get_tables() %>%
   map_int(nrow)
 
-cdm_nycflights13(cycle = FALSE) %>%
+dm_nycflights13(cycle = FALSE) %>%
   dm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
   dm_apply_filters() %>%
   dm_get_tables() %>%
@@ -176,7 +176,7 @@ cdm_nycflights13(cycle = FALSE) %>%
 For joining two tables using their relationship defined in the `dm`, you can use `cdm_join_tbl()`:
 
 ```{r}
-cdm_nycflights13(cycle = FALSE) %>%
+dm_nycflights13(cycle = FALSE) %>%
   dm_join_to_tbl(airports, flights, join = semi_join)
 ```
 
@@ -190,7 +190,7 @@ In order to transfer an existing `dm` object to a DB, you can call `dm_copy_to()
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-nycflights13_remote <- dm_copy_to(src_sqlite, cdm_nycflights13(cycle = TRUE))
+nycflights13_remote <- dm_copy_to(src_sqlite, dm_nycflights13(cycle = TRUE))
 nycflights13_remote
 ```
 

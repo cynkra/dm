@@ -191,3 +191,8 @@ cdm_learn_from_db <- new_cdm_forward(dm_learn_from_db)
 #' @keywords internal
 #' @export
 cdm_check_constraints <- new_cdm_forward(dm_check_constraints)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_nycflights13 <- new_cdm_forward(dm_nycflights13)
