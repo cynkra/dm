@@ -21,9 +21,9 @@
 #'
 #' @examples
 #' dm_nycflights13() %>%
-#'   cdm_rename(airports, code = faa, altitude = alt)
+#'   dm_rename(airports, code = faa, altitude = alt)
 #' @export
-cdm_rename <- function(dm, table, ...) {
+dm_rename <- function(dm, table, ...) {
   table_name <- as_string(ensym(table))
 
   cdm_zoom_to_tbl(dm, !!table_name) %>%
@@ -35,16 +35,16 @@ cdm_rename <- function(dm, table, ...) {
 #'
 #' Select columns of your [`dm`] using syntax that is similar to `dplyr::select()`.
 #'
-#' @inheritParams cdm_rename
+#' @inheritParams dm_rename
 #'
 #' @examples
 #' dm_nycflights13() %>%
-#'   cdm_select(airports, code = faa, altitude = alt)
+#'   dm_select(airports, code = faa, altitude = alt)
 #' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
 #' If key columns are removed, then all related relations are dropped as well.
 #'
 #' @export
-cdm_select <- function(dm, table, ...) {
+dm_select <- function(dm, table, ...) {
   table_name <- as_string(ensym(table))
 
   cdm_zoom_to_tbl(dm, !!table_name) %>%

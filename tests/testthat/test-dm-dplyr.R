@@ -610,7 +610,7 @@ test_that("key tracking works", {
       rename(c_new = c, d_new = d) %>%
       cdm_update_zoomed_tbl(),
     dm_filter(dm_for_filter, t2, d < 6) %>%
-      cdm_rename(t2, c_new = c, d_new = d)
+      dm_rename(t2, c_new = c, d_new = d)
   )
 })
 

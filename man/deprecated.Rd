@@ -39,6 +39,10 @@
 \alias{cdm_get_all_pks}
 \alias{cdm_rm_pk}
 \alias{cdm_enum_pk_candidates}
+\alias{cdm_select_tbl}
+\alias{cdm_rename_tbl}
+\alias{cdm_select}
+\alias{cdm_rename}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -137,6 +141,14 @@ cdm_get_all_pks(dm)
 cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 
 cdm_enum_pk_candidates(dm, table)
+
+cdm_select_tbl(dm, ...)
+
+cdm_rename_tbl(dm, ...)
+
+cdm_select(dm, table, ...)
+
+cdm_rename(dm, table, ...)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

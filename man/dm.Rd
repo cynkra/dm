@@ -106,9 +106,9 @@ dm_nycflights13() \%>\% dm_get_src()
 dm_nycflights13() \%>\% dm_get_tables()
 
 dm_nycflights13() \%>\%
-  cdm_rename_tbl(ap = airports)
+  dm_rename_tbl(ap = airports)
 dm_nycflights13() \%>\%
-  cdm_rename_tbl(ap = airports, fl = flights)
+  dm_rename_tbl(ap = airports, fl = flights)
 }
 \seealso{
 \itemize{
@@ -117,7 +117,7 @@ dm_nycflights13() \%>\%
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
 \item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
-\item \code{\link[=cdm_select_tbl]{cdm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
+\item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
 \item \code{\link[=decompose_table]{decompose_table()}} as one example of the table surgery family
 \item \code{\link[=check_key]{check_key()}} and \code{\link[=check_if_subset]{check_if_subset()}} for checking for key properties
 \item \code{\link[=check_cardinality]{check_cardinality()}} for checking the cardinality of the relation between two tables

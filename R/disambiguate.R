@@ -83,7 +83,7 @@ explain_col_rename <- function(recipe) {
 col_rename <- function(dm, recipe) {
   reduce2(recipe$table,
     recipe$renames,
-    ~ cdm_rename(..1, !!..2, !!!..3),
+    ~ dm_rename(..1, !!..2, !!!..3),
     .init = dm
   )
 }

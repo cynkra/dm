@@ -71,7 +71,7 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 }
 \examples{
 dm_nycflights13() \%>\%
-  cdm_select_tbl(-weather) \%>\%
+  dm_select_tbl(-weather) \%>\%
   dm_flatten_to_tbl(flights)
 }
 \seealso{

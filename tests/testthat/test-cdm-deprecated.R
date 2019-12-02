@@ -294,7 +294,7 @@ test_that("other PK functions work", {
   )
 })
 
-test_that("cdm_select_tbl() and cdm_rename_tbl() work", {
+test_that("dm_select_tbl() and dm_rename_tbl() work", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equivalent_dm(
     cdm_select_tbl(dm_for_filter, t1_new = t1, t2, new_t6 = t6),
@@ -304,5 +304,18 @@ test_that("cdm_select_tbl() and cdm_rename_tbl() work", {
   expect_equivalent_dm(
     cdm_rename_tbl(dm_for_filter, t1_new = t1, new_t6 = t6),
     dm_rename_tbl(dm_for_filter, t1_new = t1, new_t6 = t6)
+  )
+})
+
+test_that("dm_select() and dm_rename() work", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_select(dm_for_filter, t1, a_new = a) %>% tbl("t1"),
+    dm_select(dm_for_filter, t1, a_new = a) %>% tbl("t1")
+  )
+
+  expect_identical(
+    cdm_rename(dm_for_filter, t1, a_new = a) %>% tbl("t1"),
+    dm_rename(dm_for_filter, t1, a_new = a) %>% tbl("t1")
   )
 })

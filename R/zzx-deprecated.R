@@ -236,3 +236,13 @@ cdm_select_tbl <- new_cdm_forward(dm_select_tbl)
 #' @keywords internal
 #' @export
 cdm_rename_tbl <- new_cdm_forward(dm_rename_tbl)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_select <- new_cdm_forward_2(dm_select)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_rename <- new_cdm_forward_2(dm_rename)
