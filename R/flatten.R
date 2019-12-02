@@ -1,6 +1,6 @@
 #' Flatten a part of a `dm` into a wide table
 #'
-#' `cdm_flatten_to_tbl()` and `cdm_squash_to_tbl()` gather all information of interest in one place in a wide table.
+#' `dm_flatten_to_tbl()` and `cdm_squash_to_tbl()` gather all information of interest in one place in a wide table.
 #' Both functions perform a disambiguation of column names and a cascade of joins.
 #' Disambiguates column names and a cascade of joins.
 #'
@@ -42,7 +42,7 @@
 #' For all other join types, filtering only the `start` table is enough because the effect is passed on by
 #' successive joins.
 #'
-#' Mind that calling `cdm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...` argument
+#' Mind that calling `dm_flatten_to_tbl()` with `join = right_join` and no table order determined in the `...` argument
 #' will not lead to a well-defined result if two or more foreign tables are to be joined to `start`.
 #' The resulting
 #' table would depend on the order the tables that are listed in the `dm`.
@@ -56,25 +56,25 @@
 #' @examples
 #' cdm_nycflights13() %>%
 #'   cdm_select_tbl(-weather) %>%
-#'   cdm_flatten_to_tbl(flights)
+#'   dm_flatten_to_tbl(flights)
 #' @export
-cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   start <- as_string(ensym(start))
-  cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
-#' @rdname cdm_flatten_to_tbl
+#' @rdname dm_flatten_to_tbl
 #' @export
 cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- as_string(ensym(start))
-  cdm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
 }
 
 
-cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
+dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   check_correct_input(dm, start)
   vars <- setdiff(tidyselect_table_names(dm), start)
   list_of_pts <- dm_try_tables(tidyselect::vars_select(vars, ...), src_tbls(dm))
@@ -90,7 +90,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # early returns for some of the possible joins would be possible for "perfect" key relations,
   # but since it is generally possible to have imperfect FK relations, `semi_join` and `anti_join` might
   # produce results, that are of interest, e.g.
-  # cdm_flatten_to_tbl(cdm_nycflights13(cycle = TRUE) %>% cdm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
+  # dm_flatten_to_tbl(cdm_nycflights13(cycle = TRUE) %>% cdm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
 
   # need to work with directed graph here, since we only want to go in the direction
   # the foreign key is pointing to
@@ -151,7 +151,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #'
 #' @description A join of a desired type is performed between `table_1` and `table_2`.
 #' The two tables need to be directly connected by a foreign key relation.
-#' Since this function is a wrapper around [cdm_flatten_to_tbl()], the LHS of
+#' Since this function is a wrapper around [dm_flatten_to_tbl()], the LHS of
 #' the join will always be a "child table", i.e. a table referencing the other table.
 #'
 #' @param dm A [`dm`] object.
@@ -176,7 +176,7 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  cdm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
@@ -227,7 +227,7 @@ check_flatten_to_tbl <- function(
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
 
 
-  # If called by `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()`, the argument `squash = FALSE`.
+  # If called by `cdm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
   if (!squash && has_grandparent) {
     abort_only_parents()
@@ -236,7 +236,7 @@ check_flatten_to_tbl <- function(
   if (join_name == "right_join" && auto_detect && more_than_1_pt) {
     warning(
       paste0(
-        "Result for `cdm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
+        "Result for `dm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
         "more than 2 tables involved and no explicit order given in `...`."
       )
     )

@@ -178,7 +178,7 @@ error_txt_no_cycles <- function() {
 }
 
 
-# error in cdm_flatten_to_tbl() ----------------------------------------------
+# error in dm_flatten_to_tbl() ----------------------------------------------
 
 abort_tables_not_reachable_from_start <- function() {
   abort(error_txt_tables_not_reachable_from_start(), .subclass = dm_error_full("tables_not_reachable_from_start"))
@@ -325,7 +325,7 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
-# `cdm_flatten_to_tbl()` and `cdm_join_to_tbl()` only supported for parents
+# `dm_flatten_to_tbl()` and `dm_join_to_tbl()` only supported for parents
 
 abort_only_parents <- function() {
   abort(error_only_parents(), .subclass = dm_error_full("only_parents"))
@@ -333,7 +333,7 @@ abort_only_parents <- function() {
 
 error_only_parents <- function() {
   paste0(
-    "When using `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()` all join partners of table `start` ",
+    "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` ",
     "have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
     "use `cdm_squash_to_tbl()` as an alternative."
   )

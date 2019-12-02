@@ -98,7 +98,7 @@ Let's look at some examples:
 
 ```{r}
 dm_joined <- dm %>% 
-  cdm_join_to_tbl(flights, airlines, join = left_join)
+  dm_join_to_tbl(flights, airlines, join = left_join)
 dm_joined
 ```
 
@@ -134,7 +134,7 @@ You can check this with an `anti_join`:
 
 ```{r}
 dm %>% 
-  cdm_join_to_tbl(flights, airlines, join = anti_join)
+  dm_join_to_tbl(flights, airlines, join = anti_join)
 ```
 
 An example with filtering on a `dm` and then merging:
@@ -150,7 +150,7 @@ cdm_nycflights13() %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(flights, month == 5) %>% 
   cdm_apply_filters() %>% 
-  cdm_join_to_tbl(flights, airports, join = left_join)
+  dm_join_to_tbl(flights, airports, join = left_join)
 ```
 
 A last example:
@@ -158,7 +158,7 @@ A last example:
 **Merge all tables into one big table.**
 
 Sometimes you need everything in one place.
-In this case you can use the `cdm_flatten_to_tbl()` function.
+In this case you can use the `dm_flatten_to_tbl()` function.
 It joins all the tables of your `dm` object together into one wide table.
 All you have to do is to specify the starting table.
 The following joins are determined by the foreign key links.
@@ -166,8 +166,8 @@ The following joins are determined by the foreign key links.
 ```{r}
 cdm_nycflights13() %>%
   cdm_select_tbl(-weather) %>%
-  cdm_flatten_to_tbl(start = flights)
+  dm_flatten_to_tbl(start = flights)
 ```
 
 Be aware that all column names need to be unique.
-The `cdm_flatten_to_tbl` cares about automatically renaming the relevant columns and prints if something was changed, e.g. `name -> airlines.name`.
+The `dm_flatten_to_tbl` cares about automatically renaming the relevant columns and prints if something was changed, e.g. `name -> airlines.name`.

@@ -21,7 +21,7 @@
 #' - [cdm_add_pk()] and [cdm_add_fk()] add primary and foreign keys
 #' - [dm_copy_to()] and [cdm_learn_from_db()] for DB interaction
 #' - [dm_draw()] for visualization
-#' - [cdm_join_to_tbl()] for flattening
+#' - [dm_join_to_tbl()] for flattening
 #' - [dm_filter()] for filtering
 #' - [cdm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [decompose_table()] as one example of the table surgery family

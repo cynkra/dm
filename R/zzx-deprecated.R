@@ -57,7 +57,7 @@ cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)
 #' @keywords internal
 #' @export
 # FIXME: name of table comes from {{ table }}, which is not available anymore
-# when passed by new_cdm_forward(dm_filter)
+# when passed by `new_cdm_forward(dm_filter)`
 cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", paste0("dm::cdm_filter()"))
   cdm_zoom_to_tbl(dm, {{ table }}) %>%
@@ -69,3 +69,15 @@ cdm_filter <- function(dm, table, ...) {
 #' @keywords internal
 #' @export
 cdm_nrow <- new_cdm_forward(dm_nrow)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+# FIXME: name of `start` comes from {{ start }} (deparse(substitute()), which is not available anymore
+# when passed by `new_cdm_forward(dm_flatten_to_tbl)`
+cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+  join_name <- deparse(substitute(join))
+  start <- as_string(ensym(start))
+  dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
+}
+

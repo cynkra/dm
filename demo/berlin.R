@@ -295,27 +295,27 @@ nycflights13_sqlite %>%
 ##
 
 cdm_nycflights13() %>%
-  cdm_join_to_tbl(airlines, flights, join = left_join)
+  dm_join_to_tbl(airlines, flights, join = left_join)
 
 cdm_nycflights13() %>%
-  cdm_join_to_tbl(flights, airlines, join = left_join)
+  dm_join_to_tbl(flights, airlines, join = left_join)
 
 nycflights13_sqlite %>%
-  cdm_join_to_tbl(airlines, flights, join = left_join)
+  dm_join_to_tbl(airlines, flights, join = left_join)
 
 aa_non_jfk_january %>%
-  cdm_join_to_tbl(flights, airlines, join = left_join)
+  dm_join_to_tbl(flights, airlines, join = left_join)
 
 # FIXME: Multi-joins
 
 try(
   cdm_nycflights13() %>%
-    cdm_join_to_tbl(airports, airlines, join = left_join)
+    dm_join_to_tbl(airports, airlines, join = left_join)
 )
 
 try(
   cdm_nycflights13() %>%
-    cdm_join_to_tbl(flights, airports, airlines, join = left_join)
+    dm_join_to_tbl(flights, airports, airlines, join = left_join)
 )
 
 ##

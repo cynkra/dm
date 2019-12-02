@@ -340,7 +340,7 @@ dm_for_disambiguate_2 %<-% {
     cdm_add_fk(iris_2, iris_2.key, iris_1)
 }
 
-# star schema data model for testing `cdm_flatten_to_tbl()`
+# star schema data model for testing `dm_flatten_to_tbl()`
 
 message("star schema")
 
@@ -433,7 +433,7 @@ result_from_flatten %<-% {
     left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
 }
 
-# 'bad' dm (no ref. integrity) for testing cdm_flatten_to_tbl() --------
+# 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
 tbl_1 %<-% tibble(a = c(1, 2, 4, 5), b = a)
 tbl_2 %<-% tibble(id = 1:2, c = letters[1:2])

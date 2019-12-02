@@ -21,11 +21,11 @@ The resulting table of the join.
 \description{
 A join of a desired type is performed between \code{table_1} and \code{table_2}.
 The two tables need to be directly connected by a foreign key relation.
-Since this function is a wrapper around \code{\link[=cdm_flatten_to_tbl]{cdm_flatten_to_tbl()}}, the LHS of
+Since this function is a wrapper around \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}}, the LHS of
 the join will always be a "child table", i.e. a table referencing the other table.
 }
 \seealso{
 Other flattening functions: 
-\code{\link{cdm_flatten_to_tbl}()}
+\code{\link{dm_flatten_to_tbl}()}
 }
 \concept{flattening functions}

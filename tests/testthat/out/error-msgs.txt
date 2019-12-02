@@ -90,7 +90,7 @@ You cannot call `find_wisdom()` on a `dm` with filter conditions. Consider using
 Tables `subjects` and `king` are not directly linked by a foreign key relation.
 
 > error_only_parents()
-[1] "When using `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()` all join partners of table `start` have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `cdm_squash_to_tbl()` as an alternative."
+[1] "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `cdm_squash_to_tbl()` as an alternative."
 
 > error_not_same_src()
 [1] "Not all tables in the object share the same `src`"

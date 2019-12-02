@@ -146,7 +146,7 @@ then boils down to:
 library(dm)
 
 cdm_nycflights13() %>%
-  cdm_flatten_to_tbl(start = flights)
+  dm_flatten_to_tbl(start = flights)
 #> Renamed columns:
 #> * year -> flights$flights.year, planes$planes.year
 #> * name -> airlines$airlines.name, airports$airports.name
@@ -251,7 +251,7 @@ can use `cdm_join_tbl()`:
 
 ``` r
 cdm_nycflights13(cycle = FALSE) %>%
-  cdm_join_to_tbl(airports, flights, join = semi_join)
+  dm_join_to_tbl(airports, flights, join = semi_join)
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 19</span><span>

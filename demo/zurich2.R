@@ -188,11 +188,11 @@ dm_flights %>%
   dm_draw()
 
 dm_flights %>%
-  cdm_join_to_tbl(airlines, flights)
+  dm_join_to_tbl(airlines, flights)
 
 try(
   dm_flights %>%
-    cdm_join_to_tbl(airports, airlines)
+    dm_join_to_tbl(airports, airlines)
 )
 
 ##
@@ -205,7 +205,7 @@ try(
 ##
 
 dm_flights %>%
-  cdm_flatten_to_tbl(flights)
+  dm_flatten_to_tbl(flights)
 
 ##
 ##
@@ -234,11 +234,11 @@ dm_flights_sqlite %>%
   map(dbplyr::sql_render)
 
 dm_flights_sqlite %>%
-  cdm_join_to_tbl(airlines, flights) %>%
+  dm_join_to_tbl(airlines, flights) %>%
   dbplyr::sql_render()
 
 dm_flights_sqlite %>%
-  cdm_flatten_to_tbl(flights) %>%
+  dm_flatten_to_tbl(flights) %>%
   dbplyr::sql_render()
 
 # Filtering on the database
@@ -295,10 +295,10 @@ delta_non_jfk_january %>%
 
 delta_non_jfk_january %>%
   cdm_apply_filters() %>%
-  cdm_join_to_tbl(flights, airlines)
+  dm_join_to_tbl(flights, airlines)
 
 delta_non_jfk_january %>%
-  cdm_flatten_to_tbl(flights)
+  dm_flatten_to_tbl(flights)
 
 
 ##

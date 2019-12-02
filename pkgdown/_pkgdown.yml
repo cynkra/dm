@@ -44,8 +44,8 @@ reference:
 
 - title: Flattening
   contents:
-  - cdm_flatten_to_tbl
-  - cdm_join_to_tbl
+  - dm_flatten_to_tbl
+  - dm_join_to_tbl
 
 - title: Filtering
   contents:

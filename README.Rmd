@@ -111,7 +111,7 @@ The task of joining the four `flights`, `airlines`, `planes` and `airports` tabl
 library(dm)
 
 cdm_nycflights13() %>%
-  cdm_flatten_to_tbl(start = flights)
+  dm_flatten_to_tbl(start = flights)
 ```
 
 The example data model for {nycflights13} is integrated in {dm} and defines primary and foreign keys to identify the common points between the tables.
@@ -177,7 +177,7 @@ For joining two tables using their relationship defined in the `dm`, you can use
 
 ```{r}
 cdm_nycflights13(cycle = FALSE) %>%
-  cdm_join_to_tbl(airports, flights, join = semi_join)
+  dm_join_to_tbl(airports, flights, join = semi_join)
 ```
 
 In our `dm`, the `origin` column of the `flights` table points to the `airports` table.
