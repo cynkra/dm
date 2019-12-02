@@ -2,18 +2,18 @@
 
 # error class generator ---------------------------------------------------
 
-cdm_error <- function(x) {
+dm_error <- function(x) {
   paste0("dm_error_", x)
 }
 
-cdm_error_full <- function(x) {
-  c(cdm_error(x), "dm_error")
+dm_error_full <- function(x) {
+  c(dm_error(x), "dm_error")
 }
 
 # abort and text for primary key handling errors --------------------------
 
 abort_wrong_col_args <- function() {
-  abort(error_txt_wrong_col_args(), .subclass = cdm_error_full("wrong_cols_args"))
+  abort(error_txt_wrong_col_args(), .subclass = dm_error_full("wrong_cols_args"))
 }
 
 error_txt_wrong_col_args <- function() {
@@ -21,7 +21,7 @@ error_txt_wrong_col_args <- function() {
 }
 
 abort_key_set_force_false <- function() {
-  abort(error_txt_key_set_force_false(), .subclass = cdm_error_full("key_set_force_false"))
+  abort(error_txt_key_set_force_false(), .subclass = dm_error_full("key_set_force_false"))
 }
 
 error_txt_key_set_force_false <- function() {
@@ -31,7 +31,7 @@ error_txt_key_set_force_false <- function() {
 # abort and text for key-helper functions ---------------------------------
 
 abort_not_unique_key <- function(table_name, column_names) {
-  abort(error_txt_not_unique_key(table_name, column_names), .subclass = cdm_error_full("not_unique_key"))
+  abort(error_txt_not_unique_key(table_name, column_names), .subclass = dm_error_full("not_unique_key"))
 }
 
 error_txt_not_unique_key <- function(table_name, column_names) {
@@ -41,7 +41,7 @@ error_txt_not_unique_key <- function(table_name, column_names) {
 # general error: table not part of `dm` -----------------------------------
 
 abort_table_not_in_dm <- function(table_name, dm_tables) {
-  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = cdm_error_full("table_not_in_dm"))
+  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = dm_error_full("table_not_in_dm"))
 }
 
 error_txt_table_not_in_dm <- function(table_name, dm_tables) {
@@ -53,7 +53,7 @@ error_txt_table_not_in_dm <- function(table_name, dm_tables) {
 abort_not_subset_of <- function(table_name_1, colname_1,
                                 table_name_2, colname_2) {
   abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
-    .subclass = cdm_error_full("not_subset_of")
+    .subclass = dm_error_full("not_subset_of")
   )
 }
 
@@ -68,7 +68,7 @@ error_txt_not_subset_of <- function(table_name_1, colname_1,
 # error sets not equal ----------------------------------------------------
 
 abort_sets_not_equal <- function(error_msgs) {
-  abort(error_txt_sets_not_equal(error_msgs), .subclass = cdm_error_full("sets_not_equal"))
+  abort(error_txt_sets_not_equal(error_msgs), .subclass = dm_error_full("sets_not_equal"))
 }
 
 error_txt_sets_not_equal <- function(error_msgs) {
@@ -79,7 +79,7 @@ error_txt_sets_not_equal <- function(error_msgs) {
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
   abort(error_txt_not_bijective(child_table_name, fk_col_name),
-    .subclass = cdm_error_full("not_bijective")
+    .subclass = dm_error_full("not_bijective")
   )
 }
 
@@ -92,7 +92,7 @@ error_txt_not_bijective <- function(child_table_name, fk_col_name) {
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
   abort(error_txt_not_injective(child_table_name, fk_col_name),
-    .subclass = cdm_error_full("not_injective")
+    .subclass = dm_error_full("not_injective")
   )
 }
 
@@ -107,7 +107,7 @@ error_txt_not_injective <- function(child_table_name, fk_col_name) {
 
 abort_ref_tbl_has_no_pk <- function(ref_table_name) {
   abort(error_txt_ref_tbl_has_no_pk(ref_table_name),
-    .subclass = cdm_error_full("ref_tbl_has_no_pk")
+    .subclass = dm_error_full("ref_tbl_has_no_pk")
   )
 }
 
@@ -124,7 +124,7 @@ abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
     error_txt_is_not_fk(
       child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
     ),
-    .subclass = cdm_error_full("is_not_fkc")
+    .subclass = dm_error_full("is_not_fkc")
   )
 }
 
@@ -138,7 +138,7 @@ error_txt_is_not_fk <- function(child_table_name, wrong_fk_colnames,
 }
 
 abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = cdm_error_full("rm_fk_col_missing"))
+  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
 }
 
 error_txt_rm_fk_col_missing <- function() {
@@ -148,7 +148,7 @@ error_txt_rm_fk_col_missing <- function() {
 # error helpers for draw_dm -----------------------------------------------
 
 abort_last_col_missing <- function() {
-  abort(error_txt_last_col_missing(), .subclass = cdm_error_full("last_col_missing"))
+  abort(error_txt_last_col_missing(), .subclass = dm_error_full("last_col_missing"))
 }
 
 error_txt_last_col_missing <- function() {
@@ -156,7 +156,7 @@ error_txt_last_col_missing <- function() {
 }
 
 abort_wrong_color <- function(avail_color_names) {
-  abort(error_txt_wrong_color(avail_color_names), .subclass = cdm_error_full("wrong_color"))
+  abort(error_txt_wrong_color(avail_color_names), .subclass = dm_error_full("wrong_color"))
 }
 
 error_txt_wrong_color <- function(avail_color_names) {
@@ -170,7 +170,7 @@ error_txt_wrong_color <- function(avail_color_names) {
 # errors in graph-functions -----------------------------------------------
 
 abort_no_cycles <- function() {
-  abort(error_txt_no_cycles(), .subclass = cdm_error_full("no_cycles"))
+  abort(error_txt_no_cycles(), .subclass = dm_error_full("no_cycles"))
 }
 
 error_txt_no_cycles <- function() {
@@ -181,7 +181,7 @@ error_txt_no_cycles <- function() {
 # error in cdm_flatten_to_tbl() ----------------------------------------------
 
 abort_tables_not_reachable_from_start <- function() {
-  abort(error_txt_tables_not_reachable_from_start(), .subclass = cdm_error_full("tables_not_reachable_from_start"))
+  abort(error_txt_tables_not_reachable_from_start(), .subclass = dm_error_full("tables_not_reachable_from_start"))
 }
 
 error_txt_tables_not_reachable_from_start <- function() {
@@ -194,7 +194,7 @@ error_txt_tables_not_reachable_from_start <- function() {
 
 abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   abort(error_txt_wrong_col_names(table_name, actual_colnames, wrong_colnames),
-    .subclass = cdm_error_full("wrong_col_names")
+    .subclass = dm_error_full("wrong_col_names")
   )
 }
 
@@ -218,7 +218,7 @@ error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colname
 
 
 abort_dupl_new_id_col_name <- function(table_name) {
-  abort(error_txt_dupl_new_id_col_name(table_name), .subclass = cdm_error_full("dupl_new_id_col_name"))
+  abort(error_txt_dupl_new_id_col_name(table_name), .subclass = dm_error_full("dupl_new_id_col_name"))
 }
 
 error_txt_dupl_new_id_col_name <- function(table_name) {
@@ -227,7 +227,7 @@ error_txt_dupl_new_id_col_name <- function(table_name) {
 
 abort_no_overwrite <- function() {
   fun_name <- as_string(sys.call(-1)[[1]])
-  abort(error_txt_no_overwrite(fun_name), .subclass = cdm_error_full("no_overwrite"))
+  abort(error_txt_no_overwrite(fun_name), .subclass = dm_error_full("no_overwrite"))
 }
 
 error_txt_no_overwrite <- function(fun_name) {
@@ -235,7 +235,7 @@ error_txt_no_overwrite <- function(fun_name) {
 }
 
 abort_no_types <- function() {
-  abort(error_txt_no_types(), .subclass = cdm_error_full("no_types"))
+  abort(error_txt_no_types(), .subclass = dm_error_full("no_types"))
 }
 
 error_txt_no_types <- function() {
@@ -243,7 +243,7 @@ error_txt_no_types <- function() {
 }
 
 abort_no_indexes <- function() {
-  abort(error_txt_no_indexes(), .subclass = cdm_error_full("no_indexes"))
+  abort(error_txt_no_indexes(), .subclass = dm_error_full("no_indexes"))
 }
 
 error_txt_no_indexes <- function() {
@@ -251,7 +251,7 @@ error_txt_no_indexes <- function() {
 }
 
 abort_no_unique_indexes <- function() {
-  abort(error_txt_no_unique_indexes(), .subclass = cdm_error_full("no_unique_indexes"))
+  abort(error_txt_no_unique_indexes(), .subclass = dm_error_full("no_unique_indexes"))
 }
 
 error_txt_no_unique_indexes <- function() {
@@ -259,7 +259,7 @@ error_txt_no_unique_indexes <- function() {
 }
 
 abort_need_named_vec <- function(table_names) {
-  abort(error_txt_need_named_vec(table_names), .subclass = cdm_error_full("need_named_vec"))
+  abort(error_txt_need_named_vec(table_names), .subclass = dm_error_full("need_named_vec"))
 }
 
 error_txt_need_named_vec <- function(table_names) {
@@ -271,7 +271,7 @@ error_txt_need_named_vec <- function(table_names) {
 }
 
 abort_src_not_db <- function() {
-  abort(error_src_not_db(), .subclass = cdm_error_full("src_not_db"))
+  abort(error_src_not_db(), .subclass = dm_error_full("src_not_db"))
 }
 
 error_src_not_db <- function() {
@@ -279,7 +279,7 @@ error_src_not_db <- function() {
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
-  abort(error_first_rm_fks(table, fk_tables), .subclass = cdm_error_full("first_rm_fks"))
+  abort(error_first_rm_fks(table, fk_tables), .subclass = dm_error_full("first_rm_fks"))
 }
 
 error_first_rm_fks <- function(table, fk_tables) {
@@ -290,7 +290,7 @@ error_first_rm_fks <- function(table, fk_tables) {
 }
 
 abort_no_src_or_con <- function() {
-  abort(error_no_src_or_con(), .subclass = cdm_error_full("no_src_or_con"))
+  abort(error_no_src_or_con(), .subclass = dm_error_full("no_src_or_con"))
 }
 
 error_no_src_or_con <- function() {
@@ -298,7 +298,7 @@ error_no_src_or_con <- function() {
 }
 
 abort_update_not_supported <- function() {
-  abort(error_update_not_supported(), .subclass = cdm_error_full("update_not_supported"))
+  abort(error_update_not_supported(), .subclass = dm_error_full("update_not_supported"))
 }
 
 error_update_not_supported <- function() {
@@ -308,7 +308,7 @@ error_update_not_supported <- function() {
 # errors when filters are set but they shouldn't be ------------------------------
 
 abort_only_possible_wo_filters <- function(fun_name) {
-  abort(error_only_possible_wo_filters(fun_name), .subclass = cdm_error_full("only_possible_wo_filters"))
+  abort(error_only_possible_wo_filters(fun_name), .subclass = dm_error_full("only_possible_wo_filters"))
 }
 
 error_only_possible_wo_filters <- function(fun_name) {
@@ -318,7 +318,7 @@ error_only_possible_wo_filters <- function(fun_name) {
 # no foreign key relation -------------------------------------------------
 
 abort_tables_not_neighbours <- function(t1_name, t2_name) {
-  abort(error_tables_not_neighbours(t1_name, t2_name), .subclass = cdm_error_full("tables_not_neighbours"))
+  abort(error_tables_not_neighbours(t1_name, t2_name), .subclass = dm_error_full("tables_not_neighbours"))
 }
 
 error_tables_not_neighbours <- function(t1_name, t2_name) {
@@ -328,7 +328,7 @@ error_tables_not_neighbours <- function(t1_name, t2_name) {
 # `cdm_flatten_to_tbl()` and `cdm_join_to_tbl()` only supported for parents
 
 abort_only_parents <- function() {
-  abort(error_only_parents(), .subclass = cdm_error_full("only_parents"))
+  abort(error_only_parents(), .subclass = dm_error_full("only_parents"))
 }
 
 error_only_parents <- function() {
@@ -343,7 +343,7 @@ error_only_parents <- function() {
 
 
 abort_not_same_src <- function() {
-  abort(error_not_same_src(), .subclass = cdm_error_full("not_same_src"))
+  abort(error_not_same_src(), .subclass = dm_error_full("not_same_src"))
 }
 
 error_not_same_src <- function() {
@@ -353,7 +353,7 @@ error_not_same_src <- function() {
 # Something other than tables are put in a `dm` ------------------
 
 abort_what_a_weird_object <- function(class) {
-  abort(error_what_a_weird_object(class), .subclass = cdm_error_full("what_a_weird_object"))
+  abort(error_what_a_weird_object(class), .subclass = dm_error_full("what_a_weird_object"))
 }
 
 error_what_a_weird_object <- function(class) {
@@ -361,7 +361,7 @@ error_what_a_weird_object <- function(class) {
 }
 
 abort_squash_limited <- function() {
-  abort(error_squash_limited(), .subclass = cdm_error_full("squash_limited"))
+  abort(error_squash_limited(), .subclass = dm_error_full("squash_limited"))
 }
 
 error_squash_limited <- function() {
@@ -369,11 +369,11 @@ error_squash_limited <- function() {
 }
 
 abort_apply_filters_first <- function(join_name) {
-  abort(error_apply_filters_first(join_name), .subclass = cdm_error_apply_filters_first(join_name))
+  abort(error_apply_filters_first(join_name), .subclass = dm_error_apply_filters_first(join_name))
 }
 
-cdm_error_apply_filters_first <- function(join_name) {
-  cdm_error(c(paste0("apply_filters_first_", join_name), "apply_filters_first"))
+dm_error_apply_filters_first <- function(join_name) {
+  dm_error(c(paste0("apply_filters_first_", join_name), "apply_filters_first"))
 }
 
 error_apply_filters_first <- function(join_name) {
@@ -385,7 +385,7 @@ error_apply_filters_first <- function(join_name) {
 }
 
 abort_no_flatten_with_nest_join <- function() {
-  abort(error_no_flatten_with_nest_join(), .subclass = cdm_error_full("no_flatten_with_nest_join"))
+  abort(error_no_flatten_with_nest_join(), .subclass = dm_error_full("no_flatten_with_nest_join"))
 }
 
 error_no_flatten_with_nest_join <- function() {
@@ -398,7 +398,7 @@ error_no_flatten_with_nest_join <- function() {
 # either explicit table names, or auto-unique ones ------------------------
 
 abort_unique_table_names_or_table_names <- function() {
-  abort(error_unique_table_names_or_table_names(), .subclass = cdm_error_full("unique_table_names_or_table_names"))
+  abort(error_unique_table_names_or_table_names(), .subclass = dm_error_full("unique_table_names_or_table_names"))
 }
 
 error_unique_table_names_or_table_names <- function() {
@@ -408,7 +408,7 @@ error_unique_table_names_or_table_names <- function() {
 
 # object is not a `dm` (but should be one) --------------------------------
 abort_is_not_dm <- function(obj_class) {
-  abort(error_is_not_dm(obj_class), .subclass = cdm_error_full("is_not_dm"))
+  abort(error_is_not_dm(obj_class), .subclass = dm_error_full("is_not_dm"))
 }
 
 error_is_not_dm <- function(obj_class) {
@@ -418,7 +418,7 @@ error_is_not_dm <- function(obj_class) {
 
 # local `dm` has no con ---------------------------------------------------
 abort_con_only_for_dbi <- function() {
-  abort(error_con_only_for_dbi(), .subclass = cdm_error_full("con_only_for_dbi"))
+  abort(error_con_only_for_dbi(), .subclass = dm_error_full("con_only_for_dbi"))
 }
 
 error_con_only_for_dbi <- function() {
@@ -428,7 +428,7 @@ error_con_only_for_dbi <- function() {
 # no zoom allowed for `cdm_zoom_to_tbl()` ---------------------------------
 
 abort_no_zoom_allowed <- function() {
-  abort(error_no_zoom_allowed(), .subclass = cdm_error_full("no_zoom_allowed"))
+  abort(error_no_zoom_allowed(), .subclass = dm_error_full("no_zoom_allowed"))
 }
 
 error_no_zoom_allowed <- function() {
@@ -441,13 +441,13 @@ error_no_zoom_allowed <- function() {
 # general abort with customized msg ---------------------------------------
 
 abort_w_message <- function(msg) {
-  abort(msg, .subclass = cdm_error_full("w_message"))
+  abort(msg, .subclass = dm_error_full("w_message"))
 }
 
 # no table zoomed, but 'cdm_insert_tbl()' called ---------------------------------
 
 abort_no_table_zoomed <- function() {
-  abort(error_no_table_zoomed(), .subclass = cdm_error_full("no_table_zoomed"))
+  abort(error_no_table_zoomed(), .subclass = dm_error_full("no_table_zoomed"))
 }
 
 error_no_table_zoomed <- function() {
@@ -458,7 +458,7 @@ error_no_table_zoomed <- function() {
 # new table needs a name --------------------------------------------------
 
 abort_table_needs_name <- function() {
-  abort(error_table_needs_name(), .subclass = cdm_error_full("table_needs_name"))
+  abort(error_table_needs_name(), .subclass = dm_error_full("table_needs_name"))
 }
 
 error_table_needs_name <- function() {
@@ -468,7 +468,7 @@ error_table_needs_name <- function() {
 # when zoomed and it shouldn't be ------------------------------
 
 abort_only_possible_wo_zoom <- function(fun_name) {
-  abort(error_only_possible_wo_zoom(fun_name), .subclass = cdm_error_full("only_possible_wo_zoom"))
+  abort(error_only_possible_wo_zoom(fun_name), .subclass = dm_error_full("only_possible_wo_zoom"))
 }
 
 error_only_possible_wo_zoom <- function(fun_name) {
@@ -481,7 +481,7 @@ error_only_possible_wo_zoom <- function(fun_name) {
 # when not zoomed and it should be ------------------------------
 
 abort_only_possible_w_zoom <- function(fun_name) {
-  abort(error_only_possible_w_zoom(fun_name), .subclass = cdm_error_full("only_possible_w_zoom"))
+  abort(error_only_possible_w_zoom(fun_name), .subclass = dm_error_full("only_possible_w_zoom"))
 }
 
 error_only_possible_w_zoom <- function(fun_name) {
@@ -491,19 +491,19 @@ error_only_possible_w_zoom <- function(fun_name) {
 # errors for `copy_to.dm()` ----------------------------------------------
 
 abort_only_data_frames_supported <- function() {
-  abort("`copy_to.dm()` only supports class `data.frame` for argument `df`", .subclass = cdm_error_full("only_data_frames_supported"))
+  abort("`copy_to.dm()` only supports class `data.frame` for argument `df`", .subclass = dm_error_full("only_data_frames_supported"))
 }
 
 abort_one_name_for_copy_to <- function(name) {
   abort(glue("Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"),
-    .subclass = cdm_error_full("one_name_for_copy_to")
+    .subclass = dm_error_full("one_name_for_copy_to")
   )
 }
 
 # table not on src --------------------------------------------------------
 
 abort_req_tbl_not_avail <- function(avail, missing) {
-  abort(error_req_tbl_not_avail(avail, missing), .subclass = cdm_error_full("req_tbl_not_avail"))
+  abort(error_req_tbl_not_avail(avail, missing), .subclass = dm_error_full("req_tbl_not_avail"))
 }
 
 error_req_tbl_not_avail <- function(avail, missing) {
@@ -514,7 +514,7 @@ error_req_tbl_not_avail <- function(avail, missing) {
 # table for which key should be set not in list of tables when creating dm -----------------------
 
 abort_unnamed_table_list <- function() {
-  abort(error_unnamed_table_list(), .subclass = cdm_error_full("unnamed_table_list"))
+  abort(error_unnamed_table_list(), .subclass = dm_error_full("unnamed_table_list"))
 }
 
 error_unnamed_table_list <- function() {
@@ -524,7 +524,7 @@ error_unnamed_table_list <- function() {
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
-  abort(error_need_unique_names(duplicate_names), .subclass = cdm_error_full("need_unique_names"))
+  abort(error_need_unique_names(duplicate_names), .subclass = dm_error_full("need_unique_names"))
 }
 
 error_need_unique_names <- function(duplicate_names) {
@@ -537,7 +537,7 @@ error_need_unique_names <- function(duplicate_names) {
 # lost track of by-column (FK-relation) -----------------------------------
 
 abort_fk_not_tracked <- function(x_orig_name, y_name) {
-  abort(error_fk_not_tracked(x_orig_name, y_name), .subclass = cdm_error_full("fk_not_tracked"))
+  abort(error_fk_not_tracked(x_orig_name, y_name), .subclass = dm_error_full("fk_not_tracked"))
 }
 
 error_fk_not_tracked <- function(x_orig_name, y_name) {
@@ -550,7 +550,7 @@ error_fk_not_tracked <- function(x_orig_name, y_name) {
 # RHS-by column not selected ----------------------------------------------
 
 abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = cdm_error_full("need_to_select_rhs_by"))
+  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = dm_error_full("need_to_select_rhs_by"))
 }
 
 error_need_to_select_rhs_by <- function(y_name, rhs_by) {
@@ -561,7 +561,7 @@ error_need_to_select_rhs_by <- function(y_name, rhs_by) {
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
-  abort(error_dm_invalid(why), .subclass = cdm_error_full("dm_invalid"))
+  abort(error_dm_invalid(why), .subclass = dm_error_full("dm_invalid"))
 }
 
 error_dm_invalid <- function(why) {

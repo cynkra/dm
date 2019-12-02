@@ -18,7 +18,7 @@ test_that("check_if_subset() checks if t1$c1 column values are subset of t2$c2 p
       check_if_subset_2a_1a_names
     ),
     ~ expect_known_output(
-      expect_cdm_error(
+      expect_dm_error(
         check_if_subset(..1, a, ..2, a),
         class = "not_subset_of"
       ),

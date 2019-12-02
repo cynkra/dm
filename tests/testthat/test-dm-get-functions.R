@@ -6,7 +6,7 @@ lookup <- tibble(
 )
 
 test_that("dm_get_src() works", {
-  expect_cdm_error(
+  expect_dm_error(
     dm_get_src(1),
     class = "is_not_dm"
   )
@@ -21,12 +21,12 @@ test_that("dm_get_src() works", {
 })
 
 test_that("dm_get_con() works", {
-  expect_cdm_error(
+  expect_dm_error(
     dm_get_con(1),
     class = "is_not_dm"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     dm_get_con(dm_for_filter),
     class = "con_only_for_dbi"
   )

@@ -3,7 +3,7 @@ context("test-foreign-key-functions")
 test_that("cdm_add_fk() works as intended?", {
   iwalk(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       cdm_add_fk(.x, cdm_table_1, a, cdm_table_4),
       class = "ref_tbl_has_no_pk"
     )
@@ -135,7 +135,7 @@ test_that("cdm_rm_fk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       .x %>%
         cdm_add_pk(cdm_table_4, c) %>%
         cdm_add_fk(cdm_table_1, a, cdm_table_4) %>%
@@ -147,7 +147,7 @@ test_that("cdm_rm_fk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       .x %>%
         cdm_add_pk(cdm_table_4, c) %>%
         cdm_add_fk(cdm_table_1, a, cdm_table_4) %>%
@@ -241,7 +241,7 @@ test_that("cdm_enum_fk_candidates() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       cdm_enum_fk_candidates(.x, cdm_table_1, cdm_table_4),
       class = "ref_tbl_has_no_pk"
     )

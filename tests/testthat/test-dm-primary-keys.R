@@ -16,7 +16,7 @@ test_that("cdm_add_pk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       cdm_add_pk(.x, cdm_table_1, qq),
       class = "wrong_col_names"
     )
@@ -24,7 +24,7 @@ test_that("cdm_add_pk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       cdm_add_pk(.x, cdm_table_1, a) %>%
         cdm_add_pk(cdm_table_1, b),
       class = "key_set_force_false"
@@ -33,7 +33,7 @@ test_that("cdm_add_pk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       cdm_add_pk(.x, cdm_table_2, c, check = TRUE),
       class = "not_unique_key"
     )
@@ -68,7 +68,7 @@ test_that("cdm_rm_pk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       cdm_add_pk(.x, cdm_table_1, a) %>%
         cdm_rm_pk(cdm_table_5),
       class = "table_not_in_dm"
@@ -76,7 +76,7 @@ test_that("cdm_rm_pk() works as intended?", {
   )
 
   # test if error is thrown if FK points to PK that is about to be removed
-  expect_cdm_error(
+  expect_dm_error(
     cdm_rm_pk(dm_for_filter, t4),
     "first_rm_fks"
   )
@@ -133,7 +133,7 @@ test_that("cdm_get_pk() works as intended?", {
 
   map(
     .x = cdm_test_obj_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       .x %>%
         cdm_add_pk(cdm_table_1, a) %>%
         cdm_add_pk(cdm_table_1, b),

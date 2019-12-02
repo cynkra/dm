@@ -1,6 +1,6 @@
 test_that("can access tables", {
   expect_identical(tbl(cdm_nycflights13(), "airlines"), nycflights13::airlines)
-  expect_cdm_error(
+  expect_dm_error(
     tbl(cdm_nycflights13(), "x"),
     class = "table_not_in_dm"
   )
@@ -25,17 +25,17 @@ test_that("creation of empty `dm` works", {
 })
 
 test_that("'copy_to.dm()' works", {
-  expect_cdm_error(
+  expect_dm_error(
     copy_to(dm_for_filter, letters[1:5], name = "letters"),
     "only_data_frames_supported"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     copy_to(dm_for_filter, list(mtcars, iris)),
     "only_data_frames_supported"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     copy_to(dm_for_filter, mtcars, overwrite = TRUE),
     "no_overwrite"
   )
@@ -45,7 +45,7 @@ test_that("'copy_to.dm()' works", {
     dm_add_tbl(dm_for_filter, car_table = mtcars)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     copy_to(dm_for_filter, mtcars, c("car_table", "another_table")),
     "one_name_for_copy_to"
   )
@@ -75,7 +75,7 @@ test_that("'copy_to.dm()' works", {
   )
 
   # throw error if duplicate table names and `repair = check_unique`
-  expect_cdm_error(
+  expect_dm_error(
     dm(mtcars) %>% copy_to(mtcars, repair = "check_unique"),
     "need_unique_names"
   )
@@ -139,7 +139,7 @@ test_that("validator is silent", {
 
 test_that("validator speaks up (postgres)", {
   skip_if_not("postgres" %in% src_names)
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>%
       mutate(data = if_else(table == "t1", list(dm_for_filter_src$postgres$t1), data))) %>%
       validate_dm(),
@@ -149,7 +149,7 @@ test_that("validator speaks up (postgres)", {
 
 test_that("validator speaks up (sqlite)", {
   skip_if_not("sqlite" %in% src_names)
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>%
       mutate(data = if_else(table == "t1", list(dm_for_filter_src$sqlite$t1), data))) %>%
       validate_dm(),
@@ -159,37 +159,37 @@ test_that("validator speaks up (sqlite)", {
 
 test_that("validator speaks up when something's wrong", {
   # key tracker of non-zoomed dm contains entries
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>% mutate(key_tracker_zoom = list(1))) %>% validate_dm(),
     "dm_invalid"
   )
 
   # zoom column of `zoomed_dm` is empty
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter %>% cdm_zoom_to_tbl(t1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 
   # key tracker of zoomed dm is empty
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter %>% cdm_zoom_to_tbl(t1)) %>% mutate(key_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 
   # table name is missing
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>% mutate(table = "")) %>% validate_dm(),
     "dm_invalid"
   )
 
   # zoom column of un-zoomed dm contains a (nonsensical) entry
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>% mutate(zoom = list(1))) %>% validate_dm(),
     "dm_invalid"
   )
 
   # zoom column of a zoomed dm contains a nonsensical entry
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_for_filter %>%
       cdm_zoom_to_tbl(t1) %>%
       dm_get_def() %>%
@@ -199,7 +199,7 @@ test_that("validator speaks up when something's wrong", {
   )
 
   # zoom column of a zoomed dm contains more than one entry
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_for_filter %>%
       cdm_zoom_to_tbl(t1) %>%
       dm_get_def() %>%
@@ -209,20 +209,20 @@ test_that("validator speaks up when something's wrong", {
   )
 
   # data column of un-zoomed dm contains non-tibble entries
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>% mutate(data = list(1, 2, 3, 4, 5, 6))) %>% validate_dm(),
     "dm_invalid"
   )
 
   # PK metadata wrong (colname doesn't exist)
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>% mutate(pks = if_else(table == "t1", vctrs::list_of(new_pk(list("z"))), pks))) %>%
       validate_dm(),
     "dm_invalid"
   )
 
   # FK metadata wrong (table doesn't exist)
-  expect_cdm_error(
+  expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>%
       mutate(fks = if_else(table == "t3", vctrs::list_of(new_fk(table = "t8", list("z"))), fks))) %>%
       validate_dm(),

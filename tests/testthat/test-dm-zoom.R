@@ -82,7 +82,7 @@ test_that("cdm_insert_zoomed_tbl() works", {
   )
 
   # test that an error is thrown if 'repair = check_unique' and duplicate table names
-  expect_cdm_error(
+  expect_dm_error(
     cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4, repair = "check_unique"),
     "need_unique_names"
   )

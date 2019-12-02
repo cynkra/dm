@@ -33,12 +33,12 @@ test_that("dm_copy_to() copies between sources", {
 # in combination with cdm_learn_from_db
 
 test_that("dm_copy_to() rejects overwrite and types arguments", {
-  expect_cdm_error(
+  expect_dm_error(
     dm_copy_to(src_df(env = new_environment()), dm_for_filter, overwrite = TRUE),
     class = "no_overwrite"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     dm_copy_to(src_df(env = new_environment()), dm_for_filter, types = character()),
     class = "no_types"
   )

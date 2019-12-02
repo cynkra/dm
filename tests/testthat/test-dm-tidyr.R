@@ -4,7 +4,7 @@ test_that("basic test: 'unite()'-methods work", {
     unite(t2, "new_col", c, e)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     unite(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -19,7 +19,7 @@ test_that("basic test: 'separate()'-methods work", {
     t2
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     separate(dm_for_filter),
     "only_possible_w_zoom"
   )

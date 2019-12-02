@@ -7,7 +7,7 @@ test_that("basic test: 'group_by()'-methods work", {
     group_by(t2, e)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     group_by(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -19,7 +19,7 @@ test_that("basic test: 'select()'-methods work", {
     select(t2, e, a = c)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     select(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -31,7 +31,7 @@ test_that("basic test: 'rename()'-methods work", {
     rename(t2, a = c)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     rename(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -43,7 +43,7 @@ test_that("basic test: 'mutate()'-methods work", {
     mutate(t2, d_2 = d * 2)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     mutate(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -56,7 +56,7 @@ test_that("basic test: 'transmute()'-methods work", {
     transmute(t2, d_2 = d * 2)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     transmute(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -68,7 +68,7 @@ test_that("basic test: 'ungroup()'-methods work", {
     group_by(t2, e) %>% ungroup()
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     ungroup(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -80,7 +80,7 @@ test_that("basic test: 'summarise()'-methods work", {
     summarise(t2, d_2 = mean(d))
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     summarise(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -92,7 +92,7 @@ test_that("basic test: 'filter()'-methods work", {
     filter(t2, d > mean(d))
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     filter(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -104,7 +104,7 @@ test_that("basic test: 'distinct()'-methods work", {
     distinct(t2, d_new = d)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     distinct(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -123,7 +123,7 @@ test_that("basic test: 'arrange()'-methods work", {
     arrange(group_by(t2, e), desc(e), .by_group = TRUE)
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     arrange(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -155,7 +155,7 @@ test_that("basic test: 'slice()'-methods work", {
     )
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     slice(dm_for_filter, 2),
     "only_possible_w_zoom"
   )
@@ -193,7 +193,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # fails if RHS not linked to zoomed table and no by is given
-  expect_cdm_error(
+  expect_dm_error(
     left_join(zoomed_dm, t4),
     "tables_not_neighbours"
   )
@@ -217,7 +217,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # a former FK-relation could not be tracked
-  expect_cdm_error(
+  expect_dm_error(
     zoomed_dm %>% mutate(e = e) %>% left_join(t3),
     "fk_not_tracked"
   )
@@ -246,32 +246,32 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
-  expect_cdm_error(
+  expect_dm_error(
     left_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     inner_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     full_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     semi_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     anti_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     right_join(dm_for_filter),
     "only_possible_w_zoom"
   )
@@ -310,7 +310,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # fails if RHS not linked to zoomed table and no by is given
-  expect_cdm_error(
+  expect_dm_error(
     left_join(zoomed_dm, t4),
     "tables_not_neighbours"
   )
@@ -334,7 +334,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # a former FK-relation could not be tracked
-  expect_cdm_error(
+  expect_dm_error(
     zoomed_dm %>% mutate(e = e) %>% left_join(t3),
     "fk_not_tracked"
   )
@@ -363,32 +363,32 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
-  expect_cdm_error(
+  expect_dm_error(
     left_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     inner_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     full_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     semi_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     anti_join(dm_for_filter),
     "only_possible_w_zoom"
   )
 
-  expect_cdm_error(
+  expect_dm_error(
     right_join(dm_for_filter),
     "only_possible_w_zoom"
   )

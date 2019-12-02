@@ -54,7 +54,7 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
   expect_not_pred(fc_t4, c("t6_2", "t3", "t2", "t1"))
 
   # fails when cycle is present
-  expect_cdm_error(
+  expect_dm_error(
     dm_for_filter_w_cycle %>% cdm_filter(t1, a > 3) %>% dm_get_filtered_table("t3"),
     "no_cycles"
   )
@@ -164,7 +164,7 @@ test_that("cdm_filter() returns original `dm` object when ellipsis empty", {
 test_that("cdm_filter() fails when no table name is provided", {
   map(
     dm_for_filter_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       cdm_filter(.x),
       class = "table_not_in_dm"
     )

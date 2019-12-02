@@ -75,7 +75,7 @@ test_that("table surgery functions fail in the expected ways?", {
 
   walk(
     data_ts_src,
-    ~ expect_cdm_error(
+    ~ expect_dm_error(
       decompose_table(., a, a, e, x),
       class = "dupl_new_id_col_name"
     )

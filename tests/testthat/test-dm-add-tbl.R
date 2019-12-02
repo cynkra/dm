@@ -50,7 +50,7 @@ test_that("dm_add_tbl() works", {
   )
 
   # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
-  expect_cdm_error(
+  expect_dm_error(
     dm_add_tbl(dm_for_filter, t1 = d1, repair = "check_unique"),
     "need_unique_names"
   )
@@ -75,7 +75,7 @@ test_that("dm_add_tbl() works", {
     d1_db <- d1_src[-1]
     walk(
       d1_db,
-      ~ expect_cdm_error(
+      ~ expect_dm_error(
         dm_add_tbl(dm_for_filter, .),
         "not_same_src"
       )
@@ -118,7 +118,7 @@ test_that("dm_rm_tbl() works", {
   )
 
   # fails when table name is wrong
-  expect_cdm_error(
+  expect_dm_error(
     dm_rm_tbl(dm_for_filter, t7),
     "w_message"
   )
