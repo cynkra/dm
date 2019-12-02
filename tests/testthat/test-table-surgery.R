@@ -46,7 +46,7 @@ test_that("reunite_parent_child() reunites parent and child nicely on all source
       data_ts_child_src, data_ts_parent_src, reunite_parent_child_data_ts_names
     ),
     ~ expect_known_output(
-      print(reunite_parent_child(..1, ..2, aef_id)),
+      print(reunite_parent_child(..1, ..2, aef_id) %>% arrange_all()),
       ..3
     )
   )
@@ -57,7 +57,7 @@ test_that("reunite_parent_child_from_list() reunites parent and child nicely on 
     list_of_data_ts_parent_and_child_src,
     reunite_parent_child_from_list_data_ts_names,
     ~ expect_known_output(
-      print(reunite_parent_child_from_list(.x, aef_id)),
+      print(reunite_parent_child_from_list(.x, aef_id) %>% arrange_all()),
       .y
     )
   )
