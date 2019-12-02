@@ -5,7 +5,7 @@
 \alias{dm_from_src}
 \alias{new_dm}
 \alias{validate_dm}
-\alias{cdm_get_src}
+\alias{dm_get_src}
 \alias{cdm_get_con}
 \alias{cdm_get_tables}
 \alias{cdm_get_filter}
@@ -21,7 +21,7 @@ new_dm(tables = list())
 
 validate_dm(x)
 
-cdm_get_src(x)
+dm_get_src(x)
 
 cdm_get_con(x)
 

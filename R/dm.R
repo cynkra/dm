@@ -256,7 +256,7 @@ debug_validate_dm <- function(dm) {
 #' @rdname dm
 #'
 #' @export
-cdm_get_src <- function(x) {
+dm_get_src <- function(x) {
   check_dm(x)
   tables <- cdm_get_tables(x)
   tbl_src(tables[1][[1]])

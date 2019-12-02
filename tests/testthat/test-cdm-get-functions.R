@@ -5,9 +5,11 @@ lookup <- tibble(
   class_con = c(NA_character_, "SQLiteConnection", "PqConnection", "Microsoft SQL Server")
 )
 
-test_that("dm_get_src() works", {
+test_that("cdm_get_src() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+
   expect_cdm_error(
-    dm_get_src(1),
+    cdm_get_src(1),
     class = "is_not_dm"
   )
 
