@@ -434,9 +434,9 @@ nycflights13_weather_flights_link <-
   select(origin_slot_id, everything(), -time_hour_fmt) %>%
   cdm_update_zoomed_tbl()
 
-# `cdm_enum_fk_candidates()` of a `dm` gives info
+# `dm_enum_fk_candidates()` of a `dm` gives info
 # about potential FK columns from one table to another
-cdm_enum_fk_candidates(nycflights13_weather_flights_link, flights, weather)
+dm_enum_fk_candidates(nycflights13_weather_flights_link, flights, weather)
 
 # well, it's almost perfect, let's add the FK anyway...
 

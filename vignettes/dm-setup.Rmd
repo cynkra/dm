@@ -77,7 +77,7 @@ cdm_get_all_pks(flights_dm_only_pks)
 ## Foreign Keys
 
 ```{r}
-cdm_enum_fk_candidates(
+dm_enum_fk_candidates(
   dm = flights_dm_only_pks,
   table = flights,
   ref_table = airlines

@@ -171,7 +171,7 @@ test_that("cdm_add_pk() and cdm_add_fk() work", {
   )
 })
 
-test_that("cdm_has_fk() and cdm_get_fk() work", {
+test_that("other FK functions work", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_has_fk(dm_for_filter, t2, t1),
@@ -187,12 +187,20 @@ test_that("cdm_has_fk() and cdm_get_fk() work", {
     cdm_get_fk(dm_for_filter, t2, t1),
     dm_get_fk(dm_for_filter, t2, t1)
   )
-})
 
-test_that("cdm_has_fk() and cdm_get_fk() work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_get_all_fks(dm_for_filter),
     dm_get_all_fks(dm_for_filter)
   )
+
+  expect_equivalent_dm(
+    cdm_rm_fk(dm_for_filter, t2, d, t1),
+    dm_rm_fk(dm_for_filter, t2, d, t1)
+  )
+
+  expect_identical(
+    cdm_enum_fk_candidates(dm_for_filter, t2, t1),
+    dm_enum_fk_candidates(dm_for_filter, t2, t1)
+  )
+
 })

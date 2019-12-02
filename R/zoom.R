@@ -197,7 +197,7 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
     dm <- reduce2(
       old_out_keys$column,
       old_out_keys$table,
-      ~ cdm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3),
+      ~ dm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3),
       .init = dm
     )
   }

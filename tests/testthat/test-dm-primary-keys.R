@@ -84,14 +84,14 @@ test_that("cdm_rm_pk() works as intended?", {
   # test logic if argument `rm_referencing_fks = TRUE`
   expect_equivalent_dm(
     cdm_rm_pk(dm_for_filter, t4, rm_referencing_fks = TRUE),
-    cdm_rm_fk(dm_for_filter, t5, l, t4) %>%
+    dm_rm_fk(dm_for_filter, t5, l, t4) %>%
       cdm_rm_pk(t4)
   )
 
   expect_equivalent_dm(
     cdm_rm_pk(dm_for_filter, t3, rm_referencing_fks = TRUE),
-    cdm_rm_fk(dm_for_filter, t4, j, t3) %>%
-      cdm_rm_fk(t2, e, t3) %>%
+    dm_rm_fk(dm_for_filter, t4, j, t3) %>%
+      dm_rm_fk(t2, e, t3) %>%
       cdm_rm_pk(t3)
   )
 })

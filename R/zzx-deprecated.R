@@ -161,3 +161,13 @@ cdm_get_fk <- new_cdm_forward_2(dm_get_fk)
 #' @keywords internal
 #' @export
 cdm_get_all_fks <- new_cdm_forward(dm_get_all_fks)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_rm_fk <- new_cdm_forward_2(dm_rm_fk)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_enum_fk_candidates <- new_cdm_forward_2(dm_enum_fk_candidates)

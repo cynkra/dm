@@ -1,8 +1,8 @@
 test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
   def <-
     dm_for_filter %>%
-    cdm_rm_fk(t5, m, t6) %>%
-    cdm_rm_fk(t2, d, t1) %>%
+    dm_rm_fk(t5, m, t6) %>%
+    dm_rm_fk(t2, d, t1) %>%
     dm_get_def()
 
   dm_for_filter_smaller <- new_dm3(def[def$table %in% c("t1", "t6"), ])

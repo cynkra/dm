@@ -119,7 +119,7 @@ dm_get_all_fks <- nse(function(dm) {
 #' @family foreign key functions
 #'
 #' @export
-cdm_rm_fk <- function(dm, table, column, ref_table) {
+dm_rm_fk <- function(dm, table, column, ref_table) {
   table <- as_name(ensym(table))
   ref_table <- as_name(ensym(ref_table))
 
@@ -169,7 +169,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' @param table The table whose columns should be tested for suitability as foreign keys.
 #' @param ref_table A table with a primary key.
 #'
-#' @details `cdm_enum_fk_candidates()` first checks if `ref_table` has a primary key set,
+#' @details `dm_enum_fk_candidates()` first checks if `ref_table` has a primary key set,
 #' if not, an error is thrown.
 #'
 #' If `ref_table` does have a primary key, then a join operation will be tried using
@@ -189,9 +189,9 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' @family foreign key functions
 #'
 #' @examples
-#' cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
+#' dm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
 #' @export
-cdm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
+dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
@@ -209,9 +209,9 @@ cdm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk)
 })
 
-#' @details `enum_fk_candidates()` works like `cdm_enum_fk_candidates()` with the zoomed table as `table`.
+#' @details `enum_fk_candidates()` works like `dm_enum_fk_candidates()` with the zoomed table as `table`.
 #'
-#' @rdname cdm_enum_fk_candidates
+#' @rdname dm_enum_fk_candidates
 #' @param zoomed_dm A `dm` with a zoomed table.
 #' @export
 enum_fk_candidates <- function(zoomed_dm, ref_table) {

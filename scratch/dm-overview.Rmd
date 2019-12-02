@@ -130,8 +130,8 @@ Useful functions for managing foreign key relations are:
 1. `dm_add_fk()`
 2. `dm_has_fk()`
 3. `dm_get_fk()`
-4. `cdm_rm_fk()`
-5. `cdm_enum_fk_candidates()`
+4. `dm_rm_fk()`
+5. `dm_enum_fk_candidates()`
 
 Now it gets (even more) interesting: we want to define relations between different tables.
 With the function `dm_add_fk()` you can define, which column of which table points to another table's column.
@@ -169,22 +169,22 @@ flights_dm_with_fk %>% dm_get_fk(flights, planes)
 flights_dm_with_fk %>% dm_get_fk(flights, airports)
 ```
 
-Remove foreign key relations with `cdm_rm_fk()` (parameter `column = NULL` means removal of all relations):
+Remove foreign key relations with `dm_rm_fk()` (parameter `column = NULL` means removal of all relations):
 ```{r error=TRUE}
 flights_dm_with_fk %>% 
-  cdm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
+  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
   dm_get_fk(flights, airports)
 flights_dm_with_fk %>% 
-  cdm_rm_fk(flights, origin, airports) %>% 
+  dm_rm_fk(flights, origin, airports) %>% 
   dm_get_fk(flights, airports)
 flights_dm_with_fk %>% 
-  cdm_rm_fk(flights, NULL, airports) %>% 
+  dm_rm_fk(flights, NULL, airports) %>% 
   dm_get_fk(flights, airports)
 ```
 
-Another function for getting to know your data better (cf. `cdm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `cdm_enum_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
+Another function for getting to know your data better (cf. `cdm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `dm_enum_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
 ```{r}
-cdm_enum_fk_candidates(flights_dm_with_key, weather, airports)
+dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
 ```
 
 ## Visualising the data model
