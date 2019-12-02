@@ -40,7 +40,7 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
     code <- glue_collapse(c(code, code_select), sep = " %>%\n")
   }
   # adding code for establishing PKs
-  tbl_pks <- cdm_get_all_pks(dm) %>%
+  tbl_pks <- dm_get_all_pks(dm) %>%
     mutate(code = glue("{tab}dm_add_pk({table}, {pk_col})"))
   code_pks <- if (nrow(tbl_pks)) summarize(tbl_pks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 

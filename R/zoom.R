@@ -155,7 +155,7 @@ cdm_zoom_out <- function(dm) {
 update_zoomed_pk <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  orig_pk <- cdm_get_pk(dm, !!old_tbl_name)
+  orig_pk <- dm_get_pk(dm, !!old_tbl_name)
   upd_pk <- if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
     new_pk(list(names(tracked_keys[tracked_keys == orig_pk])))
   } else {
@@ -167,7 +167,7 @@ update_zoomed_pk <- function(dm) {
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  orig_pk <- cdm_get_pk(dm, !!old_tbl_name)
+  orig_pk <- dm_get_pk(dm, !!old_tbl_name)
   if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
     filter(dm_get_def(dm), table == old_tbl_name) %>% pull(fks)
   } else {

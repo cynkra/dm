@@ -132,7 +132,7 @@ dm_set_key_constraints <- nse(function(dm) {
   if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
   db_table_names <- get_db_table_names(dm)
 
-  tables_w_pk <- cdm_get_all_pks(dm)
+  tables_w_pk <- dm_get_all_pks(dm)
 
   fk_info <-
     dm_get_all_fks(dm) %>%

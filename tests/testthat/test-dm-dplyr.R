@@ -408,7 +408,7 @@ test_that("key tracking works", {
   # rename()
 
   expect_identical(
-    zoomed_grouped_out_dm %>% rename(c_new = c) %>% cdm_update_zoomed_tbl() %>% cdm_get_pk(t2),
+    zoomed_grouped_out_dm %>% rename(c_new = c) %>% cdm_update_zoomed_tbl() %>% dm_get_pk(t2),
     "c_new"
   )
 

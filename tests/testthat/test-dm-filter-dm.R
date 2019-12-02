@@ -142,7 +142,7 @@ test_that("dm_filter() works without primary keys", {
     function(dm_for_filter) {
       expect_error(
         dm_for_filter %>%
-          cdm_rm_pk(t5, rm_referencing_fks = TRUE) %>%
+          dm_rm_pk(t5, rm_referencing_fks = TRUE) %>%
           dm_filter(t5, l == "c") %>%
           compute(),
         NA

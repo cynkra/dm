@@ -32,6 +32,6 @@ Rename the columns of your \code{\link{dm}} using syntax that is similar to \cod
 If key columns are renamed, then the meta-information of the \code{dm} is updated accordingly.
 }
 \examples{
-cdm_nycflights13() \%>\%
+dm_nycflights13() \%>\%
   cdm_rename(airports, code = faa, altitude = alt)
 }

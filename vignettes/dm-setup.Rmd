@@ -49,10 +49,10 @@ Even though you now have a new `dm` object that contains all your data, some key
 
 ## Primary Keys
 
-`dm` offers `cdm_enum_pk_candidates()` to identify primary keys and `dm_add_pk()` to add them. 
+`dm` offers `dm_enum_pk_candidates()` to identify primary keys and `dm_add_pk()` to add them. 
 
 ```{r}
-cdm_enum_pk_candidates(
+dm_enum_pk_candidates(
   dm = flights_dm_no_keys,
   table = planes
 )
@@ -68,10 +68,10 @@ flights_dm_only_pks <- flights_dm_no_keys %>%
 flights_dm_only_pks
 ```
 
-To review the primary keys after setting them, call `cdm_get_all_pks()`.
+To review the primary keys after setting them, call `dm_get_all_pks()`.
 
 ```{r}
-cdm_get_all_pks(flights_dm_only_pks)
+dm_get_all_pks(flights_dm_only_pks)
 ```
 
 ## Foreign Keys
@@ -102,7 +102,7 @@ flights_dm_all_keys
 To retrieve your keys later on, use `dm_get_all_fks()`, or `dm_get_fk()` for its singular version. 
 
 ```{r}
-cdm_get_all_pks(flights_dm_all_keys)
+dm_get_all_pks(flights_dm_all_keys)
 ```
 
 Voilà, here's your `dm` object that you can work with:

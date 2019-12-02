@@ -84,10 +84,10 @@ But how can we use dm-functions to manage primary keys of the tables in a `dm` o
 Useful functions for managing primary key settings are:
 
 1. `dm_add_pk()`
-2. `cdm_has_pk()`
-3. `cdm_get_pk()`
-4. `cdm_rm_pk()`
-5. `cdm_enum_pk_candidates()`
+2. `dm_has_pk()`
+3. `dm_get_pk()`
+4. `dm_rm_pk()`
+5. `dm_enum_pk_candidates()`
 
 As of yet `dm` objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
 If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
@@ -96,31 +96,31 @@ By default `dm_add_pk()` checks if the column of the table given by the user is 
 Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`.
 
 ```{r}
-cdm_has_pk(flights_dm, airports)
+dm_has_pk(flights_dm, airports)
 flights_dm_with_key <- dm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
 Still looks exactly the same as before... let's check:
 ```{r}
-cdm_has_pk(flights_dm_with_key, airports)
+dm_has_pk(flights_dm_with_key, airports)
 ```
 Get the name of the column that is marked as primary key of the table:
 ```{r}
-cdm_get_pk(flights_dm_with_key, airports)
+dm_get_pk(flights_dm_with_key, airports)
 ```
 Remove a primary key by:
 ```{r}
-cdm_rm_pk(flights_dm_with_key, airports) %>% 
-  cdm_has_pk(airports)
+dm_rm_pk(flights_dm_with_key, airports) %>% 
+  dm_has_pk(airports)
 ```
 
-If you still need to get to know your data better, and it is already available in the form of a `dm` object, you can use the function `cdm_enum_pk_candidates()` in order to get information, which columns of a table are unique keys:
+If you still need to get to know your data better, and it is already available in the form of a `dm` object, you can use the function `dm_enum_pk_candidates()` in order to get information, which columns of a table are unique keys:
 ```{r}
-cdm_enum_pk_candidates(flights_dm_with_key, airports)
+dm_enum_pk_candidates(flights_dm_with_key, airports)
 ```
 Table `flights` does not have any one-column primary key candidates:
 ```{r}
-cdm_enum_pk_candidates(flights_dm_with_key, flights) %>% count(candidate)
+dm_enum_pk_candidates(flights_dm_with_key, flights) %>% count(candidate)
 ```
 
 ## Foreign keys
@@ -182,7 +182,7 @@ flights_dm_with_fk %>%
   dm_get_fk(flights, airports)
 ```
 
-Another function for getting to know your data better (cf. `cdm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `dm_enum_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
+Another function for getting to know your data better (cf. `dm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `dm_enum_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:
 ```{r}
 dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
 ```

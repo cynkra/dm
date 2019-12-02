@@ -201,3 +201,28 @@ cdm_nycflights13 <- new_cdm_forward(dm_nycflights13)
 #' @keywords internal
 #' @export
 cdm_paste <- new_cdm_forward(dm_paste)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_has_pk <- new_cdm_forward_2(dm_has_pk)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_get_pk <- new_cdm_forward_2(dm_get_pk)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_get_all_pks <- new_cdm_forward(dm_get_all_pks)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_rm_pk <- new_cdm_forward_2(dm_rm_pk)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_enum_pk_candidates <- new_cdm_forward_2(dm_enum_pk_candidates)

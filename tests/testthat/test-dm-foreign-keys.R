@@ -15,7 +15,7 @@ test_that("dm_add_fk() works as intended?", {
       .x %>%
         dm_add_pk(cdm_table_4, c) %>%
         dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
-        cdm_has_pk(cdm_table_4)
+        dm_has_pk(cdm_table_4)
     )
   )
 })

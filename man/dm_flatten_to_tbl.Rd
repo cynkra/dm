@@ -70,7 +70,7 @@ Since \code{join = nest_join()} does not make sense in this direction (LHS = chi
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 }
 \examples{
-cdm_nycflights13() \%>\%
+dm_nycflights13() \%>\%
   cdm_select_tbl(-weather) \%>\%
   dm_flatten_to_tbl(flights)
 }

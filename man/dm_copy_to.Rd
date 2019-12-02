@@ -65,6 +65,6 @@ iris_dm <- dm_copy_to(
 }
 \seealso{
 Other DB interaction functions: 
-\code{\link{cdm_learn_from_db}()}
+\code{\link{dm_learn_from_db}()}
 }
 \concept{DB interaction functions}

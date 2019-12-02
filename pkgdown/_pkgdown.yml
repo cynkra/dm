@@ -20,11 +20,11 @@ reference:
 - title: Primary keys
   contents:
   - dm_add_pk
-  - cdm_has_pk
-  - cdm_get_pk
-  - cdm_get_all_pks
-  - cdm_rm_pk
-  - cdm_enum_pk_candidates
+  - dm_has_pk
+  - dm_get_pk
+  - dm_get_all_pks
+  - dm_rm_pk
+  - dm_enum_pk_candidates
 
 - title: Foreign keys
   contents:

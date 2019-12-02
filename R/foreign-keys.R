@@ -21,7 +21,7 @@ dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   ref_table_name <- as_name(ensym(ref_table))
   check_correct_input(dm, ref_table_name)
 
-  ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
+  ref_column_name <- dm_get_pk(dm, !!ref_table_name)
   if (is_empty(ref_column_name)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
@@ -201,7 +201,7 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
 
-  ref_tbl_pk <- cdm_get_pk(dm, !!ref_table_name)
+  ref_tbl_pk <- dm_get_pk(dm, !!ref_table_name)
 
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)
@@ -222,7 +222,7 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
   ref_table_name <- as_string(ensym(ref_table))
   check_correct_input(zoomed_dm, ref_table_name)
 
-  ref_tbl_pk <- cdm_get_pk(zoomed_dm, !!ref_table_name)
+  ref_tbl_pk <- dm_get_pk(zoomed_dm, !!ref_table_name)
 
   ref_tbl <- dm_get_filtered_table(zoomed_dm, ref_table_name)
   enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk)

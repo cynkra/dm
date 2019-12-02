@@ -265,3 +265,31 @@ test_that("cdm_paste() works", {
     fixed = TRUE
   )
 })
+
+test_that("other PK functions work", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_has_pk(dm_for_filter, t1),
+    dm_has_pk(dm_for_filter, t1)
+  )
+
+  expect_identical(
+    cdm_get_pk(dm_for_filter, t1),
+    dm_get_pk(dm_for_filter, t1)
+  )
+
+  expect_identical(
+    cdm_get_all_pks(dm_for_filter),
+    dm_get_all_pks(dm_for_filter)
+  )
+
+  expect_equivalent_dm(
+    cdm_rm_pk(dm_for_filter, t2),
+    dm_rm_pk(dm_for_filter, t2)
+  )
+
+  expect_identical(
+    cdm_enum_pk_candidates(dm_for_disambiguate, iris_1),
+    dm_enum_pk_candidates(dm_for_disambiguate, iris_1)
+  )
+})

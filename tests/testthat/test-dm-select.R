@@ -1,7 +1,7 @@
 test_that("cdm_rename() works for replacing pk", {
   expect_identical(
     cdm_rename(dm_for_filter, t3, new_f = f) %>%
-      cdm_get_all_pks(),
+      dm_get_all_pks(),
     tribble(
       ~table, ~pk_col,
       "t1",       "a",
@@ -32,7 +32,7 @@ test_that("cdm_rename() works for replacing fks", {
 test_that("cdm_select() works for replacing pk", {
   expect_identical(
     cdm_select(dm_for_filter, t3, new_f = f) %>%
-      cdm_get_all_pks(),
+      dm_get_all_pks(),
     tribble(
       ~table, ~pk_col,
       "t1",       "a",
@@ -48,8 +48,8 @@ test_that("cdm_select() works for replacing pk", {
 test_that("cdm_select() keeps pks up to date", {
   expect_identical(
     cdm_select(dm_for_filter, t3, new_f = f) %>%
-      cdm_get_all_pks(),
-    cdm_get_all_pks(dm_for_filter) %>%
+      dm_get_all_pks(),
+    dm_get_all_pks(dm_for_filter) %>%
       mutate(pk_col = if_else(table == "t3", "new_f", pk_col))
   )
 })

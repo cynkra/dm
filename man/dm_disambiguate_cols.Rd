@@ -26,5 +26,5 @@ because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.
 }
 \examples{
-dm_disambiguate_cols(cdm_nycflights13())
+dm_disambiguate_cols(dm_nycflights13())
 }

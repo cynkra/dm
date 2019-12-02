@@ -76,9 +76,9 @@ as a tibble.
 }
 \examples{
 library(dplyr)
-dm_draw(cdm_nycflights13())
-dm_draw(cdm_nycflights13(cycle = TRUE))
-cdm_nycflights13(color = FALSE) \%>\%
+dm_draw(dm_nycflights13())
+dm_draw(dm_nycflights13(cycle = TRUE))
+dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
     airports = ,
     airlines = ,
@@ -92,7 +92,7 @@ new_colors <- c(
   airports = "yellow", airlines = "yellow", planes = "yellow",
   weather = "dark_blue"
 )
-cdm_nycflights13(color = FALSE) \%>\%
+dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(!!!new_colors) \%>\%
   dm_draw()
 }

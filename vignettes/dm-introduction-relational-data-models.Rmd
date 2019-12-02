@@ -116,19 +116,19 @@ A primary key can be either an existing column that satifies the condition of be
 
 Example: In the `airlines` table of `nycflights13` the column `carrier` is the primary key.
 
-You can get all primary keys in a `dm` by calling `cdm_get_all_pks()`:
+You can get all primary keys in a `dm` by calling `dm_get_all_pks()`:
 
 ```{r}
 dm %>%
-  cdm_get_all_pks()
+  dm_get_all_pks()
 ```
 
-If an attribute is suitable as a primary key, it can be checked with `cdm_enum_pk_candidates()`.
+If an attribute is suitable as a primary key, it can be checked with `dm_enum_pk_candidates()`.
 Which columns of the `airlines` table can serve as a primary key?
 
 ```{r}
 dm %>% 
-  cdm_enum_pk_candidates(airports)
+  dm_enum_pk_candidates(airports)
 ```
 
 Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).

@@ -40,7 +40,7 @@ build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
     dest_con <- con_from_src_or_con(dest)
 
     pks <-
-      cdm_get_all_pks(dm) %>%
+      dm_get_all_pks(dm) %>%
       transmute(source_name = table, column = pk_col, pk = TRUE)
 
     fks <-

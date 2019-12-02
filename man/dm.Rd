@@ -100,20 +100,20 @@ dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 new_dm(list(iris = iris, mtcars = mtcars))
 as_dm(list(iris = iris, mtcars = mtcars))
 
-cdm_nycflights13() \%>\% tbl("airports")
-cdm_nycflights13() \%>\% src_tbls()
-cdm_nycflights13() \%>\% dm_get_src()
-cdm_nycflights13() \%>\% dm_get_tables()
+dm_nycflights13() \%>\% tbl("airports")
+dm_nycflights13() \%>\% src_tbls()
+dm_nycflights13() \%>\% dm_get_src()
+dm_nycflights13() \%>\% dm_get_tables()
 
-cdm_nycflights13() \%>\%
+dm_nycflights13() \%>\%
   cdm_rename_tbl(ap = airports)
-cdm_nycflights13() \%>\%
+dm_nycflights13() \%>\%
   cdm_rename_tbl(ap = airports, fl = flights)
 }
 \seealso{
 \itemize{
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} add primary and foreign keys
-\item \code{\link[=dm_copy_to]{dm_copy_to()}} and \code{\link[=cdm_learn_from_db]{cdm_learn_from_db()}} for DB interaction
+\item \code{\link[=dm_copy_to]{dm_copy_to()}} and \code{\link[=dm_learn_from_db]{dm_learn_from_db()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
 \item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
@@ -121,6 +121,6 @@ cdm_nycflights13() \%>\%
 \item \code{\link[=decompose_table]{decompose_table()}} as one example of the table surgery family
 \item \code{\link[=check_key]{check_key()}} and \code{\link[=check_if_subset]{check_if_subset()}} for checking for key properties
 \item \code{\link[=check_cardinality]{check_cardinality()}} for checking the cardinality of the relation between two tables
-\item \code{\link[=cdm_nycflights13]{cdm_nycflights13()}}  for creating an example \code{dm} object
+\item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
 }
 }

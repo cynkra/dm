@@ -25,6 +25,20 @@
 \alias{cdm_add_fk}
 \alias{cdm_has_fk}
 \alias{cdm_get_fk}
+\alias{cdm_get_all_fks}
+\alias{cdm_rm_fk}
+\alias{cdm_enum_fk_candidates}
+\alias{cdm_is_referenced}
+\alias{cdm_get_referencing_tables}
+\alias{cdm_learn_from_db}
+\alias{cdm_check_constraints}
+\alias{cdm_nycflights13}
+\alias{cdm_paste}
+\alias{cdm_has_pk}
+\alias{cdm_get_pk}
+\alias{cdm_get_all_pks}
+\alias{cdm_rm_pk}
+\alias{cdm_enum_pk_candidates}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -86,15 +100,43 @@ cdm_join_to_tbl(dm, table_1, table_2, join = left_join)
 
 cdm_apply_filters(dm)
 
-cdm_apply_filters_to_tbl(dm = dm, table = table)
+cdm_apply_filters_to_tbl(dm, table)
 
 cdm_add_pk(dm, table, column, check = FALSE, force = FALSE)
 
 cdm_add_fk(dm, table, column, ref_table, check = FALSE)
 
-cdm_has_fk(dm = dm, table = table, ref_table = ref_table)
+cdm_has_fk(dm, table, ref_table)
 
-cdm_get_fk(dm = dm, table = table, ref_table = ref_table)
+cdm_get_fk(dm, table, ref_table)
+
+cdm_get_all_fks(dm)
+
+cdm_rm_fk(dm, table, column, ref_table)
+
+cdm_enum_fk_candidates(dm, table, ref_table)
+
+cdm_is_referenced(dm, table)
+
+cdm_get_referencing_tables(dm, table)
+
+cdm_learn_from_db(dest)
+
+cdm_check_constraints(dm)
+
+cdm_nycflights13(cycle = FALSE, color = TRUE)
+
+cdm_paste(dm, select = FALSE, tab_width = 2)
+
+cdm_has_pk(dm, table)
+
+cdm_get_pk(dm, table)
+
+cdm_get_all_pks(dm)
+
+cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
+
+cdm_enum_pk_candidates(dm, table)
 }
 \description{
 These functions are deprecated in favor of better alternatives.
