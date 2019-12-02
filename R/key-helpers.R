@@ -18,8 +18,8 @@
 #'
 #' @export
 #' @examples
-#' cdm_check_constraints(cdm_nycflights13())
-cdm_check_constraints <- function(dm) {
+#' dm_check_constraints(cdm_nycflights13())
+dm_check_constraints <- function(dm) {
   pk_results <- check_pk_constraints(dm)
   fk_results <- check_fk_constraints(dm)
   bind_rows(

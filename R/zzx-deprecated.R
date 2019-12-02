@@ -187,3 +187,7 @@ cdm_get_referencing_tables <- new_cdm_forward_2(dm_get_referencing_tables)
 #' @export
 cdm_learn_from_db <- new_cdm_forward(dm_learn_from_db)
 
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_check_constraints <- new_cdm_forward(dm_check_constraints)
