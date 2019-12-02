@@ -77,10 +77,10 @@ flights_dm
 ```
 
 This fairly verbose output shows the data and metadata of a `dm` object.
-These components can be accessed with `cdm_get_src()` and `cdm_get_tables()`.
+These components can be accessed with `dm_get_src()` and `cdm_get_tables()`.
 
 ```{r}
-cdm_get_src(flights_dm)
+dm_get_src(flights_dm)
 cdm_get_filter(flights_dm)
 cdm_get_all_pks(flights_dm)
 cdm_get_all_fks(flights_dm)

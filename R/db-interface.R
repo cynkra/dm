@@ -46,7 +46,7 @@ cdm_copy_to <- function(dest, dm, ...,
   # for the time being, we will be focusing on MSSQL
   # we expect the src (dest) to already point to the correct schema
   # we want to
-  #   1. change `cdm_get_src(dm)` to `dest`
+  #   1. change `dm_get_src(dm)` to `dest`
   #   2. copy the tables to `dest`
   #   3. implement the key situation within our `dm` on the DB
 
@@ -142,7 +142,7 @@ cdm_set_key_constraints <- nse(function(dm) {
     left_join(db_table_names, by = c("parent_table" = "table_name")) %>%
     rename(db_parent_table = remote_name)
 
-  con <- con_from_src_or_con(cdm_get_src(dm))
+  con <- con_from_src_or_con(dm_get_src(dm))
   queries <- create_queries(con, fk_info)
   walk(queries, ~ dbExecute(con, .))
 

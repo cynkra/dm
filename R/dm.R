@@ -38,7 +38,7 @@
 #'
 #' cdm_nycflights13() %>% tbl("airports")
 #' cdm_nycflights13() %>% src_tbls()
-#' cdm_nycflights13() %>% cdm_get_src()
+#' cdm_nycflights13() %>% dm_get_src()
 #' cdm_nycflights13() %>% cdm_get_tables()
 #'
 #' cdm_nycflights13() %>%
@@ -248,7 +248,7 @@ debug_validate_dm <- function(dm) {
 
 #' Get source
 #'
-#' `cdm_get_src()` returns the \pkg{dplyr} source for a `dm` object.
+#' `dm_get_src()` returns the \pkg{dplyr} source for a `dm` object.
 #' All tables in a `dm` object must be from the same source,
 #' i.e. either they are all data frames, or they all are stored on the same
 #' database.
@@ -272,7 +272,7 @@ dm_get_src <- function(x) {
 #'
 #' @export
 cdm_get_con <- function(x) {
-  src <- cdm_get_src(x)
+  src <- dm_get_src(x)
   if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
   src$con
 }
@@ -430,7 +430,7 @@ format.dm <- function(x, ...) {
 #' @import cli
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
-  src <- cdm_get_src(x)
+  src <- dm_get_src(x)
 
   db_info <- strsplit(format(src), "\n")[[1]][[1]]
 
@@ -623,7 +623,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
   # src: if `df` on a different src:
   # if `df_list` is on DB and `dest` is local, collect `df_list`
   # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
-  df <- copy_to(cdm_get_src(dest), df, unique_db_table_name(name), temporary = temporary, ...)
+  df <- copy_to(dm_get_src(dest), df, unique_db_table_name(name), temporary = temporary, ...)
   # FIXME: should we allow `overwrite` argument?
   names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
   # rename old tables with potentially new names
@@ -671,7 +671,7 @@ all_same_source <- function(tables) {
   is.null(detect(tables[-1], ~ !same_src(., first_table)))
 }
 
-# creates an empty `dm`-object, `src` is defined by implementation of `cdm_get_src()`.
+# creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src()`.
 empty_dm <- function() {
   new_dm3(
     tibble(
