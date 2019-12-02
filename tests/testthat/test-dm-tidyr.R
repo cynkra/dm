@@ -27,35 +27,35 @@ test_that("basic test: 'separate()'-methods work", {
 
 test_that("key tracking works", {
   expect_identical(
-    unite(zoomed_dm, "new_col", c, e) %>% cdm_update_zoomed_tbl() %>% get_all_keys("t2"),
+    unite(zoomed_dm, "new_col", c, e) %>% dm_update_zoomed_tbl() %>% get_all_keys("t2"),
     set_names("d")
   )
 
   expect_identical(
     unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>%
-      cdm_update_zoomed_tbl() %>%
+      dm_update_zoomed_tbl() %>%
       get_all_keys("t2"),
     set_names(c("c", "d", "e"))
   )
 
   expect_identical(
     unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>%
-      cdm_update_zoomed_tbl() %>%
+      dm_update_zoomed_tbl() %>%
       dm_add_fk(t2, new_col, t6) %>%
-      cdm_zoom_to_tbl(t2) %>%
+      dm_zoom_to_tbl(t2) %>%
       separate(new_col, c("c", "e"), remove = TRUE) %>%
-      cdm_update_zoomed_tbl() %>%
+      dm_update_zoomed_tbl() %>%
       get_all_keys("t2"),
     set_names(c("c", "d", "e"))
   )
 
   expect_identical(
     unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>%
-      cdm_update_zoomed_tbl() %>%
+      dm_update_zoomed_tbl() %>%
       dm_add_fk(t2, new_col, t6) %>%
-      cdm_zoom_to_tbl(t2) %>%
+      dm_zoom_to_tbl(t2) %>%
       separate(new_col, c("c", "e"), remove = FALSE) %>%
-      cdm_update_zoomed_tbl() %>%
+      dm_update_zoomed_tbl() %>%
       get_all_keys("t2"),
     set_names(c("c", "d", "e", "new_col"))
   )

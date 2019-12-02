@@ -115,12 +115,12 @@ test_that("'compute.dm()' computes tables on DB", {
 
 test_that("some methods/functions for `zoomed_dm` work", {
   expect_identical(
-    colnames(cdm_zoom_to_tbl(dm_for_filter, t1)),
+    colnames(dm_zoom_to_tbl(dm_for_filter, t1)),
     c("a", "b")
   )
 
   expect_identical(
-    dim(cdm_zoom_to_tbl(dm_for_filter, t1)),
+    dim(dm_zoom_to_tbl(dm_for_filter, t1)),
     c(10L, 2L)
   )
 })
@@ -166,13 +166,13 @@ test_that("validator speaks up when something's wrong", {
 
   # zoom column of `zoomed_dm` is empty
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter %>% cdm_zoom_to_tbl(t1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
+    new_dm3(dm_get_def(dm_for_filter %>% dm_zoom_to_tbl(t1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 
   # key tracker of zoomed dm is empty
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter %>% cdm_zoom_to_tbl(t1)) %>% mutate(key_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
+    new_dm3(dm_get_def(dm_for_filter %>% dm_zoom_to_tbl(t1)) %>% mutate(key_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 
@@ -191,7 +191,7 @@ test_that("validator speaks up when something's wrong", {
   # zoom column of a zoomed dm contains a nonsensical entry
   expect_dm_error(
     new_dm3(dm_for_filter %>%
-      cdm_zoom_to_tbl(t1) %>%
+      dm_zoom_to_tbl(t1) %>%
       dm_get_def() %>%
       mutate(zoom = if_else(table == "t1", list(1), NULL)), zoomed = TRUE) %>%
       validate_dm(),
@@ -201,7 +201,7 @@ test_that("validator speaks up when something's wrong", {
   # zoom column of a zoomed dm contains more than one entry
   expect_dm_error(
     new_dm3(dm_for_filter %>%
-      cdm_zoom_to_tbl(t1) %>%
+      dm_zoom_to_tbl(t1) %>%
       dm_get_def() %>%
       mutate(zoom = list(t1)), zoomed = TRUE) %>%
       validate_dm(),

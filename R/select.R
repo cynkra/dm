@@ -26,9 +26,9 @@
 dm_rename <- function(dm, table, ...) {
   table_name <- as_string(ensym(table))
 
-  cdm_zoom_to_tbl(dm, !!table_name) %>%
+  dm_zoom_to_tbl(dm, !!table_name) %>%
     rename(...) %>%
-    cdm_update_zoomed_tbl()
+    dm_update_zoomed_tbl()
 }
 
 #' Select and/or rename one or more columns of a [`dm`] table
@@ -47,9 +47,9 @@ dm_rename <- function(dm, table, ...) {
 dm_select <- function(dm, table, ...) {
   table_name <- as_string(ensym(table))
 
-  cdm_zoom_to_tbl(dm, !!table_name) %>%
+  dm_zoom_to_tbl(dm, !!table_name) %>%
     select(...) %>%
-    cdm_update_zoomed_tbl()
+    dm_update_zoomed_tbl()
 }
 
 get_all_keys <- function(dm, table_name) {

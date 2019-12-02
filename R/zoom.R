@@ -7,17 +7,17 @@
 #' @inheritParams dm_add_pk
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @details `cdm_zoom_to_tbl()`: zooms to the given table.
+#' @details `dm_zoom_to_tbl()`: zooms to the given table.
 #'
-#' `cdm_update_zoomed_tbl()`: overwrites the originally zoomed table with the manipulated table.
+#' `dm_update_zoomed_tbl()`: overwrites the originally zoomed table with the manipulated table.
 #' The filter conditions for the zoomed table are added to the original filter conditions.
 #'
-#' `cdm_insert_zoomed_tbl()`: adds a new table to the `dm`.
+#' `dm_insert_zoomed_tbl()`: adds a new table to the `dm`.
 #'
-#' `cdm_zoom_out()`: discards the zoomed table and returns the `dm` as it was before zooming.
+#' `dm_zoom_out()`: discards the zoomed table and returns the `dm` as it was before zooming.
 #'
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
-#' when using `cdm_insert_zoomed_tbl()` or `cdm_update_zoomed_tbl()`.
+#' when using `dm_insert_zoomed_tbl()` or `dm_update_zoomed_tbl()`.
 #'
 #' Functions from `dplyr` that are supported for a `zoomed_dm`: `group_by()`, `summarise()`, `mutate()`,
 #' `transmute()`, `select()`, `rename()` and `ungroup()`.
@@ -27,14 +27,14 @@
 #' `filter()` is also supported, but treated in a special way: the filter expression for the zoomed table is
 #' stored in the `dm` and is treated in a way that depends on which function you use to return to a normal `dm`:
 #'
-#' 1. `cdm_zoom_out()`: all filter conditions for the zoomed table are discarded
-#' 1. `cdm_update_zoomed_tbl()`: the filter conditions of the original table and those of the zoomed table are combined
-#' 1. `cdm_insert_zoomed_tbl()`: the filter conditions of the original table stay there and those of the zoomed table are
+#' 1. `dm_zoom_out()`: all filter conditions for the zoomed table are discarded
+#' 1. `dm_update_zoomed_tbl()`: the filter conditions of the original table and those of the zoomed table are combined
+#' 1. `dm_insert_zoomed_tbl()`: the filter conditions of the original table stay there and those of the zoomed table are
 #' transferred to the new table of the `dm`
 #'
-#' @rdname cdm_zoom_to_tbl
+#' @rdname dm_zoom_to_tbl
 #' @export
-cdm_zoom_to_tbl <- function(dm, table) {
+dm_zoom_to_tbl <- function(dm, table) {
   if (is_zoomed(dm)) abort_no_zoom_allowed()
 
   # for now only one table can be zoomed on
@@ -65,12 +65,12 @@ get_zoomed_tbl <- function(dm) {
     pluck(1)
 }
 
-#' @rdname cdm_zoom_to_tbl
+#' @rdname dm_zoom_to_tbl
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @export
-cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
+dm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
   new_tbl_name_chr <-
     if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else as_string(enexpr(new_tbl_name))
@@ -110,12 +110,12 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
   dm_update_zoomed_outgoing_fks(dm_wo_outgoing_fks, new_tbl_name_chr, is_upd = FALSE) %>%
-    cdm_zoom_out()
+    dm_zoom_out()
 }
 
-#' @rdname cdm_zoom_to_tbl
+#' @rdname dm_zoom_to_tbl
 #' @export
-cdm_update_zoomed_tbl <- function(dm) {
+dm_update_zoomed_tbl <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
   }
@@ -130,12 +130,12 @@ cdm_update_zoomed_tbl <- function(dm) {
     )
   new_dm3(new_def, zoomed = TRUE) %>%
     dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
-    cdm_zoom_out()
+    dm_zoom_out()
 }
 
-#' @rdname cdm_zoom_to_tbl
+#' @rdname dm_zoom_to_tbl
 #' @export
-cdm_zoom_out <- function(dm) {
+dm_zoom_out <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
   }

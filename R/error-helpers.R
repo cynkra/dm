@@ -425,7 +425,7 @@ error_con_only_for_dbi <- function() {
   "A local `dm` doesn't have a DB connection"
 }
 
-# no zoom allowed for `cdm_zoom_to_tbl()` ---------------------------------
+# no zoom allowed for `dm_zoom_to_tbl()` ---------------------------------
 
 abort_no_zoom_allowed <- function() {
   abort(error_no_zoom_allowed(), .subclass = dm_error_full("no_zoom_allowed"))
@@ -433,8 +433,8 @@ abort_no_zoom_allowed <- function() {
 
 error_no_zoom_allowed <- function() {
   paste0(
-    "`cdm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `cdm_update_zoomed_tbl()`, ",
-    "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first."
+    "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed_tbl()`, ",
+    "`dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
   )
 }
 
@@ -462,7 +462,7 @@ abort_table_needs_name <- function() {
 }
 
 error_table_needs_name <- function() {
-  "The new table to insert with `cdm_insert_zoomed_tbl()` must have a name"
+  "The new table to insert with `dm_insert_zoomed_tbl()` must have a name"
 }
 
 # when zoomed and it shouldn't be ------------------------------
@@ -473,8 +473,8 @@ abort_only_possible_wo_zoom <- function(fun_name) {
 
 error_only_possible_wo_zoom <- function(fun_name) {
   glue(
-    "You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `cdm_update_zoomed_tbl()`, ",
-    "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first."
+    "You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed_tbl()`, ",
+    "`dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
   )
 }
 
@@ -485,7 +485,7 @@ abort_only_possible_w_zoom <- function(fun_name) {
 }
 
 error_only_possible_w_zoom <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
+  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.")
 }
 
 # errors for `copy_to.dm()` ----------------------------------------------
