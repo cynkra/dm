@@ -99,7 +99,7 @@ dm_copy_to <- function(dest, dm, ...,
   remote_dm <- new_dm3(def)
 
   if (set_key_constraints && is_src_db(remote_dm)) {
-    cdm_set_key_constraints(remote_dm)
+    dm_set_key_constraints(remote_dm)
   }
 
   invisible(debug_validate_dm(remote_dm))
@@ -107,7 +107,7 @@ dm_copy_to <- function(dest, dm, ...,
 
 #' Set key constraints on a DB for a `dm`-obj with keys
 #'
-#' @description `cdm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database
+#' @description `dm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database
 #' (this is currently only implemented for MSSQL and Postgres databases), and mirrors the `dm` key constraints
 #' on the database.
 #'
@@ -126,9 +126,9 @@ dm_copy_to <- function(dest, dm, ...,
 #' # there are no key constraints in `as_dm(list(iris = iris))`
 #' # but if there were, and if we had already implemented setting key
 #' # constraints for SQLite, the following command would do something:
-#' cdm_set_key_constraints(iris_dm)
+#' dm_set_key_constraints(iris_dm)
 #' @noRd
-cdm_set_key_constraints <- nse(function(dm) {
+dm_set_key_constraints <- nse(function(dm) {
   if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
   db_table_names <- get_db_table_names(dm)
 
