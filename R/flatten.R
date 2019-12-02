@@ -248,7 +248,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   # filters need to be empty, for the disambiguation to work
   # renaming will be minimized if we reduce the `dm` to the necessary tables here
   red_dm <-
-    cdm_reset_all_filters(dm) %>%
+    dm_reset_all_filters(dm) %>%
     cdm_select_tbl(tables)
   # Only need to compute `tbl(dm, start)`, `cdm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.

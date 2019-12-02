@@ -97,7 +97,7 @@ cdm_apply_filters <- function(dm) {
 
   def$data <- map(def$table, ~ dm_get_filtered_table(dm, .))
 
-  cdm_reset_all_filters(new_dm3(def))
+  dm_reset_all_filters(new_dm3(def))
 }
 
 # FIXME: 'cdm_apply_filters()' should get an own doc-page which 'cdm_apply_filters_to_tbl()' should share (cf. #145)
