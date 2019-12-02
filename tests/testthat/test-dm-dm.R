@@ -7,10 +7,10 @@ test_that("can access tables", {
 })
 
 test_that("can create dm with as_dm()", {
-  test_obj_df <- as_dm(dm_get_tables(cdm_test_obj))
+  test_obj_df <- as_dm(dm_get_tables(dm_test_obj))
 
   walk(
-    cdm_test_obj_src, ~ expect_equivalent_dm(as_dm(dm_get_tables(.)), test_obj_df)
+    dm_test_obj_src, ~ expect_equivalent_dm(as_dm(dm_get_tables(.)), test_obj_df)
   )
 })
 

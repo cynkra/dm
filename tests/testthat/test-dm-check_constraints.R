@@ -12,7 +12,7 @@ test_that("`dm_check_constraints()` works", {
 
   # case of no constraints:
   expect_equal(
-    dm_check_constraints(cdm_test_obj),
+    dm_check_constraints(dm_test_obj),
     tibble(
       table = character(0),
       kind = character(0),

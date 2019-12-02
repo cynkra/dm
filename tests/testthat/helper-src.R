@@ -226,14 +226,14 @@ dm_for_filter_rev %<-%
 
 message("for tests on `dm` objects: dm_add_pk(), dm_add_fk()")
 
-cdm_test_obj %<-% as_dm(list(
+dm_test_obj %<-% as_dm(list(
   cdm_table_1 = d2,
   cdm_table_2 = d4,
   cdm_table_3 = d7,
   cdm_table_4 = d8
 ))
 
-cdm_test_obj_2 %<-% as_dm(list(
+dm_test_obj_2 %<-% as_dm(list(
   cdm_table_1 = d4,
   cdm_table_2 = d7,
   cdm_table_3 = d8,
@@ -535,15 +535,15 @@ if (is_this_a_test()) {
 
   message("loading into database")
 
-  dm_for_filter_src %<-% cdm_test_load(dm_for_filter)
-  dm_for_filter_rev_src %<-% cdm_test_load(dm_for_filter_rev)
-  dm_for_filter_w_cycle_src %<-% cdm_test_load(dm_for_filter_w_cycle)
-  cdm_test_obj_src %<-% cdm_test_load(cdm_test_obj)
-  cdm_test_obj_2_src %<-% cdm_test_load(cdm_test_obj_2)
-  dm_for_flatten_src %<-% cdm_test_load(dm_for_flatten)
-  dm_more_complex_src %<-% cdm_test_load(dm_more_complex)
-  dm_for_disambiguate_src %<-% cdm_test_load(dm_for_disambiguate)
-  dm_nycflights_small_src %<-% cdm_test_load(dm_nycflights_small, set_key_constraints = FALSE)
+  dm_for_filter_src %<-% dm_test_load(dm_for_filter)
+  dm_for_filter_rev_src %<-% dm_test_load(dm_for_filter_rev)
+  dm_for_filter_w_cycle_src %<-% dm_test_load(dm_for_filter_w_cycle)
+  dm_test_obj_src %<-% dm_test_load(dm_test_obj)
+  dm_test_obj_2_src %<-% dm_test_load(dm_test_obj_2)
+  dm_for_flatten_src %<-% dm_test_load(dm_for_flatten)
+  dm_more_complex_src %<-% dm_test_load(dm_more_complex)
+  dm_for_disambiguate_src %<-% dm_test_load(dm_for_disambiguate)
+  dm_nycflights_small_src %<-% dm_test_load(dm_nycflights_small, set_key_constraints = FALSE)
 
   message("loading data frames into database")
 
