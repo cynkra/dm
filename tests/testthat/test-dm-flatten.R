@@ -1,4 +1,4 @@
-bad_filtered_dm <- cdm_filter(bad_dm, tbl_1, a != 4)
+bad_filtered_dm <- dm_filter(bad_dm, tbl_1, a != 4)
 
 test_that("`cdm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for left join test the basic flattening also on all DBs
@@ -368,7 +368,7 @@ test_that("prepare_dm_for_flatten() works", {
 
   expect_equivalent_dm(
     prepare_dm_for_flatten(
-      cdm_filter(dm_for_flatten, dim_1, dim_1_pk > 7),
+      dm_filter(dm_for_flatten, dim_1, dim_1_pk > 7),
       c("fact", "dim_1", "dim_3"),
       gotta_rename = TRUE
     ),
@@ -378,7 +378,7 @@ test_that("prepare_dm_for_flatten() works", {
   # filtered without rename
   expect_equivalent_dm(
     prepare_dm_for_flatten(
-      cdm_filter(dm_for_flatten, dim_1, dim_1_pk > 7),
+      dm_filter(dm_for_flatten, dim_1, dim_1_pk > 7),
       c("fact", "dim_1", "dim_3"),
       gotta_rename = FALSE
     ),

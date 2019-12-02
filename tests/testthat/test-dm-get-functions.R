@@ -48,7 +48,7 @@ test_that("dm_get_filter() works", {
     )
 
   expect_identical(
-    dm_get_filter(cdm_filter(dm_for_filter, t1, a > 3, a < 8)),
+    dm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8)),
     tibble(table = "t1", filter = unname(exprs(a > 3, a < 8)), zoomed = FALSE)
   )
 })

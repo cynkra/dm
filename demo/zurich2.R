@@ -243,16 +243,16 @@ dm_flights_sqlite %>%
 
 # Filtering on the database
 dm_flights_sqlite %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, day == 1) %>%
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(flights, day == 1) %>%
   tbl("flights")
 
 # ... and the corresponding SQL statement and query plan
 dm_flights_sqlite %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, day == 1) %>%
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(flights, day == 1) %>%
   tbl("flights") %>%
   dbplyr::sql_render()
 
@@ -270,20 +270,20 @@ dm_flights_sqlite %>%
 # 1. the filter applied to the table in question
 # 2. the filter condition(s) stored
 dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.")
+  dm_filter(airlines, name == "Delta Air Lines Inc.")
 
 # the resulting `dm` can then be filtered on another table
 dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl")
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl")
 
 # ... and stored in another dm variable
 delta_non_jfk_january <-
   dm_flights %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(planes, year < 2000) %>%
-  cdm_filter(flights, month == 1)
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(planes, year < 2000) %>%
+  dm_filter(flights, month == 1)
 delta_non_jfk_january
 
 # Querying a table applies the filters via semi-joins
@@ -488,8 +488,8 @@ try({
   # Import
   dm_flights_pq <-
     dm_flights %>%
-    cdm_filter(planes, TRUE) %>%
-    cdm_filter(flights, month == 1, day == 1) %>%
+    dm_filter(planes, TRUE) %>%
+    dm_filter(flights, month == 1, day == 1) %>%
     dm_copy_to(con_pq, ., temporary = FALSE)
 
   dm_flights_from_pq <-

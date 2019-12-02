@@ -104,7 +104,7 @@ test_that("'compute.dm()' computes tables on DB", {
     db_src_names,
     ~ expect_true({
       def <- dm_for_filter_src[[.x]] %>%
-        cdm_filter(t1, a > 3) %>%
+        dm_filter(t1, a > 3) %>%
         compute() %>%
         dm_get_def()
       test <- map_chr(map(def$data, sql_render), as.character)

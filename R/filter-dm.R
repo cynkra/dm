@@ -3,7 +3,7 @@
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
 #'
-#' `cdm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
+#' `dm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
 #' These conditions will be stored in the [`dm`], and executed immediately for the tables that they are referring to.
 #'
 #' With `cdm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
@@ -24,7 +24,7 @@
 #' (similar to 1. but only for one table).
 #'
 #' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
-#' @rdname cdm_filter
+#' @rdname dm_filter
 #'
 #' @inheritParams cdm_add_pk
 #' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
@@ -42,26 +42,26 @@
 #'
 #' dm_nyc_filtered <-
 #'   cdm_nycflights13() %>%
-#'   cdm_filter(airports, name == "John F Kennedy Intl")
+#'   dm_filter(airports, name == "John F Kennedy Intl")
 #'
 #' cdm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
 #' cdm_nycflights13() %>%
-#'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
+#'   dm_filter(airports, name == "John F Kennedy Intl") %>%
 #'   cdm_apply_filters()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
 #' cdm_nycflights13() %>%
-#'   cdm_filter(flights, 1 == 1) %>%
+#'   dm_filter(flights, 1 == 1) %>%
 #'   cdm_apply_filters() %>%
 #'   cdm_nrow()
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
 #' # only the three New York airports.
 #' @export
-cdm_filter <- function(dm, table, ...) {
+dm_filter <- function(dm, table, ...) {
   cdm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
     cdm_update_zoomed_tbl()
@@ -76,19 +76,19 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 }
 
 
-#' @rdname cdm_filter
+#' @rdname dm_filter
 #'
 #' @inheritParams cdm_add_pk
 #'
 #' @examples
 #'
 #' cdm_nycflights13() %>%
-#'   cdm_filter(flights, month == 3) %>%
+#'   dm_filter(flights, month == 3) %>%
 #'   cdm_apply_filters()
 #'
 #' library(dplyr)
 #' cdm_nycflights13() %>%
-#'   cdm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
+#'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #' @export
 cdm_apply_filters <- function(dm) {
@@ -101,13 +101,13 @@ cdm_apply_filters <- function(dm) {
 }
 
 # FIXME: 'cdm_apply_filters()' should get an own doc-page which 'cdm_apply_filters_to_tbl()' should share (cf. #145)
-#' @rdname cdm_filter
+#' @rdname dm_filter
 #'
 #' @inheritParams cdm_add_pk
 #'
 #' @examples
 #' cdm_nycflights13() %>%
-#'   cdm_filter(flights, month == 3) %>%
+#'   dm_filter(flights, month == 3) %>%
 #'   cdm_apply_filters_to_tbl(planes)
 #' @export
 cdm_apply_filters_to_tbl <- function(dm, table) {

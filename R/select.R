@@ -2,7 +2,7 @@
 #'
 #' Rename the columns of your [`dm`] using syntax that is similar to `dplyr::rename()`.
 #'
-#' @inheritParams cdm_filter
+#' @inheritParams dm_filter
 #' @param ... One or more unquoted expressions separated by commas.
 #'   You can treat
 #'   variable names as if they were positions, and use expressions like x:y

@@ -116,7 +116,7 @@ cdm_nycflights13() \%>\%
 \item \code{\link[=dm_copy_to]{dm_copy_to()}} and \code{\link[=cdm_learn_from_db]{cdm_learn_from_db()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
 \item \code{\link[=cdm_join_to_tbl]{cdm_join_to_tbl()}} for flattening
-\item \code{\link[=cdm_filter]{cdm_filter()}} for filtering
+\item \code{\link[=dm_filter]{dm_filter()}} for filtering
 \item \code{\link[=cdm_select_tbl]{cdm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
 \item \code{\link[=decompose_table]{decompose_table()}} as one example of the table surgery family
 \item \code{\link[=check_key]{check_key()}} and \code{\link[=check_if_subset]{check_if_subset()}} for checking for key properties

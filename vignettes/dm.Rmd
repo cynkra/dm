@@ -139,8 +139,8 @@ Let's set two filters:
 ```{r}
 us_flights_from_jfk_prepared <- 
   flights_dm_acyclic %>%
-  cdm_filter(airports, name == "John F Kennedy Intl") %>% 
-  cdm_filter(airlines, name == "US Airways Inc.")
+  dm_filter(airports, name == "John F Kennedy Intl") %>% 
+  dm_filter(airlines, name == "US Airways Inc.")
 us_flights_from_jfk_prepared
 ```
 

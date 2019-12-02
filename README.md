@@ -220,7 +220,7 @@ A battery of utilities helps with creating a tidy relational data model.
 
 ### Filtering and joining
 
-Similarly to `dplyr::filter()`, a filtering function `cdm_filter()` is
+Similarly to `dplyr::filter()`, a filtering function `dm_filter()` is
 available for `dm` objects. You need to provide the `dm` object, the
 table whose rows you want to filter, and the filter expression. The
 actual effect of the filtering will only be realized once you use
@@ -238,7 +238,7 @@ cdm_nycflights13(cycle = FALSE) %>%
 #>       16     1458   336776     3322    26115
 
 cdm_nycflights13(cycle = FALSE) %>%
-  cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
+  dm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
   cdm_apply_filters() %>%
   dm_get_tables() %>%
   map_int(nrow)

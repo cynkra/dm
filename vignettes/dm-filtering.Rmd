@@ -83,13 +83,13 @@ tbl(dm, "airports")
 
 ## Filtering a `dm` object {#filter}
 
-`cdm_filter()` allows you to select a subset of a `dm` object.
+`dm_filter()` allows you to select a subset of a `dm` object.
 
 ### How it works
 
 Filtering a `dm` object is not that different from filtering a dataframe or tibble with `dplyr::filter()`.
 
-The corresponding {dm} function is `dm::cdm_filter()`.
+The corresponding {dm} function is `dm::dm_filter()`.
 With this function one or more filtering conditions can be set for one of the tables of the `dm` object.
 These conditions are immediately evaluated for their respective tables and in addition they are stored in the `dm`.
 There are two ways in which a condition on one table could affect another table:
@@ -116,7 +116,7 @@ Let's see filtering in action:
 ```{r}
 filtered_dm <- 
   dm %>%
-  cdm_filter(airports, name == "John F Kennedy Intl")
+  dm_filter(airports, name == "John F Kennedy Intl")
 filtered_dm
 ```
 
@@ -142,7 +142,7 @@ Next example:
 
 ```{r}
 dm %>% 
-  cdm_filter(flights, dest == "IAD") %>% 
+  dm_filter(flights, dest == "IAD") %>% 
   cdm_apply_filters() %>% 
   cdm_nrow()
 ```
@@ -155,9 +155,9 @@ An example:
 
 ```{r}
 dm_delta_may <- dm %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, month == 5)
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(flights, month == 5)
 dm_delta_may
 dm_delta_may %>% 
   cdm_apply_filters() %>% 
@@ -211,17 +211,17 @@ Example:
 
 **Print the SQL statements for getting all flights from Delta Air Lines, which did not depart from John F. Kennedy International Airport in May 2013, with the data stored in a sqlite database.**
 
-To show the SQL query behind a `cdm_filter()`, we copy the `flights`, `airlines` and `airports` tables from the `nyflights13` dataset to a temporary in-memory database using the built-in function `dm_copy_to()` and `dbplyr::src_memdb`.
+To show the SQL query behind a `dm_filter()`, we copy the `flights`, `airlines` and `airports` tables from the `nyflights13` dataset to a temporary in-memory database using the built-in function `dm_copy_to()` and `dbplyr::src_memdb`.
 
 Then we filter the data, and print the corresponding SQL statement with `dbplyr::sql_render()`.
 
 ```{r, warning=F}
 dm %>%
   cdm_select_tbl(flights, airlines, airports) %>%
-  cdm_filter(flights, month == 5) %>% 
+  dm_filter(flights, month == 5) %>% 
   dm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE) %>% 
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_apply_filters() %>% 
   dm_get_tables() %>%
   map(dbplyr::sql_render)

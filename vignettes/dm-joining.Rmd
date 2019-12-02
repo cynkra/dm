@@ -147,8 +147,8 @@ We are working towards removing this inconvenience [#62](https://github.com/krlm
 
 ```{r}
 cdm_nycflights13() %>%
-  cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  cdm_filter(flights, month == 5) %>% 
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_filter(flights, month == 5) %>% 
   cdm_apply_filters() %>% 
   cdm_join_to_tbl(flights, airports, join = left_join)
 ```

@@ -10,7 +10,7 @@ dm_sqlite <- dm_copy_to(src, dm)
 
 dm1 <-
   dm_sqlite %>%
-  cdm_filter(airports, faa == "EWR")
+  dm_filter(airports, faa == "EWR")
 
 dm1 %>% tbl("airports")
 dm1 %>% tbl("flights")
