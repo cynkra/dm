@@ -171,3 +171,13 @@ cdm_rm_fk <- new_cdm_forward_2(dm_rm_fk)
 #' @keywords internal
 #' @export
 cdm_enum_fk_candidates <- new_cdm_forward_2(dm_enum_fk_candidates)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_is_referenced <- new_cdm_forward_2(dm_is_referenced)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_get_referencing_tables <- new_cdm_forward_2(dm_get_referencing_tables)

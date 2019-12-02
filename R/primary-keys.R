@@ -161,8 +161,8 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 
   def <- dm_get_def(dm)
 
-  if (!rm_referencing_fks && cdm_is_referenced(dm, !!table)) {
-    affected <- cdm_get_referencing_tables(dm, !!table)
+  if (!rm_referencing_fks && dm_is_referenced(dm, !!table)) {
+    affected <- dm_get_referencing_tables(dm, !!table)
     abort_first_rm_fks(table, affected)
   }
   def$pks[def$table == table] <- list(new_pk())

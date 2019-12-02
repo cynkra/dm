@@ -202,5 +202,17 @@ test_that("other FK functions work", {
     cdm_enum_fk_candidates(dm_for_filter, t2, t1),
     dm_enum_fk_candidates(dm_for_filter, t2, t1)
   )
+})
 
+test_that("graph-functions work", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_is_referenced(dm_for_filter, t3),
+    dm_is_referenced(dm_for_filter, t3)
+  )
+
+  expect_identical(
+    cdm_get_referencing_tables(dm_for_filter, t3),
+    dm_get_referencing_tables(dm_for_filter, t3)
+  )
 })

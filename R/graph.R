@@ -8,13 +8,13 @@
 #' @family functions utilizing foreign key relations
 #'
 #' @export
-cdm_is_referenced <- function(dm, table) {
-  has_length(cdm_get_referencing_tables(dm, !!ensym(table)))
+dm_is_referenced <- function(dm, table) {
+  has_length(dm_get_referencing_tables(dm, !!ensym(table)))
 }
 
 #' Get the names of the tables of a [`dm`] that reference a given table.
 #'
-#' @inheritParams cdm_is_referenced
+#' @inheritParams dm_is_referenced
 #'
 #' @return Character vector of the names of the tables that point to the primary
 #' key of `table`.
@@ -22,7 +22,7 @@ cdm_is_referenced <- function(dm, table) {
 #' @family functions utilizing foreign key relations
 #'
 #' @export
-cdm_get_referencing_tables <- function(dm, table) {
+dm_get_referencing_tables <- function(dm, table) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 

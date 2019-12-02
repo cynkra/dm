@@ -59,8 +59,8 @@ reference:
 
 - title: Utilizing foreign key relations
   contents:
-  - cdm_is_referenced
-  - cdm_get_referencing_tables
+  - dm_is_referenced
+  - dm_get_referencing_tables
 
 - title: Table surgery
   contents:
