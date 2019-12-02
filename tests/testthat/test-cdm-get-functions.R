@@ -18,7 +18,9 @@ test_that("cdm_get_src() works", {
   walk2(
     dm_for_filter_src,
     active_srcs_class,
-    ~ expect_true(inherits(dm_get_src(.x), .y))
+    function(dm_for_filter, active_src) {
+      expect_true(inherits(cdm_get_src(dm_for_filter), active_src))
+    }
   )
 })
 
