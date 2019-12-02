@@ -267,7 +267,7 @@ nycflights13_sqlite %>%
   cdm_draw()
 
 nycflights13_sqlite %>%
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map(dbplyr::sql_render)
 
 # Filtering on the database

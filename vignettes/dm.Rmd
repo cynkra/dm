@@ -77,7 +77,7 @@ flights_dm
 ```
 
 This fairly verbose output shows the data and metadata of a `dm` object.
-These components can be accessed with `dm_get_src()` and `cdm_get_tables()`.
+These components can be accessed with `dm_get_src()` and `dm_get_tables()`.
 
 ```{r}
 dm_get_src(flights_dm)
@@ -150,7 +150,7 @@ The effect of the filters can be seen when counting the rows:
 ```{r}
 us_flights_from_jfk <- cdm_apply_filters(us_flights_from_jfk_prepared)
 us_flights_from_jfk %>% 
-  cdm_get_tables() %>% 
+  dm_get_tables() %>% 
   map_int(nrow)
 ```
 

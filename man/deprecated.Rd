@@ -4,11 +4,14 @@
 \alias{deprecated}
 \alias{cdm_get_src}
 \alias{cdm_get_con}
+\alias{cdm_get_tables}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
 
 cdm_get_con(x)
+
+cdm_get_tables(x)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

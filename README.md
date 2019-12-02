@@ -235,7 +235,7 @@ cycle-free relationships between the tables.
 
 ``` r
 cdm_nycflights13(cycle = FALSE) %>%
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map_int(nrow)
 #> airlines airports  flights   planes  weather 
 #>       16     1458   336776     3322    26115
@@ -243,7 +243,7 @@ cdm_nycflights13(cycle = FALSE) %>%
 cdm_nycflights13(cycle = FALSE) %>%
   cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
   cdm_apply_filters() %>%
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map_int(nrow)
 #> airlines airports  flights   planes  weather 
 #>        4        3     7301      134    26115

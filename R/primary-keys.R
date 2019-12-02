@@ -214,12 +214,12 @@ enum_pk_candidates <- nse(function(table) {
 #' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
 cdm_enum_pk_candidates <- nse(function(dm, table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
-  # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
+  # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
 
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  tbl <- cdm_get_tables(dm)[[table_name]]
+  tbl <- dm_get_tables(dm)[[table_name]]
   enum_pk_candidates(tbl)
 })

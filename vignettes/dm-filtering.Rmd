@@ -223,7 +223,7 @@ dm %>%
   cdm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   cdm_filter(airports, name != "John F Kennedy Intl") %>%
   cdm_apply_filters() %>% 
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map(dbplyr::sql_render)
 ```
 

@@ -265,7 +265,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
-  y_tbl <- cdm_get_tables(x)[[y_name]]
+  y_tbl <- dm_get_tables(x)[[y_name]]
   all_cols_y <- colnames(y_tbl)
 
   if (quo_is_null(select_quo)) {

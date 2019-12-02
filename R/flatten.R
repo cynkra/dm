@@ -139,7 +139,7 @@ cdm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 
   # list of join partners
   ordered_table_list <- prep_dm %>%
-    cdm_get_tables() %>%
+    dm_get_tables() %>%
     extract(order_df$name)
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 

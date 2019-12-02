@@ -39,7 +39,7 @@
 #' cdm_nycflights13() %>% tbl("airports")
 #' cdm_nycflights13() %>% src_tbls()
 #' cdm_nycflights13() %>% dm_get_src()
-#' cdm_nycflights13() %>% cdm_get_tables()
+#' cdm_nycflights13() %>% dm_get_tables()
 #'
 #' cdm_nycflights13() %>%
 #'   cdm_rename_tbl(ap = airports)
@@ -197,7 +197,7 @@ validate_dm <- function(x) {
     inherits(., "data.frame") || inherits(., "tbl_dbi")
   }))) {
     abort_dm_invalid(
-      "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`."
+      "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
     )
   }
   if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
@@ -258,7 +258,7 @@ debug_validate_dm <- function(dm) {
 #' @export
 dm_get_src <- function(x) {
   check_dm(x)
-  tables <- cdm_get_tables(x)
+  tables <- dm_get_tables(x)
   tbl_src(tables[1][[1]])
 }
 
@@ -279,7 +279,7 @@ dm_get_con <- function(x) {
 
 #' Get tables
 #'
-#' `cdm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
+#' `dm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
 #' Filtering expressions are NOT evaluated at this stage.
 #' To get a filtered table, use `cdm_apply_filters_to_tbl()`, to apply filters to all tables use `cdm_apply_filters()`
@@ -287,7 +287,7 @@ dm_get_con <- function(x) {
 #' @rdname dm
 #'
 #' @export
-cdm_get_tables <- function(x) {
+dm_get_tables <- function(x) {
   def <- cdm_get_def(x)
   set_names(def$data, def$table)
 }
@@ -589,7 +589,7 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(dm)
   check_correct_input(dm, from, 1L)
 
-  cdm_get_tables(dm)[[from]]
+  dm_get_tables(dm)[[from]]
 }
 
 #' @export
@@ -612,7 +612,7 @@ compute.zoomed_dm <- function(x, ...) {
 src_tbls.dm <- function(x) {
   # The x argument here is a dm object
   dm <- x
-  names(cdm_get_tables(dm))
+  names(dm_get_tables(dm))
 }
 
 #' @export

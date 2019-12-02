@@ -109,7 +109,7 @@ test_that("cdm_filter() works as intended for reversed dm", {
       expect_identical(
         cdm_filter(dm_for_filter_rev, t1, a < 8, a > 3) %>%
           collect() %>%
-          cdm_get_tables(),
+          dm_get_tables(),
         rev(output_1)
       )
     }
@@ -120,7 +120,7 @@ test_that("cdm_filter() works as intended?", {
   map(
     .x = dm_for_filter_src,
     ~ expect_identical(
-      cdm_filter(.x, t1, a < 8, a > 3) %>% collect() %>% cdm_get_tables(),
+      cdm_filter(.x, t1, a < 8, a > 3) %>% collect() %>% dm_get_tables(),
       output_1
     )
   )
@@ -130,7 +130,7 @@ test_that("cdm_filter() works as intended for inbetween table", {
   map(
     .x = dm_for_filter_src,
     ~ expect_identical(
-      cdm_filter(.x, t3, g == "five") %>% collect() %>% cdm_get_tables(),
+      cdm_filter(.x, t3, g == "five") %>% collect() %>% dm_get_tables(),
       output_3
     )
   )

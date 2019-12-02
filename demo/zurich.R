@@ -228,7 +228,7 @@ dm_flights_sqlite %>%
   cdm_draw()
 
 dm_flights_sqlite %>%
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map(dbplyr::sql_render)
 
 dm_flights_sqlite %>%

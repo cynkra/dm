@@ -123,7 +123,7 @@ cdm_apply_filters_to_tbl <- function(dm, table) {
 cdm_get_filtered_table <- function(dm, from) {
   filters <- cdm_get_filter(dm)
   if (nrow(filters) == 0) {
-    return(cdm_get_tables(dm)[[from]])
+    return(dm_get_tables(dm)[[from]])
   }
 
   fc <- get_all_filtered_connected(dm, from)
@@ -140,7 +140,7 @@ cdm_get_filtered_table <- function(dm, from) {
     select(table = node) %>%
     left_join(fc_children, by = "table")
 
-  list_of_tables <- cdm_get_tables(dm)
+  list_of_tables <- dm_get_tables(dm)
 
   for (i in seq_len(nrow(recipe))) {
     table_name <- recipe$table[i]

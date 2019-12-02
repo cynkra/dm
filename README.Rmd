@@ -163,13 +163,13 @@ This currently only works for cycle-free relationships between the tables.
 
 ```{r}
 cdm_nycflights13(cycle = FALSE) %>%
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map_int(nrow)
 
 cdm_nycflights13(cycle = FALSE) %>%
   cdm_filter(planes, year == 2000, manufacturer == "BOEING") %>%
   cdm_apply_filters() %>%
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map_int(nrow)
 ```
 

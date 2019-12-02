@@ -18,9 +18,9 @@ dm1 %>% tbl("weather")
 dm1 %>% tbl("airlines")
 dm1 %>% tbl("planes")
 
-dm1 %>% cdm_get_tables()
+dm1 %>% dm_get_tables()
 
-dm1 %>% cdm_get_tables() %>% map(nrow)
+dm1 %>% dm_get_tables() %>% map(nrow)
 
 dm1 %>% tbl("airports") %>% sql_render()
 dm1 %>% tbl("flights") %>% sql_render()

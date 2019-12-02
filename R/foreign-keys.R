@@ -27,8 +27,8 @@ cdm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   }
 
   if (check) {
-    tbl_obj <- cdm_get_tables(dm)[[table_name]]
-    ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
+    tbl_obj <- dm_get_tables(dm)[[table_name]]
+    ref_tbl_obj <- dm_get_tables(dm)[[ref_table_name]]
 
     if (!is_subset(tbl_obj, !!column_name, ref_tbl_obj, !!ref_column_name)) {
       abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
@@ -193,7 +193,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' @export
 cdm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
-  # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
+  # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
   table_name <- as_string(ensym(table))
   ref_table_name <- as_string(ensym(ref_table))

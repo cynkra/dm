@@ -7,7 +7,7 @@
 \alias{validate_dm}
 \alias{dm_get_src}
 \alias{dm_get_con}
-\alias{cdm_get_tables}
+\alias{dm_get_tables}
 \alias{cdm_get_filter}
 \alias{is_dm}
 \alias{as_dm}
@@ -25,7 +25,7 @@ dm_get_src(x)
 
 dm_get_con(x)
 
-cdm_get_tables(x)
+dm_get_tables(x)
 
 cdm_get_filter(x)
 
@@ -80,7 +80,7 @@ database.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.
 
-\code{cdm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
+\code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
 Filtering expressions are NOT evaluated at this stage.
 To get a filtered table, use \code{cdm_apply_filters_to_tbl()}, to apply filters to all tables use \code{cdm_apply_filters()}
@@ -103,7 +103,7 @@ as_dm(list(iris = iris, mtcars = mtcars))
 cdm_nycflights13() \%>\% tbl("airports")
 cdm_nycflights13() \%>\% src_tbls()
 cdm_nycflights13() \%>\% dm_get_src()
-cdm_nycflights13() \%>\% cdm_get_tables()
+cdm_nycflights13() \%>\% dm_get_tables()
 
 cdm_nycflights13() \%>\%
   cdm_rename_tbl(ap = airports)

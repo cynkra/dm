@@ -29,7 +29,7 @@ cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
 
   if (select) {
     # adding code for selection of columns
-    tbl_select <- tibble(tbl_name = src_tbls(dm), tbls = cdm_get_tables(dm)) %>%
+    tbl_select <- tibble(tbl_name = src_tbls(dm), tbls = dm_get_tables(dm)) %>%
       mutate(cols = map(tbls, colnames)) %>%
       mutate(code = map2_chr(
         tbl_name,

@@ -5,7 +5,7 @@ test_that("cdm_add_tbl() works", {
     dm_for_filter_src,
     d1_src,
     ~ expect_identical(
-      length(cdm_get_tables(cdm_add_tbl(..1, d1 = ..2))),
+      length(dm_get_tables(cdm_add_tbl(..1, d1 = ..2))),
       7L
     )
   )
@@ -39,7 +39,7 @@ test_that("cdm_add_tbl() works", {
   # adding more than 1 table:
   # 1. Is the resulting number of tables correct?
   expect_identical(
-    length(cdm_get_tables(cdm_add_tbl(dm_for_filter, d1, d2))),
+    length(dm_get_tables(cdm_add_tbl(dm_for_filter, d1, d2))),
     8L
   )
 

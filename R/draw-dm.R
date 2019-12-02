@@ -102,7 +102,7 @@ cdm_get_data_model <- function(x) {
 }
 
 cdm_get_all_columns <- function(x) {
-  cdm_get_tables(x) %>%
+  dm_get_tables(x) %>%
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%

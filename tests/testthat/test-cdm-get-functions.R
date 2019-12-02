@@ -45,3 +45,12 @@ test_that("cdm_get_con() works", {
     ~ expect_true(inherits(cdm_get_con(.x), .y))
   )
 })
+
+
+test_that("cdm_get_tables() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_get_tables(dm_for_filter),
+    dm_get_tables(dm_for_filter)
+  )
+})
