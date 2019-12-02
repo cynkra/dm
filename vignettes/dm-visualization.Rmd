@@ -87,10 +87,10 @@ flights_dm_w_many_keys_and_colors %>%
   dm_draw(view_type = "title_only")
 ```
 
-If you would like to visualize only a some of the tables, use `cdm_select_tbl()` before drawing:
+If you would like to visualize only a some of the tables, use `dm_select_tbl()` before drawing:
 
 ```{r}
 flights_dm_w_many_keys_and_colors %>% 
-  cdm_select_tbl(flights, airports, planes) %>% 
+  dm_select_tbl(flights, airports, planes) %>% 
   dm_draw()
 ```

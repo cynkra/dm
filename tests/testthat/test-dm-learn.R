@@ -13,7 +13,7 @@ test_that("Learning from MSSQL works?", {
   dm_for_filter_mssql_learned <- dm_learn_from_db(con_mssql)
 
   def_learned_renamed_reclassed <-
-    cdm_rename_tbl(
+    dm_rename_tbl(
       dm_for_filter_mssql_learned,
       structure(src_tbls(dm_for_filter_mssql_learned), names = src_tbls(dm_for_filter))
     ) %>%
@@ -43,7 +43,7 @@ test_that("Learning from Postgres works?", {
   dm_for_filter_postgres_learned <- dm_learn_from_db(con_postgres)
 
   dm_postgres_learned_renamed <-
-    cdm_rename_tbl(
+    dm_rename_tbl(
       dm_for_filter_postgres_learned,
       !!!set_names(src_tbls(dm_for_filter_postgres_learned), src_tbls(dm_for_filter))
     )

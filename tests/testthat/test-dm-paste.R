@@ -30,7 +30,7 @@ test_that("generating code for creation of existing 'dm' works", {
 
   # we don't care if the tables really exist
   expect_output(
-    dm_paste(dm_for_filter %>% cdm_rename_tbl(t1_new = t1)),
+    dm_paste(dm_for_filter %>% dm_rename_tbl(t1_new = t1)),
     paste0(
       "dm(t1_new, t2, t3, t4, t5, t6) %>%\n  dm_add_pk(t1_new, a) %>%\n  dm_add_pk(t2, c) %>%",
       "\n  dm_add_pk(t3, f) %>%\n  dm_add_pk(t4, h) %>%\n  dm_add_pk(t5, k) %>%\n  ",

@@ -13,7 +13,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # a one-table-dm
   expect_equivalent(
     dm_for_flatten %>%
-      cdm_select_tbl(fact) %>%
+      dm_select_tbl(fact) %>%
       dm_flatten_to_tbl(fact),
     fact
   )
@@ -352,11 +352,11 @@ test_that("prepare_dm_for_flatten() works", {
   # unfiltered with rename
   expect_equivalent_dm(
     prepare_dm_for_flatten(dm_for_flatten, c("fact", "dim_1", "dim_3"), gotta_rename = TRUE),
-    cdm_select_tbl(dm_for_flatten, fact, dim_1, dim_3) %>% dm_disambiguate_cols(quiet = TRUE)
+    dm_select_tbl(dm_for_flatten, fact, dim_1, dim_3) %>% dm_disambiguate_cols(quiet = TRUE)
   )
 
   # filtered with rename
-  red_dm <- cdm_select_tbl(dm_for_flatten, fact, dim_1, dim_3)
+  red_dm <- dm_select_tbl(dm_for_flatten, fact, dim_1, dim_3)
   tables <- dm_get_tables(red_dm)
   tables[["fact"]] <- filter(tables[["fact"]], dim_1_key > 7)
   tables[["dim_1"]] <- filter(tables[["dim_1"]], dim_1_pk > 7)
@@ -388,7 +388,7 @@ test_that("prepare_dm_for_flatten() works", {
   # unfiltered without rename
   expect_equivalent_dm(
     prepare_dm_for_flatten(dm_for_flatten, c("fact", "dim_1", "dim_3"), gotta_rename = FALSE),
-    cdm_select_tbl(dm_for_flatten, fact, dim_1, dim_3)
+    dm_select_tbl(dm_for_flatten, fact, dim_1, dim_3)
   )
 })
 

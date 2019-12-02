@@ -1,4 +1,4 @@
-test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
+test_that("dm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
   def <-
     dm_for_filter %>%
     dm_rm_fk(t5, m, t6) %>%
@@ -8,23 +8,23 @@ test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?",
   dm_for_filter_smaller <- new_dm3(def[def$table %in% c("t1", "t6"), ])
 
   expect_equivalent_dm(
-    cdm_select_tbl(dm_for_filter, -t2, -t3, -t4, -t5),
+    dm_select_tbl(dm_for_filter, -t2, -t3, -t4, -t5),
     dm_for_filter_smaller
   )
 })
 
-test_that("cdm_select_tbl() can reorder the tables in a `dm`", {
+test_that("dm_select_tbl() can reorder the tables in a `dm`", {
   reordered_dm_for_filter <- dm_get_def(dm_for_filter) %>%
     arrange(c(3:1, 6:4)) %>%
     new_dm3()
 
   expect_equivalent_dm(
-    cdm_select_tbl(dm_for_filter, t3:t1, t6:t4),
+    dm_select_tbl(dm_for_filter, t3:t1, t6:t4),
     reordered_dm_for_filter
   )
 })
 
-test_that("cdm_select_tbl() remembers all FKs", {
+test_that("dm_select_tbl() remembers all FKs", {
   reordered_dm_nycflights_small_cycle <- dm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
     dm_get_def() %>%
     filter(!(table %in% c("airlines", "planes"))) %>%
@@ -33,13 +33,13 @@ test_that("cdm_select_tbl() remembers all FKs", {
 
   expect_equivalent_dm(
     dm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
-      cdm_select_tbl(airports, flights),
+      dm_select_tbl(airports, flights),
     reordered_dm_nycflights_small_cycle
   )
 })
 
 
-test_that("cdm_rename_tbl() renames a `dm`", {
+test_that("dm_rename_tbl() renames a `dm`", {
   dm_rename <-
     as_dm(list(a = tibble(x = 1), b = tibble(y = 1))) %>%
     dm_add_pk(b, y) %>%
@@ -61,18 +61,18 @@ test_that("cdm_rename_tbl() renames a `dm`", {
     dm_add_fk(a, x, d)
 
   expect_equivalent_dm(
-    cdm_rename_tbl(dm_rename, c = a),
+    dm_rename_tbl(dm_rename, c = a),
     dm_rename_a
   )
 
   expect_equivalent_dm(
-    cdm_rename_tbl(dm_rename, e = b),
+    dm_rename_tbl(dm_rename, e = b),
     dm_rename_b
   )
 
   skip("dm argument")
   expect_equivalent_dm(
-    cdm_rename_tbl(dm_rename, d = b),
+    dm_rename_tbl(dm_rename, d = b),
     dm_rename_bd
   )
 })

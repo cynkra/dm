@@ -226,3 +226,13 @@ cdm_rm_pk <- new_cdm_forward_2(dm_rm_pk)
 #' @keywords internal
 #' @export
 cdm_enum_pk_candidates <- new_cdm_forward_2(dm_enum_pk_candidates)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_select_tbl <- new_cdm_forward(dm_select_tbl)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_rename_tbl <- new_cdm_forward(dm_rename_tbl)

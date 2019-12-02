@@ -152,16 +152,16 @@ dm_nycflights13(cycle = TRUE) %>%
 
 # Selection of tables
 dm_nycflights13(cycle = TRUE) %>%
-  cdm_select_tbl(flights, airlines) %>%
+  dm_select_tbl(flights, airlines) %>%
   dm_draw()
 
 dm_nycflights13(cycle = TRUE) %>%
-  cdm_select_tbl(airports, airlines) %>%
+  dm_select_tbl(airports, airlines) %>%
   dm_draw()
 
 try(
   dm_nycflights13() %>%
-    cdm_select_tbl(bogus)
+    dm_select_tbl(bogus)
 )
 
 # Accessing tables
@@ -256,7 +256,7 @@ aa_non_jfk_january %>%
 # All operations are designed to work locally and on the database
 nycflights13_sqlite <-
   dm_nycflights13() %>%
-  cdm_select_tbl(-planes) %>%
+  dm_select_tbl(-planes) %>%
   dm_filter(flights, month == 1) %>%
   dm_apply_filters() %>%
   dm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
@@ -382,19 +382,19 @@ global <-
 global
 
 global %>%
-  cdm_rename_tbl(
+  dm_rename_tbl(
     airlines = airlines_global,
     airports = airports_global,
     planes = planes_global,
     flights = flights_link,
     weather = weather_link
   ) %>%
-  cdm_select_tbl(airlines, airports, planes, flights, weather)
+  dm_select_tbl(airlines, airports, planes, flights, weather)
 
 # or better:
 nycflights13_tbl <-
   global %>%
-  cdm_select_tbl(
+  dm_select_tbl(
     airlines = airlines_global,
     airports = airports_global,
     planes = planes_global,
@@ -453,7 +453,7 @@ try({
   # Import
   dm_pq <-
     dm_nycflights13() %>%
-    cdm_select_tbl(-planes) %>%
+    dm_select_tbl(-planes) %>%
     dm_filter(flights, month == 1) %>%
     dm_copy_to(src_postgres(), ., temporary = FALSE)
 

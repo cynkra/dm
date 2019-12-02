@@ -165,7 +165,7 @@ The following joins are determined by the foreign key links.
 
 ```{r}
 dm_nycflights13() %>%
-  cdm_select_tbl(-weather) %>%
+  dm_select_tbl(-weather) %>%
   dm_flatten_to_tbl(start = flights)
 ```
 

@@ -150,16 +150,16 @@ dm_flights %>%
 
 # Selection of tables
 dm_flights %>%
-  cdm_select_tbl(flights, airlines) %>%
+  dm_select_tbl(flights, airlines) %>%
   dm_draw()
 
 dm_flights %>%
-  cdm_select_tbl(airports, airlines) %>%
+  dm_select_tbl(airports, airlines) %>%
   dm_draw()
 
 try(
   dm_flights %>%
-    cdm_select_tbl(bogus)
+    dm_select_tbl(bogus)
 )
 
 # Accessing tables

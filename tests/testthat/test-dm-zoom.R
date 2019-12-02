@@ -91,7 +91,7 @@ test_that("cdm_insert_zoomed_tbl() works", {
   expect_equivalent_dm(
     expect_silent(cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4, repair = "unique", quiet = TRUE)),
     dm_for_filter %>%
-      cdm_rename_tbl(t4...4 = t4) %>%
+      dm_rename_tbl(t4...4 = t4) %>%
       dm_add_tbl(t4...7 = t4) %>%
       dm_add_pk(t4...7, h) %>%
       dm_add_fk(t4...7, j, t3) %>%

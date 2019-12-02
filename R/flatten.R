@@ -55,7 +55,7 @@
 #'
 #' @examples
 #' dm_nycflights13() %>%
-#'   cdm_select_tbl(-weather) %>%
+#'   dm_select_tbl(-weather) %>%
 #'   dm_flatten_to_tbl(flights)
 #' @export
 dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
@@ -249,7 +249,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
   # renaming will be minimized if we reduce the `dm` to the necessary tables here
   red_dm <-
     dm_reset_all_filters(dm) %>%
-    cdm_select_tbl(tables)
+    dm_select_tbl(tables)
   # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
   # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
   start_tbl <- dm_get_filtered_table(dm, start)

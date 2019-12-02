@@ -23,7 +23,7 @@
 #' - [dm_draw()] for visualization
 #' - [dm_join_to_tbl()] for flattening
 #' - [dm_filter()] for filtering
-#' - [cdm_select_tbl()] for creating a `dm` with only a subset of the tables
+#' - [dm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [decompose_table()] as one example of the table surgery family
 #' - [check_key()] and [check_if_subset()] for checking for key properties
 #' - [check_cardinality()] for checking the cardinality of the relation between two tables
@@ -42,9 +42,9 @@
 #' dm_nycflights13() %>% dm_get_tables()
 #'
 #' dm_nycflights13() %>%
-#'   cdm_rename_tbl(ap = airports)
+#'   dm_rename_tbl(ap = airports)
 #' dm_nycflights13() %>%
-#'   cdm_rename_tbl(ap = airports, fl = flights)
+#'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
   quos <- enquos(...)
@@ -536,7 +536,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 `[.dm` <- function(x, id) {
   if (is.numeric(id)) id <- src_tbls(x)[id]
   id <- as.character(id)
-  cdm_select_tbl(x, !!!id)
+  dm_select_tbl(x, !!!id)
 }
 
 
@@ -627,7 +627,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
   # FIXME: should we allow `overwrite` argument?
   names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
   # rename old tables with potentially new names
-  dest <- cdm_rename_tbl(dest, !!!names_list$new_old_names)
+  dest <- dm_rename_tbl(dest, !!!names_list$new_old_names)
   # `repair` argument is `unique` by default
   dm_add_tbl_impl(dest, list(df), names_list$new_names)
 }

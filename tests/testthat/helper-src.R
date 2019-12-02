@@ -165,7 +165,7 @@ message("for testing filter and semi_join (2)")
 list_for_filter %<-% list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
 dm_for_filter %<-% {
   dm_for_filter_w_cycle %>%
-    cdm_select_tbl(-t7)
+    dm_select_tbl(-t7)
 }
 
 message("for testing filter and semi_join (3)")

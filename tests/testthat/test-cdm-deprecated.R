@@ -293,3 +293,16 @@ test_that("other PK functions work", {
     dm_enum_pk_candidates(dm_for_disambiguate, iris_1)
   )
 })
+
+test_that("cdm_select_tbl() and cdm_rename_tbl() work", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_equivalent_dm(
+    cdm_select_tbl(dm_for_filter, t1_new = t1, t2, new_t6 = t6),
+    dm_select_tbl(dm_for_filter, t1_new = t1, t2, new_t6 = t6)
+  )
+
+  expect_equivalent_dm(
+    cdm_rename_tbl(dm_for_filter, t1_new = t1, new_t6 = t6),
+    dm_rename_tbl(dm_for_filter, t1_new = t1, new_t6 = t6)
+  )
+})

@@ -104,7 +104,7 @@ Each table is the result of a `dm_apply_filters_to_tbl()` call, meaning that the
 Currently, this only works if the graph induced by the foreign key relations is cycle free.
 Fortunately, this is the default for `dm_nycflights13()`.
 
-Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. `dm_enum_fk_candidates()`, `dm_enum_pk_candidates()`, `cdm_select_tbl()`, `cdm_rename_tbl()`, `cdm_select()`, `cdm_rename()` and `dm_nrow()`.
+Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. `dm_enum_fk_candidates()`, `dm_enum_pk_candidates()`, `dm_select_tbl()`, `dm_rename_tbl()`, `cdm_select()`, `cdm_rename()` and `dm_nrow()`.
 In these cases consider applying the filters with `dm_apply_filters()` first.
 
 ### Filtering Examples
@@ -217,7 +217,7 @@ Then we filter the data, and print the corresponding SQL statement with `dbplyr:
 
 ```{r, warning=F}
 dm %>%
-  cdm_select_tbl(flights, airlines, airports) %>%
+  dm_select_tbl(flights, airlines, airports) %>%
   dm_filter(flights, month == 5) %>% 
   dm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE) %>% 
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%

@@ -65,7 +65,7 @@ test_that("dm_add_tbl() works", {
     expect_equivalent_dm(
       dm_add_tbl(dm_for_filter, t1 = d1, repair = "unique"),
       dm_for_filter %>%
-        cdm_rename_tbl(t1...1 = t1) %>%
+        dm_rename_tbl(t1...1 = t1) %>%
         dm_add_tbl(t1...7 = d1)
     )
   )
@@ -95,9 +95,9 @@ test_that("dm_add_tbl() works", {
     }
   )
 
-  # can I use cdm_select_tbl(), selecting among others the new table?
+  # can I use dm_select_tbl(), selecting among others the new table?
   expect_silent(
-    dm_add_tbl(dm_for_filter, t7_new = t7) %>% cdm_select_tbl(t1, t7_new, everything())
+    dm_add_tbl(dm_for_filter, t7_new = t7) %>% dm_select_tbl(t1, t7_new, everything())
   )
 })
 
@@ -114,7 +114,7 @@ test_that("dm_rm_tbl() works", {
   # removes more than one table
   expect_equivalent_dm(
     dm_rm_tbl(dm_for_filter_w_cycle, t7, t5, t3) %>% collect(),
-    cdm_select_tbl(dm_for_filter, t1, t2, t4, t6)
+    dm_select_tbl(dm_for_filter, t1, t2, t4, t6)
   )
 
   # fails when table name is wrong

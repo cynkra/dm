@@ -77,7 +77,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   names_list <-
     repair_table_names(old_names = names(dm), new_names = new_tbl_name_chr, repair, quiet)
   # rename dm in case of name repair
-  dm <- cdm_select_tbl_impl(dm, names_list$new_old_names)
+  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
 
   new_tbl_name_chr <- names_list$new_names
   old_tbl_name <- orig_name_zoomed(dm)
