@@ -27,12 +27,12 @@ cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
     dm_from_src(
       src_df("nycflights13")
     ) %>%
-    cdm_add_pk(planes, tailnum) %>%
-    cdm_add_pk(airlines, carrier) %>%
-    cdm_add_pk(airports, faa) %>%
-    cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
-    cdm_add_fk(flights, carrier, airlines) %>%
-    cdm_add_fk(flights, origin, airports)
+    dm_add_pk(planes, tailnum) %>%
+    dm_add_pk(airlines, carrier) %>%
+    dm_add_pk(airports, faa) %>%
+    dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+    dm_add_fk(flights, carrier, airlines) %>%
+    dm_add_fk(flights, origin, airports)
 
   if (color) {
     dm <-
@@ -49,7 +49,7 @@ cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
   if (cycle) {
     dm <-
       dm %>%
-      cdm_add_fk(flights, dest, airports, check = FALSE)
+      dm_add_fk(flights, dest, airports, check = FALSE)
   }
 
   dm

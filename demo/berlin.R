@@ -411,10 +411,10 @@ nycflights13_tbl %>%
 # Adding primary keys
 nycflights13_pk <-
   nycflights13_tbl %>%
-  cdm_add_pk(weather, origin_slot_id) %>%
-  cdm_add_pk(planes, tailnum) %>%
-  cdm_add_pk(airports, faa) %>%
-  cdm_add_pk(airlines, carrier)
+  dm_add_pk(weather, origin_slot_id) %>%
+  dm_add_pk(planes, tailnum) %>%
+  dm_add_pk(airports, faa) %>%
+  dm_add_pk(airlines, carrier)
 
 nycflights13_pk %>%
   dm_draw()
@@ -424,11 +424,11 @@ nycflights13_pk %>%
 # Adding foreign keys
 nycflights13_fk <-
   nycflights13_pk %>%
-  cdm_add_fk(flights, origin_slot_id, weather, check = FALSE) %>%
-  cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
-  cdm_add_fk(flights, origin, airports) %>%
-  cdm_add_fk(flights, dest, airports, check = FALSE) %>%
-  cdm_add_fk(flights, carrier, airlines)
+  dm_add_fk(flights, origin_slot_id, weather, check = FALSE) %>%
+  dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+  dm_add_fk(flights, origin, airports) %>%
+  dm_add_fk(flights, dest, airports, check = FALSE) %>%
+  dm_add_fk(flights, carrier, airlines)
 
 nycflights13_fk %>%
   dm_draw()

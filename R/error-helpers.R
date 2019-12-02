@@ -114,7 +114,7 @@ abort_ref_tbl_has_no_pk <- function(ref_table_name) {
 error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
   glue(
     "ref_table {tick(ref_table_name)} needs a primary key first. ",
-    "Use `cdm_enum_pk_candidates()` to find appropriate columns and `cdm_add_pk()` to define a primary key."
+    "Use `cdm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key."
   )
 }
 

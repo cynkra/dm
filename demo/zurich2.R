@@ -327,9 +327,9 @@ nycflights13_tbl %>%
 # Adding primary keys:
 nycflights13_pk <-
   nycflights13_tbl %>%
-  cdm_add_pk(planes, tailnum) %>%
-  cdm_add_pk(airports, faa) %>%
-  cdm_add_pk(airlines, carrier)
+  dm_add_pk(planes, tailnum) %>%
+  dm_add_pk(airports, faa) %>%
+  dm_add_pk(airlines, carrier)
 
 nycflights13_pk %>%
   dm_draw()
@@ -339,10 +339,10 @@ nycflights13_pk %>%
 # Adding foreign keys
 nycflights13_fk <-
   nycflights13_pk %>%
-  cdm_add_fk(flights, tailnum, planes) %>%
-  cdm_add_fk(flights, origin, airports) %>%
-  cdm_add_fk(flights, dest, airports) %>%
-  cdm_add_fk(flights, carrier, airlines, check = TRUE)
+  dm_add_fk(flights, tailnum, planes) %>%
+  dm_add_fk(flights, origin, airports) %>%
+  dm_add_fk(flights, dest, airports) %>%
+  dm_add_fk(flights, carrier, airlines, check = TRUE)
 
 nycflights13_fk %>%
   dm_draw()
@@ -415,7 +415,7 @@ nycflights13_weather_link <-
   # here the original 'weather' table is updated with the manipulated one
   cdm_update_zoomed_tbl() %>%
   # here we are adding a PK for the "enhanced" weather table
-  cdm_add_pk(weather, origin_slot_id)
+  dm_add_pk(weather, origin_slot_id)
 
 nycflights13_weather_link$weather
 
@@ -442,7 +442,7 @@ cdm_enum_fk_candidates(nycflights13_weather_flights_link, flights, weather)
 
 nycflights13_perfect <-
   nycflights13_weather_flights_link %>%
-  cdm_add_fk(flights, origin_slot_id, weather)
+  dm_add_fk(flights, origin_slot_id, weather)
 
 nycflights13_perfect %>%
   dm_draw()

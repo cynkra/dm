@@ -2,7 +2,7 @@
 #'
 #' `cdm_paste` takes an existing `dm` and produces the code necessary for its creation
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param select Boolean, default `FALSE`. If `TRUE` will try to produce code for reducing to necessary columns.
 #' @param tab_width Indentation width for code from the second line onwards
 #'
@@ -41,12 +41,12 @@ cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
   }
   # adding code for establishing PKs
   tbl_pks <- cdm_get_all_pks(dm) %>%
-    mutate(code = glue("{tab}cdm_add_pk({table}, {pk_col})"))
+    mutate(code = glue("{tab}dm_add_pk({table}, {pk_col})"))
   code_pks <- if (nrow(tbl_pks)) summarize(tbl_pks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
   # adding code for establishing FKs
   tbl_fks <- cdm_get_all_fks(dm) %>%
-    mutate(code = glue("{tab}cdm_add_fk({child_table}, {child_fk_col}, {parent_table})"))
+    mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_col}, {parent_table})"))
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
   # without "\n" in the end it looks weird when a warning is issued

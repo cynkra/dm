@@ -22,10 +22,10 @@ All arguments may be provided quoted or unquoted.
 }
 \seealso{
 Other foreign key functions: 
-\code{\link{cdm_add_fk}()},
 \code{\link{cdm_enum_fk_candidates}()},
 \code{\link{cdm_get_all_fks}()},
 \code{\link{cdm_get_fk}()},
-\code{\link{cdm_has_fk}()}
+\code{\link{cdm_has_fk}()},
+\code{\link{dm_add_fk}()}
 }
 \concept{foreign key functions}

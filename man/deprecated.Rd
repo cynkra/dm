@@ -21,6 +21,8 @@
 \alias{cdm_join_to_tbl}
 \alias{cdm_apply_filters}
 \alias{cdm_apply_filters_to_tbl}
+\alias{cdm_add_pk}
+\alias{cdm_add_fk}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -83,6 +85,10 @@ cdm_join_to_tbl(dm, table_1, table_2, join = left_join)
 cdm_apply_filters(dm)
 
 cdm_apply_filters_to_tbl(dm = dm, table = table)
+
+cdm_add_pk(dm, table, column, check = FALSE, force = FALSE)
+
+cdm_add_fk(dm, table, column, ref_table, check = FALSE)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

@@ -621,9 +621,9 @@ test_that("can use column as primary and foreign key", {
 
   dm <-
     dm(f, d1) %>%
-    cdm_add_pk(f, d1) %>%
-    cdm_add_pk(d1, d1) %>%
-    cdm_add_fk(f, d1, d1)
+    dm_add_pk(f, d1) %>%
+    dm_add_pk(d1, d1) %>%
+    dm_add_fk(f, d1, d1)
 
   expect_equivalent_dm(
     dm %>%

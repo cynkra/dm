@@ -9,7 +9,7 @@
 #' because only the foreign key column will remain when two tables are joined,
 #' making that column name "unique" as well.
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param sep The character variable that separates the names of the table and the names of the ambiguous columns.
 #' @param quiet Boolean.
 #'   By default, this function lists the renamed columns in a message, pass `FALSE` to suppress this message.

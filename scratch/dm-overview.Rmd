@@ -83,7 +83,7 @@ But how can we use dm-functions to manage primary keys of the tables in a `dm` o
 
 Useful functions for managing primary key settings are:
 
-1. `cdm_add_pk()`
+1. `dm_add_pk()`
 2. `cdm_has_pk()`
 3. `cdm_get_pk()`
 4. `cdm_rm_pk()`
@@ -92,12 +92,12 @@ Useful functions for managing primary key settings are:
 As of yet `dm` objects only support one-column primary keys. If your tables have unique compound keys, maybe consider adding a surrogate key column. 
 If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
-By default `cdm_add_pk()` checks if the column of the table given by the user is a unique key.
+By default `dm_add_pk()` checks if the column of the table given by the user is a unique key.
 Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`.
 
 ```{r}
 cdm_has_pk(flights_dm, airports)
-flights_dm_with_key <- cdm_add_pk(flights_dm, airports, faa)
+flights_dm_with_key <- dm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
 Still looks exactly the same as before... let's check:
@@ -127,33 +127,33 @@ cdm_enum_pk_candidates(flights_dm_with_key, flights) %>% count(candidate)
 
 Useful functions for managing foreign key relations are:
 
-1. `cdm_add_fk()`
+1. `dm_add_fk()`
 2. `cdm_has_fk()`
 3. `cdm_get_fk()`
 4. `cdm_rm_fk()`
 5. `cdm_enum_fk_candidates()`
 
 Now it gets (even more) interesting: we want to define relations between different tables.
-With the function `cdm_add_fk()` you can define, which column of which table points to another table's column.
+With the function `dm_add_fk()` you can define, which column of which table points to another table's column.
 
 When dealing with data models, a foreign key from one table has to always point to a primary key of another table.
-The primary key of the referred table must be set with `cdm_add_pk()`.
-`cdm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
+The primary key of the referred table must be set with `dm_add_pk()`.
+`dm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
 
 ```{r}
-flights_dm_with_key %>% cdm_add_fk(flights, origin, airports)
+flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 ```
 This will throw an error:
 ```{r error=TRUE}
-flights_dm %>% cdm_add_fk(flights, origin, airports)
+flights_dm %>% dm_add_fk(flights, origin, airports)
 ```
 Let's create a `dm` object with a foreign key relation to work with later on:
 ```{r}
-flights_dm_with_fk <- cdm_add_fk(flights_dm_with_key, flights, origin, airports)
+flights_dm_with_fk <- dm_add_fk(flights_dm_with_key, flights, origin, airports)
 ```
 What if we try to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, since it also contains airport codes:
 ```{r error=TRUE}
-flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports)
+flights_dm_with_fk %>% dm_add_fk(flights, dest, airports)
 ```
 As you can see, behind the scenes, checks are executed automatically by the functions of `dm` to prevent steps that do not comply with the logic of data models.
 
@@ -202,13 +202,13 @@ Let's first create a slightly more interconnected `dm` object from the {nycfligh
 ```{r}
 flights_dm_w_many_keys <- 
   flights_dm %>% 
-  cdm_add_pk(planes, tailnum) %>% 
-  cdm_add_pk(airports, faa) %>% 
-  cdm_add_pk(airlines, carrier) %>% 
-  cdm_add_fk(flights, origin, airports) %>% 
-  cdm_add_fk(flights, carrier, airlines) %>% 
-  cdm_add_fk(flights, tailnum, planes, check = FALSE) %>% 
-  cdm_add_fk(flights, dest, airports, check = FALSE)
+  dm_add_pk(planes, tailnum) %>% 
+  dm_add_pk(airports, faa) %>% 
+  dm_add_pk(airlines, carrier) %>% 
+  dm_add_fk(flights, origin, airports) %>% 
+  dm_add_fk(flights, carrier, airlines) %>% 
+  dm_add_fk(flights, tailnum, planes, check = FALSE) %>% 
+  dm_add_fk(flights, dest, airports, check = FALSE)
 flights_dm_w_many_keys
 ```
 You probably realized the option `check = FALSE` in the last two function calls when adding foreign keys.

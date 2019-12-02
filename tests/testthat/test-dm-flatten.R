@@ -286,7 +286,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   # fails when there is a cycle
   expect_dm_error(
     dm_nycflights_small %>%
-      cdm_add_fk(flights, origin, airports) %>%
+      dm_add_fk(flights, origin, airports) %>%
       dm_flatten_to_tbl(flights),
     "no_cycles"
   )

@@ -111,7 +111,7 @@ But how can we use {dm}-functions to manage the primary keys of the tables in a 
 
 Some useful functions for managing primary key settings are:
 
-1. `cdm_add_pk()`
+1. `dm_add_pk()`
 2. `cdm_has_pk()`
 3. `cdm_get_pk()`
 4. `cdm_rm_pk()`
@@ -122,12 +122,12 @@ Currently `dm` objects only support one-column primary keys. If your tables have
 If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 
-`cdm_add_pk()` has an option to check if the column of the table given by the user is a unique key; for performance reasons, the check will not be executed unless requested.
+`dm_add_pk()` has an option to check if the column of the table given by the user is a unique key; for performance reasons, the check will not be executed unless requested.
 Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm` from above.
 
 ```{r}
 cdm_has_pk(flights_dm, airports)
-flights_dm_with_key <- cdm_add_pk(flights_dm, airports, faa)
+flights_dm_with_key <- dm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
 ```
 The `dm` now has a primary key. Let's check:
@@ -166,7 +166,7 @@ This object already has all keys pre-set.
 
 Useful functions for managing foreign key relations include:
 
-1. `cdm_add_fk()`
+1. `dm_add_fk()`
 2. `cdm_has_fk()`
 3. `cdm_get_fk()`
 4. `cdm_rm_fk()`
@@ -174,26 +174,26 @@ Useful functions for managing foreign key relations include:
 6. `cdm_get_all_fks()`
 
 Now it gets (even more) interesting: we want to define relations between different tables.
-With the `cdm_add_fk()` function you can define which column of which table points to another table's column.
+With the `dm_add_fk()` function you can define which column of which table points to another table's column.
 
 This is done by choosing a foreign key from one table that will point to a primary key of another table.
-The primary key of the referred table must be set with `cdm_add_pk()`.
-`cdm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
+The primary key of the referred table must be set with `dm_add_pk()`.
+`dm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
 
 ```{r}
-flights_dm_with_key %>% cdm_add_fk(flights, origin, airports)
+flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 ```
 This will throw an error:
 ```{r error=TRUE}
-flights_dm %>% cdm_add_fk(flights, origin, airports)
+flights_dm %>% dm_add_fk(flights, origin, airports)
 ```
 Let's create a `dm` object with a foreign key relation to work with later on:
 ```{r}
-flights_dm_with_fk <- cdm_add_fk(flights_dm_with_key, flights, origin, airports)
+flights_dm_with_fk <- dm_add_fk(flights_dm_with_key, flights, origin, airports)
 ```
 What if we tried to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, since it also contains airport codes:
 ```{r error=TRUE}
-flights_dm_with_fk %>% cdm_add_fk(flights, dest, airports, check = TRUE)
+flights_dm_with_fk %>% dm_add_fk(flights, dest, airports, check = TRUE)
 ```
 As you can see, behind the scenes, checks are executed automatically (unless `check = FALSE`) by the functions of `dm` to prevent steps that would result in inconsistent representations.
 

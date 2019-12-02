@@ -2,7 +2,7 @@
 #'
 #' This function returns a tibble with information about which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @return A tibble with 5 columns:
 #'   1. `table`: the table in the `dm`

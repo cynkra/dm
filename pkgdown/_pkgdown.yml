@@ -19,7 +19,7 @@ reference:
 
 - title: Primary keys
   contents:
-  - cdm_add_pk
+  - dm_add_pk
   - cdm_has_pk
   - cdm_get_pk
   - cdm_get_all_pks
@@ -28,7 +28,7 @@ reference:
 
 - title: Foreign keys
   contents:
-  - cdm_add_fk
+  - dm_add_fk
   - cdm_has_fk
   - cdm_get_fk
   - cdm_get_all_fks

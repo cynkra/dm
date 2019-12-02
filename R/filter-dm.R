@@ -26,7 +26,7 @@
 #' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
 #' @rdname dm_filter
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
 #'   Multiple conditions are combined with `&` or `,`.
 #'   Only the rows where the condition evaluates
@@ -78,7 +78,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 
 #' @rdname dm_filter
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @examples
 #'
@@ -103,7 +103,7 @@ dm_apply_filters <- function(dm) {
 # FIXME: 'dm_apply_filters()' should get an own doc-page which 'dm_apply_filters_to_tbl()' should share (cf. #145)
 #' @rdname dm_filter
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @examples
 #' cdm_nycflights13() %>%

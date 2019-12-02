@@ -76,9 +76,9 @@ test_that("cdm_insert_zoomed_tbl() works", {
     cdm_zoom_to_tbl(dm_for_filter, t4) %>% cdm_insert_zoomed_tbl(t4_new),
     dm_for_filter %>%
       dm_add_tbl(t4_new = t4) %>%
-      cdm_add_pk(t4_new, h) %>%
-      cdm_add_fk(t4_new, j, t3) %>%
-      cdm_add_fk(t5, l, t4_new)
+      dm_add_pk(t4_new, h) %>%
+      dm_add_fk(t4_new, j, t3) %>%
+      dm_add_fk(t5, l, t4_new)
   )
 
   # test that an error is thrown if 'repair = check_unique' and duplicate table names
@@ -93,9 +93,9 @@ test_that("cdm_insert_zoomed_tbl() works", {
     dm_for_filter %>%
       cdm_rename_tbl(t4...4 = t4) %>%
       dm_add_tbl(t4...7 = t4) %>%
-      cdm_add_pk(t4...7, h) %>%
-      cdm_add_fk(t4...7, j, t3) %>%
-      cdm_add_fk(t5, l, t4...7)
+      dm_add_pk(t4...7, h) %>%
+      dm_add_fk(t4...7, j, t3) %>%
+      dm_add_fk(t5, l, t4...7)
   )
 })
 

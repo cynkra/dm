@@ -4,7 +4,7 @@
 #' Zooming to a table of a [`dm`] allows for the use of many `dplyr`-verbs directly on this table, while retaining the
 #' context of the `dm` object.
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @details `cdm_zoom_to_tbl()`: zooms to the given table.
@@ -202,7 +202,7 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
     )
   }
   structure(
-    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ cdm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm),
+    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm),
     class = c("zoomed_dm", "dm")
   )
 }

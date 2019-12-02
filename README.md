@@ -179,7 +179,7 @@ The example data model for {nycflights13} is integrated in {dm} and
 defines primary and foreign keys to identify the common points between
 the tables. For data other than the example data, the `dm` object would
 need to be created by using the `dm()` constructor and by adding keys
-using `cdm_add_pk()` and `cdm_add_fk()`.
+using `dm_add_pk()` and `dm_add_fk()`.
 
 ## Features
 

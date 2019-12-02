@@ -1,6 +1,6 @@
 #' Add a reference from one table of a [`dm`] to another
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param column The column of `table` which is to become the foreign key column and
 #'   reference the primary key of `ref_table`.
 #' @param ref_table The table which `table` is referencing.
@@ -11,7 +11,7 @@
 #' @family foreign key functions
 #'
 #' @export
-cdm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
+dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
@@ -35,11 +35,11 @@ cdm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
     }
   }
 
-  cdm_add_fk_impl(dm, table_name, column_name, ref_table_name)
+  dm_add_fk_impl(dm, table_name, column_name, ref_table_name)
 })
 
 
-cdm_add_fk_impl <- function(dm, table, column, ref_table) {
+dm_add_fk_impl <- function(dm, table, column, ref_table) {
   def <- dm_get_def(dm)
 
   i <- which(def$table == ref_table)
@@ -53,7 +53,7 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table) {
 
 #' Does there exist a reference from one table of a `dm` to another?
 #'
-#' @inheritParams cdm_add_fk
+#' @inheritParams dm_add_fk
 #' @param ref_table The table that `table` is potentially referencing.
 #'
 #' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
@@ -111,7 +111,7 @@ cdm_get_all_fks <- nse(function(dm) {
 #' @description This function can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
 #' All arguments may be provided quoted or unquoted.
 #'
-#' @inheritParams cdm_add_fk
+#' @inheritParams dm_add_fk
 #' @param column The column of `table` that should no longer be referencing the primary key of `ref_table`.
 #'   If `NULL`, all columns will be evaluated.
 #' @param ref_table The table that `table` was referencing.
@@ -165,7 +165,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
 #' to reference the primary key column of another table of the [`dm`] object.
 #'
-#' @inheritParams cdm_add_fk
+#' @inheritParams dm_add_fk
 #' @param table The table whose columns should be tested for suitability as foreign keys.
 #' @param ref_table A table with a primary key.
 #'

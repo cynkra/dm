@@ -85,17 +85,17 @@ test_that("we get filtered/unfiltered tables with respective funs", {
   expect_equivalent_dm(
     dm_filter(dm_for_filter, t1, a > 3, a < 8) %>% dm_apply_filters(),
     as_dm(output_1) %>%
-      cdm_add_pk(t1, a) %>%
-      cdm_add_pk(t2, c) %>%
-      cdm_add_pk(t3, f) %>%
-      cdm_add_pk(t4, h) %>%
-      cdm_add_pk(t5, k) %>%
-      cdm_add_pk(t6, n) %>%
-      cdm_add_fk(t2, d, t1) %>%
-      cdm_add_fk(t2, e, t3) %>%
-      cdm_add_fk(t4, j, t3) %>%
-      cdm_add_fk(t5, l, t4) %>%
-      cdm_add_fk(t5, m, t6)
+      dm_add_pk(t1, a) %>%
+      dm_add_pk(t2, c) %>%
+      dm_add_pk(t3, f) %>%
+      dm_add_pk(t4, h) %>%
+      dm_add_pk(t5, k) %>%
+      dm_add_pk(t6, n) %>%
+      dm_add_fk(t2, d, t1) %>%
+      dm_add_fk(t2, e, t3) %>%
+      dm_add_fk(t4, j, t3) %>%
+      dm_add_fk(t5, l, t4) %>%
+      dm_add_fk(t5, m, t6)
   )
 })
 

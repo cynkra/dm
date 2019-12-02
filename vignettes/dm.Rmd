@@ -90,13 +90,13 @@ cdm_get_all_fks(flights_dm)
 ## Keys and visualization {#keys}
 
 As you can see in the output above, no keys have been set so far.
-We will use `cdm_add_pk()` and `cdm_add_fk()` to add primary keys (pk) and foreign keys (fk):
+We will use `dm_add_pk()` and `dm_add_fk()` to add primary keys (pk) and foreign keys (fk):
 
 ```{r}
 flights_dm_with_one_key <- 
   flights_dm %>% 
-  cdm_add_pk(airlines, carrier) %>% 
-  cdm_add_fk(flights, carrier, airlines)
+  dm_add_pk(airlines, carrier) %>% 
+  dm_add_fk(flights, carrier, airlines)
 ```
 
 After you set the keys and establish relations, you can create a graphical representation of your data model with `dm_draw()`:

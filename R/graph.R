@@ -1,6 +1,6 @@
 #' Is a table of a [`dm`] referenced by another table?
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @return `TRUE` if at least one foreign key exists that points to the primary
 #' key of the `table` argument, `FALSE` otherwise.

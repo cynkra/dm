@@ -2,7 +2,7 @@
 
 #' Mark a column of a table in a [`dm`] object as its primary key
 #'
-#' @description `cdm_add_pk()` marks the specified column as the primary key of the specified table.
+#' @description `dm_add_pk()` marks the specified column as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
 #' the given column is a unique key of the table.
 #' If `force == TRUE`, the function will replace an already
@@ -25,13 +25,13 @@
 #' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
-#' cdm_add_pk(nycflights_dm, planes, tailnum)
-#' cdm_add_pk(nycflights_dm, airports, faa)
-#' cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
+#' dm_add_pk(nycflights_dm, planes, tailnum)
+#' dm_add_pk(nycflights_dm, airports, faa)
+#' dm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 #'
 #' # the following does not work (throws an error)
-#' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
-cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
+#' try(dm_add_pk(nycflights_dm, planes, manufacturer))
+dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)
@@ -45,14 +45,14 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
     check_key(table_from_dm, !!col_expr)
   }
 
-  cdm_add_pk_impl(dm, table_name, col_name, force)
+  dm_add_pk_impl(dm, table_name, col_name, force)
 }
 
 # both "table" and "column" must be characters
 # in {datamodelr}, a primary key may consist of more than one columns
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
-cdm_add_pk_impl <- function(dm, table, column, force) {
+dm_add_pk_impl <- function(dm, table, column, force) {
   def <- dm_get_def(dm)
   i <- which(def$table == table)
 
@@ -70,7 +70,7 @@ cdm_add_pk_impl <- function(dm, table, column, force) {
 #' @description `cdm_has_pk()` checks in the `data_model` part
 #' of the [`dm`] object if a given table has a column marked as its primary key.
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @family primary key functions
 #'
@@ -94,7 +94,7 @@ cdm_has_pk <- function(dm, table) {
 #'
 #' @family primary key functions
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @examples
 #' library(dplyr)
@@ -119,7 +119,7 @@ cdm_get_pk <- function(dm, table) {
 #'
 #' @family primary key functions
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @export
 cdm_get_all_pks <- nse(function(dm) {
@@ -136,7 +136,7 @@ cdm_get_all_pks <- nse(function(dm) {
 #'
 #' @family primary key functions
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
 #'   there are foreign keys addressing the primary key that is to be removed.
 #'   If `TRUE`, the function will
@@ -204,7 +204,7 @@ enum_pk_candidates <- nse(function(table) {
 #'
 #' @family primary key functions
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @rdname enum_pk_candidates
 #' @export

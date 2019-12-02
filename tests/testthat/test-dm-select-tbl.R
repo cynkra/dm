@@ -25,14 +25,14 @@ test_that("cdm_select_tbl() can reorder the tables in a `dm`", {
 })
 
 test_that("cdm_select_tbl() remembers all FKs", {
-  reordered_dm_nycflights_small_cycle <- cdm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
+  reordered_dm_nycflights_small_cycle <- dm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
     dm_get_def() %>%
     filter(!(table %in% c("airlines", "planes"))) %>%
     slice(2:1) %>%
     new_dm3()
 
   expect_equivalent_dm(
-    cdm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
+    dm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
       cdm_select_tbl(airports, flights),
     reordered_dm_nycflights_small_cycle
   )
@@ -42,23 +42,23 @@ test_that("cdm_select_tbl() remembers all FKs", {
 test_that("cdm_rename_tbl() renames a `dm`", {
   dm_rename <-
     as_dm(list(a = tibble(x = 1), b = tibble(y = 1))) %>%
-    cdm_add_pk(b, y) %>%
-    cdm_add_fk(a, x, b)
+    dm_add_pk(b, y) %>%
+    dm_add_fk(a, x, b)
 
   dm_rename_a <-
     as_dm(list(c = tibble(x = 1), b = tibble(y = 1))) %>%
-    cdm_add_pk(b, y) %>%
-    cdm_add_fk(c, x, b)
+    dm_add_pk(b, y) %>%
+    dm_add_fk(c, x, b)
 
   dm_rename_b <-
     as_dm(list(a = tibble(x = 1), e = tibble(y = 1))) %>%
-    cdm_add_pk(e, y) %>%
-    cdm_add_fk(a, x, e)
+    dm_add_pk(e, y) %>%
+    dm_add_fk(a, x, e)
 
   dm_rename_bd <-
     as_dm(list(a = tibble(x = 1), d = tibble(y = 1))) %>%
-    cdm_add_pk(d, y) %>%
-    cdm_add_fk(a, x, d)
+    dm_add_pk(d, y) %>%
+    dm_add_fk(a, x, d)
 
   expect_equivalent_dm(
     cdm_rename_tbl(dm_rename, c = a),
