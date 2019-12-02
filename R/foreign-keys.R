@@ -61,19 +61,19 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' @family foreign key functions
 #'
 #' @export
-cdm_has_fk <- function(dm, table, ref_table) {
-  has_length(cdm_get_fk(dm, {{ table }}, {{ ref_table }}))
+dm_has_fk <- function(dm, table, ref_table) {
+  has_length(dm_get_fk(dm, {{ table }}, {{ ref_table }}))
 }
 
 #' Retrieve the name of the column marked as a foreign key, pointing from one table of a [`dm`] to another table.
 #'
-#' @inheritParams cdm_has_fk
+#' @inheritParams dm_has_fk
 #' @param ref_table The table that is referenced from `table`.
 #'
 #' @family foreign key functions
 #'
 #' @export
-cdm_get_fk <- function(dm, table, ref_table) {
+dm_get_fk <- function(dm, table, ref_table) {
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
@@ -94,12 +94,12 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' "child_fk_col": foreign key column in child table,
 #' "parent_table": parent table
 #'
-#' @inheritParams cdm_has_fk
+#' @inheritParams dm_has_fk
 #'
 #' @family foreign key functions
 #'
 #' @export
-cdm_get_all_fks <- nse(function(dm) {
+dm_get_all_fks <- nse(function(dm) {
   dm_get_data_model_fks(dm) %>%
     select(child_table = table, child_fk_col = column, parent_table = ref) %>%
     arrange(child_table, child_fk_col)
@@ -126,7 +126,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   check_correct_input(dm, table)
   check_correct_input(dm, ref_table)
 
-  fk_cols <- cdm_get_fk(dm, !!table, !!ref_table)
+  fk_cols <- dm_get_fk(dm, !!table, !!ref_table)
   if (is_empty(fk_cols)) {
     return(dm)
   }

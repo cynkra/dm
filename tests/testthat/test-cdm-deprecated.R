@@ -170,3 +170,29 @@ test_that("cdm_add_pk() and cdm_add_fk() work", {
       dm_add_fk(cdm_table_1, a, cdm_table_4)
   )
 })
+
+test_that("cdm_has_fk() and cdm_get_fk() work", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_has_fk(dm_for_filter, t2, t1),
+    dm_has_fk(dm_for_filter, t2, t1)
+  )
+
+  expect_identical(
+    cdm_has_fk(dm_for_filter, t1, t2),
+    dm_has_fk(dm_for_filter, t1, t2)
+  )
+
+  expect_identical(
+    cdm_get_fk(dm_for_filter, t2, t1),
+    dm_get_fk(dm_for_filter, t2, t1)
+  )
+})
+
+test_that("cdm_has_fk() and cdm_get_fk() work", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_get_all_fks(dm_for_filter),
+    dm_get_all_fks(dm_for_filter)
+  )
+})

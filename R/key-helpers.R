@@ -245,7 +245,7 @@ check_pk_constraints <- function(dm) {
 }
 
 check_fk_constraints <- function(dm) {
-  fks <- left_join(cdm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
+  fks <- left_join(dm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
   pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
   fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%

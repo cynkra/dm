@@ -45,7 +45,7 @@ cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
   code_pks <- if (nrow(tbl_pks)) summarize(tbl_pks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
   # adding code for establishing FKs
-  tbl_fks <- cdm_get_all_fks(dm) %>%
+  tbl_fks <- dm_get_all_fks(dm) %>%
     mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_col}, {parent_table})"))
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 

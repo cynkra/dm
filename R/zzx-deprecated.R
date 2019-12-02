@@ -146,3 +146,18 @@ cdm_add_fk <- function(dm, table, column, ref_table, check = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_add_fk()")
   dm_add_fk(dm, {{ table }}, {{ column }}, {{ ref_table }}, check)
 }
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_has_fk <- new_cdm_forward_2(dm_has_fk)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_get_fk <- new_cdm_forward_2(dm_get_fk)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_get_all_fks <- new_cdm_forward(dm_get_all_fks)

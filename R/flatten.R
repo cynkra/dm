@@ -184,7 +184,7 @@ parent_child_table <- function(dm, table_1, table_2) {
   t2_name <- as_string(ensym(table_2))
 
   rel <-
-    cdm_get_all_fks(dm) %>%
+    dm_get_all_fks(dm) %>%
     filter(
       (child_table == t1_name & parent_table == t2_name) |
         (child_table == t2_name & parent_table == t1_name)

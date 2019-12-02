@@ -10,7 +10,7 @@ expect_equivalent_dm <- function(dm1, dm2) {
   walk2(tables1, tables2, expect_equal)
 
   expect_equal(cdm_get_all_pks(dm1), cdm_get_all_pks(dm2))
-  expect_equal(cdm_get_all_fks(dm1), cdm_get_all_fks(dm2))
+  expect_equal(dm_get_all_fks(dm1), dm_get_all_fks(dm2))
 }
 
 expect_dm_error <- function(expr, class) {

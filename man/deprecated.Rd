@@ -23,6 +23,8 @@
 \alias{cdm_apply_filters_to_tbl}
 \alias{cdm_add_pk}
 \alias{cdm_add_fk}
+\alias{cdm_has_fk}
+\alias{cdm_get_fk}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -89,6 +91,10 @@ cdm_apply_filters_to_tbl(dm = dm, table = table)
 cdm_add_pk(dm, table, column, check = FALSE, force = FALSE)
 
 cdm_add_fk(dm, table, column, ref_table, check = FALSE)
+
+cdm_has_fk(dm = dm, table = table, ref_table = ref_table)
+
+cdm_get_fk(dm = dm, table = table, ref_table = ref_table)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

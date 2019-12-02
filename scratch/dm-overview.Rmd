@@ -128,8 +128,8 @@ cdm_enum_pk_candidates(flights_dm_with_key, flights) %>% count(candidate)
 Useful functions for managing foreign key relations are:
 
 1. `dm_add_fk()`
-2. `cdm_has_fk()`
-3. `cdm_get_fk()`
+2. `dm_has_fk()`
+3. `dm_get_fk()`
 4. `cdm_rm_fk()`
 5. `cdm_enum_fk_candidates()`
 
@@ -157,29 +157,29 @@ flights_dm_with_fk %>% dm_add_fk(flights, dest, airports)
 ```
 As you can see, behind the scenes, checks are executed automatically by the functions of `dm` to prevent steps that do not comply with the logic of data models.
 
-Use `cdm_has_fk()` for checking if a foreign key exists, which is pointing from one table to another:
+Use `dm_has_fk()` for checking if a foreign key exists, which is pointing from one table to another:
 ```{r}
-flights_dm_with_fk %>% cdm_has_fk(flights, planes)
-flights_dm_with_fk %>% cdm_has_fk(flights, airports)
+flights_dm_with_fk %>% dm_has_fk(flights, planes)
+flights_dm_with_fk %>% dm_has_fk(flights, airports)
 ```
 
-If you want to access the name of the column, which acts as a foreign key of one table to another table's column, use `cdm_get_fk()`:
+If you want to access the name of the column, which acts as a foreign key of one table to another table's column, use `dm_get_fk()`:
 ```{r}
-flights_dm_with_fk %>% cdm_get_fk(flights, planes)
-flights_dm_with_fk %>% cdm_get_fk(flights, airports)
+flights_dm_with_fk %>% dm_get_fk(flights, planes)
+flights_dm_with_fk %>% dm_get_fk(flights, airports)
 ```
 
 Remove foreign key relations with `cdm_rm_fk()` (parameter `column = NULL` means removal of all relations):
 ```{r error=TRUE}
 flights_dm_with_fk %>% 
   cdm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
-  cdm_get_fk(flights, airports)
+  dm_get_fk(flights, airports)
 flights_dm_with_fk %>% 
   cdm_rm_fk(flights, origin, airports) %>% 
-  cdm_get_fk(flights, airports)
+  dm_get_fk(flights, airports)
 flights_dm_with_fk %>% 
   cdm_rm_fk(flights, NULL, airports) %>% 
-  cdm_get_fk(flights, airports)
+  dm_get_fk(flights, airports)
 ```
 
 Another function for getting to know your data better (cf. `cdm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `cdm_enum_fk_candidates()`. Use it to get an overview over foreign key candidates pointing from one table to another:

@@ -20,7 +20,7 @@ test_that("dm_add_fk() works as intended?", {
   )
 })
 
-test_that("cdm_has_fk() and cdm_get_fk() work as intended?", {
+test_that("dm_has_fk() and dm_get_fk() work as intended?", {
   map(
     .x = cdm_test_obj_src,
     ~ expect_true(
@@ -28,7 +28,7 @@ test_that("cdm_has_fk() and cdm_get_fk() work as intended?", {
         dm_add_pk(cdm_table_4, c) %>%
         dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
-        cdm_has_fk(cdm_table_1, cdm_table_4)
+        dm_has_fk(cdm_table_1, cdm_table_4)
     )
   )
 
@@ -39,7 +39,7 @@ test_that("cdm_has_fk() and cdm_get_fk() work as intended?", {
         dm_add_pk(cdm_table_4, c) %>%
         dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
-        cdm_get_fk(cdm_table_1, cdm_table_4),
+        dm_get_fk(cdm_table_1, cdm_table_4),
       "a"
     )
   )
@@ -52,7 +52,7 @@ test_that("cdm_has_fk() and cdm_get_fk() work as intended?", {
         dm_add_pk(cdm_table_4, c) %>%
         dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
-        cdm_has_fk(cdm_table_2, cdm_table_4)
+        dm_has_fk(cdm_table_2, cdm_table_4)
     )
   )
 
@@ -63,7 +63,7 @@ test_that("cdm_has_fk() and cdm_get_fk() work as intended?", {
         dm_add_pk(cdm_table_4, c) %>%
         dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
-        cdm_get_fk(cdm_table_2, cdm_table_4),
+        dm_get_fk(cdm_table_2, cdm_table_4),
       "c"
     )
   )
@@ -75,7 +75,7 @@ test_that("cdm_has_fk() and cdm_get_fk() work as intended?", {
         dm_add_pk(cdm_table_4, c) %>%
         dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
-        cdm_has_fk(cdm_table_3, cdm_table_4)
+        dm_has_fk(cdm_table_3, cdm_table_4)
     )
   )
 
@@ -86,7 +86,7 @@ test_that("cdm_has_fk() and cdm_get_fk() work as intended?", {
         dm_add_pk(cdm_table_4, c) %>%
         dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
-        cdm_get_fk(cdm_table_3, cdm_table_4),
+        dm_get_fk(cdm_table_3, cdm_table_4),
       character(0)
     )
   )
@@ -102,7 +102,7 @@ test_that("cdm_rm_fk() works as intended?", {
           dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
           dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
           cdm_rm_fk(cdm_table_2, c, cdm_table_4) %>%
-          cdm_has_fk(cdm_table_1, cdm_table_4)
+          dm_has_fk(cdm_table_1, cdm_table_4)
       )
     }
   )
@@ -116,7 +116,7 @@ test_that("cdm_rm_fk() works as intended?", {
           dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
           dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
           cdm_rm_fk(cdm_table_2, c, cdm_table_4) %>%
-          cdm_has_fk(cdm_table_2, cdm_table_4)
+          dm_has_fk(cdm_table_2, cdm_table_4)
       )
     }
   )
@@ -129,7 +129,7 @@ test_that("cdm_rm_fk() works as intended?", {
         dm_add_fk(cdm_table_1, a, cdm_table_4) %>%
         dm_add_fk(cdm_table_2, c, cdm_table_4) %>%
         cdm_rm_fk(cdm_table_2, NULL, cdm_table_4) %>%
-        cdm_has_fk(cdm_table_2, cdm_table_4)
+        dm_has_fk(cdm_table_2, cdm_table_4)
     )
   )
 

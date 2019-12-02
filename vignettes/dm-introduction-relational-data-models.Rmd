@@ -152,7 +152,7 @@ After finding and assigning foreign keys, get the name of the set foreign key:
 
 ```{r}
 dm %>% 
-  cdm_get_fk(flights, airlines)
+  dm_get_fk(flights, airlines)
 ```
 
 

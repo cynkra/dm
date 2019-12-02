@@ -27,8 +27,8 @@ Add a reference from one table of a \code{\link{dm}} to another
 Other foreign key functions: 
 \code{\link{cdm_enum_fk_candidates}()},
 \code{\link{cdm_get_all_fks}()},
-\code{\link{cdm_get_fk}()},
-\code{\link{cdm_has_fk}()},
-\code{\link{cdm_rm_fk}()}
+\code{\link{cdm_rm_fk}()},
+\code{\link{dm_get_fk}()},
+\code{\link{dm_has_fk}()}
 }
 \concept{foreign key functions}

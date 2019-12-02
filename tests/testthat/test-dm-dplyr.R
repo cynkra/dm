@@ -224,13 +224,13 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
-    left_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    left_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% dm_get_fk(t2, t1),
     "t2.d"
   )
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
-    semi_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    semi_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% dm_get_fk(t2, t1),
     "d"
   )
 
@@ -341,13 +341,13 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
-    left_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    left_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% dm_get_fk(t2, t1),
     "t2.d"
   )
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
-    semi_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% cdm_get_fk(t2, t1),
+    semi_join(zoomed_dm, t3, select = c(d = g, f)) %>% cdm_update_zoomed_tbl() %>% dm_get_fk(t2, t1),
     "d"
   )
 
@@ -416,20 +416,20 @@ test_that("key tracking works", {
     zoomed_grouped_out_dm %>%
       rename(e_new = e) %>%
       cdm_update_zoomed_tbl() %>%
-      cdm_get_all_fks() %>%
+      dm_get_all_fks() %>%
       filter(child_table == "t2", parent_table == "t3") %>%
       pull(child_fk_col),
     "e_new"
   )
 
   expect_identical(
-    # FKs should not be dropped when renaming the PK they are pointing to; tibble from `cdm_get_all_fks()` shouldn't change
+    # FKs should not be dropped when renaming the PK they are pointing to; tibble from `dm_get_all_fks()` shouldn't change
     zoomed_grouped_in_dm %>%
       rename(f_new = f) %>%
       cdm_update_zoomed_tbl() %>%
-      cdm_get_all_fks(),
+      dm_get_all_fks(),
     zoomed_grouped_in_dm %>%
-      cdm_get_all_fks()
+      dm_get_all_fks()
   )
 
   # summarize()
@@ -522,26 +522,26 @@ test_that("key tracking works", {
 
   expect_identical(
     pk_gone_dm %>%
-      cdm_get_fk(t2, t3),
+      dm_get_fk(t2, t3),
     character()
   )
 
   expect_identical(
     pk_gone_dm %>%
-      cdm_get_fk(t4, t3),
+      dm_get_fk(t4, t3),
     character()
   )
 
   expect_identical(
-    distinct(zoomed_dm, d_new = d) %>% cdm_update_zoomed_tbl() %>% cdm_get_all_fks(),
-    cdm_get_all_fks(dm_for_filter) %>%
+    distinct(zoomed_dm, d_new = d) %>% cdm_update_zoomed_tbl() %>% dm_get_all_fks(),
+    dm_get_all_fks(dm_for_filter) %>%
       filter(child_fk_col != "e") %>%
       mutate(child_fk_col = if_else(child_fk_col == "d", "d_new", child_fk_col))
   )
 
   expect_identical(
-    arrange(zoomed_dm, e) %>% cdm_update_zoomed_tbl() %>% cdm_get_all_fks(),
-    cdm_get_all_fks(dm_for_filter)
+    arrange(zoomed_dm, e) %>% cdm_update_zoomed_tbl() %>% dm_get_all_fks(),
+    dm_get_all_fks(dm_for_filter)
   )
 
   # keys tracking when there are no keys to track
@@ -593,9 +593,9 @@ test_that("key tracking works", {
       cdm_zoom_to_tbl(fact) %>%
       select(dim_1_key, dim_3_key, dim_2_key) %>%
       cdm_update_zoomed_tbl() %>%
-      cdm_get_all_fks(),
+      dm_get_all_fks(),
     dm_for_flatten %>%
-      cdm_get_all_fks() %>%
+      dm_get_all_fks() %>%
       filter(child_fk_col != "dim_4_key")
   )
 

@@ -12,12 +12,12 @@ dm_nrow <- function(dm) {
 }
 
 get_by <- function(dm, lhs_name, rhs_name) {
-  if (cdm_has_fk(dm, !!lhs_name, !!rhs_name)) {
-    lhs_col <- cdm_get_fk(dm, !!lhs_name, !!rhs_name)
+  if (dm_has_fk(dm, !!lhs_name, !!rhs_name)) {
+    lhs_col <- dm_get_fk(dm, !!lhs_name, !!rhs_name)
     rhs_col <- cdm_get_pk(dm, !!rhs_name)
-  } else if (cdm_has_fk(dm, !!rhs_name, !!lhs_name)) {
+  } else if (dm_has_fk(dm, !!rhs_name, !!lhs_name)) {
     lhs_col <- cdm_get_pk(dm, !!lhs_name)
-    rhs_col <- cdm_get_fk(dm, !!rhs_name, !!lhs_name)
+    rhs_col <- dm_get_fk(dm, !!rhs_name, !!lhs_name)
   } else {
     abort_tables_not_neighbours(lhs_name, rhs_name)
   }

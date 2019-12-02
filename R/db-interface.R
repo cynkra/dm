@@ -135,7 +135,7 @@ dm_set_key_constraints <- nse(function(dm) {
   tables_w_pk <- cdm_get_all_pks(dm)
 
   fk_info <-
-    cdm_get_all_fks(dm) %>%
+    dm_get_all_fks(dm) %>%
     left_join(tables_w_pk, by = c("parent_table" = "table")) %>%
     left_join(db_table_names, by = c("child_table" = "table_name")) %>%
     rename(db_child_table = remote_name) %>%

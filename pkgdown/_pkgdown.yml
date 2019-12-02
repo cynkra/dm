@@ -29,9 +29,9 @@ reference:
 - title: Foreign keys
   contents:
   - dm_add_fk
-  - cdm_has_fk
-  - cdm_get_fk
-  - cdm_get_all_fks
+  - dm_has_fk
+  - dm_get_fk
+  - dm_get_all_fks
   - cdm_rm_fk
   - cdm_enum_fk_candidates
 

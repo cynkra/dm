@@ -83,11 +83,11 @@ dm %>%
 
 The directed arrows show explicitly the relation between different columns.
 
-2. Printed to the console by calling `cdm_get_all_fks()`
+2. Printed to the console by calling `dm_get_all_fks()`
 
 ```{r}
 dm %>% 
-  cdm_get_all_fks()
+  dm_get_all_fks()
 ```
 
 ### Joining Examples

@@ -99,7 +99,7 @@ flights_dm_all_keys
 
 ## Retrieving Keys
 
-To retrieve your keys later on, use `cdm_get_all_fks()`, or `cdm_get_fk()` for its singular version. 
+To retrieve your keys later on, use `dm_get_all_fks()`, or `dm_get_fk()` for its singular version. 
 
 ```{r}
 cdm_get_all_pks(flights_dm_all_keys)

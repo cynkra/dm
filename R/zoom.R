@@ -180,7 +180,7 @@ update_zoomed_incoming_fks <- function(dm) {
 dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  old_out_keys <- cdm_get_all_fks(dm) %>%
+  old_out_keys <- dm_get_all_fks(dm) %>%
     filter(child_table == old_tbl_name) %>%
     select(table = parent_table, column = child_fk_col)
 
