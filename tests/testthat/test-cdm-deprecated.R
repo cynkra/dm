@@ -13,3 +13,145 @@ test_that("cdm_rm_tbl() works", {
     dm_rm_tbl(dm_for_flatten, starts_with("dim"))
   )
 })
+
+test_that("cdm_copy_to() behaves correctly", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  map(
+    test_srcs,
+    ~ expect_equivalent_dm(
+      cdm_copy_to(., dm_for_filter, unique_table_names = TRUE),
+      dm_copy_to(., dm_for_filter, unique_table_names = TRUE)
+    )
+  )
+})
+
+test_that("cdm_disambiguate_cols() works as intended", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_equivalent_dm(
+    cdm_disambiguate_cols(dm_for_disambiguate),
+    dm_disambiguate_cols(dm_for_disambiguate)
+  )
+})
+
+test_that("cdm_get_colors() behaves as intended", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_equal(
+    cdm_get_colors(cdm_nycflights13()),
+    dm_get_colors(cdm_nycflights13())
+  )
+})
+
+test_that("cdm_filter() behaves correctly", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2),
+    dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2)
+  )
+
+  expect_identical(
+    dm_filter(dm_for_filter, t1, a > 4) %>% cdm_apply_filters_to_tbl(t2),
+    dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2)
+  )
+
+  expect_equivalent_dm(
+    dm_filter(dm_for_filter, t1, a > 4) %>% cdm_apply_filters(),
+    dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters()
+  )
+})
+
+test_that("cdm_nrow() works?", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_equal(
+    sum(cdm_nrow(cdm_test_obj)),
+    rows_dm_obj)
+})
+
+test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` work", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_flatten_to_tbl(dm_for_flatten, fact),
+    dm_flatten_to_tbl(dm_for_flatten, fact)
+  )
+
+  expect_identical(
+    cdm_join_to_tbl(dm_for_flatten, fact, dim_3),
+    dm_join_to_tbl(dm_for_flatten, fact, dim_3)
+  )
+
+  expect_identical(
+    cdm_squash_to_tbl(dm_more_complex, t5),
+    dm_squash_to_tbl(dm_more_complex, t5)
+  )
+
+})
+
+active_srcs <- tibble(src = names(dbplyr:::test_srcs$get()))
+lookup <- tibble(
+  src = c("df", "sqlite", "postgres", "mssql"),
+  class_src = c("src_local", "src_SQLiteConnection", "src_PqConnection", "src_Microsoft SQL Server"),
+  class_con = c(NA_character_, "SQLiteConnection", "PqConnection", "Microsoft SQL Server")
+)
+
+test_that("cdm_get_src() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+
+  expect_dm_error(
+    cdm_get_src(1),
+    class = "is_not_dm"
+  )
+
+  active_srcs_class <- semi_join(lookup, active_srcs, by = "src") %>% pull(class_src)
+
+  walk2(
+    dm_for_filter_src,
+    active_srcs_class,
+    function(dm_for_filter, active_src) {
+      expect_true(inherits(cdm_get_src(dm_for_filter), active_src))
+    }
+  )
+})
+
+test_that("cdm_get_con() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_dm_error(
+    cdm_get_con(1),
+    class = "is_not_dm"
+  )
+
+  expect_dm_error(
+    cdm_get_con(dm_for_filter),
+    class = "con_only_for_dbi"
+  )
+
+  active_con_class <- semi_join(lookup, filter(active_srcs, src != "df"), by = "src") %>% pull(class_con)
+  dm_for_filter_src_red <- dm_for_filter_src[!(names(dm_for_filter_src) == "df")]
+
+  walk2(
+    dm_for_filter_src_red,
+    active_con_class,
+    ~ expect_true(inherits(cdm_get_con(.x), .y))
+  )
+})
+
+
+test_that("cdm_get_tables() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_get_tables(dm_for_filter),
+    dm_get_tables(dm_for_filter)
+  )
+})
+
+test_that("cdm_get_filter() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_identical(
+    cdm_get_filter(dm_for_filter),
+    dm_get_filter(dm_for_filter)
+  )
+
+  expect_identical(
+    cdm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8)),
+    dm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8))
+  )
+
+})
