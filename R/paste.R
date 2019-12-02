@@ -1,6 +1,6 @@
 #' Reverse engineer code for creation of a [`dm`]
 #'
-#' `cdm_paste` takes an existing `dm` and produces the code necessary for its creation
+#' `dm_paste` takes an existing `dm` and produces the code necessary for its creation
 #'
 #' @inheritParams dm_add_pk
 #' @param select Boolean, default `FALSE`. If `TRUE` will try to produce code for reducing to necessary columns.
@@ -17,7 +17,7 @@
 #' @return Code for producing the given `dm`
 #'
 #' @export
-cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
+dm_paste <- function(dm, select = FALSE, tab_width = 2) {
   check_dm(dm)
   check_no_filter(dm)
   check_not_zoomed(dm)

@@ -251,3 +251,17 @@ test_that("cdm_nycflights13() works", {
     dm_nycflights13()
   )
 })
+
+test_that("cdm_paste() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  expect_output(
+    cdm_paste(dm_for_filter, FALSE, 4),
+    paste0(
+      "dm(t1, t2, t3, t4, t5, t6) %>%\n    dm_add_pk(t1, a) %>%\n    dm_add_pk(t2, c) %>%",
+      "\n    dm_add_pk(t3, f) %>%\n    dm_add_pk(t4, h) %>%\n    dm_add_pk(t5, k) %>%\n    ",
+      "dm_add_pk(t6, n) %>%\n    dm_add_fk(t2, d, t1) %>%\n    dm_add_fk(t2, e, t3) %>%\n    ",
+      "dm_add_fk(t4, j, t3) %>%\n    dm_add_fk(t5, l, t4) %>%\n    dm_add_fk(t5, m, t6)"
+    ),
+    fixed = TRUE
+  )
+})

@@ -196,3 +196,8 @@ cdm_check_constraints <- new_cdm_forward(dm_check_constraints)
 #' @keywords internal
 #' @export
 cdm_nycflights13 <- new_cdm_forward(dm_nycflights13)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_paste <- new_cdm_forward(dm_paste)
