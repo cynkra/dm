@@ -74,11 +74,11 @@ In technical terms, we merge the tables that need to be directly connected by a 
 
 The existing links can be inspected in two ways:
 
-1. Visually, by drawing the data model with `cdm_draw()`
+1. Visually, by drawing the data model with `dm_draw()`
 
 ```{r}
 dm %>% 
-  cdm_draw()
+  dm_draw()
 ```
 
 The directed arrows show explicitly the relation between different columns.

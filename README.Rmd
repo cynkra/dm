@@ -86,7 +86,7 @@ Assume that your task is to merge all tables, except the `weather` table.
 
 ```{r draw, echo = FALSE}
 cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
+  dm_draw()
 ```
 
 In the classical [{dplyr}](https://dplyr.tidyverse.org) notation, you would need three `left_join()` calls to merge the `flights` table gradually to the `airlines`, `planes` and `airports` tables to create one wide data frame:

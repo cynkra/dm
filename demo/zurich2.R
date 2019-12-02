@@ -17,7 +17,7 @@ options(rlang_backtrace_on_error = "none")
 
 # Teaser
 dm::cdm_nycflights13(cycle = TRUE) %>%
-  dm::cdm_draw()
+  dm::dm_draw()
 
 # Poll: Who has worked with a software that has
 #       a concept of "THE DATASET"?
@@ -146,16 +146,16 @@ dm_flights <- cdm_nycflights13(cycle = TRUE)
 dm_flights
 
 dm_flights %>%
-  cdm_draw()
+  dm_draw()
 
 # Selection of tables
 dm_flights %>%
   cdm_select_tbl(flights, airlines) %>%
-  cdm_draw()
+  dm_draw()
 
 dm_flights %>%
   cdm_select_tbl(airports, airlines) %>%
-  cdm_draw()
+  dm_draw()
 
 try(
   dm_flights %>%
@@ -185,7 +185,7 @@ dm_flights %>%
 
 dm_flights <- cdm_nycflights13()
 dm_flights %>%
-  cdm_draw()
+  dm_draw()
 
 dm_flights %>%
   cdm_join_to_tbl(airlines, flights)
@@ -227,7 +227,7 @@ dm_flights_sqlite <-
 dm_flights_sqlite
 
 dm_flights_sqlite %>%
-  cdm_draw()
+  dm_draw()
 
 dm_flights_sqlite %>%
   dm_get_tables() %>%
@@ -322,7 +322,7 @@ dm() %>%
 
 # Tables are not connected yet:
 nycflights13_tbl %>%
-  cdm_draw()
+  dm_draw()
 
 # Adding primary keys:
 nycflights13_pk <-
@@ -332,7 +332,7 @@ nycflights13_pk <-
   cdm_add_pk(airlines, carrier)
 
 nycflights13_pk %>%
-  cdm_draw()
+  dm_draw()
 
 # FIXME: Model weak constraints, show differently in diagram (#4)
 
@@ -345,7 +345,7 @@ nycflights13_fk <-
   cdm_add_fk(flights, carrier, airlines, check = TRUE)
 
 nycflights13_fk %>%
-  cdm_draw()
+  dm_draw()
 
 # Color it!
 cdm_get_available_colors()
@@ -357,7 +357,7 @@ nycflights13_base <-
   )
 
 nycflights13_base %>%
-  cdm_draw()
+  dm_draw()
 
 
 ##
@@ -420,7 +420,7 @@ nycflights13_weather_link <-
 nycflights13_weather_link$weather
 
 nycflights13_weather_link %>%
-  cdm_draw()
+  dm_draw()
 
 # FIXME: zoom to multiple tables
 
@@ -445,7 +445,7 @@ nycflights13_perfect <-
   cdm_add_fk(flights, origin_slot_id, weather)
 
 nycflights13_perfect %>%
-  cdm_draw()
+  dm_draw()
 
 # What are the missings?
 nycflights13_perfect %>%
@@ -458,7 +458,7 @@ nycflights13_perfect %>%
   cdm_zoom_to_tbl(flights) %>%
   count(origin) %>%
   cdm_insert_zoomed_tbl("flights_agg") %>%
-  cdm_draw()
+  dm_draw()
 
 ##
 ##
@@ -496,7 +496,7 @@ try({
     cdm_learn_from_db(con_pq)
 
   dm_flights_from_pq %>%
-    cdm_draw()
+    dm_draw()
 })
 
 ##

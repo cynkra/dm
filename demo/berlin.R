@@ -148,16 +148,16 @@ library(dm)
 cdm_nycflights13(cycle = TRUE)
 
 cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
+  dm_draw()
 
 # Selection of tables
 cdm_nycflights13(cycle = TRUE) %>%
   cdm_select_tbl(flights, airlines) %>%
-  cdm_draw()
+  dm_draw()
 
 cdm_nycflights13(cycle = TRUE) %>%
   cdm_select_tbl(airports, airlines) %>%
-  cdm_draw()
+  dm_draw()
 
 try(
   cdm_nycflights13() %>%
@@ -264,7 +264,7 @@ nycflights13_sqlite <-
 nycflights13_sqlite
 
 nycflights13_sqlite %>%
-  cdm_draw()
+  dm_draw()
 
 nycflights13_sqlite %>%
   dm_get_tables() %>%
@@ -406,7 +406,7 @@ nycflights13_tbl <-
 nycflights13_tbl
 
 nycflights13_tbl %>%
-  cdm_draw()
+  dm_draw()
 
 # Adding primary keys
 nycflights13_pk <-
@@ -417,7 +417,7 @@ nycflights13_pk <-
   cdm_add_pk(airlines, carrier)
 
 nycflights13_pk %>%
-  cdm_draw()
+  dm_draw()
 
 # FIXME: Model weak constraints, show differently in diagram (#4)
 
@@ -431,14 +431,14 @@ nycflights13_fk <-
   cdm_add_fk(flights, carrier, airlines)
 
 nycflights13_fk %>%
-  cdm_draw()
+  dm_draw()
 
 # Color it!
 cdm_get_available_colors()
 
 nycflights13_fk %>%
   cdm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
-  cdm_draw()
+  dm_draw()
 
 ##
 ##

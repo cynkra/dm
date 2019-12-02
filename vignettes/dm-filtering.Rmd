@@ -71,7 +71,7 @@ But how are they connected?
 These relations are best displayed as a visualization of the entity-relationship model:
 
 ```{r}
-cdm_draw(dm)
+dm_draw(dm)
 ```
 
 You can look at a single table with `tbl`.

@@ -96,7 +96,7 @@ The `nycflights13` relations can be transferred into the following graphical rep
 dm <- cdm_nycflights13(cycle = TRUE) 
 
 dm %>% 
-  cdm_draw()
+  dm_draw()
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.

@@ -194,7 +194,7 @@ Relevant functions for visualising the data model:^[The functions in this sectio
 1. `cdm_set_colors()`
 1. `cdm_get_colors()`
 1. `cdm_get_available_colors()`
-1. `cdm_draw()`
+1. `dm_draw()`
 
 Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation of your data model.
 
@@ -240,9 +240,9 @@ flights_dm_w_many_keys_and_colors <-
   )
 ```
 
-Draw the schema with `cdm_draw()`. 
+Draw the schema with `dm_draw()`. 
 ```{r}
-cdm_draw(flights_dm_w_many_keys_and_colors)
+dm_draw(flights_dm_w_many_keys_and_colors)
 ```
 
 The colors can be queried with `cdm_get_colors()`. 
@@ -255,7 +255,7 @@ Please read the documentation to find out more.
 One argument of the function we'd like to draw your attention to, though, is `table_names`.
 This argument accepts a character vector with the table names which are to be printed, in case you would like to only see a subset of the whole data model.
 ```{r}
-cdm_draw(flights_dm_w_many_keys_and_colors, table_names = c("flights", "airports", "planes"))
+dm_draw(flights_dm_w_many_keys_and_colors, table_names = c("flights", "airports", "planes"))
 ```
 
 ## Joining tables

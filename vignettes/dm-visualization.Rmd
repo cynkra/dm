@@ -29,7 +29,7 @@ knit_print.grViz <- function(x, ...) {
 Once you have all your primary keys set and all foreign key relations defined, a graphical representation of your data model offers a condensed view of the tables and the relationships between the tables.
 The following functions can be used to visualize the `dm` object:^[The code for the functions in this section is borrowed from the [{datamodelr}](https://github.com/bergant/datamodelr) package.]
 
-1. `cdm_draw()`
+1. `dm_draw()`
 1. `cdm_set_colors()`
 1. `cdm_get_colors()`
 1. `cdm_get_available_colors()`
@@ -41,9 +41,9 @@ flights_dm_w_many_keys <- cdm_nycflights13(color = FALSE)
 flights_dm_w_many_keys
 ```
 
-The schema is drawn with `cdm_draw()`. 
+The schema is drawn with `dm_draw()`. 
 ```{r}
-cdm_draw(flights_dm_w_many_keys)
+dm_draw(flights_dm_w_many_keys)
 ```
 
 You can use colors to visually group your tables into families to reflect their logical grouping.
@@ -68,9 +68,9 @@ flights_dm_w_many_keys_and_colors <-
   )
 ```
 
-Draw the schema with `cdm_draw()`. 
+Draw the schema with `dm_draw()`. 
 ```{r}
-cdm_draw(flights_dm_w_many_keys_and_colors)
+dm_draw(flights_dm_w_many_keys_and_colors)
 ```
 
 The colors can be queried with `cdm_get_colors()`. 
@@ -78,13 +78,13 @@ The colors can be queried with `cdm_get_colors()`.
 cdm_get_colors(flights_dm_w_many_keys_and_colors)
 ```
 
-See the documentation for `cdm_draw()` for further options.
+See the documentation for `dm_draw()` for further options.
 One important argument is `view_type`.
 Besides the default `"keys_only"`, it accepts `"all"` to display all columns, and `"title_only"` to show only the title of the table.
 
 ```{r}
 flights_dm_w_many_keys_and_colors %>% 
-  cdm_draw(view_type = "title_only")
+  dm_draw(view_type = "title_only")
 ```
 
 If you would like to visualize only a some of the tables, use `cdm_select_tbl()` before drawing:
@@ -92,5 +92,5 @@ If you would like to visualize only a some of the tables, use `cdm_select_tbl()`
 ```{r}
 flights_dm_w_many_keys_and_colors %>% 
   cdm_select_tbl(flights, airports, planes) %>% 
-  cdm_draw()
+  dm_draw()
 ```

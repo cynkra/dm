@@ -147,9 +147,6 @@ library(dm)
 
 cdm_nycflights13() %>%
   cdm_flatten_to_tbl(start = flights)
-#> Note: Using an external vector in selections is brittle.
-#> [34mℹ[39m If the data contains `tables` it will be selected instead.
-#> [34mℹ[39m Use `all_of(tables)` instead of just `tables` to silence this message.
 #> Renamed columns:
 #> * year -> flights$flights.year, planes$planes.year
 #> * name -> airlines$airlines.name, airports$airports.name
@@ -255,10 +252,6 @@ can use `cdm_join_tbl()`:
 ``` r
 cdm_nycflights13(cycle = FALSE) %>%
   cdm_join_to_tbl(airports, flights, join = semi_join)
-#> Note: Using an external vector in selections is brittle.
-#> [34mℹ[39m If the data contains `tables` it will be selected instead.
-#> [34mℹ[39m Use `all_of(tables)` instead of just `tables` to silence this message.
-#> Warning: Column `name` has different attributes on LHS and RHS of join
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 336,776 x 19</span><span>

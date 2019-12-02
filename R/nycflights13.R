@@ -14,13 +14,13 @@
 #'   If `TRUE`, a `dm` object with a double reference
 #'   between those tables will be produced.
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will have
-#'   colors assigned to different tables for visualization with `cdm_draw()`
+#'   colors assigned to different tables for visualization with `dm_draw()`
 #'
 #' @export
 #' @examples
 #' if (rlang::is_installed("nycflights13")) {
 #'   cdm_nycflights13() %>%
-#'     cdm_draw()
+#'     dm_draw()
 #' }
 cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
   dm <-

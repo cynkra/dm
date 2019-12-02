@@ -37,7 +37,7 @@ reference:
 
 - title: Visualization
   contents:
-  - cdm_draw
+  - dm_draw
   - cdm_set_colors
   - cdm_get_colors
   - cdm_get_available_colors

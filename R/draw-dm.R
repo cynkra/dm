@@ -1,6 +1,6 @@
 #' Draw a diagram of a [`dm`]-object's data model
 #'
-#' `cdm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
+#' `dm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'
 #' @param dm A [`dm`] object.
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
@@ -19,9 +19,9 @@
 #'
 #' @examples
 #' library(dplyr)
-#' cdm_draw(cdm_nycflights13())
-#' cdm_draw(cdm_nycflights13(cycle = TRUE))
-cdm_draw <- function(dm,
+#' dm_draw(cdm_nycflights13())
+#' dm_draw(cdm_nycflights13(cycle = TRUE))
+dm_draw <- function(dm,
                      rankdir = "LR",
                      col_attr = "column",
                      view_type = "keys_only",
@@ -120,7 +120,7 @@ cdm_get_all_columns <- function(x) {
 #'   This argument supports splicing.
 #' @return For `cdm_set_colors()`: the updated data model.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @examples
 #' cdm_nycflights13(color = FALSE) %>%
 #'   cdm_set_colors(
@@ -129,7 +129,7 @@ cdm_get_all_columns <- function(x) {
 #'     planes = "yellow",
 #'     weather = "dark_blue"
 #'   ) %>%
-#'   cdm_draw()
+#'   dm_draw()
 #'
 #' # Splicing is supported:
 #' new_colors <- c(
@@ -138,7 +138,7 @@ cdm_get_all_columns <- function(x) {
 #' )
 #' cdm_nycflights13(color = FALSE) %>%
 #'   cdm_set_colors(!!!new_colors) %>%
-#'   cdm_draw()
+#'   dm_draw()
 #' @export
 cdm_set_colors <- function(dm, ...) {
   display_df <- color_quos_to_display(...)
@@ -178,7 +178,7 @@ color_quos_to_display <- function(...) {
 #'
 #' @return For `cdm_get_colors()`, a two-column tibble with one row per table.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @export
 cdm_get_colors <- nse(function(dm) {
   dm_get_def(dm) %>%
@@ -197,7 +197,7 @@ cdm_get_colors <- nse(function(dm) {
 #' @return For `cdm_get_available_colors()`, a tibble with the color in the first
 #'   column and auxiliary information in other columns.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @export
 cdm_get_available_colors <- function() {
   colors
