@@ -4,7 +4,7 @@
 #' Both functions perform a disambiguation of column names and a cascade of joins.
 #' Disambiguates column names and a cascade of joins.
 #'
-#' @inheritParams cdm_join_to_tbl
+#' @inheritParams dm_join_to_tbl
 #' @param start The table from which all outgoing foreign key relations are considered
 #'   when establishing a processing order for the joins.
 #'   An interesting choice could be
@@ -164,7 +164,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #' @family flattening functions
 #'
 #' @export
-cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   force(join)
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))
@@ -227,7 +227,7 @@ check_flatten_to_tbl <- function(
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
 
 
-  # If called by `cdm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
+  # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
   if (!squash && has_grandparent) {
     abort_only_parents()

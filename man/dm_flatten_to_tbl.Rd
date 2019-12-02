@@ -76,6 +76,6 @@ cdm_nycflights13() \%>\%
 }
 \seealso{
 Other flattening functions: 
-\code{\link{cdm_join_to_tbl}()}
+\code{\link{dm_join_to_tbl}()}
 }
 \concept{flattening functions}

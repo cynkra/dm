@@ -16,6 +16,7 @@
 \alias{cdm_filter}
 \alias{cdm_nrow}
 \alias{cdm_flatten_to_tbl}
+\alias{cdm_join_to_tbl}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -57,6 +58,8 @@ cdm_filter(dm, table, ...)
 cdm_nrow(dm)
 
 cdm_flatten_to_tbl(dm, start, ..., join = left_join)
+
+cdm_join_to_tbl(dm, table_1, table_2, join = left_join)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

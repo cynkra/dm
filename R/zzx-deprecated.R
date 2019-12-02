@@ -81,3 +81,22 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+# FIXME: name of `table_1` (etc.) comes from {{ table_1 }} (deparse(substitute()), which is not available anymore
+# when passed by `new_cdm_forward(dm_join_to_tbl)`
+cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+  force(join)
+  stopifnot(is_function(join))
+  join_name <- deparse(substitute(join))
+
+  t1_name <- as_string(ensym(table_1))
+  t2_name <- as_string(ensym(table_2))
+
+  rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
+  start <- rel$child_table
+  other <- rel$parent_table
+
+  dm_flatten_to_tbl_impl(dm, start, !!other, join = join, join_name = join_name, squash = FALSE)
+}

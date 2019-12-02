@@ -423,3 +423,14 @@ test_that("tidyselect works for flatten", {
     class = "w_message"
   )
 })
+
+test_that("`dm_join_to_tbl()` works", {
+  expect_identical(
+    expect_message(dm_join_to_tbl(dm_for_flatten, fact, dim_3), "Renamed"),
+    left_join(
+      rename(fact, fact.something = something),
+      rename(dim_3, dim_3.something = something),
+      by = c("dim_3_key" = "dim_3_pk")
+      )
+    )
+})
