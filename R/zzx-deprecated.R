@@ -37,3 +37,18 @@ cdm_copy_to <- new_cdm_forward(dm_copy_to)
 #' @keywords internal
 #' @export
 cdm_disambiguate_cols <- new_cdm_forward(dm_disambiguate_cols)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_set_colors <- new_cdm_forward(dm_set_colors)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_get_colors <- new_cdm_forward(dm_get_colors)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)

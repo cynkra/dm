@@ -434,10 +434,10 @@ nycflights13_fk %>%
   dm_draw()
 
 # Color it!
-cdm_get_available_colors()
+dm_get_available_colors()
 
 nycflights13_fk %>%
-  cdm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
+  dm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
   dm_draw()
 
 ##

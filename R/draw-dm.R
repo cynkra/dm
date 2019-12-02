@@ -85,7 +85,7 @@ dm_get_data_model <- function(x) {
     mutate(key = 1L)
 
   columns <-
-    cdm_get_all_columns(x) %>%
+    dm_get_all_columns(x) %>%
     # Hack: datamodelr requires `type` column
     mutate(type = "integer") %>%
     left_join(keys, by = c("table", "column")) %>%
@@ -101,7 +101,7 @@ dm_get_data_model <- function(x) {
   )
 }
 
-cdm_get_all_columns <- function(x) {
+dm_get_all_columns <- function(x) {
   dm_get_tables(x) %>%
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
@@ -109,21 +109,21 @@ cdm_get_all_columns <- function(x) {
     unnest(value)
 }
 
-#' cdm_set_colors()
+#' dm_set_colors()
 #'
-#' `cdm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
+#' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
 #'
 #' @param ... Colors to set in the form `table = "<color>"` .
 #'   Fall-through syntax similarly to
 #'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
 #'   and `table2` .
 #'   This argument supports splicing.
-#' @return For `cdm_set_colors()`: the updated data model.
+#' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @rdname dm_draw
 #' @examples
 #' cdm_nycflights13(color = FALSE) %>%
-#'   cdm_set_colors(
+#'   dm_set_colors(
 #'     airports = ,
 #'     airlines = ,
 #'     planes = "yellow",
@@ -137,10 +137,10 @@ cdm_get_all_columns <- function(x) {
 #'   weather = "dark_blue"
 #' )
 #' cdm_nycflights13(color = FALSE) %>%
-#'   cdm_set_colors(!!!new_colors) %>%
+#'   dm_set_colors(!!!new_colors) %>%
 #'   dm_draw()
 #' @export
-cdm_set_colors <- function(dm, ...) {
+dm_set_colors <- function(dm, ...) {
   display_df <- color_quos_to_display(...)
 
   def <-
@@ -172,15 +172,15 @@ color_quos_to_display <- function(...) {
   tibble(table = names(quos), new_display = new_values[idx])
 }
 
-#' cdm_get_colors()
+#' dm_get_colors()
 #'
-#' `cdm_get_colors()` returns the colors defined for a data model.
+#' `dm_get_colors()` returns the colors defined for a data model.
 #'
-#' @return For `cdm_get_colors()`, a two-column tibble with one row per table.
+#' @return For `dm_get_colors()`, a two-column tibble with one row per table.
 #'
 #' @rdname dm_draw
 #' @export
-cdm_get_colors <- nse(function(dm) {
+dm_get_colors <- nse(function(dm) {
   dm_get_def(dm) %>%
     select(table, display) %>%
     as_tibble() %>%
@@ -188,18 +188,18 @@ cdm_get_colors <- nse(function(dm) {
     select(-display)
 })
 
-#' cdm_get_available_colors()
+#' dm_get_available_colors()
 #'
-#' `cdm_get_available_colors()` returns an overview of the available colors and their names
+#' `dm_get_available_colors()` returns an overview of the available colors and their names
 #' as a tibble.
 
 #'
-#' @return For `cdm_get_available_colors()`, a tibble with the color in the first
+#' @return For `dm_get_available_colors()`, a tibble with the color in the first
 #'   column and auxiliary information in other columns.
 #'
 #' @rdname dm_draw
 #' @export
-cdm_get_available_colors <- function() {
+dm_get_available_colors <- function() {
   colors
 }
 

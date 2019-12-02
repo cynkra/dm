@@ -10,6 +10,9 @@
 \alias{cdm_rm_tbl}
 \alias{cdm_copy_to}
 \alias{cdm_disambiguate_cols}
+\alias{cdm_set_colors}
+\alias{cdm_get_colors}
+\alias{cdm_get_available_colors}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -39,6 +42,12 @@ cdm_copy_to(
 )
 
 cdm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
+
+cdm_set_colors(dm, ...)
+
+cdm_get_colors(dm)
+
+cdm_get_available_colors()
 }
 \description{
 These functions are deprecated in favor of better alternatives.

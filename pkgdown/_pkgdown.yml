@@ -38,9 +38,9 @@ reference:
 - title: Visualization
   contents:
   - dm_draw
-  - cdm_set_colors
-  - cdm_get_colors
-  - cdm_get_available_colors
+  - dm_set_colors
+  - dm_get_colors
+  - dm_get_available_colors
 
 - title: Flattening
   contents:

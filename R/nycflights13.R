@@ -37,7 +37,7 @@ cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
   if (color) {
     dm <-
       dm %>%
-      cdm_set_colors(
+      dm_set_colors(
         flights = "blue",
         airports = ,
         planes = ,

@@ -15,7 +15,7 @@ If \code{TRUE}, a \code{dm} object with a double reference
 between those tables will be produced.}
 
 \item{color}{Boolean, if \code{TRUE} (default), the resulting \code{dm} object will have
-colors assigned to different tables for visualization with \code{cdm_draw()}}
+colors assigned to different tables for visualization with \code{dm_draw()}}
 }
 \description{
 Creates an example \code{\link{dm}} object from the tables in \pkg{nycflights13},
@@ -28,6 +28,6 @@ data integrity constraints.
 \examples{
 if (rlang::is_installed("nycflights13")) {
   cdm_nycflights13() \%>\%
-    cdm_draw()
+    dm_draw()
 }
 }

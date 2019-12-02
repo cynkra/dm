@@ -191,9 +191,9 @@ cdm_enum_fk_candidates(flights_dm_with_key, weather, airports)
 
 Relevant functions for visualising the data model:^[The functions in this section rely heavily on related functions of {datamodelr}.]
 
-1. `cdm_set_colors()`
-1. `cdm_get_colors()`
-1. `cdm_get_available_colors()`
+1. `dm_set_colors()`
+1. `dm_get_colors()`
+1. `dm_get_available_colors()`
 1. `dm_draw()`
 
 Once you have all primary keys set and all foreign key relations defined, it might be interesting to look at a graphical representation of your data model.
@@ -218,21 +218,21 @@ It is recommended not to do this, since you might run into errors or other unwan
 
 You can use colors to visually group your tables into families (which could reflect their logical grouping).
 Currently, there are only eight different colors available (plus the option of having borders displayed around the tables or not).
-To find out which colors exist, use `cdm_get_available_colors()`:
+To find out which colors exist, use `dm_get_available_colors()`:
 ```{r}
-cdm_get_available_colors()
+dm_get_available_colors()
 ```
 
-The assignment is carried out with `cdm_set_colors()`, using a syntax similar to `switch()`.
+The assignment is carried out with `dm_set_colors()`, using a syntax similar to `switch()`.
 Any table you don't specifically assign will be displayed in the default color.
 
-Use `cdm_set_colors()` to assign the respective colors. 
-The result of `cdm_set_colors()` is a `dm` object.
+Use `dm_set_colors()` to assign the respective colors. 
+The result of `dm_set_colors()` is a `dm` object.
 The information about the color is stored in its `data_model`-part.
 ```{r}
 flights_dm_w_many_keys_and_colors <-
   flights_dm_w_many_keys %>% 
-  cdm_set_colors(
+  dm_set_colors(
     flights = "blue",
     airlines = ,
     airports = "orange",
@@ -245,9 +245,9 @@ Draw the schema with `dm_draw()`.
 dm_draw(flights_dm_w_many_keys_and_colors)
 ```
 
-The colors can be queried with `cdm_get_colors()`. 
+The colors can be queried with `dm_get_colors()`. 
 ```{r}
-cdm_get_colors(flights_dm_w_many_keys_and_colors)
+dm_get_colors(flights_dm_w_many_keys_and_colors)
 ```
 
 There are quite a few options for customization available. 

@@ -30,9 +30,9 @@ Once you have all your primary keys set and all foreign key relations defined, a
 The following functions can be used to visualize the `dm` object:^[The code for the functions in this section is borrowed from the [{datamodelr}](https://github.com/bergant/datamodelr) package.]
 
 1. `dm_draw()`
-1. `cdm_set_colors()`
-1. `cdm_get_colors()`
-1. `cdm_get_available_colors()`
+1. `dm_set_colors()`
+1. `dm_get_colors()`
+1. `dm_get_available_colors()`
 
 We use the prepared example `dm` object `cdm_nycflights13(cycle = TRUE)`:
 ```{r}
@@ -48,19 +48,19 @@ dm_draw(flights_dm_w_many_keys)
 
 You can use colors to visually group your tables into families to reflect their logical grouping.
 Currently, eight different colors are available, plus optional borders around tables.
-To find out which colors exist, use `cdm_get_available_colors()`:
+To find out which colors exist, use `dm_get_available_colors()`:
 ```{r}
-cdm_get_available_colors()
+dm_get_available_colors()
 ```
 
-Colors are assigned with `cdm_set_colors()` using syntax that is similar to `switch()`.
+Colors are assigned with `dm_set_colors()` using syntax that is similar to `switch()`.
 Any table to which you do not specifically assign a color will not be altered. 
-The result of `cdm_set_colors()` is a `dm` object.
+The result of `dm_set_colors()` is a `dm` object.
 The information about the color is stored together with the rest of the metadata.
 ```{r}
 flights_dm_w_many_keys_and_colors <-
   flights_dm_w_many_keys %>% 
-  cdm_set_colors(
+  dm_set_colors(
     flights = "blue",
     airlines = ,
     airports = "orange",
@@ -73,9 +73,9 @@ Draw the schema with `dm_draw()`.
 dm_draw(flights_dm_w_many_keys_and_colors)
 ```
 
-The colors can be queried with `cdm_get_colors()`. 
+The colors can be queried with `dm_get_colors()`. 
 ```{r}
-cdm_get_colors(flights_dm_w_many_keys_and_colors)
+dm_get_colors(flights_dm_w_many_keys_and_colors)
 ```
 
 See the documentation for `dm_draw()` for further options.
