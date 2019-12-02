@@ -14,6 +14,7 @@
 \alias{cdm_get_colors}
 \alias{cdm_get_available_colors}
 \alias{cdm_filter}
+\alias{cdm_nrow}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -51,6 +52,8 @@ cdm_get_colors(dm)
 cdm_get_available_colors()
 
 cdm_filter(dm, table, ...)
+
+cdm_nrow(dm)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

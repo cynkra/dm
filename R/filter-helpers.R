@@ -4,7 +4,7 @@
 #'
 #' @param dm A [`dm`] object.
 #' @export
-cdm_nrow <- function(dm) {
+dm_nrow <- function(dm) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to issue
   # a message in case the filters haven't been applied yet?
   check_no_filter(dm)

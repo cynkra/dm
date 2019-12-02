@@ -64,3 +64,8 @@ cdm_filter <- function(dm, table, ...) {
   filter(...) %>%
   cdm_update_zoomed_tbl()
 }
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_nrow <- new_cdm_forward(dm_nrow)

@@ -56,7 +56,7 @@
 #' cdm_nycflights13() %>%
 #'   dm_filter(flights, 1 == 1) %>%
 #'   cdm_apply_filters() %>%
-#'   cdm_nrow()
+#'   dm_nrow()
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
 #' # only the three New York airports.

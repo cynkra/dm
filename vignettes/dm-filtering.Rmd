@@ -104,7 +104,7 @@ Each table is the result of a `cdm_apply_filters_to_tbl()` call, meaning that th
 Currently, this only works if the graph induced by the foreign key relations is cycle free.
 Fortunately, this is the default for `cdm_nycflights13()`.
 
-Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. `cdm_enum_fk_candidates()`, `cdm_enum_pk_candidates()`, `cdm_select_tbl()`, `cdm_rename_tbl()`, `cdm_select()`, `cdm_rename()` and `cdm_nrow()`.
+Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. `cdm_enum_fk_candidates()`, `cdm_enum_pk_candidates()`, `cdm_select_tbl()`, `cdm_rename_tbl()`, `cdm_select()`, `cdm_rename()` and `dm_nrow()`.
 In these cases consider applying the filters with `cdm_apply_filters()` first.
 
 ### Filtering Examples
@@ -122,19 +122,19 @@ filtered_dm
 
 The filter expression is listed in the print output.
 
-You can get the numbers of rows of each table with `cdm_nrow()`. 
+You can get the numbers of rows of each table with `dm_nrow()`. 
 Before doing that, you will need to apply the filters using `cdm_apply_filters()`:
 
 ```{r}
 rows_per_table <- 
   filtered_dm %>% 
   cdm_apply_filters() %>% 
-  cdm_nrow()
+  dm_nrow()
 rows_per_table
 sum(rows_per_table)
 ```
 
-The total number of rows in the `dm` drops from `r format(sum(cdm_nrow(dm)), big.mark = " ")` to `r format(sum(cdm_nrow(cdm_apply_filters(filtered_dm))), big.mark = " ")` (the only unaffected table is the disconnected `weather` table).
+The total number of rows in the `dm` drops from `r format(sum(dm_nrow(dm)), big.mark = " ")` to `r format(sum(dm_nrow(cdm_apply_filters(filtered_dm))), big.mark = " ")` (the only unaffected table is the disconnected `weather` table).
 
 Next example:
 
@@ -144,7 +144,7 @@ Next example:
 dm %>% 
   dm_filter(flights, dest == "IAD") %>% 
   cdm_apply_filters() %>% 
-  cdm_nrow()
+  dm_nrow()
 ```
 
 Chaining multiple filters on different tables is also supported.
@@ -161,7 +161,7 @@ dm_delta_may <- dm %>%
 dm_delta_may
 dm_delta_may %>% 
   cdm_apply_filters() %>% 
-  cdm_nrow()
+  dm_nrow()
 ```
 
 You can inspect the filtered tables with `cdm_apply_filters_to_tbl()`.
