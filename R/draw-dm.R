@@ -65,7 +65,7 @@ cdm_draw <- function(dm,
 #'
 #' @noRd
 cdm_get_data_model <- function(x) {
-  def <- cdm_get_def(x)
+  def <- dm_get_def(x)
 
   tables <- data.frame(
     table = def$table,
@@ -144,7 +144,7 @@ cdm_set_colors <- function(dm, ...) {
   display_df <- color_quos_to_display(...)
 
   def <-
-    cdm_get_def(dm) %>%
+    dm_get_def(dm) %>%
     left_join(display_df, by = "table") %>%
     mutate(display = coalesce(new_display, display)) %>%
     select(-new_display)
@@ -181,7 +181,7 @@ color_quos_to_display <- function(...) {
 #' @rdname cdm_draw
 #' @export
 cdm_get_colors <- nse(function(dm) {
-  cdm_get_def(dm) %>%
+  dm_get_def(dm) %>%
     select(table, display) %>%
     as_tibble() %>%
     mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%

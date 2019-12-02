@@ -40,7 +40,7 @@ cdm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
 
 
 cdm_add_fk_impl <- function(dm, table, column, ref_table) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   i <- which(def$table == ref_table)
   def$fks[[i]] <- vctrs::vec_rbind(
@@ -150,7 +150,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   # FIXME: compound keys
   cols <- as.list(cols)
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   i <- which(def$table == ref_table)
 
   fks <- def$fks[[i]]

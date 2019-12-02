@@ -187,7 +187,7 @@ validate_dm <- function(x) {
   check_dm(x)
 
   if (!identical(names(unclass(x)), "def")) abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
-  def <- cdm_get_def(x)
+  def <- dm_get_def(x)
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
@@ -288,11 +288,11 @@ dm_get_con <- function(x) {
 #'
 #' @export
 dm_get_tables <- function(x) {
-  def <- cdm_get_def(x)
+  def <- dm_get_def(x)
   set_names(def$data, def$table)
 }
 
-cdm_get_def <- function(x) {
+dm_get_def <- function(x) {
   unclass(x)$def
 }
 
@@ -300,7 +300,7 @@ cdm_get_data_model_pks <- function(x) {
   # FIXME: Obliterate
 
   pk_df <-
-    cdm_get_def(x) %>%
+    dm_get_def(x) %>%
     select(table, pks) %>%
     unnest(pks)
 
@@ -319,7 +319,7 @@ cdm_get_data_model_fks <- function(x) {
   # FIXME: Obliterate
 
   fk_df <-
-    cdm_get_def(x) %>%
+    dm_get_def(x) %>%
     select(ref = table, fks, pks) %>%
     filter(map_lgl(fks, has_length)) %>%
     unnest(pks)
@@ -353,7 +353,7 @@ cdm_get_filter <- function(x) {
   # FIXME: Obliterate
 
   filter_df <-
-    cdm_get_def(x) %>%
+    dm_get_def(x) %>%
     select(table, filters) %>%
     unnest(filters)
 
@@ -367,7 +367,7 @@ cdm_get_filter <- function(x) {
 }
 
 cdm_get_zoomed_tbl <- function(x) {
-  cdm_get_def(x) %>%
+  dm_get_def(x) %>%
     filter(!map_lgl(zoom, is_null)) %>%
     select(table, zoom)
 }
@@ -438,7 +438,7 @@ print.dm <- function(x, ...) {
 
   cat_rule("Metadata", col = "violet")
 
-  def <- cdm_get_def(x)
+  def <- dm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
   cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
@@ -569,14 +569,14 @@ length.dm <- function(x) {
 
 #' @export
 str.dm <- function(object, ...) {
-  object <- cdm_get_def(object) %>%
+  object <- dm_get_def(object) %>%
     select(table, pks, fks, filters)
   str(object)
 }
 
 #' @export
 str.zoomed_dm <- function(object, ...) {
-  object <- cdm_get_def(object) %>%
+  object <- dm_get_def(object) %>%
     mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
     select(zoom, table, pks, fks, filters)
   str(object)
@@ -595,7 +595,7 @@ tbl.dm <- function(src, from, ...) {
 #' @export
 compute.dm <- function(x, ...) {
   cdm_apply_filters(x) %>%
-    cdm_get_def() %>%
+    dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
     new_dm3()
 }
@@ -643,7 +643,7 @@ collect.dm <- function(x, ...) {
     x %>%
     cdm_apply_filters()
 
-  def <- cdm_get_def(x)
+  def <- dm_get_def(x)
   def$data <- map(def$data, collect, ...)
   new_dm3(def)
 }
@@ -660,7 +660,7 @@ dimnames.zoomed_dm <- function(x) {
 }
 
 cdm_reset_all_filters <- function(dm) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   def$filters <- vctrs::list_of(new_filter())
   new_dm3(def)
 }

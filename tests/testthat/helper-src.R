@@ -217,7 +217,7 @@ output_3 %<-% list(
   )
 )
 
-def_dm_for_filter <- cdm_get_def(dm_for_filter)
+def_dm_for_filter <- dm_get_def(dm_for_filter)
 
 dm_for_filter_rev %<-%
   new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])

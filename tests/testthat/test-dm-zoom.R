@@ -101,7 +101,7 @@ test_that("cdm_insert_zoomed_tbl() works", {
 
 test_that("cdm_update_tbl() works", {
   # setting table t7 as zoomed table for t6 and removing its primary key and foreign keys pointing to it
-  new_dm_for_filter <- cdm_get_def(dm_for_filter) %>%
+  new_dm_for_filter <- dm_get_def(dm_for_filter) %>%
     mutate(
       zoom = if_else(table == "t6", list(t7), NULL)
     ) %>%
@@ -114,7 +114,7 @@ test_that("cdm_update_tbl() works", {
     dm_for_filter %>%
       cdm_rm_tbl(t6) %>%
       cdm_add_tbl(t6 = t7) %>%
-      cdm_get_def() %>%
+      dm_get_def() %>%
       new_dm3()
   )
 })

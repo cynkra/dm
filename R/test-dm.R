@@ -85,7 +85,7 @@ check_colnames <- function(key_tibble, dm_col_names, which) {
 
 check_col_classes <- function(def) {
   # Called for its side effect of checking type compatibility
-  vctrs::vec_ptype2(def, cdm_get_def(new_dm()))
+  vctrs::vec_ptype2(def, dm_get_def(new_dm()))
 
   invisible()
 }

@@ -55,7 +55,7 @@ cdm_select_tbl_impl <- function(dm, selected) {
   check_correct_input(dm, selected)
 
   def <-
-    cdm_get_def(dm) %>%
+    dm_get_def(dm) %>%
     filter_recode_table_def(selected) %>%
     filter_recode_table_fks(selected)
 

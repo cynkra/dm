@@ -26,13 +26,13 @@ cdm_get_referencing_tables <- function(dm, table) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   i <- which(def$table == table)
   def$fks[[i]]$table
 }
 
 create_graph_from_dm <- function(dm, directed = FALSE) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   def %>%
     select(ref_table = table, fks) %>%
     unnest(fks) %>%

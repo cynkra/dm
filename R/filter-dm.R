@@ -68,7 +68,7 @@ cdm_filter <- function(dm, table, ...) {
 }
 
 set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   i <- which(def$table == table)
   def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
@@ -93,7 +93,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #' @export
 cdm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   def$data <- map(def$table, ~ cdm_get_filtered_table(dm, .))
 
@@ -214,7 +214,7 @@ get_all_filtered_connected <- function(dm, table) {
 
 check_no_filter <- function(dm) {
   def <-
-    cdm_get_def(dm)
+    dm_get_def(dm)
 
   if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) {
     return()
@@ -225,7 +225,7 @@ check_no_filter <- function(dm) {
 }
 
 get_filter_for_table <- function(dm, table_name) {
-  cdm_get_def(dm) %>%
+  dm_get_def(dm) %>%
     filter(table == table_name) %>%
     pull(filters) %>%
     pluck(1)

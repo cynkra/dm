@@ -361,7 +361,7 @@ test_that("prepare_dm_for_flatten() works", {
   tables[["fact"]] <- filter(tables[["fact"]], dim_1_key > 7)
   tables[["dim_1"]] <- filter(tables[["dim_1"]], dim_1_pk > 7)
 
-  def <- cdm_get_def(red_dm)
+  def <- dm_get_def(red_dm)
   def$data <- tables
   prep_dm <- new_dm3(def)
   prep_dm_renamed <- cdm_disambiguate_cols(prep_dm, quiet = TRUE)

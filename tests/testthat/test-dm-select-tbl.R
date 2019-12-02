@@ -3,7 +3,7 @@ test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?",
     dm_for_filter %>%
     cdm_rm_fk(t5, m, t6) %>%
     cdm_rm_fk(t2, d, t1) %>%
-    cdm_get_def()
+    dm_get_def()
 
   dm_for_filter_smaller <- new_dm3(def[def$table %in% c("t1", "t6"), ])
 
@@ -14,7 +14,7 @@ test_that("cdm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?",
 })
 
 test_that("cdm_select_tbl() can reorder the tables in a `dm`", {
-  reordered_dm_for_filter <- cdm_get_def(dm_for_filter) %>%
+  reordered_dm_for_filter <- dm_get_def(dm_for_filter) %>%
     arrange(c(3:1, 6:4)) %>%
     new_dm3()
 
@@ -26,7 +26,7 @@ test_that("cdm_select_tbl() can reorder the tables in a `dm`", {
 
 test_that("cdm_select_tbl() remembers all FKs", {
   reordered_dm_nycflights_small_cycle <- cdm_add_fk(dm_nycflights_small, flights, origin, airports) %>%
-    cdm_get_def() %>%
+    dm_get_def() %>%
     filter(!(table %in% c("airlines", "planes"))) %>%
     slice(2:1) %>%
     new_dm3()

@@ -94,7 +94,7 @@ cdm_copy_to <- function(dest, dm, ...,
     ...
   )
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   def$data <- new_tables
   remote_dm <- new_dm3(def)
 

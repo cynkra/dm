@@ -17,11 +17,11 @@ test_that("Learning from MSSQL works?", {
       dm_for_filter_mssql_learned,
       structure(src_tbls(dm_for_filter_mssql_learned), names = src_tbls(dm_for_filter))
     ) %>%
-    cdm_get_def() %>%
+    dm_get_def() %>%
     select(-data)
 
   def_original <-
-    cdm_get_def(dm_for_filter) %>%
+    dm_get_def(dm_for_filter) %>%
     select(-data)
 
   expect_identical(

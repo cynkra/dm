@@ -53,7 +53,7 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
 # the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
 cdm_add_pk_impl <- function(dm, table, column, force) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   i <- which(def$table == table)
 
   if (!force && NROW(def$pks[[i]]) > 0) {
@@ -159,7 +159,7 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   if (!rm_referencing_fks && cdm_is_referenced(dm, !!table)) {
     affected <- cdm_get_referencing_tables(dm, !!table)

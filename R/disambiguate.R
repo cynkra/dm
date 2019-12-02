@@ -29,7 +29,7 @@ cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
 }
 
 get_table_colnames <- function(dm, tables = NULL) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   if (!is.null(tables)) {
     def <-

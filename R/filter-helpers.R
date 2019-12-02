@@ -37,7 +37,7 @@ repair_by <- function(by) {
 }
 
 update_filter <- function(dm, table_name, filters) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   def$filters[def$table == table_name] <- filters
   new_dm3(def)
 }

@@ -46,7 +46,7 @@ repair_table_names <- function(old_names, new_names, repair = "check_unique", qu
 }
 
 cdm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_filter())) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
   def_0$table <- table_name
