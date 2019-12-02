@@ -40,10 +40,10 @@ test_that("print() and format() methods for subclass `zoomed_dm` work", {
 })
 
 
-test_that("cdm_get_zoomed_tbl() works", {
+test_that("dm_get_zoomed_tbl() works", {
   # get zoomed tbl works
   expect_identical(
-    dm_for_filter %>% cdm_zoom_to_tbl(t2) %>% cdm_get_zoomed_tbl(),
+    dm_for_filter %>% cdm_zoom_to_tbl(t2) %>% dm_get_zoomed_tbl(),
     tibble(
       table = "t2",
       zoom = list(t2)
@@ -61,7 +61,7 @@ test_that("zooming works also on DBs", {
   walk(
     dm_for_filter_src,
     ~ expect_identical(
-      cdm_zoom_to_tbl(., t3) %>% cdm_get_zoomed_tbl(),
+      cdm_zoom_to_tbl(., t3) %>% dm_get_zoomed_tbl(),
       tibble(
         table = "t3",
         zoom = list(tbl(., "t3"))

@@ -366,7 +366,7 @@ dm_get_filter <- function(x) {
     rename(filter = filter_expr)
 }
 
-cdm_get_zoomed_tbl <- function(x) {
+dm_get_zoomed_tbl <- function(x) {
   dm_get_def(x) %>%
     filter(!map_lgl(zoom, is_null)) %>%
     select(table, zoom)

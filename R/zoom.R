@@ -60,7 +60,7 @@ is_zoomed <- function(dm) {
 }
 
 get_zoomed_tbl <- function(dm) {
-  cdm_get_zoomed_tbl(dm) %>%
+  dm_get_zoomed_tbl(dm) %>%
     pull(zoom) %>%
     pluck(1)
 }
@@ -216,7 +216,7 @@ get_tracked_keys <- function(dm) {
 }
 
 orig_name_zoomed <- function(dm) {
-  cdm_get_zoomed_tbl(dm) %>% pull(table)
+  dm_get_zoomed_tbl(dm) %>% pull(table)
 }
 
 replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_keys = NULL) {
