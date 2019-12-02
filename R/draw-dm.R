@@ -41,7 +41,7 @@ cdm_draw <- function(dm,
   # should have some schemes available for the user to choose from
   if (is_null(getOption("datamodelr.scheme"))) bdm_set_color_scheme(bdm_color_scheme)
 
-  data_model <- cdm_get_data_model(dm)
+  data_model <- dm_get_data_model(dm)
 
   graph <- bdm_create_graph(
     data_model,
@@ -60,11 +60,11 @@ cdm_draw <- function(dm,
 
 #' Get data_model
 #'
-#' `cdm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
+#' `dm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
 #' data model object for drawing.
 #'
 #' @noRd
-cdm_get_data_model <- function(x) {
+dm_get_data_model <- function(x) {
   def <- dm_get_def(x)
 
   tables <- data.frame(
@@ -74,14 +74,14 @@ cdm_get_data_model <- function(x) {
     stringsAsFactors = FALSE
   )
 
-  references_for_columns <- cdm_get_data_model_fks(x)
+  references_for_columns <- dm_get_data_model_fks(x)
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys <-
-    cdm_get_data_model_pks(x) %>%
+    dm_get_data_model_pks(x) %>%
     mutate(key = 1L)
 
   columns <-

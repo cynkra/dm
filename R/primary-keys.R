@@ -107,7 +107,7 @@ cdm_get_pk <- function(dm, table) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  pks <- cdm_get_data_model_pks(dm)
+  pks <- dm_get_data_model_pks(dm)
   pks$column[pks$table == table_name]
 }
 
@@ -123,7 +123,7 @@ cdm_get_pk <- function(dm, table) {
 #'
 #' @export
 cdm_get_all_pks <- nse(function(dm) {
-  cdm_get_data_model_pks(dm) %>%
+  dm_get_data_model_pks(dm) %>%
     select(table = table, pk_col = column)
 })
 

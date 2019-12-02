@@ -296,7 +296,7 @@ dm_get_def <- function(x) {
   unclass(x)$def
 }
 
-cdm_get_data_model_pks <- function(x) {
+dm_get_data_model_pks <- function(x) {
   # FIXME: Obliterate
 
   pk_df <-
@@ -315,7 +315,7 @@ cdm_get_data_model_pks <- function(x) {
   pk_df
 }
 
-cdm_get_data_model_fks <- function(x) {
+dm_get_data_model_fks <- function(x) {
   # FIXME: Obliterate
 
   fk_df <-
