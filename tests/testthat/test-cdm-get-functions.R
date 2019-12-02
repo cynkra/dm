@@ -25,6 +25,7 @@ test_that("cdm_get_src() works", {
 })
 
 test_that("cdm_get_con() works", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_cdm_error(
     cdm_get_con(1),
     class = "is_not_dm"
