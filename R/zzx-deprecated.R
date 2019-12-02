@@ -27,3 +27,8 @@ cdm_add_tbl <- new_cdm_forward(dm_add_tbl)
 #' @keywords internal
 #' @export
 cdm_rm_tbl <- new_cdm_forward(dm_rm_tbl)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_copy_to <- new_cdm_forward(dm_copy_to)

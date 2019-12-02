@@ -6,7 +6,7 @@ dm <- cdm_nycflights13(cycle = FALSE)
 
 src <- src_sqlite(":memory:", create = TRUE)
 
-dm_sqlite <- cdm_copy_to(src, dm)
+dm_sqlite <- dm_copy_to(src, dm)
 
 dm1 <-
   dm_sqlite %>%

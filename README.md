@@ -287,14 +287,14 @@ only these airports are included in the semi-join.
 ### From and to databases
 
 In order to transfer an existing `dm` object to a DB, you can call
-`cdm_copy_to()` with the target DB and the `dm` object:
+`dm_copy_to()` with the target DB and the `dm` object:
 
 ``` r
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
 #> src:  sqlite 3.29.0 [:memory:]
 #> tbls:
-nycflights13_remote <- cdm_copy_to(src_sqlite, cdm_nycflights13(cycle = TRUE))
+nycflights13_remote <- dm_copy_to(src_sqlite, cdm_nycflights13(cycle = TRUE))
 nycflights13_remote
 ```
 
@@ -309,7 +309,7 @@ nycflights13_remote
 
 The key constraints from the original object are also copied to the
 newly created object. With the default setting `set_key_constraints =
-TRUE` for `cdm_copy_to()`, key constraints are also established on the
+TRUE` for `dm_copy_to()`, key constraints are also established on the
 target DB. Currently this feature is only supported for MSSQL and
 Postgres database management systems (DBMS).
 

@@ -22,6 +22,6 @@ The default database schema will be used; it is currently not possible to parame
 }
 \seealso{
 Other DB interaction functions: 
-\code{\link{cdm_copy_to}()}
+\code{\link{dm_copy_to}()}
 }
 \concept{DB interaction functions}

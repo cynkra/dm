@@ -19,7 +19,7 @@
 #' @seealso
 #'
 #' - [cdm_add_pk()] and [cdm_add_fk()] add primary and foreign keys
-#' - [cdm_copy_to()] and [cdm_learn_from_db()] for DB interaction
+#' - [dm_copy_to()] and [cdm_learn_from_db()] for DB interaction
 #' - [cdm_draw()] for visualization
 #' - [cdm_join_to_tbl()] for flattening
 #' - [cdm_filter()] for filtering

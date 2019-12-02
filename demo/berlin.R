@@ -259,7 +259,7 @@ nycflights13_sqlite <-
   cdm_select_tbl(-planes) %>%
   cdm_filter(flights, month == 1) %>%
   cdm_apply_filters() %>%
-  cdm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
+  dm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
 
 nycflights13_sqlite
 
@@ -455,7 +455,7 @@ try({
     cdm_nycflights13() %>%
     cdm_select_tbl(-planes) %>%
     cdm_filter(flights, month == 1) %>%
-    cdm_copy_to(src_postgres(), ., temporary = FALSE)
+    dm_copy_to(src_postgres(), ., temporary = FALSE)
 
   dm_from_pq <-
     cdm_learn_from_db(src_postgres())

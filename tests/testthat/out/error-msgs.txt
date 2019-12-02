@@ -60,16 +60,16 @@ All selected tables must be reachable from `start`.
 `fun()` does not support the `overwrite` argument.
 
 > error_txt_no_types()
-[1] "`cdm_copy_to()` does not support the `types` argument."
+[1] "`dm_copy_to()` does not support the `types` argument."
 
 > error_txt_no_indexes()
-[1] "`cdm_copy_to()` does not support the `indexes` argument."
+[1] "`dm_copy_to()` does not support the `indexes` argument."
 
 > error_txt_no_unique_indexes()
-[1] "`cdm_copy_to()` does not support the `unique_indexes` argument."
+[1] "`dm_copy_to()` does not support the `unique_indexes` argument."
 
 > error_txt_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
-[1] "Parameter `table_names` in `cdm_copy_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`"
+[1] "Parameter `table_names` in `dm_copy_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`"
 
 > error_src_not_db()
 [1] "This does not work if the tables of the `dm` are not on a database."

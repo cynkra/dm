@@ -1,6 +1,6 @@
 #' Copy a `dm`-object to a different data source
 #'
-#' `cdm_copy_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
+#' `dm_copy_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
 #' By default, temporary tables will be created and the key constraints will be set
@@ -31,13 +31,13 @@
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-#' iris_dm <- cdm_copy_to(
+#' iris_dm <- dm_copy_to(
 #'   src_sqlite,
 #'   as_dm(list(iris = iris)),
 #'   set_key_constraints = FALSE
 #' )
 #' @export
-cdm_copy_to <- function(dest, dm, ...,
+dm_copy_to <- function(dest, dm, ...,
                         types = NULL, overwrite = NULL,
                         indexes = NULL, unique_indexes = NULL,
                         set_key_constraints = TRUE, unique_table_names = FALSE,
@@ -111,13 +111,13 @@ cdm_copy_to <- function(dest, dm, ...,
 #' (this is currently only implemented for MSSQL and Postgres databases), and mirrors the `dm` key constraints
 #' on the database.
 #'
-#' @inheritParams cdm_copy_to
+#' @inheritParams dm_copy_to
 #'
 #' @family DB interaction functions
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-#' iris_dm <- cdm_copy_to(
+#' iris_dm <- dm_copy_to(
 #'   src_sqlite,
 #'   as_dm(list(iris = iris)),
 #'   set_key_constraints = FALSE

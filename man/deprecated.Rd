@@ -8,6 +8,7 @@
 \alias{cdm_get_filter}
 \alias{cdm_add_tbl}
 \alias{cdm_rm_tbl}
+\alias{cdm_copy_to}
 \title{Deprecated functions}
 \usage{
 cdm_get_src(x)
@@ -21,6 +22,20 @@ cdm_get_filter(x)
 cdm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 
 cdm_rm_tbl(dm, ...)
+
+cdm_copy_to(
+  dest,
+  dm,
+  ...,
+  types = NULL,
+  overwrite = NULL,
+  indexes = NULL,
+  unique_indexes = NULL,
+  set_key_constraints = TRUE,
+  unique_table_names = FALSE,
+  table_names = NULL,
+  temporary = TRUE
+)
 }
 \description{
 These functions are deprecated in favor of better alternatives.

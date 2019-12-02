@@ -113,7 +113,7 @@ cdm_nycflights13() \%>\%
 \seealso{
 \itemize{
 \item \code{\link[=cdm_add_pk]{cdm_add_pk()}} and \code{\link[=cdm_add_fk]{cdm_add_fk()}} add primary and foreign keys
-\item \code{\link[=cdm_copy_to]{cdm_copy_to()}} and \code{\link[=cdm_learn_from_db]{cdm_learn_from_db()}} for DB interaction
+\item \code{\link[=dm_copy_to]{dm_copy_to()}} and \code{\link[=cdm_learn_from_db]{cdm_learn_from_db()}} for DB interaction
 \item \code{\link[=cdm_draw]{cdm_draw()}} for visualization
 \item \code{\link[=cdm_join_to_tbl]{cdm_join_to_tbl()}} for flattening
 \item \code{\link[=cdm_filter]{cdm_filter()}} for filtering

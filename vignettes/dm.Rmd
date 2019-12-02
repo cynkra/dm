@@ -207,12 +207,12 @@ Omitting the `by` argument leads to a warning.
 ## Copy a `dm` object to a DB or learn from it {#copy}
 
 `dm` objects can be transferred from one `src` to another.
-The relevant verb is `cdm_copy_to()`, which will copy both data and key constraints.
+The relevant verb is `dm_copy_to()`, which will copy both data and key constraints.
 
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-flights_dm_with_keys_remote <- cdm_copy_to(src_sqlite, flights_dm_with_keys)
+flights_dm_with_keys_remote <- dm_copy_to(src_sqlite, flights_dm_with_keys)
 ```
 
 As a result, the tables are transferred to the target data source, and all keys will be contained in the returned data model.
