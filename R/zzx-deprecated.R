@@ -181,3 +181,9 @@ cdm_is_referenced <- new_cdm_forward_2(dm_is_referenced)
 #' @keywords internal
 #' @export
 cdm_get_referencing_tables <- new_cdm_forward_2(dm_get_referencing_tables)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+cdm_learn_from_db <- new_cdm_forward(dm_learn_from_db)
+

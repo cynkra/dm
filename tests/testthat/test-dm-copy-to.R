@@ -30,7 +30,7 @@ test_that("dm_copy_to() copies between sources", {
 })
 
 # FIXME: Add test that set_key_constraints = FALSE doesn't set key constraints,
-# in combination with cdm_learn_from_db
+# in combination with dm_learn_from_db
 
 test_that("dm_copy_to() rejects overwrite and types arguments", {
   expect_dm_error(

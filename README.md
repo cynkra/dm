@@ -313,7 +313,7 @@ support for other DBMS will be implemented in a future update.
 
 ``` r
 src_postgres <- src_postgres()
-nycflights13_from_remote <- cdm_learn_from_db(src_postgres)
+nycflights13_from_remote <- dm_learn_from_db(src_postgres)
 ```
 
 ## Installation

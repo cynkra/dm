@@ -226,7 +226,7 @@ In the opposite direction, `dm` objects can also be "learned" from a DB, includi
 Unfortunately, this currently only works for MSSQL and Postgres, so we cannot show the results here just yet:
 
 ```{r eval=FALSE}
-flights_dm_from_remote <- cdm_learn_from_db(src_sqlite)
+flights_dm_from_remote <- dm_learn_from_db(src_sqlite)
 ```
 
 ## Further reading

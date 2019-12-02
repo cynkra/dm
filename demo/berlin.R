@@ -458,5 +458,5 @@ try({
     dm_copy_to(src_postgres(), ., temporary = FALSE)
 
   dm_from_pq <-
-    cdm_learn_from_db(src_postgres())
+    dm_learn_from_db(src_postgres())
 })

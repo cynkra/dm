@@ -55,7 +55,7 @@ reference:
 - title: Interaction with DBs
   contents:
   - dm_copy_to
-  - cdm_learn_from_db
+  - dm_learn_from_db
 
 - title: Utilizing foreign key relations
   contents:

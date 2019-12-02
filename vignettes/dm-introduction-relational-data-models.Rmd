@@ -222,5 +222,5 @@ In the opposite direction, `dm` can also be populated with data from a DB. Unfor
 Therefore, we cannot show the results here just yet:
 
 ```{r eval=FALSE}
-cdm_learn_from_db(src_sqlite)
+dm_learn_from_db(src_sqlite)
 ```

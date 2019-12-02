@@ -10,7 +10,7 @@ test_that("Learning from MSSQL works?", {
     dm_copy_to(con_mssql, dm_for_filter, unique_table_names = TRUE, temporary = FALSE)
   }
 
-  dm_for_filter_mssql_learned <- cdm_learn_from_db(con_mssql)
+  dm_for_filter_mssql_learned <- dm_learn_from_db(con_mssql)
 
   def_learned_renamed_reclassed <-
     cdm_rename_tbl(
@@ -40,7 +40,7 @@ test_that("Learning from Postgres works?", {
     dm_copy_to(con_postgres, dm_for_filter, unique_table_names = TRUE, temporary = FALSE)
   }
 
-  dm_for_filter_postgres_learned <- cdm_learn_from_db(con_postgres)
+  dm_for_filter_postgres_learned <- dm_learn_from_db(con_postgres)
 
   dm_postgres_learned_renamed <-
     cdm_rename_tbl(

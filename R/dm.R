@@ -19,7 +19,7 @@
 #' @seealso
 #'
 #' - [dm_add_pk()] and [dm_add_fk()] add primary and foreign keys
-#' - [dm_copy_to()] and [cdm_learn_from_db()] for DB interaction
+#' - [dm_copy_to()] and [dm_learn_from_db()] for DB interaction
 #' - [dm_draw()] for visualization
 #' - [dm_join_to_tbl()] for flattening
 #' - [dm_filter()] for filtering

@@ -216,3 +216,20 @@ test_that("graph-functions work", {
     dm_get_referencing_tables(dm_for_filter, t3)
   )
 })
+
+test_that("cdm_learn_from_db() works from PG", {
+  withr::local_options(c(lifecycle_verbosity = "quiet"))
+  src_postgres <- skip_if_error(src_test("postgres"))
+  con_postgres <- src_postgres$con
+
+  # create an object on the Postgres-DB that can be learned
+  if (is_postgres_empty()) {
+    dm_copy_to(con_postgres, dm_for_filter, unique_table_names = TRUE, temporary = FALSE)
+  }
+
+  expect_equivalent_dm(
+    cdm_learn_from_db(con_postgres),
+    dm_learn_from_db(con_postgres)
+  )
+  clear_postgres()
+})

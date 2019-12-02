@@ -493,7 +493,7 @@ try({
     dm_copy_to(con_pq, ., temporary = FALSE)
 
   dm_flights_from_pq <-
-    cdm_learn_from_db(con_pq)
+    dm_learn_from_db(con_pq)
 
   dm_flights_from_pq %>%
     dm_draw()
