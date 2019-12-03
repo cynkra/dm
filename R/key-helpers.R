@@ -39,7 +39,6 @@ dm_check_constraints <- function(dm) {
 #'
 #' @param .data The data frame whose columns should be tested for key properties.
 #' @param ... The names of the columns to be checked.
-#'   If none are specified, then all columns together are tested for the key property.
 #'
 #'   One or more unquoted expressions separated by commas.
 #'   Variable names can be treated as if they were positions, so you
@@ -72,8 +71,9 @@ check_key <- function(.data, ...) {
   duplicate_rows <-
     .data %>%
     count(!!!syms(cols_chosen)) %>%
-    count(n) %>%
+    select(n) %>%
     filter(n > 1) %>%
+    head(1) %>%
     collect()
 
   if (nrow(duplicate_rows) != 0) {
