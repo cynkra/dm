@@ -72,7 +72,6 @@ check_key <- function(.data, ...) {
   duplicate_rows <-
     .data %>%
     count(!!!syms(cols_chosen)) %>%
-    count(n) %>%
     filter(n > 1) %>%
     collect()
 
