@@ -71,7 +71,9 @@ check_key <- function(.data, ...) {
   duplicate_rows <-
     .data %>%
     count(!!!syms(cols_chosen)) %>%
+    select(n) %>%
     filter(n > 1) %>%
+    head(1) %>%
     collect()
 
   if (nrow(duplicate_rows) != 0) {
