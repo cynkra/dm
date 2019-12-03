@@ -2,7 +2,6 @@
 #'
 #' `dm_flatten_to_tbl()` and `dm_squash_to_tbl()` gather all information of interest in one place in a wide table.
 #' Both functions perform a disambiguation of column names and a cascade of joins.
-#' Disambiguates column names and a cascade of joins.
 #'
 #' @inheritParams dm_join_to_tbl
 #' @param start The table from which all outgoing foreign key relations are considered
