@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filtering a <code><a href='dm.html'>dm</a></code> object — cdm_filter • dm</title>
+<title>Filtering a <code><a href='dm.html'>dm</a></code> object — dm_filter • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Filtering a <code><a href='dm.html'>dm</a></code> object — cdm_filter" />
+<meta property="og:title" content="Filtering a <code><a href='dm.html'>dm</a></code> object — dm_filter" />
 <meta property="og:description" content="Filtering a table of a dm object may affect other tables that are connected to it
 directly or indirectly via foreign key relations." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
@@ -146,7 +146,7 @@ directly or indirectly via foreign key relations." />
     <div class="page-header">
     <h1>Filtering a <code><a href='dm.html'>dm</a></code> object</h1>
     
-    <div class="hidden name"><code>cdm_filter.Rd</code></div>
+    <div class="hidden name"><code>dm_filter.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -154,11 +154,11 @@ directly or indirectly via foreign key relations." />
 directly or indirectly via foreign key relations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>dm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
 
-<span class='fu'>cdm_apply_filters</span>(<span class='no'>dm</span>)
+<span class='fu'>dm_apply_filters</span>(<span class='no'>dm</span>)
 
-<span class='fu'>cdm_apply_filters_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
+<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,18 +186,18 @@ for an introduction to these concepts.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>cdm_filter()</code> can be used to define filter conditions for tables using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
+    <p><code>dm_filter()</code> can be used to define filter conditions for tables using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
 These conditions will be stored in the <code><a href='dm.html'>dm</a></code>, and executed immediately for the tables that they are referring to.</p>
-<p>With <code>cdm_apply_filters()</code>, all tables will be updated according to the filter conditions and the foreign key relations.</p>
-<p><code>cdm_apply_filters_to_tbl()</code> retrieves one specific table of the <code>dm</code> that is updated according to the filter conditions and the foreign key relations.</p>
+<p>With <code>dm_apply_filters()</code>, all tables will be updated according to the filter conditions and the foreign key relations.</p>
+<p><code>dm_apply_filters_to_tbl()</code> retrieves one specific table of the <code>dm</code> that is updated according to the filter conditions and the foreign key relations.</p>
 <p>The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 in one of the following scenarios:</p><ol>
-<li><p>Calling <code>cdm_apply_filters()</code> or <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> (method for <code>dm</code> objects) on a <code>dm</code>: each filtered table potentially
+<li><p>Calling <code>dm_apply_filters()</code> or <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> (method for <code>dm</code> objects) on a <code>dm</code>: each filtered table potentially
 reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
 with corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new <code>dm</code> class object without any filter conditions.</p></li>
-<li><p>Calling <code>cdm_apply_filters_to_tbl()</code>: the remaining rows of the requested table are calculated by performing a sequence
+<li><p>Calling <code>dm_apply_filters_to_tbl()</code>: the remaining rows of the requested table are calculated by performing a sequence
 of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::semi_join()</a></code>) starting from each table that has been filtered to the requested table
 (similar to 1. but only for one table).</p></li>
 </ol>
@@ -208,10 +208,10 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 
 <span class='no'>dm_nyc_filtered</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>)
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>)
 
-<span class='fu'>cdm_apply_filters_to_tbl</span>(<span class='no'>dm_nyc_filtered</span>, <span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 111,279 x 19
+<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='no'>dm_nyc_filtered</span>, <span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 111,279 x 19
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
 #&gt;  1  2013     1     1      542            540         2      923            850
@@ -227,9 +227,9 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
 #&gt; # … with 111,269 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
 #&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
 #&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</div><div class='input'>
-<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -239,17 +239,17 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
 <span class='co'># If you want to keep only those rows in the parent tables</span>
 <span class='co'># whose primary key values appear as foreign key values in</span>
 <span class='co'># `flights`, you can set a `TRUE` filter in `flights`:</span>
-<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='fl'>1</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_apply_filters</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_nrow.html'>cdm_nrow</a></span>()</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='no'>flights</span>, <span class='fl'>1</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_apply_filters</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>()</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16        3   336776     3322    26115 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
 <span class='co'># `airports` because the departure airports in `flights` are</span>
 <span class='co'># only the three New York airports.</span>
 
-<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -257,17 +257,17 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_filter</span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_apply_filters_to_tbl</span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; # A tibble: 2,619 x 9
+#&gt; Foreign keys: 3</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_apply_filters_to_tbl</span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; # A tibble: 2,619 x 9
 #&gt;    tailnum  year type          manufacturer   model  engines seats speed engine 
 #&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
 #&gt;  1 N10156   2004 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…

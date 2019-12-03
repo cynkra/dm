@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the names of the tables of a <code><a href='dm.html'>dm</a></code> that reference a given table. — cdm_get_referencing_tables • dm</title>
+<title>Retrieve all foreign key constraints in a <code><a href='dm.html'>dm</a></code> — dm_get_all_fks • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Get the names of the tables of a <code><a href='dm.html'>dm</a></code> that reference a given table. — cdm_get_referencing_tables" />
-<meta property="og:description" content="Get the names of the tables of a dm that reference a given table." />
+<meta property="og:title" content="Retrieve all foreign key constraints in a <code><a href='dm.html'>dm</a></code> — dm_get_all_fks" />
+<meta property="og:description" content="Get a summary of all foreign key relations in a dm" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -143,16 +143,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the names of the tables of a <code><a href='dm.html'>dm</a></code> that reference a given table.</h1>
+    <h1>Retrieve all foreign key constraints in a <code><a href='dm.html'>dm</a></code></h1>
     
-    <div class="hidden name"><code>cdm_get_referencing_tables.Rd</code></div>
+    <div class="hidden name"><code>dm_get_all_fks.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get the names of the tables of a <code><a href='dm.html'>dm</a></code> that reference a given table.</p>
+    <p>Get a summary of all foreign key relations in a <code><a href='dm.html'>dm</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_get_referencing_tables</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_get_all_fks</span>(<span class='no'>dm</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,20 +161,22 @@
       <th>dm</th>
       <td><p>A <code>dm</code> object.</p></td>
     </tr>
-    <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Character vector of the names of the tables that point to the primary
-key of <code>table</code>.</p>
+    <p>A tibble with columns:</p>
+<p>"child_table": child table,
+"child_fk_col": foreign key column in child table,
+"parent_table": parent table</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other functions utilizing foreign key relations: 
-<code><a href='cdm_is_referenced.html'>cdm_is_referenced</a>()</code></p></div>
+    <div class='dont-index'><p>Other foreign key functions: 
+<code><a href='dm_add_fk.html'>dm_add_fk</a>()</code>,
+<code><a href='dm_enum_fk_candidates.html'>dm_enum_fk_candidates</a>()</code>,
+<code><a href='dm_get_fk.html'>dm_get_fk</a>()</code>,
+<code><a href='dm_has_fk.html'>dm_has_fk</a>()</code>,
+<code><a href='dm_rm_fk.html'>dm_rm_fk</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

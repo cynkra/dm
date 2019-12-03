@@ -106,7 +106,7 @@
     <div class="page-header toc-ignore">
       <h1>Defining a ‘dm’ object for your data</h1>
             
-            <h4 class="date">2019-12-02</h4>
+            <h4 class="date">2019-12-03</h4>
       
       
       <div class="hidden name"><code>dm-setup.Rmd</code></div>
@@ -116,7 +116,7 @@
     
     
 <p>This document describes how you can get your data into a <code>dm</code> object.</p>
-<p>Although the example that we will be using is included in <code>dm</code>, and you can see it by running <code><a href="../reference/cdm_nycflights13.html">cdm_nycflights13()</a></code>, we will be going through the built-in example one more time here, step by step.</p>
+<p>Although the example that we will be using is included in <code>dm</code>, and you can see it by running <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code>, we will be going through the built-in example one more time here, step by step.</p>
 <p>The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013, and are available through the <a href="https://github.com/hadley/nycflights13"><code>nycflights13</code></a> package:</p>
 <ul>
 <li>
@@ -152,8 +152,8 @@
 <div id="primary-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#primary-keys" class="anchor"></a>Primary Keys</h2>
-<p><code>dm</code> offers <code><a href="../reference/enum_pk_candidates.html">cdm_enum_pk_candidates()</a></code> to identify primary keys and <code><a href="../reference/cdm_add_pk.html">cdm_add_pk()</a></code> to add them.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/enum_pk_candidates.html">cdm_enum_pk_candidates</a></span>(</a>
+<p><code>dm</code> offers <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> to identify primary keys and <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> to add them.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">dm =</span> flights_dm_no_keys,</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">table =</span> planes</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">)</a></code></pre></div>
@@ -171,9 +171,9 @@
 ## 9 year        FALSE     has duplicate values: 1959, 1963, 1975, 1976, 1977, … (…</code></pre>
 <p>Now, add the primary keys that you have identified:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">flights_dm_only_pks &lt;-<span class="st"> </span>flights_dm_no_keys <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(<span class="dt">table =</span> airlines, <span class="dt">column =</span> carrier) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(airports, faa) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_pk.html">cdm_add_pk</a></span>(planes, tailnum)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(<span class="dt">table =</span> airlines, <span class="dt">column =</span> carrier) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(airports, faa) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(planes, tailnum)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">flights_dm_only_pks</a></code></pre></div>
 <pre><code>## ── Table source ────────────────────────────────────────────────────────────────
 ## src:  &lt;environment: R_GlobalEnv&gt;
@@ -182,8 +182,8 @@
 ## Columns: 53
 ## Primary keys: 3
 ## Foreign keys: 0</code></pre>
-<p>To review the primary keys after setting them, call <code><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks()</a></code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(flights_dm_only_pks)</a></code></pre></div>
+<p>To review the primary keys after setting them, call <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>(flights_dm_only_pks)</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 2
 ##   table    pk_col 
 ##   &lt;chr&gt;    &lt;chr&gt;  
@@ -194,7 +194,7 @@
 <div id="foreign-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#foreign-keys" class="anchor"></a>Foreign Keys</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_enum_fk_candidates.html">cdm_enum_fk_candidates</a></span>(</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span>(</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">  <span class="dt">dm =</span> flights_dm_only_pks,</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="dt">table =</span> flights,</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="dt">ref_table =</span> airlines</a>
@@ -221,12 +221,12 @@
 ## 17 sched_dep_t… FALSE     Can't join on 'value' x 'value' because of incompatib…
 ## 18 time_hour    FALSE     cannot join a POSIXct object with an object that is n…
 ## 19 year         FALSE     Can't join on 'value' x 'value' because of incompatib…</code></pre>
-<p>To define how your tables are related, use <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> to add foreign keys. First, define the tables that you wish to connect by parameterizing the <code><a href="../reference/cdm_add_fk.html">cdm_add_fk()</a></code> function with <code>table</code> and <code>ref_table</code> options.</p>
+<p>To define how your tables are related, use <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> to add foreign keys. First, define the tables that you wish to connect by parameterizing the <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> function with <code>table</code> and <code>ref_table</code> options.</p>
 <p>Then indicate in <code>column</code> which column of <code>table</code> refers to <code>ref_table</code>’s primary key, which you’ve defined above. Use <code>check = FALSE</code> to omit consistency checks.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">flights_dm_all_keys &lt;-<span class="st"> </span>flights_dm_only_pks <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(<span class="dt">table =</span> flights, <span class="dt">column =</span> tailnum, <span class="dt">ref_table =</span> planes, <span class="dt">check =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, carrier, airlines) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/cdm_add_fk.html">cdm_add_fk</a></span>(flights, origin, airports)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span>(<span class="dt">table =</span> flights, <span class="dt">column =</span> tailnum, <span class="dt">ref_table =</span> planes, <span class="dt">check =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span>(flights, carrier, airlines) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span>(flights, origin, airports)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">flights_dm_all_keys</a></code></pre></div>
 <pre><code>## ── Table source ────────────────────────────────────────────────────────────────
 ## src:  &lt;environment: R_GlobalEnv&gt;
@@ -239,8 +239,8 @@
 <div id="retrieving-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#retrieving-keys" class="anchor"></a>Retrieving Keys</h2>
-<p>To retrieve your keys later on, use <code><a href="../reference/cdm_get_all_fks.html">cdm_get_all_fks()</a></code>, or <code><a href="../reference/cdm_get_fk.html">cdm_get_fk()</a></code> for its singular version.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/cdm_get_all_pks.html">cdm_get_all_pks</a></span>(flights_dm_all_keys)</a></code></pre></div>
+<p>To retrieve your keys later on, use <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>, or <code><a href="../reference/dm_get_fk.html">dm_get_fk()</a></code> for its singular version.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>(flights_dm_all_keys)</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 2
 ##   table    pk_col 
 ##   &lt;chr&gt;    &lt;chr&gt;  

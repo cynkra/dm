@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Flatten a part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl • dm</title>
+<title>Flatten a part of a <code>dm</code> into a wide table — dm_flatten_to_tbl • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Flatten a part of a <code>dm</code> into a wide table — cdm_flatten_to_tbl" />
-<meta property="og:description" content="cdm_flatten_to_tbl() and cdm_squash_to_tbl() gather all information of interest in one place in a wide table.
+<meta property="og:title" content="Flatten a part of a <code>dm</code> into a wide table — dm_flatten_to_tbl" />
+<meta property="og:description" content="dm_flatten_to_tbl() and dm_squash_to_tbl() gather all information of interest in one place in a wide table.
 Both functions perform a disambiguation of column names and a cascade of joins.
 Disambiguates column names and a cascade of joins." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
@@ -147,18 +147,18 @@ Disambiguates column names and a cascade of joins." />
     <div class="page-header">
     <h1>Flatten a part of a <code>dm</code> into a wide table</h1>
     
-    <div class="hidden name"><code>cdm_flatten_to_tbl.Rd</code></div>
+    <div class="hidden name"><code>dm_flatten_to_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>cdm_flatten_to_tbl()</code> and <code>cdm_squash_to_tbl()</code> gather all information of interest in one place in a wide table.
+    <p><code>dm_flatten_to_tbl()</code> and <code>dm_squash_to_tbl()</code> gather all information of interest in one place in a wide table.
 Both functions perform a disambiguation of column names and a cascade of joins.
 Disambiguates column names and a cascade of joins.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)
+    <pre class="usage"><span class='fu'>dm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)
 
-<span class='fu'>cdm_squash_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
+<span class='fu'>dm_squash_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,7 +181,7 @@ The order of the tables here determines
 the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
 If this includes tables that are not direct neighbours of <code>start</code>,
-it will only work with <code>cdm_squash_to_tbl()</code> (given one of the allowed join-methods).
+it will only work with <code>dm_squash_to_tbl()</code> (given one of the allowed join-methods).
 <code>tidyselect</code> is supported, cf. <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code>.</p></td>
     </tr>
     <tr>
@@ -212,10 +212,10 @@ that the effect of the filters on this table is taken into account.
 For <code>right_join</code>, <code>full_join</code> and <code>nest_join</code>, an error
 is thrown if any filters are set because filters will not affect the right hand side tables and the result will therefore be
 incorrect in general (calculating the effects on all RHS-tables would also be time-consuming, and is not supported;
-if desired, call <code><a href='cdm_filter.html'>cdm_apply_filters()</a></code> first to achieve that effect).
+if desired, call <code><a href='dm_filter.html'>dm_apply_filters()</a></code> first to achieve that effect).
 For all other join types, filtering only the <code>start</code> table is enough because the effect is passed on by
 successive joins.</p>
-<p>Mind that calling <code>cdm_flatten_to_tbl()</code> with <code>join = right_join</code> and no table order determined in the <code>...</code> argument
+<p>Mind that calling <code>dm_flatten_to_tbl()</code> with <code>join = right_join</code> and no table order determined in the <code>...</code> argument
 will not lead to a well-defined result if two or more foreign tables are to be joined to <code>start</code>.
 The resulting
 table would depend on the order the tables that are listed in the <code>dm</code>.
@@ -225,12 +225,12 @@ each nested column entry would be a tibble of one row), an error will be thrown 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other flattening functions: 
-<code><a href='cdm_join_to_tbl.html'>cdm_join_to_tbl</a>()</code></p></div>
+<code><a href='dm_join_to_tbl.html'>dm_join_to_tbl</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='cdm_select_tbl.html'>cdm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_flatten_to_tbl</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year</span>
 #&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time

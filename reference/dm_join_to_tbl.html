@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add tables to a <code><a href='dm.html'>dm</a></code> — cdm_add_tbl • dm</title>
+<title>Perform a join between two tables of a <code><a href='dm.html'>dm</a></code> — dm_join_to_tbl • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,11 @@
 
 
 
-<meta property="og:title" content="Add tables to a <code><a href='dm.html'>dm</a></code> — cdm_add_tbl" />
-<meta property="og:description" content="cdm_add_tbl() adds one or more tables to a dm.
-It uses mutate() semantics." />
+<meta property="og:title" content="Perform a join between two tables of a <code><a href='dm.html'>dm</a></code> — dm_join_to_tbl" />
+<meta property="og:description" content="A join of a desired type is performed between table_1 and table_2.
+The two tables need to be directly connected by a foreign key relation.
+Since this function is a wrapper around dm_flatten_to_tbl(), the LHS of
+the join will always be a &quot;child table&quot;, i.e. a table referencing the other table." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -144,17 +146,19 @@ It uses mutate() semantics." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add tables to a <code><a href='dm.html'>dm</a></code></h1>
+    <h1>Perform a join between two tables of a <code><a href='dm.html'>dm</a></code></h1>
     
-    <div class="hidden name"><code>cdm_add_tbl.Rd</code></div>
+    <div class="hidden name"><code>dm_join_to_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>cdm_add_tbl()</code> adds one or more tables to a <code><a href='dm.html'>dm</a></code>.
-It uses <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate()</a></code> semantics.</p>
+    <p>A join of a desired type is performed between <code>table_1</code> and <code>table_2</code>.
+The two tables need to be directly connected by a foreign key relation.
+Since this function is a wrapper around <code><a href='dm_flatten_to_tbl.html'>dm_flatten_to_tbl()</a></code>, the LHS of
+the join will always be a "child table", i.e. a table referencing the other table.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_add_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>repair</span> <span class='kw'>=</span> <span class='st'>"unique"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_join_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table_1</span>, <span class='no'>table_2</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,44 +168,26 @@ It uses <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate
       <td><p>A <code><a href='dm.html'>dm</a></code> object.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>One or more tables to add to the <code>dm</code>.
-If no explicit name is given, the name of the expression is used.</p></td>
+      <th>table_1</th>
+      <td><p>One of the tables involved in the join.</p></td>
     </tr>
     <tr>
-      <th>repair</th>
-      <td><p>Either a string or a function. If a string, it must
-be one of <code>"check_unique"</code>, <code>"minimal"</code>, <code>"unique"</code>, or <code>"universal"</code>.
-If a function, it is invoked with a vector of minimal names and must
-return minimal names, otherwise an error is thrown.</p><ul>
-<li><p>Minimal names are never <code>NULL</code> or <code>NA</code>. When an element doesn't
-have a name, its minimal name is an empty string.</p></li>
-<li><p>Unique names are unique. A suffix is appended to duplicate
-names to make them unique.</p></li>
-<li><p>Universal names are unique and syntactic, meaning that you can
-safely use the names as variables without causing a syntax
-error.</p></li>
-</ul>
-
-<p>The <code>"check_unique"</code> option doesn't perform any name repair.
-Instead, an error is raised if the names don't suit the
-<code>"unique"</code> criteria.</p></td>
+      <th>table_2</th>
+      <td><p>The second table of the join.</p></td>
     </tr>
     <tr>
-      <th>quiet</th>
-      <td><p>By default, the user is informed of any renaming
-caused by repairing the names. This only concerns unique and
-universal repairing. Set <code>quiet</code> to <code>TRUE</code> to silence the
-messages.</p></td>
+      <th>join</th>
+      <td><p>The type of join to be performed, see <code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::join()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The initial <code>dm</code> with the additional table(s).</p>
+    <p>The resulting table of the join.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='cdm_rm_tbl.html'>cdm_rm_tbl()</a></code></p></div>
+    <div class='dont-index'><p>Other flattening functions: 
+<code><a href='dm_flatten_to_tbl.html'>dm_flatten_to_tbl</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

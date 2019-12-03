@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove tables from a <code><a href='dm.html'>dm</a></code> — cdm_rm_tbl • dm</title>
+<title>Number of rows — dm_nrow • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Remove tables from a <code><a href='dm.html'>dm</a></code> — cdm_rm_tbl" />
-<meta property="og:description" content="Removes one or more tables from a dm." />
+<meta property="og:title" content="Number of rows — dm_nrow" />
+<meta property="og:description" content="Returns a named vector with the number of rows for each table." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -143,16 +143,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove tables from a <code><a href='dm.html'>dm</a></code></h1>
+    <h1>Number of rows</h1>
     
-    <div class="hidden name"><code>cdm_rm_tbl.Rd</code></div>
+    <div class="hidden name"><code>dm_nrow.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Removes one or more tables from a <code><a href='dm.html'>dm</a></code>.</p>
+    <p>Returns a named vector with the number of rows for each table.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_rm_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_nrow</span>(<span class='no'>dm</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,27 +161,14 @@
       <th>dm</th>
       <td><p>A <code><a href='dm.html'>dm</a></code> object.</p></td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td><p>One or more unquoted table names to remove from the <code>dm</code>.
-<code>tidyselect</code> is supported, see <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> for details on the semantics.</p></td>
-    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>The dm without the removed table(s) that were present in the initial <code>dm</code>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='cdm_add_tbl.html'>cdm_add_tbl()</a></code>, <code><a href='cdm_select_tbl.html'>cdm_select_tbl()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>

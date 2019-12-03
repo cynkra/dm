@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table? — cdm_is_referenced • dm</title>
+<title>Creates a <code><a href='dm.html'>dm</a></code> object for the <span class="pkg">nycflights13</span> data — dm_nycflights13 • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,13 @@
 
 
 
-<meta property="og:title" content="Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table? — cdm_is_referenced" />
-<meta property="og:description" content="Is a table of a dm referenced by another table?" />
+<meta property="og:title" content="Creates a <code><a href='dm.html'>dm</a></code> object for the <span class="pkg">nycflights13</span> data — dm_nycflights13" />
+<meta property="og:description" content="Creates an example dm object from the tables in nycflights13,
+along with the references.
+See nycflights13::flights for a description of the data.
+As described in nycflights13::planes, the relationship
+between the flights table and the planes tables is &quot;weak&quot;, it does not satisfy
+data integrity constraints." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -143,46 +148,53 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table?</h1>
+    <h1>Creates a <code><a href='dm.html'>dm</a></code> object for the <span class="pkg">nycflights13</span> data</h1>
     
-    <div class="hidden name"><code>cdm_is_referenced.Rd</code></div>
+    <div class="hidden name"><code>dm_nycflights13.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table?</p>
+    <p>Creates an example <code><a href='dm.html'>dm</a></code> object from the tables in <span class="pkg">nycflights13</span>,
+along with the references.
+See <a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>nycflights13::flights</a> for a description of the data.
+As described in <a href='https://rdrr.io/pkg/nycflights13/man/planes.html'>nycflights13::planes</a>, the relationship
+between the <code>flights</code> table and the <code>planes</code> tables is "weak", it does not satisfy
+data integrity constraints.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_is_referenced</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_nycflights13</span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
+      <th>cycle</th>
+      <td><p>Boolean.
+If <code>FALSE</code> (default), only one foreign key relation
+(from <code>flights$origin</code> to <code>airports$faa</code>) between the <code>flights</code> table and the <code>airports</code> table is
+established.
+If <code>TRUE</code>, a <code>dm</code> object with a double reference
+between those tables will be produced.</p></td>
     </tr>
     <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
+      <th>color</th>
+      <td><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
+colors assigned to different tables for visualization with <code><a href='dm_draw.html'>dm_draw()</a></code></p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>TRUE</code> if at least one foreign key exists that points to the primary
-key of the <code>table</code> argument, <code>FALSE</code> otherwise.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other functions utilizing foreign key relations: 
-<code><a href='cdm_get_referencing_tables.html'>cdm_get_referencing_tables</a>()</code></p></div>
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) {
+  <span class='fu'>dm_nycflights13</span>() <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

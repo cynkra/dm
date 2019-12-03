@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Does a table of a <code><a href='dm.html'>dm</a></code> object have a column set as primary key? — cdm_has_pk • dm</title>
+<title>Retrieve the name of the primary key column of a <code>dm</code> table — dm_get_pk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,11 @@
 
 
 
-<meta property="og:title" content="Does a table of a <code><a href='dm.html'>dm</a></code> object have a column set as primary key? — cdm_has_pk" />
-<meta property="og:description" content="cdm_has_pk() checks in the data_model part
-of the dm object if a given table has a column marked as its primary key." />
+<meta property="og:title" content="Retrieve the name of the primary key column of a <code>dm</code> table — dm_get_pk" />
+<meta property="og:description" content="dm_get_pk() returns the name of the
+column marked as primary key of a table of a dm object.
+If no primary key is
+set for the table, an empty character vector is returned." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -144,17 +146,19 @@ of the dm object if a given table has a column marked as its primary key." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Does a table of a <code><a href='dm.html'>dm</a></code> object have a column set as primary key?</h1>
+    <h1>Retrieve the name of the primary key column of a <code>dm</code> table</h1>
     
-    <div class="hidden name"><code>cdm_has_pk.Rd</code></div>
+    <div class="hidden name"><code>dm_get_pk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>cdm_has_pk()</code> checks in the <code>data_model</code> part
-of the <code><a href='dm.html'>dm</a></code> object if a given table has a column marked as its primary key.</p>
+    <p><code>dm_get_pk()</code> returns the name of the
+column marked as primary key of a table of a <code><a href='dm.html'>dm</a></code> object.
+If no primary key is
+set for the table, an empty character vector is returned.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_has_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_get_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,18 +176,18 @@ of the <code><a href='dm.html'>dm</a></code> object if a given table has a colum
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other primary key functions: 
-<code><a href='cdm_add_pk.html'>cdm_add_pk</a>()</code>,
-<code><a href='cdm_get_all_pks.html'>cdm_get_all_pks</a>()</code>,
-<code><a href='cdm_get_pk.html'>cdm_get_pk</a>()</code>,
-<code><a href='cdm_rm_pk.html'>cdm_rm_pk</a>()</code>,
+<code><a href='dm_add_pk.html'>dm_add_pk</a>()</code>,
+<code><a href='dm_get_all_pks.html'>dm_get_all_pks</a>()</code>,
+<code><a href='dm_has_pk.html'>dm_has_pk</a>()</code>,
+<code><a href='dm_rm_pk.html'>dm_rm_pk</a>()</code>,
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cdm_nycflights13.html'>cdm_nycflights13</a></span>()
+<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()
 
 <span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>cdm_has_pk</span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+  <span class='fu'>dm_get_pk</span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] "tailnum"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

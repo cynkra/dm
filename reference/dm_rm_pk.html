@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates a <code><a href='dm.html'>dm</a></code> object for the <span class="pkg">nycflights13</span> data — cdm_nycflights13 • dm</title>
+<title>Remove a primary key from a table in a <code><a href='dm.html'>dm</a></code> object — dm_rm_pk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,13 +42,10 @@
 
 
 
-<meta property="og:title" content="Creates a <code><a href='dm.html'>dm</a></code> object for the <span class="pkg">nycflights13</span> data — cdm_nycflights13" />
-<meta property="og:description" content="Creates an example dm object from the tables in nycflights13,
-along with the references.
-See nycflights13::flights for a description of the data.
-As described in nycflights13::planes, the relationship
-between the flights table and the planes tables is &quot;weak&quot;, it does not satisfy
-data integrity constraints." />
+<meta property="og:title" content="Remove a primary key from a table in a <code><a href='dm.html'>dm</a></code> object — dm_rm_pk" />
+<meta property="og:description" content="dm_rm_pk() removes a potentially set primary key from a table in the
+underlying data_model-object; leaves the dm object unaltered otherwise.
+Foreign keys that point to the table from other tables, can be optionally removed as well." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -148,52 +145,65 @@ data integrity constraints." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates a <code><a href='dm.html'>dm</a></code> object for the <span class="pkg">nycflights13</span> data</h1>
+    <h1>Remove a primary key from a table in a <code><a href='dm.html'>dm</a></code> object</h1>
     
-    <div class="hidden name"><code>cdm_nycflights13.Rd</code></div>
+    <div class="hidden name"><code>dm_rm_pk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates an example <code><a href='dm.html'>dm</a></code> object from the tables in <span class="pkg">nycflights13</span>,
-along with the references.
-See <a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>nycflights13::flights</a> for a description of the data.
-As described in <a href='https://rdrr.io/pkg/nycflights13/man/planes.html'>nycflights13::planes</a>, the relationship
-between the <code>flights</code> table and the <code>planes</code> tables is "weak", it does not satisfy
-data integrity constraints.</p>
+    <p><code>dm_rm_pk()</code> removes a potentially set primary key from a table in the
+underlying <code>data_model</code>-object; leaves the <code><a href='dm.html'>dm</a></code> object unaltered otherwise.</p>
+<p>Foreign keys that point to the table from other tables, can be optionally removed as well.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_nycflights13</span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_rm_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cycle</th>
-      <td><p>Boolean.
-If <code>FALSE</code> (default), only one foreign key relation
-(from <code>flights$origin</code> to <code>airports$faa</code>) between the <code>flights</code> table and the <code>airports</code> table is
-established.
-If <code>TRUE</code>, a <code>dm</code> object with a double reference
-between those tables will be produced.</p></td>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object.</p></td>
     </tr>
     <tr>
-      <th>color</th>
-      <td><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
-colors assigned to different tables for visualization with <code><a href='cdm_draw.html'>cdm_draw()</a></code></p></td>
+      <th>table</th>
+      <td><p>A table in the <code>dm</code>.</p></td>
+    </tr>
+    <tr>
+      <th>rm_referencing_fks</th>
+      <td><p>Boolean: if <code>FALSE</code> (default), will throw an error if
+there are foreign keys addressing the primary key that is to be removed.
+If <code>TRUE</code>, the function will
+remove, in addition to the primary key of the <code>table</code> argument, also all foreign key constraints
+that are pointing to it.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other primary key functions: 
+<code><a href='dm_add_pk.html'>dm_add_pk</a>()</code>,
+<code><a href='dm_get_all_pks.html'>dm_get_all_pks</a>()</code>,
+<code><a href='dm_get_pk.html'>dm_get_pk</a>()</code>,
+<code><a href='dm_has_pk.html'>dm_has_pk</a>()</code>,
+<code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) {
-  <span class='fu'>cdm_nycflights13</span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='cdm_draw.html'>cdm_draw</a></span>()
-}</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()
+
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_rm_pk</span>(<span class='no'>airports</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_has_pk.html'>dm_has_pk</a></span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_rm_pk</span>(<span class='no'>planes</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_has_pk.html'>dm_has_pk</a></span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

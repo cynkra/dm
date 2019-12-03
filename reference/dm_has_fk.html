@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Perform a join between two tables of a <code><a href='dm.html'>dm</a></code> — cdm_join_to_tbl • dm</title>
+<title>Does there exist a reference from one table of a <code>dm</code> to another? — dm_has_fk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,11 +42,8 @@
 
 
 
-<meta property="og:title" content="Perform a join between two tables of a <code><a href='dm.html'>dm</a></code> — cdm_join_to_tbl" />
-<meta property="og:description" content="A join of a desired type is performed between table_1 and table_2.
-The two tables need to be directly connected by a foreign key relation.
-Since this function is a wrapper around cdm_flatten_to_tbl(), the LHS of
-the join will always be a &quot;child table&quot;, i.e. a table referencing the other table." />
+<meta property="og:title" content="Does there exist a reference from one table of a <code>dm</code> to another? — dm_has_fk" />
+<meta property="og:description" content="Does there exist a reference from one table of a dm to another?" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -146,48 +143,45 @@ the join will always be a &quot;child table&quot;, i.e. a table referencing the 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Perform a join between two tables of a <code><a href='dm.html'>dm</a></code></h1>
+    <h1>Does there exist a reference from one table of a <code>dm</code> to another?</h1>
     
-    <div class="hidden name"><code>cdm_join_to_tbl.Rd</code></div>
+    <div class="hidden name"><code>dm_has_fk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A join of a desired type is performed between <code>table_1</code> and <code>table_2</code>.
-The two tables need to be directly connected by a foreign key relation.
-Since this function is a wrapper around <code><a href='cdm_flatten_to_tbl.html'>cdm_flatten_to_tbl()</a></code>, the LHS of
-the join will always be a "child table", i.e. a table referencing the other table.</p>
+    <p>Does there exist a reference from one table of a <code>dm</code> to another?</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_join_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table_1</span>, <span class='no'>table_2</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_has_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dm</th>
-      <td><p>A <code><a href='dm.html'>dm</a></code> object.</p></td>
+      <td><p>A <code>dm</code> object.</p></td>
     </tr>
     <tr>
-      <th>table_1</th>
-      <td><p>One of the tables involved in the join.</p></td>
+      <th>table</th>
+      <td><p>A table in the <code>dm</code>.</p></td>
     </tr>
     <tr>
-      <th>table_2</th>
-      <td><p>The second table of the join.</p></td>
-    </tr>
-    <tr>
-      <th>join</th>
-      <td><p>The type of join to be performed, see <code><a href='https://dplyr.tidyverse.org/reference/join.html'>dplyr::join()</a></code>.</p></td>
+      <th>ref_table</th>
+      <td><p>The table that <code>table</code> is potentially referencing.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The resulting table of the join.</p>
+    <p>A boolean value: <code>TRUE</code> if a reference from <code>table</code> to <code>ref_table</code> exists, <code>FALSE</code> otherwise.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other flattening functions: 
-<code><a href='cdm_flatten_to_tbl.html'>cdm_flatten_to_tbl</a>()</code></p></div>
+    <div class='dont-index'><p>Other foreign key functions: 
+<code><a href='dm_add_fk.html'>dm_add_fk</a>()</code>,
+<code><a href='dm_enum_fk_candidates.html'>dm_enum_fk_candidates</a>()</code>,
+<code><a href='dm_get_all_fks.html'>dm_get_all_fks</a>()</code>,
+<code><a href='dm_get_fk.html'>dm_get_fk</a>()</code>,
+<code><a href='dm_rm_fk.html'>dm_rm_fk</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

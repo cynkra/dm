@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove the reference(s) from one <code><a href='dm.html'>dm</a></code> table to another — cdm_rm_fk • dm</title>
+<title>Reverse engineer code for creation of a <code><a href='dm.html'>dm</a></code> — dm_paste • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,8 @@
 
 
 
-<meta property="og:title" content="Remove the reference(s) from one <code><a href='dm.html'>dm</a></code> table to another — cdm_rm_fk" />
-<meta property="og:description" content="This function can remove either one reference between two tables, or all references at once, if argument column = NULL.
-All arguments may be provided quoted or unquoted." />
+<meta property="og:title" content="Reverse engineer code for creation of a <code><a href='dm.html'>dm</a></code> — dm_paste" />
+<meta property="og:description" content="dm_paste takes an existing dm and produces the code necessary for its creation" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -144,17 +143,16 @@ All arguments may be provided quoted or unquoted." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove the reference(s) from one <code><a href='dm.html'>dm</a></code> table to another</h1>
+    <h1>Reverse engineer code for creation of a <code><a href='dm.html'>dm</a></code></h1>
     
-    <div class="hidden name"><code>cdm_rm_fk.Rd</code></div>
+    <div class="hidden name"><code>dm_paste.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function can remove either one reference between two tables, or all references at once, if argument <code>column = NULL</code>.
-All arguments may be provided quoted or unquoted.</p>
+    <p><code>dm_paste</code> takes an existing <code>dm</code> and produces the code necessary for its creation</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_rm_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_paste</span>(<span class='no'>dm</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tab_width</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,35 +162,34 @@ All arguments may be provided quoted or unquoted.</p>
       <td><p>A <code>dm</code> object.</p></td>
     </tr>
     <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
+      <th>select</th>
+      <td><p>Boolean, default <code>FALSE</code>. If <code>TRUE</code> will try to produce code for reducing to necessary columns.</p></td>
     </tr>
     <tr>
-      <th>column</th>
-      <td><p>The column of <code>table</code> that should no longer be referencing the primary key of <code>ref_table</code>.
-If <code>NULL</code>, all columns will be evaluated.</p></td>
-    </tr>
-    <tr>
-      <th>ref_table</th>
-      <td><p>The table that <code>table</code> was referencing.</p></td>
+      <th>tab_width</th>
+      <td><p>Indentation width for code from the second line onwards</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p>Other foreign key functions: 
-<code><a href='cdm_add_fk.html'>cdm_add_fk</a>()</code>,
-<code><a href='cdm_enum_fk_candidates.html'>cdm_enum_fk_candidates</a>()</code>,
-<code><a href='cdm_get_all_fks.html'>cdm_get_all_fks</a>()</code>,
-<code><a href='cdm_get_fk.html'>cdm_get_fk</a>()</code>,
-<code><a href='cdm_has_fk.html'>cdm_has_fk</a>()</code></p></div>
+    <p>Code for producing the given <code>dm</code></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>At the very least (if no keys exist in the given <code><a href='dm.html'>dm</a></code>) a <code><a href='dm.html'>dm()</a></code> statement is produced that -- when executed --
+produces the same <code>dm</code>. In addition, the code for setting the existing primary keys as well as the relations between the
+tables is produced. If <code>select = TRUE</code>, statements are included to select the respective columns of each table of the <code>dm</code> (useful if
+only a subset of the columns of the original tables is used for the <code>dm</code>).</p>
+<p>Mind, that it is assumed, that the tables of the existing <code>dm</code> are available in the global environment under their names
+within the <code>dm</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Learn a <code><a href='dm.html'>dm</a></code> object from a database (DB) — cdm_learn_from_db • dm</title>
+<title>Single out a table of a <code>dm</code> — dm_zoom_to_tbl • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,11 +42,9 @@
 
 
 
-<meta property="og:title" content="Learn a <code><a href='dm.html'>dm</a></code> object from a database (DB) — cdm_learn_from_db" />
-<meta property="og:description" content="If there are any permament tables on a DB, a new dm object can be created that contains those tables,
-along with their primary and foreign key constraints.
-Currently this only works with MSSQL and Postgres databases.
-The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema." />
+<meta property="og:title" content="Single out a table of a <code>dm</code> — dm_zoom_to_tbl" />
+<meta property="og:description" content="Zooming to a table of a dm allows for the use of many dplyr-verbs directly on this table, while retaining the
+context of the dm object." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -146,44 +144,95 @@ The default database schema will be used; it is currently not possible to parame
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Learn a <code><a href='dm.html'>dm</a></code> object from a database (DB)</h1>
+    <h1>Single out a table of a <code>dm</code></h1>
     
-    <div class="hidden name"><code>cdm_learn_from_db.Rd</code></div>
+    <div class="hidden name"><code>dm_zoom_to_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>If there are any permament tables on a DB, a new <code><a href='dm.html'>dm</a></code> object can be created that contains those tables,
-along with their primary and foreign key constraints.</p>
-<p>Currently this only works with MSSQL and Postgres databases.</p>
-<p>The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.</p>
+    <p>Zooming to a table of a <code><a href='dm.html'>dm</a></code> allows for the use of many <code>dplyr</code>-verbs directly on this table, while retaining the
+context of the <code>dm</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_learn_from_db</span>(<span class='no'>dest</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_zoom_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+
+<span class='fu'>dm_insert_zoomed_tbl</span>(<span class='no'>dm</span>, <span class='kw'>new_tbl_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repair</span> <span class='kw'>=</span> <span class='st'>"unique"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>dm_update_zoomed_tbl</span>(<span class='no'>dm</span>)
+
+<span class='fu'>dm_zoom_out</span>(<span class='no'>dm</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dest</th>
-      <td><p>A <code>src</code>-object on a DB or a connection to a DB.</p></td>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>table</th>
+      <td><p>A table in the <code>dm</code>.</p></td>
+    </tr>
+    <tr>
+      <th>new_tbl_name</th>
+      <td><p>Name of the new table.</p></td>
+    </tr>
+    <tr>
+      <th>repair</th>
+      <td><p>Either a string or a function. If a string, it must
+be one of <code>"check_unique"</code>, <code>"minimal"</code>, <code>"unique"</code>, or <code>"universal"</code>.
+If a function, it is invoked with a vector of minimal names and must
+return minimal names, otherwise an error is thrown.</p><ul>
+<li><p>Minimal names are never <code>NULL</code> or <code>NA</code>. When an element doesn't
+have a name, its minimal name is an empty string.</p></li>
+<li><p>Unique names are unique. A suffix is appended to duplicate
+names to make them unique.</p></li>
+<li><p>Universal names are unique and syntactic, meaning that you can
+safely use the names as variables without causing a syntax
+error.</p></li>
+</ul>
+
+<p>The <code>"check_unique"</code> option doesn't perform any name repair.
+Instead, an error is raised if the names don't suit the
+<code>"unique"</code> criteria.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>By default, the user is informed of any renaming
+caused by repairing the names. This only concerns unique and
+universal repairing. Set <code>quiet</code> to <code>TRUE</code> to silence the
+messages.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A <code><a href='dm.html'>dm</a></code> object with the tables from the DB and the respective key relations.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p><code>dm_zoom_to_tbl()</code>: zooms to the given table.</p>
+<p><code>dm_update_zoomed_tbl()</code>: overwrites the originally zoomed table with the manipulated table.
+The filter conditions for the zoomed table are added to the original filter conditions.</p>
+<p><code>dm_insert_zoomed_tbl()</code>: adds a new table to the <code>dm</code>.</p>
+<p><code>dm_zoom_out()</code>: discards the zoomed table and returns the <code>dm</code> as it was before zooming.</p>
+<p>Whenever possible, the key relations of the original table are transferred to the resulting table
+when using <code>dm_insert_zoomed_tbl()</code> or <code>dm_update_zoomed_tbl()</code>.</p>
+<p>Functions from <code>dplyr</code> that are supported for a <code>zoomed_dm</code>: <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate()</a></code>,
+<code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>.
+You can use these functions just like you would
+with a normal table.</p>
+<p><code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> is also supported, but treated in a special way: the filter expression for the zoomed table is
+stored in the <code>dm</code> and is treated in a way that depends on which function you use to return to a normal <code>dm</code>:</p><ol>
+<li><p><code>dm_zoom_out()</code>: all filter conditions for the zoomed table are discarded</p></li>
+<li><p><code>dm_update_zoomed_tbl()</code>: the filter conditions of the original table and those of the zoomed table are combined</p></li>
+<li><p><code>dm_insert_zoomed_tbl()</code>: the filter conditions of the original table stay there and those of the zoomed table are
+transferred to the new table of the <code>dm</code></p></li>
+</ol>
 
-    <div class='dont-index'><p>Other DB interaction functions: 
-<code><a href='cdm_copy_to.html'>cdm_copy_to</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>
