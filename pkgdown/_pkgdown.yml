@@ -8,14 +8,22 @@ reference:
 - title: Creating `dm` objects and basic functions
   contents:
   - dm
+  - dm_from_src
   - new_dm
-  - is_dm
   - as_dm
+  - is_dm
+  - validate_dm
   - dm_get_src
   - dm_get_con
   - dm_get_tables
   - dm_get_filter
+
+- title: Managing the tables of the `dm`
+  contents:
+  - dm_add_tbl
+  - dm_rm_tbl
   - dm_select_tbl
+  - dm_rename_tbl
 
 - title: Primary keys
   contents:
@@ -25,6 +33,7 @@ reference:
   - dm_get_all_pks
   - dm_rm_pk
   - dm_enum_pk_candidates
+  - enum_pk_candidates
 
 - title: Foreign keys
   contents:
@@ -34,6 +43,9 @@ reference:
   - dm_get_all_fks
   - dm_rm_fk
   - dm_enum_fk_candidates
+  - enum_fk_candidates
+  - dm_is_referenced
+  - dm_get_referencing_tables
 
 - title: Visualization
   contents:
@@ -42,25 +54,29 @@ reference:
   - dm_get_colors
   - dm_get_available_colors
 
+- title: Zooming to a table of a `dm`
+  contents:
+  - dm_zoom_to_tbl
+  - dm_insert_zoomed_tbl
+  - dm_update_zoomed_tbl
+  - dm_zoom_out
+
 - title: Flattening
   contents:
   - dm_flatten_to_tbl
+  - dm_squash_to_tbl
   - dm_join_to_tbl
 
 - title: Filtering
   contents:
   - dm_filter
   - dm_apply_filters
+  - dm_apply_filters_to_tbl
 
 - title: Interaction with DBs
   contents:
   - dm_copy_to
   - dm_learn_from_db
-
-- title: Utilizing foreign key relations
-  contents:
-  - dm_is_referenced
-  - dm_get_referencing_tables
 
 - title: Table surgery
   contents:
@@ -70,6 +86,7 @@ reference:
 
 - title: Check keys and cardinalities
   contents:
+  - dm_check_constraints
   - check_key
   - check_if_subset
   - check_set_equality
@@ -83,6 +100,10 @@ reference:
   contents:
   - dm_nycflights13
   - dm_nrow
+  - dm_disambiguate_cols
+  - dm_paste
+  - dm_select
+  - dm_rename
 
 navbar:
   title: ~
