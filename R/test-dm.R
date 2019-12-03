@@ -7,16 +7,16 @@
 #' dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
 #' dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE))
 #'
-#' cdm_test_obj <- cdm_nycflights13(cycle = TRUE)
-#' cdm_test_obj_srcs <- cdm_test_load(cdm_test_obj)
-cdm_test_load <- function(x,
+#' dm_test_obj <- dm_nycflights13(cycle = TRUE)
+#' dm_test_obj_srcs <- dm_test_load(dm_test_obj)
+dm_test_load <- function(x,
                           srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
                           ignore = character(),
                           set_key_constraints = TRUE) {
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
 
-  map(srcs, ~ cdm_copy_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
+  map(srcs, ~ dm_copy_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
 }
 
 
@@ -43,7 +43,7 @@ check_dm <- function(dm) {
 
 # validates that the given column is indeed part of the table of the `dm` object
 check_col_input <- function(dm, table, column) {
-  tbl_colnames <- cdm_get_tables(dm) %>%
+  tbl_colnames <- dm_get_tables(dm) %>%
     extract2(table) %>%
     colnames()
   if (!column %in% tbl_colnames) abort_wrong_col_names(table, tbl_colnames, column)
@@ -85,7 +85,7 @@ check_colnames <- function(key_tibble, dm_col_names, which) {
 
 check_col_classes <- function(def) {
   # Called for its side effect of checking type compatibility
-  vctrs::vec_ptype2(def, cdm_get_def(new_dm()))
+  vctrs::vec_ptype2(def, dm_get_def(new_dm()))
 
   invisible()
 }

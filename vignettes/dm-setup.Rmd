@@ -13,7 +13,7 @@ editor_options:
 
 This document describes how you can get your data into a `dm` object. 
 
-Although the example that we will be using is included in `dm`, and you can see it by running `cdm_nycflights13()`, we will be going through the built-in example one more time here, step by step.
+Although the example that we will be using is included in `dm`, and you can see it by running `dm_nycflights13()`, we will be going through the built-in example one more time here, step by step.
 
 The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013, and are available through the [`nycflights13`](https://github.com/hadley/nycflights13) package: 
 
@@ -49,10 +49,10 @@ Even though you now have a new `dm` object that contains all your data, some key
 
 ## Primary Keys
 
-`dm` offers `cdm_enum_pk_candidates()` to identify primary keys and `cdm_add_pk()` to add them. 
+`dm` offers `dm_enum_pk_candidates()` to identify primary keys and `dm_add_pk()` to add them. 
 
 ```{r}
-cdm_enum_pk_candidates(
+dm_enum_pk_candidates(
   dm = flights_dm_no_keys,
   table = planes
 )
@@ -62,47 +62,47 @@ Now, add the primary keys that you have identified:
 
 ```{r}
 flights_dm_only_pks <- flights_dm_no_keys %>%
-  cdm_add_pk(table = airlines, column = carrier) %>%
-  cdm_add_pk(airports, faa) %>%
-  cdm_add_pk(planes, tailnum)
+  dm_add_pk(table = airlines, column = carrier) %>%
+  dm_add_pk(airports, faa) %>%
+  dm_add_pk(planes, tailnum)
 flights_dm_only_pks
 ```
 
-To review the primary keys after setting them, call `cdm_get_all_pks()`.
+To review the primary keys after setting them, call `dm_get_all_pks()`.
 
 ```{r}
-cdm_get_all_pks(flights_dm_only_pks)
+dm_get_all_pks(flights_dm_only_pks)
 ```
 
 ## Foreign Keys
 
 ```{r}
-cdm_enum_fk_candidates(
+dm_enum_fk_candidates(
   dm = flights_dm_only_pks,
   table = flights,
   ref_table = airlines
 )
 ```
 
-To define how your tables are related, use `cdm_add_fk()` to add foreign keys. First, define the tables that you wish to connect by parameterizing the `cdm_add_fk()` function with `table` and `ref_table` options. 
+To define how your tables are related, use `dm_add_fk()` to add foreign keys. First, define the tables that you wish to connect by parameterizing the `dm_add_fk()` function with `table` and `ref_table` options. 
 
 Then indicate in `column` which column of `table` refers to `ref_table`'s primary key, which you've defined above. 
 Use `check = FALSE` to omit consistency checks.
 
 ```{r}
 flights_dm_all_keys <- flights_dm_only_pks %>%
-  cdm_add_fk(table = flights, column = tailnum, ref_table = planes, check = FALSE) %>%
-  cdm_add_fk(flights, carrier, airlines) %>%
-  cdm_add_fk(flights, origin, airports)
+  dm_add_fk(table = flights, column = tailnum, ref_table = planes, check = FALSE) %>%
+  dm_add_fk(flights, carrier, airlines) %>%
+  dm_add_fk(flights, origin, airports)
 flights_dm_all_keys
 ```
 
 ## Retrieving Keys
 
-To retrieve your keys later on, use `cdm_get_all_fks()`, or `cdm_get_fk()` for its singular version. 
+To retrieve your keys later on, use `dm_get_all_fks()`, or `dm_get_fk()` for its singular version. 
 
 ```{r}
-cdm_get_all_pks(flights_dm_all_keys)
+dm_get_all_pks(flights_dm_all_keys)
 ```
 
 Voilà, here's your `dm` object that you can work with:

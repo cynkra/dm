@@ -57,7 +57,8 @@ Suggests:
     rprojroot,
     RSQLite,
     testthat (>= 2.1.0),
-    tidyverse
+    tidyverse,
+    withr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

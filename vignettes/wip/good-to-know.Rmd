@@ -59,8 +59,8 @@ A _data model_ shows the structure between multiple tables that can be linked to
 The `nycflights13` relations can be transferred into the following graphical representation:
 
 ```{r, echo = FALSE}
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
+dm_nycflights13(cycle = TRUE) %>%
+  dm_draw()
 ```
 
 The `flights` table is linked to three other tables: `airlines`, `planes` and `airports`.

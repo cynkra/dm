@@ -1,8 +1,8 @@
 #' Reverse engineer code for creation of a [`dm`]
 #'
-#' `cdm_paste` takes an existing `dm` and produces the code necessary for its creation
+#' `dm_paste` takes an existing `dm` and produces the code necessary for its creation
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param select Boolean, default `FALSE`. If `TRUE` will try to produce code for reducing to necessary columns.
 #' @param tab_width Indentation width for code from the second line onwards
 #'
@@ -17,7 +17,7 @@
 #' @return Code for producing the given `dm`
 #'
 #' @export
-cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
+dm_paste <- function(dm, select = FALSE, tab_width = 2) {
   check_dm(dm)
   check_no_filter(dm)
   check_not_zoomed(dm)
@@ -29,24 +29,24 @@ cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
 
   if (select) {
     # adding code for selection of columns
-    tbl_select <- tibble(tbl_name = src_tbls(dm), tbls = cdm_get_tables(dm)) %>%
+    tbl_select <- tibble(tbl_name = src_tbls(dm), tbls = dm_get_tables(dm)) %>%
       mutate(cols = map(tbls, colnames)) %>%
       mutate(code = map2_chr(
         tbl_name,
         cols,
-        ~ glue("{tab}cdm_select({..1}, {paste0(tick_if_needed(..2), collapse = ', ')})")
+        ~ glue("{tab}dm_select({..1}, {paste0(tick_if_needed(..2), collapse = ', ')})")
       ))
     code_select <- if (nrow(tbl_select)) summarize(tbl_select, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
     code <- glue_collapse(c(code, code_select), sep = " %>%\n")
   }
   # adding code for establishing PKs
-  tbl_pks <- cdm_get_all_pks(dm) %>%
-    mutate(code = glue("{tab}cdm_add_pk({table}, {pk_col})"))
+  tbl_pks <- dm_get_all_pks(dm) %>%
+    mutate(code = glue("{tab}dm_add_pk({table}, {pk_col})"))
   code_pks <- if (nrow(tbl_pks)) summarize(tbl_pks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
   # adding code for establishing FKs
-  tbl_fks <- cdm_get_all_fks(dm) %>%
-    mutate(code = glue("{tab}cdm_add_fk({child_table}, {child_fk_col}, {parent_table})"))
+  tbl_fks <- dm_get_all_fks(dm) %>%
+    mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_col}, {parent_table})"))
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
   # without "\n" in the end it looks weird when a warning is issued

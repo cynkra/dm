@@ -9,4 +9,5 @@
 #' @rawNamespace import(glue, except = c(collapse))
 #' @importFrom igraph V E
 #' @importFrom utils head str
+#' @import lifecycle
 NULL

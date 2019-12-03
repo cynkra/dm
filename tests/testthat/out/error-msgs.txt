@@ -25,7 +25,7 @@ Column `game` of table `playing` contains values (see above) that are not presen
 0..1 cardinality (injectivity from child table to parent table) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
 
 > error_txt_ref_tbl_has_no_pk("parent_table")
-ref_table `parent_table` needs a primary key first. Use `cdm_enum_pk_candidates()` to find appropriate columns and `cdm_add_pk()` to define a primary key.
+ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.
 
 > error_txt_is_not_fk("child_table_name", c("wrong_fk_colname", "and_one_more"),
 + "parent_table_name", c("actual_fk_colname", "and_one_more"))
@@ -60,16 +60,16 @@ All selected tables must be reachable from `start`.
 `fun()` does not support the `overwrite` argument.
 
 > error_txt_no_types()
-[1] "`cdm_copy_to()` does not support the `types` argument."
+[1] "`dm_copy_to()` does not support the `types` argument."
 
 > error_txt_no_indexes()
-[1] "`cdm_copy_to()` does not support the `indexes` argument."
+[1] "`dm_copy_to()` does not support the `indexes` argument."
 
 > error_txt_no_unique_indexes()
-[1] "`cdm_copy_to()` does not support the `unique_indexes` argument."
+[1] "`dm_copy_to()` does not support the `unique_indexes` argument."
 
 > error_txt_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
-[1] "Parameter `table_names` in `cdm_copy_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`"
+[1] "Parameter `table_names` in `dm_copy_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`"
 
 > error_src_not_db()
 [1] "This does not work if the tables of the `dm` are not on a database."
@@ -84,13 +84,13 @@ There are foreign keys pointing from table(s) `child_1`, `child_2` to table `par
 [1] "Updating `dm` objects not supported."
 
 > error_only_possible_wo_filters("find_wisdom")
-You cannot call `find_wisdom()` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.
+You cannot call `find_wisdom()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.
 
 > error_tables_not_neighbours("subjects", "king")
 Tables `subjects` and `king` are not directly linked by a foreign key relation.
 
 > error_only_parents()
-[1] "When using `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()` all join partners of table `start` have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `cdm_squash_to_tbl()` as an alternative."
+[1] "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_squash_to_tbl()` as an alternative."
 
 > error_not_same_src()
 [1] "Not all tables in the object share the same `src`"
@@ -102,13 +102,13 @@ Don't know how to determine table source for object of class `monster`
 [1] "Not all tables in the object share the same `src`"
 
 > error_squash_limited()
-[1] "`cdm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`."
+[1] "`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`."
 
 > error_apply_filters_first("join_tightly")
-`cdm_..._to_tbl()` with join method `join_tightly` generally wouldn't produce the correct result when filters are set. Please consider calling `cdm_apply_filters()` first.
+`dm_..._to_tbl()` with join method `join_tightly` generally wouldn't produce the correct result when filters are set. Please consider calling `dm_apply_filters()` first.
 
 > error_no_flatten_with_nest_join()
-[1] "`cdm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, cf. the help pages for these functions. Consider `join = left_join`"
+[1] "`dm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, cf. the help pages for these functions. Consider `join = left_join`"
 
 > error_unique_table_names_or_table_names()
 [1] "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
@@ -120,19 +120,19 @@ Required class `dm` but instead is `blob`
 [1] "A local `dm` doesn't have a DB connection"
 
 > error_no_zoom_allowed()
-[1] "`cdm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `cdm_update_zoomed_tbl()`, `cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first."
+[1] "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed_tbl()`, `dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
 
 > error_no_table_zoomed()
-[1] "`cdm_insert_tbl()` only works for zoomed `dm`"
+[1] "`dm_insert_zoomed_tbl()` only works for zoomed `dm`"
 
 > error_table_needs_name()
-[1] "The new table to insert with `cdm_insert_zoomed_tbl()` must have a name"
+[1] "The new table to insert with `dm_insert_zoomed_tbl()` must have a name"
 
-> error_only_possible_wo_zoom("cdm_zoom_to_tbl")
-You cannot call `cdm_zoom_to_tbl()` on a `zoomed_dm`. Consider using one of `cdm_update_zoomed_tbl()`, `cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.
+> error_only_possible_wo_zoom("dm_zoom_to_tbl")
+You cannot call `dm_zoom_to_tbl()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed_tbl()`, `dm_insert_zoomed_tbl()` or `dm_zoom_out()` first.
 
-> error_only_possible_w_zoom("cdm_update_zoomed_tbl")
-You cannot call `cdm_update_zoomed_tbl()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.
+> error_only_possible_w_zoom("dm_update_zoomed_tbl")
+You cannot call `dm_update_zoomed_tbl()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.
 
 > error_req_tbl_not_avail(c("dull", "boring", "common_knowledge"), c(
 +   "fascinating", "interesting"))

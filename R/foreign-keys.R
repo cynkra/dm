@@ -1,6 +1,6 @@
 #' Add a reference from one table of a [`dm`] to another
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param column The column of `table` which is to become the foreign key column and
 #'   reference the primary key of `ref_table`.
 #' @param ref_table The table which `table` is referencing.
@@ -11,7 +11,7 @@
 #' @family foreign key functions
 #'
 #' @export
-cdm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
+dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
@@ -21,26 +21,26 @@ cdm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   ref_table_name <- as_name(ensym(ref_table))
   check_correct_input(dm, ref_table_name)
 
-  ref_column_name <- cdm_get_pk(dm, !!ref_table_name)
+  ref_column_name <- dm_get_pk(dm, !!ref_table_name)
   if (is_empty(ref_column_name)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
 
   if (check) {
-    tbl_obj <- cdm_get_tables(dm)[[table_name]]
-    ref_tbl_obj <- cdm_get_tables(dm)[[ref_table_name]]
+    tbl_obj <- dm_get_tables(dm)[[table_name]]
+    ref_tbl_obj <- dm_get_tables(dm)[[ref_table_name]]
 
     if (!is_subset(tbl_obj, !!column_name, ref_tbl_obj, !!ref_column_name)) {
       abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
     }
   }
 
-  cdm_add_fk_impl(dm, table_name, column_name, ref_table_name)
+  dm_add_fk_impl(dm, table_name, column_name, ref_table_name)
 })
 
 
-cdm_add_fk_impl <- function(dm, table, column, ref_table) {
-  def <- cdm_get_def(dm)
+dm_add_fk_impl <- function(dm, table, column, ref_table) {
+  def <- dm_get_def(dm)
 
   i <- which(def$table == ref_table)
   def$fks[[i]] <- vctrs::vec_rbind(
@@ -53,7 +53,7 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table) {
 
 #' Does there exist a reference from one table of a `dm` to another?
 #'
-#' @inheritParams cdm_add_fk
+#' @inheritParams dm_add_fk
 #' @param ref_table The table that `table` is potentially referencing.
 #'
 #' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
@@ -61,26 +61,26 @@ cdm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' @family foreign key functions
 #'
 #' @export
-cdm_has_fk <- function(dm, table, ref_table) {
-  has_length(cdm_get_fk(dm, {{ table }}, {{ ref_table }}))
+dm_has_fk <- function(dm, table, ref_table) {
+  has_length(dm_get_fk(dm, {{ table }}, {{ ref_table }}))
 }
 
 #' Retrieve the name of the column marked as a foreign key, pointing from one table of a [`dm`] to another table.
 #'
-#' @inheritParams cdm_has_fk
+#' @inheritParams dm_has_fk
 #' @param ref_table The table that is referenced from `table`.
 #'
 #' @family foreign key functions
 #'
 #' @export
-cdm_get_fk <- function(dm, table, ref_table) {
+dm_get_fk <- function(dm, table, ref_table) {
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
 
-  fks <- cdm_get_data_model_fks(dm)
+  fks <- dm_get_data_model_fks(dm)
   fks$column[fks$table == table_name & fks$ref == ref_table_name]
 }
 
@@ -94,13 +94,13 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' "child_fk_col": foreign key column in child table,
 #' "parent_table": parent table
 #'
-#' @inheritParams cdm_has_fk
+#' @inheritParams dm_has_fk
 #'
 #' @family foreign key functions
 #'
 #' @export
-cdm_get_all_fks <- nse(function(dm) {
-  cdm_get_data_model_fks(dm) %>%
+dm_get_all_fks <- nse(function(dm) {
+  dm_get_data_model_fks(dm) %>%
     select(child_table = table, child_fk_col = column, parent_table = ref) %>%
     arrange(child_table, child_fk_col)
 })
@@ -111,7 +111,7 @@ cdm_get_all_fks <- nse(function(dm) {
 #' @description This function can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
 #' All arguments may be provided quoted or unquoted.
 #'
-#' @inheritParams cdm_add_fk
+#' @inheritParams dm_add_fk
 #' @param column The column of `table` that should no longer be referencing the primary key of `ref_table`.
 #'   If `NULL`, all columns will be evaluated.
 #' @param ref_table The table that `table` was referencing.
@@ -119,14 +119,14 @@ cdm_get_all_fks <- nse(function(dm) {
 #' @family foreign key functions
 #'
 #' @export
-cdm_rm_fk <- function(dm, table, column, ref_table) {
+dm_rm_fk <- function(dm, table, column, ref_table) {
   table <- as_name(ensym(table))
   ref_table <- as_name(ensym(ref_table))
 
   check_correct_input(dm, table)
   check_correct_input(dm, ref_table)
 
-  fk_cols <- cdm_get_fk(dm, !!table, !!ref_table)
+  fk_cols <- dm_get_fk(dm, !!table, !!ref_table)
   if (is_empty(fk_cols)) {
     return(dm)
   }
@@ -150,7 +150,7 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
   # FIXME: compound keys
   cols <- as.list(cols)
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   i <- which(def$table == ref_table)
 
   fks <- def$fks[[i]]
@@ -165,11 +165,11 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
 #' to reference the primary key column of another table of the [`dm`] object.
 #'
-#' @inheritParams cdm_add_fk
+#' @inheritParams dm_add_fk
 #' @param table The table whose columns should be tested for suitability as foreign keys.
 #' @param ref_table A table with a primary key.
 #'
-#' @details `cdm_enum_fk_candidates()` first checks if `ref_table` has a primary key set,
+#' @details `dm_enum_fk_candidates()` first checks if `ref_table` has a primary key set,
 #' if not, an error is thrown.
 #'
 #' If `ref_table` does have a primary key, then a join operation will be tried using
@@ -189,11 +189,11 @@ cdm_rm_fk <- function(dm, table, column, ref_table) {
 #' @family foreign key functions
 #'
 #' @examples
-#' cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
+#' dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
 #' @export
-cdm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
+dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
-  # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
+  # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
   table_name <- as_string(ensym(table))
   ref_table_name <- as_string(ensym(ref_table))
@@ -201,7 +201,7 @@ cdm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   check_correct_input(dm, table_name)
   check_correct_input(dm, ref_table_name)
 
-  ref_tbl_pk <- cdm_get_pk(dm, !!ref_table_name)
+  ref_tbl_pk <- dm_get_pk(dm, !!ref_table_name)
 
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)
@@ -209,9 +209,9 @@ cdm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk)
 })
 
-#' @details `enum_fk_candidates()` works like `cdm_enum_fk_candidates()` with the zoomed table as `table`.
+#' @details `enum_fk_candidates()` works like `dm_enum_fk_candidates()` with the zoomed table as `table`.
 #'
-#' @rdname cdm_enum_fk_candidates
+#' @rdname dm_enum_fk_candidates
 #' @param zoomed_dm A `dm` with a zoomed table.
 #' @export
 enum_fk_candidates <- function(zoomed_dm, ref_table) {
@@ -222,9 +222,9 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
   ref_table_name <- as_string(ensym(ref_table))
   check_correct_input(zoomed_dm, ref_table_name)
 
-  ref_tbl_pk <- cdm_get_pk(zoomed_dm, !!ref_table_name)
+  ref_tbl_pk <- dm_get_pk(zoomed_dm, !!ref_table_name)
 
-  ref_tbl <- cdm_get_filtered_table(zoomed_dm, ref_table_name)
+  ref_tbl <- dm_get_filtered_table(zoomed_dm, ref_table_name)
   enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk)
 }
 

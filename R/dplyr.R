@@ -55,7 +55,7 @@ filter.zoomed_dm <- function(.data, ...) {
   filtered_tbl <- filter(tbl, !!!filter_quos)
 
   # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
-  # in case of `cdm_insert_zoomed_tbl()` the filter exprs needs to be transferred
+  # in case of `dm_insert_zoomed_tbl()` the filter exprs needs to be transferred
   set_filter_for_table(.data, orig_name_zoomed(.data), map(filter_quos, quo_get_expr), TRUE) %>%
     replace_zoomed_tbl(filtered_tbl)
 }
@@ -161,7 +161,7 @@ slice.dm <- function(.data, ...) {
 #' @export
 slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
   sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
-  orig_pk <- cdm_get_pk(.data, !!orig_name_zoomed(.data))
+  orig_pk <- dm_get_pk(.data, !!orig_name_zoomed(.data))
   tracked_keys <- get_tracked_keys(.data)
   if (is_null(.keep_pk)) {
     if (has_length(orig_pk) && orig_pk %in% tracked_keys) {
@@ -265,7 +265,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
-  y_tbl <- cdm_get_tables(x)[[y_name]]
+  y_tbl <- dm_get_tables(x)[[y_name]]
   all_cols_y <- colnames(y_tbl)
 
   if (quo_is_null(select_quo)) {

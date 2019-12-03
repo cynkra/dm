@@ -1,12 +1,12 @@
 #' Select and rename tables
 #'
 #' @description
-#' `cdm_select_tbl()` keeps the selected tables and their relationships,
+#' `dm_select_tbl()` keeps the selected tables and their relationships,
 #' optionally renaming them.
 #'
 #' @return The input `dm` with tables renamed or removed.
 #'
-#' @seealso [cdm_rm_tbl()]
+#' @seealso [dm_rm_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more table names of the tables of the [`dm`] object.
@@ -14,25 +14,25 @@
 #'   for details on the semantics.
 #'
 #' @export
-cdm_select_tbl <- function(dm, ...) {
+dm_select_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
   vars <- tidyselect_table_names(dm)
   selected <- dm_try_tables(tidyselect::vars_select(vars, ...), vars)
-  cdm_select_tbl_impl(dm, selected)
+  dm_select_tbl_impl(dm, selected)
 }
 
 #' Change the names of the tables in a `dm`
 #'
 #' @description
-#' `cdm_rename_tbl()` renames tables.
+#' `dm_rename_tbl()` renames tables.
 #'
-#' @rdname cdm_select_tbl
+#' @rdname dm_select_tbl
 #' @export
-cdm_rename_tbl <- function(dm, ...) {
+dm_rename_tbl <- function(dm, ...) {
   vars <- tidyselect_table_names(dm)
   selected <- dm_try_tables(tidyselect::vars_rename(vars, ...), vars)
-  cdm_select_tbl_impl(dm, selected)
+  dm_select_tbl_impl(dm, selected)
 }
 
 tidyrename_dm <- function(dm, ...) {
@@ -46,7 +46,7 @@ tidyselect_table_names <- function(dm) {
   )
 }
 
-cdm_select_tbl_impl <- function(dm, selected) {
+dm_select_tbl_impl <- function(dm, selected) {
 
   # Required to avoid an error further on
   if (is_empty(selected)) {
@@ -55,7 +55,7 @@ cdm_select_tbl_impl <- function(dm, selected) {
   check_correct_input(dm, selected)
 
   def <-
-    cdm_get_def(dm) %>%
+    dm_get_def(dm) %>%
     filter_recode_table_def(selected) %>%
     filter_recode_table_fks(selected)
 
