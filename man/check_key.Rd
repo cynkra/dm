@@ -10,7 +10,6 @@ check_key(.data, ...)
 \item{.data}{The data frame whose columns should be tested for key properties.}
 
 \item{...}{The names of the columns to be checked.
-If none are specified, then all columns together are tested for the key property.
 
 One or more unquoted expressions separated by commas.
 Variable names can be treated as if they were positions, so you
