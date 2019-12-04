@@ -691,8 +691,8 @@ empty_dm <- function() {
 #' Retrieve a table from a `dm` or a `zoomed_dm`
 #'
 #' This function has methods for both `dm` classes:
-#' 1. with `pull_tbl.dm()` you can chose which table of the `dm` you want to retrieve
-#' 1. with `pull_tbl.zoomed_dm()` you will retrieve the zoomed table in the current state.
+#' 1. With `pull_tbl.dm()` you can chose which table of the `dm` you want to retrieve.
+#' 1. With `pull_tbl.zoomed_dm()` you will retrieve the zoomed table in the current state.
 #'
 #' @inheritParams dm_add_pk
 #' @param table One unquoted table name for `pull_tbl.dm()`, ignored for `pull_tbl.zoomed_dm()`.
@@ -701,8 +701,10 @@ empty_dm <- function() {
 #'
 #' @examples
 #' # both examples lead to the same tibble:
-#' pull_tbl(dm_nycflights13(), airlines)
-#' dm_zoom_to_tbl(dm_nycflights13(), airlines) %>%
+#' dm_nycflights13() %>%
+#'   pull_tbl(airlines)
+#' dm_nycflights13() %>%
+#'   dm_zoom_to_tbl(airlines) %>%
 #'   pull_tbl()
 #'
 #' @export
@@ -720,6 +722,10 @@ pull_tbl.dm <- function(dm, table) {
 
 #' @export
 pull_tbl.zoomed_dm <- function(dm, table) {
-  if (!is_missing(table)) warning("Ignoring argument `table` in `pull_tbl.zoomed_dm`, returning zoomed table.")
-  get_zoomed_tbl(dm)
+  table_name <- as_string(enexpr(table))
+  tbl_zoomed <- dm_get_zoomed_tbl(dm)
+  if (table_name == "") {
+    if (nrow(tbl_zoomed) == 1) tbl_zoomed$zoom[[1]] else abort_not_pulling_multiple_zoomed()
+  } else if (!(table_name %in% tbl_zoomed$table)) abort_table_not_zoomed(table_name, tbl_zoomed$table) else
+      filter(tbl_zoomed, table == table_name) %>% pull(zoom) %>% pluck(1)
 }

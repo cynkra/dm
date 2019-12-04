@@ -569,8 +569,27 @@ error_dm_invalid <- function(why) {
 }
 
 
-# Argument `table` missing in `pull_tbl.dm()` -----------------------------
+# Errors for `pull_tbl.dm()` -----------------------------
 
 abort_no_table_provided <- function() {
   abort("Argument `table` for `pull_table.dm()` missing.", .subclass = dm_error_full("no_table_provided"))
 }
+
+abort_table_not_zoomed <- function(table_name, zoomed_tables) {
+  abort(error_table_not_zoomed(table_name, zoomed_tables), .subclass = dm_error_full("table_not_zoomed"))
+}
+
+error_table_not_zoomed <- function(table_name, zoomed_tables) {
+  glue("In `pull_tbl.zoomed_dm`: Table {tick(table_name)} not zoomed, ",
+       "zoomed tables: {commas(tick(zoomed_tables))}.")
+}
+
+abort_not_pulling_multiple_zoomed <- function() {
+  abort(error_not_pulling_multiple_zoomed(), .subclass = dm_error_full("not_pulling_multiple_zoomed"))
+}
+
+error_not_pulling_multiple_zoomed <- function() {
+  "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
+}
+
+

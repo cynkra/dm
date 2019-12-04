@@ -254,12 +254,16 @@ test_that("`pull_tbl()`-methods work", {
     }
   )
 
-  expect_warning(
-    expect_identical(
-      dm_zoom_to_tbl(dm_for_filter, t1) %>%
-        pull_tbl(t2),
-      t1
-    ), "Ignoring"
+  expect_identical(
+    dm_zoom_to_tbl(dm_for_filter, t1) %>%
+      pull_tbl(t1),
+    t1
+  )
+
+  expect_dm_error(
+    dm_zoom_to_tbl(dm_for_filter, t1) %>%
+      pull_tbl(t2),
+    "table_not_zoomed"
   )
 
   expect_dm_error(
