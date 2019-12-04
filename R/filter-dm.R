@@ -3,28 +3,30 @@
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
 #'
-#' `cdm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
+#' `dm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
 #' These conditions will be stored in the [`dm`], and executed immediately for the tables that they are referring to.
 #'
-#' With `cdm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
+#' With `dm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
+#'
+#' `dm_apply_filters_to_tbl()` retrieves one specific table of the `dm` that is updated according to the filter conditions and the foreign key relations.
 #'
 #' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 #' in one of the following scenarios:
 #'
-#' 1. Calling `cdm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
+#' 1. Calling `dm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
 #' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
 #' with corresponding key values.
 #' Tables that are not connected to any table with an active filter are left unchanged.
 #' This results in a new `dm` class object without any filter conditions.
 #'
-#' 1. Calling one of `tbl()`, `[[.dm()`, `$.dm()`: the remaining rows of the requested table are calculated by performing a sequence
+#' 1. Calling `dm_apply_filters_to_tbl()`: the remaining rows of the requested table are calculated by performing a sequence
 #' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
 #' (similar to 1. but only for one table).
 #'
 #' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
-#' @rdname cdm_filter
+#' @rdname dm_filter
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
 #'   Multiple conditions are combined with `&` or `,`.
 #'   Only the rows where the condition evaluates
@@ -39,40 +41,34 @@
 #' library(dplyr)
 #'
 #' dm_nyc_filtered <-
-#'   cdm_nycflights13() %>%
-#'   cdm_filter(airports, name == "John F Kennedy Intl")
+#'   dm_nycflights13() %>%
+#'   dm_filter(airports, name == "John F Kennedy Intl")
 #'
-#' tbl(dm_nyc_filtered, "flights")
-#' dm_nyc_filtered[["planes"]]
-#' dm_nyc_filtered$airlines
+#' dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
-#' cdm_nycflights13() %>%
-#'   cdm_filter(airports, name == "John F Kennedy Intl") %>%
-#'   cdm_apply_filters()
+#' dm_nycflights13() %>%
+#'   dm_filter(airports, name == "John F Kennedy Intl") %>%
+#'   dm_apply_filters()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
-#' cdm_nycflights13() %>%
-#'   cdm_filter(flights, 1 == 1) %>%
-#'   cdm_apply_filters() %>%
-#'   cdm_nrow()
+#' dm_nycflights13() %>%
+#'   dm_filter(flights, 1 == 1) %>%
+#'   dm_apply_filters() %>%
+#'   dm_nrow()
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
 #' # only the three New York airports.
-#'
 #' @export
-cdm_filter <- function(dm, table, ...) {
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
-
-  cdm_zoom_to_tbl(dm, !!table) %>%
+dm_filter <- function(dm, table, ...) {
+  dm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
-    cdm_update_zoomed_tbl()
+    dm_update_zoomed_tbl()
 }
 
 set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   i <- which(def$table == table)
   def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
@@ -80,35 +76,54 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 }
 
 
-#' @rdname cdm_filter
+#' @rdname dm_filter
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_filter(flights, month == 3) %>%
-#'   cdm_apply_filters()
+#'
+#' dm_nycflights13() %>%
+#'   dm_filter(flights, month == 3) %>%
+#'   dm_apply_filters()
 #'
 #' library(dplyr)
-#' cdm_nycflights13() %>%
-#'   cdm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
+#' dm_nycflights13() %>%
+#'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #' @export
-cdm_apply_filters <- function(dm) {
+dm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
-  def$data <- map(def$table, ~ tbl(dm, .))
+  def$data <- map(def$table, ~ dm_get_filtered_table(dm, .))
 
-  cdm_reset_all_filters(new_dm3(def))
+  dm_reset_all_filters(new_dm3(def))
+}
+
+# FIXME: 'dm_apply_filters()' should get an own doc-page which 'dm_apply_filters_to_tbl()' should share (cf. #145)
+#' @rdname dm_filter
+#'
+#' @inheritParams dm_add_pk
+#'
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_filter(flights, month == 3) %>%
+#'   dm_apply_filters_to_tbl(planes)
+#' @export
+dm_apply_filters_to_tbl <- function(dm, table) {
+  check_not_zoomed(dm)
+  table_name <- as_string(ensym(table))
+  check_correct_input(dm, table_name)
+
+  dm_get_filtered_table(dm, table_name)
 }
 
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
-cdm_get_filtered_table <- function(dm, from) {
-  filters <- cdm_get_filter(dm)
+dm_get_filtered_table <- function(dm, from) {
+  filters <- dm_get_filter(dm)
   if (nrow(filters) == 0) {
-    return(cdm_get_tables(dm)[[from]])
+    return(dm_get_tables(dm)[[from]])
   }
 
   fc <- get_all_filtered_connected(dm, from)
@@ -125,7 +140,7 @@ cdm_get_filtered_table <- function(dm, from) {
     select(table = node) %>%
     left_join(fc_children, by = "table")
 
-  list_of_tables <- cdm_get_tables(dm)
+  list_of_tables <- dm_get_tables(dm)
 
   for (i in seq_len(nrow(recipe))) {
     table_name <- recipe$table[i]
@@ -148,7 +163,7 @@ cdm_get_filtered_table <- function(dm, from) {
 }
 
 get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- unique(cdm_get_filter(dm)$table)
+  filtered_tables <- unique(dm_get_filter(dm)$table)
   graph <- create_graph_from_dm(dm)
 
   # Computation of distances and shortest paths uses the same algorithm
@@ -160,6 +175,12 @@ get_all_filtered_connected <- function(dm, table) {
   # Using only nodes with finite distances (=in the same connected component)
   # as target. This avoids a warning.
   target_tables <- names(finite_distances)
+
+  # use only subgraph to
+  # 1. speed things up
+  # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
+  graph <- igraph::induced_subgraph(graph, target_tables)
+  if (length(E(graph)) >= length(V(graph))) abort_no_cycles()
   paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
 
   # All edges with finite distance as tidy data frame
@@ -167,16 +188,16 @@ get_all_filtered_connected <- function(dm, table) {
     tibble(
       node = names(V(graph)),
       parent = names(paths$predecessors),
-      distance = distances
-    ) %>%
-    filter(is.finite(distance))
+      # all of `graph`, `paths` and `finite_distances` are based on the same subset of tables,
+      # hence the resulting tibble is correct
+      distance = finite_distances
+    )
 
   # Edges of interest, will be grown until source node `table` is reachable
   # from all nodes
   edges <-
     all_edges %>%
     filter(node %in% !!c(filtered_tables, table))
-
   # Recursive join
   repeat {
     missing <- setdiff(edges$parent, edges$node)
@@ -193,16 +214,18 @@ get_all_filtered_connected <- function(dm, table) {
 
 check_no_filter <- function(dm) {
   def <-
-    cdm_get_def(dm)
+    dm_get_def(dm)
 
-  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) return()
+  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) {
+    return()
+  }
 
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_filters(fun_name)
 }
 
 get_filter_for_table <- function(dm, table_name) {
-  cdm_get_def(dm) %>%
+  dm_get_def(dm) %>%
     filter(table == table_name) %>%
     pull(filters) %>%
     pluck(1)

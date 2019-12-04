@@ -2,12 +2,13 @@
 #'
 #' This function returns a tibble with information about which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @return A tibble with 5 columns:
 #'   1. `table`: the table in the `dm`
 #'   1. `kind`: "PK" or "FK"
-#'   1. `column`: a column of `table`
+#'   1. `column`: a column of the table
+#'   1. `ref_table`: for foreign keys, the referenced table
 #'   1. `is_key`: logical
 #'   1. `problem`: if `is_key = FALSE`, the reason for that
 #'
@@ -17,8 +18,8 @@
 #'
 #' @export
 #' @examples
-#' cdm_check_constraints(cdm_nycflights13())
-cdm_check_constraints <- function(dm) {
+#' dm_check_constraints(dm_nycflights13())
+dm_check_constraints <- function(dm) {
   pk_results <- check_pk_constraints(dm)
   fk_results <- check_fk_constraints(dm)
   bind_rows(
@@ -33,12 +34,11 @@ cdm_check_constraints <- function(dm) {
 #'
 #' @description `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
-#' if the specified columns (or all columns, if no columns are specified) are NOT a unique key of the data frame.
+#' if the specified columns are NOT a unique key of the data frame.
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 #'
 #' @param .data The data frame whose columns should be tested for key properties.
 #' @param ... The names of the columns to be checked.
-#'   If none are specified, then all columns together are tested for the key property.
 #'
 #'   One or more unquoted expressions separated by commas.
 #'   Variable names can be treated as if they were positions, so you
@@ -62,22 +62,29 @@ cdm_check_constraints <- function(dm) {
 check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
-  args <- exprs(...)
-  names(args) <- set_names(paste0("...", seq_along(args)))
+
+  cols_avail <- colnames(.data)
+  # if no column is chosen, all columns are used for the check
+  cols_chosen <- tidyselect::vars_select(cols_avail, ...)
+  names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 
   duplicate_rows <-
     .data %>%
-    as_tibble() %>% # as_tibble works only, if as_tibble.sf()-method is available
-    count(!!!args) %>%
-    filter(n != 1)
+    count(!!!syms(cols_chosen)) %>%
+    select(n) %>%
+    filter(n > 1) %>%
+    head(1) %>%
+    collect()
 
-  if (nrow(duplicate_rows) != 0) abort_not_unique_key(as_label(data_q), map_chr(args, as_label))
+  if (nrow(duplicate_rows) != 0) {
+    abort_not_unique_key(as_label(data_q), cols_chosen)
+  }
 
   invisible(.data)
 }
 
 # an internal function to check if a column is a unique key of a table
-is_unique_key <- nse_function(c(.data, column), ~ {
+is_unique_key <- nse(function(.data, column) {
   col_expr <- ensym(column)
   col_name <- as_name(col_expr)
 
@@ -125,18 +132,20 @@ check_set_equality <- function(t1, c1, t2, c2) {
   c1q <- ensym(c1)
   c2q <- ensym(c2)
 
-  catcher_1 <- tryCatch({
-    check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
-    NULL
-  },
-  error = identity
+  catcher_1 <- tryCatch(
+    {
+      check_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
+      NULL
+    },
+    error = identity
   )
 
-  catcher_2 <- tryCatch({
-    check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)
-    NULL
-  },
-  error = identity
+  catcher_2 <- tryCatch(
+    {
+      check_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)
+      NULL
+    },
+    error = identity
   )
 
   catchers <- compact(list(catcher_1, catcher_2))
@@ -187,6 +196,7 @@ check_if_subset <- function(t1, c1, t2, c2) {
 
   setdiff_v1_v2 <- setdiff(v1, v2)
   print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
+
   abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q))
 }
 
@@ -209,41 +219,44 @@ is_subset <- function(t1, c1, t2, c2) {
 }
 
 check_pk_constraints <- function(dm) {
-  pks <- cdm_get_all_pks(dm)
-  if (nrow(pks) == 0) return(tibble(
-    table = character(0),
-    kind = character(0),
-    column = character(0),
-    is_key = logical(0),
-    problem = character(0)
-    )
-  )
+  pks <- dm_get_all_pks(dm)
+  if (nrow(pks) == 0) {
+    return(tibble(
+      table = character(0),
+      kind = character(0),
+      column = character(0),
+      is_key = logical(0),
+      problem = character(0)
+    ))
+  }
   table_names <- pull(pks, table)
   tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
-    map2(syms(pks$pk_col), ~select(.x, !!.y))
+    map2(syms(pks$pk_col), ~ select(.x, !!.y))
   tbl_is_pk <- map_dfr(tbls, enum_pk_candidates) %>%
     rename(is_key = candidate, problem = why)
 
   tibble(
     table = table_names,
     kind = "PK",
-    column = pks$pk_col
+    column = pks$pk_col,
+    ref_table = NA_character_
   ) %>%
     left_join(tbl_is_pk, by = "column")
 }
 
 check_fk_constraints <- function(dm) {
-  fks <-  left_join(cdm_get_all_fks(dm), cdm_get_all_pks(dm), by = c("parent_table" = "table"))
+  fks <- left_join(dm_get_all_fks(dm), dm_get_all_pks(dm), by = c("parent_table" = "table"))
   pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
   fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
     select(t1, t1_name = child_table, colname = child_fk_col, t2, t2_name = parent_table, pk = pk_col)
   mutate(
-    fks_tibble, problem = pmap_chr(fks_tibble, check_fk),
+    fks_tibble,
+    problem = pmap_chr(fks_tibble, check_fk),
     is_key = if_else(problem == "", TRUE, FALSE),
     kind = "FK"
   ) %>%
-    select(table = t1_name, kind, column = colname, is_key, problem)
+    select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
 }
 
 new_tracked_keys <- function(dm, selected) {
@@ -252,9 +265,12 @@ new_tracked_keys <- function(dm, selected) {
   # the new tracked keys need to be the remaining original column names
   # and their name needs to be the newest one (tidyselect-syntax)
   # `intersect(selected, old_tracked_names)` is empty, return `NULL`
-  if (is_null(intersect(selected, old_tracked_names))) NULL else
-  set_names(
-    tracked_keys[selected[selected %in% old_tracked_names]],
-    names(selected[selected %in% old_tracked_names])
-  )
+  if (is_null(intersect(selected, old_tracked_names))) {
+    NULL
+  } else {
+    set_names(
+      tracked_keys[selected[selected %in% old_tracked_names]],
+      names(selected[selected %in% old_tracked_names])
+    )
+  }
 }

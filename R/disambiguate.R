@@ -1,23 +1,27 @@
 #' Avoid conflicts in column names
 #'
-#' This function checks all tables for column names that are not unique (across the entire `dm` object), and renames
-#' those columns by prefixing the respective table name and a separator.
-#' Key columns will not be renamed because only one column should remain when two tables that are
-#' linked by a key relation are joined.
+#' This function ensures that all columns in `dm` have unique names.
 #'
-#' @inheritParams cdm_add_pk
+#' The function first checks if there are any column names that are not unique.
+#' If there are, those columns will be assigned new, unique, names by prefixing their existing name
+#' with the name of their table and a separator.
+#' Columns that act as primary or foreign keys will not be renamed
+#' because only the foreign key column will remain when two tables are joined,
+#' making that column name "unique" as well.
+#'
+#' @inheritParams dm_add_pk
 #' @param sep The character variable that separates the names of the table and the names of the ambiguous columns.
 #' @param quiet Boolean.
 #'   By default, this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
 #'
 #' @examples
-#' cdm_disambiguate_cols(cdm_nycflights13())
+#' dm_disambiguate_cols(dm_nycflights13())
 #' @export
-cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
-  cdm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
+dm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
+  dm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
 }
 
-cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
+dm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
   table_colnames <- get_table_colnames(dm, tables)
   recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = sep)
   if (!quiet) explain_col_rename(recipe)
@@ -25,7 +29,7 @@ cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
 }
 
 get_table_colnames <- function(dm, tables = NULL) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   if (!is.null(tables)) {
     def <-
@@ -40,7 +44,7 @@ get_table_colnames <- function(dm, tables = NULL) {
     unnest(column)
 
   pks <-
-    cdm_get_all_pks(dm) %>%
+    dm_get_all_pks(dm) %>%
     rename(column = pk_col)
 
   table_colnames %>%
@@ -60,7 +64,9 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
 }
 
 explain_col_rename <- function(recipe) {
-  if (nrow(recipe) == 0) return()
+  if (nrow(recipe) == 0) {
+    return()
+  }
 
   msg_core <-
     recipe %>%
@@ -77,7 +83,7 @@ explain_col_rename <- function(recipe) {
 col_rename <- function(dm, recipe) {
   reduce2(recipe$table,
     recipe$renames,
-    ~ cdm_rename(..1, !!..2, !!!..3),
+    ~ dm_rename(..1, !!..2, !!!..3),
     .init = dm
   )
 }

@@ -37,6 +37,26 @@ d8 %<-% tibble::tibble(c = c(1:6))
 # for check_key() ---------------------------------------------------------
 
 message("for check_fk() and check_set_equality()")
+# for check_cardinality...() ----------------------------------------------
+d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
+d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
+d3 <- tibble::tibble(c = 1:5)
+d4 <- tibble::tibble(c = c(1:5, 5))
+d5 <- tibble::tibble(a = 1:5)
+d6 <- tibble::tibble(c = 1:4)
+d7 <- tibble::tibble(c = c(1:5, 5, 6))
+d8 <- tibble::tibble(c = c(1:6))
+
+d1_src <- test_load(d1)
+d2_src <- test_load(d2)
+d3_src <- test_load(d3)
+d4_src <- test_load(d4)
+d5_src <- test_load(d5)
+d6_src <- test_load(d6)
+d8_src <- test_load(d8)
+
+# names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
+src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
 
 data %<-%
   tribble(
@@ -124,20 +144,20 @@ dm_for_filter_w_cycle %<-% {
   as_dm(list(
     t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6, t7 = t7
   )) %>%
-    cdm_add_pk(t1, a) %>%
-    cdm_add_pk(t2, c) %>%
-    cdm_add_pk(t3, f) %>%
-    cdm_add_pk(t4, h) %>%
-    cdm_add_pk(t5, k) %>%
-    cdm_add_pk(t6, n) %>%
-    cdm_add_pk(t7, p) %>%
-    cdm_add_fk(t2, d, t1) %>%
-    cdm_add_fk(t2, e, t3) %>%
-    cdm_add_fk(t4, j, t3) %>%
-    cdm_add_fk(t5, l, t4) %>%
-    cdm_add_fk(t5, m, t6) %>%
-    cdm_add_fk(t6, o, t7) %>%
-    cdm_add_fk(t7, q, t2)
+    dm_add_pk(t1, a) %>%
+    dm_add_pk(t2, c) %>%
+    dm_add_pk(t3, f) %>%
+    dm_add_pk(t4, h) %>%
+    dm_add_pk(t5, k) %>%
+    dm_add_pk(t6, n) %>%
+    dm_add_pk(t7, p) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t2, e, t3) %>%
+    dm_add_fk(t4, j, t3) %>%
+    dm_add_fk(t5, l, t4) %>%
+    dm_add_fk(t5, m, t6) %>%
+    dm_add_fk(t6, o, t7) %>%
+    dm_add_fk(t7, q, t2)
 }
 
 message("for testing filter and semi_join (2)")
@@ -145,7 +165,7 @@ message("for testing filter and semi_join (2)")
 list_for_filter %<-% list(t1 = t1, t2 = t2, t3 = t3, t4 = t4, t5 = t5, t6 = t6)
 dm_for_filter %<-% {
   dm_for_filter_w_cycle %>%
-    cdm_select_tbl(-t7)
+    dm_select_tbl(-t7)
 }
 
 message("for testing filter and semi_join (3)")
@@ -197,26 +217,28 @@ output_3 %<-% list(
   )
 )
 
-def_dm_for_filter <- cdm_get_def(dm_for_filter)
+def_dm_for_filter <- dm_get_def(dm_for_filter)
 
 dm_for_filter_rev %<-%
   new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
 
-# for tests on `dm` objects: cdm_add_pk(), cdm_add_fk() ------------------------
+# for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 
-message("for tests on `dm` objects: cdm_add_pk(), cdm_add_fk()")
+message("for tests on `dm` objects: dm_add_pk(), dm_add_fk()")
 
-cdm_test_obj %<-% as_dm(list(
-  cdm_table_1 = d2,
-  cdm_table_2 = d4,
-  cdm_table_3 = d7,
-  cdm_table_4 = d8))
+dm_test_obj %<-% as_dm(list(
+  dm_table_1 = d2,
+  dm_table_2 = d4,
+  dm_table_3 = d7,
+  dm_table_4 = d8
+))
 
-cdm_test_obj_2 %<-% as_dm(list(
-  cdm_table_1 = d4,
-  cdm_table_2 = d7,
-  cdm_table_3 = d8,
-  cdm_table_4 = d6))
+dm_test_obj_2 %<-% as_dm(list(
+  dm_table_1 = d4,
+  dm_table_2 = d7,
+  dm_table_3 = d8,
+  dm_table_4 = d6
+))
 
 
 # for `dm_nrow()` ---------------------------------------------------------
@@ -248,35 +270,35 @@ list_for_filter_2 %<-%
 
 dm_more_complex %<-% {
   as_dm(list_for_filter_2) %>%
-    cdm_add_pk(t1, a) %>%
-    cdm_add_pk(t2, c) %>%
-    cdm_add_pk(t3, f) %>%
-    cdm_add_pk(t4, h) %>%
-    cdm_add_pk(t4_2, r) %>%
-    cdm_add_pk(t5, k) %>%
-    cdm_add_pk(t6, n) %>%
-    cdm_add_pk(t6_2, p) %>%
-    cdm_add_pk(a, a_1) %>%
-    cdm_add_pk(b, b_1) %>%
-    cdm_add_pk(c, c_1) %>%
-    cdm_add_pk(d, d_1) %>%
-    cdm_add_pk(e, e_1) %>%
-    cdm_add_fk(t2, d, t1) %>%
-    cdm_add_fk(t2, e, t3) %>%
-    cdm_add_fk(t4, j, t3) %>%
-    cdm_add_fk(t5, l, t4) %>%
-    cdm_add_fk(t5, l, t4_2) %>%
-    cdm_add_fk(t5, m, t6) %>%
-    cdm_add_fk(t6_2, f, t3) %>%
-    cdm_add_fk(b, b_2, a) %>%
-    cdm_add_fk(b, b_3, c) %>%
-    cdm_add_fk(d, b_1, b) %>%
-    cdm_add_fk(e, b_1, b)
+    dm_add_pk(t1, a) %>%
+    dm_add_pk(t2, c) %>%
+    dm_add_pk(t3, f) %>%
+    dm_add_pk(t4, h) %>%
+    dm_add_pk(t4_2, r) %>%
+    dm_add_pk(t5, k) %>%
+    dm_add_pk(t6, n) %>%
+    dm_add_pk(t6_2, p) %>%
+    dm_add_pk(a, a_1) %>%
+    dm_add_pk(b, b_1) %>%
+    dm_add_pk(c, c_1) %>%
+    dm_add_pk(d, d_1) %>%
+    dm_add_pk(e, e_1) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t2, e, t3) %>%
+    dm_add_fk(t4, j, t3) %>%
+    dm_add_fk(t5, l, t4) %>%
+    dm_add_fk(t5, l, t4_2) %>%
+    dm_add_fk(t5, m, t6) %>%
+    dm_add_fk(t6_2, f, t3) %>%
+    dm_add_fk(b, b_2, a) %>%
+    dm_add_fk(b, b_3, c) %>%
+    dm_add_fk(d, b_1, b) %>%
+    dm_add_fk(e, b_1, b)
 }
 
-# for testing `cdm_disambiguate_cols()` ----------------------------------------
+# for testing `dm_disambiguate_cols()` ----------------------------------------
 
-message("for cdm_disambiguate_cols()")
+message("for dm_disambiguate_cols()")
 
 iris_1 %<-% {
   as_tibble(iris) %>%
@@ -308,17 +330,17 @@ iris_3_dis %<-% {
 
 dm_for_disambiguate %<-% {
   as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
-    cdm_add_pk(iris_1, key) %>%
-    cdm_add_fk(iris_2, key, iris_1)
+    dm_add_pk(iris_1, key) %>%
+    dm_add_fk(iris_2, key, iris_1)
 }
 
 dm_for_disambiguate_2 %<-% {
   as_dm(list(iris_1 = iris_1_dis, iris_2 = iris_2_dis, iris_3 = iris_3_dis)) %>%
-    cdm_add_pk(iris_1, key) %>%
-    cdm_add_fk(iris_2, iris_2.key, iris_1)
+    dm_add_pk(iris_1, key) %>%
+    dm_add_fk(iris_2, iris_2.key, iris_1)
 }
 
-# star schema data model for testing `cdm_flatten_to_tbl()`
+# star schema data model for testing `dm_flatten_to_tbl()`
 
 message("star schema")
 
@@ -393,14 +415,14 @@ dm_for_flatten %<-% {
     dim_3 = dim_3,
     dim_4 = dim_4
   )) %>%
-    cdm_add_pk(dim_1, dim_1_pk) %>%
-    cdm_add_pk(dim_2, dim_2_pk) %>%
-    cdm_add_pk(dim_3, dim_3_pk) %>%
-    cdm_add_pk(dim_4, dim_4_pk) %>%
-    cdm_add_fk(fact, dim_1_key, dim_1) %>%
-    cdm_add_fk(fact, dim_2_key, dim_2) %>%
-    cdm_add_fk(fact, dim_3_key, dim_3) %>%
-    cdm_add_fk(fact, dim_4_key, dim_4)
+    dm_add_pk(dim_1, dim_1_pk) %>%
+    dm_add_pk(dim_2, dim_2_pk) %>%
+    dm_add_pk(dim_3, dim_3_pk) %>%
+    dm_add_pk(dim_4, dim_4_pk) %>%
+    dm_add_fk(fact, dim_1_key, dim_1) %>%
+    dm_add_fk(fact, dim_2_key, dim_2) %>%
+    dm_add_fk(fact, dim_3_key, dim_3) %>%
+    dm_add_fk(fact, dim_4_key, dim_4)
 }
 
 result_from_flatten %<-% {
@@ -411,7 +433,7 @@ result_from_flatten %<-% {
     left_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
 }
 
-# 'bad' dm (no ref. integrity) for testing cdm_flatten_to_tbl() --------
+# 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
 tbl_1 %<-% tibble(a = c(1, 2, 4, 5), b = a)
 tbl_2 %<-% tibble(id = 1:2, c = letters[1:2])
@@ -419,30 +441,32 @@ tbl_3 %<-% tibble(id = 2:4, d = letters[2:4])
 
 bad_dm %<-% {
   as_dm(list(tbl_1 = tbl_1, tbl_2 = tbl_2, tbl_3 = tbl_3)) %>%
-    cdm_add_pk(tbl_2, id) %>%
-    cdm_add_pk(tbl_3, id) %>%
-    cdm_add_fk(tbl_1, a, tbl_2) %>%
-    cdm_add_fk(tbl_1, b, tbl_3)
+    dm_add_pk(tbl_2, id) %>%
+    dm_add_pk(tbl_3, id) %>%
+    dm_add_fk(tbl_1, a, tbl_2) %>%
+    dm_add_fk(tbl_1, b, tbl_3)
 }
 
-dm_nycflights_small %<-% {as_dm(
-  list(
-    flights = nycflights13::flights %>% slice(1:800),
-    planes = nycflights13::planes,
-    airlines = nycflights13::airlines,
-    airports = nycflights13::airports,
-    weather = nycflights13::weather %>% slice(1:800))
+dm_nycflights_small %<-% {
+  as_dm(
+    list(
+      flights = nycflights13::flights %>% slice(1:800),
+      planes = nycflights13::planes,
+      airlines = nycflights13::airlines,
+      airports = nycflights13::airports,
+      weather = nycflights13::weather %>% slice(1:800)
+    )
   ) %>%
-  cdm_add_pk(planes, tailnum) %>%
-  cdm_add_pk(airlines, carrier) %>%
-  cdm_add_pk(airports, faa) %>%
-  cdm_add_fk(flights, tailnum, planes) %>%
-  cdm_add_fk(flights, carrier, airlines) %>%
-  cdm_add_fk(flights, dest, airports)
-  }
+    dm_add_pk(planes, tailnum) %>%
+    dm_add_pk(airlines, carrier) %>%
+    dm_add_pk(airports, faa) %>%
+    dm_add_fk(flights, tailnum, planes) %>%
+    dm_add_fk(flights, carrier, airlines) %>%
+    dm_add_fk(flights, dest, airports)
+}
 
-zoomed_dm <- cdm_zoom_to_tbl(dm_for_filter, t2)
-zoomed_dm_2 <- cdm_zoom_to_tbl(dm_for_filter, t3)
+zoomed_dm <- dm_zoom_to_tbl(dm_for_filter, t2)
+zoomed_dm_2 <- dm_zoom_to_tbl(dm_for_filter, t3)
 
 # for database tests -------------------------------------------------
 
@@ -486,7 +510,8 @@ if (is_this_a_test()) {
   local(try(
     {
       con <- DBI::dbConnect(
-        RPostgres::Postgres(), dbname = "postgres", host = "localhost", port = 5432,
+        RPostgres::Postgres(),
+        dbname = "postgres", host = "localhost", port = 5432,
         user = "postgres", bigint = "integer"
       )
       src <- src_dbi(con, auto_disconnect = TRUE)
@@ -510,15 +535,15 @@ if (is_this_a_test()) {
 
   message("loading into database")
 
-  dm_for_filter_src %<-% cdm_test_load(dm_for_filter)
-  dm_for_filter_rev_src %<-% cdm_test_load(dm_for_filter_rev)
-  dm_for_filter_w_cycle_src %<-% cdm_test_load(dm_for_filter_w_cycle)
-  cdm_test_obj_src %<-% cdm_test_load(cdm_test_obj)
-  cdm_test_obj_2_src %<-% cdm_test_load(cdm_test_obj_2)
-  dm_for_flatten_src %<-% cdm_test_load(dm_for_flatten)
-  dm_more_complex_src %<-% cdm_test_load(dm_more_complex)
-  dm_for_disambiguate_src %<-% cdm_test_load(dm_for_disambiguate)
-  dm_nycflights_small_src %<-% cdm_test_load(dm_nycflights_small, set_key_constraints = FALSE)
+  dm_for_filter_src %<-% dm_test_load(dm_for_filter)
+  dm_for_filter_rev_src %<-% dm_test_load(dm_for_filter_rev)
+  dm_for_filter_w_cycle_src %<-% dm_test_load(dm_for_filter_w_cycle)
+  dm_test_obj_src %<-% dm_test_load(dm_test_obj)
+  dm_test_obj_2_src %<-% dm_test_load(dm_test_obj_2)
+  dm_for_flatten_src %<-% dm_test_load(dm_for_flatten)
+  dm_more_complex_src %<-% dm_test_load(dm_more_complex)
+  dm_for_disambiguate_src %<-% dm_test_load(dm_for_disambiguate)
+  dm_nycflights_small_src %<-% dm_test_load(dm_nycflights_small, set_key_constraints = FALSE)
 
   message("loading data frames into database")
 

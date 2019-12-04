@@ -4,8 +4,6 @@
 #' 1. Is `pk_column` is a unique key for `parent_table`?
 #' 1. Is the set of values in `fk_column` of `child_table` a subset of the set of values of `pk_column`?
 #' 1. Does the relation between the two tables of the data model meet the cardinality requirements?
-#`
-#` Please see below for details.
 #'
 #' @details All `check_cardinality` functions accept a `parent table` (data frame), a column name of this table,
 #' a `child table`, and a column name of the child table.
@@ -40,6 +38,7 @@
 #' between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 #' there are no duplicates in either of them.
 #'
+#' Finally, `check_cardinality()` tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these) between the two given columns.
 #' @param parent_table Data frame.
 #' @param pk_column Column of `parent_table` that has to be one of its unique keys.
 #' @param child_table Data frame.
@@ -103,11 +102,12 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
-  tryCatch({
-    check_key(!!ct, !!fkc)
-    NULL
-  },
-  error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
+  tryCatch(
+    {
+      check_key(!!ct, !!fkc)
+      NULL
+    },
+    error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
   )
 
   invisible(TRUE)
@@ -125,12 +125,39 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
-  tryCatch({
-    check_key(!!ct, !!fkc)
-    NULL
-  },
-  error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
+  tryCatch(
+    {
+      check_key(!!ct, !!fkc)
+      NULL
+    },
+    error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
   )
 
   invisible(TRUE)
+}
+
+#' @rdname check_cardinality
+#' @export
+check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
+  pt <- enquo(parent_table)
+  pkc <- enexpr(pk_column)
+  ct <- enquo(child_table)
+  fkc <- enexpr(fk_column)
+
+  check_key(!!pt, !!pkc)
+  check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+
+  min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
+  max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
+
+  if (min_1 && max_1) {
+    return("bijective mapping (child: 1 -> parent: 1)")
+  } else
+  if (min_1) {
+    return("surjective mapping (child: 1 to n -> parent: 1)")
+  } else
+  if (max_1) {
+    return("injective mapping ( child: 0 or 1 -> parent: 1)")
+  }
+  "generic mapping (child: 0 to n -> parent: 1)"
 }

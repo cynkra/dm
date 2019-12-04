@@ -26,14 +26,14 @@ datamodel_tables_from_overview <- function(overview) {
     as.data.frame(stringsAsFactors = FALSE)
 }
 
-datamodel_columns_from_overview <- nse_function(c(overview), ~ {
+datamodel_columns_from_overview <- nse(function(overview) {
   overview %>%
     select(column, type, table, key, ref, ref_col) %>%
     mutate(key = as.numeric(key)) %>%
     as.data.frame(stringsAsFactors = FALSE)
 })
 
-datamodel_references_from_overview <- nse_function(c(overview), ~ {
+datamodel_references_from_overview <- nse(function(overview) {
   overview %>%
     filter(!is.na(ref)) %>%
     select(table, column, ref, ref_col) %>%

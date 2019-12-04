@@ -1,6 +1,6 @@
 #' Is a table of a [`dm`] referenced by another table?
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @return `TRUE` if at least one foreign key exists that points to the primary
 #' key of the `table` argument, `FALSE` otherwise.
@@ -8,18 +8,13 @@
 #' @family functions utilizing foreign key relations
 #'
 #' @export
-cdm_is_referenced <- function(dm, table) {
-  has_length(cdm_get_referencing_tables(dm, !!ensym(table)))
-}
-
-is_referenced_data_model <- function(data_model, table_name) {
-  which_ind <- data_model$references$ref == table_name
-  any(which_ind)
+dm_is_referenced <- function(dm, table) {
+  has_length(dm_get_referencing_tables(dm, !!ensym(table)))
 }
 
 #' Get the names of the tables of a [`dm`] that reference a given table.
 #'
-#' @inheritParams cdm_is_referenced
+#' @inheritParams dm_is_referenced
 #'
 #' @return Character vector of the names of the tables that point to the primary
 #' key of `table`.
@@ -27,46 +22,17 @@ is_referenced_data_model <- function(data_model, table_name) {
 #' @family functions utilizing foreign key relations
 #'
 #' @export
-cdm_get_referencing_tables <- function(dm, table) {
+dm_get_referencing_tables <- function(dm, table) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   i <- which(def$table == table)
   def$fks[[i]]$table
 }
 
-calculate_join_list <- function(dm, table_name) {
-  g <- create_graph_from_dm(dm)
-
-  if (!table_name %in% names(V(g))) {
-    return(tibble(
-      lhs = character(), rhs = character(), rank = integer(), has_father = logical()
-    ))
-  }
-
-  bfs <- igraph::bfs(g, table_name, father = TRUE, rank = TRUE, unreachable = FALSE)
-
-  nodes <- names(V(g))
-
-  has_father <- !is.na(bfs$father)
-
-  res <-
-    tibble(lhs = nodes, rhs = nodes[bfs$father], rank = bfs$rank, has_father) %>%
-    filter(has_father) %>%
-    arrange(rank)
-
-  subgraph_nodes <- union(res$lhs, res$rhs)
-  subgraph <- igraph::induced_subgraph(g, subgraph_nodes)
-  if (length(V(subgraph)) - 1 < length(E(subgraph))) {
-    abort_no_cycles()
-  }
-
-  res
-}
-
 create_graph_from_dm <- function(dm, directed = FALSE) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
   def %>%
     select(ref_table = table, fks) %>%
     unnest(fks) %>%

@@ -2,7 +2,7 @@
 
 #' Mark a column of a table in a [`dm`] object as its primary key
 #'
-#' @description `cdm_add_pk()` marks the specified column as the primary key of the specified table.
+#' @description `dm_add_pk()` marks the specified column as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
 #' the given column is a unique key of the table.
 #' If `force == TRUE`, the function will replace an already
@@ -25,13 +25,13 @@
 #' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
-#' cdm_add_pk(nycflights_dm, planes, tailnum)
-#' cdm_add_pk(nycflights_dm, airports, faa)
-#' cdm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
+#' dm_add_pk(nycflights_dm, planes, tailnum)
+#' dm_add_pk(nycflights_dm, airports, faa)
+#' dm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
 #'
 #' # the following does not work (throws an error)
-#' try(cdm_add_pk(nycflights_dm, planes, manufacturer))
-cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
+#' try(dm_add_pk(nycflights_dm, planes, manufacturer))
+dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)
@@ -41,19 +41,18 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   check_col_input(dm, table_name, col_name)
 
   if (check) {
-    table_from_dm <- tbl(dm, table_name)
+    table_from_dm <- dm_get_filtered_table(dm, table_name)
     check_key(table_from_dm, !!col_expr)
   }
 
-  cdm_add_pk_impl(dm, table_name, col_name, force)
+  dm_add_pk_impl(dm, table_name, col_name, force)
 }
 
 # both "table" and "column" must be characters
 # in {datamodelr}, a primary key may consist of more than one columns
 # a key will be added, regardless of whether it is a unique key or not; not to be exported
-# the "cdm" just means "cynkra-dm", to distinguish it from {datamodelr}-functions
-cdm_add_pk_impl <- function(dm, table, column, force) {
-  def <- cdm_get_def(dm)
+dm_add_pk_impl <- function(dm, table, column, force) {
+  def <- dm_get_def(dm)
   i <- which(def$table == table)
 
   if (!force && NROW(def$pks[[i]]) > 0) {
@@ -67,76 +66,76 @@ cdm_add_pk_impl <- function(dm, table, column, force) {
 
 #' Does a table of a [`dm`] object have a column set as primary key?
 #'
-#' @description `cdm_has_pk()` checks in the `data_model` part
+#' @description `dm_has_pk()` checks in the `data_model` part
 #' of the [`dm`] object if a given table has a column marked as its primary key.
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @family primary key functions
 #'
 #' @examples
 #' library(dplyr)
-#' nycflights_dm <- cdm_nycflights13()
+#' nycflights_dm <- dm_nycflights13()
 #'
 #' nycflights_dm %>%
-#'   cdm_has_pk(planes)
+#'   dm_has_pk(planes)
 #' @export
-cdm_has_pk <- function(dm, table) {
-  has_length(cdm_get_pk(dm, {{ table }}))
+dm_has_pk <- function(dm, table) {
+  has_length(dm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the name of the primary key column of a `dm` table 
+#' Retrieve the name of the primary key column of a `dm` table
 #'
-#' @description `cdm_get_pk()` returns the name of the
+#' @description `dm_get_pk()` returns the name of the
 #' column marked as primary key of a table of a [`dm`] object.
 #' If no primary key is
 #' set for the table, an empty character vector is returned.
 #'
 #' @family primary key functions
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @examples
 #' library(dplyr)
-#' nycflights_dm <- cdm_nycflights13()
+#' nycflights_dm <- dm_nycflights13()
 #'
 #' nycflights_dm %>%
-#'   cdm_get_pk(planes)
+#'   dm_get_pk(planes)
 #' @export
-cdm_get_pk <- function(dm, table) {
+dm_get_pk <- function(dm, table) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  pks <- cdm_get_data_model_pks(dm)
+  pks <- dm_get_data_model_pks(dm)
   pks$column[pks$table == table_name]
 }
 
 # FIXME: export?
 #' Get all primary keys of a [`dm`] object
 #'
-#' @description `cdm_get_all_pks()` checks the `dm` object for set primary keys and
+#' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
 #' @family primary key functions
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @export
-cdm_get_all_pks <- nse_function(c(dm), ~ {
-  cdm_get_data_model_pks(dm) %>%
+dm_get_all_pks <- nse(function(dm) {
+  dm_get_data_model_pks(dm) %>%
     select(table = table, pk_col = column)
 })
 
 #' Remove a primary key from a table in a [`dm`] object
 #'
-#' @description `cdm_rm_pk()` removes a potentially set primary key from a table in the
+#' @description `dm_rm_pk()` removes a potentially set primary key from a table in the
 #' underlying `data_model`-object; leaves the [`dm`] object unaltered otherwise.
 #'
 #' Foreign keys that point to the table from other tables, can be optionally removed as well.
 #'
 #' @family primary key functions
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
 #'   there are foreign keys addressing the primary key that is to be removed.
 #'   If `TRUE`, the function will
@@ -145,34 +144,30 @@ cdm_get_all_pks <- nse_function(c(dm), ~ {
 #'
 #' @examples
 #' library(dplyr)
-#' nycflights_dm <- cdm_nycflights13()
+#' nycflights_dm <- dm_nycflights13()
 #'
 #' nycflights_dm %>%
-#'   cdm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
-#'   cdm_has_pk(planes)
+#'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
+#'   dm_has_pk(planes)
 #'
 #' nycflights_dm %>%
-#'   cdm_rm_pk(planes, rm_referencing_fks = TRUE) %>%
-#'   cdm_has_pk(planes)
+#'   dm_rm_pk(planes, rm_referencing_fks = TRUE) %>%
+#'   dm_has_pk(planes)
 #' @export
-cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
+dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
-  selected <- set_names(def$table)
-  selected <- selected[selected != table]
-  new_def <- filter_recode_table_fks(def, selected)
-
-  if (!rm_referencing_fks && !identical(def$fks, new_def$fks)) {
-    affected <- !map2_lgl(def$fks, new_def$fks, identical)
-    abort_first_rm_fks(table, def$table[affected])
+  if (!rm_referencing_fks && dm_is_referenced(dm, !!table)) {
+    affected <- dm_get_referencing_tables(dm, !!table)
+    abort_first_rm_fks(table, affected)
   }
+  def$pks[def$table == table] <- list(new_pk())
+  def$fks[def$table == table] <- list(new_fk())
 
-  new_def$pks[new_def$table == table] <- list(tibble(column = list()))
-
-  new_dm3(new_def)
+  new_dm3(def)
 }
 
 
@@ -185,7 +180,7 @@ cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' @export
 #' @examples
 #' nycflights13::flights %>% enum_pk_candidates()
-enum_pk_candidates <- nse_function(c(table), ~ {
+enum_pk_candidates <- nse(function(table) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
@@ -203,27 +198,27 @@ enum_pk_candidates <- nse_function(c(table), ~ {
 })
 
 
-#' @description `cdm_enum_pk_candidates()` performs these checks
+#' @description `dm_enum_pk_candidates()` performs these checks
 #' for a table in a [dm] object.
 #'
 #' @family primary key functions
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #'
 #' @rdname enum_pk_candidates
 #' @export
 #' @examples
 #'
-#' cdm_nycflights13() %>% cdm_enum_pk_candidates(flights)
-#' cdm_nycflights13() %>% cdm_enum_pk_candidates(airports)
-cdm_enum_pk_candidates <- nse_function(c(dm, table), ~ {
+#' dm_nycflights13() %>% dm_enum_pk_candidates(flights)
+#' dm_nycflights13() %>% dm_enum_pk_candidates(airports)
+dm_enum_pk_candidates <- nse(function(dm, table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
-  # for tables retrieved with `tbl()` or with `cdm_get_tables()[[table_name]]`
+  # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
 
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  tbl <- cdm_get_tables(dm)[[table_name]]
+  tbl <- dm_get_tables(dm)[[table_name]]
   enum_pk_candidates(tbl)
 })
