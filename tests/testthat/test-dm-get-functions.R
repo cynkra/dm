@@ -45,7 +45,7 @@ test_that("dm_get_filter() works", {
   expect_identical(
     dm_get_filter(dm_for_filter),
     tibble(table = character(), filter = list(), zoomed = logical())
-    )
+  )
 
   expect_identical(
     dm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8)),

@@ -63,7 +63,8 @@ test_that("cdm_nrow() works?", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equal(
     sum(cdm_nrow(dm_test_obj)),
-    rows_dm_obj)
+    rows_dm_obj
+  )
 })
 
 test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` work", {
@@ -82,7 +83,6 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
     cdm_squash_to_tbl(dm_more_complex, t5),
     dm_squash_to_tbl(dm_more_complex, t5)
   )
-
 })
 
 active_srcs <- tibble(src = names(dbplyr:::test_srcs$get()))
@@ -153,7 +153,6 @@ test_that("cdm_get_filter() works", {
     cdm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8)),
     dm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8))
   )
-
 })
 
 test_that("cdm_add_pk() and cdm_add_fk() work", {

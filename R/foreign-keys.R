@@ -19,7 +19,6 @@
 #' dm(iris_1 = iris_key, iris_2 = iris_key) %>%
 #'   dm_add_pk(iris_2, key) %>%
 #'   dm_add_fk(iris_1, key, iris_2)
-#'
 #' @export
 dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   table_name <- as_name(ensym(table))
@@ -73,7 +72,6 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' @examples
 #' dm_has_fk(dm_nycflights13(), flights, airports)
 #' dm_has_fk(dm_nycflights13(), airports, flights)
-#'
 #' @export
 dm_has_fk <- function(dm, table, ref_table) {
   has_length(dm_get_fk(dm, {{ table }}, {{ ref_table }}))
@@ -90,7 +88,6 @@ dm_has_fk <- function(dm, table, ref_table) {
 #'
 #' @examples
 #' dm_get_fk(dm_nycflights13(), flights, airports)
-#'
 #' @export
 dm_get_fk <- function(dm, table, ref_table) {
   table_name <- as_name(ensym(table))
@@ -119,7 +116,6 @@ dm_get_fk <- function(dm, table, ref_table) {
 #'
 #' @examples
 #' dm_get_all_fks(dm_nycflights13())
-#'
 #' @export
 dm_get_all_fks <- nse(function(dm) {
   dm_get_data_model_fks(dm) %>%
@@ -147,8 +143,8 @@ dm_get_all_fks <- nse(function(dm) {
 #'   dm_nycflights13(cycle = TRUE),
 #'   flights,
 #'   dest,
-#'   airports)
-#'
+#'   airports
+#' )
 #' @export
 dm_rm_fk <- function(dm, table, column, ref_table) {
   table <- as_name(ensym(table))
@@ -224,7 +220,6 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
 #'
 #' dm_zoom_to_tbl(dm_nycflights13(), flights) %>%
 #'   enum_fk_candidates(airports)
-#'
 #' @export
 dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check

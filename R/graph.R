@@ -10,7 +10,6 @@
 #' @examples
 #' dm_is_referenced(dm_nycflights13(), airports)
 #' dm_is_referenced(dm_nycflights13(), flights)
-#'
 #' @export
 dm_is_referenced <- function(dm, table) {
   has_length(dm_get_referencing_tables(dm, !!ensym(table)))
@@ -28,7 +27,6 @@ dm_is_referenced <- function(dm, table) {
 #' @examples
 #' dm_get_referencing_tables(dm_nycflights13(), airports)
 #' dm_get_referencing_tables(dm_nycflights13(), flights)
-#'
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
   table <- as_name(ensym(table))

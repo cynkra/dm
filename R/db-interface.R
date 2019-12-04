@@ -40,11 +40,11 @@
 #' )
 #' @export
 dm_copy_to <- function(dest, dm, ...,
-                        types = NULL, overwrite = NULL,
-                        indexes = NULL, unique_indexes = NULL,
-                        set_key_constraints = TRUE, unique_table_names = FALSE,
-                        table_names = NULL,
-                        temporary = TRUE) {
+                       types = NULL, overwrite = NULL,
+                       indexes = NULL, unique_indexes = NULL,
+                       set_key_constraints = TRUE, unique_table_names = FALSE,
+                       table_names = NULL,
+                       temporary = TRUE) {
   # for the time being, we will be focusing on MSSQL
   # we expect the src (dest) to already point to the correct schema
   # we want to

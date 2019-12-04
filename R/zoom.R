@@ -58,7 +58,6 @@
 #'
 #' # discard the zoomed table
 #' dm_zoom_out(flights_zoomed_transformed)
-#'
 #' @export
 dm_zoom_to_tbl <- function(dm, table) {
   if (is_zoomed(dm)) abort_no_zoom_allowed()

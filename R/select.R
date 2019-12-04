@@ -46,7 +46,6 @@ dm_rename <- function(dm, table, ...) {
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_select(airports, code = faa, altitude = alt)
-#'
 #' @export
 dm_select <- function(dm, table, ...) {
   table_name <- as_string(ensym(table))

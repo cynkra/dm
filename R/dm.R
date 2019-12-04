@@ -44,7 +44,8 @@
 #' # this works only when tables of `dm` are on DB
 #' if (FALSE) {
 #'   dm_copy_to(dbplyr::src_memdb(), dm_nycflights13()) %>%
-#'     dm_get_con}
+#'     dm_get_con()
+#' }
 #' dm_nycflights13() %>% dm_get_tables()
 #' dm_nycflights13() %>% dm_get_filter()
 #' dm_nycflights13() %>% validate_dm()

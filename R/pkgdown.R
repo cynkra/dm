@@ -8,7 +8,6 @@
 #'
 #' @examples
 #' browse_docs()
-#'
 #' @export
 browse_docs <- function() {
   utils::browseURL("https://krlmlr.github.io/dm/")

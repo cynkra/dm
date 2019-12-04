@@ -26,17 +26,16 @@
 #' dm_draw(dm_nycflights13(cycle = TRUE))
 #' dm_get_available_colors()
 #' dm_get_colors(dm_nycflights13())
-#'
 dm_draw <- function(dm,
-                     rankdir = "LR",
-                     col_attr = "column",
-                     view_type = "keys_only",
-                     columnArrows = TRUE,
-                     graph_attrs = "",
-                     node_attrs = "",
-                     edge_attrs = "",
-                     focus = NULL,
-                     graph_name = "Data Model") {
+                    rankdir = "LR",
+                    col_attr = "column",
+                    view_type = "keys_only",
+                    columnArrows = TRUE,
+                    graph_attrs = "",
+                    node_attrs = "",
+                    edge_attrs = "",
+                    focus = NULL,
+                    graph_name = "Data Model") {
   #
   check_dm(dm)
   if (is_empty(dm)) {

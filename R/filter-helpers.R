@@ -11,7 +11,6 @@
 #'   dm_filter(airports, faa %in% c("EWR", "LGA")) %>%
 #'   dm_apply_filters() %>%
 #'   dm_nrow()
-#'
 #' @export
 dm_nrow <- function(dm) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to issue

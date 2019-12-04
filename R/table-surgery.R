@@ -94,7 +94,6 @@ decompose_table <- function(.data, new_id_column, ...) {
 #'
 #' reunite_parent_child(ct, pt, new_id)
 #' reunite_parent_child_from_list(decomposed_table, new_id)
-#'
 #' @name reunite_parent_child
 #' @export
 reunite_parent_child <- function(child_table, parent_table, id_column) {

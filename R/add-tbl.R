@@ -20,7 +20,6 @@
 #' # renaming table names if necessary (depending on argument `repair`)
 #' dm_nycflights13() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
-#'
 #' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   check_dm(dm)
