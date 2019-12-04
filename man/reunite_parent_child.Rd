@@ -42,7 +42,6 @@ pt <- decomposed_table$parent_table
 
 reunite_parent_child(ct, pt, new_id)
 reunite_parent_child_from_list(decomposed_table, new_id)
-
 }
 \seealso{
 Other table surgery functions: 

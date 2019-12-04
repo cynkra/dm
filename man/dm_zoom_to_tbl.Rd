@@ -103,5 +103,4 @@ dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
 
 # discard the zoomed table
 dm_zoom_out(flights_zoomed_transformed)
-
 }

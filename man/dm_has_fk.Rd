@@ -22,7 +22,6 @@ Does a reference exist from one table of a \code{dm} to another?
 \examples{
 dm_has_fk(dm_nycflights13(), flights, airports)
 dm_has_fk(dm_nycflights13(), airports, flights)
-
 }
 \seealso{
 Other foreign key functions: 

@@ -38,5 +38,4 @@ If key columns are removed, then all related relations are dropped as well.
 \examples{
 dm_nycflights13() \%>\%
   dm_select(airports, code = faa, altitude = alt)
-
 }

@@ -21,7 +21,6 @@ Get a summary of all foreign key relations in a \code{\link{dm}}
 }
 \examples{
 dm_get_all_fks(dm_nycflights13())
-
 }
 \seealso{
 Other foreign key functions: 

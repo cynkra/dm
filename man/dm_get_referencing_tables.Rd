@@ -21,7 +21,6 @@ Get the names of the tables of a \code{\link{dm}} that reference a given table.
 \examples{
 dm_get_referencing_tables(dm_nycflights13(), airports)
 dm_get_referencing_tables(dm_nycflights13(), flights)
-
 }
 \seealso{
 Other functions utilizing foreign key relations: 

@@ -7,13 +7,12 @@
 browse_docs()
 }
 \value{
-Opens the {dm}-website as a side-effect
+Opens the {dm}-website as a side effect
 }
 \description{
 Opens the documentation website in a browser.
 }
 \examples{
 browse_docs()
-
 }
 \keyword{internal}

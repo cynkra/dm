@@ -33,7 +33,6 @@ iris_key <- mutate(iris, key = row_number()) \%>\%
 dm(iris_1 = iris_key, iris_2 = iris_key) \%>\%
   dm_add_pk(iris_2, key) \%>\%
   dm_add_fk(iris_1, key, iris_2)
-
 }
 \seealso{
 Other foreign key functions: 

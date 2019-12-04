@@ -21,7 +21,6 @@ Retrieve the name of the column marked as a foreign key, pointing from one table
 }
 \examples{
 dm_get_fk(dm_nycflights13(), flights, airports)
-
 }
 \seealso{
 Other foreign key functions: 

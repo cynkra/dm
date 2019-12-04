@@ -28,8 +28,8 @@ dm_rm_fk(
   dm_nycflights13(cycle = TRUE),
   flights,
   dest,
-  airports)
-
+  airports
+)
 }
 \seealso{
 Other foreign key functions: 

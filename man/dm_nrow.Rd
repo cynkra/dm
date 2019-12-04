@@ -20,5 +20,4 @@ dm_nycflights13() \%>\%
   dm_filter(airports, faa \%in\% c("EWR", "LGA")) \%>\%
   dm_apply_filters() \%>\%
   dm_nrow()
-
 }

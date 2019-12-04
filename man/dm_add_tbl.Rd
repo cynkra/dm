@@ -49,7 +49,6 @@ dm_nycflights13() \%>\%
 # renaming table names if necessary (depending on argument `repair`)
 dm_nycflights13() \%>\%
   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
-
 }
 \seealso{
 \code{\link[=dm_rm_tbl]{dm_rm_tbl()}}

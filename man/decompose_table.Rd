@@ -26,7 +26,7 @@ See vignette("programming") for an introduction to those concepts.
 See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...}
 }
 \value{
-A named list of two:
+A named list of length two:
 \itemize{
 \item entry "child_table": the child table with column \code{new_id_column} referring to the same column in \code{parent_table}
 \item entry "parent_table": the "lookup table" for \code{child_table}

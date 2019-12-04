@@ -83,7 +83,6 @@ dm_draw(dm_nycflights13())
 dm_draw(dm_nycflights13(cycle = TRUE))
 dm_get_available_colors()
 dm_get_colors(dm_nycflights13())
-
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
     airports = ,
