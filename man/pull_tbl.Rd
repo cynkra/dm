@@ -9,7 +9,7 @@ pull_tbl(dm, table)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{table}{One unquoted table name for \code{pull_tbl.dm()}, ignored for \code{pull_tbl.zoomed_dm()}}
+\item{table}{One unquoted table name for \code{pull_tbl.dm()}, ignored for \code{pull_tbl.zoomed_dm()}.}
 }
 \value{
 The requested table
@@ -17,14 +17,16 @@ The requested table
 \description{
 This function has methods for both \code{dm} classes:
 \enumerate{
-\item with \code{pull_tbl.dm()} you can chose which table of the \code{dm} you want to retrieve
-\item with \code{pull_tbl.zoomed_dm()} you will retrieve the zoomed table in the current state
+\item With \code{pull_tbl.dm()} you can chose which table of the \code{dm} you want to retrieve.
+\item With \code{pull_tbl.zoomed_dm()} you will retrieve the zoomed table in the current state.
 }
 }
 \examples{
 # both examples lead to the same tibble:
-pull_tbl(dm_nycflights13(), airlines)
-dm_zoom_to_tbl(dm_nycflights13(), airlines) \%>\%
+dm_nycflights13() \%>\%
+  pull_tbl(airlines)
+dm_nycflights13() \%>\%
+  dm_zoom_to_tbl(airlines) \%>\%
   pull_tbl()
 
 }

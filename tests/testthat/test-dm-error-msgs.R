@@ -54,5 +54,8 @@ test_that("error messages do not change", {
     error_fk_not_tracked("hook", "eye")
     error_need_to_select_rhs_by("RHS", "by")
     error_dm_invalid("it's ugly")
+    error_no_table_provided()
+    error_table_not_zoomed("blur", c("focus_1", "focus_2"))
+    error_not_pulling_multiple_zoomed()
   })
 })

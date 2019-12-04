@@ -572,7 +572,11 @@ error_dm_invalid <- function(why) {
 # Errors for `pull_tbl.dm()` -----------------------------
 
 abort_no_table_provided <- function() {
-  abort("Argument `table` for `pull_table.dm()` missing.", .subclass = dm_error_full("no_table_provided"))
+  abort(error_no_table_provided(), .subclass = dm_error_full("no_table_provided"))
+}
+
+error_no_table_provided <- function() {
+  "Argument `table` for `pull_table.dm()` missing."
 }
 
 abort_table_not_zoomed <- function(table_name, zoomed_tables) {
