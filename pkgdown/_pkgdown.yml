@@ -69,6 +69,10 @@ reference:
   - dm_join_to_tbl
   - dm_disambiguate_cols
 
+- title: Rename or select columns of tables in a `dm`
+  - dm_rename
+  - dm_select
+
 - title: Filtering
   contents:
   - dm_filter
@@ -102,8 +106,6 @@ reference:
   contents:
   - dm_nycflights13
   - dm_nrow
-  - dm_select
-  - dm_rename
   - browse_docs
 
 navbar:
