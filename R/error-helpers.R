@@ -576,7 +576,7 @@ abort_no_table_provided <- function() {
 }
 
 error_no_table_provided <- function() {
-  "Argument `table` for `pull_table.dm()` missing."
+  "Argument `table` for `pull_tbl.dm()` missing."
 }
 
 abort_table_not_zoomed <- function(table_name, zoomed_tables) {

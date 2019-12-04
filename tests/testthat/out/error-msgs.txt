@@ -154,7 +154,7 @@ You need to select by-column `by` of RHS-table `RHS`.
 [1] "This `dm` is invalid, reason: it's ugly"
 
 > error_no_table_provided()
-[1] "Argument `table` for `pull_table.dm()` missing."
+[1] "Argument `table` for `pull_tbl.dm()` missing."
 
 > error_table_not_zoomed("blur", c("focus_1", "focus_2"))
 In `pull_tbl.zoomed_dm`: Table `blur` not zoomed, zoomed tables: `focus_1`, `focus_2`.
