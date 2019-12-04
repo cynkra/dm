@@ -17,6 +17,7 @@ reference:
   - dm_get_con
   - dm_get_tables
   - dm_get_filter
+  - dm_paste
 
 - title: Managing the tables of a `dm`
   contents:
@@ -66,6 +67,7 @@ reference:
   - dm_flatten_to_tbl
   - dm_squash_to_tbl
   - dm_join_to_tbl
+  - dm_disambiguate_cols
 
 - title: Filtering
   contents:
@@ -100,8 +102,6 @@ reference:
   contents:
   - dm_nycflights13
   - dm_nrow
-  - dm_disambiguate_cols
-  - dm_paste
   - dm_select
   - dm_rename
   - browse_docs
