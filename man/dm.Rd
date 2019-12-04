@@ -124,7 +124,9 @@ dm_nycflights13() \%>\% tbl("airports")
 dm_nycflights13() \%>\% src_tbls()
 dm_nycflights13() \%>\% dm_get_src()
 # this works only when tables of `dm` are on DB
-try(dm_nycflights13() \%>\% dm_get_con())
+if (FALSE) {
+  dm_copy_to(dbplyr::src_memdb(), dm_nycflights13()) \%>\%
+    dm_get_con}
 dm_nycflights13() \%>\% dm_get_tables()
 dm_nycflights13() \%>\% dm_get_filter()
 dm_nycflights13() \%>\% validate_dm()

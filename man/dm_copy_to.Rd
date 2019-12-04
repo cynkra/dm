@@ -42,7 +42,7 @@ Those tables of the \code{dm} that are not addressed will be called by their ori
 These tables will vanish when disconnecting from the database.}
 }
 \value{
-A \code{dm} object on the given \code{src}
+A \code{dm} object on the given \code{src}.
 }
 \description{
 \code{dm_copy_to()} takes a \link[dplyr:src_dbi]{dplyr::src_dbi} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
