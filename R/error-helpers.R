@@ -567,3 +567,10 @@ abort_dm_invalid <- function(why) {
 error_dm_invalid <- function(why) {
   paste0("This `dm` is invalid, reason: ", why)
 }
+
+
+# Argument `table` missing in `pull_tbl.dm()` -----------------------------
+
+abort_no_table_provided <- function() {
+  abort("Argument `table` for `pull_table.dm()` missing.", .subclass = dm_error_full("no_table_provided"))
+}
