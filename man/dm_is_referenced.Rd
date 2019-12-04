@@ -19,8 +19,8 @@ key of the \code{table} argument, \code{FALSE} otherwise.
 Is a table of a \code{\link{dm}} referenced by another table?
 }
 \examples{
-cdm_is_referenced(cdm_nycflights13(), airports)
-cdm_is_referenced(cdm_nycflights13(), flights)
+dm_is_referenced(dm_nycflights13(), airports)
+dm_is_referenced(dm_nycflights13(), flights)
 
 }
 \seealso{

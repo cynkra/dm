@@ -109,7 +109,7 @@ dm_copy_to <- function(dest, dm, ...,
 
 #' Set key constraints on a DB for a `dm`-obj with keys
 #'
-#' @description `cdm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database
+#' @description `dm_set_key_constraints()` takes a `dm` object that is constructed from tables in a database
 #' (this is currently only implemented for MSSQL and Postgres databases), and mirrors the `dm` key constraints
 #' on the database.
 #'

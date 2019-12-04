@@ -43,12 +43,12 @@ The initial \code{dm} with the additional table(s).
 It uses \code{\link[=mutate]{mutate()}} semantics.
 }
 \examples{
-cdm_nycflights13() \%>\%
-  cdm_add_tbl(cars = mtcars, flowers = iris)
+dm_nycflights13() \%>\%
+  dm_add_tbl(cars = mtcars, flowers = iris)
 
 # renaming table names if necessary (depending on argument `repair`)
-cdm_nycflights13() \%>\%
-  cdm_add_tbl(new_tbl = mtcars, new_tbl = iris)
+dm_nycflights13() \%>\%
+  dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 
 }
 \seealso{

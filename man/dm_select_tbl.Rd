@@ -2,9 +2,12 @@
 % Please edit documentation in R/select-tbl.R
 \name{dm_select_tbl}
 \alias{dm_select_tbl}
+\alias{dm_rename_tbl}
 \title{Select and rename tables}
 \usage{
 dm_select_tbl(dm, ...)
+
+dm_rename_tbl(dm, ...)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
@@ -18,12 +21,16 @@ The input \code{dm} with tables renamed or removed.
 \description{
 \code{dm_select_tbl()} keeps the selected tables and their relationships,
 optionally renaming them.
+
+\code{dm_rename_tbl()} renames tables.
 }
 \examples{
-cdm_nycflights13() \%>\%
-  cdm_select_tbl(ap = airports)
-cdm_nycflights13() \%>\%
-  cdm_select_tbl(ap = airports, fl = flights)
+dm_nycflights13() \%>\%
+  dm_select_tbl(ap = airports)
+dm_nycflights13() \%>\%
+  dm_select_tbl(ap = airports, fl = flights)
+dm_nycflights13() \%>\%
+  dm_rename_tbl(ap = airports, fl = flights)
 }
 \seealso{
 \code{\link[=dm_rm_tbl]{dm_rm_tbl()}}

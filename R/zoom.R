@@ -34,11 +34,11 @@
 #'
 #' @rdname dm_zoom_to_tbl
 #'
-#' @return For `cdm_zoom_to_tbl()`: A `zoomed_dm` object
+#' @return For `dm_zoom_to_tbl()`: A `zoomed_dm` object
 #'
 #' @examples
 #' library(dplyr)
-#' flights_zoomed <- cdm_zoom_to_tbl(cdm_nycflights13(), flights)
+#' flights_zoomed <- dm_zoom_to_tbl(dm_nycflights13(), flights)
 #'
 #' flights_zoomed
 #'
@@ -51,13 +51,13 @@
 #'   select(year:dep_time, am_pm_dep, everything())
 #'
 #' # replace table `flights` with the zoomed table
-#' cdm_update_zoomed_tbl(flights_zoomed_transformed)
+#' dm_update_zoomed_tbl(flights_zoomed_transformed)
 #'
 #' # insert the zoomed table as a new table
-#' cdm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+#' dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
 #'
 #' # discard the zoomed table
-#' cdm_zoom_out(flights_zoomed_transformed)
+#' dm_zoom_out(flights_zoomed_transformed)
 #'
 #' @export
 dm_zoom_to_tbl <- function(dm, table) {
@@ -95,7 +95,7 @@ get_zoomed_tbl <- function(dm) {
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @return For `cdm_insert_zoomed_tbl()`, `cdm_update_zoomed_tbl()` and `cdm_zoomed_out()`: A `dm` object
+#' @return For `dm_insert_zoomed_tbl()`, `dm_update_zoomed_tbl()` and `dm_zoomed_out()`: A `dm` object
 #'
 #' @export
 dm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {

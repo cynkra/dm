@@ -45,9 +45,9 @@ The outcome of the join operation determines the value of the \code{why} column 
 \code{enum_fk_candidates()} works like \code{dm_enum_fk_candidates()} with the zoomed table as \code{table}.
 }
 \examples{
-cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
+dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
 
-cdm_zoom_to_tbl(cdm_nycflights13(), flights) \%>\%
+dm_zoom_to_tbl(dm_nycflights13(), flights) \%>\%
   enum_fk_candidates(airports)
 
 }

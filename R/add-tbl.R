@@ -14,12 +14,12 @@
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_add_tbl(cars = mtcars, flowers = iris)
+#' dm_nycflights13() %>%
+#'   dm_add_tbl(cars = mtcars, flowers = iris)
 #'
 #' # renaming table names if necessary (depending on argument `repair`)
-#' cdm_nycflights13() %>%
-#'   cdm_add_tbl(new_tbl = mtcars, new_tbl = iris)
+#' dm_nycflights13() %>%
+#'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #'
 #' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {

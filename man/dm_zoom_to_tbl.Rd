@@ -46,9 +46,9 @@ universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
 }
 \value{
-For \code{cdm_zoom_to_tbl()}: A \code{zoomed_dm} object
+For \code{dm_zoom_to_tbl()}: A \code{zoomed_dm} object
 
-For \code{cdm_insert_zoomed_tbl()}, \code{cdm_update_zoomed_tbl()} and \code{cdm_zoomed_out()}: A \code{dm} object
+For \code{dm_insert_zoomed_tbl()}, \code{dm_update_zoomed_tbl()} and \code{dm_zoomed_out()}: A \code{dm} object
 }
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
@@ -83,7 +83,7 @@ transferred to the new table of the \code{dm}
 }
 \examples{
 library(dplyr)
-flights_zoomed <- cdm_zoom_to_tbl(cdm_nycflights13(), flights)
+flights_zoomed <- dm_zoom_to_tbl(dm_nycflights13(), flights)
 
 flights_zoomed
 
@@ -96,12 +96,12 @@ flights_zoomed_transformed <-
   select(year:dep_time, am_pm_dep, everything())
 
 # replace table `flights` with the zoomed table
-cdm_update_zoomed_tbl(flights_zoomed_transformed)
+dm_update_zoomed_tbl(flights_zoomed_transformed)
 
 # insert the zoomed table as a new table
-cdm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
 
 # discard the zoomed table
-cdm_zoom_out(flights_zoomed_transformed)
+dm_zoom_out(flights_zoomed_transformed)
 
 }

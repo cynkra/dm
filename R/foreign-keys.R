@@ -17,8 +17,8 @@
 #' iris_key <- mutate(iris, key = row_number()) %>%
 #'   select(key, everything())
 #' dm(iris_1 = iris_key, iris_2 = iris_key) %>%
-#'   cdm_add_pk(iris_2, key) %>%
-#'   cdm_add_fk(iris_1, key, iris_2)
+#'   dm_add_pk(iris_2, key) %>%
+#'   dm_add_fk(iris_1, key, iris_2)
 #'
 #' @export
 dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
@@ -71,8 +71,8 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' @family foreign key functions
 #'
 #' @examples
-#' cdm_has_fk(cdm_nycflights13(), flights, airports)
-#' cdm_has_fk(cdm_nycflights13(), airports, flights)
+#' dm_has_fk(dm_nycflights13(), flights, airports)
+#' dm_has_fk(dm_nycflights13(), airports, flights)
 #'
 #' @export
 dm_has_fk <- function(dm, table, ref_table) {
@@ -89,7 +89,7 @@ dm_has_fk <- function(dm, table, ref_table) {
 #' @return A character vector with the column name(s) of `table`, pointing to the primary key of `ref_table`
 #'
 #' @examples
-#' cdm_get_fk(cdm_nycflights13(), flights, airports)
+#' dm_get_fk(dm_nycflights13(), flights, airports)
 #'
 #' @export
 dm_get_fk <- function(dm, table, ref_table) {
@@ -118,7 +118,7 @@ dm_get_fk <- function(dm, table, ref_table) {
 #' @family foreign key functions
 #'
 #' @examples
-#' cdm_get_all_fks(cdm_nycflights13())
+#' dm_get_all_fks(dm_nycflights13())
 #'
 #' @export
 dm_get_all_fks <- nse(function(dm) {
@@ -143,8 +143,8 @@ dm_get_all_fks <- nse(function(dm) {
 #' @return An updated `dm` without the given foreign key relation
 #'
 #' @examples
-#' cdm_rm_fk(
-#'   cdm_nycflights13(cycle = TRUE),
+#' dm_rm_fk(
+#'   dm_nycflights13(cycle = TRUE),
 #'   flights,
 #'   dest,
 #'   airports)
@@ -220,9 +220,9 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
 #' @family foreign key functions
 #'
 #' @examples
-#' cdm_enum_fk_candidates(cdm_nycflights13(), flights, airports)
+#' dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
 #'
-#' cdm_zoom_to_tbl(cdm_nycflights13(), flights) %>%
+#' dm_zoom_to_tbl(dm_nycflights13(), flights) %>%
 #'   enum_fk_candidates(airports)
 #'
 #' @export

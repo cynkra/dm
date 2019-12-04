@@ -13,10 +13,10 @@
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
 #' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_select_tbl(ap = airports)
-#' cdm_nycflights13() %>%
-#'   cdm_select_tbl(ap = airports, fl = flights)
+#' dm_nycflights13() %>%
+#'   dm_select_tbl(ap = airports)
+#' dm_nycflights13() %>%
+#'   dm_select_tbl(ap = airports, fl = flights)
 #' @export
 dm_select_tbl <- function(dm, ...) {
   check_no_filter(dm)
@@ -31,11 +31,11 @@ dm_select_tbl <- function(dm, ...) {
 #' @description
 #' `dm_rename_tbl()` renames tables.
 #'
-#' @rdname cdm_select_tbl
+#' @rdname dm_select_tbl
 #'
 #' @examples
-#' cdm_nycflights13() %>%
-#'   cdm_rename_tbl(ap = airports, fl = flights)
+#' dm_nycflights13() %>%
+#'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm_rename_tbl <- function(dm, ...) {
   vars <- tidyselect_table_names(dm)

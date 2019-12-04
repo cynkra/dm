@@ -20,8 +20,8 @@ A boolean value: \code{TRUE} if a reference from \code{table} to \code{ref_table
 Does a reference exist from one table of a \code{dm} to another?
 }
 \examples{
-cdm_has_fk(cdm_nycflights13(), flights, airports)
-cdm_has_fk(cdm_nycflights13(), airports, flights)
+dm_has_fk(dm_nycflights13(), flights, airports)
+dm_has_fk(dm_nycflights13(), airports, flights)
 
 }
 \seealso{

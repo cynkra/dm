@@ -24,8 +24,8 @@ This function can remove either one reference between two tables, or all referen
 All arguments may be provided quoted or unquoted.
 }
 \examples{
-cdm_rm_fk(
-  cdm_nycflights13(cycle = TRUE),
+dm_rm_fk(
+  dm_nycflights13(cycle = TRUE),
   flights,
   dest,
   airports)

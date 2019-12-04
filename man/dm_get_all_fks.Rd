@@ -20,7 +20,7 @@ A tibble with columns:
 Get a summary of all foreign key relations in a \code{\link{dm}}
 }
 \examples{
-cdm_get_all_fks(cdm_nycflights13())
+dm_get_all_fks(dm_nycflights13())
 
 }
 \seealso{

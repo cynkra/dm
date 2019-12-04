@@ -6,6 +6,25 @@
 \usage{
 dm_select(dm, table, ...)
 }
+\arguments{
+\item{dm}{A \code{dm} object.}
+
+\item{table}{A table in the \code{dm}.}
+
+\item{...}{One or more unquoted expressions separated by commas.
+You can treat
+variable names as if they were positions, and use expressions like x:y
+to select the ranges of variables.
+
+Use named arguments, e.g. new_name = old_name, to rename the selected variables.
+
+The arguments in ... are automatically quoted and evaluated in a context where
+column names represent column positions.
+They also support unquoting and splicing.
+See \code{vignette("programming", package = "dplyr")} for an introduction to those concepts.
+
+See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...}
+}
 \value{
 An updated \code{dm} with the columns of \code{table} potentially reduced and/or renamed
 }
@@ -17,7 +36,7 @@ If key columns are renamed, then the meta-information of the \code{dm} is update
 If key columns are removed, then all related relations are dropped as well.
 }
 \examples{
-cdm_nycflights13() \%>\%
-  cdm_select(airports, code = faa, altitude = alt)
+dm_nycflights13() \%>\%
+  dm_select(airports, code = faa, altitude = alt)
 
 }

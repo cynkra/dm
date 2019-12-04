@@ -31,8 +31,8 @@ library(dplyr)
 iris_key <- mutate(iris, key = row_number()) \%>\%
   select(key, everything())
 dm(iris_1 = iris_key, iris_2 = iris_key) \%>\%
-  cdm_add_pk(iris_2, key) \%>\%
-  cdm_add_fk(iris_1, key, iris_2)
+  dm_add_pk(iris_2, key) \%>\%
+  dm_add_fk(iris_1, key, iris_2)
 
 }
 \seealso{
