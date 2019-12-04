@@ -692,7 +692,7 @@ empty_dm <- function() {
 #'
 #' This function has methods for both `dm` classes:
 #' 1. with `pull_tbl.dm()` you can chose which table of the `dm` you want to retrieve
-#' 1. with `pull_tbl.zoomed_dm()` you will retrieve the zoomed table in the current state
+#' 1. with `pull_tbl.zoomed_dm()` you will retrieve the zoomed table in the current state.
 #'
 #' @inheritParams dm_add_pk
 #' @param table One unquoted table name for `pull_tbl.dm()`, ignored for `pull_tbl.zoomed_dm()`
@@ -723,4 +723,3 @@ pull_tbl.zoomed_dm <- function(dm, table) {
   if (!is_missing(table)) warning("Ignoring argument `table` in `pull_tbl.zoomed_dm`, returning zoomed table.")
   get_zoomed_tbl(dm)
 }
-
