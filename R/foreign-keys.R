@@ -209,9 +209,8 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
 #' - the count and percentage of missing matches for a column that is not suitable
 #' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
-#' @return A table that lists which columns of `table` would be suitable candidates for
-#' foreign key columns to reference `ref_table`, which columns would not be suitable,
-#' and the reason `why`.
+#' @return A table with columns `column` (column of `table`), `candidate` (boolean) and `why`
+#' (if not a candidate for a foreign key, explanation for this).
 #'
 #' @family foreign key functions
 #'

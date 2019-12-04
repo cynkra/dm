@@ -15,8 +15,8 @@ dm_enum_pk_candidates(dm, table)
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A table that lists which columns of \code{table} would be suitable candidates for
-primary key columns and which columns would not be suitable.
+A table with columns \code{column} (column of \code{table}), \code{candidate} (boolean) and \code{why}
+(if not a candidate for a primary key column, explanation for this).
 }
 \description{
 \code{enum_pk_candidates()} checks for each column of a
