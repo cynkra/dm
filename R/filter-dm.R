@@ -121,7 +121,7 @@ dm_apply_filters_to_tbl <- function(dm, table) {
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
 dm_get_filtered_table <- function(dm, from) {
-  filters <- dm_get_filter(dm)
+  filters <- dm_get_filters(dm)
   if (nrow(filters) == 0) {
     return(dm_get_tables(dm)[[from]])
   }
@@ -163,7 +163,7 @@ dm_get_filtered_table <- function(dm, from) {
 }
 
 get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- unique(dm_get_filter(dm)$table)
+  filtered_tables <- unique(dm_get_filters(dm)$table)
   graph <- create_graph_from_dm(dm)
 
   # Computation of distances and shortest paths uses the same algorithm

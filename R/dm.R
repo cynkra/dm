@@ -342,14 +342,14 @@ dm_get_data_model_fks <- function(x) {
 
 #' Get filter expressions
 #'
-#' `dm_get_filter()` returns the filter expressions that have been applied to a `dm` object.
+#' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
 #' These filter expressions are not intended for evaluation, only for
 #' information.
 #'
 #' @rdname dm
 #'
 #' @export
-dm_get_filter <- function(x) {
+dm_get_filters <- function(x) {
   # FIXME: Obliterate
 
   filter_df <-
@@ -444,7 +444,7 @@ print.dm <- function(x, ...) {
   cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
   cat_line("Foreign keys: ", sum(map_int(def$fks, vctrs::vec_size)))
 
-  filters <- dm_get_filter(x)
+  filters <- dm_get_filters(x)
   if (nrow(filters) > 0) {
     cat_rule("Filters", col = "orange")
     walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
@@ -461,7 +461,7 @@ print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   df <- get_zoomed_tbl(x)
-  zoomed_filters <- dm_get_filter(x) %>%
+  zoomed_filters <- dm_get_filters(x) %>%
     filter(zoomed == TRUE)
   filters <- if_else(nrow(zoomed_filters) > 0, TRUE, FALSE)
   # so far only 1 table can be zoomed on
