@@ -29,7 +29,7 @@
 #'
 #' @family DB interaction functions
 #'
-#' @return A `dm` object on the given `src`
+#' @return A `dm` object on the given `src`.
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
