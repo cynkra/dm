@@ -695,7 +695,7 @@ empty_dm <- function() {
 #' 1. with `pull_tbl.zoomed_dm()` you will retrieve the zoomed table in the current state.
 #'
 #' @inheritParams dm_add_pk
-#' @param table One unquoted table name for `pull_tbl.dm()`, ignored for `pull_tbl.zoomed_dm()`
+#' @param table One unquoted table name for `pull_tbl.dm()`, ignored for `pull_tbl.zoomed_dm()`.
 #'
 #' @return The requested table
 #'
