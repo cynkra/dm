@@ -215,17 +215,21 @@ The filter conditions for the zoomed table are added to the original filter cond
 <p>Whenever possible, the key relations of the original table are transferred to the resulting table
 when using <code>dm_insert_zoomed_tbl()</code> or <code>dm_update_zoomed_tbl()</code>.</p>
 <p>Functions from <code>dplyr</code> that are supported for a <code>zoomed_dm</code>: <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate()</a></code>,
-<code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>.
+<code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>.
 You can use these functions just like you would
 with a normal table.</p>
-<p><code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> is also supported, but treated in a special way: the filter expression for the zoomed table is
-stored in the <code>dm</code> and is treated in a way that depends on which function you use to return to a normal <code>dm</code>:</p><ol>
+<p>In addition to filtering the zoomed table, the filter condition from <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> is also stored in the <code>dm</code>.
+Depending on which function you use to return to a normal <code>dm</code>, one of the following happens:</p><ol>
 <li><p><code>dm_zoom_out()</code>: all filter conditions for the zoomed table are discarded</p></li>
 <li><p><code>dm_update_zoomed_tbl()</code>: the filter conditions of the original table and those of the zoomed table are combined</p></li>
 <li><p><code>dm_insert_zoomed_tbl()</code>: the filter conditions of the original table stay there and those of the zoomed table are
 transferred to the new table of the <code>dm</code></p></li>
 </ol>
 
+<p>Furthermore, the different <code>join()</code>-variants from dplyr are also supported (apart from <code>nest_join()</code>).
+The join-methods for <code>zoomed_dm</code> have an extra argument <code>select</code> that let's you choose the columns of the RHS table
+in a tidyselect manner.</p>
+<p>And -- last but not least -- also the tidyr-functions <code>unite()</code> and <code>separate()</code> are supported for <code>zoomed_dm</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
