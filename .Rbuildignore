@@ -10,3 +10,6 @@
 ^appveyor\.yml$
 ^tic\.R$
 ^codecov\.yml$
+^dm\.Rcheck$
+^dm.*\.tar\.gz$
+^dm.*\.tgz$

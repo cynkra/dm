@@ -145,31 +145,31 @@ rm(t1, t2)
 library(dm)
 
 # Compound object: tables, relationships, data
-cdm_nycflights13(cycle = TRUE)
+dm_nycflights13(cycle = TRUE)
 
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_draw()
+dm_nycflights13(cycle = TRUE) %>%
+  dm_draw()
 
 # Selection of tables
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_select_tbl(flights, airlines) %>%
-  cdm_draw()
+dm_nycflights13(cycle = TRUE) %>%
+  dm_select_tbl(flights, airlines) %>%
+  dm_draw()
 
-cdm_nycflights13(cycle = TRUE) %>%
-  cdm_select_tbl(airports, airlines) %>%
-  cdm_draw()
+dm_nycflights13(cycle = TRUE) %>%
+  dm_select_tbl(airports, airlines) %>%
+  dm_draw()
 
 try(
-  cdm_nycflights13() %>%
-    cdm_select_tbl(bogus)
+  dm_nycflights13() %>%
+    dm_select_tbl(bogus)
 )
 
 # Accessing tables
-cdm_nycflights13() %>%
+dm_nycflights13() %>%
   tbl("airlines")
 
 # Table names
-cdm_nycflights13() %>%
+dm_nycflights13() %>%
   src_tbls()
 
 # NB: [, $, [[ and names() also work
@@ -195,20 +195,20 @@ tibble(x = 1:5) %>%
 ##
 ##
 
-cdm_nycflights13()
+dm_nycflights13()
 
 # Filtering on a table returns a dm object with the filter condition(s) stored
 (dm_nyc_filtered <-
-  cdm_nycflights13() %>%
-  cdm_filter(airlines, carrier == "AA"))
+  dm_nycflights13() %>%
+  dm_filter(airlines, carrier == "AA"))
 
 # Apply all filters and retrieve an "updated" `dm`
 dm_nyc_filtered %>%
-  cdm_apply_filters()
+  dm_apply_filters()
 
 # If a filter condition is phrased wrongly it will only fail, once the filter is being applied
-(dm_nyc_fail <- cdm_nycflights13() %>%
-  cdm_filter(airports, origin == "EWR"))
+(dm_nyc_fail <- dm_nycflights13() %>%
+  dm_filter(airports, origin == "EWR"))
 try(
   tbl(dm_nyc_fail, "flights")
 )
@@ -216,22 +216,22 @@ try(
 # only the necessary filter conditions are applied:
 tbl(dm_nyc_fail, "weather")
 
-cdm_nycflights13() %>%
-  cdm_filter(flights, origin == "EWR") %>%
-  cdm_apply_filters()
+dm_nycflights13() %>%
+  dm_filter(flights, origin == "EWR") %>%
+  dm_apply_filters()
 
 # ... which then can be filtered on another table
-cdm_nycflights13() %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_apply_filters()
+dm_nycflights13() %>%
+  dm_filter(airlines, name == "American Airlines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_apply_filters()
 
 aa_non_jfk_january <-
-  cdm_nycflights13() %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, month == 1) %>%
-  cdm_apply_filters()
+  dm_nycflights13() %>%
+  dm_filter(airlines, name == "American Airlines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(flights, month == 1) %>%
+  dm_apply_filters()
 aa_non_jfk_january
 
 # ... and processed further
@@ -255,33 +255,33 @@ aa_non_jfk_january %>%
 
 # All operations are designed to work locally and on the database
 nycflights13_sqlite <-
-  cdm_nycflights13() %>%
-  cdm_select_tbl(-planes) %>%
-  cdm_filter(flights, month == 1) %>%
-  cdm_apply_filters() %>%
-  cdm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
+  dm_nycflights13() %>%
+  dm_select_tbl(-planes) %>%
+  dm_filter(flights, month == 1) %>%
+  dm_apply_filters() %>%
+  dm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE)
 
 nycflights13_sqlite
 
 nycflights13_sqlite %>%
-  cdm_draw()
+  dm_draw()
 
 nycflights13_sqlite %>%
-  cdm_get_tables() %>%
+  dm_get_tables() %>%
   map(dbplyr::sql_render)
 
 # Filtering on the database
 nycflights13_sqlite %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, day == 1) %>%
+  dm_filter(airlines, name == "American Airlines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(flights, day == 1) %>%
   tbl("flights")
 
 # ... and the corresponding SQL statement
 nycflights13_sqlite %>%
-  cdm_filter(airlines, name == "American Airlines Inc.") %>%
-  cdm_filter(airports, name != "John F Kennedy Intl") %>%
-  cdm_filter(flights, day == 1) %>%
+  dm_filter(airlines, name == "American Airlines Inc.") %>%
+  dm_filter(airports, name != "John F Kennedy Intl") %>%
+  dm_filter(flights, day == 1) %>%
   tbl("flights") %>%
   dbplyr::sql_render()
 
@@ -294,28 +294,28 @@ nycflights13_sqlite %>%
 ##
 ##
 
-cdm_nycflights13() %>%
-  cdm_join_to_tbl(airlines, flights, join = left_join)
+dm_nycflights13() %>%
+  dm_join_to_tbl(airlines, flights, join = left_join)
 
-cdm_nycflights13() %>%
-  cdm_join_to_tbl(flights, airlines, join = left_join)
+dm_nycflights13() %>%
+  dm_join_to_tbl(flights, airlines, join = left_join)
 
 nycflights13_sqlite %>%
-  cdm_join_to_tbl(airlines, flights, join = left_join)
+  dm_join_to_tbl(airlines, flights, join = left_join)
 
 aa_non_jfk_january %>%
-  cdm_join_to_tbl(flights, airlines, join = left_join)
+  dm_join_to_tbl(flights, airlines, join = left_join)
 
 # FIXME: Multi-joins
 
 try(
-  cdm_nycflights13() %>%
-    cdm_join_to_tbl(airports, airlines, join = left_join)
+  dm_nycflights13() %>%
+    dm_join_to_tbl(airports, airlines, join = left_join)
 )
 
 try(
-  cdm_nycflights13() %>%
-    cdm_join_to_tbl(flights, airports, airlines, join = left_join)
+  dm_nycflights13() %>%
+    dm_join_to_tbl(flights, airports, airlines, join = left_join)
 )
 
 ##
@@ -382,19 +382,19 @@ global <-
 global
 
 global %>%
-  cdm_rename_tbl(
+  dm_rename_tbl(
     airlines = airlines_global,
     airports = airports_global,
     planes = planes_global,
     flights = flights_link,
     weather = weather_link
   ) %>%
-  cdm_select_tbl(airlines, airports, planes, flights, weather)
+  dm_select_tbl(airlines, airports, planes, flights, weather)
 
 # or better:
 nycflights13_tbl <-
   global %>%
-  cdm_select_tbl(
+  dm_select_tbl(
     airlines = airlines_global,
     airports = airports_global,
     planes = planes_global,
@@ -406,39 +406,39 @@ nycflights13_tbl <-
 nycflights13_tbl
 
 nycflights13_tbl %>%
-  cdm_draw()
+  dm_draw()
 
 # Adding primary keys
 nycflights13_pk <-
   nycflights13_tbl %>%
-  cdm_add_pk(weather, origin_slot_id) %>%
-  cdm_add_pk(planes, tailnum) %>%
-  cdm_add_pk(airports, faa) %>%
-  cdm_add_pk(airlines, carrier)
+  dm_add_pk(weather, origin_slot_id) %>%
+  dm_add_pk(planes, tailnum) %>%
+  dm_add_pk(airports, faa) %>%
+  dm_add_pk(airlines, carrier)
 
 nycflights13_pk %>%
-  cdm_draw()
+  dm_draw()
 
 # FIXME: Model weak constraints, show differently in diagram (#4)
 
 # Adding foreign keys
 nycflights13_fk <-
   nycflights13_pk %>%
-  cdm_add_fk(flights, origin_slot_id, weather, check = FALSE) %>%
-  cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
-  cdm_add_fk(flights, origin, airports) %>%
-  cdm_add_fk(flights, dest, airports, check = FALSE) %>%
-  cdm_add_fk(flights, carrier, airlines)
+  dm_add_fk(flights, origin_slot_id, weather, check = FALSE) %>%
+  dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+  dm_add_fk(flights, origin, airports) %>%
+  dm_add_fk(flights, dest, airports, check = FALSE) %>%
+  dm_add_fk(flights, carrier, airlines)
 
 nycflights13_fk %>%
-  cdm_draw()
+  dm_draw()
 
 # Color it!
-cdm_get_available_colors()
+dm_get_available_colors()
 
 nycflights13_fk %>%
-  cdm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
-  cdm_draw()
+  dm_set_colors(airlines = , planes = , weather = , airports = "blue") %>%
+  dm_draw()
 
 ##
 ##
@@ -452,11 +452,11 @@ nycflights13_fk %>%
 try({
   # Import
   dm_pq <-
-    cdm_nycflights13() %>%
-    cdm_select_tbl(-planes) %>%
-    cdm_filter(flights, month == 1) %>%
-    cdm_copy_to(src_postgres(), ., temporary = FALSE)
+    dm_nycflights13() %>%
+    dm_select_tbl(-planes) %>%
+    dm_filter(flights, month == 1) %>%
+    dm_copy_to(src_postgres(), ., temporary = FALSE)
 
   dm_from_pq <-
-    cdm_learn_from_db(src_postgres())
+    dm_learn_from_db(src_postgres())
 })

@@ -34,7 +34,7 @@
 #'
 #' }
 #' @export
-cdm_learn_from_db <- function(dest) {
+dm_learn_from_db <- function(dest) {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
 
   con <- con_from_src_or_con(dest)
@@ -152,9 +152,11 @@ postgres_learn_query <- function() {
   and t.table_type = 'BASE TABLE'"
 }
 
-# FIXME: only needed for `cdm_learn_from_db()` <- needs to be implemented in a different manner
+# FIXME: only needed for `dm_learn_from_db()` <- needs to be implemented in a different manner
 legacy_new_dm <- function(tables, data_model) {
-  if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
+  if (is_missing(tables) && is_missing(data_model)) {
+    return(empty_dm())
+  }
   if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(is.data_model(data_model))
 

@@ -20,16 +20,16 @@
 #'
 #' @seealso
 #'
-#' - [cdm_add_pk()] and [cdm_add_fk()] add primary and foreign keys
-#' - [cdm_copy_to()] and [cdm_learn_from_db()] for DB interaction
-#' - [cdm_draw()] for visualization
-#' - [cdm_join_to_tbl()] for flattening
-#' - [cdm_filter()] for filtering
-#' - [cdm_select_tbl()] for creating a `dm` with only a subset of the tables
+#' - [dm_add_pk()] and [dm_add_fk()] add primary and foreign keys
+#' - [dm_copy_to()] and [dm_learn_from_db()] for DB interaction
+#' - [dm_draw()] for visualization
+#' - [dm_join_to_tbl()] for flattening
+#' - [dm_filter()] for filtering
+#' - [dm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [decompose_table()] as one example of the table surgery family
 #' - [check_key()] and [check_if_subset()] for checking for key properties
 #' - [check_cardinality()] for checking the cardinality of the relation between two tables
-#' - [cdm_nycflights13()]  for creating an example `dm` object
+#' - [dm_nycflights13()]  for creating an example `dm` object
 #'
 #' @examples
 #' library(dplyr)
@@ -38,18 +38,18 @@
 #' new_dm(list(iris = iris, mtcars = mtcars))
 #' as_dm(list(iris = iris, mtcars = mtcars))
 #'
-#' cdm_nycflights13() %>% tbl("airports")
-#' cdm_nycflights13() %>% src_tbls()
-#' cdm_nycflights13() %>% cdm_get_src()
+#' dm_nycflights13() %>% tbl("airports")
+#' dm_nycflights13() %>% src_tbls()
+#' dm_nycflights13() %>% dm_get_src()
 #' # this works only when tables of `dm` are on DB
-#' try(cdm_nycflights13() %>% cdm_get_con())
-#' cdm_nycflights13() %>% cdm_get_tables()
-#' cdm_nycflights13() %>% cdm_get_filter()
-#' cdm_nycflights13() %>% validate_dm()
-#' is_dm(cdm_nycflights13())
-#' cdm_nycflights13()["airports"]
-#' cdm_nycflights13()[["airports"]]
-#' cdm_nycflights13()$airports
+#' try(dm_nycflights13() %>% dm_get_con())
+#' dm_nycflights13() %>% dm_get_tables()
+#' dm_nycflights13() %>% dm_get_filter()
+#' dm_nycflights13() %>% validate_dm()
+#' is_dm(dm_nycflights13())
+#' dm_nycflights13()["airports"]
+#' dm_nycflights13()[["airports"]]
+#' dm_nycflights13()$airports
 #' @export
 dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
   quos <- enquos(...)
@@ -77,8 +77,10 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #'
 #' @rdname dm
 #' @export
-dm_from_src <- nse_function(c(src, table_names = NULL), ~ {
-  if (is_missing(src)) return(empty_dm())
+dm_from_src <- nse(function(src = NULL, table_names = NULL) {
+  if (is_null(src)) {
+    return(empty_dm())
+  }
   src_tbl_names <- src_tbls(src)
 
   if (is_null(table_names)) {
@@ -193,21 +195,37 @@ validate_dm <- function(x) {
   check_dm(x)
 
   if (!identical(names(unclass(x)), "def")) abort_dm_invalid("A `dm` needs to be a list of one item named `def`.")
-  def <- cdm_get_def(x)
+  def <- dm_get_def(x)
 
   table_names <- def$table
   if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
   check_col_classes(def)
 
-  if (!all(map_lgl(def$data, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi")}))) abort_dm_invalid(
-    "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `cdm_get_tables()`.")
+  if (!all(map_lgl(def$data, ~ {
+    inherits(., "data.frame") || inherits(., "tbl_dbi")
+  }))) {
+    abort_dm_invalid(
+      "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
+    )
+  }
   if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
 
-  if (nrow(def) == 0) return(invisible(x))
-  if (ncol(def) != 9) abort_dm_invalid(
-    glue("Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
-         "instead of 9.")
+  if (nrow(def) == 0) {
+    return(invisible(x))
+  }
+  if (ncol(def) != 9) {
+    abort_dm_invalid(
+      glue(
+        "Number of columns of tibble defining `dm` is wrong: {as.character(ncol(def))} ",
+        "instead of 9."
+      )
     )
+  }
+
+  inner_names <- map(def, names)
+  if (!all(map_lgl(inner_names, is.null))) {
+    abort_dm_invalid("`def` must not have inner names.")
+  }
 
   fks <- def$fks %>%
     map_dfr(I) %>%
@@ -220,72 +238,83 @@ validate_dm <- function(x) {
     unnest(column)
   check_colnames(pks, dm_col_names, "PK")
   check_one_zoom(def, is_zoomed(x))
-  if (!all(map_lgl(def$zoom, ~ {inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")}))) abort_dm_invalid(
-    "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`.")
+  if (!all(map_lgl(def$zoom, ~ {
+    inherits(., "data.frame") || inherits(., "tbl_dbi") || inherits(., "NULL")
+  }))) {
+    abort_dm_invalid(
+      "Not all entries in `def$zoom` are of class `data.frame`, `tbl_dbi` or `NULL`."
+    )
+  }
   invisible(x)
+}
+
+debug_validate_dm <- function(dm) {
+  # Uncomment to enable validation for troubleshooting
+  # validate_dm(dm)
+  dm
 }
 
 #' Get source
 #'
-#' `cdm_get_src()` returns the \pkg{dplyr} source for a `dm` object.
+#' `dm_get_src()` returns the \pkg{dplyr} source for a `dm` object.
 #' All tables in a `dm` object must be from the same source,
 #' i.e. either they are all data frames, or they all are stored on the same
 #' database.
 #'
 #' @rdname dm
 #'
-#' @return For `cdm_get_src()`: the \pkg{dplyr} source for a `dm` object
+#' @return For `dm_get_src()`: the \pkg{dplyr} source for a `dm` object
 #'
 #' @export
-cdm_get_src <- function(x) {
+dm_get_src <- function(x) {
   check_dm(x)
-  tables <- cdm_get_tables(x)
+  tables <- dm_get_tables(x)
   tbl_src(tables[1][[1]])
 }
 
 #' Get connection
 #'
-#' `cdm_get_con()` returns the [`DBI::DBIConnection-class`] for `dm` objects.
+#' `dm_get_con()` returns the [`DBI::DBIConnection-class`] for `dm` objects.
 #' This works only if the tables are stored on a database, otherwise an error
 #' is thrown.
 #'
 #' @rdname dm
 #'
-#' @return For `cdm_get_con()`: The [`DBI::DBIConnection-class`] for `dm` objects
+#' @return For `dm_get_con()`: The [`DBI::DBIConnection-class`] for `dm` objects
 #'
 #' @export
-cdm_get_con <- function(x) {
-  src <- cdm_get_src(x)
+dm_get_con <- function(x) {
+  src <- dm_get_src(x)
   if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
   src$con
 }
 
 #' Get tables
 #'
-#' `cdm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
+#' `dm_get_tables()` returns a named list of \pkg{dplyr} [tbl] objects
 #' of a `dm` object.
 #' Filtering expressions are NOT evaluated at this stage.
-#' To get filtered tables, use `tbl.dm()`
+#' To get a filtered table, use `dm_apply_filters_to_tbl()`, to apply filters to all tables use `dm_apply_filters()`
 #'
 #' @rdname dm
 #'
-#' @return For `cdm_get_tables()`: A named list with the tables constituing the `dm`
+#' @return For `dm_get_tables()`: A named list with the tables constituing the `dm`
 #'
 #' @export
-cdm_get_tables <- function(x) {
-  def <- cdm_get_def(x)
+dm_get_tables <- function(x) {
+  def <- dm_get_def(x)
   set_names(def$data, def$table)
 }
 
-cdm_get_def <- function(x) {
+dm_get_def <- function(x) {
   unclass(x)$def
 }
 
-cdm_get_data_model_pks <- function(x) {
+dm_get_data_model_pks <- function(x) {
   # FIXME: Obliterate
 
   pk_df <-
-    cdm_get_def(x) %>%
+    dm_get_def(x) %>%
     select(table, pks) %>%
     unnest(pks)
 
@@ -300,11 +329,11 @@ cdm_get_data_model_pks <- function(x) {
   pk_df
 }
 
-cdm_get_data_model_fks <- function(x) {
+dm_get_data_model_fks <- function(x) {
   # FIXME: Obliterate
 
   fk_df <-
-    cdm_get_def(x) %>%
+    dm_get_def(x) %>%
     select(ref = table, fks, pks) %>%
     filter(map_lgl(fks, has_length)) %>%
     unnest(pks)
@@ -327,24 +356,24 @@ cdm_get_data_model_fks <- function(x) {
 
 #' Get filter expressions
 #'
-#' `cdm_get_filter()` returns the filter expressions that have been applied to a `dm` object.
+#' `dm_get_filter()` returns the filter expressions that have been applied to a `dm` object.
 #' These filter expressions are not intended for evaluation, only for
 #' information.
 #'
 #' @rdname dm
 #'
-#' @return For `cdm_get_filter()`: A tibble with columns:
+#' @return For `dm_get_filter()`: A tibble with columns:
 #'
 #' - "table": table that was filtered,
 #' - "filter": the filter expression,
 #' - "zoomed": logical, does the filter condition relate to the zoomed table
 #'
 #' @export
-cdm_get_filter <- function(x) {
+dm_get_filter <- function(x) {
   # FIXME: Obliterate
 
   filter_df <-
-    cdm_get_def(x) %>%
+    dm_get_def(x) %>%
     select(table, filters) %>%
     unnest(filters)
 
@@ -353,12 +382,12 @@ cdm_get_filter <- function(x) {
     filter_df$filter_expr <- list()
   }
 
-  filter_df  %>%
+  filter_df %>%
     rename(filter = filter_expr)
 }
 
-cdm_get_zoomed_tbl <- function(x) {
-  cdm_get_def(x) %>%
+dm_get_zoomed_tbl <- function(x) {
+  dm_get_def(x) %>%
     filter(!map_lgl(zoom, is_null)) %>%
     select(table, zoom)
 }
@@ -423,9 +452,8 @@ format.dm <- function(x, ...) {
 #' @export
 #' @import cli
 print.dm <- function(x, ...) {
-
   cat_rule("Table source", col = "green")
-  src <- cdm_get_src(x)
+  src <- dm_get_src(x)
 
   db_info <- strsplit(format(src), "\n")[[1]][[1]]
 
@@ -433,13 +461,13 @@ print.dm <- function(x, ...) {
 
   cat_rule("Metadata", col = "violet")
 
-  def <- cdm_get_def(x)
+  def <- dm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
   cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
   cat_line("Foreign keys: ", sum(map_int(def$fks, vctrs::vec_size)))
 
-  filters <- cdm_get_filter(x)
+  filters <- dm_get_filter(x)
   if (nrow(filters) > 0) {
     cat_rule("Filters", col = "orange")
     walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
@@ -456,7 +484,7 @@ print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   df <- get_zoomed_tbl(x)
-  zoomed_filters <- cdm_get_filter(x) %>%
+  zoomed_filters <- dm_get_filter(x) %>%
     filter(zoomed == TRUE)
   filters <- if_else(nrow(zoomed_filters) > 0, TRUE, FALSE)
   # so far only 1 table can be zoomed on
@@ -470,7 +498,9 @@ format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 new_zoomed_df <- function(x, ...) {
-  if (!is.data.frame(x)) return(structure(x, class = c("zoomed_df", class(x)), ...))
+  if (!is.data.frame(x)) {
+    return(structure(x, class = c("zoomed_df", class(x)), ...))
+  }
   # need this in order to avoid star (from rownames, automatic from `structure(...)`)
   # in print method for local tibbles
   new_tibble(
@@ -480,15 +510,18 @@ new_zoomed_df <- function(x, ...) {
     # FIXME: Remove setdiff() when tibble >= 3.0.0 is on CRAN
     class = c("zoomed_df", setdiff(class(x), c("tbl_df", "tbl", "data.frame"))),
     nrow = nrow(x),
-    ...)
+    ...
+  )
 }
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`
 # therefore, we need to have our own subclass but the main class needs to be `tbl`
 #' @export
 tbl_sum.zoomed_df <- function(x) {
-  c(structure(attr(x, "name_df"), names = "Zoomed table"),
-    NextMethod())
+  c(
+    structure(attr(x, "name_df"), names = "Zoomed table"),
+    NextMethod()
+  )
 }
 
 #' @export
@@ -526,7 +559,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 `[.dm` <- function(x, id) {
   if (is.numeric(id)) id <- src_tbls(x)[id]
   id <- as.character(id)
-  cdm_select_tbl(x, !!!id)
+  dm_select_tbl(x, !!!id)
 }
 
 
@@ -559,14 +592,14 @@ length.dm <- function(x) {
 
 #' @export
 str.dm <- function(object, ...) {
-  object <- cdm_get_def(object) %>%
+  object <- dm_get_def(object) %>%
     select(table, pks, fks, filters)
   str(object)
 }
 
 #' @export
 str.zoomed_dm <- function(object, ...) {
-  object <- cdm_get_def(object) %>%
+  object <- dm_get_def(object) %>%
     mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
     select(zoom, table, pks, fks, filters)
   str(object)
@@ -579,13 +612,13 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(dm)
   check_correct_input(dm, from, 1L)
 
-  cdm_get_filtered_table(dm, from)
+  dm_get_tables(dm)[[from]]
 }
 
 #' @export
 compute.dm <- function(x, ...) {
-  cdm_apply_filters(x) %>%
-    cdm_get_def() %>%
+  dm_apply_filters(x) %>%
+    dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
     new_dm3()
 }
@@ -602,22 +635,38 @@ compute.zoomed_dm <- function(x, ...) {
 src_tbls.dm <- function(x) {
   # The x argument here is a dm object
   dm <- x
-  names(cdm_get_tables(dm))
+  names(dm_get_tables(dm))
 }
 
 #' @export
-copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, ...) {
-  # TODO: How to add a table to a dm?
-  abort("`dm` objects are immutable, please use ...")
+copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
+  if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
+  if (overwrite) abort_no_overwrite()
+  if (length(name) != 1) abort_one_name_for_copy_to(name)
+  # src: if `df` on a different src:
+  # if `df_list` is on DB and `dest` is local, collect `df_list`
+  # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
+  df <- copy_to(dm_get_src(dest), df, unique_db_table_name(name), temporary = temporary, ...)
+  # FIXME: should we allow `overwrite` argument?
+  names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
+  # rename old tables with potentially new names
+  dest <- dm_rename_tbl(dest, !!!names_list$new_old_names)
+  # `repair` argument is `unique` by default
+  dm_add_tbl_impl(dest, list(df), names_list$new_names)
+}
+
+#' @export
+copy_to.zoomed_dm <- function(dest, df, name, overwrite, ...) {
+  check_not_zoomed(.data)
 }
 
 #' @export
 collect.dm <- function(x, ...) {
   x <-
     x %>%
-    cdm_apply_filters()
+    dm_apply_filters()
 
-  def <- cdm_get_def(x)
+  def <- dm_get_def(x)
   def$data <- map(def$data, collect, ...)
   new_dm3(def)
 }
@@ -633,8 +682,8 @@ dimnames.zoomed_dm <- function(x) {
   dimnames(get_zoomed_tbl(x))
 }
 
-cdm_reset_all_filters <- function(dm) {
-  def <- cdm_get_def(dm)
+dm_reset_all_filters <- function(dm) {
+  def <- dm_get_def(dm)
   def$filters <- vctrs::list_of(new_filter())
   new_dm3(def)
 }
@@ -645,7 +694,7 @@ all_same_source <- function(tables) {
   is.null(detect(tables[-1], ~ !same_src(., first_table)))
 }
 
-# creates an empty `dm`-object, `src` is defined by implementation of `cdm_get_src()`.
+# creates an empty `dm`-object, `src` is defined by implementation of `dm_get_src()`.
 empty_dm <- function() {
   new_dm3(
     tibble(
@@ -653,7 +702,7 @@ empty_dm <- function() {
       data = list(),
       segment = character(),
       display = character(),
-      pks =vctrs::list_of(new_pk()),
+      pks = vctrs::list_of(new_pk()),
       fks = vctrs::list_of(new_fk()),
       filters = vctrs::list_of(new_filter()),
       zoom = list(),

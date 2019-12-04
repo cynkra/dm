@@ -9,7 +9,7 @@
 #' because only the foreign key column will remain when two tables are joined,
 #' making that column name "unique" as well.
 #'
-#' @inheritParams cdm_add_pk
+#' @inheritParams dm_add_pk
 #' @param sep The character variable that separates the names of the table and the names of the ambiguous columns.
 #' @param quiet Boolean.
 #'   By default, this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
@@ -17,13 +17,13 @@
 #' @return A `dm` whose column names are unambiguous.
 #'
 #' @examples
-#' cdm_disambiguate_cols(cdm_nycflights13())
+#' dm_disambiguate_cols(dm_nycflights13())
 #' @export
-cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
-  cdm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
+dm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
+  dm_disambiguate_cols_impl(dm, tables = NULL, sep = sep, quiet = quiet)
 }
 
-cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
+dm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
   table_colnames <- get_table_colnames(dm, tables)
   recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = sep)
   if (!quiet) explain_col_rename(recipe)
@@ -31,7 +31,7 @@ cdm_disambiguate_cols_impl <- function(dm, tables, sep = ".", quiet = FALSE) {
 }
 
 get_table_colnames <- function(dm, tables = NULL) {
-  def <- cdm_get_def(dm)
+  def <- dm_get_def(dm)
 
   if (!is.null(tables)) {
     def <-
@@ -46,7 +46,7 @@ get_table_colnames <- function(dm, tables = NULL) {
     unnest(column)
 
   pks <-
-    cdm_get_all_pks(dm) %>%
+    dm_get_all_pks(dm) %>%
     rename(column = pk_col)
 
   table_colnames %>%
@@ -66,7 +66,9 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep) {
 }
 
 explain_col_rename <- function(recipe) {
-  if (nrow(recipe) == 0) return()
+  if (nrow(recipe) == 0) {
+    return()
+  }
 
   msg_core <-
     recipe %>%
@@ -83,7 +85,7 @@ explain_col_rename <- function(recipe) {
 col_rename <- function(dm, recipe) {
   reduce2(recipe$table,
     recipe$renames,
-    ~ cdm_rename(..1, !!..2, !!!..3),
+    ~ dm_rename(..1, !!..2, !!!..3),
     .init = dm
   )
 }

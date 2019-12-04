@@ -5,29 +5,29 @@
 \alias{dm_from_src}
 \alias{new_dm}
 \alias{validate_dm}
-\alias{cdm_get_src}
-\alias{cdm_get_con}
-\alias{cdm_get_tables}
-\alias{cdm_get_filter}
+\alias{dm_get_src}
+\alias{dm_get_con}
+\alias{dm_get_tables}
+\alias{dm_get_filter}
 \alias{is_dm}
 \alias{as_dm}
 \title{Data model class}
 \usage{
 dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
 
-dm_from_src(src, table_names = NULL)
+dm_from_src(src = NULL, table_names = NULL)
 
 new_dm(tables = list())
 
 validate_dm(x)
 
-cdm_get_src(x)
+dm_get_src(x)
 
-cdm_get_con(x)
+dm_get_con(x)
 
-cdm_get_tables(x)
+dm_get_tables(x)
 
-cdm_get_filter(x)
+dm_get_filter(x)
 
 is_dm(x)
 
@@ -55,13 +55,13 @@ For \code{dm()}, \code{dm_from_src()}, \code{new_dm()}, \code{as_dm()}: A \code{
 
 For \code{validate_dm()}: Invisibly returns the \code{dm} after finishing all checks
 
-For \code{cdm_get_src()}: the \pkg{dplyr} source for a \code{dm} object
+For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object
 
-For \code{cdm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects
+For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects
 
-For \code{cdm_get_tables()}: A named list with the tables constituing the \code{dm}
+For \code{dm_get_tables()}: A named list with the tables constituing the \code{dm}
 
-For \code{cdm_get_filter()}: A tibble with columns:
+For \code{dm_get_filter()}: A tibble with columns:
 \itemize{
 \item "table": table that was filtered,
 \item "filter": the filter expression,
@@ -91,21 +91,21 @@ use \code{validate_dm()} to double-check the returned object.
 
 \code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
-\code{cdm_get_src()} returns the \pkg{dplyr} source for a \code{dm} object.
+\code{dm_get_src()} returns the \pkg{dplyr} source for a \code{dm} object.
 All tables in a \code{dm} object must be from the same source,
 i.e. either they are all data frames, or they all are stored on the same
 database.
 
-\code{cdm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
+\code{dm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.
 
-\code{cdm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
+\code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
 of a \code{dm} object.
 Filtering expressions are NOT evaluated at this stage.
-To get filtered tables, use \code{tbl.dm()}
+To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters to all tables use \code{dm_apply_filters()}
 
-\code{cdm_get_filter()} returns the filter expressions that have been applied to a \code{dm} object.
+\code{dm_get_filter()} returns the filter expressions that have been applied to a \code{dm} object.
 These filter expressions are not intended for evaluation, only for
 information.
 
@@ -120,30 +120,30 @@ dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 new_dm(list(iris = iris, mtcars = mtcars))
 as_dm(list(iris = iris, mtcars = mtcars))
 
-cdm_nycflights13() \%>\% tbl("airports")
-cdm_nycflights13() \%>\% src_tbls()
-cdm_nycflights13() \%>\% cdm_get_src()
+dm_nycflights13() \%>\% tbl("airports")
+dm_nycflights13() \%>\% src_tbls()
+dm_nycflights13() \%>\% dm_get_src()
 # this works only when tables of `dm` are on DB
-try(cdm_nycflights13() \%>\% cdm_get_con())
-cdm_nycflights13() \%>\% cdm_get_tables()
-cdm_nycflights13() \%>\% cdm_get_filter()
-cdm_nycflights13() \%>\% validate_dm()
-is_dm(cdm_nycflights13())
-cdm_nycflights13()["airports"]
-cdm_nycflights13()[["airports"]]
-cdm_nycflights13()$airports
+try(dm_nycflights13() \%>\% dm_get_con())
+dm_nycflights13() \%>\% dm_get_tables()
+dm_nycflights13() \%>\% dm_get_filter()
+dm_nycflights13() \%>\% validate_dm()
+is_dm(dm_nycflights13())
+dm_nycflights13()["airports"]
+dm_nycflights13()[["airports"]]
+dm_nycflights13()$airports
 }
 \seealso{
 \itemize{
-\item \code{\link[=cdm_add_pk]{cdm_add_pk()}} and \code{\link[=cdm_add_fk]{cdm_add_fk()}} add primary and foreign keys
-\item \code{\link[=cdm_copy_to]{cdm_copy_to()}} and \code{\link[=cdm_learn_from_db]{cdm_learn_from_db()}} for DB interaction
-\item \code{\link[=cdm_draw]{cdm_draw()}} for visualization
-\item \code{\link[=cdm_join_to_tbl]{cdm_join_to_tbl()}} for flattening
-\item \code{\link[=cdm_filter]{cdm_filter()}} for filtering
-\item \code{\link[=cdm_select_tbl]{cdm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
+\item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} add primary and foreign keys
+\item \code{\link[=dm_copy_to]{dm_copy_to()}} and \code{\link[=dm_learn_from_db]{dm_learn_from_db()}} for DB interaction
+\item \code{\link[=dm_draw]{dm_draw()}} for visualization
+\item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
+\item \code{\link[=dm_filter]{dm_filter()}} for filtering
+\item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
 \item \code{\link[=decompose_table]{decompose_table()}} as one example of the table surgery family
 \item \code{\link[=check_key]{check_key()}} and \code{\link[=check_if_subset]{check_if_subset()}} for checking for key properties
 \item \code{\link[=check_cardinality]{check_cardinality()}} for checking the cardinality of the relation between two tables
-\item \code{\link[=cdm_nycflights13]{cdm_nycflights13()}}  for creating an example \code{dm} object
+\item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
 }
 }

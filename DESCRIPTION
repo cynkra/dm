@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational data models
-Version: 0.0.5.9000
-Date: 2019-11-25
+Version: 0.0.5.9002
+Date: 2019-11-30
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -27,6 +27,7 @@ Description: Provides tools for working with multiple related tables,
     Multiple tables (data and metadata) are stored in a compound object,
     which can then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
+Depends: R (>= 3.3)
 Imports:
     backports,
     cli,
@@ -56,7 +57,8 @@ Suggests:
     rprojroot,
     RSQLite,
     testthat (>= 2.1.0),
-    tidyverse
+    tidyverse,
+    withr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

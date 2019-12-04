@@ -14,11 +14,11 @@ systime_convenient <- function() {
 }
 
 # Internal copy helper functions
-build_copy_data <- nse_function(c(dm, dest, table_names, unique_table_names), ~ {
+build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
   source <-
     dm %>%
-    cdm_apply_filters() %>%
-    cdm_get_tables()
+    dm_apply_filters() %>%
+    dm_get_tables()
 
   # Also need table names for local src (?)
   if (!is.null(table_names)) {
@@ -40,11 +40,11 @@ build_copy_data <- nse_function(c(dm, dest, table_names, unique_table_names), ~ 
     dest_con <- con_from_src_or_con(dest)
 
     pks <-
-      cdm_get_all_pks(dm) %>%
+      dm_get_all_pks(dm) %>%
       transmute(source_name = table, column = pk_col, pk = TRUE)
 
     fks <-
-      cdm_get_all_fks(dm) %>%
+      dm_get_all_fks(dm) %>%
       transmute(source_name = child_table, column = child_fk_col, fk = TRUE)
 
     # Need to supply NOT NULL modifiers for primary keys
@@ -88,9 +88,8 @@ build_copy_data <- nse_function(c(dm, dest, table_names, unique_table_names), ~ 
 # Not exported, to give us flexibility to change easily
 copy_list_of_tables_to <- function(dest, copy_data,
                                    ..., overwrite = FALSE, df = NULL, name = NULL, types = NULL) {
-
-  tables <- pmap(copy_data, copy_to, dest = dest, overwrite = overwrite, ...)
-  set_names(tables, copy_data$source_name)
+  #
+  pmap(copy_data, copy_to, dest = dest, overwrite = overwrite, ...)
 }
 
 create_queries <- function(dest, fk_information) {
@@ -140,7 +139,7 @@ get_db_table_names <- function(dm) {
   }
   tibble(
     table_name = src_tbls(dm),
-    remote_name = map_chr(cdm_get_tables(dm), list("ops", "x"))
+    remote_name = map_chr(dm_get_tables(dm), list("ops", "x"))
   )
 }
 
@@ -149,7 +148,7 @@ is_db <- function(x) {
 }
 
 is_src_db <- function(dm) {
-  is_db(cdm_get_src(dm))
+  is_db(dm_get_src(dm))
 }
 
 is_mssql <- function(dest) {

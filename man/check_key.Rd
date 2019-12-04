@@ -10,7 +10,6 @@ check_key(.data, ...)
 \item{.data}{The data frame whose columns should be tested for key properties.}
 
 \item{...}{The names of the columns to be checked.
-If none are specified, then all columns together are tested for the key property.
 
 One or more unquoted expressions separated by commas.
 Variable names can be treated as if they were positions, so you
@@ -29,7 +28,7 @@ Invisibly returns \code{.data}, if the check is passed. Otherwise an error is th
 \description{
 \code{check_key()} accepts a data frame and, optionally, columns.
 It throws an error
-if the specified columns (or all columns, if no columns are specified) are NOT a unique key of the data frame.
+if the specified columns are NOT a unique key of the data frame.
 If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 }
 \examples{
