@@ -27,7 +27,7 @@
 #'
 #' @family table surgery functions
 #'
-#' @return A named list of two:
+#' @return A named list of length two:
 #'   - entry "child_table": the child table with column `new_id_column` referring to the same column in `parent_table`
 #'   - entry "parent_table": the "lookup table" for `child_table`
 #'
