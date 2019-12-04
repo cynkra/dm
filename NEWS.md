@@ -1,3 +1,10 @@
+# dm 0.0.5.9003
+
+- More efficient `check_key()` for databases (#208).
+- Change `cdm_` prefix to `dm_`. The old names are still available (#117).
+- Testing for R >= 3.3 and for debug versions.
+
+
 # dm 0.0.5.9002
 
 - New `cdm_apply_filters_to_tbl()` that applies filters in related tables to a table, similar to `cdm_apply_filters()`; `tbl()`, `$` and `[[` no longer apply filter conditions defined in related tables (#161).
