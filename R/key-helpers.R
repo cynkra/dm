@@ -5,12 +5,12 @@
 #' @inheritParams dm_add_pk
 #'
 #' @return A tibble with 5 columns:
-#'   1. `table`: the table in the `dm`
-#'   1. `kind`: "PK" or "FK"
-#'   1. `column`: a column of the table
-#'   1. `ref_table`: for foreign keys, the referenced table
-#'   1. `is_key`: logical
-#'   1. `problem`: if `is_key = FALSE`, the reason for that
+#'   1. `table`: the table in the `dm`,
+#'   1. `kind`: "PK" or "FK",
+#'   1. `column`: a column of the table,
+#'   1. `ref_table`: for foreign keys, the referenced table,
+#'   1. `is_key`: logical,
+#'   1. `problem`: if `is_key = FALSE`, the reason for that.
 #'
 #' @details For the primary key constraints, it is tested if the values in the respective columns are all unique.
 #' For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column

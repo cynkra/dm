@@ -4,7 +4,7 @@
 #'
 #' @param dm A [`dm`] object.
 #'
-#' @return A named vector with the number of rows for each table
+#' @return A named vector with the number of rows for each table.
 #'
 #' @examples
 #' dm_nycflights13() %>%

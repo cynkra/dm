@@ -46,9 +46,9 @@ universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
 }
 \value{
-For \code{dm_zoom_to_tbl()}: A \code{zoomed_dm} object
+For \code{dm_zoom_to_tbl()}: A \code{zoomed_dm} object.
 
-For \code{dm_insert_zoomed_tbl()}, \code{dm_update_zoomed_tbl()} and \code{dm_zoomed_out()}: A \code{dm} object
+For \code{dm_insert_zoomed_tbl()}, \code{dm_update_zoomed_tbl()} and \code{dm_zoomed_out()}: A \code{dm} object.
 }
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the

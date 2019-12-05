@@ -20,7 +20,7 @@ set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 }
 \value{
-An updated \code{dm} with an additional primary key
+An updated \code{dm} with an additional primary key.
 }
 \description{
 \code{dm_add_pk()} marks the specified column as the primary key of the specified table.

@@ -12,7 +12,7 @@ dm_has_pk(dm, table)
 \item{table}{A table in the \code{dm}.}
 }
 \value{
-A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} otherwise
+A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} otherwise.
 }
 \description{
 \code{dm_has_pk()} checks in the \code{data_model} part

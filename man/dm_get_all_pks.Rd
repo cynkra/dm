@@ -11,8 +11,10 @@ dm_get_all_pks(dm)
 }
 \value{
 A tibble with columns:
-
-"table": table name, "pk_col": column name(s) of primary key
+\itemize{
+\item "table": table name,
+\item "pk_col": column name(s) of primary key.
+}
 }
 \description{
 \code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and

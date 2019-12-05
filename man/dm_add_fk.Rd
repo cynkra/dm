@@ -21,7 +21,7 @@ This table needs to have a primary key set.}
 \code{column} are a subset of the values of the primary key column of \code{ref_table}.}
 }
 \value{
-An updated \code{dm} with an additional foreign key relation
+An updated \code{dm} with an additional foreign key relation.
 }
 \description{
 Add a reference from one table of a \code{\link{dm}} to another

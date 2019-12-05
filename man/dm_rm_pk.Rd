@@ -18,7 +18,7 @@ remove, in addition to the primary key of the \code{table} argument, also all fo
 that are pointing to it.}
 }
 \value{
-An updated \code{dm} without the indicated primary key
+An updated \code{dm} without the indicated primary key.
 }
 \description{
 \code{dm_rm_pk()} removes a potentially set primary key from a table in the

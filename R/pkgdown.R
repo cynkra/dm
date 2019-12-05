@@ -4,7 +4,7 @@
 #'
 #' @keywords internal
 #'
-#' @return Opens the {dm}-website as a side effect
+#' @return Opens the {dm}-website as a side effect.
 #'
 #' @examples
 #' browse_docs()

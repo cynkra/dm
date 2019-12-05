@@ -18,7 +18,7 @@
 #'
 #' @family primary key functions
 #'
-#' @return An updated `dm` with an additional primary key
+#' @return An updated `dm` with an additional primary key.
 #'
 #' @export
 #' @examples
@@ -75,7 +75,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'
 #' @family primary key functions
 #'
-#' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise
+#' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise.
 #'
 #' @examples
 #' library(dplyr)
@@ -97,7 +97,7 @@ dm_has_pk <- function(dm, table) {
 #'
 #' @family primary key functions
 #'
-#' @return A character vector with the column name(s) of the primary key of `table`
+#' @return A character vector with the column name(s) of the primary key of `table`.
 #'
 #' @inheritParams dm_add_pk
 #'
@@ -126,8 +126,8 @@ dm_get_pk <- function(dm, table) {
 #' @inheritParams dm_add_pk
 #'
 #' @return A tibble with columns:
-#'
-#' "table": table name, "pk_col": column name(s) of primary key
+#' - "table": table name,
+#' - "pk_col": column name(s) of primary key.
 #'
 #' @export
 dm_get_all_pks <- nse(function(dm) {
@@ -151,7 +151,7 @@ dm_get_all_pks <- nse(function(dm) {
 #'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
 #'   that are pointing to it.
 #'
-#' @return An updated `dm` without the indicated primary key
+#' @return An updated `dm` without the indicated primary key.
 #'
 #' @examples
 #' library(dplyr)

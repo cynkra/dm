@@ -51,24 +51,24 @@ to be included in the \code{dm} object.}
 \item{x}{An object.}
 }
 \value{
-For \code{dm()}, \code{dm_from_src()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object
+For \code{dm()}, \code{dm_from_src()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
 
-For \code{validate_dm()}: Invisibly returns the \code{dm} after finishing all checks
+For \code{validate_dm()}: Invisibly returns the \code{dm} after finishing all checks.
 
-For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object
+For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object.
 
-For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects
+For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
 
-For \code{dm_get_tables()}: A named list with the tables constituing the \code{dm}
+For \code{dm_get_tables()}: A named list with the tables constituing the \code{dm}.
 
-For \code{dm_get_filter()}: A tibble with columns:
+For \code{dm_get_filter()}: A tibble with columns:.
 \itemize{
 \item "table": table that was filtered,
 \item "filter": the filter expression,
 \item "zoomed": logical, does the filter condition relate to the zoomed table
 }
 
-For \code{is_dm()}: Boolean, is this object a \code{dm}
+For \code{is_dm()}: Boolean, is this object a \code{dm}.
 }
 \description{
 The \code{dm} class holds a list of tables and their relationships.

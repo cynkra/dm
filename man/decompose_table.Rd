@@ -28,8 +28,8 @@ See select helpers for more details, and the examples about tidyselect helpers, 
 \value{
 A named list of length two:
 \itemize{
-\item entry "child_table": the child table with column \code{new_id_column} referring to the same column in \code{parent_table}
-\item entry "parent_table": the "lookup table" for \code{child_table}
+\item entry "child_table": the child table with column \code{new_id_column} referring to the same column in \code{parent_table},
+\item entry "parent_table": the "lookup table" for \code{child_table}.
 }
 }
 \description{

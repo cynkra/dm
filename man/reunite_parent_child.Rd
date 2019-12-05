@@ -20,7 +20,7 @@ reunite_parent_child_from_list(list_of_parent_child_tables, id_column)
 \code{reunite_parent_child()}, but both in a named list (as created by \code{decompose_table()}).}
 }
 \value{
-A wide table produced by joining the two given tables
+A wide table produced by joining the two given tables.
 }
 \description{
 Perform table fusion by combining two tables by a common (key) column, and then removing this column.

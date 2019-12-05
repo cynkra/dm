@@ -14,7 +14,7 @@ dm_paste(dm, select = FALSE, tab_width = 2)
 \item{tab_width}{Indentation width for code from the second line onwards}
 }
 \value{
-Code for producing the given \code{dm}
+Code for producing the given \code{dm}.
 }
 \description{
 \code{dm_paste} takes an existing \code{dm} and produces the code necessary for its creation

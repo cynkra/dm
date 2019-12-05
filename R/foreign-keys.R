@@ -10,7 +10,7 @@
 #'
 #' @family foreign key functions
 #'
-#' @return An updated `dm` with an additional foreign key relation
+#' @return An updated `dm` with an additional foreign key relation.
 #'
 #' @examples
 #' library(dplyr)
@@ -84,7 +84,7 @@ dm_has_fk <- function(dm, table, ref_table) {
 #'
 #' @family foreign key functions
 #'
-#' @return A character vector with the column name(s) of `table`, pointing to the primary key of `ref_table`
+#' @return A character vector with the column name(s) of `table`, pointing to the primary key of `ref_table`.
 #'
 #' @examples
 #' dm_get_fk(dm_nycflights13(), flights, airports)
@@ -104,7 +104,7 @@ dm_get_fk <- function(dm, table, ref_table) {
 #'
 #' @description Get a summary of all foreign key relations in a [`dm`]
 #'
-#' @return A tibble with columns:
+#' @return A tibble with columns:.
 #'
 #' "child_table": child table,
 #' "child_fk_col": foreign key column in child table,
@@ -136,7 +136,7 @@ dm_get_all_fks <- nse(function(dm) {
 #'
 #' @family foreign key functions
 #'
-#' @return An updated `dm` without the given foreign key relation
+#' @return An updated `dm` without the given foreign key relation.
 #'
 #' @examples
 #' dm_rm_fk(

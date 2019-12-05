@@ -10,7 +10,7 @@ dm_nrow(dm)
 \item{dm}{A \code{\link{dm}} object.}
 }
 \value{
-A named vector with the number of rows for each table
+A named vector with the number of rows for each table.
 }
 \description{
 Returns a named vector with the number of rows for each table.

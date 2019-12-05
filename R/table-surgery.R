@@ -28,8 +28,8 @@
 #' @family table surgery functions
 #'
 #' @return A named list of length two:
-#'   - entry "child_table": the child table with column `new_id_column` referring to the same column in `parent_table`
-#'   - entry "parent_table": the "lookup table" for `child_table`
+#'   - entry "child_table": the child table with column `new_id_column` referring to the same column in `parent_table`,
+#'   - entry "parent_table": the "lookup table" for `child_table`.
 #'
 #' @examples
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
@@ -85,7 +85,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 #'
 #' @family table surgery functions
 #'
-#' @return A wide table produced by joining the two given tables
+#' @return A wide table produced by joining the two given tables.
 #'
 #' @examples
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)

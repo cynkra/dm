@@ -16,7 +16,7 @@
 #' @param src A \pkg{dplyr} table source object.
 #' @param table_names A character vector of the names of the tables to include.
 #'
-#' @return For `dm()`, `dm_from_src()`, `new_dm()`, `as_dm()`: A `dm` object
+#' @return For `dm()`, `dm_from_src()`, `new_dm()`, `as_dm()`: A `dm` object.
 #'
 #' @seealso
 #'
@@ -190,7 +190,7 @@ new_key_tracker_zoom <- function() {
 #'
 #' @param x An object.
 #'
-#' @return For `validate_dm()`: Invisibly returns the `dm` after finishing all checks
+#' @return For `validate_dm()`: Invisibly returns the `dm` after finishing all checks.
 #'
 #' @rdname dm
 #' @export
@@ -266,7 +266,7 @@ debug_validate_dm <- function(dm) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_src()`: the \pkg{dplyr} source for a `dm` object
+#' @return For `dm_get_src()`: the \pkg{dplyr} source for a `dm` object.
 #'
 #' @export
 dm_get_src <- function(x) {
@@ -283,7 +283,7 @@ dm_get_src <- function(x) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_con()`: The [`DBI::DBIConnection-class`] for `dm` objects
+#' @return For `dm_get_con()`: The [`DBI::DBIConnection-class`] for `dm` objects.
 #'
 #' @export
 dm_get_con <- function(x) {
@@ -301,7 +301,7 @@ dm_get_con <- function(x) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_tables()`: A named list with the tables constituing the `dm`
+#' @return For `dm_get_tables()`: A named list with the tables constituing the `dm`.
 #'
 #' @export
 dm_get_tables <- function(x) {
@@ -365,7 +365,7 @@ dm_get_data_model_fks <- function(x) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_filter()`: A tibble with columns:
+#' @return For `dm_get_filter()`: A tibble with columns:.
 #'
 #' - "table": table that was filtered,
 #' - "filter": the filter expression,
@@ -401,7 +401,7 @@ dm_get_zoomed_tbl <- function(x) {
 #'
 #' @rdname dm
 #'
-#' @return For `is_dm()`: Boolean, is this object a `dm`
+#' @return For `is_dm()`: Boolean, is this object a `dm`.
 #'
 #' @export
 is_dm <- function(x) {

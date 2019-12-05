@@ -2,7 +2,7 @@
 #'
 #' @description Works like `dbplyr::test_load()`, just for `dm`_objects.
 #'
-#' @return A list of the same `dm` object on different \pkg{dplyr} sources
+#' @return A list of the same `dm` object on different \pkg{dplyr} sources.
 #'
 #' @noRd
 #' @examples

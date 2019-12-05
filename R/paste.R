@@ -14,7 +14,7 @@
 #' Mind, that it is assumed, that the tables of the existing `dm` are available in the global environment under their names
 #' within the `dm`.
 #'
-#' @return Code for producing the given `dm`
+#' @return Code for producing the given `dm`.
 #'
 #' @export
 dm_paste <- function(dm, select = FALSE, tab_width = 2) {

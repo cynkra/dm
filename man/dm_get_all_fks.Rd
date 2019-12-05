@@ -10,7 +10,7 @@ dm_get_all_fks(dm)
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A tibble with columns:
+A tibble with columns:.
 
 "child_table": child table,
 "child_fk_col": foreign key column in child table,
