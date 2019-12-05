@@ -104,11 +104,11 @@ dm_get_fk <- function(dm, table, ref_table) {
 #'
 #' @description Get a summary of all foreign key relations in a [`dm`]
 #'
-#' @return A tibble with columns:.
+#' @return A tibble with columns:
 #'
-#' "child_table": child table,
-#' "child_fk_col": foreign key column in child table,
-#' "parent_table": parent table
+#' - "child_table": child table,
+#' - "child_fk_col": foreign key column in child table,
+#' - "parent_table": parent table.
 #'
 #' @inheritParams dm_has_fk
 #'

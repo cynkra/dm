@@ -365,11 +365,11 @@ dm_get_data_model_fks <- function(x) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_filter()`: A tibble with columns:.
+#' @return For `dm_get_filter()`: A tibble with columns:
 #'
 #' - "table": table that was filtered,
 #' - "filter": the filter expression,
-#' - "zoomed": logical, does the filter condition relate to the zoomed table
+#' - "zoomed": logical, does the filter condition relate to the zoomed table.
 #'
 #' @export
 dm_get_filter <- function(x) {

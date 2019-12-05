@@ -61,11 +61,11 @@ For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnec
 
 For \code{dm_get_tables()}: A named list with the tables constituing the \code{dm}.
 
-For \code{dm_get_filter()}: A tibble with columns:.
+For \code{dm_get_filter()}: A tibble with columns:
 \itemize{
 \item "table": table that was filtered,
 \item "filter": the filter expression,
-\item "zoomed": logical, does the filter condition relate to the zoomed table
+\item "zoomed": logical, does the filter condition relate to the zoomed table.
 }
 
 For \code{is_dm()}: Boolean, is this object a \code{dm}.
