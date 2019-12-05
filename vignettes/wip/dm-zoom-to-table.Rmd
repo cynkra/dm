@@ -194,6 +194,19 @@ joined_flights_dm$flights_plane_type
 dm_draw(joined_flights_dm)
 ```
 
+### Tip: Accessing the zoomed table
+
+At each point you can retrieve the zoomed table by calling `pull_tbl()` on a `zoomed_dm`.
+To use our last example once more:
+
+```{r}
+flights_dm %>% 
+  dm_zoom_to_tbl(flights) %>% 
+  select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% 
+  left_join(planes, select = c(tailnum, plane_type = type)) %>% 
+  pull_tbl()
+```
+
 ### Possible pitfalls and caveats
 
 1. Currently not all of the {dplyr}-verbs have their own method for a `zoomed_dm`, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a `dm` and reinserting a transformed version of theirs into the `dm` eventually.

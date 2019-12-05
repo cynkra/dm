@@ -16,6 +16,7 @@ reference:
   - dm_get_tables
   - dm_get_filter
   - dm_select_tbl
+  - pull_tbl
 
 - title: Primary keys
   contents:
