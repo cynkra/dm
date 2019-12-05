@@ -1,4 +1,4 @@
-# Demo for presentation at Energie 360, November 2019
+# Demo for presentation at BaselR, December 2019
 
 # {dm} facilitates working with multiple tables
 
@@ -179,6 +179,31 @@ dm_flights %>%
   src_tbls()
 
 # NB: [, $, [[ and names() also work
+
+
+
+
+##
+##
+##
+##
+## THREE USE CASES:
+## --------------------------------------------------------------------
+##
+## 1. Work with a prepared dm object
+## 2. Build a data model for your own data
+## 3. Publish a dm to a relational database (and load from it)
+##
+##
+##
+##
+
+
+
+
+
+
+
 
 
 
@@ -612,7 +637,31 @@ try({
 
 
 
-asdf
+
+
+
+##
+##
+##
+##
+## THREE USE CASES:
+## --------------------------------------------------------------------
+##
+## 1. Work with a prepared dm object
+## 2. Build a data model for your own data
+## 3. Publish a dm to a relational database (and load from it)
+##
+##
+##
+##
+
+
+
+
+
+
+
+
 
 
 
