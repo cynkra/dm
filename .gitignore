@@ -5,3 +5,6 @@ inst/doc
 .Rprofile.local
 docs/
 .Rprofile
+dm.Rcheck/
+dm*.tar.gz
+dm*.tgz

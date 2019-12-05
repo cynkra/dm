@@ -1,8 +1,50 @@
-do_package_checks()
+if (ci_has_env("TIC_DEV_VERSIONS")) {
+  get_stage("install") %>%
+    add_step(step_install_github(upgrade = "always", c(
+      "mllg/backports",
+      "r-lib/cli",
+      "r-dbi/DBI",
+      "tidyverse/dplyr",
+      "rstudio/DT",
+      "tidyverse/glue",
+      "igraph/rigraph",
+      "r-lib/lifecycle",
+      "tidyverse/magrittr",
+      "tidyverse/purrr",
+      "r-lib/rlang",
+      "tidyverse/tibble",
+      "tidyverse/tidyr",
+      "r-lib/tidyselect",
+      "r-lib/vctrs",
+      "rich-iannone/DiagrammeR",
+      "rich-iannone/DiagrammeRsvg",
+      "tidyverse/dbplyr",
+      "brodieG/fansi",
+      "yihui/knitr",
+      "hadley/nycflights13",
+      "rstudio/rmarkdown",
+      "r-dbi/RPostgres",
+      "r-lib/rprojroot",
+      "r-dbi/RSQLite",
+      "r-lib/testthat",
+      "tidyverse/tidyverse"
+    )))
+}
 
-get_stage("install") %>%
-  add_step(step_install_github("r-lib/pkgdown"))
+if (ci_has_env("TIC_ONLY_TESTS")) {
+  get_stage("script") %>%
+    add_code_step(devtools::test())
+} else if (ci_has_env("TIC_ONLY_STYLER") && ci_has_env("id_rsa")) {
+  get_stage("install") %>%
+    add_step(step_install_github("r-lib/styler#538"))
+  get_stage("deploy") %>%
+    add_code_step(styler::style_pkg()) %>%
+    add_step(step_setup_ssh()) %>%
+    add_step(step_push_deploy())
+} else {
+  do_package_checks(error_on = if (getRversion() >= "3.4") "note" else "warning")
 
-if (ci_on_travis()) {
-  do_pkgdown()
+  if (ci_has_env("TIC_BUILD_PKGDOWN")) {
+    do_pkgdown()
+  }
 }

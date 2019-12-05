@@ -1,38 +1,46 @@
 #' Select and rename tables
 #'
 #' @description
-#' `cdm_select_tbl()` keeps the selected tables and their relationships,
+#' `dm_select_tbl()` keeps the selected tables and their relationships,
 #' optionally renaming them.
 #'
 #' @return The input `dm` with tables renamed or removed.
 #'
-#' @seealso [cdm_rm_tbl()]
+#' @seealso [dm_rm_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more table names of the tables of the [`dm`] object.
-#'   See [tidyselect::vars_select()] and [tidyselect::vars_rename()]
-#'   for details on the semantics.
+#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_select_tbl(ap = airports)
+#' dm_nycflights13() %>%
+#'   dm_select_tbl(ap = airports, fl = flights)
 #' @export
-cdm_select_tbl <- function(dm, ...) {
+dm_select_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
   vars <- tidyselect_table_names(dm)
-  selected <- tidyselect::vars_select(vars, ...)
-  cdm_select_tbl_impl(dm, selected)
+  selected <- dm_try_tables(tidyselect::vars_select(vars, ...), vars)
+  dm_select_tbl_impl(dm, selected)
 }
 
 #' Change the names of the tables in a `dm`
 #'
 #' @description
-#' `cdm_rename_tbl()` renames tables.
+#' `dm_rename_tbl()` renames tables.
 #'
-#' @rdname cdm_select_tbl
+#' @rdname dm_select_tbl
+#'
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
-cdm_rename_tbl <- function(dm, ...) {
+dm_rename_tbl <- function(dm, ...) {
   vars <- tidyselect_table_names(dm)
-  selected <- tidyselect::vars_rename(vars, ...)
-  cdm_select_tbl_impl(dm, selected)
+  selected <- dm_try_tables(tidyselect::vars_rename(vars, ...), vars)
+  dm_select_tbl_impl(dm, selected)
 }
 
 tidyrename_dm <- function(dm, ...) {
@@ -46,14 +54,16 @@ tidyselect_table_names <- function(dm) {
   )
 }
 
-cdm_select_tbl_impl <- function(dm, selected) {
+dm_select_tbl_impl <- function(dm, selected) {
 
   # Required to avoid an error further on
-  if (is_empty(selected)) return(empty_dm())
+  if (is_empty(selected)) {
+    return(empty_dm())
+  }
   check_correct_input(dm, selected)
 
   def <-
-    cdm_get_def(dm) %>%
+    dm_get_def(dm) %>%
     filter_recode_table_def(selected) %>%
     filter_recode_table_fks(selected)
 
@@ -64,7 +74,8 @@ filter_recode_table_fks <- function(def, selected) {
   def$fks <-
     # as_list_of() is needed so that `fks` doesn't become a normal list
     vctrs::as_list_of(map(
-      def$fks, filter_recode_fks_of_table, selected = selected
+      def$fks, filter_recode_fks_of_table,
+      selected = selected
     ))
   def
 }

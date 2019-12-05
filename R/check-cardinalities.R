@@ -4,8 +4,6 @@
 #' 1. Is `pk_column` is a unique key for `parent_table`?
 #' 1. Is the set of values in `fk_column` of `child_table` a subset of the set of values of `pk_column`?
 #' 1. Does the relation between the two tables of the data model meet the cardinality requirements?
-#`
-#` Please see below for details.
 #'
 #' @details All `check_cardinality` functions accept a `parent table` (data frame), a column name of this table,
 #' a `child table`, and a column name of the child table.
@@ -48,6 +46,9 @@
 #'
 #' @name check_cardinality
 #'
+#' @return Functions return `parent_table`, invisibly, if the check is passed, to support pipes.
+#' Otherwise an error is thrown and the reason for it is explained.
+#'
 #' @export
 #' @examples
 #' d1 <- tibble::tibble(a = 1:5)
@@ -74,7 +75,7 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 
   check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
-  invisible(TRUE)
+  invisible(parent_table)
 }
 
 #' @rdname check_cardinality
@@ -89,7 +90,7 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 
   check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
-  invisible(TRUE)
+  invisible(parent_table)
 }
 
 #' @rdname check_cardinality
@@ -104,14 +105,15 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
-  tryCatch({
-    check_key(!!ct, !!fkc)
-    NULL
-  },
-  error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
+  tryCatch(
+    {
+      check_key(!!ct, !!fkc)
+      NULL
+    },
+    error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
   )
 
-  invisible(TRUE)
+  invisible(parent_table)
 }
 
 #' @rdname check_cardinality
@@ -126,14 +128,15 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
-  tryCatch({
-    check_key(!!ct, !!fkc)
-    NULL
-  },
-  error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
+  tryCatch(
+    {
+      check_key(!!ct, !!fkc)
+      NULL
+    },
+    error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
   )
 
-  invisible(TRUE)
+  invisible(parent_table)
 }
 
 #' @rdname check_cardinality
@@ -150,9 +153,14 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
   max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
 
-  if (min_1 && max_1) return("bijective relationship (child: 1 -> parent: 1)") else
-    if (min_1) return("surjective relationship (child: 1 to n -> parent: 1)") else
-    if (max_1) return("injective relationship ( child: 0 or 1 -> parent: 1)")
-  "no special relationship (child: 0 to n -> parent: 1)"
-
+  if (min_1 && max_1) {
+    return("bijective mapping (child: 1 -> parent: 1)")
+  } else
+  if (min_1) {
+    return("surjective mapping (child: 1 to n -> parent: 1)")
+  } else
+  if (max_1) {
+    return("injective mapping ( child: 0 or 1 -> parent: 1)")
+  }
+  "generic mapping (child: 0 to n -> parent: 1)"
 }

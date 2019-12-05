@@ -14,30 +14,32 @@
 #'   If `TRUE`, a `dm` object with a double reference
 #'   between those tables will be produced.
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will have
-#'   colors assigned to different tables for visualization with `cdm_draw()`
+#'   colors assigned to different tables for visualization with `dm_draw()`
+#'
+#' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
 #' @export
 #' @examples
 #' if (rlang::is_installed("nycflights13")) {
-#'   cdm_nycflights13() %>%
-#'     cdm_draw()
+#'   dm_nycflights13() %>%
+#'     dm_draw()
 #' }
-cdm_nycflights13 <- nse_function(c(cycle = FALSE, color = TRUE), ~ {
+dm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
   dm <-
     dm_from_src(
       src_df("nycflights13")
     ) %>%
-    cdm_add_pk(planes, tailnum) %>%
-    cdm_add_pk(airlines, carrier) %>%
-    cdm_add_pk(airports, faa) %>%
-    cdm_add_fk(flights, tailnum, planes, check = FALSE) %>%
-    cdm_add_fk(flights, carrier, airlines) %>%
-    cdm_add_fk(flights, origin, airports)
+    dm_add_pk(planes, tailnum) %>%
+    dm_add_pk(airlines, carrier) %>%
+    dm_add_pk(airports, faa) %>%
+    dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+    dm_add_fk(flights, carrier, airlines) %>%
+    dm_add_fk(flights, origin, airports)
 
   if (color) {
     dm <-
       dm %>%
-      cdm_set_colors(
+      dm_set_colors(
         flights = "blue",
         airports = ,
         planes = ,
@@ -49,7 +51,7 @@ cdm_nycflights13 <- nse_function(c(cycle = FALSE, color = TRUE), ~ {
   if (cycle) {
     dm <-
       dm %>%
-      cdm_add_fk(flights, dest, airports, check = FALSE)
+      dm_add_fk(flights, dest, airports, check = FALSE)
   }
 
   dm

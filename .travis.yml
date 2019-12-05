@@ -31,12 +31,43 @@ after_script: R -q -e 'tic::after_script()'
 language: r
 sudo: false
 dist: xenial
-cache: packages
+cache:
+- packages
+- .Rcache
 latex: false
+
+#stages: test, full
+stages:
+- name: test
+- name: full
+  if: branch = master
+
+#jobs
+jobs:
+  include:
+  - r: devel
+    env:
+    - TIC_DEV_VERSIONS=TRUE
+    - TIC_ONLY_TESTS=TRUE
+  - r: release
+    env:
+    - TIC_ONLY_STYLER=true
+  - r: 3.3
+  - stage: full
+    os: osx
+  - r: devel
+  - r: release
+    env:
+    - TIC_BUILD_PKGDOWN=true
+  - r: 3.5
+  - r: 3.4
+  fast_finish: true
 
 #env
 env:
   global:
+  - _R_CHECK_FORCE_SUGGESTS_=false
+  - _R_CHECK_SYSTEM_CLOCK_=false
   - MAKEFLAGS="-j 2"
   - _R_CHECK_PACKAGE_DEPENDS_IGNORE_MISSING_ENHANCES_="true"
 

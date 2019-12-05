@@ -55,7 +55,7 @@ filter.zoomed_dm <- function(.data, ...) {
   filtered_tbl <- filter(tbl, !!!filter_quos)
 
   # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
-  # in case of `cdm_insert_zoomed_tbl()` the filter exprs needs to be transferred
+  # in case of `dm_insert_zoomed_tbl()` the filter exprs needs to be transferred
   set_filter_for_table(.data, orig_name_zoomed(.data), map(filter_quos, quo_get_expr), TRUE) %>%
     replace_zoomed_tbl(filtered_tbl)
 }
@@ -135,7 +135,9 @@ distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- get_zoomed_tbl(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
   # when keeping all columns or empty ellipsis (use all columns for distinct) all keys columns remain
-  if (.keep_all || is_empty(enexprs(...))) return(replace_zoomed_tbl(.data, distinct_tbl))
+  if (.keep_all || is_empty(enexprs(...))) {
+    return(replace_zoomed_tbl(.data, distinct_tbl))
+  }
   selected <- tidyselect::vars_select(colnames(tbl), ...)
   new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_keys_zoom)
@@ -159,12 +161,20 @@ slice.dm <- function(.data, ...) {
 #' @export
 slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
   sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
-  orig_pk <- cdm_get_pk(.data, !!orig_name_zoomed(.data))
+  orig_pk <- dm_get_pk(.data, !!orig_name_zoomed(.data))
   tracked_keys <- get_tracked_keys(.data)
-  if (is_null(.keep_pk)) {if (has_length(orig_pk) && orig_pk %in% tracked_keys) message(
-    paste("Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices).",
-          "Set argument `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended.")
-    )} else if (!.keep_pk) {tracked_keys <- discard(tracked_keys, tracked_keys == orig_pk)}
+  if (is_null(.keep_pk)) {
+    if (has_length(orig_pk) && orig_pk %in% tracked_keys) {
+      message(
+        paste(
+          "Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices).",
+          "Set argument `.keep_pk` to `TRUE` or `FALSE` to ensure the behavior you intended."
+        )
+      )
+    }
+  } else if (!.keep_pk) {
+    tracked_keys <- discard(tracked_keys, tracked_keys == orig_pk)
+  }
   replace_zoomed_tbl(.data, sliced_tbl, tracked_keys)
 }
 
@@ -255,7 +265,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
   x_tbl <- get_zoomed_tbl(x)
   x_orig_name <- orig_name_zoomed(x)
-  y_tbl <- cdm_get_tables(x)[[y_name]]
+  y_tbl <- dm_get_tables(x)[[y_name]]
   all_cols_y <- colnames(y_tbl)
 
   if (quo_is_null(select_quo)) {
@@ -294,8 +304,12 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
     explain_col_rename(recipe)
 
-    x_renames <- recipe %>% filter(table == x_disambig_name) %>% pull(renames)
-    y_renames <- recipe %>% filter(table == y_disambig_name) %>% pull(renames)
+    x_renames <- recipe %>%
+      filter(table == x_disambig_name) %>%
+      pull(renames)
+    y_renames <- recipe %>%
+      filter(table == y_disambig_name) %>%
+      pull(renames)
 
     if (has_length(x_renames)) {
       x_tbl <- x_tbl %>% rename(!!!x_renames[[1]])

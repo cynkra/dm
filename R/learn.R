@@ -13,8 +13,27 @@
 #'
 #' @return A [`dm`] object with the tables from the DB and the respective key relations.
 #'
+#' @examples
+#' if (FALSE) {
+#'   library(dplyr)
+#'   src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
+#'   iris_key <- mutate(iris, key = row_number())
+#'
+#'   # setting key constraints currently doesn't work on
+#'   # SQLite but this would be the code to set the PK
+#'   # constraint on the DB
+#'   iris_dm <- dm_copy_to(
+#'     src_sqlite,
+#'     dm(iris = iris_key),
+#'     set_key_constraints = TRUE
+#'   )
+#'
+#'   # and this would be the code to learn
+#'   # the `dm` from the SQLite DB
+#'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
+#' }
 #' @export
-cdm_learn_from_db <- function(dest) {
+dm_learn_from_db <- function(dest) {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
 
   con <- con_from_src_or_con(dest)
@@ -132,9 +151,11 @@ postgres_learn_query <- function() {
   and t.table_type = 'BASE TABLE'"
 }
 
-# FIXME: only needed for `cdm_learn_from_db()` <- needs to be implemented in a different manner
+# FIXME: only needed for `dm_learn_from_db()` <- needs to be implemented in a different manner
 legacy_new_dm <- function(tables, data_model) {
-  if (is_missing(tables) && is_missing(data_model)) return(empty_dm())
+  if (is_missing(tables) && is_missing(data_model)) {
+    return(empty_dm())
+  }
   if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(is.data_model(data_model))
 

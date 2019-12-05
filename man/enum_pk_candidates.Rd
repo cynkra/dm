@@ -2,38 +2,46 @@
 % Please edit documentation in R/primary-keys.R
 \name{enum_pk_candidates}
 \alias{enum_pk_candidates}
-\alias{cdm_enum_pk_candidates}
+\alias{dm_enum_pk_candidates}
 \title{Which columns are candidates for a primary key column?}
 \usage{
 enum_pk_candidates(table)
 
-cdm_enum_pk_candidates(dm, table)
+dm_enum_pk_candidates(dm, table)
 }
 \arguments{
 \item{table}{A table in the \code{dm}.}
 
 \item{dm}{A \code{dm} object.}
 }
+\value{
+A table with columns_
+\itemize{
+\item \code{column} (column of \code{table}),
+\item \code{candidate} (boolean),
+\item \code{why} (if not a candidate for a primary key column, explanation for this).
+}
+}
 \description{
 \code{enum_pk_candidates()} checks for each column of a
 table if the column contains only unique values, and is thus
 a suitable candidate for a primary key of the table.
 
-\code{cdm_enum_pk_candidates()} performs these checks
+\code{dm_enum_pk_candidates()} performs these checks
 for a table in a \link{dm} object.
 }
 \examples{
 nycflights13::flights \%>\% enum_pk_candidates()
 
-cdm_nycflights13() \%>\% cdm_enum_pk_candidates(flights)
-cdm_nycflights13() \%>\% cdm_enum_pk_candidates(airports)
+dm_nycflights13() \%>\% dm_enum_pk_candidates(flights)
+dm_nycflights13() \%>\% dm_enum_pk_candidates(airports)
 }
 \seealso{
 Other primary key functions: 
-\code{\link{cdm_add_pk}()},
-\code{\link{cdm_get_all_pks}()},
-\code{\link{cdm_get_pk}()},
-\code{\link{cdm_has_pk}()},
-\code{\link{cdm_rm_pk}()}
+\code{\link{dm_add_pk}()},
+\code{\link{dm_get_all_pks}()},
+\code{\link{dm_get_pk}()},
+\code{\link{dm_has_pk}()},
+\code{\link{dm_rm_pk}()}
 }
 \concept{primary key functions}

@@ -1,6 +1,6 @@
 #' Draw a diagram of a [`dm`]-object's data model
 #'
-#' `cdm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
+#' `dm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'
 #' @param dm A [`dm`] object.
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
@@ -17,21 +17,26 @@
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
 #' @export
 #'
+#' @return For `dm_draw()`: returns an object of class `grViz` (see also [DiagrammeR::grViz()]), which,
+#' when printed, produces the output seen in the viewer as a side effect.
+#'
 #' @examples
 #' library(dplyr)
-#' cdm_draw(cdm_nycflights13())
-#' cdm_draw(cdm_nycflights13(cycle = TRUE))
-cdm_draw <- function(dm,
-                     rankdir = "LR",
-                     col_attr = "column",
-                     view_type = "keys_only",
-                     columnArrows = TRUE,
-                     graph_attrs = "",
-                     node_attrs = "",
-                     edge_attrs = "",
-                     focus = NULL,
-                     graph_name = "Data Model") {
-
+#' dm_draw(dm_nycflights13())
+#' dm_draw(dm_nycflights13(cycle = TRUE))
+#' dm_get_available_colors()
+#' dm_get_colors(dm_nycflights13())
+dm_draw <- function(dm,
+                    rankdir = "LR",
+                    col_attr = "column",
+                    view_type = "keys_only",
+                    columnArrows = TRUE,
+                    graph_attrs = "",
+                    node_attrs = "",
+                    edge_attrs = "",
+                    focus = NULL,
+                    graph_name = "Data Model") {
+  #
   check_dm(dm)
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
@@ -41,7 +46,7 @@ cdm_draw <- function(dm,
   # should have some schemes available for the user to choose from
   if (is_null(getOption("datamodelr.scheme"))) bdm_set_color_scheme(bdm_color_scheme)
 
-  data_model <- cdm_get_data_model(dm)
+  data_model <- dm_get_data_model(dm)
 
   graph <- bdm_create_graph(
     data_model,
@@ -60,12 +65,12 @@ cdm_draw <- function(dm,
 
 #' Get data_model
 #'
-#' `cdm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
+#' `dm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
 #' data model object for drawing.
 #'
 #' @noRd
-cdm_get_data_model <- function(x) {
-  def <- cdm_get_def(x)
+dm_get_data_model <- function(x) {
+  def <- dm_get_def(x)
 
   tables <- data.frame(
     table = def$table,
@@ -74,18 +79,18 @@ cdm_get_data_model <- function(x) {
     stringsAsFactors = FALSE
   )
 
-  references_for_columns <- cdm_get_data_model_fks(x)
+  references_for_columns <- dm_get_data_model_fks(x)
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys <-
-    cdm_get_data_model_pks(x) %>%
+    dm_get_data_model_pks(x) %>%
     mutate(key = 1L)
 
   columns <-
-    cdm_get_all_columns(x) %>%
+    dm_get_all_columns(x) %>%
     # Hack: datamodelr requires `type` column
     mutate(type = "integer") %>%
     left_join(keys, by = c("table", "column")) %>%
@@ -101,50 +106,50 @@ cdm_get_data_model <- function(x) {
   )
 }
 
-cdm_get_all_columns <- function(x) {
-  cdm_get_tables(x) %>%
+dm_get_all_columns <- function(x) {
+  dm_get_tables(x) %>%
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
     unnest(value)
 }
 
-#' cdm_set_colors()
+#' dm_set_colors()
 #'
-#' `cdm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
+#' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
 #'
 #' @param ... Colors to set in the form `table = "<color>"` .
 #'   Fall-through syntax similarly to
 #'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
 #'   and `table2` .
 #'   This argument supports splicing.
-#' @return For `cdm_set_colors()`: the updated data model.
+#' @return For `dm_set_colors()`: the updated data model.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @examples
-#' cdm_nycflights13(color = FALSE) %>%
-#'   cdm_set_colors(
+#' dm_nycflights13(color = FALSE) %>%
+#'   dm_set_colors(
 #'     airports = ,
 #'     airlines = ,
 #'     planes = "yellow",
 #'     weather = "dark_blue"
 #'   ) %>%
-#'   cdm_draw()
+#'   dm_draw()
 #'
 #' # Splicing is supported:
 #' new_colors <- c(
 #'   airports = "yellow", airlines = "yellow", planes = "yellow",
 #'   weather = "dark_blue"
 #' )
-#' cdm_nycflights13(color = FALSE) %>%
-#'   cdm_set_colors(!!!new_colors) %>%
-#'   cdm_draw()
+#' dm_nycflights13(color = FALSE) %>%
+#'   dm_set_colors(!!!new_colors) %>%
+#'   dm_draw()
 #' @export
-cdm_set_colors <- function(dm, ...) {
+dm_set_colors <- function(dm, ...) {
   display_df <- color_quos_to_display(...)
 
   def <-
-    cdm_get_def(dm) %>%
+    dm_get_def(dm) %>%
     left_join(display_df, by = "table") %>%
     mutate(display = coalesce(new_display, display)) %>%
     select(-new_display)
@@ -172,7 +177,7 @@ color_quos_to_display <- function(...) {
   tibble(table = names(quos), new_display = new_values[idx])
 }
 
-cdm_set_colors2 <- function(dm, ...) {
+dm_set_colors2 <- function(dm, ...) {
   avail_tables <- src_tbls(dm)
   selected_tables <- tidyselect::vars_select(avail_tables, ...) %>%
     # names will get integer suffixes if duplicated ("blue1", "blue2", ...)
@@ -187,7 +192,7 @@ cdm_set_colors2 <- function(dm, ...) {
     new_display = colors$datamodelr[match(sel_colors, colors$dm)])
 
   def <-
-    cdm_get_def(dm) %>%
+    dm_get_def(dm) %>%
     left_join(display_df, by = "table") %>%
     mutate(display = coalesce(new_display, display)) %>%
     select(-new_display)
@@ -195,34 +200,34 @@ cdm_set_colors2 <- function(dm, ...) {
   new_dm3(def)
 }
 
-#' cdm_get_colors()
+#' dm_get_colors()
 #'
-#' `cdm_get_colors()` returns the colors defined for a data model.
+#' `dm_get_colors()` returns the colors defined for a data model.
 #'
-#' @return For `cdm_get_colors()`, a two-column tibble with one row per table.
+#' @return For `dm_get_colors()`, a two-column tibble with one row per table.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @export
-cdm_get_colors <- nse_function(c(dm), ~ {
-  cdm_get_def(dm) %>%
+dm_get_colors <- nse(function(dm) {
+  dm_get_def(dm) %>%
     select(table, display) %>%
     as_tibble() %>%
     mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
     select(-display)
 })
 
-#' cdm_get_available_colors()
+#' dm_get_available_colors()
 #'
-#' `cdm_get_available_colors()` returns an overview of the available colors and their names
+#' `dm_get_available_colors()` returns an overview of the available colors and their names
 #' as a tibble.
 
 #'
-#' @return For `cdm_get_available_colors()`, a tibble with the color in the first
+#' @return For `dm_get_available_colors()`, a tibble with the color in the first
 #'   column and auxiliary information in other columns.
 #'
-#' @rdname cdm_draw
+#' @rdname dm_draw
 #' @export
-cdm_get_available_colors <- function() {
+dm_get_available_colors <- function() {
   colors
 }
 

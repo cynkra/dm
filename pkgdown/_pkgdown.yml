@@ -11,55 +11,57 @@ reference:
   - new_dm
   - is_dm
   - as_dm
-  - cdm_get_src
-  - cdm_get_tables
-  - cdm_get_filter
-  - cdm_select_tbl
+  - dm_get_src
+  - dm_get_con
+  - dm_get_tables
+  - dm_get_filter
+  - dm_select_tbl
+  - pull_tbl
 
 - title: Primary keys
   contents:
-  - cdm_add_pk
-  - cdm_has_pk
-  - cdm_get_pk
-  - cdm_get_all_pks
-  - cdm_rm_pk
-  - cdm_enum_pk_candidates
+  - dm_add_pk
+  - dm_has_pk
+  - dm_get_pk
+  - dm_get_all_pks
+  - dm_rm_pk
+  - dm_enum_pk_candidates
 
 - title: Foreign keys
   contents:
-  - cdm_add_fk
-  - cdm_has_fk
-  - cdm_get_fk
-  - cdm_get_all_fks
-  - cdm_rm_fk
-  - cdm_enum_fk_candidates
+  - dm_add_fk
+  - dm_has_fk
+  - dm_get_fk
+  - dm_get_all_fks
+  - dm_rm_fk
+  - dm_enum_fk_candidates
 
 - title: Visualization
   contents:
-  - cdm_draw
-  - cdm_set_colors
-  - cdm_get_colors
-  - cdm_get_available_colors
+  - dm_draw
+  - dm_set_colors
+  - dm_get_colors
+  - dm_get_available_colors
 
 - title: Flattening
   contents:
-  - cdm_flatten_to_tbl
-  - cdm_join_to_tbl
+  - dm_flatten_to_tbl
+  - dm_join_to_tbl
 
 - title: Filtering
   contents:
-  - cdm_filter
-  - cdm_apply_filters
+  - dm_filter
+  - dm_apply_filters
 
 - title: Interaction with DBs
   contents:
-  - cdm_copy_to
-  - cdm_learn_from_db
+  - dm_copy_to
+  - dm_learn_from_db
 
 - title: Utilizing foreign key relations
   contents:
-  - cdm_is_referenced
-  - cdm_get_referencing_tables
+  - dm_is_referenced
+  - dm_get_referencing_tables
 
 - title: Table surgery
   contents:
@@ -80,8 +82,8 @@ reference:
 
 - title: Miscellaneous
   contents:
-  - cdm_nycflights13
-  - cdm_nrow
+  - dm_nycflights13
+  - dm_nrow
 
 navbar:
   title: ~

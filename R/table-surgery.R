@@ -27,58 +27,42 @@
 #'
 #' @family table surgery functions
 #'
-#' @examples
-#' library(magrittr)
+#' @return A named list of length two:
+#'   - entry "child_table": the child table with column `new_id_column` referring to the same column in `parent_table`,
+#'   - entry "parent_table": the "lookup table" for `child_table`.
 #'
+#' @examples
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
 #' decomposed_table$child_table
 #' decomposed_table$parent_table
 #' @export
 decompose_table <- function(.data, new_id_column, ...) {
-  .data_q <- enquo(.data)
-  cols_q <- ensyms(...)
+  table_name <- deparse(substitute(.data))
+  avail_cols <- colnames(.data)
   id_col_q <- ensym(new_id_column)
 
-  cols_chr <-
-    cols_q %>%
-    map_chr(~ as_name(.))
-
-  table_name <- as_label(.data_q)
-
-  if (as_label(id_col_q) %in% colnames(eval_tidy(.data_q))) {
+  if (as_string(id_col_q) %in% avail_cols) {
     abort_dupl_new_id_col_name(table_name)
   }
-  if (!(length(cols_q))) abort(paste0("Columns of ", table_name, " need to be specified in ellipsis"))
-  if (!all(cols_q %in% colnames(eval_tidy(.data_q)))) {
-    abort_wrong_col_names(as_label(.data_q), colnames(eval_tidy(.data_q)), cols_chr)
-  }
 
-  if (length(cols_q) >= length(colnames(eval_tidy(.data_q)))) abort_too_many_cols(table_name)
+  sel_vars <- tidyselect::vars_select(avail_cols, ...)
 
   parent_table <-
-    select(eval_tidy(.data_q), !!!cols_q) %>%
+    select(.data, !!!sel_vars) %>%
     distinct() %>%
     # Without as.integer(), RPostgres creates integer64 column (#15)
-    arrange(!!!cols_q) %>%
+    arrange(!!!syms(names(sel_vars))) %>%
     mutate(!!id_col_q := as.integer(row_number())) %>%
     select(!!id_col_q, everything())
 
-  cols_chr <-
-    cols_q %>%
-    map_chr(~ paste(.))
-
-  names_data <-
-    eval_tidy(.data_q) %>%
-    colnames()
-
   non_key_names <-
-    setdiff(names_data, cols_chr)
+    setdiff(avail_cols, sel_vars)
 
   child_table <-
-    eval_tidy(.data_q) %>%
+    .data %>%
     left_join(
       parent_table,
-      by = cols_chr
+      by = prep_recode(sel_vars)
     ) %>%
     select(non_key_names, !!id_col_q)
   # FIXME: Think about a good place for the target column,
@@ -101,6 +85,15 @@ decompose_table <- function(.data, new_id_column, ...) {
 #'
 #' @family table surgery functions
 #'
+#' @return A wide table produced by joining the two given tables.
+#'
+#' @examples
+#' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
+#' ct <- decomposed_table$child_table
+#' pt <- decomposed_table$parent_table
+#'
+#' reunite_parent_child(ct, pt, new_id)
+#' reunite_parent_child_from_list(decomposed_table, new_id)
 #' @name reunite_parent_child
 #' @export
 reunite_parent_child <- function(child_table, parent_table, id_column) {

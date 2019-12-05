@@ -2,19 +2,18 @@
 
 # error class generator ---------------------------------------------------
 
-cdm_error <- function(x) {
+dm_error <- function(x) {
   paste0("dm_error_", x)
 }
 
-cdm_error_full <- function(x) {
-  c(cdm_error(x), "dm_error")
+dm_error_full <- function(x) {
+  c(dm_error(x), "dm_error")
 }
-
 
 # abort and text for primary key handling errors --------------------------
 
 abort_wrong_col_args <- function() {
-  abort(error_txt_wrong_col_args(), .subclass = cdm_error_full("wrong_cols_args"))
+  abort(error_txt_wrong_col_args(), .subclass = dm_error_full("wrong_cols_args"))
 }
 
 error_txt_wrong_col_args <- function() {
@@ -22,122 +21,100 @@ error_txt_wrong_col_args <- function() {
 }
 
 abort_key_set_force_false <- function() {
-  abort(error_txt_key_set_force_false(), .subclass = cdm_error_full("key_set_force_false"))
+  abort(error_txt_key_set_force_false(), .subclass = dm_error_full("key_set_force_false"))
 }
 
 error_txt_key_set_force_false <- function() {
   "If you want to change the existing primary key for a table, set `force` == TRUE."
 }
 
-
 # abort and text for key-helper functions ---------------------------------
 
 abort_not_unique_key <- function(table_name, column_names) {
-  abort(error_txt_not_unique_key(table_name, column_names), .subclass = cdm_error_full("not_unique_key"))
+  abort(error_txt_not_unique_key(table_name, column_names), .subclass = dm_error_full("not_unique_key"))
 }
 
 error_txt_not_unique_key <- function(table_name, column_names) {
-  paste0(
-    "`",
-    paste(column_names, collapse = ", "),
-    "` not a unique key of `",
-    table_name, "`."
-  )
+  glue("({commas(tick(column_names))}) not a unique key of {tick(table_name)}.")
 }
-
 
 # general error: table not part of `dm` -----------------------------------
 
-
-abort_table_not_in_dm <- function(table_name, dm) {
-  abort(error_txt_table_not_in_dm(table_name, dm), .subclass = cdm_error_full("table_not_in_dm"))
+abort_table_not_in_dm <- function(table_name, dm_tables) {
+  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = dm_error_full("table_not_in_dm"))
 }
 
-error_txt_table_not_in_dm <- function(table_name, dm) {
-  paste0(
-    "Tables ",
-    commas(tick(table_name)),
-    " not in `dm` object. Available table names: ",
-    commas(tick(src_tbls(dm)))
-  )
+error_txt_table_not_in_dm <- function(table_name, dm_tables) {
+  glue("Tables {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}")
 }
-
 
 # error: is not subset of -------------------------------------------------
 
 abort_not_subset_of <- function(table_name_1, colname_1,
                                 table_name_2, colname_2) {
   abort(error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
-    .subclass = cdm_error_full("not_subset_of")
+    .subclass = dm_error_full("not_subset_of")
   )
 }
 
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
-  glue("Column `{colname_1}` in table `{table_name_1}` ",
-       "contains values (see above) that are not present in ",
-       "column `{colname_2}`  in table `{table_name_2}`")
+  glue(
+    "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see above) that are not present in column ",
+    "{tick(colname_2)} of table {tick(table_name_2)}"
+  )
 }
-
 
 # error sets not equal ----------------------------------------------------
 
 abort_sets_not_equal <- function(error_msgs) {
-  abort(error_txt_sets_not_equal(error_msgs), .subclass = cdm_error_full("sets_not_equal"))
+  abort(error_txt_sets_not_equal(error_msgs), .subclass = dm_error_full("sets_not_equal"))
 }
 
 error_txt_sets_not_equal <- function(error_msgs) {
   paste0(error_msgs, collapse = "\n  ")
 }
 
-
 # cardinality check errors ------------------------------------------------
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
   abort(error_txt_not_bijective(child_table_name, fk_col_name),
-    .subclass = cdm_error_full("not_bijective")
+    .subclass = dm_error_full("not_bijective")
   )
 }
 
 error_txt_not_bijective <- function(child_table_name, fk_col_name) {
-  paste0(
-    "1..1 cardinality (bijectivity) is not given: Column `",
-    fk_col_name,
-    "` in table `",
-    child_table_name,
-    "` contains duplicate values."
+  glue(
+    "1..1 cardinality (bijectivity) is not given: Column {tick(fk_col_name)} in table ",
+    "{tick(child_table_name)} contains duplicate values."
   )
 }
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
   abort(error_txt_not_injective(child_table_name, fk_col_name),
-    .subclass = cdm_error_full("not_injective")
+    .subclass = dm_error_full("not_injective")
   )
 }
 
 error_txt_not_injective <- function(child_table_name, fk_col_name) {
-  paste0(
-    "0..1 cardinality (injectivity from child table to parent table) is not given: Column `",
-    fk_col_name,
-    "` in table `",
-    child_table_name,
-    "` contains duplicate values."
+  glue(
+    "0..1 cardinality (injectivity from child table to parent table) is not given: Column {tick(fk_col_name)}",
+    " in table {tick(child_table_name)} contains duplicate values."
   )
 }
-
 
 # errors in fk handling --------------------------------------------------
 
 abort_ref_tbl_has_no_pk <- function(ref_table_name) {
   abort(error_txt_ref_tbl_has_no_pk(ref_table_name),
-    .subclass = cdm_error_full("ref_tbl_has_no_pk")
+    .subclass = dm_error_full("ref_tbl_has_no_pk")
   )
 }
 
 error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
-  paste0(
-    "ref_table ", tick(ref_table_name), " needs a primary key first. ",
-    "Use `cdm_enum_pk_candidates()` to find candidates, and `cdm_add_pk()` define a primary key."
+  glue(
+    "ref_table {tick(ref_table_name)} needs a primary key first. ",
+    "Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key."
   )
 }
 
@@ -147,37 +124,31 @@ abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
     error_txt_is_not_fk(
       child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
     ),
-    .subclass = cdm_error_full("is_not_fkc")
+    .subclass = dm_error_full("is_not_fkc")
   )
 }
 
 error_txt_is_not_fk <- function(child_table_name, wrong_fk_colnames,
                                 parent_table_name, actual_fk_colnames) {
-  paste0(
-    "The given combination of columns ",
-    paste0(tick(wrong_fk_colnames), collapse = ", "), " ",
-    "is not a foreign key of table ",
-    tick(child_table_name), " ",
-    "with regards to ref_table ",
-    tick(parent_table_name), ". ",
-    "Foreign key columns are: ",
-    commas(tick(actual_fk_colnames)), "."
+  glue(
+    "The given combination of columns ({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
+    "{tick(child_table_name)} with regards to ref_table {tick(parent_table_name)}. ",
+    "Foreign key columns are: ({commas(tick(actual_fk_colnames))})."
   )
 }
 
 abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = cdm_error_full("rm_fk_col_missing"))
+  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
 }
 
 error_txt_rm_fk_col_missing <- function() {
   "Parameter `column` has to be set. Pass `NULL` for removing all references."
 }
 
-
 # error helpers for draw_dm -----------------------------------------------
 
 abort_last_col_missing <- function() {
-  abort(error_txt_last_col_missing(), .subclass = cdm_error_full("last_col_missing"))
+  abort(error_txt_last_col_missing(), .subclass = dm_error_full("last_col_missing"))
 }
 
 error_txt_last_col_missing <- function() {
@@ -185,7 +156,7 @@ error_txt_last_col_missing <- function() {
 }
 
 abort_wrong_color <- function(avail_color_names) {
-  abort(error_txt_wrong_color(avail_color_names), .subclass = cdm_error_full("wrong_color"))
+  abort(error_txt_wrong_color(avail_color_names), .subclass = dm_error_full("wrong_color"))
 }
 
 error_txt_wrong_color <- function(avail_color_names) {
@@ -199,7 +170,7 @@ error_txt_wrong_color <- function(avail_color_names) {
 # errors in graph-functions -----------------------------------------------
 
 abort_no_cycles <- function() {
-  abort(error_txt_no_cycles(), .subclass = cdm_error_full("no_cycles"))
+  abort(error_txt_no_cycles(), .subclass = dm_error_full("no_cycles"))
 }
 
 error_txt_no_cycles <- function() {
@@ -207,13 +178,13 @@ error_txt_no_cycles <- function() {
 }
 
 
-# error in cdm_flatten_to_tbl() ----------------------------------------------
+# error in dm_flatten_to_tbl() ----------------------------------------------
 
 abort_tables_not_reachable_from_start <- function() {
-  abort(error_txt_tables_not_reachable_from_start(), .subclass = cdm_error_full("tables_not_reachable_from_start"))
+  abort(error_txt_tables_not_reachable_from_start(), .subclass = dm_error_full("tables_not_reachable_from_start"))
 }
 
-error_txt_tables_not_reachable_from_start <- function(fun_name, param) {
+error_txt_tables_not_reachable_from_start <- function() {
   glue("All selected tables must be reachable from `start`.")
 }
 
@@ -223,7 +194,7 @@ error_txt_tables_not_reachable_from_start <- function(fun_name, param) {
 
 abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   abort(error_txt_wrong_col_names(table_name, actual_colnames, wrong_colnames),
-    .subclass = cdm_error_full("wrong_col_names")
+    .subclass = dm_error_full("wrong_col_names")
   )
 }
 
@@ -247,136 +218,132 @@ error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colname
 
 
 abort_dupl_new_id_col_name <- function(table_name) {
-  abort(error_txt_dupl_new_id_col_name(table_name), .subclass = cdm_error_full("dupl_new_id_col_name"))
+  abort(error_txt_dupl_new_id_col_name(table_name), .subclass = dm_error_full("dupl_new_id_col_name"))
 }
 
 error_txt_dupl_new_id_col_name <- function(table_name) {
   paste0("`new_id_column` can not have an identical name as one of the columns of `", table_name, "`.")
 }
 
-abort_too_many_cols <- function(table_name) {
-  abort(error_txt_too_many_cols(table_name), .subclass = cdm_error_full("too_many_cols"))
-}
-
-error_txt_too_many_cols <- function(table_name) {
-  paste0("Number of columns to be extracted has to be less than total number of columns of ", table_name)
-}
-
 abort_no_overwrite <- function() {
-  abort(error_txt_no_overwrite(), .subclass = cdm_error_full("no_overwrite"))
+  fun_name <- as_string(sys.call(-1)[[1]])
+  abort(error_txt_no_overwrite(fun_name), .subclass = dm_error_full("no_overwrite"))
 }
 
-error_txt_no_overwrite <- function() {
-  paste0("`cdm_copy_to()` does not support the `overwrite` argument.")
+error_txt_no_overwrite <- function(fun_name) {
+  glue("`{fun_name}()` does not support the `overwrite` argument.")
 }
 
 abort_no_types <- function() {
-  abort(error_txt_no_types(), .subclass = cdm_error_full("no_types"))
+  abort(error_txt_no_types(), .subclass = dm_error_full("no_types"))
 }
 
 error_txt_no_types <- function() {
-  paste0("`cdm_copy_to()` does not support the `types` argument.")
+  paste0("`dm_copy_to()` does not support the `types` argument.")
 }
 
 abort_no_indexes <- function() {
-  abort(error_txt_no_indexes(), .subclass = cdm_error_full("no_indexes"))
+  abort(error_txt_no_indexes(), .subclass = dm_error_full("no_indexes"))
 }
 
 error_txt_no_indexes <- function() {
-  paste0("`cdm_copy_to()` does not support the `indexes` argument.")
+  paste0("`dm_copy_to()` does not support the `indexes` argument.")
 }
 
 abort_no_unique_indexes <- function() {
-  abort(error_txt_no_unique_indexes(), .subclass = cdm_error_full("no_unique_indexes"))
+  abort(error_txt_no_unique_indexes(), .subclass = dm_error_full("no_unique_indexes"))
 }
 
 error_txt_no_unique_indexes <- function() {
-  paste0("`cdm_copy_to()` does not support the `unique_indexes` argument.")
+  paste0("`dm_copy_to()` does not support the `unique_indexes` argument.")
 }
 
-abort_need_named_vec <- function(dm) {
-  abort(error_txt_need_named_vec(dm), .subclass = cdm_error_full("need_named_vec"))
+abort_need_named_vec <- function(table_names) {
+  abort(error_txt_need_named_vec(table_names), .subclass = dm_error_full("need_named_vec"))
 }
 
-error_txt_need_named_vec <- function(dm) {
-  paste0("Parameter `table_names` in `cdm_copy_to()` needs to be a named vector, the names ",
-    "must be from the original table names returned by `src_tbls()`: ",
-    commas(tick(src_tbls(dm)))
+error_txt_need_named_vec <- function(table_names) {
+  paste0(
+    "Parameter `table_names` in `dm_copy_to()` needs to be a named vector whose names ",
+    "are the original table names (returned by e.g. `src_tbls()`): ",
+    commas(tick(table_names))
   )
 }
 
 abort_src_not_db <- function() {
-  abort(error_src_not_db(), .subclass = cdm_error_full("src_not_db"))
+  abort(error_src_not_db(), .subclass = dm_error_full("src_not_db"))
 }
 
 error_src_not_db <- function() {
-  paste0("This does not work if `cdm_get_src(dm)` is not on a database.")
+  paste0("This does not work if the tables of the `dm` are not on a database.")
 }
 
-abort_first_rm_fks <- function(table, fks) {
-  abort(error_first_rm_fks(table, fks), .subclass = cdm_error_full("first_rm_fks"))
+abort_first_rm_fks <- function(table, fk_tables) {
+  abort(error_first_rm_fks(table, fk_tables), .subclass = dm_error_full("first_rm_fks"))
 }
 
-error_first_rm_fks <- function(table, fks) {
-  glue("There are foreign keys pointing from table(s) {commas(tick(fks))} to table {tick(table)}. First remove those or set `rm_referencing_fks = TRUE`.")
+error_first_rm_fks <- function(table, fk_tables) {
+  glue(
+    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
+    "First remove those or set `rm_referencing_fks = TRUE`."
+  )
 }
-
 
 abort_no_src_or_con <- function() {
-  abort(error_no_src_or_con(), .subclass = cdm_error_full("no_src_or_con"))
+  abort(error_no_src_or_con(), .subclass = dm_error_full("no_src_or_con"))
 }
 
 error_no_src_or_con <- function() {
-  paste0('`src` needs to be a "src" or a "con" object.')
+  "Argument `src` needs to be a `src` or a `con` object."
 }
 
-
 abort_update_not_supported <- function() {
-  abort(error_update_not_supported(), .subclass = cdm_error_full("update_not_supported"))
+  abort(error_update_not_supported(), .subclass = dm_error_full("update_not_supported"))
 }
 
 error_update_not_supported <- function() {
-  paste0('Updating "dm" objects not supported.')
+  paste0("Updating `dm` objects not supported.")
 }
 
 # errors when filters are set but they shouldn't be ------------------------------
 
 abort_only_possible_wo_filters <- function(fun_name) {
-  abort(error_only_possible_wo_filters(fun_name), .subclass = cdm_error_full("only_possible_wo_filters"))
+  abort(error_only_possible_wo_filters(fun_name), .subclass = dm_error_full("only_possible_wo_filters"))
 }
 
 error_only_possible_wo_filters <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on a `dm` with filter conditions. Consider using `cdm_apply_filters()` first.")
+  glue("You cannot call `{fun_name}()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.")
 }
-
 
 # no foreign key relation -------------------------------------------------
 
 abort_tables_not_neighbours <- function(t1_name, t2_name) {
-  abort(error_tables_not_neighbours(t1_name, t2_name), .subclass = cdm_error_full("tables_not_neighbours"))
+  abort(error_tables_not_neighbours(t1_name, t2_name), .subclass = dm_error_full("tables_not_neighbours"))
 }
 
 error_tables_not_neighbours <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
-# `cdm_flatten_to_tbl()` and `cdm_join_to_tbl()` only supported for parents
+# `dm_flatten_to_tbl()` and `dm_join_to_tbl()` only supported for parents
 
 abort_only_parents <- function() {
-  abort(error_only_parents(), .subclass = cdm_error_full("only_parents"))
+  abort(error_only_parents(), .subclass = dm_error_full("only_parents"))
 }
 
 error_only_parents <- function() {
-  paste0("When using `cdm_join_to_tbl()` or `cdm_flatten_to_tbl()` all join partners of table `start` ",
-         "have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
-         "use `cdm_squash_to_tbl()` as an alternative.")
+  paste0(
+    "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` ",
+    "have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
+    "use `dm_squash_to_tbl()` as an alternative."
+  )
 }
 
 # not all tables have the same src ----------------------------------------
 
 
 abort_not_same_src <- function() {
-  abort(error_not_same_src(), .subclass = cdm_error_full("not_same_src"))
+  abort(error_not_same_src(), .subclass = dm_error_full("not_same_src"))
 }
 
 error_not_same_src <- function() {
@@ -386,71 +353,52 @@ error_not_same_src <- function() {
 # Something other than tables are put in a `dm` ------------------
 
 abort_what_a_weird_object <- function(class) {
-  abort(error_what_a_weird_object(class), .subclass = cdm_error_full("what_a_weird_object"))
+  abort(error_what_a_weird_object(class), .subclass = dm_error_full("what_a_weird_object"))
 }
 
 error_what_a_weird_object <- function(class) {
-  paste0("Don't know how to determine table source for object of class ",
-         class)
-}
-
-# not all tables have the same src ----------------------------------------
-
-
-abort_not_same_src <- function() {
-  abort(error_not_same_src(), .subclass = cdm_error_full("not_same_src"))
-}
-
-error_not_same_src <- function() {
-  "Not all tables in the object share the same `src`"
-}
-
-# Something other than tables are put in a `dm` ------------------
-
-abort_what_a_weird_object <- function(class) {
-  abort(error_what_a_weird_object(class), .subclass = cdm_error_full("what_a_weird_object"))
-}
-
-error_what_a_weird_object <- function(class) {
-  paste0("Don't know how to determine table source for object of class ",
-         class)
+  glue("Don't know how to determine table source for object of class {commas(tick(class))}")
 }
 
 abort_squash_limited <- function() {
-  abort(error_squash_limited(), .subclass = cdm_error_full("squash_limited"))
+  abort(error_squash_limited(), .subclass = dm_error_full("squash_limited"))
 }
 
 error_squash_limited <- function() {
-  paste0("`cdm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
+  paste0("`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
 }
 
 abort_apply_filters_first <- function(join_name) {
-  abort(error_apply_filters_first(join_name), .subclass = cdm_error_apply_filters_first(join_name))
+  abort(error_apply_filters_first(join_name), .subclass = dm_error_apply_filters_first(join_name))
 }
 
-cdm_error_apply_filters_first <- function(join_name) {
-  cdm_error(c(paste0("apply_filters_first_", join_name), "apply_filters_first"))
+dm_error_apply_filters_first <- function(join_name) {
+  dm_error(c(paste0("apply_filters_first_", join_name), "apply_filters_first"))
 }
 
 error_apply_filters_first <- function(join_name) {
-  glue("`cdm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
-       "produce the correct result when filters are set. ",
-       "Please consider calling `cdm_apply_filters()` first.")
+  glue(
+    "`dm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
+    "produce the correct result when filters are set. ",
+    "Please consider calling `dm_apply_filters()` first."
+  )
 }
 
 abort_no_flatten_with_nest_join <- function() {
-  abort(error_no_flatten_with_nest_join(), .subclass = cdm_error_full("no_flatten_with_nest_join"))
+  abort(error_no_flatten_with_nest_join(), .subclass = dm_error_full("no_flatten_with_nest_join"))
 }
 
 error_no_flatten_with_nest_join <- function() {
-  paste0("`cdm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
-  "cf. the help pages for these functions. Consider `join = left_join`")
+  paste0(
+    "`dm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
+    "cf. the help pages for these functions. Consider `join = left_join`"
+  )
 }
 
 # either explicit table names, or auto-unique ones ------------------------
 
 abort_unique_table_names_or_table_names <- function() {
-  abort(error_unique_table_names_or_table_names(), .subclass = cdm_error_full("unique_table_names_or_table_names"))
+  abort(error_unique_table_names_or_table_names(), .subclass = dm_error_full("unique_table_names_or_table_names"))
 }
 
 error_unique_table_names_or_table_names <- function() {
@@ -460,7 +408,7 @@ error_unique_table_names_or_table_names <- function() {
 
 # object is not a `dm` (but should be one) --------------------------------
 abort_is_not_dm <- function(obj_class) {
-  abort(error_is_not_dm(obj_class), .subclass = cdm_error_full("is_not_dm"))
+  abort(error_is_not_dm(obj_class), .subclass = dm_error_full("is_not_dm"))
 }
 
 error_is_not_dm <- function(obj_class) {
@@ -470,78 +418,92 @@ error_is_not_dm <- function(obj_class) {
 
 # local `dm` has no con ---------------------------------------------------
 abort_con_only_for_dbi <- function() {
-  abort(error_con_only_for_dbi(), .subclass = cdm_error_full("con_only_for_dbi"))
+  abort(error_con_only_for_dbi(), .subclass = dm_error_full("con_only_for_dbi"))
 }
 
 error_con_only_for_dbi <- function() {
   "A local `dm` doesn't have a DB connection"
 }
 
-# no zoom allowed for `cdm_zoom_to_tbl()` ---------------------------------
+# no zoom allowed for `dm_zoom_to_tbl()` ---------------------------------
 
 abort_no_zoom_allowed <- function() {
-  abort(error_no_zoom_allowed(), .subclass = cdm_error_full("no_zoom_allowed"))
+  abort(error_no_zoom_allowed(), .subclass = dm_error_full("no_zoom_allowed"))
 }
 
 error_no_zoom_allowed <- function() {
-  paste0("`cdm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `cdm_update_zoomed_tbl()`, ",
-         "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.")
+  paste0(
+    "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed_tbl()`, ",
+    "`dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
+  )
 }
 
 # general abort with customized msg ---------------------------------------
 
 abort_w_message <- function(msg) {
-  abort(msg, .subclass = cdm_error_full("w_message"))
+  abort(msg, .subclass = dm_error_full("w_message"))
 }
 
-abort_w_message
-
-# no table zoomed, but 'cdm_insert_tbl()' called ---------------------------------
+# no table zoomed, but 'dm_insert_zoomed_tbl()' called ---------------------------------
 
 abort_no_table_zoomed <- function() {
-  abort(error_no_table_zoomed(), .subclass = cdm_error_full("no_table_zoomed"))
+  abort(error_no_table_zoomed(), .subclass = dm_error_full("no_table_zoomed"))
 }
 
 error_no_table_zoomed <- function() {
-  "`cdm_insert_tbl()` only works for zoomed `dm`"
+  "`dm_insert_zoomed_tbl()` only works for zoomed `dm`"
 }
 
 
 # new table needs a name --------------------------------------------------
 
 abort_table_needs_name <- function() {
-  abort(error_table_needs_name(), .subclass = cdm_error_full("table_needs_name"))
+  abort(error_table_needs_name(), .subclass = dm_error_full("table_needs_name"))
 }
 
 error_table_needs_name <- function() {
-  "The new table to insert with `cdm_insert_zoomed_tbl()` must have a name"
+  "The new table to insert with `dm_insert_zoomed_tbl()` must have a name"
 }
 
 # when zoomed and it shouldn't be ------------------------------
 
 abort_only_possible_wo_zoom <- function(fun_name) {
-  abort(error_only_possible_wo_zoom(fun_name), .subclass = cdm_error_full("only_possible_wo_zoom"))
+  abort(error_only_possible_wo_zoom(fun_name), .subclass = dm_error_full("only_possible_wo_zoom"))
 }
 
 error_only_possible_wo_zoom <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `cdm_update_zoomed_tbl()`, ",
-       "`cdm_insert_zoomed_tbl()` or `cdm_zoom_out()` first.")
+  glue(
+    "You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed_tbl()`, ",
+    "`dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
+  )
 }
 
 # when not zoomed and it should be ------------------------------
 
 abort_only_possible_w_zoom <- function(fun_name) {
-  abort(error_only_possible_w_zoom(fun_name), .subclass = cdm_error_full("only_possible_w_zoom"))
+  abort(error_only_possible_w_zoom(fun_name), .subclass = dm_error_full("only_possible_w_zoom"))
 }
 
 error_only_possible_w_zoom <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `cdm_zoom_to_tbl()` first.")
+  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.")
+}
+
+# errors for `copy_to.dm()` ----------------------------------------------
+
+abort_only_data_frames_supported <- function() {
+  abort("`copy_to.dm()` only supports class `data.frame` for argument `df`", .subclass = dm_error_full("only_data_frames_supported"))
+}
+
+abort_one_name_for_copy_to <- function(name) {
+  abort(glue("Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"),
+    .subclass = dm_error_full("one_name_for_copy_to")
+  )
 }
 
 # table not on src --------------------------------------------------------
 
 abort_req_tbl_not_avail <- function(avail, missing) {
-  abort(error_req_tbl_not_avail(avail, missing), .subclass = cdm_error_full("req_tbl_not_avail"))
+  abort(error_req_tbl_not_avail(avail, missing), .subclass = dm_error_full("req_tbl_not_avail"))
 }
 
 error_req_tbl_not_avail <- function(avail, missing) {
@@ -552,7 +514,7 @@ error_req_tbl_not_avail <- function(avail, missing) {
 # table for which key should be set not in list of tables when creating dm -----------------------
 
 abort_unnamed_table_list <- function() {
-  abort(error_unnamed_table_list(), .subclass = cdm_error_full("unnamed_table_list"))
+  abort(error_unnamed_table_list(), .subclass = dm_error_full("unnamed_table_list"))
 }
 
 error_unnamed_table_list <- function() {
@@ -562,29 +524,33 @@ error_unnamed_table_list <- function() {
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
-  abort(error_need_unique_names(duplicate_names), .subclass = cdm_error_full("need_unique_names"))
+  abort(error_need_unique_names(duplicate_names), .subclass = dm_error_full("need_unique_names"))
 }
 
 error_need_unique_names <- function(duplicate_names) {
-  glue("Each new table needs to have a unique name. Duplicate new name(s): ",
-       "{commas(tick(duplicate_names))}.")
+  glue(
+    "Each new table needs to have a unique name. Duplicate new name(s): ",
+    "{commas(tick(duplicate_names))}."
+  )
 }
 
 # lost track of by-column (FK-relation) -----------------------------------
 
 abort_fk_not_tracked <- function(x_orig_name, y_name) {
- abort(error_fk_not_tracked(x_orig_name, y_name), .subclass = cdm_error_full("fk_not_tracked"))
+  abort(error_fk_not_tracked(x_orig_name, y_name), .subclass = dm_error_full("fk_not_tracked"))
 }
 
 error_fk_not_tracked <- function(x_orig_name, y_name) {
-  glue("The foreign key that existed between the originally zoomed table {tick(x_orig_name)} ",
-       "and {tick(y_name)} got lost in transformations. Please explicitly provide the `by` argument.")
+  glue(
+    "The foreign key that existed between the originally zoomed table {tick(x_orig_name)} ",
+    "and {tick(y_name)} got lost in transformations. Please explicitly provide the `by` argument."
+  )
 }
 
 # RHS-by column not selected ----------------------------------------------
 
 abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = cdm_error_full("need_to_select_rhs_by"))
+  abort(error_need_to_select_rhs_by(y_name, rhs_by), .subclass = dm_error_full("need_to_select_rhs_by"))
 }
 
 error_need_to_select_rhs_by <- function(y_name, rhs_by) {
@@ -595,9 +561,39 @@ error_need_to_select_rhs_by <- function(y_name, rhs_by) {
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
-  abort(error_dm_invalid(why), .subclass = cdm_error_full("dm_invalid"))
+  abort(error_dm_invalid(why), .subclass = dm_error_full("dm_invalid"))
 }
 
 error_dm_invalid <- function(why) {
   paste0("This `dm` is invalid, reason: ", why)
+}
+
+
+# Errors for `pull_tbl.dm()` -----------------------------
+
+abort_no_table_provided <- function() {
+  abort(error_no_table_provided(), .subclass = dm_error_full("no_table_provided"))
+}
+
+error_no_table_provided <- function() {
+  "Argument `table` for `pull_tbl.dm()` missing."
+}
+
+abort_table_not_zoomed <- function(table_name, zoomed_tables) {
+  abort(error_table_not_zoomed(table_name, zoomed_tables), .subclass = dm_error_full("table_not_zoomed"))
+}
+
+error_table_not_zoomed <- function(table_name, zoomed_tables) {
+  glue(
+    "In `pull_tbl.zoomed_dm`: Table {tick(table_name)} not zoomed, ",
+    "zoomed tables: {commas(tick(zoomed_tables))}."
+  )
+}
+
+abort_not_pulling_multiple_zoomed <- function() {
+  abort(error_not_pulling_multiple_zoomed(), .subclass = dm_error_full("not_pulling_multiple_zoomed"))
+}
+
+error_not_pulling_multiple_zoomed <- function() {
+  "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 }
