@@ -45,6 +45,11 @@ caused by repairing the names. This only concerns unique and
 universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
 }
+\value{
+For \code{dm_zoom_to_tbl()}: A \code{zoomed_dm} object.
+
+For \code{dm_insert_zoomed_tbl()}, \code{dm_update_zoomed_tbl()} and \code{dm_zoomed_out()}: A \code{dm} object.
+}
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
 context of the \code{dm} object.
@@ -81,4 +86,27 @@ The join-methods for \code{zoomed_dm} have an extra argument \code{select} that 
 in a {tidyselect} manner.
 
 And -- last but not least -- also the {tidyr}-functions \code{unite()} and \code{separate()} are supported for \code{zoomed_dm}.
+}
+\examples{
+library(dplyr)
+flights_zoomed <- dm_zoom_to_tbl(dm_nycflights13(), flights)
+
+flights_zoomed
+
+flights_zoomed_transformed <-
+  flights_zoomed \%>\%
+  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) \%>\%
+  # `by`-argument of `left_join()` can be explicitly given
+  # otherwise the key-relation is used
+  left_join(airports) \%>\%
+  select(year:dep_time, am_pm_dep, everything())
+
+# replace table `flights` with the zoomed table
+dm_update_zoomed_tbl(flights_zoomed_transformed)
+
+# insert the zoomed table as a new table
+dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+
+# discard the zoomed table
+dm_zoom_out(flights_zoomed_transformed)
 }

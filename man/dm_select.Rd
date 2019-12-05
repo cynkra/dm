@@ -25,6 +25,9 @@ See \code{vignette("programming", package = "dplyr")} for an introduction to tho
 
 See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...}
 }
+\value{
+An updated \code{dm} with the columns of \code{table} reduced and/or renamed.
+}
 \description{
 Select columns of your \code{\link{dm}} using syntax that is similar to \code{dplyr::select()}.
 }

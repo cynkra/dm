@@ -20,8 +20,19 @@ This table needs to have a primary key set.}
 \item{check}{Boolean, if \code{TRUE}, a check will be performed to determine if the values of
 \code{column} are a subset of the values of the primary key column of \code{ref_table}.}
 }
+\value{
+An updated \code{dm} with an additional foreign key relation.
+}
 \description{
 Add a reference from one table of a \code{\link{dm}} to another
+}
+\examples{
+library(dplyr)
+iris_key <- mutate(iris, key = row_number()) \%>\%
+  select(key, everything())
+dm(iris_1 = iris_key, iris_2 = iris_key) \%>\%
+  dm_add_pk(iris_2, key) \%>\%
+  dm_add_fk(iris_1, key, iris_2)
 }
 \seealso{
 Other foreign key functions: 

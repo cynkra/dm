@@ -27,9 +27,11 @@
 #'
 #' @family table surgery functions
 #'
-#' @examples
-#' library(magrittr)
+#' @return A named list of length two:
+#'   - entry "child_table": the child table with column `new_id_column` referring to the same column in `parent_table`,
+#'   - entry "parent_table": the "lookup table" for `child_table`.
 #'
+#' @examples
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
 #' decomposed_table$child_table
 #' decomposed_table$parent_table
@@ -83,6 +85,15 @@ decompose_table <- function(.data, new_id_column, ...) {
 #'
 #' @family table surgery functions
 #'
+#' @return A wide table produced by joining the two given tables.
+#'
+#' @examples
+#' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
+#' ct <- decomposed_table$child_table
+#' pt <- decomposed_table$parent_table
+#'
+#' reunite_parent_child(ct, pt, new_id)
+#' reunite_parent_child_from_list(decomposed_table, new_id)
 #' @name reunite_parent_child
 #' @export
 reunite_parent_child <- function(child_table, parent_table, id_column) {

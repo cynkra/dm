@@ -14,7 +14,7 @@
 #'   If the argument is empty, all tables that can be reached will be included.
 #'   If this includes tables that are not direct neighbours of `start`,
 #'   it will only work with `dm_squash_to_tbl()` (given one of the allowed join-methods).
-#'   `tidyselect` is supported, cf. [dplyr::select()].
+#'   `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @family flattening functions
 #'
 #' @details With `...` left empty, this function will join together all the tables of your [`dm`]
@@ -162,6 +162,13 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #'
 #' @family flattening functions
 #'
+#' @examples
+#'
+#' dm_join_to_tbl(dm_nycflights13(), airports, flights)
+#' # same result is achieved with:
+#' dm_join_to_tbl(dm_nycflights13(), flights, airports)
+#' # this gives an error, because the tables are not directly linked to each other:
+#' try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
 #' @export
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   force(join)
@@ -250,7 +257,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
     dm_reset_all_filters(dm) %>%
     dm_select_tbl(tables)
   # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
-  # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
+  # Need to use `dm` and not `clean_dm` here, because of possible filter conditions.
   start_tbl <- dm_get_filtered_table(dm, start)
 
   if (gotta_rename) {

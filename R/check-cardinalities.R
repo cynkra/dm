@@ -46,6 +46,9 @@
 #'
 #' @name check_cardinality
 #'
+#' @return Functions return `parent_table`, invisibly, if the check is passed, to support pipes.
+#' Otherwise an error is thrown and the reason for it is explained.
+#'
 #' @export
 #' @examples
 #' d1 <- tibble::tibble(a = 1:5)
@@ -72,7 +75,7 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 
   check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
-  invisible(TRUE)
+  invisible(parent_table)
 }
 
 #' @rdname check_cardinality
@@ -87,7 +90,7 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 
   check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
-  invisible(TRUE)
+  invisible(parent_table)
 }
 
 #' @rdname check_cardinality
@@ -110,7 +113,7 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
     error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
   )
 
-  invisible(TRUE)
+  invisible(parent_table)
 }
 
 #' @rdname check_cardinality
@@ -133,7 +136,7 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
     error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
   )
 
-  invisible(TRUE)
+  invisible(parent_table)
 }
 
 #' @rdname check_cardinality

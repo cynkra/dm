@@ -16,6 +16,8 @@
 #' @param src A \pkg{dplyr} table source object.
 #' @param table_names A character vector of the names of the tables to include.
 #'
+#' @return For `dm()`, `dm_from_src()`, `new_dm()`, `as_dm()`: A `dm` object.
+#'
 #' @seealso
 #'
 #' - [dm_add_pk()] and [dm_add_fk()] add primary and foreign keys
@@ -39,12 +41,18 @@
 #' dm_nycflights13() %>% tbl("airports")
 #' dm_nycflights13() %>% src_tbls()
 #' dm_nycflights13() %>% dm_get_src()
+#' # this works only when tables of `dm` are on DB
+#' if (FALSE) {
+#'   dm_copy_to(dbplyr::src_memdb(), dm_nycflights13()) %>%
+#'     dm_get_con()
+#' }
 #' dm_nycflights13() %>% dm_get_tables()
-#'
-#' dm_nycflights13() %>%
-#'   dm_rename_tbl(ap = airports)
-#' dm_nycflights13() %>%
-#'   dm_rename_tbl(ap = airports, fl = flights)
+#' dm_nycflights13() %>% dm_get_filter()
+#' dm_nycflights13() %>% validate_dm()
+#' is_dm(dm_nycflights13())
+#' dm_nycflights13()["airports"]
+#' dm_nycflights13()[["airports"]]
+#' dm_nycflights13()$airports
 #' @export
 dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
   quos <- enquos(...)
@@ -181,6 +189,9 @@ new_key_tracker_zoom <- function() {
 #' `validate_dm()` checks the internal consistency of a `dm` object.
 #'
 #' @param x An object.
+#'
+#' @return For `validate_dm()`: Returns the `dm`, invisibly, after finishing all checks.
+#'
 #' @rdname dm
 #' @export
 validate_dm <- function(x) {
@@ -255,6 +266,8 @@ debug_validate_dm <- function(dm) {
 #'
 #' @rdname dm
 #'
+#' @return For `dm_get_src()`: the \pkg{dplyr} source for a `dm` object.
+#'
 #' @export
 dm_get_src <- function(x) {
   check_dm(x)
@@ -269,6 +282,8 @@ dm_get_src <- function(x) {
 #' is thrown.
 #'
 #' @rdname dm
+#'
+#' @return For `dm_get_con()`: The [`DBI::DBIConnection-class`] for `dm` objects.
 #'
 #' @export
 dm_get_con <- function(x) {
@@ -285,6 +300,8 @@ dm_get_con <- function(x) {
 #' To get a filtered table, use `dm_apply_filters_to_tbl()`, to apply filters to all tables use `dm_apply_filters()`
 #'
 #' @rdname dm
+#'
+#' @return For `dm_get_tables()`: A named list with the tables constituing the `dm`.
 #'
 #' @export
 dm_get_tables <- function(x) {
@@ -348,6 +365,12 @@ dm_get_data_model_fks <- function(x) {
 #'
 #' @rdname dm
 #'
+#' @return For `dm_get_filter()`: A tibble with columns:
+#'
+#' - "table": table that was filtered,
+#' - "filter": the filter expression,
+#' - "zoomed": logical, does the filter condition relate to the zoomed table.
+#'
 #' @export
 dm_get_filter <- function(x) {
   # FIXME: Obliterate
@@ -377,6 +400,9 @@ dm_get_zoomed_tbl <- function(x) {
 #' `is_dm()` returns `TRUE` if the input is of class `dm`.
 #'
 #' @rdname dm
+#'
+#' @return For `is_dm()`: Boolean, is this object a `dm`.
+#'
 #' @export
 is_dm <- function(x) {
   inherits(x, "dm")

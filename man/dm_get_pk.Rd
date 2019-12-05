@@ -11,6 +11,9 @@ dm_get_pk(dm, table)
 
 \item{table}{A table in the \code{dm}.}
 }
+\value{
+A character vector with the column name(s) of the primary key of \code{table}.
+}
 \description{
 \code{dm_get_pk()} returns the name of the
 column marked as primary key of a table of a \code{\link{dm}} object.

@@ -14,6 +14,14 @@ dm_enum_pk_candidates(dm, table)
 
 \item{dm}{A \code{dm} object.}
 }
+\value{
+A table with columns_
+\itemize{
+\item \code{column} (column of \code{table}),
+\item \code{candidate} (boolean),
+\item \code{why} (if not a candidate for a primary key column, explanation for this).
+}
+}
 \description{
 \code{enum_pk_candidates()} checks for each column of a
 table if the column contains only unique values, and is thus

@@ -17,6 +17,9 @@ between those tables will be produced.}
 \item{color}{Boolean, if \code{TRUE} (default), the resulting \code{dm} object will have
 colors assigned to different tables for visualization with \code{dm_draw()}}
 }
+\value{
+A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
+}
 \description{
 Creates an example \code{\link{dm}} object from the tables in \pkg{nycflights13},
 along with the references.

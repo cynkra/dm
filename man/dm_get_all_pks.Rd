@@ -9,6 +9,13 @@ dm_get_all_pks(dm)
 \arguments{
 \item{dm}{A \code{dm} object.}
 }
+\value{
+A tibble with columns:
+\itemize{
+\item "table": table name,
+\item "pk_col": column name(s) of primary key.
+}
+}
 \description{
 \code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and
 returns the tables, the respective primary key columns and their classes.

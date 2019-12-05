@@ -29,6 +29,8 @@
 #'
 #' @family DB interaction functions
 #'
+#' @return A `dm` object on the given `src`.
+#'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
 #' iris_dm <- dm_copy_to(
@@ -38,11 +40,11 @@
 #' )
 #' @export
 dm_copy_to <- function(dest, dm, ...,
-                        types = NULL, overwrite = NULL,
-                        indexes = NULL, unique_indexes = NULL,
-                        set_key_constraints = TRUE, unique_table_names = FALSE,
-                        table_names = NULL,
-                        temporary = TRUE) {
+                       types = NULL, overwrite = NULL,
+                       indexes = NULL, unique_indexes = NULL,
+                       set_key_constraints = TRUE, unique_table_names = FALSE,
+                       table_names = NULL,
+                       temporary = TRUE) {
   # for the time being, we will be focusing on MSSQL
   # we expect the src (dest) to already point to the correct schema
   # we want to
@@ -114,6 +116,8 @@ dm_copy_to <- function(dest, dm, ...,
 #' @inheritParams dm_copy_to
 #'
 #' @family DB interaction functions
+#'
+#' @return Returns the `dm`, invisibly. Side effect: installing key constraints on DB.
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)

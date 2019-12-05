@@ -39,6 +39,31 @@
 #' And -- last but not least -- also the {tidyr}-functions `unite()` and `separate()` are supported for `zoomed_dm`.
 #'
 #' @rdname dm_zoom_to_tbl
+#'
+#' @return For `dm_zoom_to_tbl()`: A `zoomed_dm` object.
+#'
+#' @examples
+#' library(dplyr)
+#' flights_zoomed <- dm_zoom_to_tbl(dm_nycflights13(), flights)
+#'
+#' flights_zoomed
+#'
+#' flights_zoomed_transformed <-
+#'   flights_zoomed %>%
+#'   mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
+#'   # `by`-argument of `left_join()` can be explicitly given
+#'   # otherwise the key-relation is used
+#'   left_join(airports) %>%
+#'   select(year:dep_time, am_pm_dep, everything())
+#'
+#' # replace table `flights` with the zoomed table
+#' dm_update_zoomed_tbl(flights_zoomed_transformed)
+#'
+#' # insert the zoomed table as a new table
+#' dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+#'
+#' # discard the zoomed table
+#' dm_zoom_out(flights_zoomed_transformed)
 #' @export
 dm_zoom_to_tbl <- function(dm, table) {
 # FIXME: to include in documentation after #185:
@@ -76,6 +101,8 @@ get_zoomed_tbl <- function(dm) {
 #' @rdname dm_zoom_to_tbl
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
+#'
+#' @return For `dm_insert_zoomed_tbl()`, `dm_update_zoomed_tbl()` and `dm_zoomed_out()`: A `dm` object.
 #'
 #' @export
 dm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {

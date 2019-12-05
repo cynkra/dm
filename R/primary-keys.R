@@ -17,20 +17,22 @@
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
 #'
 #' @family primary key functions
+#'
+#' @return An updated `dm` with an additional primary key.
+#'
 #' @export
 #' @examples
 #' library(dplyr)
-#'
 #'
 #' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 #'
 #' # the following works
 #' dm_add_pk(nycflights_dm, planes, tailnum)
-#' dm_add_pk(nycflights_dm, airports, faa)
-#' dm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
+#' dm_add_pk(nycflights_dm, airports, faa, check = TRUE)
+#' dm_add_pk(nycflights_dm, planes, manufacturer)
 #'
 #' # the following does not work (throws an error)
-#' try(dm_add_pk(nycflights_dm, planes, manufacturer))
+#' try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
 dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   table_name <- as_name(ensym(table))
 
@@ -73,6 +75,8 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'
 #' @family primary key functions
 #'
+#' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise.
+#'
 #' @examples
 #' library(dplyr)
 #' nycflights_dm <- dm_nycflights13()
@@ -93,6 +97,8 @@ dm_has_pk <- function(dm, table) {
 #'
 #' @family primary key functions
 #'
+#' @return A character vector with the column name(s) of the primary key of `table`.
+#'
 #' @inheritParams dm_add_pk
 #'
 #' @examples
@@ -110,7 +116,6 @@ dm_get_pk <- function(dm, table) {
   pks$column[pks$table == table_name]
 }
 
-# FIXME: export?
 #' Get all primary keys of a [`dm`] object
 #'
 #' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
@@ -120,6 +125,10 @@ dm_get_pk <- function(dm, table) {
 #'
 #' @inheritParams dm_add_pk
 #'
+#' @return A tibble with columns:
+#' - "table": table name,
+#' - "pk_col": column name(s) of primary key.
+#'
 #' @export
 dm_get_all_pks <- nse(function(dm) {
   dm_get_data_model_pks(dm) %>%
@@ -128,7 +137,7 @@ dm_get_all_pks <- nse(function(dm) {
 
 #' Remove a primary key from a table in a [`dm`] object
 #'
-#' @description `dm_rm_pk()` removes a potentially set primary key from a table in the
+#' @description `dm_rm_pk()` removes a primary key from a table in the
 #' underlying `data_model`-object; leaves the [`dm`] object unaltered otherwise.
 #'
 #' Foreign keys that point to the table from other tables, can be optionally removed as well.
@@ -141,6 +150,8 @@ dm_get_all_pks <- nse(function(dm) {
 #'   If `TRUE`, the function will
 #'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
 #'   that are pointing to it.
+#'
+#' @return An updated `dm` without the indicated primary key.
 #'
 #' @examples
 #' library(dplyr)
@@ -176,6 +187,11 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' @description `enum_pk_candidates()` checks for each column of a
 #' table if the column contains only unique values, and is thus
 #' a suitable candidate for a primary key of the table.
+#'
+#' @return A table with columns_
+#' - `column` (column of `table`),
+#' - `candidate` (boolean),
+#' - `why` (if not a candidate for a primary key column, explanation for this).
 #'
 #' @export
 #' @examples
