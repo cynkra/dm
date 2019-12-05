@@ -177,6 +177,25 @@ along with their primary and foreign key constraints.</p>
     <div class='dont-index'><p>Other DB interaction functions: 
 <code><a href='dm_copy_to.html'>dm_copy_to</a>()</code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+  <span class='no'>src_sqlite</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_dbi.html'>src_sqlite</a></span>(<span class='st'>":memory:"</span>, <span class='kw'>create</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='no'>iris_key</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='no'>iris</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>())
+
+  <span class='co'># setting key constraints currently doesn't work on</span>
+  <span class='co'># SQLite but this would be the code to set the PK</span>
+  <span class='co'># constraint on the DB</span>
+  <span class='no'>iris_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_copy_to.html'>dm_copy_to</a></span>(
+    <span class='no'>src_sqlite</span>,
+    <span class='fu'><a href='dm.html'>dm</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris_key</span>),
+    <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  )
+
+  <span class='co'># and this would be the code to learn</span>
+  <span class='co'># the `dm` from the SQLite DB</span>
+  <span class='no'>iris_dm_learned</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_learn_from_db</span>(<span class='no'>src_sqlite</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -184,6 +203,7 @@ along with their primary and foreign key constraints.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

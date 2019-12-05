@@ -237,7 +237,9 @@ This argument supports splicing.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code>dm_set_colors()</code>: the updated data model.</p>
+    <p>For <code>dm_draw()</code>: returns an object of class <code>grViz</code> (see also <code><a href='https://rdrr.io/pkg/DiagrammeR/man/grViz.html'>DiagrammeR::grViz()</a></code>), which,
+when printed, produces the output seen in the viewer as a side effect.</p>
+<p>For <code>dm_set_colors()</code>: the updated data model.</p>
 <p>For <code>dm_get_colors()</code>, a two-column tibble with one row per table.</p>
 <p>For <code>dm_get_available_colors()</code>, a tibble with the color in the first
 column and auxiliary information in other columns.</p>
@@ -246,7 +248,31 @@ column and auxiliary information in other columns.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'>dm_draw</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())
 <span class='fu'>dm_draw</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'>dm_get_available_colors</span>()</div><div class='output co'>#&gt; # A tibble: 15 x 3
+#&gt;    dm            datamodelr nb         
+#&gt;    &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;      
+#&gt;  1 default       default    (border)   
+#&gt;  2 blue_nb       accent1nb  (no border)
+#&gt;  3 orange_nb     accent2nb  (no border)
+#&gt;  4 yellow_nb     accent3nb  (no border)
+#&gt;  5 green_nb      accent4nb  (no border)
+#&gt;  6 dark_blue_nb  accent5nb  (no border)
+#&gt;  7 light_grey_nb accent6nb  (no border)
+#&gt;  8 grey_nb       accent7nb  (no border)
+#&gt;  9 blue          accent1    (border)   
+#&gt; 10 orange        accent2    (border)   
+#&gt; 11 yellow        accent3    (border)   
+#&gt; 12 green         accent4    (border)   
+#&gt; 13 dark_blue     accent5    (border)   
+#&gt; 14 light_grey    accent6    (border)   
+#&gt; 15 grey          accent7    (border)   </div><div class='input'><span class='fu'>dm_get_colors</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; # A tibble: 5 x 2
+#&gt;   table    color 
+#&gt;   &lt;chr&gt;    &lt;chr&gt; 
+#&gt; 1 airlines orange
+#&gt; 2 airports orange
+#&gt; 3 flights  blue  
+#&gt; 4 planes   orange
+#&gt; 5 weather  green </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_set_colors</span>(
     <span class='kw'>airports</span> <span class='kw'>=</span> ,
     <span class='kw'>airlines</span> <span class='kw'>=</span> ,

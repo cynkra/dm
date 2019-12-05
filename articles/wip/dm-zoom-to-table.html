@@ -463,6 +463,32 @@
 <path fill="none" stroke="#555555" d="M109,-31C132.0402,-31 125.9514,-63.6321 140.3439,-73.3198"></path><polygon fill="#555555" stroke="#555555" points="139.4282,-76.6979 150,-76 141.3004,-69.9529 139.4282,-76.6979"></polygon></g><!-- weather --><g id="node6" class="node"><title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="31,-208 31,-228 79,-228 79,-208 31,-208"></polygon><text text-anchor="start" x="32.8492" y="-213.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#507e32" points="30,-207 30,-229 80,-229 80,-207 30,-207"></polygon></g></g></svg>
 </div>
+<div id="tip-accessing-the-zoomed-table" class="section level3">
+<h3 class="hasAnchor">
+<a href="#tip-accessing-the-zoomed-table" class="anchor"></a>Tip: Accessing the zoomed table</h3>
+<p>At each point you can retrieve the zoomed table by calling <code><a href="../../reference/pull_tbl.html">pull_tbl()</a></code> on a <code>zoomed_dm</code>. To use our last example once more:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">flights_dm <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/dm_zoom_to_tbl.html">dm_zoom_to_tbl</a></span>(flights) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span>dep_delay<span class="op">:-</span>arr_delay, <span class="op">-</span>air_time<span class="op">:-</span>time_hour) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(planes, <span class="dt">select =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(tailnum, <span class="dt">plane_type =</span> type)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../../reference/pull_tbl.html">pull_tbl</a></span>()</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 11</span><span>
+#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
+#&gt; </span><span style="color: #555555;"> 1</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      517            515 UA        </span><span style="text-decoration: underline;">1</span><span>545 N14228  EWR   
+#&gt; </span><span style="color: #555555;"> 2</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      533            529 UA        </span><span style="text-decoration: underline;">1</span><span>714 N24211  LGA   
+#&gt; </span><span style="color: #555555;"> 3</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      542            540 AA        </span><span style="text-decoration: underline;">1</span><span>141 N619AA  JFK   
+#&gt; </span><span style="color: #555555;"> 4</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      544            545 B6         725 N804JB  JFK   
+#&gt; </span><span style="color: #555555;"> 5</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      554            600 DL         461 N668DN  LGA   
+#&gt; </span><span style="color: #555555;"> 6</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      554            558 UA        </span><span style="text-decoration: underline;">1</span><span>696 N39463  EWR   
+#&gt; </span><span style="color: #555555;"> 7</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      555            600 B6         507 N516JB  EWR   
+#&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600 EV        </span><span style="text-decoration: underline;">5</span><span>708 N829AS  LGA   
+#&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600 B6          79 N593JB  JFK   
+#&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1     1      558            600 AA         301 N3ALAA  LGA   
+#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 2 more variables: dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,
+#&gt; #   plane_type </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
+</span></code></pre>
+</div>
 <div id="possible-pitfalls-and-caveats" class="section level3">
 <h3 class="hasAnchor">
 <a href="#possible-pitfalls-and-caveats" class="anchor"></a>Possible pitfalls and caveats</h3>

@@ -261,6 +261,20 @@ to be included in the <code>dm</code> object.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>For <code>dm()</code>, <code>dm_from_src()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
+<p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
+<p>For <code>dm_get_src()</code>: the <span class="pkg">dplyr</span> source for a <code>dm</code> object.</p>
+<p>For <code>dm_get_con()</code>: The <code><a href='https://rdrr.io/pkg/DBI/man/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
+<p>For <code>dm_get_tables()</code>: A named list with the tables constituing the <code>dm</code>.</p>
+<p>For <code>dm_get_filter()</code>: A tibble with columns:</p><ul>
+<li><p>"table": table that was filtered,</p></li>
+<li><p>"filter": the filter expression,</p></li>
+<li><p>"zoomed": logical, does the filter condition relate to the zoomed table.</p></li>
+</ul>
+
+<p>For <code>is_dm()</code>: Boolean, is this object a <code>dm</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -323,7 +337,12 @@ to be included in the <code>dm</code> object.</p></td>
 #&gt;  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
 #&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
 #&gt; # … with 1,448 more rows</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()</div><div class='output co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_src</span>()</div><div class='output co'>#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; tbls:</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_tables</span>()</div><div class='output co'>#&gt; $airlines
+#&gt; tbls:</div><div class='input'><span class='co'># this works only when tables of `dm` are on DB</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='fu'><a href='dm_copy_to.html'>dm_copy_to</a></span>(<span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(), <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()) <span class='kw'>%&gt;%</span>
+    <span class='fu'>dm_get_con</span>()
+}
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_tables</span>()</div><div class='output co'>#&gt; $airlines
 #&gt; # A tibble: 16 x 2
 #&gt;    carrier name                       
 #&gt;    &lt;chr&gt;   &lt;chr&gt;                      
@@ -410,27 +429,47 @@ to be included in the <code>dm</code> object.</p></td>
 #&gt; 10 EWR     2013     1     1    10  41    28.0  59.6      260      13.8 
 #&gt; # … with 26,105 more rows, and 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;,
 #&gt; #   pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;
-#&gt; </div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_select_tbl.html'>dm_rename_tbl</a></span>(<span class='kw'>ap</span> <span class='kw'>=</span> <span class='no'>airports</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_filter</span>()</div><div class='output co'>#&gt; # A tibble: 0 x 3
+#&gt; # … with 3 variables: table &lt;chr&gt;, filter &lt;list&gt;, zoomed &lt;lgl&gt;</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>validate_dm</span>()
+<span class='fu'>is_dm</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()[<span class='st'>"airports"</span>]</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `ap`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_select_tbl.html'>dm_rename_tbl</a></span>(<span class='kw'>ap</span> <span class='kw'>=</span> <span class='no'>airports</span>, <span class='kw'>fl</span> <span class='kw'>=</span> <span class='no'>flights</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `ap`, `fl`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div></pre>
+#&gt; Tables: `airports`
+#&gt; Columns: 8
+#&gt; Primary keys: 1
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()<span class='kw'>[[</span><span class='st'>"airports"</span>]]</div><div class='output co'>#&gt; # A tibble: 1,458 x 8
+#&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
+#&gt;    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
+#&gt;  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
+#&gt;  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
+#&gt;  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
+#&gt;  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
+#&gt;  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
+#&gt;  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
+#&gt;  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
+#&gt;  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
+#&gt;  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
+#&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
+#&gt; # … with 1,448 more rows</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()$<span class='no'>airports</span></div><div class='output co'>#&gt; # A tibble: 1,458 x 8
+#&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
+#&gt;    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
+#&gt;  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
+#&gt;  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
+#&gt;  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
+#&gt;  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
+#&gt;  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
+#&gt;  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
+#&gt;  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
+#&gt;  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
+#&gt;  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
+#&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
+#&gt; # … with 1,448 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

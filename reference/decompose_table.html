@@ -190,15 +190,20 @@ See vignette("programming") for an introduction to those concepts.</p>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A named list of length two:</p><ul>
+<li><p>entry "child_table": the child table with column <code>new_id_column</code> referring to the same column in <code>parent_table</code>,</p></li>
+<li><p>entry "parent_table": the "lookup table" for <code>child_table</code>.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other table surgery functions: 
 <code><a href='reunite_parent_child.html'>reunite_parent_child</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)
-
-<span class='no'>decomposed_table</span> <span class='kw'>&lt;-</span> <span class='fu'>decompose_table</span>(<span class='no'>mtcars</span>, <span class='no'>new_id</span>, <span class='no'>am</span>, <span class='no'>gear</span>, <span class='no'>carb</span>)
+    <pre class="examples"><div class='input'><span class='no'>decomposed_table</span> <span class='kw'>&lt;-</span> <span class='fu'>decompose_table</span>(<span class='no'>mtcars</span>, <span class='no'>new_id</span>, <span class='no'>am</span>, <span class='no'>gear</span>, <span class='no'>carb</span>)
 <span class='no'>decomposed_table</span>$<span class='no'>child_table</span></div><div class='output co'>#&gt;     mpg cyl  disp  hp drat    wt  qsec vs new_id
 #&gt; 1  21.0   6 160.0 110 3.90 2.620 16.46  0      9
 #&gt; 2  21.0   6 160.0 110 3.90 2.875 17.02  0      9
@@ -250,6 +255,7 @@ See vignette("programming") for an introduction to those concepts.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

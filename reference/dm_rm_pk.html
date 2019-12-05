@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Remove a primary key from a table in a <code><a href='dm.html'>dm</a></code> object — dm_rm_pk" />
-<meta property="og:description" content="dm_rm_pk() removes a potentially set primary key from a table in the
+<meta property="og:description" content="dm_rm_pk() removes a primary key from a table in the
 underlying data_model-object; leaves the dm object unaltered otherwise.
 Foreign keys that point to the table from other tables, can be optionally removed as well." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
@@ -151,7 +151,7 @@ Foreign keys that point to the table from other tables, can be optionally remove
     </div>
 
     <div class="ref-description">
-    <p><code>dm_rm_pk()</code> removes a potentially set primary key from a table in the
+    <p><code>dm_rm_pk()</code> removes a primary key from a table in the
 underlying <code>data_model</code>-object; leaves the <code><a href='dm.html'>dm</a></code> object unaltered otherwise.</p>
 <p>Foreign keys that point to the table from other tables, can be optionally removed as well.</p>
     </div>
@@ -179,6 +179,9 @@ that are pointing to it.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An updated <code>dm</code> without the indicated primary key.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other primary key functions: 
@@ -203,6 +206,7 @@ that are pointing to it.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

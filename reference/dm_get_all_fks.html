@@ -165,10 +165,12 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble with columns:</p>
-<p>"child_table": child table,
-"child_fk_col": foreign key column in child table,
-"parent_table": parent table</p>
+    <p>A tibble with columns:</p><ul>
+<li><p>"child_table": child table,</p></li>
+<li><p>"child_fk_col": foreign key column in child table,</p></li>
+<li><p>"parent_table": parent table.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other foreign key functions: 
@@ -178,6 +180,13 @@
 <code><a href='dm_has_fk.html'>dm_has_fk</a>()</code>,
 <code><a href='dm_rm_fk.html'>dm_rm_fk</a>()</code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>dm_get_all_fks</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; # A tibble: 3 x 3
+#&gt;   child_table child_fk_col parent_table
+#&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;       
+#&gt; 1 flights     carrier      airlines    
+#&gt; 2 flights     origin       airports    
+#&gt; 3 flights     tailnum      planes      </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -185,6 +194,7 @@
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

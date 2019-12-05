@@ -176,6 +176,8 @@ key of <code>table</code>.</p>
     <div class='dont-index'><p>Other functions utilizing foreign key relations: 
 <code><a href='dm_is_referenced.html'>dm_is_referenced</a>()</code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>dm_get_referencing_tables</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>airports</span>)</div><div class='output co'>#&gt; [1] "flights"</div><div class='input'><span class='fu'>dm_get_referencing_tables</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>)</div><div class='output co'>#&gt; character(0)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -183,6 +185,7 @@ key of <code>table</code>.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

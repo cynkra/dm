@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Browse package documentation — browse_docs • dm</title>
+<title>Retrieve a table from a <code>dm</code> or a <code>zoomed_dm</code> — pull_tbl • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,12 @@
 
 
 
-<meta property="og:title" content="Browse package documentation — browse_docs" />
-<meta property="og:description" content="Opens the documentation website in a browser." />
+<meta property="og:title" content="Retrieve a table from a <code>dm</code> or a <code>zoomed_dm</code> — pull_tbl" />
+<meta property="og:description" content="This function has methods for both dm classes:
+With pull_tbl.dm() you can chose which table of the dm you want to retrieve.
+With pull_tbl.zoomed_dm() you will retrieve the zoomed table in the current state.
+
+" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -143,28 +147,86 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Browse package documentation</h1>
+    <h1>Retrieve a table from a <code>dm</code> or a <code>zoomed_dm</code></h1>
     
-    <div class="hidden name"><code>browse_docs.Rd</code></div>
+    <div class="hidden name"><code>pull_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Opens the documentation website in a browser.</p>
+    <p>This function has methods for both <code>dm</code> classes:</p><ol>
+<li><p>With <code>pull_tbl.dm()</code> you can chose which table of the <code>dm</code> you want to retrieve.</p></li>
+<li><p>With <code>pull_tbl.zoomed_dm()</code> you will retrieve the zoomed table in the current state.</p></li>
+</ol>
+
     </div>
 
-    <pre class="usage"><span class='fu'>browse_docs</span>()</pre>
+    <pre class="usage"><span class='fu'>pull_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>table</th>
+      <td><p>One unquoted table name for <code>pull_tbl.dm()</code>, ignored for <code>pull_tbl.zoomed_dm()</code>.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Opens the dm-website as a side effect.</p>
+    <p>The requested table</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>browse_docs</span>()</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># both examples lead to the same tibble:</span>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>pull_tbl</span>(<span class='no'>airlines</span>)</div><div class='output co'>#&gt; # A tibble: 16 x 2
+#&gt;    carrier name                       
+#&gt;    &lt;chr&gt;   &lt;chr&gt;                      
+#&gt;  1 9E      Endeavor Air Inc.          
+#&gt;  2 AA      American Airlines Inc.     
+#&gt;  3 AS      Alaska Airlines Inc.       
+#&gt;  4 B6      JetBlue Airways            
+#&gt;  5 DL      Delta Air Lines Inc.       
+#&gt;  6 EV      ExpressJet Airlines Inc.   
+#&gt;  7 F9      Frontier Airlines Inc.     
+#&gt;  8 FL      AirTran Airways Corporation
+#&gt;  9 HA      Hawaiian Airlines Inc.     
+#&gt; 10 MQ      Envoy Air                  
+#&gt; 11 OO      SkyWest Airlines Inc.      
+#&gt; 12 UA      United Air Lines Inc.      
+#&gt; 13 US      US Airways Inc.            
+#&gt; 14 VX      Virgin America             
+#&gt; 15 WN      Southwest Airlines Co.     
+#&gt; 16 YV      Mesa Airlines Inc.         </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to_tbl.html'>dm_zoom_to_tbl</a></span>(<span class='no'>airlines</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>pull_tbl</span>()</div><div class='output co'>#&gt; # A tibble: 16 x 2
+#&gt;    carrier name                       
+#&gt;    &lt;chr&gt;   &lt;chr&gt;                      
+#&gt;  1 9E      Endeavor Air Inc.          
+#&gt;  2 AA      American Airlines Inc.     
+#&gt;  3 AS      Alaska Airlines Inc.       
+#&gt;  4 B6      JetBlue Airways            
+#&gt;  5 DL      Delta Air Lines Inc.       
+#&gt;  6 EV      ExpressJet Airlines Inc.   
+#&gt;  7 F9      Frontier Airlines Inc.     
+#&gt;  8 FL      AirTran Airways Corporation
+#&gt;  9 HA      Hawaiian Airlines Inc.     
+#&gt; 10 MQ      Envoy Air                  
+#&gt; 11 OO      SkyWest Airlines Inc.      
+#&gt; 12 UA      United Air Lines Inc.      
+#&gt; 13 US      US Airways Inc.            
+#&gt; 14 VX      Virgin America             
+#&gt; 15 WN      Southwest Airlines Co.     
+#&gt; 16 YV      Mesa Airlines Inc.         </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
