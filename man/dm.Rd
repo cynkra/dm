@@ -53,7 +53,7 @@ to be included in the \code{dm} object.}
 \value{
 For \code{dm()}, \code{dm_from_src()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
 
-For \code{validate_dm()}: Invisibly returns the \code{dm} after finishing all checks.
+For \code{validate_dm()}: Returns the \code{dm}, invisibly, after finishing all checks.
 
 For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object.
 

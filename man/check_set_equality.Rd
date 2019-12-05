@@ -16,7 +16,8 @@ check_set_equality(t1, c1, t2, c2)
 \item{c2}{The column of \code{t2} that should only contain values that are also present in column \code{c1} of data frame \code{t1}.}
 }
 \value{
-Invisibly returns \code{t1}, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+Returns \code{t1}, invisibly, if the check is passed.
+Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
 \code{check_set_equality()} is a wrapper of \code{check_if_subset()}.

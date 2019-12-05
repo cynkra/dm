@@ -190,7 +190,7 @@ new_key_tracker_zoom <- function() {
 #'
 #' @param x An object.
 #'
-#' @return For `validate_dm()`: Invisibly returns the `dm` after finishing all checks.
+#' @return For `validate_dm()`: Returns the `dm`, invisibly, after finishing all checks.
 #'
 #' @rdname dm
 #' @export

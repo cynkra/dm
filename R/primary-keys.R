@@ -137,7 +137,7 @@ dm_get_all_pks <- nse(function(dm) {
 
 #' Remove a primary key from a table in a [`dm`] object
 #'
-#' @description `dm_rm_pk()` removes a potentially set primary key from a table in the
+#' @description `dm_rm_pk()` removes a primary key from a table in the
 #' underlying `data_model`-object; leaves the [`dm`] object unaltered otherwise.
 #'
 #' Foreign keys that point to the table from other tables, can be optionally removed as well.
@@ -188,8 +188,10 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' table if the column contains only unique values, and is thus
 #' a suitable candidate for a primary key of the table.
 #'
-#' @return A table with columns `column` (column of `table`), `candidate` (boolean) and `why`
-#' (if not a candidate for a primary key column, explanation for this).
+#' @return A table with columns_
+#' - `column` (column of `table`),
+#' - `candidate` (boolean),
+#' - `why` (if not a candidate for a primary key column, explanation for this).
 #'
 #' @export
 #' @examples

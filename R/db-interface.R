@@ -117,7 +117,7 @@ dm_copy_to <- function(dest, dm, ...,
 #'
 #' @family DB interaction functions
 #'
-#' @return Invisibly returns the `dm`. Side effect: installing key constraints on DB.
+#' @return Returns the `dm`, invisibly. Side effect: installing key constraints on DB.
 #'
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)

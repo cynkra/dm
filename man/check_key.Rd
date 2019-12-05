@@ -23,7 +23,8 @@ See vignette("programming") for an introduction to these concepts.
 See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...}
 }
 \value{
-Invisibly returns \code{.data}, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+Returns \code{.data}, invisibly, if the check is passed.
+Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
 \code{check_key()} accepts a data frame and, optionally, columns.

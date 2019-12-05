@@ -21,7 +21,7 @@ that are pointing to it.}
 An updated \code{dm} without the indicated primary key.
 }
 \description{
-\code{dm_rm_pk()} removes a potentially set primary key from a table in the
+\code{dm_rm_pk()} removes a primary key from a table in the
 underlying \code{data_model}-object; leaves the \code{\link{dm}} object unaltered otherwise.
 
 Foreign keys that point to the table from other tables, can be optionally removed as well.

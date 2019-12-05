@@ -167,7 +167,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #' dm_join_to_tbl(dm_nycflights13(), airports, flights)
 #' # same result is achieved with:
 #' dm_join_to_tbl(dm_nycflights13(), flights, airports)
-#' # this gives an error, cause the tables are not directly linked to each other:
+#' # this gives an error, because the tables are not directly linked to each other:
 #' try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
 #' @export
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
@@ -257,7 +257,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename) {
     dm_reset_all_filters(dm) %>%
     dm_select_tbl(tables)
   # Only need to compute `tbl(dm, start)`, `dm_apply_filters()` not necessary
-  # Need to use `dm` and not `clean_dm` here, cause of possible filter conditions.
+  # Need to use `dm` and not `clean_dm` here, because of possible filter conditions.
   start_tbl <- dm_get_filtered_table(dm, start)
 
   if (gotta_rename) {

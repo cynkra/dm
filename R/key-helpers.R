@@ -51,7 +51,8 @@ dm_check_constraints <- function(dm) {
 #'
 #'   See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
 #'
-#' @return Invisibly returns `.data`, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+#' @return Returns `.data`, invisibly, if the check is passed.
+#'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
 #' @examples
@@ -117,7 +118,8 @@ is_unique_key <- nse(function(.data, column) {
 #' @param t2 The data frame that contains column `c2`.
 #' @param c2 The column of `t2` that should only contain values that are also present in column `c1` of data frame `t1`.
 #'
-#' @return Invisibly returns `t1`, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+#' @return Returns `t1`, invisibly, if the check is passed.
+#'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
 #' @examples
@@ -171,7 +173,8 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' @param t2 The data frame that contains column `c2`.
 #' @param c2 The column of the second data frame that has to contain all values of `c1` to avoid an error.
 #'
-#' @return Invisibly returns `t1`, if the check is passed. Otherwise an error is thrown and the reason for it is explained.
+#' @return Returns `t1`, invisibly, if the check is passed.
+#'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
 #' @examples

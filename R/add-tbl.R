@@ -17,7 +17,7 @@
 #' dm_nycflights13() %>%
 #'   dm_add_tbl(cars = mtcars, flowers = iris)
 #'
-#' # renaming table names if necessary (depending on argument `repair`)
+#' # renaming table names if necessary (depending on the `repair` argument)
 #' dm_nycflights13() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export

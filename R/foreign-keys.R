@@ -60,10 +60,12 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
   new_dm3(def)
 }
 
-#' Does a reference exist from one table of a `dm` to another?
+#' Does a reference exist?
+#'
+#' `dm_has_fk()` checks if a foreign key reference exists between two tables in a `dm`.
 #'
 #' @inheritParams dm_add_fk
-#' @param ref_table The table that `table` is potentially referencing.
+#' @param ref_table The table to check if it is referred to.
 #'
 #' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
 #'

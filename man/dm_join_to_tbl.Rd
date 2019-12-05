@@ -29,7 +29,7 @@ the join will always be a "child table", i.e. a table referencing the other tabl
 dm_join_to_tbl(dm_nycflights13(), airports, flights)
 # same result is achieved with:
 dm_join_to_tbl(dm_nycflights13(), flights, airports)
-# this gives an error, cause the tables are not directly linked to each other:
+# this gives an error, because the tables are not directly linked to each other:
 try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
 }
 \seealso{
