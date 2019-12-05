@@ -584,8 +584,10 @@ abort_table_not_zoomed <- function(table_name, zoomed_tables) {
 }
 
 error_table_not_zoomed <- function(table_name, zoomed_tables) {
-  glue("In `pull_tbl.zoomed_dm`: Table {tick(table_name)} not zoomed, ",
-       "zoomed tables: {commas(tick(zoomed_tables))}.")
+  glue(
+    "In `pull_tbl.zoomed_dm`: Table {tick(table_name)} not zoomed, ",
+    "zoomed tables: {commas(tick(zoomed_tables))}."
+  )
 }
 
 abort_not_pulling_multiple_zoomed <- function() {
@@ -595,5 +597,3 @@ abort_not_pulling_multiple_zoomed <- function() {
 error_not_pulling_multiple_zoomed <- function() {
   "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 }
-
-

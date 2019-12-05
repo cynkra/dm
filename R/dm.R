@@ -732,7 +732,6 @@ empty_dm <- function() {
 #' dm_nycflights13() %>%
 #'   dm_zoom_to_tbl(airlines) %>%
 #'   pull_tbl()
-#'
 #' @export
 pull_tbl <- function(dm, table) {
   UseMethod("pull_tbl")
@@ -752,6 +751,11 @@ pull_tbl.zoomed_dm <- function(dm, table) {
   tbl_zoomed <- dm_get_zoomed_tbl(dm)
   if (table_name == "") {
     if (nrow(tbl_zoomed) == 1) tbl_zoomed$zoom[[1]] else abort_not_pulling_multiple_zoomed()
-  } else if (!(table_name %in% tbl_zoomed$table)) abort_table_not_zoomed(table_name, tbl_zoomed$table) else
-      filter(tbl_zoomed, table == table_name) %>% pull(zoom) %>% pluck(1)
+  } else if (!(table_name %in% tbl_zoomed$table)) {
+    abort_table_not_zoomed(table_name, tbl_zoomed$table)
+  } else {
+    filter(tbl_zoomed, table == table_name) %>%
+      pull(zoom) %>%
+      pluck(1)
+  }
 }

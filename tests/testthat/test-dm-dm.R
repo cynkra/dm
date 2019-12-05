@@ -273,11 +273,10 @@ test_that("`pull_tbl()`-methods work", {
 
   expect_dm_error(
     new_dm3(dm_for_filter %>%
-              dm_zoom_to_tbl(t1) %>%
-              dm_get_def() %>%
-              mutate(zoom = list(t1)), zoomed = TRUE) %>%
+      dm_zoom_to_tbl(t1) %>%
+      dm_get_def() %>%
+      mutate(zoom = list(t1)), zoomed = TRUE) %>%
       pull_tbl(),
     "not_pulling_multiple_zoomed"
   )
-
 })
