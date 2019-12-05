@@ -66,8 +66,8 @@
 #' dm_zoom_out(flights_zoomed_transformed)
 #' @export
 dm_zoom_to_tbl <- function(dm, table) {
-# FIXME: to include in documentation after #185:
-# Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
+  # FIXME: to include in documentation after #185:
+  # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
   if (is_zoomed(dm)) abort_no_zoom_allowed()
 
   # for now only one table can be zoomed on
