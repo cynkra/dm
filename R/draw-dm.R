@@ -150,14 +150,16 @@ dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
   # If old fall-through syntax is being used:
   if (!all(names(quos) %in% avail_cols) &&
-      all(names(quos) %in% src_tbls(dm))) {
+    all(names(quos) %in% src_tbls(dm))) {
     warning(paste0(
       "When setting colors with `dm_set_colors()`, ",
       "the syntax is now as follows: `blue = table_name1, ",
       "orange = table_name2` etc. (tidyselect supported) ",
       "Forwarding your function call ",
-      "to the old implementation of `dm_set_colors()`."))
-    return(dm_set_colors2(dm, !!!quos))}
+      "to the old implementation of `dm_set_colors()`."
+    ))
+    return(dm_set_colors2(dm, !!!quos))
+  }
 
   avail_tables <- src_tbls(dm)
   selected_tables <- tidyselect::vars_select(avail_tables, ...) %>%
@@ -170,7 +172,8 @@ dm_set_colors <- function(dm, ...) {
 
   display_df <- tibble(
     table = selected_tables,
-    new_display = colors$datamodelr[match(sel_colors, colors$dm)])
+    new_display = colors$datamodelr[match(sel_colors, colors$dm)]
+  )
 
   def <-
     dm_get_def(dm) %>%
