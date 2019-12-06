@@ -146,6 +146,19 @@ dm_get_all_columns <- function(x) {
 #'   dm_draw()
 #' @export
 dm_set_colors <- function(dm, ...) {
+  avail_cols <- dm_get_available_colors()$dm
+  quos <- enquos(...)
+  # If old fall-through syntax is being used:
+  if (!all(names(quos) %in% avail_cols) &&
+      all(names(quos) %in% src_tbls(dm))) {
+    warning(paste0(
+      "When setting colors with `dm_set_colors()`, ",
+      "the syntax is now as follows: `blue = table_name1, ",
+      "orange = table_name2` etc. (tidyselect supported) ",
+      "Forwarding your function call ",
+      "to the old implementation of `dm_set_colors()`."))
+    return(dm_set_colors2(dm, !!!quos))}
+
   avail_tables <- src_tbls(dm)
   selected_tables <- tidyselect::vars_select(avail_tables, ...) %>%
     # names will get integer suffixes if duplicated ("blue1", "blue2", ...)
