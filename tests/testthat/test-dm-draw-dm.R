@@ -13,18 +13,33 @@ test_that("API", {
   )
 })
 
-test_that("`dm_set_colors2()` works", {
+test_that("`dm_set_colors()` works",  {
   expect_identical(
-    dm_set_colors2(
+    dm_set_colors(
       dm_nycflights_small,
       blue = starts_with("air"),
       green = contains("h")
     ) %>%
       dm_get_colors(),
-    tibble(
-      table = src_tbls(dm_nycflights_small),
-      color = c("green", NA_character_, "blue", "blue", "green")
+    set_names(src_tbls(dm_nycflights_small),
+              c("green", NA_character_, "blue", "blue", "green"))
     )
+})
+
+test_that("`dm_set_colors()` forwards with warning if old syntax used",  {
+  expect_identical(
+    expect_warning(
+      dm_set_colors(
+        dm_nycflights_small,
+        airports = ,
+        airlines = "blue",
+        flights = ,
+        weather = "green") %>%
+        dm_get_colors(),
+      "When setting colors"
+    ),
+    set_names(src_tbls(dm_nycflights_small),
+              c("green", NA_character_, "blue", "blue", "green"))
   )
 })
 
@@ -50,13 +65,11 @@ test_that("bad color", {
 test_that("getter", {
   expect_equal(
     dm_get_colors(dm_nycflights13()),
-    tibble::tribble(
-      ~table,       ~color,
-      "airlines", "orange",
-      "airports", "orange",
-      "flights",    "blue",
-      "planes",   "orange",
-      "weather",   "green"
+    c(orange = "airlines",
+      orange = "airports",
+      blue = "flights",
+      orange = "planes",
+      green = "weather"
     )
   )
 })
