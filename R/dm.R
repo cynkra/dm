@@ -714,6 +714,11 @@ dimnames.zoomed_dm <- function(x) {
   dimnames(get_zoomed_tbl(x))
 }
 
+#' @export
+tbl_vars.zoomed_dm <- function(x) {
+  tbl_vars(get_zoomed_tbl(x))
+}
+
 dm_reset_all_filters <- function(dm) {
   def <- dm_get_def(dm)
   def$filters <- vctrs::list_of(new_filter())
