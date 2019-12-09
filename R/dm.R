@@ -534,9 +534,15 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 `$.zoomed_dm` <- function(x, name) {
-  # This solution works also with class `data.frame`: `tibble:::`$.tbl_df`(iris, "Species")`
-  # FIXME: how to access `$.tbl_df` without going into `tibble` internals?
-  tibble:::`$.tbl_df`(get_zoomed_tbl(x), name)
+  x <- get_zoomed_tbl(x)
+  # from here on code "borrowed" from tibble:::`$.tbl_df`
+  if (is.character(name)) {
+    ret <- .subset2(x, name)
+    if (is.null(ret))
+      warning(c("Unknown or uninitialised column: '", name, "'."))
+    return(ret)
+  }
+  .subset2(x, name)
 }
 
 #' @export
