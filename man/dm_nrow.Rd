@@ -9,6 +9,15 @@ dm_nrow(dm)
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
 }
+\value{
+A named vector with the number of rows for each table.
+}
 \description{
 Returns a named vector with the number of rows for each table.
+}
+\examples{
+dm_nycflights13() \%>\%
+  dm_filter(airports, faa \%in\% c("EWR", "LGA")) \%>\%
+  dm_apply_filters() \%>\%
+  dm_nrow()
 }

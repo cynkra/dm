@@ -13,8 +13,7 @@ dm_rename_tbl(dm, ...)
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{...}{One or more table names of the tables of the \code{\link{dm}} object.
-See \code{\link[tidyselect:vars_select]{tidyselect::vars_select()}} and \code{\link[tidyselect:vars_rename]{tidyselect::vars_rename()}}
-for details on the semantics.}
+\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 }
 \value{
 The input \code{dm} with tables renamed or removed.
@@ -24,6 +23,14 @@ The input \code{dm} with tables renamed or removed.
 optionally renaming them.
 
 \code{dm_rename_tbl()} renames tables.
+}
+\examples{
+dm_nycflights13() \%>\%
+  dm_select_tbl(ap = airports)
+dm_nycflights13() \%>\%
+  dm_select_tbl(ap = airports, fl = flights)
+dm_nycflights13() \%>\%
+  dm_rename_tbl(ap = airports, fl = flights)
 }
 \seealso{
 \code{\link[=dm_rm_tbl]{dm_rm_tbl()}}

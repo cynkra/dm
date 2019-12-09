@@ -431,6 +431,6 @@ test_that("`dm_join_to_tbl()` works", {
       rename(fact, fact.something = something),
       rename(dim_3, dim_3.something = something),
       by = c("dim_3_key" = "dim_3_pk")
-      )
     )
+  )
 })

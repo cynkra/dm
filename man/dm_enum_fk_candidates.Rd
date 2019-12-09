@@ -19,9 +19,8 @@ enum_fk_candidates(zoomed_dm, ref_table)
 \item{zoomed_dm}{A \code{dm} with a zoomed table.}
 }
 \value{
-A table that lists which columns of \code{table} would be suitable candidates for
-foreign key columns to reference \code{ref_table}, which columns would not be suitable,
-and the reason \code{why}.
+A table with columns \code{column} (column of \code{table}), \code{candidate} (boolean) and \code{why}
+(if not a candidate for a foreign key, explanation for this).
 }
 \description{
 Determine which columns would be good candidates to be used as foreign keys of a table,
@@ -46,6 +45,9 @@ The outcome of the join operation determines the value of the \code{why} column 
 }
 \examples{
 dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
+
+dm_zoom_to_tbl(dm_nycflights13(), flights) \%>\%
+  enum_fk_candidates(airports)
 }
 \seealso{
 Other foreign key functions: 

@@ -17,20 +17,25 @@
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
 #' @export
 #'
+#' @return For `dm_draw()`: returns an object of class `grViz` (see also [DiagrammeR::grViz()]), which,
+#' when printed, produces the output seen in the viewer as a side effect.
+#'
 #' @examples
 #' library(dplyr)
 #' dm_draw(dm_nycflights13())
 #' dm_draw(dm_nycflights13(cycle = TRUE))
+#' dm_get_available_colors()
+#' dm_get_colors(dm_nycflights13())
 dm_draw <- function(dm,
-                     rankdir = "LR",
-                     col_attr = "column",
-                     view_type = "keys_only",
-                     columnArrows = TRUE,
-                     graph_attrs = "",
-                     node_attrs = "",
-                     edge_attrs = "",
-                     focus = NULL,
-                     graph_name = "Data Model") {
+                    rankdir = "LR",
+                    col_attr = "column",
+                    view_type = "keys_only",
+                    columnArrows = TRUE,
+                    graph_attrs = "",
+                    node_attrs = "",
+                    edge_attrs = "",
+                    focus = NULL,
+                    graph_name = "Data Model") {
   #
   check_dm(dm)
   if (is_empty(dm)) {

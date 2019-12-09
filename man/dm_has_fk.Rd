@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_has_fk}
 \alias{dm_has_fk}
-\title{Does there exist a reference from one table of a \code{dm} to another?}
+\title{Does a reference exist?}
 \usage{
 dm_has_fk(dm, table, ref_table)
 }
@@ -11,13 +11,17 @@ dm_has_fk(dm, table, ref_table)
 
 \item{table}{A table in the \code{dm}.}
 
-\item{ref_table}{The table that \code{table} is potentially referencing.}
+\item{ref_table}{The table to check if it is referred to.}
 }
 \value{
 A boolean value: \code{TRUE} if a reference from \code{table} to \code{ref_table} exists, \code{FALSE} otherwise.
 }
 \description{
-Does there exist a reference from one table of a \code{dm} to another?
+\code{dm_has_fk()} checks if a foreign key reference exists between two tables in a \code{dm}.
+}
+\examples{
+dm_has_fk(dm_nycflights13(), flights, airports)
+dm_has_fk(dm_nycflights13(), airports, flights)
 }
 \seealso{
 Other foreign key functions: 

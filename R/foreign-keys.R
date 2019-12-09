@@ -10,6 +10,15 @@
 #'
 #' @family foreign key functions
 #'
+#' @return An updated `dm` with an additional foreign key relation.
+#'
+#' @examples
+#' library(dplyr)
+#' iris_key <- mutate(iris, key = row_number()) %>%
+#'   select(key, everything())
+#' dm(iris_1 = iris_key, iris_2 = iris_key) %>%
+#'   dm_add_pk(iris_2, key) %>%
+#'   dm_add_fk(iris_1, key, iris_2)
 #' @export
 dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   table_name <- as_name(ensym(table))
@@ -51,15 +60,20 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
   new_dm3(def)
 }
 
-#' Does there exist a reference from one table of a `dm` to another?
+#' Does a reference exist?
+#'
+#' `dm_has_fk()` checks if a foreign key reference exists between two tables in a `dm`.
 #'
 #' @inheritParams dm_add_fk
-#' @param ref_table The table that `table` is potentially referencing.
+#' @param ref_table The table to check if it is referred to.
 #'
 #' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
 #'
 #' @family foreign key functions
 #'
+#' @examples
+#' dm_has_fk(dm_nycflights13(), flights, airports)
+#' dm_has_fk(dm_nycflights13(), airports, flights)
 #' @export
 dm_has_fk <- function(dm, table, ref_table) {
   has_length(dm_get_fk(dm, {{ table }}, {{ ref_table }}))
@@ -72,6 +86,10 @@ dm_has_fk <- function(dm, table, ref_table) {
 #'
 #' @family foreign key functions
 #'
+#' @return A character vector with the column name(s) of `table`, pointing to the primary key of `ref_table`.
+#'
+#' @examples
+#' dm_get_fk(dm_nycflights13(), flights, airports)
 #' @export
 dm_get_fk <- function(dm, table, ref_table) {
   table_name <- as_name(ensym(table))
@@ -90,14 +108,16 @@ dm_get_fk <- function(dm, table, ref_table) {
 #'
 #' @return A tibble with columns:
 #'
-#' "child_table": child table,
-#' "child_fk_col": foreign key column in child table,
-#' "parent_table": parent table
+#' - "child_table": child table,
+#' - "child_fk_col": foreign key column in child table,
+#' - "parent_table": parent table.
 #'
 #' @inheritParams dm_has_fk
 #'
 #' @family foreign key functions
 #'
+#' @examples
+#' dm_get_all_fks(dm_nycflights13())
 #' @export
 dm_get_all_fks <- nse(function(dm) {
   dm_get_data_model_fks(dm) %>%
@@ -118,6 +138,15 @@ dm_get_all_fks <- nse(function(dm) {
 #'
 #' @family foreign key functions
 #'
+#' @return An updated `dm` without the given foreign key relation.
+#'
+#' @examples
+#' dm_rm_fk(
+#'   dm_nycflights13(cycle = TRUE),
+#'   flights,
+#'   dest,
+#'   airports
+#' )
 #' @export
 dm_rm_fk <- function(dm, table, column, ref_table) {
   table <- as_name(ensym(table))
@@ -182,14 +211,16 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
 #' - the count and percentage of missing matches for a column that is not suitable
 #' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
-#' @return A table that lists which columns of `table` would be suitable candidates for
-#' foreign key columns to reference `ref_table`, which columns would not be suitable,
-#' and the reason `why`.
+#' @return A table with columns `column` (column of `table`), `candidate` (boolean) and `why`
+#' (if not a candidate for a foreign key, explanation for this).
 #'
 #' @family foreign key functions
 #'
 #' @examples
 #' dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
+#'
+#' dm_zoom_to_tbl(dm_nycflights13(), flights) %>%
+#'   enum_fk_candidates(airports)
 #' @export
 dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check

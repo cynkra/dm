@@ -42,6 +42,14 @@ The initial \code{dm} with the additional table(s).
 \code{dm_add_tbl()} adds one or more tables to a \code{\link{dm}}.
 It uses \code{\link[=mutate]{mutate()}} semantics.
 }
+\examples{
+dm_nycflights13() \%>\%
+  dm_add_tbl(cars = mtcars, flowers = iris)
+
+# renaming table names if necessary (depending on the `repair` argument)
+dm_nycflights13() \%>\%
+  dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
+}
 \seealso{
 \code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
 }

@@ -13,6 +13,13 @@
 #'   If no explicit name is given, the name of the expression is used.
 #' @inheritParams vctrs::vec_as_names
 #'
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_add_tbl(cars = mtcars, flowers = iris)
+#'
+#' # renaming table names if necessary (depending on the `repair` argument)
+#' dm_nycflights13() %>%
+#'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   check_dm(dm)
@@ -63,7 +70,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 #' @description
 #' Removes one or more tables from a [`dm`].
 #'
-#' @return The dm without the removed table(s) that were present in the initial `dm`.
+#' @return The `dm` without the removed table(s) that were present in the initial `dm`.
 #'
 #' @seealso [dm_add_tbl()], [dm_select_tbl()]
 #'

@@ -229,3 +229,54 @@ test_that("validator speaks up when something's wrong", {
     "dm_invalid"
   )
 })
+
+test_that("`pull_tbl()`-methods work", {
+  walk(
+    dm_for_filter_src,
+    function(dm_for_filter) {
+      expect_identical(
+        pull_tbl(dm_for_filter, t5) %>% collect(),
+        t5
+      )
+    }
+  )
+
+  walk(
+    dm_for_filter_src,
+    function(dm_for_filter) {
+      expect_identical(
+        dm_zoom_to_tbl(dm_for_filter, t3) %>%
+          mutate(new_col = row_number() * 3) %>%
+          pull_tbl() %>%
+          collect(),
+        mutate(t3, new_col = row_number() * 3)
+      )
+    }
+  )
+
+  expect_identical(
+    dm_zoom_to_tbl(dm_for_filter, t1) %>%
+      pull_tbl(t1),
+    t1
+  )
+
+  expect_dm_error(
+    dm_zoom_to_tbl(dm_for_filter, t1) %>%
+      pull_tbl(t2),
+    "table_not_zoomed"
+  )
+
+  expect_dm_error(
+    pull_tbl(dm_for_filter),
+    "no_table_provided"
+  )
+
+  expect_dm_error(
+    new_dm3(dm_for_filter %>%
+      dm_zoom_to_tbl(t1) %>%
+      dm_get_def() %>%
+      mutate(zoom = list(t1)), zoomed = TRUE) %>%
+      pull_tbl(),
+    "not_pulling_multiple_zoomed"
+  )
+})

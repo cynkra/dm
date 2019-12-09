@@ -27,6 +27,10 @@ check_cardinality(parent_table, pk_column, child_table, fk_column)
 
 \item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}.}
 }
+\value{
+Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
+Otherwise an error is thrown and the reason for it is explained.
+}
 \description{
 All \code{check_cardinality()} functions test the following conditions:
 \enumerate{

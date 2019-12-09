@@ -12,12 +12,12 @@ dm_check_constraints(dm)
 \value{
 A tibble with 5 columns:
 \enumerate{
-\item \code{table}: the table in the \code{dm}
-\item \code{kind}: "PK" or "FK"
-\item \code{column}: a column of the table
-\item \code{ref_table}: for foreign keys, the referenced table
-\item \code{is_key}: logical
-\item \code{problem}: if \code{is_key = FALSE}, the reason for that
+\item \code{table}: the table in the \code{dm},
+\item \code{kind}: "PK" or "FK",
+\item \code{column}: a column of the table,
+\item \code{ref_table}: for foreign keys, the referenced table,
+\item \code{is_key}: logical,
+\item \code{problem}: if \code{is_key = FALSE}, the reason for that.
 }
 }
 \description{

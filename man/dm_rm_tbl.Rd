@@ -13,7 +13,7 @@ dm_rm_tbl(dm, ...)
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 }
 \value{
-The dm without the removed table(s) that were present in the initial \code{dm}.
+The \code{dm} without the removed table(s) that were present in the initial \code{dm}.
 }
 \description{
 Removes one or more tables from a \code{\link{dm}}.

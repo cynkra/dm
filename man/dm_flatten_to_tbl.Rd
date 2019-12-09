@@ -23,7 +23,7 @@ the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
 If this includes tables that are not direct neighbours of \code{start},
 it will only work with \code{dm_squash_to_tbl()} (given one of the allowed join-methods).
-\code{tidyselect} is supported, cf. \code{\link[dplyr:select]{dplyr::select()}}.}
+\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
 \item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
 }

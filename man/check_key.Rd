@@ -10,7 +10,6 @@ check_key(.data, ...)
 \item{.data}{The data frame whose columns should be tested for key properties.}
 
 \item{...}{The names of the columns to be checked.
-If none are specified, then all columns together are tested for the key property.
 
 One or more unquoted expressions separated by commas.
 Variable names can be treated as if they were positions, so you
@@ -22,6 +21,10 @@ unquoting and splicing.
 See vignette("programming") for an introduction to these concepts.
 
 See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...}
+}
+\value{
+Returns \code{.data}, invisibly, if the check is passed.
+Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
 \code{check_key()} accepts a data frame and, optionally, columns.

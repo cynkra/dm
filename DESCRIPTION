@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational data models
-Version: 0.0.5.9002
-Date: 2019-11-30
+Version: 0.0.6
+Date: 2019-12-05
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -65,4 +65,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2

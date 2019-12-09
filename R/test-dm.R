@@ -2,6 +2,8 @@
 #'
 #' @description Works like `dbplyr::test_load()`, just for `dm`_objects.
 #'
+#' @return A list of the same `dm` object on different \pkg{dplyr} sources.
+#'
 #' @noRd
 #' @examples
 #' dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
@@ -10,9 +12,9 @@
 #' dm_test_obj <- dm_nycflights13(cycle = TRUE)
 #' dm_test_obj_srcs <- dm_test_load(dm_test_obj)
 dm_test_load <- function(x,
-                          srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
-                          ignore = character(),
-                          set_key_constraints = TRUE) {
+                         srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
+                         ignore = character(),
+                         set_key_constraints = TRUE) {
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
 

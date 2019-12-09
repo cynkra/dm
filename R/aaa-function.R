@@ -11,7 +11,11 @@ new_cdm_forward <- function(fwd, env = caller_env()) {
   fwd_args <- set_names(syms(names(args)), names(args))
 
   body <- expr({
-    deprecate_soft("0.1.0", !!paste0("dm::", old_fwd_name, "()"))
+    deprecate_soft(
+      "0.1.0",
+      !!paste0("dm::", old_fwd_name, "()"),
+      !!paste0("dm::", fwd_name, "()"),
+    )
     (!!fwd_sym)(!!!fwd_args)
   })
 
@@ -27,7 +31,11 @@ new_cdm_forward_2 <- function(fwd, env = caller_env()) {
   args <- formals(fwd)
 
   body <- expr({
-    deprecate_soft("0.1.0", !!paste0("dm::", old_fwd_name, "()"))
+    deprecate_soft(
+      "0.1.0",
+      !!paste0("dm::", old_fwd_name, "()"),
+      !!paste0("dm::", fwd_name, "()"),
+    )
     !!body(fwd)
   })
 

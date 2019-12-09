@@ -5,12 +5,12 @@
 #' @inheritParams dm_add_pk
 #'
 #' @return A tibble with 5 columns:
-#'   1. `table`: the table in the `dm`
-#'   1. `kind`: "PK" or "FK"
-#'   1. `column`: a column of the table
-#'   1. `ref_table`: for foreign keys, the referenced table
-#'   1. `is_key`: logical
-#'   1. `problem`: if `is_key = FALSE`, the reason for that
+#'   1. `table`: the table in the `dm`,
+#'   1. `kind`: "PK" or "FK",
+#'   1. `column`: a column of the table,
+#'   1. `ref_table`: for foreign keys, the referenced table,
+#'   1. `is_key`: logical,
+#'   1. `problem`: if `is_key = FALSE`, the reason for that.
 #'
 #' @details For the primary key constraints, it is tested if the values in the respective columns are all unique.
 #' For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column
@@ -39,7 +39,6 @@ dm_check_constraints <- function(dm) {
 #'
 #' @param .data The data frame whose columns should be tested for key properties.
 #' @param ... The names of the columns to be checked.
-#'   If none are specified, then all columns together are tested for the key property.
 #'
 #'   One or more unquoted expressions separated by commas.
 #'   Variable names can be treated as if they were positions, so you
@@ -51,6 +50,9 @@ dm_check_constraints <- function(dm) {
 #'   See vignette("programming") for an introduction to these concepts.
 #'
 #'   See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
+#'
+#' @return Returns `.data`, invisibly, if the check is passed.
+#'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
 #' @examples
@@ -72,8 +74,9 @@ check_key <- function(.data, ...) {
   duplicate_rows <-
     .data %>%
     count(!!!syms(cols_chosen)) %>%
-    count(n) %>%
+    select(n) %>%
     filter(n > 1) %>%
+    head(1) %>%
     collect()
 
   if (nrow(duplicate_rows) != 0) {
@@ -114,6 +117,9 @@ is_unique_key <- nse(function(.data, column) {
 #' @param c1 The column of `t1` that should only contain values that are also present in column `c2` of data frame `t2`.
 #' @param t2 The data frame that contains column `c2`.
 #' @param c2 The column of `t2` that should only contain values that are also present in column `c1` of data frame `t1`.
+#'
+#' @return Returns `t1`, invisibly, if the check is passed.
+#'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
 #' @examples
@@ -166,6 +172,9 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' @param c1 The column of `t1` that should only contain the values that are also present in column `c2` of data frame `t2`.
 #' @param t2 The data frame that contains column `c2`.
 #' @param c2 The column of the second data frame that has to contain all values of `c1` to avoid an error.
+#'
+#' @return Returns `t1`, invisibly, if the check is passed.
+#'   Otherwise an error is thrown and the reason for it is explained.
 #'
 #' @export
 #' @examples

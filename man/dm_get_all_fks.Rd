@@ -11,13 +11,17 @@ dm_get_all_fks(dm)
 }
 \value{
 A tibble with columns:
-
-"child_table": child table,
-"child_fk_col": foreign key column in child table,
-"parent_table": parent table
+\itemize{
+\item "child_table": child table,
+\item "child_fk_col": foreign key column in child table,
+\item "parent_table": parent table.
+}
 }
 \description{
 Get a summary of all foreign key relations in a \code{\link{dm}}
+}
+\examples{
+dm_get_all_fks(dm_nycflights13())
 }
 \seealso{
 Other foreign key functions: 

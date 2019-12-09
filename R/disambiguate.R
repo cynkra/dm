@@ -14,6 +14,8 @@
 #' @param quiet Boolean.
 #'   By default, this function lists the renamed columns in a message, pass `FALSE` to suppress this message.
 #'
+#' @return A `dm` whose column names are unambiguous.
+#'
 #' @examples
 #' dm_disambiguate_cols(dm_nycflights13())
 #' @export

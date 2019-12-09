@@ -14,6 +14,9 @@ dm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 \item{quiet}{Boolean.
 By default, this function lists the renamed columns in a message, pass \code{FALSE} to suppress this message.}
 }
+\value{
+A \code{dm} whose column names are unambiguous.
+}
 \description{
 This function ensures that all columns in \code{dm} have unique names.
 }

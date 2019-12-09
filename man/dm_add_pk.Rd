@@ -19,6 +19,9 @@ dm_add_pk(dm, table, column, check = FALSE, force = FALSE)
 set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 }
+\value{
+An updated \code{dm} with an additional primary key.
+}
 \description{
 \code{dm_add_pk()} marks the specified column as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if
@@ -29,16 +32,15 @@ set key.
 \examples{
 library(dplyr)
 
-
 nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 
 # the following works
 dm_add_pk(nycflights_dm, planes, tailnum)
-dm_add_pk(nycflights_dm, airports, faa)
-dm_add_pk(nycflights_dm, planes, manufacturer, check = FALSE)
+dm_add_pk(nycflights_dm, airports, faa, check = TRUE)
+dm_add_pk(nycflights_dm, planes, manufacturer)
 
 # the following does not work (throws an error)
-try(dm_add_pk(nycflights_dm, planes, manufacturer))
+try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
 }
 \seealso{
 Other primary key functions: 

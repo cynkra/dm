@@ -19,6 +19,8 @@
 #'
 #' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
 #'
+#' @return An updated `dm` with the columns of `table` renamed.
+#'
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_rename(airports, code = faa, altitude = alt)
@@ -36,13 +38,14 @@ dm_rename <- function(dm, table, ...) {
 #' Select columns of your [`dm`] using syntax that is similar to `dplyr::select()`.
 #'
 #' @inheritParams dm_rename
+#' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
+#' If key columns are removed, then all related relations are dropped as well.
+#'
+#' @return An updated `dm` with the columns of `table` reduced and/or renamed.
 #'
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_select(airports, code = faa, altitude = alt)
-#' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
-#' If key columns are removed, then all related relations are dropped as well.
-#'
 #' @export
 dm_select <- function(dm, table, ...) {
   table_name <- as_string(ensym(table))

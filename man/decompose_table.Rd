@@ -25,6 +25,13 @@ See vignette("programming") for an introduction to those concepts.
 
 See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...}
 }
+\value{
+A named list of length two:
+\itemize{
+\item entry "child_table": the child table with column \code{new_id_column} referring to the same column in \code{parent_table},
+\item entry "parent_table": the "lookup table" for \code{child_table}.
+}
+}
 \description{
 Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
 
@@ -36,8 +43,6 @@ Then it removes those
 columns from the original table, which is now called the 'child table, and adds the 'ID column'.
 }
 \examples{
-library(magrittr)
-
 decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
 decomposed_table$child_table
 decomposed_table$parent_table

@@ -16,9 +16,20 @@ If \code{NULL}, all columns will be evaluated.}
 
 \item{ref_table}{The table that \code{table} was referencing.}
 }
+\value{
+An updated \code{dm} without the given foreign key relation.
+}
 \description{
 This function can remove either one reference between two tables, or all references at once, if argument \code{column = NULL}.
 All arguments may be provided quoted or unquoted.
+}
+\examples{
+dm_rm_fk(
+  dm_nycflights13(cycle = TRUE),
+  flights,
+  dest,
+  airports
+)
 }
 \seealso{
 Other foreign key functions: 

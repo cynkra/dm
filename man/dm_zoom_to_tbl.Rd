@@ -45,6 +45,11 @@ caused by repairing the names. This only concerns unique and
 universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
 }
+\value{
+For \code{dm_zoom_to_tbl()}: A \code{zoomed_dm} object.
+
+For \code{dm_insert_zoomed_tbl()}, \code{dm_update_zoomed_tbl()} and \code{dm_zoomed_out()}: A \code{dm} object.
+}
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
 context of the \code{dm} object.
@@ -63,16 +68,45 @@ Whenever possible, the key relations of the original table are transferred to th
 when using \code{dm_insert_zoomed_tbl()} or \code{dm_update_zoomed_tbl()}.
 
 Functions from \code{dplyr} that are supported for a \code{zoomed_dm}: \code{group_by()}, \code{summarise()}, \code{mutate()},
-\code{transmute()}, \code{select()}, \code{rename()} and \code{ungroup()}.
+\code{transmute()}, \code{filter()}, \code{select()}, \code{rename()} and \code{ungroup()}.
 You can use these functions just like you would
 with a normal table.
 
-\code{filter()} is also supported, but treated in a special way: the filter expression for the zoomed table is
-stored in the \code{dm} and is treated in a way that depends on which function you use to return to a normal \code{dm}:
+In addition to filtering the zoomed table, the filter condition from \code{filter()} is also stored in the \code{dm}.
+Depending on which function you use to return to a normal \code{dm}, one of the following happens:
 \enumerate{
 \item \code{dm_zoom_out()}: all filter conditions for the zoomed table are discarded
 \item \code{dm_update_zoomed_tbl()}: the filter conditions of the original table and those of the zoomed table are combined
 \item \code{dm_insert_zoomed_tbl()}: the filter conditions of the original table stay there and those of the zoomed table are
 transferred to the new table of the \code{dm}
 }
+
+Furthermore, the different \code{join()}-variants from {dplyr} are also supported (apart from \code{nest_join()}).
+The join-methods for \code{zoomed_dm} have an extra argument \code{select} that let's you choose the columns of the RHS table
+in a {tidyselect} manner.
+
+And -- last but not least -- also the {tidyr}-functions \code{unite()} and \code{separate()} are supported for \code{zoomed_dm}.
+}
+\examples{
+library(dplyr)
+flights_zoomed <- dm_zoom_to_tbl(dm_nycflights13(), flights)
+
+flights_zoomed
+
+flights_zoomed_transformed <-
+  flights_zoomed \%>\%
+  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) \%>\%
+  # `by`-argument of `left_join()` can be explicitly given
+  # otherwise the key-relation is used
+  left_join(airports) \%>\%
+  select(year:dep_time, am_pm_dep, everything())
+
+# replace table `flights` with the zoomed table
+dm_update_zoomed_tbl(flights_zoomed_transformed)
+
+# insert the zoomed table as a new table
+dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+
+# discard the zoomed table
+dm_zoom_out(flights_zoomed_transformed)
 }
