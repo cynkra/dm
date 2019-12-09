@@ -632,3 +632,34 @@ test_that("can use column as primary and foreign key", {
     dm
   )
 })
+
+test_that("'summarize_at()' etc. work", {
+  expect_identical(
+    dm_nycflights_small %>%
+      dm_zoom_to_tbl(airports) %>%
+      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max)) %>%
+      get_zoomed_tbl(),
+    pull_tbl(dm_nycflights_small, airports) %>%
+      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max))
+  )
+
+  expect_identical(
+    dm_nycflights_small %>%
+      dm_zoom_to_tbl(airports) %>%
+      select(3:6) %>%
+      summarize_all(list(mean = mean, median = median)) %>%
+      get_zoomed_tbl(),
+    pull_tbl(dm_nycflights_small, airports) %>%
+      select(3:6) %>%
+      summarize_all(list(mean = mean, median = median))
+  )
+
+  expect_identical(
+    dm_nycflights_small %>%
+      dm_zoom_to_tbl(airports) %>%
+      summarize_if(is_double, list(mean = mean, median = median)) %>%
+      get_zoomed_tbl(),
+    pull_tbl(dm_nycflights_small, airports) %>%
+      summarize_if(is_double, list(mean = mean, median = median))
+  )
+})
