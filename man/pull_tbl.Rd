@@ -28,5 +28,4 @@ dm_nycflights13() \%>\%
 dm_nycflights13() \%>\%
   dm_zoom_to_tbl(airlines) \%>\%
   pull_tbl()
-
 }
