@@ -13,7 +13,7 @@ test_that("API", {
   )
 })
 
-test_that("`dm_set_colors()` works",  {
+test_that("`dm_set_colors()` works", {
   expect_identical(
     dm_set_colors(
       dm_nycflights_small,
@@ -21,12 +21,14 @@ test_that("`dm_set_colors()` works",  {
       green = contains("h")
     ) %>%
       dm_get_colors(),
-    set_names(src_tbls(dm_nycflights_small),
-              c("green", NA_character_, "blue", "blue", "green"))
+    set_names(
+      src_tbls(dm_nycflights_small),
+      c("green", NA_character_, "blue", "blue", "green")
     )
+  )
 })
 
-test_that("`dm_set_colors()` forwards with warning if old syntax used",  {
+test_that("`dm_set_colors()` forwards with warning if old syntax used", {
   expect_identical(
     expect_warning(
       dm_set_colors(
@@ -34,12 +36,15 @@ test_that("`dm_set_colors()` forwards with warning if old syntax used",  {
         airports = ,
         airlines = "blue",
         flights = ,
-        weather = "green") %>%
+        weather = "green"
+      ) %>%
         dm_get_colors(),
       "When setting colors"
     ),
-    set_names(src_tbls(dm_nycflights_small),
-              c("green", NA_character_, "blue", "blue", "green"))
+    set_names(
+      src_tbls(dm_nycflights_small),
+      c("green", NA_character_, "blue", "blue", "green")
+    )
   )
 })
 
@@ -65,7 +70,8 @@ test_that("bad color", {
 test_that("getter", {
   expect_equal(
     dm_get_colors(dm_nycflights13()),
-    c(orange = "airlines",
+    c(
+      orange = "airlines",
       orange = "airports",
       blue = "flights",
       orange = "planes",
