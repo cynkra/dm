@@ -280,3 +280,56 @@ test_that("`pull_tbl()`-methods work", {
     "not_pulling_multiple_zoomed"
   )
 })
+
+test_that("numeric subsetting works", {
+
+  # check specifically for the right output in one case
+  expect_equal(dm_for_filter[[4]], t4)
+
+  # compare numeric subsetting and subsetting by name on all sources
+  walk(
+    dm_for_filter_src,
+    ~ expect_equal(
+      .x[["t2"]],
+      .x[[2]]
+    )
+  )
+
+  # check if reducing `dm` size works on all sources
+  walk(
+    dm_for_filter_src,
+    ~ expect_equivalent_dm(
+      .x[c(1, 3, 5)],
+      dm_select_tbl(.x, 1, 3, 5)
+    )
+  )
+})
+
+test_that("subsetting for dm/zoomed_dm", {
+  expect_identical(dm_for_filter$t5, t5)
+  expect_identical(
+    dm_zoom_to_tbl(dm_for_filter, t2)$c,
+    pull(t2, c)
+  )
+
+  expect_identical(dm_for_filter[["t3"]], t3)
+  expect_identical(
+    dm_zoom_to_tbl(dm_for_filter, t3)[["g"]],
+    pull(t3, g)
+  )
+
+  expect_identical(dm_for_filter[c("t5", "t4")], dm_select_tbl(dm_for_filter, t5, t4))
+  expect_identical(
+    dm_zoom_to_tbl(dm_for_filter, t3)[c("g", "f", "g")],
+    t3[c("g", "f", "g")]
+  )
+})
+
+test_that("methods for dm/zoomed_dm work", {
+  expect_identical(length(dm_for_filter), 6L)
+  expect_identical(length(dm_zoom_to_tbl(dm_for_filter, t2)), 3L)
+
+  expect_identical(names(dm_for_filter), src_tbls(dm_for_filter))
+  expect_identical(names(dm_zoom_to_tbl(dm_for_filter, t2)), colnames(t2))
+
+})
