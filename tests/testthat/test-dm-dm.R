@@ -331,5 +331,4 @@ test_that("methods for dm/zoomed_dm work", {
 
   expect_identical(names(dm_for_filter), src_tbls(dm_for_filter))
   expect_identical(names(dm_zoom_to_tbl(dm_for_filter, t2)), colnames(t2))
-
 })

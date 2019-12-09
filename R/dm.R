@@ -538,8 +538,9 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   # from here on code "borrowed" from tibble:::`$.tbl_df`
   if (is.character(name)) {
     ret <- .subset2(x, name)
-    if (is.null(ret))
+    if (is.null(ret)) {
       warning(c("Unknown or uninitialised column: '", name, "'."))
+    }
     return(ret)
   }
   .subset2(x, name)
