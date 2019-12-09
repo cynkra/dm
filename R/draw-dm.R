@@ -155,11 +155,9 @@ dm_set_colors <- function(dm, ...) {
       "When setting colors with `dm_set_colors()`, ",
       "the syntax is now as follows: `blue = table_name1, ",
       "orange = table_name2` etc. (tidyselect supported) ",
-      "Forwarding your function call ",
-      "to the old implementation of `dm_set_colors()`."
-    ))
-    return(dm_set_colors2(dm, !!!quos))
-  }
+      "Forwarding the function call ",
+      "to the old implementation of `dm_set_colors()`."))
+    return(dm_set_colors2(dm, !!!quos))}
 
   avail_tables <- src_tbls(dm)
   selected_tables <- tidyselect::vars_select(avail_tables, ...) %>%
