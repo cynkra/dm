@@ -47,7 +47,7 @@
 #'     dm_get_con()
 #' }
 #' dm_nycflights13() %>% dm_get_tables()
-#' dm_nycflights13() %>% dm_get_filter()
+#' dm_nycflights13() %>% dm_get_filters()
 #' dm_nycflights13() %>% validate_dm()
 #' is_dm(dm_nycflights13())
 #' dm_nycflights13()["airports"]
@@ -365,7 +365,7 @@ dm_get_data_model_fks <- function(x) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_filter()`: A tibble with columns:
+#' @return For `dm_get_filters()`: A tibble with columns:
 #'
 #' - "table": table that was filtered,
 #' - "filter": the filter expression,

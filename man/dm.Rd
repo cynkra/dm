@@ -61,7 +61,7 @@ For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnec
 
 For \code{dm_get_tables()}: A named list with the tables constituing the \code{dm}.
 
-For \code{dm_get_filter()}: A tibble with columns:
+For \code{dm_get_filters()}: A tibble with columns:
 \itemize{
 \item "table": table that was filtered,
 \item "filter": the filter expression,
@@ -129,7 +129,7 @@ if (FALSE) {
     dm_get_con()
 }
 dm_nycflights13() \%>\% dm_get_tables()
-dm_nycflights13() \%>\% dm_get_filter()
+dm_nycflights13() \%>\% dm_get_filters()
 dm_nycflights13() \%>\% validate_dm()
 is_dm(dm_nycflights13())
 dm_nycflights13()["airports"]
