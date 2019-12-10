@@ -19,11 +19,13 @@ dm_separate_tbl <- function(dm, table, new_key_column, ...) {
 
   old_primary_key <- dm_get_pk(dm, !!table_name)
   if (has_length(old_primary_key) && old_primary_key %in% sel_vars) {
-    warning(glue("Primary key column {tick(old_primary_key)} of {tick(table_name)} in ",
-                 "selected columns for `dm_separate_table()`. ",
-                 "As a result the primary key will be dropped"))
+    warning(glue(
+      "Primary key column {tick(old_primary_key)} of {tick(table_name)} in ",
+      "selected columns for `dm_separate_table()`. ",
+      "As a result the primary key will be dropped"
+    ))
     dm <- dm_rm_pk(dm, !!table_name, rm_referencing_fks = TRUE)
-    }
+  }
 
   parent_table <-
     select(.data, !!!sel_vars) %>%
@@ -53,7 +55,8 @@ dm_separate_tbl <- function(dm, table, new_key_column, ...) {
 
   dm_get_def(dm) %>%
     mutate(
-      data = if_else(table == table_name, list(child_table), data)) %>%
+      data = if_else(table == table_name, list(child_table), data)
+    ) %>%
     new_dm3() %>%
     dm_add_tbl_impl(list(parent_table), parent_table_name) %>%
     dm_add_pk_impl(parent_table_name, new_col_name, FALSE) %>%
@@ -62,12 +65,16 @@ dm_separate_tbl <- function(dm, table, new_key_column, ...) {
     reduce2(
       affected_fks$child_fk_col,
       affected_fks$parent_table,
-      ~ dm_rm_fk(..1, !!table_name, !!..2, !!..3), .init = .) %>%
+      ~ dm_rm_fk(..1, !!table_name, !!..2, !!..3),
+      .init = .
+    ) %>%
     # add FK-constraints to new table
     reduce2(
       affected_fks$child_fk_col,
       affected_fks$parent_table,
-      ~ dm_add_fk_impl(..1, parent_table_name, ..2, ..3), .init = .)
+      ~ dm_add_fk_impl(..1, parent_table_name, ..2, ..3),
+      .init = .
+    )
 }
 
 
@@ -229,8 +236,9 @@ dm_unite_tbls <- function(dm, table_1, table_2) {
     filter(child_table == other)
 
   res_tbl <- dm_flatten_to_tbl_impl(
-    dm, start, !!other, join = left_join, join_name = "left_join", squash = FALSE
-    ) %>%
+    dm, start, !!other,
+    join = left_join, join_name = "left_join", squash = FALSE
+  ) %>%
     select(-!!key_col)
 
   dm %>%
@@ -238,8 +246,9 @@ dm_unite_tbls <- function(dm, table_1, table_2) {
     dm_get_def() %>%
     mutate(data = if_else(table == start, list(res_tbl), data)) %>%
     reduce(keys_to_transfer$child_fk_col,
-           keys_to_transfer$parent_table,
-           ~ dm_add_fk_impl(..1, start, ..2, ..3),
-           .init = .) %>%
+      keys_to_transfer$parent_table,
+      ~ dm_add_fk_impl(..1, start, ..2, ..3),
+      .init = .
+    ) %>%
     new_dm3()
 }

@@ -110,7 +110,6 @@ test_that("dm_separate_tbl() works", {
       dm_add_pk(iris_1, key) %>%
       dm_add_fk(iris_2, key, iris_1) %>%
       dm_add_fk(iris_1, Species_Sepal, iris_1_lookup)
-
   )
 })
 
