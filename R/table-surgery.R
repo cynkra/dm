@@ -1,4 +1,4 @@
-dm_separate_table <- function(dm, table, new_key_column, ...) {
+dm_separate_tbl <- function(dm, table, new_key_column, ...) {
   table_name <- as_string(ensym(table))
   check_correct_input(dm, table_name)
   check_no_filter(dm)
@@ -51,13 +51,13 @@ dm_separate_table <- function(dm, table, new_key_column, ...) {
 
   affected_fks <- filter(old_foreign_keys, child_fk_col %in% sel_vars)
 
-  upd_dm <- dm_get_def(dm) %>%
+  dm_get_def(dm) %>%
     mutate(
       data = if_else(table == table_name, list(child_table), data)) %>%
     new_dm3() %>%
     dm_add_tbl_impl(list(parent_table), parent_table_name) %>%
-    dm_add_pk(!!parent_table_name, !!new_col_name) %>%
-    dm_add_fk(!!table_name, !!new_col_name, !!parent_table_name) %>%
+    dm_add_pk_impl(parent_table_name, new_col_name, FALSE) %>%
+    dm_add_fk_impl(table_name, new_col_name, parent_table_name) %>%
     # remove FK-constraints from original table
     reduce2(
       affected_fks$child_fk_col,
@@ -67,7 +67,7 @@ dm_separate_table <- function(dm, table, new_key_column, ...) {
     reduce2(
       affected_fks$child_fk_col,
       affected_fks$parent_table,
-      ~ dm_add_fk(..1, !!parent_table_name, !!..2, !!..3), .init = .)
+      ~ dm_add_fk_impl(..1, parent_table_name, ..2, ..3), .init = .)
 }
 
 
