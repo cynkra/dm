@@ -280,3 +280,15 @@ test_that("`pull_tbl()`-methods work", {
     "not_pulling_multiple_zoomed"
   )
 })
+
+test_that("as.list()-methods work", {
+  expect_identical(
+    as.list(dm_for_filter),
+    list_for_filter
+  )
+
+  expect_identical(
+    as.list(dm_for_filter %>% dm_zoom_to_tbl(t4)),
+    list(t4 = t4)
+  )
+})
