@@ -1,3 +1,76 @@
+dm_separate_table <- function(dm, table, new_key_column, ...) {
+  table_name <- as_string(ensym(table))
+  check_correct_input(dm, table_name)
+  check_no_filter(dm)
+  check_not_zoomed(dm)
+
+  .data <- tbl(dm, table_name)
+  parent_table_name <- paste0(table_name, "_lookup")
+  new_col_name <- as_string(enexpr(new_key_column))
+
+  avail_cols <- colnames(.data)
+  id_col_q <- ensym(new_key_column)
+
+  if (as_string(id_col_q) %in% avail_cols) {
+    abort_dupl_new_id_col_name(table_name)
+  }
+
+  sel_vars <- tidyselect::vars_select(avail_cols, ...)
+
+  old_primary_key <- dm_get_pk(dm, !!table_name)
+  if (has_length(old_primary_key) && old_primary_key %in% sel_vars) {
+    warning(glue("Primary key column {tick(old_primary_key)} of {tick(table_name)} in ",
+                 "selected columns for `dm_separate_table()`. ",
+                 "As a result the primary key will be dropped"))
+    dm <- dm_rm_pk(dm, !!table_name, rm_referencing_fks = TRUE)
+    }
+
+  parent_table <-
+    select(.data, !!!sel_vars) %>%
+    distinct() %>%
+    # Without as.integer(), RPostgres creates integer64 column (#15)
+    arrange(!!!syms(names(sel_vars))) %>%
+    mutate(!!id_col_q := as.integer(row_number())) %>%
+    select(!!id_col_q, everything())
+
+  non_key_names <-
+    setdiff(avail_cols, sel_vars)
+
+  child_table <-
+    .data %>%
+    left_join(
+      parent_table,
+      by = prep_recode(sel_vars)
+    ) %>%
+    select(non_key_names, !!id_col_q)
+  # FIXME: Think about a good place for the target column,
+  # perhaps if this operation is run in a data model?
+
+  old_foreign_keys <- dm_get_all_fks(dm) %>%
+    filter(child_table == table_name)
+
+  affected_fks <- filter(old_foreign_keys, child_fk_col %in% sel_vars)
+
+  upd_dm <- dm_get_def(dm) %>%
+    mutate(
+      data = if_else(table == table_name, list(child_table), data)) %>%
+    new_dm3() %>%
+    dm_add_tbl_impl(list(parent_table), parent_table_name) %>%
+    dm_add_pk(!!parent_table_name, !!new_col_name) %>%
+    dm_add_fk(!!table_name, !!new_col_name, !!parent_table_name) %>%
+    # remove FK-constraints from original table
+    reduce2(
+      affected_fks$child_fk_col,
+      affected_fks$parent_table,
+      ~ dm_rm_fk(..1, !!table_name, !!..2, !!..3), .init = .) %>%
+    # add FK-constraints to new table
+    reduce2(
+      affected_fks$child_fk_col,
+      affected_fks$parent_table,
+      ~ dm_add_fk(..1, !!parent_table_name, !!..2, !!..3), .init = .)
+}
+
+
 #' Decompose a table into two linked tables
 #'
 #' @description Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
