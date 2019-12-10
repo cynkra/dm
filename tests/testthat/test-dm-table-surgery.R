@@ -96,3 +96,29 @@ test_that("table surgery functions fail in the expected ways?", {
     }
   )
 })
+
+test_that("dm_separate_tbl() works", {
+  iris_1_dec <- decompose_table(iris_1, Species_Sepal, starts_with("Sepal"), Species)
+
+  expect_equivalent_dm(
+    dm_for_disambiguate %>% dm_separate_tbl(iris_1, Species_Sepal, starts_with("Sepal"), Species),
+    dm_for_disambiguate %>%
+      dm_rm_tbl(iris_1) %>%
+      dm_add_tbl(iris_1 = iris_1_dec$child_table, iris_1_lookup = iris_1_dec$parent_table) %>%
+      dm_select_tbl(iris_1, iris_2, iris_3, iris_1_lookup) %>%
+      dm_add_pk(iris_1_lookup, Species_Sepal) %>%
+      dm_add_pk(iris_1, key) %>%
+      dm_add_fk(iris_2, key, iris_1) %>%
+      dm_add_fk(iris_1, Species_Sepal, iris_1_lookup)
+
+  )
+})
+
+test_that("dm_unite_tbls() works", {
+  expect_equivalent_dm(
+    dm_for_disambiguate %>%
+      dm_separate_tbl(iris_1, Species_Sepal, starts_with("Sepal"), Species) %>%
+      dm_unite_tbls(iris_1, iris_1_lookup),
+    dm_for_disambiguate
+  )
+})
