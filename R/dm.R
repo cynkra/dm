@@ -301,7 +301,7 @@ dm_get_con <- function(x) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_tables()`: A named list with the tables constituing the `dm`.
+#' @return For `dm_get_tables()`: A named list with the tables constituting the `dm`.
 #'
 #' @export
 dm_get_tables <- function(x) {
