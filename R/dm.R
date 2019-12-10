@@ -759,3 +759,16 @@ pull_tbl.zoomed_dm <- function(dm, table) {
       pluck(1)
   }
 }
+
+#' @export
+as.list.dm <- function(x, ...) {
+  dm_get_tables(x)
+}
+
+#' @export
+as.list.zoomed_dm <- function(x, ...) {
+  dm_get_def(x) %>%
+    select(table, zoom) %>%
+    filter(!map_lgl(zoom, is_null)) %>%
+    deframe()
+}
