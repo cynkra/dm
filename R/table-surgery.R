@@ -211,3 +211,35 @@ reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_colum
     left_join(parent_table, by = id_col_chr) %>%
     select(-!!id_col_q)
 }
+
+dm_unite_tbls <- function(dm, table_1, table_2) {
+  table_1_name <- as_string(ensym(table_1))
+  table_2_name <- as_string(ensym(table_2))
+
+  check_not_zoomed(dm)
+  check_correct_input(dm, c(table_1_name, table_2_name), 2L)
+  check_no_filter(dm)
+
+  rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
+  start <- rel$child_table
+  other <- rel$parent_table
+  key_col <- rel$child_fk_col
+  # only FKs need to be transferred, because PK-column is lost anyway
+  keys_to_transfer <- dm_get_all_fks(dm) %>%
+    filter(child_table == other)
+
+  res_tbl <- dm_flatten_to_tbl_impl(
+    dm, start, !!other, join = left_join, join_name = "left_join", squash = FALSE
+    ) %>%
+    select(-!!key_col)
+
+  dm %>%
+    dm_rm_tbl(!!other) %>%
+    dm_get_def() %>%
+    mutate(data = if_else(table == start, list(res_tbl), data)) %>%
+    reduce(keys_to_transfer$child_fk_col,
+           keys_to_transfer$parent_table,
+           ~ dm_add_fk_impl(..1, start, ..2, ..3),
+           .init = .) %>%
+    new_dm3()
+}
