@@ -245,10 +245,9 @@ dm_unite_tbls <- function(dm, table_1, table_2) {
     dm_rm_tbl(!!other) %>%
     dm_get_def() %>%
     mutate(data = if_else(table == start, list(res_tbl), data)) %>%
-    reduce(keys_to_transfer$child_fk_col,
-      keys_to_transfer$parent_table,
-      ~ dm_add_fk_impl(..1, start, ..2, ..3),
-      .init = .
-    ) %>%
-    new_dm3()
+    new_dm3() %>%
+    reduce2(keys_to_transfer$child_fk_col,
+            keys_to_transfer$parent_table,
+            ~ dm_add_fk_impl(..1, start, ..2, ..3),
+            .init = .)
 }
