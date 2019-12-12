@@ -1,11 +1,23 @@
-dm_separate_tbl <- function(dm, table, new_key_column, ...) {
+dm_separate_tbl <- function(
+  dm, table, new_key_column, ..., new_table_name = NULL, repair = "check_unique", quiet = FALSE) {
   table_name <- as_string(ensym(table))
   check_correct_input(dm, table_name)
   check_no_filter(dm)
   check_not_zoomed(dm)
 
   .data <- tbl(dm, table_name)
-  parent_table_name <- paste0(table_name, "_lookup")
+
+  new_table_name <- if (is_null(enexpr(new_table_name))) {
+    paste0(table_name, "_lookup")
+  } else {
+    as_string(enexpr(new_table_name))
+  }
+  old_names <- src_tbls(dm)
+  names_list <- repair_table_names(old_names, new_table_name, repair, quiet)
+  # rename old tables in case name repair changed their names
+  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
+  new_table_name <- names_list$new_names
+
   new_col_name <- as_string(enexpr(new_key_column))
 
   avail_cols <- colnames(.data)
@@ -58,9 +70,9 @@ dm_separate_tbl <- function(dm, table, new_key_column, ...) {
       data = if_else(table == table_name, list(child_table), data)
     ) %>%
     new_dm3() %>%
-    dm_add_tbl_impl(list(parent_table), parent_table_name) %>%
-    dm_add_pk_impl(parent_table_name, new_col_name, FALSE) %>%
-    dm_add_fk_impl(table_name, new_col_name, parent_table_name) %>%
+    dm_add_tbl_impl(list(parent_table), new_table_name) %>%
+    dm_add_pk_impl(new_table_name, new_col_name, FALSE) %>%
+    dm_add_fk_impl(table_name, new_col_name, new_table_name) %>%
     # remove FK-constraints from original table
     reduce2(
       affected_fks$child_fk_col,
@@ -72,7 +84,7 @@ dm_separate_tbl <- function(dm, table, new_key_column, ...) {
     reduce2(
       affected_fks$child_fk_col,
       affected_fks$parent_table,
-      ~ dm_add_fk_impl(..1, parent_table_name, ..2, ..3),
+      ~ dm_add_fk_impl(..1, new_table_name, ..2, ..3),
       .init = .
     )
 }
