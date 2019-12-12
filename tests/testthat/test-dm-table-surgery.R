@@ -138,5 +138,4 @@ test_that("dm_unite_tbls() works", {
       dm_unite_tbls(iris_1, iris_2),
     "no_cycles"
   )
-
 })

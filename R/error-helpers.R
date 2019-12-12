@@ -606,6 +606,8 @@ abort_no_pk_in_separate_tbl <- function(pk_col, table_name) {
 }
 
 error_txt_no_pk_in_separate_tbl <- function(pk_col, table_name) {
-  glue("A primary key column (here: {tick(paste0(table_name, '$', pk_col))}) can not be among ",
-    "the selected columns for `dm_separate_table()`.")
+  glue(
+    "A primary key column (here: {tick(paste0(table_name, '$', pk_col))}) can not be among ",
+    "the selected columns for `dm_separate_table()`."
+  )
 }

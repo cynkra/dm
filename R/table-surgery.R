@@ -1,5 +1,5 @@
 dm_separate_tbl <- function(
-  dm, table, new_key_column, ..., new_table_name = NULL, repair = "check_unique", quiet = FALSE) {
+                            dm, table, new_key_column, ..., new_table_name = NULL, repair = "check_unique", quiet = FALSE) {
   table_name <- as_string(ensym(table))
   check_correct_input(dm, table_name)
   check_no_filter(dm)
