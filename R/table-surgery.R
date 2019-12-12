@@ -57,8 +57,6 @@ dm_separate_tbl <- function(
       by = prep_recode(sel_vars)
     ) %>%
     select(non_key_names, !!id_col_q)
-  # FIXME: Think about a good place for the target column,
-  # perhaps if this operation is run in a data model?
 
   old_foreign_keys <- dm_get_all_fks(dm) %>%
     filter(child_table == table_name)
