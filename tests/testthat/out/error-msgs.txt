@@ -162,3 +162,6 @@ In `pull_tbl.zoomed_dm`: Table `blur` not zoomed, zoomed tables: `focus_1`, `foc
 > error_not_pulling_multiple_zoomed()
 [1] "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 
+> error_txt_no_pk_in_separate_tbl("KEY", "DON")
+A primary key column (here: `DON$KEY`) can not be among the selected columns for `dm_separate_table()`.
+

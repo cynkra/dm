@@ -597,3 +597,15 @@ abort_not_pulling_multiple_zoomed <- function() {
 error_not_pulling_multiple_zoomed <- function() {
   "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 }
+
+
+# errors for `dm_separate_tbl()` --------------------------------------------
+
+abort_no_pk_in_separate_tbl <- function(pk_col, table_name) {
+  abort(error_txt_no_pk_in_separate_tbl(pk_col, table_name), .subclass = dm_error_full("no_pk_in_separate_tbl"))
+}
+
+error_txt_no_pk_in_separate_tbl <- function(pk_col, table_name) {
+  glue("A primary key column (here: {tick(paste0(table_name, '$', pk_col))}) can not be among ",
+    "the selected columns for `dm_separate_table()`.")
+}

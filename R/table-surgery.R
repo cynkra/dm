@@ -31,12 +31,7 @@ dm_separate_tbl <- function(
 
   old_primary_key <- dm_get_pk(dm, !!table_name)
   if (has_length(old_primary_key) && old_primary_key %in% sel_vars) {
-    warning(glue(
-      "Primary key column {tick(old_primary_key)} of {tick(table_name)} in ",
-      "selected columns for `dm_separate_table()`. ",
-      "As a result the primary key will be dropped"
-    ))
-    dm <- dm_rm_pk(dm, !!table_name, rm_referencing_fks = TRUE)
+    abort_no_pk_in_separate_tbl(old_primary_key, table_name)
   }
 
   parent_table <-
