@@ -111,6 +111,17 @@ test_that("dm_separate_tbl() works", {
       dm_add_fk(iris_2, key, iris_1) %>%
       dm_add_fk(iris_1, Species_Sepal, iris_1_lookup)
   )
+
+  expect_dm_error(
+    dm_for_disambiguate %>% dm_separate_tbl(iris_1, new_col, key, Species, Sepal.Width),
+    "no_pk_in_separate_tbl"
+  )
+
+  expect_dm_error(
+    dm_for_disambiguate %>%
+      dm_separate_tbl(iris_1, Species_Sepal, starts_with("Sepal"), Species, new_table_name = iris_2),
+    "need_unique_names"
+  )
 })
 
 test_that("dm_unite_tbls() works", {
@@ -120,4 +131,12 @@ test_that("dm_unite_tbls() works", {
       dm_unite_tbls(iris_1, iris_1_lookup),
     dm_for_disambiguate
   )
+
+  expect_dm_error(
+    dm_for_disambiguate %>%
+      dm_add_fk(iris_2, Species, iris_1) %>%
+      dm_unite_tbls(iris_1, iris_2),
+    "no_cycles"
+  )
+
 })
