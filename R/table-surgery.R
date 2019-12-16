@@ -133,7 +133,7 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 #' dm_nycflights13() %>%
 #'   dm_unite_tbls(flights, planes)
 #' @export
-dm_unite_tbls <- function(dm, table_1, table_2) {
+dm_unite_tbls <- function(dm, table_1, table_2, rm_key_col = TRUE) {
   table_1_name <- as_string(ensym(table_1))
   table_2_name <- as_string(ensym(table_2))
 
@@ -144,7 +144,6 @@ dm_unite_tbls <- function(dm, table_1, table_2) {
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
   start <- rel$child_table
   other <- rel$parent_table
-  key_col <- rel$child_fk_col
   # only FKs need to be transferred, because PK-column is lost anyway
   keys_to_transfer <- dm_get_all_fks(dm) %>%
     filter(child_table == other)
@@ -152,8 +151,12 @@ dm_unite_tbls <- function(dm, table_1, table_2) {
   res_tbl <- dm_flatten_to_tbl_impl(
     dm, start, !!other,
     join = left_join, join_name = "left_join", squash = FALSE
-  ) %>%
-    select(-!!key_col)
+  )
+
+  if (rm_key_col) {
+    key_col <- rel$child_fk_col
+    res_tbl <- select(res_tbl, -!!key_col)
+  }
 
   dm %>%
     dm_rm_tbl(!!other) %>%
