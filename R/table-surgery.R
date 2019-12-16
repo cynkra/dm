@@ -15,16 +15,16 @@
 #' @param ... The columns to be extracted from `table`. `tidyselect` is supported, see
 #' [`dplyr::select()`] for details on the semantics.
 #' @param new_table_name Unquoted name for the new table. If `NULL`, the name will be
-#' `table` with the suffix `_lookup`
+#' `table` with the suffix `_lookup`.
 #' @inheritParams dm_add_tbl
 #'
-#' @rdname dm_separate_tbl
+#' @name dm_separate_tbl
 #'
 #' @return A `dm` with one of its tables split into two tables which are linked by
-#' a foreign key relation
+#' a foreign key relation.
 #'
 #' @examples
-#' dm_nycflights13 %>%
+#' dm_nycflights13() %>%
 #'   dm_separate_tbl(flights, ymd, year, month, day)
 #' @export
 dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NULL, repair = "check_unique", quiet = FALSE) {
