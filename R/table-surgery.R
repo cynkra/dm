@@ -1,5 +1,33 @@
-dm_separate_tbl <- function(
-                            dm, table, new_key_column, ..., new_table_name = NULL, repair = "check_unique", quiet = FALSE) {
+#' Decompose a table into two linked tables
+#'
+#' @description Extract a lookup table from a table in a `dm`, linking the original table and the new table by a key.
+#'
+#' `dm_separate_table()` accepts a `dm`, an unquoted table name, a name for the new column
+#' which will be created to link the two tables and the names of the columns that will be
+#' used in order to form the new table.
+#'
+#' In addition you can specify the name of the newly created table and how possible
+#' conflicts with existing table names should be handled.
+#'
+#' @inheritParams dm_add_pk
+#' @param new_key_column Name of the identifier column (primary key column) for the
+#' newly created lookup (parent) table. A column of this name is also added in `table`.
+#' @param ... The columns to be extracted from `table`. `tidyselect` is supported, see
+#' [`dplyr::select()`] for details on the semantics.
+#' @param new_table_name Unquoted name for the new table. If `NULL`, the name will be
+#' `table` with the suffix `_lookup`
+#' @inheritParams dm_add_tbl
+#'
+#' @rdname dm_separate_tbl
+#'
+#' @return A `dm` with one of its tables split into two tables which are linked by
+#' a foreign key relation
+#'
+#' @examples
+#' dm_nycflights13 %>%
+#'   dm_separate_tbl(flights, ymd, year, month, day)
+#' @export
+dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NULL, repair = "check_unique", quiet = FALSE) {
   table_name <- as_string(ensym(table))
   check_correct_input(dm, table_name)
   check_no_filter(dm)
