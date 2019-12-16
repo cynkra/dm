@@ -18,8 +18,6 @@
 #' `table` with the suffix `_lookup`.
 #' @inheritParams dm_add_tbl
 #'
-#' @name dm_separate_tbl
-#'
 #' @return A `dm` with one of its tables split into two tables which are linked by
 #' a foreign key relation.
 #'
@@ -124,8 +122,6 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 #' @param table_2 A table of the `dm` that is directly linked to `table_1`
 #' @param rm_key_col Boolean, if `TRUE` (default), the FK column is removed after
 #' joining the two tables. Otherwise the key column of the child table is kept.
-#'
-#' @rdname dm_separate_tbl
 #'
 #' @return The original `dm` with two of its tables merged into one.
 #'

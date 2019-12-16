@@ -2,7 +2,6 @@
 % Please edit documentation in R/table-surgery.R
 \name{dm_separate_tbl}
 \alias{dm_separate_tbl}
-\alias{dm_unite_tbls}
 \title{Decompose a table into two linked tables}
 \usage{
 dm_separate_tbl(
@@ -14,8 +13,6 @@ dm_separate_tbl(
   repair = "check_unique",
   quiet = FALSE
 )
-
-dm_unite_tbls(dm, table_1, table_2, rm_key_col = TRUE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -53,19 +50,10 @@ Instead, an error is raised if the names don't suit the
 caused by repairing the names. This only concerns unique and
 universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
-
-\item{table_1}{A table of the \code{dm} that is directly linked to \code{table_2}}
-
-\item{table_2}{A table of the \code{dm} that is directly linked to \code{table_1}}
-
-\item{rm_key_col}{Boolean, if \code{TRUE} (default), the FK column is removed after
-joining the two tables. Otherwise the key column of the child table is kept.}
 }
 \value{
 A \code{dm} with one of its tables split into two tables which are linked by
 a foreign key relation.
-
-The original \code{dm} with two of its tables merged into one.
 }
 \description{
 Extract a lookup table from a table in a \code{dm}, linking the original table and the new table by a key.
@@ -76,17 +64,8 @@ used in order to form the new table.
 
 In addition you can specify the name of the newly created table and how possible
 conflicts with existing table names should be handled.
-
-Join two tables together by their foreign key and update the
-\code{dm} accordingly. This is similar to \code{dm_join_to_tbl()}, only that the resulting
-table will be part of the \code{dm}. The name of the child table (the table with the
-foreign key relation pointing away from it) will be used for the resulting table.
-
-Foreign key relations are kept whenever possible.
 }
 \examples{
 dm_nycflights13() \%>\%
   dm_separate_tbl(flights, ymd, year, month, day)
-dm_nycflights13() \%>\%
-  dm_unite_tbls(flights, planes)
 }
