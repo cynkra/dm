@@ -144,7 +144,7 @@ dm_nycflights13()$airports
 \item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
 \item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
-\item \code{\link[=decompose_table]{decompose_table()}} as one example of the table surgery family
+\item \code{\link[=dm_separate_tbl]{dm_separate_tbl()}} as one example of the normalization family
 \item \code{\link[=check_key]{check_key()}} and \code{\link[=check_if_subset]{check_if_subset()}} for checking for key properties
 \item \code{\link[=check_cardinality]{check_cardinality()}} for checking the cardinality of the relation between two tables
 \item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object

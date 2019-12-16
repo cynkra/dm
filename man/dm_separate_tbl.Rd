@@ -69,3 +69,8 @@ conflicts with existing table names should be handled.
 dm_nycflights13() \%>\%
   dm_separate_tbl(flights, ymd, year, month, day)
 }
+\seealso{
+Other normalization: 
+\code{\link{dm_unite_tbls}()}
+}
+\concept{normalization}

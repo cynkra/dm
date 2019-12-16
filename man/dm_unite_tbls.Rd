@@ -31,3 +31,8 @@ Foreign key relations are kept whenever possible.
 dm_nycflights13() \%>\%
   dm_unite_tbls(flights, planes)
 }
+\seealso{
+Other normalization: 
+\code{\link{dm_separate_tbl}()}
+}
+\concept{normalization}
