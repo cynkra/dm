@@ -8,6 +8,10 @@ iris_1_pt <-
 iris_1_ct <-
   left_join(iris_1, iris_1_pt, by = c("Species", "Sepal.Width", "Sepal.Length")) %>%
   select(-Species, -Sepal.Width, -Sepal.Length)
+iris_1_w_key_col <-
+  left_join(iris_1_ct, iris_1_pt, by = "Species_Sepal")
+
+
 
 test_that("dm_separate_tbl() works", {
 
@@ -42,6 +46,15 @@ test_that("dm_unite_tbls() works", {
       dm_unite_tbls(iris_1, iris_1_lookup),
     dm_for_disambiguate
   )
+
+  expect_equivalent_dm(
+    dm_for_disambiguate %>%
+      dm_separate_tbl(iris_1, Species_Sepal, starts_with("Sepal"), Species) %>%
+      dm_unite_tbls(iris_1, iris_1_lookup, rm_key_col = FALSE),
+    dm_for_disambiguate %>%
+      dm_zoom_to_tbl(iris_1) %>%
+      replace_zoomed_tbl(iris_1_w_key_col) %>%
+      dm_update_zoomed_tbl())
 
   expect_dm_error(
     dm_for_disambiguate %>%
