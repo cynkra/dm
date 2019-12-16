@@ -194,7 +194,7 @@ use <code>validate_dm()</code> to double-check the returned object.</p>
 All tables in a <code>dm</code> object must be from the same source,
 i.e. either they are all data frames, or they all are stored on the same
 database.</p>
-<p><code>dm_get_con()</code> returns the <code><a href='https://rdrr.io/pkg/DBI/man/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.
+<p><code>dm_get_con()</code> returns the <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.
 This works only if the tables are stored on a database, otherwise an error
 is thrown.</p>
 <p><code>dm_get_tables()</code> returns a named list of <span class="pkg">dplyr</span> <a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a> objects
@@ -266,7 +266,7 @@ to be included in the <code>dm</code> object.</p></td>
     <p>For <code>dm()</code>, <code>dm_from_src()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
 <p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
 <p>For <code>dm_get_src()</code>: the <span class="pkg">dplyr</span> source for a <code>dm</code> object.</p>
-<p>For <code>dm_get_con()</code>: The <code><a href='https://rdrr.io/pkg/DBI/man/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
+<p>For <code>dm_get_con()</code>: The <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
 <p>For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.</p>
 <p>For <code>dm_get_filter()</code>: A tibble with columns:</p><ul>
 <li><p>"table": table that was filtered,</p></li>
