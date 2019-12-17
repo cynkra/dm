@@ -14,7 +14,6 @@ iris_1_w_key_col <-
 
 
 test_that("dm_separate_tbl() works", {
-
   expect_equivalent_dm(
     dm_for_disambiguate %>% dm_separate_tbl(iris_1, Species_Sepal, starts_with("Sepal"), Species),
     dm_for_disambiguate %>%
@@ -54,7 +53,8 @@ test_that("dm_unite_tbls() works", {
     dm_for_disambiguate %>%
       dm_zoom_to_tbl(iris_1) %>%
       replace_zoomed_tbl(iris_1_w_key_col) %>%
-      dm_update_zoomed_tbl())
+      dm_update_zoomed_tbl()
+  )
 
   expect_dm_error(
     dm_for_disambiguate %>%
