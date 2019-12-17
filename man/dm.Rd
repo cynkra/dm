@@ -59,7 +59,7 @@ For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object.
 
 For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
 
-For \code{dm_get_tables()}: A named list with the tables constituing the \code{dm}.
+For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
 
 For \code{dm_get_filters()}: A tibble with columns:
 \itemize{

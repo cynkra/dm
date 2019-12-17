@@ -170,7 +170,7 @@ try(
 
 # Accessing tables
 dm_flights %>%
-  tbl("airlines")
+  pull_tbl(airlines)
 
 dm_flights$airlines
 
@@ -384,6 +384,9 @@ dm_flights %>%
 nycflights13_tbl <- dm(airlines, airports, flights, planes, weather)
 nycflights13_tbl
 
+nycflights13_tbl %>%
+  dm_draw()
+
 # Alternatively, start from an empty `dm`
 # and add tables via `dm_add_tbl()`:
 dm() %>%
@@ -582,14 +585,14 @@ dm_flights_sqlite %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
   dm_filter(flights, day == 1) %>%
-  tbl("flights")
+  dm_apply_filters_to_tbl(flights)
 
 # ... and the corresponding SQL statement and query plan
 dm_flights_sqlite %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
   dm_filter(flights, day == 1) %>%
-  tbl("flights") %>%
+  dm_apply_filters_to_tbl(flights) %>%
   dbplyr::sql_render()
 
 
