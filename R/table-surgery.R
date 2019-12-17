@@ -34,6 +34,13 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
   check_not_zoomed(dm)
 
   .data <- tbl(dm, table_name)
+  avail_cols <- colnames(.data)
+  sel_vars <- tidyselect::vars_select(avail_cols, ...)
+
+  old_primary_key <- dm_get_pk(dm, !!table_name)
+  if (has_length(old_primary_key) && old_primary_key %in% sel_vars) {
+    abort_no_pk_in_separate_tbl(old_primary_key, table_name)
+  }
 
   new_table_name <- if (is_null(enexpr(new_table_name))) {
     paste0(table_name, "_lookup")
@@ -48,19 +55,14 @@ dm_separate_tbl <- function(dm, table, new_key_column, ..., new_table_name = NUL
 
   new_col_name <- as_string(enexpr(new_key_column))
 
-  avail_cols <- colnames(.data)
   id_col_q <- ensym(new_key_column)
 
   if (as_string(id_col_q) %in% avail_cols) {
     abort_dupl_new_id_col_name(table_name)
   }
 
-  sel_vars <- tidyselect::vars_select(avail_cols, ...)
-
-  old_primary_key <- dm_get_pk(dm, !!table_name)
-  if (has_length(old_primary_key) && old_primary_key %in% sel_vars) {
-    abort_no_pk_in_separate_tbl(old_primary_key, table_name)
-  }
+  # in case someone called the new table like the old one:
+  table_name <- prep_recode(names_list$new_old_names)[table_name]
 
   parent_table <-
     select(.data, !!!sel_vars) %>%
