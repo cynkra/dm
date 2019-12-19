@@ -66,7 +66,7 @@
 dm_filter <- function(dm, table, ...) {
   dm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
-    dm_update_zoomed_tbl()
+    dm_update_zoomed()
 }
 
 set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {

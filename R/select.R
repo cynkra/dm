@@ -30,7 +30,7 @@ dm_rename <- function(dm, table, ...) {
 
   dm_zoom_to_tbl(dm, !!table_name) %>%
     rename(...) %>%
-    dm_update_zoomed_tbl()
+    dm_update_zoomed()
 }
 
 #' Select and/or rename one or more columns of a [`dm`] table
@@ -52,7 +52,7 @@ dm_select <- function(dm, table, ...) {
 
   dm_zoom_to_tbl(dm, !!table_name) %>%
     select(...) %>%
-    dm_update_zoomed_tbl()
+    dm_update_zoomed()
 }
 
 get_all_keys <- function(dm, table_name) {

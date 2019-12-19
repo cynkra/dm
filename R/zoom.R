@@ -9,15 +9,15 @@
 #'
 #' @details `dm_zoom_to_tbl()`: zooms to the given table.
 #'
-#' `dm_update_zoomed_tbl()`: overwrites the originally zoomed table with the manipulated table.
+#' `dm_update_zoomed()`: overwrites the originally zoomed table with the manipulated table.
 #' The filter conditions for the zoomed table are added to the original filter conditions.
 #'
-#' `dm_insert_zoomed_tbl()`: adds a new table to the `dm`.
+#' `dm_insert_zoomed()`: adds a new table to the `dm`.
 #'
 #' `dm_discard_zoomed()`: discards the zoomed table and returns the `dm` as it was before zooming.
 #'
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
-#' when using `dm_insert_zoomed_tbl()` or `dm_update_zoomed_tbl()`.
+#' when using `dm_insert_zoomed()` or `dm_update_zoomed()`.
 #'
 #' Functions from `dplyr` that are supported for a `zoomed_dm`: `group_by()`, `summarise()`, `mutate()`,
 #' `transmute()`, `filter()`, `select()`, `rename()` and `ungroup()`.
@@ -28,8 +28,8 @@
 #' Depending on which function you use to return to a normal `dm`, one of the following happens:
 #'
 #' 1. `dm_discard_zoomed()`: all filter conditions for the zoomed table are discarded
-#' 1. `dm_update_zoomed_tbl()`: the filter conditions of the original table and those of the zoomed table are combined
-#' 1. `dm_insert_zoomed_tbl()`: the filter conditions of the original table stay there and those of the zoomed table are
+#' 1. `dm_update_zoomed()`: the filter conditions of the original table and those of the zoomed table are combined
+#' 1. `dm_insert_zoomed()`: the filter conditions of the original table stay there and those of the zoomed table are
 #' transferred to the new table of the `dm`
 #'
 #' Furthermore, the different `join()`-variants from {dplyr} are also supported (apart from `nest_join()`).
@@ -57,10 +57,10 @@
 #'   select(year:dep_time, am_pm_dep, everything())
 #'
 #' # replace table `flights` with the zoomed table
-#' dm_update_zoomed_tbl(flights_zoomed_transformed)
+#' dm_update_zoomed(flights_zoomed_transformed)
 #'
 #' # insert the zoomed table as a new table
-#' dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+#' dm_insert_zoomed(flights_zoomed_transformed, extended_flights)
 #'
 #' # discard the zoomed table
 #' dm_discard_zoomed(flights_zoomed_transformed)
@@ -102,10 +102,10 @@ get_zoomed_tbl <- function(dm) {
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @return For `dm_insert_zoomed_tbl()`, `dm_update_zoomed_tbl()` and `dm_zoomed_out()`: A `dm` object.
+#' @return For `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_zoomed_out()`: A `dm` object.
 #'
 #' @export
-dm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
+dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
   new_tbl_name_chr <-
     if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else as_string(enexpr(new_tbl_name))
@@ -150,7 +150,7 @@ dm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qui
 
 #' @rdname dm_zoom_to_tbl
 #' @export
-dm_update_zoomed_tbl <- function(dm) {
+dm_update_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
   }

@@ -47,7 +47,7 @@ test_that("error messages do not change", {
     error_no_table_zoomed()
     error_table_needs_name()
     error_only_possible_wo_zoom("dm_zoom_to_tbl")
-    error_only_possible_w_zoom("dm_update_zoomed_tbl")
+    error_only_possible_w_zoom("dm_update_zoomed")
     error_req_tbl_not_avail(c("dull", "boring", "common_knowledge"), c("fascinating", "interesting"))
     error_unnamed_table_list()
     error_need_unique_names("clone")

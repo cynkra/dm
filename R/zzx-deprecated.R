@@ -68,7 +68,7 @@ cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_filter()")
   dm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
-    dm_update_zoomed_tbl()
+    dm_update_zoomed()
 }
 
 #' @rdname deprecated
@@ -255,12 +255,12 @@ cdm_zoom_to_tbl <- new_cdm_forward_2(dm_zoom_to_tbl)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_insert_zoomed_tbl <- new_cdm_forward_2(dm_insert_zoomed_tbl)
+cdm_insert_zoomed_tbl <- new_cdm_forward_2(dm_insert_zoomed)
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_update_zoomed_tbl <- new_cdm_forward(dm_update_zoomed_tbl)
+cdm_update_zoomed_tbl <- new_cdm_forward(dm_update_zoomed)
 
 #' @rdname deprecated
 #' @keywords internal
