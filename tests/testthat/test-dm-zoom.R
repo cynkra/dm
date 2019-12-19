@@ -17,12 +17,12 @@ test_that("dm_zoom_to_tbl() works", {
 })
 
 
-test_that("dm_zoom_out() works", {
+test_that("dm_discard_zoomed() works", {
   # no zoom in zoomed out from zoomed `dm`
-  expect_false(is_zoomed(dm_for_filter %>% dm_zoom_to_tbl(t1) %>% dm_zoom_out()))
+  expect_false(is_zoomed(dm_for_filter %>% dm_zoom_to_tbl(t1) %>% dm_discard_zoomed()))
 
   expect_s3_class(
-    dm_for_filter %>% dm_zoom_to_tbl(t3) %>% dm_zoom_out(),
+    dm_for_filter %>% dm_zoom_to_tbl(t3) %>% dm_discard_zoomed(),
     c("dm")
   )
 })

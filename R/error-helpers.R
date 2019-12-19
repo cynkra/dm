@@ -434,7 +434,7 @@ abort_no_zoom_allowed <- function() {
 error_no_zoom_allowed <- function() {
   paste0(
     "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed_tbl()`, ",
-    "`dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
+    "`dm_insert_zoomed_tbl()` or `dm_discard_zoomed()` first."
   )
 }
 

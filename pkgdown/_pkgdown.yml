@@ -61,7 +61,7 @@ reference:
   - dm_zoom_to_tbl
   - dm_insert_zoomed_tbl
   - dm_update_zoomed_tbl
-  - dm_zoom_out
+  - dm_discard_zoomed
 
 - title: Flattening
   contents:

@@ -338,6 +338,6 @@ test_that("dm_zoom_to_tbl() and related functions work", {
 
   expect_equivalent_dm(
     dm_zoom_to_tbl(dm_for_filter, t1) %>% cdm_zoom_out(),
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_zoom_out()
+    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_discard_zoomed()
   )
 })

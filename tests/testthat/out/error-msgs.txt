@@ -120,7 +120,7 @@ Required class `dm` but instead is `blob`
 [1] "A local `dm` doesn't have a DB connection"
 
 > error_no_zoom_allowed()
-[1] "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed_tbl()`, `dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
+[1] "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed_tbl()`, `dm_insert_zoomed_tbl()` or `dm_discard_zoomed()` first."
 
 > error_no_table_zoomed()
 [1] "`dm_insert_zoomed_tbl()` only works for zoomed `dm`"

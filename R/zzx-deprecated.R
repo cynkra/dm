@@ -265,4 +265,4 @@ cdm_update_zoomed_tbl <- new_cdm_forward(dm_update_zoomed_tbl)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_zoom_out <- new_cdm_forward(dm_zoom_out)
+cdm_zoom_out <- new_cdm_forward(dm_discard_zoomed)

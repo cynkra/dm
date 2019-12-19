@@ -14,7 +14,7 @@
 #'
 #' `dm_insert_zoomed_tbl()`: adds a new table to the `dm`.
 #'
-#' `dm_zoom_out()`: discards the zoomed table and returns the `dm` as it was before zooming.
+#' `dm_discard_zoomed()`: discards the zoomed table and returns the `dm` as it was before zooming.
 #'
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
 #' when using `dm_insert_zoomed_tbl()` or `dm_update_zoomed_tbl()`.
@@ -27,7 +27,7 @@
 #' In addition to filtering the zoomed table, the filter condition from `filter()` is also stored in the `dm`.
 #' Depending on which function you use to return to a normal `dm`, one of the following happens:
 #'
-#' 1. `dm_zoom_out()`: all filter conditions for the zoomed table are discarded
+#' 1. `dm_discard_zoomed()`: all filter conditions for the zoomed table are discarded
 #' 1. `dm_update_zoomed_tbl()`: the filter conditions of the original table and those of the zoomed table are combined
 #' 1. `dm_insert_zoomed_tbl()`: the filter conditions of the original table stay there and those of the zoomed table are
 #' transferred to the new table of the `dm`
@@ -63,7 +63,7 @@
 #' dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
 #'
 #' # discard the zoomed table
-#' dm_zoom_out(flights_zoomed_transformed)
+#' dm_discard_zoomed(flights_zoomed_transformed)
 #' @export
 dm_zoom_to_tbl <- function(dm, table) {
   # FIXME: to include in documentation after #185:
@@ -145,7 +145,7 @@ dm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qui
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
   dm_update_zoomed_outgoing_fks(dm_wo_outgoing_fks, new_tbl_name_chr, is_upd = FALSE) %>%
-    dm_zoom_out()
+    dm_discard_zoomed()
 }
 
 #' @rdname dm_zoom_to_tbl
@@ -165,12 +165,12 @@ dm_update_zoomed_tbl <- function(dm) {
     )
   new_dm3(new_def, zoomed = TRUE) %>%
     dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
-    dm_zoom_out()
+    dm_discard_zoomed()
 }
 
 #' @rdname dm_zoom_to_tbl
 #' @export
-dm_zoom_out <- function(dm) {
+dm_discard_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
   }

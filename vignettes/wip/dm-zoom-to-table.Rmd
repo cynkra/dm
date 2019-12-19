@@ -46,7 +46,7 @@ When you are finished with transforming the table, there are three options to pr
 
 1. use `dm_update_zoomed_tbl()` if you want to replace the originally zoomed table with the new table
 1. with `dm_insert_zoomed_tbl()` you are creating a new table for your `dm`
-1. use `dm_zoom_out()` if you do not need the result and want to discard it
+1. use `dm_discard_zoomed()` if you do not need the result and want to discard it
 
 When employing one of the first two options, the resulting table in the `dm` will have all (primary as well as foreign) keys available, that could be tracked from the originally zoomed table.
 
