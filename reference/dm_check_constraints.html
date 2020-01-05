@@ -184,7 +184,7 @@ form a subset of the values of the referenced column.</p>
     <pre class="examples"><div class='input'><span class='fu'>dm_check_constraints</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; # A tibble: 6 x 6
 #&gt;   table   kind  column ref_table is_key problem                                 
 #&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;lgl&gt;  &lt;chr&gt;                                   
-#&gt; 1 flights FK    tailn… planes    FALSE  50094 entries (14.9%) of `flights$tailn…
+#&gt; 1 flights FK    tailn… planes    FALSE  "50094 entries (14.9%) of `flights$tail…
 #&gt; 2 airlin… PK    carri… &lt;NA&gt;      TRUE   ""                                      
 #&gt; 3 airpor… PK    faa    &lt;NA&gt;      TRUE   ""                                      
 #&gt; 4 planes  PK    tailn… &lt;NA&gt;      TRUE   ""                                      
