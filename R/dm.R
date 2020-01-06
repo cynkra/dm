@@ -534,21 +534,13 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 `$.zoomed_dm` <- function(x, name) {
-  x <- get_zoomed_tbl(x)
-  # from here on code "borrowed" from tibble:::`$.tbl_df`
-  if (is.character(name)) {
-    ret <- .subset2(x, name)
-    if (is.null(ret)) {
-      warning(c("Unknown or uninitialised column: '", name, "'."))
-    }
-    return(ret)
-  }
-  .subset2(x, name)
+  name <- ensym(name)
+  eval_tidy(quo(`$`(get_zoomed_tbl(x), !!name)))
 }
 
 #' @export
 `$.dm` <- function(x, name) {
-  table <- as_string(name)
+  table <- as_string(ensym(name))
   tbl(x, table)
 }
 
