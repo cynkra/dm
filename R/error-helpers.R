@@ -45,7 +45,7 @@ abort_table_not_in_dm <- function(table_name, dm_tables) {
 }
 
 error_txt_table_not_in_dm <- function(table_name, dm_tables) {
-  glue("Tables {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}")
+  glue("Table(s) {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}")
 }
 
 # error: is not subset of -------------------------------------------------

@@ -43,10 +43,6 @@ dm_rename_tbl <- function(dm, ...) {
   dm_select_tbl_impl(dm, selected)
 }
 
-tidyrename_dm <- function(dm, ...) {
-  tidyselect::vars_rename(tidyselect_table_names(dm), ...)
-}
-
 tidyselect_table_names <- function(dm) {
   structure(
     src_tbls(dm),
