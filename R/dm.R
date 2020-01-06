@@ -533,17 +533,26 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`$.dm` <- function(x, name) {
-  table <- as_string(name)
-  tbl(x, table)
+`$.zoomed_dm` <- function(x, name) {
+  name <- ensym(name)
+  eval_tidy(quo(`$`(get_zoomed_tbl(x), !!name)))
 }
 
+#' @export
+`$.dm` <- function(x, name) {
+  table <- as_string(ensym(name))
+  tbl(x, table)
+}
 
 #' @export
 `$<-.dm` <- function(x, name, value) {
   abort_update_not_supported()
 }
 
+#' @export
+`[[.zoomed_dm` <- function(x, id) {
+  `[[`(get_zoomed_tbl(x), id)
+}
 
 #' @export
 `[[.dm` <- function(x, id) {
@@ -551,12 +560,15 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   tbl(x, id)
 }
 
-
 #' @export
 `[[<-.dm` <- function(x, name, value) {
   abort_update_not_supported()
 }
 
+#' @export
+`[.zoomed_dm` <- function(x, id) {
+  `[`(get_zoomed_tbl(x), id)
+}
 
 #' @export
 `[.dm` <- function(x, id) {
@@ -571,6 +583,10 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   abort_update_not_supported()
 }
 
+#' @export
+names.zoomed_dm <- function(x) {
+  names(get_zoomed_tbl(x))
+}
 
 #' @export
 names.dm <- function(x) {
@@ -581,6 +597,11 @@ names.dm <- function(x) {
 #' @export
 `names<-.dm` <- function(x, value) {
   abort_update_not_supported()
+}
+
+#' @export
+length.zoomed_dm <- function(x) {
+  length(get_zoomed_tbl(x))
 }
 
 #' @export
@@ -683,6 +704,16 @@ dim.zoomed_dm <- function(x) {
 #' @export
 dimnames.zoomed_dm <- function(x) {
   dimnames(get_zoomed_tbl(x))
+}
+
+#' @export
+tbl_vars.dm <- function(x) {
+  check_zoomed(x)
+}
+
+#' @export
+tbl_vars.zoomed_dm <- function(x) {
+  tbl_vars(get_zoomed_tbl(x))
 }
 
 dm_reset_all_filters <- function(dm) {
