@@ -707,6 +707,11 @@ dimnames.zoomed_dm <- function(x) {
 }
 
 #' @export
+tbl_vars.dm <- function(x) {
+  check_zoomed(x)
+}
+
+#' @export
 tbl_vars.zoomed_dm <- function(x) {
   tbl_vars(get_zoomed_tbl(x))
 }
