@@ -275,6 +275,11 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     right_join(dm_for_filter),
     "only_possible_w_zoom"
   )
+
+  expect_dm_error(
+    inner_join(dm_zoom_to_tbl(dm_for_filter, t1), t7),
+    "table_not_in_dm"
+  )
 })
 
 

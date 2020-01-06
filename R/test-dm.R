@@ -81,7 +81,7 @@ check_colnames <- function(key_tibble, dm_col_names, which) {
   if (!all(map2_lgl(key_tibble$table, key_tibble$column, ~ {
     ..2 %in% dm_col_names[[..1]]
   }))) {
-    abort_dm_invalid(glue("At least one {which} column name(s) not in `dm` tables' column names."))
+    abort_dm_invalid(glue("At least one {which} column name not in `dm` tables' column names."))
   }
 }
 

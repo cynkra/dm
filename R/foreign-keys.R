@@ -22,13 +22,11 @@
 #' @export
 dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
   table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  ref_table_name <- as_name(ensym(ref_table))
+  check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
   column_name <- as_name(ensym(column))
   check_col_input(dm, table_name, column_name)
-
-  ref_table_name <- as_name(ensym(ref_table))
-  check_correct_input(dm, ref_table_name)
 
   ref_column_name <- dm_get_pk(dm, !!ref_table_name)
   if (is_empty(ref_column_name)) {
@@ -95,8 +93,7 @@ dm_get_fk <- function(dm, table, ref_table) {
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
-  check_correct_input(dm, table_name)
-  check_correct_input(dm, ref_table_name)
+  check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
   fks <- dm_get_data_model_fks(dm)
   fks$column[fks$table == table_name & fks$ref == ref_table_name]
@@ -149,13 +146,12 @@ dm_get_all_fks <- nse(function(dm) {
 #' )
 #' @export
 dm_rm_fk <- function(dm, table, column, ref_table) {
-  table <- as_name(ensym(table))
-  ref_table <- as_name(ensym(ref_table))
+  table_name <- as_name(ensym(table))
+  ref_table_name <- as_name(ensym(ref_table))
 
-  check_correct_input(dm, table)
-  check_correct_input(dm, ref_table)
+  check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
-  fk_cols <- dm_get_fk(dm, !!table, !!ref_table)
+  fk_cols <- dm_get_fk(dm, !!table_name, !!ref_table_name)
   if (is_empty(fk_cols)) {
     return(dm)
   }
@@ -172,7 +168,7 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
     # FIXME: Add tidyselect support
     cols <- as_name(ensym(column))
     if (!all(cols %in% fk_cols)) {
-      abort_is_not_fkc(table, cols, ref_table, fk_cols)
+      abort_is_not_fkc(table_name, cols, ref_table_name, fk_cols)
     }
   }
 
@@ -180,10 +176,10 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
   cols <- as.list(cols)
 
   def <- dm_get_def(dm)
-  i <- which(def$table == ref_table)
+  i <- which(def$table == ref_table_name)
 
   fks <- def$fks[[i]]
-  fks <- fks[fks$table != table | is.na(vctrs::vec_match(fks$column, cols)), ]
+  fks <- fks[fks$table != table_name | is.na(vctrs::vec_match(fks$column, cols)), ]
   def$fks[[i]] <- fks
 
   new_dm3(def)
@@ -229,8 +225,7 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   table_name <- as_string(ensym(table))
   ref_table_name <- as_string(ensym(ref_table))
 
-  check_correct_input(dm, table_name)
-  check_correct_input(dm, ref_table_name)
+  check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
   ref_tbl_pk <- dm_get_pk(dm, !!ref_table_name)
 

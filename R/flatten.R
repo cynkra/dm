@@ -177,6 +177,7 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
 
   t1_name <- as_string(ensym(table_1))
   t2_name <- as_string(ensym(table_2))
+  check_correct_input(dm, c(t1_name, t2_name), 2L)
 
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
   start <- rel$child_table

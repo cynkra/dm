@@ -37,7 +37,8 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
 } else if (ci_has_env("TIC_ONLY_STYLER") && ci_has_env("id_rsa")) {
   # For caching
   get_stage("install") %>%
-    add_step(step_install_github(c("r-lib/styler#538", "HenrikBengtsson/R.cache@develop")))
+    add_step(step_install_github(c("r-lib/styler"))) %>%
+    add_step(step_install_cran("R.cache"))
 
   # Needs to be at the script stage so that caching works
   get_stage("script") %>%

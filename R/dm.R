@@ -301,7 +301,7 @@ dm_get_con <- function(x) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_tables()`: A named list with the tables constituing the `dm`.
+#' @return For `dm_get_tables()`: A named list with the tables constituting the `dm`.
 #'
 #' @export
 dm_get_tables <- function(x) {
@@ -792,4 +792,14 @@ pull_tbl.zoomed_dm <- function(dm, table) {
       pull(zoom) %>%
       pluck(1)
   }
+}
+
+#' @export
+as.list.dm <- function(x, ...) {
+  dm_get_tables(x)
+}
+
+#' @export
+as.list.zoomed_dm <- function(x, ...) {
+  as.list(get_zoomed_tbl(x))
 }
