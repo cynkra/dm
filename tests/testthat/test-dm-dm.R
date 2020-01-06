@@ -289,6 +289,6 @@ test_that("as.list()-methods work", {
 
   expect_identical(
     as.list(dm_for_filter %>% dm_zoom_to_tbl(t4)),
-    list(t4 = t4)
+    as.list(t4)
   )
 })

@@ -767,8 +767,5 @@ as.list.dm <- function(x, ...) {
 
 #' @export
 as.list.zoomed_dm <- function(x, ...) {
-  dm_get_def(x) %>%
-    select(table, zoom) %>%
-    filter(!map_lgl(zoom, is_null)) %>%
-    deframe()
+  as.list(get_zoomed_tbl(x))
 }
