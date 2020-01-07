@@ -192,16 +192,15 @@ legacy_new_dm <- function(tables, data_model) {
   segment <- data_model_tables$segment
   # would be logical NA otherwise, but if set, it is class `character`
   display <- as.character(data_model_tables$display)
-  filter <- new_filters()
   zoom <- new_zoom()
   key_tracker_zoom <- new_key_tracker_zoom()
 
-  # Legacy compatibility
-  pks$column <- as.list(pks$column)
-
   pks <-
     pks %>%
-    nest(pks = -table)
+    # Legacy compatibility
+    mutate(column = as_list(column)) %>%
+    nest(pks = -table) %>%
+    mutate(pks = vctrs::as_list_of(pks))
 
   pks <-
     tibble(
@@ -217,6 +216,7 @@ legacy_new_dm <- function(tables, data_model) {
     fks %>%
     select(-ref_col) %>%
     nest(fks = -ref) %>%
+    mutate(fks = vctrs::as_list_of(fks)) %>%
     rename(table = ref)
 
   fks <-
@@ -226,17 +226,12 @@ legacy_new_dm <- function(tables, data_model) {
     ) %>%
     vctrs::vec_rbind(fks)
 
-  filters <-
-    filter %>%
-    rename(filter_expr = filter) %>%
-    nest(filters = filter_expr)
-
+  # there are no filters at this stage
   filters <-
     tibble(
-      table = setdiff(table, filters$table),
+      table = table,
       filters = vctrs::list_of(new_filter())
-    ) %>%
-    vctrs::vec_rbind(filters)
+    )
 
   def <-
     tibble(table, data, segment, display) %>%
