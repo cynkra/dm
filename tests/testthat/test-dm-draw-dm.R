@@ -28,23 +28,16 @@ test_that("`dm_set_colors()` works", {
   )
 })
 
-test_that("`dm_set_colors()` forwards with warning if old syntax used", {
-  expect_identical(
-    expect_warning(
-      dm_set_colors(
-        dm_nycflights_small,
-        airports = ,
-        airlines = "blue",
-        flights = ,
-        weather = "green"
-      ) %>%
-        dm_get_colors(),
-      "When setting colors"
+test_that("`dm_set_colors()` errors if old syntax used", {
+  expect_dm_error(
+    dm_set_colors(
+      dm_nycflights_small,
+      airports = ,
+      airlines = "blue",
+      flights = ,
+      weather = "green"
     ),
-    set_names(
-      src_tbls(dm_nycflights_small),
-      c("green", NA_character_, "blue", "blue", "green")
-    )
+    class = "wrong_syntax_set_cols"
   )
 })
 
