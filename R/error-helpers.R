@@ -597,3 +597,11 @@ abort_not_pulling_multiple_zoomed <- function() {
 error_not_pulling_multiple_zoomed <- function() {
   "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 }
+
+abort_wrong_syntax_set_cols <- function() {
+  abort(error_wrong_syntax_set_cols(), .subclass = dm_error_full("wrong_syntax_set_cols"))
+}
+
+error_wrong_syntax_set_cols <- function() {
+  "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
+}

@@ -149,6 +149,11 @@ dm_set_colors <- function(dm, ...) {
   avail_cols <- dm_get_available_colors()$dm
   quos <- enquos(...)
 
+  if (!all(names(quos) %in% avail_cols) &&
+      all(names(quos) %in% src_tbls(dm))) {
+    abort_wrong_syntax_set_cols()
+  }
+
   # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
   avail_tables <- set_names(src_tbls(dm))
   # get table names for each color (name_spec argument is not needed)
