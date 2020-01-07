@@ -69,7 +69,8 @@ test_that("table surgery functions fail in the expected ways?", {
     data_ts_src,
     ~ expect_error(
       decompose_table(., aex_id, a, e, x),
-      "."
+      # FIXME: error class might be subject to future change?
+      class = "tidyselect_error_subscript_oob_name"
     )
   )
 
