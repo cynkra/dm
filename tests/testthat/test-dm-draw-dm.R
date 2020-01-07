@@ -26,6 +26,21 @@ test_that("`dm_set_colors()` works", {
       c("green", NA_character_, "blue", "blue", "green")
     )
   )
+
+  # test splicing
+  colset <- c(blue = "flights", green = "airports")
+
+  expect_identical(
+    dm_set_colors(
+      dm_nycflights_small,
+      !!!colset
+    ) %>%
+      dm_get_colors(),
+    set_names(
+      src_tbls(dm_nycflights_small),
+      c("blue", NA_character_, NA_character_, "green", NA_character_)
+    )
+  )
 })
 
 test_that("`dm_set_colors()` errors if old syntax used", {
