@@ -128,7 +128,8 @@ dm_get_all_columns <- function(x) {
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
 #'     blue = starts_with("air"),
-#'     green = flights) %>%
+#'     green = flights
+#'   ) %>%
 #'   dm_draw()
 #'
 #' # Splicing is supported:
@@ -141,7 +142,7 @@ dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
 
   if (!all(names(quos) %in% avail_cols) &&
-      all(names(quos) %in% src_tbls(dm))) {
+    all(names(quos) %in% src_tbls(dm))) {
     abort_wrong_syntax_set_cols()
   }
 
@@ -153,11 +154,12 @@ dm_set_colors <- function(dm, ...) {
       map(
         quos,
         function(quos_sel) unname(avail_tables[tidyselect::eval_select(quos_sel, avail_tables)])
-    )} else {
+      )
+    } else {
       map(
         quos,
         function(quos_sel) tidyselect::vars_select(avail_tables, !!quos_sel)
-        )
+      )
     }
 
   # create "color-vector" of appropriate repetitions for each color
