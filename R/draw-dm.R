@@ -148,7 +148,18 @@ dm_set_colors <- function(dm, ...) {
   # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
   avail_tables <- set_names(src_tbls(dm))
   # get table names for each color (name_spec argument is not needed)
-  selected_tables <- map(quos, function(quos_sel) names(tidyselect::eval_select(quos_sel, avail_tables)))
+  selected_tables <-
+    if (packageVersion("tidyselect") >= "0.2.99.9000") {
+      map(
+        quos,
+        function(quos_sel) unname(avail_tables[tidyselect::eval_select(quos_sel, avail_tables)])
+    )} else {
+      map(
+        quos,
+        function(quos_sel) tidyselect::vars_select(avail_tables, !!quos_sel)
+        )
+    }
+
   # create "color-vector" of appropriate repetitions for each color
   num_for_each_col <- map_int(selected_tables, length)
   sel_colors <- rep(names(num_for_each_col), num_for_each_col)
