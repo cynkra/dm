@@ -148,18 +148,6 @@ dm_get_all_columns <- function(x) {
 dm_set_colors <- function(dm, ...) {
   avail_cols <- dm_get_available_colors()$dm
   quos <- enquos(...)
-  # If old fall-through syntax is being used:
-  if (!all(names(quos) %in% avail_cols) &&
-    all(names(quos) %in% src_tbls(dm))) {
-    warning(paste0(
-      "When setting colors with `dm_set_colors()`, ",
-      "the syntax is now as follows: `blue = table_name1, ",
-      "orange = table_name2` etc. (tidyselect supported) ",
-      "Forwarding the function call ",
-      "to the old implementation of `dm_set_colors()`."
-    ))
-    return(dm_set_colors2(dm, !!!quos))
-  }
 
   # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
   avail_tables <- set_names(src_tbls(dm))
