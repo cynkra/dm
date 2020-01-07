@@ -161,17 +161,21 @@ dm_set_colors <- function(dm, ...) {
     return(dm_set_colors2(dm, !!!quos))
   }
 
-  avail_tables <- src_tbls(dm)
-  selected_tables <- tidyselect::vars_select(avail_tables, ...) %>%
-    # names will get integer suffixes if duplicated ("blue1", "blue2", ...)
-    set_names(gsub("[0-9]*", "", names(.)))
-  sel_colors <- names(selected_tables)
-  if (!all(sel_colors %in% colors$dm)) {
+  # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
+  avail_tables <- set_names(src_tbls(dm))
+  # get table names for each color (name_spec argument is not needed)
+  selected_tables <- map(quos, function(quos_sel) names(tidyselect::eval_select(quos_sel, avail_tables)))
+  # create "color-vector" of appropriate repetitions for each color
+  num_for_each_col <- map_int(selected_tables, length)
+  sel_colors <- rep(names(num_for_each_col), num_for_each_col)
+
+  if (!all(names(selected_tables) %in% colors$dm)) {
     abort_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
   }
 
   display_df <- tibble(
-    table = selected_tables,
+    # `unname` to avoid warning from `flatten_chr()`
+    table = flatten_chr(unname(selected_tables)),
     new_display = colors$datamodelr[match(sel_colors, colors$dm)]
   )
 
