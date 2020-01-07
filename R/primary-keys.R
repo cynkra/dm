@@ -166,17 +166,17 @@ dm_get_all_pks <- nse(function(dm) {
 #'   dm_has_pk(planes)
 #' @export
 dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
+  table_name <- as_name(ensym(table))
+  check_correct_input(dm, table_name)
 
   def <- dm_get_def(dm)
 
-  if (!rm_referencing_fks && dm_is_referenced(dm, !!table)) {
-    affected <- dm_get_referencing_tables(dm, !!table)
-    abort_first_rm_fks(table, affected)
+  if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
+    affected <- dm_get_referencing_tables(dm, !!table_name)
+    abort_first_rm_fks(table_name, affected)
   }
-  def$pks[def$table == table] <- list(new_pk())
-  def$fks[def$table == table] <- list(new_fk())
+  def$pks[def$table == table_name] <- list(new_pk())
+  def$fks[def$table == table_name] <- list(new_fk())
 
   new_dm3(def)
 }
