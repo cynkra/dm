@@ -155,11 +155,12 @@ error_txt_last_col_missing <- function() {
   "The last color cannot be missing."
 }
 
-abort_wrong_color <- function(avail_color_names) {
-  abort(error_txt_wrong_color(avail_color_names), .subclass = dm_error_full("wrong_color"))
+abort_wrong_color <- function() {
+  abort(error_txt_wrong_color(), .subclass = dm_error_full("wrong_color"))
 }
 
-error_txt_wrong_color <- function(avail_color_names) {
+error_txt_wrong_color <- function() {
+  avail_color_names <- glue("{tick(colors$dm)} {colors$nb}")
   paste0(
     "Available color names are only: \n",
     paste0(avail_color_names, collapse = ",\n")

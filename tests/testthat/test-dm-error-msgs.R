@@ -16,7 +16,7 @@ test_that("error messages do not change", {
     error_txt_is_not_fk("child_table_name", c("wrong_fk_colname", "and_one_more"), "parent_table_name", c("actual_fk_colname", "and_one_more"))
     error_txt_rm_fk_col_missing()
     error_txt_last_col_missing()
-    error_txt_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
+    error_txt_wrong_color()
     error_txt_no_cycles()
     error_txt_tables_not_reachable_from_start()
     error_txt_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one", "col_2"))

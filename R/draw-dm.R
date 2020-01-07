@@ -167,7 +167,7 @@ dm_set_colors <- function(dm, ...) {
   sel_colors <- rep(names(num_for_each_col), num_for_each_col)
 
   if (!all(names(selected_tables) %in% colors$dm)) {
-    abort_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
+    abort_wrong_color()
   }
 
   display_df <- tibble(
