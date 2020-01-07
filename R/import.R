@@ -8,6 +8,6 @@
 #' @importFrom methods is
 #' @rawNamespace import(glue, except = c(collapse))
 #' @importFrom igraph V E
-#' @importFrom utils head str
+#' @importFrom utils head str packageVersion
 #' @import lifecycle
 NULL
