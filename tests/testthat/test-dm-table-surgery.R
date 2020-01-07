@@ -73,7 +73,8 @@ test_that("table surgery functions fail in the expected ways?", {
       class = if_else(
         packageVersion("tidyselect") >= "0.2.99.9000",
         "tidyselect_error_subscript_oob_name",
-        "simpleError")
+        "simpleError"
+      )
     )
   )
 
