@@ -62,7 +62,7 @@ jobs:
   - r: 3.5
   - r: 3.4
   allow_failures:
-    r: devel
+  - r: devel
     env: TIC_DEV_VERSIONS=TRUE TIC_ONLY_TESTS=TRUE
   fast_finish: true
 
