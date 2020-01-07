@@ -114,35 +114,26 @@ dm_get_all_columns <- function(x) {
     unnest(value)
 }
 
-#' dm_set_colors()
+#' `dm_set_colors()`
 #'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
 #'
-#' @param ... Colors to set in the form `table = "<color>"` .
-#'   Fall-through syntax similarly to
-#'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
-#'   and `table2` .
-#'   This argument supports splicing.
+#' @param ... Colors to set in the form `color = table`.
+#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @rdname dm_draw
 #' @examples
+#'
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
-#'     airports = ,
-#'     airlines = ,
-#'     planes = "yellow",
-#'     weather = "dark_blue"
-#'   ) %>%
+#'     blue = starts_with("air"),
+#'     green = flights) %>%
 #'   dm_draw()
 #'
 #' # Splicing is supported:
-#' new_colors <- c(
-#'   airports = "yellow", airlines = "yellow", planes = "yellow",
-#'   weather = "dark_blue"
-#' )
 #' dm_nycflights13(color = FALSE) %>%
-#'   dm_set_colors(!!!new_colors) %>%
+#'   dm_set_colors(!!!dm_get_colors(dm_nycflights13())) %>%
 #'   dm_draw()
 #' @export
 dm_set_colors <- function(dm, ...) {

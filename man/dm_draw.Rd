@@ -50,11 +50,8 @@ It defines the level of details for rendering tables
 
 \item{graph_name}{The name of the graph.}
 
-\item{...}{Colors to set in the form \code{table = "<color>"} .
-Fall-through syntax similarly to
-\code{\link[=switch]{switch()}} is supported: \verb{table1 = , table2 = "<color>"} sets the color for both \code{table1}
-and \code{table2} .
-This argument supports splicing.}
+\item{...}{Colors to set in the form \code{color = table}.
+\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 }
 \value{
 For \code{dm_draw()}: returns an object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,
@@ -83,21 +80,15 @@ dm_draw(dm_nycflights13())
 dm_draw(dm_nycflights13(cycle = TRUE))
 dm_get_available_colors()
 dm_get_colors(dm_nycflights13())
+
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
-    airports = ,
-    airlines = ,
-    planes = "yellow",
-    weather = "dark_blue"
-  ) \%>\%
+    blue = starts_with("air"),
+    green = flights) \%>\%
   dm_draw()
 
 # Splicing is supported:
-new_colors <- c(
-  airports = "yellow", airlines = "yellow", planes = "yellow",
-  weather = "dark_blue"
-)
 dm_nycflights13(color = FALSE) \%>\%
-  dm_set_colors(!!!new_colors) \%>\%
+  dm_set_colors(!!!dm_get_colors(dm_nycflights13())) \%>\%
   dm_draw()
 }
