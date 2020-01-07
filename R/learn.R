@@ -198,7 +198,7 @@ legacy_new_dm <- function(tables, data_model) {
   pks <-
     pks %>%
     # Legacy compatibility
-    mutate(column = as_list(column)) %>%
+    mutate(column = vctrs::vec_cast(column, list())) %>%
     nest(pks = -table) %>%
     mutate(pks = vctrs::as_list_of(pks))
 
