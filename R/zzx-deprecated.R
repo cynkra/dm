@@ -46,7 +46,7 @@ cdm_draw <- new_cdm_forward(dm_draw)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_set_colors <- new_cdm_forward(dm_set_colors)
+cdm_set_colors <- new_cdm_forward(dm_set_colors2)
 
 #' @rdname deprecated
 #' @keywords internal
