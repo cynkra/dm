@@ -172,7 +172,9 @@ dm_set_colors <- function(dm, ...) {
     # `unname` to avoid warning from `flatten_chr()`
     table = flatten_chr(unname(selected_tables)),
     new_display = colors$datamodelr[match(sel_colors, colors$dm)]
-  )
+  ) %>%
+    # needs to be done like this, cause `distinct()` would keep the first one
+    filter(!duplicated(table, fromLast = TRUE))
 
   def <-
     dm_get_def(dm) %>%
