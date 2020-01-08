@@ -116,6 +116,7 @@ dm_get_all_columns <- function(x) {
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
 #'
 #' @param ... Colors to set in the form `color = table`.
+#' Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
@@ -124,8 +125,8 @@ dm_get_all_columns <- function(x) {
 #'
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
-#'     blue = starts_with("air"),
-#'     green = flights
+#'     darkblue = starts_with("air"),
+#'     "#5986C4" = flights
 #'   ) %>%
 #'   dm_draw()
 #'

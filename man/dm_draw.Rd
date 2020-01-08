@@ -51,6 +51,7 @@ It defines the level of details for rendering tables
 \item{graph_name}{The name of the graph.}
 
 \item{...}{Colors to set in the form \code{color = table}.
+Allowed colors are all hex coded colors (quoted) and the color names from \code{dm_get_available_colors()}.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 }
 \value{
@@ -83,8 +84,8 @@ dm_get_colors(dm_nycflights13())
 
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
-    blue = starts_with("air"),
-    green = flights
+    darkblue = starts_with("air"),
+    "#5986C4" = flights
   ) \%>\%
   dm_draw()
 
