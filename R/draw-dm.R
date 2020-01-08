@@ -147,8 +147,8 @@ dm_set_colors <- function(dm, ...) {
   }
 
   # convert color names to hex color codes (if already hex code this is a no-op)
-  # FIXME: tryCatch?
-  hexcols <- gplots::col2hex(names(quos))
+  hexcols <- col_to_hex(cols)
+
   # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
   avail_tables <- set_names(src_tbls(dm))
   # get table names for each color (name_spec argument is not needed)

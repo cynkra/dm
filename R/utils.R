@@ -32,3 +32,14 @@ tick_if_needed <- function(x) {
 is_syntactic <- function(x) {
   x == make.names(x)
 }
+
+is_hex_color <- function(x) {
+  grepl("^#[A-Fa-f0-9]{6}$", x)
+}
+
+col_to_hex <- function(x) {
+  # from hex or name to rgb
+  map(x, function(x) col2rgb(x)[,1]) %>%
+    # from rgb to hex
+    map_chr(function(x) rgb(x[1], x[2], x[3], maxColorValue = 255))
+}
