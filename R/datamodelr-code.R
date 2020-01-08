@@ -435,7 +435,12 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   border <- 1
   # test if palette_id is valid: either datamodelr or hexcode (converted in `dm_set_colors()` from colorname)
   if (palette_id == "default") {
-    col <- bdm_get_color_scheme()[["default"]]
+    col <- list(
+        line_color = "#555555",
+        header_bgcolor = "#EFEBDD",
+        header_font = "#000000",
+        bgcolor = "#FFFFFF"
+      )
   } else {
     basecol_rgb <- col2rgb(palette_id)[,1]
     header_bgcol_rgb <- as.integer(basecol_rgb / 1.4)

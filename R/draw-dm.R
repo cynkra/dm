@@ -42,9 +42,6 @@ dm_draw <- function(dm,
     message("The dm cannot be drawn because it is empty.")
     return(invisible(NULL))
   }
-  # FIXME: here the color scheme is set with an options(...)-call;
-  # should have some schemes available for the user to choose from
-  if (is_null(getOption("datamodelr.scheme"))) bdm_set_color_scheme(bdm_color_scheme)
 
   data_model <- dm_get_data_model(dm)
 
