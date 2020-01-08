@@ -138,18 +138,17 @@ dm_get_all_columns <- function(x) {
 #'   dm_draw()
 #' @export
 dm_set_colors <- function(dm, ...) {
-  avail_cols <- dm_get_available_colors()$dm
+  # avail_cols <- dm_get_available_colors()$dm
   quos <- enquos(...)
-
-  if (!all(names(quos) %in% avail_cols) &&
-    all(names(quos) %in% src_tbls(dm))) {
-    abort_wrong_syntax_set_cols()
-  }
+  # convert color names to hex color codes (if already hex code this is a no-op)
+  # FIXME: tryCatch?
+  hexcols <- gplots::col2hex(names(quos))
 
   # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
   avail_tables <- set_names(src_tbls(dm))
   # get table names for each color (name_spec argument is not needed)
   selected_tables <-
+    # FIXME: maybe later use function from https://github.com/krlmlr/dm/pull/228/commits/c6c63302780f5a5c296d967c834c197dd168cf52
     if (packageVersion("tidyselect") >= "0.2.99.9000") {
       map(
         quos,
@@ -164,16 +163,12 @@ dm_set_colors <- function(dm, ...) {
 
   # create "color-vector" of appropriate repetitions for each color
   num_for_each_col <- map_int(selected_tables, length)
-  sel_colors <- rep(names(num_for_each_col), num_for_each_col)
-
-  if (!all(names(selected_tables) %in% colors$dm)) {
-    abort_wrong_color()
-  }
+  sel_colors <- rep(hexcols, num_for_each_col)
 
   display_df <- tibble(
     # `unname` to avoid warning from `flatten_chr()`
     table = flatten_chr(unname(selected_tables)),
-    new_display = colors$datamodelr[match(sel_colors, colors$dm)]
+    new_display = sel_colors
   ) %>%
     # needs to be done like this, cause `distinct()` would keep the first one
     filter(!duplicated(table, fromLast = TRUE))
