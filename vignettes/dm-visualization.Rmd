@@ -50,8 +50,8 @@ dm_draw(flights_dm_w_many_keys)
 ```
 
 You can use colors to visually group your tables into families to reflect their logical grouping.
-Currently, eight different colors are available, plus optional borders around tables.
-To find out which colors exist, use `dm_get_available_colors()`:
+The available colors are either hexcoded colors or the standard R color names.
+The function `dm_get_available_colors()` forwards to `grDevices::colors()`:
 ```{r}
 dm_get_available_colors()
 ```
@@ -64,9 +64,9 @@ The information about the color is stored together with the rest of the metadata
 flights_dm_w_many_keys_and_colors <-
   flights_dm_w_many_keys %>% 
   dm_set_colors(
-    blue = flights,
+    maroon4 = flights,
     orange = starts_with("air"),
-    green_nb = planes
+    "#5986C4" = planes
   )
 ```
 
