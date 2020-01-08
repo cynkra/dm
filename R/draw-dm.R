@@ -239,9 +239,8 @@ dm_get_colors <- nse(function(dm) {
 
 #' dm_get_available_colors()
 #'
-#' `dm_get_available_colors()` returns an overview of the available colors and their names
-#' as a vector.
-#' The available colors are the standard colors returned by `grDevices::colors()`.
+#' `dm_get_available_colors()` returns an overview of the names of the available colors
+#' These are the standard colors also returned by `grDevices::colors()`.
 #'
 #' @return For `dm_get_available_colors()`, a vector with the available colors.
 #'

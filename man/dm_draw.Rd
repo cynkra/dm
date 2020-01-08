@@ -71,9 +71,8 @@ For \code{dm_get_available_colors()}, a vector with the available colors.
 
 \code{dm_get_colors()} returns the colors defined for a data model.
 
-\code{dm_get_available_colors()} returns an overview of the available colors and their names
-as a vector.
-The available colors are the standard colors returned by \code{grDevices::colors()}.
+\code{dm_get_available_colors()} returns an overview of the names of the available colors
+These are the standard colors also returned by \code{grDevices::colors()}.
 }
 \examples{
 library(dplyr)
