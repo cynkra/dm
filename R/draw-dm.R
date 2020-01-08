@@ -135,12 +135,11 @@ dm_get_all_columns <- function(x) {
 #'   dm_draw()
 #' @export
 dm_set_colors <- function(dm, ...) {
-  # avail_cols <- dm_get_available_colors()$dm
-  quos <- enquos(...)
+  # only those tables for which a color is set (others get default color when drawing)
+  quos <- enquos(...) %>% extract(names(.) != "")
   # convert color names to hex color codes (if already hex code this is a no-op)
   # FIXME: tryCatch?
   hexcols <- gplots::col2hex(names(quos))
-
   # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
   avail_tables <- set_names(src_tbls(dm))
   # get table names for each color (name_spec argument is not needed)
