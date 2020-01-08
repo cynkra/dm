@@ -417,7 +417,9 @@ to_html_table <- function(x,
         sapply(cols, function(col_name) {
           value <- x[r, col_name]
           if (!is_null(trans)) value <- trans(col_name, x[r, ], value)
-          if (is_null(value) || is_na(value)) return("")
+          if (is_null(value) || is_na(value)) {
+            return("")
+          }
           html_td(html_font(value, atrs = attr_font), if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
         })
       ))
@@ -436,13 +438,13 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   # test if palette_id is valid: either datamodelr or hexcode (converted in `dm_set_colors()` from colorname)
   if (palette_id == "default") {
     col <- list(
-        line_color = "#555555",
-        header_bgcolor = "#EFEBDD",
-        header_font = "#000000",
-        bgcolor = "#FFFFFF"
-      )
+      line_color = "#555555",
+      header_bgcolor = "#EFEBDD",
+      header_font = "#000000",
+      bgcolor = "#FFFFFF"
+    )
   } else {
-    basecol_rgb <- col2rgb(palette_id)[,1]
+    basecol_rgb <- col2rgb(palette_id)[, 1]
     header_bgcol_rgb <- as.integer(basecol_rgb / 1.4)
     header_bgcol <- rgb(header_bgcol_rgb[1], header_bgcol_rgb[2], header_bgcol_rgb[3], maxColorValue = 255)
     # if header background too dark, use white font color

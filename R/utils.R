@@ -39,7 +39,7 @@ is_hex_color <- function(x) {
 
 col_to_hex <- function(x) {
   # from hex or name to rgb
-  map(x, function(x) col2rgb(x)[,1]) %>%
+  map(x, function(x) col2rgb(x)[, 1]) %>%
     # from rgb to hex
     map_chr(function(x) rgb(x[1], x[2], x[3], maxColorValue = 255))
 }
