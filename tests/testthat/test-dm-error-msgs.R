@@ -57,6 +57,6 @@ test_that("error messages do not change", {
     error_no_table_provided()
     error_table_not_zoomed("blur", c("focus_1", "focus_2"))
     error_not_pulling_multiple_zoomed()
-    error_wrong_syntax_set_cols()
+    error_cols_not_avail(c("pink5", "elephant"))
   })
 })

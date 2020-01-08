@@ -162,6 +162,6 @@ In `pull_tbl.zoomed_dm`: Table `blur` not zoomed, zoomed tables: `focus_1`, `foc
 > error_not_pulling_multiple_zoomed()
 [1] "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 
-> error_wrong_syntax_set_cols()
-[1] "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
+> error_cols_not_avail(c("pink5", "elephant"))
+The color(s) `pink5`, `elephant` are not available. Please refer to `?dm_set_colors()` for examples.
 

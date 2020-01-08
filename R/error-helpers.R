@@ -599,10 +599,11 @@ error_not_pulling_multiple_zoomed <- function() {
   "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 }
 
-abort_wrong_syntax_set_cols <- function() {
-  abort(error_wrong_syntax_set_cols(), .subclass = dm_error_full("wrong_syntax_set_cols"))
+abort_cols_not_avail <- function(wrong_col) {
+  abort(error_cols_not_avail(wrong_col), .subclass = dm_error_full("cols_not_avail"))
 }
 
-error_wrong_syntax_set_cols <- function() {
-  "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
+error_cols_not_avail <- function(wrong_col) {
+  glue("The color(s) {paste(tick(wrong_col), collapse = ', ')} are not ",
+       "available. Please refer to `?dm_set_colors()` for examples.")
 }

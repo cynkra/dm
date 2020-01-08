@@ -137,6 +137,15 @@ dm_get_all_columns <- function(x) {
 dm_set_colors <- function(dm, ...) {
   # only those tables for which a color is set (others get default color when drawing)
   quos <- enquos(...) %>% extract(names(.) != "")
+  cols <- names(quos)
+  # if not all colors that are not hex coded colors are available, abort
+  if (!all(setdiff(cols, cols[is_hex_color(cols)]) %in% dm_get_available_colors())) {
+    abort_cols_not_avail(setdiff(
+      setdiff(cols, cols[is_hex_color(cols)]),
+      dm_get_available_colors())
+      )
+  }
+
   # convert color names to hex color codes (if already hex code this is a no-op)
   # FIXME: tryCatch?
   hexcols <- gplots::col2hex(names(quos))
