@@ -79,11 +79,11 @@ test_that("getter", {
   expect_equal(
     dm_get_colors(dm_nycflights13()),
     c(
-      "#FFA500" = "airlines",
-      "#FFA500" = "airports",
-      "#0000FF" = "flights",
-      "#FFA500" = "planes",
-      "#00FF00" = "weather"
+      "#FFA07A" = "airlines",
+      "#FFA07A" = "airports",
+      "#ADD8E6" = "flights",
+      "#FFA07A" = "planes",
+      "#90EE90" = "weather"
     )
   )
 })

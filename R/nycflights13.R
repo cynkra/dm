@@ -40,10 +40,10 @@ dm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
     dm <-
       dm %>%
       dm_set_colors(
-        blue = flights,
-        orange = starts_with("air"),
-        orange = planes,
-        green = weather
+        lightblue = flights,
+        lightsalmon = starts_with("air"),
+        lightsalmon = planes,
+        lightgreen = weather
       )
   }
 
