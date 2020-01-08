@@ -250,7 +250,6 @@ bdm_create_graph_list <- function(
     }
   }
 
-
   # remove hidden columns
   # data_model$columns <-
   #  data_model$columns[is.na(data_model$columns$display) | data_model$columns$display != "hide", ]
@@ -272,7 +271,6 @@ bdm_create_graph_list <- function(
       })
     }
   )
-
   g_labels <-
     sapply(names(tables), function(x) {
       dot_html_label(
@@ -385,6 +383,7 @@ html_tag <- function(x, tag, ident = 0, nl = TRUE, atrs = NULL, collapse = "") {
   space <- paste(rep("  ", ident), collapse = "")
   atrs <- paste(sprintf('%s="%s"', names(atrs), atrs), collapse = " ")
   if (nchar(atrs) > 0) atrs <- paste0(" ", atrs)
+
   htext <-
     if (nl) {
       sprintf("%s<%s%s>\n%s%s</%s>\n", space, tag, atrs, x, space, tag)
@@ -417,8 +416,9 @@ to_html_table <- function(x,
         # cells
         sapply(cols, function(col_name) {
           value <- x[r, col_name]
-          if (!is.null(trans)) value <- trans(col_name, x[r, ], value)
-          html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
+          if (!is_null(trans)) value <- trans(col_name, x[r, ], value)
+          if (is_null(value) || is_na(value)) return("")
+          html_td(html_font(value, atrs = attr_font), if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
         })
       ))
     })
@@ -428,26 +428,46 @@ to_html_table <- function(x,
 dot_html_label <- function(x, title, palette_id = "default", col_attr = c("column"),
                            columnArrows = FALSE) {
   cols <- c("ref", col_attr)
-  if (is.null(palette_id)) {
+  if (is.null(palette_id) || palette_id == "show") {
     palette_id <- "default"
   }
+  # currently we always have a border around the tables
+  border <- 1
+  # test if palette_id is valid: either datamodelr or hexcode (converted in `dm_set_colors()` from colorname)
+  if (palette_id == "default") {
+    col <- bdm_get_color_scheme()[["default"]]
+  } else {
+    basecol_rgb <- col2rgb(palette_id)[,1]
+    header_bgcol_rgb <- as.integer(basecol_rgb / 1.4)
+    header_bgcol <- rgb(header_bgcol_rgb[1], header_bgcol_rgb[2], header_bgcol_rgb[3], maxColorValue = 255)
+    # if header background too dark, use white font color
+    header_font <- if (sum(header_bgcol_rgb) < 300) "#FFFFFF" else "#000000"
+    line_color_rgb <- as.integer(basecol_rgb / 3.)
+    line_color <- rgb(line_color_rgb[1], line_color_rgb[2], line_color_rgb[3], maxColorValue = 255)
 
-  border <- ifelse(is.null(bdm_color(palette_id, "line_color")), 0, 1)
+    col <- list(
+      line_color = line_color,
+      header_bgcolor = header_bgcol,
+      header_font = header_font,
+      bgcolor = palette_id
+    )
+  }
 
   attr_table <- list(
     ALIGN = "LEFT", BORDER = border, CELLBORDER = 0, CELLSPACING = 0
   )
-  if (!is.null(bdm_color(palette_id, "line_color"))) {
-    attr_table[["COLOR"]] <- bdm_color(palette_id, "line_color")
+  # border color
+  if (border) {
+    attr_table[["COLOR"]] <- col[["line_color"]]
   }
   attr_header <- list(
-    COLSPAN = length(cols) - columnArrows, BGCOLOR = bdm_color(palette_id, "header_bgcolor"), BORDER = 0
+    COLSPAN = length(cols) - columnArrows, BGCOLOR = col[["header_bgcolor"]], BORDER = 0
   )
   attr_font <- list()
-  attr_font <- list(COLOR = bdm_color(palette_id, "header_font"))
+  attr_font <- list(COLOR = col[["header_font"]])
 
   attr_td <- function(col_name, row_values, value) {
-    ret <- list(ALIGN = "LEFT", BGCOLOR = bdm_color(palette_id, "bgcolor"))
+    ret <- list(ALIGN = "LEFT", BGCOLOR = col[["bgcolor"]])
     if (col_name == "column" && columnArrows) {
       key <- row_values[["key"]]
       reference <- row_values[["ref"]]
@@ -486,6 +506,7 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   )
 
   ret <- sprintf("<%s>", trimws(ret))
+
   ret
 }
 
