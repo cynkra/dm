@@ -230,18 +230,18 @@ dm_get_colors <- nse(function(dm) {
 #' dm_get_available_colors()
 #'
 #' `dm_get_available_colors()` returns an overview of the available colors and their names
-#' as a tibble.
-
+#' as a vector.
+#' The available colors are the standard colors returned by `grDevices::colors()`.
 #'
-#' @return For `dm_get_available_colors()`, a tibble with the color in the first
-#'   column and auxiliary information in other columns.
+#' @return For `dm_get_available_colors()`, a vector with the available colors.
 #'
 #' @rdname dm_draw
 #' @export
 dm_get_available_colors <- function() {
-  colors
+  colors()
 }
 
+# still needed for legacy `cdm_set/get_colors()`
 colors <- tibble::tribble(
   ~dm, ~datamodelr, ~nb,
   "default", "default", "(border)",

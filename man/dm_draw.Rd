@@ -61,8 +61,7 @@ For \code{dm_set_colors()}: the updated data model.
 
 For \code{dm_get_colors()}, a two-column tibble with one row per table.
 
-For \code{dm_get_available_colors()}, a tibble with the color in the first
-column and auxiliary information in other columns.
+For \code{dm_get_available_colors()}, a vector with the available colors.
 }
 \description{
 \code{dm_draw()} uses \pkg{DiagrammeR} to draw diagrams.
@@ -72,7 +71,8 @@ column and auxiliary information in other columns.
 \code{dm_get_colors()} returns the colors defined for a data model.
 
 \code{dm_get_available_colors()} returns an overview of the available colors and their names
-as a tibble.
+as a vector.
+The available colors are the standard colors returned by \code{grDevices::colors()}.
 }
 \examples{
 library(dplyr)
@@ -84,7 +84,8 @@ dm_get_colors(dm_nycflights13())
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
     blue = starts_with("air"),
-    green = flights) \%>\%
+    green = flights
+  ) \%>\%
   dm_draw()
 
 # Splicing is supported:
