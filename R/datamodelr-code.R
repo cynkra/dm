@@ -417,10 +417,7 @@ to_html_table <- function(x,
         sapply(cols, function(col_name) {
           value <- x[r, col_name]
           if (!is_null(trans)) value <- trans(col_name, x[r, ], value)
-          if (is_null(value) || is_na(value)) {
-            return("")
-          }
-          html_td(html_font(value, atrs = attr_font), if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
+          html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
         })
       ))
     })
