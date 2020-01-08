@@ -23,7 +23,7 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors(),
     set_names(
       src_tbls(dm_nycflights_small),
-      c("green", NA_character_, "blue", "blue", "green")
+      c("#00FF00", NA_character_, "#0000FF", "#0000FF", "#00FF00")
     )
   )
 
@@ -38,7 +38,7 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors(),
     set_names(
       src_tbls(dm_nycflights_small),
-      c("blue", NA_character_, NA_character_, "green", NA_character_)
+      c("#0000FF", NA_character_, NA_character_, "#00FF00", NA_character_)
     )
   )
 })
@@ -79,11 +79,11 @@ test_that("getter", {
   expect_equal(
     dm_get_colors(dm_nycflights13()),
     c(
-      orange = "airlines",
-      orange = "airports",
-      blue = "flights",
-      orange = "planes",
-      green = "weather"
+      "#FFA500" = "airlines",
+      "#FFA500" = "airports",
+      "#0000FF" = "flights",
+      "#FFA500" = "planes",
+      "#00FF00" = "weather"
     )
   )
 })
