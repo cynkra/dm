@@ -69,12 +69,7 @@ test_that("table surgery functions fail in the expected ways?", {
     data_ts_src,
     ~ expect_error(
       decompose_table(., aex_id, a, e, x),
-      # FIXME: error class might be subject to future change?
-      class = if_else(
-        packageVersion("tidyselect") >= "0.2.99.9000",
-        "tidyselect_error_subscript_oob_name",
-        "simpleError"
-      )
+      class = if_pkg_version("tidyselect", "0.2.99.9000", "tidyselect_error_subscript_oob_name", "simpleError")
     )
   )
 
