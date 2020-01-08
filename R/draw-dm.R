@@ -224,8 +224,7 @@ color_quos_to_display <- function(...) {
 dm_get_colors <- nse(function(dm) {
   dm_get_def(dm) %>%
     select(table, display) %>%
-    mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
-    select(color, table) %>%
+    select(display, table) %>%
     deframe()
 })
 
