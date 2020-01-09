@@ -606,7 +606,7 @@ abort_cols_not_avail <- function(wrong_col) {
 error_cols_not_avail <- function(wrong_col) {
   glue(
     "The color(s) {paste(tick(wrong_col), collapse = ', ')} are not ",
-    "available. Please refer to `?dm_set_colors()` for examples."
+    "available. Call `dm_get_available_colors()` for possible color names or use hex color codes."
   )
 }
 

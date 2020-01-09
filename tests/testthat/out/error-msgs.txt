@@ -163,7 +163,7 @@ In `pull_tbl.zoomed_dm`: Table `blur` not zoomed, zoomed tables: `focus_1`, `foc
 [1] "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 
 > error_cols_not_avail(c("pink5", "elephant"))
-The color(s) `pink5`, `elephant` are not available. Please refer to `?dm_set_colors()` for examples.
+The color(s) `pink5`, `elephant` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
 
 > error_only_named_args("give_names", "important")
 The `...` argument in function `give_names()` accepts only named arguments (the names are important).
