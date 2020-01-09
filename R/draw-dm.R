@@ -148,18 +148,17 @@ dm_set_colors <- function(dm, ...) {
   avail_tables <- set_names(src_tbls(dm))
   # get table names for each color (name_spec argument is not needed)
   selected_tables <-
-    # FIXME: maybe later use function from https://github.com/krlmlr/dm/pull/228/commits/c6c63302780f5a5c296d967c834c197dd168cf52
-    if (packageVersion("tidyselect") >= "0.2.99.9000") {
+    if_pkg_version(
+      "tidyselect",
+      "0.2.99.9000",
       map(
         quos,
         function(quos_sel) unname(avail_tables[tidyselect::eval_select(quos_sel, avail_tables)])
-      )
-    } else {
+      ),
       map(
         quos,
         function(quos_sel) tidyselect::vars_select(avail_tables, !!quos_sel)
-      )
-    }
+      ))
 
   # create "color-vector" of appropriate repetitions for each color
   num_for_each_col <- map_int(selected_tables, length)
