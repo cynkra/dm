@@ -43,3 +43,7 @@ col_to_hex <- function(x) {
     # from rgb to hex
     map_chr(function(x) if (x[1] != "default") rgb(x[1], x[2], x[3], maxColorValue = 255) else x)
 }
+
+if_pkg_version <- function(pkg, min_version, if_true, if_false = NULL) {
+  if (packageVersion(pkg) >= min_version) if_true else if_false
+}
