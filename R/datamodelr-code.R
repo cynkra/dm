@@ -174,12 +174,14 @@ bdm_create_graph <- function(
                              view_type = "all",
                              focus = NULL,
                              col_attr = "column",
-                             columnArrows = FALSE) {
+                             columnArrows = FALSE,
+                             legacy = FALSE) {
   g_list <-
     bdm_create_graph_list(
       data_model = data_model, view_type = view_type,
       focus = focus, col_attr = col_attr,
-      columnArrows = columnArrows
+      columnArrows = columnArrows,
+      legacy = legacy
     )
   if (length(g_list$nodes$nodes) == 0) {
     warning("The number of tables to render is 0.")
@@ -220,7 +222,8 @@ bdm_create_graph_list <- function(
                                   view_type = "all",
                                   focus = NULL,
                                   col_attr = "column",
-                                  columnArrows = FALSE) {
+                                  columnArrows = FALSE,
+                                  legacy = FALSE) {
 
   # hidden tables
 
@@ -273,13 +276,24 @@ bdm_create_graph_list <- function(
   )
   g_labels <-
     sapply(names(tables), function(x) {
-      dot_html_label(
-        tables[[x]],
-        title = x,
-        palette_id = data_model$tables[data_model$tables$table == x, "display"],
-        col_attr = col_attr,
-        columnArrows = columnArrows
-      )
+      if (legacy) {
+        dot_html_label_2(
+          tables[[x]],
+          title = x,
+          palette_id = data_model$tables[data_model$tables$table == x, "display"],
+          col_attr = col_attr,
+          columnArrows = columnArrows
+        )
+      } else {
+        dot_html_label(
+          tables[[x]],
+          title = x,
+          palette_id = data_model$tables[data_model$tables$table == x, "display"],
+          col_attr = col_attr,
+          columnArrows = columnArrows
+        )
+      }
+
     })
 
   nodes <-
@@ -624,3 +638,70 @@ bdm_color_scheme <- list(
     bgcolor = "#D8D8D8"
   )
 )
+
+
+# For legacy code `cdm_draw()` --------------------------------------------
+
+dot_html_label_2 <- function(x, title, palette_id = "default", col_attr = c("column"),
+                           columnArrows = FALSE) {
+  cols <- c("ref", col_attr)
+  if (is.null(palette_id)) {
+    palette_id <- "default"
+  }
+
+  border <- ifelse(is.null(bdm_color(palette_id, "line_color")), 0, 1)
+
+  attr_table <- list(
+    ALIGN = "LEFT", BORDER = border, CELLBORDER = 0, CELLSPACING = 0
+  )
+  if (!is.null(bdm_color(palette_id, "line_color"))) {
+    attr_table[["COLOR"]] <- bdm_color(palette_id, "line_color")
+  }
+  attr_header <- list(
+    COLSPAN = length(cols) - columnArrows, BGCOLOR = bdm_color(palette_id, "header_bgcolor"), BORDER = 0
+  )
+  attr_font <- list()
+  attr_font <- list(COLOR = bdm_color(palette_id, "header_font"))
+
+  attr_td <- function(col_name, row_values, value) {
+    ret <- list(ALIGN = "LEFT", BGCOLOR = bdm_color(palette_id, "bgcolor"))
+    if (col_name == "column" && columnArrows) {
+      key <- row_values[["key"]]
+      reference <- row_values[["ref"]]
+      if (!is.na(reference) || key) {
+        ret$PORT <- row_values[["column"]]
+      }
+    }
+    ret
+  }
+
+  # value presentation transformation
+  trans <- function(col_name, row_values, value) {
+    if (col_name == "ref") {
+      value <- ifelse(is.na(value), "", "~")
+      if (columnArrows) {
+        value <- NULL
+      }
+    }
+    if (col_name == "column" && row_values[["key"]]) {
+      value <- sprintf("<U>%s</U>", value)
+    }
+    if (!is.null(value) && is.na(value)) {
+      value <- ""
+    }
+    return(value)
+  }
+
+  ret <- to_html_table(x,
+                       title = title,
+                       attr_table = attr_table,
+                       attr_header = attr_header,
+                       attr_font = attr_font,
+                       attr_td = attr_td,
+                       cols = cols,
+                       trans = trans
+  )
+
+  ret <- sprintf("<%s>", trimws(ret))
+  ret
+}

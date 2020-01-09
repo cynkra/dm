@@ -41,17 +41,71 @@ cdm_disambiguate_cols <- new_cdm_forward(dm_disambiguate_cols)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_draw <- new_cdm_forward(dm_draw)
+cdm_draw <- function(
+  dm,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model") {
+  #
+  check_dm(dm)
+  if (is_empty(dm)) {
+    message("The dm cannot be drawn because it is empty.")
+    return(invisible(NULL))
+  }
+  # FIXME: here the color scheme is set with an options(...)-call;
+  # should have some schemes available for the user to choose from
+  if (is_null(getOption("datamodelr.scheme"))) bdm_set_color_scheme(bdm_color_scheme)
+
+  data_model <- dm_get_data_model(dm)
+
+  graph <- bdm_create_graph(
+    data_model,
+    rankdir = rankdir,
+    col_attr = col_attr,
+    view_type = view_type,
+    columnArrows = columnArrows,
+    graph_attrs = graph_attrs,
+    node_attrs = node_attrs,
+    edge_attrs = edge_attrs,
+    focus = focus,
+    graph_name = graph_name,
+    legacy = TRUE
+  )
+  bdm_render_graph(graph)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_set_colors <- new_cdm_forward(dm_set_colors2)
+cdm_set_colors <- function(dm, ...) {
+  deprecate_soft("0.1.0", "dm::cdm_set_colors()", "dm::dm_set_colors()")
+  display_df <- color_quos_to_display(...)
+
+  def <-
+    dm_get_def(dm) %>%
+    left_join(display_df, by = "table") %>%
+    mutate(display = coalesce(new_display, display)) %>%
+    select(-new_display)
+
+  new_dm3(def)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_colors <- new_cdm_forward(dm_get_colors)
+cdm_get_colors <- nse(function(dm) {
+  dm_get_def(dm) %>%
+    select(table, display) %>%
+    as_tibble() %>%
+    mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
+    select(-display)
+})
 
 #' @rdname deprecated
 #' @keywords internal
@@ -195,7 +249,40 @@ cdm_check_constraints <- new_cdm_forward(dm_check_constraints)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_nycflights13 <- new_cdm_forward(dm_nycflights13)
+cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
+  deprecate_soft('0.1.0', "dm::cdm_nycflights13()", "dm::dm_nycflights13()")
+
+  dm <-
+    dm_from_src(
+      src_df("nycflights13")
+    ) %>%
+    dm_add_pk(planes, tailnum) %>%
+    dm_add_pk(airlines, carrier) %>%
+    dm_add_pk(airports, faa) %>%
+    dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+    dm_add_fk(flights, carrier, airlines) %>%
+    dm_add_fk(flights, origin, airports)
+
+  if (color) {
+    dm <-
+      dm %>%
+      cdm_set_colors(
+        flights = "blue",
+        airports = ,
+        planes = ,
+        airlines = "orange",
+        weather = "green"
+      )
+  }
+
+  if (cycle) {
+    dm <-
+      dm %>%
+      dm_add_fk(flights, dest, airports, check = FALSE)
+  }
+
+  dm
+})
 
 #' @rdname deprecated
 #' @keywords internal
