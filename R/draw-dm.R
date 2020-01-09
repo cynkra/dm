@@ -137,7 +137,8 @@ dm_get_all_columns <- function(x) {
 #' @export
 dm_set_colors <- function(dm, ...) {
   # only those tables for which a color is set (others get default color when drawing)
-  quos <- enquos(...) %>% extract(names(.) != "")
+  quos <- enquos(...)
+  if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
   cols <- names(quos)
   # if not all colors that are not hex coded colors are available, abort
   if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors())) {

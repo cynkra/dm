@@ -609,3 +609,16 @@ error_cols_not_avail <- function(wrong_col) {
     "available. Please refer to `?dm_set_colors()` for examples."
   )
 }
+
+abort_only_named_args <- function(fun_name, name_meaning) {
+  abort(error_only_named_args(fun_name, name_meaning), .subclass = dm_error_full("only_named_args"))
+}
+
+error_only_named_args <- function(fun_name, name_meaning) {
+  glue(
+    "The `...` argument in function {tick(paste0(fun_name, '()'))} accepts only ",
+    "named arguments (the names are {name_meaning})."
+  )
+}
+
+
