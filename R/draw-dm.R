@@ -141,9 +141,6 @@ dm_set_colors <- function(dm, ...) {
   if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
   cols <- names(quos)
 
-  # convert color names to hex color codes (if already hex code this is a no-op)
-  hexcols <- col_to_hex(cols)
-
   # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
   avail_tables <- set_names(src_tbls(dm))
   # get table names for each color (name_spec argument is not needed)
@@ -160,15 +157,12 @@ dm_set_colors <- function(dm, ...) {
         function(quos_sel) tidyselect::vars_select(avail_tables, !!quos_sel)
       ))
 
-  # create "color-vector" of appropriate repetitions for each color
-  num_for_each_col <- map_int(selected_tables, length)
-  sel_colors <- rep(hexcols, num_for_each_col)
-
-  display_df <- tibble(
-    # `unname` to avoid warning from `flatten_chr()`
-    table = flatten_chr(unname(selected_tables)),
-    new_display = sel_colors
-  ) %>%
+  display_df <-
+    selected_tables %>%
+    enframe(name = "new_display", value = "table") %>%
+    unnest(cols = table) %>%
+    # convert color names to hex color codes (if already hex code this is a no-op)
+    mutate(new_display = col_to_hex(new_display)) %>%
     # needs to be done like this, cause `distinct()` would keep the first one
     filter(!duplicated(table, fromLast = TRUE))
 
