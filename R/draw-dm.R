@@ -240,14 +240,15 @@ dm_get_colors <- nse(function(dm) {
 #' dm_get_available_colors()
 #'
 #' `dm_get_available_colors()` returns an overview of the names of the available colors
-#' These are the standard colors also returned by `grDevices::colors()`.
+#' These are the standard colors also returned by `grDevices::colors()` plus a default
+#' table color with the name "default".
 #'
 #' @return For `dm_get_available_colors()`, a vector with the available colors.
 #'
 #' @rdname dm_draw
 #' @export
 dm_get_available_colors <- function() {
-  colors()
+  c("default", colors())
 }
 
 # still needed for legacy `cdm_set/get_colors()`

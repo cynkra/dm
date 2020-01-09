@@ -38,8 +38,8 @@ is_hex_color <- function(x) {
 }
 
 col_to_hex <- function(x) {
-  # from hex or name to rgb
-  map(x, function(x) col2rgb(x)[, 1]) %>%
+  # from hex or name to rgb; "default" should remain "default"
+  map_if(x, x != "default", ~col2rgb(..1)[, 1], .else = ~..1) %>%
     # from rgb to hex
-    map_chr(function(x) rgb(x[1], x[2], x[3], maxColorValue = 255))
+    map_chr(function(x) if (x[1] != "default") rgb(x[1], x[2], x[3], maxColorValue = 255) else x)
 }
