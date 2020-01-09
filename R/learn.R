@@ -247,5 +247,5 @@ nest_compat <- function(.data, ...) {
   stopifnot(length(quos) == 1)
   new_col <- names(quos)
   nest(.data, ...) %>%
-    mutate(!!new_col := vctrs::as_list_of(!!sym(new_col)))
+    mutate_at(vars(new_col), vctrs::as_list_of)
 }
