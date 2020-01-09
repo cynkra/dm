@@ -38,6 +38,14 @@ is_hex_color <- function(x) {
 }
 
 col_to_hex <- function(x) {
+  # if not all colors that are not hex coded colors are available, abort
+  if (!all(x[!is_hex_color(x)] %in% dm_get_available_colors())) {
+    abort_cols_not_avail(setdiff(
+      x[!is_hex_color(x)],
+      dm_get_available_colors()
+    ))
+  }
+
   # from hex or name to rgb; "default" should remain "default"
   map_if(x, x != "default", ~ col2rgb(..1)[, 1], .else = ~..1) %>%
     # from rgb to hex

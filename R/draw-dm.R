@@ -140,13 +140,6 @@ dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
   if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
   cols <- names(quos)
-  # if not all colors that are not hex coded colors are available, abort
-  if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors())) {
-    abort_cols_not_avail(setdiff(
-      cols[!is_hex_color(cols)],
-      dm_get_available_colors()
-    ))
-  }
 
   # convert color names to hex color codes (if already hex code this is a no-op)
   hexcols <- col_to_hex(cols)
