@@ -65,7 +65,7 @@ cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)
 # when using `new_cdm_forward`: error
 # when using `new_cdm_forward_2`: note in R CMD check
 cdm_filter <- function(dm, table, ...) {
-  deprecate_soft("0.1.0", "dm::cdm_filter()")
+  deprecate_soft("0.1.0", "dm::cdm_filter()","dm::dm_filter()")
   dm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
     dm_update_zoomed_tbl()
@@ -81,7 +81,7 @@ cdm_nrow <- new_cdm_forward(dm_nrow)
 #' @export
 # FIXME: both `new_cdm_forward_2(dm_flatten_to_tbl)` and `new_cdm_forward_2(dm_flatten_to_tbl)` don't work
 cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
-  deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()")
+  deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()", "dm::dm_flatten_to_tbl()")
   join_name <- deparse(substitute(join))
   start <- as_string(ensym(start))
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
@@ -92,7 +92,7 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 #' @export
 # FIXME: both `new_cdm_forward_2(dm_squash_to_tbl)` and `new_cdm_forward_2(dm_squash_to_tbl)` don't work
 cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
-  deprecate_soft("0.1.0", "dm::dm_squash_to_tbl()")
+  deprecate_soft("0.1.0", "dm::cdm_squash_to_tbl()", "dm::dm_squash_to_tbl()")
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- as_string(ensym(start))
@@ -105,7 +105,7 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 # FIXME: both `new_cdm_forward_2(dm_join_to_tbl)` and `new_cdm_forward_2(dm_join_to_tbl)` don't work
 cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   force(join)
-  deprecate_soft("0.1.0", "dm::dm_join_to_tbl()")
+  deprecate_soft("0.1.0", "dm::cdm_join_to_tbl()", "dm::dm_join_to_tbl()")
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))
 
@@ -134,7 +134,7 @@ cdm_apply_filters_to_tbl <- new_cdm_forward_2(dm_apply_filters_to_tbl)
 #' @export
 # FIXME: neither `new_cdm_forward_2(dm_add_pk)` nor `new_cdm_forward_2(dm_add_pk)` work
 cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
-  deprecate_soft("0.1.0", "dm::cdm_add_pk()")
+  deprecate_soft("0.1.0", "dm::cdm_add_pk()", "dm::dm_add_pk()")
   dm_add_pk(dm, {{ table }}, {{ column }}, check, force)
 }
 
@@ -143,7 +143,7 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 #' @export
 # FIXME: neither `new_cdm_forward_2(dm_add_fk)` nor `new_cdm_forward_2(dm_add_fk)` work
 cdm_add_fk <- function(dm, table, column, ref_table, check = FALSE) {
-  deprecate_soft("0.1.0", "dm::cdm_add_fk()")
+  deprecate_soft("0.1.0", "dm::cdm_add_fk()", "dm::dm_add_fk()")
   dm_add_fk(dm, {{ table }}, {{ column }}, {{ ref_table }}, check)
 }
 
