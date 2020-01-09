@@ -33,6 +33,6 @@ is_syntactic <- function(x) {
   x == make.names(x)
 }
 
-if_pkg_version <- function(pkg, min_version, if_true, if_false) {
+if_pkg_version <- function(pkg, min_version, if_true, if_false = NULL) {
   if (packageVersion(pkg) >= min_version) if_true else if_false
 }
