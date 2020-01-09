@@ -52,7 +52,8 @@ cdm_draw <- function(
   edge_attrs = "",
   focus = NULL,
   graph_name = "Data Model") {
-  #
+
+  deprecate_soft("0.1.0", "dm::cdm_draw()", "dm::dm_draw()")
   check_dm(dm)
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
@@ -100,6 +101,7 @@ cdm_set_colors <- function(dm, ...) {
 #' @keywords internal
 #' @export
 cdm_get_colors <- nse(function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_get_colors()", "dm::dm_get_colors()")
   dm_get_def(dm) %>%
     select(table, display) %>%
     as_tibble() %>%
