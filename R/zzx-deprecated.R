@@ -42,17 +42,16 @@ cdm_disambiguate_cols <- new_cdm_forward(dm_disambiguate_cols)
 #' @keywords internal
 #' @export
 cdm_draw <- function(
-  dm,
-  rankdir = "LR",
-  col_attr = "column",
-  view_type = "keys_only",
-  columnArrows = TRUE,
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  focus = NULL,
-  graph_name = "Data Model") {
-
+                     dm,
+                     rankdir = "LR",
+                     col_attr = "column",
+                     view_type = "keys_only",
+                     columnArrows = TRUE,
+                     graph_attrs = "",
+                     node_attrs = "",
+                     edge_attrs = "",
+                     focus = NULL,
+                     graph_name = "Data Model") {
   deprecate_soft("0.1.0", "dm::cdm_draw()", "dm::dm_draw()")
   check_dm(dm)
   if (is_empty(dm)) {
@@ -121,7 +120,7 @@ cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)
 # when using `new_cdm_forward`: error
 # when using `new_cdm_forward_2`: note in R CMD check
 cdm_filter <- function(dm, table, ...) {
-  deprecate_soft("0.1.0", "dm::cdm_filter()","dm::dm_filter()")
+  deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
   dm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
     dm_update_zoomed_tbl()
@@ -252,7 +251,7 @@ cdm_check_constraints <- new_cdm_forward(dm_check_constraints)
 #' @keywords internal
 #' @export
 cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
-  deprecate_soft('0.1.0', "dm::cdm_nycflights13()", "dm::dm_nycflights13()")
+  deprecate_soft("0.1.0", "dm::cdm_nycflights13()", "dm::dm_nycflights13()")
 
   dm <-
     dm_from_src(

@@ -293,7 +293,6 @@ bdm_create_graph_list <- function(
           columnArrows = columnArrows
         )
       }
-
     })
 
   nodes <-
@@ -643,7 +642,7 @@ bdm_color_scheme <- list(
 # For legacy code `cdm_draw()` --------------------------------------------
 
 dot_html_label_2 <- function(x, title, palette_id = "default", col_attr = c("column"),
-                           columnArrows = FALSE) {
+                             columnArrows = FALSE) {
   cols <- c("ref", col_attr)
   if (is.null(palette_id)) {
     palette_id <- "default"
@@ -693,13 +692,13 @@ dot_html_label_2 <- function(x, title, palette_id = "default", col_attr = c("col
   }
 
   ret <- to_html_table(x,
-                       title = title,
-                       attr_table = attr_table,
-                       attr_header = attr_header,
-                       attr_font = attr_font,
-                       attr_td = attr_td,
-                       cols = cols,
-                       trans = trans
+    title = title,
+    attr_table = attr_table,
+    attr_header = attr_header,
+    attr_font = attr_font,
+    attr_td = attr_td,
+    cols = cols,
+    trans = trans
   )
 
   ret <- sprintf("<%s>", trimws(ret))
