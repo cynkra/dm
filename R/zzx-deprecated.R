@@ -65,7 +65,7 @@ cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)
 # when using `new_cdm_forward`: error
 # when using `new_cdm_forward_2`: note in R CMD check
 cdm_filter <- function(dm, table, ...) {
-  deprecate_soft("0.1.0", "dm::cdm_filter()","dm::dm_filter()")
+  deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
   dm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
     dm_update_zoomed_tbl()
