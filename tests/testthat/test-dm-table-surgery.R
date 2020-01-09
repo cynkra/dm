@@ -69,7 +69,7 @@ test_that("table surgery functions fail in the expected ways?", {
     data_ts_src,
     ~ expect_error(
       decompose_table(., aex_id, a, e, x),
-      class = if_pkg_version("tidyselect", "0.2.99.9000", "tidyselect_error_subscript_oob_name", NULL)
+      class = if_pkg_version("tidyselect", "0.2.99.9000", "tidyselect_error_subscript_oob_name")
     )
   )
 
