@@ -9,7 +9,7 @@
 
 > error_txt_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus",
 +   "overhours"))
-Tables `laziness`, `daydreaming` not in `dm` object. Available table names: `hard_work`, `focus`, `overhours`
+Table(s) `laziness`, `daydreaming` not in `dm` object. Available table names: `hard_work`, `focus`, `overhours`
 
 > error_txt_not_subset_of("playing", "game", "hunting", "game")
 Column `game` of table `playing` contains values (see above) that are not present in column `game` of table `hunting`

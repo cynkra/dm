@@ -134,7 +134,8 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # in the case of only one table in the `dm` (table "start"), all code below is a no-op
   order_df <- order_df[-1, ]
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
-  order_df <- left_join(tibble(name = list_of_pts), order_df, by = "name")
+  # `unname()` to avoid warning (tibble version ‘2.99.99.9012’ retains names in column vectors)
+  order_df <- left_join(tibble(name = unname(list_of_pts)), order_df, by = "name")
 
   # list of join partners
   ordered_table_list <- prep_dm %>%
@@ -177,6 +178,7 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
 
   t1_name <- as_string(ensym(table_1))
   t2_name <- as_string(ensym(table_2))
+  check_correct_input(dm, c(t1_name, t2_name), 2L)
 
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
   start <- rel$child_table

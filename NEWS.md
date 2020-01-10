@@ -1,3 +1,10 @@
+# dm 0.0.6.9000
+
+- New `$.zoomed_dm()`, `[.zoomed_dm()`, `[[.zoomed_dm()`, `length.zoomed_dm()`, `names.zoomed_dm()`, `tbl_vars.zoomed_dm()` (#199, #216).
+- New `as.list()` methods (#213).
+- Improve error messages for missing tables (#220).
+
+
 # dm 0.0.6
 
 - Change `cdm_` prefix to `dm_`. The old names are still available (#117).

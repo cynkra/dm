@@ -433,4 +433,9 @@ test_that("`dm_join_to_tbl()` works", {
       by = c("dim_3_key" = "dim_3_pk")
     )
   )
+
+  expect_dm_error(
+    dm_join_to_tbl(dm_for_filter, t7, t8),
+    "table_not_in_dm"
+  )
 })
