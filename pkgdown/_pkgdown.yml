@@ -107,7 +107,6 @@ reference:
   contents:
   - dm_nycflights13
   - dm_nrow
-  - browse_docs
 
 navbar:
   title: ~
