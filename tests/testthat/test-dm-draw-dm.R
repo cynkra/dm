@@ -52,7 +52,7 @@ test_that("`dm_set_colors()` errors if old syntax used", {
       flights = ,
       weather = "green"
     ),
-    class = "cols_not_avail"
+    class = "wrong_syntax_set_cols"
   )
 })
 

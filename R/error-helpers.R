@@ -621,4 +621,10 @@ error_only_named_args <- function(fun_name, name_meaning) {
   )
 }
 
+abort_wrong_syntax_set_cols <- function() {
+  abort(error_wrong_syntax_set_cols(), .subclass = dm_error_full("wrong_syntax_set_cols"))
+}
 
+error_wrong_syntax_set_cols <- function() {
+  "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
+}

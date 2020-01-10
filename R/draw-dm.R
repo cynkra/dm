@@ -136,10 +136,13 @@ dm_get_all_columns <- function(x) {
 #'   dm_draw()
 #' @export
 dm_set_colors <- function(dm, ...) {
-  # only those tables for which a color is set (others get default color when drawing)
   quos <- enquos(...)
   if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
   cols <- names(quos)
+  if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
+      all(cols %in% src_tbls(dm))) {
+    abort_wrong_syntax_set_cols()
+  }
 
   # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
   avail_tables <- set_names(src_tbls(dm))

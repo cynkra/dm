@@ -59,5 +59,6 @@ test_that("error messages do not change", {
     error_not_pulling_multiple_zoomed()
     error_cols_not_avail(c("pink5", "elephant"))
     error_only_named_args("give_names", "important")
+    error_wrong_syntax_set_cols()
   })
 })
