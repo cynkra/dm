@@ -379,7 +379,6 @@ dm_get_data_model_fks <- function(x) {
 #' @export
 dm_get_filters <- function(x) {
   check_not_zoomed(x)
-  # FIXME: Obliterate
 
   filter_df <-
     dm_get_def(x) %>%
