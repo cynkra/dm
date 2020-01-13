@@ -433,7 +433,7 @@ test_that("key tracking works", {
       rename(f_new = f) %>%
       dm_update_zoomed() %>%
       dm_get_all_fks(),
-    zoomed_grouped_in_dm %>%
+    dm_for_filter %>%
       dm_get_all_fks()
   )
 
