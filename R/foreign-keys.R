@@ -265,6 +265,7 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
 #' @export
 enum_fk_candidates <- function(zoomed_dm, ref_table) {
   check_zoomed(zoomed_dm)
+  check_no_filter(zoomed_dm)
 
   table_name <- orig_name_zoomed(zoomed_dm)
   ref_table_name <- as_string(ensym(ref_table))
