@@ -26,8 +26,8 @@
 #'   dm_rename(airports, code = faa, altitude = alt)
 #' @export
 dm_rename <- function(dm, table, ...) {
+  check_not_zoomed(dm)
   table_name <- as_string(ensym(table))
-
   dm_zoom_to_tbl(dm, !!table_name) %>%
     rename(...) %>%
     dm_update_zoomed()
@@ -48,6 +48,7 @@ dm_rename <- function(dm, table, ...) {
 #'   dm_select(airports, code = faa, altitude = alt)
 #' @export
 dm_select <- function(dm, table, ...) {
+  check_not_zoomed(dm)
   table_name <- as_string(ensym(table))
 
   dm_zoom_to_tbl(dm, !!table_name) %>%

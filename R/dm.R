@@ -270,7 +270,7 @@ debug_validate_dm <- function(dm) {
 #'
 #' @export
 dm_get_src <- function(x) {
-  check_dm(x)
+  check_not_zoomed(x)
   tables <- dm_get_tables(x)
   tbl_src(tables[1][[1]])
 }
@@ -305,6 +305,7 @@ dm_get_con <- function(x) {
 #'
 #' @export
 dm_get_tables <- function(x) {
+  check_not_zoomed(x)
   def <- dm_get_def(x)
   set_names(def$data, def$table)
 }
@@ -373,6 +374,7 @@ dm_get_data_model_fks <- function(x) {
 #'
 #' @export
 dm_get_filters <- function(x) {
+  check_not_zoomed(x)
   # FIXME: Obliterate
 
   filter_df <-

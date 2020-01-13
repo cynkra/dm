@@ -21,6 +21,7 @@
 #'   dm_add_fk(iris_1, key, iris_2)
 #' @export
 dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
+  check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
@@ -74,6 +75,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' dm_has_fk(dm_nycflights13(), airports, flights)
 #' @export
 dm_has_fk <- function(dm, table, ref_table) {
+  check_not_zoomed(dm)
   has_length(dm_get_fk(dm, {{ table }}, {{ ref_table }}))
 }
 
@@ -90,6 +92,7 @@ dm_has_fk <- function(dm, table, ref_table) {
 #' dm_get_fk(dm_nycflights13(), flights, airports)
 #' @export
 dm_get_fk <- function(dm, table, ref_table) {
+  check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
@@ -117,6 +120,7 @@ dm_get_fk <- function(dm, table, ref_table) {
 #' dm_get_all_fks(dm_nycflights13())
 #' @export
 dm_get_all_fks <- nse(function(dm) {
+  check_not_zoomed(dm)
   dm_get_data_model_fks(dm) %>%
     select(child_table = table, child_fk_col = column, parent_table = ref) %>%
     arrange(child_table, child_fk_col)
@@ -146,6 +150,7 @@ dm_get_all_fks <- nse(function(dm) {
 #' )
 #' @export
 dm_rm_fk <- function(dm, table, column, ref_table) {
+  check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
@@ -154,12 +159,6 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
   fk_cols <- dm_get_fk(dm, !!table_name, !!ref_table_name)
   if (is_empty(fk_cols)) {
     return(dm)
-  }
-
-  column_quo <- enquo(column)
-
-  if (quo_is_missing(column_quo)) {
-    abort_rm_fk_col_missing()
   }
 
   if (quo_is_null(column_quo)) {
@@ -219,6 +218,7 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
 #'   enum_fk_candidates(airports)
 #' @export
 dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
+  check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
@@ -241,7 +241,6 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
 #' @param zoomed_dm A `dm` with a zoomed table.
 #' @export
 enum_fk_candidates <- function(zoomed_dm, ref_table) {
-  check_dm(zoomed_dm)
   check_zoomed(zoomed_dm)
 
   table_name <- orig_name_zoomed(zoomed_dm)

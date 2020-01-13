@@ -80,6 +80,8 @@ dm_copy_to <- function(dest, dm, ...,
     }
   }
 
+  check_not_zoomed(dm)
+
   # FIXME: if same_src(), can use compute() but need to set NOT NULL
   # constraints
 

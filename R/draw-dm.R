@@ -37,7 +37,7 @@ dm_draw <- function(dm,
                     focus = NULL,
                     graph_name = "Data Model") {
   #
-  check_dm(dm)
+  check_not_zoomed(dm)
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
     return(invisible(NULL))

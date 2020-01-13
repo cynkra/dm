@@ -18,9 +18,8 @@
 #'
 #' @export
 dm_paste <- function(dm, select = FALSE, tab_width = 2) {
-  check_dm(dm)
-  check_no_filter(dm)
   check_not_zoomed(dm)
+  check_no_filter(dm)
 
   # we assume the tables exist and have the necessary columns
   # code for including the tables
