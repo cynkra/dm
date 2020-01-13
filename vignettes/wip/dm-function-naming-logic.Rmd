@@ -1,0 +1,43 @@
+---
+title: "Function naming logic"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This vignette describes the logic behind the names of the {dm}-functions.
+
+In general the functions are implemented in such a way, that no function can handle both `dm` classes (`dm` and `zoomed_dm`) as an argument.
+A `zoomed_dm` behaves in most situations like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette ["Zooming and manipulating tables"]().
+<!-- FIXME: Vignette needs to be reviewed and integrated (https://github.com/krlmlr/dm/issues/185) -->
+
+## Prefixes
+
+1. `dm_`: There are two cases for this prefix:
+    - The function takes a `dm` object as a first argument
+    - The function constructs a `dm` object from other objects
+1. `examine_`: There are two cases for this prefix:
+    - The function throws an error if the respective check is not passed and otherwise returns the first argument invisibly.
+    - The function executes several checks and returns the results in tibble-form. 
+    
+<!-- FIXME: also rename `check_key()`, `check_if_subset()`, `check_set_equality()`? -->
+
+Most important extended prefixes `dm_..._`:
+
+1. `dm_examine_`: The function examines several aspects of a `dm` object
+1. `dm_add_`: Adds either key constraints or new tables to a `dm`
+1. `dm_get_`: Retrieves a specific piece of information about the `dm` (often a part of its constituents)
+1. `dm_rm_`: Removers either key constraints or new tables to a `dm`
+
+## Suffixes
+
+1. `_dm`: Validators, checkers or coercers
+1. `_to_tbl`: Data from a `dm` is processed in a way that a tibble is produced
+1. `_candidates`: If key-candidates are to be calculated and presented in tibble-form
+1. `_pk(s)`: Relates to primary key
+1. `_fk(s)`: Relates to foreign key
+1. `_tbl`: Add/remove/select/rename a tibble to/from/within a dm
+1. `_colors`: Relates to the colors for the visualization of the dm
+1. `_zoomed`: Insert, update or discard the zoomed table. In combination with the prefix `dm_` this indicates, that the first argument is a `zoomed_dm` rather than a `dm`.
