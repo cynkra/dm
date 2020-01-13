@@ -114,6 +114,9 @@ dm_get_all_columns <- function(x) {
 #' `dm_set_colors()`
 #'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
+#' The colors can either be specified with hex color codes or the built-in R color names.
+#' An overview of the colors corresponding to the standard color names can be found at
+#' [http://rpubs.com/krlmlr/colors](http://rpubs.com/krlmlr/colors).
 #'
 #' @param ... Colors to set in the form `color = table`.
 #' Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
