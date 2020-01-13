@@ -68,8 +68,8 @@
 dm_zoom_to_tbl <- function(dm, table) {
   # FIXME: to include in documentation after #185:
   # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
+  check_dm(dm)
   if (is_zoomed(dm)) abort_no_zoom_allowed()
-
   # for now only one table can be zoomed on
   zoom <- as_string(ensym(table))
   check_correct_input(dm, zoom)
