@@ -16,7 +16,7 @@ cdm_get_tables <- new_cdm_forward(dm_get_tables)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_filters <- new_cdm_forward(dm_get_filters)
+cdm_get_filter <- new_cdm_forward(dm_get_filters, old_fwd_name = "cdm_get_filter")
 
 #' @rdname deprecated
 #' @keywords internal
