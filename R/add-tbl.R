@@ -87,7 +87,7 @@ dm_rm_tbl <- function(dm, ...) {
 }
 
 check_new_tbls <- function(dm, tbls) {
-  orig_tbls <- dm_get_tables(dm)
+  orig_tbls <- dm_get_tables_impl(dm)
 
   # are all new tables on the same source as the original ones?
   if (has_length(orig_tbls) && !all_same_source(c(orig_tbls[1], tbls))) {

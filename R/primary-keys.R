@@ -241,6 +241,6 @@ dm_enum_pk_candidates <- nse(function(dm, table) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  tbl <- dm_get_tables(dm)[[table_name]]
+  tbl <- dm_get_tables_impl(dm)[[table_name]]
   enum_pk_candidates(tbl)
 })

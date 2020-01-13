@@ -249,7 +249,7 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
 
   ref_tbl_pk <- dm_get_pk(zoomed_dm, !!ref_table_name)
 
-  ref_tbl <- dm_get_filtered_table(zoomed_dm, ref_table_name)
+  ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
   enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk)
 }
 

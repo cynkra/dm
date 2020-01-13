@@ -271,7 +271,7 @@ debug_validate_dm <- function(dm) {
 #' @export
 dm_get_src <- function(x) {
   check_not_zoomed(x)
-  tables <- dm_get_tables(x)
+  tables <- dm_get_tables_impl(x)
   tbl_src(tables[1][[1]])
 }
 
@@ -306,6 +306,10 @@ dm_get_con <- function(x) {
 #' @export
 dm_get_tables <- function(x) {
   check_not_zoomed(x)
+  dm_get_tables_impl(x)
+}
+
+dm_get_tables_impl <- function(x) {
   def <- dm_get_def(x)
   set_names(def$data, def$table)
 }
@@ -638,7 +642,7 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(dm)
   check_correct_input(dm, from, 1L)
 
-  dm_get_tables(dm)[[from]]
+  dm_get_tables_impl(dm)[[from]]
 }
 
 #' @export
@@ -661,8 +665,11 @@ compute.zoomed_dm <- function(x, ...) {
 src_tbls.dm <- function(x) {
   # The x argument here is a dm object
   dm <- x
-  names(dm_get_tables(dm))
+  # FIXME: should this be forbidden for `zoomed_dm`? and should we not just take the names from `def`?
+  names(dm_get_tables_impl(dm))
 }
+
+
 
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
@@ -795,7 +802,7 @@ pull_tbl.zoomed_dm <- function(dm, table) {
 
 #' @export
 as.list.dm <- function(x, ...) {
-  dm_get_tables(x)
+  dm_get_tables_impl(x)
 }
 
 #' @export
