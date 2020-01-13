@@ -57,5 +57,6 @@ test_that("error messages do not change", {
     error_no_table_provided()
     error_table_not_zoomed("blur", c("focus_1", "focus_2"))
     error_not_pulling_multiple_zoomed()
+    error_temp_table_requested(c("i_am_temporary", "i_am_permanent"), "i_am_permanent")
   })
 })

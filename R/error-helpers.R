@@ -597,3 +597,14 @@ abort_not_pulling_multiple_zoomed <- function() {
 error_not_pulling_multiple_zoomed <- function() {
   "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 }
+
+abort_temp_table_requested <- function(table_names, tbls_in_dm) {
+  abort(error_temp_table_requested(table_names, tbls_in_dm), .subclass = dm_error_full("temp_table_requested"))
+}
+
+error_temp_table_requested <- function(table_names, tbls_in_dm) {
+  temp_tables <- setdiff(table_names, tbls_in_dm)
+  glue("The following requested tables from the DB are temporary tables and cannot be included in the result: ",
+       "{commas(tick(temp_tables))}")
+}
+

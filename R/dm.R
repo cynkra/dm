@@ -87,9 +87,22 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL) {
   src_tbl_names <- src_tbls(src)
 
   if (is_null(table_names)) {
+    auto_detect <- TRUE
     table_names <- src_tbl_names
-  } else if (!all(table_names %in% src_tbl_names)) {
-    abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
+  } else {
+    if (!all(table_names %in% src_tbl_names)) {
+      abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
+    }
+    auto_detect <- FALSE
+  }
+  if (is_mssql(src) || is_postgres(src)) {
+    dm_learned <- dm_learn_from_db(src)
+    tbls_in_dm <- src_tbls(dm_learned)
+    # `src_tbls()` show also temporary tables, but those are not included in the result of `dm_learn_from_db()`
+    # therefore, throw an error if `table_names` includes temporary tables.
+    tbls_req <- intersect(tbls_in_dm, table_names)
+    if (!auto_detect && (!identical(tbls_req, table_names))) abort_temp_table_requested(table_names, tbls_in_dm)
+    return(dm_learned %>% dm_select_tbl(!!!tbls_req))
   }
 
   tbls <- map(set_names(table_names), tbl, src = src)

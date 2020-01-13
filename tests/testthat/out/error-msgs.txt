@@ -162,3 +162,7 @@ In `pull_tbl.zoomed_dm`: Table `blur` not zoomed, zoomed tables: `focus_1`, `foc
 > error_not_pulling_multiple_zoomed()
 [1] "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
 
+> error_temp_table_requested(c("i_am_temporary", "i_am_permanent"),
++ "i_am_permanent")
+The following requested tables from the DB are temporary tables and cannot be included in the result: `i_am_temporary`
+
