@@ -2,10 +2,10 @@ nse <- function(fun, env = caller_env()) {
   fun
 }
 
-new_cdm_forward <- function(fwd, env = caller_env()) {
+new_cdm_forward <- function(fwd, env = caller_env(), old_fwd_name = NULL) {
   fwd_sym <- ensym(fwd)
   fwd_name <- as_name(fwd_sym)
-  old_fwd_name <- gsub("^dm_", "cdm_", fwd_name)
+  if (is_null(old_fwd_name)) old_fwd_name <- gsub("^dm_", "cdm_", fwd_name)
 
   args <- formals(fwd)
   fwd_args <- set_names(syms(names(args)), names(args))
@@ -23,10 +23,10 @@ new_cdm_forward <- function(fwd, env = caller_env()) {
 }
 
 # to be used in case names are created from arguments in the `dm`-function
-new_cdm_forward_2 <- function(fwd, env = caller_env()) {
+new_cdm_forward_2 <- function(fwd, env = caller_env(), old_fwd_name = NULL) {
   fwd_sym <- ensym(fwd)
   fwd_name <- as_name(fwd_sym)
-  old_fwd_name <- gsub("^dm_", "cdm_", fwd_name)
+  if (is_null(old_fwd_name)) old_fwd_name <- gsub("^dm_", "cdm_", fwd_name)
 
   args <- formals(fwd)
 

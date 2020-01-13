@@ -255,14 +255,14 @@ cdm_zoom_to_tbl <- new_cdm_forward_2(dm_zoom_to_tbl)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_insert_zoomed_tbl <- new_cdm_forward_2(dm_insert_zoomed)
+cdm_insert_zoomed_tbl <- new_cdm_forward_2(dm_insert_zoomed, old_fwd_name = "cdm_insert_zoomed_tbl")
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_update_zoomed_tbl <- new_cdm_forward(dm_update_zoomed)
+cdm_update_zoomed_tbl <- new_cdm_forward(dm_update_zoomed, old_fwd_name = "cdm_update_zoomed_tbl")
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_zoom_out <- new_cdm_forward(dm_discard_zoomed)
+cdm_zoom_out <- new_cdm_forward(dm_discard_zoomed, old_fwd_name = "cdm_zoom_out")
