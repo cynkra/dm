@@ -190,7 +190,7 @@ dm_discard_zoomed <- function(dm) {
 update_zoomed_pk <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  orig_pk <- dm_get_pk(dm, !!old_tbl_name)
+  orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
   upd_pk <- if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
     new_pk(list(names(tracked_keys[tracked_keys == orig_pk])))
   } else {
@@ -202,7 +202,7 @@ update_zoomed_pk <- function(dm) {
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  orig_pk <- dm_get_pk(dm, !!old_tbl_name)
+  orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
   if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
     filter(dm_get_def(dm), table == old_tbl_name) %>% pull(fks)
   } else {
@@ -215,7 +215,7 @@ update_zoomed_incoming_fks <- function(dm) {
 dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  old_out_keys <- dm_get_all_fks(dm) %>%
+  old_out_keys <- dm_get_all_fks_impl(dm) %>%
     filter(child_table == old_tbl_name) %>%
     select(table = parent_table, column = child_fk_col)
 
@@ -232,12 +232,12 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
     dm <- reduce2(
       old_out_keys$column,
       old_out_keys$table,
-      ~ dm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3),
+      ~ dm_rm_fk_impl(..1, old_tbl_name, ..2, ..3),
       .init = dm
     )
   }
   structure(
-    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm),
+    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk_impl(..1, new_tbl_name, ..2, ..3), .init = dm),
     class = c("zoomed_dm", "dm")
   )
 }

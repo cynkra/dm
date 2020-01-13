@@ -76,7 +76,11 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' @export
 dm_has_fk <- function(dm, table, ref_table) {
   check_not_zoomed(dm)
-  has_length(dm_get_fk(dm, {{ table }}, {{ ref_table }}))
+  dm_has_fk_impl(dm, as_name(ensym(table)), as_name(ensym(ref_table)))
+}
+
+dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
+  has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
 #' Retrieve the name of the column marked as a foreign key, pointing from one table of a [`dm`] to another table.
@@ -93,9 +97,14 @@ dm_has_fk <- function(dm, table, ref_table) {
 #' @export
 dm_get_fk <- function(dm, table, ref_table) {
   check_not_zoomed(dm)
+
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
+  dm_get_fk_impl(dm, table_name, ref_table_name)
+}
+
+dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
   fks <- dm_get_data_model_fks(dm)
@@ -121,11 +130,14 @@ dm_get_fk <- function(dm, table, ref_table) {
 #' @export
 dm_get_all_fks <- nse(function(dm) {
   check_not_zoomed(dm)
+  dm_get_all_fks_impl(dm)
+})
+
+dm_get_all_fks_impl <- function(dm) {
   dm_get_data_model_fks(dm) %>%
     select(child_table = table, child_fk_col = column, parent_table = ref) %>%
     arrange(child_table, child_fk_col)
-})
-
+}
 
 #' Remove the reference(s) from one [`dm`] table to another
 #'
@@ -151,12 +163,18 @@ dm_get_all_fks <- nse(function(dm) {
 #' @export
 dm_rm_fk <- function(dm, table, column, ref_table) {
   check_not_zoomed(dm)
+
+  column_quo <- enquo(column)
+
+  if (quo_is_missing(column_quo)) {
+    abort_rm_fk_col_missing()
+  }
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
-  fk_cols <- dm_get_fk(dm, !!table_name, !!ref_table_name)
+  fk_cols <- dm_get_fk_impl(dm, table_name, ref_table_name)
   if (is_empty(fk_cols)) {
     return(dm)
   }
@@ -170,6 +188,11 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
       abort_is_not_fkc(table_name, cols, ref_table_name, fk_cols)
     }
   }
+
+  dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
+}
+
+dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 
   # FIXME: compound keys
   cols <- as.list(cols)
@@ -247,7 +270,7 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
   ref_table_name <- as_string(ensym(ref_table))
   check_correct_input(zoomed_dm, ref_table_name)
 
-  ref_tbl_pk <- dm_get_pk(zoomed_dm, !!ref_table_name)
+  ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
   enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk)

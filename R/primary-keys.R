@@ -114,7 +114,10 @@ dm_get_pk <- function(dm, table) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
+  dm_get_pk_impl(dm, table_name)
+}
 
+dm_get_pk_impl <- function(dm, table_name) {
   pks <- dm_get_data_model_pks(dm)
   pks$column[pks$table == table_name]
 }
@@ -135,9 +138,14 @@ dm_get_pk <- function(dm, table) {
 #' @export
 dm_get_all_pks <- nse(function(dm) {
   check_not_zoomed(dm)
+  dm_get_all_pks_impl(dm)
+})
+
+dm_get_all_pks_impl <- function(dm) {
   dm_get_data_model_pks(dm) %>%
     select(table = table, pk_col = column)
-})
+}
+
 
 #' Remove a primary key from a table in a [`dm`] object
 #'
