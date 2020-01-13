@@ -695,17 +695,22 @@ copy_to.src_sql <- function(dest,
       name = name,
       overwrite = overwrite,
       ...,
-      temporary = temporary)} else if (is_dm(df)) {
-        dm_copy_to(
-          dest,
-          df,
-          ...,
-          types = types, overwrite = overwrite,
-          indexes = indexes, unique_indexes = unique_indexes,
-          set_key_constraints = set_key_constraints, unique_table_names = unique_table_names,
-          table_names = table_names,
-          temporary = temporary
-          )} else abort_either_dm_of_df(class(df))
+      temporary = temporary
+    )
+  } else if (is_dm(df)) {
+    dm_copy_to(
+      dest,
+      df,
+      ...,
+      types = types, overwrite = overwrite,
+      indexes = indexes, unique_indexes = unique_indexes,
+      set_key_constraints = set_key_constraints, unique_table_names = unique_table_names,
+      table_names = table_names,
+      temporary = temporary
+    )
+  } else {
+    abort_either_dm_of_df(class(df))
+  }
 }
 
 #' @export

@@ -604,7 +604,8 @@ abort_temp_table_requested <- function(table_names, tbls_in_dm) {
 
 error_temp_table_requested <- function(table_names, tbls_in_dm) {
   temp_tables <- setdiff(table_names, tbls_in_dm)
-  glue("The following requested tables from the DB are temporary tables and cannot be included in the result: ",
-       "{commas(tick(temp_tables))}")
+  glue(
+    "The following requested tables from the DB are temporary tables and cannot be included in the result: ",
+    "{commas(tick(temp_tables))}"
+  )
 }
-
