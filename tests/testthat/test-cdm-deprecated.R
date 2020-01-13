@@ -234,11 +234,11 @@ test_that("cdm_learn_from_db() works from PG", {
   clear_postgres()
 })
 
-test_that("cdm_check_constraints() works", {
+test_that("cdm_examine_constraints() works", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_check_constraints(bad_dm),
-    dm_check_constraints(bad_dm)
+    dm_examine_constraints(bad_dm)
   )
 })
 

@@ -93,7 +93,7 @@ reference:
 
 - title: Check keys and cardinalities
   contents:
-  - dm_check_constraints
+  - dm_examine_constraints
   - check_key
   - check_if_subset
   - check_set_equality

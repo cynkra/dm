@@ -18,8 +18,8 @@
 #'
 #' @export
 #' @examples
-#' dm_check_constraints(dm_nycflights13())
-dm_check_constraints <- function(dm) {
+#' dm_examine_constraints(dm_nycflights13())
+dm_examine_constraints <- function(dm) {
   check_not_zoomed(dm)
   pk_results <- check_pk_constraints(dm)
   fk_results <- check_fk_constraints(dm)
