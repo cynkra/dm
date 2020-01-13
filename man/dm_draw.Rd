@@ -68,7 +68,7 @@ For \code{dm_get_available_colors()}, a vector with the available colors.
 \code{dm_draw()} uses \pkg{DiagrammeR} to draw diagrams.
 
 \code{dm_set_colors()} allows to define the colors that will be used to display the tables of the data model.
-The colors can either be specified with hex color codes or the built-in R color names.
+The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 An overview of the colors corresponding to the standard color names can be found at
 \url{http://rpubs.com/krlmlr/colors}.
 
