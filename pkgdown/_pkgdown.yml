@@ -94,9 +94,9 @@ reference:
 - title: Check keys and cardinalities
   contents:
   - dm_examine_constraints
-  - check_key
-  - check_if_subset
-  - check_set_equality
+  - examine_key
+  - examine_if_subset
+  - examine_set_equality
   - examine_cardinality
   - examine_cardinality_0_n
   - examine_cardinality_1_n

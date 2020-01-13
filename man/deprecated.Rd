@@ -2,6 +2,9 @@
 % Please edit documentation in R/deprecated.R, R/zzx-deprecated.R
 \name{deprecated}
 \alias{deprecated}
+\alias{check_key}
+\alias{check_if_subset}
+\alias{check_set_equality}
 \alias{cdm_get_src}
 \alias{cdm_get_con}
 \alias{cdm_get_tables}
@@ -49,6 +52,12 @@
 \alias{cdm_zoom_out}
 \title{Deprecated functions}
 \usage{
+check_key(.data, ...)
+
+check_if_subset(t1, c1, t2, c2)
+
+check_set_equality(t1, c1, t2, c2)
+
 cdm_get_src(x)
 
 cdm_get_con(x)

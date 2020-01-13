@@ -71,9 +71,9 @@ examine_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_col
   ct <- enquo(child_table)
   fkc <- ensym(fk_column)
 
-  check_key(!!pt, !!pkc)
+  examine_key(!!pt, !!pkc)
 
-  check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+  examine_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
   invisible(parent_table)
 }
@@ -86,9 +86,9 @@ examine_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_col
   ct <- enquo(child_table)
   fkc <- ensym(fk_column)
 
-  check_key(!!pt, !!pkc)
+  examine_key(!!pt, !!pkc)
 
-  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  examine_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
   invisible(parent_table)
 }
@@ -101,13 +101,13 @@ examine_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_col
   ct <- enquo(child_table)
   fkc <- ensym(fk_column)
 
-  check_key(!!pt, !!pkc)
+  examine_key(!!pt, !!pkc)
 
-  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  examine_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
   tryCatch(
     {
-      check_key(!!ct, !!fkc)
+      examine_key(!!ct, !!fkc)
       NULL
     },
     error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
@@ -124,13 +124,13 @@ examine_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_col
   ct <- enquo(child_table)
   fkc <- ensym(fk_column)
 
-  check_key(!!pt, !!pkc)
+  examine_key(!!pt, !!pkc)
 
-  check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+  examine_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
   tryCatch(
     {
-      check_key(!!ct, !!fkc)
+      examine_key(!!ct, !!fkc)
       NULL
     },
     error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
@@ -147,8 +147,8 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
   ct <- enquo(child_table)
   fkc <- enexpr(fk_column)
 
-  check_key(!!pt, !!pkc)
-  check_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+  examine_key(!!pt, !!pkc)
+  examine_if_subset(!!ct, !!fkc, !!pt, !!pkc)
 
   min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
   max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)

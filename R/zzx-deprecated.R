@@ -1,6 +1,21 @@
 #' @rdname deprecated
 #' @keywords internal
 #' @export
+check_key <- new_cdm_forward_2(examine_key)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_if_subset <- new_cdm_forward_2(examine_if_subset)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_set_equality <- new_cdm_forward_2(examine_set_equality)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
 cdm_get_src <- new_cdm_forward(dm_get_src)
 
 #' @rdname deprecated

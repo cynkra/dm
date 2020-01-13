@@ -107,22 +107,22 @@ planes %>%
 
 # dm shortcut:
 planes %>%
-  dm::check_key(tailnum)
+  dm::examine_key(tailnum)
 
 try(
   planes %>%
-    dm::check_key(engines)
+    dm::examine_key(engines)
 )
 
 airports %>%
-  dm::check_key(faa)
+  dm::examine_key(faa)
 
 # FIXME: add dm function that explains why not key candidate
 
 # Why is name not a key candidate for airports?
 try(
   airports %>%
-    dm::check_key(name)
+    dm::examine_key(name)
 )
 
 airports %>%

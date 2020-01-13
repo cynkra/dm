@@ -34,7 +34,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     map2(
       .x = d1_src,
       .y = d3_src,
-      ~ check_set_equality(.x, a, .y, c)
+      ~ examine_set_equality(.x, a, .y, c)
     )
   )
 

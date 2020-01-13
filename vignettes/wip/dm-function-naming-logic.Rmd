@@ -22,7 +22,7 @@ A `zoomed_dm` behaves in most situations like a table and there are mostly no ex
     - The function throws an error if the respective check is not passed and otherwise returns the first argument invisibly.
     - The function executes several checks and returns the results in tibble-form. 
     
-<!-- FIXME: also rename `check_key()`, `check_if_subset()`, `check_set_equality()`? -->
+<!-- FIXME: also rename `examine_key()`, `examine_if_subset()`, `examine_set_equality()`? -->
 
 Most important extended prefixes `dm_..._`:
 
