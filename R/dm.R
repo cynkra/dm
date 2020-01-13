@@ -493,14 +493,10 @@ print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   df <- get_zoomed_tbl(x)
-  zoomed_filters <- dm_get_filters(x) %>%
-    filter(zoomed == TRUE)
-  filters <- if_else(nrow(zoomed_filters) > 0, TRUE, FALSE)
   # so far only 1 table can be zoomed on
   zoomed_df <- new_zoomed_df(
     df,
-    name_df = orig_name_zoomed(x),
-    filters = filters
+    name_df = orig_name_zoomed(x)
   )
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
