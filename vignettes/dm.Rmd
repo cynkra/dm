@@ -24,6 +24,9 @@ knit_print.grViz <- function(x, ...) {
     c("`````{=html}\n", ., "\n`````\n") %>% 
     knitr::asis_output()
 }
+library(nycflights13)
+library(tidyverse)
+library(dm)
 ```
 
 The goal of the package {dm} and its `dm` class is to facilitate working with multiple related tables.
@@ -61,8 +64,8 @@ We will now demonstrate some of the features of {dm}:
 Let's first have a brief look at how to create a `dm`-class object.
 
 ```{r message=FALSE}
-library(dm)
 library(tidyverse)
+library(dm)
 ```
 
 
@@ -207,12 +210,12 @@ Omitting the `by` argument leads to a warning.
 ## Copy a `dm` object to a DB or learn from it {#copy}
 
 `dm` objects can be transferred from one `src` to another.
-The relevant verb is `dm_copy_to()`, which will copy both data and key constraints.
+The relevant method is `copy_to()` with the second argument being a `dm`, which will copy both data and key constraints.
 
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-flights_dm_with_keys_remote <- dm_copy_to(src_sqlite, flights_dm_with_keys)
+flights_dm_with_keys_remote <- copy_to(src_sqlite, flights_dm_with_keys)
 ```
 
 As a result, the tables are transferred to the target data source, and all keys will be contained in the returned data model.
