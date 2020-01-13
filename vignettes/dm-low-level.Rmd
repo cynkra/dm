@@ -100,11 +100,11 @@ This ensures that the functions can be conveniently used in a pipe configuration
 
 This section contains information and examples for the functions
 
-1. `check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)`
-1. `check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)`
-1. `check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)`
-1. `check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)`
-1. `check_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `examine_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `examine_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `examine_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `examine_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `examine_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)`
 
 The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as inputs.
 The functions first test if that requirement is fulfilled by checking if: 
@@ -127,7 +127,7 @@ But not all of the parent table column values have to be referred to.
 `1_1` means, that for each value of the `parent_key_column`, exactly one value has to correspond to it in the child table's column. 
 This means that there is a "bijective" ("injective" AND "surjective") relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.
 
-Also `check_cardinality()` first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met.
+Also `examine_cardinality()` first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met.
 Subsequently, two further checks are made to determine the nature of the relation (surjective, injective, bijective or none of these) between the two columns.
 
 ### Examples
@@ -144,24 +144,24 @@ Here are some examples of how the cardinality testing functions can be used:
 
 ```{r}
 # This does not pass, `c` is not unique key of d2:
-check_cardinality_0_n(d2, c, d1, a)
+examine_cardinality_0_n(d2, c, d1, a)
 
 # This passes, multiple values in d2$c are allowed:
-check_cardinality_0_n(d1, a, d2, c)
+examine_cardinality_0_n(d1, a, d2, c)
 
 # This does not pass, injectivity is violated:
-check_cardinality_1_1(d1, a, d2, c)
+examine_cardinality_1_1(d1, a, d2, c)
 
 # This passes:
-check_cardinality_0_1(d1, a, d3, c)
+examine_cardinality_0_1(d1, a, d3, c)
 ```
 
-`check_cardinality()` returns the type of relation, e.g.:
+`examine_cardinality()` returns the type of relation, e.g.:
 ```{r}
-check_cardinality(d1, a, d3, c)
-check_cardinality(d1, a, d2, c)
-check_cardinality(d1, a, d1, a)
-check_cardinality(d1, a, d4, a)
+examine_cardinality(d1, a, d3, c)
+examine_cardinality(d1, a, d2, c)
+examine_cardinality(d1, a, d1, a)
+examine_cardinality(d1, a, d4, a)
 ```
 
 

@@ -97,11 +97,11 @@ reference:
   - check_key
   - check_if_subset
   - check_set_equality
-  - check_cardinality
-  - check_cardinality_0_n
-  - check_cardinality_1_n
-  - check_cardinality_0_1
-  - check_cardinality_1_1
+  - examine_cardinality
+  - examine_cardinality_0_n
+  - examine_cardinality_1_n
+  - examine_cardinality_0_1
+  - examine_cardinality_1_1
 
 - title: Miscellaneous
   contents:

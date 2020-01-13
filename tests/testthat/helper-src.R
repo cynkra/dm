@@ -21,9 +21,9 @@ cache <- search_env("dm_cache")
   invisible(value)
 }
 
-# for check_cardinality...() ----------------------------------------------
+# for examine_cardinality...() ----------------------------------------------
 
-message("for check_cardinality...()")
+message("for examine_cardinality...()")
 
 d1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
 d2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
@@ -37,7 +37,7 @@ d8 %<-% tibble::tibble(c = c(1:6))
 # for check_key() ---------------------------------------------------------
 
 message("for check_fk() and check_set_equality()")
-# for check_cardinality...() ----------------------------------------------
+# for examine_cardinality...() ----------------------------------------------
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
 d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 d3 <- tibble::tibble(c = 1:5)
