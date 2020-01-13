@@ -677,7 +677,36 @@ src_tbls.dm <- function(x) {
   names(dm_get_tables_impl(dm))
 }
 
-
+#' @export
+copy_to.src_sql <- function(dest,
+                            df,
+                            name = deparse(substitute(df)),
+                            overwrite = NULL,
+                            ...,
+                            types = NULL,
+                            indexes = NULL, unique_indexes = NULL,
+                            set_key_constraints = TRUE, unique_table_names = FALSE,
+                            table_names = NULL,
+                            temporary = TRUE) {
+  if (inherits(df, "data.frame")) {
+    dbplyr:::copy_to.src_sql(
+      dest = dest,
+      df = df,
+      name = name,
+      overwrite = overwrite,
+      ...,
+      temporary = temporary)} else if (is_dm(df)) {
+        dm_copy_to(
+          dest,
+          df,
+          ...,
+          types = types, overwrite = overwrite,
+          indexes = indexes, unique_indexes = unique_indexes,
+          set_key_constraints = set_key_constraints, unique_table_names = unique_table_names,
+          table_names = table_names,
+          temporary = temporary
+          )} else abort_either_dm_of_df(class(df))
+}
 
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {

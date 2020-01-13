@@ -38,7 +38,6 @@
 #'   as_dm(list(iris = iris)),
 #'   set_key_constraints = FALSE
 #' )
-#' @export
 dm_copy_to <- function(dest, dm, ...,
                        types = NULL, overwrite = NULL,
                        indexes = NULL, unique_indexes = NULL,
