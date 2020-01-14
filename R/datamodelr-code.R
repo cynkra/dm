@@ -174,14 +174,12 @@ bdm_create_graph <- function(
                              view_type = "all",
                              focus = NULL,
                              col_attr = "column",
-                             columnArrows = FALSE,
-                             legacy = FALSE) {
+                             columnArrows = FALSE) {
   g_list <-
     bdm_create_graph_list(
       data_model = data_model, view_type = view_type,
       focus = focus, col_attr = col_attr,
-      columnArrows = columnArrows,
-      legacy = legacy
+      columnArrows = columnArrows
     )
   if (length(g_list$nodes$nodes) == 0) {
     warning("The number of tables to render is 0.")
@@ -222,8 +220,7 @@ bdm_create_graph_list <- function(
                                   view_type = "all",
                                   focus = NULL,
                                   col_attr = "column",
-                                  columnArrows = FALSE,
-                                  legacy = FALSE) {
+                                  columnArrows = FALSE) {
 
   # hidden tables
 
@@ -276,23 +273,13 @@ bdm_create_graph_list <- function(
   )
   g_labels <-
     sapply(names(tables), function(x) {
-      if (legacy) {
-        dot_html_label_2(
-          tables[[x]],
-          title = x,
-          palette_id = data_model$tables[data_model$tables$table == x, "display"],
-          col_attr = col_attr,
-          columnArrows = columnArrows
-        )
-      } else {
-        dot_html_label(
-          tables[[x]],
-          title = x,
-          palette_id = data_model$tables[data_model$tables$table == x, "display"],
-          col_attr = col_attr,
-          columnArrows = columnArrows
-        )
-      }
+      dot_html_label(
+        tables[[x]],
+        title = x,
+        palette_id = data_model$tables[data_model$tables$table == x, "display"],
+        col_attr = col_attr,
+        columnArrows = columnArrows
+      )
     })
 
   nodes <-
