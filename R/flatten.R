@@ -58,6 +58,7 @@
 #'   dm_flatten_to_tbl(flights)
 #' @export
 dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+  check_not_zoomed(dm)
   join_name <- deparse(substitute(join))
   start <- as_string(ensym(start))
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
@@ -66,6 +67,7 @@ dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 #' @rdname dm_flatten_to_tbl
 #' @export
 dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+  check_not_zoomed(dm)
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
   start <- as_string(ensym(start))
@@ -117,7 +119,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   # function to detect any reason for abort()
   check_flatten_to_tbl(
     join_name,
-    (nrow(dm_get_filter(dm)) > 0) && !is_empty(list_of_pts),
+    (nrow(dm_get_filters(dm)) > 0) && !is_empty(list_of_pts),
     anyNA(order_df$name),
     g,
     auto_detect,
@@ -172,6 +174,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #' try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
 #' @export
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+  check_not_zoomed(dm)
   force(join)
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))

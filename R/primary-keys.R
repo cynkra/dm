@@ -34,6 +34,7 @@
 #' # the following does not work (throws an error)
 #' try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
 dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
+  check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)
@@ -44,7 +45,7 @@ dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
-    check_key(table_from_dm, !!col_expr)
+    examine_key(table_from_dm, !!col_expr)
   }
 
   dm_add_pk_impl(dm, table_name, col_name, force)
@@ -85,6 +86,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'   dm_has_pk(planes)
 #' @export
 dm_has_pk <- function(dm, table) {
+  check_not_zoomed(dm)
   has_length(dm_get_pk(dm, {{ table }}))
 }
 
@@ -109,9 +111,13 @@ dm_has_pk <- function(dm, table) {
 #'   dm_get_pk(planes)
 #' @export
 dm_get_pk <- function(dm, table) {
+  check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
+  dm_get_pk_impl(dm, table_name)
+}
 
+dm_get_pk_impl <- function(dm, table_name) {
   pks <- dm_get_data_model_pks(dm)
   pks$column[pks$table == table_name]
 }
@@ -131,9 +137,15 @@ dm_get_pk <- function(dm, table) {
 #'
 #' @export
 dm_get_all_pks <- nse(function(dm) {
+  check_not_zoomed(dm)
+  dm_get_all_pks_impl(dm)
+})
+
+dm_get_all_pks_impl <- function(dm) {
   dm_get_data_model_pks(dm) %>%
     select(table = table, pk_col = column)
-})
+}
+
 
 #' Remove a primary key from a table in a [`dm`] object
 #'
@@ -166,6 +178,7 @@ dm_get_all_pks <- nse(function(dm) {
 #'   dm_has_pk(planes)
 #' @export
 dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
+  check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
@@ -228,6 +241,7 @@ enum_pk_candidates <- nse(function(table) {
 #' dm_nycflights13() %>% dm_enum_pk_candidates(flights)
 #' dm_nycflights13() %>% dm_enum_pk_candidates(airports)
 dm_enum_pk_candidates <- nse(function(dm, table) {
+  check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
@@ -235,6 +249,6 @@ dm_enum_pk_candidates <- nse(function(dm, table) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  tbl <- dm_get_tables(dm)[[table_name]]
+  tbl <- dm_get_tables_impl(dm)[[table_name]]
   enum_pk_candidates(tbl)
 })

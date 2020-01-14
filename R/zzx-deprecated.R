@@ -1,6 +1,46 @@
 #' @rdname deprecated
 #' @keywords internal
 #' @export
+check_key <- new_cdm_forward_2(examine_key)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_if_subset <- new_cdm_forward_2(examine_if_subset)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_set_equality <- new_cdm_forward_2(examine_set_equality)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_cardinality <- new_cdm_forward_2(examine_cardinality)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_cardinality_0_1 <- new_cdm_forward_2(examine_cardinality_0_1)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_cardinality_1_1 <- new_cdm_forward_2(examine_cardinality_1_1)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_cardinality_0_n <- new_cdm_forward_2(examine_cardinality_0_n)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
+check_cardinality_1_n <- new_cdm_forward_2(examine_cardinality_1_n)
+
+#' @rdname deprecated
+#' @keywords internal
+#' @export
 cdm_get_src <- new_cdm_forward(dm_get_src)
 
 #' @rdname deprecated
@@ -16,7 +56,7 @@ cdm_get_tables <- new_cdm_forward(dm_get_tables)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_filter <- new_cdm_forward(dm_get_filter)
+cdm_get_filter <- new_cdm_forward(dm_get_filters, old_fwd_name = "cdm_get_filter")
 
 #' @rdname deprecated
 #' @keywords internal
@@ -68,7 +108,7 @@ cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
   dm_zoom_to_tbl(dm, {{ table }}) %>%
     filter(...) %>%
-    dm_update_zoomed_tbl()
+    dm_update_zoomed()
 }
 
 #' @rdname deprecated
@@ -190,7 +230,7 @@ cdm_learn_from_db <- new_cdm_forward(dm_learn_from_db)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_check_constraints <- new_cdm_forward(dm_check_constraints)
+cdm_check_constraints <- new_cdm_forward(dm_examine_constraints, old_fwd_name = "cdm_check_constraints")
 
 #' @rdname deprecated
 #' @keywords internal
@@ -255,14 +295,14 @@ cdm_zoom_to_tbl <- new_cdm_forward_2(dm_zoom_to_tbl)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_insert_zoomed_tbl <- new_cdm_forward_2(dm_insert_zoomed_tbl)
+cdm_insert_zoomed_tbl <- new_cdm_forward_2(dm_insert_zoomed, old_fwd_name = "cdm_insert_zoomed_tbl")
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_update_zoomed_tbl <- new_cdm_forward(dm_update_zoomed_tbl)
+cdm_update_zoomed_tbl <- new_cdm_forward(dm_update_zoomed, old_fwd_name = "cdm_update_zoomed_tbl")
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_zoom_out <- new_cdm_forward(dm_zoom_out)
+cdm_zoom_out <- new_cdm_forward(dm_discard_zoomed, old_fwd_name = "cdm_zoom_out")

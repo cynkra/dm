@@ -214,7 +214,7 @@ For example, let's create a local Sqlite database and copy the `dm` object to it
 ```{r}
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-dm_copy_to(src_sqlite, dm)
+copy_to(src_sqlite, dm)
 src_sqlite
 ```
 

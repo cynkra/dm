@@ -41,14 +41,14 @@ test_that("dm_get_con() works", {
   )
 })
 
-test_that("dm_get_filter() works", {
+test_that("dm_get_filters() works", {
   expect_identical(
-    dm_get_filter(dm_for_filter),
+    dm_get_filters(dm_for_filter),
     tibble(table = character(), filter = list(), zoomed = logical())
   )
 
   expect_identical(
-    dm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8)),
+    dm_get_filters(dm_filter(dm_for_filter, t1, a > 3, a < 8)),
     tibble(table = "t1", filter = unname(exprs(a > 3, a < 8)), zoomed = FALSE)
   )
 })

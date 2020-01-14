@@ -18,9 +18,8 @@
 #'
 #' @export
 dm_paste <- function(dm, select = FALSE, tab_width = 2) {
-  check_dm(dm)
-  check_no_filter(dm)
   check_not_zoomed(dm)
+  check_no_filter(dm)
 
   # we assume the tables exist and have the necessary columns
   # code for including the tables
@@ -29,7 +28,7 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
 
   if (select) {
     # adding code for selection of columns
-    tbl_select <- tibble(tbl_name = src_tbls(dm), tbls = dm_get_tables(dm)) %>%
+    tbl_select <- tibble(tbl_name = src_tbls(dm), tbls = dm_get_tables_impl(dm)) %>%
       mutate(cols = map(tbls, colnames)) %>%
       mutate(code = map2_chr(
         tbl_name,

@@ -32,7 +32,6 @@
 #'   # the `dm` from the SQLite DB
 #'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
 #' }
-#' @export
 dm_learn_from_db <- function(dest) {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
   con <- con_from_src_or_con(dest)

@@ -120,19 +120,19 @@ Required class `dm` but instead is `blob`
 [1] "A local `dm` doesn't have a DB connection"
 
 > error_no_zoom_allowed()
-[1] "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed_tbl()`, `dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
+[1] "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first."
 
 > error_no_table_zoomed()
-[1] "`dm_insert_zoomed_tbl()` only works for zoomed `dm`"
+[1] "`dm_insert_zoomed()` only works for zoomed `dm`"
 
 > error_table_needs_name()
-[1] "The new table to insert with `dm_insert_zoomed_tbl()` must have a name"
+[1] "The new table to insert with `dm_insert_zoomed()` must have a name"
 
 > error_only_possible_wo_zoom("dm_zoom_to_tbl")
-You cannot call `dm_zoom_to_tbl()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed_tbl()`, `dm_insert_zoomed_tbl()` or `dm_zoom_out()` first.
+You cannot call `dm_zoom_to_tbl()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_zoom_out()` first.
 
-> error_only_possible_w_zoom("dm_update_zoomed_tbl")
-You cannot call `dm_update_zoomed_tbl()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.
+> error_only_possible_w_zoom("dm_update_zoomed")
+You cannot call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.
 
 > error_req_tbl_not_avail(c("dull", "boring", "common_knowledge"), c(
 +   "fascinating", "interesting"))
@@ -161,4 +161,8 @@ In `pull_tbl.zoomed_dm`: Table `blur` not zoomed, zoomed tables: `focus_1`, `foc
 
 > error_not_pulling_multiple_zoomed()
 [1] "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
+
+> error_temp_table_requested(c("i_am_temporary", "i_am_permanent"),
++ "i_am_permanent")
+The following requested tables from the DB are temporary tables and cannot be included in the result: `i_am_temporary`
 

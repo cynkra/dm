@@ -27,8 +27,8 @@
 #' - [dm_filter()] for filtering
 #' - [dm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [decompose_table()] as one example of the table surgery family
-#' - [check_key()] and [check_if_subset()] for checking for key properties
-#' - [check_cardinality()] for checking the cardinality of the relation between two tables
+#' - [examine_key()] and [examine_if_subset()] for checking for key properties
+#' - [examine_cardinality()] for checking the cardinality of the relation between two tables
 #' - [dm_nycflights13()]  for creating an example `dm` object
 #'
 #' @examples
@@ -47,7 +47,7 @@
 #'     dm_get_con()
 #' }
 #' dm_nycflights13() %>% dm_get_tables()
-#' dm_nycflights13() %>% dm_get_filter()
+#' dm_nycflights13() %>% dm_get_filters()
 #' dm_nycflights13() %>% validate_dm()
 #' is_dm(dm_nycflights13())
 #' dm_nycflights13()["airports"]
@@ -87,9 +87,22 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL) {
   src_tbl_names <- src_tbls(src)
 
   if (is_null(table_names)) {
+    auto_detect <- TRUE
     table_names <- src_tbl_names
-  } else if (!all(table_names %in% src_tbl_names)) {
-    abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
+  } else {
+    if (!all(table_names %in% src_tbl_names)) {
+      abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
+    }
+    auto_detect <- FALSE
+  }
+  if (is_mssql(src) || is_postgres(src)) {
+    dm_learned <- dm_learn_from_db(src)
+    tbls_in_dm <- src_tbls(dm_learned)
+    # `src_tbls()` show also temporary tables, but those are not included in the result of `dm_learn_from_db()`
+    # therefore, throw an error if `table_names` includes temporary tables.
+    tbls_req <- intersect(tbls_in_dm, table_names)
+    if (!auto_detect && (!identical(tbls_req, table_names))) abort_temp_table_requested(table_names, tbls_in_dm)
+    return(dm_learned %>% dm_select_tbl(!!!tbls_req))
   }
 
   tbls <- map(set_names(table_names), tbl, src = src)
@@ -270,8 +283,8 @@ debug_validate_dm <- function(dm) {
 #'
 #' @export
 dm_get_src <- function(x) {
-  check_dm(x)
-  tables <- dm_get_tables(x)
+  check_not_zoomed(x)
+  tables <- dm_get_tables_impl(x)
   tbl_src(tables[1][[1]])
 }
 
@@ -305,6 +318,11 @@ dm_get_con <- function(x) {
 #'
 #' @export
 dm_get_tables <- function(x) {
+  check_not_zoomed(x)
+  dm_get_tables_impl(x)
+}
+
+dm_get_tables_impl <- function(x) {
   def <- dm_get_def(x)
   set_names(def$data, def$table)
 }
@@ -359,21 +377,21 @@ dm_get_data_model_fks <- function(x) {
 
 #' Get filter expressions
 #'
-#' `dm_get_filter()` returns the filter expressions that have been applied to a `dm` object.
+#' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
 #' These filter expressions are not intended for evaluation, only for
 #' information.
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_filter()`: A tibble with columns:
+#' @return For `dm_get_filters()`: A tibble with columns:
 #'
 #' - "table": table that was filtered,
 #' - "filter": the filter expression,
 #' - "zoomed": logical, does the filter condition relate to the zoomed table.
 #'
 #' @export
-dm_get_filter <- function(x) {
-  # FIXME: Obliterate
+dm_get_filters <- function(x) {
+  check_not_zoomed(x)
 
   filter_df <-
     dm_get_def(x) %>%
@@ -470,7 +488,7 @@ print.dm <- function(x, ...) {
   cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
   cat_line("Foreign keys: ", sum(map_int(def$fks, vctrs::vec_size)))
 
-  filters <- dm_get_filter(x)
+  filters <- dm_get_filters(x)
   if (nrow(filters) > 0) {
     cat_rule("Filters", col = "orange")
     walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
@@ -487,14 +505,10 @@ print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 #' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   df <- get_zoomed_tbl(x)
-  zoomed_filters <- dm_get_filter(x) %>%
-    filter(zoomed == TRUE)
-  filters <- if_else(nrow(zoomed_filters) > 0, TRUE, FALSE)
   # so far only 1 table can be zoomed on
   zoomed_df <- new_zoomed_df(
     df,
-    name_df = orig_name_zoomed(x),
-    filters = filters
+    name_df = orig_name_zoomed(x)
   )
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
@@ -636,7 +650,7 @@ tbl.dm <- function(src, from, ...) {
   check_not_zoomed(dm)
   check_correct_input(dm, from, 1L)
 
-  dm_get_tables(dm)[[from]]
+  dm_get_tables_impl(dm)[[from]]
 }
 
 #' @export
@@ -659,7 +673,44 @@ compute.zoomed_dm <- function(x, ...) {
 src_tbls.dm <- function(x) {
   # The x argument here is a dm object
   dm <- x
-  names(dm_get_tables(dm))
+  check_not_zoomed(x)
+  names(dm_get_tables_impl(dm))
+}
+
+#' @export
+copy_to.src_sql <- function(dest,
+                            df,
+                            name = deparse(substitute(df)),
+                            overwrite = NULL,
+                            ...,
+                            types = NULL,
+                            indexes = NULL, unique_indexes = NULL,
+                            set_key_constraints = TRUE, unique_table_names = FALSE,
+                            table_names = NULL,
+                            temporary = TRUE) {
+  if (inherits(df, "data.frame")) {
+    dbplyr:::copy_to.src_sql(
+      dest = dest,
+      df = df,
+      name = name,
+      overwrite = overwrite,
+      ...,
+      temporary = temporary
+    )
+  } else if (is_dm(df)) {
+    dm_copy_to(
+      dest,
+      df,
+      ...,
+      types = types, overwrite = overwrite,
+      indexes = indexes, unique_indexes = unique_indexes,
+      set_key_constraints = set_key_constraints, unique_table_names = unique_table_names,
+      table_names = table_names,
+      temporary = temporary
+    )
+  } else {
+    abort_either_dm_of_df(class(df))
+  }
 }
 
 #' @export
@@ -793,7 +844,7 @@ pull_tbl.zoomed_dm <- function(dm, table) {
 
 #' @export
 as.list.dm <- function(x, ...) {
-  dm_get_tables(x)
+  dm_get_tables_impl(x)
 }
 
 #' @export

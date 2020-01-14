@@ -22,7 +22,7 @@
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
-  check_dm(dm)
+  check_not_zoomed(dm)
 
   new_names <- names(exprs(..., .named = TRUE))
   new_tables <- list(...)
@@ -80,14 +80,14 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 #'
 #' @export
 dm_rm_tbl <- function(dm, ...) {
-  check_dm(dm)
+  check_not_zoomed(dm)
   selected <- dm_try_tables(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...)), src_tbls(dm))
 
   dm_select_tbl(dm, !!!selected)
 }
 
 check_new_tbls <- function(dm, tbls) {
-  orig_tbls <- dm_get_tables(dm)
+  orig_tbls <- dm_get_tables_impl(dm)
 
   # are all new tables on the same source as the original ones?
   if (has_length(orig_tbls) && !all_same_source(c(orig_tbls[1], tbls))) {

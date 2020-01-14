@@ -13,19 +13,20 @@
 #'   dm_nrow()
 #' @export
 dm_nrow <- function(dm) {
+  check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to issue
   # a message in case the filters haven't been applied yet?
   check_no_filter(dm)
-  map_dbl(dm_get_tables(dm), ~ as.numeric(pull(collect(count(.)))))
+  map_int(dm_get_tables_impl(dm), ~ as.integer(pull(collect(count(.)))))
 }
 
 get_by <- function(dm, lhs_name, rhs_name) {
-  if (dm_has_fk(dm, !!lhs_name, !!rhs_name)) {
-    lhs_col <- dm_get_fk(dm, !!lhs_name, !!rhs_name)
-    rhs_col <- dm_get_pk(dm, !!rhs_name)
-  } else if (dm_has_fk(dm, !!rhs_name, !!lhs_name)) {
-    lhs_col <- dm_get_pk(dm, !!lhs_name)
-    rhs_col <- dm_get_fk(dm, !!rhs_name, !!lhs_name)
+  if (dm_has_fk_impl(dm, lhs_name, rhs_name)) {
+    lhs_col <- dm_get_fk_impl(dm, lhs_name, rhs_name)
+    rhs_col <- dm_get_pk_impl(dm, rhs_name)
+  } else if (dm_has_fk_impl(dm, rhs_name, lhs_name)) {
+    lhs_col <- dm_get_pk_impl(dm, lhs_name)
+    rhs_col <- dm_get_fk_impl(dm, rhs_name, lhs_name)
   } else {
     abort_tables_not_neighbours(lhs_name, rhs_name)
   }

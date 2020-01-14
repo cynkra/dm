@@ -9,15 +9,15 @@
 #'
 #' @details `dm_zoom_to_tbl()`: zooms to the given table.
 #'
-#' `dm_update_zoomed_tbl()`: overwrites the originally zoomed table with the manipulated table.
+#' `dm_update_zoomed()`: overwrites the originally zoomed table with the manipulated table.
 #' The filter conditions for the zoomed table are added to the original filter conditions.
 #'
-#' `dm_insert_zoomed_tbl()`: adds a new table to the `dm`.
+#' `dm_insert_zoomed()`: adds a new table to the `dm`.
 #'
-#' `dm_zoom_out()`: discards the zoomed table and returns the `dm` as it was before zooming.
+#' `dm_discard_zoomed()`: discards the zoomed table and returns the `dm` as it was before zooming.
 #'
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
-#' when using `dm_insert_zoomed_tbl()` or `dm_update_zoomed_tbl()`.
+#' when using `dm_insert_zoomed()` or `dm_update_zoomed()`.
 #'
 #' Functions from `dplyr` that are supported for a `zoomed_dm`: `group_by()`, `summarise()`, `mutate()`,
 #' `transmute()`, `filter()`, `select()`, `rename()` and `ungroup()`.
@@ -27,9 +27,9 @@
 #' In addition to filtering the zoomed table, the filter condition from `filter()` is also stored in the `dm`.
 #' Depending on which function you use to return to a normal `dm`, one of the following happens:
 #'
-#' 1. `dm_zoom_out()`: all filter conditions for the zoomed table are discarded
-#' 1. `dm_update_zoomed_tbl()`: the filter conditions of the original table and those of the zoomed table are combined
-#' 1. `dm_insert_zoomed_tbl()`: the filter conditions of the original table stay there and those of the zoomed table are
+#' 1. `dm_discard_zoomed()`: all filter conditions for the zoomed table are discarded
+#' 1. `dm_update_zoomed()`: the filter conditions of the original table and those of the zoomed table are combined
+#' 1. `dm_insert_zoomed()`: the filter conditions of the original table stay there and those of the zoomed table are
 #' transferred to the new table of the `dm`
 #'
 #' Furthermore, the different `join()`-variants from {dplyr} are also supported (apart from `nest_join()`).
@@ -57,19 +57,19 @@
 #'   select(year:dep_time, am_pm_dep, everything())
 #'
 #' # replace table `flights` with the zoomed table
-#' dm_update_zoomed_tbl(flights_zoomed_transformed)
+#' dm_update_zoomed(flights_zoomed_transformed)
 #'
 #' # insert the zoomed table as a new table
-#' dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+#' dm_insert_zoomed(flights_zoomed_transformed, extended_flights)
 #'
 #' # discard the zoomed table
-#' dm_zoom_out(flights_zoomed_transformed)
+#' dm_discard_zoomed(flights_zoomed_transformed)
 #' @export
 dm_zoom_to_tbl <- function(dm, table) {
   # FIXME: to include in documentation after #185:
   # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
+  check_dm(dm)
   if (is_zoomed(dm)) abort_no_zoom_allowed()
-
   # for now only one table can be zoomed on
   zoom <- as_string(ensym(table))
   check_correct_input(dm, zoom)
@@ -102,10 +102,10 @@ get_zoomed_tbl <- function(dm) {
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @return For `dm_insert_zoomed_tbl()`, `dm_update_zoomed_tbl()` and `dm_zoomed_out()`: A `dm` object.
+#' @return For `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_zoomed_out()`: A `dm` object.
 #'
 #' @export
-dm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
+dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
   if (!is_zoomed(dm)) abort_no_table_zoomed()
   new_tbl_name_chr <-
     if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else as_string(enexpr(new_tbl_name))
@@ -145,12 +145,12 @@ dm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qui
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
   dm_update_zoomed_outgoing_fks(dm_wo_outgoing_fks, new_tbl_name_chr, is_upd = FALSE) %>%
-    dm_zoom_out()
+    dm_discard_zoomed()
 }
 
 #' @rdname dm_zoom_to_tbl
 #' @export
-dm_update_zoomed_tbl <- function(dm) {
+dm_update_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
   }
@@ -165,12 +165,12 @@ dm_update_zoomed_tbl <- function(dm) {
     )
   new_dm3(new_def, zoomed = TRUE) %>%
     dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
-    dm_zoom_out()
+    dm_discard_zoomed()
 }
 
 #' @rdname dm_zoom_to_tbl
 #' @export
-dm_zoom_out <- function(dm) {
+dm_discard_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
   }
@@ -190,7 +190,7 @@ dm_zoom_out <- function(dm) {
 update_zoomed_pk <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  orig_pk <- dm_get_pk(dm, !!old_tbl_name)
+  orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
   upd_pk <- if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
     new_pk(list(names(tracked_keys[tracked_keys == orig_pk])))
   } else {
@@ -202,7 +202,7 @@ update_zoomed_pk <- function(dm) {
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  orig_pk <- dm_get_pk(dm, !!old_tbl_name)
+  orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
   if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
     filter(dm_get_def(dm), table == old_tbl_name) %>% pull(fks)
   } else {
@@ -215,7 +215,7 @@ update_zoomed_incoming_fks <- function(dm) {
 dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_keys <- get_tracked_keys(dm)
-  old_out_keys <- dm_get_all_fks(dm) %>%
+  old_out_keys <- dm_get_all_fks_impl(dm) %>%
     filter(child_table == old_tbl_name) %>%
     select(table = parent_table, column = child_fk_col)
 
@@ -232,12 +232,12 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
     dm <- reduce2(
       old_out_keys$column,
       old_out_keys$table,
-      ~ dm_rm_fk(..1, !!old_tbl_name, !!..2, !!..3),
+      ~ dm_rm_fk_impl(..1, old_tbl_name, ..2, ..3),
       .init = dm
     )
   }
   structure(
-    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk(..1, !!new_tbl_name, !!..2, !!..3), .init = dm),
+    reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk_impl(..1, new_tbl_name, ..2, ..3), .init = dm),
     class = c("zoomed_dm", "dm")
   )
 }

@@ -146,12 +146,12 @@ test_that("cdm_get_filter() works", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_get_filter(dm_for_filter),
-    dm_get_filter(dm_for_filter)
+    dm_get_filters(dm_for_filter)
   )
 
   expect_identical(
     cdm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8)),
-    dm_get_filter(dm_filter(dm_for_filter, t1, a > 3, a < 8))
+    dm_get_filters(dm_filter(dm_for_filter, t1, a > 3, a < 8))
   )
 })
 
@@ -234,11 +234,11 @@ test_that("cdm_learn_from_db() works from PG", {
   clear_postgres()
 })
 
-test_that("cdm_check_constraints() works", {
+test_that("cdm_examine_constraints() works", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_check_constraints(bad_dm),
-    dm_check_constraints(bad_dm)
+    dm_examine_constraints(bad_dm)
   )
 })
 
@@ -328,16 +328,16 @@ test_that("dm_zoom_to_tbl() and related functions work", {
 
   expect_equivalent_dm(
     dm_zoom_to_tbl(dm_for_filter, t1) %>% cdm_insert_zoomed_tbl("another_name"),
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_insert_zoomed_tbl("another_name")
+    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_insert_zoomed("another_name")
   )
 
   expect_equivalent_dm(
     dm_zoom_to_tbl(dm_for_filter, t1) %>% cdm_update_zoomed_tbl(),
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_update_zoomed_tbl()
+    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_update_zoomed()
   )
 
   expect_equivalent_dm(
     dm_zoom_to_tbl(dm_for_filter, t1) %>% cdm_zoom_out(),
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_zoom_out()
+    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_discard_zoomed()
   )
 })

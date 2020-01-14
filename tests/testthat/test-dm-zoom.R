@@ -17,12 +17,12 @@ test_that("dm_zoom_to_tbl() works", {
 })
 
 
-test_that("dm_zoom_out() works", {
+test_that("dm_discard_zoomed() works", {
   # no zoom in zoomed out from zoomed `dm`
-  expect_false(is_zoomed(dm_for_filter %>% dm_zoom_to_tbl(t1) %>% dm_zoom_out()))
+  expect_false(is_zoomed(dm_for_filter %>% dm_zoom_to_tbl(t1) %>% dm_discard_zoomed()))
 
   expect_s3_class(
-    dm_for_filter %>% dm_zoom_to_tbl(t3) %>% dm_zoom_out(),
+    dm_for_filter %>% dm_zoom_to_tbl(t3) %>% dm_discard_zoomed(),
     c("dm")
   )
 })
@@ -70,10 +70,10 @@ test_that("zooming works also on DBs", {
   )
 })
 
-test_that("dm_insert_zoomed_tbl() works", {
+test_that("dm_insert_zoomed() works", {
   # test that a new tbl is inserted, based on the requested one
   expect_equivalent_dm(
-    dm_zoom_to_tbl(dm_for_filter, t4) %>% dm_insert_zoomed_tbl(t4_new),
+    dm_zoom_to_tbl(dm_for_filter, t4) %>% dm_insert_zoomed(t4_new),
     dm_for_filter %>%
       dm_add_tbl(t4_new = t4) %>%
       dm_add_pk(t4_new, h) %>%
@@ -83,13 +83,13 @@ test_that("dm_insert_zoomed_tbl() works", {
 
   # test that an error is thrown if 'repair = check_unique' and duplicate table names
   expect_dm_error(
-    dm_zoom_to_tbl(dm_for_filter, t4) %>% dm_insert_zoomed_tbl(t4, repair = "check_unique"),
+    dm_zoom_to_tbl(dm_for_filter, t4) %>% dm_insert_zoomed(t4, repair = "check_unique"),
     "need_unique_names"
   )
 
   # test that in case of 'repair = unique' and duplicate table names -> renames of old and new
   expect_equivalent_dm(
-    expect_silent(dm_zoom_to_tbl(dm_for_filter, t4) %>% dm_insert_zoomed_tbl(t4, repair = "unique", quiet = TRUE)),
+    expect_silent(dm_zoom_to_tbl(dm_for_filter, t4) %>% dm_insert_zoomed(t4, repair = "unique", quiet = TRUE)),
     dm_for_filter %>%
       dm_rename_tbl(t4...4 = t4) %>%
       dm_add_tbl(t4...7 = t4) %>%
@@ -110,7 +110,7 @@ test_that("dm_update_tbl() works", {
 
   # test that the old table is updated correctly
   expect_equivalent_dm(
-    dm_update_zoomed_tbl(new_dm_for_filter),
+    dm_update_zoomed(new_dm_for_filter),
     dm_for_filter %>%
       dm_rm_tbl(t6) %>%
       dm_add_tbl(t6 = t7) %>%

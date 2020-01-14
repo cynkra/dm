@@ -357,7 +357,7 @@ test_that("prepare_dm_for_flatten() works", {
 
   # filtered with rename
   red_dm <- dm_select_tbl(dm_for_flatten, fact, dim_1, dim_3)
-  tables <- dm_get_tables(red_dm)
+  tables <- dm_get_tables_impl(red_dm)
   tables[["fact"]] <- filter(tables[["fact"]], dim_1_key > 7)
   tables[["dim_1"]] <- filter(tables[["dim_1"]], dim_1_pk > 7)
 

@@ -19,6 +19,7 @@
 #'   dm_select_tbl(ap = airports, fl = flights)
 #' @export
 dm_select_tbl <- function(dm, ...) {
+  check_not_zoomed(dm)
   check_no_filter(dm)
 
   vars <- tidyselect_table_names(dm)
@@ -38,6 +39,7 @@ dm_select_tbl <- function(dm, ...) {
 #'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm_rename_tbl <- function(dm, ...) {
+  check_not_zoomed(dm)
   vars <- tidyselect_table_names(dm)
   selected <- dm_try_tables(tidyselect::vars_rename(vars, ...), vars)
   dm_select_tbl_impl(dm, selected)

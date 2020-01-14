@@ -37,7 +37,7 @@ dm_draw <- function(dm,
                     focus = NULL,
                     graph_name = "Data Model") {
   #
-  check_dm(dm)
+  check_not_zoomed(dm)
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
     return(invisible(NULL))
@@ -107,7 +107,7 @@ dm_get_data_model <- function(x) {
 }
 
 dm_get_all_columns <- function(x) {
-  dm_get_tables(x) %>%
+  dm_get_tables_impl(x) %>%
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
