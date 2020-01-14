@@ -33,8 +33,8 @@ check_correct_input <- function(dm, table, n = NULL) {
       abort(paste0("`table` must be a character vector of length ", n, "."))
     }
   }
-  if (!all(table %in% src_tbls(dm))) {
-    abort_table_not_in_dm(setdiff(table, src_tbls(dm)), src_tbls(dm))
+  if (!all(table %in% src_tbls_impl(dm))) {
+    abort_table_not_in_dm(setdiff(table, src_tbls_impl(dm)), src_tbls_impl(dm))
   }
 }
 
