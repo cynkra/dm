@@ -677,6 +677,13 @@ src_tbls.dm <- function(x) {
   names(dm_get_tables_impl(dm))
 }
 
+# this is not exported, but we use it a lot in our own code
+src_tbls.zoomed_dm <- function(x) {
+  # The x argument here is a dm object
+  dm <- x
+  names(dm_get_tables_impl(dm))
+}
+
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
   if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
