@@ -673,7 +673,7 @@ compute.zoomed_dm <- function(x, ...) {
 src_tbls.dm <- function(x) {
   # The x argument here is a dm object
   dm <- x
-  # FIXME: should this be forbidden for `zoomed_dm`? and should we not just take the names from `def`?
+  check_not_zoomed(x)
   names(dm_get_tables_impl(dm))
 }
 
