@@ -8,7 +8,7 @@
 \alias{dm_get_src}
 \alias{dm_get_con}
 \alias{dm_get_tables}
-\alias{dm_get_filter}
+\alias{dm_get_filters}
 \alias{is_dm}
 \alias{as_dm}
 \title{Data model class}
@@ -27,7 +27,7 @@ dm_get_con(x)
 
 dm_get_tables(x)
 
-dm_get_filter(x)
+dm_get_filters(x)
 
 is_dm(x)
 
@@ -61,7 +61,7 @@ For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnec
 
 For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
 
-For \code{dm_get_filter()}: A tibble with columns:
+For \code{dm_get_filters()}: A tibble with columns:
 \itemize{
 \item "table": table that was filtered,
 \item "filter": the filter expression,
@@ -105,7 +105,7 @@ of a \code{dm} object.
 Filtering expressions are NOT evaluated at this stage.
 To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters to all tables use \code{dm_apply_filters()}
 
-\code{dm_get_filter()} returns the filter expressions that have been applied to a \code{dm} object.
+\code{dm_get_filters()} returns the filter expressions that have been applied to a \code{dm} object.
 These filter expressions are not intended for evaluation, only for
 information.
 
@@ -129,7 +129,7 @@ if (FALSE) {
     dm_get_con()
 }
 dm_nycflights13() \%>\% dm_get_tables()
-dm_nycflights13() \%>\% dm_get_filter()
+dm_nycflights13() \%>\% dm_get_filters()
 dm_nycflights13() \%>\% validate_dm()
 is_dm(dm_nycflights13())
 dm_nycflights13()["airports"]
@@ -145,8 +145,8 @@ dm_nycflights13()$airports
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
 \item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
 \item \code{\link[=decompose_table]{decompose_table()}} as one example of the table surgery family
-\item \code{\link[=check_key]{check_key()}} and \code{\link[=check_if_subset]{check_if_subset()}} for checking for key properties
-\item \code{\link[=check_cardinality]{check_cardinality()}} for checking the cardinality of the relation between two tables
+\item \code{\link[=examine_key]{examine_key()}} and \code{\link[=examine_if_subset]{examine_if_subset()}} for checking for key properties
+\item \code{\link[=examine_cardinality]{examine_cardinality()}} for checking the cardinality of the relation between two tables
 \item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
 }
 }

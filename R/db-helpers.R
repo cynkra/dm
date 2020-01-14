@@ -18,7 +18,7 @@ build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
   source <-
     dm %>%
     dm_apply_filters() %>%
-    dm_get_tables()
+    dm_get_tables_impl()
 
   # Also need table names for local src (?)
   if (!is.null(table_names)) {
@@ -139,7 +139,7 @@ get_db_table_names <- function(dm) {
   }
   tibble(
     table_name = src_tbls(dm),
-    remote_name = map_chr(dm_get_tables(dm), list("ops", "x"))
+    remote_name = map_chr(dm_get_tables_impl(dm), list("ops", "x"))
   )
 }
 

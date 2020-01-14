@@ -44,9 +44,9 @@ Some general information about "zooming" to a table of a `dm`:
 {dm} provides methods for many of the {dplyr}-verbs for a `zoomed_dm` which behave the way you are used to, affecting only the zoomed table and leaving the rest of the `dm` untouched.
 When you are finished with transforming the table, there are three options to proceed:
 
-1. use `dm_update_zoomed_tbl()` if you want to replace the originally zoomed table with the new table
-1. with `dm_insert_zoomed_tbl()` you are creating a new table for your `dm`
-1. use `dm_zoom_out()` if you do not need the result and want to discard it
+1. use `dm_update_zoomed()` if you want to replace the originally zoomed table with the new table
+1. with `dm_insert_zoomed()` you are creating a new table for your `dm`
+1. use `dm_discard_zoomed()` if you do not need the result and want to discard it
 
 When employing one of the first two options, the resulting table in the `dm` will have all (primary as well as foreign) keys available, that could be tracked from the originally zoomed table.
 
@@ -79,10 +79,10 @@ flights_zoomed_mutate <-
   select(year:dep_time, am_pm_dep, everything())
 flights_zoomed_mutate
 
-# In order to update the original `dm` with a new `flights` table we use `dm_update_zoomed_tbl()`:
+# In order to update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:
 updated_flights_dm <- 
   flights_zoomed_mutate %>% 
-  dm_update_zoomed_tbl()
+  dm_update_zoomed()
 # The only difference in the `dm` print output is the increased number of columns
 updated_flights_dm
 # The schematic view of the data model remains unchanged
@@ -116,7 +116,7 @@ weather_zoomed_mutate <-
 enum_pk_candidates(weather_zoomed_mutate) %>% filter(candidate)
 flights_upd_weather_dm <- 
   weather_zoomed_mutate %>% 
-  dm_update_zoomed_tbl() %>% 
+  dm_update_zoomed() %>% 
   dm_add_pk(weather, origin_slot_id)
 flights_upd_weather_dm
 # creating the coveted FK relation between `flights` and `weather`
@@ -126,7 +126,7 @@ extended_flights_dm <-
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>% 
   # need to keep `origin` as FK to airports, so `remove = FALSE`
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>% 
-  dm_update_zoomed_tbl() %>% 
+  dm_update_zoomed() %>% 
   dm_add_fk(flights, origin_slot_id, weather)
 extended_flights_dm %>% dm_draw()
 ```
@@ -148,7 +148,7 @@ disentangled_flights_dm <-
   # zooming and immediately inserting essentially creates a copy of the original table
   dm_zoom_to_tbl(airports) %>% 
   # reinserting the `airports` table under the name `destination`
-  dm_insert_zoomed_tbl(destination) %>% 
+  dm_insert_zoomed(destination) %>% 
   # renaming the originally zoomed table
   dm_rename_tbl(origin = airports) %>% 
   # Key relations are also duplicated, so the wrong ones need to be removed
@@ -168,7 +168,7 @@ dm_with_summary <-
   flights_dm %>% 
   dm_zoom_to_tbl(flights) %>% 
   count(origin, carrier) %>% 
-  dm_insert_zoomed_tbl(dep_carrier_count)
+  dm_insert_zoomed(dep_carrier_count)
 dm_draw(dm_with_summary)
 ```
 
@@ -187,7 +187,7 @@ joined_flights_dm <-
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% 
   # in the {dm}-method for the joins you can specify which columns you want to add to the zoomed table
   left_join(planes, select = c(tailnum, plane_type = type)) %>% 
-  dm_insert_zoomed_tbl(flights_plane_type)
+  dm_insert_zoomed(flights_plane_type)
 # this is how the table looks now
 joined_flights_dm$flights_plane_type
 # also here, the FK-relations are transferred to the new table

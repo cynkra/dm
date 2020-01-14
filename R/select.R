@@ -26,11 +26,11 @@
 #'   dm_rename(airports, code = faa, altitude = alt)
 #' @export
 dm_rename <- function(dm, table, ...) {
+  check_not_zoomed(dm)
   table_name <- as_string(ensym(table))
-
   dm_zoom_to_tbl(dm, !!table_name) %>%
     rename(...) %>%
-    dm_update_zoomed_tbl()
+    dm_update_zoomed()
 }
 
 #' Select and/or rename one or more columns of a [`dm`] table
@@ -48,17 +48,18 @@ dm_rename <- function(dm, table, ...) {
 #'   dm_select(airports, code = faa, altitude = alt)
 #' @export
 dm_select <- function(dm, table, ...) {
+  check_not_zoomed(dm)
   table_name <- as_string(ensym(table))
 
   dm_zoom_to_tbl(dm, !!table_name) %>%
     select(...) %>%
-    dm_update_zoomed_tbl()
+    dm_update_zoomed()
 }
 
 get_all_keys <- function(dm, table_name) {
-  fks <- dm_get_all_fks(dm) %>%
-    filter(child_table == !!table_name) %>%
+  fks <- dm_get_all_fks_impl(dm) %>%
+    filter(child_table == table_name) %>%
     pull(child_fk_col)
-  pk <- dm_get_pk(dm, !!table_name)
+  pk <- dm_get_pk_impl(dm, table_name)
   set_names(unique(c(pk, fks)))
 }

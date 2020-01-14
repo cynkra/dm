@@ -38,7 +38,6 @@
 #'   as_dm(list(iris = iris)),
 #'   set_key_constraints = FALSE
 #' )
-#' @export
 dm_copy_to <- function(dest, dm, ...,
                        types = NULL, overwrite = NULL,
                        indexes = NULL, unique_indexes = NULL,
@@ -79,6 +78,8 @@ dm_copy_to <- function(dest, dm, ...,
       abort_table_not_in_dm(unique(not_found), src_tbls(dm))
     }
   }
+
+  check_not_zoomed(dm)
 
   # FIXME: if same_src(), can use compute() but need to set NOT NULL
   # constraints

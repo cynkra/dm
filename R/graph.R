@@ -12,6 +12,7 @@
 #' dm_is_referenced(dm_nycflights13(), flights)
 #' @export
 dm_is_referenced <- function(dm, table) {
+  check_not_zoomed(dm)
   has_length(dm_get_referencing_tables(dm, !!ensym(table)))
 }
 
@@ -29,6 +30,7 @@ dm_is_referenced <- function(dm, table) {
 #' dm_get_referencing_tables(dm_nycflights13(), flights)
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
+  check_not_zoomed(dm)
   table <- as_name(ensym(table))
   check_correct_input(dm, table)
 

@@ -413,7 +413,7 @@ abort_is_not_dm <- function(obj_class) {
 }
 
 error_is_not_dm <- function(obj_class) {
-  glue("Required class `dm` but instead is {tick(obj_class)}")
+  glue("Required class `dm` but instead is {paste(tick(obj_class), collapse = ', ')}")
 }
 
 
@@ -434,8 +434,8 @@ abort_no_zoom_allowed <- function() {
 
 error_no_zoom_allowed <- function() {
   paste0(
-    "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed_tbl()`, ",
-    "`dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
+    "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed()`, ",
+    "`dm_insert_zoomed()` or `dm_discard_zoomed()` first."
   )
 }
 
@@ -445,14 +445,14 @@ abort_w_message <- function(msg) {
   abort(msg, .subclass = dm_error_full("w_message"))
 }
 
-# no table zoomed, but 'dm_insert_zoomed_tbl()' called ---------------------------------
+# no table zoomed, but 'dm_insert_zoomed()' called ---------------------------------
 
 abort_no_table_zoomed <- function() {
   abort(error_no_table_zoomed(), .subclass = dm_error_full("no_table_zoomed"))
 }
 
 error_no_table_zoomed <- function() {
-  "`dm_insert_zoomed_tbl()` only works for zoomed `dm`"
+  "`dm_insert_zoomed()` only works for zoomed `dm`"
 }
 
 
@@ -463,7 +463,7 @@ abort_table_needs_name <- function() {
 }
 
 error_table_needs_name <- function() {
-  "The new table to insert with `dm_insert_zoomed_tbl()` must have a name"
+  "The new table to insert with `dm_insert_zoomed()` must have a name"
 }
 
 # when zoomed and it shouldn't be ------------------------------
@@ -474,8 +474,8 @@ abort_only_possible_wo_zoom <- function(fun_name) {
 
 error_only_possible_wo_zoom <- function(fun_name) {
   glue(
-    "You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed_tbl()`, ",
-    "`dm_insert_zoomed_tbl()` or `dm_zoom_out()` first."
+    "You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, ",
+    "`dm_insert_zoomed()` or `dm_zoom_out()` first."
   )
 }
 
@@ -627,4 +627,16 @@ abort_wrong_syntax_set_cols <- function() {
 
 error_wrong_syntax_set_cols <- function() {
   "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
+}
+
+abort_temp_table_requested <- function(table_names, tbls_in_dm) {
+  abort(error_temp_table_requested(table_names, tbls_in_dm), .subclass = dm_error_full("temp_table_requested"))
+}
+
+error_temp_table_requested <- function(table_names, tbls_in_dm) {
+  temp_tables <- setdiff(table_names, tbls_in_dm)
+  glue(
+    "The following requested tables from the DB are temporary tables and cannot be included in the result: ",
+    "{commas(tick(temp_tables))}"
+  )
 }

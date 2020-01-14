@@ -2,18 +2,18 @@
 % Please edit documentation in R/zoom.R
 \name{dm_zoom_to_tbl}
 \alias{dm_zoom_to_tbl}
-\alias{dm_insert_zoomed_tbl}
-\alias{dm_update_zoomed_tbl}
-\alias{dm_zoom_out}
+\alias{dm_insert_zoomed}
+\alias{dm_update_zoomed}
+\alias{dm_discard_zoomed}
 \title{Single out a table of a \code{dm}}
 \usage{
 dm_zoom_to_tbl(dm, table)
 
-dm_insert_zoomed_tbl(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE)
+dm_insert_zoomed(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE)
 
-dm_update_zoomed_tbl(dm)
+dm_update_zoomed(dm)
 
-dm_zoom_out(dm)
+dm_discard_zoomed(dm)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -48,7 +48,7 @@ messages.}
 \value{
 For \code{dm_zoom_to_tbl()}: A \code{zoomed_dm} object.
 
-For \code{dm_insert_zoomed_tbl()}, \code{dm_update_zoomed_tbl()} and \code{dm_zoomed_out()}: A \code{dm} object.
+For \code{dm_insert_zoomed()}, \code{dm_update_zoomed()} and \code{dm_zoomed_out()}: A \code{dm} object.
 }
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
@@ -57,15 +57,15 @@ context of the \code{dm} object.
 \details{
 \code{dm_zoom_to_tbl()}: zooms to the given table.
 
-\code{dm_update_zoomed_tbl()}: overwrites the originally zoomed table with the manipulated table.
+\code{dm_update_zoomed()}: overwrites the originally zoomed table with the manipulated table.
 The filter conditions for the zoomed table are added to the original filter conditions.
 
-\code{dm_insert_zoomed_tbl()}: adds a new table to the \code{dm}.
+\code{dm_insert_zoomed()}: adds a new table to the \code{dm}.
 
-\code{dm_zoom_out()}: discards the zoomed table and returns the \code{dm} as it was before zooming.
+\code{dm_discard_zoomed()}: discards the zoomed table and returns the \code{dm} as it was before zooming.
 
 Whenever possible, the key relations of the original table are transferred to the resulting table
-when using \code{dm_insert_zoomed_tbl()} or \code{dm_update_zoomed_tbl()}.
+when using \code{dm_insert_zoomed()} or \code{dm_update_zoomed()}.
 
 Functions from \code{dplyr} that are supported for a \code{zoomed_dm}: \code{group_by()}, \code{summarise()}, \code{mutate()},
 \code{transmute()}, \code{filter()}, \code{select()}, \code{rename()} and \code{ungroup()}.
@@ -75,9 +75,9 @@ with a normal table.
 In addition to filtering the zoomed table, the filter condition from \code{filter()} is also stored in the \code{dm}.
 Depending on which function you use to return to a normal \code{dm}, one of the following happens:
 \enumerate{
-\item \code{dm_zoom_out()}: all filter conditions for the zoomed table are discarded
-\item \code{dm_update_zoomed_tbl()}: the filter conditions of the original table and those of the zoomed table are combined
-\item \code{dm_insert_zoomed_tbl()}: the filter conditions of the original table stay there and those of the zoomed table are
+\item \code{dm_discard_zoomed()}: all filter conditions for the zoomed table are discarded
+\item \code{dm_update_zoomed()}: the filter conditions of the original table and those of the zoomed table are combined
+\item \code{dm_insert_zoomed()}: the filter conditions of the original table stay there and those of the zoomed table are
 transferred to the new table of the \code{dm}
 }
 
@@ -102,11 +102,11 @@ flights_zoomed_transformed <-
   select(year:dep_time, am_pm_dep, everything())
 
 # replace table `flights` with the zoomed table
-dm_update_zoomed_tbl(flights_zoomed_transformed)
+dm_update_zoomed(flights_zoomed_transformed)
 
 # insert the zoomed table as a new table
-dm_insert_zoomed_tbl(flights_zoomed_transformed, extended_flights)
+dm_insert_zoomed(flights_zoomed_transformed, extended_flights)
 
 # discard the zoomed table
-dm_zoom_out(flights_zoomed_transformed)
+dm_discard_zoomed(flights_zoomed_transformed)
 }
