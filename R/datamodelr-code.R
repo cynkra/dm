@@ -458,7 +458,7 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
     bodycol_rgb <- as.integer(header_bgcol_rgb + (255 - header_bgcol_rgb) * 0.87)
     bodycol <- rgb(bodycol_rgb[1], bodycol_rgb[2], bodycol_rgb[3], maxColorValue = 255)
     # if header background too dark, use white font color
-    header_font <- if (sum(header_bgcol_rgb) < 300) "#FFFFFF" else "#000000"
+    header_font <- if (is_dark_color(header_bgcol_rgb)) "#FFFFFF" else "#000000"
     line_color_rgb <- as.integer(header_bgcol_rgb / 3.)
     line_color <- rgb(line_color_rgb[1], line_color_rgb[2], line_color_rgb[3], maxColorValue = 255)
 
