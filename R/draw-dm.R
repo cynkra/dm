@@ -202,22 +202,15 @@ dm_set_colors2 <- function(dm, ...) {
 
 color_quos_to_display <- function(...) {
   quos <- enquos(..., .named = TRUE, .ignore_empty = "none", .homonyms = "error")
-
   missing <- map_lgl(quos, quo_is_missing)
   if (has_length(missing) && missing[[length(missing)]]) {
     abort_last_col_missing()
   }
-
   avail <- !missing
   idx <- rev(cumsum(rev(avail)))
   values <- map_chr(quos[avail], eval_tidy)
 
-  if (!all(values %in% colors$dm)) {
-    abort_wrong_color()
-  }
-  new_values <- rev(colors$datamodelr[match(values, colors$dm)])
-
-  tibble(table = names(quos), new_display = new_values[idx])
+  set_names(names(quos), rev(values)[idx])
 }
 
 #' dm_get_colors()
