@@ -7,3 +7,22 @@ is_dark_color <- function(rgb) {
   sum(rgb / 255. * c(0.3, 0.5, 0.2)) < 0.6
   # the weights are inspired by the sources mentioned above (only the differences between them are much smaller here)
 }
+
+is_hex_color <- function(x) {
+  grepl("^#[A-Fa-f0-9]{6}$", x)
+}
+
+col_to_hex <- function(x) {
+  # if not all colors that are not hex coded colors are available, abort
+  if (!all(x[!is_hex_color(x)] %in% dm_get_available_colors())) {
+    abort_cols_not_avail(setdiff(
+      x[!is_hex_color(x)],
+      dm_get_available_colors()
+    ))
+  }
+
+  # from hex or name to rgb; "default" should remain "default"
+  map_if(x, x != "default", ~ col2rgb(..1)[, 1], .else = ~..1) %>%
+    # from rgb to hex
+    map_chr(function(x) if (x[1] != "default") rgb(x[1], x[2], x[3], maxColorValue = 255) else x)
+}
