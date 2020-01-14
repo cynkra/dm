@@ -37,9 +37,6 @@ The given combination of columns (`wrong_fk_colname`, `and_one_more`) is not a f
 > error_txt_last_col_missing()
 [1] "The last color cannot be missing."
 
-> error_txt_wrong_color()
-[1] "Available color names are only: \n`default` (border),\n`blue_nb` (no border),\n`orange_nb` (no border),\n`yellow_nb` (no border),\n`green_nb` (no border),\n`dark_blue_nb` (no border),\n`light_grey_nb` (no border),\n`grey_nb` (no border),\n`blue` (border),\n`orange` (border),\n`yellow` (border),\n`green` (border),\n`dark_blue` (border),\n`light_grey` (border),\n`grey` (border)"
-
 > error_txt_no_cycles()
 [1] "Cycles in the relationship graph not yet supported."
 
