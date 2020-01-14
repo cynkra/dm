@@ -242,40 +242,7 @@ cdm_check_constraints <- new_cdm_forward(dm_examine_constraints, old_fwd_name = 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
-  deprecate_soft("0.1.0", "dm::cdm_nycflights13()", "dm::dm_nycflights13()")
-
-  dm <-
-    dm_from_src(
-      src_df("nycflights13")
-    ) %>%
-    dm_add_pk(planes, tailnum) %>%
-    dm_add_pk(airlines, carrier) %>%
-    dm_add_pk(airports, faa) %>%
-    dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
-    dm_add_fk(flights, carrier, airlines) %>%
-    dm_add_fk(flights, origin, airports)
-
-  if (color) {
-    dm <-
-      dm %>%
-      cdm_set_colors(
-        flights = "blue",
-        airports = ,
-        planes = ,
-        airlines = "orange",
-        weather = "green"
-      )
-  }
-
-  if (cycle) {
-    dm <-
-      dm %>%
-      dm_add_fk(flights, dest, airports, check = FALSE)
-  }
-
-  dm
-})
+cdm_nycflights13 <- new_cdm_forward(dm_nycflights13)
 
 #' @rdname deprecated
 #' @keywords internal
