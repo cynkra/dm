@@ -214,7 +214,7 @@ Example:
 
 **Print the SQL statements for getting all flights from Delta Air Lines, which did not depart from John F. Kennedy International Airport in May 2013, with the data stored in a sqlite database.**
 
-To show the SQL query behind a `dm_filter()`, we copy the `flights`, `airlines` and `airports` tables from the `nyflights13` dataset to a temporary in-memory database using the {dm}-method `copy_to()` for `src_sql` objects with the argument `dbplyr::src_memdb`.
+To show the SQL query behind a `dm_filter()`, we copy the `flights`, `airlines` and `airports` tables from the `nyflights13` dataset to a temporary in-memory database using the built-in function `dm_copy_to()` and `dbplyr::src_memdb`.
 
 Then we filter the data, and print the corresponding SQL statement with `dbplyr::sql_render()`.
 
@@ -222,7 +222,7 @@ Then we filter the data, and print the corresponding SQL statement with `dbplyr:
 dm %>%
   dm_select_tbl(flights, airlines, airports) %>%
   dm_filter(flights, month == 5) %>% 
-  copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE) %>% 
+  dm_copy_to(dbplyr::src_memdb(), ., unique_table_names = TRUE) %>% 
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
   dm_apply_filters() %>% 
