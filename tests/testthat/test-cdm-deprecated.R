@@ -20,7 +20,7 @@ test_that("cdm_copy_to() behaves correctly", {
     test_srcs,
     ~ expect_equivalent_dm(
       cdm_copy_to(., dm_for_filter, unique_table_names = TRUE),
-      dm_copy_to(., dm_for_filter, unique_table_names = TRUE)
+      copy_dm_to(., dm_for_filter, unique_table_names = TRUE)
     )
   )
 })
@@ -227,7 +227,7 @@ test_that("cdm_learn_from_db() works from PG", {
 
   # create an object on the Postgres-DB that can be learned
   if (is_postgres_empty()) {
-    dm_copy_to(con_postgres, dm_for_filter, unique_table_names = TRUE, temporary = FALSE)
+    copy_dm_to(con_postgres, dm_for_filter, unique_table_names = TRUE, temporary = FALSE)
   }
 
   expect_equivalent_dm(

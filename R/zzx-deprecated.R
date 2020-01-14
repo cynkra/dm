@@ -71,7 +71,7 @@ cdm_rm_tbl <- new_cdm_forward(dm_rm_tbl)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_copy_to <- new_cdm_forward(dm_copy_to)
+cdm_copy_to <- new_cdm_forward(copy_dm_to, old_fwd_name = "cdm_copy_to")
 
 #' @rdname deprecated
 #' @keywords internal

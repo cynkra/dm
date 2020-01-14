@@ -82,7 +82,7 @@ reference:
 
 - title: Interaction with DBs
   contents:
-  - dm_copy_to
+  - copy_dm_to
   - dm_learn_from_db
 
 - title: Table surgery

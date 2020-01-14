@@ -18,7 +18,7 @@ dm_test_load <- function(x,
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
 
-  map(srcs, ~ dm_copy_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
+  map(srcs, ~ copy_dm_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
 }
 
 

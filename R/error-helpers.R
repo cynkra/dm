@@ -227,7 +227,7 @@ abort_no_types <- function() {
 }
 
 error_txt_no_types <- function() {
-  paste0("`dm_copy_to()` does not support the `types` argument.")
+  paste0("`copy_dm_to()` does not support the `types` argument.")
 }
 
 abort_no_indexes <- function() {
@@ -235,7 +235,7 @@ abort_no_indexes <- function() {
 }
 
 error_txt_no_indexes <- function() {
-  paste0("`dm_copy_to()` does not support the `indexes` argument.")
+  paste0("`copy_dm_to()` does not support the `indexes` argument.")
 }
 
 abort_no_unique_indexes <- function() {
@@ -243,7 +243,7 @@ abort_no_unique_indexes <- function() {
 }
 
 error_txt_no_unique_indexes <- function() {
-  paste0("`dm_copy_to()` does not support the `unique_indexes` argument.")
+  paste0("`copy_dm_to()` does not support the `unique_indexes` argument.")
 }
 
 abort_need_named_vec <- function(table_names) {
@@ -252,7 +252,7 @@ abort_need_named_vec <- function(table_names) {
 
 error_txt_need_named_vec <- function(table_names) {
   paste0(
-    "Parameter `table_names` in `dm_copy_to()` needs to be a named vector whose names ",
+    "Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names ",
     "are the original table names (returned by e.g. `src_tbls()`): ",
     commas(tick(table_names))
   )
