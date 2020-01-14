@@ -6,8 +6,10 @@ test_that("API", {
       airports = "orange",
       planes = "green_nb"
     ),
-    set_names(c("flights", "airlines", "airports", "planes"),
-              c("blue", "orange", "orange", "green_nb"))
+    set_names(
+      c("flights", "airlines", "airports", "planes"),
+      c("blue", "orange", "orange", "green_nb")
+    )
   )
 })
 
