@@ -21,7 +21,7 @@
 #' @seealso
 #'
 #' - [dm_add_pk()] and [dm_add_fk()] add primary and foreign keys
-#' - [dm_copy_to()] and [dm_learn_from_db()] for DB interaction
+#' - [copy_dm_to()] and [dm_learn_from_db()] for DB interaction
 #' - [dm_draw()] for visualization
 #' - [dm_join_to_tbl()] for flattening
 #' - [dm_filter()] for filtering
@@ -43,7 +43,7 @@
 #' dm_nycflights13() %>% dm_get_src()
 #' # this works only when tables of `dm` are on DB
 #' if (FALSE) {
-#'   dm_copy_to(dbplyr::src_memdb(), dm_nycflights13()) %>%
+#'   copy_dm_to(dbplyr::src_memdb(), dm_nycflights13()) %>%
 #'     dm_get_con()
 #' }
 #' dm_nycflights13() %>% dm_get_tables()

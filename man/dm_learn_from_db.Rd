@@ -29,7 +29,7 @@ if (FALSE) {
   # setting key constraints currently doesn't work on
   # SQLite but this would be the code to set the PK
   # constraint on the DB
-  iris_dm <- dm_copy_to(
+  iris_dm <- copy_dm_to(
     src_sqlite,
     dm(iris = iris_key),
     set_key_constraints = TRUE
@@ -42,6 +42,6 @@ if (FALSE) {
 }
 \seealso{
 Other DB interaction functions: 
-\code{\link{dm_copy_to}()}
+\code{\link{copy_dm_to}()}
 }
 \concept{DB interaction functions}
