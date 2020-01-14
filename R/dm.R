@@ -674,14 +674,11 @@ src_tbls.dm <- function(x) {
   # The x argument here is a dm object
   dm <- x
   check_not_zoomed(x)
-  names(dm_get_tables_impl(dm))
+  src_tbls_impl(dm)
 }
 
-# this is not exported, but we use it a lot in our own code
-src_tbls.zoomed_dm <- function(x) {
-  # The x argument here is a dm object
-  dm <- x
-  names(dm_get_tables_impl(dm))
+src_tbls_impl <- function(dm) {
+  dm_get_def(dm)$table
 }
 
 #' @export
