@@ -5,11 +5,9 @@ test_that("API", {
       airlines = ,
       airports = "orange",
       planes = "green_nb"
-    ) %>%
-      nest(data = -new_display) %>%
-      deframe() %>%
-      map(pull),
-    list(accent1 = "flights", accent2 = c("airlines", "airports"), accent4nb = "planes")
+    ),
+    set_names(c("flights", "airlines", "airports", "planes"),
+              c("blue", "orange", "orange", "green_nb"))
   )
 })
 
@@ -68,10 +66,11 @@ test_that("last", {
 
 test_that("bad color", {
   expect_dm_error(
-    color_quos_to_display(
-      flights = "mauve"
+    dm_set_colors(
+      dm_nycflights_small,
+      "mauve" = flights
     ),
-    class = "wrong_color"
+    class = "cols_not_avail"
   )
 })
 
@@ -79,11 +78,11 @@ test_that("getter", {
   expect_equal(
     dm_get_colors(dm_nycflights13()),
     c(
-      "#FFA07A" = "airlines",
-      "#FFA07A" = "airports",
-      "#ADD8E6" = "flights",
-      "#FFA07A" = "planes",
-      "#90EE90" = "weather"
+      "#ED7D31" = "airlines",
+      "#ED7D31" = "airports",
+      "#5B9BD5" = "flights",
+      "#ED7D31" = "planes",
+      "#70AD47" = "weather"
     )
   )
 })

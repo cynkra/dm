@@ -37,9 +37,9 @@ test_that("cdm_get_colors() behaves as intended", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equal(
     cdm_get_colors(cdm_nycflights13()),
-    tibble(
-      table = c("airlines", "airports", "flights", "planes", "weather"),
-      color = c("orange", "orange", "blue", "orange", "green")
+    set_names(
+      c("#ED7D31", "#ED7D31", "#5B9BD5", "#ED7D31", "#70AD47"),
+      c("airlines", "airports", "flights", "planes", "weather")
     )
   )
 })
