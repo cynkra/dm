@@ -21,7 +21,7 @@
 #' @seealso
 #'
 #' - [dm_add_pk()] and [dm_add_fk()] add primary and foreign keys
-#' - [dm_copy_to()] and [dm_learn_from_db()] for DB interaction
+#' - [copy_dm_to()] and [dm_learn_from_db()] for DB interaction
 #' - [dm_draw()] for visualization
 #' - [dm_join_to_tbl()] for flattening
 #' - [dm_filter()] for filtering
@@ -43,7 +43,7 @@
 #' dm_nycflights13() %>% dm_get_src()
 #' # this works only when tables of `dm` are on DB
 #' if (FALSE) {
-#'   dm_copy_to(dbplyr::src_memdb(), dm_nycflights13()) %>%
+#'   copy_dm_to(dbplyr::src_memdb(), dm_nycflights13()) %>%
 #'     dm_get_con()
 #' }
 #' dm_nycflights13() %>% dm_get_tables()
@@ -674,43 +674,11 @@ src_tbls.dm <- function(x) {
   # The x argument here is a dm object
   dm <- x
   check_not_zoomed(x)
-  names(dm_get_tables_impl(dm))
+  src_tbls_impl(dm)
 }
 
-#' @export
-copy_to.src_sql <- function(dest,
-                            df,
-                            name = deparse(substitute(df)),
-                            overwrite = NULL,
-                            ...,
-                            types = NULL,
-                            indexes = NULL, unique_indexes = NULL,
-                            set_key_constraints = TRUE, unique_table_names = FALSE,
-                            table_names = NULL,
-                            temporary = TRUE) {
-  if (inherits(df, "data.frame")) {
-    dbplyr:::copy_to.src_sql(
-      dest = dest,
-      df = df,
-      name = name,
-      overwrite = overwrite,
-      ...,
-      temporary = temporary
-    )
-  } else if (is_dm(df)) {
-    dm_copy_to(
-      dest,
-      df,
-      ...,
-      types = types, overwrite = overwrite,
-      indexes = indexes, unique_indexes = unique_indexes,
-      set_key_constraints = set_key_constraints, unique_table_names = unique_table_names,
-      table_names = table_names,
-      temporary = temporary
-    )
-  } else {
-    abort_either_dm_of_df(class(df))
-  }
+src_tbls_impl <- function(dm) {
+  dm_get_def(dm)$table
 }
 
 #' @export

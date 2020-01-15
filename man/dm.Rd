@@ -125,7 +125,7 @@ dm_nycflights13() \%>\% src_tbls()
 dm_nycflights13() \%>\% dm_get_src()
 # this works only when tables of `dm` are on DB
 if (FALSE) {
-  dm_copy_to(dbplyr::src_memdb(), dm_nycflights13()) \%>\%
+  copy_dm_to(dbplyr::src_memdb(), dm_nycflights13()) \%>\%
     dm_get_con()
 }
 dm_nycflights13() \%>\% dm_get_tables()
@@ -139,7 +139,7 @@ dm_nycflights13()$airports
 \seealso{
 \itemize{
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} add primary and foreign keys
-\item \code{\link[=dm_copy_to]{dm_copy_to()}} and \code{\link[=dm_learn_from_db]{dm_learn_from_db()}} for DB interaction
+\item \code{\link[=copy_dm_to]{copy_dm_to()}} and \code{\link[=dm_learn_from_db]{dm_learn_from_db()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
 \item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering

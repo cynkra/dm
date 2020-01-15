@@ -18,7 +18,7 @@ dm_test_load <- function(x,
   stopifnot(is.character(ignore))
   srcs <- srcs[setdiff(names(srcs), ignore)]
 
-  map(srcs, ~ dm_copy_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
+  map(srcs, ~ copy_dm_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
 }
 
 
@@ -33,8 +33,8 @@ check_correct_input <- function(dm, table, n = NULL) {
       abort(paste0("`table` must be a character vector of length ", n, "."))
     }
   }
-  if (!all(table %in% src_tbls(dm))) {
-    abort_table_not_in_dm(setdiff(table, src_tbls(dm)), src_tbls(dm))
+  if (!all(table %in% src_tbls_impl(dm))) {
+    abort_table_not_in_dm(setdiff(table, src_tbls_impl(dm)), src_tbls_impl(dm))
   }
 }
 
