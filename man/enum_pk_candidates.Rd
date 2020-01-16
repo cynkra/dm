@@ -16,10 +16,10 @@ dm_enum_pk_candidates(dm, table)
 }
 \value{
 A tibble with the following columns:
-\itemize{
-\item \code{column}: column of \code{table},
-\item \code{candidate} (logical): ,
-\item \code{why}: if not a candidate for a primary key column, explanation for this.
+\describe{
+\item{\code{column}}{column of \code{table},}
+\item{\code{candidate}}{boolean: is this column a candidate for a primary key,}
+\item{\code{why}}{if not a candidate for a primary key column, explanation for this.}
 }
 }
 \description{

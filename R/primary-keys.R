@@ -132,8 +132,10 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @inheritParams dm_add_pk
 #'
 #' @return A tibble with the following columns:
-#'   - `table`: table name,
-#'   - `pk_col`: column name(s) of primary key.
+#'   \describe{
+#'     \item{`table`}{table name,}
+#'     \item{`pk_col`}{column name(s) of primary key.}
+#'   }
 #'
 #' @export
 dm_get_all_pks <- nse(function(dm) {
@@ -202,9 +204,11 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' a suitable candidate for a primary key of the table.
 #'
 #' @return A tibble with the following columns:
-#'   - `column`: column of `table`,
-#'   - `candidate` (logical): ,
-#'   - `why`: if not a candidate for a primary key column, explanation for this.
+#'   \describe{
+#'     \item{`column`}{column of `table`,}
+#'     \item{`candidate`}{boolean: is this column a candidate for a primary key,}
+#'     \item{`why`}{if not a candidate for a primary key column, explanation for this.}
+#'   }
 #'
 #' @export
 #' @examples

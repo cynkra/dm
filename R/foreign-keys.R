@@ -116,9 +116,11 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @description Get a summary of all foreign key relations in a [`dm`]
 #'
 #' @return A tibble with the following columns:
-#'   - `child_table`: child table,
-#'   - `child_fk_col`: foreign key column in child table,
-#'   - `parent_table`: parent table.
+#'   \describe{
+#'     \item{`child_table`}{child table,}
+#'     \item{`child_fk_col`}{foreign key column in child table,}
+#'     \item{`parent_table`}{parent table.}
+#'   }
 #'
 #' @inheritParams dm_has_fk
 #'
@@ -229,9 +231,11 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
 #' @return A tibble with the following columns:
-#'   - `column`: column of `table`,
-#'   - `candidate` (boolean),
-#'   - `why`: if not a candidate for a foreign key, explanation for the reason.
+#'   \describe{
+#'     \item{`column`}{column of `table`,}
+#'     \item{`candidate`}{boolean: is this column a candidate for a foreign key,}
+#'     \item{`why`}{if not a candidate for a foreign key, explanation for the reason.}
+#'   }
 #'
 #' @family foreign key functions
 #'

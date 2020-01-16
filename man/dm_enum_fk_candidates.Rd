@@ -20,10 +20,10 @@ enum_fk_candidates(zoomed_dm, ref_table)
 }
 \value{
 A tibble with the following columns:
-\itemize{
-\item \code{column}: column of \code{table},
-\item \code{candidate} (boolean),
-\item \code{why}: if not a candidate for a foreign key, explanation for the reason.
+\describe{
+\item{\code{column}}{column of \code{table},}
+\item{\code{candidate}}{boolean: is this column a candidate for a foreign key,}
+\item{\code{why}}{if not a candidate for a foreign key, explanation for the reason.}
 }
 }
 \description{

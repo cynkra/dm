@@ -11,9 +11,9 @@ dm_get_all_pks(dm)
 }
 \value{
 A tibble with the following columns:
-\itemize{
-\item \code{table}: table name,
-\item \code{pk_col}: column name(s) of primary key.
+\describe{
+\item{\code{table}}{table name,}
+\item{\code{pk_col}}{column name(s) of primary key.}
 }
 }
 \description{
