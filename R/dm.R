@@ -381,9 +381,7 @@ dm_get_data_model_fks <- function(x) {
 #' These filter expressions are not intended for evaluation, only for
 #' information.
 #'
-#' @rdname dm
-#'
-#' @return For `dm_get_filters()`: A tibble with columns:
+#' @return A tibble with columns:
 #'
 #' - "table": table that was filtered,
 #' - "filter": the filter expression,

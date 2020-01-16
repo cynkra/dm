@@ -8,7 +8,6 @@
 \alias{dm_get_src}
 \alias{dm_get_con}
 \alias{dm_get_tables}
-\alias{dm_get_filters}
 \alias{is_dm}
 \alias{as_dm}
 \title{Data model class}
@@ -26,8 +25,6 @@ dm_get_src(x)
 dm_get_con(x)
 
 dm_get_tables(x)
-
-dm_get_filters(x)
 
 is_dm(x)
 
@@ -60,13 +57,6 @@ For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object.
 For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
 
 For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
-
-For \code{dm_get_filters()}: A tibble with columns:
-\itemize{
-\item "table": table that was filtered,
-\item "filter": the filter expression,
-\item "zoomed": logical, does the filter condition relate to the zoomed table.
-}
 
 For \code{is_dm()}: Boolean, is this object a \code{dm}.
 }
@@ -104,10 +94,6 @@ is thrown.
 of a \code{dm} object.
 Filtering expressions are NOT evaluated at this stage.
 To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters to all tables use \code{dm_apply_filters()}
-
-\code{dm_get_filters()} returns the filter expressions that have been applied to a \code{dm} object.
-These filter expressions are not intended for evaluation, only for
-information.
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
