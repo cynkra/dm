@@ -19,7 +19,7 @@ enum_fk_candidates(zoomed_dm, ref_table)
 \item{zoomed_dm}{A \code{dm} with a zoomed table.}
 }
 \value{
-A table with columns \code{column} (column of \code{table}), \code{candidate} (boolean) and \code{why}
+A tibble with columns \code{column} (column of \code{table}), \code{candidate} (boolean) and \code{why}
 (if not a candidate for a foreign key, explanation for this).
 }
 \description{

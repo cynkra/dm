@@ -201,7 +201,7 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' table if the column contains only unique values, and is thus
 #' a suitable candidate for a primary key of the table.
 #'
-#' @return A table with columns_
+#' @return A tibble with columns:
 #' - `column` (column of `table`),
 #' - `candidate` (boolean),
 #' - `why` (if not a candidate for a primary key column, explanation for this).
