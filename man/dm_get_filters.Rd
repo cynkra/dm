@@ -7,11 +7,11 @@
 dm_get_filters(x)
 }
 \value{
-A tibble with columns:
+A tibble with the following columns:
 \itemize{
-\item "table": table that was filtered,
-\item "filter": the filter expression,
-\item "zoomed": logical, does the filter condition relate to the zoomed table.
+\item \code{table}: table that was filtered,
+\item \code{filter}: the filter expression,
+\item \code{zoomed}: logical, does the filter condition relate to the zoomed table.
 }
 }
 \description{

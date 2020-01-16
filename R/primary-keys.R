@@ -131,9 +131,9 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @return A tibble with columns:
-#' - "table": table name,
-#' - "pk_col": column name(s) of primary key.
+#' @return A tibble with the following columns:
+#'   - `table`: table name,
+#'   - `pk_col`: column name(s) of primary key.
 #'
 #' @export
 dm_get_all_pks <- nse(function(dm) {
@@ -201,10 +201,10 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' table if the column contains only unique values, and is thus
 #' a suitable candidate for a primary key of the table.
 #'
-#' @return A tibble with columns:
-#' - `column` (column of `table`),
-#' - `candidate` (boolean),
-#' - `why` (if not a candidate for a primary key column, explanation for this).
+#' @return A tibble with the following columns:
+#'   - `column`: column of `table`,
+#'   - `candidate` (logical): ,
+#'   - `why`: if not a candidate for a primary key column, explanation for this.
 #'
 #' @export
 #' @examples

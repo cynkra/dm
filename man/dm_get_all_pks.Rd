@@ -10,10 +10,10 @@ dm_get_all_pks(dm)
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A tibble with columns:
+A tibble with the following columns:
 \itemize{
-\item "table": table name,
-\item "pk_col": column name(s) of primary key.
+\item \code{table}: table name,
+\item \code{pk_col}: column name(s) of primary key.
 }
 }
 \description{

@@ -15,11 +15,11 @@ dm_enum_pk_candidates(dm, table)
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A tibble with columns:
+A tibble with the following columns:
 \itemize{
-\item \code{column} (column of \code{table}),
-\item \code{candidate} (boolean),
-\item \code{why} (if not a candidate for a primary key column, explanation for this).
+\item \code{column}: column of \code{table},
+\item \code{candidate} (logical): ,
+\item \code{why}: if not a candidate for a primary key column, explanation for this.
 }
 }
 \description{

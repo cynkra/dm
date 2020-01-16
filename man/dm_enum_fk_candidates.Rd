@@ -19,8 +19,12 @@ enum_fk_candidates(zoomed_dm, ref_table)
 \item{zoomed_dm}{A \code{dm} with a zoomed table.}
 }
 \value{
-A tibble with columns \code{column} (column of \code{table}), \code{candidate} (boolean) and \code{why}
-(if not a candidate for a foreign key, explanation for this).
+A tibble with the following columns:
+\itemize{
+\item \code{column}: column of \code{table},
+\item \code{candidate} (boolean),
+\item \code{why}: if not a candidate for a foreign key, explanation for the reason.
+}
 }
 \description{
 Determine which columns would be good candidates to be used as foreign keys of a table,
