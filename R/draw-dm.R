@@ -157,7 +157,7 @@ dm_set_colors <- function(dm, ...) {
   selected_tables <- map(
     quos,
     function(quos_sel) unname(avail_tables[tidyselect::eval_select(quos_sel, avail_tables)])
-    )
+  )
 
   display_df <-
     selected_tables %>%
