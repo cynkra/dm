@@ -36,7 +36,7 @@ d8 %<-% tibble::tibble(c = c(1:6))
 
 # for examine_key() ---------------------------------------------------------
 
-message("for check_fk() and examine_set_equality()")
+message("for check_fk() and check_set_equality()")
 # for examine_cardinality...() ----------------------------------------------
 d1 <- tibble::tibble(a = 1:5, b = letters[1:5])
 d2 <- tibble::tibble(a = c(1, 3:6), b = letters[1:5])

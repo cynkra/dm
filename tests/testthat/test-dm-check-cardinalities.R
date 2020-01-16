@@ -34,7 +34,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     map2(
       .x = d1_src,
       .y = d3_src,
-      ~ examine_set_equality(.x, a, .y, c)
+      ~ check_set_equality(.x, a, .y, c)
     )
   )
 

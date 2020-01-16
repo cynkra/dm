@@ -92,7 +92,7 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 
   examine_key(!!pt, !!pkc)
 
-  examine_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
   invisible(parent_table)
 }
@@ -107,7 +107,7 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   examine_key(!!pt, !!pkc)
 
-  examine_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
 
   tryCatch(
     {

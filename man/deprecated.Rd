@@ -4,7 +4,6 @@
 \alias{deprecated}
 \alias{check_key}
 \alias{check_if_subset}
-\alias{check_set_equality}
 \alias{check_cardinality}
 \alias{cdm_get_src}
 \alias{cdm_get_con}
@@ -56,8 +55,6 @@
 check_key(.data, ...)
 
 check_if_subset(t1, c1, t2, c2)
-
-check_set_equality(t1, c1, t2, c2)
 
 check_cardinality(parent_table, pk_column, child_table, fk_column)
 

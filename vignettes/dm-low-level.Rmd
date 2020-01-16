@@ -34,7 +34,7 @@ This section contains information and examples about the following functions:
 
 1. `examine_key(.data, ...)`
 1. `check_subset(t1, c1, t2, c2)`
-1. `examine_set_equality(t1, c1, t2, c2)`
+1. `check_set_equality(t1, c1, t2, c2)`
 
 When you have tables (data frames) that are connected by key relations, this package can help you to verify the assumed key relations and/or determine the existing key relations between the tables. 
 For example, if you have tables:
@@ -79,10 +79,10 @@ examine_key(t2, c2)
 check_subset(t1, c1, t2, c2)
 ```
 
-To check both directions at once, and to find out if the unique values of `c_1` in `t_1` are the same as those of `c_2` in `t_2`, {dm} provides the function `examine_set_equality()` (this would fail with a longer error message and is therefore not evaluated):
+To check both directions at once, and to find out if the unique values of `c_1` in `t_1` are the same as those of `c_2` in `t_2`, {dm} provides the function `check_set_equality()` (this would fail with a longer error message and is therefore not evaluated):
 
 ```{r eval=FALSE}
-examine_set_equality(data_1, a, data_2, a)
+check_set_equality(data_1, a, data_2, a)
 ```
 
 Introducing one more table enables us to show how it looks when the test is passed:
@@ -90,7 +90,7 @@ Introducing one more table enables us to show how it looks when the test is pass
 ```{r}
 data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
-examine_set_equality(data_1, a, data_3, a)
+check_set_equality(data_1, a, data_3, a)
 ```
 
 If the test is passed, the return value of the function will be the first table parameter (invisibly).

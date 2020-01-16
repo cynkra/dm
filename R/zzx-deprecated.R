@@ -11,11 +11,6 @@ check_if_subset <- new_cdm_forward_2(check_subset, old_fwd_name = "check_if_subs
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-check_set_equality <- new_cdm_forward_2(examine_set_equality)
-
-#' @rdname deprecated
-#' @keywords internal
-#' @export
 check_cardinality <- new_cdm_forward_2(examine_cardinality)
 
 #' @rdname deprecated

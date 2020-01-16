@@ -96,7 +96,7 @@ reference:
   - dm_examine_constraints
   - examine_key
   - check_subset
-  - examine_set_equality
+  - check_set_equality
   - examine_cardinality
   - check_cardinality_0_n
   - check_cardinality_1_n

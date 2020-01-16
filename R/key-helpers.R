@@ -112,7 +112,7 @@ is_unique_key <- nse(function(.data, column) {
 
 #' Test if the value sets of two different columns in two different tables are the same
 #'
-#' @description `examine_set_equality()` is a wrapper of `check_subset()`.
+#' @description `check_set_equality()` is a wrapper of `check_subset()`.
 #' It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
 #' If not, it throws an error.
 #'
@@ -129,12 +129,12 @@ is_unique_key <- nse(function(.data, column) {
 #' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is failing:
-#' try(examine_set_equality(data_1, a, data_2, a))
+#' try(check_set_equality(data_1, a, data_2, a))
 #'
 #' data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
-#' examine_set_equality(data_1, a, data_3, a)
-examine_set_equality <- function(t1, c1, t2, c2) {
+#' check_set_equality(data_1, a, data_3, a)
+check_set_equality <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
