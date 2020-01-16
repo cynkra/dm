@@ -9,7 +9,7 @@ is_dark_color <- function(rgb) {
 }
 
 is_hex_color <- function(x) {
-  grepl("^#[A-Fa-f0-9]{6}$", x)
+  grepl("^#[A-Fa-f0-9]{6}([A-Fa-f0-9]{2})?$", x)
 }
 
 col_to_hex <- function(x) {
