@@ -27,7 +27,7 @@
 #' - [dm_filter()] for filtering
 #' - [dm_select_tbl()] for creating a `dm` with only a subset of the tables
 #' - [decompose_table()] as one example of the table surgery family
-#' - [examine_key()] and [check_subset()] for checking for key properties
+#' - [check_key()] and [check_subset()] for checking for key properties
 #' - [examine_cardinality()] for checking the cardinality of the relation between two tables
 #' - [dm_nycflights13()]  for creating an example `dm` object
 #'

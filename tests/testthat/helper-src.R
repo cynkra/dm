@@ -34,7 +34,7 @@ d6 %<-% tibble::tibble(c = 1:4)
 d7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
 d8 %<-% tibble::tibble(c = c(1:6))
 
-# for examine_key() ---------------------------------------------------------
+# for check_key() ---------------------------------------------------------
 
 message("for check_fk() and check_set_equality()")
 # for examine_cardinality...() ----------------------------------------------
@@ -557,7 +557,7 @@ if (is_this_a_test()) {
   # names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
   src_names %<-% names(d1_src) # e.g. gets src names of list entries of object d1_src
 
-  data_examine_key_src %<-% dbplyr::test_load(data)
+  data_check_key_src %<-% dbplyr::test_load(data)
 
   data_1_src %<-% dbplyr::test_load(data_1)
   data_2_src %<-% dbplyr::test_load(data_2)

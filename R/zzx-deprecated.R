@@ -1,11 +1,6 @@
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-check_key <- new_cdm_forward_2(examine_key)
-
-#' @rdname deprecated
-#' @keywords internal
-#' @export
 check_if_subset <- new_cdm_forward_2(check_subset, old_fwd_name = "check_if_subset")
 
 #' @rdname deprecated

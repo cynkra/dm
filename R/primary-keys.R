@@ -45,7 +45,7 @@ dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
-    examine_key(table_from_dm, !!col_expr)
+    check_key(table_from_dm, !!col_expr)
   }
 
   dm_add_pk_impl(dm, table_name, col_name, force)

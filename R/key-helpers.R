@@ -35,7 +35,7 @@ dm_examine_constraints <- function(dm) {
 
 #' Test if a column (combination) is unique key of a table
 #'
-#' @description `examine_key()` accepts a data frame and, optionally, columns.
+#' @description `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
 #' if the specified columns are NOT a unique key of the data frame.
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
@@ -61,11 +61,11 @@ dm_examine_constraints <- function(dm) {
 #' @examples
 #' data <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' # this is failing:
-#' try(examine_key(data, a, b))
+#' try(check_key(data, a, b))
 #'
 #' # this is passing:
-#' examine_key(data, a, c)
-examine_key <- function(.data, ...) {
+#' check_key(data, a, c)
+check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 

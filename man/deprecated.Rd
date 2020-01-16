@@ -2,7 +2,6 @@
 % Please edit documentation in R/deprecated.R, R/zzx-deprecated.R
 \name{deprecated}
 \alias{deprecated}
-\alias{check_key}
 \alias{check_if_subset}
 \alias{check_cardinality}
 \alias{cdm_get_src}
@@ -52,8 +51,6 @@
 \alias{cdm_zoom_out}
 \title{Deprecated functions}
 \usage{
-check_key(.data, ...)
-
 check_if_subset(t1, c1, t2, c2)
 
 check_cardinality(parent_table, pk_column, child_table, fk_column)
