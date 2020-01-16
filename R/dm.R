@@ -372,11 +372,13 @@ dm_get_data_model_fks <- function(x, legacy = FALSE) {
 
   if (legacy) {
     mutate(all_fks,
-           # This is expected to break with compound keys
-           column = flatten_chr(column),
-           ref_col = flatten_chr(ref_col))
-    } else all_fks
-
+      # This is expected to break with compound keys
+      column = flatten_chr(column),
+      ref_col = flatten_chr(ref_col)
+    )
+  } else {
+    all_fks
+  }
 }
 
 #' Get filter expressions

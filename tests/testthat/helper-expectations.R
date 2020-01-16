@@ -12,11 +12,11 @@ expect_equivalent_dm <- function(dm1, dm2) {
   expect_equal(
     unnest(dm_get_all_pks_impl(dm1), pk_col),
     unnest(dm_get_all_pks_impl(dm2), pk_col)
-    )
+  )
   expect_equal(
     unnest(dm_get_all_fks_impl(dm1), child_fk_col),
     unnest(dm_get_all_fks_impl(dm2), child_fk_col)
-    )
+  )
 }
 
 expect_dm_error <- function(expr, class) {
