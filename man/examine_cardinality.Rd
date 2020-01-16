@@ -2,19 +2,19 @@
 % Please edit documentation in R/check-cardinalities.R
 \name{examine_cardinality}
 \alias{examine_cardinality}
-\alias{examine_cardinality_0_n}
-\alias{examine_cardinality_1_n}
-\alias{examine_cardinality_1_1}
-\alias{examine_cardinality_0_1}
+\alias{check_cardinality_0_n}
+\alias{check_cardinality_1_n}
+\alias{check_cardinality_1_1}
+\alias{check_cardinality_0_1}
 \title{Test if the relation between two tables of a data model meet the requirements}
 \usage{
-examine_cardinality_0_n(parent_table, pk_column, child_table, fk_column)
+check_cardinality_0_n(parent_table, pk_column, child_table, fk_column)
 
-examine_cardinality_1_n(parent_table, pk_column, child_table, fk_column)
+check_cardinality_1_n(parent_table, pk_column, child_table, fk_column)
 
-examine_cardinality_1_1(parent_table, pk_column, child_table, fk_column)
+check_cardinality_1_1(parent_table, pk_column, child_table, fk_column)
 
-examine_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
+check_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
 
 examine_cardinality(parent_table, pk_column, child_table, fk_column)
 }
@@ -28,19 +28,23 @@ examine_cardinality(parent_table, pk_column, child_table, fk_column)
 \item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}.}
 }
 \value{
-Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
+For \verb{check_cardinality_?_?()}: Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
 Otherwise an error is thrown and the reason for it is explained.
+
+For \code{examine_cardinality()}: Returns a character variable specifying the type of relationship between the two columns.
 }
 \description{
-All \code{examine_cardinality()} functions test the following conditions:
+All \verb{check_cardinality_?_?()} functions test the following conditions:
 \enumerate{
 \item Is \code{pk_column} is a unique key for \code{parent_table}?
 \item Is the set of values in \code{fk_column} of \code{child_table} a subset of the set of values of \code{pk_column}?
 \item Does the relation between the two tables of the data model meet the cardinality requirements?
 }
+
+\code{examine_cardinality()} also checks the first two points and subsequently determines the type of cardinality.
 }
 \details{
-All \code{examine_cardinality} functions accept a \verb{parent table} (data frame), a column name of this table,
+All cardinality-functions accept a \verb{parent table} (data frame), a column name of this table,
 a \verb{child table}, and a column name of the child table.
 The given column of the \verb{parent table} has to be one of its
 unique keys (no duplicates are allowed).
@@ -52,23 +56,23 @@ The numbers \code{0}, \code{1} and \code{n} refer to the number of values in the
 column of the parent table.
 \code{n} means "more than one" in this context, with no upper limit.
 
-\verb{0_n} means, that for each value of the \code{pk_column}, at least \code{0} and at most
-\code{n} values have to correspond to it in the column of the child table (which translates to no further restrictions).
+\verb{0_n} means, that each value of the \code{pk_column} has at least \code{0} and at most
+\code{n} corresponding values in the column of the child table (which translates to no further restrictions).
 
-\verb{1_n} means, that for each value of the \code{pk_column}, at least \code{1} and at most
-\code{n} values have to correspond to it in the column of the child table.
+\verb{1_n} means, that each value of the \code{pk_column} has at least \code{1} and at most
+\code{n} corresponding values in the column of the child table.
 This means that there is a "surjective" mapping from the child table
 to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 
-\verb{0_1} means, that for each value of the \code{pk_column}, at least \code{0} and at most
-\code{1} value has to correspond to it in the column of the child table.
+\verb{0_1} means, that each value of the \code{pk_column} has at least \code{0} and at most
+\code{1} corresponding values in the column of the child table.
 This means that there is a "injective" mapping from the child table
 to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
 But not all of the parent table
 column values have to be referred to.
 
-\verb{1_1} means, that for each value of the \code{pk_column}, exactly
-\code{1} value has to correspond to it in the column of the child table.
+\verb{1_1} means, that each value of the \code{pk_column} has exactly
+\code{1}  corresponding value in the column of the child table.
 This means that there is a "bijective" ("injective" AND "surjective") mapping
 between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 there are no duplicates in either of them.
@@ -80,14 +84,14 @@ d1 <- tibble::tibble(a = 1:5)
 d2 <- tibble::tibble(c = c(1:5, 5))
 d3 <- tibble::tibble(c = 1:4)
 # This does not pass, `c` is not unique key of d2:
-try(examine_cardinality_0_n(d2, c, d1, a))
+try(check_cardinality_0_n(d2, c, d1, a))
 
 # This passes, multiple values in d2$c are allowed:
-examine_cardinality_0_n(d1, a, d2, c)
+check_cardinality_0_n(d1, a, d2, c)
 
 # This does not pass, injectivity is violated:
-try(examine_cardinality_1_1(d1, a, d2, c))
+try(check_cardinality_1_1(d1, a, d2, c))
 
 # This passes:
-examine_cardinality_0_1(d1, a, d3, c)
+check_cardinality_0_1(d1, a, d3, c)
 }

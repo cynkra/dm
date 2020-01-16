@@ -1,6 +1,6 @@
 context("test-check-cardinalities")
 
-test_that("examine_cardinality_...() functions are checking the cardinality correctly?", {
+test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
   card_0_n_d1_d2_names <- find_testthat_root_file(paste0("out/card-0-n-d1-d2-", src_names, ".txt"))
   card_0_1_d1_d2_names <- find_testthat_root_file(paste0("out/card-0-1-d1-d2-", src_names, ".txt"))
 
@@ -10,7 +10,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     map2(
       .x = d1_src,
       .y = d3_src,
-      ~ examine_cardinality_0_n(parent_table = .x, pk_column = a, child_table = .y, fk_column = c)
+      ~ check_cardinality_0_n(parent_table = .x, pk_column = a, child_table = .y, fk_column = c)
     )
   )
 
@@ -18,7 +18,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     map2(
       .x = d1_src,
       .y = d3_src,
-      ~ examine_cardinality_1_n(.x, a, .y, c)
+      ~ check_cardinality_1_n(.x, a, .y, c)
     )
   )
 
@@ -26,7 +26,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     map2(
       .x = d1_src,
       .y = d3_src,
-      ~ examine_cardinality_1_1(.x, a, .y, c)
+      ~ check_cardinality_1_1(.x, a, .y, c)
     )
   )
 
@@ -42,7 +42,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     map2(
       .x = d5_src,
       .y = d4_src,
-      ~ examine_cardinality_0_n(.x, a, .y, c)
+      ~ check_cardinality_0_n(.x, a, .y, c)
     )
   )
 
@@ -50,7 +50,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     map2(
       .x = d5_src,
       .y = d6_src,
-      ~ examine_cardinality_0_1(.x, a, .y, c)
+      ~ check_cardinality_0_1(.x, a, .y, c)
     )
   )
 
@@ -100,7 +100,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     ),
     ~ expect_known_output(
       expect_dm_error(
-        examine_cardinality_0_n(
+        check_cardinality_0_n(
           parent_table = ..1,
           pk_column = a,
           child_table = ..2,
@@ -121,7 +121,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     ),
     ~ expect_known_output(
       expect_dm_error(
-        examine_cardinality_0_1(
+        check_cardinality_0_1(
           parent_table = ..1,
           pk_column = a,
           child_table = ..2,
@@ -137,7 +137,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     .x = d5_src,
     .y = d4_src,
     ~ expect_dm_error(
-      examine_cardinality_1_1(.x, a, .y, c),
+      check_cardinality_1_1(.x, a, .y, c),
       class = "not_bijective"
     )
   )
@@ -146,7 +146,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     .x = d4_src,
     .y = d5_src,
     ~ expect_dm_error(
-      examine_cardinality_1_1(.x, c, .y, a),
+      check_cardinality_1_1(.x, c, .y, a),
       class = "not_unique_key"
     )
   )
@@ -155,7 +155,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     .x = d4_src,
     .y = d1_src,
     ~ expect_dm_error(
-      examine_cardinality_1_1(.x, c, .y, a),
+      check_cardinality_1_1(.x, c, .y, a),
       class = "not_unique_key"
     )
   )
@@ -164,7 +164,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     .x = d1_src,
     .y = d4_src,
     ~ expect_dm_error(
-      examine_cardinality_0_1(.x, a, .y, c),
+      check_cardinality_0_1(.x, a, .y, c),
       class = "not_injective"
     )
   )
@@ -173,7 +173,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     .x = d4_src,
     .y = d1_src,
     ~ expect_dm_error(
-      examine_cardinality_0_n(.x, c, .y, a),
+      check_cardinality_0_n(.x, c, .y, a),
       class = "not_unique_key"
     )
   )
@@ -182,7 +182,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     .x = d4_src,
     .y = d1_src,
     ~ expect_dm_error(
-      examine_cardinality_1_1(.x, c, .y, a),
+      check_cardinality_1_1(.x, c, .y, a),
       class = "not_unique_key"
     )
   )
@@ -191,7 +191,7 @@ test_that("examine_cardinality_...() functions are checking the cardinality corr
     .x = d1_src,
     .y = d4_src,
     ~ expect_dm_error(
-      examine_cardinality_1_1(.x, a, .y, c),
+      check_cardinality_1_1(.x, a, .y, c),
       class = "not_bijective"
     )
   )

@@ -98,10 +98,10 @@ reference:
   - examine_if_subset
   - examine_set_equality
   - examine_cardinality
-  - examine_cardinality_0_n
-  - examine_cardinality_1_n
-  - examine_cardinality_0_1
-  - examine_cardinality_1_1
+  - check_cardinality_0_n
+  - check_cardinality_1_n
+  - check_cardinality_0_1
+  - check_cardinality_1_1
 
 - title: Miscellaneous
   contents:

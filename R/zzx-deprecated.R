@@ -21,26 +21,6 @@ check_cardinality <- new_cdm_forward_2(examine_cardinality)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-check_cardinality_0_1 <- new_cdm_forward_2(examine_cardinality_0_1)
-
-#' @rdname deprecated
-#' @keywords internal
-#' @export
-check_cardinality_1_1 <- new_cdm_forward_2(examine_cardinality_1_1)
-
-#' @rdname deprecated
-#' @keywords internal
-#' @export
-check_cardinality_0_n <- new_cdm_forward_2(examine_cardinality_0_n)
-
-#' @rdname deprecated
-#' @keywords internal
-#' @export
-check_cardinality_1_n <- new_cdm_forward_2(examine_cardinality_1_n)
-
-#' @rdname deprecated
-#' @keywords internal
-#' @export
 cdm_get_src <- new_cdm_forward(dm_get_src)
 
 #' @rdname deprecated

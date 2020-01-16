@@ -100,10 +100,10 @@ This ensures that the functions can be conveniently used in a pipe configuration
 
 This section contains information and examples for the functions
 
-1. `examine_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)`
-1. `examine_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)`
-1. `examine_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)`
-1. `examine_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)`
+1. `check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)`
 1. `examine_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)`
 
 The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as inputs.
@@ -144,16 +144,16 @@ Here are some examples of how the cardinality testing functions can be used:
 
 ```{r}
 # This does not pass, `c` is not unique key of d2:
-examine_cardinality_0_n(d2, c, d1, a)
+check_cardinality_0_n(d2, c, d1, a)
 
 # This passes, multiple values in d2$c are allowed:
-examine_cardinality_0_n(d1, a, d2, c)
+check_cardinality_0_n(d1, a, d2, c)
 
 # This does not pass, injectivity is violated:
-examine_cardinality_1_1(d1, a, d2, c)
+check_cardinality_1_1(d1, a, d2, c)
 
 # This passes:
-examine_cardinality_0_1(d1, a, d3, c)
+check_cardinality_0_1(d1, a, d3, c)
 ```
 
 `examine_cardinality()` returns the type of relation, e.g.:

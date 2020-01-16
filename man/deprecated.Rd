@@ -6,10 +6,6 @@
 \alias{check_if_subset}
 \alias{check_set_equality}
 \alias{check_cardinality}
-\alias{check_cardinality_0_1}
-\alias{check_cardinality_1_1}
-\alias{check_cardinality_0_n}
-\alias{check_cardinality_1_n}
 \alias{cdm_get_src}
 \alias{cdm_get_con}
 \alias{cdm_get_tables}
@@ -64,14 +60,6 @@ check_if_subset(t1, c1, t2, c2)
 check_set_equality(t1, c1, t2, c2)
 
 check_cardinality(parent_table, pk_column, child_table, fk_column)
-
-check_cardinality_0_1(parent_table, pk_column, child_table, fk_column)
-
-check_cardinality_1_1(parent_table, pk_column, child_table, fk_column)
-
-check_cardinality_0_n(parent_table, pk_column, child_table, fk_column)
-
-check_cardinality_1_n(parent_table, pk_column, child_table, fk_column)
 
 cdm_get_src(x)
 
