@@ -5,12 +5,14 @@
 #' @inheritParams dm_add_pk
 #'
 #' @return A tibble with the following columns:
-#'   - `table`: the table in the `dm`,
-#'   - `kind`: "PK" or "FK",
-#'   - `column`: a column of the table,
-#'   - `ref_table`: for foreign keys, the referenced table,
-#'   - `is_key`: logical,
-#'   - `problem`: if `is_key = FALSE`, the reason for that.
+#'   \describe{
+#'     \item{`table`}{the table in the `dm`,}
+#'     \item{`kind`}{"PK" or "FK",}
+#'     \item{`column`}{a column of the table,}
+#'     \item{`ref_table`}{for foreign keys, the referenced table,}
+#'     \item{`is_key`}{logical,}
+#'     \item{`problem`}{if `is_key = FALSE`, the reason for that.}
+#'   }
 #'
 #' @details For the primary key constraints, it is tested if the values in the respective columns are all unique.
 #' For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column

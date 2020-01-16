@@ -384,9 +384,11 @@ dm_get_data_model_fks <- function(x) {
 #' @inheritParams dm
 #'
 #' @return A tibble with the following columns:
-#'   - `table`: table that was filtered,
-#'   - `filter`: the filter expression,
-#'   - `zoomed`: logical, does the filter condition relate to the zoomed table.
+#'   \describe{
+#'     \item{`table`}{table that was filtered,}
+#'     \item{`filter`}{the filter expression,}
+#'     \item{`zoomed`}{logical, does the filter condition relate to the zoomed table.}
+#'   }
 #'
 #' @export
 dm_get_filters <- function(x) {

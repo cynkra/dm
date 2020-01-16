@@ -11,10 +11,10 @@ dm_get_filters(x)
 }
 \value{
 A tibble with the following columns:
-\itemize{
-\item \code{table}: table that was filtered,
-\item \code{filter}: the filter expression,
-\item \code{zoomed}: logical, does the filter condition relate to the zoomed table.
+\describe{
+\item{\code{table}}{table that was filtered,}
+\item{\code{filter}}{the filter expression,}
+\item{\code{zoomed}}{logical, does the filter condition relate to the zoomed table.}
 }
 }
 \description{

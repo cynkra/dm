@@ -11,10 +11,10 @@ dm_get_all_fks(dm)
 }
 \value{
 A tibble with the following columns:
-\itemize{
-\item \code{child_table}: child table,
-\item \code{child_fk_col}: foreign key column in child table,
-\item \code{parent_table}: parent table.
+\describe{
+\item{\code{child_table}}{child table,}
+\item{\code{child_fk_col}}{foreign key column in child table,}
+\item{\code{parent_table}}{parent table.}
 }
 }
 \description{
