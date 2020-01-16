@@ -15,6 +15,7 @@ systime_convenient <- function() {
 
 # Internal copy helper functions
 build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
+
   source <-
     dm %>%
     dm_apply_filters() %>%
@@ -41,11 +42,19 @@ build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
 
     pks <-
       dm_get_all_pks(dm) %>%
-      transmute(source_name = table, column = pk_col, pk = TRUE)
+      transmute(source_name = table, column = pk_col, pk = TRUE) %>%
+      # FIXME: this needs to be revisited once we have compound keys
+      unnest(column) %>%
+      # FIXME: this is needed, in case of empty tibble when class of `column` cannot be determined
+      mutate(column = as.character(column))
 
     fks <-
       dm_get_all_fks(dm) %>%
-      transmute(source_name = child_table, column = child_fk_col, fk = TRUE)
+      transmute(source_name = child_table, column = child_fk_col, fk = TRUE) %>%
+      # FIXME: this needs to be revisited once we have compound keys
+      unnest(column) %>%
+      # FIXME: this is needed, in case of empty tibble when class of `column` cannot be determined
+      mutate(column = as.character(column))
 
     # Need to supply NOT NULL modifiers for primary keys
     # because they are difficult to add to MSSQL after the fact

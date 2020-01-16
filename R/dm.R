@@ -360,8 +360,8 @@ dm_get_data_model_fks <- function(x, legacy = FALSE) {
 
   if (nrow(fk_df) == 0) {
     return(tibble(
-      table = character(), column = character(),
-      ref = character(), ref_col = character()
+      table = character(), column = list(),
+      ref = character(), ref_col = list()
     ))
   }
   all_fks <-
