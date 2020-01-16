@@ -134,10 +134,10 @@ dm_get_all_fks <- nse(function(dm) {
   dm_get_all_fks_impl(dm)
 })
 
-dm_get_all_fks_impl <- function(dm) {
-  dm_get_data_model_fks(dm) %>%
+dm_get_all_fks_impl <- function(dm, legacy = FALSE) {
+  dm_get_data_model_fks(dm, legacy) %>%
     select(child_table = table, child_fk_col = column, parent_table = ref) %>%
-    arrange(child_table, child_fk_col)
+    arrange(child_table)
 }
 
 #' Remove the reference(s) from one [`dm`] table to another

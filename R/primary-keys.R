@@ -143,8 +143,8 @@ dm_get_all_pks <- nse(function(dm) {
   dm_get_all_pks_impl(dm)
 })
 
-dm_get_all_pks_impl <- function(dm) {
-  dm_get_data_model_pks(dm) %>%
+dm_get_all_pks_impl <- function(dm, legacy = FALSE) {
+  dm_get_data_model_pks(dm, legacy) %>%
     select(table = table, pk_col = column)
 }
 

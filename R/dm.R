@@ -331,9 +331,8 @@ dm_get_def <- function(x) {
   unclass(x)$def
 }
 
-dm_get_data_model_pks <- function(x) {
+dm_get_data_model_pks <- function(x, legacy = FALSE) {
   # FIXME: Obliterate
-
   pk_df <-
     dm_get_def(x) %>%
     select(table, pks) %>%
@@ -344,13 +343,13 @@ dm_get_data_model_pks <- function(x) {
     pk_df$column <- character()
   } else {
     # This is expected to break with compound keys
-    pk_df$column <- flatten_chr(pk_df$column)
+    if (legacy) pk_df$column <- flatten_chr(pk_df$column)
   }
 
   pk_df
 }
 
-dm_get_data_model_fks <- function(x) {
+dm_get_data_model_fks <- function(x, legacy = FALSE) {
   # FIXME: Obliterate
 
   fk_df <-
@@ -365,14 +364,19 @@ dm_get_data_model_fks <- function(x) {
       ref = character(), ref_col = character()
     ))
   }
-
-  fk_df %>%
-    # This is expected to break with compound keys
-    mutate(ref_col = flatten_chr(column)) %>%
-    select(-column) %>%
-    unnest(fks) %>%
-    mutate(column = flatten_chr(column)) %>%
+  all_fks <-
+    fk_df %>%
+    rename(ref_col = column) %>%
+    unnest(cols = c(fks)) %>%
     select(ref, column, table, ref_col)
+
+  if (legacy) {
+    mutate(all_fks,
+           # This is expected to break with compound keys
+           column = flatten_chr(column),
+           ref_col = flatten_chr(ref_col))
+    } else all_fks
+
 }
 
 #' Get filter expressions

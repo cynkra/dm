@@ -25,11 +25,12 @@ dm_examine_constraints <- function(dm) {
   check_not_zoomed(dm)
   pk_results <- check_pk_constraints(dm)
   fk_results <- check_fk_constraints(dm)
+
   bind_rows(
     pk_results,
     fk_results
   ) %>%
-    arrange(is_key, desc(kind), table, column)
+    arrange(is_key, desc(kind), table)
 }
 
 
@@ -99,6 +100,24 @@ is_unique_key <- nse(function(.data, column) {
     count(value = !!col_expr) %>%
     filter(n != 1) %>%
     arrange(value) %>%
+    utils::head(MAX_COMMAS + 1) %>%
+    collect() %>%
+    {
+      # https://github.com/tidyverse/tidyr/issues/734
+      tibble(data = list(.))
+    } %>%
+    mutate(unique = map_lgl(data, ~ nrow(.) == 0))
+
+  duplicate_rows
+})
+
+# an internal function to check if a set of columns is a unique key of a table
+are_unique_key <- nse(function(.data, vec_of_columns) {
+  duplicate_rows <-
+    .data %>%
+    count(!!!syms(vec_of_columns)) %>%
+    filter(n != 1) %>%
+    arrange(desc(n)) %>%
     utils::head(MAX_COMMAS + 1) %>%
     collect() %>%
     {
@@ -232,18 +251,20 @@ is_subset <- function(t1, c1, t2, c2) {
 
 check_pk_constraints <- function(dm) {
   pks <- dm_get_all_pks(dm)
+
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(0),
       kind = character(0),
-      column = character(0),
+      column = list(0),
       is_key = logical(0),
       problem = character(0)
     ))
   }
   table_names <- pull(pks, table)
   tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
-    map2(syms(pks$pk_col), ~ select(.x, !!.y))
+    # works also for compound primary keys like this
+    map2(pks$pk_col, ~ select(.x, !!.y))
   tbl_is_pk <- map_dfr(tbls, enum_pk_candidates) %>%
     rename(is_key = candidate, problem = why)
 
@@ -251,9 +272,10 @@ check_pk_constraints <- function(dm) {
     table = table_names,
     kind = "PK",
     column = pks$pk_col,
-    ref_table = NA_character_
-  ) %>%
-    left_join(tbl_is_pk, by = "column")
+    ref_table = NA_character_,
+    is_key = tbl_is_pk$is_key,
+    problem = tbl_is_pk$problem
+  )
 }
 
 check_fk_constraints <- function(dm) {
