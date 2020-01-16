@@ -22,15 +22,14 @@ col_to_hex <- function(x) {
   }
 
   # from hex or name to rgb; "default" should remain "default"
-  map_if(x, x != "default", ~ col2rgb(..1)[, 1], .else = ~..1) %>%
-    # from rgb to hex
-    map_chr(function(x) if (x[1] != "default") rgb(x[1], x[2], x[3], maxColorValue = 255) else x)
+  is_not_default <- which(x != "default")
+  x[is_not_default] <- hex_from_rgb(col2rgb(x[is_not_default]))
 }
 
 hex_from_rgb <- function(col_rgb) {
-  rgb(col_rgb[1], col_rgb[2], col_rgb[3], maxColorValue = 255)
+  rgb(col_rgb[1, ], col_rgb[2, ], col_rgb[3, ], maxColorValue = 255)
 }
 
 calc_bodycol_rgb <- function(header_bgcol_rgb) {
-  as.integer(header_bgcol_rgb + (255 - header_bgcol_rgb) * 0.8)
+  header_bgcol_rgb + (255 - header_bgcol_rgb) * 0.8
 }
