@@ -381,6 +381,8 @@ dm_get_data_model_fks <- function(x) {
 #' These filter expressions are not intended for evaluation, only for
 #' information.
 #'
+#' @inheritParams dm
+#'
 #' @return A tibble with the following columns:
 #'   - `table`: table that was filtered,
 #'   - `filter`: the filter expression,
