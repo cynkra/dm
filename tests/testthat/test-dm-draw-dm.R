@@ -70,7 +70,7 @@ test_that("bad color", {
   expect_dm_error(
     dm_set_colors(
       dm_nycflights_small,
-      "mauve" = flights
+      "zzz-bogus" = flights
     ),
     class = "cols_not_avail"
   )
