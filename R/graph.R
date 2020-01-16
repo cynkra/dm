@@ -20,8 +20,8 @@ dm_is_referenced <- function(dm, table) {
 #'
 #' @inheritParams dm_is_referenced
 #'
-#' @return Character vector of the names of the tables that point to the primary
-#' key of `table`.
+#' @return A character vector of the names of the tables that point to the primary
+#'   key of `table`.
 #'
 #' @family functions utilizing foreign key relations
 #'

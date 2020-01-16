@@ -12,7 +12,7 @@ dm_get_referencing_tables(dm, table)
 \item{table}{A table in the \code{dm}.}
 }
 \value{
-Character vector of the names of the tables that point to the primary
+A character vector of the names of the tables that point to the primary
 key of \code{table}.
 }
 \description{

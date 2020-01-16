@@ -15,7 +15,7 @@ dm_enum_pk_candidates(dm, table)
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A table with columns_
+A tibble with columns:
 \itemize{
 \item \code{column} (column of \code{table}),
 \item \code{candidate} (boolean),
