@@ -10,11 +10,11 @@ dm_get_all_fks(dm)
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A tibble with columns:
+A tibble with the following columns:
 \itemize{
-\item "child_table": child table,
-\item "child_fk_col": foreign key column in child table,
-\item "parent_table": parent table.
+\item \code{child_table}: child table,
+\item \code{child_fk_col}: foreign key column in child table,
+\item \code{parent_table}: parent table.
 }
 }
 \description{

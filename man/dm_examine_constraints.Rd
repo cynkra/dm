@@ -10,8 +10,8 @@ dm_examine_constraints(dm)
 \item{dm}{A \code{dm} object.}
 }
 \value{
-A tibble with 5 columns:
-\enumerate{
+A tibble with the following columns:
+\itemize{
 \item \code{table}: the table in the \code{dm},
 \item \code{kind}: "PK" or "FK",
 \item \code{column}: a column of the table,

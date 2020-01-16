@@ -381,11 +381,10 @@ dm_get_data_model_fks <- function(x) {
 #' These filter expressions are not intended for evaluation, only for
 #' information.
 #'
-#' @return A tibble with columns:
-#'
-#' - "table": table that was filtered,
-#' - "filter": the filter expression,
-#' - "zoomed": logical, does the filter condition relate to the zoomed table.
+#' @return A tibble with the following columns:
+#'   - `table`: table that was filtered,
+#'   - `filter`: the filter expression,
+#'   - `zoomed`: logical, does the filter condition relate to the zoomed table.
 #'
 #' @export
 dm_get_filters <- function(x) {
