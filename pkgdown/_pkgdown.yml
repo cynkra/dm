@@ -95,7 +95,7 @@ reference:
   contents:
   - dm_examine_constraints
   - examine_key
-  - examine_if_subset
+  - check_subset
   - examine_set_equality
   - examine_cardinality
   - check_cardinality_0_n

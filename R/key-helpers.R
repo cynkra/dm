@@ -112,7 +112,7 @@ is_unique_key <- nse(function(.data, column) {
 
 #' Test if the value sets of two different columns in two different tables are the same
 #'
-#' @description `examine_set_equality()` is a wrapper of `examine_if_subset()`.
+#' @description `examine_set_equality()` is a wrapper of `check_subset()`.
 #' It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
 #' If not, it throws an error.
 #'
@@ -143,7 +143,7 @@ examine_set_equality <- function(t1, c1, t2, c2) {
 
   catcher_1 <- tryCatch(
     {
-      examine_if_subset(!!t1q, !!c1q, !!t2q, !!c2q)
+      check_subset(!!t1q, !!c1q, !!t2q, !!c2q)
       NULL
     },
     error = identity
@@ -151,7 +151,7 @@ examine_set_equality <- function(t1, c1, t2, c2) {
 
   catcher_2 <- tryCatch(
     {
-      examine_if_subset(!!t2q, !!c2q, !!t1q, !!c1q)
+      check_subset(!!t2q, !!c2q, !!t1q, !!c1q)
       NULL
     },
     error = identity
@@ -168,7 +168,7 @@ examine_set_equality <- function(t1, c1, t2, c2) {
 
 #' Test if the values of one column are a subset of the values of another column
 #'
-#' @description `examine_if_subset()` tests if the values of the chosen column `c1` of data frame `t1` are a subset of the values
+#' @description `check_subset()` tests if the values of the chosen column `c1` of data frame `t1` are a subset of the values
 #' of column `c2` of data frame `t2`.
 #'
 #' @param t1 The data frame that contains column `c1`.
@@ -184,11 +184,11 @@ examine_set_equality <- function(t1, c1, t2, c2) {
 #' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 #' # this is passing:
-#' examine_if_subset(data_1, a, data_2, a)
+#' check_subset(data_1, a, data_2, a)
 #'
 #' # this is failing:
-#' try(examine_if_subset(data_2, a, data_1, a))
-examine_if_subset <- function(t1, c1, t2, c2) {
+#' try(check_subset(data_2, a, data_1, a))
+check_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
@@ -200,7 +200,7 @@ examine_if_subset <- function(t1, c1, t2, c2) {
   }
 
   # Hier kann nicht t1 direkt verwendet werden, da das für den Aufruf
-  # examine_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
+  # check_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
   # Siehe eval-bang.R für ein Minimalbeispiel.
   v1 <- pull(eval_tidy(t1q), !!ensym(c1q))
@@ -212,7 +212,7 @@ examine_if_subset <- function(t1, c1, t2, c2) {
   abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q))
 }
 
-# similar to `examine_if_subset()`, but evaluates to a boolean
+# similar to `check_subset()`, but evaluates to a boolean
 is_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
@@ -221,7 +221,7 @@ is_subset <- function(t1, c1, t2, c2) {
   c2q <- ensym(c2)
 
   # Hier kann nicht t1 direkt verwendet werden, da das für den Aufruf
-  # examine_if_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
+  # check_subset(!!t1q, !!c1q, !!t2q, !!c2q) der Auswertung des Ausdrucks !!t1q
   # entsprechen würde; dies ist nicht erlaubt.
   # Siehe eval-bang.R für ein Minimalbeispiel.
   v1 <- pull(eval_tidy(t1q), !!ensym(c1q))

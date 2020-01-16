@@ -77,7 +77,7 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 
   examine_key(!!pt, !!pkc)
 
-  examine_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+  check_subset(!!ct, !!fkc, !!pt, !!pkc)
 
   invisible(parent_table)
 }
@@ -130,7 +130,7 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 
   examine_key(!!pt, !!pkc)
 
-  examine_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+  check_subset(!!ct, !!fkc, !!pt, !!pkc)
 
   tryCatch(
     {
@@ -152,7 +152,7 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
   fkc <- enexpr(fk_column)
 
   examine_key(!!pt, !!pkc)
-  examine_if_subset(!!ct, !!fkc, !!pt, !!pkc)
+  check_subset(!!ct, !!fkc, !!pt, !!pkc)
 
   min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
   max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)

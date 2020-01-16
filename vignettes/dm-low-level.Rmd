@@ -33,7 +33,7 @@ We will also describe functions that can be used for splitting and uniting table
 This section contains information and examples about the following functions: 
 
 1. `examine_key(.data, ...)`
-1. `examine_if_subset(t1, c1, t2, c2)`
+1. `check_subset(t1, c1, t2, c2)`
 1. `examine_set_equality(t1, c1, t2, c2)`
 
 When you have tables (data frames) that are connected by key relations, this package can help you to verify the assumed key relations and/or determine the existing key relations between the tables. 
@@ -58,25 +58,25 @@ For `data_2`, column `a` is a key:
 examine_key(data_2, a)
 ```
 
-To see if a column of one table contains only those values that are also present in another column of another table, the `examine_if_subset()` function can be used:
+To see if a column of one table contains only those values that are also present in another column of another table, the `check_subset()` function can be used:
 
 ```{r}
-examine_if_subset(data_1, a, data_2, a)
+check_subset(data_1, a, data_2, a)
 ```
 
 This function is important for determining if a column is a foreign key to some other table.
 What about the inverse relation?
 
 ```{r}
-examine_if_subset(data_2, a, data_1, a)
+check_subset(data_2, a, data_1, a)
 ```
 
-It should be kept in mind that `examine_if_subset()` does not test if column `c2` is a unique key of table `t2`.
+It should be kept in mind that `check_subset()` does not test if column `c2` is a unique key of table `t2`.
 In order to find out if a (child) table `t1` contains a column `c1` that is a foreign key to a (parent) table `t2` with the corresponding column `c2`, the following method should be used:
 
 ```{r, eval = FALSE}
 examine_key(t2, c2)
-examine_if_subset(t1, c1, t2, c2)
+check_subset(t1, c1, t2, c2)
 ```
 
 To check both directions at once, and to find out if the unique values of `c_1` in `t_1` are the same as those of `c_2` in `t_2`, {dm} provides the function `examine_set_equality()` (this would fail with a longer error message and is therefore not evaluated):

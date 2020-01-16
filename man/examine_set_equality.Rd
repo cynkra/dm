@@ -20,7 +20,7 @@ Returns \code{t1}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
-\code{examine_set_equality()} is a wrapper of \code{examine_if_subset()}.
+\code{examine_set_equality()} is a wrapper of \code{check_subset()}.
 It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
 If not, it throws an error.
 }
