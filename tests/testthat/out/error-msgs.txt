@@ -37,9 +37,6 @@ The given combination of columns (`wrong_fk_colname`, `and_one_more`) is not a f
 > error_txt_last_col_missing()
 [1] "The last color cannot be missing."
 
-> error_txt_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
-[1] "Available color names are only: \n`default` (border),\n`blue_nb` (no border),\n`orange_nb` (no border),\n`yellow_nb` (no border),\n`green_nb` (no border),\n`dark_blue_nb` (no border),\n`light_grey_nb` (no border),\n`grey_nb` (no border),\n`blue` (border),\n`orange` (border),\n`yellow` (border),\n`green` (border),\n`dark_blue` (border),\n`light_grey` (border),\n`grey` (border)"
-
 > error_txt_no_cycles()
 [1] "Cycles in the relationship graph not yet supported."
 
@@ -161,6 +158,15 @@ In `pull_tbl.zoomed_dm`: Table `blur` not zoomed, zoomed tables: `focus_1`, `foc
 
 > error_not_pulling_multiple_zoomed()
 [1] "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
+
+> error_cols_not_avail(c("pink5", "elephant"))
+The color(s) `pink5`, `elephant` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
+
+> error_only_named_args("give_names", "important")
+The `...` argument in function `give_names()` accepts only named arguments (the names are important).
+
+> error_wrong_syntax_set_cols()
+[1] "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
 
 > error_temp_table_requested(c("i_am_temporary", "i_am_permanent"),
 + "i_am_permanent")

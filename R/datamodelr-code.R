@@ -250,7 +250,6 @@ bdm_create_graph_list <- function(
     }
   }
 
-
   # remove hidden columns
   # data_model$columns <-
   #  data_model$columns[is.na(data_model$columns$display) | data_model$columns$display != "hide", ]
@@ -272,7 +271,6 @@ bdm_create_graph_list <- function(
       })
     }
   )
-
   g_labels <-
     sapply(names(tables), function(x) {
       dot_html_label(
@@ -385,6 +383,7 @@ html_tag <- function(x, tag, ident = 0, nl = TRUE, atrs = NULL, collapse = "") {
   space <- paste(rep("  ", ident), collapse = "")
   atrs <- paste(sprintf('%s="%s"', names(atrs), atrs), collapse = " ")
   if (nchar(atrs) > 0) atrs <- paste0(" ", atrs)
+
   htext <-
     if (nl) {
       sprintf("%s<%s%s>\n%s%s</%s>\n", space, tag, atrs, x, space, tag)
@@ -417,7 +416,7 @@ to_html_table <- function(x,
         # cells
         sapply(cols, function(col_name) {
           value <- x[r, col_name]
-          if (!is.null(trans)) value <- trans(col_name, x[r, ], value)
+          if (!is_null(trans)) value <- trans(col_name, x[r, ], value)
           html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
         })
       ))
@@ -428,26 +427,51 @@ to_html_table <- function(x,
 dot_html_label <- function(x, title, palette_id = "default", col_attr = c("column"),
                            columnArrows = FALSE) {
   cols <- c("ref", col_attr)
-  if (is.null(palette_id)) {
+  if (is.null(palette_id) || palette_id == "show") {
     palette_id <- "default"
   }
+  # currently we always have a border around the tables
+  border <- 1
+  # test if palette_id is valid: either datamodelr or hexcode (converted in `dm_set_colors()` from colorname)
+  if (palette_id == "default") {
+    col <- list(
+      line_color = "#555555",
+      header_bgcolor = "#EFEBDD",
+      header_font = "#000000",
+      bgcolor = "#FFFFFF"
+    )
+  } else {
+    header_bgcol_rgb <- col2rgb(palette_id)
+    bodycol_rgb <- calc_bodycol_rgb(header_bgcol_rgb)
+    bodycol <- hex_from_rgb(bodycol_rgb)
+    # if header background too dark, use white font color
+    header_font <- if (is_dark_color(header_bgcol_rgb)) "#FFFFFF" else "#000000"
+    line_color_rgb <- header_bgcol_rgb / 1.5
+    line_color <- hex_from_rgb(line_color_rgb)
 
-  border <- ifelse(is.null(bdm_color(palette_id, "line_color")), 0, 1)
+    col <- list(
+      line_color = line_color,
+      header_bgcolor = palette_id,
+      header_font = header_font,
+      bgcolor = bodycol
+    )
+  }
 
   attr_table <- list(
     ALIGN = "LEFT", BORDER = border, CELLBORDER = 0, CELLSPACING = 0
   )
-  if (!is.null(bdm_color(palette_id, "line_color"))) {
-    attr_table[["COLOR"]] <- bdm_color(palette_id, "line_color")
+  # border color
+  if (border) {
+    attr_table[["COLOR"]] <- col[["line_color"]]
   }
   attr_header <- list(
-    COLSPAN = length(cols) - columnArrows, BGCOLOR = bdm_color(palette_id, "header_bgcolor"), BORDER = 0
+    COLSPAN = length(cols) - columnArrows, BGCOLOR = col[["header_bgcolor"]], BORDER = 0
   )
   attr_font <- list()
-  attr_font <- list(COLOR = bdm_color(palette_id, "header_font"))
+  attr_font <- list(COLOR = col[["header_font"]])
 
   attr_td <- function(col_name, row_values, value) {
-    ret <- list(ALIGN = "LEFT", BGCOLOR = bdm_color(palette_id, "bgcolor"))
+    ret <- list(ALIGN = "LEFT", BGCOLOR = col[["bgcolor"]])
     if (col_name == "column" && columnArrows) {
       key <- row_values[["key"]]
       reference <- row_values[["ref"]]
@@ -486,116 +510,6 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   )
 
   ret <- sprintf("<%s>", trimws(ret))
+
   ret
 }
-
-bdm_set_color_scheme <- function(color_scheme) {
-  options(datamodelr.scheme = color_scheme)
-}
-
-bdm_get_color_scheme <- function() {
-  getOption("datamodelr.scheme")
-}
-
-bdm_palette <- function(line_color = NULL, header_bgcolor, header_font, bgcolor) {
-  list(
-    line_color = line_color,
-    header_bgcolor = header_bgcolor,
-    header_font = header_font,
-    bgcolor = bgcolor
-  )
-}
-
-bdm_color <- function(palette_id, what) {
-  color_scheme <- bdm_get_color_scheme()
-  if (is.null(color_scheme[[palette_id]])) {
-    palette_id <- "default"
-  }
-  color_scheme[[palette_id]][[what]]
-}
-
-bdm_color_scheme <- list(
-  default = bdm_palette(
-    line_color = "#555555",
-    header_bgcolor = "#EFEBDD",
-    header_font = "#000000",
-    bgcolor = "#FFFFFF"
-  ),
-  accent1nb = bdm_palette(
-    header_bgcolor = "#5B9BD5",
-    header_font = "#FFFFFF",
-    bgcolor = "#D6E1F1"
-  ),
-  accent2nb = bdm_palette(
-    header_bgcolor = "#ED7D31",
-    header_font = "#FFFFFF",
-    bgcolor = "#F9DBD2"
-  ),
-  accent3nb = bdm_palette(
-    header_bgcolor = "#FFC000",
-    header_font = "#FFFFFF",
-    bgcolor = "#FFEAD0"
-  ),
-  accent4nb = bdm_palette(
-    header_bgcolor = "#70AD47",
-    header_font = "#FFFFFF",
-    bgcolor = "#D9E6D4"
-  ),
-  accent5nb = bdm_palette(
-    header_bgcolor = "#4472C4",
-    header_font = "#FFFFFF",
-    bgcolor = "#D4D9EC"
-  ),
-  accent6nb = bdm_palette(
-    header_bgcolor = "#A5A5A5",
-    header_font = "#FFFFFF",
-    bgcolor = "#E4E4E4"
-  ),
-  accent7nb = bdm_palette(
-    header_bgcolor = "#787878",
-    header_font = "#FFFFFF",
-    bgcolor = "#D8D8D8"
-  ),
-  accent1 = bdm_palette(
-    line_color = "#41719C",
-    header_bgcolor = "#5B9BD5",
-    header_font = "#FFFFFF",
-    bgcolor = "#D6E1F1"
-  ),
-  accent2 = bdm_palette(
-    line_color = "#AE5A21",
-    header_bgcolor = "#ED7D31",
-    header_font = "#FFFFFF",
-    bgcolor = "#F9DBD2"
-  ),
-  accent3 = bdm_palette(
-    line_color = "#BC8C00",
-    header_bgcolor = "#FFC000",
-    header_font = "#FFFFFF",
-    bgcolor = "#FFEAD0"
-  ),
-  accent4 = bdm_palette(
-    line_color = "#507E32",
-    header_bgcolor = "#70AD47",
-    header_font = "#FFFFFF",
-    bgcolor = "#D9E6D4"
-  ),
-  accent5 = bdm_palette(
-    line_color = "#2F528F",
-    header_bgcolor = "#4472C4",
-    header_font = "#FFFFFF",
-    bgcolor = "#D4D9EC"
-  ),
-  accent6 = bdm_palette(
-    line_color = "#787878",
-    header_bgcolor = "#A5A5A5",
-    header_font = "#FFFFFF",
-    bgcolor = "#E4E4E4"
-  ),
-  accent7 = bdm_palette(
-    line_color = "#000000",
-    header_bgcolor = "#787878",
-    header_font = "#FFFFFF",
-    bgcolor = "#D8D8D8"
-  )
-)

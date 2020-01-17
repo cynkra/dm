@@ -36,8 +36,11 @@ test_that("cdm_disambiguate_cols() works as intended", {
 test_that("cdm_get_colors() behaves as intended", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equal(
-    cdm_get_colors(dm_nycflights13()),
-    dm_get_colors(dm_nycflights13())
+    cdm_get_colors(cdm_nycflights13()),
+    set_names(
+      c("#ED7D31", "#ED7D31", "#5B9BD5", "#ED7D31", "#70AD47"),
+      c("airlines", "airports", "flights", "planes", "weather")
+    )
   )
 })
 

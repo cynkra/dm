@@ -9,11 +9,12 @@ utils::globalVariables(c(
   "airlines",
   "airports",
   "carrier",
+  "distance",
+  "faa",
   "flights",
   "planes",
   "tailnum",
-  "distance",
-  "faa",
+  "weather",
 
   # dm
   "arrange_col",
@@ -21,6 +22,7 @@ utils::globalVariables(c(
   "child_fk_col",
   "child_table",
   "colname",
+  "color",
   "cols",
   "column",
   "dest",

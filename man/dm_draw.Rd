@@ -50,11 +50,9 @@ It defines the level of details for rendering tables
 
 \item{graph_name}{The name of the graph.}
 
-\item{...}{Colors to set in the form \code{table = "<color>"} .
-Fall-through syntax similarly to
-\code{\link[=switch]{switch()}} is supported: \verb{table1 = , table2 = "<color>"} sets the color for both \code{table1}
-and \code{table2} .
-This argument supports splicing.}
+\item{...}{Colors to set in the form \code{color = table}.
+Allowed colors are all hex coded colors (quoted) and the color names from \code{dm_get_available_colors()}.
+\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 }
 \value{
 For \code{dm_draw()}: returns an object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,
@@ -64,18 +62,22 @@ For \code{dm_set_colors()}: the updated data model.
 
 For \code{dm_get_colors()}, a two-column tibble with one row per table.
 
-For \code{dm_get_available_colors()}, a tibble with the color in the first
-column and auxiliary information in other columns.
+For \code{dm_get_available_colors()}, a vector with the available colors.
 }
 \description{
 \code{dm_draw()} uses \pkg{DiagrammeR} to draw diagrams.
 
 \code{dm_set_colors()} allows to define the colors that will be used to display the tables of the data model.
+The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+An overview of the colors corresponding to the standard color names can be found at
+the bottom of
+\url{http://rpubs.com/krlmlr/colors}.
 
 \code{dm_get_colors()} returns the colors defined for a data model.
 
-\code{dm_get_available_colors()} returns an overview of the available colors and their names
-as a tibble.
+\code{dm_get_available_colors()} returns an overview of the names of the available colors
+These are the standard colors also returned by \code{grDevices::colors()} plus a default
+table color with the name "default".
 }
 \examples{
 library(dplyr)
@@ -83,21 +85,19 @@ dm_draw(dm_nycflights13())
 dm_draw(dm_nycflights13(cycle = TRUE))
 dm_get_available_colors()
 dm_get_colors(dm_nycflights13())
+
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
-    airports = ,
-    airlines = ,
-    planes = "yellow",
-    weather = "dark_blue"
+    darkblue = starts_with("air"),
+    "#5986C4" = flights
   ) \%>\%
   dm_draw()
 
 # Splicing is supported:
-new_colors <- c(
-  airports = "yellow", airlines = "yellow", planes = "yellow",
-  weather = "dark_blue"
-)
+nyc_cols <- dm_get_colors(dm_nycflights13())
+nyc_cols
+
 dm_nycflights13(color = FALSE) \%>\%
-  dm_set_colors(!!!new_colors) \%>\%
+  dm_set_colors(!!!nyc_cols) \%>\%
   dm_draw()
 }

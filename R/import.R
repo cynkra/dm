@@ -10,4 +10,5 @@
 #' @importFrom igraph V E
 #' @importFrom utils head str packageVersion
 #' @import lifecycle
+#' @importFrom grDevices col2rgb colors rgb
 NULL

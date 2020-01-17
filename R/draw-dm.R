@@ -42,9 +42,6 @@ dm_draw <- function(dm,
     message("The dm cannot be drawn because it is empty.")
     return(invisible(NULL))
   }
-  # FIXME: here the color scheme is set with an options(...)-call;
-  # should have some schemes available for the user to choose from
-  if (is_null(getOption("datamodelr.scheme"))) bdm_set_color_scheme(bdm_color_scheme)
 
   data_model <- dm_get_data_model(dm)
 
@@ -114,39 +111,62 @@ dm_get_all_columns <- function(x) {
     unnest(value)
 }
 
-#' dm_set_colors()
+#' `dm_set_colors()`
 #'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
+#' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+#' An overview of the colors corresponding to the standard color names can be found at
+#' the bottom of
+#' [http://rpubs.com/krlmlr/colors](http://rpubs.com/krlmlr/colors).
 #'
-#' @param ... Colors to set in the form `table = "<color>"` .
-#'   Fall-through syntax similarly to
-#'   [switch()] is supported: `table1 = , table2 = "<color>"` sets the color for both `table1`
-#'   and `table2` .
-#'   This argument supports splicing.
+#' @param ... Colors to set in the form `color = table`.
+#' Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
+#' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @rdname dm_draw
 #' @examples
+#'
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
-#'     airports = ,
-#'     airlines = ,
-#'     planes = "yellow",
-#'     weather = "dark_blue"
+#'     darkblue = starts_with("air"),
+#'     "#5986C4" = flights
 #'   ) %>%
 #'   dm_draw()
 #'
 #' # Splicing is supported:
-#' new_colors <- c(
-#'   airports = "yellow", airlines = "yellow", planes = "yellow",
-#'   weather = "dark_blue"
-#' )
+#' nyc_cols <- dm_get_colors(dm_nycflights13())
+#' nyc_cols
+#'
 #' dm_nycflights13(color = FALSE) %>%
-#'   dm_set_colors(!!!new_colors) %>%
+#'   dm_set_colors(!!!nyc_cols) %>%
 #'   dm_draw()
 #' @export
 dm_set_colors <- function(dm, ...) {
-  display_df <- color_quos_to_display(...)
+  quos <- enquos(...)
+  if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
+  cols <- names(quos)
+  if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
+    all(cols %in% src_tbls(dm))) {
+    abort_wrong_syntax_set_cols()
+  }
+
+  # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
+  avail_tables <- set_names(src_tbls(dm))
+  # get table names for each color (name_spec argument is not needed)
+  selected_tables <- map(
+    quos,
+    function(quos_sel) unname(avail_tables[tidyselect::eval_select(quos_sel, avail_tables)])
+  )
+
+  display_df <-
+    selected_tables %>%
+    enframe(name = "new_display", value = "table") %>%
+    unnest(cols = table) %>%
+    # convert color names to hex color codes (if already hex code this is a no-op)
+    mutate(new_display = col_to_hex(new_display)) %>%
+    # needs to be done like this, cause `distinct()` would keep the first one
+    filter(!duplicated(table, fromLast = TRUE))
 
   def <-
     dm_get_def(dm) %>%
@@ -159,22 +179,15 @@ dm_set_colors <- function(dm, ...) {
 
 color_quos_to_display <- function(...) {
   quos <- enquos(..., .named = TRUE, .ignore_empty = "none", .homonyms = "error")
-
   missing <- map_lgl(quos, quo_is_missing)
   if (has_length(missing) && missing[[length(missing)]]) {
     abort_last_col_missing()
   }
-
   avail <- !missing
   idx <- rev(cumsum(rev(avail)))
   values <- map_chr(quos[avail], eval_tidy)
 
-  if (!all(values %in% colors$dm)) {
-    abort_wrong_color(paste0("`", colors$dm, "` ", colors$nb))
-  }
-  new_values <- rev(colors$datamodelr[match(values, colors$dm)])
-
-  tibble(table = names(quos), new_display = new_values[idx])
+  set_names(names(quos), rev(values)[idx])
 }
 
 #' dm_get_colors()
@@ -188,41 +201,20 @@ color_quos_to_display <- function(...) {
 dm_get_colors <- nse(function(dm) {
   dm_get_def(dm) %>%
     select(table, display) %>%
-    as_tibble() %>%
-    mutate(color = colors$dm[match(display, colors$datamodelr)]) %>%
-    select(-display)
+    select(display, table) %>%
+    deframe()
 })
 
 #' dm_get_available_colors()
 #'
-#' `dm_get_available_colors()` returns an overview of the available colors and their names
-#' as a tibble.
-
+#' `dm_get_available_colors()` returns an overview of the names of the available colors
+#' These are the standard colors also returned by `grDevices::colors()` plus a default
+#' table color with the name "default".
 #'
-#' @return For `dm_get_available_colors()`, a tibble with the color in the first
-#'   column and auxiliary information in other columns.
+#' @return For `dm_get_available_colors()`, a vector with the available colors.
 #'
 #' @rdname dm_draw
 #' @export
 dm_get_available_colors <- function() {
-  colors
+  c("default", colors())
 }
-
-colors <- tibble::tribble(
-  ~dm, ~datamodelr, ~nb,
-  "default", "default", "(border)",
-  "blue_nb", "accent1nb", "(no border)",
-  "orange_nb", "accent2nb", "(no border)",
-  "yellow_nb", "accent3nb", "(no border)",
-  "green_nb", "accent4nb", "(no border)",
-  "dark_blue_nb", "accent5nb", "(no border)",
-  "light_grey_nb", "accent6nb", "(no border)",
-  "grey_nb", "accent7nb", "(no border)",
-  "blue", "accent1", "(border)",
-  "orange", "accent2", "(border)",
-  "yellow", "accent3", "(border)",
-  "green", "accent4", "(border)",
-  "dark_blue", "accent5", "(border)",
-  "light_grey", "accent6", "(border)",
-  "grey", "accent7", "(border)"
-)

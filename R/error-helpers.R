@@ -155,18 +155,6 @@ error_txt_last_col_missing <- function() {
   "The last color cannot be missing."
 }
 
-abort_wrong_color <- function(avail_color_names) {
-  abort(error_txt_wrong_color(avail_color_names), .subclass = dm_error_full("wrong_color"))
-}
-
-error_txt_wrong_color <- function(avail_color_names) {
-  paste0(
-    "Available color names are only: \n",
-    paste0(avail_color_names, collapse = ",\n")
-  )
-}
-
-
 # errors in graph-functions -----------------------------------------------
 
 abort_no_cycles <- function() {
@@ -596,6 +584,36 @@ abort_not_pulling_multiple_zoomed <- function() {
 
 error_not_pulling_multiple_zoomed <- function() {
   "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.zoomed_dm()`."
+}
+
+abort_cols_not_avail <- function(wrong_col) {
+  abort(error_cols_not_avail(wrong_col), .subclass = dm_error_full("cols_not_avail"))
+}
+
+error_cols_not_avail <- function(wrong_col) {
+  glue(
+    "The color(s) {commas(tick(wrong_col))} are not ",
+    "available. Call `dm_get_available_colors()` for possible color names or use hex color codes."
+  )
+}
+
+abort_only_named_args <- function(fun_name, name_meaning) {
+  abort(error_only_named_args(fun_name, name_meaning), .subclass = dm_error_full("only_named_args"))
+}
+
+error_only_named_args <- function(fun_name, name_meaning) {
+  glue(
+    "The `...` argument in function {tick(paste0(fun_name, '()'))} accepts only ",
+    "named arguments (the names are {name_meaning})."
+  )
+}
+
+abort_wrong_syntax_set_cols <- function() {
+  abort(error_wrong_syntax_set_cols(), .subclass = dm_error_full("wrong_syntax_set_cols"))
+}
+
+error_wrong_syntax_set_cols <- function() {
+  "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
 }
 
 abort_temp_table_requested <- function(table_names, tbls_in_dm) {

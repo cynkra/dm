@@ -86,12 +86,19 @@ cdm_draw <- new_cdm_forward(dm_draw)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_set_colors <- new_cdm_forward(dm_set_colors)
+cdm_set_colors <- function(dm, ...) {
+  deprecate_soft("0.1.0", "dm::cdm_set_colors()", "dm::dm_set_colors()")
+  display <- color_quos_to_display(...)
+  dm_set_colors(dm, !!!display)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_colors <- new_cdm_forward(dm_get_colors)
+cdm_get_colors <- nse(function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_get_colors()", "dm::dm_get_colors()")
+  prep_recode(dm_get_colors(dm))
+})
 
 #' @rdname deprecated
 #' @keywords internal
