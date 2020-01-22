@@ -261,7 +261,9 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)
 
-  enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk)
+  enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 })
 
 #' @details `enum_fk_candidates()` works like `dm_enum_fk_candidates()` with the zoomed table as `table`.
@@ -280,7 +282,9 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
   ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
-  enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk)
+  enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 }
 
 enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) {

@@ -166,7 +166,9 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     ~column, ~candidate, ~why,
     "a", TRUE, "",
     "b", FALSE, "<reason>"
-  )
+  ) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 
   map(
     dm_test_obj_src,
@@ -183,11 +185,13 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   tbl_t3_t4 <- tibble::tribble(
     ~column, ~candidate, ~why,
     "c", FALSE, "<reason>"
-  )
+  ) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 
   map(
     dm_test_obj_2_src,
-    ~ expect_equivalent(
+    ~ expect_identical(
       dm_add_pk(.x, dm_table_4, c) %>%
         dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
         mutate(why = if_else(why != "", "<reason>", "")),
@@ -198,7 +202,9 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   tbl_t4_t3 <- tibble::tribble(
     ~column, ~candidate, ~why,
     "c", TRUE, ""
-  )
+  ) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 
   map(
     dm_test_obj_src,
@@ -231,7 +237,10 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     "sched_dep_time", FALSE, "<reason>",
     "time_hour",      FALSE, "<reason>",
     "year",           FALSE, "<reason>"
-  )
+  ) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
+
 
   expect_identical(
     dm_enum_fk_candidates(dm_nycflights13(), flights, airports) %>%
