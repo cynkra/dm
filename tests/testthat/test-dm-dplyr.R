@@ -421,7 +421,7 @@ test_that("key tracking works", {
     zoomed_grouped_out_dm %>%
       rename(e_new = e) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks() %>%
+      dm_get_all_fks_impl() %>%
       filter(child_table == "t2", parent_table == "t3") %>%
       pull(child_fk_col),
     "e_new"
@@ -432,9 +432,9 @@ test_that("key tracking works", {
     zoomed_grouped_in_dm %>%
       rename(f_new = f) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks(),
+      dm_get_all_fks_impl(),
     dm_for_filter %>%
-      dm_get_all_fks()
+      dm_get_all_fks_impl()
   )
 
   # summarize()
