@@ -140,7 +140,8 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @export
 dm_get_all_pks <- nse(function(dm) {
   check_not_zoomed(dm)
-  dm_get_all_pks_impl(dm)
+  dm_get_all_pks_impl(dm) %>%
+    mutate(pk_col = new_keys(pk_col))
 })
 
 dm_get_all_pks_impl <- function(dm) {
