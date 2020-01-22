@@ -275,7 +275,16 @@ cdm_rm_pk <- new_cdm_forward_2(dm_rm_pk)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_enum_pk_candidates <- new_cdm_forward_2(dm_enum_pk_candidates)
+cdm_enum_pk_candidates <- function(dm, table) {
+  deprecate_soft("0.1.0", "dm::cdm_enum_pk_candidates()", "dm::dm_enum_pk_candidates()")
+  check_no_filter(dm)
+
+  table_name <- as_name(ensym(table))
+  check_correct_input(dm, table_name)
+
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  enum_pk_candidates_impl(table)
+}
 
 #' @rdname deprecated
 #' @keywords internal
