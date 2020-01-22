@@ -113,7 +113,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   order_df <-
     tibble(
       name = names(dfs[["order"]]),
-      pred = names(V(g))[ unclass(dfs[["father"]])[name] ]
+      pred = names(V(g))[unclass(dfs[["father"]])[name]]
     )
 
   # function to detect any reason for abort()

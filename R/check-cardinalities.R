@@ -154,15 +154,23 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
   ct <- enquo(child_table)
   fkc <- enexpr(fk_column)
 
-  if (!is_unique_key(eval_tidy(pt), !!pkc)$unique) return(
-    glue("Cannot examine cardinality: Column(s) {tick(commas(as_string(pkc)))} not ",
-         "a unique key of {tick('parent_table')}.")
-  )
+  if (!is_unique_key(eval_tidy(pt), !!pkc)$unique) {
+    return(
+      glue(
+        "Cannot examine cardinality: Column(s) {tick(commas(as_string(pkc)))} not ",
+        "a unique key of {tick('parent_table')}."
+      )
+    )
+  }
 
-  if (!is_subset(!!ct, !!fkc, !!pt, !!pkc)) return(
-    glue("Cannot examine cardinality: Column(s) {tick(commas(as_string(fkc)))} of {tick('child_table')} not ",
-         "a subset of column(s) {tick(commas(as_string(pkc)))} of {tick('parent_table')}.")
-  )
+  if (!is_subset(!!ct, !!fkc, !!pt, !!pkc)) {
+    return(
+      glue(
+        "Cannot examine cardinality: Column(s) {tick(commas(as_string(fkc)))} of {tick('child_table')} not ",
+        "a subset of column(s) {tick(commas(as_string(pkc)))} of {tick('parent_table')}."
+      )
+    )
+  }
 
   min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
   max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
