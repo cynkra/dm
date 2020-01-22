@@ -17,7 +17,9 @@ dm_get_fk(dm, table, ref_table)
 A character vector with the column name(s) of \code{table}, pointing to the primary key of \code{ref_table}.
 }
 \description{
-Retrieve the name of the column marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.
+\code{dm_get_fk()} returns the name of the
+column marked as foreign key of table \code{table} with respect to table \code{ref_table} within a \code{\link{dm}} object.
+If no foreign key is set between the tables, an empty character vector is returned.
 }
 \examples{
 dm_get_fk(dm_nycflights13(), flights, airports)

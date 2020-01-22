@@ -90,6 +90,10 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 
 #' Retrieve the name of the column marked as a foreign key, pointing from one table of a [`dm`] to another table.
 #'
+#' @description `dm_get_fk()` returns the name of the
+#' column marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
+#' If no foreign key is set between the tables, an empty character vector is returned.
+#'
 #' @inheritParams dm_has_fk
 #' @param ref_table The table that is referenced from `table`.
 #'
