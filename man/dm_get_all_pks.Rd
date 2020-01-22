@@ -19,6 +19,9 @@ A tibble with the following columns:
 \description{
 \code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and
 returns the tables, the respective primary key columns and their classes.
+
+FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+therefore the result of this function will slightly change.
 }
 \seealso{
 Other primary key functions: 

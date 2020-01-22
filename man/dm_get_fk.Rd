@@ -20,6 +20,9 @@ A character vector with the column name(s) of \code{table}, pointing to the prim
 \code{dm_get_fk()} returns the name of the
 column marked as foreign key of table \code{table} with respect to table \code{ref_table} within a \code{\link{dm}} object.
 If no foreign key is set between the tables, an empty character vector is returned.
+
+FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+therefore the result of this function will slightly change.
 }
 \examples{
 dm_get_fk(dm_nycflights13(), flights, airports)

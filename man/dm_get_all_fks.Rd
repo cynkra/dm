@@ -19,6 +19,9 @@ A tibble with the following columns:
 }
 \description{
 Get a summary of all foreign key relations in a \code{\link{dm}}
+
+FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+therefore the result of this function will slightly change.
 }
 \examples{
 dm_get_all_fks(dm_nycflights13())

@@ -8,6 +8,9 @@
 #' If `force == TRUE`, the function will replace an already
 #' set key.
 #'
+#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+#' therefore the syntax for this function will slightly change.
+#'
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
 #' @param column A column of that table.
@@ -97,6 +100,9 @@ dm_has_pk <- function(dm, table) {
 #' If no primary key is
 #' set for the table, an empty character vector is returned.
 #'
+#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+#' therefore the result for this function can include several columns.
+#'
 #' @family primary key functions
 #'
 #' @return A character vector with the column name(s) of the primary key of `table`.
@@ -126,6 +132,9 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'
 #' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
+#'
+#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+#' therefore the result of this function will slightly change.
 #'
 #' @family primary key functions
 #'

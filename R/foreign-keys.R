@@ -5,6 +5,9 @@
 #' If `check == TRUE`, then it will first check if the values in column `column` are a subset
 #' of the values of the primary key in table `ref_table`.
 #'
+#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+#' therefore the syntax of this function will slightly change.
+#'
 #' @inheritParams dm_add_pk
 #' @param column The column of `table` which is to become the foreign key column and
 #'   reference the primary key of `ref_table`.
@@ -94,6 +97,9 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #' column marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
 #' If no foreign key is set between the tables, an empty character vector is returned.
 #'
+#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+#' therefore the result of this function will slightly change.
+#'
 #' @inheritParams dm_has_fk
 #' @param ref_table The table that is referenced from `table`.
 #'
@@ -123,6 +129,9 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' Retrieve all foreign key constraints in a [`dm`]
 #'
 #' @description Get a summary of all foreign key relations in a [`dm`]
+#'
+#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+#' therefore the result of this function will slightly change.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -154,6 +163,8 @@ dm_get_all_fks_impl <- function(dm) {
 #'
 #' @description This function can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
 #' All arguments may be provided quoted or unquoted.
+#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+#' therefore the syntax of this function will slightly change.
 #'
 #' @inheritParams dm_add_fk
 #' @param column The column of `table` that should no longer be referencing the primary key of `ref_table`.

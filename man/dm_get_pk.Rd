@@ -19,6 +19,9 @@ A character vector with the column name(s) of the primary key of \code{table}.
 column marked as primary key of a table of a \code{\link{dm}} object.
 If no primary key is
 set for the table, an empty character vector is returned.
+
+FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+therefore the result for this function can include several columns.
 }
 \examples{
 library(dplyr)

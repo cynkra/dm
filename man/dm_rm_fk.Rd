@@ -22,6 +22,8 @@ An updated \code{dm} without the given foreign key relation.
 \description{
 This function can remove either one reference between two tables, or all references at once, if argument \code{column = NULL}.
 All arguments may be provided quoted or unquoted.
+FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+therefore the syntax of this function will slightly change.
 }
 \examples{
 dm_rm_fk(

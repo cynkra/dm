@@ -28,6 +28,9 @@ If \code{check == TRUE}, then it will first check if
 the given column is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
 set key.
+
+FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+therefore the syntax for this function will slightly change.
 }
 \examples{
 library(dplyr)

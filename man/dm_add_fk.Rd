@@ -28,6 +28,9 @@ An updated \code{dm} with an additional foreign key relation.
 respect to the primary key of table \code{ref_table}.
 If \code{check == TRUE}, then it will first check if the values in column \code{column} are a subset
 of the values of the primary key in table \code{ref_table}.
+
+FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+therefore the syntax of this function will slightly change.
 }
 \examples{
 library(dplyr)
