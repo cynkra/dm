@@ -30,7 +30,7 @@ dm_examine_constraints <- function(dm) {
     fk_results
   ) %>%
     rename(columns = column)
-    mutate(columns = as.list(column)) %>%
+  mutate(columns = as.list(column)) %>%
     arrange(is_key, desc(kind), table, column)
 }
 
