@@ -47,7 +47,7 @@ get_table_colnames <- function(dm, tables = NULL) {
     unnest(column)
 
   pks <-
-    dm_get_all_pks(dm) %>%
+    dm_get_all_pks_impl(dm) %>%
     rename(column = pk_col)
 
   table_colnames %>%
