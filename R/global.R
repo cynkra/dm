@@ -25,6 +25,7 @@ utils::globalVariables(c(
   "color",
   "cols",
   "column",
+  "columns",
   "dest",
   "df",
   "display",
