@@ -39,12 +39,14 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
     code <- glue_collapse(c(code, code_select), sep = " %>%\n")
   }
   # adding code for establishing PKs
-  tbl_pks <- dm_get_all_pks(dm) %>%
+  # FIXME: this will fail with compound keys
+  tbl_pks <- dm_get_all_pks_impl(dm) %>%
     mutate(code = glue("{tab}dm_add_pk({table}, {pk_col})"))
   code_pks <- if (nrow(tbl_pks)) summarize(tbl_pks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
   # adding code for establishing FKs
-  tbl_fks <- dm_get_all_fks(dm) %>%
+  # FIXME: this will fail with compound keys
+  tbl_fks <- dm_get_all_fks_impl(dm) %>%
     mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_col}, {parent_table})"))
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
