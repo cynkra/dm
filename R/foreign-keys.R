@@ -131,7 +131,8 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @export
 dm_get_all_fks <- nse(function(dm) {
   check_not_zoomed(dm)
-  dm_get_all_fks_impl(dm)
+  dm_get_all_fks_impl(dm) %>%
+    mutate(child_fk_col = new_keys(child_fk_col))
 })
 
 dm_get_all_fks_impl <- function(dm) {

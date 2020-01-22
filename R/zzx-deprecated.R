@@ -207,7 +207,7 @@ cdm_get_fk <- new_cdm_forward_2(dm_get_fk)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_all_fks <- new_cdm_forward(dm_get_all_fks)
+cdm_get_all_fks <- new_cdm_forward(dm_get_all_fks_impl, old_fwd_name = "cdm_get_all_fks", new_name = "dm_get_all_fks")
 
 #' @rdname deprecated
 #' @keywords internal
