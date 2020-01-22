@@ -237,7 +237,10 @@ cdm_learn_from_db <- new_cdm_forward(dm_learn_from_db)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_check_constraints <- new_cdm_forward(dm_examine_constraints_impl, old_fwd_name = "cdm_check_constraints")
+cdm_check_constraints <- new_cdm_forward(
+  dm_examine_constraints_impl,
+  old_fwd_name = "cdm_check_constraints",
+  new_name = "dm_examine_constraints")
 
 #' @rdname deprecated
 #' @keywords internal
