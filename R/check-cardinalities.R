@@ -40,7 +40,10 @@
 #' between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 #' there are no duplicates in either of them.
 #'
-#' Finally, `examine_cardinality()` tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these) between the two given columns.
+#' Finally, `examine_cardinality()` tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these)
+#' between the two given columns. If either `pk_column` is not a unique key of `parent_table` or the values of `fk_column` are
+#' not a subset of the values in `pk_column`, the requirements for a cardinality test is not fulfilled. No error will be thrown, but
+#' the result will contain the information which prerequisite was violated.
 #' @param parent_table Data frame.
 #' @param pk_column Column of `parent_table` that has to be one of its unique keys.
 #' @param child_table Data frame.

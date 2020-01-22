@@ -77,7 +77,10 @@ This means that there is a "bijective" ("injective" AND "surjective") mapping
 between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and
 there are no duplicates in either of them.
 
-Finally, \code{examine_cardinality()} tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these) between the two given columns.
+Finally, \code{examine_cardinality()} tests for and returns the nature of the relationship (injective, surjective, bijective, or none of these)
+between the two given columns. If either \code{pk_column} is not a unique key of \code{parent_table} or the values of \code{fk_column} are
+not a subset of the values in \code{pk_column}, the requirements for a cardinality test is not fulfilled. No error will be thrown, but
+the result will contain the information which prerequisite was violated.
 }
 \examples{
 d1 <- tibble::tibble(a = 1:5)
