@@ -241,7 +241,7 @@ test_that("cdm_examine_constraints() works", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_check_constraints(bad_dm),
-    dm_examine_constraints(bad_dm)
+    dm_examine_constraints_impl(bad_dm)
   )
 })
 

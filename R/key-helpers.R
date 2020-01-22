@@ -22,6 +22,12 @@
 #' @examples
 #' dm_examine_constraints(dm_nycflights13())
 dm_examine_constraints <- function(dm) {
+  dm_examine_constraints_impl(dm) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
+}
+
+dm_examine_constraints_impl <- function(dm) {
   check_not_zoomed(dm)
   pk_results <- check_pk_constraints(dm)
   fk_results <- check_fk_constraints(dm)
@@ -29,11 +35,8 @@ dm_examine_constraints <- function(dm) {
     pk_results,
     fk_results
   ) %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns)) %>%
     arrange(is_key, desc(kind), table)
 }
-
 
 #' Test if a column (combination) is unique key of a table
 #'
