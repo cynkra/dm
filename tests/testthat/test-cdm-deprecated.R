@@ -292,7 +292,9 @@ test_that("other PK functions work", {
   )
 
   expect_identical(
-    cdm_enum_pk_candidates(dm_for_disambiguate, iris_1),
+    cdm_enum_pk_candidates(dm_for_disambiguate, iris_1) %>%
+      rename(columns = column) %>%
+      mutate(columns = new_keys(columns)),
     dm_enum_pk_candidates(dm_for_disambiguate, iris_1)
   )
 })

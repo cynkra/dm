@@ -154,8 +154,12 @@ test_that("dm_get_pk() works as intended?", {
 })
 
 test_that("dm_enum_pk_candidates() works properly?", {
-  candidates_table_1 <- tibble(column = c("a", "b"), candidate = c(TRUE, TRUE), why = c("", ""))
-  candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE), why = "has duplicate values: 5")
+  candidates_table_1 <- tibble(column = c("a", "b"), candidate = c(TRUE, TRUE), why = c("", "")) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
+  candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE), why = "has duplicate values: 5") %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 
   iwalk(
     dm_test_obj_src,
