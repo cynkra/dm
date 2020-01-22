@@ -40,11 +40,11 @@ build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
     dest_con <- con_from_src_or_con(dest)
 
     pks <-
-      dm_get_all_pks(dm) %>%
+      dm_get_all_pks_impl(dm) %>%
       transmute(source_name = table, column = pk_col, pk = TRUE)
 
     fks <-
-      dm_get_all_fks(dm) %>%
+      dm_get_all_fks_impl(dm) %>%
       transmute(source_name = child_table, column = child_fk_col, fk = TRUE)
 
     # Need to supply NOT NULL modifiers for primary keys
