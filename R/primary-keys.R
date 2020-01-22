@@ -218,19 +218,10 @@ enum_pk_candidates <- nse(function(table) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
-  map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
-    enframe("column") %>%
-    # Workaround: Can't call bind_rows() here with dplyr < 0.9.0
-    # Can't call unnest() either for an unknown reason
-    mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
-    select(-value) %>%
-    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none")))) %>%
-    select(-data) %>%
-    mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
-    select(-values) %>%
-    arrange(desc(candidate), column)
+  enum_pk_candidates_impl(table) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 })
-
 
 #' @description `dm_enum_pk_candidates()` performs these checks
 #' for a table in a [dm] object.
@@ -254,6 +245,23 @@ dm_enum_pk_candidates <- nse(function(dm, table) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  tbl <- dm_get_tables_impl(dm)[[table_name]]
-  enum_pk_candidates(tbl)
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  enum_pk_candidates_impl(table) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 })
+
+enum_pk_candidates_impl <- function(table) {
+  map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
+    enframe("column") %>%
+    # Workaround: Can't call bind_rows() here with dplyr < 0.9.0
+    # Can't call unnest() either for an unknown reason
+    mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
+    select(-value) %>%
+    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none")))) %>%
+    select(-data) %>%
+    mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
+    select(-values) %>%
+    arrange(desc(candidate), column)
+
+}
