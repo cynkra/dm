@@ -157,7 +157,7 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
   if (!is_unique_key(eval_tidy(pt), !!pkc)$unique) {
     return(
       glue(
-        "Cannot examine cardinality: Column(s) {tick(commas(as_string(pkc)))} not ",
+        "Column(s) {tick(commas(as_string(pkc)))} not ",
         "a unique key of {tick('parent_table')}."
       )
     )
@@ -166,7 +166,7 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
   if (!is_subset(!!ct, !!fkc, !!pt, !!pkc)) {
     return(
       glue(
-        "Cannot examine cardinality: Column(s) {tick(commas(as_string(fkc)))} of {tick('child_table')} not ",
+        "Column(s) {tick(commas(as_string(fkc)))} of {tick('child_table')} not ",
         "a subset of column(s) {tick(commas(as_string(pkc)))} of {tick('parent_table')}."
       )
     )
