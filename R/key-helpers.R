@@ -242,6 +242,7 @@ check_pk_constraints <- function(dm) {
       table = character(0),
       kind = character(0),
       column = character(0),
+      ref_table = NA_character_,
       is_key = logical(0),
       problem = character(0)
     ))
