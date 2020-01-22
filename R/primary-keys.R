@@ -263,5 +263,4 @@ enum_pk_candidates_impl <- function(table) {
     mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
     select(-values) %>%
     arrange(desc(candidate), column)
-
 }

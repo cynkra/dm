@@ -1,11 +1,11 @@
 nyc_check <- tibble::tribble(
-  ~table,    ~kind,   ~columns, ~ref_table, ~is_key,   ~problem,
-  "flights",  "FK",    "dest", "airports",   FALSE, "<reason>",
-  "flights",  "FK", "tailnum",   "planes",   FALSE, "<reason>",
-  "airlines", "PK", "carrier",         NA,    TRUE,         "",
-  "airports", "PK",     "faa",         NA,    TRUE,         "",
-  "planes",   "PK", "tailnum",         NA,    TRUE,         "",
-  "flights",  "FK", "carrier", "airlines",    TRUE,         "",
+  ~table, ~kind, ~columns, ~ref_table, ~is_key, ~problem,
+  "flights", "FK", "dest", "airports", FALSE, "<reason>",
+  "flights", "FK", "tailnum", "planes", FALSE, "<reason>",
+  "airlines", "PK", "carrier", NA, TRUE, "",
+  "airports", "PK", "faa", NA, TRUE, "",
+  "planes", "PK", "tailnum", NA, TRUE, "",
+  "flights", "FK", "carrier", "airlines", TRUE, "",
 ) %>%
   mutate(columns = new_keys(columns))
 
