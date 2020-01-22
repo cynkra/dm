@@ -8,7 +8,7 @@
 #'   \describe{
 #'     \item{`table`}{the table in the `dm`,}
 #'     \item{`kind`}{"PK" or "FK",}
-#'     \item{`column`}{a column of the table,}
+#'     \item{`columns`}{the table columns that define the key,}
 #'     \item{`ref_table`}{for foreign keys, the referenced table,}
 #'     \item{`is_key`}{logical,}
 #'     \item{`problem`}{if `is_key = FALSE`, the reason for that.}
@@ -29,6 +29,8 @@ dm_examine_constraints <- function(dm) {
     pk_results,
     fk_results
   ) %>%
+    rename(columns = column)
+    mutate(columns = as.list(column)) %>%
     arrange(is_key, desc(kind), table, column)
 }
 
