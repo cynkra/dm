@@ -283,7 +283,7 @@ test_that("other PK functions work", {
 
   expect_identical(
     cdm_get_all_pks(dm_for_filter),
-    dm_get_all_pks(dm_for_filter)
+    dm_get_all_pks_impl(dm_for_filter)
   )
 
   expect_equivalent_dm(

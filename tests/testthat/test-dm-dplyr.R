@@ -538,15 +538,15 @@ test_that("key tracking works", {
   )
 
   expect_identical(
-    distinct(zoomed_dm, d_new = d) %>% dm_update_zoomed() %>% dm_get_all_fks(),
-    dm_get_all_fks(dm_for_filter) %>%
+    distinct(zoomed_dm, d_new = d) %>% dm_update_zoomed() %>% dm_get_all_fks_impl(),
+    dm_get_all_fks_impl(dm_for_filter) %>%
       filter(child_fk_col != "e") %>%
       mutate(child_fk_col = if_else(child_fk_col == "d", "d_new", child_fk_col))
   )
 
   expect_identical(
-    arrange(zoomed_dm, e) %>% dm_update_zoomed() %>% dm_get_all_fks(),
-    dm_get_all_fks(dm_for_filter)
+    arrange(zoomed_dm, e) %>% dm_update_zoomed() %>% dm_get_all_fks_impl(),
+    dm_get_all_fks_impl(dm_for_filter)
   )
 
   # keys tracking when there are no keys to track
@@ -598,9 +598,9 @@ test_that("key tracking works", {
       dm_zoom_to_tbl(fact) %>%
       select(dim_1_key, dim_3_key, dim_2_key) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks(),
+      dm_get_all_fks_impl(),
     dm_for_flatten %>%
-      dm_get_all_fks() %>%
+      dm_get_all_fks_impl() %>%
       filter(child_fk_col != "dim_4_key")
   )
 
