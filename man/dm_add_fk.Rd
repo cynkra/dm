@@ -24,7 +24,10 @@ This table needs to have a primary key set.}
 An updated \code{dm} with an additional foreign key relation.
 }
 \description{
-Add a reference from one table of a \code{\link{dm}} to another
+\code{dm_add_fk()} marks the specified column as the foreign key of table \code{table} with
+respect to the primary key of table \code{ref_table}.
+If \code{check == TRUE}, then it will first check if the values in column \code{column} are a subset
+of the values of the primary key in table \code{ref_table}.
 }
 \examples{
 library(dplyr)

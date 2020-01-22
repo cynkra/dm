@@ -1,5 +1,10 @@
 #' Add a reference from one table of a [`dm`] to another
 #'
+#' @description `dm_add_fk()` marks the specified column as the foreign key of table `table` with
+#' respect to the primary key of table `ref_table`.
+#' If `check == TRUE`, then it will first check if the values in column `column` are a subset
+#' of the values of the primary key in table `ref_table`.
+#'
 #' @inheritParams dm_add_pk
 #' @param column The column of `table` which is to become the foreign key column and
 #'   reference the primary key of `ref_table`.
