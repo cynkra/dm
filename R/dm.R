@@ -182,7 +182,7 @@ new_fk <- function(table = character(), column = list()) {
 
 new_keys <- function(x) {
   # both c("a", "b") and list("a", "b") is accepted
-  if (inherits(x, "character")) x <- as_list(x)
+  if (inherits(x, "character")) x <- vctrs::vec_cast(x, list())
   vctrs::new_list_of(x, character())
 }
 
