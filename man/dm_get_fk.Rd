@@ -26,7 +26,7 @@ If no foreign key is set between the tables, an empty character vector is return
 
 Currently, keys consisting of more than one column are not supported.
 \href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
-This means that after this change the character vector returned by \code{dm_get_fk()} can be of length > 1.
+Therefore the function may return vectors of length greater than one in the future.
 }
 
 \examples{
