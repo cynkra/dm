@@ -18,7 +18,7 @@
 #'
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
-#' @param columns Columns of that table.
+#' @param columns Table columns, unquoted.
 #' @param check Boolean, if `TRUE`, a check is made if the combination of columns is a unique key of the table.
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
@@ -153,7 +153,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`pk_col`}{column name(s) of primary key.}
+#'     \item{`pk_cols`}{column name(s) of primary key.}
 #'   }
 #'
 #' @export
@@ -219,8 +219,8 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
-#'     \item{`column`}{column of `table`,}
-#'     \item{`candidate`}{boolean: is this column a candidate for a primary key,}
+#'     \item{`columns`}{columns of `table`,}
+#'     \item{`candidate`}{boolean: are these columns a candidate for a primary key,}
 #'     \item{`why`}{if not a candidate for a primary key column, explanation for this.}
 #'   }
 #'

@@ -83,7 +83,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' `dm_has_fk()` checks if a foreign key reference exists between two tables in a `dm`.
 #'
 #' @inheritParams dm_add_fk
-#' @param ref_table The table to check if it is referred to.
+#' @param ref_table The table to be checked if it is referred to.
 #'
 #' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
 #'
@@ -265,9 +265,9 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
-#'     \item{`column`}{column of `table`,}
-#'     \item{`candidate`}{boolean: is this column a candidate for a foreign key,}
-#'     \item{`why`}{if not a candidate for a foreign key, explanation for the reason.}
+#'     \item{`columns`}{columns of `table`,}
+#'     \item{`candidate`}{boolean: are these columns a candidate for a foreign key,}
+#'     \item{`why`}{if not a candidate for a foreign key, explanation for for this.}
 #'   }
 #'
 #' @family foreign key functions

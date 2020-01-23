@@ -13,7 +13,7 @@ dm_get_all_pks(dm)
 A tibble with the following columns:
 \describe{
 \item{\code{table}}{table name,}
-\item{\code{pk_col}}{column name(s) of primary key.}
+\item{\code{pk_cols}}{column name(s) of primary key.}
 }
 }
 \description{

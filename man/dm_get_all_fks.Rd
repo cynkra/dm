@@ -13,12 +13,13 @@ dm_get_all_fks(dm)
 A tibble with the following columns:
 \describe{
 \item{\code{child_table}}{child table,}
-\item{\code{child_fk_col}}{foreign key column in child table,}
+\item{\code{child_fk_cols}}{foreign key column in child table,}
 \item{\code{parent_table}}{parent table.}
 }
 }
 \description{
 Get a summary of all foreign key relations in a \code{\link{dm}}
+}
 \section{Compound keys}{
 
 
@@ -35,7 +36,6 @@ Other foreign key functions:
 \code{\link{dm_add_fk}()},
 \code{\link{dm_enum_fk_candidates}()},
 \code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()},
-\code{\link{dm_rm_fk}()}
+\code{\link{dm_has_fk}()}
 }
 \concept{foreign key functions}

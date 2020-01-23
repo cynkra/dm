@@ -37,7 +37,6 @@ Other foreign key functions:
 \code{\link{dm_add_fk}()},
 \code{\link{dm_enum_fk_candidates}()},
 \code{\link{dm_get_all_fks}()},
-\code{\link{dm_has_fk}()},
-\code{\link{dm_rm_fk}()}
+\code{\link{dm_has_fk}()}
 }
 \concept{foreign key functions}
