@@ -42,8 +42,6 @@ test_that("error messages do not change", {
     error_unique_table_names_or_table_names()
     error_is_not_dm("blob")
     error_con_only_for_dbi()
-    error_no_zoom_allowed()
-    error_no_table_zoomed()
     error_table_needs_name()
     error_only_possible_wo_zoom("dm_zoom_to_tbl")
     error_only_possible_w_zoom("dm_update_zoomed")

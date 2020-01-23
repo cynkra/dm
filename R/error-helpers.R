@@ -413,35 +413,11 @@ error_con_only_for_dbi <- function() {
   "A local `dm` doesn't have a DB connection"
 }
 
-# no zoom allowed for `dm_zoom_to_tbl()` ---------------------------------
-
-abort_no_zoom_allowed <- function() {
-  abort(error_no_zoom_allowed(), .subclass = dm_error_full("no_zoom_allowed"))
-}
-
-error_no_zoom_allowed <- function() {
-  paste0(
-    "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed()`, ",
-    "`dm_insert_zoomed()` or `dm_discard_zoomed()` first."
-  )
-}
-
 # general abort with customized msg ---------------------------------------
 
 abort_w_message <- function(msg) {
   abort(msg, .subclass = dm_error_full("w_message"))
 }
-
-# no table zoomed, but 'dm_insert_zoomed()' called ---------------------------------
-
-abort_no_table_zoomed <- function() {
-  abort(error_no_table_zoomed(), .subclass = dm_error_full("no_table_zoomed"))
-}
-
-error_no_table_zoomed <- function() {
-  "`dm_insert_zoomed()` only works for zoomed `dm`"
-}
-
 
 # new table needs a name --------------------------------------------------
 

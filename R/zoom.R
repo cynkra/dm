@@ -69,7 +69,7 @@ dm_zoom_to_tbl <- function(dm, table) {
   # FIXME: to include in documentation after #185:
   # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
   check_dm(dm)
-  if (is_zoomed(dm)) abort_no_zoom_allowed()
+  check_not_zoomed(dm)
   # for now only one table can be zoomed on
   zoom <- as_string(ensym(table))
   check_correct_input(dm, zoom)
@@ -106,7 +106,7 @@ get_zoomed_tbl <- function(dm) {
 #'
 #' @export
 dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
-  if (!is_zoomed(dm)) abort_no_table_zoomed()
+  check_zoomed(dm)
   new_tbl_name_chr <-
     if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else as_string(enexpr(new_tbl_name))
   names_list <-
