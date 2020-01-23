@@ -101,8 +101,11 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #' column marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
 #' If no foreign key is set between the tables, an empty character vector is returned.
 #'
-#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-#' therefore the result of this function will slightly change.
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' This means that after this change the character vector returned by `dm_get_fk()` can be of length > 1.
 #'
 #' @inheritParams dm_has_fk
 #' @param ref_table The table that is referenced from `table`.
