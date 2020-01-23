@@ -73,7 +73,7 @@ test_that("zooming works also on DBs", {
 test_that("dm_insert_zoomed() works", {
   # test that a new tbl is inserted, based on the requested one
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter, t4) %>% dm_insert_zoomed(t4_new),
+    dm_zoom_to(dm_for_filter, t4) %>% dm_insert_zoomed("t4_new"),
     dm_for_filter %>%
       dm_add_tbl(t4_new = t4) %>%
       dm_add_pk(t4_new, h) %>%
@@ -83,13 +83,13 @@ test_that("dm_insert_zoomed() works", {
 
   # test that an error is thrown if 'repair = check_unique' and duplicate table names
   expect_dm_error(
-    dm_zoom_to(dm_for_filter, t4) %>% dm_insert_zoomed(t4, repair = "check_unique"),
+    dm_zoom_to(dm_for_filter, t4) %>% dm_insert_zoomed("t4", repair = "check_unique"),
     "need_unique_names"
   )
 
   # test that in case of 'repair = unique' and duplicate table names -> renames of old and new
   expect_equivalent_dm(
-    expect_silent(dm_zoom_to(dm_for_filter, t4) %>% dm_insert_zoomed(t4, repair = "unique", quiet = TRUE)),
+    expect_silent(dm_zoom_to(dm_for_filter, t4) %>% dm_insert_zoomed("t4", repair = "unique", quiet = TRUE)),
     dm_for_filter %>%
       dm_rename_tbl(t4...4 = t4) %>%
       dm_add_tbl(t4...7 = t4) %>%
