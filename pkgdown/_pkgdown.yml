@@ -58,9 +58,9 @@ reference:
 
 - title: Zooming to a table of a `dm`
   contents:
-  - dm_zoom_to_tbl
-  - dm_insert_zoomed_tbl
-  - dm_update_zoomed_tbl
+  - dm_zoom_to
+  - dm_insert_zoomed
+  - dm_update_zoomed
   - dm_discard_zoomed
 
 - title: Flattening
