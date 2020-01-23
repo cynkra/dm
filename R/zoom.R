@@ -102,7 +102,7 @@ get_zoomed_tbl <- function(dm) {
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @return For `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_zoomed_out()`: A `dm` object.
+#' @return For `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`: A `dm` object.
 #'
 #' @export
 dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {

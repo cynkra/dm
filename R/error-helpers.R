@@ -462,7 +462,7 @@ abort_only_possible_wo_zoom <- function(fun_name) {
 error_only_possible_wo_zoom <- function(fun_name) {
   glue(
     "You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, ",
-    "`dm_insert_zoomed()` or `dm_zoom_out()` first."
+    "`dm_insert_zoomed()` or `dm_discard_zoomed()` first."
   )
 }
 
