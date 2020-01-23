@@ -45,7 +45,7 @@ abort_table_not_in_dm <- function(table_name, dm_tables) {
 }
 
 error_txt_table_not_in_dm <- function(table_name, dm_tables) {
-  glue("Table(s) {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}")
+  glue("Table(s) {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}.")
 }
 
 # error: is not subset of -------------------------------------------------
@@ -61,7 +61,7 @@ error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
   glue(
     "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see above) that are not present in column ",
-    "{tick(colname_2)} of table {tick(table_name_2)}"
+    "{tick(colname_2)} of table {tick(table_name_2)}."
   )
 }
 
@@ -254,7 +254,7 @@ error_txt_need_named_vec <- function(table_names) {
   paste0(
     "Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names ",
     "are the original table names (returned by e.g. `src_tbls()`): ",
-    commas(tick(table_names))
+    commas(tick(table_names)), "."
   )
 }
 
@@ -335,7 +335,7 @@ abort_not_same_src <- function() {
 }
 
 error_not_same_src <- function() {
-  "Not all tables in the object share the same `src`"
+  "Not all tables in the object share the same `src`."
 }
 
 # Something other than tables are put in a `dm` ------------------
@@ -345,7 +345,7 @@ abort_what_a_weird_object <- function(class) {
 }
 
 error_what_a_weird_object <- function(class) {
-  glue("Don't know how to determine table source for object of class {commas(tick(class))}")
+  glue("Don't know how to determine table source for object of class {commas(tick(class))}.")
 }
 
 abort_squash_limited <- function() {
@@ -379,7 +379,7 @@ abort_no_flatten_with_nest_join <- function() {
 error_no_flatten_with_nest_join <- function() {
   paste0(
     "`dm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
-    "cf. the help pages for these functions. Consider `join = left_join`"
+    "cf. the help pages for these functions. Consider `join = left_join`."
   )
 }
 
@@ -400,7 +400,7 @@ abort_is_not_dm <- function(obj_class) {
 }
 
 error_is_not_dm <- function(obj_class) {
-  glue("Required class `dm` but instead is {paste(tick(obj_class), collapse = ', ')}")
+  glue("Required class `dm` but instead is {paste(tick(obj_class), collapse = ', ')}.")
 }
 
 
@@ -410,7 +410,7 @@ abort_con_only_for_dbi <- function() {
 }
 
 error_con_only_for_dbi <- function() {
-  "A local `dm` doesn't have a DB connection"
+  "A local `dm` doesn't have a DB connection."
 }
 
 # general abort with customized msg ---------------------------------------
@@ -426,7 +426,7 @@ abort_table_needs_name <- function() {
 }
 
 error_table_needs_name <- function() {
-  "The new table to insert with `dm_insert_zoomed()` must have a name"
+  "The new table to insert with `dm_insert_zoomed()` must have a name."
 }
 
 # when zoomed and it shouldn't be ------------------------------
@@ -600,6 +600,6 @@ error_temp_table_requested <- function(table_names, tbls_in_dm) {
   temp_tables <- setdiff(table_names, tbls_in_dm)
   glue(
     "The following requested tables from the DB are temporary tables and cannot be included in the result: ",
-    "{commas(tick(temp_tables))}"
+    "{commas(tick(temp_tables))}."
   )
 }
