@@ -7,7 +7,7 @@
 #' @inheritParams dm_add_pk
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @details `dm_zoom_to_tbl()`: zooms to the given table.
+#' @details `dm_zoom_to()`: zooms to the given table.
 #'
 #' `dm_update_zoomed()`: overwrites the originally zoomed table with the manipulated table.
 #' The filter conditions for the zoomed table are added to the original filter conditions.
@@ -38,13 +38,13 @@
 #'
 #' And -- last but not least -- also the {tidyr}-functions `unite()` and `separate()` are supported for `zoomed_dm`.
 #'
-#' @rdname dm_zoom_to_tbl
+#' @rdname dm_zoom_to
 #'
-#' @return For `dm_zoom_to_tbl()`: A `zoomed_dm` object.
+#' @return For `dm_zoom_to()`: A `zoomed_dm` object.
 #'
 #' @examples
 #' library(dplyr)
-#' flights_zoomed <- dm_zoom_to_tbl(dm_nycflights13(), flights)
+#' flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 #'
 #' flights_zoomed
 #'
@@ -65,7 +65,7 @@
 #' # discard the zoomed table
 #' dm_discard_zoomed(flights_zoomed_transformed)
 #' @export
-dm_zoom_to_tbl <- function(dm, table) {
+dm_zoom_to <- function(dm, table) {
   # FIXME: to include in documentation after #185:
   # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
   check_dm(dm)
@@ -98,7 +98,7 @@ get_zoomed_tbl <- function(dm) {
     pluck(1)
 }
 
-#' @rdname dm_zoom_to_tbl
+#' @rdname dm_zoom_to
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
@@ -147,7 +147,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     dm_discard_zoomed()
 }
 
-#' @rdname dm_zoom_to_tbl
+#' @rdname dm_zoom_to
 #' @export
 dm_update_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
@@ -167,7 +167,7 @@ dm_update_zoomed <- function(dm) {
     dm_discard_zoomed()
 }
 
-#' @rdname dm_zoom_to_tbl
+#' @rdname dm_zoom_to
 #' @export
 dm_discard_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {

@@ -43,7 +43,7 @@ test_that("error messages do not change", {
     error_is_not_dm("blob")
     error_con_only_for_dbi()
     error_table_needs_name()
-    error_only_possible_wo_zoom("dm_zoom_to_tbl")
+    error_only_possible_wo_zoom("dm_zoom_to")
     error_only_possible_w_zoom("dm_update_zoomed")
     error_req_tbl_not_avail(c("dull", "boring", "common_knowledge"), c("fascinating", "interesting"))
     error_unnamed_table_list()

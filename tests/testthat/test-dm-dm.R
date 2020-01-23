@@ -115,12 +115,12 @@ test_that("'compute.dm()' computes tables on DB", {
 
 test_that("some methods/functions for `zoomed_dm` work", {
   expect_identical(
-    colnames(dm_zoom_to_tbl(dm_for_filter, t1)),
+    colnames(dm_zoom_to(dm_for_filter, t1)),
     c("a", "b")
   )
 
   expect_identical(
-    dim(dm_zoom_to_tbl(dm_for_filter, t1)),
+    dim(dm_zoom_to(dm_for_filter, t1)),
     c(10L, 2L)
   )
 })
@@ -166,13 +166,13 @@ test_that("validator speaks up when something's wrong", {
 
   # zoom column of `zoomed_dm` is empty
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter %>% dm_zoom_to_tbl(t1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
+    new_dm3(dm_get_def(dm_for_filter %>% dm_zoom_to(t1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 
   # key tracker of zoomed dm is empty
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter %>% dm_zoom_to_tbl(t1)) %>% mutate(key_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
+    new_dm3(dm_get_def(dm_for_filter %>% dm_zoom_to(t1)) %>% mutate(key_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 
@@ -191,7 +191,7 @@ test_that("validator speaks up when something's wrong", {
   # zoom column of a zoomed dm contains a nonsensical entry
   expect_dm_error(
     new_dm3(dm_for_filter %>%
-      dm_zoom_to_tbl(t1) %>%
+      dm_zoom_to(t1) %>%
       dm_get_def() %>%
       mutate(zoom = if_else(table == "t1", list(1), NULL)), zoomed = TRUE) %>%
       validate_dm(),
@@ -201,7 +201,7 @@ test_that("validator speaks up when something's wrong", {
   # zoom column of a zoomed dm contains more than one entry
   expect_dm_error(
     new_dm3(dm_for_filter %>%
-      dm_zoom_to_tbl(t1) %>%
+      dm_zoom_to(t1) %>%
       dm_get_def() %>%
       mutate(zoom = list(t1)), zoomed = TRUE) %>%
       validate_dm(),
@@ -245,7 +245,7 @@ test_that("`pull_tbl()`-methods work", {
     dm_for_filter_src,
     function(dm_for_filter) {
       expect_identical(
-        dm_zoom_to_tbl(dm_for_filter, t3) %>%
+        dm_zoom_to(dm_for_filter, t3) %>%
           mutate(new_col = row_number() * 3) %>%
           pull_tbl() %>%
           collect(),
@@ -255,13 +255,13 @@ test_that("`pull_tbl()`-methods work", {
   )
 
   expect_identical(
-    dm_zoom_to_tbl(dm_for_filter, t1) %>%
+    dm_zoom_to(dm_for_filter, t1) %>%
       pull_tbl(t1),
     t1
   )
 
   expect_dm_error(
-    dm_zoom_to_tbl(dm_for_filter, t1) %>%
+    dm_zoom_to(dm_for_filter, t1) %>%
       pull_tbl(t2),
     "table_not_zoomed"
   )
@@ -273,7 +273,7 @@ test_that("`pull_tbl()`-methods work", {
 
   expect_dm_error(
     new_dm3(dm_for_filter %>%
-      dm_zoom_to_tbl(t1) %>%
+      dm_zoom_to(t1) %>%
       dm_get_def() %>%
       mutate(zoom = list(t1)), zoomed = TRUE) %>%
       pull_tbl(),
@@ -308,29 +308,29 @@ test_that("numeric subsetting works", {
 test_that("subsetting for dm/zoomed_dm", {
   expect_identical(dm_for_filter$t5, t5)
   expect_identical(
-    dm_zoom_to_tbl(dm_for_filter, t2)$c,
+    dm_zoom_to(dm_for_filter, t2)$c,
     pull(t2, c)
   )
 
   expect_identical(dm_for_filter[["t3"]], t3)
   expect_identical(
-    dm_zoom_to_tbl(dm_for_filter, t3)[["g"]],
+    dm_zoom_to(dm_for_filter, t3)[["g"]],
     pull(t3, g)
   )
 
   expect_identical(dm_for_filter[c("t5", "t4")], dm_select_tbl(dm_for_filter, t5, t4))
   expect_identical(
-    dm_zoom_to_tbl(dm_for_filter, t3)[c("g", "f", "g")],
+    dm_zoom_to(dm_for_filter, t3)[c("g", "f", "g")],
     t3[c("g", "f", "g")]
   )
 })
 
 test_that("methods for dm/zoomed_dm work", {
   expect_identical(length(dm_for_filter), 6L)
-  expect_identical(length(dm_zoom_to_tbl(dm_for_filter, t2)), 3L)
+  expect_identical(length(dm_zoom_to(dm_for_filter, t2)), 3L)
 
   expect_identical(names(dm_for_filter), src_tbls(dm_for_filter))
-  expect_identical(names(dm_zoom_to_tbl(dm_for_filter, t2)), colnames(t2))
+  expect_identical(names(dm_zoom_to(dm_for_filter, t2)), colnames(t2))
 })
 
 test_that("as.list()-methods work", {
@@ -340,7 +340,7 @@ test_that("as.list()-methods work", {
   )
 
   expect_identical(
-    as.list(dm_for_filter %>% dm_zoom_to_tbl(t4)),
+    as.list(dm_for_filter %>% dm_zoom_to(t4)),
     as.list(t4)
   )
 })

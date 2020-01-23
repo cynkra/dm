@@ -781,7 +781,7 @@ empty_dm <- function() {
 #' dm_nycflights13() %>%
 #'   pull_tbl(airlines)
 #' dm_nycflights13() %>%
-#'   dm_zoom_to_tbl(airlines) %>%
+#'   dm_zoom_to(airlines) %>%
 #'   pull_tbl()
 #' @export
 pull_tbl <- function(dm, table) {

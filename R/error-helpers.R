@@ -448,7 +448,7 @@ abort_only_possible_w_zoom <- function(fun_name) {
 }
 
 error_only_possible_w_zoom <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.")
+  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.")
 }
 
 # errors for `copy_to.dm()` ----------------------------------------------

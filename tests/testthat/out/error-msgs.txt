@@ -121,11 +121,11 @@ Required class `dm` but instead is `blob`.
 > error_table_needs_name()
 [1] "The new table to insert with `dm_insert_zoomed()` must have a name."
 
-> error_only_possible_wo_zoom("dm_zoom_to_tbl")
-You cannot call `dm_zoom_to_tbl()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+> error_only_possible_wo_zoom("dm_zoom_to")
+You cannot call `dm_zoom_to()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 > error_only_possible_w_zoom("dm_update_zoomed")
-You cannot call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.
+You cannot call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.
 
 > error_req_tbl_not_avail(c("dull", "boring", "common_knowledge"), c(
 +   "fascinating", "interesting"))
