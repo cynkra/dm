@@ -5,7 +5,12 @@
 #' If `check == TRUE`, then it will first check if the values in column `column` are a subset
 #' of the values of the primary key in table `ref_table`.
 #'
-#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' The syntax of this function will be extended but remain compatible
+#' with current semantics.
 #' therefore the syntax of this function will slightly change.
 #'
 #' @inheritParams dm_add_pk
