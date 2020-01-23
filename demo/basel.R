@@ -351,7 +351,7 @@ dm_with_summary %>%
 dm_flights %>%
   dm_zoom_to(flights) %>%
   count(carrier, origin) %>%
-  dm_insert_zoomed(origin_carrier_count) %>%
+  dm_insert_zoomed("origin_carrier_count") %>%
   dm_draw()
 
 
