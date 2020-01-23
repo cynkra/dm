@@ -19,16 +19,20 @@ A tibble with the following columns:
 \description{
 \code{dm_get_all_pks()} checks the \code{dm} object for set primary keys and
 returns the tables, the respective primary key columns and their classes.
-
-FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-therefore the result of this function will slightly change.
 }
+\section{Compound keys}{
+
+
+Currently, keys consisting of more than one column are not supported.
+\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+Therefore the \code{pk_cols} column may contain vectors of length greater than one.
+}
+
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
 \code{\link{dm_get_pk}()},
 \code{\link{dm_has_pk}()},
-\code{\link{dm_rm_pk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}
