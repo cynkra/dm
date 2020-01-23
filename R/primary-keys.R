@@ -1,6 +1,4 @@
-# for external users: also checks if a column really is primary key
-
-#' Mark columns of a table in a [`dm`] object as its primary key
+#' Add/remove a primary key to/from a table in a [`dm`] object
 #'
 #' @description `dm_add_pk()` marks the specified columns as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
@@ -8,11 +6,14 @@
 #' If `force == TRUE`, the function will replace an already
 #' set key.
 #'
+#' `dm_rm_pk()` removes a primary key from a table and leaves the [`dm`] object otherwise unaltered.
+#' Foreign keys that point to the table from other tables, can be optionally removed as well.
+#'
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
 #' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
-#' The syntax of this function will be extended but will remain compatible
+#' The syntax of these functions will be extended but will remain compatible
 #' with current semantics.
 #'
 #' @param dm A `dm` object.
@@ -25,7 +26,7 @@
 #'
 #' @family primary key functions
 #'
-#' @return An updated `dm` with an additional primary key.
+#' @return For `dm_add_pk()`: An updated `dm` with an additional primary key.
 #'
 #' @export
 #' @examples
@@ -170,28 +171,15 @@ dm_get_all_pks_impl <- function(dm) {
 
 #' Remove a primary key from a table in a [`dm`] object
 #'
-#' @description `dm_rm_pk()` removes a primary key from a table in the
-#' underlying `data_model`-object; leaves the [`dm`] object unaltered otherwise.
+#' @rdname dm_add_pk
 #'
-#' Foreign keys that point to the table from other tables, can be optionally removed as well.
-#'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
-#' The syntax of this function will be extended but will remain compatible
-#' with current semantics.
-#'
-#' @family primary key functions
-#'
-#' @inheritParams dm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
 #'   there are foreign keys addressing the primary key that is to be removed.
 #'   If `TRUE`, the function will
 #'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
 #'   that are pointing to it.
 #'
-#' @return An updated `dm` without the indicated primary key.
+#' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
 #'
 #' @examples
 #' library(dplyr)

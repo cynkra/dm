@@ -1,4 +1,4 @@
-#' Add a reference from one table of a [`dm`] to another
+#' Add/remove references from one table of a [`dm`] to another
 #'
 #' @description `dm_add_fk()` marks the specified columns as the foreign key of table `table` with
 #' respect to the primary key of table `ref_table`.
@@ -9,20 +9,27 @@
 #'
 #' Currently, keys consisting of more than one column are not supported.
 #' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
-#' The syntax of this function will be extended but will remain compatible
+#' The syntax of these functions will be extended but will remain compatible
 #' with current semantics.
 #'
 #' @inheritParams dm_add_pk
-#' @param columns The columns of `table` which are to become the foreign key columns that
+#' @param columns For `dm_add_fk()`: The columns of `table` which are to become the foreign key columns that
 #'   reference the primary key of `ref_table`.
-#' @param ref_table The table which `table` is referencing.
+#'
+#'   For `dm_rm_fk()`: The columns of `table` that should no longer be referencing the primary key of `ref_table`.
+#'   If `NULL`, all columns will be evaluated.
+#' @param ref_table For `dm_add_fk()`: The table which `table` will be referencing.
 #'   This table needs to have a primary key set.
+#'
+#'   For `dm_rm_fk()`: The table that `table` is referencing.
 #' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
 #'   `column` are a subset of the values of the primary key column of `ref_table`.
 #'
 #' @family foreign key functions
 #'
-#' @return An updated `dm` with an additional foreign key relation.
+#' @rdname dm_add_fk
+#'
+#' @return For `dm_add_fk()`: An updated `dm` with an additional foreign key relation.
 #'
 #' @examples
 #' library(dplyr)
@@ -171,24 +178,14 @@ dm_get_all_fks_impl <- function(dm) {
 
 #' Remove the reference(s) from one [`dm`] table to another
 #'
-#' @description This function can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
+#' @description `dm_rm_fk()` can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
 #' All arguments may be provided quoted or unquoted.
-#'
-#' @section Compound keys:
-#'
-#' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
 #'
 #' @rdname dm_add_fk
 #'
-#' @inheritParams dm_add_fk
-#' @param columns The columns of `table` that should no longer be referencing the primary key of `ref_table`.
-#'   If `NULL`, all columns will be evaluated.
-#' @param ref_table The table that `table` was referencing.
-#'
 #' @family foreign key functions
 #'
-#' @return An updated `dm` without the given foreign key relation.
+#' @return For `dm_rm_fk()`: An updated `dm` without the given foreign key relation.
 #'
 #' @examples
 #' dm_rm_fk(
