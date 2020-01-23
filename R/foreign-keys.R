@@ -9,9 +9,8 @@
 #'
 #' Currently, keys consisting of more than one column are not supported.
 #' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
-#' The syntax of this function will be extended but remain compatible
+#' The syntax of this function will be extended but will remain compatible
 #' with current semantics.
-#' therefore the syntax of this function will slightly change.
 #'
 #' @inheritParams dm_add_pk
 #' @param column The column of `table` which is to become the foreign key column and

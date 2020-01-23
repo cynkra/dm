@@ -28,10 +28,16 @@ An updated \code{dm} with an additional foreign key relation.
 respect to the primary key of table \code{ref_table}.
 If \code{check == TRUE}, then it will first check if the values in column \code{column} are a subset
 of the values of the primary key in table \code{ref_table}.
-
-FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-therefore the syntax of this function will slightly change.
 }
+\section{Compound keys}{
+
+
+Currently, keys consisting of more than one column are not supported.
+\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+The syntax of this function will be extended but will remain compatible
+with current semantics.
+}
+
 \examples{
 library(dplyr)
 iris_key <- mutate(iris, key = row_number()) \%>\%
