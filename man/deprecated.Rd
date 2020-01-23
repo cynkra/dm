@@ -144,7 +144,7 @@ cdm_get_fk(dm, table, ref_table)
 
 cdm_get_all_fks(dm)
 
-cdm_rm_fk(dm, table, column, ref_table)
+cdm_rm_fk(dm, table, columns, ref_table)
 
 cdm_enum_fk_candidates(dm, table, ref_table)
 

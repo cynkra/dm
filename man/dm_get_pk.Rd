@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_get_pk}
 \alias{dm_get_pk}
-\title{Retrieve the name of the primary key column of a \code{dm} table}
+\title{Retrieve the name of the primary key columns of a \code{dm} table}
 \usage{
 dm_get_pk(dm, table)
 }
@@ -15,8 +15,8 @@ dm_get_pk(dm, table)
 A character vector with the column name(s) of the primary key of \code{table}.
 }
 \description{
-\code{dm_get_pk()} returns the name of the
-column marked as primary key of a table of a \code{\link{dm}} object.
+\code{dm_get_pk()} returns the names of the
+columns marked as primary key of a table of a \code{\link{dm}} object.
 If no primary key is
 set for the table, an empty character vector is returned.
 

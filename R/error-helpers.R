@@ -142,7 +142,7 @@ abort_rm_fk_col_missing <- function() {
 }
 
 error_txt_rm_fk_col_missing <- function() {
-  "Parameter `column` has to be set. Pass `NULL` for removing all references."
+  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 }
 
 # error helpers for draw_dm -----------------------------------------------

@@ -1,8 +1,8 @@
 #' Add a reference from one table of a [`dm`] to another
 #'
-#' @description `dm_add_fk()` marks the specified column as the foreign key of table `table` with
+#' @description `dm_add_fk()` marks the specified columns as the foreign key of table `table` with
 #' respect to the primary key of table `ref_table`.
-#' If `check == TRUE`, then it will first check if the values in column `column` are a subset
+#' If `check == TRUE`, then it will first check if the values in columns `columns` are a subset
 #' of the values of the primary key in table `ref_table`.
 #'
 #' @section Compound keys:
@@ -13,7 +13,7 @@
 #' with current semantics.
 #'
 #' @inheritParams dm_add_pk
-#' @param column The column of `table` which is to become the foreign key column and
+#' @param columns The columns of `table` which are to become the foreign key columns that
 #'   reference the primary key of `ref_table`.
 #' @param ref_table The table which `table` is referencing.
 #'   This table needs to have a primary key set.
@@ -32,13 +32,13 @@
 #'   dm_add_pk(iris_2, key) %>%
 #'   dm_add_fk(iris_1, key, iris_2)
 #' @export
-dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
+dm_add_fk <- nse(function(dm, table, columns, ref_table, check = FALSE) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
-  column_name <- as_name(ensym(column))
+  column_name <- as_name(ensym(columns))
   check_col_input(dm, table_name, column_name)
 
   ref_column_name <- dm_get_pk(dm, !!ref_table_name)
@@ -95,17 +95,17 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
   has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
-#' Retrieve the name of the column marked as a foreign key, pointing from one table of a [`dm`] to another table.
+#' Retrieve the names of the columns marked as a foreign key, pointing from one table of a [`dm`] to another table.
 #'
-#' @description `dm_get_fk()` returns the name of the
-#' column marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
+#' @description `dm_get_fk()` returns the names of the
+#' columns marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
 #' If no foreign key is set between the tables, an empty character vector is returned.
 #'
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
 #' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
-#' This means that after this change the character vector returned by `dm_get_fk()` can be of length > 1.
+#' Therefore the function may return vectors of length greater than one in the future.
 #'
 #' @inheritParams dm_has_fk
 #' @param ref_table The table that is referenced from `table`.
@@ -137,8 +137,11 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #'
 #' @description Get a summary of all foreign key relations in a [`dm`]
 #'
-#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-#' therefore the result of this function will slightly change.
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' Therefore the `child_fk_cols` column may contain vectors of length greater than one.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -170,11 +173,16 @@ dm_get_all_fks_impl <- function(dm) {
 #'
 #' @description This function can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
 #' All arguments may be provided quoted or unquoted.
-#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-#' therefore the syntax of this function will slightly change.
+#'
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#'
+#' @rdname dm_add_fk
 #'
 #' @inheritParams dm_add_fk
-#' @param column The column of `table` that should no longer be referencing the primary key of `ref_table`.
+#' @param columns The columns of `table` that should no longer be referencing the primary key of `ref_table`.
 #'   If `NULL`, all columns will be evaluated.
 #' @param ref_table The table that `table` was referencing.
 #'
@@ -190,10 +198,10 @@ dm_get_all_fks_impl <- function(dm) {
 #'   airports
 #' )
 #' @export
-dm_rm_fk <- function(dm, table, column, ref_table) {
+dm_rm_fk <- function(dm, table, columns, ref_table) {
   check_not_zoomed(dm)
 
-  column_quo <- enquo(column)
+  column_quo <- enquo(columns)
 
   if (quo_is_missing(column_quo)) {
     abort_rm_fk_col_missing()
@@ -212,7 +220,7 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
     cols <- fk_cols
   } else {
     # FIXME: Add tidyselect support
-    cols <- as_name(ensym(column))
+    cols <- as_name(ensym(columns))
     if (!all(cols %in% fk_cols)) {
       abort_is_not_fkc(table_name, cols, ref_table_name, fk_cols)
     }

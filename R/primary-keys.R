@@ -1,20 +1,24 @@
 # for external users: also checks if a column really is primary key
 
-#' Mark a column of a table in a [`dm`] object as its primary key
+#' Mark columns of a table in a [`dm`] object as its primary key
 #'
-#' @description `dm_add_pk()` marks the specified column as the primary key of the specified table.
+#' @description `dm_add_pk()` marks the specified columns as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
-#' the given column is a unique key of the table.
+#' the given combination of columns is a unique key of the table.
 #' If `force == TRUE`, the function will replace an already
 #' set key.
 #'
-#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-#' therefore the syntax for this function will slightly change.
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' The syntax of this function will be extended but will remain compatible
+#' with current semantics.
 #'
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
-#' @param column A column of that table.
-#' @param check Boolean, if `TRUE`, a check is made if the column is a unique key of the table.
+#' @param columns Columns of that table.
+#' @param check Boolean, if `TRUE`, a check is made if the combination of columns is a unique key of the table.
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
@@ -36,13 +40,13 @@
 #'
 #' # the following does not work (throws an error)
 #' try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
-dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
+dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)
 
-  col_expr <- ensym(column)
+  col_expr <- ensym(columns)
   col_name <- as_name(col_expr)
   check_col_input(dm, table_name, col_name)
 
@@ -70,10 +74,9 @@ dm_add_pk_impl <- function(dm, table, column, force) {
   new_dm3(def)
 }
 
-#' Does a table of a [`dm`] object have a column set as primary key?
+#' Does a table of a [`dm`] object have columns set as primary key?
 #'
-#' @description `dm_has_pk()` checks in the `data_model` part
-#' of the [`dm`] object if a given table has a column marked as its primary key.
+#' @description `dm_has_pk()` checks if a given table has columns marked as its primary key.
 #'
 #' @inheritParams dm_add_pk
 #'
@@ -93,15 +96,18 @@ dm_has_pk <- function(dm, table) {
   has_length(dm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the name of the primary key column of a `dm` table
+#' Retrieve the name of the primary key columns of a `dm` table
 #'
-#' @description `dm_get_pk()` returns the name of the
-#' column marked as primary key of a table of a [`dm`] object.
+#' @description `dm_get_pk()` returns the names of the
+#' columns marked as primary key of a table of a [`dm`] object.
 #' If no primary key is
 #' set for the table, an empty character vector is returned.
 #'
-#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-#' therefore the result for this function can include several columns.
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' Therefore the function may return vectors of length greater than one in the future.
 #'
 #' @family primary key functions
 #'
@@ -133,8 +139,11 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
-#' FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-#' therefore the result of this function will slightly change.
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' Therefore the `pk_cols` column may contain vectors of length greater than one.
 #'
 #' @family primary key functions
 #'
@@ -165,6 +174,13 @@ dm_get_all_pks_impl <- function(dm) {
 #' underlying `data_model`-object; leaves the [`dm`] object unaltered otherwise.
 #'
 #' Foreign keys that point to the table from other tables, can be optionally removed as well.
+#'
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' The syntax of this function will be extended but will remain compatible
+#' with current semantics.
 #'
 #' @family primary key functions
 #'

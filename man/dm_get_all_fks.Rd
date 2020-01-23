@@ -19,10 +19,14 @@ A tibble with the following columns:
 }
 \description{
 Get a summary of all foreign key relations in a \code{\link{dm}}
+\section{Compound keys}{
 
-FYI: Mind, that in one of the upcoming updates, compound keys will be supported, and
-therefore the result of this function will slightly change.
+
+Currently, keys consisting of more than one column are not supported.
+\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+To prepare for this change, the column \code{child_fk_cols} in the tibble returned by \code{dm_get_all_fks()} is a list.
 }
+
 \examples{
 dm_get_all_fks(dm_nycflights13())
 }

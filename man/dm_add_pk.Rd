@@ -2,18 +2,18 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_add_pk}
 \alias{dm_add_pk}
-\title{Mark a column of a table in a \code{\link{dm}} object as its primary key}
+\title{Mark columns of a table in a \code{\link{dm}} object as its primary key}
 \usage{
-dm_add_pk(dm, table, column, check = FALSE, force = FALSE)
+dm_add_pk(dm, table, columns, check = FALSE, force = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{column}{A column of that table.}
+\item{columns}{Columns of that table.}
 
-\item{check}{Boolean, if \code{TRUE}, a check is made if the column is a unique key of the table.}
+\item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
 set for this table.
@@ -23,9 +23,9 @@ If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 An updated \code{dm} with an additional primary key.
 }
 \description{
-\code{dm_add_pk()} marks the specified column as the primary key of the specified table.
+\code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if
-the given column is a unique key of the table.
+the given combination of columns is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
 set key.
 

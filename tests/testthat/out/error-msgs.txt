@@ -32,7 +32,7 @@ ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candidates()
 The given combination of columns (`wrong_fk_colname`, `and_one_more`) is not a foreign key of table `child_table_name` with regards to ref_table `parent_table_name`. Foreign key columns are: (`actual_fk_colname`, `and_one_more`).
 
 > error_txt_rm_fk_col_missing()
-[1] "Parameter `column` has to be set. Pass `NULL` for removing all references."
+[1] "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 
 > error_txt_last_col_missing()
 [1] "The last color cannot be missing."

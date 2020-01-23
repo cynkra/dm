@@ -4,14 +4,14 @@
 \alias{dm_add_fk}
 \title{Add a reference from one table of a \code{\link{dm}} to another}
 \usage{
-dm_add_fk(dm, table, column, ref_table, check = FALSE)
+dm_add_fk(dm, table, columns, ref_table, check = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{column}{The column of \code{table} which is to become the foreign key column and
+\item{columns}{The columns of \code{table} which are to become the foreign key columns that
 reference the primary key of \code{ref_table}.}
 
 \item{ref_table}{The table which \code{table} is referencing.
@@ -24,9 +24,9 @@ This table needs to have a primary key set.}
 An updated \code{dm} with an additional foreign key relation.
 }
 \description{
-\code{dm_add_fk()} marks the specified column as the foreign key of table \code{table} with
+\code{dm_add_fk()} marks the specified columns as the foreign key of table \code{table} with
 respect to the primary key of table \code{ref_table}.
-If \code{check == TRUE}, then it will first check if the values in column \code{column} are a subset
+If \code{check == TRUE}, then it will first check if the values in columns \code{columns} are a subset
 of the values of the primary key in table \code{ref_table}.
 }
 \section{Compound keys}{

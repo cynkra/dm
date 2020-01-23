@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_has_pk}
 \alias{dm_has_pk}
-\title{Does a table of a \code{\link{dm}} object have a column set as primary key?}
+\title{Does a table of a \code{\link{dm}} object have columns set as primary key?}
 \usage{
 dm_has_pk(dm, table)
 }
@@ -15,8 +15,7 @@ dm_has_pk(dm, table)
 A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} otherwise.
 }
 \description{
-\code{dm_has_pk()} checks in the \code{data_model} part
-of the \code{\link{dm}} object if a given table has a column marked as its primary key.
+\code{dm_has_pk()} checks if a given table has columns marked as its primary key.
 }
 \examples{
 library(dplyr)

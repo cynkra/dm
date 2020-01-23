@@ -4,14 +4,14 @@
 \alias{dm_rm_fk}
 \title{Remove the reference(s) from one \code{\link{dm}} table to another}
 \usage{
-dm_rm_fk(dm, table, column, ref_table)
+dm_rm_fk(dm, table, columns, ref_table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{column}{The column of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
+\item{columns}{The columns of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
 If \code{NULL}, all columns will be evaluated.}
 
 \item{ref_table}{The table that \code{table} was referencing.}
