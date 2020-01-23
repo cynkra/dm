@@ -18,11 +18,8 @@ A `zoomed_dm` behaves in most situations like a table and there are mostly no ex
 1. `dm_`: There are two cases for this prefix:
     - The function takes a `dm` object as a first argument
     - The function constructs a `dm` object from other objects
-1. `examine_`: There are two cases for this prefix:
-    - The function throws an error if the respective check is not passed and otherwise returns the first argument invisibly.
-    - The function executes several checks and returns the results in tibble-form. 
-    
-<!-- FIXME: also rename `examine_key()`, `examine_if_subset()`, `examine_set_equality()`? -->
+1. `check_`: Certain tests on the arguments are performed and an error is thrown in case they are not passed. If the tests are passed, the first argument is returned invisibly.
+1. `examine_`: The function executes checks and returns an object containing an overview of the results of the checks. 
 
 Most important extended prefixes `dm_..._`:
 

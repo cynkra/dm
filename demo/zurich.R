@@ -575,20 +575,20 @@ planes %>%
 
 # dm shortcut:
 planes %>%
-  examine_key(tailnum)
+  check_key(tailnum)
 
 try(
   planes %>%
-    examine_key(engines)
+    check_key(engines)
 )
 
 airports %>%
-  examine_key(faa)
+  check_key(faa)
 
 # Why is name not a key candidate for airports?
 try(
   airports %>%
-    examine_key(name)
+    check_key(name)
 )
 
 # NEW NEW NEW: Friendly description
