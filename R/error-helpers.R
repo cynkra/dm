@@ -188,18 +188,18 @@ abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
 
 error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   if (length(wrong_colnames) > 1) {
-    paste0(
+    glue(
       "Not all specified variables ",
-      paste(tick(wrong_colnames), collapse = ", "), " ",
-      "are columns of ", tick(table_name), ". ",
+      "{commas(tick(wrong_colnames))} ",
+      "are columns of {tick(table_name)}. ",
       "Its columns are: \n",
-      paste(tick(actual_colnames), collapse = ", "), "."
+      "{commas(tick(actual_colnames))}."
     )
   } else {
-    paste0(
-      tick(wrong_colnames), " is not a column of ",
-      tick(table_name), ". Its columns are: \n",
-      commas(tick(actual_colnames)), "."
+    glue(
+      "{tick(wrong_colnames)} is not a column of ",
+      "{tick(table_name)}. Its columns are: \n",
+      "{commas(tick(actual_colnames))}."
     )
   }
 }
@@ -210,7 +210,7 @@ abort_dupl_new_id_col_name <- function(table_name) {
 }
 
 error_txt_dupl_new_id_col_name <- function(table_name) {
-  paste0("`new_id_column` can not have an identical name as one of the columns of `", table_name, "`.")
+  glue("`new_id_column` can not have an identical name as one of the columns of {tick(table_name)}.")
 }
 
 abort_no_overwrite <- function() {
@@ -227,7 +227,7 @@ abort_no_types <- function() {
 }
 
 error_txt_no_types <- function() {
-  paste0("`copy_dm_to()` does not support the `types` argument.")
+  "`copy_dm_to()` does not support the `types` argument."
 }
 
 abort_no_indexes <- function() {
@@ -235,7 +235,7 @@ abort_no_indexes <- function() {
 }
 
 error_txt_no_indexes <- function() {
-  paste0("`copy_dm_to()` does not support the `indexes` argument.")
+  "`copy_dm_to()` does not support the `indexes` argument."
 }
 
 abort_no_unique_indexes <- function() {
@@ -243,7 +243,7 @@ abort_no_unique_indexes <- function() {
 }
 
 error_txt_no_unique_indexes <- function() {
-  paste0("`copy_dm_to()` does not support the `unique_indexes` argument.")
+  "`copy_dm_to()` does not support the `unique_indexes` argument."
 }
 
 abort_need_named_vec <- function(table_names) {
@@ -251,10 +251,9 @@ abort_need_named_vec <- function(table_names) {
 }
 
 error_txt_need_named_vec <- function(table_names) {
-  paste0(
+  glue(
     "Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names ",
-    "are the original table names (returned by e.g. `src_tbls()`): ",
-    commas(tick(table_names)), "."
+    "are the original table names (returned by e.g. `src_tbls()`): {commas(tick(table_names))}."
   )
 }
 
@@ -263,7 +262,7 @@ abort_src_not_db <- function() {
 }
 
 error_src_not_db <- function() {
-  paste0("This does not work if the tables of the `dm` are not on a database.")
+  "This does not work if the tables of the `dm` are not on a database."
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
@@ -290,7 +289,7 @@ abort_update_not_supported <- function() {
 }
 
 error_update_not_supported <- function() {
-  paste0("Updating `dm` objects not supported.")
+  "Updating `dm` objects not supported."
 }
 
 # errors when filters are set but they shouldn't be ------------------------------
@@ -353,7 +352,7 @@ abort_squash_limited <- function() {
 }
 
 error_squash_limited <- function() {
-  paste0("`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
+  "`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`."
 }
 
 abort_apply_filters_first <- function(join_name) {
@@ -529,7 +528,7 @@ abort_dm_invalid <- function(why) {
 }
 
 error_dm_invalid <- function(why) {
-  paste0("This `dm` is invalid, reason: ", why)
+  glue("This `dm` is invalid, reason: {why}")
 }
 
 
