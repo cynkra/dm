@@ -67,6 +67,8 @@ test_that("last", {
 })
 
 test_that("bad color", {
+  skip_if_not(getRversion() >= "3.4")
+
   expect_dm_error(
     dm_set_colors(
       dm_nycflights_small,
