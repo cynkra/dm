@@ -108,9 +108,14 @@ get_zoomed_tbl <- function(dm) {
 dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
   check_zoomed(dm)
   new_tbl_name_chr <-
-    if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else {
-      if (is_symbol(enexpr(new_tbl_name))) warning(
-        "The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`.")
+    if (is_null(enexpr(new_tbl_name))) {
+      orig_name_zoomed(dm)
+    } else {
+      if (is_symbol(enexpr(new_tbl_name))) {
+        warning(
+          "The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`."
+        )
+      }
       as_string(enexpr(new_tbl_name))
     }
   names_list <-
