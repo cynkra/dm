@@ -399,7 +399,7 @@ abort_is_not_dm <- function(obj_class) {
 }
 
 error_is_not_dm <- function(obj_class) {
-  glue("Required class `dm` but instead is {paste(tick(obj_class), collapse = ', ')}.")
+  glue("Required class `dm` but instead is {format_classes(obj_class)}.")
 }
 
 
