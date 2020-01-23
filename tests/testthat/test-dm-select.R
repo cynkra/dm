@@ -19,7 +19,7 @@ test_that("dm_rename() works for replacing fks", {
     dm_rename(dm_for_filter, t2, new_d = d, new_e = e) %>%
       dm_get_all_fks_impl(),
     tribble(
-      ~child_table, ~child_fk_col, ~parent_table,
+      ~child_table, ~child_fk_cols, ~parent_table,
       "t2",               "new_d",          "t1",
       "t2",               "new_e",          "t3",
       "t4",                   "j",          "t3",
@@ -59,7 +59,7 @@ test_that("dm_select() works for replacing fks, and removes missing ones", {
     dm_select(dm_for_filter, t2, new_d = d) %>%
       dm_get_all_fks_impl(),
     tribble(
-      ~child_table, ~child_fk_col, ~parent_table,
+      ~child_table, ~child_fk_cols, ~parent_table,
       "t2",               "new_d",          "t1",
       "t4",                   "j",          "t3",
       "t5",                   "l",          "t4",
@@ -73,6 +73,6 @@ test_that("dm_select() removes fks if not in selection", {
     dm_select(dm_for_filter, t2, c, e) %>%
       dm_get_all_fks_impl(),
     dm_get_all_fks_impl(dm_for_filter) %>%
-      filter(!child_fk_col == "d")
+      filter(!child_fk_cols == "d")
   )
 })

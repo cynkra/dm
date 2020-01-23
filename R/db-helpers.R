@@ -45,7 +45,7 @@ build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
 
     fks <-
       dm_get_all_fks_impl(dm) %>%
-      transmute(source_name = child_table, column = child_fk_col, fk = TRUE)
+      transmute(source_name = child_table, column = child_fk_cols, fk = TRUE)
 
     # Need to supply NOT NULL modifiers for primary keys
     # because they are difficult to add to MSSQL after the fact
@@ -102,7 +102,7 @@ create_queries <- function(dest, fk_information) {
 
 queries_set_fk_relations <- function(dest, fk_information) {
   db_child_tables <- fk_information$db_child_table
-  child_fk_cols <- fk_information$child_fk_col
+  child_fk_cols <- fk_information$child_fk_cols
   db_parent_tables <- fk_information$db_parent_table
   parent_pk_col <- fk_information$pk_col
 

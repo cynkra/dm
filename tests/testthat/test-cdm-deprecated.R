@@ -192,7 +192,7 @@ test_that("other FK functions work", {
 
   expect_identical(
     cdm_get_all_fks(dm_for_filter) %>%
-      mutate(child_fk_col = new_keys(child_fk_col)),
+      mutate(child_fk_cols = new_keys(child_fk_cols)),
     dm_get_all_fks(dm_for_filter)
   )
 

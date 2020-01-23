@@ -47,7 +47,7 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
   # adding code for establishing FKs
   # FIXME: this will fail with compound keys
   tbl_fks <- dm_get_all_fks_impl(dm) %>%
-    mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_col}, {parent_table})"))
+    mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_cols}, {parent_table})"))
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
   # without "\n" in the end it looks weird when a warning is issued

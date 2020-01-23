@@ -423,7 +423,7 @@ test_that("key tracking works", {
       dm_update_zoomed() %>%
       dm_get_all_fks_impl() %>%
       filter(child_table == "t2", parent_table == "t3") %>%
-      pull(child_fk_col),
+      pull(child_fk_cols),
     "e_new"
   )
 
@@ -540,8 +540,8 @@ test_that("key tracking works", {
   expect_identical(
     distinct(zoomed_dm, d_new = d) %>% dm_update_zoomed() %>% dm_get_all_fks_impl(),
     dm_get_all_fks_impl(dm_for_filter) %>%
-      filter(child_fk_col != "e") %>%
-      mutate(child_fk_col = if_else(child_fk_col == "d", "d_new", child_fk_col))
+      filter(child_fk_cols != "e") %>%
+      mutate(child_fk_cols = if_else(child_fk_cols == "d", "d_new", child_fk_cols))
   )
 
   expect_identical(
@@ -601,7 +601,7 @@ test_that("key tracking works", {
       dm_get_all_fks_impl(),
     dm_for_flatten %>%
       dm_get_all_fks_impl() %>%
-      filter(child_fk_col != "dim_4_key")
+      filter(child_fk_cols != "dim_4_key")
   )
 
   expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_keys(), set_names(c("d", "e")))

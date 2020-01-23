@@ -143,7 +143,7 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`child_table`}{child table,}
-#'     \item{`child_fk_col`}{foreign key column in child table,}
+#'     \item{`child_fk_cols`}{foreign key column in child table,}
 #'     \item{`parent_table`}{parent table.}
 #'   }
 #'
@@ -157,13 +157,13 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 dm_get_all_fks <- nse(function(dm) {
   check_not_zoomed(dm)
   dm_get_all_fks_impl(dm) %>%
-    mutate(child_fk_col = new_keys(child_fk_col))
+    mutate(child_fk_cols = new_keys(child_fk_cols))
 })
 
 dm_get_all_fks_impl <- function(dm) {
   dm_get_data_model_fks(dm) %>%
-    select(child_table = table, child_fk_col = column, parent_table = ref) %>%
-    arrange(child_table, child_fk_col)
+    select(child_table = table, child_fk_cols = column, parent_table = ref) %>%
+    arrange(child_table, child_fk_cols)
 }
 
 #' Remove the reference(s) from one [`dm`] table to another

@@ -19,7 +19,7 @@ utils::globalVariables(c(
   # dm
   "arrange_col",
   "candidate",
-  "child_fk_col",
+  "child_fk_cols",
   "child_table",
   "colname",
   "color",
