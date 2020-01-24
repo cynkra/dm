@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -61,25 +61,34 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
       <a href="articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
     </li>
     <li>
-      <a href="articles/dm-joining.html">Joining in Relational Data Models</a>
-    </li>
-    <li>
-      <a href="articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
       <a href="articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
+      <a href="articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+    </li>
+    <li>
+      <a href="articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
       <a href="articles/dm-low-level.html">Low level operations</a>
+    </li>
+    <li>
+      <a href="articles/dm-function-naming-logic.html">Function naming logic</a>
+    </li>
+    <li>
+      <a href="articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -287,12 +296,12 @@
 <p>In order to transfer an existing <code>dm</code> object to a DB, you can call <code>dm_copy_to()</code> with the target DB and the <code>dm</code> object:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">src_sqlite &lt;-<span class="st"> </span><span class="kw">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="dt">create =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">src_sqlite</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.29.0 [:memory:]</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.30.1 [:memory:]</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; tbls:</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">nycflights13_remote &lt;-<span class="st"> </span><span class="kw">dm_copy_to</span>(src_sqlite, <span class="kw"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">nycflights13_remote &lt;-<span class="st"> </span><span class="kw"><a href="reference/copy_dm_to.html">copy_dm_to</a></span>(src_sqlite, <span class="kw"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">nycflights13_remote</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.29.0 [:memory:]
+#&gt; src:  sqlite 3.30.1 [:memory:]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
@@ -395,7 +404,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
 <li><a href="https://travis-ci.org/krlmlr/dm"><img src="https://travis-ci.org/krlmlr/dm.svg?branch=master" alt="Travis build status"></a></li>
 <li><a href="https://codecov.io/gh/krlmlr/dm?branch=master"><img src="https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://cran.r-project.org/package=dm"><img src="https://www.r-pkg.org/badges/version/dm" alt="CRAN status"></a></li>

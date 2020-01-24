@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Learn a <code><a href='dm.html'>dm</a></code> object from a database (DB) — dm_learn_from_db • dm</title>
+<title>Create data model from database constraints — dm_learn_from_db • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Learn a <code><a href='dm.html'>dm</a></code> object from a database (DB) — dm_learn_from_db" />
+<meta property="og:title" content="Create data model from database constraints — dm_learn_from_db" />
 <meta property="og:description" content="If there are any permament tables on a DB, a new dm object can be created that contains those tables,
 along with their primary and foreign key constraints.
 Currently this only works with MSSQL and Postgres databases.
@@ -80,7 +80,7 @@ The default database schema will be used; it is currently not possible to parame
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -100,25 +100,34 @@ The default database schema will be used; it is currently not possible to parame
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
       <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
-    </li>
-    <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
+    </li>
+    <li>
+      <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
+    </li>
+    <li>
+      <a href="../articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -146,7 +155,7 @@ The default database schema will be used; it is currently not possible to parame
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Learn a <code><a href='dm.html'>dm</a></code> object from a database (DB)</h1>
+    <h1>Create data model from database constraints</h1>
     
     <div class="hidden name"><code>dm_learn_from_db.Rd</code></div>
     </div>

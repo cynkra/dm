@@ -142,6 +142,12 @@
     <loc>https://krlmlr.github.io/dm/articles/dm-filtering.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-function-naming-logic.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-good-to-know.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html</loc>
   </url>
   <url>
@@ -154,7 +160,13 @@
     <loc>https://krlmlr.github.io/dm/articles/dm-setup.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-version-migration-guide.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-visualization.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-zoom-to-table.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm.html</loc>
@@ -163,21 +175,9 @@
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-db.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/articles/wip/dm-function-naming-logic.html</loc>
-  </url>
-  <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-shiny-dynafilter.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-tips-and-tricks.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/wip/dm-version-migration-guide.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/wip/dm-zoom-to-table.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/wip/good-to-know.html</loc>
   </url>
 </urlset>

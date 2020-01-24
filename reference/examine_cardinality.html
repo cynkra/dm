@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if the relation between two tables of a data model meet the requirements — examine_cardinality • dm</title>
+<title>Check table relations — examine_cardinality • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Test if the relation between two tables of a data model meet the requirements — examine_cardinality" />
+<meta property="og:title" content="Check table relations — examine_cardinality" />
 <meta property="og:description" content="All check_cardinality_?_?() functions test the following conditions:
 Is pk_column is a unique key for parent_table?
 Is the set of values in fk_column of child_table a subset of the set of values of pk_column?
@@ -83,7 +83,7 @@ examine_cardinality() also checks the first two points and subsequently determin
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -103,25 +103,34 @@ examine_cardinality() also checks the first two points and subsequently determin
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
       <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
-    </li>
-    <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
+    </li>
+    <li>
+      <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
+    </li>
+    <li>
+      <a href="../articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -149,7 +158,7 @@ examine_cardinality() also checks the first two points and subsequently determin
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if the relation between two tables of a data model meet the requirements</h1>
+    <h1>Check table relations</h1>
     
     <div class="hidden name"><code>examine_cardinality.Rd</code></div>
     </div>

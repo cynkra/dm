@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -96,25 +96,34 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
       <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
-    </li>
-    <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
+    </li>
+    <li>
+      <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
+    </li>
+    <li>
+      <a href="../articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -177,7 +186,7 @@
         <td>
           <p><code><a href="dm_paste.html">dm_paste()</a></code> </p>
         </td>
-        <td><p>Reverse engineer code for creation of a <code>dm</code></p></td>
+        <td><p>Create R code for a dm object</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -197,7 +206,7 @@
         <td>
           <p><code><a href="dm_rm_tbl.html">dm_rm_tbl()</a></code> </p>
         </td>
-        <td><p>Remove tables from a <code>dm</code></p></td>
+        <td><p>Remove tables</p></td>
       </tr><tr>
         
         <td>
@@ -209,7 +218,7 @@
         <td>
           <p><code><a href="pull_tbl.html">pull_tbl()</a></code> </p>
         </td>
-        <td><p>Retrieve a table from a <code>dm</code> or a <code>zoomed_dm</code></p></td>
+        <td><p>Retrieve a table</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -237,19 +246,19 @@
         <td>
           <p><code><a href="dm_add_pk.html">dm_add_pk()</a></code> <code><a href="dm_add_pk.html">dm_rm_pk()</a></code> </p>
         </td>
-        <td><p>Add/remove a primary key to/from a table in a <code>dm</code> object</p></td>
+        <td><p>Add/remove a primary key</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_has_pk.html">dm_has_pk()</a></code> </p>
         </td>
-        <td><p>Does a table of a <code>dm</code> object have columns set as primary key?</p></td>
+        <td><p>Check for primary key</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_get_pk.html">dm_get_pk()</a></code> </p>
         </td>
-        <td><p>Names of the primary key columns</p></td>
+        <td><p>Primary key column names</p></td>
       </tr><tr>
         
         <td>
@@ -261,7 +270,7 @@
         <td>
           <p><code><a href="enum_pk_candidates.html">enum_pk_candidates()</a></code> <code><a href="enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> </p>
         </td>
-        <td><p>Which columns are candidates for a primary key?</p></td>
+        <td><p>Primary key candidate</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -275,31 +284,31 @@
         <td>
           <p><code><a href="dm_add_fk.html">dm_add_fk()</a></code> <code><a href="dm_add_fk.html">dm_rm_fk()</a></code> </p>
         </td>
-        <td><p>Add/remove references from one table of a <code>dm</code> to another</p></td>
+        <td><p>Add/remove foreign keys</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_has_fk.html">dm_has_fk()</a></code> </p>
         </td>
-        <td><p>Does a reference exist?</p></td>
+        <td><p>Check if foreign keys exists</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_get_fk.html">dm_get_fk()</a></code> </p>
         </td>
-        <td><p>Names of the foreign key columns</p></td>
+        <td><p>Foreign key column names</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code> </p>
         </td>
-        <td><p>Retrieve all foreign key constraints in a <code>dm</code></p></td>
+        <td><p>Get foreign key constraints</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> <code><a href="dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> </p>
         </td>
-        <td><p>Which columns are candidates for a foreign key?</p></td>
+        <td><p>Foreign key candidates</p></td>
       </tr><tr>
         
         <td>
@@ -325,7 +334,7 @@
         <td>
           <p><code><a href="dm_draw.html">dm_draw()</a></code> <code><a href="dm_draw.html">dm_set_colors()</a></code> <code><a href="dm_draw.html">dm_get_colors()</a></code> <code><a href="dm_draw.html">dm_get_available_colors()</a></code> </p>
         </td>
-        <td><p>Draw a diagram of a <code>dm</code>-object's data model</p></td>
+        <td><p>Draw a diagram of the data model</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -339,7 +348,7 @@
         <td>
           <p><code><a href="dm_zoom_to.html">dm_zoom_to()</a></code> <code><a href="dm_zoom_to.html">dm_insert_zoomed()</a></code> <code><a href="dm_zoom_to.html">dm_update_zoomed()</a></code> <code><a href="dm_zoom_to.html">dm_discard_zoomed()</a></code> </p>
         </td>
-        <td><p>Single out a table of a <code>dm</code></p></td>
+        <td><p>Mark table for manipulation</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -401,13 +410,13 @@
         <td>
           <p><code><a href="dm_join_to_tbl.html">dm_join_to_tbl()</a></code> </p>
         </td>
-        <td><p>Perform a join between two tables of a <code>dm</code></p></td>
+        <td><p>Join two tables</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_disambiguate_cols.html">dm_disambiguate_cols()</a></code> </p>
         </td>
-        <td><p>Avoid conflicts in column names</p></td>
+        <td><p>Resolve column name ambiguities</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -421,19 +430,19 @@
         <td>
           <p><code><a href="dm_filter.html">dm_filter()</a></code> <code><a href="dm_filter.html">dm_apply_filters()</a></code> <code><a href="dm_filter.html">dm_apply_filters_to_tbl()</a></code> </p>
         </td>
-        <td><p>Filtering a <code>dm</code> object</p></td>
+        <td><p>Filtering</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_rename.html">dm_rename()</a></code> </p>
         </td>
-        <td><p>Rename one or more columns of a table</p></td>
+        <td><p>Rename columns</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_select.html">dm_select()</a></code> </p>
         </td>
-        <td><p>Select and/or rename one or more columns of a <code>dm</code> table</p></td>
+        <td><p>Select columns</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -447,13 +456,13 @@
         <td>
           <p><code><a href="copy_dm_to.html">copy_dm_to()</a></code> </p>
         </td>
-        <td><p>Copy a <code>dm</code>-object to a different data source</p></td>
+        <td><p>Copy data model to data source</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_learn_from_db.html">dm_learn_from_db()</a></code> </p>
         </td>
-        <td><p>Learn a <code>dm</code> object from a database (DB)</p></td>
+        <td><p>Create data model from database constraints</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -487,31 +496,31 @@
         <td>
           <p><code><a href="dm_examine_constraints.html">dm_examine_constraints()</a></code> </p>
         </td>
-        <td><p>Validate your <code>dm</code>: are all key constraints met?</p></td>
+        <td><p>Validate your data model</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="examine_cardinality.html">check_cardinality_0_n()</a></code> <code><a href="examine_cardinality.html">check_cardinality_1_n()</a></code> <code><a href="examine_cardinality.html">check_cardinality_1_1()</a></code> <code><a href="examine_cardinality.html">check_cardinality_0_1()</a></code> <code><a href="examine_cardinality.html">examine_cardinality()</a></code> </p>
         </td>
-        <td><p>Test if the relation between two tables of a data model meet the requirements</p></td>
+        <td><p>Check table relations</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="check_key.html">check_key()</a></code> </p>
         </td>
-        <td><p>Test if a column (combination) is unique key of a table</p></td>
+        <td><p>Check if column(s) can be used as keys</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="check_subset.html">check_subset()</a></code> </p>
         </td>
-        <td><p>Test if the values of one column are a subset of the values of another column</p></td>
+        <td><p>Check column values for subset</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="check_set_equality.html">check_set_equality()</a></code> </p>
         </td>
-        <td><p>Test if the value sets of two different columns in two different tables are the same</p></td>
+        <td><p>Check column values for set equality</p></td>
       </tr>
     </tbody><tbody>
       <tr>

@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -96,25 +96,34 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
       <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
-    </li>
-    <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
       <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
     </li>
     <li>
+      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+    </li>
+    <li>
+      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+    </li>
+    <li>
+      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
+    </li>
+    <li>
+      <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
+    </li>
+    <li>
+      <a href="../articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -146,26 +155,23 @@
       
     </div>
 
-    <div id="dm-0-0-6-9001" class="section level1">
+    <div id="dm-0-1-0" class="section level1">
 <h1 class="page-header">
-<a href="#dm-0-0-6-9001" class="anchor"></a>dm 0.0.6.9001</h1>
+<a href="#dm-0-1-0" class="anchor"></a>dm 0.1.0</h1>
 <ul>
+<li>Package is now in the “maturing” lifecycle (#154).</li>
 <li>
 <code><a href="../reference/dplyr_table_manipulation.html">filter.zoomed_dm()</a></code> no longer sets the filter.</li>
-<li>Prepare <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and other key-related functions for compound keys (#239).</li>
 <li>
 <code>examine_()</code> functions never throw an error (#238).</li>
-<li>{tidyselect} interface for setting colors (#162).</li>
-<li>API overhaul (#233): <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code>, <code><a href="../reference/dm_zoom_to.html">dm_update_zoomed()</a></code> and <code><a href="../reference/dm_zoom_to.html">dm_discard_zoomed()</a></code>; <code>check_()</code> -&gt; <code>examine_()</code>; <code><a href="../reference/dm_get_filters.html">dm_get_filters()</a></code> -&gt; <code>dm_get_filter()</code>.</li>
-<li>Avoid warnings in <code>R CMD check</code> with dev versions of dependencies.</li>
-</ul>
-</div>
-    <div id="dm-0-0-6-9000" class="section level1">
-<h1 class="page-header">
-<a href="#dm-0-0-6-9000" class="anchor"></a>dm 0.0.6.9000</h1>
-<ul>
+<li>API overhaul: <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code>, <code><a href="../reference/dm_zoom_to.html">dm_update_zoomed()</a></code> and <code><a href="../reference/dm_zoom_to.html">dm_discard_zoomed()</a></code>; <code>check_()</code> -&gt; <code>examine_()</code>; <code><a href="../reference/dm_get_filters.html">dm_get_filters()</a></code> -&gt; <code>dm_get_filter()</code> (#233).</li>
 <li>New <code>$.zoomed_dm()</code>, <code>[.zoomed_dm()</code>, <code>[[.zoomed_dm()</code>, <code>length.zoomed_dm()</code>, <code>names.zoomed_dm()</code>, <code>tbl_vars.zoomed_dm()</code> (#199, #216).</li>
 <li>New <code><a href="https://rdrr.io/r/base/list.html">as.list()</a></code> methods (#213).</li>
+<li>Help pages for dplyr methods (#209).</li>
+<li>New migration guide from dm &lt;= 0.0.5 (#234).</li>
+<li>New {tidyselect} interface for setting colors (#162).</li>
+<li>Prepare <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and other key-related functions for compound keys (#239).</li>
+<li>Avoid warnings in <code>R CMD check</code> with dev versions of dependencies.</li>
 <li>Improve error messages for missing tables (#220).</li>
 </ul>
 </div>
@@ -541,8 +547,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#dm-0-0-6-9001">0.0.6.9001</a></li>
-        <li><a href="#dm-0-0-6-9000">0.0.6.9000</a></li>
+        <li><a href="#dm-0-1-0">0.1.0</a></li>
         <li><a href="#dm-0-0-6">0.0.6</a></li>
         <li><a href="#dm-0-0-5">0.0.5</a></li>
         <li><a href="#dm-0-0-4">0.0.4</a></li>
