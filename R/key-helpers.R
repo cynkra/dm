@@ -20,7 +20,8 @@
 #'
 #' @export
 #' @examples
-#' dm_examine_constraints(dm_nycflights13())
+#' dm_nycflights13() %>%
+#'   dm_examine_constraints()
 dm_examine_constraints <- function(dm) {
   check_not_zoomed(dm)
   dm_examine_constraints_impl(dm) %>%

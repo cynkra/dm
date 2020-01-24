@@ -97,4 +97,7 @@ try(check_cardinality_1_1(d1, a, d2, c))
 
 # This passes:
 check_cardinality_0_1(d1, a, d3, c)
+
+# Returns the kind of cardinality
+examine_cardinality(d1, a, d2, c)
 }

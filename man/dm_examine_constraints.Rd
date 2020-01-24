@@ -29,5 +29,6 @@ For the foreign key constraints, the tests check if for each foreign key constra
 form a subset of the values of the referenced column.
 }
 \examples{
-dm_examine_constraints(dm_nycflights13())
+dm_nycflights13() \%>\%
+  dm_examine_constraints()
 }

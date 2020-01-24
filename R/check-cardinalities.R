@@ -148,6 +148,10 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 
 #' @rdname examine_cardinality
 #' @export
+#' @examples
+#'
+#' # Returns the kind of cardinality
+#' examine_cardinality(d1, a, d2, c)
 examine_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
   pkc <- enexpr(pk_column)
