@@ -153,20 +153,26 @@ navbar:
     href: reference/index.html
   - text: Articles
     menu:
-    - text: Class 'dm' and basic operations
-      href: articles/dm-class-and-basic-operations.html
-    - text: Defining a 'dm' object for your data
-      href: articles/dm-setup.html
     - text: Introduction to Relational Data Models
       href: articles/dm-introduction-relational-data-models.html
-    - text: Joining in Relational Data Models
-      href: articles/dm-joining.html
-    - text: Filtering in Relational Data Models
-      href: articles/dm-filtering.html
+    - text: Class 'dm' and basic operations
+      href: articles/dm-class-and-basic-operations.html
     - text: Visualizing 'dm' objects
       href: articles/dm-visualization.html
+    - text: Joining in Relational Data Models
+      href: articles/dm-joining.html
+    - text: Zooming and manipulating tables
+      href: articles/dm-zoom-to-table.html
+    - text: Filtering in Relational Data Models
+      href: articles/dm-filtering.html
+    - text: Defining a 'dm' object for your data
+      href: articles/dm-setup.html
     - text: Low level operations
       href: articles/dm-low-level.html
+    - text: Function naming logic
+      href: articles/dm-function-naming-logic.html
+    - text: 'Migration guide: ''cdm'' -> ''dm'''
+      href: articles/dm-version-migration-guide.html
   - text: News
     href: news/index.html
   right:
