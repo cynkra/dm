@@ -50,7 +50,7 @@ The outcome of the join operation determines the value of the \code{why} column 
 \examples{
 dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
 
-dm_zoom_to_tbl(dm_nycflights13(), flights) \%>\%
+dm_zoom_to(dm_nycflights13(), flights) \%>\%
   enum_fk_candidates(airports)
 }
 \seealso{

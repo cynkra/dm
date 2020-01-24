@@ -42,7 +42,7 @@ test_that("key tracking works", {
     unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       dm_add_fk(t2, new_col, t6) %>%
-      dm_zoom_to_tbl(t2) %>%
+      dm_zoom_to(t2) %>%
       separate(new_col, c("c", "e"), remove = TRUE) %>%
       dm_update_zoomed() %>%
       get_all_keys("t2"),
@@ -53,7 +53,7 @@ test_that("key tracking works", {
     unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       dm_add_fk(t2, new_col, t6) %>%
-      dm_zoom_to_tbl(t2) %>%
+      dm_zoom_to(t2) %>%
       separate(new_col, c("c", "e"), remove = FALSE) %>%
       dm_update_zoomed() %>%
       get_all_keys("t2"),

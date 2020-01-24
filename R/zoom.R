@@ -7,7 +7,7 @@
 #' @inheritParams dm_add_pk
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @details `dm_zoom_to_tbl()`: zooms to the given table.
+#' @details `dm_zoom_to()`: zooms to the given table.
 #'
 #' `dm_update_zoomed()`: overwrites the originally zoomed table with the manipulated table.
 #' The filter conditions for the zoomed table are added to the original filter conditions.
@@ -38,13 +38,13 @@
 #'
 #' And -- last but not least -- also the {tidyr}-functions `unite()` and `separate()` are supported for `zoomed_dm`.
 #'
-#' @rdname dm_zoom_to_tbl
+#' @rdname dm_zoom_to
 #'
-#' @return For `dm_zoom_to_tbl()`: A `zoomed_dm` object.
+#' @return For `dm_zoom_to()`: A `zoomed_dm` object.
 #'
 #' @examples
 #' library(dplyr)
-#' flights_zoomed <- dm_zoom_to_tbl(dm_nycflights13(), flights)
+#' flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 #'
 #' flights_zoomed
 #'
@@ -65,11 +65,11 @@
 #' # discard the zoomed table
 #' dm_discard_zoomed(flights_zoomed_transformed)
 #' @export
-dm_zoom_to_tbl <- function(dm, table) {
+dm_zoom_to <- function(dm, table) {
   # FIXME: to include in documentation after #185:
   # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
   check_dm(dm)
-  if (is_zoomed(dm)) abort_no_zoom_allowed()
+  check_not_zoomed(dm)
   # for now only one table can be zoomed on
   zoom <- as_string(ensym(table))
   check_correct_input(dm, zoom)
@@ -98,17 +98,26 @@ get_zoomed_tbl <- function(dm) {
     pluck(1)
 }
 
-#' @rdname dm_zoom_to_tbl
+#' @rdname dm_zoom_to
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @return For `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_zoomed_out()`: A `dm` object.
+#' @return For `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`: A `dm` object.
 #'
 #' @export
 dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
-  if (!is_zoomed(dm)) abort_no_table_zoomed()
+  check_zoomed(dm)
   new_tbl_name_chr <-
-    if (is_null(enexpr(new_tbl_name))) orig_name_zoomed(dm) else as_string(enexpr(new_tbl_name))
+    if (is_null(enexpr(new_tbl_name))) {
+      orig_name_zoomed(dm)
+    } else {
+      if (is_symbol(enexpr(new_tbl_name))) {
+        warning(
+          "The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`."
+        )
+      }
+      as_string(enexpr(new_tbl_name))
+    }
   names_list <-
     repair_table_names(old_names = src_tbls_impl(dm), new_names = new_tbl_name_chr, repair, quiet)
   # rename dm in case of name repair
@@ -147,7 +156,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     dm_discard_zoomed()
 }
 
-#' @rdname dm_zoom_to_tbl
+#' @rdname dm_zoom_to
 #' @export
 dm_update_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
@@ -167,7 +176,7 @@ dm_update_zoomed <- function(dm) {
     dm_discard_zoomed()
 }
 
-#' @rdname dm_zoom_to_tbl
+#' @rdname dm_zoom_to
 #' @export
 dm_discard_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {

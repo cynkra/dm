@@ -83,7 +83,7 @@ cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)
 # when using `new_cdm_forward_2`: note in R CMD check
 cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
-  dm_zoom_to_tbl(dm, {{ table }}) %>%
+  dm_zoom_to(dm, {{ table }}) %>%
     filter(...) %>%
     dm_update_zoomed()
 }
@@ -280,7 +280,7 @@ cdm_rename <- new_cdm_forward_2(dm_rename)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_zoom_to_tbl <- new_cdm_forward_2(dm_zoom_to_tbl)
+cdm_zoom_to_tbl <- new_cdm_forward_2(dm_zoom_to, old_fwd_name = "cdm_zoom_to_tbl", new_name = "dm_zoom_to")
 
 #' @rdname deprecated
 #' @keywords internal

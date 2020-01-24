@@ -325,25 +325,25 @@ test_that("dm_select() and dm_rename() work", {
   )
 })
 
-test_that("dm_zoom_to_tbl() and related functions work", {
+test_that("dm_zoom_to() and related functions work", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t1),
-    dm_zoom_to_tbl(dm_for_filter, t1)
+    dm_zoom_to(dm_for_filter, t1)
   )
 
   expect_equivalent_dm(
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% cdm_insert_zoomed_tbl("another_name"),
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_insert_zoomed("another_name")
+    dm_zoom_to(dm_for_filter, t1) %>% cdm_insert_zoomed_tbl("another_name"),
+    dm_zoom_to(dm_for_filter, t1) %>% dm_insert_zoomed("another_name")
   )
 
   expect_equivalent_dm(
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% cdm_update_zoomed_tbl(),
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_update_zoomed()
+    dm_zoom_to(dm_for_filter, t1) %>% cdm_update_zoomed_tbl(),
+    dm_zoom_to(dm_for_filter, t1) %>% dm_update_zoomed()
   )
 
   expect_equivalent_dm(
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% cdm_zoom_out(),
-    dm_zoom_to_tbl(dm_for_filter, t1) %>% dm_discard_zoomed()
+    dm_zoom_to(dm_for_filter, t1) %>% cdm_zoom_out(),
+    dm_zoom_to(dm_for_filter, t1) %>% dm_discard_zoomed()
   )
 })

@@ -275,7 +275,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #' @examples
 #' dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
 #'
-#' dm_zoom_to_tbl(dm_nycflights13(), flights) %>%
+#' dm_zoom_to(dm_nycflights13(), flights) %>%
 #'   enum_fk_candidates(airports)
 #' @export
 dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {

@@ -138,7 +138,7 @@ test_that("basic test: 'slice()'-methods work", {
   # silent when no PK available
   expect_silent(
     expect_identical(
-      slice(dm_zoom_to_tbl(dm_for_disambiguate, iris_3), 1:3) %>% get_zoomed_tbl(),
+      slice(dm_zoom_to(dm_for_disambiguate, iris_3), 1:3) %>% get_zoomed_tbl(),
       slice(iris_3, 1:3)
     )
   )
@@ -236,7 +236,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 
   # multi-column "by" argument
   expect_identical(
-    dm_zoom_to_tbl(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
+    dm_zoom_to(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
     left_join(
       iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
       iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
@@ -277,7 +277,7 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
   )
 
   expect_dm_error(
-    inner_join(dm_zoom_to_tbl(dm_for_filter, t1), t7),
+    inner_join(dm_zoom_to(dm_for_filter, t1), t7),
     "table_not_in_dm"
   )
 })
@@ -358,7 +358,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 
   # multi-column "by" argument
   expect_identical(
-    dm_zoom_to_tbl(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
+    dm_zoom_to(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
     left_join(
       iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
       iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
@@ -403,10 +403,10 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
 # test key tracking for all methods ---------------------------------------
 
 # dm_for_filter, zoomed to t2; PK: c; 2 outgoing FKs: d, e; no incoming FKS
-zoomed_grouped_out_dm <- dm_zoom_to_tbl(dm_for_filter, t2) %>% group_by(c, e)
+zoomed_grouped_out_dm <- dm_zoom_to(dm_for_filter, t2) %>% group_by(c, e)
 
 # dm_for_filter, zoomed to t3; PK: f; 2 incoming FKs: t4$j, t2$e; no outgoing FKS:
-zoomed_grouped_in_dm <- dm_zoom_to_tbl(dm_for_filter, t3) %>% group_by(g)
+zoomed_grouped_in_dm <- dm_zoom_to(dm_for_filter, t3) %>% group_by(g)
 
 test_that("key tracking works", {
 
@@ -551,21 +551,21 @@ test_that("key tracking works", {
 
   # keys tracking when there are no keys to track
   expect_identical(
-    dm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+    dm_zoom_to(dm_nycflights_small, weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 
   expect_identical(
-    dm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+    dm_zoom_to(dm_nycflights_small, weather) %>%
       summarize(avg_wind_speed = mean(wind_speed)) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
   )
 
   expect_identical(
-    dm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+    dm_zoom_to(dm_nycflights_small, weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
@@ -573,21 +573,21 @@ test_that("key tracking works", {
 
   # keys tracking when there are no keys to track
   expect_identical(
-    dm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+    dm_zoom_to(dm_nycflights_small, weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 
   expect_identical(
-    dm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+    dm_zoom_to(dm_nycflights_small, weather) %>%
       summarize(avg_wind_speed = mean(wind_speed)) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
   )
 
   expect_identical(
-    dm_zoom_to_tbl(dm_nycflights_small, weather) %>%
+    dm_zoom_to(dm_nycflights_small, weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
@@ -595,7 +595,7 @@ test_that("key tracking works", {
 
   expect_identical(
     dm_for_flatten %>%
-      dm_zoom_to_tbl(fact) %>%
+      dm_zoom_to(fact) %>%
       select(dim_1_key, dim_3_key, dim_2_key) %>%
       dm_update_zoomed() %>%
       dm_get_all_fks_impl(),
@@ -610,7 +610,7 @@ test_that("key tracking works", {
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
-    dm_zoom_to_tbl(dm_for_filter, t2) %>%
+    dm_zoom_to(dm_for_filter, t2) %>%
       filter(d < 6) %>%
       rename(c_new = c, d_new = d) %>%
       dm_update_zoomed(),
@@ -632,7 +632,7 @@ test_that("can use column as primary and foreign key", {
 
   expect_equivalent_dm(
     dm %>%
-      dm_zoom_to_tbl(f) %>%
+      dm_zoom_to(f) %>%
       dm_update_zoomed(),
     dm
   )
@@ -641,7 +641,7 @@ test_that("can use column as primary and foreign key", {
 test_that("'summarize_at()' etc. work", {
   expect_identical(
     dm_nycflights_small %>%
-      dm_zoom_to_tbl(airports) %>%
+      dm_zoom_to(airports) %>%
       summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max)) %>%
       get_zoomed_tbl(),
     pull_tbl(dm_nycflights_small, airports) %>%
@@ -650,7 +650,7 @@ test_that("'summarize_at()' etc. work", {
 
   expect_identical(
     dm_nycflights_small %>%
-      dm_zoom_to_tbl(airports) %>%
+      dm_zoom_to(airports) %>%
       select(3:6) %>%
       summarize_all(list(mean = mean, median = median)) %>%
       get_zoomed_tbl(),
@@ -661,7 +661,7 @@ test_that("'summarize_at()' etc. work", {
 
   expect_identical(
     dm_nycflights_small %>%
-      dm_zoom_to_tbl(airports) %>%
+      dm_zoom_to(airports) %>%
       summarize_if(is_double, list(mean = mean, median = median)) %>%
       get_zoomed_tbl(),
     pull_tbl(dm_nycflights_small, airports) %>%
