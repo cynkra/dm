@@ -121,7 +121,7 @@ abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
 }
 
 error_txt_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                                parent_table_name, actual_fk_colnames) {
+                                 parent_table_name, actual_fk_colnames) {
   glue(
     "The given combination of columns ({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
     "{tick(child_table_name)} with regards to ref_table {tick(parent_table_name)}. ",
