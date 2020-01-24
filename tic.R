@@ -51,9 +51,7 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
       add_step(step_push_deploy())
   }
 } else {
-  # Examples are slow:
-  #do_package_checks(error_on = if (getRversion() >= "3.4") "note" else "warning")
-  do_package_checks()
+  do_package_checks(error_on = if (getRversion() >= "3.4") "note" else "warning")
 
   if (ci_has_env("TIC_BUILD_PKGDOWN")) {
     do_pkgdown()
