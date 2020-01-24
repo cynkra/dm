@@ -93,7 +93,7 @@ flights_zoomed
 
 flights_zoomed_transformed <-
   flights_zoomed \%>\%
-  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) \%>\%
+  mutate(am_pm_dep = ifelse(dep_time < 1200, "am", "pm")) \%>\%
   # `by`-argument of `left_join()` can be explicitly given
   # otherwise the key-relation is used
   left_join(airports) \%>\%
