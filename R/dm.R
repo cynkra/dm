@@ -230,7 +230,7 @@ validate_dm <- function(x) {
       "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
     )
   }
-  if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
+  if (!all_same_source(def$data)) abort_dm_invalid(error_txt_not_same_src())
 
   if (nrow(def) == 0) {
     return(invisible(x))
