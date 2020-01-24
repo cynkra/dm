@@ -180,7 +180,7 @@ navbar:
     href: https://github.com/krlmlr/dm
 
 development:
-  mode: unreleased
+  mode: auto
 
 authors:
   Kirill Müller:
