@@ -62,6 +62,9 @@ dplyr::src_tbls
 dplyr::tbl
 
 #' @export
+dplyr::arrange
+
+#' @export
 tidyr::unite
 
 #' @export
