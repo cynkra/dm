@@ -23,6 +23,7 @@ dm_get_referencing_tables(dm_nycflights13(), airports)
 dm_get_referencing_tables(dm_nycflights13(), flights)
 }
 \seealso{
-Other functions utilizing foreign key relations: \code{\link{dm_is_referenced}}
+Other functions utilizing foreign key relations: 
+\code{\link{dm_is_referenced}()}
 }
 \concept{functions utilizing foreign key relations}

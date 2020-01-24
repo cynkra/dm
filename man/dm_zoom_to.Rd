@@ -5,12 +5,11 @@
 \alias{dm_insert_zoomed}
 \alias{dm_update_zoomed}
 \alias{dm_discard_zoomed}
-\title{Mark table for usage}
+\title{Mark table for manipulation}
 \usage{
 dm_zoom_to(dm, table)
 
-dm_insert_zoomed(dm, new_tbl_name = NULL, repair = "unique",
-  quiet = FALSE)
+dm_insert_zoomed(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE)
 
 dm_update_zoomed(dm)
 

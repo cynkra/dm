@@ -37,8 +37,10 @@ dm_nycflights13(cycle = TRUE) \%>\%
   dm_get_fk(flights, airports)
 }
 \seealso{
-Other foreign key functions: \code{\link{dm_add_fk}},
-  \code{\link{dm_enum_fk_candidates}},
-  \code{\link{dm_get_all_fks}}, \code{\link{dm_has_fk}}
+Other foreign key functions: 
+\code{\link{dm_add_fk}()},
+\code{\link{dm_enum_fk_candidates}()},
+\code{\link{dm_get_all_fks}()},
+\code{\link{dm_has_fk}()}
 }
 \concept{foreign key functions}

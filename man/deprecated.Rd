@@ -67,16 +67,34 @@ cdm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 
 cdm_rm_tbl(dm, ...)
 
-cdm_copy_to(dest, dm, ..., types = NULL, overwrite = NULL,
-  indexes = NULL, unique_indexes = NULL, set_key_constraints = TRUE,
-  unique_table_names = FALSE, table_names = NULL, temporary = TRUE)
+cdm_copy_to(
+  dest,
+  dm,
+  ...,
+  types = NULL,
+  overwrite = NULL,
+  indexes = NULL,
+  unique_indexes = NULL,
+  set_key_constraints = TRUE,
+  unique_table_names = FALSE,
+  table_names = NULL,
+  temporary = TRUE
+)
 
 cdm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 
-cdm_draw(dm, rankdir = "LR", col_attr = "column",
-  view_type = "keys_only", columnArrows = TRUE, graph_attrs = "",
-  node_attrs = "", edge_attrs = "", focus = NULL,
-  graph_name = "Data Model")
+cdm_draw(
+  dm,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model"
+)
 
 cdm_set_colors(dm, ...)
 
@@ -144,8 +162,12 @@ cdm_rename(dm, table, ...)
 
 cdm_zoom_to_tbl(dm, table)
 
-cdm_insert_zoomed_tbl(dm, new_tbl_name = NULL, repair = "unique",
-  quiet = FALSE)
+cdm_insert_zoomed_tbl(
+  dm,
+  new_tbl_name = NULL,
+  repair = "unique",
+  quiet = FALSE
+)
 
 cdm_update_zoomed_tbl(dm)
 

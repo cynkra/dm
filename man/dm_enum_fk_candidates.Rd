@@ -3,7 +3,7 @@
 \name{dm_enum_fk_candidates}
 \alias{dm_enum_fk_candidates}
 \alias{enum_fk_candidates}
-\title{Foreign key candidate}
+\title{Foreign key candidates}
 \usage{
 dm_enum_fk_candidates(dm, table, ref_table)
 
@@ -67,8 +67,10 @@ dm_nycflights13() \%>\%
   enum_fk_candidates(airports)
 }
 \seealso{
-Other foreign key functions: \code{\link{dm_add_fk}},
-  \code{\link{dm_get_all_fks}}, \code{\link{dm_get_fk}},
-  \code{\link{dm_has_fk}}
+Other foreign key functions: 
+\code{\link{dm_add_fk}()},
+\code{\link{dm_get_all_fks}()},
+\code{\link{dm_get_fk}()},
+\code{\link{dm_has_fk}()}
 }
 \concept{foreign key functions}

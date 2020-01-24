@@ -74,6 +74,7 @@ dm_nycflights13() \%>\%
   dm_flatten_to_tbl(flights)
 }
 \seealso{
-Other flattening functions: \code{\link{dm_join_to_tbl}}
+Other flattening functions: 
+\code{\link{dm_join_to_tbl}()}
 }
 \concept{flattening functions}

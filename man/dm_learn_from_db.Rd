@@ -40,6 +40,7 @@ if (FALSE) {
 }
 }
 \seealso{
-Other DB interaction functions: \code{\link{copy_dm_to}}
+Other DB interaction functions: 
+\code{\link{copy_dm_to}()}
 }
 \concept{DB interaction functions}

@@ -74,8 +74,10 @@ dm_nycflights13() \%>\%
   dm_draw()
 }
 \seealso{
-Other primary key functions: \code{\link{dm_get_all_pks}},
-  \code{\link{dm_get_pk}}, \code{\link{dm_has_pk}},
-  \code{\link{enum_pk_candidates}}
+Other primary key functions: 
+\code{\link{dm_get_all_pks}()},
+\code{\link{dm_get_pk}()},
+\code{\link{dm_has_pk}()},
+\code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}
