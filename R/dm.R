@@ -650,6 +650,13 @@ str.zoomed_dm <- function(object, ...) {
   str(object)
 }
 
+#' \pkg{dplyr} table retrieval, table info and DB interaction methods
+#'
+#' Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples).
+#' @param src A \pkg{dplyr} table source object.
+#' @param from A length one character variable containing the name of the requested table
+#' @param ... See original function documentation
+#' @rdname dplyr_db
 #' @export
 tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
@@ -660,6 +667,8 @@ tbl.dm <- function(src, from, ...) {
   dm_get_tables_impl(dm)[[from]]
 }
 
+#' @param x Either a `dm` or a `zoomed_dm`; the latter leads to an error for `src_tbls.dm()`
+#' @rdname dplyr_db
 #' @export
 compute.dm <- function(x, ...) {
   dm_apply_filters(x) %>%
@@ -668,6 +677,7 @@ compute.dm <- function(x, ...) {
     new_dm3()
 }
 
+#' @rdname dplyr_db
 #' @export
 compute.zoomed_dm <- function(x, ...) {
   zoomed_df <- get_zoomed_tbl(x) %>%
@@ -675,7 +685,7 @@ compute.zoomed_dm <- function(x, ...) {
   replace_zoomed_tbl(x, zoomed_df)
 }
 
-
+#' @rdname dplyr_db
 #' @export
 src_tbls.dm <- function(x) {
   # The x argument here is a dm object
@@ -688,6 +698,14 @@ src_tbls_impl <- function(dm) {
   dm_get_def(dm)$table
 }
 
+#' @rdname dplyr_db
+#' @param dest For `copy_to.dm`: The `dm` object to which a table should be copied.
+#' @param df For `copy_to.dm`: A table (can be on a different `src`)
+#' @param name For `copy_to.dm`: See [`dplyr::copy_to`]
+#' @param overwrite For `copy_to.dm`: See [`dplyr::copy_to`]; `TRUE` leads to an error
+#' @param temporary For `copy_to.dm`: If the `dm` is on a DB, the copied version of `df` will only be written temporarily to the DB.
+#' After the connection is reset it will no longer be available.
+#' @param repair,quiet Name repair options; cf. [`vctrs::vec_as_names`]
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
   if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
@@ -710,6 +728,7 @@ copy_to.zoomed_dm <- function(dest, df, name, overwrite, ...) {
   check_not_zoomed(.data)
 }
 
+#' @rdname dplyr_db
 #' @export
 collect.dm <- function(x, ...) {
   x <-
