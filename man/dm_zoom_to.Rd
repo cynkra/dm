@@ -53,17 +53,17 @@ For \code{dm_insert_zoomed()}, \code{dm_update_zoomed()} and \code{dm_discard_zo
 \description{
 Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
 context of the \code{dm} object.
-}
-\details{
-\code{dm_zoom_to()}: zooms to the given table.
 
-\code{dm_update_zoomed()}: overwrites the originally zoomed table with the manipulated table.
+\code{dm_zoom_to()} zooms to the given table.
+
+\code{dm_update_zoomed()} overwrites the originally zoomed table with the manipulated table.
 The filter conditions for the zoomed table are added to the original filter conditions.
 
-\code{dm_insert_zoomed()}: adds a new table to the \code{dm}.
+\code{dm_insert_zoomed()} adds a new table to the \code{dm}.
 
-\code{dm_discard_zoomed()}: discards the zoomed table and returns the \code{dm} as it was before zooming.
-
+\code{dm_discard_zoomed()} discards the zoomed table and returns the \code{dm} as it was before zooming.
+}
+\details{
 Whenever possible, the key relations of the original table are transferred to the resulting table
 when using \code{dm_insert_zoomed()} or \code{dm_update_zoomed()}.
 
@@ -82,13 +82,11 @@ transferred to the new table of the \code{dm}
 }
 
 Furthermore, the different \code{join()}-variants from {dplyr} are also supported (apart from \code{nest_join()}).
-The join-methods for \code{zoomed_dm} have an extra argument \code{select} that let's you choose the columns of the RHS table
-in a {tidyselect} manner.
+The join-methods for \code{zoomed_dm} have an extra argument \code{select} that allows choosing the columns of the RHS table.
 
 And -- last but not least -- also the {tidyr}-functions \code{unite()} and \code{separate()} are supported for \code{zoomed_dm}.
 }
 \examples{
-library(dplyr)
 flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 
 flights_zoomed
@@ -101,12 +99,18 @@ flights_zoomed_transformed <-
   left_join(airports) \%>\%
   select(year:dep_time, am_pm_dep, everything())
 
+flights_zoomed_transformed
+
 # replace table `flights` with the zoomed table
-dm_update_zoomed(flights_zoomed_transformed)
+flights_zoomed_transformed \%>\%
+  dm_update_zoomed()
 
 # insert the zoomed table as a new table
-dm_insert_zoomed(flights_zoomed_transformed, extended_flights)
+flights_zoomed_transformed \%>\%
+  dm_insert_zoomed("extended_flights") \%>\%
+  dm_draw()
 
 # discard the zoomed table
-dm_discard_zoomed(flights_zoomed_transformed)
+flights_zoomed_transformed \%>\%
+  dm_discard_zoomed()
 }

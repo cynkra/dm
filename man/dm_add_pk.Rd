@@ -53,27 +53,24 @@ with current semantics.
 }
 
 \examples{
-library(dplyr)
-
 nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
+nycflights_dm \%>\%
+  dm_draw()
 
 # the following works
-dm_add_pk(nycflights_dm, planes, tailnum)
-dm_add_pk(nycflights_dm, airports, faa, check = TRUE)
-dm_add_pk(nycflights_dm, planes, manufacturer)
+nycflights_dm \%>\%
+  dm_add_pk(planes, tailnum) \%>\%
+  dm_add_pk(airports, faa, check = TRUE) \%>\%
+  dm_draw()
 
 # the following does not work (throws an error)
-try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
-library(dplyr)
-nycflights_dm <- dm_nycflights13()
-
-nycflights_dm \%>\%
+try(
+  nycflights_dm \%>\%
+    dm_add_pk(planes, manufacturer, check = TRUE)
+)
+dm_nycflights13() \%>\%
   dm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
-  dm_has_pk(planes)
-
-nycflights_dm \%>\%
-  dm_rm_pk(planes, rm_referencing_fks = TRUE) \%>\%
-  dm_has_pk(planes)
+  dm_draw()
 }
 \seealso{
 Other primary key functions: 

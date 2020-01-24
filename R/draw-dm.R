@@ -21,7 +21,6 @@
 #' when printed, produces the output seen in the viewer as a side effect.
 #'
 #' @examples
-#' library(dplyr)
 #' dm_draw(dm_nycflights13())
 #' dm_draw(dm_nycflights13(cycle = TRUE))
 #' dm_get_available_colors()

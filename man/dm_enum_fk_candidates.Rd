@@ -3,7 +3,7 @@
 \name{dm_enum_fk_candidates}
 \alias{dm_enum_fk_candidates}
 \alias{enum_fk_candidates}
-\title{Find foreign key candidates in a table}
+\title{Which columns are candidates for a foreign key?}
 \usage{
 dm_enum_fk_candidates(dm, table, ref_table)
 
@@ -27,6 +27,8 @@ A tibble with the following columns:
 }
 }
 \description{
+\lifecycle{questioning}
+
 Determine which columns would be good candidates to be used as foreign keys of a table,
 to reference the primary key column of another table of the \code{\link{dm}} object.
 }
@@ -47,6 +49,15 @@ The outcome of the join operation determines the value of the \code{why} column 
 
 \code{enum_fk_candidates()} works like \code{dm_enum_fk_candidates()} with the zoomed table as \code{table}.
 }
+\section{Life cycle}{
+
+These functions are marked "questioning" because we are not yet sure about
+the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
+variants.
+Changing the interface later seems harmless because these functions are
+most likely used interactively.
+}
+
 \examples{
 dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
 

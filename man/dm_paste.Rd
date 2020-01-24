@@ -28,3 +28,10 @@ only a subset of the columns of the original tables is used for the \code{dm}).
 Mind, that it is assumed, that the tables of the existing \code{dm} are available in the global environment under their names
 within the \code{dm}.
 }
+\examples{
+dm_nycflights13() \%>\%
+  dm_paste()
+
+dm_nycflights13() \%>\%
+  dm_paste(select = TRUE)
+}

@@ -80,7 +80,6 @@ These are the standard colors also returned by \code{grDevices::colors()} plus a
 table color with the name "default".
 }
 \examples{
-library(dplyr)
 dm_draw(dm_nycflights13())
 dm_draw(dm_nycflights13(cycle = TRUE))
 dm_get_available_colors()

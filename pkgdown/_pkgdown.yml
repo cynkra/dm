@@ -16,7 +16,7 @@ reference:
   - dm_get_src
   - dm_get_con
   - dm_get_tables
-  - dm_get_filter
+  - dm_get_filters
   - dm_paste
 
 - title: Managing the tables of a `dm`
@@ -56,7 +56,7 @@ reference:
   - dm_get_colors
   - dm_get_available_colors
 
-- title: Zooming to a table of a `dm`
+- title: Zooming
   contents:
   - dm_zoom_to
   - dm_insert_zoomed

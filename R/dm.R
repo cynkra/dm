@@ -32,7 +32,6 @@
 #' - [dm_nycflights13()]  for creating an example `dm` object
 #'
 #' @examples
-#' library(dplyr)
 #' dm(iris, mtcars)
 #' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 #' new_dm(list(iris = iris, mtcars = mtcars))
@@ -783,11 +782,13 @@ empty_dm <- function() {
 #' @return The requested table
 #'
 #' @examples
-#' # both examples lead to the same tibble:
+#' # For an unzoomed dm you need to specify the table to pull:
 #' dm_nycflights13() %>%
-#'   pull_tbl(airlines)
+#'   pull_tbl(airports)
+#'
+#' # If zoomed, pulling detaches the zoomed table from the dm:
 #' dm_nycflights13() %>%
-#'   dm_zoom_to(airlines) %>%
+#'   dm_zoom_to(airports) %>%
 #'   pull_tbl()
 #' @export
 pull_tbl <- function(dm, table) {

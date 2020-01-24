@@ -28,6 +28,10 @@ Currently, keys consisting of more than one column are not supported.
 Therefore the \code{pk_cols} column may contain vectors of length greater than one.
 }
 
+\examples{
+dm_nycflights13() \%>\%
+  dm_get_all_pks()
+}
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},

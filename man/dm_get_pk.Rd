@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_get_pk}
 \alias{dm_get_pk}
-\title{Retrieve the name of the primary key columns of a \code{dm} table}
+\title{Retrieve the primary key columns}
 \usage{
 dm_get_pk(dm, table)
 }
@@ -12,7 +12,8 @@ dm_get_pk(dm, table)
 \item{table}{A table in the \code{dm}.}
 }
 \value{
-A character vector with the column name(s) of the primary key of \code{table}.
+A list with character vectors with the column name(s) of the
+primary keys of \code{table}.
 }
 \description{
 \code{dm_get_pk()} returns the names of the
@@ -20,19 +21,23 @@ columns marked as primary key of a table of a \code{\link{dm}} object.
 If no primary key is
 set for the table, an empty character vector is returned.
 }
-\section{Compound keys}{
+\section{Compound keys and multiple primary keys}{
 
 
 Currently, keys consisting of more than one column are not supported.
 \href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
 Therefore the function may return vectors of length greater than one in the future.
+
+Similarly, each table currently can have only one primary key.
+This restriction may be lifted in the future.
+For this reason, and for symmetry with \code{dm_get_fk()},
+this function returns a slit of character vectors.
 }
 
 \examples{
-library(dplyr)
-nycflights_dm <- dm_nycflights13()
-
-nycflights_dm \%>\%
+dm_nycflights13() \%>\%
+  dm_get_pk(flights)
+dm_nycflights13() \%>\%
   dm_get_pk(planes)
 }
 \seealso{

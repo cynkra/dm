@@ -26,9 +26,7 @@ optionally renaming them.
 }
 \examples{
 dm_nycflights13() \%>\%
-  dm_select_tbl(ap = airports)
-dm_nycflights13() \%>\%
-  dm_select_tbl(ap = airports, fl = flights)
+  dm_select_tbl(airports, fl = flights)
 dm_nycflights13() \%>\%
   dm_rename_tbl(ap = airports, fl = flights)
 }

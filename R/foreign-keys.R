@@ -31,14 +31,17 @@
 #'
 #' @return For `dm_add_fk()`: An updated `dm` with an additional foreign key relation.
 #'
-#' @examples
-#' library(dplyr)
-#' iris_key <- mutate(iris, key = row_number()) %>%
-#'   select(key, everything())
-#' dm(iris_1 = iris_key, iris_2 = iris_key) %>%
-#'   dm_add_pk(iris_2, key) %>%
-#'   dm_add_fk(iris_1, key, iris_2)
 #' @export
+#' @examples
+#'
+#' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
+#' nycflights_dm %>%
+#'   dm_draw()
+#'
+#' nycflights_dm %>%
+#'   dm_add_pk(planes, tailnum) %>%
+#'   dm_add_fk(flights, tailnum, planes) %>%
+#'   dm_draw()
 dm_add_fk <- nse(function(dm, table, columns, ref_table, check = FALSE) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
@@ -89,10 +92,12 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #'
 #' @family foreign key functions
 #'
-#' @examples
-#' dm_has_fk(dm_nycflights13(), flights, airports)
-#' dm_has_fk(dm_nycflights13(), airports, flights)
 #' @export
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_has_fk(flights, airports)
+#' dm_nycflights13() %>%
+#'   dm_has_fk(airports, flights)
 dm_has_fk <- function(dm, table, ref_table) {
   check_not_zoomed(dm)
   dm_has_fk_impl(dm, as_name(ensym(table)), as_name(ensym(ref_table)))
@@ -102,7 +107,7 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
   has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
-#' Retrieve the names of the columns marked as a foreign key, pointing from one table of a [`dm`] to another table.
+#' Retrieve the names of foreign key columns
 #'
 #' @description `dm_get_fk()` returns the names of the
 #' columns marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
@@ -119,18 +124,22 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #'
 #' @family foreign key functions
 #'
-#' @return A character vector with the column name(s) of `table`, pointing to the primary key of `ref_table`.
+#' @return A list of character vectors with the column name(s) of `table`,
+#' pointing to the primary key of `ref_table`.
 #'
-#' @examples
-#' dm_get_fk(dm_nycflights13(), flights, airports)
 #' @export
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_get_fk(flights, airports)
+#' dm_nycflights13(cycle = TRUE) %>%
+#'   dm_get_fk(flights, airports)
 dm_get_fk <- function(dm, table, ref_table) {
   check_not_zoomed(dm)
 
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
-  dm_get_fk_impl(dm, table_name, ref_table_name)
+  new_keys(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
 dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
@@ -241,7 +250,9 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
   new_dm3(def)
 }
 
-#' Find foreign key candidates in a table
+#' Which columns are candidates for a foreign key?
+#'
+#' @description \lifecycle{questioning}
 #'
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
 #' to reference the primary key column of another table of the [`dm`] object.
@@ -262,6 +273,13 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #' - an empty value for a column of `table` that is a suitable foreign key candidate
 #' - the count and percentage of missing matches for a column that is not suitable
 #' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
+#'
+#' @section Life cycle:
+#' These functions are marked "questioning" because we are not yet sure about
+#' the interface, in particular if we need both `dm_enum...()` and `enum...()`
+#' variants.
+#' Changing the interface later seems harmless because these functions are
+#' most likely used interactively.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{

@@ -7,10 +7,12 @@
 #'
 #' @family functions utilizing foreign key relations
 #'
-#' @examples
-#' dm_is_referenced(dm_nycflights13(), airports)
-#' dm_is_referenced(dm_nycflights13(), flights)
 #' @export
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_is_referenced(airports)
+#' dm_nycflights13() %>%
+#'   dm_is_referenced(flights)
 dm_is_referenced <- function(dm, table) {
   check_not_zoomed(dm)
   has_length(dm_get_referencing_tables(dm, !!ensym(table)))

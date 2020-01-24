@@ -17,6 +17,12 @@
 #' @return Code for producing the given `dm`.
 #'
 #' @export
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_paste()
+#'
+#' dm_nycflights13() %>%
+#'   dm_paste(select = TRUE)
 dm_paste <- function(dm, select = FALSE, tab_width = 2) {
   check_not_zoomed(dm)
   check_no_filter(dm)

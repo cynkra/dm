@@ -15,7 +15,6 @@
 #'
 #' @examples
 #' if (FALSE) {
-#'   library(dplyr)
 #'   src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
 #'   iris_key <- mutate(iris, key = row_number())
 #'

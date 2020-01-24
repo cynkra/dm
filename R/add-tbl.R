@@ -14,11 +14,11 @@
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @examples
-#' dm_nycflights13() %>%
-#'   dm_add_tbl(cars = mtcars, flowers = iris)
+#' dm() %>%
+#'   dm_add_tbl(mtcars, flowers = iris)
 #'
 #' # renaming table names if necessary (depending on the `repair` argument)
-#' dm_nycflights13() %>%
+#' dm() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
@@ -79,6 +79,9 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
 #' @export
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_rm_tbl(airports)
 dm_rm_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
   selected <- dm_try_tables(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...)), src_tbls(dm))

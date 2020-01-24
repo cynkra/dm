@@ -22,7 +22,6 @@ The default database schema will be used; it is currently not possible to parame
 }
 \examples{
 if (FALSE) {
-  library(dplyr)
   src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
   iris_key <- mutate(iris, key = row_number())
 

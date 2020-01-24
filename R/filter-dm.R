@@ -40,8 +40,6 @@
 #' @return For `dm_filter`: an updated `dm` object (filter executed for given table, and condition stored).
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' dm_nyc_filtered <-
 #'   dm_nycflights13() %>%
 #'   dm_filter(airports, name == "John F Kennedy Intl")
@@ -91,7 +89,6 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'   dm_filter(flights, month == 3) %>%
 #'   dm_apply_filters()
 #'
-#' library(dplyr)
 #' dm_nycflights13() %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()

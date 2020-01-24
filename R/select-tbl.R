@@ -14,9 +14,7 @@
 #'
 #' @examples
 #' dm_nycflights13() %>%
-#'   dm_select_tbl(ap = airports)
-#' dm_nycflights13() %>%
-#'   dm_select_tbl(ap = airports, fl = flights)
+#'   dm_select_tbl(airports, fl = flights)
 #' @export
 dm_select_tbl <- function(dm, ...) {
   check_not_zoomed(dm)

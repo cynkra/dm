@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_get_fk}
 \alias{dm_get_fk}
-\title{Retrieve the names of the columns marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.}
+\title{Retrieve the names of foreign key columns}
 \usage{
 dm_get_fk(dm, table, ref_table)
 }
@@ -14,7 +14,8 @@ dm_get_fk(dm, table, ref_table)
 \item{ref_table}{The table that is referenced from \code{table}.}
 }
 \value{
-A character vector with the column name(s) of \code{table}, pointing to the primary key of \code{ref_table}.
+A list of character vectors with the column name(s) of \code{table},
+pointing to the primary key of \code{ref_table}.
 }
 \description{
 \code{dm_get_fk()} returns the names of the
@@ -30,7 +31,10 @@ Therefore the function may return vectors of length greater than one in the futu
 }
 
 \examples{
-dm_get_fk(dm_nycflights13(), flights, airports)
+dm_nycflights13() \%>\%
+  dm_get_fk(flights, airports)
+dm_nycflights13(cycle = TRUE) \%>\%
+  dm_get_fk(flights, airports)
 }
 \seealso{
 Other foreign key functions: 

@@ -52,12 +52,15 @@ with current semantics.
 }
 
 \examples{
-library(dplyr)
-iris_key <- mutate(iris, key = row_number()) \%>\%
-  select(key, everything())
-dm(iris_1 = iris_key, iris_2 = iris_key) \%>\%
-  dm_add_pk(iris_2, key) \%>\%
-  dm_add_fk(iris_1, key, iris_2)
+
+nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
+nycflights_dm \%>\%
+  dm_draw()
+
+nycflights_dm \%>\%
+  dm_add_pk(planes, tailnum) \%>\%
+  dm_add_fk(flights, tailnum, planes) \%>\%
+  dm_draw()
 dm_rm_fk(
   dm_nycflights13(cycle = TRUE),
   flights,

@@ -18,6 +18,10 @@ The \code{dm} without the removed table(s) that were present in the initial \cod
 \description{
 Removes one or more tables from a \code{\link{dm}}.
 }
+\examples{
+dm_nycflights13() \%>\%
+  dm_rm_tbl(airports)
+}
 \seealso{
 \code{\link[=dm_add_tbl]{dm_add_tbl()}}, \code{\link[=dm_select_tbl]{dm_select_tbl()}}
 }

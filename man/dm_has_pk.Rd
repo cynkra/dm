@@ -18,10 +18,9 @@ A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} 
 \code{dm_has_pk()} checks if a given table has columns marked as its primary key.
 }
 \examples{
-library(dplyr)
-nycflights_dm <- dm_nycflights13()
-
-nycflights_dm \%>\%
+dm_nycflights13() \%>\%
+  dm_has_pk(flights)
+dm_nycflights13() \%>\%
   dm_has_pk(planes)
 }
 \seealso{

@@ -60,8 +60,6 @@ of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from 
 Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
 }
 \examples{
-library(dplyr)
-
 dm_nyc_filtered <-
   dm_nycflights13() \%>\%
   dm_filter(airports, name == "John F Kennedy Intl")
@@ -87,7 +85,6 @@ dm_nycflights13() \%>\%
   dm_filter(flights, month == 3) \%>\%
   dm_apply_filters()
 
-library(dplyr)
 dm_nycflights13() \%>\%
   dm_filter(planes, engine \%in\% c("Reciprocating", "4 Cycle")) \%>\%
   compute()

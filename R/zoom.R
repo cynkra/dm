@@ -1,21 +1,23 @@
 
 #' Single out a table of a `dm`
 #'
+#' @description
 #' Zooming to a table of a [`dm`] allows for the use of many `dplyr`-verbs directly on this table, while retaining the
 #' context of the `dm` object.
+#'
+#' `dm_zoom_to()` zooms to the given table.
+#'
+#' `dm_update_zoomed()` overwrites the originally zoomed table with the manipulated table.
+#' The filter conditions for the zoomed table are added to the original filter conditions.
+#'
+#' `dm_insert_zoomed()` adds a new table to the `dm`.
+#'
+#' `dm_discard_zoomed()` discards the zoomed table and returns the `dm` as it was before zooming.
 #'
 #' @inheritParams dm_add_pk
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @details `dm_zoom_to()`: zooms to the given table.
-#'
-#' `dm_update_zoomed()`: overwrites the originally zoomed table with the manipulated table.
-#' The filter conditions for the zoomed table are added to the original filter conditions.
-#'
-#' `dm_insert_zoomed()`: adds a new table to the `dm`.
-#'
-#' `dm_discard_zoomed()`: discards the zoomed table and returns the `dm` as it was before zooming.
-#'
+#' @details
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
 #' when using `dm_insert_zoomed()` or `dm_update_zoomed()`.
 #'
@@ -33,8 +35,7 @@
 #' transferred to the new table of the `dm`
 #'
 #' Furthermore, the different `join()`-variants from {dplyr} are also supported (apart from `nest_join()`).
-#' The join-methods for `zoomed_dm` have an extra argument `select` that let's you choose the columns of the RHS table
-#' in a {tidyselect} manner.
+#' The join-methods for `zoomed_dm` have an extra argument `select` that allows choosing the columns of the RHS table.
 #'
 #' And -- last but not least -- also the {tidyr}-functions `unite()` and `separate()` are supported for `zoomed_dm`.
 #'
@@ -42,8 +43,8 @@
 #'
 #' @return For `dm_zoom_to()`: A `zoomed_dm` object.
 #'
+#' @export
 #' @examples
-#' library(dplyr)
 #' flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 #'
 #' flights_zoomed
@@ -56,15 +57,20 @@
 #'   left_join(airports) %>%
 #'   select(year:dep_time, am_pm_dep, everything())
 #'
+#' flights_zoomed_transformed
+#'
 #' # replace table `flights` with the zoomed table
-#' dm_update_zoomed(flights_zoomed_transformed)
+#' flights_zoomed_transformed %>%
+#'   dm_update_zoomed()
 #'
 #' # insert the zoomed table as a new table
-#' dm_insert_zoomed(flights_zoomed_transformed, extended_flights)
+#' flights_zoomed_transformed %>%
+#'   dm_insert_zoomed("extended_flights") %>%
+#'   dm_draw()
 #'
 #' # discard the zoomed table
-#' dm_discard_zoomed(flights_zoomed_transformed)
-#' @export
+#' flights_zoomed_transformed %>%
+#'   dm_discard_zoomed()
 dm_zoom_to <- function(dm, table) {
   # FIXME: to include in documentation after #185:
   # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
@@ -116,7 +122,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
           "The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`."
         )
       }
-      as_string(enexpr(new_tbl_name))
+      new_tbl_name <- as_string(enexpr(new_tbl_name))
     }
   names_list <-
     repair_table_names(old_names = src_tbls_impl(dm), new_names = new_tbl_name_chr, repair, quiet)

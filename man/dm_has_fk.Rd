@@ -20,8 +20,10 @@ A boolean value: \code{TRUE} if a reference from \code{table} to \code{ref_table
 \code{dm_has_fk()} checks if a foreign key reference exists between two tables in a \code{dm}.
 }
 \examples{
-dm_has_fk(dm_nycflights13(), flights, airports)
-dm_has_fk(dm_nycflights13(), airports, flights)
+dm_nycflights13() \%>\%
+  dm_has_fk(flights, airports)
+dm_nycflights13() \%>\%
+  dm_has_fk(airports, flights)
 }
 \seealso{
 Other foreign key functions: 

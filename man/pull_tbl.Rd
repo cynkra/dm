@@ -22,10 +22,12 @@ This function has methods for both \code{dm} classes:
 }
 }
 \examples{
-# both examples lead to the same tibble:
+# For an unzoomed dm you need to specify the table to pull:
 dm_nycflights13() \%>\%
-  pull_tbl(airlines)
+  pull_tbl(airports)
+
+# If zoomed, pulling detaches the zoomed table from the dm:
 dm_nycflights13() \%>\%
-  dm_zoom_to(airlines) \%>\%
+  dm_zoom_to(airports) \%>\%
   pull_tbl()
 }

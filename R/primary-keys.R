@@ -30,17 +30,21 @@
 #'
 #' @export
 #' @examples
-#' library(dplyr)
-#'
 #' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
+#' nycflights_dm %>%
+#'   dm_draw()
 #'
 #' # the following works
-#' dm_add_pk(nycflights_dm, planes, tailnum)
-#' dm_add_pk(nycflights_dm, airports, faa, check = TRUE)
-#' dm_add_pk(nycflights_dm, planes, manufacturer)
+#' nycflights_dm %>%
+#'   dm_add_pk(planes, tailnum) %>%
+#'   dm_add_pk(airports, faa, check = TRUE) %>%
+#'   dm_draw()
 #'
 #' # the following does not work (throws an error)
-#' try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
+#' try(
+#'   nycflights_dm %>%
+#'     dm_add_pk(planes, manufacturer, check = TRUE)
+#' )
 dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
@@ -86,10 +90,9 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise.
 #'
 #' @examples
-#' library(dplyr)
-#' nycflights_dm <- dm_nycflights13()
-#'
-#' nycflights_dm %>%
+#' dm_nycflights13() %>%
+#'   dm_has_pk(flights)
+#' dm_nycflights13() %>%
 #'   dm_has_pk(planes)
 #' @export
 dm_has_pk <- function(dm, table) {
@@ -97,37 +100,42 @@ dm_has_pk <- function(dm, table) {
   has_length(dm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the name of the primary key columns of a `dm` table
+#' Retrieve the primary key columns
 #'
 #' @description `dm_get_pk()` returns the names of the
 #' columns marked as primary key of a table of a [`dm`] object.
 #' If no primary key is
 #' set for the table, an empty character vector is returned.
 #'
-#' @section Compound keys:
+#' @section Compound keys and multiple primary keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
 #' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
 #' Therefore the function may return vectors of length greater than one in the future.
 #'
+#' Similarly, each table currently can have only one primary key.
+#' This restriction may be lifted in the future.
+#' For this reason, and for symmetry with `dm_get_fk()`,
+#' this function returns a slit of character vectors.
+#'
 #' @family primary key functions
 #'
-#' @return A character vector with the column name(s) of the primary key of `table`.
+#' @return A list with character vectors with the column name(s) of the
+#'   primary keys of `table`.
 #'
 #' @inheritParams dm_add_pk
 #'
 #' @examples
-#' library(dplyr)
-#' nycflights_dm <- dm_nycflights13()
-#'
-#' nycflights_dm %>%
+#' dm_nycflights13() %>%
+#'   dm_get_pk(flights)
+#' dm_nycflights13() %>%
 #'   dm_get_pk(planes)
 #' @export
 dm_get_pk <- function(dm, table) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
-  dm_get_pk_impl(dm, table_name)
+  new_keys(dm_get_pk_impl(dm, table_name))
 }
 
 dm_get_pk_impl <- function(dm, table_name) {
@@ -157,6 +165,9 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'   }
 #'
 #' @export
+#' @examples
+#' dm_nycflights13() %>%
+#'   dm_get_all_pks()
 dm_get_all_pks <- nse(function(dm) {
   check_not_zoomed(dm)
   dm_get_all_pks_impl(dm) %>%
@@ -182,16 +193,9 @@ dm_get_all_pks_impl <- function(dm) {
 #' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
 #'
 #' @examples
-#' library(dplyr)
-#' nycflights_dm <- dm_nycflights13()
-#'
-#' nycflights_dm %>%
+#' dm_nycflights13() %>%
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
-#'   dm_has_pk(planes)
-#'
-#' nycflights_dm %>%
-#'   dm_rm_pk(planes, rm_referencing_fks = TRUE) %>%
-#'   dm_has_pk(planes)
+#'   dm_draw()
 #' @export
 dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
   check_not_zoomed(dm)
@@ -211,9 +215,11 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 }
 
 
-#' Which columns are candidates for a primary key column?
+#' Which columns are candidates for a primary key?
 #'
-#' @description `enum_pk_candidates()` checks for each column of a
+#' @description \lifecycle{questioning}
+#'
+#' `enum_pk_candidates()` checks for each column of a
 #' table if the column contains only unique values, and is thus
 #' a suitable candidate for a primary key of the table.
 #'
@@ -223,6 +229,13 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #'     \item{`candidate`}{boolean: are these columns a candidate for a primary key,}
 #'     \item{`why`}{if not a candidate for a primary key column, explanation for this.}
 #'   }
+#'
+#' @section Life cycle:
+#' These functions are marked "questioning" because we are not yet sure about
+#' the interface, in particular if we need both `dm_enum...()` and `enum...()`
+#' variants.
+#' Changing the interface later seems harmless because these functions are
+#' most likely used interactively.
 #'
 #' @export
 #' @examples
@@ -247,8 +260,8 @@ enum_pk_candidates <- nse(function(table) {
 #' @export
 #' @examples
 #'
-#' dm_nycflights13() %>% dm_enum_pk_candidates(flights)
-#' dm_nycflights13() %>% dm_enum_pk_candidates(airports)
+#' dm_nycflights13() %>%
+#'   dm_enum_pk_candidates(airports)
 dm_enum_pk_candidates <- nse(function(dm, table) {
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check

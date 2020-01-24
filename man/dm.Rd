@@ -100,7 +100,6 @@ To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters 
 \code{as_dm()} coerces objects to the \code{dm} class
 }
 \examples{
-library(dplyr)
 dm(iris, mtcars)
 dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 new_dm(list(iris = iris, mtcars = mtcars))
