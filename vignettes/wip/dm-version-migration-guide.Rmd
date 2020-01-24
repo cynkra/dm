@@ -24,7 +24,20 @@ knit_print.grViz <- function(x, ...) {
     c("`````{=html}\n", ., "\n`````\n") %>% 
     knitr::asis_output()
 }
+library(dm)
 ```
 
-This vignette describes which changes are necessary to adapt your code when updating the {dm} package version from a version `0.0.5.9002` or lower to `0.0.5.9003` or higher.
+This vignette describes which changes are necessary to adapt your code when updating the {dm} package version from a version `0.0.5` or lower to `0.0.6` or higher.
 
+## Changes from version `0.0.5` to `0.0.6`
+
+
+### Replace `cdm` with `dm`
+During this update the prevalent prefix `cdm` was discarded in favor of `dm`.
+The old prefix would still do its job, but a warning message would be issued each time a function beginning with `cdm` was being used, informing that the function is soft-deprecated and suggesting the use of its newer version.
+
+If you have a script which is based on an older {dm} version, it should still work with the newer version, albeit complaining each time an outdated function is being used.
+This can be repaired by:
+
+1. either going through the script step by step, testing the output of each line of code and use the new function names provided in the generated warnings to update the function calls.
+1. or just by replacing all occurrences of `cdm` by `dm` in this script. This can e.g. be done in RStudio using "Find" or in the terminal using `sed -e 's/cdm/dm/g' path-to-file` on Windows or `sed -i '' -e 's/cdm/dm/g' path-to-file` on a Mac. If the script errors after this step, you will need to check where exactly the error happens and manually repair the damage.
