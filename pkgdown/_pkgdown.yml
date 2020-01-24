@@ -27,6 +27,15 @@ reference:
   - dm_rename_tbl
   - pull_tbl
 
+- title: Table retrieval, table info and DB interaction methods (`dplyr`)
+  contents:
+  - tbl.dm
+  - compute.dm
+  - compute.zoomed_dm
+  - src_tbls.dm
+  - copy_to.dm
+  - collect.dm
+
 - title: Primary keys
   contents:
   - dm_add_pk
