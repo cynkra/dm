@@ -29,8 +29,7 @@ library(dm)
 
 This vignette describes which changes are necessary to adapt your code when updating the {dm} package version from a version `0.0.5` or lower to `0.0.6` or higher.
 
-## Changes from version `0.0.5` to `0.0.6`
-
+## Changes required when updating from version `0.0.5` to `0.0.6`
 
 ### Replace `cdm` with `dm`
 During this update the prevalent prefix `cdm` was discarded in favor of `dm`.
