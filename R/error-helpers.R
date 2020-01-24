@@ -64,7 +64,7 @@ abort_sets_not_equal <- function(error_msgs) {
 }
 
 error_txt_sets_not_equal <- function(error_msgs) {
-  paste0(error_msgs, collapse = "\n  ")
+  paste0(error_msgs, ".", collapse = "\n  ")
 }
 
 # cardinality check errors ------------------------------------------------
@@ -113,14 +113,14 @@ error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
 abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
                              parent_table_name, actual_fk_colnames) {
   abort(
-    error_txt_is_not_fk(
+    error_txt_is_not_fkc(
       child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
     ),
     .subclass = dm_error_full("is_not_fkc")
   )
 }
 
-error_txt_is_not_fk <- function(child_table_name, wrong_fk_colnames,
+error_txt_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
                                 parent_table_name, actual_fk_colnames) {
   glue(
     "The given combination of columns ({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
