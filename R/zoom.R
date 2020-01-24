@@ -1,5 +1,5 @@
 
-#' Mark table for usage
+#' Mark table for manipulation
 #'
 #' @description
 #' Zooming to a table of a [`dm`] allows for the use of many `dplyr`-verbs directly on this table, while retaining the

@@ -251,7 +251,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
   new_dm3(def)
 }
 
-#' Foreign key candidate
+#' Foreign key candidates
 #'
 #' @description \lifecycle{questioning}
 #'

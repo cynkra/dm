@@ -1,4 +1,4 @@
-#' De-parse for [`dm`] objects
+#' Create R code for a dm object
 #'
 #' `dm_paste` takes an existing `dm` and produces the code necessary for its creation
 #'
