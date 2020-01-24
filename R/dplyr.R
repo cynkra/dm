@@ -3,12 +3,12 @@ group_by.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' Tidyverse methods for `zoomed_dm` objects (remove '.zoomed_dm' suffix!)
+#' \pkg{dplyr} table manipulation methods for `zoomed_dm` objects
 #'
-#' Tidyverse methods for `zoomed_dm` objects. Use these methods without the '.zoomed_dm' suffix (see examples).
+#' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' @param .data object of class `zoomed_dm`
 #' @param ... see corresponding function in package \pkg{dplyr} or \pkg{tidyr}
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @examples
 #' zoomed <- dm_nycflights13() %>%
 #'   dm_zoom_to(flights) %>%
@@ -30,7 +30,7 @@ ungroup.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @param x For `ungroup.zoomed_dm`: object of class `zoomed_dm`
 #' @export
 ungroup.zoomed_dm <- function(x, ...) {
@@ -40,7 +40,7 @@ ungroup.zoomed_dm <- function(x, ...) {
   replace_zoomed_tbl(x, ungrouped_tbl)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @export
 summarise.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -61,7 +61,7 @@ filter.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @export
 filter.zoomed_dm <- function(.data, ...) {
   filter_quos <- enquos(...)
@@ -83,7 +83,7 @@ mutate.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -101,7 +101,7 @@ transmute.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @export
 transmute.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -118,7 +118,7 @@ select.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @export
 select.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -135,7 +135,7 @@ rename.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @export
 rename.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -152,7 +152,7 @@ distinct.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @param .keep_all For `distinct.zoomed_dm()`: see [`dplyr::distinct`]
 #' @export
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
@@ -172,7 +172,7 @@ arrange.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @export
 arrange.zoomed_dm <- function(.data, ...) {
   replace_zoomed_tbl(.data, arrange(get_zoomed_tbl(.data), ...))
@@ -183,7 +183,7 @@ slice.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_table_manipulation
 #' @param .keep_pk For `slice.zoomed_dm`: Logical, if `TRUE`, the primary key will be retained during this transformation. If `FALSE`, it will be dropped.
 #' By default, the value is `NULL`, which causes the function to issue a message in case a primary key is available for the zoomed table.
 #' This argument is specific for the `slice.zoomed_dm()` method.
@@ -212,14 +212,17 @@ left_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
-#' @rdname tidyverse
-#' @param x,y For `join`-methods: tbls to join. `x` is the `zoomed_dm` and `y` is another table in the `dm`.
-#' @param by For `join`-methods: If left `NULL` (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now `x`)
+#' \pkg{dplyr} join methods for `zoomed_dm` objects
+#'
+#' Use these methods without the '.zoomed_dm' suffix (see examples).
+#' @rdname dplyr_join
+#' @param x,y tbls to join. `x` is the `zoomed_dm` and `y` is another table in the `dm`.
+#' @param by If left `NULL` (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now `x`)
 #' and the other table (`y`).
 #' If you provide a value (for the syntax see [`dplyr::join`]), you can also join tables that are not connected in the `dm`.
-#' @param copy For `join`-methods: Disabled, since all tables in a `dm` are by definition on the same `src`.
-#' @param suffix For `join`-methods: Disabled, since columns are disambiguated automatically if necessary, changing the column names to `table_name.column_name`.
-#' @param select For `join`-methods: Select a subset of the \strong{RHS-table}'s columns, the syntax being `select = c(col_1, col_2, col_3)` (unquoted or quoted).
+#' @param copy Disabled, since all tables in a `dm` are by definition on the same `src`.
+#' @param suffix Disabled, since columns are disambiguated automatically if necessary, changing the column names to `table_name.column_name`.
+#' @param select Select a subset of the \strong{RHS-table}'s columns, the syntax being `select = c(col_1, col_2, col_3)` (unquoted or quoted).
 #' This argument is specific for the `join`-methods for `zoomed_dm`.
 #' @export
 left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
@@ -234,7 +237,7 @@ inner_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_join
 #' @export
 inner_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -248,7 +251,7 @@ full_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_join
 #' @export
 full_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -262,7 +265,7 @@ right_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_join
 #' @export
 right_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -276,7 +279,7 @@ semi_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_join
 #' @export
 semi_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -290,7 +293,7 @@ anti_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
-#' @rdname tidyverse
+#' @rdname dplyr_join
 #' @export
 anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
