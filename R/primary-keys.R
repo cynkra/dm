@@ -1,24 +1,32 @@
-# for external users: also checks if a column really is primary key
-
-#' Mark a column of a table in a [`dm`] object as its primary key
+#' Add/remove a primary key to/from a table in a [`dm`] object
 #'
-#' @description `dm_add_pk()` marks the specified column as the primary key of the specified table.
+#' @description `dm_add_pk()` marks the specified columns as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
-#' the given column is a unique key of the table.
+#' the given combination of columns is a unique key of the table.
 #' If `force == TRUE`, the function will replace an already
 #' set key.
 #'
+#' `dm_rm_pk()` removes a primary key from a table and leaves the [`dm`] object otherwise unaltered.
+#' Foreign keys that point to the table from other tables, can be optionally removed as well.
+#'
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' The syntax of these functions will be extended but will remain compatible
+#' with current semantics.
+#'
 #' @param dm A `dm` object.
 #' @param table A table in the `dm`.
-#' @param column A column of that table.
-#' @param check Boolean, if `TRUE`, a check is made if the column is a unique key of the table.
+#' @param columns Table columns, unquoted.
+#' @param check Boolean, if `TRUE`, a check is made if the combination of columns is a unique key of the table.
 #' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
 #'   set for this table.
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
 #'
 #' @family primary key functions
 #'
-#' @return An updated `dm` with an additional primary key.
+#' @return For `dm_add_pk()`: An updated `dm` with an additional primary key.
 #'
 #' @export
 #' @examples
@@ -33,13 +41,13 @@
 #'
 #' # the following does not work (throws an error)
 #' try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
-dm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
+dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
 
   check_correct_input(dm, table_name)
 
-  col_expr <- ensym(column)
+  col_expr <- ensym(columns)
   col_name <- as_name(col_expr)
   check_col_input(dm, table_name, col_name)
 
@@ -67,10 +75,9 @@ dm_add_pk_impl <- function(dm, table, column, force) {
   new_dm3(def)
 }
 
-#' Does a table of a [`dm`] object have a column set as primary key?
+#' Does a table of a [`dm`] object have columns set as primary key?
 #'
-#' @description `dm_has_pk()` checks in the `data_model` part
-#' of the [`dm`] object if a given table has a column marked as its primary key.
+#' @description `dm_has_pk()` checks if a given table has columns marked as its primary key.
 #'
 #' @inheritParams dm_add_pk
 #'
@@ -90,12 +97,18 @@ dm_has_pk <- function(dm, table) {
   has_length(dm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the name of the primary key column of a `dm` table
+#' Retrieve the name of the primary key columns of a `dm` table
 #'
-#' @description `dm_get_pk()` returns the name of the
-#' column marked as primary key of a table of a [`dm`] object.
+#' @description `dm_get_pk()` returns the names of the
+#' columns marked as primary key of a table of a [`dm`] object.
 #' If no primary key is
 #' set for the table, an empty character vector is returned.
+#'
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' Therefore the function may return vectors of length greater than one in the future.
 #'
 #' @family primary key functions
 #'
@@ -127,6 +140,12 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @description `dm_get_all_pks()` checks the `dm` object for set primary keys and
 #' returns the tables, the respective primary key columns and their classes.
 #'
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' Therefore the `pk_cols` column may contain vectors of length greater than one.
+#'
 #' @family primary key functions
 #'
 #' @inheritParams dm_add_pk
@@ -134,13 +153,14 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table`}{table name,}
-#'     \item{`pk_col`}{column name(s) of primary key.}
+#'     \item{`pk_cols`}{column name(s) of primary key.}
 #'   }
 #'
 #' @export
 dm_get_all_pks <- nse(function(dm) {
   check_not_zoomed(dm)
-  dm_get_all_pks_impl(dm)
+  dm_get_all_pks_impl(dm) %>%
+    mutate(pk_col = new_keys(pk_col))
 })
 
 dm_get_all_pks_impl <- function(dm) {
@@ -151,21 +171,15 @@ dm_get_all_pks_impl <- function(dm) {
 
 #' Remove a primary key from a table in a [`dm`] object
 #'
-#' @description `dm_rm_pk()` removes a primary key from a table in the
-#' underlying `data_model`-object; leaves the [`dm`] object unaltered otherwise.
+#' @rdname dm_add_pk
 #'
-#' Foreign keys that point to the table from other tables, can be optionally removed as well.
-#'
-#' @family primary key functions
-#'
-#' @inheritParams dm_add_pk
 #' @param rm_referencing_fks Boolean: if `FALSE` (default), will throw an error if
 #'   there are foreign keys addressing the primary key that is to be removed.
 #'   If `TRUE`, the function will
 #'   remove, in addition to the primary key of the `table` argument, also all foreign key constraints
 #'   that are pointing to it.
 #'
-#' @return An updated `dm` without the indicated primary key.
+#' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
 #'
 #' @examples
 #' library(dplyr)
@@ -205,8 +219,8 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
-#'     \item{`column`}{column of `table`,}
-#'     \item{`candidate`}{boolean: is this column a candidate for a primary key,}
+#'     \item{`columns`}{columns of `table`,}
+#'     \item{`candidate`}{boolean: are these columns a candidate for a primary key,}
 #'     \item{`why`}{if not a candidate for a primary key column, explanation for this.}
 #'   }
 #'
@@ -217,19 +231,10 @@ enum_pk_candidates <- nse(function(table) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
-  map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
-    enframe("column") %>%
-    # Workaround: Can't call bind_rows() here with dplyr < 0.9.0
-    # Can't call unnest() either for an unknown reason
-    mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
-    select(-value) %>%
-    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none")))) %>%
-    select(-data) %>%
-    mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
-    select(-values) %>%
-    arrange(desc(candidate), column)
+  enum_pk_candidates_impl(table) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 })
-
 
 #' @description `dm_enum_pk_candidates()` performs these checks
 #' for a table in a [dm] object.
@@ -253,6 +258,22 @@ dm_enum_pk_candidates <- nse(function(dm, table) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  tbl <- dm_get_tables_impl(dm)[[table_name]]
-  enum_pk_candidates(tbl)
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  enum_pk_candidates_impl(table) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 })
+
+enum_pk_candidates_impl <- function(table) {
+  map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
+    enframe("column") %>%
+    # Workaround: Can't call bind_rows() here with dplyr < 0.9.0
+    # Can't call unnest() either for an unknown reason
+    mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
+    select(-value) %>%
+    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none")))) %>%
+    select(-data) %>%
+    mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
+    select(-values) %>%
+    arrange(desc(candidate), column)
+}

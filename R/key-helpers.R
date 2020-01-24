@@ -8,7 +8,7 @@
 #'   \describe{
 #'     \item{`table`}{the table in the `dm`,}
 #'     \item{`kind`}{"PK" or "FK",}
-#'     \item{`column`}{a column of the table,}
+#'     \item{`columns`}{the table columns that define the key,}
 #'     \item{`ref_table`}{for foreign keys, the referenced table,}
 #'     \item{`is_key`}{logical,}
 #'     \item{`problem`}{if `is_key = FALSE`, the reason for that.}
@@ -23,15 +23,20 @@
 #' dm_examine_constraints(dm_nycflights13())
 dm_examine_constraints <- function(dm) {
   check_not_zoomed(dm)
+  dm_examine_constraints_impl(dm) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
+}
+
+dm_examine_constraints_impl <- function(dm) {
   pk_results <- check_pk_constraints(dm)
   fk_results <- check_fk_constraints(dm)
   bind_rows(
     pk_results,
     fk_results
   ) %>%
-    arrange(is_key, desc(kind), table, column)
+    arrange(is_key, desc(kind), table)
 }
-
 
 #' Test if a column (combination) is unique key of a table
 #'
@@ -231,12 +236,13 @@ is_subset <- function(t1, c1, t2, c2) {
 }
 
 check_pk_constraints <- function(dm) {
-  pks <- dm_get_all_pks(dm)
+  pks <- dm_get_all_pks_impl(dm)
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(0),
       kind = character(0),
       column = character(0),
+      ref_table = NA_character_,
       is_key = logical(0),
       problem = character(0)
     ))
@@ -244,24 +250,24 @@ check_pk_constraints <- function(dm) {
   table_names <- pull(pks, table)
   tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
     map2(syms(pks$pk_col), ~ select(.x, !!.y))
-  tbl_is_pk <- map_dfr(tbls, enum_pk_candidates) %>%
+  tbl_is_pk <- map_dfr(tbls, enum_pk_candidates_impl) %>%
+    mutate(table = table_names) %>%
     rename(is_key = candidate, problem = why)
-
   tibble(
     table = table_names,
     kind = "PK",
     column = pks$pk_col,
     ref_table = NA_character_
   ) %>%
-    left_join(tbl_is_pk, by = "column")
+    left_join(tbl_is_pk, by = c("table", "column"))
 }
 
 check_fk_constraints <- function(dm) {
-  fks <- left_join(dm_get_all_fks(dm), dm_get_all_pks(dm), by = c("parent_table" = "table"))
+  fks <- left_join(dm_get_all_fks_impl(dm), dm_get_all_pks_impl(dm), by = c("parent_table" = "table"))
   pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
   fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
-    select(t1, t1_name = child_table, colname = child_fk_col, t2, t2_name = parent_table, pk = pk_col)
+    select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = pk_col)
   mutate(
     fks_tibble,
     problem = pmap_chr(fks_tibble, check_fk),

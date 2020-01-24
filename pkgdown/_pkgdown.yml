@@ -71,6 +71,7 @@ reference:
   - dm_disambiguate_cols
 
 - title: Rename or select columns of tables in a `dm`
+  contents:
   - dm_rename
   - dm_select
 

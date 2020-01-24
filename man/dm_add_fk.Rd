@@ -2,30 +2,55 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_add_fk}
 \alias{dm_add_fk}
-\title{Add a reference from one table of a \code{\link{dm}} to another}
+\alias{dm_rm_fk}
+\title{Add/remove references from one table of a \code{\link{dm}} to another}
 \usage{
-dm_add_fk(dm, table, column, ref_table, check = FALSE)
+dm_add_fk(dm, table, columns, ref_table, check = FALSE)
+
+dm_rm_fk(dm, table, columns, ref_table)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{column}{The column of \code{table} which is to become the foreign key column and
-reference the primary key of \code{ref_table}.}
+\item{columns}{For \code{dm_add_fk()}: The columns of \code{table} which are to become the foreign key columns that
+reference the primary key of \code{ref_table}.
 
-\item{ref_table}{The table which \code{table} is referencing.
-This table needs to have a primary key set.}
+For \code{dm_rm_fk()}: The columns of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
+If \code{NULL}, all columns will be evaluated.}
+
+\item{ref_table}{For \code{dm_add_fk()}: The table which \code{table} will be referencing.
+This table needs to have a primary key set.
+
+For \code{dm_rm_fk()}: The table that \code{table} is referencing.}
 
 \item{check}{Boolean, if \code{TRUE}, a check will be performed to determine if the values of
 \code{column} are a subset of the values of the primary key column of \code{ref_table}.}
 }
 \value{
-An updated \code{dm} with an additional foreign key relation.
+For \code{dm_add_fk()}: An updated \code{dm} with an additional foreign key relation.
+
+For \code{dm_rm_fk()}: An updated \code{dm} without the given foreign key relation.
 }
 \description{
-Add a reference from one table of a \code{\link{dm}} to another
+\code{dm_add_fk()} marks the specified columns as the foreign key of table \code{table} with
+respect to the primary key of table \code{ref_table}.
+If \code{check == TRUE}, then it will first check if the values in columns \code{columns} are a subset
+of the values of the primary key in table \code{ref_table}.
+
+\code{dm_rm_fk()} can remove either one reference between two tables, or all references at once, if argument \code{column = NULL}.
+All arguments may be provided quoted or unquoted.
 }
+\section{Compound keys}{
+
+
+Currently, keys consisting of more than one column are not supported.
+\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+The syntax of these functions will be extended but will remain compatible
+with current semantics.
+}
+
 \examples{
 library(dplyr)
 iris_key <- mutate(iris, key = row_number()) \%>\%
@@ -33,13 +58,24 @@ iris_key <- mutate(iris, key = row_number()) \%>\%
 dm(iris_1 = iris_key, iris_2 = iris_key) \%>\%
   dm_add_pk(iris_2, key) \%>\%
   dm_add_fk(iris_1, key, iris_2)
+dm_rm_fk(
+  dm_nycflights13(cycle = TRUE),
+  flights,
+  dest,
+  airports
+)
 }
 \seealso{
 Other foreign key functions: 
 \code{\link{dm_enum_fk_candidates}()},
 \code{\link{dm_get_all_fks}()},
 \code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()},
-\code{\link{dm_rm_fk}()}
+\code{\link{dm_has_fk}()}
+
+Other foreign key functions: 
+\code{\link{dm_enum_fk_candidates}()},
+\code{\link{dm_get_all_fks}()},
+\code{\link{dm_get_fk}()},
+\code{\link{dm_has_fk}()}
 }
 \concept{foreign key functions}

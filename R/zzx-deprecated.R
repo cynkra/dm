@@ -177,7 +177,7 @@ cdm_get_fk <- new_cdm_forward_2(dm_get_fk)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_all_fks <- new_cdm_forward(dm_get_all_fks)
+cdm_get_all_fks <- new_cdm_forward(dm_get_all_fks_impl, old_fwd_name = "cdm_get_all_fks", new_name = "dm_get_all_fks")
 
 #' @rdname deprecated
 #' @keywords internal
@@ -207,7 +207,11 @@ cdm_learn_from_db <- new_cdm_forward(dm_learn_from_db)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_check_constraints <- new_cdm_forward(dm_examine_constraints, old_fwd_name = "cdm_check_constraints")
+cdm_check_constraints <- new_cdm_forward(
+  dm_examine_constraints_impl,
+  old_fwd_name = "cdm_check_constraints",
+  new_name = "dm_examine_constraints"
+)
 
 #' @rdname deprecated
 #' @keywords internal
@@ -232,7 +236,7 @@ cdm_get_pk <- new_cdm_forward_2(dm_get_pk)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_all_pks <- new_cdm_forward(dm_get_all_pks)
+cdm_get_all_pks <- new_cdm_forward(dm_get_all_pks_impl, old_fwd_name = "cdm_get_all_pks", new_name = "dm_get_all_pks")
 
 #' @rdname deprecated
 #' @keywords internal
@@ -242,7 +246,16 @@ cdm_rm_pk <- new_cdm_forward_2(dm_rm_pk)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_enum_pk_candidates <- new_cdm_forward_2(dm_enum_pk_candidates)
+cdm_enum_pk_candidates <- function(dm, table) {
+  deprecate_soft("0.1.0", "dm::cdm_enum_pk_candidates()", "dm::dm_enum_pk_candidates()")
+  check_no_filter(dm)
+
+  table_name <- as_name(ensym(table))
+  check_correct_input(dm, table_name)
+
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  enum_pk_candidates_impl(table)
+}
 
 #' @rdname deprecated
 #' @keywords internal

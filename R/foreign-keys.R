@@ -1,16 +1,35 @@
-#' Add a reference from one table of a [`dm`] to another
+#' Add/remove references from one table of a [`dm`] to another
+#'
+#' @description `dm_add_fk()` marks the specified columns as the foreign key of table `table` with
+#' respect to the primary key of table `ref_table`.
+#' If `check == TRUE`, then it will first check if the values in columns `columns` are a subset
+#' of the values of the primary key in table `ref_table`.
+#'
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' The syntax of these functions will be extended but will remain compatible
+#' with current semantics.
 #'
 #' @inheritParams dm_add_pk
-#' @param column The column of `table` which is to become the foreign key column and
+#' @param columns For `dm_add_fk()`: The columns of `table` which are to become the foreign key columns that
 #'   reference the primary key of `ref_table`.
-#' @param ref_table The table which `table` is referencing.
+#'
+#'   For `dm_rm_fk()`: The columns of `table` that should no longer be referencing the primary key of `ref_table`.
+#'   If `NULL`, all columns will be evaluated.
+#' @param ref_table For `dm_add_fk()`: The table which `table` will be referencing.
 #'   This table needs to have a primary key set.
+#'
+#'   For `dm_rm_fk()`: The table that `table` is referencing.
 #' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
 #'   `column` are a subset of the values of the primary key column of `ref_table`.
 #'
 #' @family foreign key functions
 #'
-#' @return An updated `dm` with an additional foreign key relation.
+#' @rdname dm_add_fk
+#'
+#' @return For `dm_add_fk()`: An updated `dm` with an additional foreign key relation.
 #'
 #' @examples
 #' library(dplyr)
@@ -20,13 +39,13 @@
 #'   dm_add_pk(iris_2, key) %>%
 #'   dm_add_fk(iris_1, key, iris_2)
 #' @export
-dm_add_fk <- nse(function(dm, table, column, ref_table, check = FALSE) {
+dm_add_fk <- nse(function(dm, table, columns, ref_table, check = FALSE) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
-  column_name <- as_name(ensym(column))
+  column_name <- as_name(ensym(columns))
   check_col_input(dm, table_name, column_name)
 
   ref_column_name <- dm_get_pk(dm, !!ref_table_name)
@@ -64,7 +83,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' `dm_has_fk()` checks if a foreign key reference exists between two tables in a `dm`.
 #'
 #' @inheritParams dm_add_fk
-#' @param ref_table The table to check if it is referred to.
+#' @param ref_table The table to be checked if it is referred to.
 #'
 #' @return A boolean value: `TRUE` if a reference from `table` to `ref_table` exists, `FALSE` otherwise.
 #'
@@ -83,7 +102,17 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
   has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
-#' Retrieve the name of the column marked as a foreign key, pointing from one table of a [`dm`] to another table.
+#' Retrieve the names of the columns marked as a foreign key, pointing from one table of a [`dm`] to another table.
+#'
+#' @description `dm_get_fk()` returns the names of the
+#' columns marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
+#' If no foreign key is set between the tables, an empty character vector is returned.
+#'
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' Therefore the function may return vectors of length greater than one in the future.
 #'
 #' @inheritParams dm_has_fk
 #' @param ref_table The table that is referenced from `table`.
@@ -115,10 +144,16 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #'
 #' @description Get a summary of all foreign key relations in a [`dm`]
 #'
+#' @section Compound keys:
+#'
+#' Currently, keys consisting of more than one column are not supported.
+#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' Therefore the `child_fk_cols` column may contain vectors of length greater than one.
+#'
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`child_table`}{child table,}
-#'     \item{`child_fk_col`}{foreign key column in child table,}
+#'     \item{`child_fk_cols`}{foreign key column in child table,}
 #'     \item{`parent_table`}{parent table.}
 #'   }
 #'
@@ -131,28 +166,26 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @export
 dm_get_all_fks <- nse(function(dm) {
   check_not_zoomed(dm)
-  dm_get_all_fks_impl(dm)
+  dm_get_all_fks_impl(dm) %>%
+    mutate(child_fk_cols = new_keys(child_fk_cols))
 })
 
 dm_get_all_fks_impl <- function(dm) {
   dm_get_data_model_fks(dm) %>%
-    select(child_table = table, child_fk_col = column, parent_table = ref) %>%
-    arrange(child_table, child_fk_col)
+    select(child_table = table, child_fk_cols = column, parent_table = ref) %>%
+    arrange(child_table, child_fk_cols)
 }
 
 #' Remove the reference(s) from one [`dm`] table to another
 #'
-#' @description This function can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
+#' @description `dm_rm_fk()` can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
 #' All arguments may be provided quoted or unquoted.
 #'
-#' @inheritParams dm_add_fk
-#' @param column The column of `table` that should no longer be referencing the primary key of `ref_table`.
-#'   If `NULL`, all columns will be evaluated.
-#' @param ref_table The table that `table` was referencing.
+#' @rdname dm_add_fk
 #'
 #' @family foreign key functions
 #'
-#' @return An updated `dm` without the given foreign key relation.
+#' @return For `dm_rm_fk()`: An updated `dm` without the given foreign key relation.
 #'
 #' @examples
 #' dm_rm_fk(
@@ -162,10 +195,10 @@ dm_get_all_fks_impl <- function(dm) {
 #'   airports
 #' )
 #' @export
-dm_rm_fk <- function(dm, table, column, ref_table) {
+dm_rm_fk <- function(dm, table, columns, ref_table) {
   check_not_zoomed(dm)
 
-  column_quo <- enquo(column)
+  column_quo <- enquo(columns)
 
   if (quo_is_missing(column_quo)) {
     abort_rm_fk_col_missing()
@@ -184,7 +217,7 @@ dm_rm_fk <- function(dm, table, column, ref_table) {
     cols <- fk_cols
   } else {
     # FIXME: Add tidyselect support
-    cols <- as_name(ensym(column))
+    cols <- as_name(ensym(columns))
     if (!all(cols %in% fk_cols)) {
       abort_is_not_fkc(table_name, cols, ref_table_name, fk_cols)
     }
@@ -232,9 +265,9 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
-#'     \item{`column`}{column of `table`,}
-#'     \item{`candidate`}{boolean: is this column a candidate for a foreign key,}
-#'     \item{`why`}{if not a candidate for a foreign key, explanation for the reason.}
+#'     \item{`columns`}{columns of `table`,}
+#'     \item{`candidate`}{boolean: are these columns a candidate for a foreign key,}
+#'     \item{`why`}{if not a candidate for a foreign key, explanation for for this.}
 #'   }
 #'
 #' @family foreign key functions
@@ -260,7 +293,9 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)
 
-  enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk)
+  enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 })
 
 #' @details `enum_fk_candidates()` works like `dm_enum_fk_candidates()` with the zoomed table as `table`.
@@ -279,7 +314,9 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
   ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
-  enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk)
+  enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
 }
 
 enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) {

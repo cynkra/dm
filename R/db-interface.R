@@ -135,7 +135,7 @@ copy_dm_to <- function(dest, dm, ...,
 #' dm_set_key_constraints(iris_dm)
 #' @noRd
 dm_set_key_constraints <- nse(function(dm) {
-  if (!is_src_db(dm) && !is_this_a_test()) abort_src_not_db()
+  if (!is_src_db(dm) && !is_this_a_test()) abort_key_constraints_need_db()
   db_table_names <- get_db_table_names(dm)
 
   tables_w_pk <- dm_get_all_pks(dm)

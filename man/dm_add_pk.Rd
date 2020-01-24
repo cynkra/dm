@@ -2,33 +2,56 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_add_pk}
 \alias{dm_add_pk}
-\title{Mark a column of a table in a \code{\link{dm}} object as its primary key}
+\alias{dm_rm_pk}
+\title{Add/remove a primary key to/from a table in a \code{\link{dm}} object}
 \usage{
-dm_add_pk(dm, table, column, check = FALSE, force = FALSE)
+dm_add_pk(dm, table, columns, check = FALSE, force = FALSE)
+
+dm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
 
-\item{column}{A column of that table.}
+\item{columns}{Table columns, unquoted.}
 
-\item{check}{Boolean, if \code{TRUE}, a check is made if the column is a unique key of the table.}
+\item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
 set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
+
+\item{rm_referencing_fks}{Boolean: if \code{FALSE} (default), will throw an error if
+there are foreign keys addressing the primary key that is to be removed.
+If \code{TRUE}, the function will
+remove, in addition to the primary key of the \code{table} argument, also all foreign key constraints
+that are pointing to it.}
 }
 \value{
-An updated \code{dm} with an additional primary key.
+For \code{dm_add_pk()}: An updated \code{dm} with an additional primary key.
+
+For \code{dm_rm_pk()}: An updated \code{dm} without the indicated primary key.
 }
 \description{
-\code{dm_add_pk()} marks the specified column as the primary key of the specified table.
+\code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
 If \code{check == TRUE}, then it will first check if
-the given column is a unique key of the table.
+the given combination of columns is a unique key of the table.
 If \code{force == TRUE}, the function will replace an already
 set key.
+
+\code{dm_rm_pk()} removes a primary key from a table and leaves the \code{\link{dm}} object otherwise unaltered.
+Foreign keys that point to the table from other tables, can be optionally removed as well.
 }
+\section{Compound keys}{
+
+
+Currently, keys consisting of more than one column are not supported.
+\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+The syntax of these functions will be extended but will remain compatible
+with current semantics.
+}
+
 \examples{
 library(dplyr)
 
@@ -41,13 +64,22 @@ dm_add_pk(nycflights_dm, planes, manufacturer)
 
 # the following does not work (throws an error)
 try(dm_add_pk(nycflights_dm, planes, manufacturer, check = TRUE))
+library(dplyr)
+nycflights_dm <- dm_nycflights13()
+
+nycflights_dm \%>\%
+  dm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
+  dm_has_pk(planes)
+
+nycflights_dm \%>\%
+  dm_rm_pk(planes, rm_referencing_fks = TRUE) \%>\%
+  dm_has_pk(planes)
 }
 \seealso{
 Other primary key functions: 
 \code{\link{dm_get_all_pks}()},
 \code{\link{dm_get_pk}()},
 \code{\link{dm_has_pk}()},
-\code{\link{dm_rm_pk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}

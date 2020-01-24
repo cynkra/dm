@@ -33,13 +33,13 @@ Error: ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candi
 
 > abort_is_not_fkc("child_table_name", c("wrong_fk_colname", "and_one_more"),
 + "parent_table_name", c("actual_fk_colname", "and_one_more"))
-Error: The given combination of columns (`wrong_fk_colname`, `and_one_more`) is not a foreign key of table `child_table_name` with regards to ref_table `parent_table_name`. Foreign key columns are: (`actual_fk_colname`, `and_one_more`).
+Error: (`wrong_fk_colname`, `and_one_more`) is not a foreign key of table `child_table_name` into table `parent_table_name`. Foreign key columns are: (`actual_fk_colname`, `and_one_more`).
 
 > abort_rm_fk_col_missing()
-Error: Parameter `column` has to be set. Pass `NULL` for removing all references.
+Error: Parameter `columns` has to be set. Pass `NULL` for removing all references.
 
 > abort_last_col_missing()
-Error: The last color cannot be missing.
+Error: The last color can't be missing.
 
 > abort_no_cycles()
 Error: Cycles in the relationship graph not yet supported.
@@ -56,10 +56,10 @@ Error: `col_one` is not a column of `table_name`. Its columns are:
 `col_1`, `col_2`.
 
 > abort_dupl_new_id_col_name("tibbletable")
-Error: `new_id_column` can not have an identical name as one of the columns of `tibbletable`.
+Error: `new_id_column` can't have an identical name as one of the columns of `tibbletable`.
 
-> abort_no_overwrite("fun")
-Error in abort_no_overwrite("fun"): unused argument ("fun")
+> abort_no_overwrite()
+Error: `eval()` does not support the `overwrite` argument.
 
 > abort_no_types()
 Error: `copy_dm_to()` does not support the `types` argument.
@@ -73,8 +73,8 @@ Error: `copy_dm_to()` does not support the `unique_indexes` argument.
 > abort_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
 Error: Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`.
 
-> abort_src_not_db()
-Error: This does not work if the tables of the `dm` are not on a database.
+> abort_key_constraints_need_db()
+Error: Setting key constraints only works if the tables of the `dm` are on a database.
 
 > abort_first_rm_fks("parent", c("child_1", "child_2"))
 Error: There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those or set `rm_referencing_fks = TRUE`.
@@ -86,7 +86,7 @@ Error: Argument `src` needs to be a `src` or a `con` object.
 Error: Updating `dm` objects not supported.
 
 > abort_only_possible_wo_filters("find_wisdom")
-Error: You cannot call `find_wisdom()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.
+Error: You can't call `find_wisdom()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.
 
 > abort_tables_not_neighbours("subjects", "king")
 Error: Tables `subjects` and `king` are not directly linked by a foreign key relation.
@@ -121,14 +121,11 @@ Error: Required class `dm` but instead is `blob`.
 > abort_con_only_for_dbi()
 Error: A local `dm` doesn't have a DB connection.
 
-> abort_table_needs_name()
-Error: The new table to insert with `dm_insert_zoomed()` must have a name.
-
 > abort_only_possible_wo_zoom("dm_zoom_to")
-Error: You cannot call `dm_zoom_to()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+Error: You can't call `dm_zoom_to()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 > abort_only_possible_w_zoom("dm_update_zoomed")
-Error: You cannot call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.
+Error: You can't call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.
 
 > abort_req_tbl_not_avail(c("dull", "boring", "common_knowledge"), c(
 +   "fascinating", "interesting"))
@@ -146,8 +143,8 @@ Error: The foreign key that existed between the originally zoomed table `hook` a
 > abort_need_to_select_rhs_by("RHS", "by")
 Error: You need to select by-column `by` of RHS-table `RHS`.
 
-> abort_dm_invalid("it's ugly")
-Error: This `dm` is invalid, reason: it's ugly
+> abort_dm_invalid("it's ugly.")
+Error: This `dm` is invalid, reason: it's ugly.
 
 > abort_no_table_provided()
 Error: Argument `table` for `pull_tbl.dm()` missing.
@@ -161,13 +158,13 @@ Error: If more than 1 zoomed table is available you need to specify argument `ta
 > abort_cols_not_avail(c("pink5", "elephant"))
 Error: The color(s) `pink5`, `elephant` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
 
-> abort_only_named_args("give_names", "important")
-Error: The `...` argument in function `give_names()` accepts only named arguments (the names are important).
+> abort_only_named_args("give_names", "frobnicability")
+Error: All `...` arguments to function `give_names()` must be named. The names represent frobnicability.
 
 > abort_wrong_syntax_set_cols()
 Error: You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples.
 
 > abort_temp_table_requested(c("i_am_temporary", "i_am_permanent"),
 + "i_am_permanent")
-Error: The following requested tables from the DB are temporary tables and cannot be included in the result: `i_am_temporary`.
+Error: The following requested tables from the DB are temporary tables and can't be included in the result: `i_am_temporary`.
 

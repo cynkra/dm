@@ -21,9 +21,9 @@ enum_fk_candidates(zoomed_dm, ref_table)
 \value{
 A tibble with the following columns:
 \describe{
-\item{\code{column}}{column of \code{table},}
-\item{\code{candidate}}{boolean: is this column a candidate for a foreign key,}
-\item{\code{why}}{if not a candidate for a foreign key, explanation for the reason.}
+\item{\code{columns}}{columns of \code{table},}
+\item{\code{candidate}}{boolean: are these columns a candidate for a foreign key,}
+\item{\code{why}}{if not a candidate for a foreign key, explanation for for this.}
 }
 }
 \description{
@@ -58,7 +58,6 @@ Other foreign key functions:
 \code{\link{dm_add_fk}()},
 \code{\link{dm_get_all_fks}()},
 \code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()},
-\code{\link{dm_rm_fk}()}
+\code{\link{dm_has_fk}()}
 }
 \concept{foreign key functions}

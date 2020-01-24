@@ -191,7 +191,8 @@ test_that("other FK functions work", {
   )
 
   expect_identical(
-    cdm_get_all_fks(dm_for_filter),
+    cdm_get_all_fks(dm_for_filter) %>%
+      mutate(child_fk_cols = new_keys(child_fk_cols)),
     dm_get_all_fks(dm_for_filter)
   )
 
@@ -241,7 +242,7 @@ test_that("cdm_examine_constraints() works", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_check_constraints(bad_dm),
-    dm_examine_constraints(bad_dm)
+    dm_examine_constraints_impl(bad_dm)
   )
 })
 
@@ -282,7 +283,7 @@ test_that("other PK functions work", {
 
   expect_identical(
     cdm_get_all_pks(dm_for_filter),
-    dm_get_all_pks(dm_for_filter)
+    dm_get_all_pks_impl(dm_for_filter)
   )
 
   expect_equivalent_dm(
@@ -291,7 +292,9 @@ test_that("other PK functions work", {
   )
 
   expect_identical(
-    cdm_enum_pk_candidates(dm_for_disambiguate, iris_1),
+    cdm_enum_pk_candidates(dm_for_disambiguate, iris_1) %>%
+      rename(columns = column) %>%
+      mutate(columns = new_keys(columns)),
     dm_enum_pk_candidates(dm_for_disambiguate, iris_1)
   )
 })

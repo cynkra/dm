@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_get_fk}
 \alias{dm_get_fk}
-\title{Retrieve the name of the column marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.}
+\title{Retrieve the names of the columns marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.}
 \usage{
 dm_get_fk(dm, table, ref_table)
 }
@@ -17,8 +17,18 @@ dm_get_fk(dm, table, ref_table)
 A character vector with the column name(s) of \code{table}, pointing to the primary key of \code{ref_table}.
 }
 \description{
-Retrieve the name of the column marked as a foreign key, pointing from one table of a \code{\link{dm}} to another table.
+\code{dm_get_fk()} returns the names of the
+columns marked as foreign key of table \code{table} with respect to table \code{ref_table} within a \code{\link{dm}} object.
+If no foreign key is set between the tables, an empty character vector is returned.
 }
+\section{Compound keys}{
+
+
+Currently, keys consisting of more than one column are not supported.
+\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+Therefore the function may return vectors of length greater than one in the future.
+}
+
 \examples{
 dm_get_fk(dm_nycflights13(), flights, airports)
 }
@@ -27,7 +37,6 @@ Other foreign key functions:
 \code{\link{dm_add_fk}()},
 \code{\link{dm_enum_fk_candidates}()},
 \code{\link{dm_get_all_fks}()},
-\code{\link{dm_has_fk}()},
-\code{\link{dm_rm_fk}()}
+\code{\link{dm_has_fk}()}
 }
 \concept{foreign key functions}

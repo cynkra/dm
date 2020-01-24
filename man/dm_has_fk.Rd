@@ -11,7 +11,7 @@ dm_has_fk(dm, table, ref_table)
 
 \item{table}{A table in the \code{dm}.}
 
-\item{ref_table}{The table to check if it is referred to.}
+\item{ref_table}{The table to be checked if it is referred to.}
 }
 \value{
 A boolean value: \code{TRUE} if a reference from \code{table} to \code{ref_table} exists, \code{FALSE} otherwise.
@@ -28,7 +28,6 @@ Other foreign key functions:
 \code{\link{dm_add_fk}()},
 \code{\link{dm_enum_fk_candidates}()},
 \code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_rm_fk}()}
+\code{\link{dm_get_fk}()}
 }
 \concept{foreign key functions}

@@ -180,6 +180,12 @@ new_fk <- function(table = character(), column = list()) {
   tibble(table = table, column = column)
 }
 
+new_keys <- function(x) {
+  # both c("a", "b") and list("a", "b") is accepted
+  if (inherits(x, "character")) x <- vctrs::vec_cast(x, list())
+  vctrs::new_list_of(x, character())
+}
+
 new_filter <- function(quos = list(), zoomed = logical()) {
   tibble(filter_expr = unclass(quos), zoomed = zoomed)
 }
@@ -224,7 +230,7 @@ validate_dm <- function(x) {
       "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
     )
   }
-  if (!all_same_source(def$data)) abort_dm_invalid(error_not_same_src())
+  if (!all_same_source(def$data)) abort_dm_invalid(error_txt_not_same_src())
 
   if (nrow(def) == 0) {
     return(invisible(x))

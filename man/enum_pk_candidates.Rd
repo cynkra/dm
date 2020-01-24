@@ -17,8 +17,8 @@ dm_enum_pk_candidates(dm, table)
 \value{
 A tibble with the following columns:
 \describe{
-\item{\code{column}}{column of \code{table},}
-\item{\code{candidate}}{boolean: is this column a candidate for a primary key,}
+\item{\code{columns}}{columns of \code{table},}
+\item{\code{candidate}}{boolean: are these columns a candidate for a primary key,}
 \item{\code{why}}{if not a candidate for a primary key column, explanation for this.}
 }
 }
@@ -41,7 +41,6 @@ Other primary key functions:
 \code{\link{dm_add_pk}()},
 \code{\link{dm_get_all_pks}()},
 \code{\link{dm_get_pk}()},
-\code{\link{dm_has_pk}()},
-\code{\link{dm_rm_pk}()}
+\code{\link{dm_has_pk}()}
 }
 \concept{primary key functions}
