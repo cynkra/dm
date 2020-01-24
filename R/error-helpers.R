@@ -123,8 +123,8 @@ abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
 error_txt_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
                                  parent_table_name, actual_fk_colnames) {
   glue(
-    "The given combination of columns ({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
-    "{tick(child_table_name)} with regards to ref_table {tick(parent_table_name)}. ",
+    "({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
+    "{tick(child_table_name)} into table {tick(parent_table_name)}. ",
     "Foreign key columns are: ({commas(tick(actual_fk_colnames))})."
   )
 }
@@ -144,7 +144,7 @@ abort_last_col_missing <- function() {
 }
 
 error_txt_last_col_missing <- function() {
-  "The last color cannot be missing."
+  "The last color can't be missing."
 }
 
 # errors in graph-functions -----------------------------------------------
@@ -202,7 +202,7 @@ abort_dupl_new_id_col_name <- function(table_name) {
 }
 
 error_txt_dupl_new_id_col_name <- function(table_name) {
-  glue("`new_id_column` can not have an identical name as one of the columns of {tick(table_name)}.")
+  glue("`new_id_column` can't have an identical name as one of the columns of {tick(table_name)}.")
 }
 
 abort_no_overwrite <- function() {
@@ -249,12 +249,12 @@ error_txt_need_named_vec <- function(table_names) {
   )
 }
 
-abort_src_not_db <- function() {
-  abort(error_txt_src_not_db(), .subclass = dm_error_full("src_not_db"))
+abort_key_constraints_need_db <- function() {
+  abort(error_txt_key_constraints_need_db(), .subclass = dm_error_full("key_constraints_need_db"))
 }
 
-error_txt_src_not_db <- function() {
-  "This does not work if the tables of the `dm` are not on a database."
+error_txt_key_constraints_need_db <- function() {
+  "Setting key constraints only works if the tables of the `dm` are on a database."
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
@@ -291,7 +291,7 @@ abort_only_possible_wo_filters <- function(fun_name) {
 }
 
 error_txt_only_possible_wo_filters <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.")
+  glue("You can't call `{fun_name}()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.")
 }
 
 # no foreign key relation -------------------------------------------------
@@ -410,16 +410,6 @@ abort_w_message <- function(msg) {
   abort(msg, .subclass = dm_error_full("w_message"))
 }
 
-# new table needs a name --------------------------------------------------
-
-abort_table_needs_name <- function() {
-  abort(error_txt_table_needs_name(), .subclass = dm_error_full("table_needs_name"))
-}
-
-error_txt_table_needs_name <- function() {
-  "The new table to insert with `dm_insert_zoomed()` must have a name."
-}
-
 # when zoomed and it shouldn't be ------------------------------
 
 abort_only_possible_wo_zoom <- function(fun_name) {
@@ -428,7 +418,7 @@ abort_only_possible_wo_zoom <- function(fun_name) {
 
 error_txt_only_possible_wo_zoom <- function(fun_name) {
   glue(
-    "You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, ",
+    "You can't call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, ",
     "`dm_insert_zoomed()` or `dm_discard_zoomed()` first."
   )
 }
@@ -440,7 +430,7 @@ abort_only_possible_w_zoom <- function(fun_name) {
 }
 
 error_txt_only_possible_w_zoom <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.")
+  glue("You can't call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.")
 }
 
 # errors for `copy_to.dm()` ----------------------------------------------
@@ -570,8 +560,8 @@ abort_only_named_args <- function(fun_name, name_meaning) {
 
 error_txt_only_named_args <- function(fun_name, name_meaning) {
   glue(
-    "The `...` argument in function {tick(paste0(fun_name, '()'))} accepts only ",
-    "named arguments (the names are {name_meaning})."
+    "All `...` arguments to function {tick(paste0(fun_name, '()'))} must be named. ",
+    "The names represent {name_meaning}."
   )
 }
 
@@ -590,7 +580,7 @@ abort_temp_table_requested <- function(table_names, tbls_in_dm) {
 error_txt_temp_table_requested <- function(table_names, tbls_in_dm) {
   temp_tables <- setdiff(table_names, tbls_in_dm)
   glue(
-    "The following requested tables from the DB are temporary tables and cannot be included in the result: ",
+    "The following requested tables from the DB are temporary tables and can't be included in the result: ",
     "{commas(tick(temp_tables))}."
   )
 }
