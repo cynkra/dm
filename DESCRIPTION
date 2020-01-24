@@ -15,19 +15,20 @@ Authors@R:
       person(given = "Darko",
              family = "Bergant",
              role = "aut",
-             email = "darko.bergant@gmail.com"),       
+             email = "darko.bergant@gmail.com"),
       person(given = "energie360° AG",
              role = "fnd",
              email = "info@energie360.ch"),
       person(given = "cynkra GmbH",
              role = "fnd",
              email = "mail@cynkra.com"))
-Description: Provides tools for working with multiple related tables,
-    stored as data frames or in a relational database.
-    Multiple tables (data and metadata) are stored in a compound object,
-    which can then be manipulated with a pipe-friendly syntax.
+Description: Provides tools for working with multiple related
+    tables, stored as data frames or in a relational database.  Multiple
+    tables (data and metadata) are stored in a compound object, which can
+    then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
-Depends: R (>= 3.3)
+Depends: 
+    R (>= 3.3)
 Imports:
     backports,
     cli,
@@ -61,10 +62,12 @@ Suggests:
     withr
 VignetteBuilder: 
     knitr
+RdMacros: 
+    lifecycle
+Remotes: 
+    r-lib/tidyselect
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
 RoxygenNote: 7.0.2
-Remotes:  
-    r-lib/tidyselect
