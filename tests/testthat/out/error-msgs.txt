@@ -1,74 +1,77 @@
-> error_txt_wrong_col_args()
-[1] "Argument `column` has to be given as character variable or unquoted and may only contain 1 element."
+> abort_key_set_force_false("pk_table")
+Error: Table `pk_table` already has a primary key. Use `force = TRUE` to change the existing primary key.
 
-> error_txt_key_set_force_false()
-[1] "If you want to change the existing primary key for a table, set `force` == TRUE."
+> abort_not_unique_key("Christmas", "Rudolph")
+Error: (`Rudolph`) not a unique key of `Christmas`.
 
-> error_txt_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
-(`elves`, `Rudolph`, `mulled_wine`) not a unique key of `Christmas`.
+> abort_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
+Error: (`elves`, `Rudolph`, `mulled_wine`) not a unique key of `Christmas`.
 
-> error_txt_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus",
-+   "overhours"))
-Table(s) `laziness`, `daydreaming` not in `dm` object. Available table names: `hard_work`, `focus`, `overhours`.
+> abort_table_not_in_dm("laziness", "hard_work")
+Error: Table(s) `laziness` not in `dm` object. Available table names: `hard_work`.
 
-> error_txt_not_subset_of("playing", "game", "hunting", "game")
-Column `game` of table `playing` contains values (see above) that are not present in column `game` of table `hunting`.
+> abort_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus",
++   "overtime"))
+Error: Table(s) `laziness`, `daydreaming` not in `dm` object. Available table names: `hard_work`, `focus`, `overtime`.
 
-> error_txt_sets_not_equal(c("A problem occurred",
+> abort_not_subset_of("playing", "game", "hunting", "game")
+Error: Column `game` of table `playing` contains values (see above) that are not present in column `game` of table `hunting`.
+
+> abort_sets_not_equal(c("A problem occurred",
 +   "And another, even worse problem, occurred shortly after"))
-[1] "A problem occurred\n  And another, even worse problem, occurred shortly after"
+Error: A problem occurred
+  And another, even worse problem, occurred shortly after
 
-> error_txt_not_bijective("child_table_name", "fk_col_name")
-1..1 cardinality (bijectivity) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
+> abort_not_bijective("child_table_name", "fk_col_name")
+Error: 1..1 cardinality (bijectivity) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
 
-> error_txt_not_injective("child_table_name", "fk_col_name")
-0..1 cardinality (injectivity from child table to parent table) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
+> abort_not_injective("child_table_name", "fk_col_name")
+Error: 0..1 cardinality (injectivity from child table to parent table) is not given: Column `fk_col_name` in table `child_table_name` contains duplicate values.
 
-> error_txt_ref_tbl_has_no_pk("parent_table")
-ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.
+> abort_ref_tbl_has_no_pk("parent_table")
+Error: ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.
 
-> error_txt_is_not_fk("child_table_name", c("wrong_fk_colname", "and_one_more"),
+> abort_is_not_fk("child_table_name", c("wrong_fk_colname", "and_one_more"),
 + "parent_table_name", c("actual_fk_colname", "and_one_more"))
-The given combination of columns (`wrong_fk_colname`, `and_one_more`) is not a foreign key of table `child_table_name` with regards to ref_table `parent_table_name`. Foreign key columns are: (`actual_fk_colname`, `and_one_more`).
+Error in abort_is_not_fk("child_table_name", c("wrong_fk_colname", "and_one_more"), : could not find function "abort_is_not_fk"
 
-> error_txt_rm_fk_col_missing()
-[1] "Parameter `column` has to be set. Pass `NULL` for removing all references."
+> abort_rm_fk_col_missing()
+Error: Parameter `column` has to be set. Pass `NULL` for removing all references.
 
-> error_txt_last_col_missing()
-[1] "The last color cannot be missing."
+> abort_last_col_missing()
+Error: The last color cannot be missing.
 
-> error_txt_no_cycles()
-[1] "Cycles in the relationship graph not yet supported."
+> abort_no_cycles()
+Error: Cycles in the relationship graph not yet supported.
 
-> error_txt_tables_not_reachable_from_start()
-All selected tables must be reachable from `start`.
+> abort_tables_not_reachable_from_start()
+Error: All selected tables must be reachable from `start`.
 
-> error_txt_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one",
-+   "col_2"))
-Not all specified variables `col_one`, `col_2` are columns of `table_name`. Its columns are: 
+> abort_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one", "col_2"))
+Error: Not all specified variables `col_one`, `col_2` are columns of `table_name`. Its columns are: 
 `col_1`, `col_2`.
 
-> error_txt_wrong_col_names("table_name", c("col_1", "col_2"), "col_one")
-`col_one` is not a column of `table_name`. Its columns are: 
+> abort_wrong_col_names("table_name", c("col_1", "col_2"), "col_one")
+Error: `col_one` is not a column of `table_name`. Its columns are: 
 `col_1`, `col_2`.
 
-> error_txt_dupl_new_id_col_name("tibbletable")
-`new_id_column` can not have an identical name as one of the columns of `tibbletable`.
+> abort_dupl_new_id_col_name("tibbletable")
+Error: `new_id_column` can not have an identical name as one of the columns of `tibbletable`.
 
-> error_txt_no_overwrite("fun")
-`fun()` does not support the `overwrite` argument.
+> abort_no_overwrite("fun")
+Error in abort_no_overwrite("fun"): unused argument ("fun")
 
-> error_txt_no_types()
-[1] "`copy_dm_to()` does not support the `types` argument."
+> abort_no_types()
+Error: `copy_dm_to()` does not support the `types` argument.
 
-> error_txt_no_indexes()
-[1] "`copy_dm_to()` does not support the `indexes` argument."
+> abort_no_indexes()
+Error: `copy_dm_to()` does not support the `indexes` argument.
 
-> error_txt_no_unique_indexes()
-[1] "`copy_dm_to()` does not support the `unique_indexes` argument."
+> abort_no_unique_indexes()
+Error: `copy_dm_to()` does not support the `unique_indexes` argument.
 
-> error_txt_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
-Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`.
+> abort_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
+Error: Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`.
 
 > error_src_not_db()
 [1] "This does not work if the tables of the `dm` are not on a database."

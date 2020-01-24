@@ -12,20 +12,12 @@ dm_error_full <- function(x) {
 
 # abort and text for primary key handling errors --------------------------
 
-abort_wrong_col_args <- function() {
-  abort(error_txt_wrong_col_args(), .subclass = dm_error_full("wrong_cols_args"))
+abort_key_set_force_false <- function(table) {
+  abort(error_txt_key_set_force_false(table), .subclass = dm_error_full("key_set_force_false"))
 }
 
-error_txt_wrong_col_args <- function() {
-  "Argument `column` has to be given as character variable or unquoted and may only contain 1 element."
-}
-
-abort_key_set_force_false <- function() {
-  abort(error_txt_key_set_force_false(), .subclass = dm_error_full("key_set_force_false"))
-}
-
-error_txt_key_set_force_false <- function() {
-  "If you want to change the existing primary key for a table, set `force` == TRUE."
+error_txt_key_set_force_false <- function(table) {
+  glue("Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key.")
 }
 
 # abort and text for key-helper functions ---------------------------------
