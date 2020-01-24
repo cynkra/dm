@@ -60,3 +60,9 @@ dplyr::src_tbls
 
 #' @export
 dplyr::tbl
+
+#' @export
+tidyr::unite
+
+#' @export
+tidyr::separate
