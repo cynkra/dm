@@ -6,7 +6,7 @@
 \alias{check_cardinality_1_n}
 \alias{check_cardinality_1_1}
 \alias{check_cardinality_0_1}
-\title{Test if the relation between two tables of a data model meet the requirements}
+\title{Check table relations}
 \usage{
 check_cardinality_0_n(parent_table, pk_column, child_table, fk_column)
 
@@ -28,13 +28,13 @@ examine_cardinality(parent_table, pk_column, child_table, fk_column)
 \item{fk_column}{Column of \code{child_table} that has to be a foreign key to \code{pk_column} in \code{parent_table}.}
 }
 \value{
-For \verb{check_cardinality_?_?()}: Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
+For \code{check_cardinality_?_?()}: Functions return \code{parent_table}, invisibly, if the check is passed, to support pipes.
 Otherwise an error is thrown and the reason for it is explained.
 
 For \code{examine_cardinality()}: Returns a character variable specifying the type of relationship between the two columns.
 }
 \description{
-All \verb{check_cardinality_?_?()} functions test the following conditions:
+All \code{check_cardinality_?_?()} functions test the following conditions:
 \enumerate{
 \item Is \code{pk_column} is a unique key for \code{parent_table}?
 \item Is the set of values in \code{fk_column} of \code{child_table} a subset of the set of values of \code{pk_column}?
@@ -44,34 +44,34 @@ All \verb{check_cardinality_?_?()} functions test the following conditions:
 \code{examine_cardinality()} also checks the first two points and subsequently determines the type of cardinality.
 }
 \details{
-All cardinality-functions accept a \verb{parent table} (data frame), a column name of this table,
-a \verb{child table}, and a column name of the child table.
-The given column of the \verb{parent table} has to be one of its
+All cardinality-functions accept a \code{parent table} (data frame), a column name of this table,
+a \code{child table}, and a column name of the child table.
+The given column of the \code{parent table} has to be one of its
 unique keys (no duplicates are allowed).
 Furthermore, in all cases, the set of values of the child table's column has to be a subset of the set of values of
 the parent table's column.
 
-The cardinality specifications \verb{0_n}, \verb{1_n}, \verb{0_1}, \verb{1_1} refer to the expected relation that the child table has with the parent table.
+The cardinality specifications \code{0_n}, \code{1_n}, \code{0_1}, \code{1_1} refer to the expected relation that the child table has with the parent table.
 The numbers \code{0}, \code{1} and \code{n} refer to the number of values in the column of the child table that correspond to each value of the
 column of the parent table.
 \code{n} means "more than one" in this context, with no upper limit.
 
-\verb{0_n} means, that each value of the \code{pk_column} has at least \code{0} and at most
+\code{0_n} means, that each value of the \code{pk_column} has at least \code{0} and at most
 \code{n} corresponding values in the column of the child table (which translates to no further restrictions).
 
-\verb{1_n} means, that each value of the \code{pk_column} has at least \code{1} and at most
+\code{1_n} means, that each value of the \code{pk_column} has at least \code{1} and at most
 \code{n} corresponding values in the column of the child table.
 This means that there is a "surjective" mapping from the child table
 to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 
-\verb{0_1} means, that each value of the \code{pk_column} has at least \code{0} and at most
+\code{0_1} means, that each value of the \code{pk_column} has at least \code{0} and at most
 \code{1} corresponding values in the column of the child table.
 This means that there is a "injective" mapping from the child table
 to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
 But not all of the parent table
 column values have to be referred to.
 
-\verb{1_1} means, that each value of the \code{pk_column} has exactly
+\code{1_1} means, that each value of the \code{pk_column} has exactly
 \code{1}  corresponding value in the column of the child table.
 This means that there is a "bijective" ("injective" AND "surjective") mapping
 between the child table and the parent table w.r.t. the specified columns, i.e. the sets of values of the two columns are equal and

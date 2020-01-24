@@ -2,7 +2,7 @@
 % Please edit documentation in R/paste.R
 \name{dm_paste}
 \alias{dm_paste}
-\title{Reverse engineer code for creation of a \code{\link{dm}}}
+\title{De-parse for \code{\link{dm}} objects}
 \usage{
 dm_paste(dm, select = FALSE, tab_width = 2)
 }

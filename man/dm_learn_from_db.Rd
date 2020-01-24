@@ -2,7 +2,7 @@
 % Please edit documentation in R/learn.R
 \name{dm_learn_from_db}
 \alias{dm_learn_from_db}
-\title{Learn a \code{\link{dm}} object from a database (DB)}
+\title{Create data model from database constraints}
 \usage{
 dm_learn_from_db(dest)
 }
@@ -40,7 +40,6 @@ if (FALSE) {
 }
 }
 \seealso{
-Other DB interaction functions: 
-\code{\link{copy_dm_to}()}
+Other DB interaction functions: \code{\link{copy_dm_to}}
 }
 \concept{DB interaction functions}

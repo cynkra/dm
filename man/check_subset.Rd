@@ -2,7 +2,7 @@
 % Please edit documentation in R/key-helpers.R
 \name{check_subset}
 \alias{check_subset}
-\title{Test if the values of one column are a subset of the values of another column}
+\title{Check column values for subset}
 \usage{
 check_subset(t1, c1, t2, c2)
 }

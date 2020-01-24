@@ -1,4 +1,4 @@
-#' Validate your [`dm`]: are all key constraints met?
+#' Validate your data model
 #'
 #' This function returns a tibble with information about which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
 #'
@@ -39,7 +39,7 @@ dm_examine_constraints_impl <- function(dm) {
     arrange(is_key, desc(kind), table)
 }
 
-#' Test if a column (combination) is unique key of a table
+#' Check if column(s) can be used as keys
 #'
 #' @description `check_key()` accepts a data frame and, optionally, columns.
 #' It throws an error
@@ -116,7 +116,7 @@ is_unique_key <- nse(function(.data, column) {
   duplicate_rows
 })
 
-#' Test if the value sets of two different columns in two different tables are the same
+#' Check column values for set equality
 #'
 #' @description `check_set_equality()` is a wrapper of `check_subset()`.
 #' It tests if one value set is a subset of another and vice versa, i.e., if both sets are the same.
@@ -172,7 +172,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
   invisible(eval_tidy(t1q))
 }
 
-#' Test if the values of one column are a subset of the values of another column
+#' Check column values for subset
 #'
 #' @description `check_subset()` tests if the values of the chosen column `c1` of data frame `t1` are a subset of the values
 #' of column `c2` of data frame `t2`.

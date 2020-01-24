@@ -1,4 +1,4 @@
-#' Copy a `dm`-object to a different data source
+#' Copy data model to data source
 #'
 #' `copy_dm_to()` takes a [dplyr::src_dbi] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.

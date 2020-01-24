@@ -1,4 +1,4 @@
-#' Add/remove a primary key to/from a table in a [`dm`] object
+#' Add/remove a primary key
 #'
 #' @description `dm_add_pk()` marks the specified columns as the primary key of the specified table.
 #' If `check == TRUE`, then it will first check if
@@ -79,7 +79,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
   new_dm3(def)
 }
 
-#' Does a table of a [`dm`] object have columns set as primary key?
+#' Check for primary key
 #'
 #' @description `dm_has_pk()` checks if a given table has columns marked as its primary key.
 #'
@@ -100,7 +100,7 @@ dm_has_pk <- function(dm, table) {
   has_length(dm_get_pk(dm, {{ table }}))
 }
 
-#' Names of the primary key columns
+#' Primary key column names
 #'
 #' @description `dm_get_pk()` returns the names of the
 #' columns marked as primary key of a table of a [`dm`] object.
@@ -216,7 +216,7 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 }
 
 
-#' Which columns are candidates for a primary key?
+#' Primary key candidate
 #'
 #' @description \lifecycle{questioning}
 #'

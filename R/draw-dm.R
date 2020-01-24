@@ -1,4 +1,4 @@
-#' Draw a diagram of a [`dm`]-object's data model
+#' Draw a diagram of data model
 #'
 #' `dm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'

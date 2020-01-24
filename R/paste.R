@@ -1,4 +1,4 @@
-#' Reverse engineer code for creation of a [`dm`]
+#' De-parse for [`dm`] objects
 #'
 #' `dm_paste` takes an existing `dm` and produces the code necessary for its creation
 #'

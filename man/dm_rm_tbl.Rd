@@ -2,7 +2,7 @@
 % Please edit documentation in R/add-tbl.R
 \name{dm_rm_tbl}
 \alias{dm_rm_tbl}
-\title{Remove tables from a \code{\link{dm}}}
+\title{Remove tables}
 \usage{
 dm_rm_tbl(dm, ...)
 }

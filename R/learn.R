@@ -1,4 +1,4 @@
-#' Learn a [`dm`] object from a database (DB)
+#' Create data model from database constraints
 #'
 #' @description If there are any permament tables on a DB, a new [`dm`] object can be created that contains those tables,
 #' along with their primary and foreign key constraints.

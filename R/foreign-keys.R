@@ -1,4 +1,4 @@
-#' Add/remove references from one table of a [`dm`] to another
+#' Add/remove foreign keys
 #'
 #' @description `dm_add_fk()` marks the specified columns as the foreign key of table `table` with
 #' respect to the primary key of table `ref_table`.
@@ -81,7 +81,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
   new_dm3(def)
 }
 
-#' Does a reference exist?
+#' Check if foreign keys exists
 #'
 #' `dm_has_fk()` checks if a foreign key reference exists between two tables in a `dm`.
 #'
@@ -107,7 +107,7 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
   has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
-#' Names of the foreign key columns
+#' Foreign key column names
 #'
 #' @description `dm_get_fk()` returns the names of the
 #' columns marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
@@ -149,7 +149,7 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
   fks$column[fks$table == table_name & fks$ref == ref_table_name]
 }
 
-#' Retrieve all foreign key constraints in a [`dm`]
+#' Get foreign key constraints
 #'
 #' @description Get a summary of all foreign key relations in a [`dm`]
 #'
@@ -251,7 +251,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
   new_dm3(def)
 }
 
-#' Which columns are candidates for a foreign key?
+#' Foreign key candidate
 #'
 #' @description \lifecycle{questioning}
 #'
