@@ -1,6 +1,6 @@
 #' @export
-unite.dm <- function(.data, ...) {
-  check_zoomed(.data)
+unite.dm <- function(data, ...) {
+  check_zoomed(data)
 }
 
 #' \pkg{tidyr} data manipulation methods for `zoomed_dm` objects
@@ -24,9 +24,6 @@ unite.dm <- function(.data, ...) {
 #' For `separate.zoomed_dm`: see [`tidyr::separate`]
 #' @param na.rm see [`tidyr::unite`]
 #' @param into see [`tidyr::separate`]
-#' @param convert see [`tidyr::separate`]
-#' @param extra see [`tidyr::separate`]
-#' @param fill see [`tidyr::separate`]
 #' @rdname tidyr_table_manipulation
 #' @examples
 #' zoom_united <- dm_nycflights13() %>%
@@ -48,8 +45,8 @@ unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
 }
 
 #' @export
-separate.dm <- function(.data, ...) {
-  check_zoomed(.data)
+separate.dm <- function(data, ...) {
+  check_zoomed(data)
 }
 
 #' @rdname tidyr_table_manipulation

@@ -224,6 +224,7 @@ left_join.dm <- function(x, ...) {
 #' @param suffix Disabled, since columns are disambiguated automatically if necessary, changing the column names to `table_name.column_name`.
 #' @param select Select a subset of the \strong{RHS-table}'s columns, the syntax being `select = c(col_1, col_2, col_3)` (unquoted or quoted).
 #' This argument is specific for the `join`-methods for `zoomed_dm`.
+#' @param ... see [`dplyr::join`]
 #' @examples
 #' flights_dm <- dm_nycflights13()
 #' dm_zoom_to(flights_dm, flights) %>%

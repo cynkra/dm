@@ -34,6 +34,8 @@ If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}
 
 \item{select}{Select a subset of the \strong{RHS-table}'s columns, the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
 This argument is specific for the \code{join}-methods for \code{zoomed_dm}.}
+
+\item{...}{see \code{\link[dplyr:join]{dplyr::join}}}
 }
 \description{
 Use these methods without the '.zoomed_dm' suffix (see examples).
