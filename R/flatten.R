@@ -165,14 +165,15 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #'
 #' @family flattening functions
 #'
+#' @export
 #' @examples
-#'
 #' dm_join_to_tbl(dm_nycflights13(), airports, flights)
+#'
 #' # same result is achieved with:
 #' dm_join_to_tbl(dm_nycflights13(), flights, airports)
+#'
 #' # this gives an error, because the tables are not directly linked to each other:
 #' try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
-#' @export
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   check_not_zoomed(dm)
   force(join)

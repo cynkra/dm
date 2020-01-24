@@ -1,5 +1,8 @@
 #' Filtering a [`dm`] object
 #'
+#' @description
+#' \lifecycle{questioning}
+#'
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
 #'
@@ -24,6 +27,18 @@
 #' (similar to 1. but only for one table).
 #'
 #' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
+#'
+#' @section Life cycle:
+#' These functions are marked "questioning" because it feels wrong
+#' to tightly couple filtering with the data model.
+#' On the one hand, an overview of active filters is useful
+#' when specifying the base data set for an analysis in terms of column selections
+#' and row filters.
+#' However, these filter condition should be only of informative nature
+#' and never affect the results of other operations.
+#' We are working on formalizing the semantics of the underlying operations
+#' in order to present them in a cleaner interface.
+#'
 #' @rdname dm_filter
 #'
 #' @inheritParams dm_add_pk
@@ -106,6 +121,8 @@ dm_apply_filters <- function(dm) {
 #' @rdname dm_filter
 #'
 #' @inheritParams dm_add_pk
+#'
+#' @return For `dm_apply_filters_to_tbl()`, a table.
 #'
 #' @examples
 #' dm_nycflights13() %>%

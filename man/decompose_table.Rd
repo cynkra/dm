@@ -33,6 +33,8 @@ A named list of length two:
 }
 }
 \description{
+\lifecycle{questioning}
+
 Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
 
 \code{decompose_table()} accepts a data frame, a name for the 'ID column' that will be newly created, and the names
@@ -42,6 +44,12 @@ It creates a 'parent table', which consists of the columns specified in the elli
 Then it removes those
 columns from the original table, which is now called the 'child table, and adds the 'ID column'.
 }
+\section{Life cycle}{
+
+This function is marked "questioning" because it feels more useful
+when applied to a table in a dm object.
+}
+
 \examples{
 decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
 decomposed_table$child_table

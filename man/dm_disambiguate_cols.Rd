@@ -18,7 +18,7 @@ By default, this function lists the renamed columns in a message, pass \code{FAL
 A \code{dm} whose column names are unambiguous.
 }
 \description{
-This function ensures that all columns in \code{dm} have unique names.
+This function ensures that all columns in a \code{dm} have unique names.
 }
 \details{
 The function first checks if there are any column names that are not unique.

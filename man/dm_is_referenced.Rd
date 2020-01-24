@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph.R
 \name{dm_is_referenced}
 \alias{dm_is_referenced}
-\title{Is a table of a \code{\link{dm}} referenced by another table?}
+\title{Check foreign key reference}
 \usage{
 dm_is_referenced(dm, table)
 }

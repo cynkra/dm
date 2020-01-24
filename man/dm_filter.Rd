@@ -31,19 +31,23 @@ for an introduction to these concepts.}
 For \code{dm_filter}: an updated \code{dm} object (filter executed for given table, and condition stored).
 
 For \code{dm_apply_filters}: an updated \code{dm} object (filter effects evaluated for all tables).
+
+For \code{dm_apply_filters_to_tbl()}, a table.
 }
 \description{
+\lifecycle{questioning}
+
 Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it
 directly or indirectly via foreign key relations.
-}
-\details{
+
 \code{dm_filter()} can be used to define filter conditions for tables using syntax that is similar to \code{\link[dplyr:filter]{dplyr::filter()}}.
 These conditions will be stored in the \code{\link{dm}}, and executed immediately for the tables that they are referring to.
 
 With \code{dm_apply_filters()}, all tables will be updated according to the filter conditions and the foreign key relations.
 
 \code{dm_apply_filters_to_tbl()} retrieves one specific table of the \code{dm} that is updated according to the filter conditions and the foreign key relations.
-
+}
+\details{
 The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 in one of the following scenarios:
 \enumerate{
@@ -59,6 +63,19 @@ of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from 
 
 Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
 }
+\section{Life cycle}{
+
+These functions are marked "questioning" because it feels wrong
+to tightly couple filtering with the data model.
+On the one hand, an overview of active filters is useful
+when specifying the base data set for an analysis in terms of column selections
+and row filters.
+However, these filter condition should be only of informative nature
+and never affect the results of other operations.
+We are working on formalizing the semantics of the underlying operations
+in order to present them in a cleaner interface.
+}
+
 \examples{
 dm_nyc_filtered <-
   dm_nycflights13() \%>\%

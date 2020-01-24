@@ -1,6 +1,6 @@
 #' Avoid conflicts in column names
 #'
-#' This function ensures that all columns in `dm` have unique names.
+#' This function ensures that all columns in a `dm` have unique names.
 #'
 #' The function first checks if there are any column names that are not unique.
 #' If there are, those columns will be assigned new, unique, names by prefixing their existing name

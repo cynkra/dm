@@ -62,8 +62,6 @@ reference:
   - dm_insert_zoomed
   - dm_update_zoomed
   - dm_discard_zoomed
-  - dm_rename
-  - dm_select
 
 - title: Flattening
   contents:
@@ -72,11 +70,13 @@ reference:
   - dm_join_to_tbl
   - dm_disambiguate_cols
 
-- title: Filtering
+- title: Filtering and column selection
   contents:
   - dm_filter
   - dm_apply_filters
   - dm_apply_filters_to_tbl
+  - dm_rename
+  - dm_select
 
 - title: Interaction with DBs
   contents:

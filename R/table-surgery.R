@@ -1,6 +1,9 @@
 #' Decompose a table into two linked tables
 #'
-#' @description Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
+#' @description
+#' \lifecycle{questioning}
+#'
+#' Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
 #'
 #' `decompose_table()` accepts a data frame, a name for the 'ID column' that will be newly created, and the names
 #' of the columns that will be extracted into the new data frame.
@@ -30,6 +33,10 @@
 #' @return A named list of length two:
 #'   - entry "child_table": the child table with column `new_id_column` referring to the same column in `parent_table`,
 #'   - entry "parent_table": the "lookup table" for `child_table`.
+#'
+#' @section Life cycle:
+#' This function is marked "questioning" because it feels more useful
+#' when applied to a table in a dm object.
 #'
 #' @examples
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
@@ -73,7 +80,10 @@ decompose_table <- function(.data, new_id_column, ...) {
 
 #' Merge two tables that are linked by a foreign key relation
 #'
-#' @description Perform table fusion by combining two tables by a common (key) column, and then removing this column.
+#' @description
+#' \lifecycle{questioning}
+#'
+#' Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 #'
 #' `reunite_parent_child()`: After joining the two tables by the column `id_column`, this column will be removed.
 #' The transformation is roughly the
@@ -87,6 +97,13 @@ decompose_table <- function(.data, new_id_column, ...) {
 #'
 #' @return A wide table produced by joining the two given tables.
 #'
+#' @section Life cycle:
+#' These functions are marked "questioning" because they feel more useful
+#' when applied to a table in a dm object.
+#'
+#' @name reunite_parent_child
+#'
+#' @export
 #' @examples
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
 #' ct <- decomposed_table$child_table
@@ -94,8 +111,6 @@ decompose_table <- function(.data, new_id_column, ...) {
 #'
 #' reunite_parent_child(ct, pt, new_id)
 #' reunite_parent_child_from_list(decomposed_table, new_id)
-#' @name reunite_parent_child
-#' @export
 reunite_parent_child <- function(child_table, parent_table, id_column) {
   id_col_q <- ensym(id_column)
 
@@ -117,8 +132,6 @@ reunite_parent_child <- function(child_table, parent_table, id_column) {
 #'
 #' @param list_of_parent_child_tables Cf arguments `child_table` and `parent_table` from
 #'   `reunite_parent_child()`, but both in a named list (as created by `decompose_table()`).
-#'
-#' @family table surgery functions
 #'
 #' @rdname reunite_parent_child
 #' @export

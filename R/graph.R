@@ -1,3 +1,5 @@
+#' Check foreign key reference
+#'
 #' Is a table of a [`dm`] referenced by another table?
 #'
 #' @inheritParams dm_add_pk
