@@ -36,3 +36,7 @@ is_syntactic <- function(x) {
 if_pkg_version <- function(pkg, min_version, if_true, if_false = NULL) {
   if (packageVersion(pkg) >= min_version) if_true else if_false
 }
+
+format_classes <- function(class) {
+  commas(tick(class))
+}

@@ -45,7 +45,7 @@ abort_table_not_in_dm <- function(table_name, dm_tables) {
 }
 
 error_txt_table_not_in_dm <- function(table_name, dm_tables) {
-  glue("Table(s) {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}")
+  glue("Table(s) {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}.")
 }
 
 # error: is not subset of -------------------------------------------------
@@ -61,7 +61,7 @@ error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
   glue(
     "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see above) that are not present in column ",
-    "{tick(colname_2)} of table {tick(table_name_2)}"
+    "{tick(colname_2)} of table {tick(table_name_2)}."
   )
 }
 
@@ -188,18 +188,18 @@ abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
 
 error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   if (length(wrong_colnames) > 1) {
-    paste0(
+    glue(
       "Not all specified variables ",
-      paste(tick(wrong_colnames), collapse = ", "), " ",
-      "are columns of ", tick(table_name), ". ",
+      "{commas(tick(wrong_colnames))} ",
+      "are columns of {tick(table_name)}. ",
       "Its columns are: \n",
-      paste(tick(actual_colnames), collapse = ", "), "."
+      "{commas(tick(actual_colnames))}."
     )
   } else {
-    paste0(
-      tick(wrong_colnames), " is not a column of ",
-      tick(table_name), ". Its columns are: \n",
-      commas(tick(actual_colnames)), "."
+    glue(
+      "{tick(wrong_colnames)} is not a column of ",
+      "{tick(table_name)}. Its columns are: \n",
+      "{commas(tick(actual_colnames))}."
     )
   }
 }
@@ -210,7 +210,7 @@ abort_dupl_new_id_col_name <- function(table_name) {
 }
 
 error_txt_dupl_new_id_col_name <- function(table_name) {
-  paste0("`new_id_column` can not have an identical name as one of the columns of `", table_name, "`.")
+  glue("`new_id_column` can not have an identical name as one of the columns of {tick(table_name)}.")
 }
 
 abort_no_overwrite <- function() {
@@ -227,7 +227,7 @@ abort_no_types <- function() {
 }
 
 error_txt_no_types <- function() {
-  paste0("`copy_dm_to()` does not support the `types` argument.")
+  "`copy_dm_to()` does not support the `types` argument."
 }
 
 abort_no_indexes <- function() {
@@ -235,7 +235,7 @@ abort_no_indexes <- function() {
 }
 
 error_txt_no_indexes <- function() {
-  paste0("`copy_dm_to()` does not support the `indexes` argument.")
+  "`copy_dm_to()` does not support the `indexes` argument."
 }
 
 abort_no_unique_indexes <- function() {
@@ -243,7 +243,7 @@ abort_no_unique_indexes <- function() {
 }
 
 error_txt_no_unique_indexes <- function() {
-  paste0("`copy_dm_to()` does not support the `unique_indexes` argument.")
+  "`copy_dm_to()` does not support the `unique_indexes` argument."
 }
 
 abort_need_named_vec <- function(table_names) {
@@ -251,10 +251,9 @@ abort_need_named_vec <- function(table_names) {
 }
 
 error_txt_need_named_vec <- function(table_names) {
-  paste0(
+  glue(
     "Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names ",
-    "are the original table names (returned by e.g. `src_tbls()`): ",
-    commas(tick(table_names))
+    "are the original table names (returned by e.g. `src_tbls()`): {commas(tick(table_names))}."
   )
 }
 
@@ -263,7 +262,7 @@ abort_src_not_db <- function() {
 }
 
 error_src_not_db <- function() {
-  paste0("This does not work if the tables of the `dm` are not on a database.")
+  "This does not work if the tables of the `dm` are not on a database."
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
@@ -290,7 +289,7 @@ abort_update_not_supported <- function() {
 }
 
 error_update_not_supported <- function() {
-  paste0("Updating `dm` objects not supported.")
+  "Updating `dm` objects not supported."
 }
 
 # errors when filters are set but they shouldn't be ------------------------------
@@ -335,7 +334,7 @@ abort_not_same_src <- function() {
 }
 
 error_not_same_src <- function() {
-  "Not all tables in the object share the same `src`"
+  "Not all tables in the object share the same `src`."
 }
 
 # Something other than tables are put in a `dm` ------------------
@@ -345,7 +344,7 @@ abort_what_a_weird_object <- function(class) {
 }
 
 error_what_a_weird_object <- function(class) {
-  glue("Don't know how to determine table source for object of class {commas(tick(class))}")
+  glue("Don't know how to determine table source for object of class {commas(tick(class))}.")
 }
 
 abort_squash_limited <- function() {
@@ -353,7 +352,7 @@ abort_squash_limited <- function() {
 }
 
 error_squash_limited <- function() {
-  paste0("`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`.")
+  "`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`."
 }
 
 abort_apply_filters_first <- function(join_name) {
@@ -379,7 +378,7 @@ abort_no_flatten_with_nest_join <- function() {
 error_no_flatten_with_nest_join <- function() {
   paste0(
     "`dm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
-    "cf. the help pages for these functions. Consider `join = left_join`"
+    "cf. the help pages for these functions. Consider `join = left_join`."
   )
 }
 
@@ -400,7 +399,7 @@ abort_is_not_dm <- function(obj_class) {
 }
 
 error_is_not_dm <- function(obj_class) {
-  glue("Required class `dm` but instead is {paste(tick(obj_class), collapse = ', ')}")
+  glue("Required class `dm` but instead is {format_classes(obj_class)}.")
 }
 
 
@@ -410,20 +409,7 @@ abort_con_only_for_dbi <- function() {
 }
 
 error_con_only_for_dbi <- function() {
-  "A local `dm` doesn't have a DB connection"
-}
-
-# no zoom allowed for `dm_zoom_to_tbl()` ---------------------------------
-
-abort_no_zoom_allowed <- function() {
-  abort(error_no_zoom_allowed(), .subclass = dm_error_full("no_zoom_allowed"))
-}
-
-error_no_zoom_allowed <- function() {
-  paste0(
-    "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed()`, ",
-    "`dm_insert_zoomed()` or `dm_discard_zoomed()` first."
-  )
+  "A local `dm` doesn't have a DB connection."
 }
 
 # general abort with customized msg ---------------------------------------
@@ -432,17 +418,6 @@ abort_w_message <- function(msg) {
   abort(msg, .subclass = dm_error_full("w_message"))
 }
 
-# no table zoomed, but 'dm_insert_zoomed()' called ---------------------------------
-
-abort_no_table_zoomed <- function() {
-  abort(error_no_table_zoomed(), .subclass = dm_error_full("no_table_zoomed"))
-}
-
-error_no_table_zoomed <- function() {
-  "`dm_insert_zoomed()` only works for zoomed `dm`"
-}
-
-
 # new table needs a name --------------------------------------------------
 
 abort_table_needs_name <- function() {
@@ -450,7 +425,7 @@ abort_table_needs_name <- function() {
 }
 
 error_table_needs_name <- function() {
-  "The new table to insert with `dm_insert_zoomed()` must have a name"
+  "The new table to insert with `dm_insert_zoomed()` must have a name."
 }
 
 # when zoomed and it shouldn't be ------------------------------
@@ -462,7 +437,7 @@ abort_only_possible_wo_zoom <- function(fun_name) {
 error_only_possible_wo_zoom <- function(fun_name) {
   glue(
     "You cannot call `{fun_name}()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, ",
-    "`dm_insert_zoomed()` or `dm_zoom_out()` first."
+    "`dm_insert_zoomed()` or `dm_discard_zoomed()` first."
   )
 }
 
@@ -473,7 +448,7 @@ abort_only_possible_w_zoom <- function(fun_name) {
 }
 
 error_only_possible_w_zoom <- function(fun_name) {
-  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.")
+  glue("You cannot call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.")
 }
 
 # errors for `copy_to.dm()` ----------------------------------------------
@@ -553,7 +528,7 @@ abort_dm_invalid <- function(why) {
 }
 
 error_dm_invalid <- function(why) {
-  paste0("This `dm` is invalid, reason: ", why)
+  glue("This `dm` is invalid, reason: {why}")
 }
 
 
@@ -624,6 +599,6 @@ error_temp_table_requested <- function(table_names, tbls_in_dm) {
   temp_tables <- setdiff(table_names, tbls_in_dm)
   glue(
     "The following requested tables from the DB are temporary tables and cannot be included in the result: ",
-    "{commas(tick(temp_tables))}"
+    "{commas(tick(temp_tables))}."
   )
 }

@@ -9,10 +9,10 @@
 
 > error_txt_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus",
 +   "overhours"))
-Table(s) `laziness`, `daydreaming` not in `dm` object. Available table names: `hard_work`, `focus`, `overhours`
+Table(s) `laziness`, `daydreaming` not in `dm` object. Available table names: `hard_work`, `focus`, `overhours`.
 
 > error_txt_not_subset_of("playing", "game", "hunting", "game")
-Column `game` of table `playing` contains values (see above) that are not present in column `game` of table `hunting`
+Column `game` of table `playing` contains values (see above) that are not present in column `game` of table `hunting`.
 
 > error_txt_sets_not_equal(c("A problem occurred",
 +   "And another, even worse problem, occurred shortly after"))
@@ -45,13 +45,15 @@ All selected tables must be reachable from `start`.
 
 > error_txt_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one",
 +   "col_2"))
-[1] "Not all specified variables `col_one`, `col_2` are columns of `table_name`. Its columns are: \n`col_1`, `col_2`."
+Not all specified variables `col_one`, `col_2` are columns of `table_name`. Its columns are: 
+`col_1`, `col_2`.
 
 > error_txt_wrong_col_names("table_name", c("col_1", "col_2"), "col_one")
-[1] "`col_one` is not a column of `table_name`. Its columns are: \n`col_1`, `col_2`."
+`col_one` is not a column of `table_name`. Its columns are: 
+`col_1`, `col_2`.
 
 > error_txt_dupl_new_id_col_name("tibbletable")
-[1] "`new_id_column` can not have an identical name as one of the columns of `tibbletable`."
+`new_id_column` can not have an identical name as one of the columns of `tibbletable`.
 
 > error_txt_no_overwrite("fun")
 `fun()` does not support the `overwrite` argument.
@@ -66,7 +68,7 @@ All selected tables must be reachable from `start`.
 [1] "`copy_dm_to()` does not support the `unique_indexes` argument."
 
 > error_txt_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
-[1] "Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`"
+Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`.
 
 > error_src_not_db()
 [1] "This does not work if the tables of the `dm` are not on a database."
@@ -90,13 +92,13 @@ Tables `subjects` and `king` are not directly linked by a foreign key relation.
 [1] "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_squash_to_tbl()` as an alternative."
 
 > error_not_same_src()
-[1] "Not all tables in the object share the same `src`"
+[1] "Not all tables in the object share the same `src`."
 
 > error_what_a_weird_object("monster")
-Don't know how to determine table source for object of class `monster`
+Don't know how to determine table source for object of class `monster`.
 
 > error_not_same_src()
-[1] "Not all tables in the object share the same `src`"
+[1] "Not all tables in the object share the same `src`."
 
 > error_squash_limited()
 [1] "`dm_squash_to_tbl()` only supports join methods `left_join`, `inner_join`, `full_join`."
@@ -105,31 +107,25 @@ Don't know how to determine table source for object of class `monster`
 `dm_..._to_tbl()` with join method `join_tightly` generally wouldn't produce the correct result when filters are set. Please consider calling `dm_apply_filters()` first.
 
 > error_no_flatten_with_nest_join()
-[1] "`dm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, cf. the help pages for these functions. Consider `join = left_join`"
+[1] "`dm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, cf. the help pages for these functions. Consider `join = left_join`."
 
 > error_unique_table_names_or_table_names()
 [1] "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
 
 > error_is_not_dm("blob")
-Required class `dm` but instead is `blob`
+Required class `dm` but instead is `blob`.
 
 > error_con_only_for_dbi()
-[1] "A local `dm` doesn't have a DB connection"
-
-> error_no_zoom_allowed()
-[1] "`dm_zoom_to_tbl()` only works for unzoomed `dm`. Please use one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first."
-
-> error_no_table_zoomed()
-[1] "`dm_insert_zoomed()` only works for zoomed `dm`"
+[1] "A local `dm` doesn't have a DB connection."
 
 > error_table_needs_name()
-[1] "The new table to insert with `dm_insert_zoomed()` must have a name"
+[1] "The new table to insert with `dm_insert_zoomed()` must have a name."
 
-> error_only_possible_wo_zoom("dm_zoom_to_tbl")
-You cannot call `dm_zoom_to_tbl()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_zoom_out()` first.
+> error_only_possible_wo_zoom("dm_zoom_to")
+You cannot call `dm_zoom_to()` on a `zoomed_dm`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 > error_only_possible_w_zoom("dm_update_zoomed")
-You cannot call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to_tbl()` first.
+You cannot call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.
 
 > error_req_tbl_not_avail(c("dull", "boring", "common_knowledge"), c(
 +   "fascinating", "interesting"))
@@ -148,7 +144,7 @@ The foreign key that existed between the originally zoomed table `hook` and `eye
 You need to select by-column `by` of RHS-table `RHS`.
 
 > error_dm_invalid("it's ugly")
-[1] "This `dm` is invalid, reason: it's ugly"
+This `dm` is invalid, reason: it's ugly
 
 > error_no_table_provided()
 [1] "Argument `table` for `pull_tbl.dm()` missing."
@@ -170,5 +166,5 @@ The `...` argument in function `give_names()` accepts only named arguments (the 
 
 > error_temp_table_requested(c("i_am_temporary", "i_am_permanent"),
 + "i_am_permanent")
-The following requested tables from the DB are temporary tables and cannot be included in the result: `i_am_temporary`
+The following requested tables from the DB are temporary tables and cannot be included in the result: `i_am_temporary`.
 

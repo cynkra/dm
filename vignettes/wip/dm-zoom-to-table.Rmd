@@ -68,7 +68,7 @@ flights_dm <- dm_nycflights13()
 flights_dm
 flights_zoomed <- 
   flights_dm %>% 
-  dm_zoom_to_tbl(flights)
+  dm_zoom_to(flights)
 # The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
 flights_zoomed
 
@@ -98,7 +98,7 @@ We can do this for the `weather` table.
 library(tidyr)
 weather_zoomed <- 
   flights_dm %>% 
-  dm_zoom_to_tbl(weather)
+  dm_zoom_to(weather)
 weather_zoomed
 # Maybe there is some hidden candidate for a primary key that we overlooked
 enum_pk_candidates(weather_zoomed)
@@ -122,7 +122,7 @@ flights_upd_weather_dm
 # creating the coveted FK relation between `flights` and `weather`
 extended_flights_dm <- 
   flights_upd_weather_dm %>% 
-  dm_zoom_to_tbl(flights) %>% 
+  dm_zoom_to(flights) %>% 
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>% 
   # need to keep `origin` as FK to airports, so `remove = FALSE`
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>% 
@@ -146,7 +146,7 @@ One way to do this in the {dm}-framework is as follows:
 disentangled_flights_dm <- 
   dm_nycflights13(cycle = TRUE) %>% 
   # zooming and immediately inserting essentially creates a copy of the original table
-  dm_zoom_to_tbl(airports) %>% 
+  dm_zoom_to(airports) %>% 
   # reinserting the `airports` table under the name `destination`
   dm_insert_zoomed(destination) %>% 
   # renaming the originally zoomed table
@@ -166,7 +166,7 @@ Here is an example for adding a summary of a table as a new table to a `dm` (FK-
 ```{r}
 dm_with_summary <- 
   flights_dm %>% 
-  dm_zoom_to_tbl(flights) %>% 
+  dm_zoom_to(flights) %>% 
   count(origin, carrier) %>% 
   dm_insert_zoomed(dep_carrier_count)
 dm_draw(dm_with_summary)
@@ -182,7 +182,7 @@ The LHS-table of a join is always the zoomed table.
 ```{r}
 joined_flights_dm <- 
   flights_dm %>% 
-  dm_zoom_to_tbl(flights) %>% 
+  dm_zoom_to(flights) %>% 
   # let's first reduce the number of columns of flights
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% 
   # in the {dm}-method for the joins you can specify which columns you want to add to the zoomed table
@@ -201,7 +201,7 @@ To use our last example once more:
 
 ```{r}
 flights_dm %>% 
-  dm_zoom_to_tbl(flights) %>% 
+  dm_zoom_to(flights) %>% 
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% 
   left_join(planes, select = c(tailnum, plane_type = type)) %>% 
   pull_tbl()

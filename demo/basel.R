@@ -317,17 +317,17 @@ delta_non_jfk_january %>%
 
 # The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
 dm_flights %>%
-  dm_zoom_to_tbl(flights)
+  dm_zoom_to(flights)
 
 # Many {dplyr} verbs work on zoomed tables:
 dm_flights %>%
-  dm_zoom_to_tbl(flights) %>%
+  dm_zoom_to(flights) %>%
   mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
   select(year:dep_time, am_pm_dep, everything())
 
 # Put back into the dm:
 dm_flights %>%
-  dm_zoom_to_tbl(flights) %>%
+  dm_zoom_to(flights) %>%
   mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
   select(year:dep_time, am_pm_dep, everything()) %>%
   dm_update_zoomed()
@@ -338,7 +338,7 @@ dm_flights
 # Creation of a summary table:
 dm_with_summary <-
   dm_flights %>%
-  dm_zoom_to_tbl(flights) %>%
+  dm_zoom_to(flights) %>%
   count(origin) %>%
   dm_insert_zoomed("origin_count")
 
@@ -349,9 +349,9 @@ dm_with_summary %>%
 
 # All relationships still available in the summary are retained:
 dm_flights %>%
-  dm_zoom_to_tbl(flights) %>%
+  dm_zoom_to(flights) %>%
   count(carrier, origin) %>%
-  dm_insert_zoomed(origin_carrier_count) %>%
+  dm_insert_zoomed("origin_carrier_count") %>%
   dm_draw()
 
 
@@ -445,7 +445,7 @@ nycflights13_base %>%
 
 
 # Determine key candidates
-zoomed_weather <- dm_zoom_to_tbl(nycflights13_base, weather)
+zoomed_weather <- dm_zoom_to(nycflights13_base, weather)
 zoomed_weather
 
 # `enum_pk_candidates()` works for both `tibbles` and `zoomed_dm`
@@ -493,7 +493,7 @@ nycflights13_weather_link %>%
 # FIXME: zoom to multiple tables
 
 nycflights13_weather_flights_link <-
-  dm_zoom_to_tbl(nycflights13_weather_link, flights) %>%
+  dm_zoom_to(nycflights13_weather_link, flights) %>%
   # same procedure with `flights` table
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   # for flights we need to keep the column `origin`,
@@ -517,13 +517,13 @@ nycflights13_perfect %>%
 
 # What are the missings?
 nycflights13_perfect %>%
-  dm_zoom_to_tbl(flights) %>%
+  dm_zoom_to(flights) %>%
   anti_join(weather) %>%
   count(origin_slot_id)
 
 # Create table of aggregates, and insert it into the dm
 nycflights13_perfect %>%
-  dm_zoom_to_tbl(flights) %>%
+  dm_zoom_to(flights) %>%
   count(origin) %>%
   dm_insert_zoomed("flights_agg") %>%
   dm_draw()

@@ -26,6 +26,6 @@ This function has methods for both \code{dm} classes:
 dm_nycflights13() \%>\%
   pull_tbl(airlines)
 dm_nycflights13() \%>\%
-  dm_zoom_to_tbl(airlines) \%>\%
+  dm_zoom_to(airlines) \%>\%
   pull_tbl()
 }
