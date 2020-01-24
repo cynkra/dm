@@ -3,6 +3,20 @@ group_by.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' Tidyverse methods for `zoomed_dm` objects (remove '.zoomed_dm' suffix!)
+#'
+#' Tidyverse methods for `zoomed_dm` objects. Use these methods without the '.zoomed_dm' suffix (see examples).
+#' @param .data object of class `zoomed_dm`
+#' @param ... see corresponding function in package \pkg{dplyr} or \pkg{tidyr}
+#' @rdname tidyverse
+#' @examples
+#' zoomed <- dm_nycflights13() %>%
+#'   dm_zoom_to(flights) %>%
+#'   group_by(month) %>%
+#'   arrange(desc(day)) %>%
+#'   summarize(avg_air_time = mean(air_time))
+#' zoomed
+#' dm_insert_zoomed(zoomed, new_tbl_name = "avg_air_time_per_month")
 #' @export
 group_by.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -16,6 +30,8 @@ ungroup.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
+#' @rdname tidyverse
+#' @param x For `ungroup.zoomed_dm`: object of class `zoomed_dm`
 #' @export
 ungroup.zoomed_dm <- function(x, ...) {
   tbl <- get_zoomed_tbl(x)
@@ -24,6 +40,7 @@ ungroup.zoomed_dm <- function(x, ...) {
   replace_zoomed_tbl(x, ungrouped_tbl)
 }
 
+#' @rdname tidyverse
 #' @export
 summarise.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -44,6 +61,7 @@ filter.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @rdname tidyverse
 #' @export
 filter.zoomed_dm <- function(.data, ...) {
   filter_quos <- enquos(...)
@@ -65,6 +83,7 @@ mutate.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @rdname tidyverse
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -82,6 +101,7 @@ transmute.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @rdname tidyverse
 #' @export
 transmute.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -98,6 +118,7 @@ select.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @rdname tidyverse
 #' @export
 select.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -114,6 +135,7 @@ rename.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @rdname tidyverse
 #' @export
 rename.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
@@ -130,6 +152,8 @@ distinct.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @rdname tidyverse
+#' @param .keep_all For `distinct.zoomed_dm()`: see [`dplyr::distinct`]
 #' @export
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- get_zoomed_tbl(.data)
@@ -148,6 +172,7 @@ arrange.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @rdname tidyverse
 #' @export
 arrange.zoomed_dm <- function(.data, ...) {
   replace_zoomed_tbl(.data, arrange(get_zoomed_tbl(.data), ...))
@@ -158,6 +183,10 @@ slice.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @rdname tidyverse
+#' @param .keep_pk For `slice.zoomed_dm`: Logical, if `TRUE`, the primary key will be retained during this transformation. If `FALSE`, it will be dropped.
+#' By default, the value is `NULL`, which causes the function to issue a message in case a primary key is available for the zoomed table.
+#' This argument is specific for the `slice.zoomed_dm()` method.
 #' @export
 slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
   sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
