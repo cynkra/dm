@@ -27,6 +27,15 @@ reference:
   - dm_rename_tbl
   - pull_tbl
 
+- title: Table retrieval, table info and DB interaction methods (`dplyr`)
+  contents:
+  - tbl.dm
+  - compute.dm
+  - compute.zoomed_dm
+  - src_tbls.dm
+  - copy_to.dm
+  - collect.dm
+
 - title: Primary keys
   contents:
   - dm_add_pk
@@ -62,6 +71,34 @@ reference:
   - dm_insert_zoomed
   - dm_update_zoomed
   - dm_discard_zoomed
+
+- title: Table manipulation methods (`dplyr`) for `zoomed_dm` objects
+  contents:
+  - arrange.zoomed_dm
+  - distinct.zoomed_dm
+  - filter.zoomed_dm
+  - group_by.zoomed_dm
+  - mutate.zoomed_dm
+  - rename.zoomed_dm
+  - select.zoomed_dm
+  - slice.zoomed_dm
+  - summarise.zoomed_dm
+  - transmute.zoomed_dm
+  - ungroup.zoomed_dm
+
+- title: Table manipulation methods (`tidyr`) for `zoomed_dm` objects
+  contents:
+  - separate.zoomed_dm
+  - unite.zoomed_dm
+
+- title: Join methods (`dplyr`) for `zoomed_dm` objects
+  contents:
+  - anti_join.zoomed_dm
+  - full_join.zoomed_dm
+  - inner_join.zoomed_dm
+  - left_join.zoomed_dm
+  - right_join.zoomed_dm
+  - semi_join.zoomed_dm
 
 - title: Flattening
   contents:

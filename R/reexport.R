@@ -60,3 +60,12 @@ dplyr::src_tbls
 
 #' @export
 dplyr::tbl
+
+#' @export
+dplyr::arrange
+
+#' @export
+tidyr::unite
+
+#' @export
+tidyr::separate

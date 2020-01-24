@@ -1,8 +1,38 @@
 #' @export
-unite.dm <- function(.data, ...) {
-  check_zoomed(.data)
+unite.dm <- function(data, ...) {
+  check_zoomed(data)
 }
 
+#' \pkg{tidyr} data manipulation methods for `zoomed_dm` objects
+#'
+#' Use these methods without the '.zoomed_dm' suffix (see examples).
+#' @param data object of class `zoomed_dm`
+#' @param col For `unite.zoomed_dm`: see [`tidyr::unite`]
+#'
+#' For `separate.zoomed_dm`: see [`tidyr::separate`]
+#' @param ... For `unite.zoomed_dm`: see [`tidyr::unite`]
+#'
+#' For `separate.zoomed_dm`: see [`tidyr::separate`]
+#' @param col For `unite.zoomed_dm`: see [`tidyr::unite`]
+#'
+#' For `separate.zoomed_dm`: see [`tidyr::separate`]
+#' @param sep For `unite.zoomed_dm`: see [`tidyr::unite`]
+#'
+#' For `separate.zoomed_dm`: see [`tidyr::separate`]
+#' @param remove For `unite.zoomed_dm`: see [`tidyr::unite`]
+#'
+#' For `separate.zoomed_dm`: see [`tidyr::separate`]
+#' @param na.rm see [`tidyr::unite`]
+#' @param into see [`tidyr::separate`]
+#' @rdname tidyr_table_manipulation
+#' @examples
+#' zoom_united <- dm_nycflights13() %>%
+#'   dm_zoom_to(flights) %>%
+#'   select(year, month, day) %>%
+#'   unite("month_day", month, day)
+#' zoom_united
+#' zoom_united %>%
+#'   separate(month_day, c("month", "day"))
 #' @export
 unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   tbl <- get_zoomed_tbl(data)
@@ -15,10 +45,11 @@ unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
 }
 
 #' @export
-separate.dm <- function(.data, ...) {
-  check_zoomed(.data)
+separate.dm <- function(data, ...) {
+  check_zoomed(data)
 }
 
+#' @rdname tidyr_table_manipulation
 #' @export
 separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...) {
   tbl <- get_zoomed_tbl(data)
