@@ -45,12 +45,11 @@ This can be repaired by:
 
 Furthermore, you need to pay attention if you used one of `tbl.dm()`, `[[.dm()`, `$.dm()`.
 During the same update the implementation for those methods changed as well, and here you don't get the convenient warning messages.
-The change was, that before the update, the mentioned methods would return you the table after "filtering" it to just contain the rows with values that relate via foreign key relations to other tables that were filtered earlier.
+The change was, that before the update, the mentioned methods would return the table after "filtering" it to just contain the rows with values that relate via foreign key relations to other tables that were filtered earlier.
 After the update just the table as is would be returned.
 If you want to retain the former behavior, you need to replace each of the methods with the function `dm_apply_filters_to_tbl()`, which was made available with the update.
 
 The methods are of course not to be avoided in general, if no filters are set anyway the result will not change after the update.
-But we would like to make sure you are aware of the change in their implementation.
 
 Here a short example for the different cases:
 
