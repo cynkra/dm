@@ -66,6 +66,7 @@ jobs:
     env:
     - TIC_DEV_VERSIONS=TRUE
     - TIC_ONLY_TESTS=TRUE
+  - os: osx
   fast_finish: true
 
 #env
