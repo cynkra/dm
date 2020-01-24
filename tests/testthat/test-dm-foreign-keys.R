@@ -1,5 +1,3 @@
-context("test-foreign-key-functions")
-
 test_that("dm_add_fk() works as intended?", {
   iwalk(
     .x = dm_test_obj_src,
@@ -40,7 +38,7 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
         dm_add_fk(dm_table_1, a, dm_table_4) %>%
         dm_add_fk(dm_table_2, c, dm_table_4) %>%
         dm_get_fk(dm_table_1, dm_table_4),
-      "a"
+      new_keys("a")
     )
   )
 
@@ -64,7 +62,7 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
         dm_add_fk(dm_table_1, a, dm_table_4) %>%
         dm_add_fk(dm_table_2, c, dm_table_4) %>%
         dm_get_fk(dm_table_2, dm_table_4),
-      "c"
+      new_keys("c")
     )
   )
 
@@ -87,7 +85,7 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
         dm_add_fk(dm_table_1, a, dm_table_4) %>%
         dm_add_fk(dm_table_2, c, dm_table_4) %>%
         dm_get_fk(dm_table_3, dm_table_4),
-      character(0)
+      new_keys(character(0))
     )
   )
 })
@@ -249,11 +247,13 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   )
 
   map(
-    .x = dm_test_obj_src,
-    ~ expect_dm_error(
-      dm_enum_fk_candidates(.x, dm_table_1, dm_table_4),
-      class = "ref_tbl_has_no_pk"
-    )
+    dm_test_obj_src,
+    function(dm_test_obj) {
+      expect_dm_error(
+        dm_enum_fk_candidates(dm_test_obj, dm_table_1, dm_table_4),
+        class = "ref_tbl_has_no_pk"
+      )
+    }
   )
 })
 

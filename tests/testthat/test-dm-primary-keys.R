@@ -118,7 +118,7 @@ test_that("dm_get_pk() works as intended?", {
     .x = dm_test_obj_src,
     ~ expect_identical(
       dm_get_pk(.x, dm_table_1),
-      character(0)
+      new_keys(character(0))
     )
   )
 
@@ -127,7 +127,7 @@ test_that("dm_get_pk() works as intended?", {
     ~ expect_identical(
       dm_add_pk(.x, dm_table_1, a) %>%
         dm_get_pk(dm_table_1),
-      "a"
+      new_keys("a")
     )
   )
 

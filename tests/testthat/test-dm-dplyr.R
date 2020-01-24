@@ -225,13 +225,13 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
     left_join(zoomed_dm, t3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(t2, t1),
-    "t2.d"
+    new_keys("t2.d")
   )
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
     semi_join(zoomed_dm, t3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(t2, t1),
-    "d"
+    new_keys("d")
   )
 
   # multi-column "by" argument
@@ -347,13 +347,13 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
     left_join(zoomed_dm, t3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(t2, t1),
-    "t2.d"
+    new_keys("t2.d")
   )
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
     semi_join(zoomed_dm, t3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(t2, t1),
-    "d"
+    new_keys("d")
   )
 
   # multi-column "by" argument
@@ -414,7 +414,7 @@ test_that("key tracking works", {
 
   expect_identical(
     zoomed_grouped_out_dm %>% rename(c_new = c) %>% dm_update_zoomed() %>% dm_get_pk(t2),
-    "c_new"
+    new_keys("c_new")
   )
 
   expect_identical(
@@ -528,13 +528,13 @@ test_that("key tracking works", {
   expect_identical(
     pk_gone_dm %>%
       dm_get_fk(t2, t3),
-    character()
+    new_keys(character())
   )
 
   expect_identical(
     pk_gone_dm %>%
       dm_get_fk(t4, t3),
-    character()
+    new_keys(character())
   )
 
   expect_identical(

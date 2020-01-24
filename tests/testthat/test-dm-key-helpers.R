@@ -1,5 +1,3 @@
-context("test-check-key")
-
 test_that("check_key() checks primary key properly?", {
   map(
     .x = data_check_key_src,

@@ -1,5 +1,3 @@
-context("test-filter-dm")
-
 test_that("get_all_filtered_connected() calculates the paths correctly", {
   fc <-
     dm_more_complex %>%

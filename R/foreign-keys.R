@@ -50,8 +50,7 @@ dm_add_fk <- nse(function(dm, table, columns, ref_table, check = FALSE) {
   column_name <- as_name(ensym(columns))
   check_col_input(dm, table_name, column_name)
 
-  # FIXME: This breaks when multiple primary keys are allowed
-  ref_column_name <- dm_get_pk(dm, !!ref_table_name)[[1]]
+  ref_column_name <- dm_get_pk_impl(dm, ref_table_name)
 
   if (is_empty(ref_column_name)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
@@ -310,8 +309,7 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
 
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
-  # FIXME: This breaks when multiple primary keys are allowed
-  ref_tbl_pk <- dm_get_pk(dm, !!ref_table_name)[[1]]
+  ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
 
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)

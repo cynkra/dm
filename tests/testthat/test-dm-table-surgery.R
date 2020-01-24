@@ -5,8 +5,6 @@ reunite_parent_child_data_ts_names <-
 reunite_parent_child_from_list_data_ts_names <-
   find_testthat_root_file(paste0("out/reunite-parent-child_from_list-data-ts-", src_names, ".txt"))
 
-context("test-table-surgery")
-
 test_that("decompose_table() decomposes tables nicely on all sources?", {
   walk2(
     data_ts_src,

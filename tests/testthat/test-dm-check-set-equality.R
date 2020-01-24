@@ -1,5 +1,3 @@
-context("test-check-set-equality")
-
 test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
   check_set_equality_1a_2a_names <- find_testthat_root_file(paste0("out/check-set-equality-1a-2a-", src_names, ".txt"))
 
