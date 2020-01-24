@@ -42,7 +42,8 @@ most likely used interactively.
 }
 
 \examples{
-nycflights13::flights \%>\% enum_pk_candidates()
+nycflights13::flights \%>\%
+  enum_pk_candidates()
 
 dm_nycflights13() \%>\%
   dm_enum_pk_candidates(airports)

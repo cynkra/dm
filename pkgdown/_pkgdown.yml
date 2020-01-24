@@ -5,7 +5,7 @@ template:
   - pkgdown/assets
 
 reference:
-- title: Creating `dm` objects and basic functions
+- title: Creation and basic functionality
   contents:
   - dm
   - dm_from_src
@@ -19,7 +19,7 @@ reference:
   - dm_get_filters
   - dm_paste
 
-- title: Managing the tables of a `dm`
+- title: Tables
   contents:
   - dm_add_tbl
   - dm_rm_tbl
@@ -62,6 +62,8 @@ reference:
   - dm_insert_zoomed
   - dm_update_zoomed
   - dm_discard_zoomed
+  - dm_rename
+  - dm_select
 
 - title: Flattening
   contents:
@@ -69,11 +71,6 @@ reference:
   - dm_squash_to_tbl
   - dm_join_to_tbl
   - dm_disambiguate_cols
-
-- title: Rename or select columns of tables in a `dm`
-  contents:
-  - dm_rename
-  - dm_select
 
 - title: Filtering
   contents:

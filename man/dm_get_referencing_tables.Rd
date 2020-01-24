@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph.R
 \name{dm_get_referencing_tables}
 \alias{dm_get_referencing_tables}
-\title{Get the names of the tables of a \code{\link{dm}} that reference a given table.}
+\title{Get the names of referencing tables}
 \usage{
 dm_get_referencing_tables(dm, table)
 }
@@ -16,7 +16,7 @@ A character vector of the names of the tables that point to the primary
 key of \code{table}.
 }
 \description{
-Get the names of the tables of a \code{\link{dm}} that reference a given table.
+Get the names of referencing tables
 }
 \examples{
 dm_get_referencing_tables(dm_nycflights13(), airports)

@@ -18,7 +18,7 @@ dm_is_referenced <- function(dm, table) {
   has_length(dm_get_referencing_tables(dm, !!ensym(table)))
 }
 
-#' Get the names of the tables of a [`dm`] that reference a given table.
+#' Get the names of referencing tables
 #'
 #' @inheritParams dm_is_referenced
 #'

@@ -100,7 +100,7 @@ dm_has_pk <- function(dm, table) {
   has_length(dm_get_pk(dm, {{ table }}))
 }
 
-#' Retrieve the primary key columns
+#' Names of the primary key columns
 #'
 #' @description `dm_get_pk()` returns the names of the
 #' columns marked as primary key of a table of a [`dm`] object.
@@ -193,6 +193,7 @@ dm_get_all_pks_impl <- function(dm) {
 #' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
 #'
 #' @examples
+#'
 #' dm_nycflights13() %>%
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   dm_draw()
@@ -239,7 +240,8 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #'
 #' @export
 #' @examples
-#' nycflights13::flights %>% enum_pk_candidates()
+#' nycflights13::flights %>%
+#'   enum_pk_candidates()
 enum_pk_candidates <- nse(function(table) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)

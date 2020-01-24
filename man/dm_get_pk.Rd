@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_get_pk}
 \alias{dm_get_pk}
-\title{Retrieve the primary key columns}
+\title{Names of the primary key columns}
 \usage{
 dm_get_pk(dm, table)
 }

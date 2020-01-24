@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_get_fk}
 \alias{dm_get_fk}
-\title{Retrieve the names of foreign key columns}
+\title{Names of the foreign key columns}
 \usage{
 dm_get_fk(dm, table, ref_table)
 }

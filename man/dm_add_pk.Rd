@@ -68,6 +68,7 @@ try(
   nycflights_dm \%>\%
     dm_add_pk(planes, manufacturer, check = TRUE)
 )
+
 dm_nycflights13() \%>\%
   dm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
   dm_draw()

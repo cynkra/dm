@@ -1,4 +1,4 @@
-#' Rename one or more columns of a [`dm`] table
+#' Rename one or more columns of a table
 #'
 #' Rename the columns of your [`dm`] using syntax that is similar to `dplyr::rename()`.
 #'

@@ -52,7 +52,6 @@ with current semantics.
 }
 
 \examples{
-
 nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 nycflights_dm \%>\%
   dm_draw()
@@ -61,6 +60,7 @@ nycflights_dm \%>\%
   dm_add_pk(planes, tailnum) \%>\%
   dm_add_fk(flights, tailnum, planes) \%>\%
   dm_draw()
+
 dm_rm_fk(
   dm_nycflights13(cycle = TRUE),
   flights,

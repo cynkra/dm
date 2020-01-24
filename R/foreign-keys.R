@@ -33,7 +33,6 @@
 #'
 #' @export
 #' @examples
-#'
 #' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
 #' nycflights_dm %>%
 #'   dm_draw()
@@ -51,7 +50,9 @@ dm_add_fk <- nse(function(dm, table, columns, ref_table, check = FALSE) {
   column_name <- as_name(ensym(columns))
   check_col_input(dm, table_name, column_name)
 
-  ref_column_name <- dm_get_pk(dm, !!ref_table_name)
+  # FIXME: This breaks when multiple primary keys are allowed
+  ref_column_name <- dm_get_pk(dm, !!ref_table_name)[[1]]
+
   if (is_empty(ref_column_name)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
@@ -107,7 +108,7 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
   has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
-#' Retrieve the names of foreign key columns
+#' Names of the foreign key columns
 #'
 #' @description `dm_get_fk()` returns the names of the
 #' columns marked as foreign key of table `table` with respect to table `ref_table` within a [`dm`] object.
@@ -196,14 +197,15 @@ dm_get_all_fks_impl <- function(dm) {
 #'
 #' @return For `dm_rm_fk()`: An updated `dm` without the given foreign key relation.
 #'
+#' @export
 #' @examples
+#'
 #' dm_rm_fk(
 #'   dm_nycflights13(cycle = TRUE),
 #'   flights,
 #'   dest,
 #'   airports
 #' )
-#' @export
 dm_rm_fk <- function(dm, table, columns, ref_table) {
   check_not_zoomed(dm)
 
@@ -291,9 +293,11 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #' @family foreign key functions
 #'
 #' @examples
-#' dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
+#' dm_nycflights13() %>%
+#'   dm_enum_fk_candidates(flights, airports)
 #'
-#' dm_zoom_to(dm_nycflights13(), flights) %>%
+#' dm_nycflights13() %>%
+#'   dm_zoom_to(flights) %>%
 #'   enum_fk_candidates(airports)
 #' @export
 dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
@@ -306,7 +310,8 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
 
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
-  ref_tbl_pk <- dm_get_pk(dm, !!ref_table_name)
+  # FIXME: This breaks when multiple primary keys are allowed
+  ref_tbl_pk <- dm_get_pk(dm, !!ref_table_name)[[1]]
 
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)

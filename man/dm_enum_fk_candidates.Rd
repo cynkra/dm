@@ -59,9 +59,11 @@ most likely used interactively.
 }
 
 \examples{
-dm_enum_fk_candidates(dm_nycflights13(), flights, airports)
+dm_nycflights13() \%>\%
+  dm_enum_fk_candidates(flights, airports)
 
-dm_zoom_to(dm_nycflights13(), flights) \%>\%
+dm_nycflights13() \%>\%
+  dm_zoom_to(flights) \%>\%
   enum_fk_candidates(airports)
 }
 \seealso{
