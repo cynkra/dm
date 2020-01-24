@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Objects exported from other packages — reexports • dm</title>
+<title><span class="pkg">dplyr</span> table retrieval, table info and DB interaction methods — tbl.dm • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,15 +42,8 @@
 
 
 
-<meta property="og:title" content="Objects exported from other packages — reexports" />
-<meta property="og:description" content="These objects are imported from other packages. Follow the links
-below to see their documentation.
-
-  dplyr%&amp;gt;%, anti_join, arrange, collect, compute, copy_to, filter, full_join, group_by, inner_join, left_join, mutate, rename, right_join, select, semi_join, src_tbls, summarise, summarize, tbl, transmute, ungroup
-
-  tidyrseparate, unite
-
-" />
+<meta property="og:title" content="<span class="pkg">dplyr</span> table retrieval, table info and DB interaction methods — tbl.dm" />
+<meta property="og:description" content="Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples)." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -150,29 +143,94 @@ below to see their documentation.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Objects exported from other packages</h1>
+    <h1><span class="pkg">dplyr</span> table retrieval, table info and DB interaction methods</h1>
     
-    <div class="hidden name"><code>reexports.Rd</code></div>
+    <div class="hidden name"><code>dplyr_db.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These objects are imported from other packages. Follow the links
-below to see their documentation.</p>
-<dl class='dl-horizontal'>
-  <dt>dplyr</dt><dd><p><code>%&gt;%</code>, <code><a href='https://dplyr.tidyverse.org/reference/join.html'>anti_join</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/join.html'>full_join</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/join.html'>inner_join</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/join.html'>left_join</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/join.html'>right_join</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/join.html'>semi_join</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></code></p></dd>
-
-  <dt>tidyr</dt><dd><p><code><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></code>, <code><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></code></p></dd>
-
-</dl>
+    <p>Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples).</p>
     </div>
 
+    <pre class="usage"><span class='co'># S3 method for dm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span>(<span class='no'>src</span>, <span class='no'>from</span>, <span class='no'>...</span>)
 
+<span class='co'># S3 method for dm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for zoomed_dm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for dm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for dm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></span>(
+  <span class='no'>dest</span>,
+  <span class='no'>df</span>,
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='no'>df</span>)),
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>repair</span> <span class='kw'>=</span> <span class='st'>"unique"</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)
+
+<span class='co'># S3 method for dm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>src</th>
+      <td><p>A <span class="pkg">dplyr</span> table source object.</p></td>
+    </tr>
+    <tr>
+      <th>from</th>
+      <td><p>A length one character variable containing the name of the requested table</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>See original function documentation</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>Either a <code>dm</code> or a <code>zoomed_dm</code>; the latter leads to an error for <code>src_tbls.dm()</code></p></td>
+    </tr>
+    <tr>
+      <th>dest</th>
+      <td><p>For <code>copy_to.dm</code>: The <code>dm</code> object to which a table should be copied.</p></td>
+    </tr>
+    <tr>
+      <th>df</th>
+      <td><p>For <code>copy_to.dm</code>: A table (can be on a different <code>src</code>)</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>For <code>copy_to.dm</code>: See <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to</a></code></p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>For <code>copy_to.dm</code>: See <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to</a></code>; <code>TRUE</code> leads to an error</p></td>
+    </tr>
+    <tr>
+      <th>temporary</th>
+      <td><p>For <code>copy_to.dm</code>: If the <code>dm</code> is on a DB, the copied version of <code>df</code> will only be written temporarily to the DB.
+After the connection is reset it will no longer be available.</p></td>
+    </tr>
+    <tr>
+      <th>repair, quiet</th>
+      <td><p>Name repair options; cf. <code><a href='https://rdrr.io/pkg/vctrs/man/vec_as_names.html'>vctrs::vec_as_names</a></code></p></td>
+    </tr>
+    </table>
 
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
     </ul>
 
   </div>

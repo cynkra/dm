@@ -237,7 +237,7 @@ transferred to the new table of the <code>dm</code></p></li>
 
 <p>Furthermore, the different <code>join()</code>-variants from dplyr are also supported (apart from <code>nest_join()</code>).
 The join-methods for <code>zoomed_dm</code> have an extra argument <code>select</code> that allows choosing the columns of the RHS table.</p>
-<p>And -- last but not least -- also the tidyr-functions <code>unite()</code> and <code>separate()</code> are supported for <code>zoomed_dm</code>.</p>
+<p>And -- last but not least -- also the tidyr-functions <code><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite()</a></code> and <code><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate()</a></code> are supported for <code>zoomed_dm</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>flights_zoomed</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_zoom_to</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>)

@@ -151,7 +151,7 @@
 <a href="#dm-0-0-6-9001" class="anchor"></a>dm 0.0.6.9001</h1>
 <ul>
 <li>
-<code>filter.zoomed_dm()</code> no longer sets the filter.</li>
+<code><a href="../reference/dplyr_table_manipulation.html">filter.zoomed_dm()</a></code> no longer sets the filter.</li>
 <li>Prepare <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and other key-related functions for compound keys (#239).</li>
 <li>
 <code>examine_()</code> functions never throw an error (#238).</li>
@@ -209,12 +209,12 @@
 <a href="#features" class="anchor"></a>Features</h2>
 <ul>
 <li>
-<code><a href="../reference/deprecated.html">cdm_filter()</a></code> and <code>filter.zoomed_dm()</code> apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in <code><a href="../reference/deprecated.html">cdm_apply_filters()</a></code>. This now allows using a variety of operations on filtered <code>dm</code> objects (#124).</li>
+<code><a href="../reference/deprecated.html">cdm_filter()</a></code> and <code><a href="../reference/dplyr_table_manipulation.html">filter.zoomed_dm()</a></code> apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in <code><a href="../reference/deprecated.html">cdm_apply_filters()</a></code>. This now allows using a variety of operations on filtered <code>dm</code> objects (#124).</li>
 <li>
-<code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code>, <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code>, <code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code>, <code>distinct()</code>, <code>arrange()</code>, <code>slice()</code>, <code>separate()</code> and <code>unite()</code> implemented for zoomed dm-s (#130).</li>
+<code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code>, <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code>, <code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code>, <code>distinct()</code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>, <code>slice()</code>, <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/unite.html">unite()</a></code> implemented for zoomed dm-s (#130).</li>
 <li>Joins on zoomed dm objects now supported (#121). Joins use the same column name disambiguation algorithm as <code><a href="../reference/deprecated.html">cdm_flatten_to_tbl()</a></code> (#147).</li>
 <li>
-<code>slice.zoomed_dm()</code>: user decides in arg <code>.keep_pk</code> if PK column is tracked or not (#152).</li>
+<code><a href="../reference/dplyr_table_manipulation.html">slice.zoomed_dm()</a></code>: user decides in arg <code>.keep_pk</code> if PK column is tracked or not (#152).</li>
 <li>Supported {dplyr} and {tidyr} verbs are reexported.</li>
 <li>
 <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> works with zoomed dm-s (#156).</li>
@@ -222,7 +222,7 @@
 <li>Add name repair argument for both <code><a href="../reference/deprecated.html">cdm_insert_zoomed_tbl()</a></code> and <code><a href="../reference/deprecated.html">cdm_add_tbl()</a></code>, defaulting to renaming of old and new tables when adding tables with duplicate names (#132).</li>
 <li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code>tibble()</code>, <code><a href="../reference/dm.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/dm.html">validate_dm()</a></code> checks internal consistency (#69).</li>
 <li>
-<code>compute.dm()</code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> on all tables (#135).</li>
+<code><a href="../reference/dplyr_db.html">compute.dm()</a></code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> on all tables (#135).</li>
 </ul>
 </div>
 <div id="documentation" class="section level2">

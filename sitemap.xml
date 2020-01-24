@@ -109,6 +109,15 @@
     <loc>https://krlmlr.github.io/dm/reference/dm_zoom_to.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/dplyr_db.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/dplyr_join.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/dplyr_table_manipulation.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/reference/enum_pk_candidates.html</loc>
   </url>
   <url>
@@ -122,6 +131,9 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/reunite_parent_child.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/tidyr_table_manipulation.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html</loc>
