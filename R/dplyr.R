@@ -212,6 +212,15 @@ left_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
+#' @rdname tidyverse
+#' @param x,y For `join`-methods: tbls to join. `x` is the `zoomed_dm` and `y` is another table in the `dm`.
+#' @param by For `join`-methods: If left `NULL` (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now `x`)
+#' and the other table (`y`).
+#' If you provide a value (for the syntax see [`dplyr::join`]), you can also join tables that are not connected in the `dm`.
+#' @param copy For `join`-methods: Disabled, since all tables in a `dm` are by definition on the same `src`.
+#' @param suffix For `join`-methods: Disabled, since columns are disambiguated automatically if necessary, changing the column names to `table_name.column_name`.
+#' @param select For `join`-methods: Select a subset of the \strong{RHS-table}'s columns, the syntax being `select = c(col_1, col_2, col_3)` (unquoted or quoted).
+#' This argument is specific for the `join`-methods for `zoomed_dm`.
 #' @export
 left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -225,6 +234,7 @@ inner_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
+#' @rdname tidyverse
 #' @export
 inner_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -238,6 +248,7 @@ full_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
+#' @rdname tidyverse
 #' @export
 full_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -251,6 +262,7 @@ right_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
+#' @rdname tidyverse
 #' @export
 right_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -264,6 +276,7 @@ semi_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
+#' @rdname tidyverse
 #' @export
 semi_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))
@@ -277,6 +290,7 @@ anti_join.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
+#' @rdname tidyverse
 #' @export
 anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))

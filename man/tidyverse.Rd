@@ -12,6 +12,12 @@
 \alias{distinct.zoomed_dm}
 \alias{arrange.zoomed_dm}
 \alias{slice.zoomed_dm}
+\alias{left_join.zoomed_dm}
+\alias{inner_join.zoomed_dm}
+\alias{full_join.zoomed_dm}
+\alias{right_join.zoomed_dm}
+\alias{semi_join.zoomed_dm}
+\alias{anti_join.zoomed_dm}
 \title{Tidyverse methods for \code{zoomed_dm} objects (remove '.zoomed_dm' suffix!)}
 \usage{
 \method{group_by}{zoomed_dm}(.data, ...)
@@ -35,6 +41,18 @@
 \method{arrange}{zoomed_dm}(.data, ...)
 
 \method{slice}{zoomed_dm}(.data, ..., .keep_pk = NULL)
+
+\method{left_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{inner_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{full_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{right_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{semi_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+
+\method{anti_join}{zoomed_dm}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
 }
 \arguments{
 \item{.data}{object of class \code{zoomed_dm}}
@@ -48,6 +66,19 @@
 \item{.keep_pk}{For \code{slice.zoomed_dm}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.
 This argument is specific for the \code{slice.zoomed_dm()} method.}
+
+\item{by}{For \code{join}-methods: If left \code{NULL} (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now \code{x})
+and the other table (\code{y}).
+If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}), you can also join tables that are not connected in the \code{dm}.}
+
+\item{copy}{For \code{join}-methods: Disabled, since all tables in a \code{dm} are by definition on the same \code{src}.}
+
+\item{suffix}{For \code{join}-methods: Disabled, since columns are disambiguated automatically if necessary, changing the column names to \code{table_name.column_name}.}
+
+\item{select}{For \code{join}-methods: Select a subset of the \strong{RHS-table}'s columns, the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
+This argument is specific for the \code{join}-methods for \code{zoomed_dm}.}
+
+\item{x, y}{For \code{join}-methods: tbls to join. \code{x} is the \code{zoomed_dm} and \code{y} is another table in the \code{dm}.}
 }
 \description{
 Tidyverse methods for \code{zoomed_dm} objects. Use these methods without the '.zoomed_dm' suffix (see examples).
