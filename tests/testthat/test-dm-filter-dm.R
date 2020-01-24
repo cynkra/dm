@@ -126,11 +126,13 @@ test_that("dm_filter() works as intended?", {
 
 test_that("dm_filter() works as intended for inbetween table", {
   map(
-    .x = dm_for_filter_src,
-    ~ expect_identical(
-      dm_filter(.x, t3, g == "five") %>% collect() %>% dm_get_tables(),
-      output_3
-    )
+    dm_for_filter_src,
+    function(dm_for_filter) {
+      expect_identical(
+        dm_filter(dm_for_filter, t3, g == "five") %>% collect() %>% dm_get_tables(),
+        output_3
+      )
+    }
   )
 })
 

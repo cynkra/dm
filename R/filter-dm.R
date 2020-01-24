@@ -39,6 +39,9 @@
 #' We are working on formalizing the semantics of the underlying operations
 #' in order to present them in a cleaner interface.
 #'
+#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering
+#' the filter.
+#'
 #' @rdname dm_filter
 #'
 #' @inheritParams dm_add_pk
@@ -79,8 +82,29 @@
 dm_filter <- function(dm, table, ...) {
   check_not_zoomed(dm)
   dm_zoom_to(dm, {{ table }}) %>%
-    filter(...) %>%
+    dm_filter_impl(..., set_filter = TRUE) %>%
     dm_update_zoomed()
+}
+
+dm_filter_impl <- function(zoomed_dm, ..., set_filter) {
+  # valid table and empty ellipsis provided
+  filter_quos <- enquos(...)
+  if (is_empty(filter_quos)) {
+    return(zoomed_dm)
+  }
+
+  tbl <- get_zoomed_tbl(zoomed_dm)
+  filtered_tbl <- filter(tbl, ...)
+
+  # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
+  # in case of `dm_insert_zoomed()` the filter exprs needs to be transferred
+  if (set_filter) {
+    zoomed_dm <-
+      zoomed_dm %>%
+      set_filter_for_table(orig_name_zoomed(zoomed_dm), map(filter_quos, quo_get_expr), TRUE)
+  }
+
+  replace_zoomed_tbl(zoomed_dm, filtered_tbl)
 }
 
 set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {

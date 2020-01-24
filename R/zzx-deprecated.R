@@ -84,7 +84,7 @@ cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)
 cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
   dm_zoom_to(dm, {{ table }}) %>%
-    filter(...) %>%
+    dm_filter_impl(..., set_filter = TRUE) %>%
     dm_update_zoomed()
 }
 

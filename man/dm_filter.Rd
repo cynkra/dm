@@ -74,6 +74,9 @@ However, these filter condition should be only of informative nature
 and never affect the results of other operations.
 We are working on formalizing the semantics of the underlying operations
 in order to present them in a cleaner interface.
+
+Use \code{\link[=dm_zoom_to]{dm_zoom_to()}} and \code{\link[dplyr:filter]{dplyr::filter()}} to filter rows without registering
+the filter.
 }
 
 \examples{
