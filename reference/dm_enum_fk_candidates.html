@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find foreign key candidates in a table — dm_enum_fk_candidates • dm</title>
+<title>Which columns are candidates for a foreign key? — dm_enum_fk_candidates • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,9 @@
 
 
 
-<meta property="og:title" content="Find foreign key candidates in a table — dm_enum_fk_candidates" />
-<meta property="og:description" content="Determine which columns would be good candidates to be used as foreign keys of a table,
+<meta property="og:title" content="Which columns are candidates for a foreign key? — dm_enum_fk_candidates" />
+<meta property="og:description" content="
+Determine which columns would be good candidates to be used as foreign keys of a table,
 to reference the primary key column of another table of the dm object." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -78,7 +79,7 @@ to reference the primary key column of another table of the dm object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -144,13 +145,14 @@ to reference the primary key column of another table of the dm object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find foreign key candidates in a table</h1>
+    <h1>Which columns are candidates for a foreign key?</h1>
     
     <div class="hidden name"><code>dm_enum_fk_candidates.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Determine which columns would be good candidates to be used as foreign keys of a table,
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p>Determine which columns would be good candidates to be used as foreign keys of a table,
 to reference the primary key column of another table of the <code><a href='dm.html'>dm</a></code> object.</p>
     </div>
 
@@ -202,6 +204,15 @@ Attempting to join incompatible columns triggers an error.</p>
 </ul>
 
 <p><code>enum_fk_candidates()</code> works like <code>dm_enum_fk_candidates()</code> with the zoomed table as <code>table</code>.</p>
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+
+<p>These functions are marked "questioning" because we are not yet sure about
+the interface, in particular if we need both <code>dm_enum...()</code> and <code>enum...()</code>
+variants.
+Changing the interface later seems harmless because these functions are
+most likely used interactively.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other foreign key functions: 
@@ -211,7 +222,8 @@ Attempting to join incompatible columns triggers an error.</p>
 <code><a href='dm_has_fk.html'>dm_has_fk</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm_enum_fk_candidates</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 3
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_enum_fk_candidates</span>(<span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 3
 #&gt;       columns candidate why                                                     
 #&gt;    &lt;list&lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;                                                   
 #&gt;  1        [1] TRUE      ""                                                      
@@ -233,7 +245,8 @@ Attempting to join incompatible columns triggers an error.</p>
 #&gt; 17        [1] FALSE     "Can't join on 'value' x 'value' because of incompatibl…
 #&gt; 18        [1] FALSE     "cannot join a POSIXct object with an object that is no…
 #&gt; 19        [1] FALSE     "Can't join on 'value' x 'value' because of incompatibl…</div><div class='input'>
-<span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='no'>flights</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>enum_fk_candidates</span>(<span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 3
 #&gt;       columns candidate why                                                     
 #&gt;    &lt;list&lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;                                                   
@@ -263,6 +276,7 @@ Attempting to join incompatible columns triggers an error.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#life-cycle">Life cycle</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

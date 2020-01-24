@@ -83,7 +83,7 @@ Foreign keys that point to the table from other tables, can be optionally remove
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -225,40 +225,24 @@ with current semantics.</p>
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-
-<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm_from_src</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
+    <pre class="examples"><div class='input'><span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm_from_src</a></span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
 
 <span class='co'># the following works</span>
-<span class='fu'>dm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>tailnum</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 1
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>dm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>airports</span>, <span class='no'>faa</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 1
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>dm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 1
-#&gt; Foreign keys: 0</div><div class='input'>
-<span class='co'># the following does not work (throws an error)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>dm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Error : (`manufacturer`) not a unique key of `table_from_dm`.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_add_pk</span>(<span class='no'>planes</span>, <span class='no'>tailnum</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_add_pk</span>(<span class='no'>airports</span>, <span class='no'>faa</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
 
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+<span class='co'># the following does not work (throws an error)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(
+  <span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'>dm_add_pk</span>(<span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+)</div><div class='output co'>#&gt; Error : (`manufacturer`) not a unique key of `table_from_dm`.</div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_rm_pk</span>(<span class='no'>airports</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_has_pk.html'>dm_has_pk</a></span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_rm_pk</span>(<span class='no'>planes</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_has_pk.html'>dm_has_pk</a></span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

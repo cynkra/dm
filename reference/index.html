@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -156,7 +156,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-creating-dm-objects-and-basic-functions" class="hasAnchor"><a href="#section-creating-dm-objects-and-basic-functions" class="anchor"></a>Creating `dm` objects and basic functions</h2>
+          <h2 id="section-creation-and-basic-functionality" class="hasAnchor"><a href="#section-creation-and-basic-functionality" class="anchor"></a>Creation and basic functionality</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -169,6 +169,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="dm_get_filters.html">dm_get_filters()</a></code> </p>
+        </td>
+        <td><p>Get filter expressions</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="dm_paste.html">dm_paste()</a></code> </p>
         </td>
         <td><p>Reverse engineer code for creation of a <code>dm</code></p></td>
@@ -176,7 +182,7 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-managing-the-tables-of-a-dm-" class="hasAnchor"><a href="#section-managing-the-tables-of-a-dm-" class="anchor"></a>Managing the tables of a `dm`</h2>
+          <h2 id="section-tables" class="hasAnchor"><a href="#section-tables" class="anchor"></a>Tables</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -229,7 +235,7 @@
         <td>
           <p><code><a href="dm_get_pk.html">dm_get_pk()</a></code> </p>
         </td>
-        <td><p>Retrieve the name of the primary key columns of a <code>dm</code> table</p></td>
+        <td><p>Names of the primary key columns</p></td>
       </tr><tr>
         
         <td>
@@ -241,7 +247,7 @@
         <td>
           <p><code><a href="enum_pk_candidates.html">enum_pk_candidates()</a></code> <code><a href="enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> </p>
         </td>
-        <td><p>Which columns are candidates for a primary key column?</p></td>
+        <td><p>Which columns are candidates for a primary key?</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -267,7 +273,7 @@
         <td>
           <p><code><a href="dm_get_fk.html">dm_get_fk()</a></code> </p>
         </td>
-        <td><p>Retrieve the names of the columns marked as a foreign key, pointing from one table of a <code>dm</code> to another table.</p></td>
+        <td><p>Names of the foreign key columns</p></td>
       </tr><tr>
         
         <td>
@@ -279,19 +285,19 @@
         <td>
           <p><code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> <code><a href="dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> </p>
         </td>
-        <td><p>Find foreign key candidates in a table</p></td>
+        <td><p>Which columns are candidates for a foreign key?</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_is_referenced.html">dm_is_referenced()</a></code> </p>
         </td>
-        <td><p>Is a table of a <code>dm</code> referenced by another table?</p></td>
+        <td><p>Check foreign key reference</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_get_referencing_tables.html">dm_get_referencing_tables()</a></code> </p>
         </td>
-        <td><p>Get the names of the tables of a <code>dm</code> that reference a given table.</p></td>
+        <td><p>Get the names of referencing tables</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -310,7 +316,7 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-zooming-to-a-table-of-a-dm-" class="hasAnchor"><a href="#section-zooming-to-a-table-of-a-dm-" class="anchor"></a>Zooming to a table of a `dm`</h2>
+          <h2 id="section-zooming" class="hasAnchor"><a href="#section-zooming" class="anchor"></a>Zooming</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -350,27 +356,7 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-rename-or-select-columns-of-tables-in-a-dm-" class="hasAnchor"><a href="#section-rename-or-select-columns-of-tables-in-a-dm-" class="anchor"></a>Rename or select columns of tables in a `dm`</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="dm_rename.html">dm_rename()</a></code> </p>
-        </td>
-        <td><p>Rename one or more columns of a <code>dm</code> table</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dm_select.html">dm_select()</a></code> </p>
-        </td>
-        <td><p>Select and/or rename one or more columns of a <code>dm</code> table</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-filtering" class="hasAnchor"><a href="#section-filtering" class="anchor"></a>Filtering</h2>
+          <h2 id="section-filtering-and-column-selection" class="hasAnchor"><a href="#section-filtering-and-column-selection" class="anchor"></a>Filtering and column selection</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -380,6 +366,18 @@
           <p><code><a href="dm_filter.html">dm_filter()</a></code> <code><a href="dm_filter.html">dm_apply_filters()</a></code> <code><a href="dm_filter.html">dm_apply_filters_to_tbl()</a></code> </p>
         </td>
         <td><p>Filtering a <code>dm</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dm_rename.html">dm_rename()</a></code> </p>
+        </td>
+        <td><p>Rename one or more columns of a table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dm_select.html">dm_select()</a></code> </p>
+        </td>
+        <td><p>Select and/or rename one or more columns of a <code>dm</code> table</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -486,15 +484,14 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-creating-dm-objects-and-basic-functions">Creating `dm` objects and basic functions</a></li>
-      <li><a href="#section-managing-the-tables-of-a-dm-">Managing the tables of a `dm`</a></li>
+      <li><a href="#section-creation-and-basic-functionality">Creation and basic functionality</a></li>
+      <li><a href="#section-tables">Tables</a></li>
       <li><a href="#section-primary-keys">Primary keys</a></li>
       <li><a href="#section-foreign-keys">Foreign keys</a></li>
       <li><a href="#section-visualization">Visualization</a></li>
-      <li><a href="#section-zooming-to-a-table-of-a-dm-">Zooming to a table of a `dm`</a></li>
+      <li><a href="#section-zooming">Zooming</a></li>
       <li><a href="#section-flattening">Flattening</a></li>
-      <li><a href="#section-rename-or-select-columns-of-tables-in-a-dm-">Rename or select columns of tables in a `dm`</a></li>
-      <li><a href="#section-filtering">Filtering</a></li>
+      <li><a href="#section-filtering-and-column-selection">Filtering and column selection</a></li>
       <li><a href="#section-interaction-with-dbs">Interaction with DBs</a></li>
       <li><a href="#section-table-surgery">Table surgery</a></li>
       <li><a href="#section-check-keys-and-cardinalities">Check keys and cardinalities</a></li>

@@ -14,6 +14,7 @@ articles:
   dm-function-naming-logic: wip/dm-function-naming-logic.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
+  dm-version-migration-guide: wip/dm-version-migration-guide.html
   dm-zoom-to-table: wip/dm-zoom-to-table.html
   good-to-know: wip/good-to-know.html
 urls:

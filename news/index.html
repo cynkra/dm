@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -146,6 +146,20 @@
       
     </div>
 
+    <div id="dm-0-0-6-9001" class="section level1">
+<h1 class="page-header">
+<a href="#dm-0-0-6-9001" class="anchor"></a>dm 0.0.6.9001</h1>
+<ul>
+<li>
+<code>filter.zoomed_dm()</code> no longer sets the filter.</li>
+<li>Prepare <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and other key-related functions for compound keys (#239).</li>
+<li>
+<code>examine_()</code> functions never throw an error (#238).</li>
+<li>{tidyselect} interface for setting colors (#162).</li>
+<li>API overhaul (#233): <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code>, <code><a href="../reference/dm_zoom_to.html">dm_update_zoomed()</a></code> and <code><a href="../reference/dm_zoom_to.html">dm_discard_zoomed()</a></code>; <code>check_()</code> -&gt; <code>examine_()</code>; <code><a href="../reference/dm_get_filters.html">dm_get_filters()</a></code> -&gt; <code>dm_get_filter()</code>.</li>
+<li>Avoid warnings in <code>R CMD check</code> with dev versions of dependencies.</li>
+</ul>
+</div>
     <div id="dm-0-0-6-9000" class="section level1">
 <h1 class="page-header">
 <a href="#dm-0-0-6-9000" class="anchor"></a>dm 0.0.6.9000</h1>
@@ -527,6 +541,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dm-0-0-6-9001">0.0.6.9001</a></li>
         <li><a href="#dm-0-0-6-9000">0.0.6.9000</a></li>
         <li><a href="#dm-0-0-6">0.0.6</a></li>
         <li><a href="#dm-0-0-5">0.0.5</a></li>

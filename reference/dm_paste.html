@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -183,6 +183,28 @@ only a subset of the columns of the original tables is used for the <code>dm</co
 <p>Mind, that it is assumed, that the tables of the existing <code>dm</code> are available in the global environment under their names
 within the <code>dm</code>.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; dm(airlines, airports, flights, planes, weather) %&gt;%
+#&gt;   dm_add_pk(airlines, carrier) %&gt;%
+#&gt;   dm_add_pk(airports, faa) %&gt;%
+#&gt;   dm_add_pk(planes, tailnum) %&gt;%
+#&gt;   dm_add_fk(flights, carrier, airlines) %&gt;%
+#&gt;   dm_add_fk(flights, origin, airports) %&gt;%
+#&gt;   dm_add_fk(flights, tailnum, planes) </div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_paste</span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; dm(airlines, airports, flights, planes, weather) %&gt;%
+#&gt;   dm_select(airlines, carrier, name) %&gt;%
+#&gt;   dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%
+#&gt;   dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%
+#&gt;   dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%
+#&gt;   dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour) %&gt;%
+#&gt;   dm_add_pk(airlines, carrier) %&gt;%
+#&gt;   dm_add_pk(airports, faa) %&gt;%
+#&gt;   dm_add_pk(planes, tailnum) %&gt;%
+#&gt;   dm_add_fk(flights, carrier, airlines) %&gt;%
+#&gt;   dm_add_fk(flights, origin, airports) %&gt;%
+#&gt;   dm_add_fk(flights, tailnum, planes) </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -190,6 +212,7 @@ within the <code>dm</code>.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

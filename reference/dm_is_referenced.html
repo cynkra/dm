@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table? — dm_is_referenced • dm</title>
+<title>Check foreign key reference — dm_is_referenced • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table? — dm_is_referenced" />
+<meta property="og:title" content="Check foreign key reference — dm_is_referenced" />
 <meta property="og:description" content="Is a table of a dm referenced by another table?" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -143,7 +143,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table?</h1>
+    <h1>Check foreign key reference</h1>
     
     <div class="hidden name"><code>dm_is_referenced.Rd</code></div>
     </div>
@@ -177,7 +177,9 @@ key of the <code>table</code> argument, <code>FALSE</code> otherwise.</p>
 <code><a href='dm_get_referencing_tables.html'>dm_get_referencing_tables</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm_is_referenced</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>airports</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>dm_is_referenced</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_is_referenced</span>(<span class='no'>airports</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_is_referenced</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

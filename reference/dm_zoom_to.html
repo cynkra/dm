@@ -44,7 +44,12 @@
 
 <meta property="og:title" content="Single out a table of a <code>dm</code> — dm_zoom_to" />
 <meta property="og:description" content="Zooming to a table of a dm allows for the use of many dplyr-verbs directly on this table, while retaining the
-context of the dm object." />
+context of the dm object.
+dm_zoom_to() zooms to the given table.
+dm_update_zoomed() overwrites the originally zoomed table with the manipulated table.
+The filter conditions for the zoomed table are added to the original filter conditions.
+dm_insert_zoomed() adds a new table to the dm.
+dm_discard_zoomed() discards the zoomed table and returns the dm as it was before zooming." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +83,7 @@ context of the dm object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -152,6 +157,11 @@ context of the dm object." />
     <div class="ref-description">
     <p>Zooming to a table of a <code><a href='dm.html'>dm</a></code> allows for the use of many <code>dplyr</code>-verbs directly on this table, while retaining the
 context of the <code>dm</code> object.</p>
+<p><code>dm_zoom_to()</code> zooms to the given table.</p>
+<p><code>dm_update_zoomed()</code> overwrites the originally zoomed table with the manipulated table.
+The filter conditions for the zoomed table are added to the original filter conditions.</p>
+<p><code>dm_insert_zoomed()</code> adds a new table to the <code>dm</code>.</p>
+<p><code>dm_discard_zoomed()</code> discards the zoomed table and returns the <code>dm</code> as it was before zooming.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dm_zoom_to</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
@@ -211,12 +221,7 @@ messages.</p></td>
 <p>For <code>dm_insert_zoomed()</code>, <code>dm_update_zoomed()</code> and <code>dm_discard_zoomed()</code>: A <code>dm</code> object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>dm_zoom_to()</code>: zooms to the given table.</p>
-<p><code>dm_update_zoomed()</code>: overwrites the originally zoomed table with the manipulated table.
-The filter conditions for the zoomed table are added to the original filter conditions.</p>
-<p><code>dm_insert_zoomed()</code>: adds a new table to the <code>dm</code>.</p>
-<p><code>dm_discard_zoomed()</code>: discards the zoomed table and returns the <code>dm</code> as it was before zooming.</p>
-<p>Whenever possible, the key relations of the original table are transferred to the resulting table
+    <p>Whenever possible, the key relations of the original table are transferred to the resulting table
 when using <code>dm_insert_zoomed()</code> or <code>dm_update_zoomed()</code>.</p>
 <p>Functions from <code>dplyr</code> that are supported for a <code>zoomed_dm</code>: <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate()</a></code>,
 <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>.
@@ -230,14 +235,12 @@ Depending on which function you use to return to a normal <code>dm</code>, one o
 transferred to the new table of the <code>dm</code></p></li>
 </ol>
 
-<p>Furthermore, the different <code><a href='https://dplyr.tidyverse.org/reference/join.html'>join()</a></code>-variants from dplyr are also supported (apart from <code><a href='https://dplyr.tidyverse.org/reference/join.html'>nest_join()</a></code>).
-The join-methods for <code>zoomed_dm</code> have an extra argument <code>select</code> that let's you choose the columns of the RHS table
-in a tidyselect manner.</p>
+<p>Furthermore, the different <code>join()</code>-variants from dplyr are also supported (apart from <code>nest_join()</code>).
+The join-methods for <code>zoomed_dm</code> have an extra argument <code>select</code> that allows choosing the columns of the RHS table.</p>
 <p>And -- last but not least -- also the tidyr-functions <code>unite()</code> and <code>separate()</code> are supported for <code>zoomed_dm</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='no'>flights_zoomed</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_zoom_to</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>)
+    <pre class="examples"><div class='input'><span class='no'>flights_zoomed</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_zoom_to</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>)
 
 <span class='no'>flights_zoomed</span></div><div class='output co'>#&gt; # Zoomed table: flights
 #&gt; # A tibble:     336,776 x 19
@@ -258,14 +261,34 @@ in a tidyselect manner.</p>
 #&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</div><div class='input'>
 <span class='no'>flights_zoomed_transformed</span> <span class='kw'>&lt;-</span>
   <span class='no'>flights_zoomed</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am_pm_dep</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='no'>dep_time</span> <span class='kw'>&lt;</span> <span class='fl'>1200</span>, <span class='st'>"am"</span>, <span class='st'>"pm"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am_pm_dep</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>dep_time</span> <span class='kw'>&lt;</span> <span class='fl'>1200</span>, <span class='st'>"am"</span>, <span class='st'>"pm"</span>)) <span class='kw'>%&gt;%</span>
   <span class='co'># `by`-argument of `left_join()` can be explicitly given</span>
   <span class='co'># otherwise the key-relation is used</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>airports</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>year</span>:<span class='no'>dep_time</span>, <span class='no'>am_pm_dep</span>, <span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>everything</a></span>())
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>year</span>:<span class='no'>dep_time</span>, <span class='no'>am_pm_dep</span>, <span class='fu'>everything</span>())
 
+<span class='no'>flights_zoomed_transformed</span></div><div class='output co'>#&gt; # Zoomed table: flights
+#&gt; # A tibble:     336,776 x 27
+#&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;              &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
+#&gt;  1  2013     1     1      517 am                   515         2      830
+#&gt;  2  2013     1     1      533 am                   529         4      850
+#&gt;  3  2013     1     1      542 am                   540         2      923
+#&gt;  4  2013     1     1      544 am                   545        -1     1004
+#&gt;  5  2013     1     1      554 am                   600        -6      812
+#&gt;  6  2013     1     1      554 am                   558        -4      740
+#&gt;  7  2013     1     1      555 am                   600        -5      913
+#&gt;  8  2013     1     1      557 am                   600        -3      709
+#&gt;  9  2013     1     1      557 am                   600        -3      838
+#&gt; 10  2013     1     1      558 am                   600        -2      753
+#&gt; # … with 336,766 more rows, and 19 more variables: sched_arr_time &lt;int&gt;,
+#&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,
+#&gt; #   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
+#&gt; #   time_hour &lt;dttm&gt;, name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;,
+#&gt; #   dst &lt;chr&gt;, tzone &lt;chr&gt;</div><div class='input'>
 <span class='co'># replace table `flights` with the zoomed table</span>
-<span class='fu'>dm_update_zoomed</span>(<span class='no'>flights_zoomed_transformed</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_update_zoomed</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -273,15 +296,13 @@ in a tidyselect manner.</p>
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3</div><div class='input'>
 <span class='co'># insert the zoomed table as a new table</span>
-<span class='fu'>dm_insert_zoomed</span>(<span class='no'>flights_zoomed_transformed</span>, <span class='no'>extended_flights</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`.</span></div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `extended_flights`
-#&gt; Columns: 80
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 6</div><div class='input'>
+<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_insert_zoomed</span>(<span class='st'>"extended_flights"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
+
 <span class='co'># discard the zoomed table</span>
-<span class='fu'>dm_discard_zoomed</span>(<span class='no'>flights_zoomed_transformed</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_discard_zoomed</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`

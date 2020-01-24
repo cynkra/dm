@@ -43,8 +43,13 @@
 
 
 <meta property="og:title" content="Filtering a <code><a href='dm.html'>dm</a></code> object — dm_filter" />
-<meta property="og:description" content="Filtering a table of a dm object may affect other tables that are connected to it
-directly or indirectly via foreign key relations." />
+<meta property="og:description" content="
+Filtering a table of a dm object may affect other tables that are connected to it
+directly or indirectly via foreign key relations.
+dm_filter() can be used to define filter conditions for tables using syntax that is similar to dplyr::filter().
+These conditions will be stored in the dm, and executed immediately for the tables that they are referring to.
+With dm_apply_filters(), all tables will be updated according to the filter conditions and the foreign key relations.
+dm_apply_filters_to_tbl() retrieves one specific table of the dm that is updated according to the filter conditions and the foreign key relations." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +83,7 @@ directly or indirectly via foreign key relations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -150,8 +155,13 @@ directly or indirectly via foreign key relations." />
     </div>
 
     <div class="ref-description">
-    <p>Filtering a table of a <code><a href='dm.html'>dm</a></code> object may affect other tables that are connected to it
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p>Filtering a table of a <code><a href='dm.html'>dm</a></code> object may affect other tables that are connected to it
 directly or indirectly via foreign key relations.</p>
+<p><code>dm_filter()</code> can be used to define filter conditions for tables using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
+These conditions will be stored in the <code><a href='dm.html'>dm</a></code>, and executed immediately for the tables that they are referring to.</p>
+<p>With <code>dm_apply_filters()</code>, all tables will be updated according to the filter conditions and the foreign key relations.</p>
+<p><code>dm_apply_filters_to_tbl()</code> retrieves one specific table of the <code>dm</code> that is updated according to the filter conditions and the foreign key relations.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
@@ -188,13 +198,10 @@ for an introduction to these concepts.</p></td>
 
     <p>For <code>dm_filter</code>: an updated <code>dm</code> object (filter executed for given table, and condition stored).</p>
 <p>For <code>dm_apply_filters</code>: an updated <code>dm</code> object (filter effects evaluated for all tables).</p>
+<p>For <code>dm_apply_filters_to_tbl()</code>, a table.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>dm_filter()</code> can be used to define filter conditions for tables using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.
-These conditions will be stored in the <code><a href='dm.html'>dm</a></code>, and executed immediately for the tables that they are referring to.</p>
-<p>With <code>dm_apply_filters()</code>, all tables will be updated according to the filter conditions and the foreign key relations.</p>
-<p><code>dm_apply_filters_to_tbl()</code> retrieves one specific table of the <code>dm</code> that is updated according to the filter conditions and the foreign key relations.</p>
-<p>The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
+    <p>The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
 in one of the following scenarios:</p><ol>
 <li><p>Calling <code>dm_apply_filters()</code> or <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> (method for <code>dm</code> objects) on a <code>dm</code>: each filtered table potentially
 reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
@@ -207,11 +214,24 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
 </ol>
 
 <p>Several functions of the dm package will throw an error if filter conditions exist when they are called.</p>
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+
+<p>These functions are marked "questioning" because it feels wrong
+to tightly couple filtering with the data model.
+On the one hand, an overview of active filters is useful
+when specifying the base data set for an analysis in terms of column selections
+and row filters.
+However, these filter condition should be only of informative nature
+and never affect the results of other operations.
+We are working on formalizing the semantics of the underlying operations
+in order to present them in a cleaner interface.</p>
+<p>Use <code><a href='dm_zoom_to.html'>dm_zoom_to()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code> to filter rows without registering
+the filter.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-
-<span class='no'>dm_nyc_filtered</span> <span class='kw'>&lt;-</span>
+    <pre class="examples"><div class='input'><span class='no'>dm_nyc_filtered</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>)
 
@@ -260,7 +280,6 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
 #&gt; Columns: 53
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_filter</span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
@@ -292,6 +311,7 @@ of semi-joins (<code><a href='https://dplyr.tidyverse.org/reference/join.html'>d
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#life-cycle">Life cycle</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

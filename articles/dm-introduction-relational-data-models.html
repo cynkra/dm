@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -276,7 +276,9 @@
 <p>After finding and assigning foreign keys, get the name of the set foreign key:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">dm <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span>(flights, airlines)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; [1] "carrier"</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; &lt;list_of&lt;character&gt;[1]&gt;</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "carrier"</span></a></code></pre></div>
 <p>Further Reading: All {dm} functions for working with <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys">foreign keys</a>.</p>
 </div>
 <div id="normalisation" class="section level2">

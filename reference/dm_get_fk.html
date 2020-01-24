@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retrieve the names of the columns marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table. — dm_get_fk • dm</title>
+<title>Names of the foreign key columns — dm_get_fk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Retrieve the names of the columns marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table. — dm_get_fk" />
+<meta property="og:title" content="Names of the foreign key columns — dm_get_fk" />
 <meta property="og:description" content="dm_get_fk() returns the names of the
 columns marked as foreign key of table table with respect to table ref_table within a dm object.
 If no foreign key is set between the tables, an empty character vector is returned." />
@@ -79,7 +79,7 @@ If no foreign key is set between the tables, an empty character vector is return
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@ If no foreign key is set between the tables, an empty character vector is return
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retrieve the names of the columns marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table.</h1>
+    <h1>Names of the foreign key columns</h1>
     
     <div class="hidden name"><code>dm_get_fk.Rd</code></div>
     </div>
@@ -177,7 +177,8 @@ If no foreign key is set between the tables, an empty character vector is return
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character vector with the column name(s) of <code>table</code>, pointing to the primary key of <code>ref_table</code>.</p>
+    <p>A list of character vectors with the column name(s) of <code>table</code>,
+pointing to the primary key of <code>ref_table</code>.</p>
     <h2 class="hasAnchor" id="compound-keys"><a class="anchor" href="#compound-keys"></a>Compound keys</h2>
 
     
@@ -195,7 +196,18 @@ Therefore the function may return vectors of length greater than one in the futu
 <code><a href='dm_has_fk.html'>dm_has_fk</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm_get_fk</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; [1] "origin"</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_get_fk</span>(<span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[1]&gt;
+#&gt; [[1]]
+#&gt; [1] "origin"
+#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_get_fk</span>(<span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[2]&gt;
+#&gt; [[1]]
+#&gt; [1] "origin"
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] "dest"
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -182,7 +182,8 @@ For the foreign key constraints, the tests check if for each foreign key constra
 form a subset of the values of the referenced column.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm_examine_constraints</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; # A tibble: 6 x 6
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_examine_constraints</span>()</div><div class='output co'>#&gt; # A tibble: 6 x 6
 #&gt;   table   kind    columns ref_table is_key problem                              
 #&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;list&lt;ch&gt; &lt;chr&gt;     &lt;lgl&gt;  &lt;chr&gt;                                
 #&gt; 1 flights FK          [1] planes    FALSE  "50094 entries (14.9%) of `flights$t…

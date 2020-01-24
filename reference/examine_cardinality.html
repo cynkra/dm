@@ -83,7 +83,7 @@ examine_cardinality() also checks the first two points and subsequently determin
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.6.9001</span>
       </span>
     </div>
 
@@ -246,7 +246,10 @@ the result will contain the information which prerequisite was violated.</p>
 <span class='co'># This does not pass, injectivity is violated:</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_cardinality_1_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>))</div><div class='output co'>#&gt; Error : 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.</div><div class='input'>
 <span class='co'># This passes:</span>
-<span class='fu'>check_cardinality_0_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d3</span>, <span class='no'>c</span>)</div></pre>
+<span class='fu'>check_cardinality_0_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d3</span>, <span class='no'>c</span>)
+
+<span class='co'># Returns the kind of cardinality</span>
+<span class='fu'>examine_cardinality</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)</div><div class='output co'>#&gt; [1] "surjective mapping (child: 1 to n -&gt; parent: 1)"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
