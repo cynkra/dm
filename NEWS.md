@@ -1,17 +1,16 @@
-# dm 0.0.6.9001
+# dm 0.1.0
 
+- Package is now in the "maturing" lifecycle (#154).
 - `filter.zoomed_dm()` no longer sets the filter.
-- Prepare `dm_examine_constraints()` and other key-related functions for compound keys (#239).
 - `examine_()` functions never throw an error (#238).
-- {tidyselect} interface for setting colors (#162).
-- API overhaul (#233): `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`; `check_()` -> `examine_()`; `dm_get_filters()` -> `dm_get_filter()`.
-- Avoid warnings in `R CMD check` with dev versions of dependencies.
-
-
-# dm 0.0.6.9000
-
+- API overhaul: `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`; `check_()` -> `examine_()`; `dm_get_filters()` -> `dm_get_filter()` (#233).
 - New `$.zoomed_dm()`, `[.zoomed_dm()`, `[[.zoomed_dm()`, `length.zoomed_dm()`, `names.zoomed_dm()`, `tbl_vars.zoomed_dm()` (#199, #216).
 - New `as.list()` methods (#213).
+- Help pages for dplyr methods (#209).
+- New migration guide from dm <= 0.0.5 (#234).
+- New {tidyselect} interface for setting colors (#162).
+- Prepare `dm_examine_constraints()` and other key-related functions for compound keys (#239).
+- Avoid warnings in `R CMD check` with dev versions of dependencies.
 - Improve error messages for missing tables (#220).
 
 
