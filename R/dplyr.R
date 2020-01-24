@@ -224,6 +224,14 @@ left_join.dm <- function(x, ...) {
 #' @param suffix Disabled, since columns are disambiguated automatically if necessary, changing the column names to `table_name.column_name`.
 #' @param select Select a subset of the \strong{RHS-table}'s columns, the syntax being `select = c(col_1, col_2, col_3)` (unquoted or quoted).
 #' This argument is specific for the `join`-methods for `zoomed_dm`.
+#' @examples
+#' flights_dm <- dm_nycflights13()
+#' dm_zoom_to(flights_dm, flights) %>%
+#'   left_join(airports, select = c(faa, name))
+#'
+#' # this should illustrate that tables don't necessarily need to be connected
+#' dm_zoom_to(flights_dm, airports) %>%
+#'   semi_join(airlines, by = "name")
 #' @export
 left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))

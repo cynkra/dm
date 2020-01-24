@@ -38,3 +38,12 @@ This argument is specific for the \code{join}-methods for \code{zoomed_dm}.}
 \description{
 Use these methods without the '.zoomed_dm' suffix (see examples).
 }
+\examples{
+flights_dm <- dm_nycflights13()
+dm_zoom_to(flights_dm, flights) \%>\%
+  left_join(airports, select = c(faa, name))
+
+# this should illustrate that tables don't necessarily need to be connected
+dm_zoom_to(flights_dm, airports) \%>\%
+  semi_join(airlines, by = "name")
+}
