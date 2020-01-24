@@ -2,7 +2,7 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis build
 status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
 [![Codecov test
@@ -285,14 +285,14 @@ In order to transfer an existing `dm` object to a DB, you can call
 ``` r
 src_sqlite <- src_sqlite(":memory:", create = TRUE)
 src_sqlite
-#> src:  sqlite 3.29.0 [:memory:]
+#> src:  sqlite 3.30.1 [:memory:]
 #> tbls:
-nycflights13_remote <- dm_copy_to(src_sqlite, dm_nycflights13(cycle = TRUE))
+nycflights13_remote <- copy_dm_to(src_sqlite, dm_nycflights13(cycle = TRUE))
 nycflights13_remote
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.29.0 [:memory:]
+#&gt; src:  sqlite 3.30.1 [:memory:]
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
