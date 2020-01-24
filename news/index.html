@@ -163,7 +163,7 @@
 <li>New <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> extracts a single table from a <code>dm</code> (#206).</li>
 <li>New <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code> that applies filters in related tables to a table, similar to <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code>; <code><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl()</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> no longer apply filter conditions defined in related tables (#161).</li>
 <li>New <code><a href="../reference/dm_paste.html">dm_paste()</a></code> (#160).</li>
-<li>New <code><a href="../reference/check_cardinality.html">check_cardinality()</a></code> returns the nature of the relationship between <code>parent_table$pk_col</code> and <code>child_table$fk_col</code> (#15).</li>
+<li>New <code><a href="../reference/deprecated.html">check_cardinality()</a></code> returns the nature of the relationship between <code>parent_table$pk_col</code> and <code>child_table$fk_col</code> (#15).</li>
 <li>New zoom vignette (#171).</li>
 <li>
 <code><a href="../reference/check_key.html">check_key()</a></code> no longer maps empty selection list to all columns.</li>
@@ -175,13 +175,13 @@
 <code><a href="../reference/decompose_table.html">decompose_table()</a></code> uses tidyselect (#194).</li>
 <li>Implement <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to()</a></code> for <code>dm</code> objects (#129).</li>
 <li>Relax test for cycles in relationship graph (#198).</li>
-<li>Return <code>ref_table</code> column in <code><a href="../reference/dm_check_constraints.html">dm_check_constraints()</a></code> (#178).</li>
+<li>Return <code>ref_table</code> column in <code>dm_check_constraints()</code> (#178).</li>
 <li>
 <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> shows simpified views (#123).</li>
 <li>Edits to README (#172, <a href='https://github.com/bbecane'>@bbecane</a>).</li>
 <li>Extend <code><a href="../reference/dm.html">validate_dm()</a></code> (#173).</li>
 <li>Fix zooming into table that uses an FK column as primary key (#193).</li>
-<li>Fix corner case in <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> (#175).</li>
+<li>Fix corner case in <code><a href="../reference/dm_add_fk.html">dm_rm_fk()</a></code> (#175).</li>
 <li>More efficient <code><a href="../reference/check_key.html">check_key()</a></code> for databases (#208).</li>
 <li>Testing for R &gt;= 3.3 and for debug versions.</li>
 <li>Remove {stringr} dependency (#183).</li>
@@ -366,7 +366,7 @@
 <a href="#minor-changes" class="anchor"></a>Minor changes</h2>
 <ul>
 <li>
-<code><a href="../reference/browse_docs.html">browse_docs()</a></code> opens the pkgdown website (#36).</li>
+<code>browse_docs()</code> opens the pkgdown website (#36).</li>
 <li>
 <code><a href="../reference/dm.html">as_dm()</a></code> now also accepts a list of remote tables (#30).</li>
 <li>Use {tidyselect} syntax for <code><a href="../reference/deprecated.html">cdm_rename_tbl()</a></code> and <code><a href="../reference/deprecated.html">cdm_select_tbl()</a></code> (#14).</li>
@@ -503,12 +503,12 @@
 <a href="#check-keys-and-cardinalities" class="anchor"></a>Check keys and cardinalities</h2>
 <ul>
 <li><code><a href="../reference/check_key.html">check_key()</a></code></li>
-<li><code><a href="../reference/check_if_subset.html">check_if_subset()</a></code></li>
+<li><code><a href="../reference/deprecated.html">check_if_subset()</a></code></li>
 <li><code><a href="../reference/check_set_equality.html">check_set_equality()</a></code></li>
-<li><code><a href="../reference/check_cardinality.html">check_cardinality_0_n()</a></code></li>
-<li><code><a href="../reference/check_cardinality.html">check_cardinality_1_n()</a></code></li>
-<li><code><a href="../reference/check_cardinality.html">check_cardinality_1_1()</a></code></li>
-<li><code><a href="../reference/check_cardinality.html">check_cardinality_0_1()</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">check_cardinality_0_n()</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">check_cardinality_1_n()</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">check_cardinality_1_1()</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">check_cardinality_0_1()</a></code></li>
 </ul>
 </div>
 <div id="miscellaneous" class="section level2">

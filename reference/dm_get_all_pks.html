@@ -167,18 +167,26 @@ returns the tables, the respective primary key columns and their classes.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble with columns:</p><ul>
-<li><p>"table": table name,</p></li>
-<li><p>"pk_col": column name(s) of primary key.</p></li>
-</ul>
+    <p>A tibble with the following columns:</p><dl class='dl-horizontal'>
+<dt><code>table</code></dt><dd><p>table name,</p></dd>
+<dt><code>pk_cols</code></dt><dd><p>column name(s) of primary key.</p></dd>
 
+</dl>
+
+    <h2 class="hasAnchor" id="compound-keys"><a class="anchor" href="#compound-keys"></a>Compound keys</h2>
+
+    
+
+
+<p>Currently, keys consisting of more than one column are not supported.
+<a href='https://github.com/krlmlr/dm/issues/3'>This feature</a> is planned for dm 0.2.0.
+Therefore the <code>pk_cols</code> column may contain vectors of length greater than one.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other primary key functions: 
 <code><a href='dm_add_pk.html'>dm_add_pk</a>()</code>,
 <code><a href='dm_get_pk.html'>dm_get_pk</a>()</code>,
 <code><a href='dm_has_pk.html'>dm_has_pk</a>()</code>,
-<code><a href='dm_rm_pk.html'>dm_rm_pk</a>()</code>,
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
   </div>
@@ -187,6 +195,7 @@ returns the tables, the respective primary key columns and their classes.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#compound-keys">Compound keys</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

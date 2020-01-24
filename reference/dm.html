@@ -67,9 +67,6 @@ dm_get_tables() returns a named list of dplyr tbl objects
 of a dm object.
 Filtering expressions are NOT evaluated at this stage.
 To get a filtered table, use dm_apply_filters_to_tbl(), to apply filters to all tables use dm_apply_filters()
-dm_get_filter() returns the filter expressions that have been applied to a dm object.
-These filter expressions are not intended for evaluation, only for
-information.
 is_dm() returns TRUE if the input is of class dm.
 as_dm() coerces objects to the dm class" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
@@ -201,9 +198,6 @@ is thrown.</p>
 of a <code>dm</code> object.
 Filtering expressions are NOT evaluated at this stage.
 To get a filtered table, use <code><a href='dm_filter.html'>dm_apply_filters_to_tbl()</a></code>, to apply filters to all tables use <code><a href='dm_filter.html'>dm_apply_filters()</a></code></p>
-<p><code>dm_get_filter()</code> returns the filter expressions that have been applied to a <code>dm</code> object.
-These filter expressions are not intended for evaluation, only for
-information.</p>
 <p><code>is_dm()</code> returns <code>TRUE</code> if the input is of class <code>dm</code>.</p>
 <p><code>as_dm()</code> coerces objects to the <code>dm</code> class</p>
     </div>
@@ -221,8 +215,6 @@ information.</p>
 <span class='fu'>dm_get_con</span>(<span class='no'>x</span>)
 
 <span class='fu'>dm_get_tables</span>(<span class='no'>x</span>)
-
-<span class='fu'>dm_get_filter</span>(<span class='no'>x</span>)
 
 <span class='fu'>is_dm</span>(<span class='no'>x</span>)
 
@@ -268,26 +260,20 @@ to be included in the <code>dm</code> object.</p></td>
 <p>For <code>dm_get_src()</code>: the <span class="pkg">dplyr</span> source for a <code>dm</code> object.</p>
 <p>For <code>dm_get_con()</code>: The <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
 <p>For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.</p>
-<p>For <code>dm_get_filter()</code>: A tibble with columns:</p><ul>
-<li><p>"table": table that was filtered,</p></li>
-<li><p>"filter": the filter expression,</p></li>
-<li><p>"zoomed": logical, does the filter condition relate to the zoomed table.</p></li>
-</ul>
-
 <p>For <code>is_dm()</code>: Boolean, is this object a <code>dm</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
 <ul>
 <li><p><code><a href='dm_add_pk.html'>dm_add_pk()</a></code> and <code><a href='dm_add_fk.html'>dm_add_fk()</a></code> add primary and foreign keys</p></li>
-<li><p><code><a href='dm_copy_to.html'>dm_copy_to()</a></code> and <code><a href='dm_learn_from_db.html'>dm_learn_from_db()</a></code> for DB interaction</p></li>
+<li><p><code><a href='copy_dm_to.html'>copy_dm_to()</a></code> and <code><a href='dm_learn_from_db.html'>dm_learn_from_db()</a></code> for DB interaction</p></li>
 <li><p><code><a href='dm_draw.html'>dm_draw()</a></code> for visualization</p></li>
 <li><p><code><a href='dm_join_to_tbl.html'>dm_join_to_tbl()</a></code> for flattening</p></li>
 <li><p><code><a href='dm_filter.html'>dm_filter()</a></code> for filtering</p></li>
 <li><p><code><a href='dm_select_tbl.html'>dm_select_tbl()</a></code> for creating a <code>dm</code> with only a subset of the tables</p></li>
 <li><p><code><a href='decompose_table.html'>decompose_table()</a></code> as one example of the table surgery family</p></li>
-<li><p><code><a href='check_key.html'>check_key()</a></code> and <code><a href='check_if_subset.html'>check_if_subset()</a></code> for checking for key properties</p></li>
-<li><p><code><a href='check_cardinality.html'>check_cardinality()</a></code> for checking the cardinality of the relation between two tables</p></li>
+<li><p><code><a href='check_key.html'>check_key()</a></code> and <code><a href='check_subset.html'>check_subset()</a></code> for checking for key properties</p></li>
+<li><p><code><a href='examine_cardinality.html'>examine_cardinality()</a></code> for checking the cardinality of the relation between two tables</p></li>
 <li><p><code><a href='dm_nycflights13.html'>dm_nycflights13()</a></code>  for creating an example <code>dm</code> object</p></li>
 </ul>
 </div>
@@ -339,7 +325,7 @@ to be included in the <code>dm</code> object.</p></td>
 #&gt; # … with 1,448 more rows</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()</div><div class='output co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_src</span>()</div><div class='output co'>#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; tbls:</div><div class='input'><span class='co'># this works only when tables of `dm` are on DB</span>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'><a href='dm_copy_to.html'>dm_copy_to</a></span>(<span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(), <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(), <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()) <span class='kw'>%&gt;%</span>
     <span class='fu'>dm_get_con</span>()
 }
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_tables</span>()</div><div class='output co'>#&gt; $airlines
@@ -429,7 +415,7 @@ to be included in the <code>dm</code> object.</p></td>
 #&gt; 10 EWR     2013     1     1    10  41    28.0  59.6      260      13.8 
 #&gt; # … with 26,105 more rows, and 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;,
 #&gt; #   pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;
-#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_filter</span>()</div><div class='output co'>#&gt; # A tibble: 0 x 3
+#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='dm_get_filters.html'>dm_get_filters</a></span>()</div><div class='output co'>#&gt; # A tibble: 0 x 3
 #&gt; # … with 3 variables: table &lt;chr&gt;, filter &lt;list&gt;, zoomed &lt;lgl&gt;</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>validate_dm</span>()
 <span class='fu'>is_dm</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()[<span class='st'>"airports"</span>]</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;

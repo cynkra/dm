@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retrieve the name of the column marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table. — dm_get_fk • dm</title>
+<title>Retrieve the names of the columns marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table. — dm_get_fk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,10 @@
 
 
 
-<meta property="og:title" content="Retrieve the name of the column marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table. — dm_get_fk" />
-<meta property="og:description" content="Retrieve the name of the column marked as a foreign key, pointing from one table of a dm to another table." />
+<meta property="og:title" content="Retrieve the names of the columns marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table. — dm_get_fk" />
+<meta property="og:description" content="dm_get_fk() returns the names of the
+columns marked as foreign key of table table with respect to table ref_table within a dm object.
+If no foreign key is set between the tables, an empty character vector is returned." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -143,13 +145,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retrieve the name of the column marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table.</h1>
+    <h1>Retrieve the names of the columns marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table.</h1>
     
     <div class="hidden name"><code>dm_get_fk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Retrieve the name of the column marked as a foreign key, pointing from one table of a <code><a href='dm.html'>dm</a></code> to another table.</p>
+    <p><code>dm_get_fk()</code> returns the names of the
+columns marked as foreign key of table <code>table</code> with respect to table <code>ref_table</code> within a <code><a href='dm.html'>dm</a></code> object.
+If no foreign key is set between the tables, an empty character vector is returned.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dm_get_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)</pre>
@@ -174,14 +178,21 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A character vector with the column name(s) of <code>table</code>, pointing to the primary key of <code>ref_table</code>.</p>
+    <h2 class="hasAnchor" id="compound-keys"><a class="anchor" href="#compound-keys"></a>Compound keys</h2>
+
+    
+
+
+<p>Currently, keys consisting of more than one column are not supported.
+<a href='https://github.com/krlmlr/dm/issues/3'>This feature</a> is planned for dm 0.2.0.
+Therefore the function may return vectors of length greater than one in the future.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other foreign key functions: 
 <code><a href='dm_add_fk.html'>dm_add_fk</a>()</code>,
 <code><a href='dm_enum_fk_candidates.html'>dm_enum_fk_candidates</a>()</code>,
 <code><a href='dm_get_all_fks.html'>dm_get_all_fks</a>()</code>,
-<code><a href='dm_has_fk.html'>dm_has_fk</a>()</code>,
-<code><a href='dm_rm_fk.html'>dm_rm_fk</a>()</code></p></div>
+<code><a href='dm_has_fk.html'>dm_has_fk</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>dm_get_fk</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; [1] "origin"</div></pre>
@@ -191,6 +202,7 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#compound-keys">Compound keys</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Copy a <code>dm</code>-object to a different data source — dm_copy_to • dm</title>
+<title>Get filter expressions — dm_get_filters • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,12 +42,10 @@
 
 
 
-<meta property="og:title" content="Copy a <code>dm</code>-object to a different data source — dm_copy_to" />
-<meta property="og:description" content="dm_copy_to() takes a dplyr::src_dbi object or a DBI::DBIConnection object as its first argument
-and a dm object as its second argument.
-The latter is copied to the former.
-By default, temporary tables will be created and the key constraints will be set
-(currently only on MSSQL and Postgres databases)." />
+<meta property="og:title" content="Get filter expressions — dm_get_filters" />
+<meta property="og:description" content="dm_get_filters() returns the filter expressions that have been applied to a dm object.
+These filter expressions are not intended for evaluation, only for
+information." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -147,107 +145,44 @@ By default, temporary tables will be created and the key constraints will be set
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Copy a <code>dm</code>-object to a different data source</h1>
+    <h1>Get filter expressions</h1>
     
-    <div class="hidden name"><code>dm_copy_to.Rd</code></div>
+    <div class="hidden name"><code>dm_get_filters.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>dm_copy_to()</code> takes a <a href='https://dplyr.tidyverse.org/reference/src_dbi.html'>dplyr::src_dbi</a> object or a <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> object as its first argument
-and a <code><a href='dm.html'>dm</a></code> object as its second argument.
-The latter is copied to the former.
-By default, temporary tables will be created and the key constraints will be set
-(currently only on MSSQL and Postgres databases).</p>
+    <p><code>dm_get_filters()</code> returns the filter expressions that have been applied to a <code>dm</code> object.
+These filter expressions are not intended for evaluation, only for
+information.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_copy_to</span>(
-  <span class='no'>dest</span>,
-  <span class='no'>dm</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>unique_indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>dm_get_filters</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dest</th>
-      <td><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Possible further arguments passed to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code>, which is used on each table.</p></td>
-    </tr>
-    <tr>
-      <th>overwrite, types, indexes, unique_indexes</th>
-      <td><p>Must remain <code>NULL</code>.</p></td>
-    </tr>
-    <tr>
-      <th>set_key_constraints</th>
-      <td><p>Boolean variable, if <code>TRUE</code> will mirror <code>dm</code> key constraints on a database.</p></td>
-    </tr>
-    <tr>
-      <th>unique_table_names</th>
-      <td><p>Boolean, if <code>FALSE</code> (default), the original table names will be used, if <code>TRUE</code>,
-unique table names will be created based on the original table names.</p></td>
-    </tr>
-    <tr>
-      <th>table_names</th>
-      <td><p>A named character vector, containing the names that you want the tables in the <code>dm</code> to have
-after copying them to the database.
-The table names within the <code>dm</code> will remain unchanged.
-The name of each element of the vector needs to be one of the table names of the <code>dm</code>.
-Those tables of the <code>dm</code> that are not addressed will be called by their original name on the database.</p></td>
-    </tr>
-    <tr>
-      <th>temporary</th>
-      <td><p>Boolean variable, if <code>TRUE</code>, only temporary tables will be created.
-These tables will vanish when disconnecting from the database.</p></td>
+      <th>x</th>
+      <td><p>An object.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>dm</code> object on the given <code>src</code>.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>A tibble with the following columns:</p><dl class='dl-horizontal'>
+<dt><code>table</code></dt><dd><p>table that was filtered,</p></dd>
+<dt><code>filter</code></dt><dd><p>the filter expression,</p></dd>
+<dt><code>zoomed</code></dt><dd><p>logical, does the filter condition relate to the zoomed table.</p></dd>
 
-    <p>No tables will be overwritten; passing <code>overwrite = TRUE</code> to the function will give an error.
-Types are determined separately for each table, setting the <code>types</code> argument will
-also throw an error.
-The arguments are included in the signature to avoid passing them via the
-<code>...</code> ellipsis.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+</dl>
 
-    <div class='dont-index'><p>Other DB interaction functions: 
-<code><a href='dm_learn_from_db.html'>dm_learn_from_db</a>()</code></p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>src_sqlite</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_dbi.html'>src_sqlite</a></span>(<span class='st'>":memory:"</span>, <span class='kw'>create</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>iris_dm</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_copy_to</span>(
-  <span class='no'>src_sqlite</span>,
-  <span class='fu'><a href='dm.html'>as_dm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>)),
-  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

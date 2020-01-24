@@ -179,11 +179,12 @@ for a table in a <a href='dm.html'>dm</a> object.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A table with columns_</p><ul>
-<li><p><code>column</code> (column of <code>table</code>),</p></li>
-<li><p><code>candidate</code> (boolean),</p></li>
-<li><p><code>why</code> (if not a candidate for a primary key column, explanation for this).</p></li>
-</ul>
+    <p>A tibble with the following columns:</p><dl class='dl-horizontal'>
+<dt><code>columns</code></dt><dd><p>columns of <code>table</code>,</p></dd>
+<dt><code>candidate</code></dt><dd><p>boolean: are these columns a candidate for a primary key,</p></dd>
+<dt><code>why</code></dt><dd><p>if not a candidate for a primary key column, explanation for this.</p></dd>
+
+</dl>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -191,64 +192,63 @@ for a table in a <a href='dm.html'>dm</a> object.</p>
 <code><a href='dm_add_pk.html'>dm_add_pk</a>()</code>,
 <code><a href='dm_get_all_pks.html'>dm_get_all_pks</a>()</code>,
 <code><a href='dm_get_pk.html'>dm_get_pk</a>()</code>,
-<code><a href='dm_has_pk.html'>dm_has_pk</a>()</code>,
-<code><a href='dm_rm_pk.html'>dm_rm_pk</a>()</code></p></div>
+<code><a href='dm_has_pk.html'>dm_has_pk</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw pkg'>nycflights13</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>flights</a></span> <span class='kw'>%&gt;%</span> <span class='fu'>enum_pk_candidates</span>()</div><div class='output co'>#&gt; # A tibble: 19 x 3
-#&gt;    column       candidate why                                                   
-#&gt;    &lt;chr&gt;        &lt;lgl&gt;     &lt;chr&gt;                                                 
-#&gt;  1 air_time     FALSE     has duplicate values: 20, 21, 22, 23, 24, … (7 total) 
-#&gt;  2 arr_delay    FALSE     has duplicate values: -75, -71, -70, -69, -68, … (7 t…
-#&gt;  3 arr_time     FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt;  4 carrier      FALSE     has duplicate values: 9E, AA, AS, B6, DL, … (7 total) 
-#&gt;  5 day          FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt;  6 dep_delay    FALSE     has duplicate values: -25, -24, -23, -22, -21, … (7 t…
-#&gt;  7 dep_time     FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt;  8 dest         FALSE     has duplicate values: ABQ, ACK, ALB, ANC, ATL, … (7 t…
-#&gt;  9 distance     FALSE     has duplicate values: 80, 94, 96, 116, 143, … (7 tota…
-#&gt; 10 flight       FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt; 11 hour         FALSE     has duplicate values: 5, 6, 7, 8, 9, … (7 total)      
-#&gt; 12 minute       FALSE     has duplicate values: 0, 1, 2, 3, 4, … (7 total)      
-#&gt; 13 month        FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt; 14 origin       FALSE     has duplicate values: EWR, JFK, LGA                   
-#&gt; 15 sched_arr_t… FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt; 16 sched_dep_t… FALSE     has duplicate values: 500, 505, 510, 515, 516, … (7 t…
-#&gt; 17 tailnum      FALSE     has duplicate values: D942DN, N0EGMQ, N10156, N102UW,…
-#&gt; 18 time_hour    FALSE     has duplicate values: 2013-01-01 05:00:00, 2013-01-01…
-#&gt; 19 year         FALSE     has duplicate values: 2013                            </div><div class='input'>
+#&gt;       columns candidate why                                                     
+#&gt;    &lt;list&lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;                                                   
+#&gt;  1        [1] FALSE     has duplicate values: 20, 21, 22, 23, 24, … (7 total)   
+#&gt;  2        [1] FALSE     has duplicate values: -75, -71, -70, -69, -68, … (7 tot…
+#&gt;  3        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt;  4        [1] FALSE     has duplicate values: 9E, AA, AS, B6, DL, … (7 total)   
+#&gt;  5        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt;  6        [1] FALSE     has duplicate values: -25, -24, -23, -22, -21, … (7 tot…
+#&gt;  7        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt;  8        [1] FALSE     has duplicate values: ABQ, ACK, ALB, ANC, ATL, … (7 tot…
+#&gt;  9        [1] FALSE     has duplicate values: 80, 94, 96, 116, 143, … (7 total) 
+#&gt; 10        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt; 11        [1] FALSE     has duplicate values: 5, 6, 7, 8, 9, … (7 total)        
+#&gt; 12        [1] FALSE     has duplicate values: 0, 1, 2, 3, 4, … (7 total)        
+#&gt; 13        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt; 14        [1] FALSE     has duplicate values: EWR, JFK, LGA                     
+#&gt; 15        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt; 16        [1] FALSE     has duplicate values: 500, 505, 510, 515, 516, … (7 tot…
+#&gt; 17        [1] FALSE     has duplicate values: D942DN, N0EGMQ, N10156, N102UW, N…
+#&gt; 18        [1] FALSE     has duplicate values: 2013-01-01 05:00:00, 2013-01-01 0…
+#&gt; 19        [1] FALSE     has duplicate values: 2013                              </div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_enum_pk_candidates</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 19 x 3
-#&gt;    column       candidate why                                                   
-#&gt;    &lt;chr&gt;        &lt;lgl&gt;     &lt;chr&gt;                                                 
-#&gt;  1 air_time     FALSE     has duplicate values: 20, 21, 22, 23, 24, … (7 total) 
-#&gt;  2 arr_delay    FALSE     has duplicate values: -75, -71, -70, -69, -68, … (7 t…
-#&gt;  3 arr_time     FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt;  4 carrier      FALSE     has duplicate values: 9E, AA, AS, B6, DL, … (7 total) 
-#&gt;  5 day          FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt;  6 dep_delay    FALSE     has duplicate values: -25, -24, -23, -22, -21, … (7 t…
-#&gt;  7 dep_time     FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt;  8 dest         FALSE     has duplicate values: ABQ, ACK, ALB, ANC, ATL, … (7 t…
-#&gt;  9 distance     FALSE     has duplicate values: 80, 94, 96, 116, 143, … (7 tota…
-#&gt; 10 flight       FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt; 11 hour         FALSE     has duplicate values: 5, 6, 7, 8, 9, … (7 total)      
-#&gt; 12 minute       FALSE     has duplicate values: 0, 1, 2, 3, 4, … (7 total)      
-#&gt; 13 month        FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt; 14 origin       FALSE     has duplicate values: EWR, JFK, LGA                   
-#&gt; 15 sched_arr_t… FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)      
-#&gt; 16 sched_dep_t… FALSE     has duplicate values: 500, 505, 510, 515, 516, … (7 t…
-#&gt; 17 tailnum      FALSE     has duplicate values: D942DN, N0EGMQ, N10156, N102UW,…
-#&gt; 18 time_hour    FALSE     has duplicate values: 2013-01-01 05:00:00, 2013-01-01…
-#&gt; 19 year         FALSE     has duplicate values: 2013                            </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_enum_pk_candidates</span>(<span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 3
-#&gt;   column candidate why                                                          
-#&gt;   &lt;chr&gt;  &lt;lgl&gt;     &lt;chr&gt;                                                        
-#&gt; 1 faa    TRUE      ""                                                           
-#&gt; 2 lon    TRUE      ""                                                           
-#&gt; 3 alt    FALSE     "has duplicate values: 0, 1, 3, 4, 5, … (7 total)"           
-#&gt; 4 dst    FALSE     "has duplicate values: A, N, U"                              
-#&gt; 5 lat    FALSE     "has duplicate values: 38.88944, 40.63975"                   
-#&gt; 6 name   FALSE     "has duplicate values: All Airports, Capital City Airport, D…
-#&gt; 7 tz     FALSE     "has duplicate values: -10, -9, -8, -7, -6, … (7 total)"     
-#&gt; 8 tzone  FALSE     "has duplicate values: America/Anchorage, America/Chicago, A…</div></pre>
+#&gt;       columns candidate why                                                     
+#&gt;    &lt;list&lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;                                                   
+#&gt;  1        [1] FALSE     has duplicate values: 20, 21, 22, 23, 24, … (7 total)   
+#&gt;  2        [1] FALSE     has duplicate values: -75, -71, -70, -69, -68, … (7 tot…
+#&gt;  3        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt;  4        [1] FALSE     has duplicate values: 9E, AA, AS, B6, DL, … (7 total)   
+#&gt;  5        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt;  6        [1] FALSE     has duplicate values: -25, -24, -23, -22, -21, … (7 tot…
+#&gt;  7        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt;  8        [1] FALSE     has duplicate values: ABQ, ACK, ALB, ANC, ATL, … (7 tot…
+#&gt;  9        [1] FALSE     has duplicate values: 80, 94, 96, 116, 143, … (7 total) 
+#&gt; 10        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt; 11        [1] FALSE     has duplicate values: 5, 6, 7, 8, 9, … (7 total)        
+#&gt; 12        [1] FALSE     has duplicate values: 0, 1, 2, 3, 4, … (7 total)        
+#&gt; 13        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt; 14        [1] FALSE     has duplicate values: EWR, JFK, LGA                     
+#&gt; 15        [1] FALSE     has duplicate values: 1, 2, 3, 4, 5, … (7 total)        
+#&gt; 16        [1] FALSE     has duplicate values: 500, 505, 510, 515, 516, … (7 tot…
+#&gt; 17        [1] FALSE     has duplicate values: D942DN, N0EGMQ, N10156, N102UW, N…
+#&gt; 18        [1] FALSE     has duplicate values: 2013-01-01 05:00:00, 2013-01-01 0…
+#&gt; 19        [1] FALSE     has duplicate values: 2013                              </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_enum_pk_candidates</span>(<span class='no'>airports</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 3
+#&gt;      columns candidate why                                                      
+#&gt;   &lt;list&lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;                                                    
+#&gt; 1        [1] TRUE      ""                                                       
+#&gt; 2        [1] TRUE      ""                                                       
+#&gt; 3        [1] FALSE     "has duplicate values: 0, 1, 3, 4, 5, … (7 total)"       
+#&gt; 4        [1] FALSE     "has duplicate values: A, N, U"                          
+#&gt; 5        [1] FALSE     "has duplicate values: 38.88944, 40.63975"               
+#&gt; 6        [1] FALSE     "has duplicate values: All Airports, Capital City Airpor…
+#&gt; 7        [1] FALSE     "has duplicate values: -10, -9, -8, -7, -6, … (7 total)" 
+#&gt; 8        [1] FALSE     "has duplicate values: America/Anchorage, America/Chicag…</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

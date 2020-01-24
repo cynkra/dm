@@ -45,9 +45,14 @@
 <meta property="og:title" content="Draw a diagram of a <code><a href='dm.html'>dm</a></code>-object's data model — dm_draw" />
 <meta property="og:description" content="dm_draw() uses DiagrammeR to draw diagrams.
 dm_set_colors() allows to define the colors that will be used to display the tables of the data model.
+The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+An overview of the colors corresponding to the standard color names can be found at
+the bottom of
+http://rpubs.com/krlmlr/colors.
 dm_get_colors() returns the colors defined for a data model.
-dm_get_available_colors() returns an overview of the available colors and their names
-as a tibble." />
+dm_get_available_colors() returns an overview of the names of the available colors
+These are the standard colors also returned by grDevices::colors() plus a default
+table color with the name &quot;default&quot;." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -154,10 +159,15 @@ as a tibble." />
 
     <div class="ref-description">
     <p><code>dm_draw()</code> uses <span class="pkg">DiagrammeR</span> to draw diagrams.</p>
-<p><code>dm_set_colors()</code> allows to define the colors that will be used to display the tables of the data model.</p>
+<p><code>dm_set_colors()</code> allows to define the colors that will be used to display the tables of the data model.
+The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+An overview of the colors corresponding to the standard color names can be found at
+the bottom of
+<a href='http://rpubs.com/krlmlr/colors'>http://rpubs.com/krlmlr/colors</a>.</p>
 <p><code>dm_get_colors()</code> returns the colors defined for a data model.</p>
-<p><code>dm_get_available_colors()</code> returns an overview of the available colors and their names
-as a tibble.</p>
+<p><code>dm_get_available_colors()</code> returns an overview of the names of the available colors
+These are the standard colors also returned by <code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code> plus a default
+table color with the name "default".</p>
     </div>
 
     <pre class="usage"><span class='fu'>dm_draw</span>(
@@ -227,11 +237,9 @@ It defines the level of details for rendering tables
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Colors to set in the form <code>table = "&lt;color&gt;"</code> .
-Fall-through syntax similarly to
-<code><a href='https://rdrr.io/r/base/switch.html'>switch()</a></code> is supported: <code>table1 = , table2 = "&lt;color&gt;"</code> sets the color for both <code>table1</code>
-and <code>table2</code> .
-This argument supports splicing.</p></td>
+      <td><p>Colors to set in the form <code>color = table</code>.
+Allowed colors are all hex coded colors (quoted) and the color names from <code>dm_get_available_colors()</code>.
+<code>tidyselect</code> is supported, see <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> for details on the semantics.</p></td>
     </tr>
     </table>
 
@@ -241,53 +249,246 @@ This argument supports splicing.</p></td>
 when printed, produces the output seen in the viewer as a side effect.</p>
 <p>For <code>dm_set_colors()</code>: the updated data model.</p>
 <p>For <code>dm_get_colors()</code>, a two-column tibble with one row per table.</p>
-<p>For <code>dm_get_available_colors()</code>, a tibble with the color in the first
-column and auxiliary information in other columns.</p>
+<p>For <code>dm_get_available_colors()</code>, a vector with the available colors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'>dm_draw</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())
 <span class='fu'>dm_draw</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='fu'>dm_get_available_colors</span>()</div><div class='output co'>#&gt; # A tibble: 15 x 3
-#&gt;    dm            datamodelr nb         
-#&gt;    &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;      
-#&gt;  1 default       default    (border)   
-#&gt;  2 blue_nb       accent1nb  (no border)
-#&gt;  3 orange_nb     accent2nb  (no border)
-#&gt;  4 yellow_nb     accent3nb  (no border)
-#&gt;  5 green_nb      accent4nb  (no border)
-#&gt;  6 dark_blue_nb  accent5nb  (no border)
-#&gt;  7 light_grey_nb accent6nb  (no border)
-#&gt;  8 grey_nb       accent7nb  (no border)
-#&gt;  9 blue          accent1    (border)   
-#&gt; 10 orange        accent2    (border)   
-#&gt; 11 yellow        accent3    (border)   
-#&gt; 12 green         accent4    (border)   
-#&gt; 13 dark_blue     accent5    (border)   
-#&gt; 14 light_grey    accent6    (border)   
-#&gt; 15 grey          accent7    (border)   </div><div class='input'><span class='fu'>dm_get_colors</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; # A tibble: 5 x 2
-#&gt;   table    color 
-#&gt;   &lt;chr&gt;    &lt;chr&gt; 
-#&gt; 1 airlines orange
-#&gt; 2 airports orange
-#&gt; 3 flights  blue  
-#&gt; 4 planes   orange
-#&gt; 5 weather  green </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'>dm_get_available_colors</span>()</div><div class='output co'>#&gt;   [1] "default"              "white"                "aliceblue"           
+#&gt;   [4] "antiquewhite"         "antiquewhite1"        "antiquewhite2"       
+#&gt;   [7] "antiquewhite3"        "antiquewhite4"        "aquamarine"          
+#&gt;  [10] "aquamarine1"          "aquamarine2"          "aquamarine3"         
+#&gt;  [13] "aquamarine4"          "azure"                "azure1"              
+#&gt;  [16] "azure2"               "azure3"               "azure4"              
+#&gt;  [19] "beige"                "bisque"               "bisque1"             
+#&gt;  [22] "bisque2"              "bisque3"              "bisque4"             
+#&gt;  [25] "black"                "blanchedalmond"       "blue"                
+#&gt;  [28] "blue1"                "blue2"                "blue3"               
+#&gt;  [31] "blue4"                "blueviolet"           "brown"               
+#&gt;  [34] "brown1"               "brown2"               "brown3"              
+#&gt;  [37] "brown4"               "burlywood"            "burlywood1"          
+#&gt;  [40] "burlywood2"           "burlywood3"           "burlywood4"          
+#&gt;  [43] "cadetblue"            "cadetblue1"           "cadetblue2"          
+#&gt;  [46] "cadetblue3"           "cadetblue4"           "chartreuse"          
+#&gt;  [49] "chartreuse1"          "chartreuse2"          "chartreuse3"         
+#&gt;  [52] "chartreuse4"          "chocolate"            "chocolate1"          
+#&gt;  [55] "chocolate2"           "chocolate3"           "chocolate4"          
+#&gt;  [58] "coral"                "coral1"               "coral2"              
+#&gt;  [61] "coral3"               "coral4"               "cornflowerblue"      
+#&gt;  [64] "cornsilk"             "cornsilk1"            "cornsilk2"           
+#&gt;  [67] "cornsilk3"            "cornsilk4"            "cyan"                
+#&gt;  [70] "cyan1"                "cyan2"                "cyan3"               
+#&gt;  [73] "cyan4"                "darkblue"             "darkcyan"            
+#&gt;  [76] "darkgoldenrod"        "darkgoldenrod1"       "darkgoldenrod2"      
+#&gt;  [79] "darkgoldenrod3"       "darkgoldenrod4"       "darkgray"            
+#&gt;  [82] "darkgreen"            "darkgrey"             "darkkhaki"           
+#&gt;  [85] "darkmagenta"          "darkolivegreen"       "darkolivegreen1"     
+#&gt;  [88] "darkolivegreen2"      "darkolivegreen3"      "darkolivegreen4"     
+#&gt;  [91] "darkorange"           "darkorange1"          "darkorange2"         
+#&gt;  [94] "darkorange3"          "darkorange4"          "darkorchid"          
+#&gt;  [97] "darkorchid1"          "darkorchid2"          "darkorchid3"         
+#&gt; [100] "darkorchid4"          "darkred"              "darksalmon"          
+#&gt; [103] "darkseagreen"         "darkseagreen1"        "darkseagreen2"       
+#&gt; [106] "darkseagreen3"        "darkseagreen4"        "darkslateblue"       
+#&gt; [109] "darkslategray"        "darkslategray1"       "darkslategray2"      
+#&gt; [112] "darkslategray3"       "darkslategray4"       "darkslategrey"       
+#&gt; [115] "darkturquoise"        "darkviolet"           "deeppink"            
+#&gt; [118] "deeppink1"            "deeppink2"            "deeppink3"           
+#&gt; [121] "deeppink4"            "deepskyblue"          "deepskyblue1"        
+#&gt; [124] "deepskyblue2"         "deepskyblue3"         "deepskyblue4"        
+#&gt; [127] "dimgray"              "dimgrey"              "dodgerblue"          
+#&gt; [130] "dodgerblue1"          "dodgerblue2"          "dodgerblue3"         
+#&gt; [133] "dodgerblue4"          "firebrick"            "firebrick1"          
+#&gt; [136] "firebrick2"           "firebrick3"           "firebrick4"          
+#&gt; [139] "floralwhite"          "forestgreen"          "gainsboro"           
+#&gt; [142] "ghostwhite"           "gold"                 "gold1"               
+#&gt; [145] "gold2"                "gold3"                "gold4"               
+#&gt; [148] "goldenrod"            "goldenrod1"           "goldenrod2"          
+#&gt; [151] "goldenrod3"           "goldenrod4"           "gray"                
+#&gt; [154] "gray0"                "gray1"                "gray2"               
+#&gt; [157] "gray3"                "gray4"                "gray5"               
+#&gt; [160] "gray6"                "gray7"                "gray8"               
+#&gt; [163] "gray9"                "gray10"               "gray11"              
+#&gt; [166] "gray12"               "gray13"               "gray14"              
+#&gt; [169] "gray15"               "gray16"               "gray17"              
+#&gt; [172] "gray18"               "gray19"               "gray20"              
+#&gt; [175] "gray21"               "gray22"               "gray23"              
+#&gt; [178] "gray24"               "gray25"               "gray26"              
+#&gt; [181] "gray27"               "gray28"               "gray29"              
+#&gt; [184] "gray30"               "gray31"               "gray32"              
+#&gt; [187] "gray33"               "gray34"               "gray35"              
+#&gt; [190] "gray36"               "gray37"               "gray38"              
+#&gt; [193] "gray39"               "gray40"               "gray41"              
+#&gt; [196] "gray42"               "gray43"               "gray44"              
+#&gt; [199] "gray45"               "gray46"               "gray47"              
+#&gt; [202] "gray48"               "gray49"               "gray50"              
+#&gt; [205] "gray51"               "gray52"               "gray53"              
+#&gt; [208] "gray54"               "gray55"               "gray56"              
+#&gt; [211] "gray57"               "gray58"               "gray59"              
+#&gt; [214] "gray60"               "gray61"               "gray62"              
+#&gt; [217] "gray63"               "gray64"               "gray65"              
+#&gt; [220] "gray66"               "gray67"               "gray68"              
+#&gt; [223] "gray69"               "gray70"               "gray71"              
+#&gt; [226] "gray72"               "gray73"               "gray74"              
+#&gt; [229] "gray75"               "gray76"               "gray77"              
+#&gt; [232] "gray78"               "gray79"               "gray80"              
+#&gt; [235] "gray81"               "gray82"               "gray83"              
+#&gt; [238] "gray84"               "gray85"               "gray86"              
+#&gt; [241] "gray87"               "gray88"               "gray89"              
+#&gt; [244] "gray90"               "gray91"               "gray92"              
+#&gt; [247] "gray93"               "gray94"               "gray95"              
+#&gt; [250] "gray96"               "gray97"               "gray98"              
+#&gt; [253] "gray99"               "gray100"              "green"               
+#&gt; [256] "green1"               "green2"               "green3"              
+#&gt; [259] "green4"               "greenyellow"          "grey"                
+#&gt; [262] "grey0"                "grey1"                "grey2"               
+#&gt; [265] "grey3"                "grey4"                "grey5"               
+#&gt; [268] "grey6"                "grey7"                "grey8"               
+#&gt; [271] "grey9"                "grey10"               "grey11"              
+#&gt; [274] "grey12"               "grey13"               "grey14"              
+#&gt; [277] "grey15"               "grey16"               "grey17"              
+#&gt; [280] "grey18"               "grey19"               "grey20"              
+#&gt; [283] "grey21"               "grey22"               "grey23"              
+#&gt; [286] "grey24"               "grey25"               "grey26"              
+#&gt; [289] "grey27"               "grey28"               "grey29"              
+#&gt; [292] "grey30"               "grey31"               "grey32"              
+#&gt; [295] "grey33"               "grey34"               "grey35"              
+#&gt; [298] "grey36"               "grey37"               "grey38"              
+#&gt; [301] "grey39"               "grey40"               "grey41"              
+#&gt; [304] "grey42"               "grey43"               "grey44"              
+#&gt; [307] "grey45"               "grey46"               "grey47"              
+#&gt; [310] "grey48"               "grey49"               "grey50"              
+#&gt; [313] "grey51"               "grey52"               "grey53"              
+#&gt; [316] "grey54"               "grey55"               "grey56"              
+#&gt; [319] "grey57"               "grey58"               "grey59"              
+#&gt; [322] "grey60"               "grey61"               "grey62"              
+#&gt; [325] "grey63"               "grey64"               "grey65"              
+#&gt; [328] "grey66"               "grey67"               "grey68"              
+#&gt; [331] "grey69"               "grey70"               "grey71"              
+#&gt; [334] "grey72"               "grey73"               "grey74"              
+#&gt; [337] "grey75"               "grey76"               "grey77"              
+#&gt; [340] "grey78"               "grey79"               "grey80"              
+#&gt; [343] "grey81"               "grey82"               "grey83"              
+#&gt; [346] "grey84"               "grey85"               "grey86"              
+#&gt; [349] "grey87"               "grey88"               "grey89"              
+#&gt; [352] "grey90"               "grey91"               "grey92"              
+#&gt; [355] "grey93"               "grey94"               "grey95"              
+#&gt; [358] "grey96"               "grey97"               "grey98"              
+#&gt; [361] "grey99"               "grey100"              "honeydew"            
+#&gt; [364] "honeydew1"            "honeydew2"            "honeydew3"           
+#&gt; [367] "honeydew4"            "hotpink"              "hotpink1"            
+#&gt; [370] "hotpink2"             "hotpink3"             "hotpink4"            
+#&gt; [373] "indianred"            "indianred1"           "indianred2"          
+#&gt; [376] "indianred3"           "indianred4"           "ivory"               
+#&gt; [379] "ivory1"               "ivory2"               "ivory3"              
+#&gt; [382] "ivory4"               "khaki"                "khaki1"              
+#&gt; [385] "khaki2"               "khaki3"               "khaki4"              
+#&gt; [388] "lavender"             "lavenderblush"        "lavenderblush1"      
+#&gt; [391] "lavenderblush2"       "lavenderblush3"       "lavenderblush4"      
+#&gt; [394] "lawngreen"            "lemonchiffon"         "lemonchiffon1"       
+#&gt; [397] "lemonchiffon2"        "lemonchiffon3"        "lemonchiffon4"       
+#&gt; [400] "lightblue"            "lightblue1"           "lightblue2"          
+#&gt; [403] "lightblue3"           "lightblue4"           "lightcoral"          
+#&gt; [406] "lightcyan"            "lightcyan1"           "lightcyan2"          
+#&gt; [409] "lightcyan3"           "lightcyan4"           "lightgoldenrod"      
+#&gt; [412] "lightgoldenrod1"      "lightgoldenrod2"      "lightgoldenrod3"     
+#&gt; [415] "lightgoldenrod4"      "lightgoldenrodyellow" "lightgray"           
+#&gt; [418] "lightgreen"           "lightgrey"            "lightpink"           
+#&gt; [421] "lightpink1"           "lightpink2"           "lightpink3"          
+#&gt; [424] "lightpink4"           "lightsalmon"          "lightsalmon1"        
+#&gt; [427] "lightsalmon2"         "lightsalmon3"         "lightsalmon4"        
+#&gt; [430] "lightseagreen"        "lightskyblue"         "lightskyblue1"       
+#&gt; [433] "lightskyblue2"        "lightskyblue3"        "lightskyblue4"       
+#&gt; [436] "lightslateblue"       "lightslategray"       "lightslategrey"      
+#&gt; [439] "lightsteelblue"       "lightsteelblue1"      "lightsteelblue2"     
+#&gt; [442] "lightsteelblue3"      "lightsteelblue4"      "lightyellow"         
+#&gt; [445] "lightyellow1"         "lightyellow2"         "lightyellow3"        
+#&gt; [448] "lightyellow4"         "limegreen"            "linen"               
+#&gt; [451] "magenta"              "magenta1"             "magenta2"            
+#&gt; [454] "magenta3"             "magenta4"             "maroon"              
+#&gt; [457] "maroon1"              "maroon2"              "maroon3"             
+#&gt; [460] "maroon4"              "mediumaquamarine"     "mediumblue"          
+#&gt; [463] "mediumorchid"         "mediumorchid1"        "mediumorchid2"       
+#&gt; [466] "mediumorchid3"        "mediumorchid4"        "mediumpurple"        
+#&gt; [469] "mediumpurple1"        "mediumpurple2"        "mediumpurple3"       
+#&gt; [472] "mediumpurple4"        "mediumseagreen"       "mediumslateblue"     
+#&gt; [475] "mediumspringgreen"    "mediumturquoise"      "mediumvioletred"     
+#&gt; [478] "midnightblue"         "mintcream"            "mistyrose"           
+#&gt; [481] "mistyrose1"           "mistyrose2"           "mistyrose3"          
+#&gt; [484] "mistyrose4"           "moccasin"             "navajowhite"         
+#&gt; [487] "navajowhite1"         "navajowhite2"         "navajowhite3"        
+#&gt; [490] "navajowhite4"         "navy"                 "navyblue"            
+#&gt; [493] "oldlace"              "olivedrab"            "olivedrab1"          
+#&gt; [496] "olivedrab2"           "olivedrab3"           "olivedrab4"          
+#&gt; [499] "orange"               "orange1"              "orange2"             
+#&gt; [502] "orange3"              "orange4"              "orangered"           
+#&gt; [505] "orangered1"           "orangered2"           "orangered3"          
+#&gt; [508] "orangered4"           "orchid"               "orchid1"             
+#&gt; [511] "orchid2"              "orchid3"              "orchid4"             
+#&gt; [514] "palegoldenrod"        "palegreen"            "palegreen1"          
+#&gt; [517] "palegreen2"           "palegreen3"           "palegreen4"          
+#&gt; [520] "paleturquoise"        "paleturquoise1"       "paleturquoise2"      
+#&gt; [523] "paleturquoise3"       "paleturquoise4"       "palevioletred"       
+#&gt; [526] "palevioletred1"       "palevioletred2"       "palevioletred3"      
+#&gt; [529] "palevioletred4"       "papayawhip"           "peachpuff"           
+#&gt; [532] "peachpuff1"           "peachpuff2"           "peachpuff3"          
+#&gt; [535] "peachpuff4"           "peru"                 "pink"                
+#&gt; [538] "pink1"                "pink2"                "pink3"               
+#&gt; [541] "pink4"                "plum"                 "plum1"               
+#&gt; [544] "plum2"                "plum3"                "plum4"               
+#&gt; [547] "powderblue"           "purple"               "purple1"             
+#&gt; [550] "purple2"              "purple3"              "purple4"             
+#&gt; [553] "red"                  "red1"                 "red2"                
+#&gt; [556] "red3"                 "red4"                 "rosybrown"           
+#&gt; [559] "rosybrown1"           "rosybrown2"           "rosybrown3"          
+#&gt; [562] "rosybrown4"           "royalblue"            "royalblue1"          
+#&gt; [565] "royalblue2"           "royalblue3"           "royalblue4"          
+#&gt; [568] "saddlebrown"          "salmon"               "salmon1"             
+#&gt; [571] "salmon2"              "salmon3"              "salmon4"             
+#&gt; [574] "sandybrown"           "seagreen"             "seagreen1"           
+#&gt; [577] "seagreen2"            "seagreen3"            "seagreen4"           
+#&gt; [580] "seashell"             "seashell1"            "seashell2"           
+#&gt; [583] "seashell3"            "seashell4"            "sienna"              
+#&gt; [586] "sienna1"              "sienna2"              "sienna3"             
+#&gt; [589] "sienna4"              "skyblue"              "skyblue1"            
+#&gt; [592] "skyblue2"             "skyblue3"             "skyblue4"            
+#&gt; [595] "slateblue"            "slateblue1"           "slateblue2"          
+#&gt; [598] "slateblue3"           "slateblue4"           "slategray"           
+#&gt; [601] "slategray1"           "slategray2"           "slategray3"          
+#&gt; [604] "slategray4"           "slategrey"            "snow"                
+#&gt; [607] "snow1"                "snow2"                "snow3"               
+#&gt; [610] "snow4"                "springgreen"          "springgreen1"        
+#&gt; [613] "springgreen2"         "springgreen3"         "springgreen4"        
+#&gt; [616] "steelblue"            "steelblue1"           "steelblue2"          
+#&gt; [619] "steelblue3"           "steelblue4"           "tan"                 
+#&gt; [622] "tan1"                 "tan2"                 "tan3"                
+#&gt; [625] "tan4"                 "thistle"              "thistle1"            
+#&gt; [628] "thistle2"             "thistle3"             "thistle4"            
+#&gt; [631] "tomato"               "tomato1"              "tomato2"             
+#&gt; [634] "tomato3"              "tomato4"              "turquoise"           
+#&gt; [637] "turquoise1"           "turquoise2"           "turquoise3"          
+#&gt; [640] "turquoise4"           "violet"               "violetred"           
+#&gt; [643] "violetred1"           "violetred2"           "violetred3"          
+#&gt; [646] "violetred4"           "wheat"                "wheat1"              
+#&gt; [649] "wheat2"               "wheat3"               "wheat4"              
+#&gt; [652] "whitesmoke"           "yellow"               "yellow1"             
+#&gt; [655] "yellow2"              "yellow3"              "yellow4"             
+#&gt; [658] "yellowgreen"         </div><div class='input'><span class='fu'>dm_get_colors</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt;    #ED7D31    #ED7D31    #5B9BD5    #ED7D31    #70AD47 
+#&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_set_colors</span>(
-    <span class='kw'>airports</span> <span class='kw'>=</span> ,
-    <span class='kw'>airlines</span> <span class='kw'>=</span> ,
-    <span class='kw'>planes</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>,
-    <span class='kw'>weather</span> <span class='kw'>=</span> <span class='st'>"dark_blue"</span>
+    <span class='kw'>darkblue</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>starts_with</a></span>(<span class='st'>"air"</span>),
+    <span class='st'>"#5986C4"</span> <span class='kw'>=</span> <span class='no'>flights</span>
   ) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_draw</span>()
 
 <span class='co'># Splicing is supported:</span>
-<span class='no'>new_colors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
-  <span class='kw'>airports</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>, <span class='kw'>airlines</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>, <span class='kw'>planes</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>,
-  <span class='kw'>weather</span> <span class='kw'>=</span> <span class='st'>"dark_blue"</span>
-)
+<span class='no'>nyc_cols</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_get_colors</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())
+<span class='no'>nyc_cols</span></div><div class='output co'>#&gt;    #ED7D31    #ED7D31    #5B9BD5    #ED7D31    #70AD47 
+#&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_set_colors</span>(!!!<span class='no'>new_colors</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_set_colors</span>(!!!<span class='no'>nyc_cols</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_draw</span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

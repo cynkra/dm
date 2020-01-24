@@ -156,7 +156,11 @@ Most functions with the <code>cdm_</code> prefix have an identical alternative
 with a <code>dm_</code> prefix.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cdm_get_src</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>check_if_subset</span>(<span class='no'>t1</span>, <span class='no'>c1</span>, <span class='no'>t2</span>, <span class='no'>c2</span>)
+
+<span class='fu'>check_cardinality</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
+
+<span class='fu'>cdm_get_src</span>(<span class='no'>x</span>)
 
 <span class='fu'>cdm_get_con</span>(<span class='no'>x</span>)
 
@@ -227,7 +231,7 @@ with a <code>dm_</code> prefix.</p>
 
 <span class='fu'>cdm_get_all_fks</span>(<span class='no'>dm</span>)
 
-<span class='fu'>cdm_rm_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>)
+<span class='fu'>cdm_rm_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>columns</span>, <span class='no'>ref_table</span>)
 
 <span class='fu'>cdm_enum_fk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)
 

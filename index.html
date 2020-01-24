@@ -284,12 +284,12 @@
 <div id="from-and-to-databases" class="section level3">
 <h3 class="hasAnchor">
 <a href="#from-and-to-databases" class="anchor"></a>From and to databases</h3>
-<p>In order to transfer an existing <code>dm</code> object to a DB, you can call <code><a href="reference/dm_copy_to.html">dm_copy_to()</a></code> with the target DB and the <code>dm</code> object:</p>
+<p>In order to transfer an existing <code>dm</code> object to a DB, you can call <code>dm_copy_to()</code> with the target DB and the <code>dm</code> object:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">src_sqlite &lt;-<span class="st"> </span><span class="kw">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="dt">create =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">src_sqlite</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; src:  sqlite 3.29.0 [:memory:]</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; tbls:</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">nycflights13_remote &lt;-<span class="st"> </span><span class="kw"><a href="reference/dm_copy_to.html">dm_copy_to</a></span>(src_sqlite, <span class="kw"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">nycflights13_remote &lt;-<span class="st"> </span><span class="kw">dm_copy_to</span>(src_sqlite, <span class="kw"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">nycflights13_remote</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  sqlite 3.29.0 [:memory:]
@@ -299,7 +299,7 @@
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 4
 </span></code></pre>
-<p>The key constraints from the original object are also copied to the newly created object. With the default setting <code>set_key_constraints = TRUE</code> for <code><a href="reference/dm_copy_to.html">dm_copy_to()</a></code>, key constraints are also established on the target DB. Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).</p>
+<p>The key constraints from the original object are also copied to the newly created object. With the default setting <code>set_key_constraints = TRUE</code> for <code>dm_copy_to()</code>, key constraints are also established on the target DB. Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).</p>
 <p>It is also possible to automatically create a <code>dm</code> object from the permanent tables of a DB. Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated. The support for other DBMS will be implemented in a future update.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">src_postgres &lt;-<span class="st"> </span><span class="kw">src_postgres</span>()</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">nycflights13_from_remote &lt;-<span class="st"> </span><span class="kw"><a href="reference/dm_learn_from_db.html">dm_learn_from_db</a></span>(src_postgres)</a></code></pre></div>

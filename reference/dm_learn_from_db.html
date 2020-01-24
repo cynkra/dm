@@ -175,7 +175,7 @@ along with their primary and foreign key constraints.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DB interaction functions: 
-<code><a href='dm_copy_to.html'>dm_copy_to</a>()</code></p></div>
+<code><a href='copy_dm_to.html'>copy_dm_to</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -186,7 +186,7 @@ along with their primary and foreign key constraints.</p>
   <span class='co'># setting key constraints currently doesn't work on</span>
   <span class='co'># SQLite but this would be the code to set the PK</span>
   <span class='co'># constraint on the DB</span>
-  <span class='no'>iris_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_copy_to.html'>dm_copy_to</a></span>(
+  <span class='no'>iris_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(
     <span class='no'>src_sqlite</span>,
     <span class='fu'><a href='dm.html'>dm</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris_key</span>),
     <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Browse package documentation — browse_docs • dm</title>
+<title>Validate your <code><a href='dm.html'>dm</a></code>: are all key constraints met? — dm_examine_constraints • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Browse package documentation — browse_docs" />
-<meta property="og:description" content="Opens the documentation website in a browser." />
+<meta property="og:title" content="Validate your <code><a href='dm.html'>dm</a></code>: are all key constraints met? — dm_examine_constraints" />
+<meta property="og:description" content="This function returns a tibble with information about which key constraints are met (is_key = TRUE) or violated (FALSE)." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -143,29 +143,61 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Browse package documentation</h1>
+    <h1>Validate your <code><a href='dm.html'>dm</a></code>: are all key constraints met?</h1>
     
-    <div class="hidden name"><code>browse_docs.Rd</code></div>
+    <div class="hidden name"><code>dm_examine_constraints.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Opens the documentation website in a browser.</p>
+    <p>This function returns a tibble with information about which key constraints are met (<code>is_key = TRUE</code>) or violated (<code>FALSE</code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>browse_docs</span>()</pre>
+    <pre class="usage"><span class='fu'>dm_examine_constraints</span>(<span class='no'>dm</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dm</th>
+      <td><p>A <code>dm</code> object.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Opens the dm-website as a side effect.</p>
+    <p>A tibble with the following columns:</p><dl class='dl-horizontal'>
+<dt><code>table</code></dt><dd><p>the table in the <code>dm</code>,</p></dd>
+<dt><code>kind</code></dt><dd><p>"PK" or "FK",</p></dd>
+<dt><code>columns</code></dt><dd><p>the table columns that define the key,</p></dd>
+<dt><code>ref_table</code></dt><dd><p>for foreign keys, the referenced table,</p></dd>
+<dt><code>is_key</code></dt><dd><p>logical,</p></dd>
+<dt><code>problem</code></dt><dd><p>if <code>is_key = FALSE</code>, the reason for that.</p></dd>
+
+</dl>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For the primary key constraints, it is tested if the values in the respective columns are all unique.
+For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column
+form a subset of the values of the referenced column.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>browse_docs</span>()</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>dm_examine_constraints</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; # A tibble: 6 x 6
+#&gt;   table   kind    columns ref_table is_key problem                              
+#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;list&lt;ch&gt; &lt;chr&gt;     &lt;lgl&gt;  &lt;chr&gt;                                
+#&gt; 1 flights FK          [1] planes    FALSE  "50094 entries (14.9%) of `flights$t…
+#&gt; 2 airlin… PK          [1] &lt;NA&gt;      TRUE   ""                                   
+#&gt; 3 airpor… PK          [1] &lt;NA&gt;      TRUE   ""                                   
+#&gt; 4 planes  PK          [1] &lt;NA&gt;      TRUE   ""                                   
+#&gt; 5 flights FK          [1] airlines  TRUE   ""                                   
+#&gt; 6 flights FK          [1] airports  TRUE   ""                                   </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -4,19 +4,16 @@
     <loc>https://krlmlr.github.io/dm/index.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/reference/browse_docs.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/reference/check_cardinality.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/reference/check_if_subset.html</loc>
-  </url>
-  <url>
     <loc>https://krlmlr.github.io/dm/reference/check_key.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/check_set_equality.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/check_subset.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/copy_dm_to.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/decompose_table.html</loc>
@@ -37,12 +34,6 @@
     <loc>https://krlmlr.github.io/dm/reference/dm_add_tbl.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/reference/dm_check_constraints.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/reference/dm_copy_to.html</loc>
-  </url>
-  <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_disambiguate_cols.html</loc>
   </url>
   <url>
@@ -50,6 +41,9 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_enum_fk_candidates.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/dm_examine_constraints.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_filter.html</loc>
@@ -62,6 +56,9 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_get_all_pks.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/dm_get_filters.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_get_fk.html</loc>
@@ -100,12 +97,6 @@
     <loc>https://krlmlr.github.io/dm/reference/dm_rename.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/reference/dm_rm_fk.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/reference/dm_rm_pk.html</loc>
-  </url>
-  <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_rm_tbl.html</loc>
   </url>
   <url>
@@ -115,10 +106,13 @@
     <loc>https://krlmlr.github.io/dm/reference/dm_select_tbl.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/reference/dm_zoom_to_tbl.html</loc>
+    <loc>https://krlmlr.github.io/dm/reference/dm_zoom_to.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/enum_pk_candidates.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/examine_cardinality.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/pull_tbl.html</loc>
@@ -155,6 +149,9 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-db.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/wip/dm-function-naming-logic.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-shiny-dynafilter.html</loc>

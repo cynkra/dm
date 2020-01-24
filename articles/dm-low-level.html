@@ -106,7 +106,7 @@
     <div class="page-header toc-ignore">
       <h1>Low level operations</h1>
             
-            <h4 class="date">2020-01-09</h4>
+            <h4 class="date">2020-01-24</h4>
       
       
       <div class="hidden name"><code>dm-low-level.Rmd</code></div>
@@ -123,7 +123,7 @@
 <p>This section contains information and examples about the following functions:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/check_key.html">check_key(.data, ...)</a></code></li>
-<li><code><a href="../reference/check_if_subset.html">check_if_subset(t1, c1, t2, c2)</a></code></li>
+<li><code><a href="../reference/check_subset.html">check_subset(t1, c1, t2, c2)</a></code></li>
 <li><code><a href="../reference/check_set_equality.html">check_set_equality(t1, c1, t2, c2)</a></code></li>
 </ol>
 <p>When you have tables (data frames) that are connected by key relations, this package can help you to verify the assumed key relations and/or determine the existing key relations between the tables. For example, if you have tables:</p>
@@ -135,18 +135,18 @@
 <p>Mind the error message when a test is not passed.</p>
 <p>For <code>data_2</code>, column <code>a</code> is a key:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/check_key.html">check_key</a></span>(data_<span class="dv">2</span>, a)</a></code></pre></div>
-<p>To see if a column of one table contains only those values that are also present in another column of another table, the <code><a href="../reference/check_if_subset.html">check_if_subset()</a></code> function can be used:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
+<p>To see if a column of one table contains only those values that are also present in another column of another table, the <code><a href="../reference/check_subset.html">check_subset()</a></code> function can be used:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/check_subset.html">check_subset</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
 <p>This function is important for determining if a column is a foreign key to some other table. What about the inverse relation?</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/check_if_subset.html">check_if_subset</a></span>(data_<span class="dv">2</span>, a, data_<span class="dv">1</span>, a)</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/check_subset.html">check_subset</a></span>(data_<span class="dv">2</span>, a, data_<span class="dv">1</span>, a)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;       a     b     c</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1     3     6     9</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`</span></a></code></pre></div>
-<p>It should be kept in mind that <code><a href="../reference/check_if_subset.html">check_if_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, the following method should be used:</p>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`.</span></a></code></pre></div>
+<p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, the following method should be used:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/check_key.html">check_key</a></span>(t2, c2)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/check_if_subset.html">check_if_subset</a></span>(t1, c1, t2, c2)</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/check_subset.html">check_subset</a></span>(t1, c1, t2, c2)</a></code></pre></div>
 <p>To check both directions at once, and to find out if the unique values of <code>c_1</code> in <code>t_1</code> are the same as those of <code>c_2</code> in <code>t_2</code>, {dm} provides the function <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code> (this would fail with a longer error message and is therefore not evaluated):</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/check_set_equality.html">check_set_equality</a></span>(data_<span class="dv">1</span>, a, data_<span class="dv">2</span>, a)</a></code></pre></div>
 <p>Introducing one more table enables us to show how it looks when the test is passed:</p>
@@ -160,11 +160,11 @@
 <a href="#testing-cardinalities-between-two-tables" class="anchor"></a>Testing cardinalities between two tables</h2>
 <p>This section contains information and examples for the functions</p>
 <ol style="list-style-type: decimal">
-<li><code><a href="../reference/check_cardinality.html">check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="../reference/check_cardinality.html">check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="../reference/check_cardinality.html">check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="../reference/check_cardinality.html">check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
-<li><code><a href="../reference/check_cardinality.html">check_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">check_cardinality_1_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">check_cardinality_0_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">check_cardinality_1_1(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
+<li><code><a href="../reference/examine_cardinality.html">examine_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
 </ol>
 <p>The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as inputs. The functions first test if that requirement is fulfilled by checking if:</p>
 <ol style="list-style-type: decimal">
@@ -178,7 +178,7 @@
 <p><code>0_n</code> means, that for each value of the <code>parent_key_column</code>, the number of corresponding records in the child table is unrestricted. <code>1_n</code> means, that for each value of the <code>parent_key_column</code> there is at least one coresponding record in the child table. This means that there is a “surjective” relation from the child table to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.</p>
 <p><code>0_1</code> means, that for each value of the <code>parent_key_column</code>, at least zero and at most one value has to correspond to it in the column of the child table. This means that there is an “injective” relation from the child table to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. But not all of the parent table column values have to be referred to.</p>
 <p><code>1_1</code> means, that for each value of the <code>parent_key_column</code>, exactly one value has to correspond to it in the child table’s column. This means that there is a “bijective” (“injective” AND “surjective”) relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.</p>
-<p>Also <code><a href="../reference/check_cardinality.html">check_cardinality()</a></code> first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met. Subsequently, two further checks are made to determine the nature of the relation (surjective, injective, bijective or none of these) between the two columns.</p>
+<p>Also <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met. Subsequently, two further checks are made to determine the nature of the relation (surjective, injective, bijective or none of these) between the two columns.</p>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h3>
@@ -189,26 +189,26 @@
 <a class="sourceLine" id="cb9-4" data-line-number="4">d4 &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">5</span>))</a></code></pre></div>
 <p>Here are some examples of how the cardinality testing functions can be used:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># This does not pass, `c` is not unique key of d2:</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_0_n</a></span>(d2, c, d1, a)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span>(d2, c, d1, a)</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; Error: (`c`) not a unique key of `d2`.</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># This passes, multiple values in d2$c are allowed:</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_0_n</a></span>(d1, a, d2, c)</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span>(d1, a, d2, c)</a>
 <a class="sourceLine" id="cb10-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co"># This does not pass, injectivity is violated:</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_1_1</a></span>(d1, a, d2, c)</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="../reference/examine_cardinality.html">check_cardinality_1_1</a></span>(d1, a, d2, c)</a>
 <a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; Error: 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.</span></a>
 <a class="sourceLine" id="cb10-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co"># This passes:</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality_0_1</a></span>(d1, a, d3, c)</a></code></pre></div>
-<p><code><a href="../reference/check_cardinality.html">check_cardinality()</a></code> returns the type of relation, e.g.:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality</a></span>(d1, a, d3, c)</a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="kw"><a href="../reference/examine_cardinality.html">check_cardinality_0_1</a></span>(d1, a, d3, c)</a></code></pre></div>
+<p><code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> returns the type of relation, e.g.:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span>(d1, a, d3, c)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; [1] "injective mapping ( child: 0 or 1 -&gt; parent: 1)"</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality</a></span>(d1, a, d2, c)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span>(d1, a, d2, c)</a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; [1] "surjective mapping (child: 1 to n -&gt; parent: 1)"</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality</a></span>(d1, a, d1, a)</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span>(d1, a, d1, a)</a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; [1] "bijective mapping (child: 1 -&gt; parent: 1)"</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="kw"><a href="../reference/check_cardinality.html">check_cardinality</a></span>(d1, a, d4, a)</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="kw"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span>(d1, a, d4, a)</a>
 <a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; [1] "generic mapping (child: 0 to n -&gt; parent: 1)"</span></a></code></pre></div>
 </div>
 </div>

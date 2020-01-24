@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add a reference from one table of a <code><a href='dm.html'>dm</a></code> to another — dm_add_fk • dm</title>
+<title>Add/remove references from one table of a <code><a href='dm.html'>dm</a></code> to another — dm_add_fk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,13 @@
 
 
 
-<meta property="og:title" content="Add a reference from one table of a <code><a href='dm.html'>dm</a></code> to another — dm_add_fk" />
-<meta property="og:description" content="Add a reference from one table of a dm to another" />
+<meta property="og:title" content="Add/remove references from one table of a <code><a href='dm.html'>dm</a></code> to another — dm_add_fk" />
+<meta property="og:description" content="dm_add_fk() marks the specified columns as the foreign key of table table with
+respect to the primary key of table ref_table.
+If check == TRUE, then it will first check if the values in columns columns are a subset
+of the values of the primary key in table ref_table.
+dm_rm_fk() can remove either one reference between two tables, or all references at once, if argument column = NULL.
+All arguments may be provided quoted or unquoted." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -143,16 +148,23 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add a reference from one table of a <code><a href='dm.html'>dm</a></code> to another</h1>
+    <h1>Add/remove references from one table of a <code><a href='dm.html'>dm</a></code> to another</h1>
     
     <div class="hidden name"><code>dm_add_fk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Add a reference from one table of a <code><a href='dm.html'>dm</a></code> to another</p>
+    <p><code>dm_add_fk()</code> marks the specified columns as the foreign key of table <code>table</code> with
+respect to the primary key of table <code>ref_table</code>.
+If <code>check == TRUE</code>, then it will first check if the values in columns <code>columns</code> are a subset
+of the values of the primary key in table <code>ref_table</code>.</p>
+<p><code>dm_rm_fk()</code> can remove either one reference between two tables, or all references at once, if argument <code>column = NULL</code>.
+All arguments may be provided quoted or unquoted.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>columns</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>dm_rm_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>columns</span>, <span class='no'>ref_table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,14 +178,17 @@
       <td><p>A table in the <code>dm</code>.</p></td>
     </tr>
     <tr>
-      <th>column</th>
-      <td><p>The column of <code>table</code> which is to become the foreign key column and
-reference the primary key of <code>ref_table</code>.</p></td>
+      <th>columns</th>
+      <td><p>For <code>dm_add_fk()</code>: The columns of <code>table</code> which are to become the foreign key columns that
+reference the primary key of <code>ref_table</code>.</p>
+<p>For <code>dm_rm_fk()</code>: The columns of <code>table</code> that should no longer be referencing the primary key of <code>ref_table</code>.
+If <code>NULL</code>, all columns will be evaluated.</p></td>
     </tr>
     <tr>
       <th>ref_table</th>
-      <td><p>The table which <code>table</code> is referencing.
-This table needs to have a primary key set.</p></td>
+      <td><p>For <code>dm_add_fk()</code>: The table which <code>table</code> will be referencing.
+This table needs to have a primary key set.</p>
+<p>For <code>dm_rm_fk()</code>: The table that <code>table</code> is referencing.</p></td>
     </tr>
     <tr>
       <th>check</th>
@@ -184,15 +199,29 @@ This table needs to have a primary key set.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An updated <code>dm</code> with an additional foreign key relation.</p>
+    <p>For <code>dm_add_fk()</code>: An updated <code>dm</code> with an additional foreign key relation.</p>
+<p>For <code>dm_rm_fk()</code>: An updated <code>dm</code> without the given foreign key relation.</p>
+    <h2 class="hasAnchor" id="compound-keys"><a class="anchor" href="#compound-keys"></a>Compound keys</h2>
+
+    
+
+
+<p>Currently, keys consisting of more than one column are not supported.
+<a href='https://github.com/krlmlr/dm/issues/3'>This feature</a> is planned for dm 0.2.0.
+The syntax of these functions will be extended but will remain compatible
+with current semantics.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other foreign key functions: 
 <code><a href='dm_enum_fk_candidates.html'>dm_enum_fk_candidates</a>()</code>,
 <code><a href='dm_get_all_fks.html'>dm_get_all_fks</a>()</code>,
 <code><a href='dm_get_fk.html'>dm_get_fk</a>()</code>,
-<code><a href='dm_has_fk.html'>dm_has_fk</a>()</code>,
-<code><a href='dm_rm_fk.html'>dm_rm_fk</a>()</code></p></div>
+<code><a href='dm_has_fk.html'>dm_has_fk</a>()</code></p>
+<p>Other foreign key functions: 
+<code><a href='dm_enum_fk_candidates.html'>dm_enum_fk_candidates</a>()</code>,
+<code><a href='dm_get_all_fks.html'>dm_get_all_fks</a>()</code>,
+<code><a href='dm_get_fk.html'>dm_get_fk</a>()</code>,
+<code><a href='dm_has_fk.html'>dm_has_fk</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
@@ -206,13 +235,25 @@ This table needs to have a primary key set.</p></td>
 #&gt; Tables: `iris_1`, `iris_2`
 #&gt; Columns: 12
 #&gt; Primary keys: 1
-#&gt; Foreign keys: 1</div></pre>
+#&gt; Foreign keys: 1</div><div class='input'><span class='fu'>dm_rm_fk</span>(
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+  <span class='no'>flights</span>,
+  <span class='no'>dest</span>,
+  <span class='no'>airports</span>
+)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
+#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 3</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#compound-keys">Compound keys</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

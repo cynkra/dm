@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{dm} and databases • dm</title>
+<title>Function naming logic • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../pkgdown.js"></script><meta property="og:title" content="{dm} and databases">
+<script src="../../pkgdown.js"></script><meta property="og:title" content="Function naming logic">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
 <meta name="twitter:card" content="summary">
@@ -104,28 +104,82 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>{dm} and databases</h1>
+      <h1>Function naming logic</h1>
             
-            <h4 class="date">2020-01-24</h4>
       
       
-      <div class="hidden name"><code>dm-db.Rmd</code></div>
+      <div class="hidden name"><code>dm-function-naming-logic.Rmd</code></div>
 
     </div>
 
     
     
-<p>FIXME: This vignette is not yet written, but will be available in a future update.</p>
-<p>Relevant functions for interaction with DBs:</p>
+<p>This vignette describes the logic behind the names of the {dm}-functions.</p>
+<p>In general the functions are implemented in such a way, that no function can handle both <code>dm</code> classes (<code>dm</code> and <code>zoomed_dm</code>) as an argument. A <code>zoomed_dm</code> behaves in most situations like a table and there are mostly no explicit functions available for this class, but rather methods (see vignette <a href="">“Zooming and manipulating tables”</a>. <!-- FIXME: Vignette needs to be reviewed and integrated (https://github.com/krlmlr/dm/issues/185) --></p>
+<div id="prefixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#prefixes" class="anchor"></a>Prefixes</h2>
+<ol style="list-style-type: decimal">
+<li>
+<code>dm_</code>: There are two cases for this prefix:
 <ul>
-<li><code><a href="../../reference/copy_dm_to.html">copy_dm_to()</a></code></li>
-<li><code>dm_set_key_constraints()</code></li>
-<li><code><a href="../../reference/dm_learn_from_db.html">dm_learn_from_db()</a></code></li>
+<li>The function takes a <code>dm</code> object as a first argument</li>
+<li>The function constructs a <code>dm</code> object from other objects</li>
 </ul>
+</li>
+<li>
+<code>check_</code>: Certain tests on the arguments are performed and an error is thrown in case they are not passed. If the tests are passed, the first argument is returned invisibly.</li>
+<li>
+<code>examine_</code>: The function executes checks and returns an object containing an overview of the results of the checks.</li>
+</ol>
+<p>Most important extended prefixes <code>dm_..._</code>:</p>
+<ol style="list-style-type: decimal">
+<li>
+<code>dm_examine_</code>: The function examines several aspects of a <code>dm</code> object</li>
+<li>
+<code>dm_add_</code>: Adds either key constraints or new tables to a <code>dm</code>
+</li>
+<li>
+<code>dm_get_</code>: Retrieves a specific piece of information about the <code>dm</code> (often a part of its constituents)</li>
+<li>
+<code>dm_rm_</code>: Removers either key constraints or new tables to a <code>dm</code>
+</li>
+</ol>
 </div>
+<div id="suffixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#suffixes" class="anchor"></a>Suffixes</h2>
+<ol style="list-style-type: decimal">
+<li>
+<code>_dm</code>: Validators, checkers or coercers</li>
+<li>
+<code>_to_tbl</code>: Data from a <code>dm</code> is processed in a way that a tibble is produced</li>
+<li>
+<code>_candidates</code>: If key-candidates are to be calculated and presented in tibble-form</li>
+<li>
+<code>_pk(s)</code>: Relates to primary key</li>
+<li>
+<code>_fk(s)</code>: Relates to foreign key</li>
+<li>
+<code>_tbl</code>: Add/remove/select/rename a tibble to/from/within a dm</li>
+<li>
+<code>_colors</code>: Relates to the colors for the visualization of the dm</li>
+<li>
+<code>_zoomed</code>: Insert, update or discard the zoomed table. In combination with the prefix <code>dm_</code> this indicates, that the first argument is a <code>zoomed_dm</code> rather than a <code>dm</code>.</li>
+</ol>
+</div>
+  </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
 
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#prefixes">Prefixes</a></li>
+      <li><a href="#suffixes">Suffixes</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mark a column of a table in a <code><a href='dm.html'>dm</a></code> object as its primary key — dm_add_pk • dm</title>
+<title>Add/remove a primary key to/from a table in a <code><a href='dm.html'>dm</a></code> object — dm_add_pk • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,12 +42,14 @@
 
 
 
-<meta property="og:title" content="Mark a column of a table in a <code><a href='dm.html'>dm</a></code> object as its primary key — dm_add_pk" />
-<meta property="og:description" content="dm_add_pk() marks the specified column as the primary key of the specified table.
+<meta property="og:title" content="Add/remove a primary key to/from a table in a <code><a href='dm.html'>dm</a></code> object — dm_add_pk" />
+<meta property="og:description" content="dm_add_pk() marks the specified columns as the primary key of the specified table.
 If check == TRUE, then it will first check if
-the given column is a unique key of the table.
+the given combination of columns is a unique key of the table.
 If force == TRUE, the function will replace an already
-set key." />
+set key.
+dm_rm_pk() removes a primary key from a table and leaves the dm object otherwise unaltered.
+Foreign keys that point to the table from other tables, can be optionally removed as well." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -147,20 +149,24 @@ set key." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Mark a column of a table in a <code><a href='dm.html'>dm</a></code> object as its primary key</h1>
+    <h1>Add/remove a primary key to/from a table in a <code><a href='dm.html'>dm</a></code> object</h1>
     
     <div class="hidden name"><code>dm_add_pk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>dm_add_pk()</code> marks the specified column as the primary key of the specified table.
+    <p><code>dm_add_pk()</code> marks the specified columns as the primary key of the specified table.
 If <code>check == TRUE</code>, then it will first check if
-the given column is a unique key of the table.
+the given combination of columns is a unique key of the table.
 If <code>force == TRUE</code>, the function will replace an already
 set key.</p>
+<p><code>dm_rm_pk()</code> removes a primary key from a table and leaves the <code><a href='dm.html'>dm</a></code> object otherwise unaltered.
+Foreign keys that point to the table from other tables, can be optionally removed as well.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_add_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_add_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>columns</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>dm_rm_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,12 +180,12 @@ set key.</p>
       <td><p>A table in the <code>dm</code>.</p></td>
     </tr>
     <tr>
-      <th>column</th>
-      <td><p>A column of that table.</p></td>
+      <th>columns</th>
+      <td><p>Table columns, unquoted.</p></td>
     </tr>
     <tr>
       <th>check</th>
-      <td><p>Boolean, if <code>TRUE</code>, a check is made if the column is a unique key of the table.</p></td>
+      <td><p>Boolean, if <code>TRUE</code>, a check is made if the combination of columns is a unique key of the table.</p></td>
     </tr>
     <tr>
       <th>force</th>
@@ -187,18 +193,35 @@ set key.</p>
 set for this table.
 If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting a new one.</p></td>
     </tr>
+    <tr>
+      <th>rm_referencing_fks</th>
+      <td><p>Boolean: if <code>FALSE</code> (default), will throw an error if
+there are foreign keys addressing the primary key that is to be removed.
+If <code>TRUE</code>, the function will
+remove, in addition to the primary key of the <code>table</code> argument, also all foreign key constraints
+that are pointing to it.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An updated <code>dm</code> with an additional primary key.</p>
+    <p>For <code>dm_add_pk()</code>: An updated <code>dm</code> with an additional primary key.</p>
+<p>For <code>dm_rm_pk()</code>: An updated <code>dm</code> without the indicated primary key.</p>
+    <h2 class="hasAnchor" id="compound-keys"><a class="anchor" href="#compound-keys"></a>Compound keys</h2>
+
+    
+
+
+<p>Currently, keys consisting of more than one column are not supported.
+<a href='https://github.com/krlmlr/dm/issues/3'>This feature</a> is planned for dm 0.2.0.
+The syntax of these functions will be extended but will remain compatible
+with current semantics.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other primary key functions: 
 <code><a href='dm_get_all_pks.html'>dm_get_all_pks</a>()</code>,
 <code><a href='dm_get_pk.html'>dm_get_pk</a>()</code>,
 <code><a href='dm_has_pk.html'>dm_has_pk</a>()</code>,
-<code><a href='dm_rm_pk.html'>dm_rm_pk</a>()</code>,
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -227,13 +250,22 @@ If <code>TRUE</code>, a potential old <code>pk</code> is deleted before setting 
 #&gt; Primary keys: 1
 #&gt; Foreign keys: 0</div><div class='input'>
 <span class='co'># the following does not work (throws an error)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>dm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Error : (`manufacturer`) not a unique key of `table_from_dm`.</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>dm_add_pk</span>(<span class='no'>nycflights_dm</span>, <span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Error : (`manufacturer`) not a unique key of `table_from_dm`.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()
+
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_rm_pk</span>(<span class='no'>airports</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_has_pk.html'>dm_has_pk</a></span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_rm_pk</span>(<span class='no'>planes</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_has_pk.html'>dm_has_pk</a></span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#compound-keys">Compound keys</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
