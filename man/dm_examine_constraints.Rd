@@ -2,7 +2,7 @@
 % Please edit documentation in R/key-helpers.R
 \name{dm_examine_constraints}
 \alias{dm_examine_constraints}
-\title{Validate your \code{\link{dm}}: are all key constraints met?}
+\title{Validate your data model}
 \usage{
 dm_examine_constraints(dm)
 }

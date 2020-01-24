@@ -3,7 +3,7 @@
 \name{dm_add_fk}
 \alias{dm_add_fk}
 \alias{dm_rm_fk}
-\title{Add/remove references from one table of a \code{\link{dm}} to another}
+\title{Add/remove foreign keys}
 \usage{
 dm_add_fk(dm, table, columns, ref_table, check = FALSE)
 
@@ -69,16 +69,12 @@ dm_rm_fk(
 )
 }
 \seealso{
-Other foreign key functions: 
-\code{\link{dm_enum_fk_candidates}()},
-\code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()}
+Other foreign key functions: \code{\link{dm_enum_fk_candidates}},
+  \code{\link{dm_get_all_fks}}, \code{\link{dm_get_fk}},
+  \code{\link{dm_has_fk}}
 
-Other foreign key functions: 
-\code{\link{dm_enum_fk_candidates}()},
-\code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()}
+Other foreign key functions: \code{\link{dm_enum_fk_candidates}},
+  \code{\link{dm_get_all_fks}}, \code{\link{dm_get_fk}},
+  \code{\link{dm_has_fk}}
 }
 \concept{foreign key functions}

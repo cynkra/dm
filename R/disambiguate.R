@@ -1,4 +1,4 @@
-#' Avoid conflicts in column names
+#' Resolve column name ambiguities
 #'
 #' This function ensures that all columns in a `dm` have unique names.
 #'

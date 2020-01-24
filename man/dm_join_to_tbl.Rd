@@ -2,7 +2,7 @@
 % Please edit documentation in R/flatten.R
 \name{dm_join_to_tbl}
 \alias{dm_join_to_tbl}
-\title{Perform a join between two tables of a \code{\link{dm}}}
+\title{Perform a joins}
 \usage{
 dm_join_to_tbl(dm, table_1, table_2, join = left_join)
 }
@@ -34,7 +34,6 @@ dm_join_to_tbl(dm_nycflights13(), flights, airports)
 try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
 }
 \seealso{
-Other flattening functions: 
-\code{\link{dm_flatten_to_tbl}()}
+Other flattening functions: \code{\link{dm_flatten_to_tbl}}
 }
 \concept{flattening functions}

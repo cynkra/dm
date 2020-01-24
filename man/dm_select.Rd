@@ -2,7 +2,7 @@
 % Please edit documentation in R/select.R
 \name{dm_select}
 \alias{dm_select}
-\title{Select and/or rename one or more columns of a \code{\link{dm}} table}
+\title{Select columns}
 \usage{
 dm_select(dm, table, ...)
 }

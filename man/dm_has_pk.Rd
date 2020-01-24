@@ -2,7 +2,7 @@
 % Please edit documentation in R/primary-keys.R
 \name{dm_has_pk}
 \alias{dm_has_pk}
-\title{Does a table of a \code{\link{dm}} object have columns set as primary key?}
+\title{Check for primary key}
 \usage{
 dm_has_pk(dm, table)
 }
@@ -24,10 +24,8 @@ dm_nycflights13() \%>\%
   dm_has_pk(planes)
 }
 \seealso{
-Other primary key functions: 
-\code{\link{dm_add_pk}()},
-\code{\link{dm_get_all_pks}()},
-\code{\link{dm_get_pk}()},
-\code{\link{enum_pk_candidates}()}
+Other primary key functions: \code{\link{dm_add_pk}},
+  \code{\link{dm_get_all_pks}}, \code{\link{dm_get_pk}},
+  \code{\link{enum_pk_candidates}}
 }
 \concept{primary key functions}

@@ -149,7 +149,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl(prep_dm, start))
 }
 
-#' Perform a join between two tables of a [`dm`]
+#' Join two tables
 #'
 #' @description A join of a desired type is performed between `table_1` and `table_2`.
 #' The two tables need to be directly connected by a foreign key relation.

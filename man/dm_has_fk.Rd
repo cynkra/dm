@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_has_fk}
 \alias{dm_has_fk}
-\title{Does a reference exist?}
+\title{Check if foreign keys exists}
 \usage{
 dm_has_fk(dm, table, ref_table)
 }
@@ -26,10 +26,8 @@ dm_nycflights13() \%>\%
   dm_has_fk(airports, flights)
 }
 \seealso{
-Other foreign key functions: 
-\code{\link{dm_add_fk}()},
-\code{\link{dm_enum_fk_candidates}()},
-\code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()}
+Other foreign key functions: \code{\link{dm_add_fk}},
+  \code{\link{dm_enum_fk_candidates}},
+  \code{\link{dm_get_all_fks}}, \code{\link{dm_get_fk}}
 }
 \concept{foreign key functions}

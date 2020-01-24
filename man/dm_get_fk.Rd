@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_get_fk}
 \alias{dm_get_fk}
-\title{Names of the foreign key columns}
+\title{Foreign key column names}
 \usage{
 dm_get_fk(dm, table, ref_table)
 }
@@ -37,10 +37,8 @@ dm_nycflights13(cycle = TRUE) \%>\%
   dm_get_fk(flights, airports)
 }
 \seealso{
-Other foreign key functions: 
-\code{\link{dm_add_fk}()},
-\code{\link{dm_enum_fk_candidates}()},
-\code{\link{dm_get_all_fks}()},
-\code{\link{dm_has_fk}()}
+Other foreign key functions: \code{\link{dm_add_fk}},
+  \code{\link{dm_enum_fk_candidates}},
+  \code{\link{dm_get_all_fks}}, \code{\link{dm_has_fk}}
 }
 \concept{foreign key functions}

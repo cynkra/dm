@@ -25,7 +25,6 @@ dm_nycflights13() \%>\%
   dm_is_referenced(flights)
 }
 \seealso{
-Other functions utilizing foreign key relations: 
-\code{\link{dm_get_referencing_tables}()}
+Other functions utilizing foreign key relations: \code{\link{dm_get_referencing_tables}}
 }
 \concept{functions utilizing foreign key relations}

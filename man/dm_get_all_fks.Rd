@@ -2,7 +2,7 @@
 % Please edit documentation in R/foreign-keys.R
 \name{dm_get_all_fks}
 \alias{dm_get_all_fks}
-\title{Retrieve all foreign key constraints in a \code{\link{dm}}}
+\title{Get foreign key constraints}
 \usage{
 dm_get_all_fks(dm)
 }
@@ -32,10 +32,8 @@ Therefore the \code{child_fk_cols} column may contain vectors of length greater 
 dm_get_all_fks(dm_nycflights13())
 }
 \seealso{
-Other foreign key functions: 
-\code{\link{dm_add_fk}()},
-\code{\link{dm_enum_fk_candidates}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()}
+Other foreign key functions: \code{\link{dm_add_fk}},
+  \code{\link{dm_enum_fk_candidates}},
+  \code{\link{dm_get_fk}}, \code{\link{dm_has_fk}}
 }
 \concept{foreign key functions}

@@ -1,4 +1,4 @@
-#' Rename one or more columns of a table
+#' Rename columns
 #'
 #' Rename the columns of your [`dm`] using syntax that is similar to `dplyr::rename()`.
 #'
@@ -33,7 +33,7 @@ dm_rename <- function(dm, table, ...) {
     dm_update_zoomed()
 }
 
-#' Select and/or rename one or more columns of a [`dm`] table
+#' Select columns
 #'
 #' Select columns of your [`dm`] using syntax that is similar to `dplyr::select()`.
 #'

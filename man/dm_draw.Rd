@@ -5,20 +5,12 @@
 \alias{dm_set_colors}
 \alias{dm_get_colors}
 \alias{dm_get_available_colors}
-\title{Draw a diagram of a \code{\link{dm}}-object's data model}
+\title{Draw a diagram of data model}
 \usage{
-dm_draw(
-  dm,
-  rankdir = "LR",
-  col_attr = "column",
-  view_type = "keys_only",
-  columnArrows = TRUE,
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  focus = NULL,
-  graph_name = "Data Model"
-)
+dm_draw(dm, rankdir = "LR", col_attr = "column",
+  view_type = "keys_only", columnArrows = TRUE, graph_attrs = "",
+  node_attrs = "", edge_attrs = "", focus = NULL,
+  graph_name = "Data Model")
 
 dm_set_colors(dm, ...)
 

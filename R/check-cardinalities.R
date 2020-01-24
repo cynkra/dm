@@ -1,4 +1,4 @@
-#' Test if the relation between two tables of a data model meet the requirements
+#' Check table relations
 #'
 #' @description All `check_cardinality_?_?()` functions test the following conditions:
 #' 1. Is `pk_column` is a unique key for `parent_table`?

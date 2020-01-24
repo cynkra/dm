@@ -2,7 +2,7 @@
 % Please edit documentation in R/dm.R
 \name{pull_tbl}
 \alias{pull_tbl}
-\title{Retrieve a table from a \code{dm} or a \code{zoomed_dm}}
+\title{Retrieve a table}
 \usage{
 pull_tbl(dm, table)
 }

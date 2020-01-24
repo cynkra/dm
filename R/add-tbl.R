@@ -65,7 +65,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
   new_dm3(vctrs::vec_rbind(def, def_0))
 }
 
-#' Remove tables from a [`dm`]
+#' Remove tables
 #'
 #' @description
 #' Removes one or more tables from a [`dm`].

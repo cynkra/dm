@@ -12,7 +12,8 @@
 \alias{as_dm}
 \title{Data model class}
 \usage{
-dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
+dm(..., .name_repair = c("check_unique", "unique", "universal",
+  "minimal"))
 
 dm_from_src(src = NULL, table_names = NULL)
 

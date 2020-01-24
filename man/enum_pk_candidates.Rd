@@ -3,7 +3,7 @@
 \name{enum_pk_candidates}
 \alias{enum_pk_candidates}
 \alias{dm_enum_pk_candidates}
-\title{Which columns are candidates for a primary key?}
+\title{Primary key candidate}
 \usage{
 enum_pk_candidates(table)
 
@@ -49,10 +49,8 @@ dm_nycflights13() \%>\%
   dm_enum_pk_candidates(airports)
 }
 \seealso{
-Other primary key functions: 
-\code{\link{dm_add_pk}()},
-\code{\link{dm_get_all_pks}()},
-\code{\link{dm_get_pk}()},
-\code{\link{dm_has_pk}()}
+Other primary key functions: \code{\link{dm_add_pk}},
+  \code{\link{dm_get_all_pks}}, \code{\link{dm_get_pk}},
+  \code{\link{dm_has_pk}}
 }
 \concept{primary key functions}

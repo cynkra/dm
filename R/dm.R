@@ -789,7 +789,7 @@ empty_dm <- function() {
   )
 }
 
-#' Retrieve a table from a `dm` or a `zoomed_dm`
+#' Retrieve a table
 #'
 #' This function has methods for both `dm` classes:
 #' 1. With `pull_tbl.dm()` you can chose which table of the `dm` you want to retrieve.

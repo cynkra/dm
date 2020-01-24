@@ -2,7 +2,7 @@
 % Please edit documentation in R/disambiguate.R
 \name{dm_disambiguate_cols}
 \alias{dm_disambiguate_cols}
-\title{Avoid conflicts in column names}
+\title{Resolve column name ambiguities}
 \usage{
 dm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 }

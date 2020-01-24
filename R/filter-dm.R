@@ -1,4 +1,4 @@
-#' Filtering a [`dm`] object
+#' Filtering
 #'
 #' @description
 #' \lifecycle{questioning}

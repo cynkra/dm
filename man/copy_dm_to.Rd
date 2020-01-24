@@ -2,21 +2,11 @@
 % Please edit documentation in R/db-interface.R
 \name{copy_dm_to}
 \alias{copy_dm_to}
-\title{Copy a \code{dm}-object to a different data source}
+\title{Copy data model to data source}
 \usage{
-copy_dm_to(
-  dest,
-  dm,
-  ...,
-  types = NULL,
-  overwrite = NULL,
-  indexes = NULL,
-  unique_indexes = NULL,
-  set_key_constraints = TRUE,
-  unique_table_names = FALSE,
-  table_names = NULL,
-  temporary = TRUE
-)
+copy_dm_to(dest, dm, ..., types = NULL, overwrite = NULL,
+  indexes = NULL, unique_indexes = NULL, set_key_constraints = TRUE,
+  unique_table_names = FALSE, table_names = NULL, temporary = TRUE)
 }
 \arguments{
 \item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
@@ -67,7 +57,6 @@ iris_dm <- copy_dm_to(
 )
 }
 \seealso{
-Other DB interaction functions: 
-\code{\link{dm_learn_from_db}()}
+Other DB interaction functions: \code{\link{dm_learn_from_db}}
 }
 \concept{DB interaction functions}
