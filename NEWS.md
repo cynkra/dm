@@ -1,3 +1,13 @@
+# dm 0.0.6.9001
+
+- `filter.zoomed_dm()` no longer sets the filter.
+- Prepare `dm_examine_constraints()` and other key-related functions for compound keys (#239).
+- `examine_()` functions never throw an error (#238).
+- {tidyselect} interface for setting colors (#162).
+- API overhaul (#233): `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`; `check_()` -> `examine_()`; `dm_get_filters()` -> `dm_get_filter()`.
+- Avoid warnings in `R CMD check` with dev versions of dependencies.
+
+
 # dm 0.0.6.9000
 
 - New `$.zoomed_dm()`, `[.zoomed_dm()`, `[[.zoomed_dm()`, `length.zoomed_dm()`, `names.zoomed_dm()`, `tbl_vars.zoomed_dm()` (#199, #216).
