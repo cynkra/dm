@@ -1,6 +1,12 @@
 ---
 title: "Function naming logic"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Zooming and manipulating tables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
