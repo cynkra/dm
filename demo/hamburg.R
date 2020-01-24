@@ -5,6 +5,7 @@
 options(tibble.print_min = 6)
 options(tibble.print_max = 6)
 options(rlang_backtrace_on_error = "none")
+library(magrittr)
 
 ##
 ##
