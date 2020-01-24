@@ -67,7 +67,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
   i <- which(def$table == table)
 
   if (!force && NROW(def$pks[[i]]) > 0) {
-    abort_key_set_force_false()
+    abort_key_set_force_false(table)
   }
 
   def$pks[[which(def$table == table)]] <- tibble(column = !!list(column))
