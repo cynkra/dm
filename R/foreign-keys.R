@@ -33,7 +33,7 @@
 #'
 #' @export
 #' @examples
-#' nycflights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
+#' nycflights_dm <- dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 #' nycflights_dm %>%
 #'   dm_draw()
 #'
