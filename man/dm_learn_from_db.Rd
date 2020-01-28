@@ -4,10 +4,16 @@
 \alias{dm_learn_from_db}
 \title{Create data model from database constraints}
 \usage{
-dm_learn_from_db(dest)
+dm_learn_from_db(dest, ...)
 }
 \arguments{
 \item{dest}{A \code{src}-object on a DB or a connection to a DB.}
+
+\item{...}{\lifecycle{experimental}
+
+Additional parameters for the schema learning query.
+Currently supports \code{schema} (default: \code{"public"})
+and \code{table_type} (default: \code{"BASE TABLE"}) for Postgres databases.}
 }
 \value{
 A \code{\link{dm}} object with the tables from the DB and the respective key relations.

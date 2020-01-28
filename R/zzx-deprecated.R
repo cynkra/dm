@@ -202,7 +202,10 @@ cdm_get_referencing_tables <- new_cdm_forward_2(dm_get_referencing_tables)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_learn_from_db <- new_cdm_forward(dm_learn_from_db)
+cdm_learn_from_db <- function(dest) {
+  deprecate_soft("0.1.0", "dm::cdm_learn_from_db()", "dm::dm_learn_from_db()")
+  dm_learn_from_db(dest)
+}
 
 #' @rdname deprecated
 #' @keywords internal
