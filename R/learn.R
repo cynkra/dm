@@ -53,13 +53,18 @@ dm_learn_from_db <- function(dest, ...) {
   }
 
   table_names <- overview %>%
-    distinct(table) %>%
-    pull()
+    select(schema, table) %>%
+    transmute(name = table, value = schema_if(schema, table)) %>%
+    deframe()
 
   legacy_new_dm(
-    tables = map(table_names, ~ tbl(con, .)) %>% set_names(table_names),
+    tables = map(table_names, ~ tbl(con, ident_q(.x))),
     data_model = get_datamodel_from_overview(overview)
   )
+}
+
+schema_if <- function(schema, table) {
+  if_else(is.na(schema), table, paste0(schema, ".", table))
 }
 
 db_learn_query <- function(dest, ...) {
@@ -73,6 +78,7 @@ db_learn_query <- function(dest, ...) {
 
 mssql_learn_query <- function() { # taken directly from {datamodelr}
   "select
+    NULL as [schema],
     tabs.name as [table],
     cols.name as [column],
     isnull(ind_col.column_id, 0) as [key],
@@ -106,8 +112,9 @@ mssql_learn_query <- function() { # taken directly from {datamodelr}
 
 postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABLE") {
   sprintf(
-    "select
-    t.table_name as table,
+    "SELECT
+    c.table_schema as schema,
+    c.table_name as table,
     c.column_name as column,
     case when pk.column_name is null then 0 else 1 end as key,
     fk.ref,
