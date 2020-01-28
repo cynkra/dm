@@ -190,7 +190,7 @@ legacy_new_dm <- function(tables, data_model) {
     filter(key > 0) %>%
     select(-key)
 
-  if (is.null(data_model$references)) {
+  if (is.null(data_model$references) || nrow(data_model$references) == 0) {
     fks <- tibble(
       table = character(),
       column = character(),
