@@ -730,9 +730,7 @@ copy_to.zoomed_dm <- function(dest, df, name, overwrite, ...) {
 #' @rdname dplyr_db
 #' @export
 collect.dm <- function(x, ...) {
-  x <-
-    x %>%
-    dm_apply_filters()
+  x <- dm_apply_filters(x)
 
   def <- dm_get_def(x)
   def$data <- map(def$data, collect, ...)
