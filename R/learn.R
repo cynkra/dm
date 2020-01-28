@@ -266,6 +266,17 @@ nest_compat <- function(.data, ...) {
   quos <- enquos(...)
   stopifnot(length(quos) == 1)
   new_col <- names(quos)
-  nest(.data, ...) %>%
-    mutate_at(vars(new_col), vctrs::as_list_of)
+  if (nrow(.data) == 0) {
+    remove <- tidyselect::eval_select(expr(c(...)), set_names(names(.data)))
+    keep <- setdiff(seq_along(.data), remove)
+
+    nest <- vctrs::new_list_of(list(), ptype = .data %>% select(!!!remove))
+
+    .data %>%
+      select(!!!keep) %>%
+      mutate(!!new_col := !!nest)
+  } else {
+    nest(.data, ...) %>%
+      mutate_at(vars(new_col), vctrs::as_list_of)
+  }
 }
