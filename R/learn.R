@@ -58,7 +58,7 @@ dm_learn_from_db <- function(dest, ...) {
     deframe()
 
   legacy_new_dm(
-    tables = map(table_names, ~ tbl(con, ident_q(.x))),
+    tables = map(table_names, ~ tbl(con, dbplyr::ident_q(.x))),
     data_model = get_datamodel_from_overview(overview)
   )
 }
