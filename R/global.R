@@ -55,6 +55,7 @@ utils::globalVariables(c(
   "ref_table",
   "remote_name",
   "renames",
+  "schema",
   "source_name",
   "sub_text",
   "t1",
