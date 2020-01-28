@@ -167,7 +167,7 @@ along with their primary and foreign key constraints.</p>
 <p>The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_learn_from_db</span>(<span class='no'>dest</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_learn_from_db</span>(<span class='no'>dest</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,6 +175,13 @@ along with their primary and foreign key constraints.</p>
     <tr>
       <th>dest</th>
       <td><p>A <code>src</code>-object on a DB or a connection to a DB.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+<p>Additional parameters for the schema learning query.
+Currently supports <code>schema</code> (default: <code>"public"</code>)
+and <code>table_type</code> (default: <code>"BASE TABLE"</code>) for Postgres databases.</p></td>
     </tr>
     </table>
 

@@ -363,29 +363,29 @@
 <a class="sourceLine" id="cb15-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/dm.html">dm_get_tables</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb15-9" data-line-number="9"><span class="st">  </span><span class="kw">map</span>(dbplyr<span class="op">::</span>sql_render)</a>
 <a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt; $flights</span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM flights_2020_01_28_01_16_43_1 AS `LHS`</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM flights_2020_01_28_20_39_52_1 AS `LHS`</span></a>
 <a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; WHERE EXISTS (</span></a>
 <a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt;   SELECT 1 FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt; FROM airlines_2020_01_28_01_16_43_2</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt; FROM airlines_2020_01_28_20_39_52_2</span></a>
 <a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span></a>
 <a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></a>
 <a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">#&gt; )) AS `LHS`</span></a>
 <a class="sourceLine" id="cb15-18" data-line-number="18"><span class="co">#&gt; WHERE EXISTS (</span></a>
 <a class="sourceLine" id="cb15-19" data-line-number="19"><span class="co">#&gt;   SELECT 1 FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb15-20" data-line-number="20"><span class="co">#&gt; FROM airports_2020_01_28_01_16_43_3</span></a>
+<a class="sourceLine" id="cb15-20" data-line-number="20"><span class="co">#&gt; FROM airports_2020_01_28_20_39_52_3</span></a>
 <a class="sourceLine" id="cb15-21" data-line-number="21"><span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span></a>
 <a class="sourceLine" id="cb15-22" data-line-number="22"><span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></a>
 <a class="sourceLine" id="cb15-23" data-line-number="23"><span class="co">#&gt; )</span></a>
 <a class="sourceLine" id="cb15-24" data-line-number="24"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb15-25" data-line-number="25"><span class="co">#&gt; $airlines</span></a>
 <a class="sourceLine" id="cb15-26" data-line-number="26"><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb15-27" data-line-number="27"><span class="co">#&gt; FROM airlines_2020_01_28_01_16_43_2</span></a>
+<a class="sourceLine" id="cb15-27" data-line-number="27"><span class="co">#&gt; FROM airlines_2020_01_28_20_39_52_2</span></a>
 <a class="sourceLine" id="cb15-28" data-line-number="28"><span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `LHS`</span></a>
 <a class="sourceLine" id="cb15-29" data-line-number="29"><span class="co">#&gt; WHERE EXISTS (</span></a>
-<a class="sourceLine" id="cb15-30" data-line-number="30"><span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_01_28_01_16_43_1 AS `LHS`</span></a>
+<a class="sourceLine" id="cb15-30" data-line-number="30"><span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_01_28_20_39_52_1 AS `LHS`</span></a>
 <a class="sourceLine" id="cb15-31" data-line-number="31"><span class="co">#&gt; WHERE EXISTS (</span></a>
 <a class="sourceLine" id="cb15-32" data-line-number="32"><span class="co">#&gt;   SELECT 1 FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb15-33" data-line-number="33"><span class="co">#&gt; FROM airports_2020_01_28_01_16_43_3</span></a>
+<a class="sourceLine" id="cb15-33" data-line-number="33"><span class="co">#&gt; FROM airports_2020_01_28_20_39_52_3</span></a>
 <a class="sourceLine" id="cb15-34" data-line-number="34"><span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span></a>
 <a class="sourceLine" id="cb15-35" data-line-number="35"><span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span></a>
 <a class="sourceLine" id="cb15-36" data-line-number="36"><span class="co">#&gt; )) AS `RHS`</span></a>
@@ -394,13 +394,13 @@
 <a class="sourceLine" id="cb15-39" data-line-number="39"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb15-40" data-line-number="40"><span class="co">#&gt; $airports</span></a>
 <a class="sourceLine" id="cb15-41" data-line-number="41"><span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb15-42" data-line-number="42"><span class="co">#&gt; FROM airports_2020_01_28_01_16_43_3</span></a>
+<a class="sourceLine" id="cb15-42" data-line-number="42"><span class="co">#&gt; FROM airports_2020_01_28_20_39_52_3</span></a>
 <a class="sourceLine" id="cb15-43" data-line-number="43"><span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `LHS`</span></a>
 <a class="sourceLine" id="cb15-44" data-line-number="44"><span class="co">#&gt; WHERE EXISTS (</span></a>
-<a class="sourceLine" id="cb15-45" data-line-number="45"><span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_01_28_01_16_43_1 AS `LHS`</span></a>
+<a class="sourceLine" id="cb15-45" data-line-number="45"><span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_01_28_20_39_52_1 AS `LHS`</span></a>
 <a class="sourceLine" id="cb15-46" data-line-number="46"><span class="co">#&gt; WHERE EXISTS (</span></a>
 <a class="sourceLine" id="cb15-47" data-line-number="47"><span class="co">#&gt;   SELECT 1 FROM (SELECT *</span></a>
-<a class="sourceLine" id="cb15-48" data-line-number="48"><span class="co">#&gt; FROM airlines_2020_01_28_01_16_43_2</span></a>
+<a class="sourceLine" id="cb15-48" data-line-number="48"><span class="co">#&gt; FROM airlines_2020_01_28_20_39_52_2</span></a>
 <a class="sourceLine" id="cb15-49" data-line-number="49"><span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span></a>
 <a class="sourceLine" id="cb15-50" data-line-number="50"><span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span></a>
 <a class="sourceLine" id="cb15-51" data-line-number="51"><span class="co">#&gt; )) AS `RHS`</span></a>
