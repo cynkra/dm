@@ -113,8 +113,8 @@ mssql_learn_query <- function() { # taken directly from {datamodelr}
 postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABLE") {
   sprintf(
     "SELECT
-    c.table_schema as schema,
-    c.table_name as table,
+    t.table_schema as schema,
+    t.table_name as table,
     c.column_name as column,
     case when pk.column_name is null then 0 else 1 end as key,
     fk.ref,
@@ -127,12 +127,12 @@ postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABL
     information_schema.columns c
     inner join information_schema.tables t on
     t.table_name = c.table_name
-    and t.table_catalog = c.table_catalog
     and t.table_schema = c.table_schema
+    and t.table_catalog = c.table_catalog
 
     left join  -- primary keys
-    ( SELECT
-      tc.constraint_name, tc.table_name, kcu.column_name
+    ( SELECT DISTINCT
+      tc.constraint_name, tc.table_name, tc.table_schema, tc.table_catalog, kcu.column_name
       FROM
       information_schema.table_constraints AS tc
       JOIN information_schema.key_column_usage AS kcu ON
@@ -141,10 +141,12 @@ postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABL
     ) pk on
     pk.table_name = c.table_name
     and pk.column_name = c.column_name
+    and pk.table_schema = c.table_schema
+    and pk.table_catalog = c.table_catalog
 
     left join  -- foreign keys
-    ( SELECT
-      tc.constraint_name, kcu.table_name, kcu.column_name,
+    ( SELECT DISTINCT
+      tc.constraint_name, kcu.table_name, kcu.table_schema, kcu.table_catalog, kcu.column_name,
       ccu.table_name as ref,
       ccu.column_name as ref_col
       FROM
@@ -156,6 +158,8 @@ postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABL
       WHERE tc.constraint_type = 'FOREIGN KEY'
     ) fk on
     fk.table_name = c.table_name
+    and fk.table_schema = c.table_schema
+    and fk.table_catalog = c.table_catalog
     and fk.column_name = c.column_name
 
     where
