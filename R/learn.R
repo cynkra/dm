@@ -13,6 +13,7 @@
 #'
 #' @return A [`dm`] object with the tables from the DB and the respective key relations.
 #'
+#' @export
 #' @examples
 #' if (FALSE) {
 #'   src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
