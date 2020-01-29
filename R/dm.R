@@ -654,7 +654,7 @@ str.zoomed_dm <- function(object, ...) {
 #' \pkg{dplyr} table retrieval, table info and DB interaction methods
 #'
 #' Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples).
-#' @param src A \pkg{dplyr} table source object.
+#' @param src For `tbl.dm()`: A `dm` object.
 #' @param from A length one character variable containing the name of the requested table
 #' @param ... See original function documentation
 #' @rdname dplyr_db

@@ -31,7 +31,7 @@
 \method{collect}{dm}(x, ...)
 }
 \arguments{
-\item{src}{A \pkg{dplyr} table source object.}
+\item{src}{For \code{tbl.dm()}: A \code{dm} object.}
 
 \item{from}{A length one character variable containing the name of the requested table}
 
