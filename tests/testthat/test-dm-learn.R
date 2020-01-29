@@ -41,6 +41,7 @@ test_that("Learning from Postgres works?", {
   }
 
   dm_for_filter_postgres_learned <- dm_from_src(src_postgres)
+  dm_for_filter_postges_learned_from_con <- dm_from_src(con_postgres)
 
   dm_postgres_learned_renamed <-
     dm_rename_tbl(
@@ -48,8 +49,19 @@ test_that("Learning from Postgres works?", {
       !!!set_names(src_tbls(dm_for_filter_postgres_learned), src_tbls(dm_for_filter))
     )
 
+  dm_postgres_learned_from_con_renamed <-
+    dm_rename_tbl(
+      dm_for_filter_postges_learned_from_con,
+      !!!set_names(src_tbls(dm_for_filter_postges_learned_from_con), src_tbls(dm_for_filter))
+    )
+
   expect_equivalent_dm(
     dm_postgres_learned_renamed,
+    dm_for_filter
+  )
+
+  expect_equivalent_dm(
+    dm_postgres_learned_from_con_renamed,
     dm_for_filter
   )
 
