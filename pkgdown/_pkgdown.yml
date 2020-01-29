@@ -109,7 +109,6 @@ reference:
 - title: Interaction with DBs
   contents:
   - copy_dm_to
-  - dm_learn_from_db
 
 - title: Table surgery
   contents:

@@ -66,8 +66,4 @@ iris_dm <- copy_dm_to(
   set_key_constraints = FALSE
 )
 }
-\seealso{
-Other DB interaction functions: 
-\code{\link{dm_learn_from_db}()}
-}
 \concept{DB interaction functions}

@@ -31,7 +31,7 @@
 \method{collect}{dm}(x, ...)
 }
 \arguments{
-\item{src}{A \pkg{dplyr} table source object.}
+\item{src}{For \code{tbl.dm()}: A \code{dm} object.}
 
 \item{from}{A length one character variable containing the name of the requested table}
 
@@ -39,15 +39,15 @@
 
 \item{x}{Either a \code{dm} or a \code{zoomed_dm}; the latter leads to an error for \code{src_tbls.dm()}}
 
-\item{dest}{For \code{copy_to.dm}: The \code{dm} object to which a table should be copied.}
+\item{dest}{For \code{copy_to.dm()}: The \code{dm} object to which a table should be copied.}
 
-\item{df}{For \code{copy_to.dm}: A table (can be on a different \code{src})}
+\item{df}{For \code{copy_to.dm()}: A table (can be on a different \code{src})}
 
-\item{name}{For \code{copy_to.dm}: See \code{\link[dplyr:copy_to]{dplyr::copy_to}}}
+\item{name}{For \code{copy_to.dm()}: See \code{\link[dplyr:copy_to]{dplyr::copy_to}}}
 
-\item{overwrite}{For \code{copy_to.dm}: See \code{\link[dplyr:copy_to]{dplyr::copy_to}}; \code{TRUE} leads to an error}
+\item{overwrite}{For \code{copy_to.dm()}: See \code{\link[dplyr:copy_to]{dplyr::copy_to}}; \code{TRUE} leads to an error}
 
-\item{temporary}{For \code{copy_to.dm}: If the \code{dm} is on a DB, the copied version of \code{df} will only be written temporarily to the DB.
+\item{temporary}{For \code{copy_to.dm()}: If the \code{dm} is on a DB, the copied version of \code{df} will only be written temporarily to the DB.
 After the connection is reset it will no longer be available.}
 
 \item{repair, quiet}{Name repair options; cf. \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names}}}

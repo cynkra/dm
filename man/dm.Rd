@@ -38,7 +38,7 @@ are auto-named.}
 \item{.name_repair}{Options for name repair.
 Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
 
-\item{src}{A \pkg{dplyr} table source object.}
+\item{src}{A \pkg{dplyr} table source object. For \code{dm_from_src()} also a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object is accepted.}
 
 \item{table_names}{A character vector of the names of the tables to include.}
 
@@ -69,7 +69,7 @@ and extends the idea by offering operations to access the data in the tables.
 (tibbles or lazy data objects).
 
 \code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}
-(a database or an environment).
+(a database or an environment) or which are accessible via a DBI-Connection.
 
 \code{new_dm()} is a low-level constructor that creates a new \code{dm} object.
 
@@ -124,7 +124,7 @@ dm_nycflights13()$airports
 \seealso{
 \itemize{
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} add primary and foreign keys
-\item \code{\link[=copy_dm_to]{copy_dm_to()}} and \code{\link[=dm_learn_from_db]{dm_learn_from_db()}} for DB interaction
+\item \code{\link[=copy_dm_to]{copy_dm_to()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
 \item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering

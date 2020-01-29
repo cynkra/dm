@@ -13,7 +13,7 @@
 #'   are auto-named.
 #' @param .name_repair Options for name repair.
 #'   Forwarded as `repair` to [vctrs::vec_as_names()].
-#' @param src A \pkg{dplyr} table source object.
+#' @param src A \pkg{dplyr} table source object. For `dm_from_src()` also a [`DBI::DBIConnection-class`] object is accepted.
 #' @param table_names A character vector of the names of the tables to include.
 #'
 #' @return For `dm()`, `dm_from_src()`, `new_dm()`, `as_dm()`: A `dm` object.
@@ -21,7 +21,7 @@
 #' @seealso
 #'
 #' - [dm_add_pk()] and [dm_add_fk()] add primary and foreign keys
-#' - [copy_dm_to()] and [dm_learn_from_db()] for DB interaction
+#' - [copy_dm_to()] for DB interaction
 #' - [dm_draw()] for visualization
 #' - [dm_join_to_tbl()] for flattening
 #' - [dm_filter()] for filtering
@@ -75,7 +75,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' dm_from_src()
 #'
 #' `dm_from_src()` creates a `dm` from some or all tables in a [src]
-#' (a database or an environment).
+#' (a database or an environment) or which are accessible via a DBI-Connection.
 #'
 #' @rdname dm
 #' @export
@@ -83,6 +83,8 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL) {
   if (is_null(src)) {
     return(empty_dm())
   }
+  # both DBI-Connection and {dplyr}-src object are accepted
+  src <- src_from_src_or_con(src)
   src_tbl_names <- src_tbls(src)
 
   if (is_null(table_names)) {
@@ -652,7 +654,7 @@ str.zoomed_dm <- function(object, ...) {
 #' \pkg{dplyr} table retrieval, table info and DB interaction methods
 #'
 #' Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples).
-#' @param src A \pkg{dplyr} table source object.
+#' @param src For `tbl.dm()`: A `dm` object.
 #' @param from A length one character variable containing the name of the requested table
 #' @param ... See original function documentation
 #' @rdname dplyr_db
@@ -698,11 +700,11 @@ src_tbls_impl <- function(dm) {
 }
 
 #' @rdname dplyr_db
-#' @param dest For `copy_to.dm`: The `dm` object to which a table should be copied.
-#' @param df For `copy_to.dm`: A table (can be on a different `src`)
-#' @param name For `copy_to.dm`: See [`dplyr::copy_to`]
-#' @param overwrite For `copy_to.dm`: See [`dplyr::copy_to`]; `TRUE` leads to an error
-#' @param temporary For `copy_to.dm`: If the `dm` is on a DB, the copied version of `df` will only be written temporarily to the DB.
+#' @param dest For `copy_to.dm()`: The `dm` object to which a table should be copied.
+#' @param df For `copy_to.dm()`: A table (can be on a different `src`)
+#' @param name For `copy_to.dm()`: See [`dplyr::copy_to`]
+#' @param overwrite For `copy_to.dm()`: See [`dplyr::copy_to`]; `TRUE` leads to an error
+#' @param temporary For `copy_to.dm()`: If the `dm` is on a DB, the copied version of `df` will only be written temporarily to the DB.
 #' After the connection is reset it will no longer be available.
 #' @param repair,quiet Name repair options; cf. [`vctrs::vec_as_names`]
 #' @export
