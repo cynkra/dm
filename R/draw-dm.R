@@ -150,13 +150,8 @@ dm_set_colors <- function(dm, ...) {
     abort_wrong_syntax_set_cols()
   }
 
-  # need to set names for avail_tables, since `tidyselect::eval_select` needs named vector
-  avail_tables <- set_names(src_tbls(dm))
   # get table names for each color (name_spec argument is not needed)
-  selected_tables <- map(
-    quos,
-    function(quos_sel) unname(avail_tables[tidyselect::eval_select(quos_sel, avail_tables)])
-  )
+  selected_tables <- map(quos, quo_select_table, src_tbls(dm))
 
   display_df <-
     selected_tables %>%
