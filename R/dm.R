@@ -83,6 +83,8 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL) {
   if (is_null(src)) {
     return(empty_dm())
   }
+  # both DBI-Connection and {dplyr}-src object are accepted
+  src <- src_from_src_or_con(src)
   src_tbl_names <- src_tbls(src)
 
   if (is_null(table_names)) {
