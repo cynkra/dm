@@ -38,7 +38,7 @@ are auto-named.}
 \item{.name_repair}{Options for name repair.
 Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
 
-\item{src}{A \pkg{dplyr} table source object.}
+\item{src}{A \pkg{dplyr} table source object. For \code{dm_from_src()} also a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object is accepted.}
 
 \item{table_names}{A character vector of the names of the tables to include.}
 
@@ -69,7 +69,7 @@ and extends the idea by offering operations to access the data in the tables.
 (tibbles or lazy data objects).
 
 \code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}
-(a database or an environment).
+(a database or an environment) or which are accessible via a DBI-Connection.
 
 \code{new_dm()} is a low-level constructor that creates a new \code{dm} object.
 

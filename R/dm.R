@@ -13,7 +13,7 @@
 #'   are auto-named.
 #' @param .name_repair Options for name repair.
 #'   Forwarded as `repair` to [vctrs::vec_as_names()].
-#' @param src A \pkg{dplyr} table source object.
+#' @param src A \pkg{dplyr} table source object. For `dm_from_src()` also a [`DBI::DBIConnection-class`] object is accepted.
 #' @param table_names A character vector of the names of the tables to include.
 #'
 #' @return For `dm()`, `dm_from_src()`, `new_dm()`, `as_dm()`: A `dm` object.
@@ -75,7 +75,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' dm_from_src()
 #'
 #' `dm_from_src()` creates a `dm` from some or all tables in a [src]
-#' (a database or an environment).
+#' (a database or an environment) or which are accessible via a DBI-Connection.
 #'
 #' @rdname dm
 #' @export
