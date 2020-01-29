@@ -8,7 +8,7 @@
 - New `as.list()` methods (#213).
 - Help pages for dplyr methods (#209).
 - New migration guide from dm <= 0.0.5 (#234).
-- New {tidyselect} interface for setting colors (#162).
+- New {tidyselect} interface for setting colors (#162) and support for hex color codes as well as R standard colors.
 - Prepare `dm_examine_constraints()` and other key-related functions for compound keys (#239).
 - Avoid warnings in `R CMD check` with dev versions of dependencies.
 - Improve error messages for missing tables (#220).
