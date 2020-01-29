@@ -311,7 +311,7 @@
 <p>The key constraints from the original object are also copied to the newly created object. With the default setting <code>set_key_constraints = TRUE</code> for <code>dm_copy_to()</code>, key constraints are also established on the target DB. Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).</p>
 <p>It is also possible to automatically create a <code>dm</code> object from the permanent tables of a DB. Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated. The support for other DBMS will be implemented in a future update.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">src_postgres &lt;-<span class="st"> </span><span class="kw">src_postgres</span>()</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">nycflights13_from_remote &lt;-<span class="st"> </span><span class="kw"><a href="reference/dm_learn_from_db.html">dm_learn_from_db</a></span>(src_postgres)</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2">nycflights13_from_remote &lt;-<span class="st"> </span><span class="kw">dm_learn_from_db</span>(src_postgres)</a></code></pre></div>
 </div>
 </div>
 <div id="installation" class="section level2">

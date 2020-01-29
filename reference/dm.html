@@ -49,7 +49,7 @@ and extends the idea by offering operations to access the data in the tables.
 dm() creates a dm object from one or multiple tbl objects
 (tibbles or lazy data objects).
 dm_from_src() creates a dm from some or all tables in a src
-(a database or an environment).
+(a database or an environment) or which are accessible via a DBI-Connection.
 new_dm() is a low-level constructor that creates a new dm object.
 If called without arguments, it will create an empty dm.
 If called with arguments, no validation checks will be made to ascertain that
@@ -189,7 +189,7 @@ and extends the idea by offering operations to access the data in the tables.</p
 <p><code>dm()</code> creates a <code>dm</code> object from one or multiple <a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a> objects
 (tibbles or lazy data objects).</p>
 <p><code>dm_from_src()</code> creates a <code>dm</code> from some or all tables in a src
-(a database or an environment).</p>
+(a database or an environment) or which are accessible via a DBI-Connection.</p>
 <p><code>new_dm()</code> is a low-level constructor that creates a new <code>dm</code> object.</p>
 <p>If called without arguments, it will create an empty <code>dm</code>.</p>
 <p>If called with arguments, no validation checks will be made to ascertain that
@@ -245,7 +245,7 @@ Forwarded as <code>repair</code> to <code><a href='https://rdrr.io/pkg/vctrs/man
     </tr>
     <tr>
       <th>src</th>
-      <td><p>A <span class="pkg">dplyr</span> table source object.</p></td>
+      <td><p>A <span class="pkg">dplyr</span> table source object. For <code>dm_from_src()</code> also a <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> object is accepted.</p></td>
     </tr>
     <tr>
       <th>table_names</th>
@@ -275,7 +275,7 @@ to be included in the <code>dm</code> object.</p></td>
     <div class='dont-index'>
 <ul>
 <li><p><code><a href='dm_add_pk.html'>dm_add_pk()</a></code> and <code><a href='dm_add_fk.html'>dm_add_fk()</a></code> add primary and foreign keys</p></li>
-<li><p><code><a href='copy_dm_to.html'>copy_dm_to()</a></code> and <code><a href='dm_learn_from_db.html'>dm_learn_from_db()</a></code> for DB interaction</p></li>
+<li><p><code><a href='copy_dm_to.html'>copy_dm_to()</a></code> for DB interaction</p></li>
 <li><p><code><a href='dm_draw.html'>dm_draw()</a></code> for visualization</p></li>
 <li><p><code><a href='dm_join_to_tbl.html'>dm_join_to_tbl()</a></code> for flattening</p></li>
 <li><p><code><a href='dm_filter.html'>dm_filter()</a></code> for filtering</p></li>
