@@ -106,10 +106,9 @@ reference:
   - dm_rename
   - dm_select
 
-- title: Interaction with DBs
+- title: Upload
   contents:
   - copy_dm_to
-  - dm_learn_from_db
 
 - title: Table surgery
   contents:
