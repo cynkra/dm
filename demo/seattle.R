@@ -12,7 +12,7 @@ library(magrittr)
 ##
 ##
 ## Greeting
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -39,7 +39,7 @@ dm::dm_nycflights13(cycle = TRUE) %>%
 ##
 ##
 ## Why?
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -55,7 +55,7 @@ flights
 ##
 ##
 ## Data model
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -63,11 +63,14 @@ flights
 library(tidyverse)
 flights_base <-
   flights %>%
-  select(year, month, day, carrier, tailnum, origin, dest, time_hour)
+  select(
+    carrier, tailnum, origin, dest,
+    year, month, day, time_hour
+  )
 flights_base
 
-# `carrier` column also present in `airlines`, this table contains
-# additional information
+# `carrier` column also present in `airlines`, this table
+# contains additional information
 airlines
 
 flights_base %>%
@@ -78,7 +81,7 @@ flights_base %>%
 ##
 ##
 ## Keys
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -93,7 +96,7 @@ all(flights$carrier %in% airlines$carrier)
 ##
 ##
 ## Single source of truth
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -114,7 +117,7 @@ flights_base %>%
 ##
 ##
 ## Goal: work with one table
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -130,7 +133,7 @@ flights_base %>%
 ##
 ##
 ## PROBLEMS (see appendix)
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ## - wrong keys
 ## - data mismatches
@@ -144,7 +147,7 @@ flights_base %>%
 ##
 ##
 ## Data model object
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -185,11 +188,13 @@ try(
 ##
 ##
 ## THREE USE CASES:
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
-## 1. Work with a prepared dm object or connect to a database
+## 1. Work with a prepared dm object or connect to a
+##    database
 ## 2. Build a data model for your own data
-## 3. Publish a dm to a relational database (and load from it)
+## 3. Publish a dm to a relational database (and load
+##    from it)
 ##
 ##
 ##
@@ -208,8 +213,9 @@ try(
 ##
 ##
 ##
-## USE CASE 1: Work with a prepared dm object
-## --------------------------------------------------------------------
+## USE CASE 1: Work with a prepared dm object or connect
+##             to a database
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -218,7 +224,7 @@ try(
 ##
 ##
 ## Setup
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -328,7 +334,7 @@ dm_flights_jfk_today_df
 ##
 ##
 ## Joining two tables
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -357,7 +363,7 @@ try(
 ##
 ##
 ## Joining many tables
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -382,7 +388,7 @@ dm_flights %>%
 ##
 ##
 ## NEW NEW NEW: Data manipulation in a dm
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -394,20 +400,25 @@ dm_flights %>%
 # or the manipulated table can be inserted as a new table.
 
 
-# The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
+# The print output for a `zoomed_dm` looks very much
+# like that from a normal `tibble`.
 dm_flights %>%
   dm_zoom_to(flights)
 
 # Many {dplyr} verbs work on zoomed tables:
 dm_flights %>%
   dm_zoom_to(flights) %>%
-  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
+  mutate(
+    am_pm_dep = if_else(dep_time < 1200, "am", "pm")
+  ) %>%
   select(year:dep_time, am_pm_dep, everything())
 
 # Put back into the dm:
 dm_flights %>%
   dm_zoom_to(flights) %>%
-  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
+  mutate(
+    am_pm_dep = if_else(dep_time < 1200, "am", "pm")
+  ) %>%
   select(year:dep_time, am_pm_dep, everything()) %>%
   dm_update_zoomed()
 
@@ -426,7 +437,8 @@ dm_with_summary$origin_count
 dm_with_summary %>%
   dm_draw()
 
-# All relationships still available in the summary are retained:
+# All relationships still available in the summary
+# are retained:
 dm_flights %>%
   dm_zoom_to(flights) %>%
   count(carrier, origin) %>%
@@ -439,7 +451,7 @@ dm_flights %>%
 ##
 ##
 ## USE CASE 2: Build a data model for your own data
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -453,7 +465,7 @@ dm_flights %>%
 ##
 ##
 ## Build up data model from scratch
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -486,7 +498,8 @@ nycflights13_pk <-
 nycflights13_pk %>%
   dm_draw()
 
-# FIXME: Model weak constraints, show differently in diagram (#4)
+# FIXME: Model weak constraints, show differently
+# in diagram (#4)
 
 # Adding foreign keys
 nycflights13_fk <-
@@ -526,8 +539,9 @@ nycflights13_base %>%
 ##
 ##
 ##
-## USE CASE 3: Publish a dm to a relational database (and load from it)
-## --------------------------------------------------------------------
+## USE CASE 3: Publish a dm to a relational database
+##             (and load from it)
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -539,7 +553,7 @@ nycflights13_base %>%
 ##
 ##
 ## Copy to database
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -568,7 +582,7 @@ dm_flights_sqlite %>%
 ##
 ##
 ## Copy to a database, including key constraints
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -578,10 +592,15 @@ try({
 
   con_pq <- DBI::dbConnect(RPostgres::Postgres())
 
-  # Off by default, to ensure that no tables are accidentally deleted
+  # Off by default, to ensure that no tables are
+  # accidentally deleted
   if (FALSE) {
-    DBI::dbExecute(con_pq, "DROP SCHEMA IF EXISTS nycflights13 CASCADE")
-    DBI::dbExecute(con_pq, "CREATE SCHEMA nycflights13")
+    DBI::dbExecute(con_pq,
+      "DROP SCHEMA IF EXISTS nycflights13 CASCADE"
+    )
+    DBI::dbExecute(con_pq,
+      "CREATE SCHEMA nycflights13"
+    )
   }
 
   # Ensure referential integrity (FIXME: Better way):
@@ -594,7 +613,10 @@ try({
     # Fill bad links with NA values:
     dm_zoom_to(flights) %>%
     left_join(planes, select = c(tailnum, type)) %>%
-    mutate(tailnum = ifelse(is.na(type), NA_character_, tailnum)) %>%
+    mutate(
+      tailnum =
+        ifelse(is.na(type), NA_character_, tailnum)
+    ) %>%
     dm_update_zoomed() %>%
     dm_add_fk(flights, tailnum, planes) %>%
 
@@ -608,12 +630,19 @@ try({
     dm_select_tbl(-dest) %>%
     dm_add_fk(flights, origin, airports)
 
-  qualified_names <- rlang::set_names(names(dm_flights_ref))
-  qualified_names[] <- paste0("nycflights13.", qualified_names)
+  qualified_names <-
+    rlang::set_names(names(dm_flights_ref))
+  qualified_names[] <- paste0(
+    "nycflights13.", qualified_names
+  )
 
   dm_flights_pq <-
     dm_flights_ref %>%
-    copy_dm_to(con_pq, ., temporary = FALSE, table_names = qualified_names)
+    copy_dm_to(
+      con_pq, .,
+      temporary = FALSE,
+      table_names = qualified_names
+    )
 
   dm_flights_from_pq <-
     dm_from_src(con_pq, schema = "nycflights13")
@@ -632,12 +661,14 @@ try({
 ##
 ##
 ## THREE USE CASES:
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
-## 1. Work with a prepared dm object or connect to a database
+## 1. Work with a prepared dm object or connect to a
+##    database
 ## 2. Build a data model for your own data
-## 3. Publish a dm to a relational database (and load from it)
-## 4. Data documentation
+## 3. Publish a dm to a relational database (and load
+##    from it)
+## 4. Data documentation (?)
 ##
 ##
 ##
@@ -657,7 +688,7 @@ try({
 ##
 ##
 ## Appendix
-## ====================================================================
+## ======================================================
 ##
 ##
 ##
@@ -666,13 +697,14 @@ try({
 ##
 ##
 ## Analogy?
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
 
 # Analogy: parallel vectors
-# Multiple parallel vectors can be combined into a data frame.
+# Multiple parallel vectors can be combined into a data
+# frame.
 # Multiple related tables can be combined into a dm.
 x <- 1:5
 x
@@ -691,7 +723,7 @@ try(
 ##
 ##
 ## Pitfall: wrong keys
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -718,7 +750,7 @@ flights_base %>%
 ##
 ##
 ## Pitfall: data mismatches
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -735,7 +767,7 @@ flights_base %>%
 ##
 ##
 ## Pitfall: relationship unclear
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -759,7 +791,7 @@ rm(airlines)
 ##
 ##
 ## Pitfall: combinatorial explosion
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -773,8 +805,8 @@ t2
 # What happens here?
 left_join(t1, t2)
 
-# When joining, the column(s) must be unique in at least one
-# participating table!
+# When joining, the column(s) must be unique in at least
+# one participating table!
 
 # Ensure uniqueness:
 airlines %>%
@@ -820,7 +852,7 @@ rm(t1, t2)
 ##
 ## Advanced zooming: Use data manipulation to understand
 ## and establish relationships
-## --------------------------------------------------------------------
+## -------------------------------------------------------
 ##
 ##
 ##
@@ -830,7 +862,8 @@ rm(t1, t2)
 zoomed_weather <- dm_zoom_to(nycflights13_base, weather)
 zoomed_weather
 
-# `enum_pk_candidates()` works for both `tibbles` and `zoomed_dm`
+# `enum_pk_candidates()` works for both `tibbles` and
+# `zoomed_dm`
 enum_pk_candidates(zoomed_weather)
 
 enum_pk_candidates(zoomed_weather) %>%
@@ -838,7 +871,10 @@ enum_pk_candidates(zoomed_weather) %>%
 
 # It's tricky:
 zoomed_weather %>%
-  unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
+  unite(
+    "slot_id", origin, year, month, day, hour,
+    remove = FALSE
+  ) %>%
   count(slot_id) %>%
   filter(n > 1)
 
@@ -862,9 +898,9 @@ nycflights13_weather_link <-
   zoomed_weather %>%
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   unite("origin_slot_id", origin, time_hour_fmt) %>%
-  # here the original 'weather' table is updated with the manipulated one
+  # Update the original `weather` table
   dm_update_zoomed() %>%
-  # here we are adding a PK for the "enhanced" weather table
+  # Add a PK for the "enhanced" weather table
   dm_add_pk(weather, origin_slot_id)
 
 nycflights13_weather_link$weather
@@ -880,13 +916,17 @@ nycflights13_weather_flights_link <-
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
   # for flights we need to keep the column `origin`,
   # since it is a FK pointing to `airports`
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
+  unite("origin_slot_id", origin, time_hour_fmt,
+    remove = FALSE
+  ) %>%
   select(origin_slot_id, everything(), -time_hour_fmt) %>%
   dm_update_zoomed()
 
 # `dm_enum_fk_candidates()` of a `dm` gives info
 # about potential FK columns from one table to another
-dm_enum_fk_candidates(nycflights13_weather_flights_link, flights, weather)
+dm_enum_fk_candidates(nycflights13_weather_flights_link,
+  flights, weather
+)
 
 # well, it's almost perfect, let's add the FK anyway...
 
@@ -902,10 +942,3 @@ nycflights13_perfect %>%
   dm_zoom_to(flights) %>%
   anti_join(weather) %>%
   count(origin_slot_id)
-
-# Create table of aggregates, and insert it into the dm
-nycflights13_perfect %>%
-  dm_zoom_to(flights) %>%
-  count(origin) %>%
-  dm_insert_zoomed("flights_agg") %>%
-  dm_draw()
