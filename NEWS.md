@@ -1,3 +1,10 @@
+# dm 0.1.0.9000
+
+- New class for prettier printing of keys (#244).
+- Add experimental schema support for `dm_from_src()`.
+- `dm_from_src()` also accepts a DBI connection (#256), and supports arguments `schema` and `table_type` for Postgres.
+
+
 # dm 0.1.0
 
 - Package is now in the "maturing" lifecycle (#154).
