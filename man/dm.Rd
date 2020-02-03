@@ -2,7 +2,6 @@
 % Please edit documentation in R/dm.R
 \name{dm}
 \alias{dm}
-\alias{dm_from_src}
 \alias{new_dm}
 \alias{validate_dm}
 \alias{dm_get_src}
@@ -13,8 +12,6 @@
 \title{Data model class}
 \usage{
 dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
-
-dm_from_src(src = NULL, table_names = NULL)
 
 new_dm(tables = list())
 
@@ -38,17 +35,15 @@ are auto-named.}
 \item{.name_repair}{Options for name repair.
 Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
 
-\item{src}{A \pkg{dplyr} table source object. For \code{dm_from_src()} also a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object is accepted.}
-
-\item{table_names}{A character vector of the names of the tables to include.}
-
-\item{tables}{A named list of the tables (tibble-objects, not names) .
+\item{tables}{A named list of the tables (tibble-objects, not names),
 to be included in the \code{dm} object.}
 
 \item{x}{An object.}
+
+\item{src}{A \pkg{dplyr} table source object.}
 }
 \value{
-For \code{dm()}, \code{dm_from_src()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
+For \code{dm()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
 
 For \code{validate_dm()}: Returns the \code{dm}, invisibly, after finishing all checks.
 
@@ -68,16 +63,13 @@ and extends the idea by offering operations to access the data in the tables.
 \code{dm()} creates a \code{dm} object from one or multiple \link{tbl} objects
 (tibbles or lazy data objects).
 
-\code{dm_from_src()} creates a \code{dm} from some or all tables in a \link{src}
-(a database or an environment) or which are accessible via a DBI-Connection.
-
 \code{new_dm()} is a low-level constructor that creates a new \code{dm} object.
-
-If called without arguments, it will create an empty \code{dm}.
-
-If called with arguments, no validation checks will be made to ascertain that
+\itemize{
+\item If called without arguments, it will create an empty \code{dm}.
+\item If called with arguments, no validation checks will be made to ascertain that
 the inputs are of the expected class and internally consistent;
 use \code{validate_dm()} to double-check the returned object.
+}
 
 \code{validate_dm()} checks the internal consistency of a \code{dm} object.
 
@@ -101,7 +93,6 @@ To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters 
 }
 \examples{
 dm(iris, mtcars)
-dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 new_dm(list(iris = iris, mtcars = mtcars))
 as_dm(list(iris = iris, mtcars = mtcars))
 
@@ -123,15 +114,17 @@ dm_nycflights13()$airports
 }
 \seealso{
 \itemize{
-\item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} add primary and foreign keys
+\item \code{\link[=dm_from_src]{dm_from_src()}} for connecting to all tables in a database
+and importing the primary and foreign keys
+\item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} for adding primary and foreign keys
 \item \code{\link[=copy_dm_to]{copy_dm_to()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
 \item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
 \item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
-\item \code{\link[=decompose_table]{decompose_table()}} as one example of the table surgery family
+\item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
+\item \code{\link[=decompose_table]{decompose_table()}} for table surgery
 \item \code{\link[=check_key]{check_key()}} and \code{\link[=check_subset]{check_subset()}} for checking for key properties
 \item \code{\link[=examine_cardinality]{examine_cardinality()}} for checking the cardinality of the relation between two tables
-\item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
 }
 }

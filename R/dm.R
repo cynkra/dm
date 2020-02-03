@@ -13,27 +13,28 @@
 #'   are auto-named.
 #' @param .name_repair Options for name repair.
 #'   Forwarded as `repair` to [vctrs::vec_as_names()].
-#' @param src A \pkg{dplyr} table source object. For `dm_from_src()` also a [`DBI::DBIConnection-class`] object is accepted.
-#' @param table_names A character vector of the names of the tables to include.
+#' @param src A \pkg{dplyr} table source object.
 #'
-#' @return For `dm()`, `dm_from_src()`, `new_dm()`, `as_dm()`: A `dm` object.
+#' @return For `dm()`, `new_dm()`, `as_dm()`: A `dm` object.
 #'
 #' @seealso
 #'
-#' - [dm_add_pk()] and [dm_add_fk()] add primary and foreign keys
+#' - [dm_from_src()] for connecting to all tables in a database
+#'   and importing the primary and foreign keys
+#' - [dm_add_pk()] and [dm_add_fk()] for adding primary and foreign keys
 #' - [copy_dm_to()] for DB interaction
 #' - [dm_draw()] for visualization
 #' - [dm_join_to_tbl()] for flattening
 #' - [dm_filter()] for filtering
 #' - [dm_select_tbl()] for creating a `dm` with only a subset of the tables
-#' - [decompose_table()] as one example of the table surgery family
+#' - [dm_nycflights13()]  for creating an example `dm` object
+#' - [decompose_table()] for table surgery
 #' - [check_key()] and [check_subset()] for checking for key properties
 #' - [examine_cardinality()] for checking the cardinality of the relation between two tables
-#' - [dm_nycflights13()]  for creating an example `dm` object
 #'
+#' @export
 #' @examples
 #' dm(iris, mtcars)
-#' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 #' new_dm(list(iris = iris, mtcars = mtcars))
 #' as_dm(list(iris = iris, mtcars = mtcars))
 #'
@@ -52,7 +53,6 @@
 #' dm_nycflights13()["airports"]
 #' dm_nycflights13()[["airports"]]
 #' dm_nycflights13()$airports
-#' @export
 dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "minimal")) {
   quos <- enquos(...)
 
@@ -74,11 +74,26 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 
 #' dm_from_src()
 #'
-#' `dm_from_src()` creates a `dm` from some or all tables in a [src]
+#' `dm_from_src()` creates a [dm] from some or all tables in a [src]
 #' (a database or an environment) or which are accessible via a DBI-Connection.
+#' For Postgres and SQL Server databases, primary and foreign keys
+#' are imported from the database.
 #'
-#' @rdname dm
+#' @param src A \pkg{dplyr} table source object or a
+#'   [`DBI::DBIConnection-class`] object is accepted.
+#' @param table_names A character vector of the names of the tables to include.
+#' @param ...
+#'   \lifecycle{experimental}
+#'
+#'   Additional parameters for the schema learning query.
+#'   Currently supports `schema` (default: `"public"`)
+#'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
+#'
+#' @return A `dm` object.
+#'
 #' @export
+#' @examples
+#' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 dm_from_src <- nse(function(src = NULL, table_names = NULL) {
   if (is_null(src)) {
     return(empty_dm())
@@ -97,7 +112,7 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL) {
     auto_detect <- FALSE
   }
   if (is_mssql(src) || is_postgres(src)) {
-    dm_learned <- dm_learn_from_db(src)
+    dm_learned <- dm_learn_from_db(src, ...)
     tbls_in_dm <- src_tbls(dm_learned)
     # `src_tbls()` show also temporary tables, but those are not included in the result of `dm_learn_from_db()`
     # therefore, throw an error if `table_names` includes temporary tables.
@@ -116,13 +131,13 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL) {
 #' @description
 #' `new_dm()` is a low-level constructor that creates a new `dm` object.
 #'
-#' If called without arguments, it will create an empty `dm`.
+#' - If called without arguments, it will create an empty `dm`.
 #'
-#' If called with arguments, no validation checks will be made to ascertain that
-#' the inputs are of the expected class and internally consistent;
-#' use `validate_dm()` to double-check the returned object.
+#' - If called with arguments, no validation checks will be made to ascertain that
+#'   the inputs are of the expected class and internally consistent;
+#'   use `validate_dm()` to double-check the returned object.
 #'
-#' @param tables A named list of the tables (tibble-objects, not names) .
+#' @param tables A named list of the tables (tibble-objects, not names),
 #'   to be included in the `dm` object.
 #'
 #' @rdname dm
@@ -654,7 +669,7 @@ str.zoomed_dm <- function(object, ...) {
 #' \pkg{dplyr} table retrieval, table info and DB interaction methods
 #'
 #' Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples).
-#' @param src For `tbl.dm()`: A `dm` object.
+#' @param src A `dm` object.
 #' @param from A length one character variable containing the name of the requested table
 #' @param ... See original function documentation
 #' @rdname dplyr_db

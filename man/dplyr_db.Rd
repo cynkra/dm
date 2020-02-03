@@ -31,7 +31,7 @@
 \method{collect}{dm}(x, ...)
 }
 \arguments{
-\item{src}{For \code{tbl.dm()}: A \code{dm} object.}
+\item{src}{A \code{dm} object.}
 
 \item{from}{A length one character variable containing the name of the requested table}
 

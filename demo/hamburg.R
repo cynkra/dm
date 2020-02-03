@@ -610,30 +610,32 @@ dm_flights_sqlite %>%
 ##
 
 try({
-  con_pq <- DBI::dbConnect(RPostgres::Postgres())
+  dm_flights <- dm_nycflights13()
 
-  # FIXME: Schema support
+  con_pq <- DBI::dbConnect(RPostgres::Postgres())
 
   # Off by default, to ensure that no tables are accidentally deleted
   if (FALSE) {
-    walk(
-      names(dm_flights),
-      ~ DBI::dbExecute(
-        con_pq,
-        paste0("DROP TABLE IF EXISTS ", ., " CASCADE")
-      )
-    )
+    DBI::dbExecute(con_pq, "DROP SCHEMA IF EXISTS nycflights13 CASCADE")
+    DBI::dbExecute(con_pq, "CREATE SCHEMA nycflights13")
   }
 
   # Import
-  dm_flights_pq <-
+  dm_flights_small <-
     dm_flights %>%
     dm_filter(planes, TRUE) %>%
     dm_filter(flights, month == 1, day == 1) %>%
-    copy_dm_to(con_pq, ., temporary = FALSE)
+    dm_apply_filters()
+
+  qualified_names <- rlang::set_names(names(dm_flights_small))
+  qualified_names[] <- paste0("nycflights13.", qualified_names)
+
+  dm_flights_pq <-
+    dm_flights_small %>%
+    copy_dm_to(con_pq, ., temporary = FALSE, table_names = qualified_names)
 
   dm_flights_from_pq <-
-    dm_learn_from_db(con_pq)
+    dm_from_src(con_pq, schema = "nycflights13")
 
   dm_flights_from_pq %>%
     dm_draw()
