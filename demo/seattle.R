@@ -595,10 +595,12 @@ try({
   # Off by default, to ensure that no tables are
   # accidentally deleted
   if (FALSE) {
-    DBI::dbExecute(con_pq,
+    DBI::dbExecute(
+      con_pq,
       "DROP SCHEMA IF EXISTS nycflights13 CASCADE"
     )
-    DBI::dbExecute(con_pq,
+    DBI::dbExecute(
+      con_pq,
       "CREATE SCHEMA nycflights13"
     )
   }
@@ -924,7 +926,8 @@ nycflights13_weather_flights_link <-
 
 # `dm_enum_fk_candidates()` of a `dm` gives info
 # about potential FK columns from one table to another
-dm_enum_fk_candidates(nycflights13_weather_flights_link,
+dm_enum_fk_candidates(
+  nycflights13_weather_flights_link,
   flights, weather
 )
 
