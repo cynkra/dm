@@ -568,6 +568,20 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   NextMethod()
 }
 
+print.dm_keys <- function(x) {
+  format(x)
+}
+
+#' @export
+format.dm_keys <- function(x, n = 3) {
+  print(map_chr(x, commas, n))
+  invisible(x)
+}
+
+vec_ptype_abbr.dm_keys <- function(x) {
+  "keys"
+}
+
 #' @export
 `$.zoomed_dm` <- function(x, name) {
   name <- ensym(name)
