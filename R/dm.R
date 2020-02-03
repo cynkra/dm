@@ -195,12 +195,6 @@ new_fk <- function(table = character(), column = list()) {
   tibble(table = table, column = column)
 }
 
-new_keys <- function(x) {
-  # both c("a", "b") and list("a", "b") is accepted
-  if (inherits(x, "character")) x <- vctrs::vec_cast(x, list())
-  vctrs::new_list_of(x, character(), class = "dm_keys")
-}
-
 new_filter <- function(quos = list(), zoomed = logical()) {
   tibble(filter_expr = unclass(quos), zoomed = zoomed)
 }
@@ -566,27 +560,6 @@ tbl_sum.zoomed_df <- function(x) {
 #' @export
 format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   NextMethod()
-}
-
-print.dm_keys <- function(x, ..., n = 3, width = NULL, n_extra = NULL) {
-  format(x, ..., n = n, width = NULL, n_extra = NULL)
-}
-
-#' @export
-format.dm_keys <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  print(map_chr(x, commas, n))
-  invisible(x)
-}
-
-vec_ptype_abbr.dm_keys <- function(x) {
-  "keys"
-}
-
-pillar_shaft.dm_keys <- function(x, n = 3) {
-  # FIXME: how can I pass n to `pillar_shaft()`?
-  x <- map_chr(x, commas, n)
-  # FIXME: should work with NextMethod
-  pillar::pillar_shaft(x)
 }
 
 #' @export
