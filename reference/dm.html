@@ -48,13 +48,13 @@ It is inspired by datamodelr,
 and extends the idea by offering operations to access the data in the tables.
 dm() creates a dm object from one or multiple tbl objects
 (tibbles or lazy data objects).
-dm_from_src() creates a dm from some or all tables in a src
-(a database or an environment) or which are accessible via a DBI-Connection.
 new_dm() is a low-level constructor that creates a new dm object.
 If called without arguments, it will create an empty dm.
 If called with arguments, no validation checks will be made to ascertain that
 the inputs are of the expected class and internally consistent;
 use validate_dm() to double-check the returned object.
+
+
 validate_dm() checks the internal consistency of a dm object.
 dm_get_src() returns the dplyr source for a dm object.
 All tables in a dm object must be from the same source,
@@ -188,13 +188,13 @@ It is inspired by <a href='https://github.com/bergant/datamodelr'>datamodelr</a>
 and extends the idea by offering operations to access the data in the tables.</p>
 <p><code>dm()</code> creates a <code>dm</code> object from one or multiple <a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a> objects
 (tibbles or lazy data objects).</p>
-<p><code>dm_from_src()</code> creates a <code>dm</code> from some or all tables in a src
-(a database or an environment) or which are accessible via a DBI-Connection.</p>
-<p><code>new_dm()</code> is a low-level constructor that creates a new <code>dm</code> object.</p>
-<p>If called without arguments, it will create an empty <code>dm</code>.</p>
-<p>If called with arguments, no validation checks will be made to ascertain that
+<p><code>new_dm()</code> is a low-level constructor that creates a new <code>dm</code> object.</p><ul>
+<li><p>If called without arguments, it will create an empty <code>dm</code>.</p></li>
+<li><p>If called with arguments, no validation checks will be made to ascertain that
 the inputs are of the expected class and internally consistent;
-use <code>validate_dm()</code> to double-check the returned object.</p>
+use <code>validate_dm()</code> to double-check the returned object.</p></li>
+</ul>
+
 <p><code>validate_dm()</code> checks the internal consistency of a <code>dm</code> object.</p>
 <p><code>dm_get_src()</code> returns the <span class="pkg">dplyr</span> source for a <code>dm</code> object.
 All tables in a <code>dm</code> object must be from the same source,
@@ -212,8 +212,6 @@ To get a filtered table, use <code><a href='dm_filter.html'>dm_apply_filters_to_
     </div>
 
     <pre class="usage"><span class='fu'>dm</span>(<span class='no'>...</span>, <span class='kw'>.name_repair</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span>))
-
-<span class='fu'>dm_from_src</span>(<span class='kw'>src</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>new_dm</span>(<span class='kw'>tables</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
 
@@ -244,16 +242,8 @@ are auto-named.</p></td>
 Forwarded as <code>repair</code> to <code><a href='https://rdrr.io/pkg/vctrs/man/vec_as_names.html'>vctrs::vec_as_names()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>src</th>
-      <td><p>A <span class="pkg">dplyr</span> table source object. For <code>dm_from_src()</code> also a <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> object is accepted.</p></td>
-    </tr>
-    <tr>
-      <th>table_names</th>
-      <td><p>A character vector of the names of the tables to include.</p></td>
-    </tr>
-    <tr>
       <th>tables</th>
-      <td><p>A named list of the tables (tibble-objects, not names) .
+      <td><p>A named list of the tables (tibble-objects, not names),
 to be included in the <code>dm</code> object.</p></td>
     </tr>
     <tr>
@@ -264,7 +254,7 @@ to be included in the <code>dm</code> object.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code>dm()</code>, <code>dm_from_src()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
+    <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
 <p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
 <p>For <code>dm_get_src()</code>: the <span class="pkg">dplyr</span> source for a <code>dm</code> object.</p>
 <p>For <code>dm_get_con()</code>: The <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
@@ -274,16 +264,18 @@ to be included in the <code>dm</code> object.</p></td>
 
     <div class='dont-index'>
 <ul>
-<li><p><code><a href='dm_add_pk.html'>dm_add_pk()</a></code> and <code><a href='dm_add_fk.html'>dm_add_fk()</a></code> add primary and foreign keys</p></li>
+<li><p><code><a href='dm_from_src.html'>dm_from_src()</a></code> for connecting to all tables in a database
+and importing the primary and foreign keys</p></li>
+<li><p><code><a href='dm_add_pk.html'>dm_add_pk()</a></code> and <code><a href='dm_add_fk.html'>dm_add_fk()</a></code> for adding primary and foreign keys</p></li>
 <li><p><code><a href='copy_dm_to.html'>copy_dm_to()</a></code> for DB interaction</p></li>
 <li><p><code><a href='dm_draw.html'>dm_draw()</a></code> for visualization</p></li>
 <li><p><code><a href='dm_join_to_tbl.html'>dm_join_to_tbl()</a></code> for flattening</p></li>
 <li><p><code><a href='dm_filter.html'>dm_filter()</a></code> for filtering</p></li>
 <li><p><code><a href='dm_select_tbl.html'>dm_select_tbl()</a></code> for creating a <code>dm</code> with only a subset of the tables</p></li>
-<li><p><code><a href='decompose_table.html'>decompose_table()</a></code> as one example of the table surgery family</p></li>
+<li><p><code><a href='dm_nycflights13.html'>dm_nycflights13()</a></code>  for creating an example <code>dm</code> object</p></li>
+<li><p><code><a href='decompose_table.html'>decompose_table()</a></code> for table surgery</p></li>
 <li><p><code><a href='check_key.html'>check_key()</a></code> and <code><a href='check_subset.html'>check_subset()</a></code> for checking for key properties</p></li>
 <li><p><code><a href='examine_cardinality.html'>examine_cardinality()</a></code> for checking the cardinality of the relation between two tables</p></li>
-<li><p><code><a href='dm_nycflights13.html'>dm_nycflights13()</a></code>  for creating an example <code>dm</code> object</p></li>
 </ul>
 </div>
 
@@ -293,12 +285,6 @@ to be included in the <code>dm</code> object.</p></td>
 #&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `iris`, `mtcars`
 #&gt; Columns: 16
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>dm_from_src</span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0</div><div class='input'><span class='fu'>new_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;

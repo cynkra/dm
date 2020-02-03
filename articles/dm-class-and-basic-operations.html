@@ -200,7 +200,7 @@
 </h3>
 <p>Squeeze all (or a subset of) tables belonging to a <code>src</code> object into a <code>dm</code> using <code><a href="../reference/dm.html">dm()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm.html">dm_from_src</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_local.html">src_df</a></span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">flights_dm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/src_local.html">src_df</a></span>(<span class="dt">pkg =</span> <span class="st">"nycflights13"</span>))</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">flights_dm</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
