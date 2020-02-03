@@ -568,12 +568,12 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   NextMethod()
 }
 
-print.dm_keys <- function(x) {
-  format(x)
+print.dm_keys <- function(x, ..., n = 3, width = NULL, n_extra = NULL) {
+  format(x, ..., n = n, width = NULL, n_extra = NULL)
 }
 
 #' @export
-format.dm_keys <- function(x, n = 3) {
+format.dm_keys <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   print(map_chr(x, commas, n))
   invisible(x)
 }
