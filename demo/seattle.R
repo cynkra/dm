@@ -1,4 +1,5 @@
-# Demo for presentation at the Hamburg R user group, January 2020
+# Demo for presentation at the Seattle R user group,
+# February 2020
 
 # {dm} facilitates working with multiple tables
 
@@ -70,7 +71,8 @@ flights_base
 airlines
 
 flights_base %>%
-  left_join(airlines)
+  left_join(airlines) %>%
+  select(name, carrier, tailnum)
 
 ##
 ##
@@ -105,7 +107,8 @@ airlines %>%
 
 # ...propagates to all related records
 flights_base %>%
-  left_join(airlines)
+  left_join(airlines) %>%
+  select(name, carrier, tailnum)
 
 ##
 ##
@@ -152,6 +155,15 @@ library(dm)
 dm_flights <- dm_nycflights13(cycle = TRUE)
 dm_flights
 
+dm_flights$airlines
+
+# Table names
+dm_flights %>%
+  names()
+
+# NB: [ and [[ also work
+
+# Visualize
 dm_flights %>%
   dm_draw()
 
@@ -160,26 +172,10 @@ dm_flights %>%
   dm_select_tbl(flights, airlines) %>%
   dm_draw()
 
-dm_flights %>%
-  dm_select_tbl(airports, airlines) %>%
-  dm_draw()
-
 try(
   dm_flights %>%
     dm_select_tbl(bogus)
 )
-
-# Accessing tables
-dm_flights %>%
-  pull_tbl(airlines)
-
-dm_flights$airlines
-
-# Table names
-dm_flights %>%
-  src_tbls()
-
-# NB: [, $, [[ and names() also work
 
 
 
@@ -191,7 +187,7 @@ dm_flights %>%
 ## THREE USE CASES:
 ## --------------------------------------------------------------------
 ##
-## 1. Work with a prepared dm object
+## 1. Work with a prepared dm object or connect to a database
 ## 2. Build a data model for your own data
 ## 3. Publish a dm to a relational database (and load from it)
 ##
@@ -218,6 +214,113 @@ dm_flights %>%
 ##
 ##
 
+##
+##
+##
+## Setup
+## --------------------------------------------------------------------
+##
+##
+##
+
+# Using an existing function:
+dm_flights <- dm_nycflights13()
+
+# Selecting tables
+dm_flights %>%
+  dm_select_tbl(-weather)
+
+# Selecting columns in tables
+dm_flights %>%
+  dm_select_tbl(-weather) %>%
+  dm_select(
+    flights,
+    year, month, day, origin, dep_time, dest, carrier
+  )
+
+# !!! Connect to a database !!!
+try({
+  con_pq <- DBI::dbConnect(RPostgres::Postgres())
+
+  dm_flights <-
+    dm_from_src(con_pq, schema = "nycflights13") %>%
+    dm_rm_fk(flights, dest, airports)
+
+  dm_flights
+})
+
+# Selecting more columns in tables
+dm_flights %>%
+  dm_select_tbl(-weather) %>%
+  dm_select(
+    flights,
+    carrier, tailnum, origin,
+    year, month, day, dest, dep_time
+  ) %>%
+  dm_select(planes, tailnum, year) %>%
+  dm_select(airports, faa, lat, lon)
+
+# Filtering rows in tables
+dm_flights %>%
+  dm_select_tbl(-weather) %>%
+  dm_select(
+    flights,
+    carrier, tailnum, origin,
+    year, month, day, dest, dep_time
+  ) %>%
+  dm_select(planes, tailnum, year) %>%
+  dm_select(airports, faa, lat, lon) %>%
+  dm_filter(flights, month == 2, day == 5)
+
+# Filtering rows in other tables
+dm_flights %>%
+  dm_select_tbl(-weather) %>%
+  dm_select(
+    flights,
+    carrier, tailnum, origin,
+    year, month, day, dest, dep_time
+  ) %>%
+  dm_select(planes, tailnum, year) %>%
+  dm_select(airports, faa, name, lat, lon) %>%
+  dm_filter(flights, month == 2, day == 5) %>%
+  dm_filter(airports, name == "John F Kennedy Intl") %>%
+  dm_filter(airlines, name == "Delta Air Lines Inc.")
+
+# Immutable object: need to assign a name to persist
+dm_flights_jfk_today <-
+  dm_flights %>%
+  dm_select_tbl(-weather) %>%
+  dm_select(
+    flights,
+    carrier, tailnum, origin,
+    year, month, day, dest, dep_time
+  ) %>%
+  dm_select(planes, tailnum, year) %>%
+  dm_select(airports, faa, name, lat, lon) %>%
+  dm_filter(flights, month == 2, day == 5) %>%
+  dm_filter(airports, name == "John F Kennedy Intl") %>%
+  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
+  dm_apply_filters()
+
+dm_flights_jfk_today
+
+dm_flights_jfk_today %>%
+  dm_draw()
+
+# Lazy tables
+dm_flights_jfk_today %>%
+  pull_tbl(flights)
+
+dm_flights_jfk_today %>%
+  pull_tbl(flights) %>%
+  dbplyr::sql_render()
+
+# Load the entire data model into memory
+dm_flights_jfk_today_df <-
+  dm_flights_jfk_today %>%
+  collect()
+
+dm_flights_jfk_today_df
 
 
 
@@ -237,6 +340,12 @@ dm_flights %>%
 dm_flights %>%
   dm_join_to_tbl(airlines, flights)
 
+airlines_flights <-
+  dm_flights %>%
+  dm_join_to_tbl(airlines, flights)
+
+airlines_flights
+
 try(
   dm_flights %>%
     dm_join_to_tbl(airports, airlines)
@@ -253,52 +362,21 @@ try(
 ##
 ##
 
+# Join "everything" into a flat table:
 dm_flights %>%
   dm_flatten_to_tbl(flights)
 
-##
-##
-##
-## Filtering for data models
-## --------------------------------------------------------------------
-##
-##
-##
-
-# Filtering on a table returns a dm object
-# with
-# 1. the filter applied to the table in question
-# 2. the filter condition(s) stored
+# Manual disambiguation of column names:
 dm_flights %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.")
-
-# the resulting `dm` can then be filtered on another table
-dm_flights %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(airports, name != "John F Kennedy Intl")
-
-# ... and stored in another dm variable
-delta_non_jfk_january <-
-  dm_flights %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(airports, name != "John F Kennedy Intl") %>%
-  dm_filter(planes, year < 2000) %>%
-  dm_filter(flights, month == 1)
-delta_non_jfk_january
-
-# Querying a table applies the filters via semi-joins
-# along the FK constraints to the requested table
-delta_non_jfk_january %>%
-  tbl("planes")
-
-# FIXME: Can this work without applying all filters?
-
-delta_non_jfk_january %>%
-  dm_apply_filters() %>%
-  dm_join_to_tbl(flights, airlines)
-
-delta_non_jfk_january %>%
+  dm_select(planes, -year) %>%
+  dm_rename(airlines, airline_name = name) %>%
   dm_flatten_to_tbl(flights)
+
+# Separate access to automatic disambiguation:
+dm_flights %>%
+  dm_disambiguate_cols()
+
+
 
 ##
 ##
@@ -382,7 +460,8 @@ dm_flights %>%
 
 
 # Use `dm()` with a syntax similar to `tibble()`:
-nycflights13_tbl <- dm(airlines, airports, flights, planes, weather)
+nycflights13_tbl <-
+  dm(airlines, airports, flights, planes, weather)
 nycflights13_tbl
 
 nycflights13_tbl %>%
@@ -425,110 +504,19 @@ dm_get_available_colors()
 
 nycflights13_base <-
   nycflights13_fk %>%
-  cdm_set_colors(
-    airlines = , planes = , weather = , airports = "blue"
+  dm_set_colors(
+    blue = c(airlines, planes, airports)
   )
 
 nycflights13_base %>%
   dm_draw()
 
+nycflights13_base %>%
+  dm_paste()
 
-
-
-##
-##
-##
-## Use data manipulation to understand and establish relationships
-## --------------------------------------------------------------------
-##
-##
-##
-
-
-# Determine key candidates
-zoomed_weather <- dm_zoom_to(nycflights13_base, weather)
-zoomed_weather
-
-# `enum_pk_candidates()` works for both `tibbles` and `zoomed_dm`
-enum_pk_candidates(zoomed_weather)
-
-enum_pk_candidates(zoomed_weather) %>%
-  count(candidate)
-
-# It's tricky:
-zoomed_weather %>%
-  unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
-  count(slot_id) %>%
-  filter(n > 1)
-
-zoomed_weather %>%
-  count(origin, time_hour) %>%
-  filter(n > 1)
-
-zoomed_weather %>%
-  count(origin, format(time_hour)) %>%
-  filter(n > 1)
-
-# This looks like a good candidate:
-zoomed_weather %>%
-  count(origin, format(time_hour, tz = "UTC")) %>%
-  filter(n > 1)
-
-# FIXME: Support compound keys (#3)
-
-# Currently, we need to create surrogate keys:
-nycflights13_weather_link <-
-  zoomed_weather %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  unite("origin_slot_id", origin, time_hour_fmt) %>%
-  # here the original 'weather' table is updated with the manipulated one
-  dm_update_zoomed() %>%
-  # here we are adding a PK for the "enhanced" weather table
-  dm_add_pk(weather, origin_slot_id)
-
-nycflights13_weather_link$weather
-
-nycflights13_weather_link %>%
-  dm_draw()
-
-# FIXME: zoom to multiple tables
-
-nycflights13_weather_flights_link <-
-  dm_zoom_to(nycflights13_weather_link, flights) %>%
-  # same procedure with `flights` table
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  # for flights we need to keep the column `origin`,
-  # since it is a FK pointing to `airports`
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
-  select(origin_slot_id, everything(), -time_hour_fmt) %>%
-  dm_update_zoomed()
-
-# `dm_enum_fk_candidates()` of a `dm` gives info
-# about potential FK columns from one table to another
-dm_enum_fk_candidates(nycflights13_weather_flights_link, flights, weather)
-
-# well, it's almost perfect, let's add the FK anyway...
-
-nycflights13_perfect <-
-  nycflights13_weather_flights_link %>%
-  dm_add_fk(flights, origin_slot_id, weather)
-
-nycflights13_perfect %>%
-  dm_draw()
-
-# What are the missings?
-nycflights13_perfect %>%
-  dm_zoom_to(flights) %>%
-  anti_join(weather) %>%
-  count(origin_slot_id)
-
-# Create table of aggregates, and insert it into the dm
-nycflights13_perfect %>%
-  dm_zoom_to(flights) %>%
-  count(origin) %>%
-  dm_insert_zoomed("flights_agg") %>%
-  dm_draw()
-
+# !!! NEW: Examine all constraints of a dm !!!
+nycflights13_base %>%
+  dm_examine_constraints()
 
 
 
@@ -556,7 +544,8 @@ nycflights13_perfect %>%
 ##
 ##
 
-# All operations are designed to work locally and on the database
+# All operations are designed to work locally
+# and on the database
 dm_flights_sqlite <-
   dm_flights %>%
   copy_dm_to(
@@ -569,48 +558,23 @@ dm_flights_sqlite
 dm_flights_sqlite %>%
   dm_draw()
 
-dm_flights_sqlite %>%
-  dm_get_tables() %>%
-  map(dbplyr::sql_render)
-
-dm_flights_sqlite %>%
-  dm_join_to_tbl(airlines, flights) %>%
-  dbplyr::sql_render()
-
+# Operations work on the database:
 dm_flights_sqlite %>%
   dm_flatten_to_tbl(flights) %>%
   dbplyr::sql_render()
 
-# Filtering on the database
-dm_flights_sqlite %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(airports, name != "John F Kennedy Intl") %>%
-  dm_filter(flights, day == 1) %>%
-  dm_apply_filters_to_tbl(flights)
-
-# ... and the corresponding SQL statement and query plan
-dm_flights_sqlite %>%
-  dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(airports, name != "John F Kennedy Intl") %>%
-  dm_filter(flights, day == 1) %>%
-  dm_apply_filters_to_tbl(flights) %>%
-  dbplyr::sql_render()
-
-
-
-
 
 ##
 ##
 ##
-## Import a dm from a database, including key constraints
+## Copy to a database, including key constraints
 ## --------------------------------------------------------------------
 ##
 ##
 ##
 
 try({
-  dm_flights <- dm_nycflights13()
+  dm_flights <- dm_nycflights13(cycle = TRUE)
 
   con_pq <- DBI::dbConnect(RPostgres::Postgres())
 
@@ -620,18 +584,36 @@ try({
     DBI::dbExecute(con_pq, "CREATE SCHEMA nycflights13")
   }
 
-  # Import
-  dm_flights_small <-
+  # Ensure referential integrity (FIXME: Better way):
+  dm_flights_ref <-
     dm_flights %>%
-    dm_filter(planes, TRUE) %>%
-    dm_filter(flights, month == 1, day == 1) %>%
-    dm_apply_filters()
 
-  qualified_names <- rlang::set_names(names(dm_flights_small))
+    # FIXME: Can't use cycles for now.
+    dm_rm_fk(flights, origin, airports) %>%
+
+    # Fill bad links with NA values:
+    dm_zoom_to(flights) %>%
+    left_join(planes, select = c(tailnum, type)) %>%
+    mutate(tailnum = ifelse(is.na(type), NA_character_, tailnum)) %>%
+    dm_update_zoomed() %>%
+    dm_add_fk(flights, tailnum, planes) %>%
+
+    # Insert synthetic rows:
+    dm_zoom_to(flights) %>%
+    count(dest) %>%
+    dm_insert_zoomed("dest") %>%
+    dm_zoom_to(airports) %>%
+    full_join(dest, select = dest) %>%
+    dm_update_zoomed() %>%
+    dm_select_tbl(-dest) %>%
+
+    dm_add_fk(flights, origin, airports)
+
+  qualified_names <- rlang::set_names(names(dm_flights_ref))
   qualified_names[] <- paste0("nycflights13.", qualified_names)
 
   dm_flights_pq <-
-    dm_flights_small %>%
+    dm_flights_ref %>%
     copy_dm_to(con_pq, ., temporary = FALSE, table_names = qualified_names)
 
   dm_flights_from_pq <-
@@ -653,9 +635,10 @@ try({
 ## THREE USE CASES:
 ## --------------------------------------------------------------------
 ##
-## 1. Work with a prepared dm object
+## 1. Work with a prepared dm object or connect to a database
 ## 2. Build a data model for your own data
 ## 3. Publish a dm to a relational database (and load from it)
+## 4. Data documentation
 ##
 ##
 ##
@@ -830,3 +813,100 @@ airports %>%
 
 # Cleanup
 rm(t1, t2)
+
+
+
+##
+##
+##
+## Advanced zooming: Use data manipulation to understand
+## and establish relationships
+## --------------------------------------------------------------------
+##
+##
+##
+
+
+# Determine key candidates
+zoomed_weather <- dm_zoom_to(nycflights13_base, weather)
+zoomed_weather
+
+# `enum_pk_candidates()` works for both `tibbles` and `zoomed_dm`
+enum_pk_candidates(zoomed_weather)
+
+enum_pk_candidates(zoomed_weather) %>%
+  count(candidate)
+
+# It's tricky:
+zoomed_weather %>%
+  unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
+  count(slot_id) %>%
+  filter(n > 1)
+
+zoomed_weather %>%
+  count(origin, time_hour) %>%
+  filter(n > 1)
+
+zoomed_weather %>%
+  count(origin, format(time_hour)) %>%
+  filter(n > 1)
+
+# This looks like a good candidate:
+zoomed_weather %>%
+  count(origin, format(time_hour, tz = "UTC")) %>%
+  filter(n > 1)
+
+# FIXME: Support compound keys (#3)
+
+# Currently, we need to create surrogate keys:
+nycflights13_weather_link <-
+  zoomed_weather %>%
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  unite("origin_slot_id", origin, time_hour_fmt) %>%
+  # here the original 'weather' table is updated with the manipulated one
+  dm_update_zoomed() %>%
+  # here we are adding a PK for the "enhanced" weather table
+  dm_add_pk(weather, origin_slot_id)
+
+nycflights13_weather_link$weather
+
+nycflights13_weather_link %>%
+  dm_draw()
+
+# FIXME: zoom to multiple tables
+
+nycflights13_weather_flights_link <-
+  dm_zoom_to(nycflights13_weather_link, flights) %>%
+  # same procedure with `flights` table
+  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  # for flights we need to keep the column `origin`,
+  # since it is a FK pointing to `airports`
+  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
+  select(origin_slot_id, everything(), -time_hour_fmt) %>%
+  dm_update_zoomed()
+
+# `dm_enum_fk_candidates()` of a `dm` gives info
+# about potential FK columns from one table to another
+dm_enum_fk_candidates(nycflights13_weather_flights_link, flights, weather)
+
+# well, it's almost perfect, let's add the FK anyway...
+
+nycflights13_perfect <-
+  nycflights13_weather_flights_link %>%
+  dm_add_fk(flights, origin_slot_id, weather)
+
+nycflights13_perfect %>%
+  dm_draw()
+
+# What are the missings?
+nycflights13_perfect %>%
+  dm_zoom_to(flights) %>%
+  anti_join(weather) %>%
+  count(origin_slot_id)
+
+# Create table of aggregates, and insert it into the dm
+nycflights13_perfect %>%
+  dm_zoom_to(flights) %>%
+  count(origin) %>%
+  dm_insert_zoomed("flights_agg") %>%
+  dm_draw()
