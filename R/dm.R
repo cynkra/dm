@@ -94,7 +94,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' @export
 #' @examples
 #' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
-dm_from_src <- nse(function(src = NULL, table_names = NULL) {
+dm_from_src <- nse(function(src = NULL, table_names = NULL, ...) {
   if (is_null(src)) {
     return(empty_dm())
   }
