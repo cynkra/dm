@@ -4,7 +4,7 @@
 \alias{dm_from_src}
 \title{dm_from_src()}
 \usage{
-dm_from_src(src = NULL, table_names = NULL)
+dm_from_src(src = NULL, table_names = NULL, ...)
 }
 \arguments{
 \item{src}{A \pkg{dplyr} table source object or a

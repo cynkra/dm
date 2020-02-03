@@ -13,7 +13,6 @@
 #'   are auto-named.
 #' @param .name_repair Options for name repair.
 #'   Forwarded as `repair` to [vctrs::vec_as_names()].
-#' @param src A \pkg{dplyr} table source object.
 #'
 #' @return For `dm()`, `new_dm()`, `as_dm()`: A `dm` object.
 #'
