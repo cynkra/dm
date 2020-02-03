@@ -1,11 +1,12 @@
 MAX_COMMAS <- 6L
 
-commas <- function(x) {
+commas <- function(x, max_commas = MAX_COMMAS) {
+  if (is_null(max_commas)) max_commas <- MAX_COMMAS
   if (is_empty(x)) {
     x <- ""
-  } else if (length(x) > MAX_COMMAS) {
-    x[[MAX_COMMAS]] <- paste0(cli::symbol$ellipsis, " (", length(x), " total)")
-    length(x) <- MAX_COMMAS
+  } else if (length(x) > max_commas) {
+    x[[max_commas]] <- paste0(cli::symbol$ellipsis, " (", length(x), " total)")
+    length(x) <- max_commas
   }
 
   glue_collapse(x, sep = ", ")

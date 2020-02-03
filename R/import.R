@@ -11,4 +11,5 @@
 #' @importFrom utils head str packageVersion
 #' @import lifecycle
 #' @importFrom grDevices col2rgb colors rgb
+#' @importFrom pillar pillar_shaft
 NULL
