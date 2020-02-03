@@ -3,12 +3,12 @@
 - Package is now in the "maturing" lifecycle (#154).
 - `filter.zoomed_dm()` no longer sets the filter.
 - `examine_()` functions never throw an error (#238).
-- API overhaul: `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`; `check_()` -> `examine_()`; `dm_get_filters()` -> `dm_get_filter()`; `dm_from_src()` + `dm_learn_from_db()` -> `dm_from_src()` (#233).
+- API overhaul: `dm_zoom_to()`, `dm_insert_zoomed()`, `dm_update_zoomed()` and `dm_discard_zoomed()`; `check_()` -> `examine_()`; `dm_get_filter()` -> `dm_get_filters()`; `dm_from_src()` + `dm_learn_from_db()` -> `dm_from_src()` (#233).
 - New `$.zoomed_dm()`, `[.zoomed_dm()`, `[[.zoomed_dm()`, `length.zoomed_dm()`, `names.zoomed_dm()`, `tbl_vars.zoomed_dm()` (#199, #216).
 - New `as.list()` methods (#213).
 - Help pages for dplyr methods (#209).
 - New migration guide from dm <= 0.0.5 (#234).
-- New {tidyselect} interface for setting colors (#162).
+- New {tidyselect} interface for setting colors (#162) and support for hex color codes as well as R standard colors.
 - Prepare `dm_examine_constraints()` and other key-related functions for compound keys (#239).
 - Avoid warnings in `R CMD check` with dev versions of dependencies.
 - Improve error messages for missing tables (#220).
