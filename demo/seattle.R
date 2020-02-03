@@ -606,7 +606,6 @@ try({
     full_join(dest, select = dest) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(-dest) %>%
-
     dm_add_fk(flights, origin, airports)
 
   qualified_names <- rlang::set_names(names(dm_flights_ref))
