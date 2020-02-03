@@ -582,6 +582,13 @@ vec_ptype_abbr.dm_keys <- function(x) {
   "keys"
 }
 
+pillar_shaft.dm_keys <- function(x, n = 3) {
+  # FIXME: how can I pass n to `pillar_shaft()`?
+  x <- map_chr(x, commas, n)
+  # FIXME: should work with NextMethod
+  pillar::pillar_shaft(x)
+}
+
 #' @export
 `$.zoomed_dm` <- function(x, name) {
   name <- ensym(name)
