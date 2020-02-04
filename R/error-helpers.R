@@ -492,17 +492,6 @@ error_txt_fk_not_tracked <- function(x_orig_name, y_name) {
   )
 }
 
-# RHS-by column not selected ----------------------------------------------
-
-abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  abort(error_txt_need_to_select_rhs_by(y_name, rhs_by), .subclass = dm_error_full("need_to_select_rhs_by"))
-}
-
-error_txt_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
-}
-
-
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
@@ -583,4 +572,17 @@ error_txt_temp_table_requested <- function(table_names, tbls_in_dm) {
     "The following requested tables from the DB are temporary tables and can't be included in the result: ",
     "{commas(tick(temp_tables))}."
   )
+}
+
+
+# RHS auto adding name collision ------------------------------------------
+
+abort_rhs_by_name_collision <- function(selected_wo_by, by_rhs_rename, tbl_name) {
+  problem <- intersect(names(selected_wo_by), names(by_rhs_rename))
+  abort(error_txt_rhs_by_name_collision(problem, tbl_name), .subclass = dm_error_full("rhs_by_name_collision"))
+}
+
+error_txt_rhs_by_name_collision <- function(problem, tbl_name) {
+  glue("Internally {{dm}} renames the `by` column of the RHS-table for the join. This clashes with the ",
+       "column names: {commas(tick(problem))} of table {tick(tbl_name)}.")
 }

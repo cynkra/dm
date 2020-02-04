@@ -373,6 +373,14 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     }
   }
 
+  # rename RHS `by` columns in the tibble to avoid after-the-fact disambiguation collision
+  by_rhs_rename <- by
+  names(by_rhs_rename) <- glue("...{seq_along(by_rhs_rename)}")
+  if (any(names(selected_wo_by) %in% names(by_rhs_rename))) abort_rhs_by_name_collision(selected_wo_by, by_rhs_rename, y_name)
+  # complete vector of selection consisting of selection without by and the newly named by-columns
+  selected_repaired <- c(selected_wo_by, by_rhs_rename)
+
+  y_tbl <- select(y_tbl, !!!selected_repaired)
   # in case key columns of x_tbl have the same name as selected columns of y_tbl
   # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
   # We can track the new column names
