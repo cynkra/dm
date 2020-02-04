@@ -110,8 +110,8 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL, ...) {
     }
     auto_detect <- FALSE
   }
-  if (is_mssql(src) || is_postgres(src)) {
-    dm_learned <- dm_learn_from_db(src, ...)
+  dm_learned <- dm_learn_from_db(src, ...)
+  if (!is.null(dm_learned)) {
     tbls_in_dm <- src_tbls(dm_learned)
     # `src_tbls()` show also temporary tables, but those are not included in the result of `dm_learn_from_db()`
     # therefore, throw an error if `table_names` includes temporary tables.

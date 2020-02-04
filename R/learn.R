@@ -43,6 +43,10 @@ dm_learn_from_db <- function(dest, ...) {
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
 
+  if (is.null(con)) {
+    return()
+  }
+
   overview <-
     dbGetQuery(con, db_learn_query(con, ...)) %>%
     as_tibble()
