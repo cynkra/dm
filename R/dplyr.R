@@ -327,16 +327,16 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   }
 
   by <- repair_by(by)
-  selected_wo_by <- setdiff(selected, by)
 
   # inform user in case RHS `by` column(s) are added
   if (!all(by %in% selected)) {
     print(glue("Adding RHS `by` column(s) to selection: {commas(tick(setdiff(by, selected)))} (not part of the result)."))
   }
 
-  new_key_names <- get_tracked_keys(x)
+  # selection without RHS `by`; only this is needed for disambiguation and by-columns are added later on for all join-types
+  selected_wo_by <- selected[selected %in% setdiff(selected, by)]
 
-  y_tbl <- select(y_tbl, !!!selected)
+  new_key_names <- get_tracked_keys(x)
 
   if (disambiguate) {
     x_disambig_name <- x_orig_name
@@ -349,8 +349,8 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     table_colnames <-
       vctrs::vec_rbind(
         tibble(table = x_disambig_name, column = colnames(x_tbl)),
-        tibble(table = y_disambig_name, column = colnames(y_tbl)) %>% filter(!(column %in% by))
-      )
+        tibble(table = y_disambig_name, column = names(selected_wo_by))
+        )
 
     recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
     explain_col_rename(recipe)
@@ -369,8 +369,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     }
 
     if (has_length(y_renames)) {
-      y_tbl <- y_tbl %>% rename(!!!y_renames[[1]])
-      selected[] <- recode(selected, !!!prep_recode(y_renames[[1]]))
+      selected_wo_by[] <- recode(selected_wo_by, !!!prep_recode(y_renames[[1]]))
     }
   }
 
