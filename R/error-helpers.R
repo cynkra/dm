@@ -583,6 +583,8 @@ abort_rhs_by_name_collision <- function(selected_wo_by, by_rhs_rename, tbl_name)
 }
 
 error_txt_rhs_by_name_collision <- function(problem, tbl_name) {
-  glue("Internally {{dm}} renames the `by` column of the RHS-table for the join. This clashes with the ",
-       "column names: {commas(tick(problem))} of table {tick(tbl_name)}.")
+  glue(
+    "Internally {{dm}} renames the `by` column of the RHS-table for the join. This clashes with the ",
+    "column names: {commas(tick(problem))} of table {tick(tbl_name)}."
+  )
 }

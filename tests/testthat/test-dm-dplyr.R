@@ -250,7 +250,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col"), select = -key) %>%
       get_zoomed_tbl(),
     "Adding RHS `by` column"
-    )
+  )
 
   # test RHS-by name collision
   expect_dm_error(
