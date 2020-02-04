@@ -317,9 +317,11 @@ dm_flights_jfk_today %>%
 dm_flights_jfk_today %>%
   pull_tbl(flights)
 
-dm_flights_jfk_today %>%
-  pull_tbl(flights) %>%
-  dbplyr::sql_render()
+try(
+  dm_flights_jfk_today %>%
+    pull_tbl(flights) %>%
+    dbplyr::sql_render()
+)
 
 # Load the entire data model into memory
 dm_flights_jfk_today_df <-
