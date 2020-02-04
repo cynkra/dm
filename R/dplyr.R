@@ -369,7 +369,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     }
 
     if (has_length(y_renames)) {
-      selected_wo_by[] <- recode(selected_wo_by, !!!prep_recode(y_renames[[1]]))
+      names(selected_wo_by) <- recode(names(selected_wo_by), !!!prep_recode(y_renames[[1]]))
     }
   }
 
