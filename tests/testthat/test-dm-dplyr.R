@@ -245,12 +245,12 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # auto-added RHS-by argument
-  expect_known_output(
+  expect_output(
     dm_zoom_to(dm_for_disambiguate, iris_2) %>%
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col"), select = -key) %>%
       get_zoomed_tbl(),
-    find_testthat_root_file("out/join_adding_RHS_by.txt")
-  )
+    "Adding RHS `by` column"
+    )
 
   # test RHS-by name collision
   expect_dm_error(
