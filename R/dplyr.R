@@ -322,8 +322,6 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
-    if (!any(selected == by)) abort_need_to_select_rhs_by(y_name, unname(by))
-
     if (!all(names(by) %in% get_tracked_keys(x))) abort_fk_not_tracked(x_orig_name, y_name)
   }
 
