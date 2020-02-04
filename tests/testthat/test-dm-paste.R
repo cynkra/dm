@@ -18,7 +18,7 @@ test_that("generating code for creation of existing 'dm' works", {
 
   # changing the tab width
   expect_output(
-    dm_paste(dm_for_filter, FALSE, 4),
+    dm_paste(dm_for_filter, FALSE, FALSE, 4),
     paste0(
       "dm(t1, t2, t3, t4, t5, t6) %>%\n    dm_add_pk(t1, a) %>%\n    dm_add_pk(t2, c) %>%",
       "\n    dm_add_pk(t3, f) %>%\n    dm_add_pk(t4, h) %>%\n    dm_add_pk(t5, k) %>%\n    ",
@@ -52,4 +52,6 @@ test_that("generating code for creation of existing 'dm' works", {
     ),
     fixed = TRUE
   )
+
+
 })
