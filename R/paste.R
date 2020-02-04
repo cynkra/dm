@@ -4,6 +4,8 @@
 #'
 #' @inheritParams dm_add_pk
 #' @param select Boolean, default `FALSE`. If `TRUE` will try to produce code for reducing to necessary columns.
+#' @param color Boolean, default `TRUE`. If `TRUE` will create the code for reproducing the original colors for
+#' the visualization of the tables.
 #' @param tab_width Indentation width for code from the second line onwards
 #'
 #' @details At the very least (if no keys exist in the given [`dm`]) a `dm()` statement is produced that -- when executed --
