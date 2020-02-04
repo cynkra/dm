@@ -52,6 +52,4 @@ test_that("generating code for creation of existing 'dm' works", {
     ),
     fixed = TRUE
   )
-
-
 })
