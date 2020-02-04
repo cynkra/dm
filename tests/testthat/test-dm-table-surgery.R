@@ -63,6 +63,8 @@ test_that("reunite_parent_child_from_list() reunites parent and child nicely on 
 
 
 test_that("table surgery functions fail in the expected ways?", {
+  skip_if_not_installed("tidyselect", "1.0.0")
+
   walk(
     data_ts_src,
     ~ expect_error(
