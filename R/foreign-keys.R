@@ -395,7 +395,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     # FIXME: this fails on SQLite, why?
     # mutate(num_mismatch = glue("{as.character(mismatch_or_null)} ({as.character(n)})")) %>%
     pull()
-  vals_formatted <- commas(format(vals_extended, trim = TRUE, justify = "none"))
+  vals_formatted <- commas(format(vals_extended, trim = TRUE, justify = "none"), capped = TRUE)
   glue(
     "{as.character(n_mismatch)} entries ({percentage_missing}%) of ",
     "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}"
