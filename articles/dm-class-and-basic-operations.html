@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@
     <div class="page-header toc-ignore">
       <h1>Class ‘dm’ and basic operations</h1>
             
-            <h4 class="date">2020-02-03</h4>
+            <h4 class="date">2020-02-04</h4>
       
       
       <div class="hidden name"><code>dm-class-and-basic-operations.Rmd</code></div>
@@ -284,16 +284,16 @@
 <p>If you still need to get to know your data better, and it is already available in the form of a <code>dm</code> object, you can use the <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> function in order to get information about which columns of the table are unique keys:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(flights_dm_with_key, airports)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 x 3</span><span>
-#&gt;      columns candidate why                                                 
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                               
-#&gt; </span><span style="color: #555555;">1</span><span>        </span><span style="color: #555555;">[1]</span><span> TRUE      </span><span style="color: #555555;">""</span><span>                                                  
-#&gt; </span><span style="color: #555555;">2</span><span>        </span><span style="color: #555555;">[1]</span><span> TRUE      </span><span style="color: #555555;">""</span><span>                                                  
-#&gt; </span><span style="color: #555555;">3</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: 0, 1, 3, 4, 5, … (7 total)</span><span style="color: #555555;">"</span><span>  
-#&gt; </span><span style="color: #555555;">4</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: A, N, U</span><span style="color: #555555;">"</span><span>                     
-#&gt; </span><span style="color: #555555;">5</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: 38.88944, 40.63975</span><span style="color: #555555;">"</span><span>          
-#&gt; </span><span style="color: #555555;">6</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: All Airports, Capital City A…
-#&gt; </span><span style="color: #555555;">7</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: -10, -9, -8, -7, -6, … (7 to…
-#&gt; </span><span style="color: #555555;">8</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: America/Anchorage, America/C…
+#&gt;   columns candidate why                                                    
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                                  
+#&gt; </span><span style="color: #555555;">1</span><span> faa     TRUE      </span><span style="color: #555555;">""</span><span>                                                     
+#&gt; </span><span style="color: #555555;">2</span><span> lon     TRUE      </span><span style="color: #555555;">""</span><span>                                                     
+#&gt; </span><span style="color: #555555;">3</span><span> alt     FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: 0, 1, 3, 4, 5, … (7 total)</span><span style="color: #555555;">"</span><span>     
+#&gt; </span><span style="color: #555555;">4</span><span> dst     FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: A, N, U</span><span style="color: #555555;">"</span><span>                        
+#&gt; </span><span style="color: #555555;">5</span><span> lat     FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: 38.88944, 40.63975</span><span style="color: #555555;">"</span><span>             
+#&gt; </span><span style="color: #555555;">6</span><span> name    FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: All Airports, Capital City Airp…
+#&gt; </span><span style="color: #555555;">7</span><span> tz      FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: -10, -9, -8, -7, -6, … (7 total…
+#&gt; </span><span style="color: #555555;">8</span><span> tzone   FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: America/Anchorage, America/Chic…
 </span></code></pre>
 <p>The <code>flights</code> table does not have any one-column primary key candidates:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(flights_dm_with_key, flights) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tally.html">count</a></span>(candidate)</a></code></pre></div>
@@ -305,11 +305,11 @@
 <p>To get an overview over all tables with primary keys, use <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>(<span class="kw"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
-#&gt;   table         pk_col
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;list&lt;chr&gt;&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> airlines         </span><span style="color: #555555;">[1]</span><span>
-#&gt; </span><span style="color: #555555;">2</span><span> airports         </span><span style="color: #555555;">[1]</span><span>
-#&gt; </span><span style="color: #555555;">3</span><span> planes           </span><span style="color: #555555;">[1]</span><span>
+#&gt;   table    pk_col 
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span> 
+#&gt; </span><span style="color: #555555;">1</span><span> airlines carrier
+#&gt; </span><span style="color: #555555;">2</span><span> airports faa    
+#&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum
 </span></code></pre>
 <p>Here we used the prepared <code>dm</code> object <code><a href="../reference/dm_nycflights13.html">dm_nycflights13(cycle = TRUE)</a></code> as an example. This object already has all keys pre-set.</p>
 </div>
@@ -374,33 +374,33 @@
 <p>Another function for getting to know your data better (cf. <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span>(flights_dm_with_key, weather, airports)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span><span>
-#&gt;       columns candidate why                                                
-#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;list&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                              
-#&gt; </span><span style="color: #555555;"> 1</span><span>        </span><span style="color: #555555;">[1]</span><span> TRUE      </span><span style="color: #555555;">""</span><span>                                                 
-#&gt; </span><span style="color: #555555;"> 2</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;"> 3</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;"> 4</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;"> 5</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;"> 6</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;"> 7</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;"> 8</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;"> 9</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;">10</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>cannot join a POSIXct object with an object that …
-#&gt; </span><span style="color: #555555;">11</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;">12</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;">13</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;">14</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
-#&gt; </span><span style="color: #555555;">15</span><span>        </span><span style="color: #555555;">[1]</span><span> FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt;    columns    candidate why                                                
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                              
+#&gt; </span><span style="color: #555555;"> 1</span><span> origin     TRUE      </span><span style="color: #555555;">""</span><span>                                                 
+#&gt; </span><span style="color: #555555;"> 2</span><span> day        FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;"> 3</span><span> dewp       FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;"> 4</span><span> hour       FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;"> 5</span><span> humid      FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;"> 6</span><span> month      FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;"> 7</span><span> precip     FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;"> 8</span><span> pressure   FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;"> 9</span><span> temp       FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;">10</span><span> time_hour  FALSE     </span><span style="color: #555555;">"</span><span>cannot join a POSIXct object with an object that …
+#&gt; </span><span style="color: #555555;">11</span><span> visib      FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;">12</span><span> wind_dir   FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;">13</span><span> wind_gust  FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;">14</span><span> wind_speed FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
+#&gt; </span><span style="color: #555555;">15</span><span> year       FALSE     </span><span style="color: #555555;">"</span><span>Can't join on 'value' x 'value' because of incomp…
 </span></code></pre>
 <p>Get an overview of all foreign key relations with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span>(<span class="kw"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="dt">cycle =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 3</span><span>
 #&gt;   child_table child_fk_cols parent_table
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>         </span><span style="color: #555555;font-style: italic;">&lt;list&lt;chr&gt;&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       
-#&gt; </span><span style="color: #555555;">1</span><span> flights               </span><span style="color: #555555;">[1]</span><span> airlines    
-#&gt; </span><span style="color: #555555;">2</span><span> flights               </span><span style="color: #555555;">[1]</span><span> airports    
-#&gt; </span><span style="color: #555555;">3</span><span> flights               </span><span style="color: #555555;">[1]</span><span> airports    
-#&gt; </span><span style="color: #555555;">4</span><span> flights               </span><span style="color: #555555;">[1]</span><span> planes
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       
+#&gt; </span><span style="color: #555555;">1</span><span> flights     carrier       airlines    
+#&gt; </span><span style="color: #555555;">2</span><span> flights     dest          airports    
+#&gt; </span><span style="color: #555555;">3</span><span> flights     origin        airports    
+#&gt; </span><span style="color: #555555;">4</span><span> flights     tailnum       planes
 </span></code></pre>
 </div>
   </div>

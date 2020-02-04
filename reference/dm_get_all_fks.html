@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -200,10 +200,10 @@ Therefore the <code>child_fk_cols</code> column may contain vectors of length gr
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>dm_get_all_fks</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt;   child_table child_fk_cols parent_table
-#&gt;   &lt;chr&gt;         &lt;list&lt;chr&gt;&gt; &lt;chr&gt;       
-#&gt; 1 flights               [1] airlines    
-#&gt; 2 flights               [1] airports    
-#&gt; 3 flights               [1] planes      </div></pre>
+#&gt;   &lt;chr&gt;       &lt;keys&gt;        &lt;chr&gt;       
+#&gt; 1 flights     carrier       airlines    
+#&gt; 2 flights     origin        airports    
+#&gt; 3 flights     tailnum       planes      </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

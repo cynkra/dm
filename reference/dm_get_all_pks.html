@@ -78,7 +78,7 @@ returns the tables, the respective primary key columns and their classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -201,11 +201,11 @@ Therefore the <code>pk_cols</code> column may contain vectors of length greater 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_get_all_pks</span>()</div><div class='output co'>#&gt; # A tibble: 3 x 2
-#&gt;   table         pk_col
-#&gt;   &lt;chr&gt;    &lt;list&lt;chr&gt;&gt;
-#&gt; 1 airlines         [1]
-#&gt; 2 airports         [1]
-#&gt; 3 planes           [1]</div></pre>
+#&gt;   table    pk_col 
+#&gt;   &lt;chr&gt;    &lt;keys&gt; 
+#&gt; 1 airlines carrier
+#&gt; 2 airports faa    
+#&gt; 3 planes   tailnum</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
