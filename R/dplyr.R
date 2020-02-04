@@ -327,6 +327,8 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   }
 
   by <- repair_by(by)
+  selected_wo_by <- setdiff(selected, by)
+
 
   new_key_names <- get_tracked_keys(x)
 
