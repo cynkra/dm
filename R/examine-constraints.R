@@ -61,13 +61,14 @@ print.dm_examine_constraints <- function(x, ...) {
     cli::cli_alert_warning("Unsatisfied constraints:")
 
     problem_df %>%
-      as_tibble() %>%
-      mutate(kind = kind_to_long(kind)) %>%
+      mutate(
+        into = if_else(kind == "FK", paste0(" into table ", tick(ref_table)), "")
+      ) %>%
       # FIXME: Use cli styles
       mutate(text = paste0(
         "Table ", tick(table), ": ",
         kind_to_long(kind), " ", format(columns),
-        if_else(kind == "FK", paste0(" into table ", tick(ref_table)), ""),
+        into,
         ": ", problem)
       ) %>%
       pull(text) %>%

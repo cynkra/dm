@@ -1,13 +1,13 @@
 > dm_nycflights13() %>% dm_examine_constraints()
 Message: [33m![39m Unsatisfied constraints:
 
-* Table `flights`: foreign key tailnum: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), ... (>= 7 total)
+* Table `flights`: foreign key tailnum into table `planes`: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), ... (>= 7 total)
 
 > dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
 Message: [33m![39m Unsatisfied constraints:
 
-* Table `flights`: foreign key dest: 7602 entries (2.3%) of `flights$dest` not in `airports$faa`: SJU (5819), BQN (896), STT (522), PSE (365)
-* Table `flights`: foreign key tailnum: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), ... (>= 7 total)
+* Table `flights`: foreign key dest into table `airports`: 7602 entries (2.3%) of `flights$dest` not in `airports$faa`: SJU (5819), BQN (896), STT (522), PSE (365)
+* Table `flights`: foreign key tailnum into table `planes`: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), ... (>= 7 total)
 
 > dm_nycflights13(cycle = TRUE) %>% dm_select_tbl(-flights) %>%
 +   dm_examine_constraints()
