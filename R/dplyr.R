@@ -328,11 +328,6 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
   by <- repair_by(by)
 
-  # inform user in case RHS `by` column(s) are added
-  if (!all(by %in% selected)) {
-    print(glue("Adding RHS `by` column(s) to selection: {commas(tick(setdiff(by, selected)))} (not part of the result)."))
-  }
-
   # selection without RHS `by`; only this is needed for disambiguation and by-columns are added later on for all join-types
   selected_wo_by <- selected[selected %in% setdiff(selected, by)]
 
@@ -371,6 +366,11 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     if (has_length(y_renames)) {
       names(selected_wo_by) <- recode(names(selected_wo_by), !!!prep_recode(y_renames[[1]]))
     }
+  }
+
+  # inform user in case RHS `by` column(s) are added
+  if (!all(by %in% selected)) {
+    print(glue("Adding RHS `by` column(s) to selection: {commas(tick(setdiff(by, selected)))} (not part of the result)."))
   }
 
   # rename RHS `by` columns in the tibble to avoid after-the-fact disambiguation collision
