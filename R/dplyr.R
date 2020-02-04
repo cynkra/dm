@@ -329,6 +329,10 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   by <- repair_by(by)
   selected_wo_by <- setdiff(selected, by)
 
+  # inform user in case RHS `by` column(s) are added
+  if (!all(by %in% selected)) {
+    print(glue("Adding RHS `by` column(s) to selection: {commas(tick(setdiff(by, selected)))} (not part of the result)."))
+  }
 
   new_key_names <- get_tracked_keys(x)
 
