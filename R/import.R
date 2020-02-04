@@ -1,4 +1,5 @@
 #' @import rlang
+#' @importFrom vctrs vec_ptype_abbr
 #' @import dplyr
 #' @import DBI
 #' @import tibble
