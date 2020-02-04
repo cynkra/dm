@@ -67,7 +67,7 @@ print.dm_examine_constraints <- function(x, ...) {
       mutate(text = paste0(
         "Table ", tick(table), ": ",
         kind_to_long(kind), " ", format(columns),
-        if_else(kind == "PK", paste0(" into table ", tick(ref_table)), ""),
+        if_else(kind == "FK", paste0(" into table ", tick(ref_table)), ""),
         ": ", problem)
       ) %>%
       pull(text) %>%
