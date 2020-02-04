@@ -1,7 +1,8 @@
-# Demo for presentation at the Seattle R user group,
+# Demo for presentation at the
+# New York Open Statistical Programming Meetup,
 # February 2020
 
-# {dm} facilitates working with multiple tables
+# {dm}: Relational data models in R
 
 options(tibble.print_min = 6)
 options(tibble.print_max = 6)
@@ -17,65 +18,22 @@ library(magrittr)
 ##
 ##
 
-# Teaser
-dm::dm_nycflights13(cycle = TRUE) %>%
-  dm::dm_draw()
-
 # Poll: Who is familiar with the {dplyr} package
 #       (grammar of data manipulation)?
 
 # Poll: Who is familiar with the {dbplyr} package
 #       (using {dplyr} with databases)?
 
-# Poll: Who has worked with databases?
+# Poll: Who has worked with databases, perhaps using SQL?
 
-# Poll: Who has worked with a software that has
-#       a concept of "THE DATASET"?
+# Poll: Who has worked with a software where you work with
+#       "THE DATASET"?
 
 # Poll: Who uses more than one table/data frame
 #       at the same time?
 
-##
-##
-##
-## Why?
-## -------------------------------------------------------
-##
-##
-##
 
-library(nycflights13)
 
-# Example dataset: tables linked with each other
-?flights
-
-flights
-
-##
-##
-##
-## Data model
-## -------------------------------------------------------
-##
-##
-##
-
-library(tidyverse)
-flights_base <-
-  flights %>%
-  select(
-    carrier, tailnum, origin, dest,
-    year, month, day, time_hour
-  )
-flights_base
-
-# `carrier` column also present in `airlines`, this table
-# contains additional information
-airlines
-
-flights_base %>%
-  left_join(airlines) %>%
-  select(name, carrier, tailnum)
 
 ##
 ##
@@ -86,32 +44,18 @@ flights_base %>%
 ##
 ##
 
+# Data
+library(nycflights13)
+
+dm::dm_nycflights13(cycle = TRUE) %>%
+  dm::dm_draw()
+
 # `carrier` is a "primary key" in `airlines`
 any(duplicated(airlines$carrier))
 
 # `carrier` is a "foreign key" in `flights` into `airlines`
 all(flights$carrier %in% airlines$carrier)
 
-##
-##
-##
-## Single source of truth
-## -------------------------------------------------------
-##
-##
-##
-
-# Update in one single location
-airlines[airlines$carrier == "UA", "name"] <-
-  "United broke my guitar"
-
-airlines %>%
-  filter(carrier == "UA")
-
-# ...propagates to all related records
-flights_base %>%
-  left_join(airlines) %>%
-  select(name, carrier, tailnum)
 
 ##
 ##
@@ -122,12 +66,46 @@ flights_base %>%
 ##
 ##
 
-flights_base %>%
+library(tidyverse)
+library(nycflights13)
+
+# Join one table
+flights %>%
+  left_join(airlines, by = "carrier") %>%
+  select(name, carrier, year:dep_time)
+
+# Use attributes from two tables after joining
+flights %>%
+  left_join(airlines, by = "carrier") %>%
+  count(name, month) %>%
+  ggplot() +
+  aes(x = factor(month), y = name, fill = n) +
+  geom_tile()
+
+# Join many tables
+flights_details <-
+  flights %>%
   left_join(airlines, by = "carrier") %>%
   left_join(planes, by = "tailnum") %>%
   left_join(weather, by = c("origin", "time_hour")) %>%
   left_join(airports, by = c("origin" = "faa")) %>%
   left_join(airports, by = c("dest" = "faa"))
+
+flights_details
+
+##
+##
+##
+## ...eventually
+## -------------------------------------------------------
+##
+##
+##
+
+flights_details %>%
+  count(is.na(lat.y), is.na(lon.y))
+
+all(flights$dest %in% airports$faa)
 
 ##
 ##
@@ -142,6 +120,36 @@ flights_base %>%
 ##
 ##
 ##
+
+
+
+##
+##
+##
+## Single source of truth
+## -------------------------------------------------------
+##
+##
+##
+
+# Keep information in one place
+flights %>%
+  left_join(airlines) %>%
+  select(name, carrier, tailnum)
+
+# Update in one single location
+airlines[airlines$carrier == "UA", "name"] <-
+  "United broke my guitar"
+
+airlines %>%
+  filter(carrier == "UA")
+
+# ...propagates to all related records
+flights %>%
+  left_join(airlines) %>%
+  select(name, carrier, tailnum)
+
+rm(airlines)
 
 ##
 ##
@@ -169,16 +177,6 @@ dm_flights %>%
 # Visualize
 dm_flights %>%
   dm_draw()
-
-# Selection of tables
-dm_flights %>%
-  dm_select_tbl(flights, airlines) %>%
-  dm_draw()
-
-try(
-  dm_flights %>%
-    dm_select_tbl(bogus)
-)
 
 
 
@@ -229,7 +227,7 @@ try(
 ##
 ##
 
-# Using an existing function:
+# Get a dm from an existing function:
 dm_flights <- dm_nycflights13()
 
 # Selecting tables
@@ -241,7 +239,8 @@ dm_flights %>%
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    year, month, day, origin, dep_time, dest, carrier
+    origin, dest, carrier, tailnum,
+    year, month, day, dep_time
   )
 
 # !!! Connect to a database !!!
@@ -260,8 +259,8 @@ dm_flights %>%
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    carrier, tailnum, origin,
-    year, month, day, dest, dep_time
+    origin, dest, carrier, tailnum,
+    year, month, day, dep_time
   ) %>%
   dm_select(planes, tailnum, year) %>%
   dm_select(airports, faa, lat, lon)
@@ -271,8 +270,8 @@ dm_flights %>%
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    carrier, tailnum, origin,
-    year, month, day, dest, dep_time
+    origin, dest, carrier, tailnum,
+    year, month, day, dep_time
   ) %>%
   dm_select(planes, tailnum, year) %>%
   dm_select(airports, faa, lat, lon) %>%
@@ -283,8 +282,8 @@ dm_flights %>%
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    carrier, tailnum, origin,
-    year, month, day, dest, dep_time
+    origin, dest, carrier, tailnum,
+    year, month, day, dep_time
   ) %>%
   dm_select(planes, tailnum, year) %>%
   dm_select(airports, faa, name, lat, lon) %>%
@@ -298,12 +297,12 @@ dm_flights_jfk_today <-
   dm_select_tbl(-weather) %>%
   dm_select(
     flights,
-    carrier, tailnum, origin,
-    year, month, day, dest, dep_time
+    origin, dest, carrier, tailnum,
+    year, month, day, dep_time
   ) %>%
   dm_select(planes, tailnum, year) %>%
   dm_select(airports, faa, name, lat, lon) %>%
-  dm_filter(flights, month == 2, day == 5) %>%
+  dm_filter(flights, month == 2, day == 4) %>%
   dm_filter(airports, name == "John F Kennedy Intl") %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_apply_filters()
@@ -382,8 +381,8 @@ dm_flights %>%
 
 # Separate access to automatic disambiguation:
 dm_flights %>%
-  dm_disambiguate_cols()
-
+  dm_disambiguate_cols() %>%
+  dm_draw()
 
 
 ##
@@ -614,7 +613,7 @@ try({
     # FIXME: Can't use cycles for now.
     dm_rm_fk(flights, origin, airports) %>%
 
-    # Fill bad links with NA values:
+    # Fill bad links with NA/NULL values:
     dm_zoom_to(flights) %>%
     left_join(planes, select = c(tailnum, type)) %>%
     mutate(
@@ -734,6 +733,13 @@ try(
 
 # Same for airplanes?
 planes
+
+flights_base <-
+  flights %>%
+  select(
+    carrier, tailnum, origin, dest,
+    year, month, day, time_hour
+  )
 
 flights_base %>%
   left_join(planes)
