@@ -381,8 +381,12 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   selected_repaired <- c(selected_wo_by, by_rhs_rename)
 
   y_tbl <- select(y_tbl, !!!selected_repaired)
+
+  # the `by` argument needs to be updated: LHS stays, RHS needs to be replaced with new names
+  repaired_by <- set_names(recode(by, !!!prep_recode(by_rhs_rename)), names(by))
+
   # in case key columns of x_tbl have the same name as selected columns of y_tbl
   # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
   # We can track the new column names
-  list(x_tbl = x_tbl, y_tbl = y_tbl, by = by, new_key_names = new_key_names)
+  list(x_tbl = x_tbl, y_tbl = y_tbl, by = repaired_by, new_key_names = new_key_names)
 }
