@@ -23,7 +23,7 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste(select = TRUE)
-dm_paste <- function(dm, select = FALSE, tab_width = 2) {
+dm_paste <- function(dm, select = FALSE, color = TRUE, tab_width = 2) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
@@ -43,6 +43,13 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
       ))
     code_select <- if (nrow(tbl_select)) summarize(tbl_select, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
     code <- glue_collapse(c(code, code_select), sep = " %>%\n")
+  }
+
+  if (color) {
+    colors <- dm_get_colors(dm)
+    colors <- colors[!are_na(names(colors))]
+    code_color <- imap_chr(colors, ~glue("{tab}dm_set_colors({tick_if_needed(..2)} = {tick_if_needed(..1)})"))
+    code <- glue_collapse(c(code, code_color), sep = " %>%\n")
   }
   # adding code for establishing PKs
   # FIXME: this will fail with compound keys
