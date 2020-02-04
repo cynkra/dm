@@ -1,8 +1,9 @@
-# dm 0.1.0.9000
+# dm 0.1.1
 
 - New class for prettier printing of keys (#244).
-- Add experimental schema support for `dm_from_src()`.
-- `dm_from_src()` also accepts a DBI connection (#256), and supports arguments `schema` and `table_type` for Postgres.
+- Ease tidyselect version requirement to 0.2.5.
+- Add experimental schema support for `dm_from_src()` for Postgres through the new `schema` and `table_type` arguments.
+- `dm_from_src()` also accepts a DBI connection (#256).
 
 
 # dm 0.1.0
