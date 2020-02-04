@@ -251,6 +251,15 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
       get_zoomed_tbl(),
     find_testthat_root_file("out/join_adding_RHS_by.txt")
   )
+
+  # test RHS-by name collision
+  expect_dm_error(
+    dm_for_filter %>%
+      dm_rename(t2, "...1" = d) %>%
+      dm_zoom_to(t3) %>%
+      right_join(t2),
+    class = "rhs_by_name_collision"
+  )
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
