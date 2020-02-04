@@ -52,4 +52,18 @@ test_that("generating code for creation of existing 'dm' works", {
     ),
     fixed = TRUE
   )
+
+  # produce code with colors
+  expect_output(
+    dm_paste(dm_set_colors(dm_for_filter, "#A0BB55" = t1:t3, "darkgreen" = t5:t6), FALSE, TRUE, 4),
+    paste0(
+      "dm(t1, t2, t3, t4, t5, t6) %>%\n    dm_set_colors(`#A0BB55` = t1) %>%\n    dm_set_colors(`#A0BB55` = t2) %>%",
+    "\n    dm_set_colors(`#A0BB55` = t3) %>%\n    dm_set_colors(`#006400` = t5) %>%\n    ",
+    "dm_set_colors(`#006400` = t6) %>%\n    dm_add_pk(t1, a) %>%\n    dm_add_pk(t2, c) %>%",
+      "\n    dm_add_pk(t3, f) %>%\n    dm_add_pk(t4, h) %>%\n    dm_add_pk(t5, k) %>%\n    ",
+      "dm_add_pk(t6, n) %>%\n    dm_add_fk(t2, d, t1) %>%\n    dm_add_fk(t2, e, t3) %>%\n    ",
+      "dm_add_fk(t4, j, t3) %>%\n    dm_add_fk(t5, l, t4) %>%\n    dm_add_fk(t5, m, t6)"
+    ),
+    fixed = TRUE
+  )
 })
