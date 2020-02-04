@@ -854,3 +854,13 @@ as.list.dm <- function(x, ...) {
 as.list.zoomed_dm <- function(x, ...) {
   as.list(get_zoomed_tbl(x))
 }
+
+#' @export
+head.zoomed_dm <- function(x, n = 6L, ...) {
+  replace_zoomed_tbl(x, head(get_zoomed_tbl(x), n, ...))
+}
+
+#' @export
+tail.zoomed_dm <- function(x, n = 6L, ...) {
+  replace_zoomed_tbl(x, tail(get_zoomed_tbl(x), n, ...))
+}
