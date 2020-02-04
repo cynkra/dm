@@ -69,8 +69,8 @@ print.dm_examine_constraints <- function(x, ...) {
         "Table ", tick(table), ": ",
         kind_to_long(kind), " ", format(columns),
         into,
-        ": ", problem)
-      ) %>%
+        ": ", problem
+      )) %>%
       pull(text) %>%
       cli::cat_bullet(bullet_col = "red")
   }

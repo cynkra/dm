@@ -9,7 +9,8 @@ commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE) {
       cli::symbol$ellipsis, " (",
       if (capped) ">= ",
       length(x),
-      " total)")
+      " total)"
+    )
     length(x) <- max_commas
   }
 
