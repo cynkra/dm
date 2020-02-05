@@ -192,15 +192,7 @@ form a subset of the values of the referenced column.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_examine_constraints</span>()</div><div class='output co'>#&gt; # A tibble: 6 x 6
-#&gt;   table   kind  columns ref_table is_key problem                                
-#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;keys&gt;  &lt;chr&gt;     &lt;lgl&gt;  &lt;chr&gt;                                  
-#&gt; 1 flights FK    tailnum planes    FALSE  "50094 entries (14.9%) of `flights$tai…
-#&gt; 2 airlin… PK    carrier &lt;NA&gt;      TRUE   ""                                     
-#&gt; 3 airpor… PK    faa     &lt;NA&gt;      TRUE   ""                                     
-#&gt; 4 planes  PK    tailnum &lt;NA&gt;      TRUE   ""                                     
-#&gt; 5 flights FK    carrier airlines  TRUE   ""                                     
-#&gt; 6 flights FK    origin  airports  TRUE   ""                                     </div></pre>
+  <span class='fu'>dm_examine_constraints</span>()</div><div class='output co'>#&gt; <span class='message'>! Unsatisfied constraints:</span></div><div class='output co'>#&gt; ● Table `flights`: foreign key tailnum into table `planes`: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), … (&gt;= 7 total)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
