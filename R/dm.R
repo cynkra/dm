@@ -99,7 +99,7 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL, ...) {
   }
   # both DBI-Connection and {dplyr}-src object are accepted
   src <- src_from_src_or_con(src)
-  src_tbl_names <- src_tbls(src)
+  src_tbl_names <- unique(src_tbls(src))
 
   if (is_null(table_names)) {
     auto_detect <- TRUE
