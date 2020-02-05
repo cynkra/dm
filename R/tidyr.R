@@ -61,3 +61,31 @@ separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = 
   new_tracked_keys_zoom <- new_tracked_keys(data, selected)
   replace_zoomed_tbl(data, separated_tbl, new_tracked_keys_zoom)
 }
+
+nest.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+nest.zoomed_dm <- function(.data, ...) {
+  zoomed_dm <- .data
+
+  keys <- get_tracked_keys(zoomed_dm)
+  orig_table <- orig_name_zoomed(zoomed_dm)
+  if (!dm_has_pk_impl(zoomed_dm, orig_table)) abort_nest_only_for_pt()
+  orig_pk <- dm_get_pk_impl(zoomed_dm, orig_table)
+  if (!(orig_pk %in% keys)) abort_pk_not_tracked(orig_table, orig_pk)
+  new_pk <- names(keys[keys == orig_pk])
+
+  child_tables <- get_tracked_in_fks(zoomed_dm, orig_table) %>%
+    mutate(data = map(child_table, ~dm_get_tables_impl(zoomed_dm)[[.x]]))
+  x <- get_zoomed_tbl(zoomed_dm)
+
+  for (i in seq_len(nrow(child_tables))) {
+    x <- nest_join(
+      x,
+      y = child_tables$data[[i]],
+      by = set_names(child_tables$child_fk_cols[i], new_pk),
+      name = child_tables$child_table[i])
+  }
+  x
+}
