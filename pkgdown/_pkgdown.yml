@@ -90,6 +90,8 @@ reference:
   - left_join.zoomed_dm
   - right_join.zoomed_dm
   - semi_join.zoomed_dm
+  - head.zoomed_dm
+  - tail.zoomed_dm
 
 - title: Flattening
   contents:
