@@ -1,4 +1,4 @@
-> dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
+> dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints() %>% as_tibble()
 # A tibble: 7 x 6
   table   kind  columns ref_table is_key problem                                
   <chr>   <chr> <keys>  <chr>     <lgl>  <chr>                                  
