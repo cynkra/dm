@@ -17,7 +17,7 @@ dm_paste(dm, select = FALSE, tab_width = 2)
 Code for producing the given \code{dm}.
 }
 \description{
-\code{dm_paste} takes an existing \code{dm} and produces the code necessary for its creation
+\code{dm_paste()} takes an existing \code{dm} and emits the code necessary for its creation.
 }
 \details{
 At the very least (if no keys exist in the given \code{\link{dm}}) a \code{dm()} statement is produced that -- when executed --

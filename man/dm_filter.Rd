@@ -28,9 +28,9 @@ See \code{vignette("programming", package = "dplyr")}
 for an introduction to these concepts.}
 }
 \value{
-For \code{dm_filter}: an updated \code{dm} object (filter executed for given table, and condition stored).
+For \code{dm_filter()}: an updated \code{dm} object (filter executed for given table, and condition stored).
 
-For \code{dm_apply_filters}: an updated \code{dm} object (filter effects evaluated for all tables).
+For \code{dm_apply_filters()}: an updated \code{dm} object (filter effects evaluated for all tables).
 
 For \code{dm_apply_filters_to_tbl()}, a table.
 }

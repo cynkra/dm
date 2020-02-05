@@ -55,7 +55,7 @@
 #'   See `vignette("programming", package = "dplyr")`
 #'   for an introduction to these concepts.
 #'
-#' @return For `dm_filter`: an updated `dm` object (filter executed for given table, and condition stored).
+#' @return For `dm_filter()`: an updated `dm` object (filter executed for given table, and condition stored).
 #'
 #' @examples
 #' dm_nyc_filtered <-
@@ -120,7 +120,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @return For `dm_apply_filters`: an updated `dm` object (filter effects evaluated for all tables).
+#' @return For `dm_apply_filters()`: an updated `dm` object (filter effects evaluated for all tables).
 #'
 #' @examples
 #'
