@@ -492,6 +492,17 @@ error_txt_fk_not_tracked <- function(x_orig_name, y_name) {
   )
 }
 
+# lost track of PK-column(s) -----------------------------------
+
+abort_pk_not_tracked <- function(orig_table, orig_pk) {
+  abort(error_txt_pk_not_tracked(orig_table, orig_pk), .subclass = dm_error_full("pk_not_tracked"))
+}
+
+error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
+  glue("The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {tick(orig_table)} got lost ",
+       "in transformations. Therefore it is not possible to use `nest.zoomed_dm()`.")
+}
+
 # RHS-by column not selected ----------------------------------------------
 
 abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
