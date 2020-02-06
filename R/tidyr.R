@@ -88,5 +88,5 @@ nest.zoomed_dm <- function(.data, ...) {
       by = set_names(child_tables$child_fk_cols[i], new_pk),
       name = child_tables$child_table[i])
   }
-  x
+  replace_zoomed_tbl(zoomed_dm, x)
 }
