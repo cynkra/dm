@@ -77,7 +77,7 @@ nest.zoomed_dm <- function(.data, ...) {
   if (!(orig_pk %in% keys)) abort_pk_not_tracked(orig_table, orig_pk)
   new_pk <- names(keys[keys == orig_pk])
 
-  child_tables <- get_tracked_in_fks(zoomed_dm, orig_table) %>%
+  child_tables <- get_orig_in_fks(zoomed_dm, orig_table) %>%
     mutate(data = map(child_table, ~dm_get_tables_impl(zoomed_dm)[[.x]]))
   x <- get_zoomed_tbl(zoomed_dm)
 
