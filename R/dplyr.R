@@ -374,3 +374,50 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   # We can track the new column names
   list(x_tbl = x_tbl, y_tbl = y_tbl, by = by, new_key_names = new_key_names)
 }
+
+#' @export
+nest_join.dm <- function(x, ...) {
+  check_zoomed(.data)
+}
+
+#' @export
+nest_join.zoomed_dm <- function(x, ...) {
+  zoomed_dm <- x
+  src_dm <- dm_get_src_impl(zoomed_dm)
+  if (inherits(src_dm, "src_dbi")) abort_only_for_local_src(src_dm)
+
+  vars <- tidyselect_table_names(zoomed_dm)
+  # FIXME: needs to be replaced at some point (#257)
+  selected <- dm_try_tables(tidyselect::vars_select(vars, ...), vars)
+  if (is_empty(selected)) selected <- vars
+
+  keys <- get_tracked_keys(zoomed_dm)
+  orig_table <- orig_name_zoomed(zoomed_dm)
+
+  if (!dm_has_pk_impl(zoomed_dm, orig_table)) {
+    message("The originally zoomed table didn't have a primary key, therefore `nest.zoomed_dm()` does nothing.")
+    return(zoomed_dm)
+  }
+  orig_pk <- dm_get_pk_impl(zoomed_dm, orig_table)
+  if (!(orig_pk %in% keys)) abort_pk_not_tracked(orig_table, orig_pk)
+  new_pk <- names(keys[keys == orig_pk])
+
+  child_tables <- get_orig_in_fks(zoomed_dm, orig_table) %>%
+    mutate(data = map(child_table, ~dm_get_tables_impl(zoomed_dm)[[.x]])) %>%
+    # FIXME: should we check and warn/message, if no child table is in selected?
+    filter(child_table %in% selected) %>%
+    # perform joins in the order given in the ellipsis
+    arrange(match(child_table, selected))
+  x <- get_zoomed_tbl(zoomed_dm)
+
+  for (i in seq_len(nrow(child_tables))) {
+    x <- nest_join(
+      x,
+      y = child_tables$data[[i]],
+      by = set_names(child_tables$child_fk_cols[i], new_pk),
+      name = child_tables$child_table[i]) %>%
+      # FIXME: why does `nest_join()` not produce a `list_of`?
+      mutate(!!child_tables$child_table[i] := vctrs::as_list_of(!!sym(child_tables$child_table[i])))
+  }
+  replace_zoomed_tbl(zoomed_dm, x)
+}
