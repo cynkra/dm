@@ -71,8 +71,11 @@ nest.zoomed_dm <- function(.data, ...) {
 
   keys <- get_tracked_keys(zoomed_dm)
   orig_table <- orig_name_zoomed(zoomed_dm)
-  # FIXME: write abort functions
-  if (!dm_has_pk_impl(zoomed_dm, orig_table)) abort_nest_only_for_pt()
+
+  if (!dm_has_pk_impl(zoomed_dm, orig_table)) {
+    message("The originally zoomed table didn't have a primary key, therefore `nest.zoomed_dm()` does nothing.")
+    return(zoomed_dm)
+  }
   orig_pk <- dm_get_pk_impl(zoomed_dm, orig_table)
   if (!(orig_pk %in% keys)) abort_pk_not_tracked(orig_table, orig_pk)
   new_pk <- names(keys[keys == orig_pk])
