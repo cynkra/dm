@@ -507,11 +507,11 @@ error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
 # only for local src ------------------------------------------------------
 
 abort_only_for_local_src <- function(src_dm) {
-  abort(error_txt_only_for_local_src(format_classes(class(src_dm))), .subclass = "only_for_local_src")
+  abort(error_txt_only_for_local_src(format_classes(class(src_dm))), .subclass = dm_error_full("only_for_local_src"))
 }
 
 error_txt_only_for_local_src <- function(src_class) {
-  glue("`nest.zoomed_dm()` works only for a local `src`, not on a database.")
+  glue("`nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
 }
 
 # RHS-by column not selected ----------------------------------------------
