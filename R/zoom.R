@@ -257,8 +257,7 @@ dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   )
 }
 
-
-get_tracked_keys <- function(dm) {
+get_tracked_cols <- function(dm) {
   dm_get_def(dm) %>%
     filter(table == orig_name_zoomed(dm)) %>%
     pull(col_tracker_zoom) %>%
