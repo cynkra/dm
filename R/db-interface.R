@@ -124,14 +124,14 @@ copy_dm_to <- function(dest, dm, ...,
 #' @examples
 #' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
 #' iris_dm <- copy_dm_to(
-#'   src_sqlite,
-#'   as_dm(list(iris = iris)),
-#'   set_key_constraints = FALSE
-#' )
+  src_sqlite,
+  as_dm(list(iris = iris)),
+  set_key_constraints = FALSE
+)
 #'
-#' # there are no key constraints in `as_dm(list(iris = iris))`
-#' # but if there were, and if we had already implemented setting key
-#' # constraints for SQLite, the following command would do something:
+#'
+#'
+#'
 #' dm_set_key_constraints(iris_dm)
 #' @noRd
 dm_set_key_constraints <- nse(function(dm) {

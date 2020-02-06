@@ -5,18 +5,18 @@
 options(tibble.print_min = 6)
 options(tibble.print_max = 6)
 
-##
-##
-##
-## Why?
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
 
 library(nycflights13)
 
-# Example dataset: tables linked with each other
+
 ?flights
 ?airports
 ?airlines
@@ -29,21 +29,21 @@ flights_base <-
   select(year, month, day, carrier, tailnum, origin, dest)
 flights_base
 
-# carrier column also present in `airlines`, this table contains
-# additional information
+
+
 airlines
 
 flights_base %>%
   left_join(airlines)
 
-# single source of truth: updating in one single location
+
 airlines[airlines$carrier == "UA", "name"] <- "United broke my guitar"
 
 # ...propagates to related records
 flights_base %>%
   left_join(airlines)
 
-# Same for airplanes?
+
 planes
 
 flights_base %>%
@@ -53,11 +53,11 @@ flights_base %>%
   left_join(planes) %>%
   count(is.na(type))
 
-# Take a closer look at the join
+
 flights_base %>%
   left_join(planes, by = "tailnum")
 
-# Same for airports?
+
 airports
 
 try(
@@ -65,35 +65,35 @@ try(
     left_join(airports)
 )
 
-# Need to specify join variables!
+
 flights_base %>%
   left_join(airports, by = c("origin" = "faa"))
 
-# cleanup
+
 rm(airlines)
 
-##
-##
-##
-## Keys
-## --------------------------------------------------------------------
-##
-##
-##
 
-# Row identifiers
+
+
+
+
+
+
+
+
+
 t1 <- tibble(a = 1, b = letters[1:3])
 t1
 t2 <- tibble(a = 1, c = 1:2)
 t2
 
-# What happens here?
+
 left_join(t1, t2)
 
-# When joining, the column(s) must be unique in at least one
-# participating table!
 
-# Ensure uniqueness:
+
+
+
 airlines %>%
   count(carrier)
 
@@ -105,7 +105,7 @@ planes %>%
   count(tailnum) %>%
   count(n)
 
-# dm shortcut:
+
 planes %>%
   dm::check_key(tailnum)
 
@@ -133,18 +133,18 @@ airports %>%
 # Cleanup
 rm(t1, t2)
 
-##
-##
-##
-## Data model
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
 
 library(dm)
 
-# Compound object: tables, relationships, data
+
 dm_nycflights13(cycle = TRUE)
 
 dm_nycflights13(cycle = TRUE) %>%
@@ -408,7 +408,7 @@ nycflights13_tbl
 nycflights13_tbl %>%
   dm_draw()
 
-# Adding primary keys
+
 nycflights13_pk <-
   nycflights13_tbl %>%
   dm_add_pk(weather, origin_slot_id) %>%
@@ -419,9 +419,9 @@ nycflights13_pk <-
 nycflights13_pk %>%
   dm_draw()
 
-# FIXME: Model weak constraints, show differently in diagram (#4)
 
-# Adding foreign keys
+
+
 nycflights13_fk <-
   nycflights13_pk %>%
   dm_add_fk(flights, origin_slot_id, weather, check = FALSE) %>%
@@ -433,7 +433,7 @@ nycflights13_fk <-
 nycflights13_fk %>%
   dm_draw()
 
-# Color it!
+
 dm_get_available_colors()
 
 nycflights13_fk %>%
