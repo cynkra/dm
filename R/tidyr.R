@@ -92,7 +92,9 @@ nest.zoomed_dm <- function(.data, ...) {
       x,
       y = child_tables$data[[i]],
       by = set_names(child_tables$child_fk_cols[i], new_pk),
-      name = child_tables$child_table[i])
+      name = child_tables$child_table[i]) %>%
+      # FIXME: why does `nest_join()` not produce a `list_of`?
+      mutate(!!child_tables$child_table[i] := vctrs::as_list_of(!!sym(child_tables$child_table[i])))
   }
   replace_zoomed_tbl(zoomed_dm, x)
 }
