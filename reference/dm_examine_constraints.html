@@ -43,7 +43,10 @@
 
 
 <meta property="og:title" content="Validate your data model — dm_examine_constraints" />
-<meta property="og:description" content="This function returns a tibble with information about which key constraints are met (is_key = TRUE) or violated (FALSE)." />
+<meta property="og:description" content="This function returns a tibble with information about
+which key constraints are met (is_key = TRUE) or violated (FALSE).
+The printing for this object is special, use as_tibble()
+to print as a regular tibble." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -158,7 +161,10 @@
     </div>
 
     <div class="ref-description">
-    <p>This function returns a tibble with information about which key constraints are met (<code>is_key = TRUE</code>) or violated (<code>FALSE</code>).</p>
+    <p>This function returns a tibble with information about
+which key constraints are met (<code>is_key = TRUE</code>) or violated (<code>FALSE</code>).
+The printing for this object is special, use <code>as_tibble()</code>
+to print as a regular tibble.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dm_examine_constraints</span>(<span class='no'>dm</span>)</pre>
