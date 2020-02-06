@@ -45,7 +45,7 @@ dm_rename_tbl <- function(dm, ...) {
 
 tidyselect_table_names <- function(dm) {
   structure(
-    src_tbls(dm),
+    src_tbls_impl(dm),
     type = c("table", "tables")
   )
 }
