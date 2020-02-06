@@ -377,7 +377,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
 #' @export
 nest_join.dm <- function(x, ...) {
-  check_zoomed(.data)
+  check_zoomed(x)
 }
 
 #' @export
