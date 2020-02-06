@@ -6,51 +6,51 @@ options(tibble.print_min = 6)
 options(tibble.print_max = 6)
 options(rlang_backtrace_on_error = "none")
 
-##
-##
-##
-## Greeting
-## --------------------------------------------------------------------
-##
-##
-##
 
-# Teaser
+
+
+
+
+
+
+
+
+
 dm::dm_nycflights13(cycle = TRUE) %>%
   dm::dm_draw()
 
-# Poll: Who has worked with a software that has
-#       a concept of "THE DATASET"?
 
-# Poll: Who has worked with databases?
 
-# Poll: Who uses more than one table/data frame
-#       at the same time?
 
-##
-##
-##
-## Why?
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 library(nycflights13)
 
-# Example dataset: tables linked with each other
+
 ?flights
 
 flights
 
-##
-##
-##
-## Data model
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
 
 library(tidyverse)
 flights_base <-
@@ -58,56 +58,56 @@ flights_base <-
   select(year, month, day, carrier, tailnum, origin, dest, time_hour)
 flights_base
 
-# `carrier` column also present in `airlines`, this table contains
-# additional information
+
+
 airlines
 
 flights_base %>%
   left_join(airlines)
 
-##
-##
-##
-## Keys
-## --------------------------------------------------------------------
-##
-##
-##
 
-# `carrier` is a "primary key" in `airlines`
+
+
+
+
+
+
+
+
+
 any(duplicated(airlines$carrier))
 
-# `carrier` is a "foreign key" in `flights` into `airlines`
+
 all(flights$carrier %in% airlines$carrier)
 
-##
-##
-##
-## Single source of truth
-## --------------------------------------------------------------------
-##
-##
-##
 
-# Update in one single location
+
+
+
+
+
+
+
+
+
 airlines[airlines$carrier == "UA", "name"] <-
   "United broke my guitar"
 
 airlines %>%
   filter(carrier == "UA")
 
-# ...propagates to all related records
+
 flights_base %>%
   left_join(airlines)
 
-##
-##
-##
-## Goal: work with one table
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
 
 flights_base %>%
   left_join(airlines, by = "carrier") %>%
@@ -116,39 +116,39 @@ flights_base %>%
   left_join(airports, by = c("origin" = "faa")) %>%
   left_join(airports, by = c("dest" = "faa"))
 
-##
-##
-##
-## PROBLEMS (see appendix)
-## --------------------------------------------------------------------
-##
-## - wrong keys
-## - data mismatches
-## - relationship unclear
-## - combinatorial explosion
-##
-##
-##
 
-##
-##
-##
-## Data model object
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 library(dm)
 
-# Compound object: tables, relationships, data
+
 dm_flights <- dm_nycflights13(cycle = TRUE)
 dm_flights
 
 dm_flights %>%
   dm_draw()
 
-# Selection of tables
+
 dm_flights %>%
   dm_select_tbl(flights, airlines) %>%
   dm_draw()
@@ -162,7 +162,7 @@ try(
     dm_select_tbl(bogus)
 )
 
-# Accessing tables
+
 dm_flights %>%
   tbl("airlines")
 
@@ -170,16 +170,16 @@ dm_flights %>%
 dm_flights %>%
   src_tbls()
 
-# NB: [, $, [[ and names() also work
 
-##
-##
-##
-## Joining two tables
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
+
 
 dm_flights <- dm_nycflights13()
 dm_flights %>%
@@ -193,28 +193,28 @@ try(
     dm_join_to_tbl(airports, airlines)
 )
 
-##
-##
-##
-## NEW NEW NEW: Joining many tables
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
 
 dm_flights %>%
   dm_flatten_to_tbl(flights)
 
-##
-##
-##
-## Copy to database
-## --------------------------------------------------------------------
-##
-##
-##
 
-# All operations are designed to work locally and on the database
+
+
+
+
+
+
+
+
+
 dm_flights_sqlite <-
   dm_flights %>%
   copy_dm_to(
@@ -239,7 +239,7 @@ dm_flights_sqlite %>%
   dm_flatten_to_tbl(flights) %>%
   dbplyr::sql_render()
 
-# Filtering on the database
+
 dm_flights_sqlite %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
@@ -268,12 +268,12 @@ dm_flights_sqlite %>%
 dm_flights %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.")
 
-# ... which then can be filtered on another table
+
 dm_flights %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl")
 
-# ... and stored in another dm variable
+
 delta_non_jfk_january <-
   dm_flights %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
@@ -282,11 +282,11 @@ delta_non_jfk_january <-
   dm_filter(flights, month == 1)
 delta_non_jfk_january
 
-# Querying a table applies the filters
+
 delta_non_jfk_january %>%
   tbl("planes")
 
-# FIXME: Can this work without applying all filters?
+
 
 delta_non_jfk_january %>%
   dm_apply_filters() %>%
@@ -296,18 +296,18 @@ delta_non_jfk_january %>%
   dm_flatten_to_tbl(flights)
 
 
-##
-##
-##
-## Build up data model from scratch
-## --------------------------------------------------------------------
-##
-##
-##
 
-# Linking the weather table
 
-# Determine key candidates
+
+
+
+
+
+
+
+
+
+
 weather %>%
   enum_pk_candidates()
 
@@ -315,7 +315,7 @@ weather %>%
   enum_pk_candidates() %>%
   count(candidate)
 
-# It's tricky:
+
 weather %>%
   unite("slot_id", origin, year, month, day, hour, remove = FALSE) %>%
   count(slot_id) %>%
@@ -329,14 +329,14 @@ weather %>%
   count(origin, format(time_hour)) %>%
   filter(n > 1)
 
-# This looks like a good candidate:
+
 weather %>%
   count(origin, format(time_hour, tz = "UTC")) %>%
   filter(n > 1)
 
-# FIXME: Support compound keys (#3)
 
-# Currently, we need to create surrogate keys:
+
+
 weather_link <-
   weather %>%
   mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
@@ -365,7 +365,7 @@ nycflights13_tbl
 nycflights13_tbl %>%
   dm_draw()
 
-# Adding primary keys
+
 nycflights13_pk <-
   nycflights13_tbl %>%
   dm_add_pk(weather, origin_slot_id) %>%
@@ -376,9 +376,9 @@ nycflights13_pk <-
 nycflights13_pk %>%
   dm_draw()
 
-# FIXME: Model weak constraints, show differently in diagram (#4)
 
-# Adding foreign keys
+
+
 nycflights13_fk <-
   nycflights13_pk %>%
   dm_add_fk(flights, origin_slot_id, weather) %>%
@@ -390,7 +390,7 @@ nycflights13_fk <-
 nycflights13_fk %>%
   dm_draw()
 
-# Color it!
+
 dm_get_available_colors()
 
 nycflights13_fk %>%
@@ -438,27 +438,27 @@ try({
     dm_draw()
 })
 
-##
-##
-##
-## Appendix
-## ====================================================================
-##
-##
-##
 
-##
-##
-##
-## Analogy?
-## --------------------------------------------------------------------
-##
-##
-##
 
-# Analogy: parallel vectors
-# Multiple parallel vectors can be combined into a data frame.
-# Multiple related tables can be combined into a dm.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 x <- 1:5
 x
 y <- x + 1
@@ -472,16 +472,16 @@ try(
     mutate(z = diff(y))
 )
 
-##
-##
-##
-## Pitfall: wrong keys
-## --------------------------------------------------------------------
-##
-##
-##
 
-# Same for airplanes?
+
+
+
+
+
+
+
+
+
 planes
 
 flights_base %>%
@@ -491,7 +491,7 @@ flights_base %>%
   left_join(planes) %>%
   count(is.na(type))
 
-# Take a closer look at the join
+
 flights_base %>%
   left_join(planes, by = "tailnum")
 
@@ -499,14 +499,14 @@ flights_base %>%
   left_join(planes, by = "tailnum") %>%
   count(is.na(type))
 
-##
-##
-##
-## Pitfall: data mismatches
-## --------------------------------------------------------------------
-##
-##
-##
+
+
+
+
+
+
+
+
 
 flights_base %>%
   left_join(planes, by = "tailnum") %>%
@@ -516,16 +516,16 @@ flights_base %>%
   ggplot(aes(x = carrier, y = mismatch_rate)) +
   geom_col()
 
-##
-##
-##
-## Pitfall: relationship unclear
-## --------------------------------------------------------------------
-##
-##
-##
 
-# Same for airports?
+
+
+
+
+
+
+
+
+
 airports
 
 try(
@@ -533,35 +533,35 @@ try(
     left_join(airports)
 )
 
-# Need to specify join variables!
+
 flights_base %>%
   left_join(airports, by = c("origin" = "faa"))
 
-# cleanup
+
 rm(airlines)
 
-##
-##
-##
-## Pitfall: combinatorial explosion
-## --------------------------------------------------------------------
-##
-##
-##
 
-# Row identifiers
+
+
+
+
+
+
+
+
+
 t1 <- tibble(a = 1, b = letters[1:3])
 t1
 t2 <- tibble(a = 1, c = 1:2)
 t2
 
-# What happens here?
+
 left_join(t1, t2)
 
-# When joining, the column(s) must be unique in at least one
-# participating table!
 
-# Ensure uniqueness:
+
+
+
 airlines %>%
   count(carrier)
 
@@ -573,7 +573,7 @@ planes %>%
   count(tailnum) %>%
   count(n)
 
-# dm shortcut:
+
 planes %>%
   check_key(tailnum)
 
@@ -585,15 +585,15 @@ try(
 airports %>%
   check_key(faa)
 
-# Why is name not a key candidate for airports?
+
 try(
   airports %>%
     check_key(name)
 )
 
-# NEW NEW NEW: Friendly description
+
 airports %>%
   enum_pk_candidates()
 
-# Cleanup
+
 rm(t1, t2)

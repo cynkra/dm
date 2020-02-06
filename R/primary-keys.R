@@ -32,9 +32,9 @@
 #' @examples
 #' nycflights_dm <- dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 #' nycflights_dm %>%
-#'   dm_draw()
+  dm_draw()
 #'
-#' # the following works
+#'
 #' nycflights_dm %>%
 #'   dm_add_pk(planes, tailnum) %>%
 #'   dm_add_pk(airports, faa, check = TRUE) %>%

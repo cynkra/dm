@@ -148,7 +148,7 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' @examples
 #' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 #' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
-#' # this is passing:
+#'
 #' check_subset(data_1, a, data_2, a)
 #'
 #' # this is failing:
