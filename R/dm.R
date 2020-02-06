@@ -299,8 +299,13 @@ debug_validate_dm <- function(dm) {
 #' @export
 dm_get_src <- function(x) {
   check_not_zoomed(x)
+  dm_get_src_impl(x)
+}
+
+dm_get_src_impl <- function(x) {
   tables <- dm_get_tables_impl(x)
   tbl_src(tables[1][[1]])
+
 }
 
 #' Get connection

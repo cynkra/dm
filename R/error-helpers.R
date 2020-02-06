@@ -503,6 +503,17 @@ error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
        "in transformations. Therefore it is not possible to use `nest.zoomed_dm()`.")
 }
 
+
+# only for local src ------------------------------------------------------
+
+abort_only_for_local_src <- function(src_dm) {
+  abort(error_txt_only_for_local_src(format_classes(class(src_dm))), .subclass = "only_for_local_src")
+}
+
+error_txt_only_for_local_src <- function(src_class) {
+  glue("`nest.zoomed_dm()` works only for a local `src`, not on a database.")
+}
+
 # RHS-by column not selected ----------------------------------------------
 
 abort_need_to_select_rhs_by <- function(y_name, rhs_by) {

@@ -69,6 +69,9 @@ nest.dm <- function(.data, ...) {
 nest.zoomed_dm <- function(.data, ...) {
   zoomed_dm <- .data
 
+  src_dm <- dm_get_src_impl(zoomed_dm)
+  if (inherits(src_dm, "src_dbi")) abort_only_for_local_src(src_dm)
+
   keys <- get_tracked_keys(zoomed_dm)
   orig_table <- orig_name_zoomed(zoomed_dm)
 
