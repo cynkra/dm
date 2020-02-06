@@ -49,9 +49,6 @@ jobs:
     env:
     - TIC_DEV_VERSIONS=TRUE
     - TIC_ONLY_TESTS=TRUE
-  - r: release
-    env:
-    - TIC_ONLY_STYLER=true
   - r: 3.3
   - stage: full
     os: osx
