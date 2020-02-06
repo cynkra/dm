@@ -80,8 +80,7 @@ dm_zoom_to <- function(dm, table) {
   zoom <- as_string(ensym(table))
   check_correct_input(dm, zoom)
 
-  keys <- list(get_all_keys(dm, zoom))
-  cols <- get_all_cols(dm, zoom)
+  cols <- list(get_all_cols(dm, zoom))
 
   structure(
     new_dm3(
@@ -204,10 +203,10 @@ dm_discard_zoomed <- function(dm) {
 
 update_zoomed_pk <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
-  tracked_keys <- get_tracked_keys(dm)
+  tracked_cols <- get_tracked_cols(dm)
   orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
-  upd_pk <- if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
-    new_pk(list(names(tracked_keys[tracked_keys == orig_pk])))
+  upd_pk <- if (!is_empty(orig_pk) && orig_pk %in% tracked_cols) {
+    new_pk(list(names(tracked_cols[tracked_cols == orig_pk])))
   } else {
     new_pk()
   }
@@ -216,9 +215,9 @@ update_zoomed_pk <- function(dm) {
 
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
-  tracked_keys <- get_tracked_keys(dm)
+  tracked_cols <- get_tracked_cols(dm)
   orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
-  if (!is_empty(orig_pk) && orig_pk %in% tracked_keys) {
+  if (!is_empty(orig_pk) && orig_pk %in% tracked_cols) {
     filter(dm_get_def(dm), table == old_tbl_name) %>% pull(fks)
   } else {
     vctrs::list_of(new_fk())
@@ -229,15 +228,15 @@ update_zoomed_incoming_fks <- function(dm) {
 # if `is_upd`, new_tbl_name needs to be the same as old_tbl_name
 dm_update_zoomed_outgoing_fks <- function(dm, new_tbl_name, is_upd) {
   old_tbl_name <- orig_name_zoomed(dm)
-  tracked_keys <- get_tracked_keys(dm)
+  tracked_cols <- get_tracked_cols(dm)
   old_out_keys <- dm_get_all_fks_impl(dm) %>%
     filter(child_table == old_tbl_name) %>%
     select(table = parent_table, column = child_fk_cols)
 
   old_and_new_out_keys <-
-    if (nrow(old_out_keys) > 0 && any(old_out_keys$column %in% tracked_keys)) {
-      filter(old_out_keys, column %in% tracked_keys) %>%
-        mutate(new_column = names(tracked_keys[match(column, tracked_keys, nomatch = 0L)]))
+    if (nrow(old_out_keys) > 0 && any(old_out_keys$column %in% tracked_cols)) {
+      filter(old_out_keys, column %in% tracked_cols) %>%
+        mutate(new_column = names(tracked_cols[match(column, tracked_cols, nomatch = 0L)]))
     } else {
       filter(old_out_keys, 0 == 1) %>% mutate(new_column = character(0))
     }

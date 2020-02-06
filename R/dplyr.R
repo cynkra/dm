@@ -47,8 +47,8 @@ summarise.zoomed_dm <- function(.data, ...) {
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
   summarized_tbl <- summarize(tbl, ...)
-  new_tracked_keys_zoom <- new_tracked_keys(.data, groups)
-  replace_zoomed_tbl(.data, summarized_tbl, new_tracked_keys_zoom)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
+  replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
@@ -81,9 +81,9 @@ mutate.zoomed_dm <- function(.data, ...) {
   mutated_tbl <- mutate(tbl, !!!quos)
   # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
   # in case no keys are tracked, `set_names(NULL)` would throw an error
-  selected <- set_names(setdiff(names2(get_tracked_keys(.data)), names(quos)))
-  new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
-  replace_zoomed_tbl(.data, mutated_tbl, new_tracked_keys_zoom)
+  selected <- set_names(setdiff(names2(get_tracked_cols(.data)), names(quos)))
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
+  replace_zoomed_tbl(.data, mutated_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
@@ -98,9 +98,9 @@ transmute.zoomed_dm <- function(.data, ...) {
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
   transmuted_tbl <- transmute(tbl, ...)
-  new_tracked_keys_zoom <- new_tracked_keys(.data, groups)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
 
-  replace_zoomed_tbl(.data, transmuted_tbl, new_tracked_keys_zoom)
+  replace_zoomed_tbl(.data, transmuted_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
@@ -115,9 +115,9 @@ select.zoomed_dm <- function(.data, ...) {
   selected <- tidyselect::vars_select(colnames(tbl), ...)
   selected_tbl <- select(tbl, !!!selected)
 
-  new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
 
-  replace_zoomed_tbl(.data, selected_tbl, new_tracked_keys_zoom)
+  replace_zoomed_tbl(.data, selected_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
@@ -132,9 +132,9 @@ rename.zoomed_dm <- function(.data, ...) {
   renamed <- tidyselect::vars_rename(colnames(tbl), ...)
   renamed_tbl <- rename(tbl, !!!renamed)
 
-  new_tracked_keys_zoom <- new_tracked_keys(.data, renamed)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, renamed)
 
-  replace_zoomed_tbl(.data, renamed_tbl, new_tracked_keys_zoom)
+  replace_zoomed_tbl(.data, renamed_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
@@ -153,8 +153,8 @@ distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
     return(replace_zoomed_tbl(.data, distinct_tbl))
   }
   selected <- tidyselect::vars_select(colnames(tbl), ...)
-  new_tracked_keys_zoom <- new_tracked_keys(.data, selected)
-  replace_zoomed_tbl(.data, distinct_tbl, new_tracked_keys_zoom)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
+  replace_zoomed_tbl(.data, distinct_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
@@ -181,9 +181,9 @@ slice.dm <- function(.data, ...) {
 slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
   sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
   orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
-  tracked_keys <- get_tracked_keys(.data)
+  tracked_cols <- get_tracked_cols(.data)
   if (is_null(.keep_pk)) {
-    if (has_length(orig_pk) && orig_pk %in% tracked_keys) {
+    if (has_length(orig_pk) && orig_pk %in% tracked_cols) {
       message(
         paste(
           "Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices).",
@@ -192,9 +192,9 @@ slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
       )
     }
   } else if (!.keep_pk) {
-    tracked_keys <- discard(tracked_keys, tracked_keys == orig_pk)
+    tracked_cols <- discard(tracked_cols, tracked_cols == orig_pk)
   }
-  replace_zoomed_tbl(.data, sliced_tbl, tracked_keys)
+  replace_zoomed_tbl(.data, sliced_tbl, tracked_cols)
 }
 
 #' @export
@@ -228,7 +228,7 @@ left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
   joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
 #' @export
@@ -242,7 +242,7 @@ inner_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, se
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
   joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
 #' @export
@@ -256,7 +256,7 @@ full_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
   joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
 #' @export
@@ -270,7 +270,7 @@ right_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, se
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
   joined_tbl <- right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
 #' @export
@@ -284,7 +284,7 @@ semi_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
   joined_tbl <- semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
 #' @export
@@ -298,7 +298,7 @@ anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
   joined_tbl <- anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_key_names)
+  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
 prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) {
@@ -324,12 +324,12 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     by <- get_by(x, x_orig_name, y_name)
     if (!any(selected == by)) abort_need_to_select_rhs_by(y_name, unname(by))
 
-    if (!all(names(by) %in% get_tracked_keys(x))) abort_fk_not_tracked(x_orig_name, y_name)
+    if (!all(names(by) %in% get_tracked_cols(x))) abort_fk_not_tracked(x_orig_name, y_name)
   }
 
   by <- repair_by(by)
 
-  new_key_names <- get_tracked_keys(x)
+  new_col_names <- get_tracked_cols(x)
 
   y_tbl <- select(y_tbl, !!!selected)
 
@@ -360,7 +360,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     if (has_length(x_renames)) {
       x_tbl <- x_tbl %>% rename(!!!x_renames[[1]])
       names(by) <- recode(names2(by), !!!prep_recode(x_renames[[1]]))
-      names(new_key_names) <- recode(names(new_key_names), !!!prep_recode(x_renames[[1]]))
+      names(new_col_names) <- recode(names(new_col_names), !!!prep_recode(x_renames[[1]]))
     }
 
     if (has_length(y_renames)) {
@@ -372,5 +372,5 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   # in case key columns of x_tbl have the same name as selected columns of y_tbl
   # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
   # We can track the new column names
-  list(x_tbl = x_tbl, y_tbl = y_tbl, by = by, new_key_names = new_key_names)
+  list(x_tbl = x_tbl, y_tbl = y_tbl, by = by, new_col_names = new_col_names)
 }
