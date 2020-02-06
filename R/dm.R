@@ -146,7 +146,7 @@ new_dm <- function(tables = list()) {
   data <- unname(tables)
   table <- names2(tables)
   zoom <- new_zoom()
-  key_tracker_zoom <- new_key_tracker_zoom()
+  col_tracker_zoom <- new_col_tracker_zoom()
 
   pks <-
     tibble(
@@ -172,7 +172,7 @@ new_dm <- function(tables = list()) {
     left_join(fks, by = "table") %>%
     left_join(filters, by = "table") %>%
     left_join(zoom, by = "table") %>%
-    left_join(key_tracker_zoom, by = "table")
+    left_join(col_tracker_zoom, by = "table")
 
   new_dm3(def)
 }
@@ -208,8 +208,8 @@ new_zoom <- function() {
   tibble(table = character(), zoom = list())
 }
 
-new_key_tracker_zoom <- function() {
-  tibble(table = character(), key_tracker_zoom = list())
+new_col_tracker_zoom <- function() {
+  tibble(table = character(), col_tracker_zoom = list())
 }
 
 #' Validator
@@ -792,7 +792,7 @@ empty_dm <- function() {
       fks = vctrs::list_of(new_fk()),
       filters = vctrs::list_of(new_filter()),
       zoom = list(),
-      key_tracker_zoom = list()
+      col_tracker_zoom = list()
     )
   )
 }
