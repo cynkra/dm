@@ -169,14 +169,25 @@ dm_update_zoomed <- function(dm) {
     return(dm)
   }
   table_name <- orig_name_zoomed(dm)
+  orig_colnames <- colnames(dm_get_tables_impl(dm)[[table_name]])
+  tracked_cols <- get_tracked_cols(dm)
+  # Test if keys need to be updated (TRUE, if at least one column was renamed or lost)
+  upd_keys <- !all(orig_colnames %in% tracked_cols) || !all(names(tracked_cols) == tracked_cols)
+
   upd_filter <- vctrs::list_of(get_filter_for_table(dm, table_name) %>% mutate(zoomed = FALSE))
   new_def <- dm_get_def(dm) %>%
     mutate(
       data = if_else(table == table_name, zoom, data),
-      pks = if_else(table == table_name, update_zoomed_pk(dm), pks),
-      fks = if_else(table == table_name, update_zoomed_incoming_fks(dm), fks),
       filters = if_else(table == table_name, upd_filter, filters)
     )
+  if (upd_keys) {
+    new_def <- new_def %>%
+      mutate(
+      pks = if_else(table == table_name, update_zoomed_pk(dm), pks),
+      fks = if_else(table == table_name, update_zoomed_incoming_fks(dm), fks)
+      )
+  }
+
   new_dm3(new_def, zoomed = TRUE) %>%
     dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
     dm_discard_zoomed()
