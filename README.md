@@ -326,7 +326,7 @@ devtools::install_github("krlmlr/dm")
 ```
 
 The {dm} package will also be made available on
-[CRAN](https://cran.r-project.org/web/packages/), from where it can be
+[CRAN](https://CRAN.R-project.org/package=dm), from where it can be
 installed with the command
 
 ``` r
