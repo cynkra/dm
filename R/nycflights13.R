@@ -24,7 +24,7 @@
 #'   dm_nycflights13() %>%
 #'     dm_draw()
 #' }
-dm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
+dm_nycflights13 <- function(cycle = FALSE, color = TRUE) {
   dm <-
     dm_from_src(
       src_df("nycflights13")
@@ -54,4 +54,4 @@ dm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE) {
   }
 
   dm
-})
+}

@@ -1,7 +1,3 @@
-nse <- function(fun, env = caller_env()) {
-  fun
-}
-
 new_cdm_forward <- function(fwd, env = caller_env(), old_fwd_name = NULL, new_name = NULL) {
   fwd_sym <- ensym(fwd)
   if (is_null(new_name)) fwd_name <- as_name(fwd_sym) else fwd_name <- new_name

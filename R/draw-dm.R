@@ -192,12 +192,12 @@ color_quos_to_display <- function(...) {
 #'
 #' @rdname dm_draw
 #' @export
-dm_get_colors <- nse(function(dm) {
+dm_get_colors <- function(dm) {
   dm_get_def(dm) %>%
     select(table, display) %>%
     select(display, table) %>%
     deframe()
-})
+}
 
 #' dm_get_available_colors()
 #'
