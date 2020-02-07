@@ -125,10 +125,6 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #' @examples
 #'
 #' dm_nyc %>%
-#'   dm_filter(flights, month == 3) %>%
-#'   dm_apply_filters()
-#'
-#' dm_nyc %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #' @export
@@ -147,11 +143,6 @@ dm_apply_filters <- function(dm) {
 #' @inheritParams dm_add_pk
 #'
 #' @return For `dm_apply_filters_to_tbl()`, a table.
-#'
-#' @examples
-#' dm_nyc %>%
-#'   dm_filter(flights, month == 3) %>%
-#'   dm_apply_filters_to_tbl(planes)
 #' @export
 dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)

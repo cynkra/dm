@@ -102,13 +102,6 @@ dm_nyc \%>\%
 # only the three New York airports.
 
 dm_nyc \%>\%
-  dm_filter(flights, month == 3) \%>\%
-  dm_apply_filters()
-
-dm_nyc \%>\%
   dm_filter(planes, engine \%in\% c("Reciprocating", "4 Cycle")) \%>\%
   compute()
-dm_nyc \%>\%
-  dm_filter(flights, month == 3) \%>\%
-  dm_apply_filters_to_tbl(planes)
 }
