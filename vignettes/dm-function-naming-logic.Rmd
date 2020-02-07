@@ -31,7 +31,7 @@ Most important extended prefixes `dm_..._`:
 1. `dm_examine_`: The function examines several aspects of a `dm` object
 1. `dm_add_`: Adds either key constraints or new tables to a `dm`
 1. `dm_get_`: Retrieves a specific piece of information about the `dm` (often a part of its constituents)
-1. `dm_rm_`: Removers either key constraints or new tables to a `dm`
+1. `dm_rm_`: Removes either key constraints or tables from a `dm`
 
 ## Suffixes
 
