@@ -309,15 +309,6 @@ check_not_zoomed <- function(dm) {
   abort_only_possible_wo_zoom(fun_name)
 }
 
-# FIXME: remove after #266?
-get_all_keys <- function(dm, table_name) {
-  fks <- dm_get_all_fks_impl(dm) %>%
-    filter(child_table == table_name) %>%
-    pull(child_fk_cols)
-  pk <- dm_get_pk_impl(dm, table_name)
-  set_names(unique(c(pk, fks)))
-}
-
 get_all_cols <- function(dm, table_name) {
   set_names(colnames(tbl(dm, table_name)))
 }
