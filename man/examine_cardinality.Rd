@@ -86,10 +86,10 @@ the result will contain the information which prerequisite was violated.
 d1 <- tibble::tibble(a = 1:5)
 d2 <- tibble::tibble(c = c(1:5, 5))
 d3 <- tibble::tibble(c = 1:4)
-# This does not pass, `c` is not unique key of d2:
+# This does not pass, 'c' is not unique key of 'd2':
 try(check_cardinality_0_n(d2, c, d1, a))
 
-# This passes, multiple values in d2$c are allowed:
+# This passes, multiple values in 'd2$c' are allowed:
 check_cardinality_0_n(d1, a, d2, c)
 
 # This does not pass, injectivity is violated:
