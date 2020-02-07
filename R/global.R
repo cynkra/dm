@@ -26,6 +26,7 @@ utils::globalVariables(c(
   "cols",
   "column",
   "columns",
+  "day",
   "dest",
   "df",
   "display",
