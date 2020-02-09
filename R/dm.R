@@ -349,10 +349,18 @@ dm_get_def <- function(x) {
 dm_get_data_model_pks <- function(x) {
   # FIXME: Obliterate
 
-  pk_df <-
-    dm_get_def(x) %>%
+  dm_get_def(x) %>%
     select(table, pks) %>%
-    unnest(pks)
+    unnest_pks()
+}
+
+unnest_pks <- function(def) {
+  # Optimized
+  pk_df <- tibble(
+    table = rep(def$table, map_int(def$pks, nrow))
+  )
+
+  pk_df <- vctrs::vec_cbind(pk_df, vctrs::vec_rbind(!!!def$pks))
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
