@@ -1,5 +1,5 @@
 test_that("dm_add_fk() works as intended?", {
-  iwalk(
+  walk(
     .x = dm_test_obj_src,
     function(dm_test_obj) {
       expect_dm_error(
