@@ -159,7 +159,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
   dm_update_zoomed_outgoing_fks(dm_wo_outgoing_fks, new_tbl_name_chr, is_upd = FALSE) %>%
-    dm_discard_zoomed()
+    dm_clean_zoomed()
 }
 
 #' @rdname dm_zoom_to
@@ -180,17 +180,22 @@ dm_update_zoomed <- function(dm) {
       data = if_else(table == table_name, zoom, data),
       filters = if_else(table == table_name, upd_filter, filters)
     )
-  if (upd_keys) {
-    new_def <- new_def %>%
-      mutate(
-      pks = if_else(table == table_name, update_zoomed_pk(dm), pks),
-      fks = if_else(table == table_name, update_zoomed_incoming_fks(dm), fks)
-      )
-  }
 
-  new_dm3(new_def, zoomed = TRUE) %>%
-    dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
-    dm_discard_zoomed()
+  if (upd_keys) {
+    new_def <-
+      new_def %>%
+      mutate(
+        pks = if_else(table == table_name, update_zoomed_pk(dm), pks),
+        fks = if_else(table == table_name, update_zoomed_incoming_fks(dm), fks)
+      )
+
+    new_dm3(new_def, zoomed = TRUE) %>%
+      dm_update_zoomed_outgoing_fks(table_name, is_upd = TRUE) %>%
+      dm_clean_zoomed()
+  } else {
+    new_dm3(new_def, zoomed = TRUE) %>%
+      dm_clean_zoomed()
+  }
 }
 
 #' @rdname dm_zoom_to
@@ -202,14 +207,33 @@ dm_discard_zoomed <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   upd_filter <- get_filter_for_table(dm, old_tbl_name) %>%
     filter(zoomed == FALSE)
+
   new_dm3(
     dm_get_def(dm) %>%
       mutate(
-        zoom = list(NULL),
-        col_tracker_zoom = list(NULL),
-        filters = if_else(table == old_tbl_name, vctrs::list_of(upd_filter), filters)
-      )
+        filters = if_else(
+          table == old_tbl_name,
+          vctrs::list_of(upd_filter),
+          filters
+        )
+      ) %>%
+      clean_zoom()
   )
+}
+
+dm_clean_zoomed <- function(dm) {
+  dm %>%
+    dm_get_def() %>%
+    clean_zoom() %>%
+    new_dm3()
+}
+
+clean_zoom <- function(def) {
+  def %>%
+    mutate(
+      zoom = list(NULL),
+      col_tracker_zoom = list(NULL)
+    )
 }
 
 update_zoomed_pk <- function(dm) {
