@@ -17,7 +17,7 @@
 #' dm() %>%
 #'   dm_add_tbl(mtcars, flowers = iris)
 #'
-#' # renaming table names if necessary (depending on the 'repair' argument)
+#' # renaming table names if necessary (depending on the `repair` argument)
 #' dm() %>%
 #'   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 #' @export

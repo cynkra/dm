@@ -94,14 +94,14 @@ flights_zoomed
 flights_zoomed_transformed <-
   flights_zoomed \%>\%
   mutate(am_pm_dep = ifelse(dep_time < 1200, "am", "pm")) \%>\%
-  # 'by'-argument of 'left_join()' can be explicitly given
+  # `by`-argument of `left_join()` can be explicitly given
   # otherwise the key-relation is used
   left_join(airports) \%>\%
   select(year:dep_time, am_pm_dep, everything())
 
 flights_zoomed_transformed
 
-# replace table 'flights' with the zoomed table
+# replace table `flights` with the zoomed table
 flights_zoomed_transformed \%>\%
   dm_update_zoomed()
 

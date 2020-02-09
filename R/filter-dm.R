@@ -70,13 +70,13 @@
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
-#' # 'flights', you can set a 'TRUE' filter in 'flights':
+#' # `flights`, you can set a `TRUE` filter in `flights`:
 #' dm_nyc %>%
 #'   dm_filter(flights, 1 == 1) %>%
 #'   dm_apply_filters() %>%
 #'   dm_nrow()
 #' # note that in this example, the only affected table is
-#' # 'airports' because the departure airports in 'flights' are
+#' # `airports` because the departure airports in `flights` are
 #' # only the three New York airports.
 #' @export
 dm_filter <- function(dm, table, ...) {
