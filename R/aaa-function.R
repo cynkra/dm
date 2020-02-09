@@ -14,7 +14,7 @@ new_cdm_forward <- function(fwd, env = caller_env(), old_fwd_name = NULL, new_na
     deprecate_soft(
       "0.1.0",
       !!paste0("dm::", old_fwd_name, "()"),
-      !!paste0("dm::", fwd_name, "()"),
+      !!paste0("dm::", fwd_name, "()")
     )
     (!!fwd_sym)(!!!fwd_args)
   })
@@ -34,7 +34,7 @@ new_cdm_forward_2 <- function(fwd, env = caller_env(), old_fwd_name = NULL, new_
     deprecate_soft(
       "0.1.0",
       !!paste0("dm::", old_fwd_name, "()"),
-      !!paste0("dm::", fwd_name, "()"),
+      !!paste0("dm::", fwd_name, "()")
     )
     !!body(fwd)
   })
