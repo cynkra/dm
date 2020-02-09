@@ -1,10 +1,12 @@
 test_that("dm_add_fk() works as intended?", {
   iwalk(
     .x = dm_test_obj_src,
-    ~ expect_dm_error(
-      dm_add_fk(.x, dm_table_1, a, dm_table_4),
-      class = "ref_tbl_has_no_pk"
-    )
+    function(dm_test_obj) {
+      expect_dm_error(
+        dm_add_fk(dm_test_obj, dm_table_1, a, dm_table_4),
+        class = "ref_tbl_has_no_pk"
+      )
+    }
   )
 
   map(
@@ -170,14 +172,16 @@ test_that("dm_enum_fk_candidates() works as intended?", {
 
   map(
     dm_test_obj_src,
-    ~ expect_identical(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_enum_fk_candidates(dm_table_1, dm_table_4) %>%
-        mutate(why = if_else(why != "", "<reason>", "")) %>%
-        collect(),
-      tbl_fk_candidates_t1_t4
-    )
+    function(dm_test_obj) {
+      expect_identical(
+        dm_test_obj %>%
+          dm_add_pk(dm_table_4, c) %>%
+          dm_enum_fk_candidates(dm_table_1, dm_table_4) %>%
+          mutate(why = if_else(why != "", "<reason>", "")) %>%
+          collect(),
+        tbl_fk_candidates_t1_t4
+      )
+    }
   )
 
   tbl_t3_t4 <- tibble::tribble(

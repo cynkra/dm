@@ -304,10 +304,8 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
-  table_name <- as_string(ensym(table))
-  ref_table_name <- as_string(ensym(ref_table))
-
-  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  table_name <- check_table(dm, {{ table }})
+  ref_table_name <- check_table(dm, {{ ref_table }})
 
   ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
 

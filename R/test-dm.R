@@ -42,6 +42,30 @@ check_dm <- function(dm) {
   if (!is_dm(dm)) abort_is_not_dm(class(dm))
 }
 
+check_table <- function(dm, table) {
+  table_quo <- enquo(table)
+  if (quo_is_missing(table_quo)) {
+    abort(tick(as_label(table_quo)), " can't be missing.")
+  }
+
+  if (!quo_is_symbol(table_quo)) {
+    abort(tick(as_label(table_quo)), " must be a symbol.")
+  }
+
+  tryCatch(
+    table_name <- as_string(quo_get_expr(table_quo)),
+    rlang_error = function(e) {
+      abort(paste0(tick(as_label(table_quo))), " must be a string or symbol.")
+    }
+  )
+
+  if (!(table_name %in% src_tbls_impl(dm))) {
+    abort_table_not_in_dm(setdiff(table_name, src_tbls_impl(dm)), src_tbls_impl(dm))
+  }
+
+  table_name
+}
+
 # validates that the given column is indeed part of the table of the `dm` object
 check_col_input <- function(dm, table, column) {
   tbl_colnames <- dm_get_tables_impl(dm) %>%
