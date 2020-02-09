@@ -239,20 +239,20 @@ each nested column entry would be a tibble of one row), an error will be thrown 
   <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_flatten_to_tbl</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year</span>
-#&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span></div><div class='output co'>#&gt; # A tibble: 336,776 x 35
+#&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span></div><div class='output co'>#&gt; # A tibble: 11,227 x 35
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-#&gt;  1         2013     1     1      517            515         2      830
-#&gt;  2         2013     1     1      533            529         4      850
-#&gt;  3         2013     1     1      542            540         2      923
-#&gt;  4         2013     1     1      544            545        -1     1004
-#&gt;  5         2013     1     1      554            600        -6      812
-#&gt;  6         2013     1     1      554            558        -4      740
-#&gt;  7         2013     1     1      555            600        -5      913
-#&gt;  8         2013     1     1      557            600        -3      709
-#&gt;  9         2013     1     1      557            600        -3      838
-#&gt; 10         2013     1     1      558            600        -2      753
-#&gt; # … with 336,766 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,
+#&gt;  1         2013     1    10        3           2359         4      426
+#&gt;  2         2013     1    10       16           2359        17      447
+#&gt;  3         2013     1    10      450            500       -10      634
+#&gt;  4         2013     1    10      520            525        -5      813
+#&gt;  5         2013     1    10      530            530         0      824
+#&gt;  6         2013     1    10      531            540        -9      832
+#&gt;  7         2013     1    10      535            540        -5     1015
+#&gt;  8         2013     1    10      546            600       -14      645
+#&gt;  9         2013     1    10      549            600       -11      652
+#&gt; 10         2013     1    10      550            600       -10      649
+#&gt; # … with 11,217 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,
 #&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,
 #&gt; #   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
 #&gt; #   time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;, airports.name &lt;chr&gt;, lat &lt;dbl&gt;,

@@ -252,20 +252,20 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
     <pre class="examples"><div class='input'><span class='no'>flights_zoomed</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_zoom_to</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>)
 
 <span class='no'>flights_zoomed</span></div><div class='output co'>#&gt; # Zoomed table: flights
-#&gt; # A tibble:     336,776 x 19
+#&gt; # A tibble:     11,227 x 19
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
-#&gt;  1  2013     1     1      517            515         2      830            819
-#&gt;  2  2013     1     1      533            529         4      850            830
-#&gt;  3  2013     1     1      542            540         2      923            850
-#&gt;  4  2013     1     1      544            545        -1     1004           1022
-#&gt;  5  2013     1     1      554            600        -6      812            837
-#&gt;  6  2013     1     1      554            558        -4      740            728
-#&gt;  7  2013     1     1      555            600        -5      913            854
-#&gt;  8  2013     1     1      557            600        -3      709            723
-#&gt;  9  2013     1     1      557            600        -3      838            846
-#&gt; 10  2013     1     1      558            600        -2      753            745
-#&gt; # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+#&gt;  1  2013     1    10        3           2359         4      426            437
+#&gt;  2  2013     1    10       16           2359        17      447            444
+#&gt;  3  2013     1    10      450            500       -10      634            648
+#&gt;  4  2013     1    10      520            525        -5      813            820
+#&gt;  5  2013     1    10      530            530         0      824            829
+#&gt;  6  2013     1    10      531            540        -9      832            850
+#&gt;  7  2013     1    10      535            540        -5     1015           1017
+#&gt;  8  2013     1    10      546            600       -14      645            709
+#&gt;  9  2013     1    10      549            600       -11      652            724
+#&gt; 10  2013     1    10      550            600       -10      649            703
+#&gt; # … with 11,217 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
 #&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
 #&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</div><div class='input'>
 <span class='no'>flights_zoomed_transformed</span> <span class='kw'>&lt;-</span>
@@ -277,20 +277,20 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>year</span>:<span class='no'>dep_time</span>, <span class='no'>am_pm_dep</span>, <span class='fu'>everything</span>())
 
 <span class='no'>flights_zoomed_transformed</span></div><div class='output co'>#&gt; # Zoomed table: flights
-#&gt; # A tibble:     336,776 x 27
+#&gt; # A tibble:     11,227 x 27
 #&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
 #&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;              &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-#&gt;  1  2013     1     1      517 am                   515         2      830
-#&gt;  2  2013     1     1      533 am                   529         4      850
-#&gt;  3  2013     1     1      542 am                   540         2      923
-#&gt;  4  2013     1     1      544 am                   545        -1     1004
-#&gt;  5  2013     1     1      554 am                   600        -6      812
-#&gt;  6  2013     1     1      554 am                   558        -4      740
-#&gt;  7  2013     1     1      555 am                   600        -5      913
-#&gt;  8  2013     1     1      557 am                   600        -3      709
-#&gt;  9  2013     1     1      557 am                   600        -3      838
-#&gt; 10  2013     1     1      558 am                   600        -2      753
-#&gt; # … with 336,766 more rows, and 19 more variables: sched_arr_time &lt;int&gt;,
+#&gt;  1  2013     1    10        3 am                  2359         4      426
+#&gt;  2  2013     1    10       16 am                  2359        17      447
+#&gt;  3  2013     1    10      450 am                   500       -10      634
+#&gt;  4  2013     1    10      520 am                   525        -5      813
+#&gt;  5  2013     1    10      530 am                   530         0      824
+#&gt;  6  2013     1    10      531 am                   540        -9      832
+#&gt;  7  2013     1    10      535 am                   540        -5     1015
+#&gt;  8  2013     1    10      546 am                   600       -14      645
+#&gt;  9  2013     1    10      549 am                   600       -11      652
+#&gt; 10  2013     1    10      550 am                   600       -10      649
+#&gt; # … with 11,217 more rows, and 19 more variables: sched_arr_time &lt;int&gt;,
 #&gt; #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,
 #&gt; #   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
 #&gt; #   time_hour &lt;dttm&gt;, name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;,

@@ -211,35 +211,35 @@
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>year</span>, <span class='no'>month</span>, <span class='no'>day</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></span>(<span class='st'>"month_day"</span>, <span class='no'>month</span>, <span class='no'>day</span>)
 <span class='no'>zoom_united</span></div><div class='output co'>#&gt; # Zoomed table: flights
-#&gt; # A tibble:     336,776 x 2
+#&gt; # A tibble:     11,227 x 2
 #&gt;     year month_day
 #&gt;    &lt;int&gt; &lt;chr&gt;    
-#&gt;  1  2013 1_1      
-#&gt;  2  2013 1_1      
-#&gt;  3  2013 1_1      
-#&gt;  4  2013 1_1      
-#&gt;  5  2013 1_1      
-#&gt;  6  2013 1_1      
-#&gt;  7  2013 1_1      
-#&gt;  8  2013 1_1      
-#&gt;  9  2013 1_1      
-#&gt; 10  2013 1_1      
-#&gt; # … with 336,766 more rows</div><div class='input'><span class='no'>zoom_united</span> <span class='kw'>%&gt;%</span>
+#&gt;  1  2013 1_10     
+#&gt;  2  2013 1_10     
+#&gt;  3  2013 1_10     
+#&gt;  4  2013 1_10     
+#&gt;  5  2013 1_10     
+#&gt;  6  2013 1_10     
+#&gt;  7  2013 1_10     
+#&gt;  8  2013 1_10     
+#&gt;  9  2013 1_10     
+#&gt; 10  2013 1_10     
+#&gt; # … with 11,217 more rows</div><div class='input'><span class='no'>zoom_united</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='no'>month_day</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"month"</span>, <span class='st'>"day"</span>))</div><div class='output co'>#&gt; # Zoomed table: flights
-#&gt; # A tibble:     336,776 x 3
+#&gt; # A tibble:     11,227 x 3
 #&gt;     year month day  
 #&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-#&gt;  1  2013 1     1    
-#&gt;  2  2013 1     1    
-#&gt;  3  2013 1     1    
-#&gt;  4  2013 1     1    
-#&gt;  5  2013 1     1    
-#&gt;  6  2013 1     1    
-#&gt;  7  2013 1     1    
-#&gt;  8  2013 1     1    
-#&gt;  9  2013 1     1    
-#&gt; 10  2013 1     1    
-#&gt; # … with 336,766 more rows</div></pre>
+#&gt;  1  2013 1     10   
+#&gt;  2  2013 1     10   
+#&gt;  3  2013 1     10   
+#&gt;  4  2013 1     10   
+#&gt;  5  2013 1     10   
+#&gt;  6  2013 1     10   
+#&gt;  7  2013 1     10   
+#&gt;  8  2013 1     10   
+#&gt;  9  2013 1     10   
+#&gt; 10  2013 1     10   
+#&gt; # … with 11,217 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

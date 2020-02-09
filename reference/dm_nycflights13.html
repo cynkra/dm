@@ -171,7 +171,7 @@ between the <code>flights</code> table and the <code>planes</code> tables is "we
 data integrity constraints.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_nycflights13</span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_nycflights13</span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,7 +188,11 @@ between those tables will be produced.</p></td>
     <tr>
       <th>color</th>
       <td><p>Boolean, if <code>TRUE</code> (default), the resulting <code>dm</code> object will have
-colors assigned to different tables for visualization with <code><a href='dm_draw.html'>dm_draw()</a></code></p></td>
+colors assigned to different tables for visualization with <code><a href='dm_draw.html'>dm_draw()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>subset</th>
+      <td><p>Boolean, if <code>TRUE</code> (default), the <code>flights</code> table is reduced to flights with column <code>day</code> equal to 10.</p></td>
     </tr>
     </table>
 

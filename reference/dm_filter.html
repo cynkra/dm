@@ -240,28 +240,28 @@ in order to present them in a cleaner interface.</p>
 the filter.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dm_nyc_filtered</span> <span class='kw'>&lt;-</span>
+    <pre class="examples"><div class='input'><span class='no'>dm_nyc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()
+<span class='no'>dm_nyc_filtered</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>)
 
-<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='no'>dm_nyc_filtered</span>, <span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 111,279 x 19
+<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='no'>dm_nyc_filtered</span>, <span class='no'>flights</span>)</div><div class='output co'>#&gt; # A tibble: 3,661 x 19
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
-#&gt;  1  2013     1     1      542            540         2      923            850
-#&gt;  2  2013     1     1      544            545        -1     1004           1022
-#&gt;  3  2013     1     1      557            600        -3      838            846
-#&gt;  4  2013     1     1      558            600        -2      849            851
-#&gt;  5  2013     1     1      558            600        -2      853            856
-#&gt;  6  2013     1     1      558            600        -2      924            917
-#&gt;  7  2013     1     1      559            559         0      702            706
-#&gt;  8  2013     1     1      606            610        -4      837            845
-#&gt;  9  2013     1     1      611            600        11      945            931
-#&gt; 10  2013     1     1      613            610         3      925            921
-#&gt; # … with 111,269 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+#&gt;  1  2013     1    10        3           2359         4      426            437
+#&gt;  2  2013     1    10       16           2359        17      447            444
+#&gt;  3  2013     1    10      531            540        -9      832            850
+#&gt;  4  2013     1    10      535            540        -5     1015           1017
+#&gt;  5  2013     1    10      553            600        -7      711            715
+#&gt;  6  2013     1    10      557            600        -3      855            912
+#&gt;  7  2013     1    10      557            600        -3      933            925
+#&gt;  8  2013     1    10      558            600        -2      844            906
+#&gt;  9  2013     1    10      559            600        -1      653            658
+#&gt; 10  2013     1    10      607            601         6      932            918
+#&gt; # … with 3,651 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
 #&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
 #&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>) <span class='kw'>%&gt;%</span>
+<span class='no'>dm_nyc_filtered</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; ── Metadata ────────────────────────────────────────────────────────────────────
@@ -272,24 +272,15 @@ the filter.</p>
 <span class='co'># If you want to keep only those rows in the parent tables</span>
 <span class='co'># whose primary key values appear as foreign key values in</span>
 <span class='co'># `flights`, you can set a `TRUE` filter in `flights`:</span>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+<span class='no'>dm_nyc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_filter</span>(<span class='no'>flights</span>, <span class='fl'>1</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_apply_filters</span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>()</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16        3   336776     3322    26115 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
+#&gt;       16        3    11227     2345    26115 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
 <span class='co'># `airports` because the departure airports in `flights` are</span>
 <span class='co'># only the three New York airports.</span>
 
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_apply_filters</span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+<span class='no'>dm_nyc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_filter</span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
@@ -297,22 +288,7 @@ the filter.</p>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_filter</span>(<span class='no'>flights</span>, <span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_apply_filters_to_tbl</span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; # A tibble: 2,619 x 9
-#&gt;    tailnum  year type          manufacturer   model  engines seats speed engine 
-#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
-#&gt;  1 N10156   2004 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…
-#&gt;  2 N102UW   1998 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  3 N103US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  4 N104UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  5 N10575   2002 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…
-#&gt;  6 N105UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  7 N107US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  8 N108UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  9 N109UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt; 10 N110UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt; # … with 2,609 more rows</div></pre>
+#&gt; Foreign keys: 3</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
