@@ -138,7 +138,7 @@ cdm_learn_from_db(dest)
 
 cdm_check_constraints(dm)
 
-cdm_nycflights13(cycle = FALSE, color = TRUE)
+cdm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE)
 
 cdm_paste(dm, select = FALSE, tab_width = 2)
 
