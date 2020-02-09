@@ -38,7 +38,7 @@ utils::globalVariables(c(
   "into",
   "is_key",
   "key",
-  "key_tracker_zoom",
+  "col_tracker_zoom",
   "kind",
   "mismatch_or_null",
   "name",

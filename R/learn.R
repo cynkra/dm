@@ -216,7 +216,7 @@ legacy_new_dm <- function(tables, data_model) {
   # would be logical NA otherwise, but if set, it is class `character`
   display <- as.character(data_model_tables$display)
   zoom <- new_zoom()
-  key_tracker_zoom <- new_key_tracker_zoom()
+  col_tracker_zoom <- new_col_tracker_zoom()
 
   pks <-
     pks %>%
@@ -260,7 +260,7 @@ legacy_new_dm <- function(tables, data_model) {
     left_join(fks, by = "table") %>%
     left_join(filters, by = "table") %>%
     left_join(zoom, by = "table") %>%
-    left_join(key_tracker_zoom, by = "table")
+    left_join(col_tracker_zoom, by = "table")
 
   new_dm3(def)
 }
