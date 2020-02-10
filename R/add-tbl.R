@@ -84,7 +84,9 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 #'   dm_rm_tbl(airports)
 dm_rm_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
-  selected <- dm_try_tables(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...)), src_tbls(dm))
+  dm_tables <- src_tbls(dm)
+  deselected <- quo_select_table(quo(c(...)), dm_tables)
+  selected <- setdiff(dm_tables, deselected)
 
   dm_select_tbl(dm, !!!selected)
 }
