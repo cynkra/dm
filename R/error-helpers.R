@@ -584,3 +584,12 @@ error_txt_temp_table_requested <- function(table_names, tbls_in_dm) {
     "{commas(tick(temp_tables))}."
   )
 }
+
+abort_dupl_table_name <- function(names) {
+ duplicated <- names[duplicated(names)]
+ abort(error_txt_dupl_table_name(duplicated), .subclass = dm_error_full("dupl_table_name"))
+}
+
+error_txt_dupl_table_name <- function(duplicated) {
+  glue("The table names within a `dm` need to be unique. Duplicated table names: {commas(tick(duplicated))}.")
+}

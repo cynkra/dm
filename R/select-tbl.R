@@ -39,7 +39,8 @@ dm_select_tbl <- function(dm, ...) {
 dm_rename_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
   vars <- tidyselect_table_names(dm)
-  selected <- dm_try_tables(tidyselect::vars_rename(vars, ...), vars)
+  selected <- quo_rename_table(quo(c(...)), vars)
+
   dm_select_tbl_impl(dm, selected)
 }
 
