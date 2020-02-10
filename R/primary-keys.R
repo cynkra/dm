@@ -139,8 +139,13 @@ dm_get_pk <- function(dm, table) {
 }
 
 dm_get_pk_impl <- function(dm, table_name) {
-  pks <- dm_get_data_model_pks(dm)
-  pks$column[pks$table == table_name]
+  # Optimized
+  dm %>%
+    dm_get_def() %>%
+    select(table, pks) %>%
+    filter(table == !!table_name) %>%
+    unnest_pks() %>%
+    pull(column)
 }
 
 #' Get all primary keys of a [`dm`] object

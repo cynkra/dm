@@ -1,5 +1,5 @@
 Package: dm
-Title: Relational data models
+Title: Relational Data Models
 Version: 0.1.1
 Date: 2020-02-04
 Authors@R: 
@@ -48,7 +48,7 @@ Imports:
     rlang (>= 0.4.0),
     tibble,
     tidyr (>= 1.0.0),
-    tidyselect (>= 0.2.5),
+    tidyselect (>= 1.0.0),
     vctrs (>= 0.2.0)
 Suggests: 
     DiagrammeR,
