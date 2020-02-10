@@ -10,5 +10,5 @@ quo_select_table <- function(quo, table_names) {
     }
   )
 
-  table_names[indexes]
+  set_names(table_names[indexes], names(indexes))
 }
