@@ -112,9 +112,12 @@ select.dm <- function(.data, ...) {
 #' @export
 select.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  selected <- tidyselect::vars_select(colnames(tbl), ...)
-  selected_tbl <- select(tbl, !!!selected)
+  cols_tbl <- set_names(colnames(tbl))
 
+  selected_ind <- tidyselect::eval_select(quo(c(...)), cols_tbl)
+  selected_tbl <- select(tbl, !!!selected_ind)
+
+  selected <- set_names(cols_tbl[selected_ind], names(selected_ind))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
 
   replace_zoomed_tbl(.data, selected_tbl, new_tracked_cols_zoom)
@@ -129,8 +132,14 @@ rename.dm <- function(.data, ...) {
 #' @export
 rename.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  renamed <- tidyselect::vars_rename(colnames(tbl), ...)
-  renamed_tbl <- rename(tbl, !!!renamed)
+  cols_tbl <- set_names(colnames(tbl))
+
+  renamed_ind <- tidyselect::eval_rename(quo(c(...)), cols_tbl)
+  renamed_tbl <- rename(tbl, !!!renamed_ind)
+
+  renamed <- cols_tbl
+  renamed[renamed_ind] <- names(renamed_ind)
+  renamed <- prep_recode(renamed)
 
   new_tracked_cols_zoom <- new_tracked_cols(.data, renamed)
 
@@ -152,7 +161,8 @@ distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   if (.keep_all || is_empty(enexprs(...))) {
     return(replace_zoomed_tbl(.data, distinct_tbl))
   }
-  selected <- tidyselect::vars_select(colnames(tbl), ...)
+  selected_ind <- tidyselect::eval_select(quo(c(...)), tbl)
+  selected <- set_names(colnames(tbl)[selected_ind], names(selected_ind))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_cols_zoom)
 }
@@ -315,9 +325,11 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   all_cols_y <- colnames(y_tbl)
 
   if (quo_is_null(select_quo)) {
-    selected <- tidyselect::vars_select(all_cols_y, everything())
+    selected_ind <- tidyselect::eval_select(quo(everything()), y_tbl)
+    selected <- set_names(all_cols_y[selected_ind], names(selected_ind))
   } else {
-    selected <- tidyselect::vars_select(all_cols_y, !!select_quo)
+    selected_ind <- tidyselect::eval_select(select_quo, y_tbl)
+    selected <- set_names(all_cols_y[selected_ind], names(selected_ind))
   }
 
   if (is_null(by)) {
