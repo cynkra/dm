@@ -22,6 +22,7 @@ dm_select_tbl <- function(dm, ...) {
 
   vars <- tidyselect_table_names(dm)
   selected <- quo_select_table(quo(c(...)), vars)
+
   dm_select_tbl_impl(dm, selected)
 }
 
@@ -53,6 +54,7 @@ tidyselect_table_names <- function(dm) {
 
 dm_select_tbl_impl <- function(dm, selected) {
 
+  if (anyDuplicated(names(selected))) abort_dupl_table_name(names(selected))
   # Required to avoid an error further on
   if (is_empty(selected)) {
     return(empty_dm())

@@ -24,7 +24,6 @@ quo_rename_table <- function(quo, table_names) {
     }
   )
 
-  if (anyDuplicated(names(indexes))) abort_dupl_table_name(names(indexes))
   names <- names(table_names)
   names[indexes] <- names(indexes)
 
