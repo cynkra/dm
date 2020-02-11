@@ -54,7 +54,6 @@ tidyselect_table_names <- function(dm) {
 }
 
 dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "unique", quiet = FALSE) {
-
   if (needs_repair) selected <- set_names(selected, repair_names_vec(names(selected), repair, quiet))
 
   # Required to avoid an error further on

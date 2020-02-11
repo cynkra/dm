@@ -42,7 +42,9 @@ unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
     cols_tbl <- set_names(colnames(tbl))
     deselected_ind <- tidyselect::eval_select(quo(c(...)), cols_tbl)
     set_names(cols_tbl[deselected_ind], names(deselected_ind))
-    } else deselected <- character()
+  } else {
+    deselected <- character()
+  }
   selected <- set_names(setdiff(names(get_tracked_cols(data)), deselected))
   new_tracked_cols_zoom <- new_tracked_cols(data, selected)
   replace_zoomed_tbl(data, united_tbl, new_tracked_cols_zoom)
