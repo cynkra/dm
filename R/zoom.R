@@ -122,7 +122,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
           "The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`."
         )
       }
-      new_tbl_name <- as_string(enexpr(new_tbl_name))
+      as_string(enexpr(new_tbl_name))
     }
   names_list <-
     repair_table_names(old_names = src_tbls_impl(dm), new_names = new_tbl_name_chr, repair, quiet)
