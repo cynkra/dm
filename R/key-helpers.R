@@ -34,9 +34,9 @@ check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 
-  cols_avail <- colnames(.data)
+  cols_avail <- set_names(colnames(.data))
   # if no column is chosen, all columns are used for the check
-  cols_chosen <- tidyselect::vars_select(cols_avail, ...)
+  cols_chosen <- cols_avail[tidyselect::eval_select(quo(c(...)), cols_avail)]
   names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 
   duplicate_rows <-
