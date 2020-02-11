@@ -40,9 +40,8 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 repair_names_vec <- function(names, repair, quiet) {
   tryCatch(
     vctrs::vec_as_names(names, repair = repair, quiet = quiet),
-    error = function(e) {
-      if (inherits(e, "vctrs_error_names_must_be_unique")) abort_need_unique_names(names[duplicated(names)])
-      abort(e$message)
+    vctrs_error_names_must_be_unique = function(e) {
+      abort_need_unique_names(names[duplicated(names)])
     }
   )
 }
