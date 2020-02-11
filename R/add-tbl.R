@@ -32,8 +32,8 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   old_names <- src_tbls(dm)
   names_list <- repair_table_names(old_names, new_names, repair, quiet)
   # rename old tables in case name repair changed their names
-  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
 
+  dm <- dm_select_tbl_impl(dm, names_list$new_old_names, needs_repair = FALSE)
   dm_add_tbl_impl(dm, new_tables, names_list$new_names)
 }
 

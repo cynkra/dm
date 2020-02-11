@@ -53,20 +53,20 @@ tidyselect_table_names <- function(dm) {
   )
 }
 
-dm_select_tbl_impl <- function(dm, selected, repair = "unique", quiet = FALSE) {
+dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "unique", quiet = FALSE) {
 
-  selected_repaired <- set_names(selected, repair_names_vec(names(selected), repair, quiet))
+  if (needs_repair) selected <- set_names(selected, repair_names_vec(names(selected), repair, quiet))
 
   # Required to avoid an error further on
-  if (is_empty(selected_repaired)) {
+  if (is_empty(selected)) {
     return(empty_dm())
   }
-  check_correct_input(dm, selected_repaired)
+  check_correct_input(dm, selected)
 
   def <-
     dm_get_def(dm) %>%
-    filter_recode_table_def(selected_repaired) %>%
-    filter_recode_table_fks(selected_repaired)
+    filter_recode_table_def(selected) %>%
+    filter_recode_table_fks(selected)
 
   new_dm3(def)
 }
