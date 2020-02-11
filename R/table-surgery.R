@@ -45,14 +45,15 @@
 #' @export
 decompose_table <- function(.data, new_id_column, ...) {
   table_name <- deparse(substitute(.data))
-  avail_cols <- colnames(.data)
+  avail_cols <- set_names(colnames(.data))
   id_col_q <- ensym(new_id_column)
 
   if (as_string(id_col_q) %in% avail_cols) {
     abort_dupl_new_id_col_name(table_name)
   }
 
-  sel_vars <- tidyselect::vars_select(avail_cols, ...)
+  sel_vars_ind <- tidyselect::eval_select(quo(c(...)), avail_cols)
+  sel_vars <- set_names(avail_cols[sel_vars_ind], names(sel_vars_ind))
 
   parent_table <-
     select(.data, !!!sel_vars) %>%
