@@ -1,6 +1,8 @@
 quo_select_table <- function(quo, table_names) {
+  names(table_names) <- table_names
+
   indexes <- tryCatch(
-    eval_tidy(quo(tidyselect::vars_select(table_names, !!quo))),
+    tidyselect::eval_select(quo, table_names),
     vctrs_error_subscript = function(cnd) {
       # https://github.com/r-lib/vctrs/issues/786
       cnd$subscript_elt <- "element"
@@ -8,5 +10,5 @@ quo_select_table <- function(quo, table_names) {
     }
   )
 
-  indexes
+  table_names[indexes]
 }

@@ -139,8 +139,13 @@ dm_get_pk <- function(dm, table) {
 }
 
 dm_get_pk_impl <- function(dm, table_name) {
-  pks <- dm_get_data_model_pks(dm)
-  pks$column[pks$table == table_name]
+  # Optimized
+  dm %>%
+    dm_get_def() %>%
+    select(table, pks) %>%
+    filter(table == !!table_name) %>%
+    unnest_pks() %>%
+    pull(column)
 }
 
 #' Get all primary keys of a [`dm`] object
@@ -286,7 +291,7 @@ enum_pk_candidates_impl <- function(table) {
     # Can't call unnest() either for an unknown reason
     mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
     select(-value) %>%
-    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none")))) %>%
+    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none"), capped = TRUE))) %>%
     select(-data) %>%
     mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
     select(-values) %>%

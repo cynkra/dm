@@ -369,8 +369,8 @@ abort_no_flatten_with_nest_join <- function() {
 
 error_txt_no_flatten_with_nest_join <- function() {
   paste0(
-    "`dm_..._to_tbl() can't be called with `join = nest_join`, because it doesn't make sense, ",
-    "cf. the help pages for these functions. Consider `join = left_join`."
+    "`dm_..._to_tbl()` can't be called with `join = nest_join`, ",
+    "see the help pages for these functions. Consider `join = left_join`."
   )
 }
 

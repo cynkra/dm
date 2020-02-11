@@ -1,44 +1,3 @@
-#' Validate your data model
-#'
-#' This function returns a tibble with information about which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
-#'
-#' @inheritParams dm_add_pk
-#'
-#' @return A tibble with the following columns:
-#'   \describe{
-#'     \item{`table`}{the table in the `dm`,}
-#'     \item{`kind`}{"PK" or "FK",}
-#'     \item{`columns`}{the table columns that define the key,}
-#'     \item{`ref_table`}{for foreign keys, the referenced table,}
-#'     \item{`is_key`}{logical,}
-#'     \item{`problem`}{if `is_key = FALSE`, the reason for that.}
-#'   }
-#'
-#' @details For the primary key constraints, it is tested if the values in the respective columns are all unique.
-#' For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column
-#' form a subset of the values of the referenced column.
-#'
-#' @export
-#' @examples
-#' dm_nycflights13() %>%
-#'   dm_examine_constraints()
-dm_examine_constraints <- function(dm) {
-  check_not_zoomed(dm)
-  dm_examine_constraints_impl(dm) %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
-}
-
-dm_examine_constraints_impl <- function(dm) {
-  pk_results <- check_pk_constraints(dm)
-  fk_results <- check_fk_constraints(dm)
-  bind_rows(
-    pk_results,
-    fk_results
-  ) %>%
-    arrange(is_key, desc(kind), table)
-}
-
 #' Check if column(s) can be used as keys
 #'
 #' @description `check_key()` accepts a data frame and, optionally, columns.
@@ -278,9 +237,9 @@ check_fk_constraints <- function(dm) {
     select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
 }
 
-new_tracked_keys <- function(dm, selected) {
-  tracked_keys <- get_tracked_keys(dm)
-  old_tracked_names <- names(tracked_keys)
+new_tracked_cols <- function(dm, selected) {
+  tracked_cols <- get_tracked_cols(dm)
+  old_tracked_names <- names(tracked_cols)
   # the new tracked keys need to be the remaining original column names
   # and their name needs to be the newest one (tidyselect-syntax)
   # `intersect(selected, old_tracked_names)` is empty, return `NULL`
@@ -288,7 +247,7 @@ new_tracked_keys <- function(dm, selected) {
     NULL
   } else {
     set_names(
-      tracked_keys[selected[selected %in% old_tracked_names]],
+      tracked_cols[selected[selected %in% old_tracked_names]],
       names(selected[selected %in% old_tracked_names])
     )
   }

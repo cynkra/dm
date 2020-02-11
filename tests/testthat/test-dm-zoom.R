@@ -118,3 +118,11 @@ test_that("dm_update_tbl() works", {
       new_dm3()
   )
 })
+
+# after #271:
+test_that("all cols are tracked in zoomed table", {
+  expect_identical(
+    dm_zoom_to(dm_nycflights_small, flights) %>% get_tracked_cols(),
+    set_names(colnames(tbl(dm_nycflights_small, "flights")))
+  )
+})
