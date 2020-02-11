@@ -11,19 +11,20 @@
 #' @param dm A [`dm`] object.
 #' @param ... One or more table names of the tables of the [`dm`] object.
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
+#' @inheritParams vctrs::vec_as_names
 #'
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_select_tbl(airports, fl = flights)
 #' @export
-dm_select_tbl <- function(dm, ...) {
+dm_select_tbl <- function(dm, ..., repair = "check_unique", quiet = FALSE) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
   vars <- tidyselect_table_names(dm)
   selected <- quo_select_table(quo(c(...)), vars)
 
-  dm_select_tbl_impl(dm, selected)
+  dm_select_tbl_impl(dm, selected, repair = repair, quiet = quiet)
 }
 
 #' Change the names of the tables in a `dm`
@@ -37,12 +38,12 @@ dm_select_tbl <- function(dm, ...) {
 #' dm_nycflights13() %>%
 #'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
-dm_rename_tbl <- function(dm, ...) {
+dm_rename_tbl <- function(dm, ..., repair = "check_unique", quiet = FALSE) {
   check_not_zoomed(dm)
   vars <- tidyselect_table_names(dm)
   selected <- quo_rename_table(quo(c(...)), vars)
 
-  dm_select_tbl_impl(dm, selected)
+  dm_select_tbl_impl(dm, selected, repair = repair, quiet = quiet)
 }
 
 tidyselect_table_names <- function(dm) {
@@ -52,19 +53,20 @@ tidyselect_table_names <- function(dm) {
   )
 }
 
-dm_select_tbl_impl <- function(dm, selected) {
+dm_select_tbl_impl <- function(dm, selected, repair = "unique", quiet = FALSE) {
 
-  if (anyDuplicated(names(selected))) abort_dupl_table_name(names(selected))
+  selected_repaired <- set_names(selected, repair_names_vec(names(selected), repair, quiet))
+
   # Required to avoid an error further on
-  if (is_empty(selected)) {
+  if (is_empty(selected_repaired)) {
     return(empty_dm())
   }
-  check_correct_input(dm, selected)
+  check_correct_input(dm, selected_repaired)
 
   def <-
     dm_get_def(dm) %>%
-    filter_recode_table_def(selected) %>%
-    filter_recode_table_fks(selected)
+    filter_recode_table_def(selected_repaired) %>%
+    filter_recode_table_fks(selected_repaired)
 
   new_dm3(def)
 }

@@ -37,14 +37,18 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   dm_add_tbl_impl(dm, new_tables, names_list$new_names)
 }
 
-repair_table_names <- function(old_names, new_names, repair = "check_unique", quiet = FALSE) {
-  all_names <- tryCatch(
-    vctrs::vec_as_names(c(old_names, new_names), repair = repair, quiet = quiet),
+repair_names_vec <- function(names, repair, quiet) {
+  tryCatch(
+    vctrs::vec_as_names(names, repair = repair, quiet = quiet),
     error = function(e) {
-      if (inherits(e, "vctrs_error_names_must_be_unique")) abort_need_unique_names(intersect(old_names, new_names))
+      if (inherits(e, "vctrs_error_names_must_be_unique")) abort_need_unique_names(names[duplicated(names)])
       abort(e$message)
     }
   )
+}
+
+repair_table_names <- function(old_names, new_names, repair = "check_unique", quiet = FALSE) {
+  all_names <- repair_names_vec(c(old_names, new_names), repair, quiet)
   new_old_names <- set_names(old_names, all_names[seq_along(old_names)])
 
   new_names <-

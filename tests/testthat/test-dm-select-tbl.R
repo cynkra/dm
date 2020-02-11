@@ -77,15 +77,22 @@ test_that("dm_rename_tbl() renames a `dm`", {
   )
 })
 
-
 test_that("errors for selecting and renaming tables work", {
   expect_dm_error(
     dm_select_tbl(dm_for_filter, t_new = c(t1, t2)),
-    class = "dupl_table_name"
+    class = "need_unique_names"
   )
 
   expect_dm_error(
     dm_rename_tbl(dm_for_filter, t_new = c(t1, t2)),
-    class = "dupl_table_name"
+    class = "need_unique_names"
+  )
+
+  expect_message(
+    dm_select_tbl(dm_for_filter, t_new = c(t1, t2), repair = "unique")
+  )
+
+  expect_message(
+    dm_rename_tbl(dm_for_filter, t_new = c(t1, t2), repair = "unique")
   )
 })

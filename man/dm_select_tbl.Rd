@@ -5,15 +5,38 @@
 \alias{dm_rename_tbl}
 \title{Select and rename tables}
 \usage{
-dm_select_tbl(dm, ...)
+dm_select_tbl(dm, ..., repair = "check_unique", quiet = FALSE)
 
-dm_rename_tbl(dm, ...)
+dm_rename_tbl(dm, ..., repair = "check_unique", quiet = FALSE)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{...}{One or more table names of the tables of the \code{\link{dm}} object.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
+
+\item{repair}{Either a string or a function. If a string, it must
+be one of \code{"check_unique"}, \code{"minimal"}, \code{"unique"}, or \code{"universal"}.
+If a function, it is invoked with a vector of minimal names and must
+return minimal names, otherwise an error is thrown.
+\itemize{
+\item Minimal names are never \code{NULL} or \code{NA}. When an element doesn't
+have a name, its minimal name is an empty string.
+\item Unique names are unique. A suffix is appended to duplicate
+names to make them unique.
+\item Universal names are unique and syntactic, meaning that you can
+safely use the names as variables without causing a syntax
+error.
+}
+
+The \code{"check_unique"} option doesn't perform any name repair.
+Instead, an error is raised if the names don't suit the
+\code{"unique"} criteria.}
+
+\item{quiet}{By default, the user is informed of any renaming
+caused by repairing the names. This only concerns unique and
+universal repairing. Set \code{quiet} to \code{TRUE} to silence the
+messages.}
 }
 \value{
 The input \code{dm} with tables renamed or removed.
