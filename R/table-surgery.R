@@ -56,10 +56,10 @@ decompose_table <- function(.data, new_id_column, ...) {
   sel_vars <- set_names(avail_cols[sel_vars_ind], names(sel_vars_ind))
 
   parent_table <-
-    select(.data, !!!sel_vars) %>%
+    select(.data, !!!sel_vars_ind) %>%
     distinct() %>%
     # Without as.integer(), RPostgres creates integer64 column (#15)
-    arrange(!!!syms(names(sel_vars))) %>%
+    arrange(!!!syms(names(sel_vars_ind))) %>%
     mutate(!!id_col_q := as.integer(row_number())) %>%
     select(!!id_col_q, everything())
 
