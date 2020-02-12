@@ -183,7 +183,7 @@ flights %>%
   count(model)
 ```
 
-The {dm} code is leaner because the fk information is encoded in the object.
+The {dm} code is leaner because the foreign key relations are encoded in the object.
 
 Mind, that if you access a table via `tbl.dm()`, `$.dm()` or `[[.dm()`, filter conditions set for other tables are ignored.
 
