@@ -109,7 +109,7 @@ flights_dm_with_one_key %>%
   dm_draw()
 ```
 
-The `dm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables (by default a reduced version of table `flight`), defines all primary and foreign keys, and even assigns colors to the different types of tables.
+The `dm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables (by default a reduced version of table `flights`), defines all primary and foreign keys, and even assigns colors to the different types of tables.
 We will be using the `dm` object created by this function from now on.
 
 ```{r}
