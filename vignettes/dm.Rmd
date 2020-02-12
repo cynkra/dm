@@ -80,15 +80,15 @@ flights_dm
 ```
 
 This fairly verbose output shows the data and metadata of a `dm` object.
-These components can be accessed with `dm_get_src()` and `dm_get_tables()`.
+The various components can be accessed with functions of the type `dm_get_...()`, e.g.:
 
 ```{r}
 dm_get_src(flights_dm)
-dm_get_filters(flights_dm)
 dm_get_all_pks(flights_dm)
 dm_get_all_fks(flights_dm)
 ```
 
+Notably, the function `dm_get_tables()` returns a named list containing the individual tables.
 
 ## Keys and visualization {#keys}
 
