@@ -87,5 +87,4 @@ test_that("errors for selecting and renaming tables work", {
     dm_rename_tbl(dm_for_filter, t_new = c(t1, t2)),
     class = "need_unique_names"
   )
-
 })
