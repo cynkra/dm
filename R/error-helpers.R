@@ -469,7 +469,7 @@ error_txt_unnamed_table_list <- function() {
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
-  abort(error_txt_need_unique_names(duplicate_names), .subclass = dm_error_full("need_unique_names"))
+  abort(error_txt_need_unique_names(unique(duplicate_names)), .subclass = dm_error_full("need_unique_names"))
 }
 
 error_txt_need_unique_names <- function(duplicate_names) {

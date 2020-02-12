@@ -127,7 +127,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   names_list <-
     repair_table_names(old_names = src_tbls_impl(dm), new_names = new_tbl_name_chr, repair, quiet)
   # rename dm in case of name repair
-  dm <- dm_select_tbl_impl(dm, names_list$new_old_names, needs_repair = FALSE)
+  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
   new_tbl_name_chr <- names_list$new_names
   old_tbl_name <- orig_name_zoomed(dm)
   new_tbl <- list(get_zoomed_tbl(dm))

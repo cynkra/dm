@@ -152,9 +152,9 @@ cdm_rm_pk(dm, table, rm_referencing_fks = FALSE)
 
 cdm_enum_pk_candidates(dm, table)
 
-cdm_select_tbl(dm, ..., repair = "check_unique", quiet = FALSE)
+cdm_select_tbl(dm, ...)
 
-cdm_rename_tbl(dm, ..., repair = "check_unique", quiet = FALSE)
+cdm_rename_tbl(dm, ...)
 
 cdm_select(dm, table, ...)
 

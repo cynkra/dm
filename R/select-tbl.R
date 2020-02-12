@@ -11,20 +11,19 @@
 #' @param dm A [`dm`] object.
 #' @param ... One or more table names of the tables of the [`dm`] object.
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
-#' @inheritParams vctrs::vec_as_names
 #'
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_select_tbl(airports, fl = flights)
 #' @export
-dm_select_tbl <- function(dm, ..., repair = "check_unique", quiet = FALSE) {
+dm_select_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
   vars <- tidyselect_table_names(dm)
   selected <- quo_select_table(quo(c(...)), vars)
 
-  dm_select_tbl_impl(dm, selected, repair = repair, quiet = quiet)
+  dm_select_tbl_impl(dm, selected)
 }
 
 #' Change the names of the tables in a `dm`
@@ -38,12 +37,12 @@ dm_select_tbl <- function(dm, ..., repair = "check_unique", quiet = FALSE) {
 #' dm_nycflights13() %>%
 #'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
-dm_rename_tbl <- function(dm, ..., repair = "check_unique", quiet = FALSE) {
+dm_rename_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
   vars <- tidyselect_table_names(dm)
   selected <- quo_rename_table(quo(c(...)), vars)
 
-  dm_select_tbl_impl(dm, selected, repair = repair, quiet = quiet)
+  dm_select_tbl_impl(dm, selected)
 }
 
 tidyselect_table_names <- function(dm) {
@@ -54,7 +53,7 @@ tidyselect_table_names <- function(dm) {
 }
 
 dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "unique", quiet = FALSE) {
-  if (needs_repair) selected <- set_names(selected, repair_names_vec(names(selected), repair, quiet))
+  if (anyDuplicated(names(selected))) abort_need_unique_names(names(selected[duplicated(names(selected))]))
 
   # Required to avoid an error further on
   if (is_empty(selected)) {
