@@ -151,8 +151,7 @@ dm_set_colors <- function(dm, ...) {
   }
 
   # get table names for each color (name_spec argument is not needed)
-  quo_for_select <- quo(c(...))
-  selected_tables <- quo_select_table(quo_for_select, src_tbls(dm))
+  selected_tables <- quo_select_table(quo(c(...)), src_tbls(dm))
 
   display_df <-
     selected_tables %>%
