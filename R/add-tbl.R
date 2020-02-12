@@ -88,8 +88,8 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 dm_rm_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
   dm_tables <- src_tbls(dm)
-  deselected <- quo_select_table(quo(c(...)), dm_tables)
-  selected <- setdiff(dm_tables, deselected)
+  deselected_ind <- quo_get_table_indices(quo(c(...)), dm_tables)
+  selected <- dm_tables[-deselected_ind]
 
   dm_select_tbl(dm, !!!selected)
 }
