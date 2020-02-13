@@ -56,6 +56,15 @@ test_that("`dm_set_colors()` errors if old syntax used", {
   )
 })
 
+test_that("`dm_set_colors()` errors with unnamed args", {
+  expect_dm_error(
+    dm_set_colors(
+      dm_nycflights_small,
+      airports),
+    class = "only_named_args"
+  )
+})
+
 test_that("last", {
   expect_dm_error(
     color_quos_to_display(
