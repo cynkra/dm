@@ -1,3 +1,9 @@
+get_stage("before_script") %>%
+  add_code_step({
+    pkgload::load_all()
+    sessioninfo::session_info()
+  })
+
 if (ci_has_env("TIC_DEV_VERSIONS")) {
   get_stage("install") %>%
     add_step(step_install_github(upgrade = "always", c(
