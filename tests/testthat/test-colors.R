@@ -22,4 +22,28 @@ test_that("color related functions work", {
     col_to_hex("darklightpink"),
     "cols_not_avail"
   )
+
+  # hex_from_rgb()
+  expect_identical(
+    hex_from_rgb(matrix(100, 4, 1)),
+    # FIXME: after #279 result will be: "#64646464"
+    "#646464"
+  )
+
+  expect_identical(
+    hex_from_rgb(matrix(100:107, 4, 2)),
+    # FIXME: after #279 result will be: c("#64656667", "#68696A6B")
+    c("#646566", "#68696A")
+  )
+
+  # calc_bodycol_rgb()
+  # FIXME: test after #279:
+  # expect_identical(
+  #    calc_bodycol_rgb(matrix(c(100, 20, 200, 155), 3, 1)),
+  #    matrix(c(224, 208, 244, 155), 4, 1)
+  #    )
+  expect_identical(
+    calc_bodycol_rgb(matrix(c(100, 20, 200), 3, 1)),
+    matrix(c(224, 208, 244), 3, 1)
+  )
 })
