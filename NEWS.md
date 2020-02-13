@@ -1,9 +1,11 @@
 # dm 0.1.1
 
+- Adapt to tidyselect 1.0.0 (#257).
+- Zooming and unzooming is now faster if no columns are removed.
+- Table names must be unique.
+- `dm_examine_constraints()` formats the problems nicely.
 - New class for prettier printing of keys (#244).
-- Ease tidyselect version requirement to 0.2.5.
-- Add experimental schema support for `dm_from_src()` for Postgres through the new `schema` and `table_type` arguments.
-- `dm_from_src()` also accepts a DBI connection (#256).
+- Add experimental schema support for `dm_from_src()` for Postgres through the new `schema` and `table_type` arguments (#256).
 
 
 # dm 0.1.0
