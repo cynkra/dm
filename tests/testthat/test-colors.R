@@ -1,5 +1,6 @@
 test_that("color related functions work", {
   # is_dark_color()
+  # FIXME: after #279 needs vector of 4
   expect_true(is_dark_color(rgb = c(100, 100, 100)))
   expect_false(is_dark_color(rgb = c(142, 164, 143)))
 
@@ -13,6 +14,7 @@ test_that("color related functions work", {
   expect_identical(
     col_to_hex(c("brown", "#92A87F", "darkgreen", "#92A87F4C")),
     # alpha channel gets swallowed by hex_from_rgb()
+    # FIXME: after #279 results will always contain alpha channel
     c("#A52A2A", "#92A87F", "#006400", "#92A87F")
   )
 
