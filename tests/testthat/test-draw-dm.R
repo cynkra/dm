@@ -99,3 +99,26 @@ test_that("getter", {
     )
   )
 })
+
+test_that("datamodel-code for drawing", {
+  data_model_for_filter <- dm_get_data_model(dm_for_filter)
+
+  expect_s3_class(
+    data_model_for_filter,
+    "data_model"
+  )
+
+  expect_identical(
+    map(data_model_for_filter, nrow),
+    list(tables = 6L, columns = 15L, references = 5L)
+  )
+})
+
+test_that("get available colors", {
+  expect_length(
+    dm_get_available_colors(),
+    length(colors()) + 1
+  )
+})
+
+})
