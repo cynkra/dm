@@ -80,15 +80,15 @@ flights_dm
 ```
 
 This fairly verbose output shows the data and metadata of a `dm` object.
-These components can be accessed with `dm_get_src()` and `dm_get_tables()`.
+The various components can be accessed with functions of the type `dm_get_...()`, e.g.:
 
 ```{r}
 dm_get_src(flights_dm)
-dm_get_filters(flights_dm)
 dm_get_all_pks(flights_dm)
 dm_get_all_fks(flights_dm)
 ```
 
+Notably, the function `dm_get_tables()` returns a named list containing the individual tables.
 
 ## Keys and visualization {#keys}
 
@@ -109,7 +109,7 @@ flights_dm_with_one_key %>%
   dm_draw()
 ```
 
-The `dm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables, defines all primary and foreign keys, and even assigns colors to the different types of tables.
+The `dm_nycflights13()` function provides a shortcut: the `dm` object returned by this function contains all tables (by default a reduced version of table `flights`), defines all primary and foreign keys, and even assigns colors to the different types of tables.
 We will be using the `dm` object created by this function from now on.
 
 ```{r}
@@ -183,7 +183,7 @@ flights %>%
   count(model)
 ```
 
-The {dm} code is leaner because the fk information is encoded in the object.
+The {dm} code is leaner because the foreign key relations are encoded in the object.
 
 Mind, that if you access a table via `tbl.dm()`, `$.dm()` or `[[.dm()`, filter conditions set for other tables are ignored.
 
