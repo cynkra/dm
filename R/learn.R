@@ -271,8 +271,8 @@ nest_compat <- function(.data, ...) {
   stopifnot(length(quos) == 1)
   new_col <- names(quos)
   if (nrow(.data) == 0) {
-    remove <- tidyselect::eval_select(quo(c(...)), .data)
-    keep <- setdiff(names(.data), names(remove))
+    remove <- eval_select_indexes(quo(c(...)), colnames(.data))
+    keep <- setdiff(seq_along(.data), remove)
 
     nest <- vctrs::new_list_of(list(), ptype = .data %>% select(!!!remove))
 

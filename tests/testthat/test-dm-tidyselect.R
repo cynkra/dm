@@ -13,7 +13,7 @@ test_that("tidyselecting tables works", {
   )
 
   expect_identical(
-    eval_rename_table(quo, table_names),
+    eval_rename_table_all(quo, table_names),
     set_names(table_names, c("table_1_new", "table_2", "table_3_new"))
   )
 })

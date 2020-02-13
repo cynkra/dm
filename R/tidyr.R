@@ -37,16 +37,16 @@ unite.dm <- function(data, ...) {
 unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   tbl <- get_zoomed_tbl(data)
   united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
+
   # all columns that are not not removed count as "selected"; names of "selected" are identical to "selected"
-  deselected <- if (remove) {
-    cols_tbl <- set_names(colnames(tbl))
-    deselected_ind <- tidyselect::eval_select(quo(c(...)), cols_tbl)
-    set_names(cols_tbl[deselected_ind], names(deselected_ind))
+  if (remove) {
+    deselected <- eval_select_both(quo(c(...)), colnames(tbl))
   } else {
-    character()
+    deselected <- eval_select_both(quo(c()), colnames(tbl))
   }
-  selected <- set_names(setdiff(names(get_tracked_cols(data)), deselected))
+  selected <- set_names(setdiff(names(get_tracked_cols(data)), deselected$names))
   new_tracked_cols_zoom <- new_tracked_cols(data, selected)
+
   replace_zoomed_tbl(data, united_tbl, new_tracked_cols_zoom)
 }
 

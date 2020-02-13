@@ -34,21 +34,22 @@ check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 
-  cols_avail <- set_names(colnames(.data))
-  # if no column is chosen, all columns are used for the check
-  cols_chosen <- cols_avail[tidyselect::eval_select(quo(c(...)), cols_avail)]
+  # No special handling for no columns
+  cols_chosen <- eval_select_indices(quo(c(...)), colnames(.data))
+  orig_names <- names(cols_chosen)
   names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 
   duplicate_rows <-
     .data %>%
-    count(!!!syms(cols_chosen)) %>%
+    select(!!!cols_chosen) %>%
+    count(!!!syms(names(cols_chosen))) %>%
     select(n) %>%
     filter(n > 1) %>%
     head(1) %>%
     collect()
 
   if (nrow(duplicate_rows) != 0) {
-    abort_not_unique_key(as_label(data_q), cols_chosen)
+    abort_not_unique_key(as_label(data_q), orig_names)
   }
 
   invisible(.data)

@@ -87,8 +87,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 #'   dm_rm_tbl(airports)
 dm_rm_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
-  dm_tables <- src_tbls(dm)
-  deselected_ind <- eval_select_table_indices(quo(c(...)), dm_tables)
+  deselected_ind <- eval_select_table_indices(quo(c(...)), src_tbls_impl(dm))
   selected_ind <- setdiff(seq_along(dm), deselected_ind)
 
   dm_select_tbl(dm, !!!selected_ind)

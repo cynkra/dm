@@ -45,34 +45,33 @@
 #' @export
 decompose_table <- function(.data, new_id_column, ...) {
   table_name <- deparse(substitute(.data))
-  avail_cols <- set_names(colnames(.data))
+  avail_cols <- colnames(.data)
   id_col_q <- ensym(new_id_column)
 
   if (as_string(id_col_q) %in% avail_cols) {
     abort_dupl_new_id_col_name(table_name)
   }
 
-  sel_vars_ind <- tidyselect::eval_select(quo(c(...)), avail_cols)
-  sel_vars <- set_names(avail_cols[sel_vars_ind], names(sel_vars_ind))
+  sel_vars <- eval_select_both(quo(c(...)), avail_cols)
 
   parent_table <-
-    select(.data, !!!sel_vars_ind) %>%
+    select(.data, !!!sel_vars$indices) %>%
     distinct() %>%
+    arrange(!!!syms(names(sel_vars$indices))) %>%
     # Without as.integer(), RPostgres creates integer64 column (#15)
-    arrange(!!!syms(names(sel_vars_ind))) %>%
     mutate(!!id_col_q := as.integer(row_number())) %>%
     select(!!id_col_q, everything())
 
-  non_key_names <-
-    setdiff(avail_cols, sel_vars)
+  non_key_indices <-
+    setdiff(seq_along(avail_cols), sel_vars$indices)
 
   child_table <-
     .data %>%
     left_join(
       parent_table,
-      by = prep_recode(sel_vars)
+      by = prep_recode(sel_vars$names)
     ) %>%
-    select(non_key_names, !!id_col_q)
+    select(!!!non_key_indices, !!id_col_q)
   # FIXME: Think about a good place for the target column,
   # perhaps if this operation is run in a data model?
 
