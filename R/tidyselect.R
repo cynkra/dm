@@ -1,5 +1,5 @@
-eval_select_table <- function(quo, table_names) {
-  indexes <- eval_select_table_indices(quo, table_names)
+eval_select_table <- function(quo, table_names, unique = TRUE) {
+  indexes <- eval_select_table_indices(quo, table_names, unique = unique)
   set_names(table_names[indexes], names(indexes))
 }
 
@@ -10,9 +10,9 @@ eval_rename_table_all <- function(quo, table_names) {
   set_names(table_names, names)
 }
 
-eval_select_table_indices <- function(quo, table_names) {
+eval_select_table_indices <- function(quo, table_names, unique = TRUE) {
   tryCatch(
-    eval_select_indices(quo, table_names),
+    eval_select_indices(quo, table_names, unique = unique),
     vctrs_error_subscript = function(cnd) {
       # https://github.com/r-lib/vctrs/issues/786
       cnd$subscript_elt <- "element"
@@ -38,7 +38,7 @@ eval_select_both <- function(quo, names) {
   list(indices = indices, names = names)
 }
 
-eval_select_indices <- function(quo, names) {
+eval_select_indices <- function(quo, names, unique = TRUE) {
   pos <- tidyselect::eval_select(quo, set_names(names))
 
   # https://github.com/r-lib/tidyselect/issues/173?
@@ -46,10 +46,12 @@ eval_select_indices <- function(quo, names) {
     names(pos) <- names[pos]
   }
 
-  # Called for side effects.
-  # Normally done by tidyselect if the `data` argument
-  # to eval_select() is a data frame.
-  vctrs::vec_as_names(names(pos), repair = "check_unique")
+  if (unique) {
+    # Called for side effects.
+    # Normally done by tidyselect if the `data` argument
+    # to eval_select() is a data frame.
+    vctrs::vec_as_names(names(pos), repair = "check_unique")
+  }
 
   pos
 }

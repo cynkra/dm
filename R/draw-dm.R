@@ -151,12 +151,11 @@ dm_set_colors <- function(dm, ...) {
   }
 
   # get table names for each color (name_spec argument is not needed)
-  selected_tables <- map(quos, eval_select_table, src_tbls_impl(dm))
+  selected_tables <- eval_select_table(quo(c(...)), src_tbls_impl(dm), unique = FALSE)
 
   display_df <-
     selected_tables %>%
     enframe(name = "new_display", value = "table") %>%
-    unnest(cols = table) %>%
     # convert color names to hex color codes (if already hex code this is a no-op)
     mutate(new_display = col_to_hex(new_display)) %>%
     # needs to be done like this, cause `distinct()` would keep the first one
