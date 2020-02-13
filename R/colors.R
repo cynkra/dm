@@ -3,8 +3,9 @@ is_dark_color <- function(rgb) {
   # and https://www.w3.org/WAI/WCAG21/Techniques/general/G18.html
   # you should calculate luminance first and then compare its contrast to white and black
   #
-  # But after evaluating results from this approach, it seems more natural to use a formula like this:
-  sum(rgb / 255. * c(0.8, 1.2, 0.6, -1.)) < 0.6
+  # But after evaluating results from this approach and taking the alpha channel into account,
+  # it seems more natural to use a formula like this:
+  sum(rgb[1:3] / 255. * c(0.3, 0.5, 0.2)) + (255. - rgb[4]) / 255. * 0.2 < 0.6
   #  + (255 - rgb[4]) / 255. * 0.15
   # the weights are inspired by the sources mentioned above (only the differences between them are much smaller here)
 }
