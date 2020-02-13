@@ -34,6 +34,6 @@ hex_from_rgb <- function(col_rgb) {
 
 calc_bodycol_rgb <- function(header_bgcol_rgb) {
   # alpha channel remains the same for the body color
-  header_bgcol_rgb[1:3,] <- header_bgcol_rgb[1:3,] + (255 - header_bgcol_rgb[1:3,]) * 0.8
+  header_bgcol_rgb[1:3, ] <- header_bgcol_rgb[1:3, ] + (255 - header_bgcol_rgb[1:3, ]) * 0.8
   header_bgcol_rgb
 }
