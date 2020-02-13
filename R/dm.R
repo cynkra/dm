@@ -93,7 +93,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' @export
 #' @examples
 #' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
-dm_from_src <- nse(function(src = NULL, table_names = NULL, ...) {
+dm_from_src <- function(src = NULL, table_names = NULL, ...) {
   if (is_null(src)) {
     return(empty_dm())
   }
@@ -123,7 +123,7 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL, ...) {
   tbls <- map(set_names(table_names), tbl, src = src)
 
   new_dm(tbls)
-})
+}
 
 #' A low-level constructor
 #'
