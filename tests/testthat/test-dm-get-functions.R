@@ -1,4 +1,4 @@
-active_srcs <- tibble(src = names(dbplyr:::test_srcs$get()))
+active_srcs <- tibble(src = names(test_srcs))
 lookup <- tibble(
   src = c("df", "sqlite", "postgres", "mssql"),
   class_src = c("src_local", "src_SQLiteConnection", "src_PqConnection", "src_Microsoft SQL Server"),
