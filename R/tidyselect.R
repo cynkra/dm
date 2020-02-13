@@ -21,6 +21,13 @@ quo_select_table_indices <- function(quo, table_names) {
   )
 }
 
+eval_select_both <- function(quo, names) {
+  indices <- quo_select_indices(quo, names)
+  names <- set_names(names[indices], names(indices))
+  list(indices = indices, names = names)
+}
+
+# FIXME: quo_select_ -> eval_select_
 quo_select_indices <- function(quo, names) {
   tidyselect::eval_select(quo, set_names(names))
 }

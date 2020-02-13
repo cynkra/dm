@@ -243,12 +243,10 @@ new_tracked_cols <- function(dm, selected) {
   # the new tracked keys need to be the remaining original column names
   # and their name needs to be the newest one (tidyselect-syntax)
   # `intersect(selected, old_tracked_names)` is empty, return `NULL`
-  if (is_null(intersect(selected, old_tracked_names))) {
-    NULL
-  } else {
-    set_names(
-      tracked_cols[selected[selected %in% old_tracked_names]],
-      names(selected[selected %in% old_tracked_names])
-    )
-  }
+
+  selected_match <- selected[selected %in% old_tracked_names]
+  set_names(
+    tracked_cols[selected_match],
+    names(selected_match)
+  )
 }

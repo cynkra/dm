@@ -112,13 +112,10 @@ select.dm <- function(.data, ...) {
 #' @export
 select.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  cols_tbl <- set_names(colnames(tbl))
 
-  selected_ind <- tidyselect::eval_select(quo(c(...)), cols_tbl)
-  selected_tbl <- select(tbl, !!!selected_ind)
-
-  selected <- set_names(cols_tbl[selected_ind], names(selected_ind))
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
+  selected <- eval_select_both(quo(c(...)), colnames(tbl))
+  selected_tbl <- select(tbl, !!!selected$indices)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected$names)
 
   replace_zoomed_tbl(.data, selected_tbl, new_tracked_cols_zoom)
 }

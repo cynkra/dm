@@ -128,4 +128,10 @@ test_that("dm_rm_tbl() works", {
     dm_rm_tbl(dm_for_disambiguate, everything()),
     empty_dm()
   )
+
+  # corner case: not removing any table
+  expect_identical(
+    dm_rm_tbl(dm_for_disambiguate),
+    dm_for_disambiguate
+  )
 })
