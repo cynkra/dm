@@ -404,12 +404,6 @@ error_txt_con_only_for_dbi <- function() {
   "A local `dm` doesn't have a DB connection."
 }
 
-# general abort with customized msg ---------------------------------------
-
-abort_w_message <- function(msg) {
-  abort(msg, .subclass = dm_error_full("w_message"))
-}
-
 # when zoomed and it shouldn't be ------------------------------
 
 abort_only_possible_wo_zoom <- function(fun_name) {
@@ -469,7 +463,7 @@ error_txt_unnamed_table_list <- function() {
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
-  abort(error_txt_need_unique_names(duplicate_names), .subclass = dm_error_full("need_unique_names"))
+  abort(error_txt_need_unique_names(unique(duplicate_names)), .subclass = dm_error_full("need_unique_names"))
 }
 
 error_txt_need_unique_names <- function(duplicate_names) {

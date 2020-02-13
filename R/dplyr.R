@@ -112,10 +112,10 @@ select.dm <- function(.data, ...) {
 #' @export
 select.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  selected <- tidyselect::vars_select(colnames(tbl), ...)
-  selected_tbl <- select(tbl, !!!selected)
 
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
+  selected <- eval_select_both(quo(c(...)), colnames(tbl))
+  selected_tbl <- select(tbl, !!!selected$indices)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected$names)
 
   replace_zoomed_tbl(.data, selected_tbl, new_tracked_cols_zoom)
 }
@@ -129,10 +129,10 @@ rename.dm <- function(.data, ...) {
 #' @export
 rename.zoomed_dm <- function(.data, ...) {
   tbl <- get_zoomed_tbl(.data)
-  renamed <- tidyselect::vars_rename(colnames(tbl), ...)
-  renamed_tbl <- rename(tbl, !!!renamed)
 
-  new_tracked_cols_zoom <- new_tracked_cols(.data, renamed)
+  renamed <- eval_rename_both(quo(c(...)), colnames(tbl))
+  renamed_tbl <- rename(tbl, !!!renamed$indices)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, renamed$all_names)
 
   replace_zoomed_tbl(.data, renamed_tbl, new_tracked_cols_zoom)
 }
@@ -148,12 +148,16 @@ distinct.dm <- function(.data, ...) {
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
   tbl <- get_zoomed_tbl(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
-  # when keeping all columns or empty ellipsis (use all columns for distinct) all keys columns remain
-  if (.keep_all || is_empty(enexprs(...))) {
+  # when keeping all columns or empty ellipsis
+  # (use all columns for distinct)
+  # all keys columns remain
+  if (.keep_all || rlang::dots_n(...) == 0) {
     return(replace_zoomed_tbl(.data, distinct_tbl))
   }
-  selected <- tidyselect::vars_select(colnames(tbl), ...)
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
+
+  selected <- eval_select_both(quo(c(...)), colnames(tbl))
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected$names)
+
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_cols_zoom)
 }
 
@@ -165,7 +169,9 @@ arrange.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 arrange.zoomed_dm <- function(.data, ...) {
-  replace_zoomed_tbl(.data, arrange(get_zoomed_tbl(.data), ...))
+  tbl <- get_zoomed_tbl(.data)
+  arranged_tbl <- arrange(tbl, ...)
+  replace_zoomed_tbl(.data, arranged_tbl)
 }
 
 #' @export
@@ -315,14 +321,14 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   all_cols_y <- colnames(y_tbl)
 
   if (quo_is_null(select_quo)) {
-    selected <- tidyselect::vars_select(all_cols_y, everything())
-  } else {
-    selected <- tidyselect::vars_select(all_cols_y, !!select_quo)
+    select_quo <- quo(everything())
   }
+
+  selected <- eval_select_both(select_quo, colnames(y_tbl))
 
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
-    if (!any(selected == by)) abort_need_to_select_rhs_by(y_name, unname(by))
+    if (!any(selected$names == by)) abort_need_to_select_rhs_by(y_name, unname(by))
 
     if (!all(names(by) %in% get_tracked_cols(x))) abort_fk_not_tracked(x_orig_name, y_name)
   }
@@ -331,7 +337,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
   new_col_names <- get_tracked_cols(x)
 
-  y_tbl <- select(y_tbl, !!!selected)
+  y_tbl <- select(y_tbl, !!!selected$indices)
 
   if (disambiguate) {
     x_disambig_name <- x_orig_name
@@ -365,7 +371,6 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
     if (has_length(y_renames)) {
       y_tbl <- y_tbl %>% rename(!!!y_renames[[1]])
-      selected[] <- recode(selected, !!!prep_recode(y_renames[[1]]))
     }
   }
 
