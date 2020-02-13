@@ -21,7 +21,7 @@ dm_select_tbl <- function(dm, ...) {
   check_no_filter(dm)
 
   vars <- tidyselect_table_names(dm)
-  selected <- quo_select_table(quo(c(...)), vars)
+  selected <- eval_select_table(quo(c(...)), vars)
 
   dm_select_tbl_impl(dm, selected)
 }
@@ -40,7 +40,7 @@ dm_select_tbl <- function(dm, ...) {
 dm_rename_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
   vars <- tidyselect_table_names(dm)
-  selected <- quo_rename_table(quo(c(...)), vars)
+  selected <- eval_rename_table(quo(c(...)), vars)
 
   dm_select_tbl_impl(dm, selected)
 }
