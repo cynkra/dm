@@ -1,7 +1,7 @@
 get_stage("before_script") %>%
   add_code_step({
     pkgload::load_all()
-    sessioninfo::session_info()
+    print(sessioninfo::session_info())
   })
 
 if (ci_has_env("TIC_DEV_VERSIONS")) {
