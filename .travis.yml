@@ -45,10 +45,9 @@ stages:
 #jobs
 jobs:
   include:
-  - r: devel
+  - r: release
     env:
-    - TIC_DEV_VERSIONS=TRUE
-    - TIC_ONLY_TESTS=TRUE
+    - TIC_BUILD_PKGDOWN=true
   - r: release
     env:
     - TIC_ONLY_STYLER=true
@@ -56,9 +55,10 @@ jobs:
   - stage: full
     os: osx
   - r: devel
-  - r: release
+  - r: devel
     env:
-    - TIC_BUILD_PKGDOWN=true
+    - TIC_DEV_VERSIONS=TRUE
+    - TIC_ONLY_TESTS=TRUE
   - r: 3.5
   - r: 3.4
   allow_failures:
