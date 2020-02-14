@@ -41,9 +41,7 @@ stages:
 - name: test
 - name: full
   if:
-  - branch = master
-  - branch = docs
-  - branch =~ /^r-.*$/
+  - branch = master OR branch = docs OR branch =~ /^r-.*$/
 
 #jobs
 jobs:
