@@ -491,7 +491,8 @@ as_dm.src <- function(x) {
 
 #' @export
 format.dm <- function(x, ...) {
-  abort("NYI")
+  def <- dm_get_def(x)
+  glue("dm: {def_get_n_tables(def)} tables, {def_get_n_columns(def)} columns, {def_get_n_pks(def)} primary keys, {def_get_n_fks(def)} foreign keys")
 }
 
 #' @export
@@ -508,9 +509,9 @@ print.dm <- function(x, ...) {
 
   def <- dm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
-  cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
-  cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
-  cat_line("Foreign keys: ", sum(map_int(def$fks, vctrs::vec_size)))
+  cat_line("Columns: ", def_get_n_columns(def))
+  cat_line("Primary keys: ", def_get_n_pks(def))
+  cat_line("Foreign keys: ", def_get_n_fks(def))
 
   filters <- dm_get_filters(x)
   if (nrow(filters) > 0) {
@@ -519,6 +520,22 @@ print.dm <- function(x, ...) {
   }
 
   invisible(x)
+}
+
+def_get_n_tables <- function(def) {
+  nrow(def)
+}
+
+def_get_n_columns <- function(def) {
+  sum(map_int(map(def$data, colnames), length))
+}
+
+def_get_n_pks <- function(def) {
+  sum(map_int(def$pks, vctrs::vec_size))
+}
+
+def_get_n_fks <- function(def) {
+  sum(map_int(def$fks, vctrs::vec_size))
 }
 
 #' @export

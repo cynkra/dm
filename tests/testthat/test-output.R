@@ -3,6 +3,9 @@ test_that("output", {
     dm_nycflights13(cycle = TRUE)
 
     dm_nycflights13(cycle = TRUE) %>%
+      format()
+
+    dm_nycflights13(cycle = TRUE) %>%
       dm_filter(flights, origin == "EWR")
 
     dm_nycflights13(cycle = TRUE) %>%

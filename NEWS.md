@@ -1,5 +1,6 @@
 # dm 0.1.1
 
+- Implement `format.dm()`.
 - Adapt to tidyselect 1.0.0 (#257).
 - Zooming and unzooming is now faster if no columns are removed.
 - Table names must be unique.
