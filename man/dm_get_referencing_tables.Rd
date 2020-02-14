@@ -16,7 +16,8 @@ A character vector of the names of the tables that point to the primary
 key of \code{table}.
 }
 \description{
-Get the names of referencing tables
+This function returns the names of all tables that point to the primary key
+of a table.
 }
 \examples{
 dm_get_referencing_tables(dm_nycflights13(), airports)

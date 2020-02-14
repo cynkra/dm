@@ -1,3 +1,26 @@
+> dm_nycflights13(cycle = TRUE)
+-- Table source ----------------------------------------------------------------
+src:  <environment: R_GlobalEnv>
+-- Metadata --------------------------------------------------------------------
+Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+Columns: 53
+Primary keys: 3
+Foreign keys: 4
+
+> dm_nycflights13(cycle = TRUE) %>% format()
+dm: 5 tables, 53 columns, 3 primary keys, 4 foreign keys
+
+> dm_nycflights13(cycle = TRUE) %>% dm_filter(flights, origin == "EWR")
+-- Table source ----------------------------------------------------------------
+src:  <environment: R_GlobalEnv>
+-- Metadata --------------------------------------------------------------------
+Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+Columns: 53
+Primary keys: 3
+Foreign keys: 4
+-- Filters ---------------------------------------------------------------------
+flights: origin == "EWR"
+
 > dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints() %>% as_tibble()
 # A tibble: 7 x 6
   table   kind  columns ref_table is_key problem                                
