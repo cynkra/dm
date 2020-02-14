@@ -1,4 +1,4 @@
-#' Creates a [`dm`] object for the \pkg{nycflights13} data
+#' Creates a dm object for the \pkg{nycflights13} data
 #'
 #' @description Creates an example [`dm`] object from the tables in \pkg{nycflights13},
 #' along with the references.
