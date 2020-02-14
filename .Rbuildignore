@@ -13,3 +13,4 @@
 ^dm\.Rcheck$
 ^dm.*\.tar\.gz$
 ^dm.*\.tgz$
+^cran-comments\.md$
