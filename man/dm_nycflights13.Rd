@@ -2,7 +2,7 @@
 % Please edit documentation in R/nycflights13.R
 \name{dm_nycflights13}
 \alias{dm_nycflights13}
-\title{Creates a \code{\link{dm}} object for the \pkg{nycflights13} data}
+\title{Creates a dm object for the \pkg{nycflights13} data}
 \usage{
 dm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE)
 }

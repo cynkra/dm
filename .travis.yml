@@ -40,21 +40,24 @@ latex: false
 stages:
 - name: test
 - name: full
-  if: branch = master
+  if:
+  - branch = master
+  - branch = docs
+  - branch =~ /^r-.*$/
 
 #jobs
 jobs:
   include:
-  - r: release
-    env:
-    - TIC_BUILD_PKGDOWN=true
+  - r: devel
   - r: release
     env:
     - TIC_ONLY_STYLER=true
   - r: 3.3
   - stage: full
     os: osx
-  - r: devel
+  - r: release
+    env:
+    - TIC_BUILD_PKGDOWN=true
   - r: devel
     env:
     - TIC_DEV_VERSIONS=TRUE

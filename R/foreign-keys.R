@@ -151,7 +151,7 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 
 #' Get foreign key constraints
 #'
-#' @description Get a summary of all foreign key relations in a [`dm`]
+#' Get a summary of all foreign key relations in a [`dm`].
 #'
 #' @section Compound keys:
 #'

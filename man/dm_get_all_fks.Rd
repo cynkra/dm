@@ -18,7 +18,7 @@ A tibble with the following columns:
 }
 }
 \description{
-Get a summary of all foreign key relations in a \code{\link{dm}}
+Get a summary of all foreign key relations in a \code{\link{dm}}.
 }
 \section{Compound keys}{
 
