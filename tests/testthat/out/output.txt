@@ -19,129 +19,129 @@ Foreign keys: 4
 flights: origin == "EWR"
 
 > dm_nycflights13(cycle = TRUE) %>% str()
-tibble [5 x 4] (S3: tbl_df/tbl/data.frame)
- $ table  : chr [1:5] "airlines" "airports" "flights" "planes" ...
+Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	5 obs. of  4 variables:
+ $ table  : chr  "airlines" "airports" "flights" "planes" ...
  $ pks    : list<df[,1]> [1:5] 
-  ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  1 variable:
   .. ..$ column:List of 1
   .. .. ..$ : chr "carrier"
-  ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  1 variable:
   .. ..$ column:List of 1
   .. .. ..$ : chr "faa"
-  ..$ : tibble [0 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  1 variable:
   .. ..$ column: list()
-  ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  1 variable:
   .. ..$ column:List of 1
   .. .. ..$ : chr "tailnum"
-  ..$ : tibble [0 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  1 variable:
   .. ..$ column: list()
-  ..@ ptype: tibble [0 x 1] (S3: tbl_df/tbl/data.frame)
+  ..@ ptype:Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  1 variable:
   .. ..$ column: list()
  $ fks    : list<df[,2]> [1:5] 
-  ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  2 variables:
   .. ..$ table : chr "flights"
   .. ..$ column:List of 1
   .. .. ..$ : chr "carrier"
-  ..$ : tibble [2 x 2] (S3: tbl_df/tbl/data.frame)
-  .. ..$ table : chr [1:2] "flights" "flights"
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	2 obs. of  2 variables:
+  .. ..$ table : chr  "flights" "flights"
   .. ..$ column:List of 2
   .. .. ..$ : chr "origin"
   .. .. ..$ : chr "dest"
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
-  .. ..$ table : chr(0) 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
+  .. ..$ table : chr 
   .. ..$ column: list()
-  ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  2 variables:
   .. ..$ table : chr "flights"
   .. ..$ column:List of 1
   .. .. ..$ : chr "tailnum"
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
-  .. ..$ table : chr(0) 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
+  .. ..$ table : chr 
   .. ..$ column: list()
-  ..@ ptype: tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
-  .. ..$ table : chr(0) 
+  ..@ ptype:Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
+  .. ..$ table : chr 
   .. ..$ column: list()
  $ filters: list<df[,2]> [1:5] 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..@ ptype: tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..@ ptype:Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
+  .. ..$ zoomed     : logi 
 
 > dm_nycflights13(cycle = TRUE) %>% dm_zoom_to(airlines) %>% str()
-tibble [5 x 5] (S3: tbl_df/tbl/data.frame)
- $ zoom   : chr [1:5] "airlines" NA NA NA ...
- $ table  : chr [1:5] "airlines" "airports" "flights" "planes" ...
+Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	5 obs. of  5 variables:
+ $ zoom   : chr  "airlines" NA NA NA ...
+ $ table  : chr  "airlines" "airports" "flights" "planes" ...
  $ pks    : list<df[,1]> [1:5] 
-  ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  1 variable:
   .. ..$ column:List of 1
   .. .. ..$ : chr "carrier"
-  ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  1 variable:
   .. ..$ column:List of 1
   .. .. ..$ : chr "faa"
-  ..$ : tibble [0 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  1 variable:
   .. ..$ column: list()
-  ..$ : tibble [1 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  1 variable:
   .. ..$ column:List of 1
   .. .. ..$ : chr "tailnum"
-  ..$ : tibble [0 x 1] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  1 variable:
   .. ..$ column: list()
-  ..@ ptype: tibble [0 x 1] (S3: tbl_df/tbl/data.frame)
+  ..@ ptype:Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  1 variable:
   .. ..$ column: list()
  $ fks    : list<df[,2]> [1:5] 
-  ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  2 variables:
   .. ..$ table : chr "flights"
   .. ..$ column:List of 1
   .. .. ..$ : chr "carrier"
-  ..$ : tibble [2 x 2] (S3: tbl_df/tbl/data.frame)
-  .. ..$ table : chr [1:2] "flights" "flights"
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	2 obs. of  2 variables:
+  .. ..$ table : chr  "flights" "flights"
   .. ..$ column:List of 2
   .. .. ..$ : chr "origin"
   .. .. ..$ : chr "dest"
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
-  .. ..$ table : chr(0) 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
+  .. ..$ table : chr 
   .. ..$ column: list()
-  ..$ : tibble [1 x 2] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  2 variables:
   .. ..$ table : chr "flights"
   .. ..$ column:List of 1
   .. .. ..$ : chr "tailnum"
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
-  .. ..$ table : chr(0) 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
+  .. ..$ table : chr 
   .. ..$ column: list()
-  ..@ ptype: tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
-  .. ..$ table : chr(0) 
+  ..@ ptype:Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
+  .. ..$ table : chr 
   .. ..$ column: list()
  $ filters: list<df[,2]> [1:5] 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..$ : tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..$ :Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
-  ..@ ptype: tibble [0 x 2] (S3: tbl_df/tbl/data.frame)
+  .. ..$ zoomed     : logi 
+  ..@ ptype:Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	0 obs. of  2 variables:
   .. ..$ filter_expr: list()
-  .. ..$ zoomed     : logi(0) 
+  .. ..$ zoomed     : logi 
 
 > dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints() %>% as_tibble()
 # A tibble: 7 x 6
