@@ -1,4 +1,4 @@
-#' Creates a [`dm`] object for the \pkg{nycflights13} data
+#' Creates a dm object for the \pkg{nycflights13} data
 #'
 #' @description Creates an example [`dm`] object from the tables in \pkg{nycflights13},
 #' along with the references.
@@ -25,7 +25,7 @@
 #'   dm_nycflights13() %>%
 #'     dm_draw()
 #' }
-dm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE, subset = TRUE) {
+dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
   dm <-
     dm_from_src(
       src_df("nycflights13")
@@ -42,8 +42,7 @@ dm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE, subset = TRUE) {
       dm %>%
       dm_set_colors(
         "#5B9BD5" = flights,
-        "#ED7D31" = starts_with("air"),
-        "#ED7D31" = planes,
+        "#ED7D31" = c(starts_with("air"), planes),
         "#70AD47" = weather
       )
   }
@@ -63,4 +62,4 @@ dm_nycflights13 <- nse(function(cycle = FALSE, color = TRUE, subset = TRUE) {
   }
 
   dm
-})
+}

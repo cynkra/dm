@@ -32,19 +32,22 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   old_names <- src_tbls(dm)
   names_list <- repair_table_names(old_names, new_names, repair, quiet)
   # rename old tables in case name repair changed their names
-  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
 
+  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
   dm_add_tbl_impl(dm, new_tables, names_list$new_names)
 }
 
-repair_table_names <- function(old_names, new_names, repair = "check_unique", quiet = FALSE) {
-  all_names <- tryCatch(
-    vctrs::vec_as_names(c(old_names, new_names), repair = repair, quiet = quiet),
-    error = function(e) {
-      if (inherits(e, "vctrs_error_names_must_be_unique")) abort_need_unique_names(intersect(old_names, new_names))
-      abort(e$message)
+repair_names_vec <- function(names, repair, quiet) {
+  tryCatch(
+    vctrs::vec_as_names(names, repair = repair, quiet = quiet),
+    vctrs_error_names_must_be_unique = function(e) {
+      abort_need_unique_names(names[duplicated(names)])
     }
   )
+}
+
+repair_table_names <- function(old_names, new_names, repair = "check_unique", quiet = FALSE) {
+  all_names <- repair_names_vec(c(old_names, new_names), repair, quiet)
   new_old_names <- set_names(old_names, all_names[seq_along(old_names)])
 
   new_names <-
@@ -84,9 +87,10 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 #'   dm_rm_tbl(airports)
 dm_rm_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
-  selected <- dm_try_tables(setdiff(src_tbls(dm), tidyselect::vars_select(src_tbls(dm), ...)), src_tbls(dm))
+  deselected_ind <- eval_select_table_indices(quo(c(...)), src_tbls_impl(dm))
+  selected_ind <- setdiff(seq_along(dm), deselected_ind)
 
-  dm_select_tbl(dm, !!!selected)
+  dm_select_tbl(dm, !!!selected_ind)
 }
 
 check_new_tbls <- function(dm, tbls) {
@@ -96,36 +100,4 @@ check_new_tbls <- function(dm, tbls) {
   if (has_length(orig_tbls) && !all_same_source(c(orig_tbls[1], tbls))) {
     abort_not_same_src()
   }
-}
-
-dm_try_tables <- function(code, table_names) {
-  selected <- tryCatch(
-    force(code),
-    error = function(e) {
-      error_class <- class(e)
-      if (inherits(e, "rlang_error")) {
-        abort_w_message(
-          # error like "Unknown column `wrong_column` "
-          # FIXME: which other "rlang_error"s are possible?
-          glue(
-            "{trimws(sub('column', 'table', conditionMessage(e), fixed = TRUE))}. ",
-            "Available tables in `dm`: {commas(tick(table_names))}"
-          )
-        )
-      } else if (inherits(e, "simpleError")) {
-        # error like "object 'wrong_object' not found"
-        # FIXME: which other "simpleError"s are possible?
-        wrong_table <- gsub("^.*'(.*)'.*$", "\\1", e$message)
-        abort_w_message(
-          glue(
-            "Unknown table {tick(wrong_table)}. ",
-            "Available tables in `dm`: {commas(tick(table_names))}"
-          )
-        )
-      } else {
-        abort(e$message)
-      }
-    }
-  )
-  selected
 }

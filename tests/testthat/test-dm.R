@@ -403,3 +403,16 @@ test_that("dm_get_filters() works", {
     tibble(table = "t1", filter = unname(exprs(a > 3, a < 8)), zoomed = FALSE)
   )
 })
+
+test_that("output", {
+  verify_output("out/output.txt", {
+    dm_nycflights13(cycle = TRUE)
+
+    dm_nycflights13(cycle = TRUE) %>%
+      format()
+
+    dm_nycflights13(cycle = TRUE) %>%
+      dm_filter(flights, origin == "EWR")
+  })
+})
+
