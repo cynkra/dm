@@ -14,3 +14,4 @@
 ^dm.*\.tar\.gz$
 ^dm.*\.tgz$
 ^cran-comments\.md$
+^man/figures/logo\.png$
