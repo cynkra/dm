@@ -397,12 +397,11 @@ nest_join.zoomed_dm <- function(x, ...) {
   src_dm <- dm_get_src_impl(zoomed_dm)
   if (inherits(src_dm, "src_dbi")) abort_only_for_local_src(src_dm)
 
-  vars <- tidyselect_table_names(zoomed_dm)
-  # FIXME: needs to be replaced at some point (#257)
-  selected <- dm_try_tables(tidyselect::vars_select(vars, ...), vars)
+  vars <- src_tbls_impl(zoomed_dm)
+  selected <- eval_select_table(quo(c(...)), vars)
   if (is_empty(selected)) selected <- vars
 
-  keys <- get_tracked_keys(zoomed_dm)
+  keys <- get_tracked_cols(zoomed_dm)
   orig_table <- orig_name_zoomed(zoomed_dm)
 
   if (!dm_has_pk_impl(zoomed_dm, orig_table)) {
