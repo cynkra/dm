@@ -662,9 +662,12 @@ test_that("key tracking works", {
       filter(child_fk_cols != "dim_4_key")
   )
 
-  expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_keys(), set_names(c("d", "e")))
-  expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2)) %>% get_tracked_keys(), set_names(c("c", "d", "e")))
-  expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% get_tracked_keys(), set_names(c("c", "d", "e")))
+  expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_cols(), set_names(c("d", "e")))
+  expect_message(
+    expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2)) %>% get_tracked_cols(), set_names(c("c", "d", "e"))),
+    "Keeping PK"
+  )
+  expect_identical(slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% get_tracked_cols(), set_names(c("c", "d", "e")))
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(

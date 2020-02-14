@@ -93,7 +93,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' @export
 #' @examples
 #' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
-dm_from_src <- nse(function(src = NULL, table_names = NULL, ...) {
+dm_from_src <- function(src = NULL, table_names = NULL, ...) {
   if (is_null(src)) {
     return(empty_dm())
   }
@@ -123,7 +123,7 @@ dm_from_src <- nse(function(src = NULL, table_names = NULL, ...) {
   tbls <- map(set_names(table_names), tbl, src = src)
 
   new_dm(tbls)
-})
+}
 
 #' A low-level constructor
 #'
@@ -146,7 +146,7 @@ new_dm <- function(tables = list()) {
   data <- unname(tables)
   table <- names2(tables)
   zoom <- new_zoom()
-  key_tracker_zoom <- new_key_tracker_zoom()
+  col_tracker_zoom <- new_col_tracker_zoom()
 
   pks <-
     tibble(
@@ -172,7 +172,7 @@ new_dm <- function(tables = list()) {
     left_join(fks, by = "table") %>%
     left_join(filters, by = "table") %>%
     left_join(zoom, by = "table") %>%
-    left_join(key_tracker_zoom, by = "table")
+    left_join(col_tracker_zoom, by = "table")
 
   new_dm3(def)
 }
@@ -208,8 +208,8 @@ new_zoom <- function() {
   tibble(table = character(), zoom = list())
 }
 
-new_key_tracker_zoom <- function() {
-  tibble(table = character(), key_tracker_zoom = list())
+new_col_tracker_zoom <- function() {
+  tibble(table = character(), col_tracker_zoom = list())
 }
 
 #' Validator
@@ -354,10 +354,18 @@ dm_get_def <- function(x) {
 dm_get_data_model_pks <- function(x) {
   # FIXME: Obliterate
 
-  pk_df <-
-    dm_get_def(x) %>%
+  dm_get_def(x) %>%
     select(table, pks) %>%
-    unnest(pks)
+    unnest_pks()
+}
+
+unnest_pks <- function(def) {
+  # Optimized
+  pk_df <- tibble(
+    table = rep(def$table, map_int(def$pks, nrow))
+  )
+
+  pk_df <- vctrs::vec_cbind(pk_df, vctrs::vec_rbind(!!!def$pks))
 
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
@@ -488,7 +496,8 @@ as_dm.src <- function(x) {
 
 #' @export
 format.dm <- function(x, ...) {
-  abort("NYI")
+  def <- dm_get_def(x)
+  glue("dm: {def_get_n_tables(def)} tables, {def_get_n_columns(def)} columns, {def_get_n_pks(def)} primary keys, {def_get_n_fks(def)} foreign keys")
 }
 
 #' @export
@@ -505,9 +514,9 @@ print.dm <- function(x, ...) {
 
   def <- dm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
-  cat_line("Columns: ", sum(map_int(map(def$data, colnames), length)))
-  cat_line("Primary keys: ", sum(map_int(def$pks, vctrs::vec_size)))
-  cat_line("Foreign keys: ", sum(map_int(def$fks, vctrs::vec_size)))
+  cat_line("Columns: ", def_get_n_columns(def))
+  cat_line("Primary keys: ", def_get_n_pks(def))
+  cat_line("Foreign keys: ", def_get_n_fks(def))
 
   filters <- dm_get_filters(x)
   if (nrow(filters) > 0) {
@@ -516,6 +525,22 @@ print.dm <- function(x, ...) {
   }
 
   invisible(x)
+}
+
+def_get_n_tables <- function(def) {
+  nrow(def)
+}
+
+def_get_n_columns <- function(def) {
+  sum(map_int(map(def$data, colnames), length))
+}
+
+def_get_n_pks <- function(def) {
+  sum(map_int(def$pks, vctrs::vec_size))
+}
+
+def_get_n_fks <- function(def) {
+  sum(map_int(def$fks, vctrs::vec_size))
 }
 
 #' @export
@@ -797,7 +822,7 @@ empty_dm <- function() {
       fks = vctrs::list_of(new_fk()),
       filters = vctrs::list_of(new_filter()),
       zoom = list(),
-      key_tracker_zoom = list()
+      col_tracker_zoom = list()
     )
   )
 }

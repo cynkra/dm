@@ -143,8 +143,13 @@ dm_get_pk <- function(dm, table) {
 }
 
 dm_get_pk_impl <- function(dm, table_name) {
-  pks <- dm_get_data_model_pks(dm)
-  pks$column[pks$table == table_name]
+  # Optimized
+  dm %>%
+    dm_get_def() %>%
+    select(table, pks) %>%
+    filter(table == !!table_name) %>%
+    unnest_pks() %>%
+    pull(column)
 }
 
 #' Get all primary keys of a [`dm`] object
@@ -172,11 +177,11 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_get_all_pks()
-dm_get_all_pks <- nse(function(dm) {
+dm_get_all_pks <- function(dm) {
   check_not_zoomed(dm)
   dm_get_all_pks_impl(dm) %>%
     mutate(pk_col = new_keys(pk_col))
-})
+}
 
 dm_get_all_pks_impl <- function(dm) {
   dm_get_data_model_pks(dm) %>%
@@ -246,14 +251,14 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
 #' @examples
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
-enum_pk_candidates <- nse(function(table) {
+enum_pk_candidates <- function(table) {
   # a list of ayes and noes:
   if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
 
   enum_pk_candidates_impl(table) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
-})
+}
 
 #' @description `dm_enum_pk_candidates()` performs these checks
 #' for a table in a [dm] object.
@@ -268,7 +273,7 @@ enum_pk_candidates <- nse(function(table) {
 #'
 #' dm_nycflights13() %>%
 #'   dm_enum_pk_candidates(airports)
-dm_enum_pk_candidates <- nse(function(dm, table) {
+dm_enum_pk_candidates <- function(dm, table) {
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
@@ -281,7 +286,7 @@ dm_enum_pk_candidates <- nse(function(dm, table) {
   enum_pk_candidates_impl(table) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
-})
+}
 
 enum_pk_candidates_impl <- function(table) {
   map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%

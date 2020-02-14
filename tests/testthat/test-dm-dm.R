@@ -158,9 +158,9 @@ test_that("validator speaks up (sqlite)", {
 })
 
 test_that("validator speaks up when something's wrong", {
-  # key tracker of non-zoomed dm contains entries
+  # col tracker of non-zoomed dm contains entries
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter) %>% mutate(key_tracker_zoom = list(1))) %>% validate_dm(),
+    new_dm3(dm_get_def(dm_for_filter) %>% mutate(col_tracker_zoom = list(1))) %>% validate_dm(),
     "dm_invalid"
   )
 
@@ -170,9 +170,9 @@ test_that("validator speaks up when something's wrong", {
     "dm_invalid"
   )
 
-  # key tracker of zoomed dm is empty
+  # col tracker of zoomed dm is empty
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter %>% dm_zoom_to(t1)) %>% mutate(key_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
+    new_dm3(dm_get_def(dm_for_filter %>% dm_zoom_to(t1)) %>% mutate(col_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 

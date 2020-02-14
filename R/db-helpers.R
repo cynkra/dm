@@ -14,7 +14,7 @@ systime_convenient <- function() {
 }
 
 # Internal copy helper functions
-build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
+build_copy_data <- function(dm, dest, table_names, unique_table_names) {
   source <-
     dm %>%
     dm_apply_filters() %>%
@@ -83,7 +83,7 @@ build_copy_data <- nse(function(dm, dest, table_names, unique_table_names) {
   }
 
   copy_data
-})
+}
 
 # Not exported, to give us flexibility to change easily
 copy_list_of_tables_to <- function(dest, copy_data,

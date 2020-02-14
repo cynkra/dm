@@ -2,9 +2,9 @@
 % Please edit documentation in R/nycflights13.R
 \name{dm_nycflights13}
 \alias{dm_nycflights13}
-\title{Creates a \code{\link{dm}} object for the \pkg{nycflights13} data}
+\title{Creates a dm object for the \pkg{nycflights13} data}
 \usage{
-dm_nycflights13(cycle = FALSE, color = TRUE)
+dm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE)
 }
 \arguments{
 \item{cycle}{Boolean.
@@ -15,7 +15,9 @@ If \code{TRUE}, a \code{dm} object with a double reference
 between those tables will be produced.}
 
 \item{color}{Boolean, if \code{TRUE} (default), the resulting \code{dm} object will have
-colors assigned to different tables for visualization with \code{dm_draw()}}
+colors assigned to different tables for visualization with \code{dm_draw()}.}
+
+\item{subset}{Boolean, if \code{TRUE} (default), the \code{flights} table is reduced to flights with column \code{day} equal to 10.}
 }
 \value{
 A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.

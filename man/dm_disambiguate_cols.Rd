@@ -12,7 +12,7 @@ dm_disambiguate_cols(dm, sep = ".", quiet = FALSE)
 \item{sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
 
 \item{quiet}{Boolean.
-By default, this function lists the renamed columns in a message, pass \code{FALSE} to suppress this message.}
+By default, this function lists the renamed columns in a message, pass \code{TRUE} to suppress this message.}
 }
 \value{
 A \code{dm} whose column names are unambiguous.

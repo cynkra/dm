@@ -28,9 +28,9 @@ knit_print.grViz <- function(x, ...) {
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![Travis build status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
+[![Travis build status](https://travis-ci.com/krlmlr/dm.svg?branch=master)](https://travis-ci.com/krlmlr/dm)
 [![Codecov test coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
-[![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://cran.r-project.org/package=dm)
+[![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
@@ -216,7 +216,7 @@ The latest (development) version of {dm} can be installed from GitHub.
 devtools::install_github("krlmlr/dm")
 ```
 
-The {dm} package will also be made available on [CRAN](https://cran.r-project.org/web/packages/), from where it can be installed with the command
+The {dm} package will also be made available on [CRAN](https://CRAN.R-project.org/package=dm), from where it can be installed with the command
 
 ```r
 install.packages("dm")
@@ -232,7 +232,7 @@ If you would like to learn more about {dm}, the [Intro article](https://krlmlr.g
 Further resources:
 
 - [Function reference](https://krlmlr.github.io/dm/reference/index.html)
-- [Introduction to Relational Data Models](https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-model.html) article
+- [Introduction to Relational Data Models](https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html) article
 - [Joining](https://krlmlr.github.io/dm/articles/dm-joining.html) article
 - [Filtering](https://krlmlr.github.io/dm/articles/dm-filtering.html) article
 - [Class 'dm' and basic operations](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html) article
@@ -276,5 +276,5 @@ Funded by:
 
 ---
 
-Please note that the 'dm' project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+Please note that the 'dm' project is released with a [Contributor Code of Conduct](https://krlmlr.github.io/dm/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
