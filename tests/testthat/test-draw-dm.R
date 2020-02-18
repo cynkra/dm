@@ -56,6 +56,15 @@ test_that("`dm_set_colors()` errors if old syntax used", {
   )
 })
 
+test_that("`dm_set_colors()` errors with unnamed args", {
+  expect_dm_error(
+    dm_set_colors(
+      dm_nycflights_small,
+      airports),
+    class = "only_named_args"
+  )
+})
+
 test_that("last", {
   expect_dm_error(
     color_quos_to_display(
@@ -87,6 +96,51 @@ test_that("getter", {
       "#5B9BD5FF" = "flights",
       "#ED7D31FF" = "planes",
       "#70AD47FF" = "weather"
+    )
+  )
+})
+
+test_that("datamodel-code for drawing", {
+  data_model_for_filter <- dm_get_data_model(dm_for_filter)
+
+  expect_s3_class(
+    data_model_for_filter,
+    "data_model"
+  )
+
+  expect_identical(
+    map(data_model_for_filter, nrow),
+    list(tables = 6L, columns = 15L, references = 5L)
+  )
+})
+
+test_that("get available colors", {
+  expect_length(
+    dm_get_available_colors(),
+    length(colors()) + 1
+  )
+})
+
+test_that("helpers", {
+  expect_identical(
+    dm_get_all_columns(dm_for_filter),
+    tibble::tribble(
+      ~table, ~id, ~column,
+      "t1",  1L,     "a",
+      "t1",  2L,     "b",
+      "t2",  1L,     "c",
+      "t2",  2L,     "d",
+      "t2",  3L,     "e",
+      "t3",  1L,     "f",
+      "t3",  2L,     "g",
+      "t4",  1L,     "h",
+      "t4",  2L,     "i",
+      "t4",  3L,     "j",
+      "t5",  1L,     "k",
+      "t5",  2L,     "l",
+      "t5",  3L,     "m",
+      "t6",  1L,     "n",
+      "t6",  2L,     "o"
     )
   )
 })
