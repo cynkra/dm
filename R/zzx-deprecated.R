@@ -400,7 +400,16 @@ cdm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
 #' @export
 cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
   deprecate_soft("0.1.0", "dm::cdm_paste()", "dm::dm_paste()")
-  dm_paste(dm = dm, select = select, tab_width = tab_width)
+
+  code <- dm_paste_impl(
+    dm = dm, select = select,
+    tab_width = tab_width, color = FALSE
+  )
+
+  # without "\n" in the end it looks weird when a warning is issued
+  cat(code, "\n")
+
+  invisible(dm)
 }
 
 #' @rdname deprecated

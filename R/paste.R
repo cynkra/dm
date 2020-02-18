@@ -25,9 +25,16 @@
 #' dm_nycflights13() %>%
 #'   dm_paste(select = TRUE)
 dm_paste <- function(dm, select = FALSE, tab_width = 2) {
-  # FIXME: Expose as argument?
-  color <- TRUE
+  # FIXME: Expose color as argument?
+  code <- dm_paste_impl(
+    dm = dm, select = select,
+    tab_width = tab_width, color = TRUE
+  )
+  cli::cli_code(code)
+  invisible(dm)
+}
 
+dm_paste_impl <- function(dm, select, tab_width, color) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
@@ -67,7 +74,5 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
     mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_cols}, {parent_table})"))
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
-  # without "\n" in the end it looks weird when a warning is issued
-  cli::cli_code(glue_collapse(c(code, code_pks, code_fks), sep = " %>%\n"))
-  invisible(dm)
+  glue_collapse(c(code, code_pks, code_fks), sep = " %>%\n")
 }

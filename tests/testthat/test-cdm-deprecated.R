@@ -256,7 +256,6 @@ test_that("cdm_nycflights13() works", {
 })
 
 test_that("cdm_paste() works", {
-  skip("`expect_output()` does not work with `cli::cli_code()`")
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_output(
     cdm_paste(dm_for_filter, FALSE, 4),
