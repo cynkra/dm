@@ -3,7 +3,8 @@
 #' `dm_paste()` takes an existing `dm` and emits the code necessary for its creation.
 #'
 #' @inheritParams dm_add_pk
-#' @param select Boolean, default `FALSE`. If `TRUE` will try to produce code for reducing to necessary columns.
+#' @param select Boolean, default `FALSE`. If `TRUE` will produce code for reducing to necessary columns.
+#'    visualizing the tables.
 #' @param tab_width Indentation width for code from the second line onwards
 #'
 #' @details At the very least (if no keys exist in the given [`dm`]) a `dm()` statement is produced that -- when executed --
@@ -24,6 +25,16 @@
 #' dm_nycflights13() %>%
 #'   dm_paste(select = TRUE)
 dm_paste <- function(dm, select = FALSE, tab_width = 2) {
+  # FIXME: Expose color as argument?
+  code <- dm_paste_impl(
+    dm = dm, select = select,
+    tab_width = tab_width, color = TRUE
+  )
+  cli::cli_code(code)
+  invisible(dm)
+}
+
+dm_paste_impl <- function(dm, select, tab_width, color) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
@@ -44,6 +55,7 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
     code_select <- if (nrow(tbl_select)) summarize(tbl_select, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
     code <- glue_collapse(c(code, code_select), sep = " %>%\n")
   }
+
   # adding code for establishing PKs
   # FIXME: this will fail with compound keys
   tbl_pks <- dm_get_all_pks_impl(dm) %>%
@@ -56,7 +68,13 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
     mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_cols}, {parent_table})"))
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
-  # without "\n" in the end it looks weird when a warning is issued
-  cat(glue_collapse(c(code, code_pks, code_fks), sep = " %>%\n"), "\n")
-  invisible(dm)
+  if (color) {
+    colors <- dm_get_colors(dm)
+    colors <- colors[names(colors) != "default"]
+    code_color <- imap_chr(colors, ~ glue("{tab}dm_set_colors({tick_if_needed(..2)} = {tick_if_needed(..1)})"))
+  } else {
+    code_color <- character()
+  }
+
+  glue_collapse(c(code, code_color, code_pks, code_fks), sep = " %>%\n")
 }

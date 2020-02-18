@@ -195,6 +195,7 @@ dm_get_colors <- function(dm) {
   dm_get_def(dm) %>%
     select(table, display) %>%
     select(display, table) %>%
+    mutate(display = coalesce(display, "default")) %>%
     deframe()
 }
 

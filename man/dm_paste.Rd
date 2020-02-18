@@ -9,7 +9,8 @@ dm_paste(dm, select = FALSE, tab_width = 2)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{select}{Boolean, default \code{FALSE}. If \code{TRUE} will try to produce code for reducing to necessary columns.}
+\item{select}{Boolean, default \code{FALSE}. If \code{TRUE} will produce code for reducing to necessary columns.
+visualizing the tables.}
 
 \item{tab_width}{Indentation width for code from the second line onwards}
 }

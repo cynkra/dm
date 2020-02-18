@@ -23,7 +23,7 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors(),
     set_names(
       src_tbls(dm_nycflights_small),
-      c("#00FF00FF", NA_character_, "#0000FFFF", "#0000FFFF", "#00FF00FF")
+      c("#00FF00FF", "default", "#0000FFFF", "#0000FFFF", "#00FF00FF")
     )
   )
 
@@ -38,7 +38,7 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors(),
     set_names(
       src_tbls(dm_nycflights_small),
-      c("#0000FFFF", NA_character_, NA_character_, "#00FF00FF", NA_character_)
+      c("#0000FFFF", "default", "default", "#00FF00FF", "default")
     )
   )
 })
