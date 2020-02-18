@@ -65,10 +65,10 @@ cdm_set_colors <- function(dm, ...) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_colors <- nse(function(dm) {
+cdm_get_colors <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_colors()", "dm::dm_get_colors()")
   prep_recode(dm_get_colors(dm))
-})
+}
 
 #' @rdname deprecated
 #' @keywords internal

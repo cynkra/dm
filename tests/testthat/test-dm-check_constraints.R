@@ -7,7 +7,8 @@ nyc_check <- tibble::tribble(
   "planes", "PK", "tailnum", NA, TRUE, "",
   "flights", "FK", "carrier", "airlines", TRUE, "",
 ) %>%
-  mutate(columns = new_keys(columns))
+  mutate(columns = new_keys(columns)) %>%
+  new_dm_examine_constraints()
 
 test_that("`dm_examine_constraints()` works", {
 
@@ -21,7 +22,8 @@ test_that("`dm_examine_constraints()` works", {
       ref_table = character(0),
       is_key = logical(0),
       problem = character(0)
-    )
+    ) %>%
+      new_dm_examine_constraints()
   )
 
   # case of some constraints, all met:
@@ -36,7 +38,8 @@ test_that("`dm_examine_constraints()` works", {
         ref_table = c(NA, "iris_1"),
         is_key = TRUE,
         problem = ""
-      )
+      ) %>%
+        new_dm_examine_constraints()
     )
   )
 

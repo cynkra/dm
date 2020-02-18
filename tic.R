@@ -51,6 +51,12 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
       add_step(step_push_deploy())
   }
 } else {
+  get_stage("before_script") %>%
+    add_code_step({
+      pkgload::load_all()
+      print(sessioninfo::session_info())
+    })
+
   do_package_checks(error_on = if (getRversion() >= "3.4") "note" else "warning")
 
   if (ci_has_env("TIC_BUILD_PKGDOWN")) {

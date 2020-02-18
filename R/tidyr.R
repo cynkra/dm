@@ -1,9 +1,4 @@
-#' @export
-unite.dm <- function(data, ...) {
-  check_zoomed(data)
-}
-
-#' \pkg{tidyr} data manipulation methods for `zoomed_dm` objects
+#' \pkg{tidyr} table manipulation methods for zoomed dm objects
 #'
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' @param data object of class `zoomed_dm`
@@ -24,7 +19,7 @@ unite.dm <- function(data, ...) {
 #' For `separate.zoomed_dm`: see [`tidyr::separate`]
 #' @param na.rm see [`tidyr::unite`]
 #' @param into see [`tidyr::separate`]
-#' @rdname tidyr_table_manipulation
+#' @name tidyr_table_manipulation
 #' @examples
 #' zoom_united <- dm_nycflights13() %>%
 #'   dm_zoom_to(flights) %>%
@@ -33,15 +28,28 @@ unite.dm <- function(data, ...) {
 #' zoom_united
 #' zoom_united %>%
 #'   separate(month_day, c("month", "day"))
+NULL
+#' @export
+unite.dm <- function(data, ...) {
+  check_zoomed(data)
+}
+
+#' @rdname tidyr_table_manipulation
 #' @export
 unite.zoomed_dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   tbl <- get_zoomed_tbl(data)
   united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
+
   # all columns that are not not removed count as "selected"; names of "selected" are identical to "selected"
-  if (remove) deselected <- tidyselect::vars_select(colnames(tbl), ...) else deselected <- character()
-  selected <- set_names(setdiff(names(get_tracked_keys(data)), deselected))
-  new_tracked_keys_zoom <- new_tracked_keys(data, selected)
-  replace_zoomed_tbl(data, united_tbl, new_tracked_keys_zoom)
+  if (remove) {
+    deselected <- eval_select_both(quo(c(...)), colnames(tbl))
+  } else {
+    deselected <- eval_select_both(quo(c()), colnames(tbl))
+  }
+  selected <- set_names(setdiff(names(get_tracked_cols(data)), deselected$names))
+  new_tracked_cols_zoom <- new_tracked_cols(data, selected)
+
+  replace_zoomed_tbl(data, united_tbl, new_tracked_cols_zoom)
 }
 
 #' @export
@@ -57,7 +65,7 @@ separate.zoomed_dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = 
   separated_tbl <- separate(tbl, col = !!col, into = into, sep = sep, remove = remove, ...)
   # all columns that are not removed count as "selected"; names of "selected" are identical to "selected"
   deselected <- if (remove) col else character()
-  selected <- set_names(setdiff(names(get_tracked_keys(data)), deselected))
-  new_tracked_keys_zoom <- new_tracked_keys(data, selected)
-  replace_zoomed_tbl(data, separated_tbl, new_tracked_keys_zoom)
+  selected <- set_names(setdiff(names(get_tracked_cols(data)), deselected))
+  new_tracked_cols_zoom <- new_tracked_cols(data, selected)
+  replace_zoomed_tbl(data, separated_tbl, new_tracked_cols_zoom)
 }

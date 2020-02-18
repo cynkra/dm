@@ -43,6 +43,10 @@ dm_learn_from_db <- function(dest, ...) {
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
 
+  if (is.null(con)) {
+    return()
+  }
+
   overview <-
     dbGetQuery(con, db_learn_query(con, ...)) %>%
     as_tibble()
@@ -212,7 +216,7 @@ legacy_new_dm <- function(tables, data_model) {
   # would be logical NA otherwise, but if set, it is class `character`
   display <- as.character(data_model_tables$display)
   zoom <- new_zoom()
-  key_tracker_zoom <- new_key_tracker_zoom()
+  col_tracker_zoom <- new_col_tracker_zoom()
 
   pks <-
     pks %>%
@@ -256,7 +260,7 @@ legacy_new_dm <- function(tables, data_model) {
     left_join(fks, by = "table") %>%
     left_join(filters, by = "table") %>%
     left_join(zoom, by = "table") %>%
-    left_join(key_tracker_zoom, by = "table")
+    left_join(col_tracker_zoom, by = "table")
 
   new_dm3(def)
 }
@@ -267,8 +271,8 @@ nest_compat <- function(.data, ...) {
   stopifnot(length(quos) == 1)
   new_col <- names(quos)
   if (nrow(.data) == 0) {
-    remove <- tidyselect::vars_select(names(.data), ...)
-    keep <- setdiff(names(.data), remove)
+    remove <- eval_select_indices(quo(c(...)), colnames(.data))
+    keep <- setdiff(seq_along(.data), remove)
 
     nest <- vctrs::new_list_of(list(), ptype = .data %>% select(!!!remove))
 

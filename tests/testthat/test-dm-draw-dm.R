@@ -23,7 +23,7 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors(),
     set_names(
       src_tbls(dm_nycflights_small),
-      c("#00FF00", "default", "#0000FF", "#0000FF", "#00FF00")
+      c("#00FF00FF", "default", "#0000FFFF", "#0000FFFF", "#00FF00FF")
     )
   )
 
@@ -38,7 +38,7 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors(),
     set_names(
       src_tbls(dm_nycflights_small),
-      c("#0000FF", "default", "default", "#00FF00", "default")
+      c("#0000FFFF", "default", "default", "#00FF00FF", "default")
     )
   )
 })
@@ -82,11 +82,21 @@ test_that("getter", {
   expect_equal(
     dm_get_colors(dm_nycflights13()),
     c(
-      "#ED7D31" = "airlines",
-      "#ED7D31" = "airports",
-      "#5B9BD5" = "flights",
-      "#ED7D31" = "planes",
-      "#70AD47" = "weather"
+      "#ED7D31FF" = "airlines",
+      "#ED7D31FF" = "airports",
+      "#5B9BD5FF" = "flights",
+      "#ED7D31FF" = "planes",
+      "#70AD47FF" = "weather"
     )
+  )
+})
+
+test_that("output", {
+  expect_known_output(
+    dm_nycflights13() %>%
+      dm_draw() %>%
+      DiagrammeRsvg::export_svg() %>%
+      cli::cat_line(),
+    "out/nycflights13.svg"
   )
 })

@@ -55,23 +55,23 @@
 #'   See `vignette("programming", package = "dplyr")`
 #'   for an introduction to these concepts.
 #'
-#' @return For `dm_filter`: an updated `dm` object (filter executed for given table, and condition stored).
+#' @return For `dm_filter()`: an updated `dm` object (filter executed for given table, and condition stored).
 #'
 #' @examples
+#' dm_nyc <- dm_nycflights13()
 #' dm_nyc_filtered <-
 #'   dm_nycflights13() %>%
 #'   dm_filter(airports, name == "John F Kennedy Intl")
 #'
 #' dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
 #'
-#' dm_nycflights13() %>%
-#'   dm_filter(airports, name == "John F Kennedy Intl") %>%
+#' dm_nyc_filtered %>%
 #'   dm_apply_filters()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
-#' dm_nycflights13() %>%
+#' dm_nyc %>%
 #'   dm_filter(flights, 1 == 1) %>%
 #'   dm_apply_filters() %>%
 #'   dm_nrow()
@@ -120,15 +120,11 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @return For `dm_apply_filters`: an updated `dm` object (filter effects evaluated for all tables).
+#' @return For `dm_apply_filters()`: an updated `dm` object (filter effects evaluated for all tables).
 #'
 #' @examples
 #'
-#' dm_nycflights13() %>%
-#'   dm_filter(flights, month == 3) %>%
-#'   dm_apply_filters()
-#'
-#' dm_nycflights13() %>%
+#' dm_nyc %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
 #'   compute()
 #' @export
@@ -147,11 +143,6 @@ dm_apply_filters <- function(dm) {
 #' @inheritParams dm_add_pk
 #'
 #' @return For `dm_apply_filters_to_tbl()`, a table.
-#'
-#' @examples
-#' dm_nycflights13() %>%
-#'   dm_filter(flights, month == 3) %>%
-#'   dm_apply_filters_to_tbl(planes)
 #' @export
 dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)

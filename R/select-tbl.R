@@ -20,8 +20,7 @@ dm_select_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
-  vars <- tidyselect_table_names(dm)
-  selected <- dm_try_tables(tidyselect::vars_select(vars, ...), vars)
+  selected <- eval_select_table(quo(c(...)), src_tbls_impl(dm))
   dm_select_tbl_impl(dm, selected)
 }
 
@@ -38,19 +37,13 @@ dm_select_tbl <- function(dm, ...) {
 #' @export
 dm_rename_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
-  vars <- tidyselect_table_names(dm)
-  selected <- dm_try_tables(tidyselect::vars_rename(vars, ...), vars)
+
+  selected <- eval_rename_table_all(quo(c(...)), src_tbls_impl(dm))
   dm_select_tbl_impl(dm, selected)
 }
 
-tidyselect_table_names <- function(dm) {
-  structure(
-    src_tbls(dm),
-    type = c("table", "tables")
-  )
-}
-
-dm_select_tbl_impl <- function(dm, selected) {
+dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "unique", quiet = FALSE) {
+  if (anyDuplicated(names(selected))) abort_need_unique_names(names(selected[duplicated(names(selected))]))
 
   # Required to avoid an error further on
   if (is_empty(selected)) {
