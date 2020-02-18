@@ -24,6 +24,7 @@ col_to_hex <- function(x) {
   # from hex or name to rgb; "default" should remain "default"
   is_not_default <- which(x != "default")
   x[is_not_default] <- hex_from_rgb(col2rgb(x[is_not_default]))
+  x
 }
 
 hex_from_rgb <- function(col_rgb) {
