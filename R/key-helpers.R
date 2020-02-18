@@ -34,21 +34,22 @@ check_key <- function(.data, ...) {
   data_q <- enquo(.data)
   .data <- eval_tidy(data_q)
 
-  cols_avail <- colnames(.data)
-  # if no column is chosen, all columns are used for the check
-  cols_chosen <- tidyselect::vars_select(cols_avail, ...)
+  # No special handling for no columns
+  cols_chosen <- eval_select_indices(quo(c(...)), colnames(.data))
+  orig_names <- names(cols_chosen)
   names(cols_chosen) <- glue("...{seq_along(cols_chosen)}")
 
   duplicate_rows <-
     .data %>%
-    count(!!!syms(cols_chosen)) %>%
+    select(!!!cols_chosen) %>%
+    count(!!!syms(names(cols_chosen))) %>%
     select(n) %>%
     filter(n > 1) %>%
     head(1) %>%
     collect()
 
   if (nrow(duplicate_rows) != 0) {
-    abort_not_unique_key(as_label(data_q), cols_chosen)
+    abort_not_unique_key(as_label(data_q), orig_names)
   }
 
   invisible(.data)
@@ -243,12 +244,10 @@ new_tracked_cols <- function(dm, selected) {
   # the new tracked keys need to be the remaining original column names
   # and their name needs to be the newest one (tidyselect-syntax)
   # `intersect(selected, old_tracked_names)` is empty, return `NULL`
-  if (is_null(intersect(selected, old_tracked_names))) {
-    NULL
-  } else {
-    set_names(
-      tracked_cols[selected[selected %in% old_tracked_names]],
-      names(selected[selected %in% old_tracked_names])
-    )
-  }
+
+  selected_match <- selected[selected %in% old_tracked_names]
+  set_names(
+    tracked_cols[selected_match],
+    names(selected_match)
+  )
 }

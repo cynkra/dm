@@ -77,8 +77,8 @@ dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 
 dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
   check_correct_input(dm, start)
-  vars <- setdiff(tidyselect_table_names(dm), start)
-  list_of_pts <- dm_try_tables(tidyselect::vars_select(vars, ...), src_tbls(dm))
+  vars <- setdiff(src_tbls_impl(dm), start)
+  list_of_pts <- eval_select_table(quo(c(...)), vars)
 
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
 

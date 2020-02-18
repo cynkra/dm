@@ -118,14 +118,20 @@ test_that("dm_rm_tbl() works", {
   )
 
   # fails when table name is wrong
-  expect_dm_error(
+  expect_error(
     dm_rm_tbl(dm_for_filter, t7),
-    "w_message"
+    class = "vctrs_error_subscript"
   )
 
   # select-helpers work for 'dm_rm_tbl()'
   expect_identical(
     dm_rm_tbl(dm_for_disambiguate, everything()),
     empty_dm()
+  )
+
+  # corner case: not removing any table
+  expect_identical(
+    dm_rm_tbl(dm_for_disambiguate),
+    dm_for_disambiguate
   )
 })
