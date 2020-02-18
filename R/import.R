@@ -9,7 +9,7 @@
 #' @importFrom methods is
 #' @rawNamespace import(glue, except = c(collapse))
 #' @importFrom igraph V E
-#' @importFrom utils head str packageVersion
+#' @importFrom utils head tail str packageVersion
 #' @import lifecycle
 #' @importFrom grDevices col2rgb colors rgb
 #' @importFrom pillar pillar_shaft
