@@ -49,7 +49,7 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2, color = TRUE) {
 
   if (color) {
     colors <- dm_get_colors(dm)
-    colors <- colors[!are_na(names(colors))]
+    colors <- colors[names(colors) != "default"]
     code_color <- imap_chr(colors, ~ glue("{tab}dm_set_colors({tick_if_needed(..2)} = {tick_if_needed(..1)})"))
     code <- glue_collapse(c(code, code_color), sep = " %>%\n")
   }
