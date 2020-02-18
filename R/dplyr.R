@@ -424,21 +424,25 @@ nest_join.dm <- function(x, ...) {
 nest_join.zoomed_dm <- function(x, ...) {
   zoomed_dm <- x
   src_dm <- dm_get_src_impl(zoomed_dm)
-  if (inherits(src_dm, "src_dbi")) abort_only_for_local_src(src_dm)
+  if (!inherits(src_dm, "src_local")) {
+    abort_only_for_local_src(src_dm)
+  }
 
   vars <- src_tbls_impl(zoomed_dm)
   selected <- eval_select_table(quo(c(...)), vars)
   if (is_empty(selected)) selected <- vars
 
-  keys <- get_tracked_cols(zoomed_dm)
   orig_table <- orig_name_zoomed(zoomed_dm)
-
   if (!dm_has_pk_impl(zoomed_dm, orig_table)) {
     message("The originally zoomed table didn't have a primary key, therefore `nest.zoomed_dm()` does nothing.")
     return(zoomed_dm)
   }
+
   orig_pk <- dm_get_pk_impl(zoomed_dm, orig_table)
-  if (!(orig_pk %in% keys)) abort_pk_not_tracked(orig_table, orig_pk)
+  keys <- get_tracked_cols(zoomed_dm)
+  if (!(orig_pk %in% keys)) {
+    abort_pk_not_tracked(orig_table, orig_pk)
+  }
   new_pk <- names(keys[keys == orig_pk])
 
   child_tables <- get_orig_in_fks(zoomed_dm, orig_table) %>%
