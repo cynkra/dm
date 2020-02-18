@@ -15,7 +15,10 @@ new_cdm_forward <- function(fwd, env = caller_env(), old_fwd_name = NULL, new_na
     (!!fwd_sym)(!!!fwd_args)
   })
 
-  new_function(args, body, env)
+  new_function(args, body, env) %>%
+    deparse() %>%
+    styler::style_text() %>%
+    clipr::write_clip()
 }
 
 # to be used in case names are created from arguments in the `dm`-function

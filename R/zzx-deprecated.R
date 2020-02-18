@@ -11,47 +11,88 @@ check_cardinality <- new_cdm_forward_2(examine_cardinality)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_src <- new_cdm_forward(dm_get_src)
+cdm_get_src <- function(x) {
+  deprecate_soft("0.1.0", "dm::cdm_get_src()", "dm::dm_get_src()")
+  dm_get_src(x = x)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_con <- new_cdm_forward(dm_get_con)
+cdm_get_con <- function(x) {
+  deprecate_soft("0.1.0", "dm::cdm_get_con()", "dm::dm_get_con()")
+  dm_get_con(x = x)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_tables <- new_cdm_forward(dm_get_tables)
+cdm_get_tables <- function(x) {
+  deprecate_soft("0.1.0", "dm::cdm_get_tables()", "dm::dm_get_tables()")
+  dm_get_tables(x = x)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_filter <- new_cdm_forward(dm_get_filters, old_fwd_name = "cdm_get_filter")
+cdm_get_filter <- function(x) {
+  deprecate_soft("0.1.0", "dm::cdm_get_filter()", "dm::dm_get_filters()")
+  dm_get_filters(x = x)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_add_tbl <- new_cdm_forward(dm_add_tbl)
+cdm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
+  deprecate_soft("0.1.0", "dm::cdm_add_tbl()", "dm::dm_add_tbl()")
+  dm_add_tbl(dm = dm, ... = ..., repair = repair, quiet = quiet)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_rm_tbl <- new_cdm_forward(dm_rm_tbl)
+cdm_rm_tbl <- function(dm, ...) {
+  deprecate_soft("0.1.0", "dm::cdm_rm_tbl()", "dm::dm_rm_tbl()")
+  dm_rm_tbl(dm = dm, ... = ...)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_copy_to <- new_cdm_forward(copy_dm_to, old_fwd_name = "cdm_copy_to")
+cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes = NULL,
+                        unique_indexes = NULL, set_key_constraints = TRUE, unique_table_names = FALSE,
+                        table_names = NULL, temporary = TRUE) {
+  deprecate_soft("0.1.0", "dm::cdm_copy_to()", "dm::copy_dm_to()")
+  copy_dm_to(
+    dest = dest, dm = dm, ... = ..., types = types,
+    overwrite = overwrite, indexes = indexes, unique_indexes = unique_indexes,
+    set_key_constraints = set_key_constraints, unique_table_names = unique_table_names,
+    table_names = table_names, temporary = temporary
+  )
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_disambiguate_cols <- new_cdm_forward(dm_disambiguate_cols)
+cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
+  deprecate_soft("0.1.0", "dm::cdm_disambiguate_cols()", "dm::dm_disambiguate_cols()")
+  dm_disambiguate_cols(dm = dm, sep = sep, quiet = quiet)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_draw <- new_cdm_forward(dm_draw)
+cdm_draw <- function(dm, rankdir = "LR", col_attr = "column", view_type = "keys_only",
+                     columnArrows = TRUE, graph_attrs = "", node_attrs = "", edge_attrs = "",
+                     focus = NULL, graph_name = "Data Model") {
+  deprecate_soft("0.1.0", "dm::cdm_draw()", "dm::dm_draw()")
+  dm_draw(
+    dm = dm, rankdir = rankdir, col_attr = col_attr,
+    view_type = view_type, columnArrows = columnArrows, graph_attrs = graph_attrs,
+    node_attrs = node_attrs, edge_attrs = edge_attrs, focus = focus,
+    graph_name = graph_name
+  )
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -73,14 +114,17 @@ cdm_get_colors <- function(dm) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_available_colors <- new_cdm_forward(dm_get_available_colors)
+cdm_get_available_colors <- function() {
+  deprecate_soft(
+    "0.1.0", "dm::cdm_get_available_colors()",
+    "dm::dm_get_available_colors()"
+  )
+  dm_get_available_colors()
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME:
-# when using `new_cdm_forward`: error
-# when using `new_cdm_forward_2`: note in R CMD check
 cdm_filter <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_filter()", "dm::dm_filter()")
   dm_zoom_to(dm, {{ table }}) %>%
@@ -91,12 +135,14 @@ cdm_filter <- function(dm, table, ...) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_nrow <- new_cdm_forward(dm_nrow)
+cdm_nrow <- function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_nrow()", "dm::dm_nrow()")
+  dm_nrow(dm = dm)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME: both `new_cdm_forward_2(dm_flatten_to_tbl)` and `new_cdm_forward_2(dm_flatten_to_tbl)` don't work
 cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()", "dm::dm_flatten_to_tbl()")
   join_name <- deparse(substitute(join))
@@ -107,7 +153,6 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME: both `new_cdm_forward_2(dm_squash_to_tbl)` and `new_cdm_forward_2(dm_squash_to_tbl)` don't work
 cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   deprecate_soft("0.1.0", "dm::cdm_squash_to_tbl()", "dm::dm_squash_to_tbl()")
   join_name <- deparse(substitute(join))
@@ -119,7 +164,6 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME: both `new_cdm_forward_2(dm_join_to_tbl)` and `new_cdm_forward_2(dm_join_to_tbl)` don't work
 cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   force(join)
   deprecate_soft("0.1.0", "dm::cdm_join_to_tbl()", "dm::dm_join_to_tbl()")
@@ -139,7 +183,10 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_apply_filters <- new_cdm_forward(dm_apply_filters)
+cdm_apply_filters <- function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_apply_filters()", "dm::dm_apply_filters()")
+  dm_apply_filters(dm = dm)
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -149,7 +196,6 @@ cdm_apply_filters_to_tbl <- new_cdm_forward_2(dm_apply_filters_to_tbl)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME: neither `new_cdm_forward_2(dm_add_pk)` nor `new_cdm_forward_2(dm_add_pk)` work
 cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_add_pk()", "dm::dm_add_pk()")
   dm_add_pk(dm, {{ table }}, {{ column }}, check, force)
@@ -158,7 +204,6 @@ cdm_add_pk <- function(dm, table, column, check = FALSE, force = FALSE) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-# FIXME: neither `new_cdm_forward_2(dm_add_fk)` nor `new_cdm_forward_2(dm_add_fk)` work
 cdm_add_fk <- function(dm, table, column, ref_table, check = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_add_fk()", "dm::dm_add_fk()")
   dm_add_fk(dm, {{ table }}, {{ column }}, {{ ref_table }}, check)
@@ -177,7 +222,10 @@ cdm_get_fk <- new_cdm_forward_2(dm_get_fk)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_all_fks <- new_cdm_forward(dm_get_all_fks_impl, old_fwd_name = "cdm_get_all_fks", new_name = "dm_get_all_fks")
+cdm_get_all_fks <- function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
+  dm_get_all_fks_impl(dm = dm)
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -210,21 +258,26 @@ cdm_learn_from_db <- function(dest) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_check_constraints <- new_cdm_forward(
-  dm_examine_constraints_impl,
-  old_fwd_name = "cdm_check_constraints",
-  new_name = "dm_examine_constraints"
-)
+cdm_check_constraints <- function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_check_constraints()", "dm::dm_examine_constraints()")
+  dm_examine_constraints_impl(dm = dm)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_nycflights13 <- new_cdm_forward(dm_nycflights13)
+cdm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
+  deprecate_soft("0.1.0", "dm::cdm_nycflights13()", "dm::dm_nycflights13()")
+  dm_nycflights13(cycle = cycle, color = color, subset = subset)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_paste <- new_cdm_forward(dm_paste)
+cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
+  deprecate_soft("0.1.0", "dm::cdm_paste()", "dm::dm_paste()")
+  dm_paste(dm = dm, select = select, tab_width = tab_width)
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -239,7 +292,10 @@ cdm_get_pk <- new_cdm_forward_2(dm_get_pk)
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_all_pks <- new_cdm_forward(dm_get_all_pks_impl, old_fwd_name = "cdm_get_all_pks", new_name = "dm_get_all_pks")
+cdm_get_all_pks <- function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
+  dm_get_all_pks_impl(dm = dm)
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -263,12 +319,18 @@ cdm_enum_pk_candidates <- function(dm, table) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_select_tbl <- new_cdm_forward(dm_select_tbl)
+cdm_select_tbl <- function(dm, ...) {
+  deprecate_soft("0.1.0", "dm::cdm_select_tbl()", "dm::dm_select_tbl()")
+  dm_select_tbl(dm = dm, ... = ...)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_rename_tbl <- new_cdm_forward(dm_rename_tbl)
+cdm_rename_tbl <- function(dm, ...) {
+  deprecate_soft("0.1.0", "dm::cdm_rename_tbl()", "dm::dm_rename_tbl()")
+  dm_rename_tbl(dm = dm, ... = ...)
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -293,9 +355,15 @@ cdm_insert_zoomed_tbl <- new_cdm_forward_2(dm_insert_zoomed, old_fwd_name = "cdm
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_update_zoomed_tbl <- new_cdm_forward(dm_update_zoomed, old_fwd_name = "cdm_update_zoomed_tbl")
+cdm_update_zoomed_tbl <- function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_update_zoomed_tbl()", "dm::dm_update_zoomed()")
+  dm_update_zoomed(dm = dm)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_zoom_out <- new_cdm_forward(dm_discard_zoomed, old_fwd_name = "cdm_zoom_out")
+cdm_zoom_out <- function(dm) {
+  deprecate_soft("0.1.0", "dm::cdm_zoom_out()", "dm::dm_discard_zoomed()")
+  dm_discard_zoomed(dm = dm)
+}
