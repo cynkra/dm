@@ -1,3 +1,14 @@
+# dm 0.1.1.9001
+
+- New `nest_join()` method for `zoomed_dm` (#168).
+- Reorganize tests (#76).
+- `dm_paste()` produces code for setting colors (#218).
+- Key columns are always selected in a join operation, with a message (#153).
+- New `head()` and `tail()` methods for `zoomed_dm` (#236).
+- Expand definitions of deprecated functions (#204).
+- Support alpha colors for the table colors (#279).
+
+
 # dm 0.1.1.9000
 
 Same as previous version.
