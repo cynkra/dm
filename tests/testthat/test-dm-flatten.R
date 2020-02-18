@@ -418,9 +418,9 @@ test_that("tidyselect works for flatten", {
   )
 
   # trying to deselect table that doesn't exist:
-  expect_dm_error(
+  expect_error(
     dm_flatten_to_tbl(dm_for_filter, t2, -t101),
-    class = "w_message"
+    class = "vctrs_error_subscript"
   )
 })
 

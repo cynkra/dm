@@ -1,6 +1,6 @@
 #' Create R code for a dm object
 #'
-#' `dm_paste` takes an existing `dm` and produces the code necessary for its creation
+#' `dm_paste()` takes an existing `dm` and emits the code necessary for its creation.
 #'
 #' @inheritParams dm_add_pk
 #' @param select Boolean, default `FALSE`. If `TRUE` will try to produce code for reducing to necessary columns.

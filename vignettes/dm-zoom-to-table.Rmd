@@ -148,7 +148,7 @@ disentangled_flights_dm <-
   # zooming and immediately inserting essentially creates a copy of the original table
   dm_zoom_to(airports) %>% 
   # reinserting the `airports` table under the name `destination`
-  dm_insert_zoomed(destination) %>% 
+  dm_insert_zoomed("destination") %>% 
   # renaming the originally zoomed table
   dm_rename_tbl(origin = airports) %>% 
   # Key relations are also duplicated, so the wrong ones need to be removed
@@ -168,7 +168,7 @@ dm_with_summary <-
   flights_dm %>% 
   dm_zoom_to(flights) %>% 
   count(origin, carrier) %>% 
-  dm_insert_zoomed(dep_carrier_count)
+  dm_insert_zoomed("dep_carrier_count")
 dm_draw(dm_with_summary)
 ```
 
@@ -187,7 +187,7 @@ joined_flights_dm <-
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% 
   # in the {dm}-method for the joins you can specify which columns you want to add to the zoomed table
   left_join(planes, select = c(tailnum, plane_type = type)) %>% 
-  dm_insert_zoomed(flights_plane_type)
+  dm_insert_zoomed("flights_plane_type")
 # this is how the table looks now
 joined_flights_dm$flights_plane_type
 # also here, the FK-relations are transferred to the new table

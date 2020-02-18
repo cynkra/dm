@@ -1,7 +1,7 @@
 Package: dm
-Title: Relational data models
-Version: 0.1.1
-Date: 2020-02-04
+Title: Relational Data Models
+Version: 0.1.1.9000
+Date: 2020-02-14
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -10,12 +10,15 @@ Authors@R:
       person(given = "Kirill",
              family = "Müller",
              role = c("aut", "cre"),
-             email = "kirill@cynkra.com",
+             email = "krlmlr+r@mailbox.org",
              comment = c(ORCID = "0000-0002-1416-3412")),
       person(given = "Darko",
              family = "Bergant",
              role = "aut",
              email = "darko.bergant@gmail.com"),
+      person(given = "Katharina",
+             family = "Brunner",
+             role = "ctb"),
       person(given = "energie360° AG",
              role = "fnd",
              email = "info@energie360.ch"),
@@ -45,7 +48,7 @@ Imports:
     rlang (>= 0.4.0),
     tibble,
     tidyr (>= 1.0.0),
-    tidyselect (>= 0.2.5),
+    tidyselect (>= 1.0.0),
     vctrs (>= 0.2.0)
 Suggests: 
     DiagrammeR,

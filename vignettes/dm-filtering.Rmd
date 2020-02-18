@@ -54,6 +54,8 @@ The data comes from the US Bureau of Transportation Statistics, and is documente
 To start with our exploration, we have to create a `dm` object from the {nycflights13} data.
 The built-in `dm::dm_nycflights13()` function takes care of this.
 
+By default it only uses a subset of the complete data though: only the flights on the 10th of each month are considered, reducing the number of rows in the `flights` table to 11 227.
+
 A [data model object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm) contains data from the source tables, and metadata about the tables.
 
 If you would like to create a `dm` object from tables other than the example data, you can use the `new_dm()`, `dm()` or `as_dm()` functions.

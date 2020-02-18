@@ -41,7 +41,7 @@
 #'   dm_add_pk(planes, tailnum) %>%
 #'   dm_add_fk(flights, tailnum, planes) %>%
 #'   dm_draw()
-dm_add_fk <- nse(function(dm, table, columns, ref_table, check = FALSE) {
+dm_add_fk <- function(dm, table, columns, ref_table, check = FALSE) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
@@ -66,7 +66,7 @@ dm_add_fk <- nse(function(dm, table, columns, ref_table, check = FALSE) {
   }
 
   dm_add_fk_impl(dm, table_name, column_name, ref_table_name)
-})
+}
 
 
 dm_add_fk_impl <- function(dm, table, column, ref_table) {
@@ -151,7 +151,7 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 
 #' Get foreign key constraints
 #'
-#' @description Get a summary of all foreign key relations in a [`dm`]
+#' Get a summary of all foreign key relations in a [`dm`].
 #'
 #' @section Compound keys:
 #'
@@ -173,11 +173,11 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @examples
 #' dm_get_all_fks(dm_nycflights13())
 #' @export
-dm_get_all_fks <- nse(function(dm) {
+dm_get_all_fks <- function(dm) {
   check_not_zoomed(dm)
   dm_get_all_fks_impl(dm) %>%
     mutate(child_fk_cols = new_keys(child_fk_cols))
-})
+}
 
 dm_get_all_fks_impl <- function(dm) {
   dm_get_data_model_fks(dm) %>%
@@ -299,7 +299,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #'   dm_zoom_to(flights) %>%
 #'   enum_fk_candidates(airports)
 #' @export
-dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
+dm_enum_fk_candidates <- function(dm, table, ref_table) {
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
@@ -317,7 +317,7 @@ dm_enum_fk_candidates <- nse(function(dm, table, ref_table) {
   enum_fk_candidates_impl(table_name, tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
-})
+}
 
 #' @details `enum_fk_candidates()` works like `dm_enum_fk_candidates()` with the zoomed table as `table`.
 #'
@@ -395,7 +395,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     # FIXME: this fails on SQLite, why?
     # mutate(num_mismatch = glue("{as.character(mismatch_or_null)} ({as.character(n)})")) %>%
     pull()
-  vals_formatted <- commas(format(vals_extended, trim = TRUE, justify = "none"))
+  vals_formatted <- commas(format(vals_extended, trim = TRUE, justify = "none"), capped = TRUE)
   glue(
     "{as.character(n_mismatch)} entries ({percentage_missing}%) of ",
     "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}"
