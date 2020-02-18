@@ -140,7 +140,7 @@ cdm_check_constraints(dm)
 
 cdm_nycflights13(cycle = FALSE, color = TRUE)
 
-cdm_paste(dm, select = FALSE, color = TRUE, tab_width = 2)
+cdm_paste(dm, select = FALSE, tab_width = 2, color = TRUE)
 
 cdm_has_pk(dm, table)
 
