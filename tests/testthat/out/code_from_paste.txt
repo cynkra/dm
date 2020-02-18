@@ -15,7 +15,7 @@ dm(t1, t2, t3, t4, t5, t6) %>%
   dm_add_fk(t5, l, t4) %>%
   dm_add_fk(t5, m, t6) 
 
-> dm_paste(dm_for_filter, FALSE, 4, FALSE)
+> dm_paste(dm_for_filter, FALSE, 4)
 dm(t1, t2, t3, t4, t5, t6) %>%
     dm_add_pk(t1, a) %>%
     dm_add_pk(t2, c) %>%

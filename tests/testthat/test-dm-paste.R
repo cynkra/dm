@@ -3,7 +3,7 @@ test_that("generating code for creation of existing 'dm' works", {
       {dm_paste(empty_dm())
         dm_paste(dm_for_filter)
         # changing the tab width
-        dm_paste(dm_for_filter, FALSE, 4, FALSE)
+        dm_paste(dm_for_filter, FALSE, 4)
         # we don't care if the tables really exist
         dm_paste(dm_for_filter %>% dm_rename_tbl(t1_new = t1))
         # produce `dm_select()` statements in addition to the rest
