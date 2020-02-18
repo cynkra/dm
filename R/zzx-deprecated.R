@@ -1,12 +1,59 @@
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-check_if_subset <- new_cdm_forward_2(check_subset, old_fwd_name = "check_if_subset")
+check_if_subset <- function(t1, c1, t2, c2) {
+  deprecate_soft("0.1.0", "dm::check_if_subset()", "dm::check_subset()")
+  t1q <- enquo(t1)
+  t2q <- enquo(t2)
+  c1q <- ensym(c1)
+  c2q <- ensym(c2)
+  if (is_subset(eval_tidy(t1q), !!c1q, eval_tidy(t2q), !!c2q)) {
+    return(invisible(eval_tidy(t1q)))
+  }
+  v1 <- pull(eval_tidy(t1q), !!ensym(c1q))
+  v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
+  setdiff_v1_v2 <- setdiff(v1, v2)
+  print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
+  abort_not_subset_of(
+    as_name(t1q), as_name(c1q), as_name(t2q),
+    as_name(c2q)
+  )
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-check_cardinality <- new_cdm_forward_2(examine_cardinality)
+check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
+  deprecate_soft("0.1.0", "dm::examine_cardinality()", "dm::examine_cardinality()")
+  pt <- enquo(parent_table)
+  pkc <- enexpr(pk_column)
+  ct <- enquo(child_table)
+  fkc <- enexpr(fk_column)
+  if (!is_unique_key(eval_tidy(pt), !!pkc)$unique) {
+    return(glue(
+      "Column(s) {tick(commas(as_string(pkc)))} not ",
+      "a unique key of {tick('parent_table')}."
+    ))
+  }
+  if (!is_subset(!!ct, !!fkc, !!pt, !!pkc)) {
+    return(glue(
+      "Column(s) {tick(commas(as_string(fkc)))} of {tick('child_table')} not ",
+      "a subset of column(s) {tick(commas(as_string(pkc)))} of {tick('parent_table')}."
+    ))
+  }
+  min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
+  max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
+  if (min_1 && max_1) {
+    return("bijective mapping (child: 1 -> parent: 1)")
+  }
+  else if (min_1) {
+    return("surjective mapping (child: 1 to n -> parent: 1)")
+  }
+  else if (max_1) {
+    return("injective mapping ( child: 0 or 1 -> parent: 1)")
+  }
+  "generic mapping (child: 0 to n -> parent: 1)"
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -191,7 +238,16 @@ cdm_apply_filters <- function(dm) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_apply_filters_to_tbl <- new_cdm_forward_2(dm_apply_filters_to_tbl)
+cdm_apply_filters_to_tbl <- function(dm, table) {
+  deprecate_soft(
+    "0.1.0", "dm::cdm_apply_filters_to_tbl()",
+    "dm::dm_apply_filters_to_tbl()"
+  )
+  check_not_zoomed(dm)
+  table_name <- as_string(ensym(table))
+  check_correct_input(dm, table_name)
+  dm_get_filtered_table(dm, table_name)
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -212,12 +268,22 @@ cdm_add_fk <- function(dm, table, column, ref_table, check = FALSE) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_has_fk <- new_cdm_forward_2(dm_has_fk)
+cdm_has_fk <- function(dm, table, ref_table) {
+  deprecate_soft("0.1.0", "dm::cdm_has_fk()", "dm::dm_has_fk()")
+  check_not_zoomed(dm)
+  dm_has_fk_impl(dm, as_name(ensym(table)), as_name(ensym(ref_table)))
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_fk <- new_cdm_forward_2(dm_get_fk)
+cdm_get_fk <- function(dm, table, ref_table) {
+  deprecate_soft("0.1.0", "dm::cdm_get_fk()", "dm::dm_get_fk()")
+  check_not_zoomed(dm)
+  table_name <- as_name(ensym(table))
+  ref_table_name <- as_name(ensym(ref_table))
+  new_keys(dm_get_fk_impl(dm, table_name, ref_table_name))
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -230,22 +296,80 @@ cdm_get_all_fks <- function(dm) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_rm_fk <- new_cdm_forward_2(dm_rm_fk)
+cdm_rm_fk <- function(dm, table, columns, ref_table) {
+  deprecate_soft("0.1.0", "dm::cdm_rm_fk()", "dm::dm_rm_fk()")
+  check_not_zoomed(dm)
+  column_quo <- enquo(columns)
+  if (quo_is_missing(column_quo)) {
+    abort_rm_fk_col_missing()
+  }
+  table_name <- as_name(ensym(table))
+  ref_table_name <- as_name(ensym(ref_table))
+  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  fk_cols <- dm_get_fk_impl(dm, table_name, ref_table_name)
+  if (is_empty(fk_cols)) {
+    return(dm)
+  }
+  if (quo_is_null(column_quo)) {
+    cols <- fk_cols
+  }
+  else {
+    cols <- as_name(ensym(columns))
+    if (!all(cols %in% fk_cols)) {
+      abort_is_not_fkc(
+        table_name, cols, ref_table_name,
+        fk_cols
+      )
+    }
+  }
+  dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_enum_fk_candidates <- new_cdm_forward_2(dm_enum_fk_candidates)
+cdm_enum_fk_candidates <- function(dm, table, ref_table) {
+  deprecate_soft("0.1.0", "dm::cdm_enum_fk_candidates()", "dm::dm_enum_fk_candidates()")
+  check_not_zoomed(dm)
+  check_no_filter(dm)
+  table_name <- as_string(ensym(table))
+  ref_table_name <- as_string(ensym(ref_table))
+  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
+  ref_tbl <- tbl(dm, ref_table_name)
+  tbl <- tbl(dm, table_name)
+  enum_fk_candidates_impl(
+    table_name, tbl, ref_table_name,
+    ref_tbl, ref_tbl_pk
+  ) %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_is_referenced <- new_cdm_forward_2(dm_is_referenced)
+cdm_is_referenced <- function(dm, table) {
+  deprecate_soft("0.1.0", "dm::cdm_is_referenced()", "dm::dm_is_referenced()")
+  check_not_zoomed(dm)
+  has_length(dm_get_referencing_tables(dm, !!ensym(table)))
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_referencing_tables <- new_cdm_forward_2(dm_get_referencing_tables)
+cdm_get_referencing_tables <- function(dm, table) {
+  deprecate_soft(
+    "0.1.0", "dm::cdm_get_referencing_tables()",
+    "dm::dm_get_referencing_tables()"
+  )
+  check_not_zoomed(dm)
+  table <- as_name(ensym(table))
+  check_correct_input(dm, table)
+  def <- dm_get_def(dm)
+  i <- which(def$table == table)
+  def$fks[[i]]$table
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -282,12 +406,22 @@ cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_has_pk <- new_cdm_forward_2(dm_has_pk)
+cdm_has_pk <- function(dm, table) {
+  deprecate_soft("0.1.0", "dm::cdm_has_pk()", "dm::dm_has_pk()")
+  check_not_zoomed(dm)
+  has_length(dm_get_pk(dm, {{ table }}))
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_get_pk <- new_cdm_forward_2(dm_get_pk)
+cdm_get_pk <- function(dm, table) {
+  deprecate_soft("0.1.0", "dm::cdm_get_pk()", "dm::dm_get_pk()")
+  check_not_zoomed(dm)
+  table_name <- as_name(ensym(table))
+  check_correct_input(dm, table_name)
+  new_keys(dm_get_pk_impl(dm, table_name))
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -300,7 +434,20 @@ cdm_get_all_pks <- function(dm) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_rm_pk <- new_cdm_forward_2(dm_rm_pk)
+cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
+  deprecate_soft("0.1.0", "dm::cdm_rm_pk()", "dm::dm_rm_pk()")
+  check_not_zoomed(dm)
+  table_name <- as_name(ensym(table))
+  check_correct_input(dm, table_name)
+  def <- dm_get_def(dm)
+  if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
+    affected <- dm_get_referencing_tables(dm, !!table_name)
+    abort_first_rm_fks(table_name, affected)
+  }
+  def$pks[def$table == table_name] <- list(new_pk())
+  def$fks[def$table == table_name] <- list(new_fk())
+  new_dm3(def)
+}
 
 #' @rdname deprecated
 #' @keywords internal
@@ -335,22 +482,90 @@ cdm_rename_tbl <- function(dm, ...) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_select <- new_cdm_forward_2(dm_select)
+cdm_select <- function(dm, table, ...) {
+  deprecate_soft("0.1.0", "dm::cdm_select()", "dm::dm_select()")
+  check_not_zoomed(dm)
+  table_name <- as_string(ensym(table))
+  dm_zoom_to(dm, !!table_name) %>%
+    select(...) %>%
+    dm_update_zoomed()
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_rename <- new_cdm_forward_2(dm_rename)
+cdm_rename <- function(dm, table, ...) {
+  deprecate_soft("0.1.0", "dm::cdm_rename()", "dm::dm_rename()")
+  check_not_zoomed(dm)
+  table_name <- as_string(ensym(table))
+  dm_zoom_to(dm, !!table_name) %>%
+    rename(...) %>%
+    dm_update_zoomed()
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_zoom_to_tbl <- new_cdm_forward_2(dm_zoom_to, old_fwd_name = "cdm_zoom_to_tbl", new_name = "dm_zoom_to")
+cdm_zoom_to_tbl <- function(dm, table) {
+  deprecate_soft("0.1.0", "dm::cdm_zoom_to_tbl()", "dm::dm_zoom_to()")
+  check_not_zoomed(dm)
+  zoom <- as_string(ensym(table))
+  check_correct_input(dm, zoom)
+  cols <- list(get_all_cols(dm, zoom))
+  dm_get_def(dm) %>%
+    mutate(
+      zoom = if_else(table == !!zoom, data, list(NULL)),
+      col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
+    ) %>%
+    new_dm3(zoomed = TRUE)
+}
 
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_insert_zoomed_tbl <- new_cdm_forward_2(dm_insert_zoomed, old_fwd_name = "cdm_insert_zoomed_tbl")
+cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
+  deprecate_soft("0.1.0", "dm::cdm_insert_zoomed_tbl()", "dm::dm_insert_zoomed()")
+
+  check_zoomed(dm)
+  if (is_null(enexpr(new_tbl_name))) {
+    new_tbl_name_chr <- orig_name_zoomed(dm)
+  }
+  else {
+    if (is_symbol(enexpr(new_tbl_name))) {
+      warning("The argument `new_tbl_name` in `dm_insert_zoomed()` should be of class `character`.")
+    }
+    new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
+  }
+  names_list <- repair_table_names(
+    old_names = src_tbls_impl(dm),
+    new_names = new_tbl_name_chr, repair, quiet
+  )
+  dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
+  new_tbl_name_chr <- names_list$new_names
+  old_tbl_name <- orig_name_zoomed(dm)
+  new_tbl <- list(get_zoomed_tbl(dm))
+  all_filters <- get_filter_for_table(dm, old_tbl_name)
+  old_filters <- all_filters %>% filter(!zoomed)
+  new_filters <- all_filters %>%
+    filter(zoomed) %>%
+    mutate(zoomed = FALSE)
+  upd_pk <- update_zoomed_pk(dm)
+  upd_inc_fks <- update_zoomed_incoming_fks(dm)
+  dm_wo_outgoing_fks <-
+    dm %>%
+    update_filter(old_tbl_name, vctrs::list_of(old_filters)) %>%
+    dm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
+    dm_get_def() %>%
+    mutate(
+      pks = if_else(table == new_tbl_name_chr, !!upd_pk, pks),
+      fks = if_else(table == new_tbl_name_chr, !!upd_inc_fks, fks)
+    ) %>%
+    new_dm3(zoomed = TRUE)
+
+  dm_wo_outgoing_fks %>%
+    dm_update_zoomed_outgoing_fks(new_tbl_name_chr, is_upd = FALSE) %>%
+    dm_clean_zoomed()
+}
 
 #' @rdname deprecated
 #' @keywords internal

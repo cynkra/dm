@@ -35,8 +35,11 @@ new_cdm_forward_2 <- function(fwd, env = caller_env(), old_fwd_name = NULL, new_
       !!paste0("dm::", old_fwd_name, "()"),
       !!paste0("dm::", fwd_name, "()")
     )
-    !!body(fwd)
+    !!!as.list(body(fwd))[-1]
   })
 
-  new_function(args, body = body, env)
+  new_function(args, body = body, env) %>%
+    deparse() %>%
+    styler::style_text() %>%
+    clipr::write_clip()
 }
