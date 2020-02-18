@@ -857,7 +857,10 @@ as.list.zoomed_dm <- function(x, ...) {
 
 #' \pkg{utils} table manipulation methods for `zoomed_dm` objects
 #'
+#' Extract the first or last rows from a table.
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
+#' The methods for regular `dm` objects extract the first or last tables.
+#'
 #' @param x object of class `zoomed_dm`
 #' @inheritParams utils::head
 #' @rdname utils_table_manipulation
