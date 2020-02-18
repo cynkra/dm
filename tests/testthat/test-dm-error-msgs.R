@@ -49,7 +49,6 @@ test_that("error messages do not change", {
     abort_unnamed_table_list()
     abort_need_unique_names("clone")
     abort_fk_not_tracked("hook", "eye")
-    abort_need_to_select_rhs_by("RHS", "by")
     abort_dm_invalid("it's ugly.")
     abort_no_table_provided()
     abort_table_not_zoomed("blur", c("focus_1", "focus_2"))

@@ -486,17 +486,6 @@ error_txt_fk_not_tracked <- function(x_orig_name, y_name) {
   )
 }
 
-# RHS-by column not selected ----------------------------------------------
-
-abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  abort(error_txt_need_to_select_rhs_by(y_name, rhs_by), .subclass = dm_error_full("need_to_select_rhs_by"))
-}
-
-error_txt_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
-}
-
-
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
