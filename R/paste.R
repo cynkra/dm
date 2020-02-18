@@ -56,12 +56,6 @@ dm_paste_impl <- function(dm, select, tab_width, color) {
     code <- glue_collapse(c(code, code_select), sep = " %>%\n")
   }
 
-  if (color) {
-    colors <- dm_get_colors(dm)
-    colors <- colors[names(colors) != "default"]
-    code_color <- imap_chr(colors, ~ glue("{tab}dm_set_colors({tick_if_needed(..2)} = {tick_if_needed(..1)})"))
-    code <- glue_collapse(c(code, code_color), sep = " %>%\n")
-  }
   # adding code for establishing PKs
   # FIXME: this will fail with compound keys
   tbl_pks <- dm_get_all_pks_impl(dm) %>%
@@ -74,5 +68,13 @@ dm_paste_impl <- function(dm, select, tab_width, color) {
     mutate(code = glue("{tab}dm_add_fk({child_table}, {child_fk_cols}, {parent_table})"))
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
-  glue_collapse(c(code, code_pks, code_fks), sep = " %>%\n")
+  if (color) {
+    colors <- dm_get_colors(dm)
+    colors <- colors[names(colors) != "default"]
+    code_color <- imap_chr(colors, ~ glue("{tab}dm_set_colors({tick_if_needed(..2)} = {tick_if_needed(..1)})"))
+  } else {
+    code_color <- character()
+  }
+
+  glue_collapse(c(code, code_color, code_pks, code_fks), sep = " %>%\n")
 }
