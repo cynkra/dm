@@ -486,6 +486,28 @@ error_txt_fk_not_tracked <- function(x_orig_name, y_name) {
   )
 }
 
+# lost track of PK-column(s) -----------------------------------
+
+abort_pk_not_tracked <- function(orig_table, orig_pk) {
+  abort(error_txt_pk_not_tracked(orig_table, orig_pk), .subclass = dm_error_full("pk_not_tracked"))
+}
+
+error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
+  glue("The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {tick(orig_table)} got lost ",
+       "in transformations. Therefore it is not possible to use `nest.zoomed_dm()`.")
+}
+
+
+# only for local src ------------------------------------------------------
+
+abort_only_for_local_src <- function(src_dm) {
+  abort(error_txt_only_for_local_src(format_classes(class(src_dm))), .subclass = dm_error_full("only_for_local_src"))
+}
+
+error_txt_only_for_local_src <- function(src_class) {
+  glue("`nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
+}
+
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {

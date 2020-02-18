@@ -97,7 +97,11 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' @export
 dm_has_pk <- function(dm, table) {
   check_not_zoomed(dm)
-  has_length(dm_get_pk(dm, {{ table }}))
+  dm_has_pk_impl(dm, as_string(ensym(table)))
+}
+
+dm_has_pk_impl <- function(dm, table) {
+  has_length(dm_get_pk_impl(dm, table))
 }
 
 #' Primary key column names

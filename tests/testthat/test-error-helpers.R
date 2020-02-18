@@ -57,5 +57,7 @@ test_that("error messages do not change", {
     abort_only_named_args("give_names", "frobnicability")
     abort_wrong_syntax_set_cols()
     abort_temp_table_requested(c("i_am_temporary", "i_am_permanent"), "i_am_permanent")
+    abort_pk_not_tracked("house", "house_number")
+    abort_only_for_local_src(mtcars)
   })
 })
