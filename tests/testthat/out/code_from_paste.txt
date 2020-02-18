@@ -1,0 +1,68 @@
+> dm_paste(empty_dm())
+dm() 
+
+> dm_paste(dm_for_filter)
+dm(t1, t2, t3, t4, t5, t6) %>%
+  dm_add_pk(t1, a) %>%
+  dm_add_pk(t2, c) %>%
+  dm_add_pk(t3, f) %>%
+  dm_add_pk(t4, h) %>%
+  dm_add_pk(t5, k) %>%
+  dm_add_pk(t6, n) %>%
+  dm_add_fk(t2, d, t1) %>%
+  dm_add_fk(t2, e, t3) %>%
+  dm_add_fk(t4, j, t3) %>%
+  dm_add_fk(t5, l, t4) %>%
+  dm_add_fk(t5, m, t6) 
+
+> dm_paste(dm_for_filter, FALSE, 4, FALSE)
+dm(t1, t2, t3, t4, t5, t6) %>%
+    dm_add_pk(t1, a) %>%
+    dm_add_pk(t2, c) %>%
+    dm_add_pk(t3, f) %>%
+    dm_add_pk(t4, h) %>%
+    dm_add_pk(t5, k) %>%
+    dm_add_pk(t6, n) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t2, e, t3) %>%
+    dm_add_fk(t4, j, t3) %>%
+    dm_add_fk(t5, l, t4) %>%
+    dm_add_fk(t5, m, t6) 
+
+> dm_paste(dm_for_filter %>% dm_rename_tbl(t1_new = t1))
+dm(t1_new, t2, t3, t4, t5, t6) %>%
+  dm_add_pk(t1_new, a) %>%
+  dm_add_pk(t2, c) %>%
+  dm_add_pk(t3, f) %>%
+  dm_add_pk(t4, h) %>%
+  dm_add_pk(t5, k) %>%
+  dm_add_pk(t6, n) %>%
+  dm_add_fk(t2, d, t1_new) %>%
+  dm_add_fk(t2, e, t3) %>%
+  dm_add_fk(t4, j, t3) %>%
+  dm_add_fk(t5, l, t4) %>%
+  dm_add_fk(t5, m, t6) 
+
+> dm_paste(dm_select(dm_for_filter, t5, k = k, m) %>% dm_select(t1, a), select = TRUE)
+dm(t1, t2, t3, t4, t5, t6) %>%
+  dm_select(t1, a) %>%
+  dm_select(t2, c, d, e) %>%
+  dm_select(t3, f, g) %>%
+  dm_select(t4, h, i, j) %>%
+  dm_select(t5, k, m) %>%
+  dm_select(t6, n, o) %>%
+  dm_add_pk(t1, a) %>%
+  dm_add_pk(t2, c) %>%
+  dm_add_pk(t3, f) %>%
+  dm_add_pk(t4, h) %>%
+  dm_add_pk(t5, k) %>%
+  dm_add_pk(t6, n) %>%
+  dm_add_fk(t2, d, t1) %>%
+  dm_add_fk(t2, e, t3) %>%
+  dm_add_fk(t4, j, t3) %>%
+  dm_add_fk(t5, m, t6) 
+
+> dm_set_colors(dm_for_filter, #A0BB55 = t1:t3, darkgreen = t5:t6) %>% dm_paste(
++   tab_width = 4)
+Error: The color(s) `tab_width` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
+
