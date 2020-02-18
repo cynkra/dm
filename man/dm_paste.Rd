@@ -4,17 +4,15 @@
 \alias{dm_paste}
 \title{Create R code for a dm object}
 \usage{
-dm_paste(dm, select = FALSE, tab_width = 2, color = TRUE)
+dm_paste(dm, select = FALSE, tab_width = 2)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{select}{Boolean, default \code{FALSE}. If \code{TRUE} will produce code for reducing to necessary columns.}
+\item{select}{Boolean, default \code{FALSE}. If \code{TRUE} will produce code for reducing to necessary columns.
+visualizing the tables.}
 
 \item{tab_width}{Indentation width for code from the second line onwards}
-
-\item{color}{Boolean, default \code{TRUE}. If \code{TRUE} will create the code for reproducing the original colors for
-visualizing the tables.}
 }
 \value{
 Code for producing the given \code{dm}.
