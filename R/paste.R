@@ -68,6 +68,6 @@ dm_paste <- function(dm, select = FALSE, tab_width = 2) {
   code_fks <- if (nrow(tbl_fks)) summarize(tbl_fks, code = glue_collapse(code, sep = " %>%\n")) %>% pull() else character()
 
   # without "\n" in the end it looks weird when a warning is issued
-  cat(glue_collapse(c(code, code_pks, code_fks), sep = " %>%\n"), "\n")
+  cli::cli_code(glue_collapse(c(code, code_pks, code_fks), sep = " %>%\n"))
   invisible(dm)
 }

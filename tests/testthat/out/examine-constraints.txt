@@ -11,5 +11,5 @@ Message: ! Unsatisfied constraints:
 
 > dm_nycflights13(cycle = TRUE) %>% dm_select_tbl(-flights) %>%
 +   dm_examine_constraints()
-Message: i All constraints satisfied.
+Message: ℹ All constraints satisfied.
 
