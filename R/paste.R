@@ -4,7 +4,6 @@
 #'
 #' @inheritParams dm_add_pk
 #' @param select Boolean, default `FALSE`. If `TRUE` will produce code for reducing to necessary columns.
-#' @param color Boolean, default `TRUE`. If `TRUE` will create the code for reproducing the original colors for
 #'    visualizing the tables.
 #' @param tab_width Indentation width for code from the second line onwards
 #'
@@ -25,7 +24,10 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste(select = TRUE)
-dm_paste <- function(dm, select = FALSE, tab_width = 2, color = TRUE) {
+dm_paste <- function(dm, select = FALSE, tab_width = 2) {
+  # FIXME: Expose as argument?
+  color <- TRUE
+
   check_not_zoomed(dm)
   check_no_filter(dm)
 
