@@ -3,8 +3,10 @@ is_dark_color <- function(rgb) {
   # and https://www.w3.org/WAI/WCAG21/Techniques/general/G18.html
   # you should calculate luminance first and then compare its contrast to white and black
   #
-  # But after evaluating results from this approach, it seems more natural to use a formula like this:
-  sum(rgb / 255. * c(0.3, 0.5, 0.2)) < 0.6
+  # But after evaluating results from this approach and taking the alpha channel into account,
+  # it seems more natural to use a formula like this:
+  sum(rgb[1:3] / 255. * c(0.3, 0.5, 0.2)) + (255. - rgb[4]) / 255. * 0.2 < 0.6
+  #  + (255 - rgb[4]) / 255. * 0.15
   # the weights are inspired by the sources mentioned above (only the differences between them are much smaller here)
 }
 
@@ -23,13 +25,16 @@ col_to_hex <- function(x) {
 
   # from hex or name to rgb; "default" should remain "default"
   is_not_default <- which(x != "default")
-  x[is_not_default] <- hex_from_rgb(col2rgb(x[is_not_default]))
+  x[is_not_default] <- hex_from_rgb(col2rgb(x[is_not_default], alpha = TRUE))
+  x
 }
 
 hex_from_rgb <- function(col_rgb) {
-  rgb(col_rgb[1, ], col_rgb[2, ], col_rgb[3, ], maxColorValue = 255)
+  rgb(col_rgb[1, ], col_rgb[2, ], col_rgb[3, ], col_rgb[4, ], maxColorValue = 255)
 }
 
 calc_bodycol_rgb <- function(header_bgcol_rgb) {
-  header_bgcol_rgb + (255 - header_bgcol_rgb) * 0.8
+  # alpha channel remains the same for the body color
+  header_bgcol_rgb[1:3, ] <- header_bgcol_rgb[1:3, ] + (255 - header_bgcol_rgb[1:3, ]) * 0.8
+  header_bgcol_rgb
 }

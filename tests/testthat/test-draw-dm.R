@@ -23,7 +23,7 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors(),
     set_names(
       src_tbls(dm_nycflights_small),
-      c("#00FF00", NA_character_, "#0000FF", "#0000FF", "#00FF00")
+      c("#00FF00FF", "default", "#0000FFFF", "#0000FFFF", "#00FF00FF")
     )
   )
 
@@ -38,7 +38,7 @@ test_that("`dm_set_colors()` works", {
       dm_get_colors(),
     set_names(
       src_tbls(dm_nycflights_small),
-      c("#0000FF", NA_character_, NA_character_, "#00FF00", NA_character_)
+      c("#0000FFFF", "default", "default", "#00FF00FF", "default")
     )
   )
 })
@@ -53,6 +53,15 @@ test_that("`dm_set_colors()` errors if old syntax used", {
       weather = "green"
     ),
     class = "wrong_syntax_set_cols"
+  )
+})
+
+test_that("`dm_set_colors()` errors with unnamed args", {
+  expect_dm_error(
+    dm_set_colors(
+      dm_nycflights_small,
+      airports),
+    class = "only_named_args"
   )
 })
 
@@ -82,11 +91,56 @@ test_that("getter", {
   expect_equal(
     dm_get_colors(dm_nycflights13()),
     c(
-      "#ED7D31" = "airlines",
-      "#ED7D31" = "airports",
-      "#5B9BD5" = "flights",
-      "#ED7D31" = "planes",
-      "#70AD47" = "weather"
+      "#ED7D31FF" = "airlines",
+      "#ED7D31FF" = "airports",
+      "#5B9BD5FF" = "flights",
+      "#ED7D31FF" = "planes",
+      "#70AD47FF" = "weather"
+    )
+  )
+})
+
+test_that("datamodel-code for drawing", {
+  data_model_for_filter <- dm_get_data_model(dm_for_filter)
+
+  expect_s3_class(
+    data_model_for_filter,
+    "data_model"
+  )
+
+  expect_identical(
+    map(data_model_for_filter, nrow),
+    list(tables = 6L, columns = 15L, references = 5L)
+  )
+})
+
+test_that("get available colors", {
+  expect_length(
+    dm_get_available_colors(),
+    length(colors()) + 1
+  )
+})
+
+test_that("helpers", {
+  expect_identical(
+    dm_get_all_columns(dm_for_filter),
+    tibble::tribble(
+      ~table, ~id, ~column,
+      "t1",  1L,     "a",
+      "t1",  2L,     "b",
+      "t2",  1L,     "c",
+      "t2",  2L,     "d",
+      "t2",  3L,     "e",
+      "t3",  1L,     "f",
+      "t3",  2L,     "g",
+      "t4",  1L,     "h",
+      "t4",  2L,     "i",
+      "t4",  3L,     "j",
+      "t5",  1L,     "k",
+      "t5",  2L,     "l",
+      "t5",  3L,     "m",
+      "t6",  1L,     "n",
+      "t6",  2L,     "o"
     )
   )
 })

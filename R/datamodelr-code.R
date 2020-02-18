@@ -351,7 +351,7 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
       bgcolor = "#FFFFFF"
     )
   } else {
-    header_bgcol_rgb <- col2rgb(palette_id)
+    header_bgcol_rgb <- col2rgb(palette_id, alpha = TRUE)
     bodycol_rgb <- calc_bodycol_rgb(header_bgcol_rgb)
     bodycol <- hex_from_rgb(bodycol_rgb)
     # if header background too dark, use white font color
