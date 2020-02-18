@@ -384,13 +384,16 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 
   # inform user in case RHS `by` column(s) are added
   if (!all(by %in% selected)) {
-    print(glue("Adding RHS `by` column(s) to selection: {commas(tick(setdiff(by, selected)))} (not part of the result)."))
+    new_cols <- glue_collapse(tick_if_needed(setdiff(by, selected)), ", ")
+    message(glue("Using `select = c({as_label(select_quo)}, {new_cols})`."))
   }
 
   # rename RHS `by` columns in the tibble to avoid after-the-fact disambiguation collision
+  prefix <- unique_prefix(names(selected_wo_by))
   by_rhs_rename <- by
-  names(by_rhs_rename) <- glue("...{seq_along(by_rhs_rename)}")
-  if (any(names(selected_wo_by) %in% names(by_rhs_rename))) abort_rhs_by_name_collision(selected_wo_by, by_rhs_rename, y_name)
+  names(by_rhs_rename) <- paste0(prefix, seq_along(by_rhs_rename))
+  stopifnot(!any(names(selected_wo_by) %in% names(by_rhs_rename)))
+
   # complete vector of selection consisting of selection without by and the newly named by-columns
   selected_repaired <- c(selected_wo_by, by_rhs_rename)
 
@@ -403,4 +406,11 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
   # We can track the new column names
   list(x_tbl = x_tbl, y_tbl = y_tbl, by = repaired_by, new_col_names = new_col_names)
+}
+
+unique_prefix <- function(x) {
+  if (is_empty(x)) return("...")
+
+  dots <- max(max(nchar(x, "bytes")), 3)
+  glue_collapse(rep(".", dots))
 }

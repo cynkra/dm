@@ -245,20 +245,27 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # auto-added RHS-by argument
-  expect_output(
+  expect_message(
     dm_zoom_to(dm_for_disambiguate, iris_2) %>%
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col"), select = -key) %>%
       get_zoomed_tbl(),
-    "Adding RHS `by` column"
+    "Using `select = c(-key, key)`.",
+    fixed = TRUE
   )
 
   # test RHS-by name collision
-  expect_dm_error(
+  expect_identical(
     dm_for_filter %>%
       dm_rename(t2, "...1" = d) %>%
       dm_zoom_to(t3) %>%
-      right_join(t2),
-    class = "rhs_by_name_collision"
+      right_join(t2) %>%
+      dm_update_zoomed(),
+    dm_for_filter %>%
+      dm_zoom_to(t3) %>%
+      right_join(t2) %>%
+      dm_update_zoomed() %>%
+      dm_rename(t3, "...1" = d) %>%
+      dm_rename(t2, "...1" = d)
   )
 })
 
@@ -687,4 +694,11 @@ test_that("'summarize_at()' etc. work", {
     pull_tbl(dm_nycflights_small, airports) %>%
       summarize_if(is_double, list(mean = mean, median = median))
   )
+})
+
+test_that("unique_prefix()", {
+  expect_equal(unique_prefix(character()), "...")
+  expect_equal(unique_prefix(c("a", "bc", "ef")), "...")
+  expect_equal(unique_prefix(c("a", "bcd", "ef")), "...")
+  expect_equal(unique_prefix(c("a", "....", "ef")), "....")
 })

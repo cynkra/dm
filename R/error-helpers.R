@@ -567,18 +567,3 @@ error_txt_temp_table_requested <- function(table_names, tbls_in_dm) {
     "{commas(tick(temp_tables))}."
   )
 }
-
-
-# RHS auto adding name collision ------------------------------------------
-
-abort_rhs_by_name_collision <- function(selected_wo_by, by_rhs_rename, tbl_name) {
-  problem <- intersect(names(selected_wo_by), names(by_rhs_rename))
-  abort(error_txt_rhs_by_name_collision(problem, tbl_name), .subclass = dm_error_full("rhs_by_name_collision"))
-}
-
-error_txt_rhs_by_name_collision <- function(problem, tbl_name) {
-  glue(
-    "Internally {{dm}} renames the `by` column of the RHS-table for the join. This clashes with the ",
-    "column names: {commas(tick(problem))} of table {tick(tbl_name)}."
-  )
-}
