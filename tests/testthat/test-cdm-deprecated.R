@@ -258,7 +258,7 @@ test_that("cdm_nycflights13() works", {
 test_that("cdm_paste() works", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_output(
-    cdm_paste(dm_for_filter, FALSE, TRUE, 4),
+    cdm_paste(dm_for_filter, FALSE, 4),
     paste0(
       "dm(t1, t2, t3, t4, t5, t6) %>%\n    dm_add_pk(t1, a) %>%\n    dm_add_pk(t2, c) %>%",
       "\n    dm_add_pk(t3, f) %>%\n    dm_add_pk(t4, h) %>%\n    dm_add_pk(t5, k) %>%\n    ",
