@@ -1,14 +1,9 @@
-#' @export
-group_by.dm <- function(.data, ...) {
-  check_zoomed(.data)
-}
-
-#' \pkg{dplyr} table manipulation methods for `zoomed_dm` objects
+#' \pkg{dplyr} table manipulation methods for zoomed dm objects
 #'
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
 #' @param .data object of class `zoomed_dm`
 #' @param ... see corresponding function in package \pkg{dplyr} or \pkg{tidyr}
-#' @rdname dplyr_table_manipulation
+#' @name dplyr_table_manipulation
 #' @examples
 #' zoomed <- dm_nycflights13() %>%
 #'   dm_zoom_to(flights) %>%
@@ -17,44 +12,7 @@ group_by.dm <- function(.data, ...) {
 #'   summarize(avg_air_time = mean(air_time, na.rm = TRUE))
 #' zoomed
 #' dm_insert_zoomed(zoomed, new_tbl_name = "avg_air_time_per_month")
-#' @export
-group_by.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
-  grouped_tbl <- group_by(tbl, ...)
-
-  replace_zoomed_tbl(.data, grouped_tbl)
-}
-
-#' @export
-ungroup.dm <- function(x, ...) {
-  check_zoomed(x)
-}
-
-#' @rdname dplyr_table_manipulation
-#' @param x For `ungroup.zoomed_dm`: object of class `zoomed_dm`
-#' @export
-ungroup.zoomed_dm <- function(x, ...) {
-  tbl <- get_zoomed_tbl(x)
-  ungrouped_tbl <- ungroup(tbl, ...)
-
-  replace_zoomed_tbl(x, ungrouped_tbl)
-}
-
-#' @rdname dplyr_table_manipulation
-#' @export
-summarise.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
-  # groups are "selected"; key tracking will continue for them
-  groups <- set_names(map_chr(groups(tbl), as_string))
-  summarized_tbl <- summarize(tbl, ...)
-  new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
-  replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
-}
-
-#' @export
-summarise.dm <- function(.data, ...) {
-  check_zoomed(.data)
-}
+NULL
 
 #' @export
 filter.dm <- function(.data, ...) {
@@ -204,14 +162,54 @@ slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
 }
 
 #' @export
-left_join.dm <- function(x, ...) {
+group_by.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+group_by.zoomed_dm <- function(.data, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  grouped_tbl <- group_by(tbl, ...)
+
+  replace_zoomed_tbl(.data, grouped_tbl)
+}
+
+#' @export
+ungroup.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
-#' \pkg{dplyr} join methods for `zoomed_dm` objects
+#' @rdname dplyr_table_manipulation
+#' @param x For `ungroup.zoomed_dm`: object of class `zoomed_dm`
+#' @export
+ungroup.zoomed_dm <- function(x, ...) {
+  tbl <- get_zoomed_tbl(x)
+  ungrouped_tbl <- ungroup(tbl, ...)
+
+  replace_zoomed_tbl(x, ungrouped_tbl)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+summarise.zoomed_dm <- function(.data, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  # groups are "selected"; key tracking will continue for them
+  groups <- set_names(map_chr(groups(tbl), as_string))
+  summarized_tbl <- summarize(tbl, ...)
+  new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
+  replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
+}
+
+#' @export
+summarise.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' \pkg{dplyr} join methods for zoomed dm objects
 #'
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
-#' @rdname dplyr_join
+#' @name dplyr_join
 #' @param x,y tbls to join. `x` is the `zoomed_dm` and `y` is another table in the `dm`.
 #' @param by If left `NULL` (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now `x`)
 #' and the other table (`y`).
@@ -230,6 +228,14 @@ left_join.dm <- function(x, ...) {
 #' # this should illustrate that tables don't necessarily need to be connected
 #' dm_zoom_to(flights_dm, airports) %>%
 #'   semi_join(airlines, by = "name")
+NULL
+
+#' @export
+left_join.dm <- function(x, ...) {
+  check_zoomed(x)
+}
+
+#' @rdname dplyr_join
 #' @export
 left_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
   y_name <- as_string(enexpr(y))

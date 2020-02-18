@@ -134,7 +134,7 @@ copy_dm_to <- function(dest, dm, ...,
 #' # constraints for SQLite, the following command would do something:
 #' dm_set_key_constraints(iris_dm)
 #' @noRd
-dm_set_key_constraints <- nse(function(dm) {
+dm_set_key_constraints <- function(dm) {
   if (!is_src_db(dm) && !is_this_a_test()) abort_key_constraints_need_db()
   db_table_names <- get_db_table_names(dm)
 
@@ -153,4 +153,4 @@ dm_set_key_constraints <- nse(function(dm) {
   walk(queries, ~ dbExecute(con, .))
 
   invisible(dm)
-})
+}
