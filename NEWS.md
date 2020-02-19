@@ -1,3 +1,8 @@
+# dm 0.1.1.9002
+
+- Don't implement `nest_join()` for now (#168).
+
+
 # dm 0.1.1.9001
 
 - New `nest_join()` method for `zoomed_dm` (#168).
