@@ -40,11 +40,14 @@
 #' dm_nycflights13() %>% tbl("airports")
 #' dm_nycflights13() %>% src_tbls()
 #' dm_nycflights13() %>% dm_get_src()
-#' # this works only when tables of `dm` are on DB
-#' if (FALSE) {
-#'   copy_dm_to(dbplyr::src_memdb(), dm_nycflights13()) %>%
-#'     dm_get_con()
-#' }
+#'
+#' copy_dm_to(
+#'   dbplyr::src_memdb(),
+#'   dm_nycflights13(),
+#'   unique_table_names = TRUE
+#' ) %>%
+#'   dm_get_con()
+#'
 #' dm_nycflights13() %>% dm_get_tables()
 #' dm_nycflights13() %>% dm_get_filters()
 #' dm_nycflights13() %>% validate_dm()
