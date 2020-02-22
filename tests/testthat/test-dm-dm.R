@@ -50,21 +50,19 @@ test_that("'copy_to.dm()' works", {
     "one_name_for_copy_to"
   )
 
-  expect_equivalent_dm(
-    expect_message(
+  expect_name_repair_message(
+    expect_equivalent_dm(
       copy_to(dm_for_filter, mtcars, ""),
-      "New names"
-    ),
-    dm_add_tbl(dm_for_filter, ...7 = mtcars)
+      dm_add_tbl(dm_for_filter, ...7 = mtcars)
+    )
   )
 
   # rename old and new tables if `repair = unique`
-  expect_equivalent_dm(
-    expect_message(
+  expect_name_repair_message(
+    expect_equivalent_dm(
       dm(mtcars) %>% copy_to(mtcars),
-      "New names:"
-    ),
-    dm(mtcars...1 = mtcars, mtcars...2 = mtcars)
+      dm(mtcars...1 = mtcars, mtcars...2 = mtcars)
+    )
   )
 
   expect_equivalent_dm(
