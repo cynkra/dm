@@ -1,3 +1,5 @@
+Resubmission upon request with corrected copyright holder and removed `if (FALSE)` in example.
+
 ## Test environments
 
 * local R installation, R 3.6.2

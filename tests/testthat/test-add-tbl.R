@@ -61,7 +61,7 @@ test_that("dm_add_tbl() works", {
     c("t1...1", "t2", "t3", "t4", "t5", "t6", "t1...7")
   )
 
-  expect_message(
+  expect_name_repair_message(
     expect_equivalent_dm(
       dm_add_tbl(dm_for_filter, t1 = d1, repair = "unique"),
       dm_for_filter %>%

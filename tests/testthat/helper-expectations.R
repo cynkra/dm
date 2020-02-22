@@ -16,3 +16,13 @@ expect_equivalent_dm <- function(dm1, dm2) {
 expect_dm_error <- function(expr, class) {
   expect_error(expr, class = dm_error(class))
 }
+
+expect_name_repair_message <- function(expr) {
+  # FIXME: Name repair should get a message
+  # https://github.com/r-lib/vctrs/issues/849
+  if (packageVersion("vctrs") >= "0.2.3") {
+    expr
+  } else {
+    expect_message(expr)
+  }
+}
