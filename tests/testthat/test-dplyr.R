@@ -422,6 +422,7 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     "only_possible_w_zoom"
   )
 
+  skip("No nest_join() for now")
   expect_dm_error(
     nest_join(dm_for_filter),
     "only_possible_w_zoom"
