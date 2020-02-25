@@ -68,3 +68,16 @@ test_that("Learning from Postgres works?", {
   # clean up Postgres-DB
   clear_postgres()
 })
+
+test_that("Learning from SQLite works (#288)?", {
+  src_sqlite <- skip_if_error(src_sqlite(":memory:", TRUE))
+
+  copy_to(src_sqlite, tibble(a = 1:3), name = "test")
+
+  expect_equivalent_dm(
+    dm_from_src(src_sqlite) %>%
+      dm_select_tbl(test) %>%
+      collect(),
+    dm(test = tibble(a = 1:3))
+  )
+})
