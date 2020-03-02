@@ -44,6 +44,12 @@ test_that("check_key() checks primary key properly?", {
     check_key(data, starts_with("d")),
     "not_unique_key"
   )
+
+  expect_silent(
+    dm_nycflights_small %>%
+      dm_zoom_to(airlines) %>%
+      check_key(carrier)
+  )
 })
 
 test_that("check_subset() checks if t1$c1 column values are subset of t2$c2 properly?", {

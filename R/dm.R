@@ -777,7 +777,7 @@ collect.dm <- function(x, ...) {
 
   def <- dm_get_def(x)
   def$data <- map(def$data, collect, ...)
-  new_dm3(def)
+  new_dm3(def, zoomed = is_zoomed(x))
 }
 
 # FIXME: what about 'dim.dm()'?
