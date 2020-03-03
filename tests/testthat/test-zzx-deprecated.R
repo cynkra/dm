@@ -18,8 +18,8 @@ test_that("cdm_copy_to() behaves correctly", {
   map(
     test_srcs,
     ~ expect_equivalent_dm(
-      cdm_copy_to(., dm_for_filter, unique_table_names = TRUE),
-      copy_dm_to(., dm_for_filter, unique_table_names = TRUE)
+      cdm_copy_to(.x, dm_for_filter, unique_table_names = TRUE),
+      dm_for_filter
     )
   )
 })
@@ -44,17 +44,17 @@ test_that("cdm_get_colors() behaves as intended", {
 test_that("cdm_filter() behaves correctly", {
   expect_identical(
     cdm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2),
-    dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2)
+    filter(t2, d > 4)
   )
 
   expect_identical(
     dm_filter(dm_for_filter, t1, a > 4) %>% cdm_apply_filters_to_tbl(t2),
-    dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2)
+    filter(t2, d > 4)
   )
 
-  expect_equivalent_dm(
-    dm_filter(dm_for_filter, t1, a > 4) %>% cdm_apply_filters(),
-    dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters()
+  expect_identical(
+    dm_filter(dm_for_filter, t1, a > 3, a < 8) %>% cdm_apply_filters() %>% dm_get_tables(),
+    output_1
   )
 })
 
@@ -68,17 +68,18 @@ test_that("cdm_nrow() works?", {
 test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` work", {
   expect_identical(
     cdm_flatten_to_tbl(dm_for_flatten, fact),
-    dm_flatten_to_tbl(dm_for_flatten, fact)
+    result_from_flatten
   )
 
   expect_identical(
     cdm_join_to_tbl(dm_for_flatten, fact, dim_3),
-    dm_join_to_tbl(dm_for_flatten, fact, dim_3)
+    select(result_from_flatten, fact:fact.something, dim_3.something)
   )
 
   expect_identical(
-    cdm_squash_to_tbl(dm_more_complex, t5),
-    dm_squash_to_tbl(dm_more_complex, t5)
+    cdm_squash_to_tbl(dm_more_complex, t5, t4, t3),
+    left_join(t5, t4, by = c("l" = "h")) %>%
+      left_join(t3, by = c("j" = "f"))
   )
 })
 
@@ -154,15 +155,9 @@ test_that("cdm_add_pk() and cdm_add_fk() work", {
 })
 
 test_that("other FK functions work", {
-  expect_identical(
-    cdm_has_fk(dm_for_filter, t2, t1),
-    dm_has_fk(dm_for_filter, t2, t1)
-  )
+  expect_true(cdm_has_fk(dm_for_filter, t2, t1))
 
-  expect_identical(
-    cdm_has_fk(dm_for_filter, t1, t2),
-    dm_has_fk(dm_for_filter, t1, t2)
-  )
+  expect_false(cdm_has_fk(dm_for_filter, t1, t2))
 
   expect_identical(
     cdm_get_fk(dm_for_filter, t2, t1),
