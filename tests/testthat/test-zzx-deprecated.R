@@ -1,5 +1,6 @@
+withr::local_options(c(lifecycle_verbosity = "quiet"))
+
 test_that("cdm_add_tbl() works", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_add_tbl(dm_for_filter, cars_table = mtcars),
     dm_add_tbl(dm_for_filter, cars_table = mtcars)
@@ -7,7 +8,6 @@ test_that("cdm_add_tbl() works", {
 })
 
 test_that("cdm_rm_tbl() works", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_rm_tbl(dm_for_flatten, starts_with("dim")),
     dm_rm_tbl(dm_for_flatten, starts_with("dim"))
@@ -15,7 +15,6 @@ test_that("cdm_rm_tbl() works", {
 })
 
 test_that("cdm_copy_to() behaves correctly", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   map(
     test_srcs,
     ~ expect_equivalent_dm(
@@ -26,7 +25,6 @@ test_that("cdm_copy_to() behaves correctly", {
 })
 
 test_that("cdm_disambiguate_cols() works as intended", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equivalent_dm(
     cdm_disambiguate_cols(dm_for_disambiguate),
     dm_disambiguate_cols(dm_for_disambiguate)
@@ -34,7 +32,6 @@ test_that("cdm_disambiguate_cols() works as intended", {
 })
 
 test_that("cdm_get_colors() behaves as intended", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equal(
     cdm_get_colors(cdm_nycflights13()),
     set_names(
@@ -45,7 +42,6 @@ test_that("cdm_get_colors() behaves as intended", {
 })
 
 test_that("cdm_filter() behaves correctly", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2),
     dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2)
@@ -63,7 +59,6 @@ test_that("cdm_filter() behaves correctly", {
 })
 
 test_that("cdm_nrow() works?", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equal(
     sum(cdm_nrow(dm_test_obj)),
     rows_dm_obj
@@ -71,7 +66,6 @@ test_that("cdm_nrow() works?", {
 })
 
 test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_flatten_to_tbl(dm_for_flatten, fact),
     dm_flatten_to_tbl(dm_for_flatten, fact)
@@ -89,7 +83,6 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
 })
 
 test_that("cdm_get_src() works", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
 
   expect_dm_error(
     cdm_get_src(1),
@@ -106,7 +99,6 @@ test_that("cdm_get_src() works", {
 })
 
 test_that("cdm_get_con() works", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_dm_error(
     cdm_get_con(1),
     class = "is_not_dm"
@@ -129,7 +121,6 @@ test_that("cdm_get_con() works", {
 
 
 test_that("cdm_get_tables() works", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_get_tables(dm_for_filter),
     dm_get_tables(dm_for_filter)
@@ -137,7 +128,6 @@ test_that("cdm_get_tables() works", {
 })
 
 test_that("cdm_get_filter() works", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_get_filter(dm_for_filter),
     dm_get_filters(dm_for_filter)
@@ -150,7 +140,6 @@ test_that("cdm_get_filter() works", {
 })
 
 test_that("cdm_add_pk() and cdm_add_fk() work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equivalent_dm(
     cdm_add_pk(dm_test_obj, dm_table_4, c),
     dm_add_pk(dm_test_obj, dm_table_4, c)
@@ -165,7 +154,6 @@ test_that("cdm_add_pk() and cdm_add_fk() work", {
 })
 
 test_that("other FK functions work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_has_fk(dm_for_filter, t2, t1),
     dm_has_fk(dm_for_filter, t2, t1)
@@ -199,7 +187,6 @@ test_that("other FK functions work", {
 })
 
 test_that("graph-functions work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_is_referenced(dm_for_filter, t3),
     dm_is_referenced(dm_for_filter, t3)
@@ -213,7 +200,7 @@ test_that("graph-functions work", {
 
 test_that("cdm_learn_from_db() works from PG", {
   skip("not testing deprecated learning from DB: test too slow")
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
+
   src_postgres <- skip_if_error(src_test("postgres"))
   con_postgres <- src_postgres$con
 
@@ -230,7 +217,6 @@ test_that("cdm_learn_from_db() works from PG", {
 })
 
 test_that("cdm_examine_constraints() works", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_check_constraints(bad_dm),
     dm_examine_constraints_impl(bad_dm)
@@ -239,7 +225,7 @@ test_that("cdm_examine_constraints() works", {
 
 test_that("cdm_nycflights13() works", {
   skip("not testing deprecated cdm_nycflights13(): test too slow")
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
+
   expect_equivalent_dm(
     cdm_nycflights13(),
     dm_nycflights13()
@@ -247,7 +233,6 @@ test_that("cdm_nycflights13() works", {
 })
 
 test_that("cdm_paste() works", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_output(
     cdm_paste(dm_for_filter, FALSE, 4),
     paste0(
@@ -261,7 +246,6 @@ test_that("cdm_paste() works", {
 })
 
 test_that("other PK functions work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_has_pk(dm_for_filter, t1),
     dm_has_pk(dm_for_filter, t1)
@@ -291,7 +275,6 @@ test_that("other PK functions work", {
 })
 
 test_that("dm_select_tbl() and dm_rename_tbl() work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equivalent_dm(
     cdm_select_tbl(dm_for_filter, t1_new = t1, t2, new_t6 = t6),
     dm_select_tbl(dm_for_filter, t1_new = t1, t2, new_t6 = t6)
@@ -304,7 +287,6 @@ test_that("dm_select_tbl() and dm_rename_tbl() work", {
 })
 
 test_that("dm_select() and dm_rename() work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_identical(
     cdm_select(dm_for_filter, t1, a_new = a) %>% tbl("t1"),
     dm_select(dm_for_filter, t1, a_new = a) %>% tbl("t1")
@@ -317,7 +299,6 @@ test_that("dm_select() and dm_rename() work", {
 })
 
 test_that("dm_zoom_to() and related functions work", {
-  withr::local_options(c(lifecycle_verbosity = "quiet"))
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter, t1),
     dm_zoom_to(dm_for_filter, t1)
