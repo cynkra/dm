@@ -88,13 +88,6 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
   )
 })
 
-active_srcs <- tibble(src = names(dbplyr:::test_srcs$get()))
-lookup <- tibble(
-  src = c("df", "sqlite", "postgres", "mssql"),
-  class_src = c("src_local", "src_SQLiteConnection", "src_PqConnection", "src_Microsoft SQL Server"),
-  class_con = c(NA_character_, "SQLiteConnection", "PqConnection", "Microsoft SQL Server")
-)
-
 test_that("cdm_get_src() works", {
   withr::local_options(c(lifecycle_verbosity = "quiet"))
 
@@ -102,8 +95,6 @@ test_that("cdm_get_src() works", {
     cdm_get_src(1),
     class = "is_not_dm"
   )
-
-  active_srcs_class <- semi_join(lookup, active_srcs, by = "src") %>% pull(class_src)
 
   walk2(
     dm_for_filter_src,

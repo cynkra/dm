@@ -346,21 +346,11 @@ test_that("as.list()-methods work", {
 
 # test getters: -----------------------------------------------------------
 
-active_srcs <- tibble(src = names(test_srcs))
-
-lookup <- tibble(
-  src = c("df", "sqlite", "postgres", "mssql"),
-  class_src = c("src_local", "src_SQLiteConnection", "src_PqConnection", "src_Microsoft SQL Server"),
-  class_con = c(NA_character_, "SQLiteConnection", "PqConnection", "Microsoft SQL Server")
-)
-
 test_that("dm_get_src() works", {
   expect_dm_error(
     dm_get_src(1),
     class = "is_not_dm"
   )
-
-  active_srcs_class <- semi_join(lookup, active_srcs, by = "src") %>% pull(class_src)
 
   walk2(
     dm_for_filter_src,
