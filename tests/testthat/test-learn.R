@@ -70,6 +70,7 @@ test_that("Learning from Postgres works?", {
 })
 
 test_that("Learning from SQLite works (#288)?", {
+  skip("learning from SQLite NYI")
   src_sqlite <- skip_if_error(src_sqlite(":memory:", TRUE))
 
   copy_to(src_sqlite, tibble(a = 1:3), name = "test")
