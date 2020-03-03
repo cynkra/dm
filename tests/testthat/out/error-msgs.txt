@@ -140,9 +140,6 @@ Error: Each new table needs to have a unique name. Duplicate new name(s): `clone
 > abort_fk_not_tracked("hook", "eye")
 Error: The foreign key that existed between the originally zoomed table `hook` and `eye` got lost in transformations. Please explicitly provide the `by` argument.
 
-> abort_need_to_select_rhs_by("RHS", "by")
-Error: You need to select by-column `by` of RHS-table `RHS`.
-
 > abort_dm_invalid("it's ugly.")
 Error: This `dm` is invalid, reason: it's ugly.
 
@@ -167,4 +164,10 @@ Error: You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set
 > abort_temp_table_requested(c("i_am_temporary", "i_am_permanent"),
 + "i_am_permanent")
 Error: The following requested tables from the DB are temporary tables and can't be included in the result: `i_am_temporary`.
+
+> abort_pk_not_tracked("house", "house_number")
+Error: The primary key column(s) `house_number` of the originally zoomed table `house` got lost in transformations. Therefore it is not possible to use `nest.zoomed_dm()`.
+
+> abort_only_for_local_src(mtcars)
+Error: `nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: `data.frame`.
 
