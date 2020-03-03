@@ -7,10 +7,8 @@ test_that("can access tables", {
 })
 
 test_that("can create dm with as_dm()", {
-  test_obj_df <- as_dm(dm_get_tables(dm_test_obj))
-
   walk(
-    dm_test_obj_src, ~ expect_equivalent_dm(as_dm(dm_get_tables(.)), test_obj_df)
+    dm_test_obj_src, ~ expect_equivalent_dm(as_dm(dm_get_tables(.)), dm_test_obj)
   )
 })
 
@@ -271,7 +269,6 @@ test_that("`pull_tbl()`-methods work", {
 
   expect_dm_error(
     new_dm3(dm_for_filter %>%
-      dm_zoom_to(t1) %>%
       dm_get_def() %>%
       mutate(zoom = list(t1)), zoomed = TRUE) %>%
       pull_tbl(),
