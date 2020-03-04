@@ -1,4 +1,4 @@
-withr::local_options(c(lifecycle_verbosity = "quiet"))
+rlang::local_options(lifecycle_verbosity = "quiet")
 
 test_that("cdm_add_tbl() works", {
   expect_identical(
