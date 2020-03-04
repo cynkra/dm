@@ -401,4 +401,3 @@ test_that("output", {
       dm_filter(flights, origin == "EWR")
   })
 })
-

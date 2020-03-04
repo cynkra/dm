@@ -34,17 +34,17 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   expect_identical(
     examine_cardinality(d5, a, d4, c),
     "surjective mapping (child: 1 to n -> parent: 1)"
-    )
+  )
 
   expect_identical(
     examine_cardinality(d8, c, d4, c),
     "generic mapping (child: 0 to n -> parent: 1)"
-    )
+  )
 
   expect_identical(
     examine_cardinality(d1, a, d3, c),
     "bijective mapping (child: 1 -> parent: 1)"
-    )
+  )
 
   # expect specific errors and sometimes specific output due to errors ---------------
 
@@ -71,35 +71,35 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   expect_dm_error(
     check_cardinality_1_1(d5, a, d4, c),
     class = "not_bijective"
-    )
+  )
 
   expect_dm_error(
     check_cardinality_1_1(d4, c, d5, a),
     class = "not_unique_key"
-    )
+  )
 
   expect_dm_error(
     check_cardinality_1_1(d4, c, d1, a),
     class = "not_unique_key"
-    )
+  )
 
   expect_dm_error(
     check_cardinality_0_1(d1, a, d4, c),
     class = "not_injective"
-    )
+  )
 
   expect_dm_error(
     check_cardinality_0_n(d4, c, d1, a),
     class = "not_unique_key"
-    )
+  )
 
   expect_dm_error(
     check_cardinality_1_1(d4, c, d1, a),
     class = "not_unique_key"
-    )
+  )
 
   expect_dm_error(
     check_cardinality_1_1(d1, a, d4, c),
     class = "not_bijective"
-    )
+  )
 })
