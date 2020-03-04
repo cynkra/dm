@@ -22,7 +22,7 @@ test_that("copy_dm_to() copies between sources", {
   # speed things up on cran
   skip_on_cran()
 
-  all_combos <- crossing(tibble(a = 1:3), tibble(b = 1:3))
+  all_combos <- crossing(a = seq_along(test_srcs), b = seq_along(dm_for_filter_src))
   map2(
     all_combos$a,
     all_combos$b,
