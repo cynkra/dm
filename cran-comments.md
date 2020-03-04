@@ -1,4 +1,4 @@
-Resubmission upon request with corrected copyright holder and removed `if (FALSE)` in example.
+Resubmission upon request with reduced testing times.
 
 ## Test environments
 
