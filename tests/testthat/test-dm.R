@@ -7,10 +7,8 @@ test_that("can access tables", {
 })
 
 test_that("can create dm with as_dm()", {
-  test_obj_df <- as_dm(dm_get_tables(dm_test_obj))
-
   walk(
-    dm_test_obj_src, ~ expect_equivalent_dm(as_dm(dm_get_tables(.)), test_obj_df)
+    dm_test_obj_src, ~ expect_equivalent_dm(as_dm(dm_get_tables(.)), dm_test_obj)
   )
 })
 
@@ -270,10 +268,9 @@ test_that("`pull_tbl()`-methods work", {
   )
 
   expect_dm_error(
-    new_dm3(dm_for_filter %>%
-      dm_zoom_to(t1) %>%
-      dm_get_def() %>%
-      mutate(zoom = list(t1)), zoomed = TRUE) %>%
+    dm_get_def(dm_for_filter) %>%
+      mutate(zoom = list(t1)) %>%
+      new_dm3(zoomed = TRUE) %>%
       pull_tbl(),
     "not_pulling_multiple_zoomed"
   )
@@ -346,21 +343,11 @@ test_that("as.list()-methods work", {
 
 # test getters: -----------------------------------------------------------
 
-active_srcs <- tibble(src = names(test_srcs))
-
-lookup <- tibble(
-  src = c("df", "sqlite", "postgres", "mssql"),
-  class_src = c("src_local", "src_SQLiteConnection", "src_PqConnection", "src_Microsoft SQL Server"),
-  class_con = c(NA_character_, "SQLiteConnection", "PqConnection", "Microsoft SQL Server")
-)
-
 test_that("dm_get_src() works", {
   expect_dm_error(
     dm_get_src(1),
     class = "is_not_dm"
   )
-
-  active_srcs_class <- semi_join(lookup, active_srcs, by = "src") %>% pull(class_src)
 
   walk2(
     dm_for_filter_src,
@@ -403,13 +390,14 @@ test_that("dm_get_filters() works", {
 })
 
 test_that("output", {
+  nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
   verify_output("out/output.txt", {
-    dm_nycflights13(cycle = TRUE)
+    nyc_flights_dm
 
-    dm_nycflights13(cycle = TRUE) %>%
+    nyc_flights_dm %>%
       format()
 
-    dm_nycflights13(cycle = TRUE) %>%
+    nyc_flights_dm %>%
       dm_filter(flights, origin == "EWR")
   })
 })

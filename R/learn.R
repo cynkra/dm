@@ -47,8 +47,13 @@ dm_learn_from_db <- function(dest, ...) {
     return()
   }
 
+  sql <- db_learn_query(con, ...)
+  if (is.null(sql)) {
+    return()
+  }
+
   overview <-
-    dbGetQuery(con, db_learn_query(con, ...)) %>%
+    dbGetQuery(con, sql) %>%
     as_tibble()
   if (nrow(overview) == 0) {
     return(NULL)

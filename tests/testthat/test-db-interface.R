@@ -19,11 +19,15 @@ test_that("copy_dm_to() copies data frames from databases", {
 })
 
 test_that("copy_dm_to() copies between sources", {
+  # speed things up on cran
+  skip_on_cran()
+
+  all_combos <- crossing(tibble(a = 1:3), tibble(b = 1:3))
   map2(
-    test_srcs,
-    dm_for_filter_src,
+    all_combos$a,
+    all_combos$b,
     ~ expect_equivalent_dm(
-      copy_dm_to(.x, .y, unique_table_names = TRUE),
+      copy_dm_to(test_srcs[[.x]], dm_for_filter_src[[.y]], unique_table_names = TRUE),
       dm_for_filter
     )
   )

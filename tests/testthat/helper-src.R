@@ -55,9 +55,6 @@ d5_src <- test_load(d5)
 d6_src <- test_load(d6)
 d8_src <- test_load(d8)
 
-# names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
-src_names <- names(d1_src) # e.g. gets src names of list entries of object d1_src
-
 data %<-%
   tribble(
     ~c1, ~c2, ~c3,
@@ -556,6 +553,13 @@ if (is_this_a_test()) {
 
   # names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
   src_names %<-% names(d1_src) # e.g. gets src names of list entries of object d1_src
+  active_srcs <- tibble(src = src_names)
+  lookup <- tibble(
+    src = c("df", "sqlite", "postgres", "mssql"),
+    class_src = c("src_local", "src_SQLiteConnection", "src_PqConnection", "src_Microsoft SQL Server"),
+    class_con = c(NA_character_, "SQLiteConnection", "PqConnection", "Microsoft SQL Server")
+  )
+  active_srcs_class <- semi_join(lookup, active_srcs, by = "src") %>% pull(class_src)
 
   data_check_key_src %<-% dbplyr::test_load(data)
 
