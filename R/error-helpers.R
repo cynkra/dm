@@ -493,8 +493,10 @@ abort_pk_not_tracked <- function(orig_table, orig_pk) {
 }
 
 error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
-  glue("The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {tick(orig_table)} got lost ",
-       "in transformations. Therefore it is not possible to use `nest.zoomed_dm()`.")
+  glue(
+    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {tick(orig_table)} got lost ",
+    "in transformations. Therefore it is not possible to use `nest.zoomed_dm()`."
+  )
 }
 
 

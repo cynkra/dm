@@ -308,7 +308,6 @@ dm_get_src <- function(x) {
 dm_get_src_impl <- function(x) {
   tables <- dm_get_tables_impl(x)
   tbl_src(tables[1][[1]])
-
 }
 
 #' Get connection

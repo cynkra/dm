@@ -73,4 +73,3 @@ test_that("output as tibble", {
       as_tibble()
   })
 })
-

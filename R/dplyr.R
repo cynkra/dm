@@ -409,7 +409,9 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
 }
 
 unique_prefix <- function(x) {
-  if (is_empty(x)) return("...")
+  if (is_empty(x)) {
+    return("...")
+  }
 
   dots <- max(max(nchar(x, "bytes")), 3)
   glue_collapse(rep(".", dots))
