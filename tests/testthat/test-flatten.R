@@ -77,39 +77,6 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
     dm_flatten_to_tbl(dm_for_flatten, fact, join = inner_join),
     result_from_flatten
   )
-
-  # explicitly choose parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = inner_join),
-    inner_join(
-      rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
-      by = c("dim_1_key" = "dim_1_pk")
-    ) %>%
-      inner_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
-  )
-
-  # change order of parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = inner_join),
-    inner_join(
-      rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
-      by = c("dim_2_key" = "dim_2_pk")
-    ) %>%
-      inner_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
-  )
-
-  # flatten bad_dm (no referential integrity)
-  expect_identical(
-    dm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = inner_join),
-    inner_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
-      inner_join(tbl_3, by = c("b" = "id"))
-  )
-
-  # filtered `dm`
-  expect_identical(
-    dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = inner_join),
-    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = inner_join)
-  )
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
@@ -119,26 +86,6 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
       full_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
       full_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
       full_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
-  )
-
-  # explicitly choose parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = full_join),
-    full_join(
-      rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
-      by = c("dim_1_key" = "dim_1_pk")
-    ) %>%
-      full_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
-  )
-
-  # change order of parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = full_join),
-    full_join(
-      rename(fact, fact.something = something), rename(dim_2, dim_2.something = something),
-      by = c("dim_2_key" = "dim_2_pk")
-    ) %>%
-      full_join(rename(dim_1, dim_1.something = something), by = c("dim_1_key" = "dim_1_pk"))
   )
 
   # flatten bad_dm (no referential integrity)
@@ -161,27 +108,6 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'semi_join()'", {
     fact
   )
 
-  # explicitly choose parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = semi_join),
-    semi_join(fact, dim_1, by = c("dim_1_key" = "dim_1_pk")) %>%
-      semi_join(dim_2, by = c("dim_2_key" = "dim_2_pk"))
-  )
-
-  # change order of parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = semi_join),
-    semi_join(fact, dim_2, by = c("dim_2_key" = "dim_2_pk")) %>%
-      semi_join(dim_1, by = c("dim_1_key" = "dim_1_pk"))
-  )
-
-  # flatten bad_dm (no referential integrity)
-  expect_identical(
-    dm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = semi_join),
-    semi_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
-      semi_join(tbl_3, by = c("b" = "id"))
-  )
-
   # filtered `dm`
   expect_identical(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = semi_join),
@@ -193,33 +119,6 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'anti_join()'", {
   expect_identical(
     dm_flatten_to_tbl(dm_for_flatten, fact, join = anti_join),
     fact %>% filter(1 == 0)
-  )
-
-  # explicitly choose parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = anti_join),
-    anti_join(fact, dim_1, by = c("dim_1_key" = "dim_1_pk")) %>%
-      anti_join(dim_2, by = c("dim_2_key" = "dim_2_pk"))
-  )
-
-  # change order of parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_2, dim_1, join = anti_join),
-    anti_join(fact, dim_2, by = c("dim_2_key" = "dim_2_pk")) %>%
-      anti_join(dim_1, by = c("dim_1_key" = "dim_1_pk"))
-  )
-
-  # flatten bad_dm (no referential integrity)
-  expect_identical(
-    dm_flatten_to_tbl(bad_dm, tbl_1, tbl_2, tbl_3, join = anti_join),
-    anti_join(tbl_1, tbl_2, by = c("a" = "id")) %>%
-      anti_join(tbl_3, by = c("b" = "id"))
-  )
-
-  # filtered `dm`
-  expect_identical(
-    dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = anti_join),
-    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = anti_join)
   )
 })
 
@@ -241,16 +140,6 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
       right_join(dim_2_clean, by = c("dim_2_key" = "dim_2_pk")) %>%
       right_join(dim_3_clean, by = c("dim_3_key" = "dim_3_pk")) %>%
       right_join(dim_4_clean, by = c("dim_4_key" = "dim_4_pk"))
-  )
-
-  # explicitly choose parent tables
-  expect_identical(
-    dm_flatten_to_tbl(dm_for_flatten, fact, dim_1, dim_2, join = right_join),
-    right_join(
-      rename(fact, fact.something = something), rename(dim_1, dim_1.something = something),
-      by = c("dim_1_key" = "dim_1_pk")
-    ) %>%
-      right_join(rename(dim_2, dim_2.something = something), by = c("dim_2_key" = "dim_2_pk"))
   )
 
   # change order of parent tables
@@ -316,12 +205,7 @@ test_that("`dm_squash_to_tbl()` does the right things", {
       full_join(t3, by = c("j" = "f"))
   )
 
-  # inner_join:
-  expect_identical(
-    dm_squash_to_tbl(dm_more_complex, t5, t4, t3, join = inner_join),
-    inner_join(t5, t4, by = c("l" = "h")) %>%
-      inner_join(t3, by = c("j" = "f"))
-  )
+  # skipping inner_join, not gaining new info
 
   # right_join:
   expect_dm_error(

@@ -18,9 +18,9 @@ expect_dm_error <- function(expr, class) {
 }
 
 expect_name_repair_message <- function(expr) {
-  # FIXME: Name repair should get a message
+  # Name repair did not get a message during some time in {vctrs}
   # https://github.com/r-lib/vctrs/issues/849
-  if (packageVersion("vctrs") >= "0.2.3") {
+  if (packageVersion("vctrs") < "0.2.99.9006") {
     expr
   } else {
     expect_message(expr)

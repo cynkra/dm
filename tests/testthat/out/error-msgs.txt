@@ -165,9 +165,3 @@ Error: You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set
 + "i_am_permanent")
 Error: The following requested tables from the DB are temporary tables and can't be included in the result: `i_am_temporary`.
 
-> abort_pk_not_tracked("house", "house_number")
-Error: The primary key column(s) `house_number` of the originally zoomed table `house` got lost in transformations. Therefore it is not possible to use `nest.zoomed_dm()`.
-
-> abort_only_for_local_src(mtcars)
-Error: `nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: `data.frame`.
-

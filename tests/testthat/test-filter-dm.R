@@ -114,7 +114,7 @@ test_that("dm_filter() works as intended for reversed dm", {
   )
 })
 
-test_that("dm_filter() works as intended?", {
+test_that("dm_filter() works on different srcs", {
   map(
     .x = dm_for_filter_src,
     ~ expect_identical(
@@ -137,17 +137,11 @@ test_that("dm_filter() works as intended for inbetween table", {
 })
 
 test_that("dm_filter() works without primary keys", {
-  map(
-    dm_for_filter_src,
-    function(dm_for_filter) {
-      expect_error(
-        dm_for_filter %>%
-          dm_rm_pk(t5, rm_referencing_fks = TRUE) %>%
-          dm_filter(t5, l == "c") %>%
-          compute(),
-        NA
-      )
-    }
+  expect_silent(
+    dm_for_filter %>%
+      dm_rm_pk(t5, rm_referencing_fks = TRUE) %>%
+      dm_filter(t5, l == "c") %>%
+      compute()
   )
 })
 
