@@ -1,4 +1,4 @@
-# Demo for presentation at the satRday Neuchâtel,
+# Demo for presentation at the satRday Neuch^atel,
 # March 2020
 
 # {dm}: Relational data models in R
