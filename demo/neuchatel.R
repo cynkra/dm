@@ -34,14 +34,14 @@ set.seed(20200314)
 
 
 ## ----connect, cache = FALSE------------------------------------
-library(DBI)  #<<
+library(DBI) # <<
 
 mydb <- dbConnect(
   RMariaDB::MariaDB(),
-  user = 'guest',
-  password = 'relational',
-  dbname = 'Financial_ijs',
-  host = 'relational.fit.cvut.cz'
+  user = "guest",
+  password = "relational",
+  dbname = "Financial_ijs",
+  host = "relational.fit.cvut.cz"
 )
 
 
@@ -57,7 +57,7 @@ as_tibble(loans)
 
 
 ## ----lazy-table, highlight.output = 2:3------------------------
-library(dbplyr) #<<
+library(dbplyr) # <<
 loans <- tbl(mydb, "loans")
 loans
 
@@ -128,23 +128,39 @@ dm_pk
 
 ## ----dm-fk, cache = FALSE--------------------------------------
 dm_fk <-
-  dm_pk %>% #<<
-  dm_add_fk(loans, account_id,
-            accounts) %>%
-  dm_add_fk(orders, account_id,
-            accounts) %>%
-  dm_add_fk(trans, account_id,
-            accounts) %>%
-  dm_add_fk(disps, account_id,
-            accounts) %>%
-  dm_add_fk(disps, client_id,
-            clients) %>%
-  dm_add_fk(accounts,
-            district_id, districts) %>%
-  dm_add_fk(clients,
-            district_id, districts) %>%
-  dm_add_fk(cards, disp_id,
-            disps)
+  dm_pk %>% # <<
+  dm_add_fk(
+    loans, account_id,
+    accounts
+  ) %>%
+  dm_add_fk(
+    orders, account_id,
+    accounts
+  ) %>%
+  dm_add_fk(
+    trans, account_id,
+    accounts
+  ) %>%
+  dm_add_fk(
+    disps, account_id,
+    accounts
+  ) %>%
+  dm_add_fk(
+    disps, client_id,
+    clients
+  ) %>%
+  dm_add_fk(
+    accounts,
+    district_id, districts
+  ) %>%
+  dm_add_fk(
+    clients,
+    district_id, districts
+  ) %>%
+  dm_add_fk(
+    cards, disp_id,
+    disps
+  )
 
 
 ## ----dm-fk-out, highlight.output = 7---------------------------
@@ -168,11 +184,11 @@ dm_fk
 
 
 ## ----dm-tweak-assign, highlight.output = 4:5-------------------
-dm_tweaked <- #<<
+dm_tweaked <- # <<
   dm_fk %>%
   dm_rm_tbl(tkeys) %>%
   dm_set_colors(green = loans, red = trans, orange = districts)
-dm_tweaked #<<
+dm_tweaked # <<
 
 
 ## ----dm-constraints--------------------------------------------
@@ -226,15 +242,17 @@ characters <-
   select(-films)
 
 dm_starwars <-
-  dm( #<<
+  dm( # <<
     characters,
     films,
     characters_films
   ) %>%
   dm_add_pk(characters, name) %>%
   dm_add_pk(films, film) %>%
-  dm_add_fk(characters_films, name,
-            characters) %>%
+  dm_add_fk(
+    characters_films, name,
+    characters
+  ) %>%
   dm_add_fk(characters_films, film, films)
 
 dm_starwars %>%
@@ -250,7 +268,7 @@ dm_starwars %>%
 dm_starwars_clean <-
   dm_starwars %>%
   dm_zoom_to(characters) %>%
-  select_if(~ !is.list(.)) %>% #<<
+  select_if(~ !is.list(.)) %>% # <<
   dm_update_zoomed()
 
 dm_starwars_clean$characters
