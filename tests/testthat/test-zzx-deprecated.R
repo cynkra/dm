@@ -40,7 +40,7 @@ test_that("cdm_get_colors() behaves as intended", {
   expect_equal(
     cdm_get_colors(cdm_nycflights13()),
     set_names(
-      c("#ED7D31", "#ED7D31", "#5B9BD5", "#ED7D31", "#70AD47"),
+      c("#ED7D31FF", "#ED7D31FF", "#5B9BD5FF", "#ED7D31FF", "#70AD47FF"),
       c("airlines", "airports", "flights", "planes", "weather")
     )
   )

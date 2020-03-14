@@ -1,5 +1,4 @@
 test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
-  skip("`nest_join_zoomed_dm()` NYI (basic test)")
   expect_identical(
     zoomed_dm_2 %>%
       nest_join_zoomed_dm() %>%
@@ -37,7 +36,6 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
 })
 
 test_that("'nest_join_zoomed_dm()' fails for Postgres-'dm'", {
-  skip("`nest_join_zoomed_dm()` NYI (PG test)")
   skip_if_not("postgres" %in% src_names)
   expect_dm_error(
     dm_zoom_to(dm_for_filter_src$postgres, t3) %>% nest_join_zoomed_dm(),
@@ -46,7 +44,6 @@ test_that("'nest_join_zoomed_dm()' fails for Postgres-'dm'", {
 })
 
 test_that("'nest_join_zoomed_dm()' fails for SQLite-'dm'", {
-  skip("`nest_join_zoomed_dm()` NYI (SQLite test)")
   skip_if_not("sqlite" %in% src_names)
   expect_dm_error(
     dm_zoom_to(dm_for_filter_src$sqlite, t3) %>% nest_join_zoomed_dm(),

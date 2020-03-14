@@ -1,7 +1,7 @@
 test_that("color related functions work", {
   # is_dark_color()
-  expect_true(is_dark_color(rgb = c(100, 100, 100)))
-  expect_false(is_dark_color(rgb = c(142, 164, 143)))
+  expect_true(is_dark_color(rgb = c(100, 100, 100, 255)))
+  expect_false(is_dark_color(rgb = c(142, 164, 143, 255)))
 
   # is_hex_color()
   expect_true(is_hex_color("#92A87F"))
@@ -11,8 +11,8 @@ test_that("color related functions work", {
 
   # col_to_hex()
   expect_identical(
-    col_to_hex(c("brown", "#92A87F", "darkgreen")),
-    c("#A52A2A", "#92A87F", "#006400")
+    col_to_hex(c("brown", "#92A87F", "darkgreen", "#92A87F4C")),
+    c("#A52A2AFF", "#92A87FFF", "#006400FF", "#92A87F4C")
   )
 
   expect_dm_error(
@@ -23,16 +23,16 @@ test_that("color related functions work", {
   # hex_from_rgb()
   expect_identical(
     hex_from_rgb(matrix(100, 4, 1)),
-    "#646464"
+    "#64646464"
   )
 
   expect_identical(
     hex_from_rgb(matrix(100:107, 4, 2)),
-    c("#646566", "#68696A")
+    c("#64656667", "#68696A6B")
   )
 
   expect_identical(
-    calc_bodycol_rgb(matrix(c(100, 20, 200), 3, 1)),
-    matrix(c(224, 208, 244), 3, 1)
+    calc_bodycol_rgb(matrix(c(100, 20, 200, 155), 4, 1)),
+    matrix(c(224, 208, 244, 155), 4, 1)
   )
 })
