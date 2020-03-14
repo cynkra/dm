@@ -37,7 +37,6 @@ Imports:
     cli,
     DBI,
     dplyr,
-    DT (>= 0.5),
     glue,
     igraph,
     lifecycle,
