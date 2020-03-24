@@ -318,19 +318,18 @@ nycflights13_from_remote <- dm_learn_from_db(src_postgres)
 
 ## Installation
 
-The latest (development) version of {dm} can be installed from GitHub.
+The latest stable version of the {dm} package can be obtained from
+[CRAN](https://CRAN.R-project.org/package=dm) with the command
+
+``` r
+install.packages("dm")
+```
+
+The latest development version of {dm} can be installed from GitHub.
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("krlmlr/dm")
-```
-
-The {dm} package will also be made available on
-[CRAN](https://CRAN.R-project.org/package=dm), from where it can be
-installed with the command
-
-``` r
-install.packages("dm")
 ```
 
 ## More information
