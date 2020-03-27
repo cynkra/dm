@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Changelog" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -62,7 +65,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -151,12 +154,12 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
       
     </div>
 
     <div id="dm-0-1-1-9002" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9002">
 <a href="#dm-0-1-1-9002" class="anchor"></a>dm 0.1.1.9002<small> Unreleased </small>
 </h1>
 <ul>
@@ -164,7 +167,7 @@
 </ul>
 </div>
     <div id="dm-0-1-1-9001" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9001">
 <a href="#dm-0-1-1-9001" class="anchor"></a>dm 0.1.1.9001<small> Unreleased </small>
 </h1>
 <ul>
@@ -179,13 +182,13 @@
 </ul>
 </div>
     <div id="dm-0-1-1-9000" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9000">
 <a href="#dm-0-1-1-9000" class="anchor"></a>dm 0.1.1.9000<small> Unreleased </small>
 </h1>
 <p>Same as previous version.</p>
 </div>
     <div id="dm-0-1-1" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1">
 <a href="#dm-0-1-1" class="anchor"></a>dm 0.1.1<small> 2020-03-12 </small>
 </h1>
 <ul>
@@ -200,7 +203,7 @@
 </ul>
 </div>
     <div id="dm-0-1-0" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.0">
 <a href="#dm-0-1-0" class="anchor"></a>dm 0.1.0<small> Unreleased </small>
 </h1>
 <ul>
@@ -221,7 +224,7 @@
 </ul>
 </div>
     <div id="dm-0-0-6" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.6">
 <a href="#dm-0-0-6" class="anchor"></a>dm 0.0.6<small> Unreleased </small>
 </h1>
 <ul>
@@ -244,7 +247,7 @@
 <li>Return <code>ref_table</code> column in <code>dm_check_constraints()</code> (#178).</li>
 <li>
 <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> shows simpified views (#123).</li>
-<li>Edits to README (#172, <a href='https://github.com/bbecane'>@bbecane</a>).</li>
+<li>Edits to README (#172, @bbecane).</li>
 <li>Extend <code><a href="../reference/dm.html">validate_dm()</a></code> (#173).</li>
 <li>Fix zooming into table that uses an FK column as primary key (#193).</li>
 <li>Fix corner case in <code><a href="../reference/dm_add_fk.html">dm_rm_fk()</a></code> (#175).</li>
@@ -254,7 +257,7 @@
 </ul>
 </div>
     <div id="dm-0-0-5" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.5">
 <a href="#dm-0-0-5" class="anchor"></a>dm 0.0.5<small> Unreleased </small>
 </h1>
 <div id="features" class="section level2">
@@ -297,14 +300,14 @@
 </div>
 </div>
     <div id="dm-0-0-4" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.4">
 <a href="#dm-0-0-4" class="anchor"></a>dm 0.0.4<small> Unreleased </small>
 </h1>
 <ul>
 <li>Many {dplyr} verbs now work on tables in a <code>dm</code>. Zooming to a table vie <code><a href="../reference/deprecated.html">cdm_zoom_to_tbl()</a></code> creates a zoomed <code>dm</code> on which the {dplyr} verbs can be applied. The resulting table can be put back into the <code>dm</code> with <code><a href="../reference/deprecated.html">cdm_update_zoomed_tbl()</a></code> (overwriting the original table) or <code><a href="../reference/deprecated.html">cdm_insert_zoomed_tbl()</a></code> (creating a new table), respectively (#89).</li>
 <li>
 <code>cdm_select_to_tbl()</code> removes foreign key constraints if the corresponding columns are removed.</li>
-<li>Integrate code from {datamodelr} in this package (<a href='https://github.com/bergant'>@bergant</a>, #111).</li>
+<li>Integrate code from {datamodelr} in this package (@bergant, #111).</li>
 <li>Reorder tables in <code>"dm"</code> using <code><a href="../reference/deprecated.html">cdm_select_tbl()</a></code> (#108).</li>
 <li>More accurate documentation of filtering operation (#98).</li>
 <li>Support empty <code>dm</code> objects via <code><a href="../reference/dm.html">dm()</a></code> and <code><a href="../reference/dm.html">new_dm()</a></code> (#96).</li>
@@ -316,7 +319,7 @@
 </ul>
 </div>
     <div id="dm-0-0-3" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.3">
 <a href="#dm-0-0-3" class="anchor"></a>dm 0.0.3<small> Unreleased </small>
 </h1>
 <ul>
@@ -325,7 +328,7 @@
 <li>
 <code><a href="../reference/deprecated.html">cdm_flatten_to_tbl()</a></code> works only in the immediate neighborhood (#75).</li>
 <li>New <code><a href="../reference/deprecated.html">cdm_squash_to_tbl()</a></code> implements recursive flattening for left, inner and full join (#75).</li>
-<li>Updated readme and introduction vignette (#72, <a href='https://github.com/cutterkom'>@cutterkom</a>).</li>
+<li>Updated readme and introduction vignette (#72, @cutterkom).</li>
 <li>New <code><a href="../reference/deprecated.html">cdm_check_constraints()</a></code> to check referential integrity of a <code>dm</code> (#56).</li>
 <li>
 <code><a href="../reference/deprecated.html">cdm_copy_to()</a></code> gains <code>table_names</code> argument (#79).</li>
@@ -335,7 +338,7 @@
 </ul>
 </div>
     <div id="dm-0-0-2-9003" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.2.9003">
 <a href="#dm-0-0-2-9003" class="anchor"></a>dm 0.0.2.9003<small> Unreleased </small>
 </h1>
 <ul>
@@ -343,7 +346,7 @@
 </ul>
 </div>
     <div id="dm-0-0-2-9002" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.2.9002">
 <a href="#dm-0-0-2-9002" class="anchor"></a>dm 0.0.2.9002<small> Unreleased </small>
 </h1>
 <ul>
@@ -357,7 +360,7 @@
 </ul>
 </div>
     <div id="dm-0-0-2-9001" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.2.9001">
 <a href="#dm-0-0-2-9001" class="anchor"></a>dm 0.0.2.9001<small> Unreleased </small>
 </h1>
 <ul>
@@ -368,12 +371,12 @@
 <code><a href="../reference/deprecated.html">cdm_get_src()</a></code> for local dm always returns a src based on <code>.GlobalEnv</code>.</li>
 <li>
 <code>cdm_flatten()</code> gains <code>...</code> argument to specify which tables to include. Currently, all tables must form a connected subtree rooted at <code>start</code>. Disambiguation of column names now happens after selecting relevant tables. The resulting SQL query is more efficient for inner and outer joins if filtering is applied. Flattening with a <code>right_join</code> with more than two tables is not well-defined and gives an error (#62).</li>
-<li>Add a vignette for joining functions (#60, <a href='https://github.com/cutterkom'>@cutterkom</a>).</li>
+<li>Add a vignette for joining functions (#60, @cutterkom).</li>
 <li>Shorten message in <code><a href="../reference/deprecated.html">cdm_disambiguate_cols()</a></code>.</li>
 </ul>
 </div>
     <div id="dm-0-0-2-9000" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.2.9000">
 <a href="#dm-0-0-2-9000" class="anchor"></a>dm 0.0.2.9000<small> Unreleased </small>
 </h1>
 <ul>
@@ -388,14 +391,14 @@
 <code><a href="../reference/deprecated.html">cdm_copy_to()</a></code> works correctly with filtered <code>dm</code> objects.</li>
 <li>
 <code><a href="../reference/deprecated.html">cdm_apply_filters()</a></code> actually resets the filter conditions.</li>
-<li>A more detailed README file and a vignette for filtering (#29, <a href='https://github.com/cutterkom'>@cutterkom</a>).</li>
+<li>A more detailed README file and a vignette for filtering (#29, @cutterkom).</li>
 <li>
 <code><a href="../reference/deprecated.html">cdm_draw()</a></code> no longer supports the <code>table_names</code> argument, use <code><a href="../reference/deprecated.html">cdm_select_tbl()</a></code>.</li>
 <li>Copying a <code>dm</code> to a database now creates indexes for all primary and foreign keys.</li>
 </ul>
 </div>
     <div id="dm-0-0-2" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.2">
 <a href="#dm-0-0-2" class="anchor"></a>dm 0.0.2<small> Unreleased </small>
 </h1>
 <div id="breaking-changes" class="section level2">
@@ -477,7 +480,7 @@
 </div>
 </div>
     <div id="dm-0-0-1" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.0.1">
 <a href="#dm-0-0-1" class="anchor"></a>dm 0.0.1<small> Unreleased </small>
 </h1>
 <p>Initial GitHub release.</p>
@@ -598,27 +601,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#dm-0-1-1-9002">0.1.1.9002</a></li>
-        <li><a href="#dm-0-1-1-9001">0.1.1.9001</a></li>
-        <li><a href="#dm-0-1-1-9000">0.1.1.9000</a></li>
-        <li><a href="#dm-0-1-1">0.1.1</a></li>
-        <li><a href="#dm-0-1-0">0.1.0</a></li>
-        <li><a href="#dm-0-0-6">0.0.6</a></li>
-        <li><a href="#dm-0-0-5">0.0.5</a></li>
-        <li><a href="#dm-0-0-4">0.0.4</a></li>
-        <li><a href="#dm-0-0-3">0.0.3</a></li>
-        <li><a href="#dm-0-0-2-9003">0.0.2.9003</a></li>
-        <li><a href="#dm-0-0-2-9002">0.0.2.9002</a></li>
-        <li><a href="#dm-0-0-2-9001">0.0.2.9001</a></li>
-        <li><a href="#dm-0-0-2-9000">0.0.2.9000</a></li>
-        <li><a href="#dm-0-0-2">0.0.2</a></li>
-        <li><a href="#dm-0-0-1">0.0.1</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -630,7 +616,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
