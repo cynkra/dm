@@ -46,13 +46,13 @@ A data frame is a fundamental data structure in R.
 Columns represent variables, rows represent observations.
 In more technical terms: a data frame is a list of variables of identical length and unique row names.
 If you imagine it visually, the result is a typical table structure.
-That is why working with data from spreadsheets is so convenient and the users of the the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
+That is why working with data from spreadsheets is so convenient and the users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
 
 The downside is that data frames and flat file systems like spreadsheets can result in bloated tables because they hold many repetitive values.
 In the worst case, a data frame can contain multiple columns with only a single value different in each row.
 
 This calls for better data organization by utilizing the resemblance between data frames and database tables, which also consist of columns and rows.
-The elements are just called differently:
+The elements are just named differently:
 
 | Data Frame | Table |
 |------------|------------|
@@ -65,7 +65,7 @@ Let's illustrate this challenge with the data from the [`nycflights13` dataset](
 contains detailed information about the 336776 flights that departed from New York City in 2013.
 The information is stored in five tables.
 
-Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other  forms of data merging.
+Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of data merging.
 
 In classical {dplyr} notation, you will need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes` and `airports` tables to create one wide data frame.
 
@@ -131,7 +131,7 @@ dm %>%
   dm_enum_pk_candidates(airports)
 ```
 
-Further Reading: The {dm} package offers several function for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
+Further Reading: The {dm} package offers several functions for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
 
 ## 4. Foreign Keys {#fk}
 
@@ -183,7 +183,7 @@ flights %>%
   select(flight, name)
 ```
 
-Another way to demonstrate normalization is splitting a table in two parts.
+Another way to demonstrate normalization is splitting a table into two parts.
 
 Let's look at the `planes` table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.
 
