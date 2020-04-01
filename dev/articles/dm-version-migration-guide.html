@@ -116,7 +116,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Migration guide: ‘cdm’ -&gt; ‘dm’</h1>
             
-            <h4 class="date">2020-03-27</h4>
+            <h4 class="date">2020-04-01</h4>
       
       
       <div class="hidden name"><code>dm-version-migration-guide.Rmd</code></div>
@@ -197,8 +197,8 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span> EWR     </span><span style="text-decoration: underline;">2</span><span>013     1     1     8  39.9  28.0  62.2      250      10.4 
 #&gt; </span><span style="color: #555555;"> 9</span><span> EWR     </span><span style="text-decoration: underline;">2</span><span>013     1     1     9  39.9  28.0  62.2      260      15.0 
 #&gt; </span><span style="color: #555555;">10</span><span> EWR     </span><span style="text-decoration: underline;">2</span><span>013     1     1    10  41    28.0  59.6      260      13.8 
-#&gt; </span><span style="color: #555555;"># … with 26,105 more rows, and 5 more variables: wind_gust </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,
-#&gt; #   precip </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, pressure </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, visib </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 26,105 more rows, and 5 more variables: wind_gust </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
+#&gt; </span><span style="color: #555555;">#   precip </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, pressure </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, visib </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
 </span></code></pre>
 <p>After the update the same result is achieved by this type of function call:</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span>(<span class="no">flights_dm</span>, <span class="no">airlines</span>)</pre></body></html></div>
