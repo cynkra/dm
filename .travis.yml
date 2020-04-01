@@ -39,9 +39,12 @@ latex: false
 #stages: test, full
 stages:
 - name: test
-- name: full
+- name: docs
   if:
   - branch = master OR branch = docs OR branch =~ /^r-.*$/
+- name: full
+  if:
+  - branch = master OR branch =~ /^r-.*$/
 
 #jobs
 jobs:
@@ -51,11 +54,12 @@ jobs:
     env:
     - TIC_ONLY_STYLER=true
   - r: 3.3
+  - stage: docs
+    env:
+    - TIC_BUILD_PKGDOWN=true
   - stage: full
     os: osx
   - r: release
-    env:
-    - TIC_BUILD_PKGDOWN=true
   - r: devel
     env:
     - TIC_DEV_VERSIONS=TRUE
