@@ -41,6 +41,7 @@ Imports:
     igraph,
     lifecycle,
     magrittr,
+    memoise,
     methods,
     pillar,
     purrr,
@@ -72,4 +73,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0

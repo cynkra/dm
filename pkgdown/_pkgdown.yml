@@ -133,6 +133,7 @@ reference:
 - title: Miscellaneous
   contents:
   - dm_nycflights13
+  - dm_financial_sqlite
   - dm_nrow
 
 navbar:
