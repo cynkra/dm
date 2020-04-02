@@ -57,6 +57,7 @@ Suggests:
     knitr,
     nycflights13,
     rmarkdown,
+    RMariaDB,
     RPostgres,
     rprojroot,
     RSQLite,
