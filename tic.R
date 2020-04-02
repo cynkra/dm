@@ -49,6 +49,8 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
       add_step(step_setup_ssh()) %>%
       add_step(step_push_deploy())
   }
+} else if (ci_has_env("TIC_BUILD_PKGDOWN")) {
+  do_pkgdown()
 } else {
   get_stage("before_script") %>%
     add_code_step({
@@ -57,8 +59,4 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
     })
 
   do_package_checks(error_on = if (getRversion() >= "3.4") "note" else "warning")
-
-  if (ci_has_env("TIC_BUILD_PKGDOWN")) {
-    do_pkgdown()
-  }
 }
