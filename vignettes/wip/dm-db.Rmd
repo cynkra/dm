@@ -216,3 +216,4 @@ my_dm_total_inplace$total_loans %>%
 ## Deploying a dm to a database
 
 - `copy_dm_to()`, see code above
+- Mention `temporary` argument for persistent deployment
