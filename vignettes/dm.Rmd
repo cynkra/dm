@@ -232,6 +232,25 @@ Unfortunately, this currently only works for MSSQL and Postgres, so we cannot sh
 flights_dm_from_remote <- dm_learn_from_db(src_sqlite)
 ```
 
+## Adding tables and retrieving results
+
+As part of the data modelling process, we often need to add new tables to our model. While dm has the built-in `dm_add_tbl()` function, we can also take advantage of dplyr's [`copy_to()`](https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/copy_to) to streamline our code.
+
+The major difference between `dm_add_tbl()` and `copy_to()` is that `dm_add_tbl()` will reject tables that are in another data source. 
+Rather than take extra steps to extract the table from the data source before adding it to your destination dm, `copy_to()` allows you to complete the operation in a single step.
+
+If the dm is local, `copy_to()` will move the table into the dm. 
+If the dm source is a remote database server, `copy_to()` will upload the data to a temporary table on the server and then add it to the dm.
+Using `copy_to()` on a dm with a remote database source will trigger the execution of SQL and the results will be stored in a temporary table on the server.
+This may or may not be a desirable side effect.
+
+There are two ways to explicitly execute a SQL query - the functions [`compute()` and `collect()`](https://dplyr.tidyverse.org/reference/compute.html), also from dplyr.
+`compute()` executes the SQL and stores the results in a temporary table on the server.
+`collect()` executes the SQL and retrieves the results into a local tibble.
+Displaying any data in a dm will create an implicit call to `collect()`.
+
+#FIXME - examples of copy_to, compute() and collect() (that could just be a mention after printing out a dataframe)
+
 ## Further reading
 
 - Learn other ways of creating `dm` objects and basic operations on them, like handling key constraints in the ["Class 'dm' and basic operations"](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html) article
