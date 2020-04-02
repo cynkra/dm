@@ -26,11 +26,11 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
-This vignette deals with situations, when you want to transform tables of your `dm` and then update an existing table or add a new one to the `dm`.
-There are two straightforward solutions to the problem:
+This vignette deals with situations where you want to transform tables of your `dm` and then update an existing table or add a new table to the `dm`.
+There are two straightforward approaches:
 
-1. individually access the tables relevant for the calculation, perform the necessary transformations, add the result to the `dm` (or replace an existing table) and establish the key relations.
-1. do all this within the `dm` object by zooming to a table and manipulate it while maintaining the key relations whenever possible.
+1. individually extract the tables relevant to the calculation, perform the necessary transformations, add the result to the `dm` (or replace an existing table) and establish the key relations.
+1. do all this within the `dm` object by zooming to a table and manipulating it while maintaining the key relations whenever possible.
 
 The first approach is rather self-explanatory, so let us have a closer look at the second way.
 
@@ -40,19 +40,20 @@ Some general information about "zooming" to a table of a `dm`:
 - all information stored in the original `dm` is kept, including the originally zoomed table
 - an object of class `zoomed_dm` is produced
 - a copy of the original table is available for transformations
+- you do not need to specify the table when calling `select()`, `mutate()` and other table manipulation functions
 
 {dm} provides methods for many of the {dplyr}-verbs for a `zoomed_dm` which behave the way you are used to, affecting only the zoomed table and leaving the rest of the `dm` untouched.
 When you are finished with transforming the table, there are three options to proceed:
 
 1. use `dm_update_zoomed()` if you want to replace the originally zoomed table with the new table
-1. with `dm_insert_zoomed()` you are creating a new table for your `dm`
+1. use `dm_insert_zoomed()` if you are creating a new table for your `dm`
 1. use `dm_discard_zoomed()` if you do not need the result and want to discard it
 
-When employing one of the first two options, the resulting table in the `dm` will have all (primary as well as foreign) keys available, that could be tracked from the originally zoomed table.
+When employing one of the first two options, the resulting table in the `dm` will have all the primary and foregin keys available that could be tracked from the originally zoomed table.
 
 ## Examples
 
-So much to the theory, but how does it look and feel?
+So much for the theory, but how does it look and feel?
 To explore this, we once more make use of our trusted {nycflights13} data.
 
 ### Use case 1: Add a new column to an existing table
@@ -75,11 +76,11 @@ flights_zoomed
 flights_zoomed_mutate <- 
   flights_zoomed %>% 
   mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>% 
-  # in order to see the change we use `select()` for reordering the columns
+  # in order to see our changes in the output we use `select()` for reordering the columns
   select(year:dep_time, am_pm_dep, everything())
 flights_zoomed_mutate
 
-# In order to update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:
+# To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:
 updated_flights_dm <- 
   flights_zoomed_mutate %>% 
   dm_update_zoomed()
@@ -91,7 +92,7 @@ dm_draw(updated_flights_dm)
 
 ### Use case 2: Creation of a surrogate key
 
-Exactly such a course of action could for example be employed to create a surrogate key for a table.
+The same course of action could, for example, be employed to create a surrogate key for a table.
 We can do this for the `weather` table.
 
 ```{r}
@@ -103,7 +104,7 @@ weather_zoomed
 # Maybe there is some hidden candidate for a primary key that we overlooked
 enum_pk_candidates(weather_zoomed)
 # Seems we have to construct a column with unique values
-# This can be done by combining columns `origin` with `time_hour`, if the latter 
+# This can be done by combining column `origin` with `time_hour`, if the latter 
 # is converted to a single time zone first; all within the `dm`:
 weather_zoomed_mutate <- 
   weather_zoomed %>% 
@@ -175,7 +176,7 @@ dm_draw(dm_with_summary)
 ### Use case 5: Joining tables
 
 If you would like to join some or all of the columns of one table to another, you can make use of one of the `join`-methods for a `zoomed_dm`.
-In addition to the usual arguments for the {dplyr}-joins, you can specify in an argument `select`, which columns of the RHS-table you want to be included in the join.
+In addition to the usual arguments for the {dplyr}-joins, by supplying an argument for `select` you can specify which columns of the RHS-table you want to be included in the join.
 For the syntax please see the example below.
 The LHS-table of a join is always the zoomed table.
 
