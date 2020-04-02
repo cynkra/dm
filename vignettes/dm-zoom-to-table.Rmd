@@ -176,7 +176,7 @@ dm_draw(dm_with_summary)
 ### Use case 5: Joining tables
 
 If you would like to join some or all of the columns of one table to another, you can make use of one of the `join`-methods for a `zoomed_dm`.
-In addition to the usual arguments for the {dplyr}-joins, by supplying an argument for `select` you can specify which columns of the RHS-table you want to be included in the join.
+In addition to the usual arguments for the {dplyr}-joins, by supplying the `select` argument you can specify which columns of the RHS-table you want to be included in the join.
 For the syntax please see the example below.
 The LHS-table of a join is always the zoomed table.
 
