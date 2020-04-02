@@ -124,30 +124,30 @@
 
     
     
-<p>This vignette deals with situations, when you want to transform tables of your <code>dm</code> and then update an existing table or add a new one to the <code>dm</code>. There are two straightforward solutions to the problem:</p>
+<p>This vignette deals with situations where you want to transform tables of your <code>dm</code> and then update an existing table or add a new table to the <code>dm</code>. There are two straightforward approaches:</p>
 <ol style="list-style-type: decimal">
-<li>individually access the tables relevant for the calculation, perform the necessary transformations, add the result to the <code>dm</code> (or replace an existing table) and establish the key relations.</li>
-<li>do all this within the <code>dm</code> object by zooming to a table and manipulate it while maintaining the key relations whenever possible.</li>
+<li>individually extract the tables relevant to the calculation, perform the necessary transformations, add the result to the <code>dm</code> (or replace an existing table) and establish the key relations.</li>
+<li>do all this within the <code>dm</code> object by zooming to a table and manipulating it while maintaining the key relations whenever possible.</li>
 </ol>
 <p>The first approach is rather self-explanatory, so let us have a closer look at the second way.</p>
 <div id="enabling-dplyr-workflow-within-a-dm" class="section level2">
 <h2 class="hasAnchor">
 <a href="#enabling-dplyr-workflow-within-a-dm" class="anchor"></a>Enabling {dplyr}-workflow within a <code>dm</code>
 </h2>
-<p>Some general information about “zooming” to a table of a <code>dm</code>: - all information stored in the original <code>dm</code> is kept, including the originally zoomed table - an object of class <code>zoomed_dm</code> is produced - a copy of the original table is available for transformations</p>
+<p>Some general information about “zooming” to a table of a <code>dm</code>: - all information stored in the original <code>dm</code> is kept, including the originally zoomed table - an object of class <code>zoomed_dm</code> is produced - a copy of the original table is available for transformations - you do not need to specify the table when calling <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and other table manipulation functions</p>
 <p>{dm} provides methods for many of the {dplyr}-verbs for a <code>zoomed_dm</code> which behave the way you are used to, affecting only the zoomed table and leaving the rest of the <code>dm</code> untouched. When you are finished with transforming the table, there are three options to proceed:</p>
 <ol style="list-style-type: decimal">
 <li>use <code><a href="../reference/dm_zoom_to.html">dm_update_zoomed()</a></code> if you want to replace the originally zoomed table with the new table</li>
-<li>with <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> you are creating a new table for your <code>dm</code>
+<li>use <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> if you are creating a new table for your <code>dm</code>
 </li>
 <li>use <code><a href="../reference/dm_zoom_to.html">dm_discard_zoomed()</a></code> if you do not need the result and want to discard it</li>
 </ol>
-<p>When employing one of the first two options, the resulting table in the <code>dm</code> will have all (primary as well as foreign) keys available, that could be tracked from the originally zoomed table.</p>
+<p>When employing one of the first two options, the resulting table in the <code>dm</code> will have all the primary and foreign keys available that could be tracked from the originally zoomed table.</p>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<p>So much to the theory, but how does it look and feel? To explore this, we once more make use of our trusted {nycflights13} data.</p>
+<p>So much for the theory, but how does it look and feel? To explore this, we once more make use of our trusted {nycflights13} data.</p>
 <div id="use-case-1-add-a-new-column-to-an-existing-table" class="section level3">
 <h3 class="hasAnchor">
 <a href="#use-case-1-add-a-new-column-to-an-existing-table" class="anchor"></a>Use case 1: Add a new column to an existing table</h3>
@@ -192,7 +192,7 @@
 <span class="no">flights_zoomed_mutate</span> <span class="kw">&lt;-</span>
   <span class="no">flights_zoomed</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">am_pm_dep</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span>(<span class="no">dep_time</span> <span class="kw">&lt;</span> <span class="fl">1200</span>, <span class="st">"am"</span>, <span class="st">"pm"</span>)) <span class="kw">%&gt;%</span>
-  <span class="co"># in order to see the change we use `select()` for reordering the columns</span>
+  <span class="co"># in order to see our changes in the output we use `select()` for reordering the columns</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">year</span>:<span class="no">dep_time</span>, <span class="no">am_pm_dep</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">everything</a></span>())
 <span class="no">flights_zoomed_mutate</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span><span>
@@ -215,7 +215,7 @@
 #&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
 </span></code></pre>
 <div class="sourceCode" id="cb4"><html><body><pre class="r">
-<span class="co"># In order to update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span>
+<span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span>
 <span class="no">updated_flights_dm</span> <span class="kw">&lt;-</span>
   <span class="no">flights_zoomed_mutate</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span>()
@@ -248,7 +248,7 @@
 <div id="use-case-2-creation-of-a-surrogate-key" class="section level3">
 <h3 class="hasAnchor">
 <a href="#use-case-2-creation-of-a-surrogate-key" class="anchor"></a>Use case 2: Creation of a surrogate key</h3>
-<p>Exactly such a course of action could for example be employed to create a surrogate key for a table. We can do this for the <code>weather</code> table.</p>
+<p>The same course of action could, for example, be employed to create a surrogate key for a table. We can do this for the <code>weather</code> table.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyr</span>)
 <span class="no">weather_zoomed</span> <span class="kw">&lt;-</span>
   <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
@@ -293,7 +293,7 @@
 #&gt; </span><span style="color: #555555;">15</span><span> year       FALSE     has duplicate values: 2013
 </span></code></pre>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># Seems we have to construct a column with unique values</span>
-<span class="co"># This can be done by combining columns `origin` with `time_hour`, if the latter </span>
+<span class="co"># This can be done by combining column `origin` with `time_hour`, if the latter </span>
 <span class="co"># is converted to a single time zone first; all within the `dm`:</span>
 <span class="no">weather_zoomed_mutate</span> <span class="kw">&lt;-</span>
   <span class="no">weather_zoomed</span> <span class="kw">%&gt;%</span>
@@ -426,7 +426,7 @@
 <div id="use-case-5-joining-tables" class="section level3">
 <h3 class="hasAnchor">
 <a href="#use-case-5-joining-tables" class="anchor"></a>Use case 5: Joining tables</h3>
-<p>If you would like to join some or all of the columns of one table to another, you can make use of one of the <code>join</code>-methods for a <code>zoomed_dm</code>. In addition to the usual arguments for the {dplyr}-joins, you can specify in an argument <code>select</code>, which columns of the RHS-table you want to be included in the join. For the syntax please see the example below. The LHS-table of a join is always the zoomed table.</p>
+<p>If you would like to join some or all of the columns of one table to another, you can make use of one of the <code>join</code>-methods for a <code>zoomed_dm</code>. In addition to the usual arguments for the {dplyr}-joins, by supplying the <code>select</code> argument you can specify which columns of the RHS-table you want to be included in the join. For the syntax please see the example below. The LHS-table of a join is always the zoomed table.</p>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">joined_flights_dm</span> <span class="kw">&lt;-</span>
   <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">flights</span>) <span class="kw">%&gt;%</span>
