@@ -721,8 +721,9 @@ compute.dm <- function(x, ...) {
 #' @rdname dplyr_db
 #' @export
 compute.zoomed_dm <- function(x, ...) {
-  zoomed_df <- get_zoomed_tbl(x) %>%
-    compute(zoomed_df, ...)
+  zoomed_df <-
+    get_zoomed_tbl(x) %>%
+    compute(...)
   replace_zoomed_tbl(x, zoomed_df)
 }
 

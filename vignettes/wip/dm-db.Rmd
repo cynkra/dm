@@ -6,11 +6,12 @@ vignette: >
   %\VignetteIndexEntry{{dm} and databases}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
+
+``````{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -19,18 +20,199 @@ fansi::set_knit_hooks(knitr::knit_hooks)
 options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
 knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
+  x %>%
+    DiagrammeRsvg::export_svg() %>%
+    c("`````{=html}\n", ., "\n`````\n") %>%
     knitr::asis_output()
 }
-```
+``````
 
-FIXME: 
-This vignette is not yet written, but will be available in a future update.
 
-Relevant functions for interaction with DBs:
 
-- `copy_dm_to()`
-- `dm_set_key_constraints()`
-- `dm_learn_from_db()`
+
+``````{r }
+library(dm)
+``````
+
+
+## Connecting to a database
+
+- Example: [financial dataset](https://relational.fit.cvut.cz/dataset/Financial), borrow text from blog post
+- `dm_from_src()`
+
+``````{r }
+library(RMariaDB)
+my_db <- dbConnect(
+  MariaDB(),
+  user = 'guest',
+  password = 'relational',
+  dbname = 'Financial_ijs',
+  host = 'relational.fit.cvut.cz'
+)
+my_dm <- dm_from_src(my_db)
+
+my_dm
+``````
+
+- Flexible creation from individual tables or views
+
+``````{r }
+dbListTables(my_db)
+
+library(dbplyr)
+loans <- tbl(my_db, "loans")
+accounts <- tbl(my_db, "accounts")
+
+my_manual_dm <- dm(loans, accounts)
+my_manual_dm
+``````
+
+- Primary and foreign key constraints on the database interpreted currently only for Postgres and SQL Server databases, need to define manually for other databases
+    - Borrow from blog post
+
+``````{r }
+my_dm_keys <-
+  my_manual_dm %>%
+  dm_add_pk(accounts, id) %>%
+  dm_add_pk(loans, id) %>%
+  dm_add_fk(loans, account_id, accounts) %>%
+  dm_set_colors(green = loans)
+
+my_dm_keys %>%
+  dm_draw()
+``````
+
+
+
+
+- Adding tables to existing objects: `dm_add_tbl()` for same source
+
+
+``````{r }
+trans <- tbl(my_db, "trans")
+
+my_dm_keys %>%
+  dm_add_tbl(trans)
+``````
+
+- Reminder: all operations are transient unless stored in a new variable
+
+``````{r }
+my_dm_keys
+
+my_dm_trans <-
+  my_dm_keys %>%
+  dm_add_tbl(trans)
+
+my_dm_trans
+``````
+
+- Copying tables into existing objects: `copy_to()` demonstrated further below, in "deploying" section
+
+## Transient nature of operations
+
+- Like dbplyr, results are never written to database unless asked explicitly
+- Example: flattening operation and its translation to SQL
+
+``````{r }
+my_dm_keys %>%
+  dm_flatten_to_tbl(loans)
+
+my_dm_keys %>%
+  dm_flatten_to_tbl(loans) %>%
+  sql_render()
+``````
+
+- Example: Zooming, summarizing, putting back
+
+``````{r }
+my_dm_total <-
+  my_dm_keys %>%
+  dm_zoom_to(loans) %>%
+  group_by(account_id) %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  dm_insert_zoomed("total_loans")
+
+my_dm_total$total_loans
+
+my_dm_total %>%
+  dm_draw()
+
+my_dm_total$total_loans %>%
+  sql_render()
+``````
+
+
+## Persisting results
+
+- Relevant phrase, from `?dbplyr::compute`: "Force computation of a query", needs to be adapted to our needs (=multiple queries)
+- Requires write access to the database (at least for temporary tables), which we don't have on relational.fit
+    - Workaround for demonstration only: copy to local SQLite database, see below for details on `copy_dm_to()`
+
+
+``````{r }
+library(RSQLite)
+my_sqlite_db <- dbConnect(SQLite(), ":memory:")
+my_dm_local <-
+  my_dm_keys %>%
+  collect()
+my_dm_sqlite <- copy_dm_to(my_sqlite_db, my_dm_local)
+
+
+my_dm_total <-
+  my_dm_sqlite %>%
+  dm_zoom_to(loans) %>%
+  group_by(account_id) %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  dm_insert_zoomed("total_loans")
+``````
+
+
+- Two dbplyr verbs implemented for dm objects, retaining their meaning
+    - `compute()` materializes all tables into new (temporary or persistent) tables
+
+``````{r }
+my_dm_total_computed <-
+  my_dm_total %>%
+  compute()
+
+my_dm_total_computed$total_loans
+
+my_dm_total_computed$total_loans %>%
+  sql_render()
+``````
+
+    - `collect()` downloads all tables to local data frames (FIXME: feel free to change order of narrative altogether to remove code repetition)
+
+``````{r }
+my_dm_local <-
+  my_dm_total %>%
+  collect()
+
+my_dm_local$total_loans
+``````
+
+    - The third verb, `collapse()`, is not yet implemented ([#304](https://github.com/krlmlr/dm/issues/304)).
+- `compute()` also works for zoomed dm
+
+
+``````{r }
+my_dm_total_inplace <-
+  my_dm_sqlite %>%
+  dm_zoom_to(loans) %>%
+  group_by(account_id) %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  compute() %>%
+  dm_insert_zoomed("total_loans")
+
+my_dm_total_inplace$total_loans %>%
+  sql_render()
+``````
+
+
+## Deploying a dm to a database
+
+- `copy_dm_to()`, see code above
