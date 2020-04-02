@@ -20,10 +20,10 @@ dm_financial_sqlite <- function() {
 
   my_db <- DBI::dbConnect(
     RMariaDB::MariaDB(),
-    user = 'guest',
-    password = 'relational',
-    dbname = 'Financial_ijs',
-    host = 'relational.fit.cvut.cz'
+    user = "guest",
+    password = "relational",
+    dbname = "Financial_ijs",
+    host = "relational.fit.cvut.cz"
   )
   my_dm <-
     dm_from_src(my_db) %>%
