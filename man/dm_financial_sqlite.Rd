@@ -17,8 +17,10 @@ subsequent calls return the same database.
 The \code{trans} table is excluded due to its size.
 }
 \examples{
-if (rlang::is_installed("RMariaDB") && rlang::is_installed("RSQLite")) {
-  dm_financial_sqlite() \%>\%
-    dm_draw()
+if (getRversion() >= "3.4") {
+  if (rlang::is_installed("RMariaDB") && rlang::is_installed("RSQLite")) {
+    dm_financial_sqlite() \%>\%
+      dm_draw()
+  }
 }
 }

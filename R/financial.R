@@ -10,9 +10,11 @@
 #'
 #' @export
 #' @examples
-#' if (rlang::is_installed("RMariaDB") && rlang::is_installed("RSQLite")) {
-#'   dm_financial_sqlite() %>%
-#'     dm_draw()
+#' if (getRversion() >= "3.4") {
+#'   if (rlang::is_installed("RMariaDB") && rlang::is_installed("RSQLite")) {
+#'     dm_financial_sqlite() %>%
+#'       dm_draw()
+#'   }
 #' }
 dm_financial_sqlite <- function() {
   stopifnot(rlang::is_installed("RMariaDB"))
