@@ -94,18 +94,39 @@ test_that("'copy_to.dm()' works", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
-  db_src_names <- setdiff(src_names, c("df"))
   skip_if(is_empty(db_src_names))
   walk(
     db_src_names,
-    ~ expect_true({
-      def <- dm_for_filter_src[[.x]] %>%
-        dm_filter(t1, a > 3) %>%
-        compute() %>%
-        dm_get_def()
-      test <- map_chr(map(def$data, sql_render), as.character)
-      all(map_lgl(test, ~ !grepl("WHERE", .)))
-    })
+    function(db_src_name) {
+      expect_true({
+        def <-
+          dm_for_filter_src[[db_src_name]] %>%
+          dm_filter(t1, a > 3) %>%
+          compute() %>%
+          dm_get_def()
+        test <- map_chr(map(def$data, sql_render), as.character)
+        all(map_lgl(test, ~ !grepl("WHERE", .)))
+      })
+    }
+  )
+})
+
+test_that("'compute.zoomed_dm()' computes tables on DB", {
+  skip_if(is_empty(db_src_names))
+  walk(
+    db_src_names,
+    function(db_src_name) {
+      expect_true({
+        def <-
+          dm_for_filter_src[[db_src_name]] %>%
+          dm_zoom_to(t1) %>%
+          mutate(c = a + 1) %>%
+          compute() %>%
+          dm_get_def()
+        test <- map_chr(map(def$data, sql_render), as.character)
+        all(map_lgl(test, ~ !grepl("WHERE", .)))
+      })
+    }
   )
 })
 
