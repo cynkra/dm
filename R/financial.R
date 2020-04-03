@@ -1,6 +1,9 @@
 #' Creates a dm object for the Financial data
 #'
-#' @description Creates an example [`dm`] object from the tables at
+#' @description
+#' \lifecycle{experimental}
+#'
+#' Creates an example [`dm`] object from the tables at
 #' <https://relational.fit.cvut.cz/dataset/Financial>.
 #' The data is downloaded once per session,
 #' subsequent calls return the same database.

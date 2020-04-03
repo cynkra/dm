@@ -10,6 +10,8 @@ dm_financial_sqlite()
 A \code{dm} object.
 }
 \description{
+\lifecycle{experimental}
+
 Creates an example \code{\link{dm}} object from the tables at
 \url{https://relational.fit.cvut.cz/dataset/Financial}.
 The data is downloaded once per session,
