@@ -506,15 +506,20 @@ format.dm <- function(x, ...) {
 #' @import cli
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
-  src <- dm_get_src(x)
+  def <- dm_get_def(x)
 
-  db_info <- strsplit(format(src), "\n")[[1]][[1]]
+  if (nrow(def) == 0) {
+    src <- dm_get_src(x)
+    db_info <- strsplit(format(src), "\n")[[1]][[1]]
+  } else {
+    db_str <- dplyr::tbl_sum(def$data[[1]])[["Database"]]
+    db_info <- paste("src:", db_str)
+  }
 
   cat_line(db_info)
 
   cat_rule("Metadata", col = "violet")
 
-  def <- dm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", def_get_n_columns(def))
   cat_line("Primary keys: ", def_get_n_pks(def))
