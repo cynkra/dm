@@ -507,13 +507,17 @@ format.dm <- function(x, ...) {
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
   def <- dm_get_def(x)
+  src <- dm_get_src(x)
+  db_info <- NULL
 
-  if (nrow(def) == 0) {
-    src <- dm_get_src(x)
+  if (!is.null(src$con) && nrow(def) >= 0) {
+    tbl_str <- dplyr::tbl_sum(def$data[[1]])
+    if ("Database" %in% names(tbl_str)) {
+      db_info <- paste0("src:  ", tbl_str[["Database"]])
+    }
+  }
+  if (is.null(db_info)) {
     db_info <- strsplit(format(src), "\n")[[1]][[1]]
-  } else {
-    db_str <- dplyr::tbl_sum(def$data[[1]])[["Database"]]
-    db_info <- paste("src:", db_str)
   }
 
   cat_line(db_info)
