@@ -37,8 +37,16 @@ library(dm)
 
 ## Connecting to a database
 
-- Example: [financial dataset](https://relational.fit.cvut.cz/dataset/Financial), borrow text from blog post
-- `dm_from_src()`
+A dm object can be created from a database which is accessible via {DBI}.
+When a dm object is created it can either import all the tables in the database, or a limited set provided as a list to the `tables` argument.
+For some databases, such as Postgres and SQL Server, primary and foreigh keys are also imported and do not have to be manually added afterwards.
+
+To demonstrate, we connect to a [relational dataset repository](https://relational.fit.cvut.cz/) with a database server that is publicly accessible without registration.
+There is a [financial dataset](https://relational.fit.cvut.cz/dataset/Financial) that contains loan data, along with relevant information and transactions.
+We chose this loan dataset because the relationships between `loan`, `account`, `transactions` tables are a good representation of databases that record real-world business transactions.
+The DBI interface for the repository's MariaDB server does not import primary or foreign keys, so we will need to add them.
+
+Creating a dm object takes a single call to `dm_from_src()`.
 
 ``````{r }
 library(RMariaDB)
@@ -54,7 +62,17 @@ my_dm <- dm_from_src(my_db)
 my_dm
 ``````
 
-- Flexible creation from individual tables or views
+The components of the my_dm object are lazy tables powered by {[dbplyr](https://dbplyr.tidyverse.org/)}.
+{dbplyr} translates the {[dplyr](https://dplyr.tidyverse.org/)} grammar of data manipulation into queries the database server understands.
+Lazy tables defer downloading of table data until results are collected for printing or local processing.
+
+## Building a dm from tables
+
+A dm can also be constructed from individual tables or views.
+This is useful for when you want to work with a subset of a database's tables or you want to build a database out of tables from different sources.
+
+Below we use the `tbl()` function from {dplyr} to extract two tables from the financial database.
+Then we create our dm by passing the tables in an as arguments.
 
 ``````{r }
 dbListTables(my_db)
@@ -67,26 +85,42 @@ my_manual_dm <- dm(loans, accounts)
 my_manual_dm
 ``````
 
-- Primary and foreign key constraints on the database interpreted currently only for Postgres and SQL Server databases, need to define manually for other databases
-    - Borrow from blog post
+## Define Primary and Foreign Keys
 
+Primary and Foreign Keys are how relational database tables are linked with each other.
+A primary key is a column (or sometimes a combination of columns) that has a unique value for each row within a table.
+A foreign key is a column (or sometimes a combination of columns) containing the primary key for a row in another table.
+Foreign keys act as cross references between tables.
+They specify the relationships that gives us the *relational* database.
+
+The [model diagram](https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg) provided by our test database loosely illustrates the intended relationships between tables.
+In the diagram we can see that the loans table should be linked to the accounts table.
+Below we create those links in 3 steps:
+
+1. Add a primary key `id` to the accounts table
+1. Add a primary key `id` to the loans table
+1. Add a foreign key `account_id` to the loans table referencing the accounts table
+
+Then we assign colors to the tables and draw the structure of the dm.
+
+Note that when the foreign key is created the primary key in the referenced table does not need to be specified, but this does require primary keys to be defined first.
+And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres and SQL Server databases.
+This process of key definition needs to be done manually for other databases
+    
 ``````{r }
 my_dm_keys <-
   my_manual_dm %>%
   dm_add_pk(accounts, id) %>%
   dm_add_pk(loans, id) %>%
   dm_add_fk(loans, account_id, accounts) %>%
-  dm_set_colors(green = loans)
+  dm_set_colors(green = loans, orange = accounts)
 
 my_dm_keys %>%
   dm_draw()
 ``````
 
-
-
-
-- Adding tables to existing objects: `dm_add_tbl()` for same source
-
+Once you have instantiated a dm object you can continue to add tables to it.
+For tables from the original source for the dm, use `dm_add_tbl()`
 
 ``````{r }
 trans <- tbl(my_db, "trans")
@@ -95,7 +129,12 @@ my_dm_keys %>%
   dm_add_tbl(trans)
 ``````
 
-- Reminder: all operations are transient unless stored in a new variable
+For tables from other sources or the local environment `[copy_to()](missing_link)` from the {dplyr} package is used.
+`copy_to()` is discussed later in this article.
+
+## Transient nature of operations
+
+Like other R objects, a dm is immutable and all operations performed on it are transient unless stored in a new variable.
 
 ``````{r }
 my_dm_keys
@@ -107,11 +146,9 @@ my_dm_trans <-
 my_dm_trans
 ``````
 
-- Copying tables into existing objects: `copy_to()` demonstrated further below, in "deploying" section
+And, like {dbplyr}, results are never written to a database unless explicitly requested.
 
-## Transient nature of operations
-
-- Like dbplyr, results are never written to database unless asked explicitly
+#ASK KIRILL - what exactly is happening here
 - Example: flattening operation and its translation to SQL
 
 ``````{r }
@@ -123,7 +160,11 @@ my_dm_keys %>%
   sql_render()
 ``````
 
-- Example: Zooming, summarizing, putting back
+## Performing operations on tables by "zooming"
+
+As the dm is a collection of tables, if we wish to perform operations on an individual table we set it as the context for those operations using `dm_zoom_to()`.
+
+Since dm operations are transient unless explicitly requested, our chain of manipulations on the selected table are made permanent by copying it into a new table at completion with `dm_insert_zoomed()`.
 
 ``````{r }
 my_dm_total <-
@@ -146,10 +187,18 @@ my_dm_total$total_loans %>%
 
 ## Persisting results
 
-- Relevant phrase, from `?dbplyr::compute`: "Force computation of a query", needs to be adapted to our needs (=multiple queries)
-- Requires write access to the database (at least for temporary tables), which we don't have on relational.fit
-    - Workaround for demonstration only: copy to local SQLite database, see below for details on `copy_dm_to()`
+After adding columns to link tables or calculating summaries of data, we might want these changes to the database to persist. 
+#FIXME - if compute stores results in temporary tables, how are they made permanent or inserted into the database itself?
 
+To force a dm to execute the SQL query generated by the operations it has performed, we use the `compute()` function, originally implemented in {dbplyr}, but reimplimented in {dm} to provide the same functionality.
+#FIXME - what's the right language here? inherited? carried over from?
+
+`compute()` forces the computation of a query, in this case the query or multiple queries created by the dm to represent all operations that have been performed but not yet evaluated.
+The results are stored in temporary tables on the database server.
+Calling `compute()` requires write access, otherwise an error is returned.
+
+relational.fit.cvut.cz does not allow write access. 
+As a workaround to demonstrate the usage of `compute()`, we will copy our dm into a local SQLite database and move forward with that as the source of our dm.
 
 ``````{r }
 library(RSQLite)
@@ -158,7 +207,6 @@ my_dm_local <-
   my_dm_keys %>%
   collect()
 my_dm_sqlite <- copy_dm_to(my_sqlite_db, my_dm_local)
-
 
 my_dm_total <-
   my_dm_sqlite %>%
@@ -170,8 +218,8 @@ my_dm_total <-
 ``````
 
 
-- Two dbplyr verbs implemented for dm objects, retaining their meaning
-    - `compute()` materializes all tables into new (temporary or persistent) tables
+Two dbplyr verbs have been implemented for dm objects, retaining their meaning.
+`compute()`, as mentioned above, materializes all tables into new (temporary or persistent) tables.
 
 ``````{r }
 my_dm_total_computed <-
@@ -184,7 +232,7 @@ my_dm_total_computed$total_loans %>%
   sql_render()
 ``````
 
-    - `collect()` downloads all tables to local data frames (FIXME: feel free to change order of narrative altogether to remove code repetition)
+`collect()` downloads all tables to local data frames.
 
 ``````{r }
 my_dm_local <-
@@ -194,8 +242,12 @@ my_dm_local <-
 my_dm_local$total_loans
 ``````
 
-    - The third verb, `collapse()`, is not yet implemented ([#304](https://github.com/krlmlr/dm/issues/304)).
-- `compute()` also works for zoomed dm
+There is a third {dbplyr} verb that has not yet been implemented. `collapse()` forces generation of the SQL query instead of computation ([#304](https://github.com/krlmlr/dm/issues/304)).
+
+`compute()` also works for a zoomed dm.
+Calling it during a chain of operations will execute all relevant SQL queries up to that point.
+Operations after the `compute()` will use the generated results.
+#FIXME - is this true? Is this what is happening?
 
 
 ``````{r }
@@ -215,4 +267,13 @@ my_dm_total_inplace$total_loans %>%
 
 ## Deploying a dm to a database
 
-- `copy_dm_to()`, see code above
+We have already seen an example of copying a dm from one data source to another.
+We deployed our dm based on a remote database server to a local SQLite database using `copy_dm_to()`.
+The function takes as its first argument a {DBI} connection, in the example it is the `SQLite()` DBI driver, and a dm as its second argument.
+The dm is copied to the DBI connection and new dm, with the DBI connection as its source, is returned.
+
+The default behaviour is to create temporary tables and, where possible (currently Postgres and SQL server), key constraints will be set.
+
+## Conclusion
+
+#TBD
