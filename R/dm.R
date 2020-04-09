@@ -511,7 +511,8 @@ print.dm <- function(x, ...) {
   db_info <- NULL
 
   if (!is.null(src$con) && nrow(def) >= 0) {
-    tbl_str <- dplyr::tbl_sum(def$data[[1]])
+    # FIXME: change to pillar::tbl_sum() once it's there
+    tbl_str <- tibble::tbl_sum(def$data[[1]])
     if ("Database" %in% names(tbl_str)) {
       db_info <- paste0("src:  ", tbl_str[["Database"]])
     }
