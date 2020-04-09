@@ -198,15 +198,11 @@ The results are stored in temporary tables on the database server.
 Calling `compute()` requires write access, otherwise an error is returned.
 
 relational.fit.cvut.cz does not allow write access. 
-As a workaround to demonstrate the usage of `compute()`, we will copy our dm into a local SQLite database and move forward with that as the source of our dm.
+As a workaround to demonstrate the usage of `compute()`, we FIXME use `dm_financial_sqlite()` FIXME.
 
 ``````{r }
 library(RSQLite)
-my_sqlite_db <- dbConnect(SQLite(), ":memory:")
-my_dm_local <-
-  my_dm_keys %>%
-  collect()
-my_dm_sqlite <- copy_dm_to(my_sqlite_db, my_dm_local)
+my_dm_sqlite <- dm_financial_sqlite()
 
 my_dm_total <-
   my_dm_sqlite %>%
