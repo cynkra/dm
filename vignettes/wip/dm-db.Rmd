@@ -277,3 +277,9 @@ The default behaviour is to create temporary tables and, where possible (current
 ## Conclusion
 
 #TBD
+
+FIXME:
+
+- Describe `copy_to()`
+- Mention `temporary` argument for persistent deployment
+- Deployment: describe `copy_dm_to()`

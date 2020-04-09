@@ -27,6 +27,12 @@ after_script: R -q -e 'tic::after_script()'
 
 # Custom parts:
 
+addons:
+  apt:
+    packages:
+    - libmysqlclient-dev
+    - libssh2-1-dev
+
 # Header
 language: r
 sudo: false
