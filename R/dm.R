@@ -506,15 +506,25 @@ format.dm <- function(x, ...) {
 #' @import cli
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
+  def <- dm_get_def(x)
   src <- dm_get_src(x)
+  db_info <- NULL
 
-  db_info <- strsplit(format(src), "\n")[[1]][[1]]
+  if (!is.null(src$con) && nrow(def) >= 0) {
+    # FIXME: change to pillar::tbl_sum() once it's there
+    tbl_str <- tibble::tbl_sum(def$data[[1]])
+    if ("Database" %in% names(tbl_str)) {
+      db_info <- paste0("src:  ", tbl_str[["Database"]])
+    }
+  }
+  if (is.null(db_info)) {
+    db_info <- strsplit(format(src), "\n")[[1]][[1]]
+  }
 
   cat_line(db_info)
 
   cat_rule("Metadata", col = "violet")
 
-  def <- dm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", def_get_n_columns(def))
   cat_line("Primary keys: ", def_get_n_pks(def))
