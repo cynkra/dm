@@ -1,13 +1,9 @@
 test_that("dm_add_tbl() works", {
 
-  # is a table added on all sources?
-  walk2(
-    dm_for_filter_src,
-    d1_src,
-    ~ expect_identical(
-      length(dm_get_tables(dm_add_tbl(..1, d1 = ..2))),
-      7L
-    )
+  # is a table added?
+  expect_identical(
+    length(dm_get_tables(dm_add_tbl(dm_for_filter, d1))),
+    7L
   )
 
   # can I retrieve the tibble under its old name?
@@ -71,28 +67,16 @@ test_that("dm_add_tbl() works", {
   )
 
   # error in case table srcs don't match
-  if (length(test_srcs) > 1) {
-    d1_db <- d1_src[-1]
-    walk(
-      d1_db,
-      ~ expect_dm_error(
-        dm_add_tbl(dm_for_filter, .),
-        "not_same_src"
-      )
-    )
-  }
+  expect_dm_error(
+    dm_add_tbl(dm_for_filter, d1_sqlite),
+    "not_same_src"
+  )
 
   # adding tables to an empty `dm` works for all sources
-  walk(
-    data_1_src,
-    function(data_1) {
-      expect_equal(
-        dm_add_tbl(dm(), test = data_1)$test %>%
-          collect(),
-        data_1 %>%
-          collect()
-      )
-    }
+  expect_equal(
+    dm_add_tbl(dm(), test = d1_sqlite)$test %>%
+      collect(),
+    d1
   )
 
   # can I use dm_select_tbl(), selecting among others the new table?
@@ -102,13 +86,10 @@ test_that("dm_add_tbl() works", {
 })
 
 test_that("dm_rm_tbl() works", {
-  # removes a table on all srcs
-  map(
-    dm_for_filter_w_cycle_src,
-    ~ expect_equivalent_dm(
-      dm_rm_tbl(., t7) %>% collect(),
-      dm_for_filter
-    )
+  # removes a table
+  expect_equivalent_dm(
+    dm_rm_tbl(dm_for_filter_w_cycle, t7) %>% collect(),
+    dm_for_filter
   )
 
   # removes more than one table
