@@ -12,7 +12,7 @@
 #'
 #' @export
 #' @examples
-#' if (getRversion() >= "3.4") {
+#' \dontrun{
 #'   if (rlang::is_installed("RMariaDB")) {
 #'     dm_financial() %>%
 #'       dm_draw()

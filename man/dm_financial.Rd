@@ -25,7 +25,7 @@ The data is downloaded once per session, subsequent calls return the same databa
 The \code{trans} table is excluded due to its size.
 }
 \examples{
-if (getRversion() >= "3.4") {
+\dontrun{
   if (rlang::is_installed("RMariaDB")) {
     dm_financial() \%>\%
       dm_draw()
