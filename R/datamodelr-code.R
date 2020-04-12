@@ -168,13 +168,11 @@ bdm_create_graph_list <- function(
 
   switch(view_type,
     all = {},
-
     keys_only = {
       tables <- lapply(tables, function(tab) {
         tab[tab[["key"]] > 0 | !is.na(tab[, "ref"]), ]
       })
     },
-
     title_only = {
       tables <- lapply(tables, function(tab) {
         tab[0L, ]
@@ -199,7 +197,6 @@ bdm_create_graph_list <- function(
       shape = "plaintext",
       type = "upper",
       segment = data_model$tables[order(data_model$tables$table), "segment"],
-
       stringsAsFactors = FALSE
     )
 

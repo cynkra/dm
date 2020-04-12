@@ -1,10 +1,8 @@
 utils::globalVariables(c(
   # pipe
   ".",
-
   # nesting
   "data",
-
   # nycflights13
   "airlines",
   "airports",
@@ -15,7 +13,6 @@ utils::globalVariables(c(
   "planes",
   "tailnum",
   "weather",
-
   # dm
   "arrange_col",
   "candidate",
