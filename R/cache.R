@@ -5,7 +5,7 @@ cache_attach <- function(algo = "sha512", base_attach = attach, name = paste0(ut
     env <- new_environment(list(...cache = new_environment()))
     base_attach(env, pos = length(search()) - 1, name = name)
   }
-  search <- search_env(name)$...cache
+  cache <- search_env(name)$...cache
 
   cache_reset <- function() {
     rm(list = ls(cache), envir = cache)
