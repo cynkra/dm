@@ -3,9 +3,19 @@
 #' `dm_paste()` takes an existing `dm` and emits the code necessary for its creation.
 #'
 #' @inheritParams dm_add_pk
-#' @param select Boolean, default `FALSE`. If `TRUE` will produce code
-#'   for reducing to necessary columns.
+#' @param select
+#'   Deprecated, see `"select"` in the `options` argument.
+#' @param ... Must be empty.
 #' @param tab_width Indentation width for code from the second line onwards
+#' @param options Formatting options. A character vector containing some of:
+#'   - `"tables"`: [tibble()] calls for empty table definitions
+#'     derived from [dm_ptype()], overrides `"select"`.
+#'   - `"select"`: [dm_select()] statements for columns that are part
+#'     of the dm.
+#'   - `"pks"`: [dm_add_pk()] statements for primary keys.
+#'   - `"keys"`: [dm_add_fk()] statements for foreign keys, implies `"pks"`.
+#'   - `"color"`: [dm_set_colors()] statements to set color.
+#'   - `"all"`: All options above except `"select"`
 #'
 #' @details At the very least (if no keys exist in the given [`dm`]) a `dm()` statement is produced that -- when executed --
 #' produces the same `dm`. In addition, the code for setting the existing primary keys as well as the relations between the
@@ -24,42 +34,86 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste(select = TRUE)
-dm_paste <- function(dm, select = FALSE, tab_width = 2) {
-  # FIXME: Expose color as argument?
-  code <- dm_paste_impl(
-    dm = dm, select = select,
-    tab_width = tab_width, color = TRUE
-  )
+dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
+                     options = NULL) {
+  check_dots_empty(action = warn)
+
+  options <- check_paste_options(options, select)
+
+  code <- dm_paste_impl(dm = dm, options, tab_width = tab_width)
   cli::cli_code(code)
   invisible(dm)
 }
 
-dm_paste_impl <- function(dm, select, tab_width, color) {
+check_paste_options <- function(options, select) {
+  allowed_options <- c("all", "tables", "keys", "pks", "select", "color")
+
+  if (is.null(options)) {
+    options <- c("keys", "color")
+  } else {
+    if (!all(options %in% allowed_options)) {
+      abort(error_txt_forbidden_option(options, allowed_options))
+    }
+  }
+
+  if (!is.null(select)) {
+    deprecate_soft("0.1.2", "dm::dm_paste(select = )", "dm::dm_paste(options = 'select')")
+    if (isTRUE(select)) {
+      options <- c(options, "select")
+    }
+  }
+
+  if ("all" %in% options) {
+    options <- allowed_options
+  }
+
+  if ("tables" %in% options) {
+    options <- setdiff(options, "select")
+  }
+
+  options
+}
+
+dm_paste_impl <- function(dm, options, tab_width) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
   tab <- paste0(rep(" ", tab_width), collapse = "")
 
-  # we assume the tables exist and have the necessary columns
+  # code for including table definitions
+  code_tables <- if ("tables" %in% options) dm_paste_tables(dm, tab)
+
   # code for including the tables
-  code_dm <- dm_paste_dm(dm)
+  code_construct <- dm_paste_construct(dm)
 
   # adding code for selection of columns
-  code_select <- if (select) dm_paste_select(dm)
+  code_select <- if ("select" %in% options) dm_paste_select(dm)
 
   # adding code for establishing PKs
-  code_pks <- dm_paste_pks(dm)
+  code_pks <- if (any(c("keys", "pks") %in% options)) dm_paste_pks(dm)
 
   # adding code for establishing FKs
-  code_fks <- dm_paste_fks(dm)
+  code_fks <- if ("keys" %in% options) dm_paste_fks(dm)
 
   # adding code for color
-  code_color <- if (color) dm_paste_color(dm)
+  code_color <- if ("color" %in% options) dm_paste_color(dm)
 
-  glue_collapse(c(code_dm, code_select, code_pks, code_fks, code_color), sep = glue(" %>%\n{tab}", .trim = FALSE))
+  # combine dm and paste code
+  code_dm <- glue_collapse(
+    c(
+      code_construct,
+      code_select,
+      code_pks,
+      code_fks,
+      code_color
+    ),
+    sep = glue(" %>%\n{tab}", .trim = FALSE)
+  )
+
+  paste0(code_tables, code_dm)
 }
 
-dm_paste_dm <- function(dm) {
+dm_paste_construct <- function(dm) {
   glue("dm({glue_collapse1(tick_if_needed(src_tbls(dm)), ', ')})")
 }
 

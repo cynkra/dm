@@ -20,7 +20,7 @@ verify_output("out/code_from_paste.txt", {
     dm_select(t5, k = k, m) %>%
     dm_select(t1, a) %>%
     dm_add_tbl(x = tibble()) %>%
-    dm_paste(select = TRUE)
+    dm_paste(options = "select")
 
   "produce code with colors"
   dm_for_filter %>%
@@ -36,5 +36,13 @@ verify_output("out/code_from_paste.txt", {
     dm_add_pk(a, "a b") %>%
     dm_add_fk("a b", "a b", a) %>%
     dm_set_colors(green = "a b") %>%
+    dm_paste(options = "all")
+
+  "all of nycflights13"
+  dm_nycflights13() %>%
+    dm_paste(options = "all")
+
+  "deprecation warning for select argument"
+  dm() %>%
     dm_paste(select = TRUE)
 })
