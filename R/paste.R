@@ -113,6 +113,19 @@ dm_paste_impl <- function(dm, options, tab_width) {
   paste0(code_tables, code_dm)
 }
 
+dm_paste_tables <- function(dm, tab) {
+  ptype <- dm_ptype(dm)
+
+  tables <-
+    ptype %>%
+    dm_get_tables() %>%
+    map_chr(df_paste, tab)
+
+  glue_collapse1(
+    glue("{tick_if_needed(names(tables))} <- {tables}\n\n", .trim = FALSE)
+  )
+}
+
 dm_paste_construct <- function(dm) {
   glue("dm({glue_collapse1(tick_if_needed(src_tbls(dm)), ', ')})")
 }
@@ -144,6 +157,25 @@ dm_paste_color <- function(dm) {
   colors <- dm_get_colors(dm)
   colors <- colors[names(colors) != "default"]
   glue("dm_set_colors({tick_if_needed(names(colors))} = {tick_if_needed(colors)})")
+}
+
+df_paste <- function(x, tab) {
+  cols <- map_chr(x, deparse_line)
+  if (is_empty(x)) {
+    cols <- ""
+  } else {
+    cols <- paste0(
+      paste0("\n", tab, tick_if_needed(names(cols)), " = ", cols, collapse = ","),
+      "\n"
+    )
+  }
+
+  paste0("tibble(", cols, ")")
+}
+
+deparse_line <- function(x) {
+  x <- deparse(x, width.cutoff = 500, backtick = TRUE)
+  gsub(" *\n *", " ", x)
 }
 
 glue_collapse1 <- function(x, ...) {
