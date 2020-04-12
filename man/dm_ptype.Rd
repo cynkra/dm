@@ -20,10 +20,12 @@ This is useful for performing creation and population of a database
 in separate steps.
 }
 \examples{
+\dontrun{
 dm_financial() \%>\%
   dm_ptype()
 
 dm_financial() \%>\%
   dm_ptype() \%>\%
   dm_nrow()
+}
 }

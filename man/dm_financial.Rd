@@ -26,9 +26,9 @@ The \code{trans} table is excluded due to its size.
 }
 \examples{
 \dontrun{
-  if (rlang::is_installed("RMariaDB")) {
-    dm_financial() \%>\%
-      dm_draw()
-  }
+if (rlang::is_installed("RMariaDB")) {
+  dm_financial() \%>\%
+    dm_draw()
+}
 }
 }
