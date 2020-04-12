@@ -6,23 +6,29 @@ dm_paste2 <- function(dm) {
     dm_get_tables() %>%
     map_chr(df_paste)
 
-  all_tables <- paste0(
-    names(tables), " <- ", tables, "\n\n",
-    collapse = ""
+  all_tables <- glue_collapse(
+    glue("{names(tables)} <- {tables}\n\n", .trim = FALSE)
   )
 
-  cli::cli_code(all_tables)
+  if (has_length(all_tables)) {
+    cli::cli_code(all_tables)
+  }
 
   dm_paste(ptype)
 }
 
 df_paste <- function(x) {
   cols <- map_chr(x, deparse_line)
-  paste0(
-    "tibble(",
-    paste0("\n  ", names(cols), " = ", cols, collapse = ","),
-    "\n)"
-  )
+  if (is_empty(x)) {
+    cols <- ""
+  } else {
+    cols <- paste0(
+      paste0("\n  ", names(cols), " = ", cols, collapse = ","),
+      "\n"
+    )
+  }
+
+  paste0("tibble(", cols, ")")
 }
 
 deparse_line <- function(x) {
