@@ -4,7 +4,7 @@
 \alias{dm_paste}
 \title{Create R code for a dm object}
 \usage{
-dm_paste(dm, select = NULL, ..., tab_width = 2, options = NULL)
+dm_paste(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -26,6 +26,8 @@ of the dm.
 \item \code{"color"}: \code{\link[=dm_set_colors]{dm_set_colors()}} statements to set color.
 \item \code{"all"}: All options above except \code{"select"}
 }}
+
+\item{path}{Output file, if \code{NULL} the code is printed to the console.}
 }
 \value{
 Code for producing the prototype of the given \code{dm}.

@@ -1,5 +1,11 @@
 local_options(lifecycle_verbosity = "warning")
 
+test_that("path argument", {
+  path <- tempfile()
+  dm() %>% dm_paste(path = path)
+  expect_identical(readLines(path), "dm()")
+})
+
 verify_output("out/code_from_paste.txt", {
   "empty"
   empty_dm() %>% dm_paste()

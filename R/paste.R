@@ -16,6 +16,7 @@
 #'   - `"keys"`: [dm_add_fk()] statements for foreign keys, implies `"pks"`.
 #'   - `"color"`: [dm_set_colors()] statements to set color.
 #'   - `"all"`: All options above except `"select"`
+#' @param path Output file, if `NULL` the code is printed to the console.
 #'
 #' @details
 #' The code emitted by the function reproduces the structure of the `dm` object.
@@ -36,13 +37,22 @@
 #' dm_nycflights13() %>%
 #'   dm_paste(options = "select")
 dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
-                     options = NULL) {
+                     options = NULL, path = NULL) {
   check_dots_empty(action = warn)
 
   options <- check_paste_options(options, select)
 
+  if (!is.null(path)) {
+    stopifnot(rlang::is_installed("brio"))
+  }
+
   code <- dm_paste_impl(dm = dm, options, tab_width = tab_width)
-  cli::cli_code(code)
+
+  if (is.null(path)) {
+    cli::cli_code(code)
+  } else {
+    brio::write_lines(code, path)
+  }
   invisible(dm)
 }
 

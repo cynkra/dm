@@ -52,6 +52,7 @@ Imports:
     tidyselect (>= 1.0.0),
     vctrs (>= 0.2.0)
 Suggests: 
+    brio,
     DiagrammeR,
     DiagrammeRsvg,
     dbplyr,
