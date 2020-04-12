@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates a dm object for the Financial data — dm_financial_sqlite • dm</title>
+<title>Creates a dm object for the Financial data — dm_financial • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,14 @@
 
 
 
-<meta property="og:title" content="Creates a dm object for the Financial data — dm_financial_sqlite" />
+<meta property="og:title" content="Creates a dm object for the Financial data — dm_financial" />
 <meta property="og:description" content="
-Creates an example dm object from the tables at
+dm_financial() creates an example dm object from the tables at
 https://relational.fit.cvut.cz/dataset/Financial.
-The data is downloaded once per session,
-subsequent calls return the same database.
+The connection is established once per session,
+subsequent calls return the same connection.
+dm_financial_sqlite() copies the data to a temporary SQLite database.
+The data is downloaded once per session, subsequent calls return the same database.
 The trans table is excluded due to its size." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 
@@ -85,7 +87,7 @@ The trans table is excluded due to its size." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9003</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9004</span>
       </span>
     </div>
 
@@ -162,19 +164,23 @@ The trans table is excluded due to its size." />
     <div class="page-header">
     <h1>Creates a dm object for the Financial data</h1>
     
-    <div class="hidden name"><code>dm_financial_sqlite.Rd</code></div>
+    <div class="hidden name"><code>dm_financial.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
-<p>Creates an example <code><a href='dm.html'>dm</a></code> object from the tables at
+<p><code>dm_financial()</code> creates an example <code><a href='dm.html'>dm</a></code> object from the tables at
 <a href='https://relational.fit.cvut.cz/dataset/Financial'>https://relational.fit.cvut.cz/dataset/Financial</a>.
-The data is downloaded once per session,
-subsequent calls return the same database.
+The connection is established once per session,
+subsequent calls return the same connection.</p>
+<p><code>dm_financial_sqlite()</code> copies the data to a temporary SQLite database.
+The data is downloaded once per session, subsequent calls return the same database.
 The <code>trans</code> table is excluded due to its size.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_financial_sqlite</span>()</pre>
+    <pre class="usage"><span class='fu'>dm_financial</span>()
+
+<span class='fu'>dm_financial_sqlite</span>()</pre>
 
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -182,11 +188,11 @@ The <code>trans</code> table is excluded due to its size.</p>
     <p>A <code>dm</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) {
-  <span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"RMariaDB"</span>) <span class='kw'>&amp;&amp;</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"RSQLite"</span>)) {
-    <span class='fu'>dm_financial_sqlite</span>() <span class='kw'>%&gt;%</span>
-      <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
-  }
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"RMariaDB"</span>)) {
+  <span class='fu'>dm_financial</span>() <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
+}
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

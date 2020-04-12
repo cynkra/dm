@@ -49,7 +49,7 @@
     <loc>https://krlmlr.github.io/dm/reference/dm_filter.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/reference/dm_financial_sqlite.html</loc>
+    <loc>https://krlmlr.github.io/dm/reference/dm_financial.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_flatten_to_tbl.html</loc>
@@ -95,6 +95,9 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_paste.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/dm_ptype.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_rename.html</loc>
