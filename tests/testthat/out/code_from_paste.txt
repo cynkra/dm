@@ -70,33 +70,35 @@ Message: dm(t1, t2, t3, t4, t5, t6, x) %>%
   dm_add_fk(t5, m, t6)
 
 > # produce code with colors
-> dm_for_filter %>% dm_set_colors(orange = t1:t3, darkgreen = t5:t6) %>% dm_paste(
-+   tab_width = 4)
+> dm_for_filter %>% dm_set_colors(orange = t1:t3, darkgreen = t5:t6) %>% dm_paste()
 Message: dm(t1, t2, t3, t4, t5, t6) %>%
-    dm_add_pk(t1, a) %>%
-    dm_add_pk(t2, c) %>%
-    dm_add_pk(t3, f) %>%
-    dm_add_pk(t4, h) %>%
-    dm_add_pk(t5, k) %>%
-    dm_add_pk(t6, n) %>%
-    dm_add_fk(t2, d, t1) %>%
-    dm_add_fk(t2, e, t3) %>%
-    dm_add_fk(t4, j, t3) %>%
-    dm_add_fk(t5, l, t4) %>%
-    dm_add_fk(t5, m, t6) %>%
-    dm_set_colors(`#FFA500FF` = t1) %>%
-    dm_set_colors(`#FFA500FF` = t2) %>%
-    dm_set_colors(`#FFA500FF` = t3) %>%
-    dm_set_colors(`#006400FF` = t5) %>%
-    dm_set_colors(`#006400FF` = t6)
+  dm_add_pk(t1, a) %>%
+  dm_add_pk(t2, c) %>%
+  dm_add_pk(t3, f) %>%
+  dm_add_pk(t4, h) %>%
+  dm_add_pk(t5, k) %>%
+  dm_add_pk(t6, n) %>%
+  dm_add_fk(t2, d, t1) %>%
+  dm_add_fk(t2, e, t3) %>%
+  dm_add_fk(t4, j, t3) %>%
+  dm_add_fk(t5, l, t4) %>%
+  dm_add_fk(t5, m, t6) %>%
+  dm_set_colors(`#FFA500FF` = t1) %>%
+  dm_set_colors(`#FFA500FF` = t2) %>%
+  dm_set_colors(`#FFA500FF` = t3) %>%
+  dm_set_colors(`#006400FF` = t5) %>%
+  dm_set_colors(`#006400FF` = t6)
 
 > # tick if needed
 > a <- tibble(x = 1)
 > names(a) <- "a b"
-> dm(a) %>% dm_zoom_to(a) %>% dm_insert_zoomed("a b") %>% dm_set_colors(green = "a b") %>%
-+   dm_paste(select = TRUE)
+> dm(a) %>% dm_zoom_to(a) %>% dm_insert_zoomed("a b") %>% dm_add_pk(a, "a b") %>%
++   dm_add_fk("a b", "a b", a) %>% dm_set_colors(green = "a b") %>% dm_paste(
++   select = TRUE)
 Message: dm(a, `a b`) %>%
   dm_select(a, `a b`) %>%
   dm_select(`a b`, `a b`) %>%
+  dm_add_pk(a, `a b`) %>%
+  dm_add_fk(`a b`, `a b`, a) %>%
   dm_set_colors(`#00FF00FF` = `a b`)
 

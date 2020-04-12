@@ -1,3 +1,5 @@
+local_options(lifecycle_verbosity = "warning")
+
 verify_output("out/code_from_paste.txt", {
   "empty"
   empty_dm() %>% dm_paste()
@@ -23,7 +25,7 @@ verify_output("out/code_from_paste.txt", {
   "produce code with colors"
   dm_for_filter %>%
     dm_set_colors("orange" = t1:t3, "darkgreen" = t5:t6) %>%
-    dm_paste(tab_width = 4)
+    dm_paste()
 
   "tick if needed"
   a <- tibble(x = 1)
@@ -31,6 +33,8 @@ verify_output("out/code_from_paste.txt", {
   dm(a) %>%
     dm_zoom_to(a) %>%
     dm_insert_zoomed("a b") %>%
+    dm_add_pk(a, "a b") %>%
+    dm_add_fk("a b", "a b", a) %>%
     dm_set_colors(green = "a b") %>%
     dm_paste(select = TRUE)
 })

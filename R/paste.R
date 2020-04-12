@@ -75,21 +75,21 @@ dm_paste_select <- function(dm) {
 dm_paste_pks <- function(dm) {
   # FIXME: this will fail with compound keys
   dm_get_all_pks_impl(dm) %>%
-    mutate(code = glue("dm_add_pk({table}, {pk_col})")) %>%
+    mutate(code = glue("dm_add_pk({tick_if_needed(table)}, {tick_if_needed(pk_col)})")) %>%
     pull()
 }
 
 dm_paste_fks <- function(dm) {
   # FIXME: this will fail with compound keys
   tbl_fks <- dm_get_all_fks_impl(dm) %>%
-    mutate(code = glue("dm_add_fk({child_table}, {child_fk_cols}, {parent_table})")) %>%
+    mutate(code = glue("dm_add_fk({tick_if_needed(child_table)}, {tick_if_needed(child_fk_cols)}, {tick_if_needed(parent_table)})")) %>%
     pull()
 }
 
 dm_paste_color <- function(dm) {
   colors <- dm_get_colors(dm)
   colors <- colors[names(colors) != "default"]
-  imap_chr(colors, ~ glue("dm_set_colors({tick_if_needed(..2)} = {tick_if_needed(..1)})"))
+  glue("dm_set_colors({tick_if_needed(names(colors))} = {tick_if_needed(colors)})")
 }
 
 glue_collapse1 <- function(x, ...) {
