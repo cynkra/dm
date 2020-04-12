@@ -45,4 +45,8 @@ verify_output("out/code_from_paste.txt", {
   "deprecation warning for select argument"
   dm() %>%
     dm_paste(select = TRUE)
+
+  "error for bad option"
+  dm() %>%
+    dm_paste(options = c("bogus", "all", "mad"))
 })

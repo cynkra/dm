@@ -53,7 +53,7 @@ check_paste_options <- function(options, select) {
     options <- c("keys", "color")
   } else {
     if (!all(options %in% allowed_options)) {
-      abort(error_txt_forbidden_option(options, allowed_options))
+      abort_unknown_option(options, allowed_options)
     }
   }
 
@@ -185,4 +185,22 @@ glue_collapse1 <- function(x, ...) {
   } else {
     glue_collapse(x, ...)
   }
+}
+
+dquote <- function(x) {
+  if (is_empty(x)) {
+    return(character())
+  }
+  paste0('"', x, '"')
+}
+
+# Errors ------------------------------------------------------------------
+
+abort_unknown_option <- function(options, all_options) {
+  abort(error_txt_unknown_option(options, all_options), .subclass = dm_error_full("unknown_option"))
+}
+
+error_txt_unknown_option <- function(options, all_options) {
+  bad_options <- setdiff(options, all_options)
+  glue("Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}.")
 }
