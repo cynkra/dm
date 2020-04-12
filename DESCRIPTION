@@ -54,6 +54,7 @@ Suggests:
     DiagrammeR,
     DiagrammeRsvg,
     dbplyr,
+    digest,
     fansi,
     knitr,
     nycflights13,
