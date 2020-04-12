@@ -1,0 +1,146 @@
+---
+title: "Updating dm objects"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Updating dm objects}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+fansi::set_knit_hooks(knitr::knit_hooks)
+options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+
+knit_print.grViz <- function(x, ...) {
+  x %>% 
+    DiagrammeRsvg::export_svg() %>% 
+    c("`````{=html}\n", ., "\n`````\n") %>% 
+    knitr::asis_output()
+}
+library(nycflights13)
+library(tidyverse)
+library(dm)
+```
+
+This draft describes update operations on dm objects.
+
+## Design
+
+- records tables from a source dm are appended/updated/upserted/removed/replaced/... from the target dm
+- both dm must be compatible
+    - same source
+    - source has no extra tables and columns
+    - PK columns must be present in source
+- dry run supported: use transient operations instead of materialization
+    - check integrity constraints are still valid after running
+    - compare before-after state
+- transactions out of scope, caller can use `DBI::withTransaction()`
+
+## Challenges
+
+- determine table name for remote tables
+    - rely on dbplyr internals for now
+- make this work for both local and remote tables and for extensions
+
+## Logic of operation
+
+- check compatibility
+- apply transformation, topologically sorted
+- put back into dm if necessary
+
+
+## API draft
+
+```{r}
+dm_transform <- function(target_dm, dm, operation, ..., dry_run = FALSE) {
+  # FIXME: ellipsis
+  
+  dm_check_transform(target_dm, dm)
+  
+  operation <- find_op(operation, target_dm)
+
+  # dispatches on dm_get_src(setup$target_dm)!
+  new_tables <- dm_run_transform(target_dm, dm, operation, dry_run)
+  
+  target_dm %>% 
+    dm_patch_tbl(!!!new_tables)
+}
+
+find_op <- function(operation, target_dm) {
+  if (is_function(operation) || is_bare_formula(operation, lhs = FALSE)) {
+    return(as_function(operation))
+  }
+  
+  switch(operation,
+    insert = tbl_insert,
+    update = tbl_update,
+    ...,
+    abort(paste0("Operation ", operation, " not found."))
+  )
+}
+
+tbl_insert <- function(target, source, ..., dry_run = FALSE) {
+  UseMethod("tbl_insert", target)
+}
+
+tbl_insert.data.frame <- function(target, source, ..., dry_run = FALSE) {
+  rbind(target, source)
+}
+
+tbl_insert.tbl_df <- function(target, source, ..., dry_run = FALSE) {
+  bind_rows(target, source)
+}
+
+tbl_insert.tbl_dbi <- function(target, source, ..., dry_run = FALSE) {
+  # Also in dry-run mode, for early notification of problems
+  # Already quoted!?!
+  name <- target_table_name(target, dry_run)
+  
+  if (dry_run) {
+    union_all(target, source)
+  } else {
+    sql <- paste0(
+      "INSERT INTO ", name, "\n",
+      sql_render(source)
+    )
+    dbExecute(target$con, sql)
+    invisible(NULL)
+  }
+}
+
+dm_check_transform <- function(target_dm, dm) {
+  check_not_zoomed(target_dm)
+  check_not_zoomed(dm)
+  
+  check_same_src(target_dm, dm)
+  walk2(dm_get_tables(target_dm), dm_get_tables(dm), check_columns_superset)
+  check_keys_compatible(target_dm, dm)
+}
+
+dm_run_transform <- function(target_dm, dm, operation, dry_run) {
+  # topologically sort tables
+  # run operation(target_tbl, source_tbl, dry_run = dry_run) for each table
+  # operation() returns NULL if no table is needed, otherwise a tbl
+  # return all non-NULL tbl
+}
+
+dm_patch_tbl <- function(dm, ...) {
+  check_not_zoomed(dm)
+  
+  new_tables <- list2(...)
+  
+  # FIXME: Better error message for unknown tables
+  
+  def <- dm_get_def(dm)
+  idx <- match(names(new_tables), def$table)
+  def[idx, "data"] <- unname(new_tables)
+  new_dm3(def)
+}
+```
