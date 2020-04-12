@@ -17,23 +17,24 @@
 #'   - `"color"`: [dm_set_colors()] statements to set color.
 #'   - `"all"`: All options above except `"select"`
 #'
-#' @details At the very least (if no keys exist in the given [`dm`]) a `dm()` statement is produced that -- when executed --
-#' produces the same `dm`. In addition, the code for setting the existing primary keys as well as the relations between the
-#' tables is produced. If `select = TRUE`, statements are included to select the respective columns of each table of the `dm` (useful if
-#' only a subset of the columns of the original tables is used for the `dm`).
+#' @details
+#' The code emitted by the function reproduces the structure of the `dm` object.
+#' The `options` argument controls the level of detail: keys, colors,
+#' table definitions.
+#' Data in the tables is never included, see [dm_ptype()] for the underlying logic.
 #'
-#' Mind, that it is assumed, that the tables of the existing `dm` are available in the global environment under their names
-#' within the `dm`.
-#'
-#' @return Code for producing the given `dm`.
+#' @return Code for producing the prototype of the given `dm`.
 #'
 #' @export
 #' @examples
+#' dm() %>%
+#'   dm_paste()
+#'
 #' dm_nycflights13() %>%
 #'   dm_paste()
 #'
 #' dm_nycflights13() %>%
-#'   dm_paste(select = TRUE)
+#'   dm_paste(options = "select")
 dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
                      options = NULL) {
   check_dots_empty(action = warn)

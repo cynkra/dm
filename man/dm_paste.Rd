@@ -28,24 +28,24 @@ of the dm.
 }}
 }
 \value{
-Code for producing the given \code{dm}.
+Code for producing the prototype of the given \code{dm}.
 }
 \description{
 \code{dm_paste()} takes an existing \code{dm} and emits the code necessary for its creation.
 }
 \details{
-At the very least (if no keys exist in the given \code{\link{dm}}) a \code{dm()} statement is produced that -- when executed --
-produces the same \code{dm}. In addition, the code for setting the existing primary keys as well as the relations between the
-tables is produced. If \code{select = TRUE}, statements are included to select the respective columns of each table of the \code{dm} (useful if
-only a subset of the columns of the original tables is used for the \code{dm}).
-
-Mind, that it is assumed, that the tables of the existing \code{dm} are available in the global environment under their names
-within the \code{dm}.
+The code emitted by the function reproduces the structure of the \code{dm} object.
+The \code{options} argument controls the level of detail: keys, colors,
+table definitions.
+Data in the tables is never included, see \code{\link[=dm_ptype]{dm_ptype()}} for the underlying logic.
 }
 \examples{
+dm() \%>\%
+  dm_paste()
+
 dm_nycflights13() \%>\%
   dm_paste()
 
 dm_nycflights13() \%>\%
-  dm_paste(select = TRUE)
+  dm_paste(options = "select")
 }
