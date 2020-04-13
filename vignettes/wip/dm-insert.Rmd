@@ -19,9 +19,9 @@ fansi::set_knit_hooks(knitr::knit_hooks)
 options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
 knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
+  x %>%
+    DiagrammeRsvg::export_svg() %>%
+    c("`````{=html}\n", ., "\n`````\n") %>%
     knitr::asis_output()
 }
 library(nycflights13)
@@ -30,6 +30,10 @@ library(dm)
 ```
 
 This draft describes update operations on dm objects.
+
+Operations on a dm object are generally transient or ephemeral.
+Resulting dm or table objects must be stored in a new object, otherwise they are lost.
+
 
 ## Design
 
@@ -48,6 +52,7 @@ This draft describes update operations on dm objects.
 - determine table name for remote tables
     - rely on dbplyr internals for now
 - make this work for both local and remote tables and for extensions
+- some operations need top-down, others need bottom-up
 
 ## Logic of operation
 
@@ -59,31 +64,40 @@ This draft describes update operations on dm objects.
 ## API draft
 
 ```{r}
-dm_transform <- function(target_dm, dm, operation, ..., dry_run = FALSE) {
-  # FIXME: ellipsis
-  
-  dm_check_transform(target_dm, dm)
-  
-  operation <- find_op(operation, target_dm)
+dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
 
-  # dispatches on dm_get_src(setup$target_dm)!
-  new_tables <- dm_run_transform(target_dm, dm, operation, dry_run)
-  
-  target_dm %>% 
-    dm_patch_tbl(!!!new_tables)
+  dm_transform(target_dm, dm, operation = tbl_insert, top_down = TRUE, dry_run = dry_run)
 }
 
-find_op <- function(operation, target_dm) {
-  if (is_function(operation) || is_bare_formula(operation, lhs = FALSE)) {
-    return(as_function(operation))
-  }
-  
-  switch(operation,
-    insert = tbl_insert,
-    update = tbl_update,
-    ...,
-    abort(paste0("Operation ", operation, " not found."))
-  )
+dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_transform(target_dm, dm, operation = tbl_update, top_down = TRUE, dry_run = dry_run)
+}
+
+dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_transform(target_dm, dm, operation = tbl_upsert, top_down = TRUE, dry_run = dry_run)
+}
+
+dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_transform(target_dm, dm, operation = tbl_delete, top_down = FALSE, dry_run = dry_run)
+}
+
+dm_truncate <- function(target_dm, dm, ..., dry_run = FALSE) {
+  check_dots_empty()
+
+  dm_transform(target_dm, dm, operation = tbl_truncate, top_down = FALSE, dry_run = dry_run)
+}
+
+dm_transform <- function(target_dm, dm, operation, top_down, dry_run = FALSE) {
+  dm_check_transform(target_dm, dm)
+
+  dm_run_transform(target_dm, dm, operation, top_down, dry_run)
 }
 
 tbl_insert <- function(target, source, ..., dry_run = FALSE) {
@@ -102,7 +116,7 @@ tbl_insert.tbl_dbi <- function(target, source, ..., dry_run = FALSE) {
   # Also in dry-run mode, for early notification of problems
   # Already quoted!?!
   name <- target_table_name(target, dry_run)
-  
+
   if (dry_run) {
     union_all(target, source)
   } else {
@@ -118,26 +132,29 @@ tbl_insert.tbl_dbi <- function(target, source, ..., dry_run = FALSE) {
 dm_check_transform <- function(target_dm, dm) {
   check_not_zoomed(target_dm)
   check_not_zoomed(dm)
-  
+
   check_same_src(target_dm, dm)
   walk2(dm_get_tables(target_dm), dm_get_tables(dm), check_columns_superset)
   check_keys_compatible(target_dm, dm)
 }
 
-dm_run_transform <- function(target_dm, dm, operation, dry_run) {
+dm_run_transform <- function(target_dm, dm, operation, top_down, dry_run) {
   # topologically sort tables
   # run operation(target_tbl, source_tbl, dry_run = dry_run) for each table
   # operation() returns NULL if no table is needed, otherwise a tbl
-  # return all non-NULL tbl
+  # new_tables is list of non-NULL operation() values
+
+  target_dm %>%
+    dm_patch_tbl(!!!new_tables)
 }
 
 dm_patch_tbl <- function(dm, ...) {
   check_not_zoomed(dm)
-  
+
   new_tables <- list2(...)
-  
+
   # FIXME: Better error message for unknown tables
-  
+
   def <- dm_get_def(dm)
   idx <- match(names(new_tables), def$table)
   def[idx, "data"] <- unname(new_tables)
