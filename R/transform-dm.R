@@ -172,7 +172,8 @@ dm_check_transform <- function(target_dm, dm) {
 
   check_same_src(target_dm, dm)
   check_tables_superset(target_dm, dm)
-  walk2(dm_get_tables(target_dm), dm_get_tables(dm), check_columns_superset)
+  tables <- dm_get_tables(dm)
+  walk2(dm_get_tables(target_dm)[names(tables)], tables, check_columns_superset)
   check_keys_compatible(target_dm, dm)
 }
 
@@ -190,7 +191,7 @@ check_tables_superset <- function(target_dm, dm) {
   }
 }
 
-check_column_superset <- function(target_tbl, tbl) {
+check_columns_superset <- function(target_tbl, tbl) {
   columns_missing <- setdiff(colnames(tbl), colnames(target_tbl))
   if (has_length(columns_missing)) {
     abort_columns_missing(columns_missing)
@@ -242,6 +243,6 @@ dm_patch_tbl <- function(dm, ...) {
 
   def <- dm_get_def(dm)
   idx <- match(names(new_tables), def$table)
-  def[idx, "data"] <- unname(new_tables)
+  def[idx, "data"] <- list(unname(new_tables))
   new_dm3(def)
 }
