@@ -100,16 +100,16 @@ tbl_insert.tbl_dbi <- function(target, source, ..., dry_run = FALSE) {
       "INSERT INTO ", name, "\n",
       sql_render(source)
     )
-    dbExecute(target$con, sql)
+    dbExecute(remote_con(target), sql)
     invisible(NULL)
   }
 }
 
 target_table_name <- function(x, dry_run) {
-  if (!inherits(x$ops, "op_base_remote")) {
+  name <- remote_name(x)
+  if (is.null(name)) {
     raise <- if (dry_run) warn else abort
     raise("Can't determine name for target table.")
-  } else {
-    x$ops$x
   }
+  name
 }

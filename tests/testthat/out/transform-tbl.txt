@@ -1,0 +1,47 @@
+> flights_init <- nycflights13::flights[0, ]
+> sqlite <- src_sqlite(":memory:", create = TRUE)
+> flights_sqlite <- copy_to(sqlite, flights_init, temporary = FALSE)
+> print(count(flights_sqlite))
+      n
+  <int>
+1     0
+
+> flights_jan_1 <- nycflights13::flights %>% filter(month == 1, day == 1)
+> print(count(flights_jan_1))
+# A tibble: 1 x 1
+      n
+  <int>
+1   842
+
+> flights_jan_1_sqlite <- copy_to(sqlite, flights_jan_1)
+> tbl_insert(flights_sqlite, flights_jan_1_sqlite)
+> print(count(flights_sqlite))
+      n
+  <int>
+1   842
+
+> flights_jan_2 <- nycflights13::flights %>% filter(month == 1, day == 2)
+> flights_jan_2_sqlite <- copy_to(sqlite, flights_jan_2)
+> flights_new <- tbl_insert(flights_sqlite, flights_jan_2_sqlite, dry_run = TRUE)
+> print(count(flights_new))
+      n
+  <int>
+1  1785
+
+> print(count(flights_sqlite))
+      n
+  <int>
+1   842
+
+> flights_new %>% dplyr::count(year, month, day)
+   year month   day     n
+  <int> <int> <int> <int>
+1  2013     1     1   842
+2  2013     1     2   943
+
+> tbl_insert(flights_sqlite, flights_jan_2_sqlite)
+> print(count(flights_sqlite))
+      n
+  <int>
+1  1785
+
