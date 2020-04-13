@@ -1,17 +1,17 @@
-#' Persisting data
+#' Persisting data for multiple tables
 #'
 #' @description
 #' \lifecycle{experimental}
 #'
 #' These functions provide a framework for updating data in existing tables.
-#' Unlike [compute()], [copy_to()] or [copy_dm_to()], no new tables are created.
+#' Unlike [compute()], [copy_to()] or [copy_dm_to()], no new tables are created
+#' on the database.
 #' All operations expect that both existing and new data are presented
-#' in two compatible dm objects on the same data source.
+#' in two compatible [dm] objects on the same data source.
 #'
 #' The tables in the target dm are ordered topologically
 #' so that parent (dimension) tables receive insertions
 #' before child (fact) tables.
-#' The order is reversed for delete operations.
 #'
 #' @param target_dm Target dm object.
 #' @param dm dm object with new data.
@@ -25,7 +25,7 @@
 #'   visible only if `dry_run = TRUE`, otherwise [invisible].
 #'   Identical to `target_dm` when run on a database with `dry_run = FALSE`.
 #'
-#' @name persist
+#' @name persist-dm
 #' @examples
 #' if (rlang::is_installed("RSQLite")) {
 #'   # Entire dataset with all dimension tables populated
@@ -42,7 +42,7 @@
 #'   sqlite <- src_sqlite(":memory:", create = TRUE)
 #'
 #'   # Target database:
-#'   flights_sqlite <- dm_copy_to(sqlite, flights_init, temporary = FALSE)
+#'   flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
 #'   print(dm_nrow(flights_sqlite))
 #'
 #'   # First update:
@@ -58,7 +58,7 @@
 #'   print(dm_nrow(flights_jan_1))
 #'
 #'   # Copy to temporary tables on the target database:
-#'   flights_jan_1_sqlite <- dm_copy_to(sqlite, flights_jan_1)
+#'   flights_jan_1_sqlite <- copy_dm_to(sqlite, flights_jan_1)
 #'   dm_insert(flights_sqlite, flights_jan_1_sqlite)
 #'   print(dm_nrow(flights_sqlite))
 #'
@@ -74,7 +74,7 @@
 #'     dm_update_zoomed()
 #'
 #'   # Copy to temporary tables on the target database:
-#'   flights_jan_2_sqlite <- dm_copy_to(sqlite, flights_jan_2)
+#'   flights_jan_2_sqlite <- copy_dm_to(sqlite, flights_jan_2)
 #'
 #'   # Dry run:
 #'   flights_new <- dm_insert(
@@ -100,7 +100,7 @@ NULL
 #'
 #' `dm_insert()` adds new records.
 #' The primary keys must differ from existing records.
-#' @rdname persist
+#' @rdname persist-dm
 #' @export
 dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
@@ -113,7 +113,7 @@ dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
 # `dm_update()` updates existing records.
 # Primary keys must match for all records to be updated.
 #
-# @rdname persist
+# @rdname persist-dm
 # @export
 dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
@@ -126,7 +126,7 @@ dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
 # `dm_upsert()` updates existing records and adds new records,
 # based on the primary key.
 #
-# @rdname persist
+# @rdname persist-dm
 # @export
 dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
@@ -139,7 +139,7 @@ dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
 # `dm_delete()` removes matching records, based on the primary key.
 # The order in which the tables are processed is reversed.
 #
-# @rdname persist
+# @rdname persist-dm
 # @export
 dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
@@ -150,8 +150,9 @@ dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
 # dm_truncate
 #
 # `dm_truncate()` removes all records, only for tables in `dm`.
+# The order in which the tables are processed is reversed.
 #
-# @rdname persist
+# @rdname persist-dm
 # @export
 dm_truncate <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
@@ -170,18 +171,66 @@ dm_check_transform <- function(target_dm, dm) {
   check_not_zoomed(dm)
 
   check_same_src(target_dm, dm)
+  check_tables_superset(target_dm, dm)
   walk2(dm_get_tables(target_dm), dm_get_tables(dm), check_columns_superset)
   check_keys_compatible(target_dm, dm)
 }
 
-dm_run_transform <- function(target_dm, dm, operation, top_down, dry_run) {
-  # topologically sort tables
-  # run operation(target_tbl, source_tbl, dry_run = dry_run) for each table
-  # operation() returns NULL if no table is needed, otherwise a tbl
-  # new_tables is list of non-NULL operation() values
+check_same_src <- function(target_dm, dm) {
+  tables <- c(dm_get_tables_impl(target_dm), dm_get_tables_impl(dm))
+  if (!all_same_source(tables)) {
+    abort_not_same_src()
+  }
+}
 
-  target_dm %>%
+check_tables_superset <- function(target_dm, dm) {
+  tables_missing <- setdiff(src_tbls_impl(dm), src_tbls_impl(target_dm))
+  if (has_length(tables_missing)) {
+    abort_tables_missing(tables_missing)
+  }
+}
+
+check_column_superset <- function(target_tbl, tbl) {
+  columns_missing <- setdiff(colnames(tbl), colnames(target_tbl))
+  if (has_length(columns_missing)) {
+    abort_columns_missing(columns_missing)
+  }
+}
+
+check_keys_compatible <- function(target_dm, dm) {
+  # FIXME
+}
+
+
+
+dm_run_transform <- function(target_dm, dm, tbl_op, top_down, dry_run) {
+  # topologically sort tables
+  graph <- dm::create_graph_from_dm(target_dm, directed = TRUE)
+  topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
+  tables <- intersect(names(topo), src_tbls(dm))
+
+  # extract keys
+  target_tbls <- dm_get_tables_impl(target_dm)[tables]
+  tbls <- dm_get_tables_impl(dm)[tables]
+
+  # FIXME: Extract keys for upsert and delete
+  # Use keyholder?
+
+  # run operation(target_tbl, source_tbl, dry_run = dry_run) for each table
+  op_results <- map2(target_tbls, tbls, tbl_op, dry_run = dry_run)
+
+  # operation() returns NULL if no table is needed, otherwise a tbl
+  new_tables <- compact(op_results)
+
+  out <-
+    target_dm %>%
     dm_patch_tbl(!!!new_tables)
+
+  if (dry_run) {
+    out
+  } else {
+    invisible(out)
+  }
 }
 
 dm_patch_tbl <- function(dm, ...) {
