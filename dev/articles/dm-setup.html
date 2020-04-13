@@ -175,10 +175,10 @@
 ## 3 engines     FALSE     "has duplicate values: 1, 2, 3, 4"                      
 ## 4 manufactur… FALSE     "has duplicate values: AIRBUS, AIRBUS INDUSTRIE, AMERIC…
 ## 5 model       FALSE     "has duplicate values: 717-200, 737-301, 737-3G7, 737-3…
-## 6 seats       FALSE     "has duplicate values: 2, 4, 5, 6, 7, … (&gt;= 7 total)"   
+## 6 seats       FALSE     "has duplicate values: 2, 4, 5, 6, 7, …"                
 ## 7 speed       FALSE     "has duplicate values: 90, 105, 162, 432, NA"           
 ## 8 type        FALSE     "has duplicate values: Fixed wing multi engine, Fixed w…
-## 9 year        FALSE     "has duplicate values: 1959, 1963, 1975, 1976, 1977, … …</code></pre>
+## 9 year        FALSE     "has duplicate values: 1959, 1963, 1975, 1976, 1977, …"</code></pre>
 <p>Now, add the primary keys that you have identified:</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">flights_dm_only_pks</span> <span class="kw">&lt;-</span> <span class="no">flights_dm_no_keys</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(<span class="kw">table</span> <span class="kw">=</span> <span class="no">airlines</span>, <span class="kw">column</span> <span class="kw">=</span> <span class="no">carrier</span>) <span class="kw">%&gt;%</span>

@@ -275,7 +275,7 @@
   <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu">map_int</span>(<span class="no">nrow</span>)
 <span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;        1        1       95       67    26115</span></pre></body></html></div>
+<span class="co">#&gt;        1        1       95       67      861</span></pre></body></html></div>
 <p>Alternatively, you can just pull out one of the tables from <code>dm</code> to answer the question which planes were used to service the US Airways flights that departed from JFK airport:</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span>(<span class="no">us_flights_from_jfk</span>, <span class="st">"planes"</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 67 x 9</span><span>

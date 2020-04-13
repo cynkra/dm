@@ -397,20 +397,20 @@ and importing the primary and foreign keys</p></li>
 #&gt; # … with 3,312 more rows
 #&gt; 
 #&gt; $weather
-#&gt; # A tibble: 26,115 x 15
+#&gt; # A tibble: 861 x 15
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
 #&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-#&gt;  1 EWR     2013     1     1     1  39.0  26.1  59.4      270      10.4 
-#&gt;  2 EWR     2013     1     1     2  39.0  27.0  61.6      250       8.06
-#&gt;  3 EWR     2013     1     1     3  39.0  28.0  64.4      240      11.5 
-#&gt;  4 EWR     2013     1     1     4  39.9  28.0  62.2      250      12.7 
-#&gt;  5 EWR     2013     1     1     5  39.0  28.0  64.4      260      12.7 
-#&gt;  6 EWR     2013     1     1     6  37.9  28.0  67.2      240      11.5 
-#&gt;  7 EWR     2013     1     1     7  39.0  28.0  64.4      240      15.0 
-#&gt;  8 EWR     2013     1     1     8  39.9  28.0  62.2      250      10.4 
-#&gt;  9 EWR     2013     1     1     9  39.9  28.0  62.2      260      15.0 
-#&gt; 10 EWR     2013     1     1    10  41    28.0  59.6      260      13.8 
-#&gt; # … with 26,105 more rows, and 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;,
+#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06
+#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
+#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
+#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
+#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
+#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
+#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
+#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
+#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
+#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
+#&gt; # … with 851 more rows, and 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;,
 #&gt; #   pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;
 #&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='dm_get_filters.html'>dm_get_filters</a></span>()</div><div class='output co'>#&gt; # A tibble: 0 x 3
 #&gt; # … with 3 variables: table &lt;chr&gt;, filter &lt;list&gt;, zoomed &lt;lgl&gt;</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>validate_dm</span>()
