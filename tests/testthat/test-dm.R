@@ -340,10 +340,14 @@ test_that("dm_get_src() works", {
     class = "is_not_dm"
   )
 
-  walk2(
-    dm_for_filter_src,
-    active_srcs_class,
-    ~ expect_true(inherits(dm_get_src(.x), .y))
+  expect_identical(
+    class(dm_get_src(dm_for_filter)),
+    c("src_local", "src")
+  )
+
+  expect_identical(
+    class(dm_get_src(dm_for_filter_sqlite)),
+    c("src_SQLiteConnection", "src_dbi", "src_sql", "src")
   )
 })
 
@@ -358,13 +362,9 @@ test_that("dm_get_con() works", {
     class = "con_only_for_dbi"
   )
 
-  active_con_class <- semi_join(lookup, filter(active_srcs, src != "df"), by = "src") %>% pull(class_con)
-  dm_for_filter_src_red <- dm_for_filter_src[!(names(dm_for_filter_src) == "df")]
-
-  walk2(
-    dm_for_filter_src_red,
-    active_con_class,
-    ~ expect_true(inherits(dm_get_con(.x), .y))
+  expect_identical(
+    class(dm_get_con(dm_for_filter_sqlite)),
+    `attr<-`("SQLiteConnection", "package", "RSQLite")
   )
 })
 
