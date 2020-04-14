@@ -221,38 +221,32 @@ test_that("validator speaks up when something's wrong", {
 })
 
 test_that("`pull_tbl()`-methods work", {
-  walk(
-    dm_for_filter_src,
-    function(dm_for_filter) {
-      expect_identical(
-        pull_tbl(dm_for_filter, t5) %>% collect(),
-        t5
-      )
-    }
-  )
 
-  walk(
-    dm_for_filter_src,
-    function(dm_for_filter) {
-      expect_identical(
-        dm_zoom_to(dm_for_filter, t3) %>%
-          mutate(new_col = row_number() * 3) %>%
-          pull_tbl() %>%
-          collect(),
-        mutate(t3, new_col = row_number() * 3)
-      )
-    }
+  expect_identical(
+    pull_tbl(dm_for_filter, t5),
+    t5
   )
 
   expect_identical(
-    dm_zoom_to(dm_for_filter, t1) %>%
-      pull_tbl(t1),
+    pull_tbl(dm_for_filter_sqlite, t5) %>% collect(),
+    t5
+  )
+
+  expect_identical(
+    dm_zoom_to(dm_for_filter_sqlite, t3) %>%
+      mutate(new_col = row_number() * 3) %>%
+      pull_tbl() %>%
+      collect(),
+    mutate(t3, new_col = row_number() * 3)
+  )
+
+  expect_identical(
+    dm_zoom_to(dm_for_filter, t1) %>% pull_tbl(t1),
     t1
   )
 
   expect_dm_error(
-    dm_zoom_to(dm_for_filter, t1) %>%
-      pull_tbl(t2),
+    dm_zoom_to(dm_for_filter, t1) %>% pull_tbl(t2),
     "table_not_zoomed"
   )
 
