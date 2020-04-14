@@ -421,6 +421,8 @@ dm_for_flatten %<-% {
     dm_add_fk(fact, dim_4_key, dim_4)
 }
 
+dm_for_flatten_sqlite %<-% copy_dm_to(sqlite, dm_for_flatten)
+
 result_from_flatten %<-% {
   fact_clean %>%
     left_join(dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%

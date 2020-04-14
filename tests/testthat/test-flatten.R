@@ -2,12 +2,14 @@ bad_filtered_dm <- dm_filter(bad_dm, tbl_1, a != 4)
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for left join test the basic flattening also on all DBs
-  walk(
-    dm_for_flatten_src,
-    ~ expect_equal(
-      dm_flatten_to_tbl(., fact) %>% collect(),
-      result_from_flatten
-    )
+  expect_identical(
+    dm_flatten_to_tbl(dm_for_flatten, fact),
+    result_from_flatten
+  )
+
+  expect_identical(
+    dm_flatten_to_tbl(dm_for_flatten_sqlite, fact) %>% collect(),
+    result_from_flatten
   )
 
   # a one-table-dm
