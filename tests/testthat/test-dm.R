@@ -89,40 +89,29 @@ test_that("'copy_to.dm()' works", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
-  skip_if(is_empty(db_src_names))
-  walk(
-    db_src_names,
-    function(db_src_name) {
-      expect_true({
-        def <-
-          dm_for_filter_src[[db_src_name]] %>%
-          dm_filter(t1, a > 3) %>%
-          compute() %>%
-          dm_get_def()
-        test <- map_chr(map(def$data, sql_render), as.character)
-        all(map_lgl(test, ~ !grepl("WHERE", .)))
-      })
-    }
-  )
+  def <-
+    dm_for_filter_sqlite %>%
+    dm_filter(t1, a > 3) %>%
+    compute() %>%
+    dm_get_def()
+  test <- map_chr(map(def$data, sql_render), as.character)
+  # no filtering is part of the SQL-query anymore, since the filtered table is "computed"
+  expect_true(all(map_lgl(test, ~ !grepl("WHERE", .))))
 })
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
-  skip_if(is_empty(db_src_names))
-  walk(
-    db_src_names,
-    function(db_src_name) {
-      expect_true({
-        def <-
-          dm_for_filter_src[[db_src_name]] %>%
-          dm_zoom_to(t1) %>%
-          mutate(c = a + 1) %>%
-          compute() %>%
-          dm_get_def()
-        test <- map_chr(map(def$data, sql_render), as.character)
-        all(map_lgl(test, ~ !grepl("WHERE", .)))
-      })
-    }
-  )
+  zoomed_dm_for_compute <- dm_for_filter_sqlite %>%
+    dm_zoom_to(t1) %>%
+    mutate(c = a + 1)
+  # "1" is without computing
+  def_1 <- dm_update_zoomed(zoomed_dm_for_compute) %>% dm_get_def()
+  # "2" is with computing
+  def_2 <- compute(zoomed_dm_for_compute) %>% dm_update_zoomed() %>% dm_get_def()
+  test_1 <- map_chr(map(def_1$data, sql_render), as.character)
+  test_2 <- map_chr(map(def_2$data, sql_render), as.character)
+
+  expect_true(!all(map_lgl(test_1, ~ !grepl("1.0 AS `c`", .))))
+  expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS `c`", .))))
 })
 
 test_that("some methods/functions for `zoomed_dm` work", {
