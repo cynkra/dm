@@ -269,26 +269,30 @@ test_that("numeric subsetting works", {
   # check specifically for the right output in one case
   expect_equal(dm_for_filter[[4]], t4)
 
-  # compare numeric subsetting and subsetting by name on all sources
-  walk(
-    dm_for_filter_src,
-    ~ expect_equal(
-      .x[["t2"]],
-      .x[[2]]
-    )
+  # compare numeric subsetting and subsetting by name locally and on SQLite
+  expect_identical(
+    dm_for_filter[["t2"]],
+    dm_for_filter[[2]]
   )
 
-  # check if reducing `dm` size works on all sources
-  walk(
-    dm_for_filter_src,
-    ~ expect_equivalent_dm(
-      .x[c(1, 3, 5)],
-      dm_select_tbl(.x, 1, 3, 5)
-    )
+  expect_identical(
+    dm_for_filter_sqlite[["t2"]],
+    dm_for_filter_sqlite[[2]]
+  )
+
+  # check if reducing `dm` size (and reordering) works locally and on SQLite
+  expect_equivalent_dm(
+    dm_for_filter[c(1, 5, 3)],
+    dm_select_tbl(dm_for_filter, 1, 5, 3)
+  )
+
+  expect_equivalent_dm(
+    dm_for_filter_sqlite[c("t1", "t5", "t3")],
+    dm_select_tbl(dm_for_filter_sqlite, 1, 5, 3)
   )
 })
 
-test_that("subsetting for dm/zoomed_dm", {
+test_that("subsetting for dm/zoomed_dm works", {
   expect_identical(dm_for_filter$t5, t5)
   expect_identical(
     dm_zoom_to(dm_for_filter, t2)$c,
@@ -301,7 +305,6 @@ test_that("subsetting for dm/zoomed_dm", {
     pull(t3, g)
   )
 
-  expect_identical(dm_for_filter[c("t5", "t4")], dm_select_tbl(dm_for_filter, t5, t4))
   expect_identical(
     dm_zoom_to(dm_for_filter, t3)[c("g", "f", "g")],
     t3[c("g", "f", "g")]
