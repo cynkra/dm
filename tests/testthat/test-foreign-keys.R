@@ -85,68 +85,67 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
 })
 
 test_that("dm_rm_fk() works as intended?", {
-  map(
-    .x = dm_test_obj_src,
-    function(dm_test_obj) {
-      expect_true(
-        dm_test_obj %>%
-          dm_add_pk(dm_table_4, c) %>%
-          dm_add_fk(dm_table_1, a, dm_table_4) %>%
-          dm_add_fk(dm_table_2, c, dm_table_4) %>%
-          dm_rm_fk(dm_table_2, c, dm_table_4) %>%
-          dm_has_fk(dm_table_1, dm_table_4)
-      )
-    }
+  expect_true(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(dm_table_2, c, dm_table_4) %>%
+      dm_has_fk(dm_table_1, dm_table_4)
   )
 
-  map(
-    dm_test_obj_src,
-    function(dm_test_obj) {
-      expect_false(
-        dm_test_obj %>%
-          dm_add_pk(dm_table_4, c) %>%
-          dm_add_fk(dm_table_1, a, dm_table_4) %>%
-          dm_add_fk(dm_table_2, c, dm_table_4) %>%
-          dm_rm_fk(dm_table_2, c, dm_table_4) %>%
-          dm_has_fk(dm_table_2, dm_table_4)
-      )
-    }
+  expect_true(
+    dm_test_obj_sqlite %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(dm_table_2, c, dm_table_4) %>%
+      dm_has_fk(dm_table_1, dm_table_4)
   )
 
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_false(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_rm_fk(dm_table_2, NULL, dm_table_4) %>%
-        dm_has_fk(dm_table_2, dm_table_4)
-    )
+  expect_false(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(dm_table_2, c, dm_table_4) %>%
+      dm_has_fk(dm_table_2, dm_table_4)
   )
 
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_dm_error(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_rm_fk(table = dm_table_2, ref_table = dm_table_4),
-      class = "rm_fk_col_missing"
-    )
+  expect_false(
+    dm_test_obj_sqlite %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(dm_table_2, c, dm_table_4) %>%
+      dm_has_fk(dm_table_2, dm_table_4)
   )
 
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_dm_error(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_rm_fk(dm_table_2, z, dm_table_4),
-      class = "is_not_fkc"
-    )
+  expect_false(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(dm_table_2, NULL, dm_table_4) %>%
+      dm_has_fk(dm_table_2, dm_table_4)
+  )
+
+  expect_dm_error(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(table = dm_table_2, ref_table = dm_table_4),
+    class = "rm_fk_col_missing"
+  )
+
+  expect_dm_error(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(dm_table_2, z, dm_table_4),
+    class = "is_not_fkc"
   )
 })
 
