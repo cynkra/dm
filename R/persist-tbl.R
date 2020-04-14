@@ -98,15 +98,15 @@ tbl_insert.tbl_dbi <- function(target, source, ..., dry_run = FALSE) {
   } else {
     sql <- paste0(
       "INSERT INTO ", name, "\n",
-      sql_render(source)
+      dbplyr::remote_query(source)
     )
-    dbExecute(remote_con(target), sql)
+    dbExecute(dbplyr::remote_con(target), sql)
     invisible(NULL)
   }
 }
 
 target_table_name <- function(x, dry_run) {
-  name <- remote_name(x)
+  name <- dbplyr::remote_name(x)
   if (is.null(name)) {
     raise <- if (dry_run) warn else abort
     raise("Can't determine name for target table.")
