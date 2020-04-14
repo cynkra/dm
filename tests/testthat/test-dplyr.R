@@ -536,7 +536,7 @@ test_that("key tracking works", {
     set_names("f")
   )
 
-  # chain of renames other transformations
+  # chain of renames & other transformations
 
   expect_identical(
     zoomed_grouped_out_dm %>%
