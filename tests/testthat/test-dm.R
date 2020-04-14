@@ -138,21 +138,10 @@ test_that("validator is silent", {
   )
 })
 
-test_that("validator speaks up (postgres)", {
-  skip_if_not("postgres" %in% src_names)
-  expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter) %>%
-      mutate(data = if_else(table == "t1", list(dm_for_filter_src$postgres$t1), data))) %>%
-      validate_dm(),
-    "dm_invalid"
-  )
-})
-
 test_that("validator speaks up (sqlite)", {
-  skip_if_not("sqlite" %in% src_names)
   expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>%
-      mutate(data = if_else(table == "t1", list(dm_for_filter_src$sqlite$t1), data))) %>%
+      mutate(data = if_else(table == "t1", list(dm_for_filter_sqlite$t1), data))) %>%
       validate_dm(),
     "dm_invalid"
   )
