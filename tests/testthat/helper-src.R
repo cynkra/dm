@@ -234,6 +234,7 @@ dm_test_obj_2 %<-% as_dm(list(
   dm_table_4 = d6
 ))
 
+dm_test_obj_2_sqlite %<-% copy_dm_to(sqlite, dm_test_obj_2, unique_table_names = TRUE)
 
 # for `dm_nrow()` ---------------------------------------------------------
 

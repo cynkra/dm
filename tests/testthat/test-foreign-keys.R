@@ -161,16 +161,22 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 
-  map(
-    dm_test_obj_src,
-    ~ expect_identical(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_enum_fk_candidates(dm_table_1, dm_table_4) %>%
-        mutate(why = if_else(why != "", "<reason>", "")) %>%
-        collect(),
-      tbl_fk_candidates_t1_t4
-    )
+  expect_identical(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_enum_fk_candidates(dm_table_1, dm_table_4) %>%
+      mutate(why = if_else(why != "", "<reason>", "")) %>%
+      collect(),
+    tbl_fk_candidates_t1_t4
+  )
+
+  expect_identical(
+    dm_test_obj_sqlite %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_enum_fk_candidates(dm_table_1, dm_table_4) %>%
+      mutate(why = if_else(why != "", "<reason>", "")) %>%
+      collect(),
+    tbl_fk_candidates_t1_t4
   )
 
   tbl_t3_t4 <- tibble::tribble(
@@ -180,14 +186,18 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 
-  map(
-    dm_test_obj_2_src,
-    ~ expect_identical(
-      dm_add_pk(.x, dm_table_4, c) %>%
-        dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
-        mutate(why = if_else(why != "", "<reason>", "")),
-      tbl_t3_t4
-    )
+  expect_identical(
+    dm_add_pk(dm_test_obj_2, dm_table_4, c) %>%
+      dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
+      mutate(why = if_else(why != "", "<reason>", "")),
+    tbl_t3_t4
+  )
+
+  expect_identical(
+    dm_add_pk(dm_test_obj_2_sqlite, dm_table_4, c) %>%
+      dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
+      mutate(why = if_else(why != "", "<reason>", "")),
+    tbl_t3_t4
   )
 
   tbl_t4_t3 <- tibble::tribble(
@@ -197,14 +207,11 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 
-  map(
-    dm_test_obj_src,
-    ~ expect_identical(
-      .x %>%
-        dm_add_pk(dm_table_3, c) %>%
-        dm_enum_fk_candidates(dm_table_4, dm_table_3),
-      tbl_t4_t3
-    )
+  expect_identical(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_3, c) %>%
+      dm_enum_fk_candidates(dm_table_4, dm_table_3),
+    tbl_t4_t3
   )
 
   nycflights_example <- tibble::tribble(
@@ -239,14 +246,9 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     nycflights_example
   )
 
-  map(
-    dm_test_obj_src,
-    function(dm_test_obj) {
-      expect_dm_error(
-        dm_enum_fk_candidates(dm_test_obj, dm_table_1, dm_table_4),
-        class = "ref_tbl_has_no_pk"
-      )
-    }
+  expect_dm_error(
+    dm_enum_fk_candidates(dm_test_obj, dm_table_1, dm_table_4),
+    class = "ref_tbl_has_no_pk"
   )
 })
 
