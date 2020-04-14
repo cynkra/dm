@@ -105,7 +105,7 @@ NULL
 dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, tbl_insert, top_down = TRUE, dry_run)
+  dm_persist(target_dm, dm, tbl_insert, top_down = TRUE, dry_run)
 }
 
 # dm_update
@@ -118,7 +118,7 @@ dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
 dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, tbl_update, top_down = TRUE, dry_run)
+  dm_persist(target_dm, dm, tbl_update, top_down = TRUE, dry_run)
 }
 
 # dm_upsert
@@ -131,7 +131,7 @@ dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
 dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, tbl_upsert, top_down = TRUE, dry_run)
+  dm_persist(target_dm, dm, tbl_upsert, top_down = TRUE, dry_run)
 }
 
 # dm_delete
@@ -144,7 +144,7 @@ dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
 dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, tbl_delete, top_down = FALSE, dry_run)
+  dm_persist(target_dm, dm, tbl_delete, top_down = FALSE, dry_run)
 }
 
 # dm_truncate
@@ -157,16 +157,16 @@ dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
 dm_truncate <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, tbl_truncate, top_down = FALSE, dry_run)
+  dm_persist(target_dm, dm, tbl_truncate, top_down = FALSE, dry_run)
 }
 
-dm_transform <- function(target_dm, dm, operation, top_down, dry_run = FALSE) {
-  dm_check_transform(target_dm, dm)
+dm_persist <- function(target_dm, dm, operation, top_down, dry_run = FALSE) {
+  dm_check_persist(target_dm, dm)
 
-  dm_run_transform(target_dm, dm, operation, top_down, dry_run)
+  dm_run_persist(target_dm, dm, operation, top_down, dry_run)
 }
 
-dm_check_transform <- function(target_dm, dm) {
+dm_check_persist <- function(target_dm, dm) {
   check_not_zoomed(target_dm)
   check_not_zoomed(dm)
 
@@ -204,7 +204,7 @@ check_keys_compatible <- function(target_dm, dm) {
 
 
 
-dm_run_transform <- function(target_dm, dm, tbl_op, top_down, dry_run) {
+dm_run_persist <- function(target_dm, dm, tbl_op, top_down, dry_run) {
   # topologically sort tables
   graph <- dm::create_graph_from_dm(target_dm, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")

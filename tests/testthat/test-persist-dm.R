@@ -1,4 +1,4 @@
-verify_output("out/transform-dm.txt", {
+verify_output("out/persist-dm.txt", {
   # Entire dataset with all dimension tables populated
   # with flights and weather data truncated:
   flights_init <-

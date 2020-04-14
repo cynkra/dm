@@ -1,4 +1,4 @@
-verify_output("out/transform-tbl.txt", {
+verify_output("out/persist-tbl.txt", {
   # Truncated table:
   flights_init <- nycflights13::flights[0, ]
 

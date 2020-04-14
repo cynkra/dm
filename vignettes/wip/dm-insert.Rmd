@@ -57,7 +57,7 @@ Resulting dm or table objects must be stored in a new object, otherwise they are
 ## Logic of operation
 
 - check compatibility
-- apply transformation, topologically sorted
+- persist tables one by one, topologically sorted
 - put back into dm if necessary
 
 
@@ -67,37 +67,37 @@ Resulting dm or table objects must be stored in a new object, otherwise they are
 dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, operation = tbl_insert, top_down = TRUE, dry_run = dry_run)
+  dm_persist(target_dm, dm, operation = tbl_insert, top_down = TRUE, dry_run = dry_run)
 }
 
 dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, operation = tbl_update, top_down = TRUE, dry_run = dry_run)
+  dm_persist(target_dm, dm, operation = tbl_update, top_down = TRUE, dry_run = dry_run)
 }
 
 dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, operation = tbl_upsert, top_down = TRUE, dry_run = dry_run)
+  dm_persist(target_dm, dm, operation = tbl_upsert, top_down = TRUE, dry_run = dry_run)
 }
 
 dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, operation = tbl_delete, top_down = FALSE, dry_run = dry_run)
+  dm_persist(target_dm, dm, operation = tbl_delete, top_down = FALSE, dry_run = dry_run)
 }
 
 dm_truncate <- function(target_dm, dm, ..., dry_run = FALSE) {
   check_dots_empty()
 
-  dm_transform(target_dm, dm, operation = tbl_truncate, top_down = FALSE, dry_run = dry_run)
+  dm_persist(target_dm, dm, operation = tbl_truncate, top_down = FALSE, dry_run = dry_run)
 }
 
-dm_transform <- function(target_dm, dm, operation, top_down, dry_run = FALSE) {
-  dm_check_transform(target_dm, dm)
+dm_persist <- function(target_dm, dm, operation, top_down, dry_run = FALSE) {
+  dm_check_persist(target_dm, dm)
 
-  dm_run_transform(target_dm, dm, operation, top_down, dry_run)
+  dm_run_persist(target_dm, dm, operation, top_down, dry_run)
 }
 
 tbl_insert <- function(target, source, ..., dry_run = FALSE) {
@@ -129,7 +129,7 @@ tbl_insert.tbl_dbi <- function(target, source, ..., dry_run = FALSE) {
   }
 }
 
-dm_check_transform <- function(target_dm, dm) {
+dm_check_persist <- function(target_dm, dm) {
   check_not_zoomed(target_dm)
   check_not_zoomed(dm)
 
@@ -138,7 +138,7 @@ dm_check_transform <- function(target_dm, dm) {
   check_keys_compatible(target_dm, dm)
 }
 
-dm_run_transform <- function(target_dm, dm, operation, top_down, dry_run) {
+dm_run_persist <- function(target_dm, dm, operation, top_down, dry_run) {
   # topologically sort tables
   # run operation(target_tbl, source_tbl, dry_run = dry_run) for each table
   # operation() returns NULL if no table is needed, otherwise a tbl
