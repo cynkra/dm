@@ -31,7 +31,7 @@
 #'   # Entire dataset with all dimension tables populated
 #'   # with flights and weather data truncated:
 #'   flights_init <-
-#'     dm_nycflights() %>%
+#'     dm_nycflights13() %>%
 #'     dm_zoom_to(flights) %>%
 #'     filter(FALSE) %>%
 #'     dm_update_zoomed() %>%
@@ -46,40 +46,40 @@
 #'   print(dm_nrow(flights_sqlite))
 #'
 #'   # First update:
-#'   flights_jan_1 <-
-#'     dm_nycflights() %>%
-#'     dm_select_tbl(flights) %>%
+#'   flights_jan <-
+#'     dm_nycflights13() %>%
+#'     dm_select_tbl(flights, weather) %>%
 #'     dm_zoom_to(flights) %>%
-#'     filter(month == 1, day == 1) %>%
+#'     filter(month == 1) %>%
 #'     dm_update_zoomed() %>%
 #'     dm_zoom_to(weather) %>%
-#'     filter(month == 1, day == 1) %>%
+#'     filter(month == 1) %>%
 #'     dm_update_zoomed()
-#'   print(dm_nrow(flights_jan_1))
+#'   print(dm_nrow(flights_jan))
 #'
 #'   # Copy to temporary tables on the target database:
-#'   flights_jan_1_sqlite <- copy_dm_to(sqlite, flights_jan_1)
-#'   dm_insert(flights_sqlite, flights_jan_1_sqlite)
+#'   flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
+#'   dm_insert(flights_sqlite, flights_jan_sqlite)
 #'   print(dm_nrow(flights_sqlite))
 #'
 #'   # Second update:
-#'   flights_jan_2 <-
-#'     dm_nycflights() %>%
-#'     dm_select_tbl(flights) %>%
+#'   flights_feb <-
+#'     dm_nycflights13() %>%
+#'     dm_select_tbl(flights, weather) %>%
 #'     dm_zoom_to(flights) %>%
-#'     filter(month == 1, day == 2) %>%
+#'     filter(month == 2) %>%
 #'     dm_update_zoomed() %>%
 #'     dm_zoom_to(weather) %>%
-#'     filter(month == 1, day == 2) %>%
+#'     filter(month == 2) %>%
 #'     dm_update_zoomed()
 #'
 #'   # Copy to temporary tables on the target database:
-#'   flights_jan_2_sqlite <- copy_dm_to(sqlite, flights_jan_2)
+#'   flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
 #'
 #'   # Dry run:
 #'   flights_new <- dm_insert(
 #'     flights_sqlite,
-#'     flights_jan_2_sqlite,
+#'     flights_feb_sqlite,
 #'     dry_run = TRUE
 #'   )
 #'   print(dm_nrow(flights_new))
@@ -90,7 +90,7 @@
 #'     dm_examine_constraints()
 #'
 #'   # Apply:
-#'   dm_insert(flights_sqlite, flights_jan_2_sqlite)
+#'   dm_insert(flights_sqlite, flights_feb_sqlite)
 #'   print(dm_nrow(flights_sqlite))
 #' }
 NULL
