@@ -50,9 +50,12 @@ Resulting dm or table objects must be stored in a new object, otherwise they are
 ## Challenges
 
 - determine table name for remote tables
-    - rely on dbplyr internals for now
+    - `dbplyr::remote_name()`
 - make this work for both local and remote tables and for extensions
 - some operations need top-down, others need bottom-up
+    - fixed set of operations, each op knows its "direction"
+- pass key columns to `tbl_xxx()` operations
+    - for now with a separate `keys` argument (TBD), later perhaps using {keyholder} or a similar data structure that combines tables and keys
 
 ## Logic of operation
 
