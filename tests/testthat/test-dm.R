@@ -75,20 +75,16 @@ test_that("'copy_to.dm()' works", {
     "need_unique_names"
   )
 
-  # copying local `tibble` to postgres `dm`
-  skip_if_error(
-    expect_equivalent_dm(
-      copy_to(dm_for_filter_src$postgres, d1_src$df, "test_table"),
-      dm_add_tbl(dm_for_filter_src$postgres, test_table = d1_src$postgres)
-    )
+  # copying local `tibble` to sqlite `dm`
+  expect_equivalent_dm(
+    copy_to(dm_for_filter_sqlite, d1, "test_table"),
+    dm_add_tbl(dm_for_filter_sqlite, test_table = d1_sqlite)
   )
 
-  # copying postgres `tibble` to local `dm`
-  skip_if_error(
-    expect_equivalent_dm(
-      copy_to(dm_for_filter_src$df, d1_src$postgres, "test_table_1"),
-      dm_add_tbl(dm_for_filter_src$df, test_table_1 = d1_src$df)
-    )
+  # copying sqlite `tibble` to local `dm`
+  expect_equivalent_dm(
+    copy_to(dm_for_filter, d1_sqlite, "test_table_1"),
+    dm_add_tbl(dm_for_filter, test_table_1 = d1)
   )
 })
 
