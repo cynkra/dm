@@ -314,6 +314,7 @@ test_that("subsetting for dm/zoomed_dm works", {
 test_that("methods for dm/zoomed_dm work", {
   expect_identical(length(dm_for_filter), 6L)
   expect_identical(length(dm_zoom_to(dm_for_filter, t2)), 3L)
+  # FIXME: expect_identical(length(dm_zoom_to(dm_for_filter_sqlite, t2)), 3L) fails: list of 2
 
   expect_identical(names(dm_for_filter), src_tbls(dm_for_filter))
   expect_identical(names(dm_zoom_to(dm_for_filter, t2)), colnames(t2))
