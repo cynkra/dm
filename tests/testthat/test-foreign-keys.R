@@ -1,92 +1,86 @@
 test_that("dm_add_fk() works as intended?", {
-  iwalk(
-    .x = dm_test_obj_src,
-    ~ expect_dm_error(
-      dm_add_fk(.x, dm_table_1, a, dm_table_4),
-      class = "ref_tbl_has_no_pk"
-    )
+  expect_dm_error(
+    dm_add_fk(dm_test_obj, dm_table_1, a, dm_table_4),
+    class = "ref_tbl_has_no_pk"
   )
 
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_true(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_has_pk(dm_table_4)
-    )
+  expect_dm_error(
+    dm_add_fk(dm_test_obj_sqlite, dm_table_1, a, dm_table_4),
+    class = "ref_tbl_has_no_pk"
+  )
+
+  expect_true(
+    dm_add_pk(dm_test_obj, dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_has_fk(dm_table_1, dm_table_4)
+  )
+
+  expect_true(
+    dm_add_pk(dm_test_obj_sqlite, dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_has_fk(dm_table_1, dm_table_4)
   )
 })
 
 test_that("dm_has_fk() and dm_get_fk() work as intended?", {
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_true(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_has_fk(dm_table_1, dm_table_4)
-    )
+  expect_identical(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_get_fk(dm_table_1, dm_table_4),
+    new_keys("a")
   )
 
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_identical(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_get_fk(dm_table_1, dm_table_4),
-      new_keys("a")
-    )
+  expect_identical(
+    dm_test_obj_sqlite %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_get_fk(dm_table_1, dm_table_4),
+    new_keys("a")
   )
 
-
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_true(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_has_fk(dm_table_2, dm_table_4)
-    )
+  expect_true(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_has_fk(dm_table_2, dm_table_4)
   )
 
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_identical(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_get_fk(dm_table_2, dm_table_4),
-      new_keys("c")
-    )
+  expect_true(
+    dm_test_obj_sqlite %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_has_fk(dm_table_2, dm_table_4)
   )
 
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_false(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_has_fk(dm_table_3, dm_table_4)
-    )
+  expect_identical(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_get_fk(dm_table_2, dm_table_4),
+    new_keys("c")
   )
 
-  map(
-    .x = dm_test_obj_src,
-    ~ expect_identical(
-      .x %>%
-        dm_add_pk(dm_table_4, c) %>%
-        dm_add_fk(dm_table_1, a, dm_table_4) %>%
-        dm_add_fk(dm_table_2, c, dm_table_4) %>%
-        dm_get_fk(dm_table_3, dm_table_4),
-      new_keys(character(0))
-    )
+  expect_false(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_has_fk(dm_table_3, dm_table_4)
+  )
+
+  expect_identical(
+    dm_test_obj %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_get_fk(dm_table_3, dm_table_4),
+    new_keys(character(0))
   )
 })
 
