@@ -211,6 +211,8 @@ def_dm_for_filter <- dm_get_def(dm_for_filter)
 
 dm_for_filter_rev %<-%
   new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
+dm_for_filter_rev_sqlite %<-% copy_dm_to(sqlite, dm_for_filter_rev)
+
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 

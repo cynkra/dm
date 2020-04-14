@@ -97,42 +97,43 @@ test_that("we get filtered/unfiltered tables with respective funs", {
   )
 })
 
+test_that("dm_filter() works on different srcs", {
+  expect_identical(
+    dm_filter(dm_for_filter, t1, a < 8, a > 3) %>% dm_apply_filters() %>% dm_get_tables(),
+    output_1
+  )
 
-
-
-test_that("dm_filter() works as intended for reversed dm", {
-  map(
-    dm_for_filter_rev_src,
-    function(dm_for_filter_rev) {
-      expect_identical(
-        dm_filter(dm_for_filter_rev, t1, a < 8, a > 3) %>%
-          collect() %>%
-          dm_get_tables(),
-        rev(output_1)
-      )
-    }
+  expect_identical(
+    dm_filter(dm_for_filter_sqlite, t1, a < 8, a > 3) %>% collect() %>% dm_get_tables(),
+    output_1
   )
 })
 
-test_that("dm_filter() works on different srcs", {
-  map(
-    .x = dm_for_filter_src,
-    ~ expect_identical(
-      dm_filter(.x, t1, a < 8, a > 3) %>% collect() %>% dm_get_tables(),
-      output_1
-    )
+test_that("dm_filter() works as intended for reversed dm", {
+  expect_identical(
+    dm_filter(dm_for_filter_rev, t1, a < 8, a > 3) %>%
+      dm_apply_filters() %>%
+      dm_get_tables(),
+    rev(output_1)
+  )
+
+  expect_identical(
+    dm_filter(dm_for_filter_rev_sqlite, t1, a < 8, a > 3) %>%
+      collect() %>%
+      dm_get_tables(),
+    rev(output_1)
   )
 })
 
 test_that("dm_filter() works as intended for inbetween table", {
-  map(
-    dm_for_filter_src,
-    function(dm_for_filter) {
-      expect_identical(
-        dm_filter(dm_for_filter, t3, g == "five") %>% collect() %>% dm_get_tables(),
-        output_3
-      )
-    }
+  expect_identical(
+    dm_filter(dm_for_filter, t3, g == "five") %>% dm_apply_filters() %>% dm_get_tables(),
+    output_3
+  )
+
+  expect_identical(
+    dm_filter(dm_for_filter_sqlite, t3, g == "five") %>% collect() %>% dm_get_tables(),
+    output_3
   )
 })
 
@@ -146,21 +147,25 @@ test_that("dm_filter() works without primary keys", {
 })
 
 test_that("dm_filter() returns original `dm` object when ellipsis empty", {
-  map(
-    dm_for_filter_src,
-    ~ expect_equivalent_dm(
-      dm_filter(.x, t3),
-      .x
-    )
+  expect_equivalent_dm(
+    dm_filter(dm_for_filter, t3),
+    dm_for_filter
+  )
+
+  expect_equivalent_dm(
+    dm_filter(dm_for_filter_sqlite, t3),
+    dm_for_filter_sqlite
   )
 })
 
 test_that("dm_filter() fails when no table name is provided", {
-  map(
-    dm_for_filter_src,
-    ~ expect_dm_error(
-      dm_filter(.x),
-      class = "table_not_in_dm"
-    )
+  expect_dm_error(
+    dm_filter(dm_for_filter),
+    class = "table_not_in_dm"
+  )
+
+  expect_dm_error(
+    dm_filter(dm_for_filter_sqlite),
+    class = "table_not_in_dm"
   )
 })
