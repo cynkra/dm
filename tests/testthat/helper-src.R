@@ -223,6 +223,8 @@ dm_test_obj %<-% as_dm(list(
   dm_table_4 = d8
 ))
 
+dm_test_obj_sqlite %<-% copy_dm_to(sqlite, dm_test_obj)
+
 dm_test_obj_2 %<-% as_dm(list(
   dm_table_1 = d4,
   dm_table_2 = d7,

@@ -7,9 +7,8 @@ test_that("can access tables", {
 })
 
 test_that("can create dm with as_dm()", {
-  walk(
-    dm_test_obj_src, ~ expect_equivalent_dm(as_dm(dm_get_tables(.)), dm_test_obj)
-  )
+  expect_equivalent_dm(as_dm(dm_get_tables(dm_test_obj)), dm_test_obj)
+  expect_equivalent_dm(as_dm(dm_get_tables(dm_test_obj_sqlite)), dm_test_obj)
 })
 
 test_that("creation of empty `dm` works", {
