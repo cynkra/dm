@@ -22,6 +22,7 @@ cache <- search_env("dm_cache")
 }
 
 sqlite %<-% src_sqlite(":memory:", create = TRUE)
+local_src %<-% src_df(env = .GlobalEnv)
 
 # for examine_cardinality...() ----------------------------------------------
 
@@ -154,6 +155,8 @@ dm_for_filter %<-% {
   dm_for_filter_w_cycle %>%
     dm_select_tbl(-t7)
 }
+
+dm_for_filter_sqlite %<-% copy_dm_to(sqlite, dm_for_filter)
 
 message("for testing filter and semi_join (3)")
 
