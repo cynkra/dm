@@ -69,7 +69,7 @@ Lazy tables defer downloading of table data until results are collected for prin
 ## Building a dm from tables
 
 A dm can also be constructed from individual tables or views.
-This is useful for when you want to work with a subset of a database's tables or you want to build a database out of tables from different sources.
+This is useful for when you want to work with a subset of a database's tables, perhaps from different schemas.
 
 Below we use the `tbl()` function from {dplyr} to extract two tables from the financial database.
 Then we create our dm by passing the tables in an as arguments.
