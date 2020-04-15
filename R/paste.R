@@ -15,7 +15,7 @@
 #'   - `"keys"`: [dm_add_pk()] and [dm_add_fk()] statements for adding keys.
 #'   - `"color"`: [dm_set_colors()] statements to set color.
 #'   - `"all"`: All options above except `"select"`
-#' 
+#'
 #'   Default `NULL` is equivalent to `c("keys", "color")`
 #' @param path Output file, if `NULL` the code is printed to the console.
 #'
@@ -58,7 +58,7 @@ dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
 }
 
 check_paste_options <- function(options, select) {
-  allowed_options <- c("all", "tables", "keys", "pks", "select", "color")
+  allowed_options <- c("all", "tables", "keys", "select", "color")
 
   if (is.null(options)) {
     options <- c("keys", "color")
@@ -102,7 +102,7 @@ dm_paste_impl <- function(dm, options, tab_width) {
   code_select <- if ("select" %in% options) dm_paste_select(dm)
 
   # adding code for establishing PKs
-  code_pks <- if (any(c("keys", "pks") %in% options)) dm_paste_pks(dm)
+  code_pks <- if ("keys" %in% options) dm_paste_pks(dm)
 
   # adding code for establishing FKs
   code_fks <- if ("keys" %in% options) dm_paste_fks(dm)
