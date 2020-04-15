@@ -248,7 +248,6 @@ There is a third {dbplyr} verb that has not yet been implemented. `collapse()` f
 `compute()` also works for a zoomed dm.
 Calling it during a chain of operations will execute all relevant SQL queries up to that point.
 Operations after the `compute()` will use the generated results.
-#FIXME - is this true? Is this what is happening?
 
 
 ``````{r }
