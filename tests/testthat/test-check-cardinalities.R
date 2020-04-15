@@ -1,12 +1,9 @@
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
   card_0_n_d1_d2_df <- find_testthat_root_file(paste0("out/card-0-n-d1-d2-df.txt"))
-  card_0_n_d1_d2_sqlite <- find_testthat_root_file(paste0("out/card-0-n-d1-d2-sqlite.txt"))
 
   #  expecting silent: ------------------------------------------------------
 
   expect_silent(check_cardinality_0_n(parent_table = d1, pk_column = a, child_table = d3, fk_column = c))
-
-  expect_silent(check_cardinality_0_n(d1_sqlite, a, d3_sqlite, c))
 
   expect_silent(check_cardinality_1_n(d1, a, d3, c))
 
@@ -27,11 +24,6 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   )
 
   expect_identical(
-    examine_cardinality(d8_sqlite, c, d2_sqlite, a),
-    "injective mapping ( child: 0 or 1 -> parent: 1)"
-  )
-
-  expect_identical(
     examine_cardinality(d5, a, d4, c),
     "surjective mapping (child: 1 to n -> parent: 1)"
   )
@@ -48,6 +40,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
 
   # expect specific errors and sometimes specific output due to errors ---------------
 
+  # FIXME: Regarding PR #313: the known output changes, depending on if it's on a DB or locally
   expect_known_output(
     expect_dm_error(
       check_cardinality_0_n(
@@ -59,19 +52,6 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
       class = "not_subset_of"
     ),
     card_0_n_d1_d2_df
-  )
-
-  expect_known_output(
-    expect_dm_error(
-      check_cardinality_0_n(
-        parent_table = d1_sqlite,
-        pk_column = a,
-        child_table = d2_sqlite,
-        fk_column = a
-      ),
-      class = "not_subset_of"
-    ),
-    card_0_n_d1_d2_sqlite
   )
 
   expect_dm_error(

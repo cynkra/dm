@@ -8,7 +8,6 @@ test_that("can access tables", {
 
 test_that("can create dm with as_dm()", {
   expect_equivalent_dm(as_dm(dm_get_tables(dm_test_obj)), dm_test_obj)
-  expect_equivalent_dm(as_dm(dm_get_tables(dm_test_obj_sqlite)), dm_test_obj)
 })
 
 test_that("creation of empty `dm` works", {
@@ -75,13 +74,13 @@ test_that("'copy_to.dm()' works", {
     "need_unique_names"
   )
 
-  # copying local `tibble` to sqlite `dm`
+  # copying `tibble` from chosen src to sqlite `dm`
   expect_equivalent_dm(
     copy_to(dm_for_filter_sqlite, d1, "test_table"),
     dm_add_tbl(dm_for_filter_sqlite, test_table = d1_sqlite)
   )
 
-  # copying sqlite `tibble` to local `dm`
+  # copying sqlite `tibble` to `dm` on src of choice
   expect_equivalent_dm(
     copy_to(dm_for_filter, d1_sqlite, "test_table_1"),
     dm_add_tbl(dm_for_filter, test_table_1 = d1)
@@ -89,6 +88,8 @@ test_that("'copy_to.dm()' works", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
+  # FIXME: Regarding PR #313: should this be tested on object `dm_for_filter` and the test
+  # skipped if it is a local dm?
   def <-
     dm_for_filter_sqlite %>%
     dm_filter(t1, a > 3) %>%
@@ -100,6 +101,8 @@ test_that("'compute.dm()' computes tables on DB", {
 })
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
+  # FIXME: Regarding PR #313: should this be tested on object `dm_for_filter` and the test
+  # skipped if it is a local dm?
   zoomed_dm_for_compute <- dm_for_filter_sqlite %>%
     dm_zoom_to(t1) %>%
     mutate(c = a + 1)
@@ -228,12 +231,7 @@ test_that("`pull_tbl()`-methods work", {
   )
 
   expect_identical(
-    pull_tbl(dm_for_filter_sqlite, t5) %>% collect(),
-    t5
-  )
-
-  expect_identical(
-    dm_zoom_to(dm_for_filter_sqlite, t3) %>%
+    dm_zoom_to(dm_for_filter, t3) %>%
       mutate(new_col = row_number() * 3) %>%
       pull_tbl() %>%
       collect(),
@@ -269,26 +267,16 @@ test_that("numeric subsetting works", {
   # check specifically for the right output in one case
   expect_equal(dm_for_filter[[4]], t4)
 
-  # compare numeric subsetting and subsetting by name locally and on SQLite
+  # compare numeric subsetting and subsetting by name on chosen src
   expect_identical(
     dm_for_filter[["t2"]],
     dm_for_filter[[2]]
   )
 
-  expect_identical(
-    dm_for_filter_sqlite[["t2"]],
-    dm_for_filter_sqlite[[2]]
-  )
-
-  # check if reducing `dm` size (and reordering) works locally and on SQLite
+  # check if reducing `dm` size (and reordering) works on chosen src
   expect_equivalent_dm(
     dm_for_filter[c(1, 5, 3)],
     dm_select_tbl(dm_for_filter, 1, 5, 3)
-  )
-
-  expect_equivalent_dm(
-    dm_for_filter_sqlite[c("t1", "t5", "t3")],
-    dm_select_tbl(dm_for_filter_sqlite, 1, 5, 3)
   )
 })
 

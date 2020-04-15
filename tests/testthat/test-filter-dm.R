@@ -103,6 +103,7 @@ test_that("dm_filter() works on different srcs", {
     output_1
   )
 
+  # FIXME: maybe always include this test on a DB, despite PR #313?
   expect_identical(
     dm_filter(dm_for_filter_sqlite, t1, a < 8, a > 3) %>% collect() %>% dm_get_tables(),
     output_1
@@ -117,6 +118,7 @@ test_that("dm_filter() works as intended for reversed dm", {
     rev(output_1)
   )
 
+  # FIXME: maybe always include this test on a DB, despite PR #313?
   expect_identical(
     dm_filter(dm_for_filter_rev_sqlite, t1, a < 8, a > 3) %>%
       collect() %>%
@@ -131,6 +133,7 @@ test_that("dm_filter() works as intended for inbetween table", {
     output_3
   )
 
+  # FIXME: maybe always include this test on a DB, despite PR #313?
   expect_identical(
     dm_filter(dm_for_filter_sqlite, t3, g == "five") %>% collect() %>% dm_get_tables(),
     output_3
@@ -152,6 +155,7 @@ test_that("dm_filter() returns original `dm` object when ellipsis empty", {
     dm_for_filter
   )
 
+  # FIXME: maybe always include this test on a DB, despite PR #313?
   expect_equivalent_dm(
     dm_filter(dm_for_filter_sqlite, t3),
     dm_for_filter_sqlite
@@ -164,6 +168,7 @@ test_that("dm_filter() fails when no table name is provided", {
     class = "table_not_in_dm"
   )
 
+  # FIXME: maybe always include this test on a DB, despite PR #313?
   expect_dm_error(
     dm_filter(dm_for_filter_sqlite),
     class = "table_not_in_dm"

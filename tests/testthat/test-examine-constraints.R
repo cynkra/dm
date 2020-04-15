@@ -40,6 +40,7 @@ test_that("`dm_examine_constraints()` works", {
       new_dm_examine_constraints()
   )
 
+  # FIXME: maybe always include this test on a DB, despite PR #313?
   expect_identical(
     dm_examine_constraints(dm_for_disambiguate_sqlite),
     tibble(
@@ -60,6 +61,7 @@ test_that("`dm_examine_constraints()` works", {
     nyc_check
   )
 
+  # FIXME: maybe always include this test on a DB, despite PR #313?
   expect_identical(
     dm_examine_constraints(dm_nycflights_small_sqlite) %>%
       mutate(problem = if_else(problem == "", "", "<reason>")),

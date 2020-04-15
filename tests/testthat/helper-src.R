@@ -22,6 +22,7 @@ cache <- search_env("dm_cache")
 }
 
 sqlite %<-% src_sqlite(":memory:", create = TRUE)
+# FIXME: Regarding PR #313: possibly local_src (possibly renamed) could become the src on which we want to perform the tests?
 local_src %<-% src_df(env = .GlobalEnv)
 
 # for examine_cardinality...() ----------------------------------------------
