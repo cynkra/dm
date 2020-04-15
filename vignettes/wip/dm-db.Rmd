@@ -165,6 +165,7 @@ my_dm_keys %>%
 ## Performing operations on tables by "zooming"
 
 As the dm is a collection of tables, if we wish to perform operations on an individual table we set it as the context for those operations using `dm_zoom_to()`.
+See `vignette("dm-zoom-to-table", package = "dm")` for more detail on zooming.
 
 Since dm operations are transient unless explicitly requested, our chain of manipulations on the selected table are made permanent by copying it into a new table at completion with `dm_insert_zoomed()`.
 
