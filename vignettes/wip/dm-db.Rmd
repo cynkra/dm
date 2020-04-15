@@ -131,7 +131,7 @@ my_dm_keys %>%
   dm_add_tbl(trans)
 ``````
 
-For tables from other sources or the local environment `[copy_to()](missing_link)` from the {dplyr} package is used.
+For tables from other sources or from the local environment `dplyr::copy_to()` is used.
 `copy_to()` is discussed later in this article.
 
 ## Transient nature of operations
