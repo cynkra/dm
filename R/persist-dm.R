@@ -10,7 +10,7 @@
 #' in two compatible [dm] objects on the same data source.
 #'
 #' The functions make sure that the tables in the target dm
-#' are processed in topological order so that parent (dimension) 
+#' are processed in topological order so that parent (dimension)
 #' tables receive insertions before child (fact) tables.
 #'
 #' @param target_dm Target `dm` object.
