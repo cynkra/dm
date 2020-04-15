@@ -88,8 +88,10 @@ my_manual_dm
 ## Define Primary and Foreign Keys
 
 Primary and Foreign Keys are how relational database tables are linked with each other.
-A primary key is a column (or sometimes a combination of columns) that has a unique value for each row within a table.
-A foreign key is a column (or sometimes a combination of columns) containing the primary key for a row in another table.
+A primary key is a column that has a unique value for each row within a table.
+A foreign key is a column containing the primary key for a row in another table.[^compound]
+
+[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/krlmlr/dm/issues/3).
 Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
 
