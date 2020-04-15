@@ -26,10 +26,20 @@
 #'     dm_draw()
 #' }
 dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
+  airlines <- nycflights13::airlines
+  airports <- nycflights13::airports
+  planes <- nycflights13::planes
+
+  if (subset) {
+    flights <- flights_subset()
+    weather <- weather_subset()
+  } else {
+    flights <- nycflights13::flights
+    weather <- nycflights13::weather
+  }
+
   dm <-
-    dm_from_src(
-      src_df("nycflights13")
-    ) %>%
+    dm(airlines, airports, flights, planes, weather) %>%
     dm_add_pk(planes, tailnum) %>%
     dm_add_pk(airlines, carrier) %>%
     dm_add_pk(airports, faa) %>%
@@ -53,13 +63,15 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
       dm_add_fk(flights, dest, airports, check = FALSE)
   }
 
-  if (subset) {
-    dm <-
-      dm %>%
-      dm_zoom_to(flights) %>%
-      filter(day == 10) %>%
-      dm_update_zoomed()
-  }
-
   dm
+}
+
+flights_subset <- function() {
+  nycflights13::flights %>%
+    filter(day == 10)
+}
+
+weather_subset <- function() {
+  nycflights13::weather %>%
+    filter(day == 10)
 }
