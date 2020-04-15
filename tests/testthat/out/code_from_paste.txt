@@ -190,5 +190,5 @@ Message: dm()
 
 > # error for bad option
 > dm() %>% dm_paste(options = c("bogus", "all", "mad"))
-Error: Option unknown: "bogus", "mad". Must be one of "all", "tables", "keys", "pks", "select", "color".
+Error: Option unknown: "bogus", "mad". Must be one of "all", "tables", "keys", "select", "color".
 
