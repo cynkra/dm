@@ -12,10 +12,11 @@
 #'     derived from [dm_ptype()], overrides `"select"`.
 #'   - `"select"`: [dm_select()] statements for columns that are part
 #'     of the dm.
-#'   - `"pks"`: [dm_add_pk()] statements for primary keys.
-#'   - `"keys"`: [dm_add_fk()] statements for foreign keys, implies `"pks"`.
+#'   - `"keys"`: [dm_add_pk()] and [dm_add_fk()] statements for adding keys.
 #'   - `"color"`: [dm_set_colors()] statements to set color.
 #'   - `"all"`: All options above except `"select"`
+#' 
+#'   Default `NULL` is equivalent to `c("keys", "color")`
 #' @param path Output file, if `NULL` the code is printed to the console.
 #'
 #' @details
