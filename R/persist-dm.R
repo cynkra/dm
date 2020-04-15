@@ -9,12 +9,12 @@
 #' All operations expect that both existing and new data are presented
 #' in two compatible [dm] objects on the same data source.
 #'
-#' The tables in the target dm are ordered topologically
-#' so that parent (dimension) tables receive insertions
-#' before child (fact) tables.
+#' The functions make sure that the tables in the target dm
+#' are processed in topological order so that parent (dimension) 
+#' tables receive insertions before child (fact) tables.
 #'
-#' @param target_dm Target dm object.
-#' @param dm dm object with new data.
+#' @param target_dm Target `dm` object.
+#' @param dm `dm` object with new data.
 #' @param ... Must be empty.
 #' @param dry_run Set to `TRUE` for running the operation without persisting.
 #'   In this mode, a modified version of `target_dm` is returned.
@@ -100,6 +100,8 @@ NULL
 #'
 #' `dm_insert()` adds new records.
 #' The primary keys must differ from existing records.
+#' This must be ensured by the caller and might be checked by the underlying database.
+#' Use `dry_run = TRUE` and apply [dm_examine_constraints()] to check beforehand.
 #' @rdname persist-dm
 #' @export
 dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
