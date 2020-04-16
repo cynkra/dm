@@ -44,7 +44,7 @@ For some databases, such as Postgres and SQL Server, primary and foreigh keys ar
 To demonstrate, we connect to a [relational dataset repository](https://relational.fit.cvut.cz/) with a database server that is publicly accessible without registration.
 There is a [financial dataset](https://relational.fit.cvut.cz/dataset/Financial) that contains loan data, along with relevant information and transactions.
 We chose this loan dataset because the relationships between `loan`, `account`, `transactions` tables are a good representation of databases that record real-world business transactions.
-The DBI interface for the repository's MariaDB server does not import primary or foreign keys, so we will need to add them.
+The repository uses a MariaDB server for which we do not currently import primary or foreign keys, so we will need to add them.
 
 Creating a dm object takes a single call to `dm_from_src()`.
 
@@ -299,4 +299,3 @@ It takes the same arguments as `copy_dm_to()`, except the second argument, inste
 
 In this tutorial we have demonstrated how to use {dm} to work with existing databases and to construct your own from local tables, including specifying key constraints, and then deploy them to a DBMS.
 If you would like more details an overview of all the methods available in {dm}, please see the [reference documentation](https://krlmlr.github.io/dm/reference/index.html).
-
