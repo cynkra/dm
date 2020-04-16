@@ -62,6 +62,7 @@ dm_financial_sqlite <- function() {
   stopifnot(rlang::is_installed("RSQLite"))
 
   my_dm <-
+    # should this be dm_financial()?
     dm_financial_sqlite() %>%
     dm_select_tbl(-trans)
 
