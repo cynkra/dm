@@ -109,7 +109,9 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   # "1" is without computing
   def_1 <- dm_update_zoomed(zoomed_dm_for_compute) %>% dm_get_def()
   # "2" is with computing
-  def_2 <- compute(zoomed_dm_for_compute) %>% dm_update_zoomed() %>% dm_get_def()
+  def_2 <- compute(zoomed_dm_for_compute) %>%
+    dm_update_zoomed() %>%
+    dm_get_def()
   test_1 <- map_chr(map(def_1$data, sql_render), as.character)
   test_2 <- map_chr(map(def_2$data, sql_render), as.character)
 
@@ -224,7 +226,6 @@ test_that("validator speaks up when something's wrong", {
 })
 
 test_that("`pull_tbl()`-methods work", {
-
   expect_identical(
     pull_tbl(dm_for_filter, t5),
     t5

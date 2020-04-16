@@ -16,7 +16,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   expect_silent(check_cardinality_0_1(d5, a, d6, c))
 
 
-# scenarios for examine_cardinality() -------------------------------------
+  # scenarios for examine_cardinality() -------------------------------------
 
   expect_identical(
     examine_cardinality(d8, c, d2, a),
