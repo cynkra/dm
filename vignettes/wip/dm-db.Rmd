@@ -267,21 +267,7 @@ To deploy a dm we must copy it to a DBMS.
 This is done using the method `copy_dm_to()`, which is used behind the scenes by our `dm_financial_sqlite()` function, the code for which appears below.
 
 ```{r}
-dm_financial_sqlite <- function() {
-  stopifnot(rlang::is_installed("RSQLite"))
-
-  my_dm <-
-    # FIXME
-    # should this be dm_financial()?
-    dm_financial_sqlite() %>%
-    # we remove the trans table from the dm due to its size
-    dm_select_tbl(-trans)
-
-  sqlite_db <- DBI::dbConnect(RSQLite::SQLite())
-  sqlite_dm <- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)
-
-  sqlite_dm
-}
+dm_financial_sqlite
 ```
 
 As demonstrated, `copy_dm_to()` takes as arguments a destination, a {DBI} connection, the dm we wish to deploy, and here the `temporary` argument set to FALSE as this is a deployment and we want it to be permanent.
