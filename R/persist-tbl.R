@@ -9,17 +9,24 @@
 #' All operations expect that both existing and new data are presented
 #' in two compatible [tbl] objects on the same data source.
 #'
+#' These operations, in contrast to all other operations,
+#' may lead to irreversible changes to the underlying database.
+#' Therefore, persistence must be requested explicitly with `persist = TRUE`.
+#' By default, an informative message is given.
+#'
 #' @param target Target table object.
 #' @param source Source table object.
 #' @param ... Must be empty.
-#' @param dry_run Set to `TRUE` for running the operation without persisting.
+#' @param persist
+#'   Set to `TRUE` for running the operation without persisting.
 #'   In this mode, a modified version of `target` is returned.
 #'   This allows verifying the results of an operation before actually
 #'   applying it.
+#'   Set to `FALSE` to perform the update on the database table.
+#'   By default, an informative message is shown.
 #'
-#' @return A tbl object of the same structure as `target`,
-#'   visible only if `dry_run = TRUE`, otherwise [invisible].
-#'   Identical to `target_dm` when run on a database with `dry_run = FALSE`.
+#' @return A tbl object of the same structure as `target`.
+#'   If `persist = TRUE`, [invisible] and identical to `target_dm`.
 #'
 #' @name persist-tbl
 #' @examples
@@ -41,7 +48,13 @@
 #'
 #'   # Copy to temporary tables on the target database:
 #'   flights_jan_1_sqlite <- copy_to(sqlite, flights_jan_1)
+#'
+#'   # Dry run by default:
 #'   tbl_insert(flights_sqlite, flights_jan_1_sqlite)
+#'   print(count(flights_sqlite))
+#'
+#'   # Explicitly request persistence:
+#'   tbl_insert(flights_sqlite, flights_jan_1_sqlite, persist = TRUE)
 #'   print(count(flights_sqlite))
 #'
 #'   # Second update:
@@ -52,11 +65,11 @@
 #'   # Copy to temporary tables on the target database:
 #'   flights_jan_2_sqlite <- copy_to(sqlite, flights_jan_2)
 #'
-#'   # Dry run:
+#'   # Explicit dry run:
 #'   flights_new <- tbl_insert(
 #'     flights_sqlite,
 #'     flights_jan_2_sqlite,
-#'     dry_run = TRUE
+#'     persist = FALSE
 #'   )
 #'   print(count(flights_new))
 #'   print(count(flights_sqlite))
@@ -66,7 +79,7 @@
 #'     dplyr::count(year, month, day)
 #'
 #'   # Apply:
-#'   tbl_insert(flights_sqlite, flights_jan_2_sqlite)
+#'   tbl_insert(flights_sqlite, flights_jan_2_sqlite, persist = TRUE)
 #'   print(count(flights_sqlite))
 #' }
 NULL
@@ -77,38 +90,38 @@ NULL
 #' `tbl_insert()` adds new records.
 #' @rdname persist-tbl
 #' @export
-tbl_insert <- function(target, source, ..., dry_run = FALSE) {
+tbl_insert <- function(target, source, ..., persist = FALSE) {
   ellipsis::check_dots_used(action = warn)
   UseMethod("tbl_insert", target)
 }
 
 #' @export
-tbl_insert.data.frame <- function(target, source, ..., dry_run = FALSE) {
+tbl_insert.data.frame <- function(target, source, ..., persist = FALSE) {
   vctrs::vec_rbind(target, source)
 }
 
 #' @export
-tbl_insert.tbl_dbi <- function(target, source, ..., dry_run = FALSE) {
+tbl_insert.tbl_dbi <- function(target, source, ..., persist = FALSE) {
   # Also in dry-run mode, for early notification of problems
   # Already quoted
-  name <- target_table_name(target, dry_run)
+  name <- target_table_name(target, persist)
 
-  if (dry_run) {
-    union_all(target, source)
-  } else {
+  if (persist) {
     sql <- paste0(
       "INSERT INTO ", name, "\n",
       dbplyr::remote_query(source)
     )
     dbExecute(dbplyr::remote_con(target), sql)
     invisible(NULL)
+  } else {
+    union_all(target, source)
   }
 }
 
-target_table_name <- function(x, dry_run) {
+target_table_name <- function(x, persist) {
   name <- dbplyr::remote_name(x)
   if (is.null(name)) {
-    raise <- if (dry_run) warn else abort
+    raise <- if (persist) abort else warn
     raise("Can't determine name for target table.")
   }
   name

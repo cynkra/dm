@@ -31,7 +31,7 @@ verify_output("out/persist-tbl.txt", {
   flights_new <- tbl_insert(
     flights_sqlite,
     flights_jan_2_sqlite,
-    dry_run = TRUE
+    persist = NULL
   )
   print(count(flights_new))
   print(count(flights_sqlite))

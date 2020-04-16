@@ -51,7 +51,7 @@ verify_output("out/persist-dm.txt", {
   flights_new <- dm_insert(
     flights_sqlite,
     flights_feb_sqlite,
-    dry_run = TRUE
+    persist = NULL
   )
   print(dm_nrow(flights_new))
   print(dm_nrow(flights_sqlite))

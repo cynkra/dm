@@ -13,17 +13,24 @@
 #' are processed in topological order so that parent (dimension)
 #' tables receive insertions before child (fact) tables.
 #'
+#' These operations, in contrast to all other operations,
+#' may lead to irreversible changes to the underlying database.
+#' Therefore, persistence must be requested explicitly with `persist = TRUE`.
+#' By default, an informative message is given.
+#'
 #' @param target_dm Target `dm` object.
 #' @param dm `dm` object with new data.
 #' @param ... Must be empty.
-#' @param dry_run Set to `TRUE` for running the operation without persisting.
+#' @param persist
+#'   Set to `TRUE` for running the operation without persisting.
 #'   In this mode, a modified version of `target_dm` is returned.
 #'   This allows verifying the results of an operation before actually
 #'   applying it.
+#'   Set to `FALSE` to perform the update on the database table.
+#'   By default, an informative message is shown.
 #'
-#' @return A dm object of the same [dm_ptype()] as `target_dm`,
-#'   visible only if `dry_run = TRUE`, otherwise [invisible].
-#'   Identical to `target_dm` when run on a database with `dry_run = FALSE`.
+#' @return A dm object of the same [dm_ptype()] as `target_dm`.
+#'   If `persist = TRUE`, [invisible] and identical to `target_dm`.
 #'
 #' @name persist-dm
 #' @examples
@@ -59,7 +66,13 @@
 #'
 #'   # Copy to temporary tables on the target database:
 #'   flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
+#'
+#'   # Dry run by default:
 #'   dm_insert(flights_sqlite, flights_jan_sqlite)
+#'   print(dm_nrow(flights_sqlite))
+#'
+#'   # Explicitly request persistence:
+#'   dm_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
 #'   print(dm_nrow(flights_sqlite))
 #'
 #'   # Second update:
@@ -76,11 +89,11 @@
 #'   # Copy to temporary tables on the target database:
 #'   flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
 #'
-#'   # Dry run:
+#'   # Explicit dry run:
 #'   flights_new <- dm_insert(
 #'     flights_sqlite,
 #'     flights_feb_sqlite,
-#'     dry_run = TRUE
+#'     persist = FALSE
 #'   )
 #'   print(dm_nrow(flights_new))
 #'   print(dm_nrow(flights_sqlite))
@@ -90,7 +103,7 @@
 #'     dm_examine_constraints()
 #'
 #'   # Apply:
-#'   dm_insert(flights_sqlite, flights_feb_sqlite)
+#'   dm_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
 #'   print(dm_nrow(flights_sqlite))
 #' }
 NULL
@@ -101,13 +114,13 @@ NULL
 #' `dm_insert()` adds new records.
 #' The primary keys must differ from existing records.
 #' This must be ensured by the caller and might be checked by the underlying database.
-#' Use `dry_run = TRUE` and apply [dm_examine_constraints()] to check beforehand.
+#' Use `persist = FALSE` and apply [dm_examine_constraints()] to check beforehand.
 #' @rdname persist-dm
 #' @export
-dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
+dm_insert <- function(target_dm, dm, ..., persist = FALSE) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_insert, top_down = TRUE, dry_run)
+  dm_persist(target_dm, dm, tbl_insert, top_down = TRUE, persist)
 }
 
 # dm_update
@@ -117,10 +130,10 @@ dm_insert <- function(target_dm, dm, ..., dry_run = FALSE) {
 #
 # @rdname persist-dm
 # @export
-dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
+dm_update <- function(target_dm, dm, ..., persist = FALSE) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_update, top_down = TRUE, dry_run)
+  dm_persist(target_dm, dm, tbl_update, top_down = TRUE, persist)
 }
 
 # dm_upsert
@@ -130,10 +143,10 @@ dm_update <- function(target_dm, dm, ..., dry_run = FALSE) {
 #
 # @rdname persist-dm
 # @export
-dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
+dm_upsert <- function(target_dm, dm, ..., persist = FALSE) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_upsert, top_down = TRUE, dry_run)
+  dm_persist(target_dm, dm, tbl_upsert, top_down = TRUE, persist)
 }
 
 # dm_delete
@@ -143,10 +156,10 @@ dm_upsert <- function(target_dm, dm, ..., dry_run = FALSE) {
 #
 # @rdname persist-dm
 # @export
-dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
+dm_delete <- function(target_dm, dm, ..., persist = FALSE) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_delete, top_down = FALSE, dry_run)
+  dm_persist(target_dm, dm, tbl_delete, top_down = FALSE, persist)
 }
 
 # dm_truncate
@@ -156,16 +169,16 @@ dm_delete <- function(target_dm, dm, ..., dry_run = FALSE) {
 #
 # @rdname persist-dm
 # @export
-dm_truncate <- function(target_dm, dm, ..., dry_run = FALSE) {
+dm_truncate <- function(target_dm, dm, ..., persist = FALSE) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_truncate, top_down = FALSE, dry_run)
+  dm_persist(target_dm, dm, tbl_truncate, top_down = FALSE, persist)
 }
 
-dm_persist <- function(target_dm, dm, operation, top_down, dry_run = FALSE) {
+dm_persist <- function(target_dm, dm, operation, top_down, persist = FALSE) {
   dm_check_persist(target_dm, dm)
 
-  dm_run_persist(target_dm, dm, operation, top_down, dry_run)
+  dm_run_persist(target_dm, dm, operation, top_down, persist)
 }
 
 dm_check_persist <- function(target_dm, dm) {
@@ -206,7 +219,7 @@ check_keys_compatible <- function(target_dm, dm) {
 
 
 
-dm_run_persist <- function(target_dm, dm, tbl_op, top_down, dry_run) {
+dm_run_persist <- function(target_dm, dm, tbl_op, top_down, persist) {
   # topologically sort tables
   graph <- dm::create_graph_from_dm(target_dm, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
@@ -219,8 +232,8 @@ dm_run_persist <- function(target_dm, dm, tbl_op, top_down, dry_run) {
   # FIXME: Extract keys for upsert and delete
   # Use keyholder?
 
-  # run operation(target_tbl, source_tbl, dry_run = dry_run) for each table
-  op_results <- map2(target_tbls, tbls, tbl_op, dry_run = dry_run)
+  # run operation(target_tbl, source_tbl, persist = persist) for each table
+  op_results <- map2(target_tbls, tbls, tbl_op, persist = persist)
 
   # operation() returns NULL if no table is needed, otherwise a tbl
   new_tables <- compact(op_results)
@@ -229,7 +242,7 @@ dm_run_persist <- function(target_dm, dm, tbl_op, top_down, dry_run) {
     target_dm %>%
     dm_patch_tbl(!!!new_tables)
 
-  if (dry_run) {
+  if (persist) {
     out
   } else {
     invisible(out)

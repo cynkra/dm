@@ -497,38 +497,37 @@ if (is_this_a_test()) {
   library(nycflights13)
 
   message("connecting")
-
   dbplyr::test_register_src("df", src_df(env = .GlobalEnv))
 
-  if (packageVersion("RSQLite") >= "2.1.1.9003") {
-    try(dbplyr::test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
-  }
-
-  local(try(
-    {
-      con <- DBI::dbConnect(
-        RPostgres::Postgres(),
-        dbname = "postgres", host = "localhost", port = 5432,
-        user = "postgres", bigint = "integer"
-      )
-      src <- src_dbi(con, auto_disconnect = TRUE)
-      dbplyr::test_register_src("postgres", src)
-      clear_postgres()
-    },
-    silent = TRUE
-  ))
-
-
-  # This will only work, if run on TS's laptop
-  try(
-    {
-      source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
-      con_mssql <- mssql_con()
-      src_mssql <- src_dbi(con_mssql)
-      dbplyr::test_register_src("mssql", src_mssql)
-    },
-    silent = TRUE
-  )
+  #
+  # if (packageVersion("RSQLite") >= "2.1.1.9003") {
+  #   try(dbplyr::test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
+  # }
+  #
+  # local(try(
+  #   {
+  #     con <- DBI::dbConnect(
+  #       RPostgres::Postgres(),
+  #       dbname = "postgres", host = "localhost", port = 5432,
+  #       user = "postgres", bigint = "integer"
+  #     )
+  #     src <- src_dbi(con, auto_disconnect = TRUE)
+  #     dbplyr::test_register_src("postgres", src)
+  #     clear_postgres()
+  #   },
+  #   silent = TRUE
+  # ))
+  #
+  #
+  # # This will only work, if run on TS's laptop
+  # try(
+  #   {
+  #     con_mssql <- mssql_con()
+  #     src_mssql <- src_dbi(con_mssql)
+  #     dbplyr::test_register_src("mssql", src_mssql)
+  #   },
+  #   silent = TRUE
+  # )
 
   message("loading into database")
 
