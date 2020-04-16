@@ -315,12 +315,16 @@ test_that("method length.zoomed_dm() works locally", {
   expect_length(dm_zoom_to(dm_for_filter, t2), 3L)
 })
 
-test_that("as.list()-methods work", {
-  expect_identical(
+test_that("as.list()-method works for `dm`", {
+  expect_equivalent_tbl_lists(
     as.list(dm_for_filter),
     list_for_filter
   )
+})
 
+test_that("as.list()-method works for `zoomed_dm`", {
+  # as.list() is no-op for `tbl_sql` object
+  skip_if_remote_src()
   expect_identical(
     as.list(dm_for_filter %>% dm_zoom_to(t4)),
     as.list(t4)
