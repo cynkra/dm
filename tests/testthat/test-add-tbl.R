@@ -74,8 +74,7 @@ test_that("dm_add_tbl() works", {
 
   # adding tables to an empty `dm` works for all sources
   expect_equivalent_tbl(
-    dm_add_tbl(dm(), test = d1_sqlite)$test %>%
-      collect(),
+    dm_add_tbl(dm(), test = d1_sqlite)$test,
     d1
   )
 
@@ -88,13 +87,13 @@ test_that("dm_add_tbl() works", {
 test_that("dm_rm_tbl() works", {
   # removes a table
   expect_equivalent_dm(
-    dm_rm_tbl(dm_for_filter_w_cycle, t7) %>% collect(),
+    dm_rm_tbl(dm_for_filter_w_cycle, t7),
     dm_for_filter
   )
 
   # removes more than one table
   expect_equivalent_dm(
-    dm_rm_tbl(dm_for_filter_w_cycle, t7, t5, t3) %>% collect(),
+    dm_rm_tbl(dm_for_filter_w_cycle, t7, t5, t3),
     dm_select_tbl(dm_for_filter, t1, t2, t4, t6)
   )
 
