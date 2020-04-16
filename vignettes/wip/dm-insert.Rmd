@@ -32,7 +32,7 @@ library(dm)
 This draft describes update operations on dm objects.
 
 Operations on a dm object are generally transient or ephemeral.
-Resulting dm or table objects must be stored in a new object, otherwise they are lost.
+Resulting dm or table objects must be stored in a new object otherwise they are lost.
 
 
 ## Design
