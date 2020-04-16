@@ -7,26 +7,26 @@ test_that("dm_add_tbl() works", {
   )
 
   # can I retrieve the tibble under its old name?
-  expect_identical(
+  expect_equivalent_tbl(
     tbl(dm_add_tbl(dm_for_filter, d1), "d1"),
     d1
   )
 
   # can I retrieve the tibble under a new name?
-  expect_identical(
+  expect_equivalent_tbl(
     tbl(dm_add_tbl(dm_for_filter, test = d1), "test"),
     d1
   )
 
   # we accept even weird table names, as long as they are unique
-  expect_identical(
+  expect_equivalent_tbl(
     tbl(d1 %>% dm_add_tbl(dm_for_filter, .), "."),
     d1
   )
 
   # do I avoid the warning when piping the table but setting the name?
   expect_silent(
-    expect_identical(
+    expect_equivalent_tbl(
       tbl(d1 %>% dm_add_tbl(dm_for_filter, new_name = .), "new_name"),
       d1
     )
@@ -73,7 +73,7 @@ test_that("dm_add_tbl() works", {
   )
 
   # adding tables to an empty `dm` works for all sources
-  expect_equal(
+  expect_equivalent_tbl(
     dm_add_tbl(dm(), test = d1_sqlite)$test %>%
       collect(),
     d1

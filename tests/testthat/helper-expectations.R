@@ -26,3 +26,10 @@ expect_name_repair_message <- function(expr) {
     expect_message(expr)
   }
 }
+
+# are two tables identical minus the `src`
+expect_equivalent_tbl <- function(tbl_1, tbl_2) {
+  tbl_1_lcl <- collect(tbl_1) %>% arrange_if(function(x) {!is_list(x)})
+  tbl_2_lcl <- collect(tbl_2) %>% arrange_if(function(x) {!is_list(x)})
+  expect_identical(tbl_1_lcl, tbl_2_lcl)
+}
