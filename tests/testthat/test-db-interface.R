@@ -7,6 +7,7 @@ test_that("copy_dm_to() copies data frames to databases", {
 
 test_that("copy_dm_to() copies data frames from databases", {
   expect_equivalent_dm(
+    # FIXME: Regarding PR #313: possibly local_src (possibly renamed) could become the src on which we want to perform the tests?
     copy_dm_to(local_src, dm_for_filter_sqlite, unique_table_names = TRUE),
     dm_for_filter_sqlite
   )
@@ -17,11 +18,13 @@ test_that("copy_dm_to() copies data frames from databases", {
 
 test_that("copy_dm_to() rejects overwrite and types arguments", {
   expect_dm_error(
+    # FIXME: Regarding PR #313: possibly local_src (possibly renamed) could become the src on which we want to perform the tests?
     copy_dm_to(local_src, dm_for_filter, overwrite = TRUE),
     class = "no_overwrite"
   )
 
   expect_dm_error(
+    # FIXME: Regarding PR #313: possibly local_src (possibly renamed) could become the src on which we want to perform the tests?
     copy_dm_to(local_src, dm_for_filter, types = character()),
     class = "no_types"
   )
