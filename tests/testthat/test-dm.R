@@ -133,12 +133,12 @@ test_that("some methods/functions for `zoomed_dm` work", {
 
 test_that("validator is silent", {
   expect_identical(
-    validate_dm(new_dm()),
+    expect_silent(validate_dm(new_dm())),
     empty_dm()
   )
 
   expect_identical(
-    validate_dm(dm_for_filter_w_cycle),
+    expect_silent(validate_dm(dm_for_filter_w_cycle)),
     dm_for_filter_w_cycle
   )
 })
