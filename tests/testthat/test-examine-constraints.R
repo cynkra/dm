@@ -40,30 +40,9 @@ test_that("`dm_examine_constraints()` works", {
       new_dm_examine_constraints()
   )
 
-  # FIXME: maybe always include this test on a DB, despite PR #313?
-  expect_identical(
-    dm_examine_constraints(dm_for_disambiguate_sqlite),
-    tibble(
-      table = c("iris_1", "iris_2"),
-      kind = c("PK", "FK"),
-      columns = new_keys("key"),
-      ref_table = c(NA, "iris_1"),
-      is_key = TRUE,
-      problem = ""
-    ) %>%
-      new_dm_examine_constraints()
-  )
-
   # case of some constraints, some violated:
   expect_identical(
     dm_examine_constraints(dm_nycflights_small) %>%
-      mutate(problem = if_else(problem == "", "", "<reason>")),
-    nyc_check
-  )
-
-  # FIXME: maybe always include this test on a DB, despite PR #313?
-  expect_identical(
-    dm_examine_constraints(dm_nycflights_small_sqlite) %>%
       mutate(problem = if_else(problem == "", "", "<reason>")),
     nyc_check
   )

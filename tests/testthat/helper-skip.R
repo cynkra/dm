@@ -6,3 +6,11 @@ skip_if_error <- function(expr) {
     }
   )
 }
+
+skip_if_remote_src <- function() {
+  # FIXME: PR #313: implement me
+}
+
+skip_if_local_src <- function() {
+  # FIXME: PR #313: implement me
+}

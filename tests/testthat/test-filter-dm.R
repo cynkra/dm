@@ -65,63 +65,31 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 })
 
 test_that("we get filtered/unfiltered tables with respective funs", {
-  expect_identical(
+  expect_equivalent_tbl(
     dm_filter(dm_for_filter, t1, a > 4) %>% tbl("t2"),
     t2
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2),
     t2 %>% semi_join(filter(t1, a > 4), by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_filter(dm_for_filter, t1, a > 4) %>% tbl("t1"),
     filter(t1, a > 4)
   )
 
-  expect_equivalent_dm(
-    dm_filter(dm_for_filter, t1, a > 3, a < 8) %>% dm_apply_filters(),
-    as_dm(output_1) %>%
-      dm_add_pk(t1, a) %>%
-      dm_add_pk(t2, c) %>%
-      dm_add_pk(t3, f) %>%
-      dm_add_pk(t4, h) %>%
-      dm_add_pk(t5, k) %>%
-      dm_add_pk(t6, n) %>%
-      dm_add_fk(t2, d, t1) %>%
-      dm_add_fk(t2, e, t3) %>%
-      dm_add_fk(t4, j, t3) %>%
-      dm_add_fk(t5, l, t4) %>%
-      dm_add_fk(t5, m, t6)
-  )
-})
-
-test_that("dm_filter() works on different srcs", {
-  expect_identical(
-    dm_filter(dm_for_filter, t1, a < 8, a > 3) %>% dm_apply_filters() %>% dm_get_tables(),
-    output_1
-  )
-
-  # FIXME: maybe always include this test on a DB, despite PR #313?
-  expect_identical(
-    dm_filter(dm_for_filter_sqlite, t1, a < 8, a > 3) %>% collect() %>% dm_get_tables(),
+  expect_equivalent_tbl_lists(
+    dm_filter(dm_for_filter, t1, a > 3, a < 8) %>% dm_apply_filters() %>% dm_get_tables(),
     output_1
   )
 })
 
 test_that("dm_filter() works as intended for reversed dm", {
-  expect_identical(
+  expect_equivalent_tbl_lists(
     dm_filter(dm_for_filter_rev, t1, a < 8, a > 3) %>%
       dm_apply_filters() %>%
-      dm_get_tables(),
-    rev(output_1)
-  )
-
-  # FIXME: maybe always include this test on a DB, despite PR #313?
-  expect_identical(
-    dm_filter(dm_for_filter_rev_sqlite, t1, a < 8, a > 3) %>%
-      collect() %>%
       dm_get_tables(),
     rev(output_1)
   )
@@ -130,12 +98,6 @@ test_that("dm_filter() works as intended for reversed dm", {
 test_that("dm_filter() works as intended for inbetween table", {
   expect_identical(
     dm_filter(dm_for_filter, t3, g == "five") %>% dm_apply_filters() %>% dm_get_tables(),
-    output_3
-  )
-
-  # FIXME: maybe always include this test on a DB, despite PR #313?
-  expect_identical(
-    dm_filter(dm_for_filter_sqlite, t3, g == "five") %>% collect() %>% dm_get_tables(),
     output_3
   )
 })
@@ -154,23 +116,11 @@ test_that("dm_filter() returns original `dm` object when ellipsis empty", {
     dm_filter(dm_for_filter, t3),
     dm_for_filter
   )
-
-  # FIXME: maybe always include this test on a DB, despite PR #313?
-  expect_equivalent_dm(
-    dm_filter(dm_for_filter_sqlite, t3),
-    dm_for_filter_sqlite
-  )
 })
 
 test_that("dm_filter() fails when no table name is provided", {
   expect_dm_error(
     dm_filter(dm_for_filter),
-    class = "table_not_in_dm"
-  )
-
-  # FIXME: maybe always include this test on a DB, despite PR #313?
-  expect_dm_error(
-    dm_filter(dm_for_filter_sqlite),
     class = "table_not_in_dm"
   )
 })

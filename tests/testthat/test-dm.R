@@ -88,10 +88,9 @@ test_that("'copy_to.dm()' works", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
-  # FIXME: Regarding PR #313: should this be tested on object `dm_for_filter` and the test
-  # skipped if it is a local dm?
+  skip_if_local_src()
   def <-
-    dm_for_filter_sqlite %>%
+    dm_for_filter %>%
     dm_filter(t1, a > 3) %>%
     compute() %>%
     dm_get_def()
@@ -101,9 +100,8 @@ test_that("'compute.dm()' computes tables on DB", {
 })
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
-  # FIXME: Regarding PR #313: should this be tested on object `dm_for_filter` and the test
-  # skipped if it is a local dm?
-  zoomed_dm_for_compute <- dm_for_filter_sqlite %>%
+  skip_if_local_src()
+  zoomed_dm_for_compute <- dm_for_filter %>%
     dm_zoom_to(t1) %>%
     mutate(c = a + 1)
   # "1" is without computing
@@ -144,6 +142,7 @@ test_that("validator is silent", {
 })
 
 test_that("validator speaks up (sqlite)", {
+  # FIXME: PR #313: will this test fail, if chosen `src` is SQLite?
   expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>%
       mutate(data = if_else(table == "t1", list(dm_for_filter_sqlite$t1), data))) %>%
@@ -226,12 +225,12 @@ test_that("validator speaks up when something's wrong", {
 })
 
 test_that("`pull_tbl()`-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     pull_tbl(dm_for_filter, t5),
     t5
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_for_filter, t3) %>%
       mutate(new_col = row_number() * 3) %>%
       pull_tbl() %>%
@@ -239,7 +238,7 @@ test_that("`pull_tbl()`-methods work", {
     mutate(t3, new_col = row_number() * 3)
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_for_filter, t1) %>% pull_tbl(t1),
     t1
   )
@@ -266,10 +265,10 @@ test_that("`pull_tbl()`-methods work", {
 test_that("numeric subsetting works", {
 
   # check specifically for the right output in one case
-  expect_equal(dm_for_filter[[4]], t4)
+  expect_equivalent_tbl(dm_for_filter[[4]], t4)
 
   # compare numeric subsetting and subsetting by name on chosen src
-  expect_identical(
+  expect_equivalent_tbl(
     dm_for_filter[["t2"]],
     dm_for_filter[[2]]
   )
@@ -281,14 +280,18 @@ test_that("numeric subsetting works", {
   )
 })
 
-test_that("subsetting for dm/zoomed_dm works", {
-  expect_identical(dm_for_filter$t5, t5)
+test_that("subsetting `dm` works", {
+  expect_equivalent_tbl(dm_for_filter$t5, t5)
+  expect_equivalent_tbl(dm_for_filter[["t3"]], t3)
+})
+
+test_that("subsetting `zoomed_dm` works", {
+  skip_if_remote_src()
   expect_identical(
     dm_zoom_to(dm_for_filter, t2)$c,
     pull(t2, c)
   )
 
-  expect_identical(dm_for_filter[["t3"]], t3)
   expect_identical(
     dm_zoom_to(dm_for_filter, t3)[["g"]],
     pull(t3, g)
@@ -301,12 +304,15 @@ test_that("subsetting for dm/zoomed_dm works", {
 })
 
 test_that("methods for dm/zoomed_dm work", {
-  expect_identical(length(dm_for_filter), 6L)
-  expect_identical(length(dm_zoom_to(dm_for_filter, t2)), 3L)
-  # FIXME: expect_identical(length(dm_zoom_to(dm_for_filter_sqlite, t2)), 3L) fails: list of 2
+  expect_length(dm_for_filter, 6L)
 
   expect_identical(names(dm_for_filter), src_tbls(dm_for_filter))
   expect_identical(names(dm_zoom_to(dm_for_filter, t2)), colnames(t2))
+})
+
+test_that("method length.zoomed_dm() works locally", {
+  skip_if_remote_src()
+  expect_length(dm_zoom_to(dm_for_filter, t2), 3L)
 })
 
 test_that("as.list()-methods work", {
@@ -332,16 +338,11 @@ test_that("dm_get_src() works", {
 
   expect_identical(
     class(dm_get_src(dm_for_filter)),
-    c("src_local", "src")
-  )
-
-  expect_identical(
-    class(dm_get_src(dm_for_filter_sqlite)),
-    c("src_SQLiteConnection", "src_dbi", "src_sql", "src")
+    class(my_test_src)
   )
 })
 
-test_that("dm_get_con() works", {
+test_that("dm_get_con() errors", {
   expect_dm_error(
     dm_get_con(1),
     class = "is_not_dm"
@@ -351,10 +352,13 @@ test_that("dm_get_con() works", {
     dm_get_con(dm_for_filter),
     class = "con_only_for_dbi"
   )
+})
 
+test_that("dm_get_con() works", {
+  skip_if_local_src()
   expect_identical(
-    class(dm_get_con(dm_for_filter_sqlite)),
-    `attr<-`("SQLiteConnection", "package", "RSQLite")
+    dm_get_con(dm_for_filter),
+    my_test_src$con
   )
 })
 
