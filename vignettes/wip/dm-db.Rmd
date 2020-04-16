@@ -150,9 +150,6 @@ my_dm_trans
 
 And, like {dbplyr}, results are never written to a database unless explicitly requested.
 
-#ASK KIRILL - what exactly is happening here
-- Example: flattening operation and its translation to SQL
-
 ``````{r }
 my_dm_keys %>%
   dm_flatten_to_tbl(loans)
@@ -266,19 +263,40 @@ my_dm_total_inplace$total_loans %>%
 
 ## Deploying a dm to a database
 
-We have already seen an example of copying a dm from one data source to another.
-We deployed our dm based on a remote database server to a local SQLite database using `copy_dm_to()`.
-The function takes as its first argument a {DBI} connection, in the example it is the `SQLite()` DBI driver, and a dm as its second argument.
-The dm is copied to the DBI connection and new dm, with the DBI connection as its source, is returned.
+To deploy a dm we must copy it to a DBMS.
+This is done using the method `copy_dm_to()`, which is used behind the scenes by our `dm_financial_sqlite()` function, the code for which appears below.
 
-The default behaviour is to create temporary tables and, where possible (currently Postgres and SQL server), key constraints will be set.
+```{r}
+dm_financial_sqlite <- function() {
+  stopifnot(rlang::is_installed("RSQLite"))
+
+  my_dm <-
+    # FIXME
+    # should this be dm_financial()?
+    dm_financial_sqlite() %>%
+    # we remove the trans table from the dm due to its size
+    dm_select_tbl(-trans)
+
+  sqlite_db <- DBI::dbConnect(RSQLite::SQLite())
+  sqlite_dm <- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)
+
+  sqlite_dm
+}
+```
+
+As demonstrated, `copy_dm_to()` takes as arguments a destination, a {DBI} connection, the dm we wish to deploy, and here the `temporary` argument set to FALSE as this is a deployment and we want it to be permanent.
+The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.
+
+The default behaviour is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.
+
+If you need to add local dataframes to an existing database, the shortest path is to use `copy_to()`.
+It takes the same arguments as `copy_dm_to()`, except the second argument, instead of expecting a dm, expects a dataframe. 
+
+# FIXME - short example showing a table added to sqlite_dm? 
+
 
 ## Conclusion
 
-#TBD
+In this tutorial we have demonstrated how to use {dm} to work with existing databases and to construct your own from local tables, including specifying key constraints, and then deploy them to a DBMS.
+If you would like more details an overview of all the methods available in {dm}, please see the [reference documentation](https://krlmlr.github.io/dm/reference/index.html).
 
-FIXME:
-
-- Describe `copy_to()`
-- Mention `temporary` argument for persistent deployment
-- Deployment: describe `copy_dm_to()`
