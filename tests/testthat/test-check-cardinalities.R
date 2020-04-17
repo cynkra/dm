@@ -1,5 +1,5 @@
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
-  card_0_n_d1_d2_df <- find_testthat_root_file(paste0("out/card-0-n-d1-d2-df.txt"))
+  card_0_n_d1_d2_df <- find_testthat_root_file(paste0("out/card-0-n-d1-d2.txt"))
 
   #  expecting silent: ------------------------------------------------------
 
@@ -40,8 +40,8 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
 
   # expect specific errors and sometimes specific output due to errors ---------------
 
-  # FIXME: Regarding PR #313: the known output changes, depending on if it's on a DB or locally
-  expect_known_output(
+  verify_output(
+    card_0_n_d1_d2_df,
     expect_dm_error(
       check_cardinality_0_n(
         parent_table = d1,
@@ -50,8 +50,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
         fk_column = a
       ),
       class = "not_subset_of"
-    ),
-    card_0_n_d1_d2_df
+    )
   )
 
   expect_dm_error(
