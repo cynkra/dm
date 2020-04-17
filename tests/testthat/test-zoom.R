@@ -47,7 +47,9 @@ test_that("dm_get_zoomed_tbl() works", {
     dm_for_filter %>%
       dm_zoom_to(t2) %>%
       dm_get_zoomed_tbl() %>%
-      mutate(zoom = map(zoom, function(tbl) {collect(tbl) %>% arrange_if_no_list()})),
+      mutate(zoom = map(zoom, function(tbl) {
+        collect(tbl) %>% arrange_if_no_list()
+      })),
     tibble(
       table = "t2",
       zoom = list(collect(t2) %>% arrange_if_no_list())

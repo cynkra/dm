@@ -114,7 +114,8 @@ test_that("cdm_get_con() works", {
   if (inherits(my_test_src, "src_local")) {
     expect_dm_error(
       cdm_get_con(dm_for_filter),
-      class = "con_only_for_dbi")
+      class = "con_only_for_dbi"
+    )
   } else {
     expect_silent(cdm_get_con(dm_for_filter))
   }

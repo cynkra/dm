@@ -27,7 +27,9 @@ expect_name_repair_message <- function(expr) {
 }
 
 arrange_if_no_list <- function(tbl) {
-  arrange_if(tbl, function(x) {!is_list(x)})
+  arrange_if(tbl, function(x) {
+    !is_list(x)
+  })
 }
 
 # are two tables identical minus the `src`

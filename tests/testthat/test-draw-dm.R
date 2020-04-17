@@ -151,8 +151,8 @@ test_that("output", {
     "out/nycflights13.svg",
     cli::cat_line(
       dm_nycflights13() %>%
-      dm_draw() %>%
-      DiagrammeRsvg::export_svg()
+        dm_draw() %>%
+        DiagrammeRsvg::export_svg()
     )
   )
 })
