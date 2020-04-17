@@ -16,6 +16,21 @@ flights weather
 
 > flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
 > dm_insert(flights_sqlite, flights_jan_sqlite)
+Warning: Not persisting, use `persist = FALSE` to turn off this warning.
+
+-- Table source -----------------------------------------------------------
+src:  sqlite 3.31.1 [:memory:]
+-- Metadata ---------------------------------------------------------------
+Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+Columns: 53
+Primary keys: 3
+Foreign keys: 3
+
+> print(dm_nrow(flights_sqlite))
+airlines airports  flights   planes  weather 
+      16     1458        0     3322        0 
+
+> dm_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
 > print(dm_nrow(flights_sqlite))
 airlines airports  flights   planes  weather 
       16     1458      932     3322       72 
@@ -24,7 +39,7 @@ airlines airports  flights   planes  weather
 +   dm_zoom_to(flights) %>% filter(month == 2) %>% dm_update_zoomed() %>%
 +   dm_zoom_to(weather) %>% filter(month == 2) %>% dm_update_zoomed()
 > flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
-> flights_new <- dm_insert(flights_sqlite, flights_feb_sqlite, dry_run = TRUE)
+> flights_new <- dm_insert(flights_sqlite, flights_feb_sqlite, persist = FALSE)
 > print(dm_nrow(flights_new))
 airlines airports  flights   planes  weather 
       16     1458     1761     3322      144 
@@ -38,7 +53,7 @@ Message: ! Unsatisfied constraints:
 
 * Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
 
-> dm_insert(flights_sqlite, flights_feb_sqlite)
+> dm_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
 > print(dm_nrow(flights_sqlite))
 airlines airports  flights   planes  weather 
       16     1458     1761     3322      144 

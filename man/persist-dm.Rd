@@ -5,7 +5,7 @@
 \alias{dm_insert}
 \title{Persisting data for multiple tables}
 \usage{
-dm_insert(target_dm, dm, ..., persist = FALSE)
+dm_insert(target_dm, dm, ..., persist = NULL)
 }
 \arguments{
 \item{target_dm}{Target \code{dm} object.}

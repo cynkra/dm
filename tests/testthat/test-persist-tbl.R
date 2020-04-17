@@ -16,7 +16,13 @@ verify_output("out/persist-tbl.txt", {
 
   # Copy to temporary tables on the target database:
   flights_jan_1_sqlite <- copy_to(sqlite, flights_jan_1)
+
+  # Dry run by default:
   tbl_insert(flights_sqlite, flights_jan_1_sqlite)
+  print(count(flights_sqlite))
+
+  # Explicitly request persistence:
+  tbl_insert(flights_sqlite, flights_jan_1_sqlite, persist = TRUE)
   print(count(flights_sqlite))
 
   # Second update:
@@ -27,11 +33,11 @@ verify_output("out/persist-tbl.txt", {
   # Copy to temporary tables on the target database:
   flights_jan_2_sqlite <- copy_to(sqlite, flights_jan_2)
 
-  # Dry run:
+  # Explicit dry run:
   flights_new <- tbl_insert(
     flights_sqlite,
     flights_jan_2_sqlite,
-    persist = NULL
+    persist = FALSE
   )
   print(count(flights_new))
   print(count(flights_sqlite))
@@ -41,6 +47,6 @@ verify_output("out/persist-tbl.txt", {
     dplyr::count(year, month, day)
 
   # Apply:
-  tbl_insert(flights_sqlite, flights_jan_2_sqlite)
+  tbl_insert(flights_sqlite, flights_jan_2_sqlite, persist = TRUE)
   print(count(flights_sqlite))
 })

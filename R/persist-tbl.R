@@ -90,21 +90,26 @@ NULL
 #' `tbl_insert()` adds new records.
 #' @rdname persist-tbl
 #' @export
-tbl_insert <- function(target, source, ..., persist = FALSE) {
+tbl_insert <- function(target, source, ..., persist = NULL) {
   ellipsis::check_dots_used(action = warn)
   UseMethod("tbl_insert", target)
 }
 
 #' @export
-tbl_insert.data.frame <- function(target, source, ..., persist = FALSE) {
+tbl_insert.data.frame <- function(target, source, ..., persist = NULL) {
   vctrs::vec_rbind(target, source)
 }
 
 #' @export
-tbl_insert.tbl_dbi <- function(target, source, ..., persist = FALSE) {
+tbl_insert.tbl_dbi <- function(target, source, ..., persist = NULL) {
   # Also in dry-run mode, for early notification of problems
   # Already quoted
   name <- target_table_name(target, persist)
+
+  if (is_null(persist)) {
+    warn("Not persisting, use `persist = FALSE` to turn off this warning.")
+    persist <- FALSE
+  }
 
   if (persist) {
     sql <- paste0(

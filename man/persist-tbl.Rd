@@ -5,7 +5,7 @@
 \alias{tbl_insert}
 \title{Persisting data for single tables}
 \usage{
-tbl_insert(target, source, ..., persist = FALSE)
+tbl_insert(target, source, ..., persist = NULL)
 }
 \arguments{
 \item{target}{Target table object.}

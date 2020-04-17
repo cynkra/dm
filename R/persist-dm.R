@@ -117,7 +117,7 @@ NULL
 #' Use `persist = FALSE` and apply [dm_examine_constraints()] to check beforehand.
 #' @rdname persist-dm
 #' @export
-dm_insert <- function(target_dm, dm, ..., persist = FALSE) {
+dm_insert <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
 
   dm_persist(target_dm, dm, tbl_insert, top_down = TRUE, persist)
@@ -130,7 +130,7 @@ dm_insert <- function(target_dm, dm, ..., persist = FALSE) {
 #
 # @rdname persist-dm
 # @export
-dm_update <- function(target_dm, dm, ..., persist = FALSE) {
+dm_update <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
 
   dm_persist(target_dm, dm, tbl_update, top_down = TRUE, persist)
@@ -143,7 +143,7 @@ dm_update <- function(target_dm, dm, ..., persist = FALSE) {
 #
 # @rdname persist-dm
 # @export
-dm_upsert <- function(target_dm, dm, ..., persist = FALSE) {
+dm_upsert <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
 
   dm_persist(target_dm, dm, tbl_upsert, top_down = TRUE, persist)
@@ -156,7 +156,7 @@ dm_upsert <- function(target_dm, dm, ..., persist = FALSE) {
 #
 # @rdname persist-dm
 # @export
-dm_delete <- function(target_dm, dm, ..., persist = FALSE) {
+dm_delete <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
 
   dm_persist(target_dm, dm, tbl_delete, top_down = FALSE, persist)
@@ -169,14 +169,19 @@ dm_delete <- function(target_dm, dm, ..., persist = FALSE) {
 #
 # @rdname persist-dm
 # @export
-dm_truncate <- function(target_dm, dm, ..., persist = FALSE) {
+dm_truncate <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
 
   dm_persist(target_dm, dm, tbl_truncate, top_down = FALSE, persist)
 }
 
-dm_persist <- function(target_dm, dm, operation, top_down, persist = FALSE) {
+dm_persist <- function(target_dm, dm, operation, top_down, persist = NULL) {
   dm_check_persist(target_dm, dm)
+
+  if (is_null(persist)) {
+    warn("Not persisting, use `persist = FALSE` to turn off this warning.")
+    persist <- FALSE
+  }
 
   dm_run_persist(target_dm, dm, operation, top_down, persist)
 }
@@ -243,9 +248,9 @@ dm_run_persist <- function(target_dm, dm, tbl_op, top_down, persist) {
     dm_patch_tbl(!!!new_tables)
 
   if (persist) {
-    out
-  } else {
     invisible(out)
+  } else {
+    out
   }
 }
 
