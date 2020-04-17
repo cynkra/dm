@@ -42,31 +42,22 @@ test_that("print() and format() methods for subclass `zoomed_dm` work", {
 
 test_that("dm_get_zoomed_tbl() works", {
   # get zoomed tbl works
+  # since PR #313 this needs to be collected and arranged properly before comparison
   expect_identical(
-    dm_for_filter %>% dm_zoom_to(t2) %>% dm_get_zoomed_tbl(),
+    dm_for_filter %>%
+      dm_zoom_to(t2) %>%
+      dm_get_zoomed_tbl() %>%
+      mutate(zoom = map(zoom, function(tbl) {collect(tbl) %>% arrange_if_no_list()})),
     tibble(
       table = "t2",
-      zoom = list(t2)
+      zoom = list(collect(t2) %>% arrange_if_no_list())
     )
   )
 
   # function for getting only the tibble itself works
-  expect_identical(
+  expect_equivalent_tbl(
     dm_for_filter %>% dm_zoom_to(t3) %>% get_zoomed_tbl(),
     t3
-  )
-})
-
-test_that("zooming works also on DBs", {
-  walk(
-    dm_for_filter_src,
-    ~ expect_identical(
-      dm_zoom_to(., t3) %>% dm_get_zoomed_tbl(),
-      tibble(
-        table = "t3",
-        zoom = list(tbl(., "t3"))
-      )
-    )
   )
 })
 
