@@ -39,5 +39,6 @@ expect_equivalent_tbl <- function(tbl_1, tbl_2) {
 
 # are two lists of tables identical minus the `src`
 expect_equivalent_tbl_lists <- function(list_1, list_2) {
+  expect_identical(names(list_1), names(list_2))
   walk2(list_1, list_2, expect_equivalent_tbl)
 }
