@@ -124,6 +124,7 @@ test_that("some methods/functions for `zoomed_dm` work", {
     c("a", "b")
   )
 
+  # FIXME: test for 'ncol()'?
   expect_identical(
     dim(dm_zoom_to(dm_for_filter, t1)),
     c(10L, 2L)
