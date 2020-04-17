@@ -147,11 +147,12 @@ test_that("helpers", {
 })
 
 test_that("output", {
-  expect_known_output(
-    dm_nycflights13() %>%
+  verify_output(
+    "out/nycflights13.svg",
+    cli::cat_line(
+      dm_nycflights13() %>%
       dm_draw() %>%
-      DiagrammeRsvg::export_svg() %>%
-      cli::cat_line(),
-    "out/nycflights13.svg"
+      DiagrammeRsvg::export_svg()
+    )
   )
 })
