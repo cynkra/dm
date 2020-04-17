@@ -39,7 +39,5 @@ expect_equivalent_tbl <- function(tbl_1, tbl_2) {
 
 # are two lists of tables identical minus the `src`
 expect_equivalent_tbl_lists <- function(list_1, list_2) {
-  list_1_lcl <- map(list_1, collect) %>% map(arrange_if_no_list)
-  list_2_lcl <- map(list_2, collect) %>% map(arrange_if_no_list)
-  expect_identical(list_1_lcl, list_2_lcl)
+  walk2(list_1, list_2, expect_equivalent_tbl)
 }
