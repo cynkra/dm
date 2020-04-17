@@ -4,19 +4,8 @@ test_that("dm_add_fk() works as intended?", {
     class = "ref_tbl_has_no_pk"
   )
 
-  expect_dm_error(
-    dm_add_fk(dm_test_obj_sqlite, dm_table_1, a, dm_table_4),
-    class = "ref_tbl_has_no_pk"
-  )
-
   expect_true(
     dm_add_pk(dm_test_obj, dm_table_4, c) %>%
-      dm_add_fk(dm_table_1, a, dm_table_4) %>%
-      dm_has_fk(dm_table_1, dm_table_4)
-  )
-
-  expect_true(
-    dm_add_pk(dm_test_obj_sqlite, dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_has_fk(dm_table_1, dm_table_4)
   )
@@ -32,25 +21,8 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
     new_keys("a")
   )
 
-  expect_identical(
-    dm_test_obj_sqlite %>%
-      dm_add_pk(dm_table_4, c) %>%
-      dm_add_fk(dm_table_1, a, dm_table_4) %>%
-      dm_add_fk(dm_table_2, c, dm_table_4) %>%
-      dm_get_fk(dm_table_1, dm_table_4),
-    new_keys("a")
-  )
-
   expect_true(
     dm_test_obj %>%
-      dm_add_pk(dm_table_4, c) %>%
-      dm_add_fk(dm_table_1, a, dm_table_4) %>%
-      dm_add_fk(dm_table_2, c, dm_table_4) %>%
-      dm_has_fk(dm_table_2, dm_table_4)
-  )
-
-  expect_true(
-    dm_test_obj_sqlite %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -94,26 +66,8 @@ test_that("dm_rm_fk() works as intended?", {
       dm_has_fk(dm_table_1, dm_table_4)
   )
 
-  expect_true(
-    dm_test_obj_sqlite %>%
-      dm_add_pk(dm_table_4, c) %>%
-      dm_add_fk(dm_table_1, a, dm_table_4) %>%
-      dm_add_fk(dm_table_2, c, dm_table_4) %>%
-      dm_rm_fk(dm_table_2, c, dm_table_4) %>%
-      dm_has_fk(dm_table_1, dm_table_4)
-  )
-
   expect_false(
     dm_test_obj %>%
-      dm_add_pk(dm_table_4, c) %>%
-      dm_add_fk(dm_table_1, a, dm_table_4) %>%
-      dm_add_fk(dm_table_2, c, dm_table_4) %>%
-      dm_rm_fk(dm_table_2, c, dm_table_4) %>%
-      dm_has_fk(dm_table_2, dm_table_4)
-  )
-
-  expect_false(
-    dm_test_obj_sqlite %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -170,15 +124,6 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     tbl_fk_candidates_t1_t4
   )
 
-  expect_identical(
-    dm_test_obj_sqlite %>%
-      dm_add_pk(dm_table_4, c) %>%
-      dm_enum_fk_candidates(dm_table_1, dm_table_4) %>%
-      mutate(why = if_else(why != "", "<reason>", "")) %>%
-      collect(),
-    tbl_fk_candidates_t1_t4
-  )
-
   tbl_t3_t4 <- tibble::tribble(
     ~column, ~candidate, ~why,
     "c", FALSE, "<reason>"
@@ -188,13 +133,6 @@ test_that("dm_enum_fk_candidates() works as intended?", {
 
   expect_identical(
     dm_add_pk(dm_test_obj_2, dm_table_4, c) %>%
-      dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
-      mutate(why = if_else(why != "", "<reason>", "")),
-    tbl_t3_t4
-  )
-
-  expect_identical(
-    dm_add_pk(dm_test_obj_2_sqlite, dm_table_4, c) %>%
       dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
       mutate(why = if_else(why != "", "<reason>", "")),
     tbl_t3_t4
