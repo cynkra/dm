@@ -1,0 +1,6 @@
+> expect_dm_error(check_cardinality_0_n(parent_table = d1, pk_column = a,
++   child_table = d2, fk_column = a), class = "not_subset_of")
+      a b    
+  <dbl> <chr>
+1     6 e    
+
