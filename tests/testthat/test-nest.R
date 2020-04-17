@@ -1,5 +1,6 @@
 test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
-  expect_identical(
+  skip_if_remote_src(my_test_src)
+  expect_equivalent_tbl(
     zoomed_dm_2 %>%
       nest_join_zoomed_dm() %>%
       pull_tbl(),
@@ -10,7 +11,7 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
       mutate(t4 = vctrs::as_list_of(t4))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     zoomed_dm_2 %>%
       nest_join_zoomed_dm(t4, t2) %>%
       pull_tbl(),
@@ -35,18 +36,10 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
   )
 })
 
-test_that("'nest_join_zoomed_dm()' fails for Postgres-'dm'", {
-  skip_if_not("postgres" %in% src_names)
+test_that("'nest_join_zoomed_dm()' fails for DB-'dm'", {
+  skip_if_local_src(my_test_src)
   expect_dm_error(
-    dm_zoom_to(dm_for_filter_src$postgres, t3) %>% nest_join_zoomed_dm(),
-    "only_for_local_src"
-  )
-})
-
-test_that("'nest_join_zoomed_dm()' fails for SQLite-'dm'", {
-  skip_if_not("sqlite" %in% src_names)
-  expect_dm_error(
-    dm_zoom_to(dm_for_filter_src$sqlite, t3) %>% nest_join_zoomed_dm(),
+    dm_zoom_to(dm_for_filter, t3) %>% nest_join_zoomed_dm(),
     "only_for_local_src"
   )
 })
