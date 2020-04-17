@@ -1,0 +1,5 @@
+> expect_dm_error(check_set_equality(data_1, a, data_2, a), class = "sets_not_equal")
+      a     b     c
+  <dbl> <dbl> <dbl>
+1     3     6     9
+

@@ -1,0 +1,5 @@
+> expect_dm_error(check_subset(data_2, a, data_1, a), class = "not_subset_of")
+      a     b     c
+  <dbl> <dbl> <dbl>
+1     3     6     9
+
