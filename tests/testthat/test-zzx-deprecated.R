@@ -2,7 +2,7 @@ rlang::local_options(lifecycle_verbosity = "quiet")
 
 test_that("cdm_add_tbl() works", {
   skip_on_cran()
-  expect_identical(
+  expect_equivalent_dm(
     cdm_add_tbl(dm_for_filter, cars_table = mtcars),
     dm_add_tbl(dm_for_filter, cars_table = mtcars)
   )
@@ -10,7 +10,7 @@ test_that("cdm_add_tbl() works", {
 
 test_that("cdm_rm_tbl() works", {
   skip_on_cran()
-  expect_identical(
+  expect_equivalent_dm(
     cdm_rm_tbl(dm_for_flatten, starts_with("dim")),
     dm_rm_tbl(dm_for_flatten, starts_with("dim"))
   )
@@ -18,12 +18,10 @@ test_that("cdm_rm_tbl() works", {
 
 test_that("cdm_copy_to() behaves correctly", {
   skip_on_cran()
-  map(
-    test_srcs,
-    ~ expect_equivalent_dm(
-      cdm_copy_to(.x, dm_for_filter, unique_table_names = TRUE),
-      dm_for_filter
-    )
+
+  expect_equivalent_dm(
+    cdm_copy_to(sqlite, dm_for_filter, unique_table_names = TRUE),
+    dm_for_filter
   )
 })
 
@@ -48,17 +46,17 @@ test_that("cdm_get_colors() behaves as intended", {
 
 test_that("cdm_filter() behaves correctly", {
   skip_on_cran()
-  expect_identical(
+  expect_equivalent_tbl(
     cdm_filter(dm_for_filter, t1, a > 4) %>% dm_apply_filters_to_tbl(t2),
     filter(t2, d > 4)
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_filter(dm_for_filter, t1, a > 4) %>% cdm_apply_filters_to_tbl(t2),
     filter(t2, d > 4)
   )
 
-  expect_identical(
+  expect_equivalent_tbl_lists(
     dm_filter(dm_for_filter, t1, a > 3, a < 8) %>% cdm_apply_filters() %>% dm_get_tables(),
     output_1
   )
@@ -74,17 +72,17 @@ test_that("cdm_nrow() works?", {
 
 test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` work", {
   skip_on_cran()
-  expect_identical(
+  expect_equivalent_tbl(
     cdm_flatten_to_tbl(dm_for_flatten, fact),
     result_from_flatten
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     cdm_join_to_tbl(dm_for_flatten, fact, dim_3),
     select(result_from_flatten, fact:fact.something, dim_3.something)
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     cdm_squash_to_tbl(dm_more_complex, t5, t4, t3),
     left_join(t5, t4, by = c("l" = "h")) %>%
       left_join(t3, by = c("j" = "f"))
@@ -99,12 +97,9 @@ test_that("cdm_get_src() works", {
     class = "is_not_dm"
   )
 
-  walk2(
-    dm_for_filter_src,
-    active_srcs_class,
-    function(dm_for_filter, active_src) {
-      expect_true(inherits(cdm_get_src(dm_for_filter), active_src))
-    }
+  expect_identical(
+    class(dm_get_src(dm_for_filter)),
+    class(my_test_src)
   )
 })
 
@@ -116,26 +111,20 @@ test_that("cdm_get_con() works", {
     class = "is_not_dm"
   )
 
-  expect_dm_error(
-    cdm_get_con(dm_for_filter),
-    class = "con_only_for_dbi"
-  )
-
-  active_con_class <- semi_join(lookup, filter(active_srcs, src != "df"), by = "src") %>% pull(class_con)
-  dm_for_filter_src_red <- dm_for_filter_src[!(names(dm_for_filter_src) == "df")]
-
-  walk2(
-    dm_for_filter_src_red,
-    active_con_class,
-    ~ expect_true(inherits(cdm_get_con(.x), .y))
-  )
+  if (inherits(my_test_src, "src_local")) {
+    expect_dm_error(
+      cdm_get_con(dm_for_filter),
+      class = "con_only_for_dbi")
+  } else {
+    expect_silent(cdm_get_con(dm_for_filter))
+  }
 })
 
 
 test_that("cdm_get_tables() works", {
   skip_on_cran()
 
-  expect_identical(
+  expect_equivalent_tbl_lists(
     cdm_get_tables(dm_for_filter),
     dm_get_tables(dm_for_filter)
   )
@@ -313,12 +302,12 @@ test_that("dm_select_tbl() and dm_rename_tbl() work", {
 test_that("dm_select() and dm_rename() work", {
   skip_on_cran()
 
-  expect_identical(
+  expect_equivalent_tbl(
     cdm_select(dm_for_filter, t1, a_new = a) %>% tbl("t1"),
     dm_select(dm_for_filter, t1, a_new = a) %>% tbl("t1")
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     cdm_rename(dm_for_filter, t1, a_new = a) %>% tbl("t1"),
     dm_rename(dm_for_filter, t1, a_new = a) %>% tbl("t1")
   )
