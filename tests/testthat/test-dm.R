@@ -235,8 +235,7 @@ test_that("`pull_tbl()`-methods work", {
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_filter, t3) %>%
       mutate(new_col = row_number() * 3) %>%
-      pull_tbl() %>%
-      collect(),
+      pull_tbl(),
     mutate(t3, new_col = row_number() * 3)
   )
 
