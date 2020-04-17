@@ -1,5 +1,5 @@
 test_that("basic test: 'unite()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     unite(zoomed_dm, "new_col", c, e) %>% get_zoomed_tbl(),
     unite(t2, "new_col", c, e)
   )
@@ -11,7 +11,7 @@ test_that("basic test: 'unite()'-methods work", {
 })
 
 test_that("basic test: 'separate()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     unite(zoomed_dm, "new_col", c, e) %>%
       separate("new_col", c("c", "e")) %>%
       select(c, d, e) %>%
