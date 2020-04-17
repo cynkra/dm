@@ -40,6 +40,7 @@ test_that("dm_select_tbl() remembers all FKs", {
 
 
 test_that("dm_rename_tbl() renames a `dm`", {
+  # FIXME: PR #313: do these test-tibbles here also need to be copied to `my_test_src`?
   dm_rename <-
     as_dm(list(a = tibble(x = 1), b = tibble(y = 1))) %>%
     dm_add_pk(b, y) %>%
