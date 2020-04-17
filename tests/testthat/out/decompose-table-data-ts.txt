@@ -1,3 +1,4 @@
+> decompose_table(data_ts, aef_id, a, e, f) %>% map(arrange_all)
 $child_table
       b     c d     aef_id
   <dbl> <int> <chr>  <int>
@@ -10,4 +11,5 @@ $parent_table
    <int> <int> <chr> <lgl>
 1      1     1 c     TRUE 
 2      2     2 b     FALSE
+
 
