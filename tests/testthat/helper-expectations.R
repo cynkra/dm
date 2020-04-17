@@ -6,7 +6,7 @@ expect_equivalent_dm <- function(dm1, dm2) {
   tables1 <- dm_get_tables_impl(dm1) %>% map(collect)
   tables2 <- dm_get_tables_impl(dm2) %>% map(collect)
 
-  expect_equivalent_tbl_lists(tables_1, tables_2)
+  expect_equivalent_tbl_lists(tables1, tables2)
 
   expect_equal(dm_get_all_pks_impl(dm1), dm_get_all_pks_impl(dm2))
   expect_equal(dm_get_all_fks_impl(dm1), dm_get_all_fks_impl(dm2))
