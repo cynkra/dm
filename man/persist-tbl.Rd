@@ -5,7 +5,7 @@
 \alias{tbl_insert}
 \title{Persisting data for single tables}
 \usage{
-tbl_insert(target, source, ..., dry_run = FALSE)
+tbl_insert(target, source, ..., persist = FALSE)
 }
 \arguments{
 \item{target}{Target table object.}
@@ -14,15 +14,16 @@ tbl_insert(target, source, ..., dry_run = FALSE)
 
 \item{...}{Must be empty.}
 
-\item{dry_run}{Set to \code{TRUE} for running the operation without persisting.
+\item{persist}{Set to \code{TRUE} for running the operation without persisting.
 In this mode, a modified version of \code{target} is returned.
 This allows verifying the results of an operation before actually
-applying it.}
+applying it.
+Set to \code{FALSE} to perform the update on the database table.
+By default, an informative message is shown.}
 }
 \value{
-A tbl object of the same structure as \code{target},
-visible only if \code{dry_run = TRUE}, otherwise \link{invisible}.
-Identical to \code{target_dm} when run on a database with \code{dry_run = FALSE}.
+A tbl object of the same structure as \code{target}.
+If \code{persist = TRUE}, \link{invisible} and identical to \code{target_dm}.
 }
 \description{
 \lifecycle{experimental}
@@ -32,6 +33,11 @@ Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \
 on the database.
 All operations expect that both existing and new data are presented
 in two compatible \link{tbl} objects on the same data source.
+
+These operations, in contrast to all other operations,
+may lead to irreversible changes to the underlying database.
+Therefore, persistence must be requested explicitly with \code{persist = TRUE}.
+By default, an informative message is given.
 
 \code{tbl_insert()} adds new records.
 }
@@ -54,7 +60,13 @@ if (rlang::is_installed("RSQLite")) {
 
   # Copy to temporary tables on the target database:
   flights_jan_1_sqlite <- copy_to(sqlite, flights_jan_1)
+
+  # Dry run by default:
   tbl_insert(flights_sqlite, flights_jan_1_sqlite)
+  print(count(flights_sqlite))
+
+  # Explicitly request persistence:
+  tbl_insert(flights_sqlite, flights_jan_1_sqlite, persist = TRUE)
   print(count(flights_sqlite))
 
   # Second update:
@@ -65,11 +77,11 @@ if (rlang::is_installed("RSQLite")) {
   # Copy to temporary tables on the target database:
   flights_jan_2_sqlite <- copy_to(sqlite, flights_jan_2)
 
-  # Dry run:
+  # Explicit dry run:
   flights_new <- tbl_insert(
     flights_sqlite,
     flights_jan_2_sqlite,
-    dry_run = TRUE
+    persist = FALSE
   )
   print(count(flights_new))
   print(count(flights_sqlite))
@@ -79,7 +91,7 @@ if (rlang::is_installed("RSQLite")) {
     dplyr::count(year, month, day)
 
   # Apply:
-  tbl_insert(flights_sqlite, flights_jan_2_sqlite)
+  tbl_insert(flights_sqlite, flights_jan_2_sqlite, persist = TRUE)
   print(count(flights_sqlite))
 }
 }

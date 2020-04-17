@@ -5,24 +5,25 @@
 \alias{dm_insert}
 \title{Persisting data for multiple tables}
 \usage{
-dm_insert(target_dm, dm, ..., dry_run = FALSE)
+dm_insert(target_dm, dm, ..., persist = FALSE)
 }
 \arguments{
-\item{target_dm}{Target dm object.}
+\item{target_dm}{Target \code{dm} object.}
 
-\item{dm}{dm object with new data.}
+\item{dm}{\code{dm} object with new data.}
 
 \item{...}{Must be empty.}
 
-\item{dry_run}{Set to \code{TRUE} for running the operation without persisting.
+\item{persist}{Set to \code{TRUE} for running the operation without persisting.
 In this mode, a modified version of \code{target_dm} is returned.
 This allows verifying the results of an operation before actually
-applying it.}
+applying it.
+Set to \code{FALSE} to perform the update on the database table.
+By default, an informative message is shown.}
 }
 \value{
-A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{target_dm},
-visible only if \code{dry_run = TRUE}, otherwise \link{invisible}.
-Identical to \code{target_dm} when run on a database with \code{dry_run = FALSE}.
+A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{target_dm}.
+If \code{persist = TRUE}, \link{invisible} and identical to \code{target_dm}.
 }
 \description{
 \lifecycle{experimental}
@@ -33,12 +34,19 @@ on the database.
 All operations expect that both existing and new data are presented
 in two compatible \link{dm} objects on the same data source.
 
-The tables in the target dm are ordered topologically
-so that parent (dimension) tables receive insertions
-before child (fact) tables.
+The functions make sure that the tables in the target dm
+are processed in topological order so that parent (dimension)
+tables receive insertions before child (fact) tables.
+
+These operations, in contrast to all other operations,
+may lead to irreversible changes to the underlying database.
+Therefore, persistence must be requested explicitly with \code{persist = TRUE}.
+By default, an informative message is given.
 
 \code{dm_insert()} adds new records.
 The primary keys must differ from existing records.
+This must be ensured by the caller and might be checked by the underlying database.
+Use \code{persist = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.
 }
 \examples{
 if (rlang::is_installed("RSQLite")) {
@@ -73,7 +81,13 @@ if (rlang::is_installed("RSQLite")) {
 
   # Copy to temporary tables on the target database:
   flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
+
+  # Dry run by default:
   dm_insert(flights_sqlite, flights_jan_sqlite)
+  print(dm_nrow(flights_sqlite))
+
+  # Explicitly request persistence:
+  dm_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
   print(dm_nrow(flights_sqlite))
 
   # Second update:
@@ -90,11 +104,11 @@ if (rlang::is_installed("RSQLite")) {
   # Copy to temporary tables on the target database:
   flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
 
-  # Dry run:
+  # Explicit dry run:
   flights_new <- dm_insert(
     flights_sqlite,
     flights_feb_sqlite,
-    dry_run = TRUE
+    persist = FALSE
   )
   print(dm_nrow(flights_new))
   print(dm_nrow(flights_sqlite))
@@ -104,7 +118,7 @@ if (rlang::is_installed("RSQLite")) {
     dm_examine_constraints()
 
   # Apply:
-  dm_insert(flights_sqlite, flights_feb_sqlite)
+  dm_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
   print(dm_nrow(flights_sqlite))
 }
 }
