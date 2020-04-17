@@ -2,7 +2,7 @@
 
 
 test_that("basic test: 'group_by()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     group_by(zoomed_dm, e) %>% get_zoomed_tbl(),
     group_by(t2, e)
   )
@@ -14,7 +14,7 @@ test_that("basic test: 'group_by()'-methods work", {
 })
 
 test_that("basic test: 'select()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     select(zoomed_dm, e, a = c) %>% get_zoomed_tbl(),
     select(t2, e, a = c)
   )
@@ -26,7 +26,7 @@ test_that("basic test: 'select()'-methods work", {
 })
 
 test_that("basic test: 'rename()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     rename(zoomed_dm, a = c) %>% get_zoomed_tbl(),
     rename(t2, a = c)
   )
@@ -38,7 +38,7 @@ test_that("basic test: 'rename()'-methods work", {
 })
 
 test_that("basic test: 'mutate()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     mutate(zoomed_dm, d_2 = d * 2) %>% get_zoomed_tbl(),
     mutate(t2, d_2 = d * 2)
   )
@@ -51,7 +51,7 @@ test_that("basic test: 'mutate()'-methods work", {
 
 
 test_that("basic test: 'transmute()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     transmute(zoomed_dm, d_2 = d * 2) %>% get_zoomed_tbl(),
     transmute(t2, d_2 = d * 2)
   )
@@ -63,7 +63,7 @@ test_that("basic test: 'transmute()'-methods work", {
 })
 
 test_that("basic test: 'ungroup()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     group_by(zoomed_dm, e) %>% ungroup() %>% get_zoomed_tbl(),
     group_by(t2, e) %>% ungroup()
   )
@@ -75,7 +75,7 @@ test_that("basic test: 'ungroup()'-methods work", {
 })
 
 test_that("basic test: 'summarise()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     summarise(zoomed_dm, d_2 = mean(d)) %>% get_zoomed_tbl(),
     summarise(t2, d_2 = mean(d))
   )
@@ -87,7 +87,7 @@ test_that("basic test: 'summarise()'-methods work", {
 })
 
 test_that("basic test: 'filter()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     filter(zoomed_dm, d > mean(d)) %>% dm_update_zoomed() %>% tbl("t2"),
     filter(t2, d > mean(d))
   )
@@ -99,7 +99,7 @@ test_that("basic test: 'filter()'-methods work", {
 })
 
 test_that("basic test: 'distinct()'-methods work", {
-  expect_identical(
+  expect_equivalent_tbl(
     distinct(zoomed_dm, d_new = d) %>% dm_update_zoomed() %>% tbl("t2"),
     distinct(t2, d_new = d)
   )
@@ -112,13 +112,13 @@ test_that("basic test: 'distinct()'-methods work", {
 
 test_that("basic test: 'arrange()'-methods work", {
   # standard arrange
-  expect_identical(
+  expect_equivalent_tbl(
     arrange(zoomed_dm, e) %>% get_zoomed_tbl(),
     arrange(t2, e)
   )
 
   # arrange within groups
-  expect_identical(
+  expect_equivalent_tbl(
     group_by(zoomed_dm, e) %>% arrange(desc(e), .by_group = TRUE) %>% get_zoomed_tbl(),
     arrange(group_by(t2, e), desc(e), .by_group = TRUE)
   )
@@ -131,13 +131,13 @@ test_that("basic test: 'arrange()'-methods work", {
 
 test_that("basic test: 'slice()'-methods work", {
   expect_message(
-    expect_identical(slice(zoomed_dm, 3:6) %>% get_zoomed_tbl(), slice(t2, 3:6)),
+    expect_equivalent_tbl(slice(zoomed_dm, 3:6) %>% get_zoomed_tbl(), slice(t2, 3:6)),
     "`slice.zoomed_dm\\(\\)` can potentially"
   )
 
   # silent when no PK available
   expect_silent(
-    expect_identical(
+    expect_equivalent_tbl(
       slice(dm_zoom_to(dm_for_disambiguate, iris_3), 1:3) %>% get_zoomed_tbl(),
       slice(iris_3, 1:3)
     )
@@ -149,7 +149,7 @@ test_that("basic test: 'slice()'-methods work", {
   )
 
   expect_silent(
-    expect_identical(
+    expect_equivalent_tbl(
       slice(zoomed_dm, if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_zoomed_tbl(),
       slice(t2, if_else(d < 5, 1:6, 7:2))
     )
@@ -162,32 +162,32 @@ test_that("basic test: 'slice()'-methods work", {
 })
 
 test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
-  expect_identical(
+  expect_equivalent_tbl(
     left_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     left_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     inner_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     inner_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     full_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     full_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     semi_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     semi_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     anti_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     anti_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     right_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     right_join(t2, t1, by = c("d" = "a"))
   )
@@ -199,19 +199,19 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # works, if by is given
-  expect_identical(
+  expect_equivalent_tbl(
     left_join(zoomed_dm, t4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl("t2"),
     left_join(t2, t4, by = c("e" = "j"))
   )
 
   # explicitly select columns from RHS using argument `select`
-  expect_identical(
+  expect_equivalent_tbl(
     left_join(zoomed_dm_2, t2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl("t3"),
     left_join(t3, select(t2, c, e), by = c("f" = "e"))
   )
 
   # explicitly select and rename columns from RHS using argument `select`
-  expect_identical(
+  expect_equivalent_tbl(
     left_join(zoomed_dm_2, t2, select = c(starts_with("c"), d_new = d, e)) %>% dm_update_zoomed() %>% tbl("t3"),
     left_join(t3, select(t2, c, d_new = d, e), by = c("f" = "e"))
   )
@@ -235,7 +235,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # multi-column "by" argument
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
     left_join(
       iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
@@ -254,7 +254,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # test RHS-by name collision
-  expect_identical(
+  expect_equivalent_dm(
     dm_for_filter %>%
       dm_rename(t2, "...1" = d) %>%
       dm_zoom_to(t3) %>%
@@ -308,32 +308,32 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
 
 
 test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
-  expect_identical(
+  expect_equivalent_tbl(
     left_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     left_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     inner_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     inner_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     full_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     full_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     semi_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     semi_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     anti_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     anti_join(t2, t1, by = c("d" = "a"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     right_join(zoomed_dm, t1) %>% dm_update_zoomed() %>% tbl("t2"),
     right_join(t2, t1, by = c("d" = "a"))
   )
@@ -345,19 +345,19 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # works, if by is given
-  expect_identical(
+  expect_equivalent_tbl(
     left_join(zoomed_dm, t4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl("t2"),
     left_join(t2, t4, by = c("e" = "j"))
   )
 
   # explicitly select columns from RHS using argument `select`
-  expect_identical(
+  expect_equivalent_tbl(
     left_join(zoomed_dm_2, t2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl("t3"),
     left_join(t3, select(t2, c, e), by = c("f" = "e"))
   )
 
   # explicitly select and rename columns from RHS using argument `select`
-  expect_identical(
+  expect_equivalent_tbl(
     left_join(zoomed_dm_2, t2, select = c(starts_with("c"), d_new = d, e)) %>% dm_update_zoomed() %>% tbl("t3"),
     left_join(t3, select(t2, c, d_new = d, e), by = c("f" = "e"))
   )
@@ -381,7 +381,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   )
 
   # multi-column "by" argument
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_for_disambiguate, iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
     left_join(
       iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
@@ -580,21 +580,21 @@ test_that("key tracking works", {
   )
 
   # keys tracking when there are no keys to track
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small, weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small, weather) %>%
       summarize(avg_wind_speed = mean(wind_speed)) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small, weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
@@ -602,21 +602,21 @@ test_that("key tracking works", {
   )
 
   # keys tracking when there are no keys to track
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small, weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small, weather) %>%
       summarize(avg_wind_speed = mean(wind_speed)) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small, "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small, weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
       get_zoomed_tbl(),
@@ -672,7 +672,7 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
-  expect_identical(
+  expect_equivalent_tbl(
     dm_nycflights_small %>%
       dm_zoom_to(airports) %>%
       summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max)) %>%
@@ -681,7 +681,7 @@ test_that("'summarize_at()' etc. work", {
       summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_nycflights_small %>%
       dm_zoom_to(airports) %>%
       select(3:6) %>%
@@ -692,7 +692,7 @@ test_that("'summarize_at()' etc. work", {
       summarize_all(list(mean = mean, median = median))
   )
 
-  expect_identical(
+  expect_equivalent_tbl(
     dm_nycflights_small %>%
       dm_zoom_to(airports) %>%
       summarize_if(is_double, list(mean = mean, median = median)) %>%
