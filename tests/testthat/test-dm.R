@@ -38,7 +38,7 @@ test_that("'copy_to.dm()' works", {
 
   expect_equivalent_dm(
     copy_to(dm_for_filter, mtcars, "car_table"),
-    dm_add_tbl(dm_for_filter, car_table = mtcars)
+    dm_add_tbl(dm_for_filter, car_table = tibble(mtcars))
   )
 
   expect_dm_error(
@@ -49,7 +49,8 @@ test_that("'copy_to.dm()' works", {
   expect_name_repair_message(
     expect_equivalent_dm(
       copy_to(dm_for_filter, mtcars, ""),
-      dm_add_tbl(dm_for_filter, ...7 = mtcars)
+      # `tibble()` call necessary cause of #322
+      dm_add_tbl(dm_for_filter, ...7 = tibble(mtcars))
     )
   )
 
@@ -57,7 +58,7 @@ test_that("'copy_to.dm()' works", {
   expect_name_repair_message(
     expect_equivalent_dm(
       dm(mtcars) %>% copy_to(mtcars),
-      dm(mtcars...1 = mtcars, mtcars...2 = mtcars)
+      dm(mtcars...1 = mtcars, mtcars...2 = tibble(mtcars))
     )
   )
 
@@ -65,7 +66,7 @@ test_that("'copy_to.dm()' works", {
     expect_silent(
       dm(mtcars) %>% copy_to(mtcars, quiet = TRUE)
     ),
-    dm(mtcars...1 = mtcars, mtcars...2 = mtcars)
+    dm(mtcars...1 = mtcars, mtcars...2 = tibble(mtcars))
   )
 
   # throw error if duplicate table names and `repair = check_unique`
