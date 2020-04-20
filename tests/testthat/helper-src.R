@@ -11,10 +11,12 @@ cache <- search_env("dm_cache")
 
   value <- get0(lhs, cache)
   if (is.null(value)) {
-    message("Evaluating ", lhs)
-    # FIXME: Remove
-    force(rhs)
-    value <- function() rhs
+    message("Deferring ", lhs)
+    value <- function() {
+      #message("Evaluating ", lhs)
+      # FIXME #313: Copy to remote source
+      rhs
+    }
     assign(lhs, value, cache)
   } else {
     message("Using cached ", lhs)
@@ -212,10 +214,10 @@ output_3 %<-% list(
   )
 )
 
-def_dm_for_filter <- dm_get_def(dm_for_filter())
+def_dm_for_filter %<-% dm_get_def(dm_for_filter())
 
 dm_for_filter_rev %<-%
-  new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
+  new_dm3(def_dm_for_filter()[rev(seq_len(nrow(def_dm_for_filter()))), ])
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 
