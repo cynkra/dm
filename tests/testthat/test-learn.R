@@ -1,3 +1,5 @@
+# FIXME: #313: learn only from current source
+
 test_that("Learning from MSSQL works?", {
 
 
