@@ -23,7 +23,7 @@ dm_financial <- function() {
 
   my_db <- DBI::dbConnect(
     RMariaDB::MariaDB(),
-    user = "guest",
+    username = "guest",
     password = "relational",
     dbname = "Financial_ijs",
     host = "relational.fit.cvut.cz"

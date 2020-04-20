@@ -162,6 +162,8 @@ navbar:
       href: articles/dm-filtering.html
     - text: Defining a 'dm' object for your data
       href: articles/dm-setup.html
+    - text: Working with databases
+      href: articles/dm-db.html
     - text: Low level operations
       href: articles/dm-low-level.html
     - text: Function naming logic
