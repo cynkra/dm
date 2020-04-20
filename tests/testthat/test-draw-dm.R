@@ -127,21 +127,21 @@ test_that("helpers", {
     dm_get_all_columns(dm_for_filter()),
     tibble::tribble(
       ~table, ~id, ~column,
-      "t1", 1L, "a",
-      "t1", 2L, "b",
-      "t2", 1L, "c",
-      "t2", 2L, "d",
-      "t2", 3L, "e",
-      "t3", 1L, "f",
-      "t3", 2L, "g",
-      "t4", 1L, "h",
-      "t4", 2L, "i",
-      "t4", 3L, "j",
-      "t5", 1L, "k",
-      "t5", 2L, "l",
-      "t5", 3L, "m",
-      "t6", 1L, "n",
-      "t6", 2L, "o"
+      "tf_1", 1L, "a",
+      "tf_1", 2L, "b",
+      "tf_2", 1L, "c",
+      "tf_2", 2L, "d",
+      "tf_2", 3L, "e",
+      "tf_3", 1L, "f",
+      "tf_3", 2L, "g",
+      "tf_4", 1L, "h",
+      "tf_4", 2L, "i",
+      "tf_4", 3L, "j",
+      "tf_5", 1L, "k",
+      "tf_5", 2L, "l",
+      "tf_5", 3L, "m",
+      "tf_6", 1L, "n",
+      "tf_6", 2L, "o"
     )
   )
 })

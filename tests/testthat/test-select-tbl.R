@@ -1,14 +1,14 @@
 test_that("dm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
   def <-
     dm_for_filter() %>%
-    dm_rm_fk(t5, m, t6) %>%
-    dm_rm_fk(t2, d, t1) %>%
+    dm_rm_fk(tf_5, m, tf_6) %>%
+    dm_rm_fk(tf_2, d, tf_1) %>%
     dm_get_def()
 
-  dm_for_filter_smaller <- new_dm3(def[def$table %in% c("t1", "t6"), ])
+  dm_for_filter_smaller <- new_dm3(def[def$table %in% c("tf_1", "tf_6"), ])
 
   expect_equivalent_dm(
-    dm_select_tbl(dm_for_filter(), -t2, -t3, -t4, -t5),
+    dm_select_tbl(dm_for_filter(), -tf_2, -tf_3, -tf_4, -tf_5),
     dm_for_filter_smaller
   )
 })
@@ -19,7 +19,7 @@ test_that("dm_select_tbl() can reorder the tables in a `dm`", {
     new_dm3()
 
   expect_equivalent_dm(
-    dm_select_tbl(dm_for_filter(), t3:t1, t6:t4),
+    dm_select_tbl(dm_for_filter(), tf_3:tf_1, tf_6:tf_4),
     reordered_dm_for_filter()
   )
 })
@@ -80,12 +80,12 @@ test_that("dm_rename_tbl() renames a `dm`", {
 
 test_that("errors for selecting and renaming tables work", {
   expect_error(
-    dm_select_tbl(dm_for_filter(), t_new = c(t1, t2)),
+    dm_select_tbl(dm_for_filter(), t_new = c(tf_1, tf_2)),
     class = "vctrs_error_names_must_be_unique"
   )
 
   expect_error(
-    dm_rename_tbl(dm_for_filter(), t_new = c(t1, t2)),
+    dm_rename_tbl(dm_for_filter(), t_new = c(tf_1, tf_2)),
     class = "vctrs_error_names_must_be_unique"
   )
 })

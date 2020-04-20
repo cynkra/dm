@@ -50,20 +50,20 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
   # with grandparent table
   expect_dm_error(
-    dm_flatten_to_tbl(dm_more_complex(), t5, t4, t3),
+    dm_flatten_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
     class = "only_parents"
   )
 
   # table unreachable
   expect_dm_error(
-    dm_flatten_to_tbl(dm_for_filter(), t2, t3, t4),
+    dm_flatten_to_tbl(dm_for_filter(), tf_2, tf_3, tf_4),
     class = "tables_not_reachable_from_start"
   )
 
   # deeper hierarchy available and `auto_detect = TRUE`
-  # for flatten: columns from t5 + t4 + t4_2 + t6 are combined in one table, 8 cols in total
+  # for flatten: columns from tf_5 + tf_4 + tf_4_2 + tf_6 are combined in one table, 8 cols in total
   expect_identical(
-    ncol(dm_flatten_to_tbl(dm_more_complex(), t5)),
+    ncol(dm_flatten_to_tbl(dm_more_complex(), tf_5)),
     8L
   )
 })
@@ -181,48 +181,48 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   # with grandparent table
   # left_join:
   expect_equivalent_tbl(
-    dm_squash_to_tbl(dm_more_complex(), t5, t4, t3),
-    left_join(t5, t4, by = c("l" = "h")) %>%
-      left_join(t3, by = c("j" = "f"))
+    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
+    left_join(tf_5, tf_4, by = c("l" = "h")) %>%
+      left_join(tf_3, by = c("j" = "f"))
   )
 
   # deeper hierarchy available and `auto_detect = TRUE`
-  # for flatten: columns from t5 + t4 + t3 + t4_2 + t6 are combined in one table, 9 cols in total
+  # for flatten: columns from tf_5 + tf_4 + tf_3 + tf_4_2 + tf_6 are combined in one table, 9 cols in total
   expect_identical(
-    ncol(dm_squash_to_tbl(dm_more_complex(), t5)),
+    ncol(dm_squash_to_tbl(dm_more_complex(), tf_5)),
     9L
   )
 
   # full_join:
   expect_equivalent_tbl(
-    dm_squash_to_tbl(dm_more_complex(), t5, t4, t3, join = full_join),
-    full_join(t5(), t4(), by = c("l" = "h")) %>%
-      full_join(t3(), by = c("j" = "f"))
+    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
+    full_join(tf_5(), tf_4(), by = c("l" = "h")) %>%
+      full_join(tf_3(), by = c("j" = "f"))
   )
 
   # skipping inner_join, not gaining new info
 
   # right_join:
   expect_dm_error(
-    dm_squash_to_tbl(dm_more_complex(), t5, t4, t3, join = right_join),
+    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = right_join),
     class = "squash_limited"
   )
 
   # semi_join:
   expect_dm_error(
-    dm_squash_to_tbl(dm_more_complex(), t5, t4, t3, join = semi_join),
+    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = semi_join),
     class = "squash_limited"
   )
 
   # anti_join:
   expect_dm_error(
-    dm_squash_to_tbl(dm_more_complex(), t5, t4, t3, join = anti_join),
+    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = anti_join),
     class = "squash_limited"
   )
 
   # fails when there is a cycle:
   expect_dm_error(
-    dm_squash_to_tbl(dm_for_filter_w_cycle(), t5),
+    dm_squash_to_tbl(dm_for_filter_w_cycle(), tf_5),
     "no_cycles"
   )
 })
@@ -292,13 +292,13 @@ test_that("tidyselect works for flatten", {
   # if only deselecting one potential candidate for flattening, the tables that are not
   # candidates will generally be part of the choice
   expect_dm_error(
-    dm_flatten_to_tbl(dm_for_filter(), t2, -t1),
+    dm_flatten_to_tbl(dm_for_filter(), tf_2, -tf_1),
     class = "tables_not_reachable_from_start"
   )
 
   # trying to deselect table that doesn't exist:
   expect_error(
-    dm_flatten_to_tbl(dm_for_filter(), t2, -t101),
+    dm_flatten_to_tbl(dm_for_filter(), tf_2, -tf_101),
     class = "vctrs_error_subscript"
   )
 })
@@ -314,7 +314,7 @@ test_that("`dm_join_to_tbl()` works", {
   )
 
   expect_dm_error(
-    dm_join_to_tbl(dm_for_filter(), t7, t8),
+    dm_join_to_tbl(dm_for_filter(), tf_7, tf_8),
     "table_not_in_dm"
   )
 })

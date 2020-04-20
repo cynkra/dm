@@ -40,7 +40,7 @@ test_that("check_key() checks primary key properly?", {
   )
 })
 
-test_that("check_subset() checks if t1$c1 column values are subset of t2$c2 properly?", {
+test_that("check_subset() checks if tf_1$c1 column values are subset of tf_2$c2 properly?", {
   expect_silent(check_subset(data_mcard_1(), a, data_mcard_2(), a))
 
   verify_output(

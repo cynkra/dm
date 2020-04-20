@@ -92,7 +92,7 @@ test_that("'compute.dm()' computes tables on DB", {
   skip_if_local_src(my_test_src())
   def <-
     dm_for_filter() %>%
-    dm_filter(t1, a > 3) %>%
+    dm_filter(tf_1, a > 3) %>%
     compute() %>%
     dm_get_def()
   test <- map_chr(map(def$data, sql_render), as.character)
@@ -103,7 +103,7 @@ test_that("'compute.dm()' computes tables on DB", {
 test_that("'compute.zoomed_dm()' computes tables on DB", {
   skip_if_local_src(my_test_src())
   zoomed_dm_for_compute <- dm_for_filter() %>%
-    dm_zoom_to(t1) %>%
+    dm_zoom_to(tf_1) %>%
     mutate(c = a + 1)
   # "1" is without computing
   def_1 <- dm_update_zoomed(zoomed_dm_for_compute) %>% dm_get_def()
@@ -120,13 +120,13 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
 
 test_that("some methods/functions for `zoomed_dm` work", {
   expect_identical(
-    colnames(dm_zoom_to(dm_for_filter(), t1)),
+    colnames(dm_zoom_to(dm_for_filter(), tf_1)),
     c("a", "b")
   )
 
   # FIXME: test for 'ncol()'?
   expect_identical(
-    dim(dm_zoom_to(dm_for_filter(), t1)),
+    dim(dm_zoom_to(dm_for_filter(), tf_1)),
     c(10L, 2L)
   )
 })
@@ -146,7 +146,7 @@ test_that("validator is silent", {
 test_that("validator speaks up (sqlite())", {
   expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter()) %>%
-      mutate(data = if_else(table == "t1", list(dm_for_filter_sqlite()$t1), data))) %>%
+      mutate(data = if_else(table == "tf_1", list(dm_for_filter_sqlite()$tf_1), data))) %>%
       validate_dm(),
     "dm_invalid"
   )
@@ -161,13 +161,13 @@ test_that("validator speaks up when something's wrong", {
 
   # zoom column of `zoomed_dm` is empty
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter() %>% dm_zoom_to(t1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
+    new_dm3(dm_get_def(dm_for_filter() %>% dm_zoom_to(tf_1)) %>% mutate(zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 
   # col tracker of zoomed dm is empty
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter() %>% dm_zoom_to(t1)) %>% mutate(col_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
+    new_dm3(dm_get_def(dm_for_filter() %>% dm_zoom_to(tf_1)) %>% mutate(col_tracker_zoom = list(NULL)), zoomed = TRUE) %>% validate_dm(),
     "dm_invalid"
   )
 
@@ -186,9 +186,9 @@ test_that("validator speaks up when something's wrong", {
   # zoom column of a zoomed dm contains a nonsensical entry
   expect_dm_error(
     new_dm3(dm_for_filter() %>%
-      dm_zoom_to(t1) %>%
+      dm_zoom_to(tf_1) %>%
       dm_get_def() %>%
-      mutate(zoom = if_else(table == "t1", list(1), NULL)), zoomed = TRUE) %>%
+      mutate(zoom = if_else(table == "tf_1", list(1), NULL)), zoomed = TRUE) %>%
       validate_dm(),
     "dm_invalid"
   )
@@ -196,9 +196,9 @@ test_that("validator speaks up when something's wrong", {
   # zoom column of a zoomed dm contains more than one entry
   expect_dm_error(
     new_dm3(dm_for_filter() %>%
-      dm_zoom_to(t1) %>%
+      dm_zoom_to(tf_1) %>%
       dm_get_def() %>%
-      mutate(zoom = list(t1)), zoomed = TRUE) %>%
+      mutate(zoom = list(tf_1)), zoomed = TRUE) %>%
       validate_dm(),
     "dm_invalid"
   )
@@ -211,7 +211,7 @@ test_that("validator speaks up when something's wrong", {
 
   # PK metadata wrong (colname doesn't exist)
   expect_dm_error(
-    new_dm3(dm_get_def(dm_for_filter()) %>% mutate(pks = if_else(table == "t1", vctrs::list_of(new_pk(list("z"))), pks))) %>%
+    new_dm3(dm_get_def(dm_for_filter()) %>% mutate(pks = if_else(table == "tf_1", vctrs::list_of(new_pk(list("z"))), pks))) %>%
       validate_dm(),
     "dm_invalid"
   )
@@ -219,7 +219,7 @@ test_that("validator speaks up when something's wrong", {
   # FK metadata wrong (table doesn't exist)
   expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter()) %>%
-      mutate(fks = if_else(table == "t3", vctrs::list_of(new_fk(table = "t8", list("z"))), fks))) %>%
+      mutate(fks = if_else(table == "tf_3", vctrs::list_of(new_fk(table = "tf_8", list("z"))), fks))) %>%
       validate_dm(),
     "dm_invalid"
   )
@@ -227,24 +227,24 @@ test_that("validator speaks up when something's wrong", {
 
 test_that("`pull_tbl()`-methods work", {
   expect_equivalent_tbl(
-    pull_tbl(dm_for_filter(), t5),
-    t5
+    pull_tbl(dm_for_filter(), tf_5),
+    tf_5
   )
 
   expect_equivalent_tbl(
-    dm_zoom_to(dm_for_filter(), t3) %>%
+    dm_zoom_to(dm_for_filter(), tf_3) %>%
       mutate(new_col = row_number() * 3) %>%
       pull_tbl(),
-    mutate(t3, new_col = row_number() * 3)
+    mutate(tf_3, new_col = row_number() * 3)
   )
 
   expect_equivalent_tbl(
-    dm_zoom_to(dm_for_filter(), t1) %>% pull_tbl(t1),
-    t1
+    dm_zoom_to(dm_for_filter(), tf_1) %>% pull_tbl(tf_1),
+    tf_1
   )
 
   expect_dm_error(
-    dm_zoom_to(dm_for_filter(), t1) %>% pull_tbl(t2),
+    dm_zoom_to(dm_for_filter(), tf_1) %>% pull_tbl(tf_2),
     "table_not_zoomed"
   )
 
@@ -255,7 +255,7 @@ test_that("`pull_tbl()`-methods work", {
 
   expect_dm_error(
     dm_get_def(dm_for_filter()) %>%
-      mutate(zoom = list(t1)) %>%
+      mutate(zoom = list(tf_1)) %>%
       new_dm3(zoomed = TRUE) %>%
       pull_tbl(),
     "not_pulling_multiple_zoomed"
@@ -265,11 +265,11 @@ test_that("`pull_tbl()`-methods work", {
 test_that("numeric subsetting works", {
 
   # check specifically for the right output in one case
-  expect_equivalent_tbl(dm_for_filter()[[4]], t4)
+  expect_equivalent_tbl(dm_for_filter()[[4]], tf_4)
 
   # compare numeric subsetting and subsetting by name on chosen src
   expect_equivalent_tbl(
-    dm_for_filter()[["t2"]],
+    dm_for_filter()[["tf_2"]],
     dm_for_filter()[[2]]
   )
 
@@ -281,25 +281,25 @@ test_that("numeric subsetting works", {
 })
 
 test_that("subsetting `dm` works", {
-  expect_equivalent_tbl(dm_for_filter()$t5, t5)
-  expect_equivalent_tbl(dm_for_filter()[["t3"]], t3)
+  expect_equivalent_tbl(dm_for_filter()$tf_5, tf_5)
+  expect_equivalent_tbl(dm_for_filter()[["tf_3"]], tf_3)
 })
 
 test_that("subsetting `zoomed_dm` works", {
   skip_if_remote_src(my_test_src())
   expect_identical(
-    dm_zoom_to(dm_for_filter(), t2)$c,
-    pull(t2, c)
+    dm_zoom_to(dm_for_filter(), tf_2)$c,
+    pull(tf_2, c)
   )
 
   expect_identical(
-    dm_zoom_to(dm_for_filter(), t3)[["g"]],
-    pull(t3, g)
+    dm_zoom_to(dm_for_filter(), tf_3)[["g"]],
+    pull(tf_3, g)
   )
 
   expect_identical(
-    dm_zoom_to(dm_for_filter(), t3)[c("g", "f", "g")],
-    t3[c("g", "f", "g")]
+    dm_zoom_to(dm_for_filter(), tf_3)[c("g", "f", "g")],
+    tf_3[c("g", "f", "g")]
   )
 })
 
@@ -307,12 +307,12 @@ test_that("methods for dm/zoomed_dm work", {
   expect_length(dm_for_filter(), 6L)
 
   expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
-  expect_identical(names(dm_zoom_to(dm_for_filter(), t2)), colnames(t2()))
+  expect_identical(names(dm_zoom_to(dm_for_filter(), tf_2)), colnames(tf_2()))
 })
 
 test_that("method length.zoomed_dm() works locally", {
   skip_if_remote_src(my_test_src())
-  expect_length(dm_zoom_to(dm_for_filter(), t2), 3L)
+  expect_length(dm_zoom_to(dm_for_filter(), tf_2), 3L)
 })
 
 test_that("as.list()-method works for `dm`", {
@@ -326,8 +326,8 @@ test_that("as.list()-method works for `zoomed_dm`", {
   # as.list() is no-op for `tbl_sql` object
   skip_if_remote_src(my_test_src())
   expect_identical(
-    as.list(dm_for_filter() %>% dm_zoom_to(t4)),
-    as.list(t4())
+    as.list(dm_for_filter() %>% dm_zoom_to(tf_4)),
+    as.list(tf_4())
   )
 })
 
@@ -373,8 +373,8 @@ test_that("dm_get_filters() works", {
   )
 
   expect_identical(
-    dm_get_filters(dm_filter(dm_for_filter(), t1, a > 3, a < 8)),
-    tibble(table = "t1", filter = unname(exprs(a > 3, a < 8)), zoomed = FALSE)
+    dm_get_filters(dm_filter(dm_for_filter(), tf_1, a > 3, a < 8)),
+    tibble(table = "tf_1", filter = unname(exprs(a > 3, a < 8)), zoomed = FALSE)
   )
 })
 

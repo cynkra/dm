@@ -40,22 +40,22 @@ test_that("dm_rm_pk() works as intended?", {
 
   # test if error is thrown if FK points to PK that is about to be removed
   expect_dm_error(
-    dm_rm_pk(dm_for_filter(), t4),
+    dm_rm_pk(dm_for_filter(), tf_4),
     "first_rm_fks"
   )
 
   # test logic if argument `rm_referencing_fks = TRUE`
   expect_equivalent_dm(
-    dm_rm_pk(dm_for_filter(), t4, rm_referencing_fks = TRUE),
-    dm_rm_fk(dm_for_filter(), t5, l, t4) %>%
-      dm_rm_pk(t4)
+    dm_rm_pk(dm_for_filter(), tf_4, rm_referencing_fks = TRUE),
+    dm_rm_fk(dm_for_filter(), tf_5, l, tf_4) %>%
+      dm_rm_pk(tf_4)
   )
 
   expect_equivalent_dm(
-    dm_rm_pk(dm_for_filter(), t3, rm_referencing_fks = TRUE),
-    dm_rm_fk(dm_for_filter(), t4, j, t3) %>%
-      dm_rm_fk(t2, e, t3) %>%
-      dm_rm_pk(t3)
+    dm_rm_pk(dm_for_filter(), tf_3, rm_referencing_fks = TRUE),
+    dm_rm_fk(dm_for_filter(), tf_4, j, tf_3) %>%
+      dm_rm_fk(tf_2, e, tf_3) %>%
+      dm_rm_pk(tf_3)
   )
 })
 
@@ -109,7 +109,7 @@ test_that("enum_pk_candidates() works properly", {
   expect_silent(
     expect_identical(
       enum_pk_candidates(zoomed_dm),
-      enum_pk_candidates(t2)
+      enum_pk_candidates(tf_2)
     )
   )
 })

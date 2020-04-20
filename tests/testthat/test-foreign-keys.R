@@ -107,7 +107,7 @@ test_that("dm_rm_fk() works as intended?", {
 test_that("dm_enum_fk_candidates() works as intended?", {
 
   # `anti_join()` doesn't distinguish between `dbl` and `int`
-  tbl_fk_candidates_t1_t4 <- tribble(
+  tbl_fk_candidates_tf_1_tf_4 <- tribble(
     ~column, ~candidate, ~why,
     "a", TRUE, "",
     "b", FALSE, "<reason>"
@@ -121,10 +121,10 @@ test_that("dm_enum_fk_candidates() works as intended?", {
       dm_enum_fk_candidates(dm_table_1, dm_table_4) %>%
       mutate(why = if_else(why != "", "<reason>", "")) %>%
       collect(),
-    tbl_fk_candidates_t1_t4
+    tbl_fk_candidates_tf_1_tf_4
   )
 
-  tbl_t3_t4 <- tibble::tribble(
+  tbl_tf_3_tf_4 <- tibble::tribble(
     ~column, ~candidate, ~why,
     "c", FALSE, "<reason>"
   ) %>%
@@ -135,10 +135,10 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     dm_add_pk(dm_test_obj_2(), dm_table_4, c) %>%
       dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
       mutate(why = if_else(why != "", "<reason>", "")),
-    tbl_t3_t4
+    tbl_tf_3_tf_4
   )
 
-  tbl_t4_t3 <- tibble::tribble(
+  tbl_tf_4_tf_3 <- tibble::tribble(
     ~column, ~candidate, ~why,
     "c", TRUE, ""
   ) %>%
@@ -149,7 +149,7 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     dm_test_obj() %>%
       dm_add_pk(dm_table_3, c) %>%
       dm_enum_fk_candidates(dm_table_4, dm_table_3),
-    tbl_t4_t3
+    tbl_tf_4_tf_3
   )
 
   nycflights_example <- tibble::tribble(
@@ -193,8 +193,8 @@ test_that("dm_enum_fk_candidates() works as intended?", {
 test_that("enum_fk_candidates() works properly", {
   expect_silent(
     expect_identical(
-      enum_fk_candidates(zoomed_dm, t3),
-      dm_enum_fk_candidates(dm_for_filter(), t2, t3)
+      enum_fk_candidates(zoomed_dm, tf_3),
+      dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_3)
     )
   )
 })

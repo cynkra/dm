@@ -95,70 +95,70 @@ list_of_data_ts_parent_and_child %<-% list(
 message("for testing filter and semi_join")
 
 # the following is for testing the filtering functionality:
-t1 %<-% tibble(
+tf_1 %<-% tibble(
   a = 1:10,
   b = LETTERS[1:10]
 )
 
-t2 %<-% tibble(
+tf_2 %<-% tibble(
   c = c("elephant", "lion", "seal", "worm", "dog", "cat"),
   d = 2:7,
   e = c(LETTERS[4:7], LETTERS[5:6])
 )
 
-t3 %<-% tibble(
+tf_3 %<-% tibble(
   f = LETTERS[2:11],
   g = c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
 )
 
-t4 %<-% tibble(
+tf_4 %<-% tibble(
   h = letters[1:5],
   i = c("three", "four", "five", "six", "seven"),
   j = c(LETTERS[3:6], LETTERS[6])
 )
 
-t5 %<-% tibble(
+tf_5 %<-% tibble(
   k = 1:4,
   l = letters[2:5],
   m = c("house", "tree", "streetlamp", "streetlamp")
 )
 
-t6 %<-% tibble(
+tf_6 %<-% tibble(
   n = c("house", "tree", "hill", "streetlamp", "garden"),
   o = letters[5:9]
 )
 
-t7 %<-% tibble(
+tf_7 %<-% tibble(
   p = letters[4:9],
   q = c("elephant", "lion", "seal", "worm", "dog", "cat")
 )
 
 dm_for_filter_w_cycle %<-% {
   as_dm(list(
-    t1 = t1(), t2 = t2(), t3 = t3(), t4 = t4(), t5 = t5(), t6 = t6(), t7 = t7()
+    tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
   )) %>%
-    dm_add_pk(t1, a) %>%
-    dm_add_pk(t2, c) %>%
-    dm_add_pk(t3, f) %>%
-    dm_add_pk(t4, h) %>%
-    dm_add_pk(t5, k) %>%
-    dm_add_pk(t6, n) %>%
-    dm_add_pk(t7, p) %>%
-    dm_add_fk(t2, d, t1) %>%
-    dm_add_fk(t2, e, t3) %>%
-    dm_add_fk(t4, j, t3) %>%
-    dm_add_fk(t5, l, t4) %>%
-    dm_add_fk(t5, m, t6) %>%
-    dm_add_fk(t6, o, t7) %>%
-    dm_add_fk(t7, q, t2)
+    dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_2, c) %>%
+    dm_add_pk(tf_3, f) %>%
+    dm_add_pk(tf_4, h) %>%
+    dm_add_pk(tf_5, k) %>%
+    dm_add_pk(tf_6, n) %>%
+    dm_add_pk(tf_7, p) %>%
+    dm_add_fk(tf_2, d, tf_1) %>%
+    dm_add_fk(tf_2, e, tf_3) %>%
+    dm_add_fk(tf_4, j, tf_3) %>%
+    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, m, tf_6) %>%
+    dm_add_fk(tf_6, o, tf_7) %>%
+    dm_add_fk(tf_7, q, tf_2)
 }
 
 message("for testing filter and semi_join (2)")
 
-list_for_filter %<-% list(t1 = t1(), t2 = t2(), t3 = t3(), t4 = t4(), t5 = t5(), t6 = t6())
+list_for_filter %<-% list(tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6())
 dm_for_filter %<-% {
   dm_for_filter_w_cycle() %>%
-    dm_select_tbl(-t7)
+    dm_select_tbl(-tf_7)
 }
 
 dm_for_filter_sqlite %<-% copy_dm_to(sqlite(), dm_for_filter())
@@ -166,47 +166,47 @@ dm_for_filter_sqlite %<-% copy_dm_to(sqlite(), dm_for_filter())
 message("for testing filter and semi_join (3)")
 
 output_1 %<-% list(
-  t1 = tibble(a = c(4:7), b = LETTERS[4:7]),
-  t2 = tibble(c = c("seal", "worm", "dog", "cat"), d = 4:7, e = c("F", "G", "E", "F")),
-  t3 = tibble(f = LETTERS[5:7], g = c("four", "five", "six")),
-  t4 = tibble(h = letters[3:5], i = c("five", "six", "seven"), j = c("E", "F", "F")),
-  t5 = tibble(
+  tf_1 = tibble(a = c(4:7), b = LETTERS[4:7]),
+  tf_2 = tibble(c = c("seal", "worm", "dog", "cat"), d = 4:7, e = c("F", "G", "E", "F")),
+  tf_3 = tibble(f = LETTERS[5:7], g = c("four", "five", "six")),
+  tf_4 = tibble(h = letters[3:5], i = c("five", "six", "seven"), j = c("E", "F", "F")),
+  tf_5 = tibble(
     k = 2:4,
     l = letters[3:5],
     m = c("tree", "streetlamp", "streetlamp")
   ),
-  t6 = tibble(
+  tf_6 = tibble(
     n = c("tree", "streetlamp"),
     o = c("f", "h")
   )
 )
 
 output_3 %<-% list(
-  t1 = tibble::tribble(
+  tf_1 = tibble::tribble(
     ~a, ~b,
     4L, "D",
     7L, "G"
   ),
-  t2 = tibble::tribble(
+  tf_2 = tibble::tribble(
     ~c, ~d, ~e,
     "seal", 4L, "F",
     "cat", 7L, "F"
   ),
-  t3 = tibble::tribble(
+  tf_3 = tibble::tribble(
     ~f, ~g,
     "F", "five"
   ),
-  t4 = tibble::tribble(
+  tf_4 = tibble::tribble(
     ~h, ~i, ~j,
     "d", "six", "F",
     "e", "seven", "F"
   ),
-  t5 = tibble::tribble(
+  tf_5 = tibble::tribble(
     ~k, ~l, ~m,
     3L, "d", "streetlamp",
     4L, "e", "streetlamp"
   ),
-  t6 = tibble::tribble(
+  tf_6 = tibble::tribble(
     ~n, ~o,
     "streetlamp", "h"
   )
@@ -247,8 +247,8 @@ list_for_filter_2 %<-%
   modifyList(
     list_for_filter(),
     list(
-      t6_2 = tibble(p = letters[1:6], f = LETTERS[6:11]),
-      t4_2 = tibble(
+      tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11]),
+      tf_4_2 = tibble(
         r = letters[2:6],
         s = c("three", "five", "six", "seven", "eight"),
         t = c(LETTERS[4:7], LETTERS[5])
@@ -263,26 +263,26 @@ list_for_filter_2 %<-%
 
 dm_more_complex %<-% {
   as_dm(list_for_filter_2()) %>%
-    dm_add_pk(t1, a) %>%
-    dm_add_pk(t2, c) %>%
-    dm_add_pk(t3, f) %>%
-    dm_add_pk(t4, h) %>%
-    dm_add_pk(t4_2, r) %>%
-    dm_add_pk(t5, k) %>%
-    dm_add_pk(t6, n) %>%
-    dm_add_pk(t6_2, p) %>%
+    dm_add_pk(tf_1, a) %>%
+    dm_add_pk(tf_2, c) %>%
+    dm_add_pk(tf_3, f) %>%
+    dm_add_pk(tf_4, h) %>%
+    dm_add_pk(tf_4_2, r) %>%
+    dm_add_pk(tf_5, k) %>%
+    dm_add_pk(tf_6, n) %>%
+    dm_add_pk(tf_6_2, p) %>%
     dm_add_pk(a, a_1) %>%
     dm_add_pk(b, b_1) %>%
     dm_add_pk(c, c_1) %>%
     dm_add_pk(d, d_1) %>%
     dm_add_pk(e, e_1) %>%
-    dm_add_fk(t2, d, t1) %>%
-    dm_add_fk(t2, e, t3) %>%
-    dm_add_fk(t4, j, t3) %>%
-    dm_add_fk(t5, l, t4) %>%
-    dm_add_fk(t5, l, t4_2) %>%
-    dm_add_fk(t5, m, t6) %>%
-    dm_add_fk(t6_2, f, t3) %>%
+    dm_add_fk(tf_2, d, tf_1) %>%
+    dm_add_fk(tf_2, e, tf_3) %>%
+    dm_add_fk(tf_4, j, tf_3) %>%
+    dm_add_fk(tf_5, l, tf_4) %>%
+    dm_add_fk(tf_5, l, tf_4_2) %>%
+    dm_add_fk(tf_5, m, tf_6) %>%
+    dm_add_fk(tf_6_2, f, tf_3) %>%
     dm_add_fk(b, b_2, a) %>%
     dm_add_fk(b, b_3, c) %>%
     dm_add_fk(d, b_1, b) %>%
@@ -461,8 +461,8 @@ dm_nycflights_small %<-% {
 
 dm_nycflights_small_sqlite %<-% copy_dm_to(sqlite(), dm_nycflights_small())
 
-zoomed_dm <- dm_zoom_to(dm_for_filter(), t2)
-zoomed_dm_2 <- dm_zoom_to(dm_for_filter(), t3)
+zoomed_dm <- dm_zoom_to(dm_for_filter(), tf_2)
+zoomed_dm_2 <- dm_zoom_to(dm_for_filter(), tf_3)
 
 # FIXME: regarding PR #313: everything below this line needs to be at least reconsidered if not just dumped.
 

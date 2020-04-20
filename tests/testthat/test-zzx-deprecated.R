@@ -47,17 +47,17 @@ test_that("cdm_get_colors() behaves as intended", {
 test_that("cdm_filter() behaves correctly", {
   skip_on_cran()
   expect_equivalent_tbl(
-    cdm_filter(dm_for_filter(), t1, a > 4) %>% dm_apply_filters_to_tbl(t2),
-    filter(t2, d > 4)
+    cdm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2),
+    filter(tf_2, d > 4)
   )
 
   expect_equivalent_tbl(
-    dm_filter(dm_for_filter(), t1, a > 4) %>% cdm_apply_filters_to_tbl(t2),
-    filter(t2, d > 4)
+    dm_filter(dm_for_filter(), tf_1, a > 4) %>% cdm_apply_filters_to_tbl(tf_2),
+    filter(tf_2, d > 4)
   )
 
   expect_equivalent_tbl_lists(
-    dm_filter(dm_for_filter(), t1, a > 3, a < 8) %>% cdm_apply_filters() %>% dm_get_tables(),
+    dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>% cdm_apply_filters() %>% dm_get_tables(),
     output_1()
   )
 })
@@ -83,9 +83,9 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
   )
 
   expect_equivalent_tbl(
-    cdm_squash_to_tbl(dm_more_complex(), t5, t4, t3),
-    left_join(t5(), t4(), by = c("l" = "h")) %>%
-      left_join(t3(), by = c("j" = "f"))
+    cdm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3),
+    left_join(tf_5(), tf_4(), by = c("l" = "h")) %>%
+      left_join(tf_3(), by = c("j" = "f"))
   )
 })
 
@@ -140,8 +140,8 @@ test_that("cdm_get_filter() works", {
   )
 
   expect_identical(
-    cdm_get_filter(dm_filter(dm_for_filter(), t1, a > 3, a < 8)),
-    dm_get_filters(dm_filter(dm_for_filter(), t1, a > 3, a < 8))
+    cdm_get_filter(dm_filter(dm_for_filter(), tf_1, a > 3, a < 8)),
+    dm_get_filters(dm_filter(dm_for_filter(), tf_1, a > 3, a < 8))
   )
 })
 
@@ -164,13 +164,13 @@ test_that("cdm_add_pk() and cdm_add_fk() work", {
 test_that("other FK functions work", {
   skip_on_cran()
 
-  expect_true(cdm_has_fk(dm_for_filter(), t2, t1))
+  expect_true(cdm_has_fk(dm_for_filter(), tf_2, tf_1))
 
-  expect_false(cdm_has_fk(dm_for_filter(), t1, t2))
+  expect_false(cdm_has_fk(dm_for_filter(), tf_1, tf_2))
 
   expect_identical(
-    cdm_get_fk(dm_for_filter(), t2, t1),
-    dm_get_fk(dm_for_filter(), t2, t1)
+    cdm_get_fk(dm_for_filter(), tf_2, tf_1),
+    dm_get_fk(dm_for_filter(), tf_2, tf_1)
   )
 
   expect_identical(
@@ -180,13 +180,13 @@ test_that("other FK functions work", {
   )
 
   expect_equivalent_dm(
-    cdm_rm_fk(dm_for_filter(), t2, d, t1),
-    dm_rm_fk(dm_for_filter(), t2, d, t1)
+    cdm_rm_fk(dm_for_filter(), tf_2, d, tf_1),
+    dm_rm_fk(dm_for_filter(), tf_2, d, tf_1)
   )
 
   expect_identical(
-    cdm_enum_fk_candidates(dm_for_filter(), t2, t1),
-    dm_enum_fk_candidates(dm_for_filter(), t2, t1)
+    cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1),
+    dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
   )
 })
 
@@ -194,13 +194,13 @@ test_that("graph-functions work", {
   skip_on_cran()
 
   expect_identical(
-    cdm_is_referenced(dm_for_filter(), t3),
-    dm_is_referenced(dm_for_filter(), t3)
+    cdm_is_referenced(dm_for_filter(), tf_3),
+    dm_is_referenced(dm_for_filter(), tf_3)
   )
 
   expect_identical(
-    cdm_get_referencing_tables(dm_for_filter(), t3),
-    dm_get_referencing_tables(dm_for_filter(), t3)
+    cdm_get_referencing_tables(dm_for_filter(), tf_3),
+    dm_get_referencing_tables(dm_for_filter(), tf_3)
   )
 })
 
@@ -246,10 +246,10 @@ test_that("cdm_paste() works", {
   expect_output(
     cdm_paste(dm_for_filter(), FALSE, 4),
     paste0(
-      "dm(t1, t2, t3, t4, t5, t6) %>%\n    dm_add_pk(t1, a) %>%\n    dm_add_pk(t2, c) %>%",
-      "\n    dm_add_pk(t3, f) %>%\n    dm_add_pk(t4, h) %>%\n    dm_add_pk(t5, k) %>%\n    ",
-      "dm_add_pk(t6, n) %>%\n    dm_add_fk(t2, d, t1) %>%\n    dm_add_fk(t2, e, t3) %>%\n    ",
-      "dm_add_fk(t4, j, t3) %>%\n    dm_add_fk(t5, l, t4) %>%\n    dm_add_fk(t5, m, t6)"
+      "dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%\n    dm_add_pk(tf_1, a) %>%\n    dm_add_pk(tf_2, c) %>%",
+      "\n    dm_add_pk(tf_3, f) %>%\n    dm_add_pk(tf_4, h) %>%\n    dm_add_pk(tf_5, k) %>%\n    ",
+      "dm_add_pk(tf_6, n) %>%\n    dm_add_fk(tf_2, d, tf_1) %>%\n    dm_add_fk(tf_2, e, tf_3) %>%\n    ",
+      "dm_add_fk(tf_4, j, tf_3) %>%\n    dm_add_fk(tf_5, l, tf_4) %>%\n    dm_add_fk(tf_5, m, tf_6)"
     ),
     fixed = TRUE
   )
@@ -259,13 +259,13 @@ test_that("other PK functions work", {
   skip_on_cran()
 
   expect_identical(
-    cdm_has_pk(dm_for_filter(), t1),
-    dm_has_pk(dm_for_filter(), t1)
+    cdm_has_pk(dm_for_filter(), tf_1),
+    dm_has_pk(dm_for_filter(), tf_1)
   )
 
   expect_identical(
-    cdm_get_pk(dm_for_filter(), t1),
-    dm_get_pk(dm_for_filter(), t1)
+    cdm_get_pk(dm_for_filter(), tf_1),
+    dm_get_pk(dm_for_filter(), tf_1)
   )
 
   expect_identical(
@@ -274,8 +274,8 @@ test_that("other PK functions work", {
   )
 
   expect_equivalent_dm(
-    cdm_rm_pk(dm_for_filter(), t2),
-    dm_rm_pk(dm_for_filter(), t2)
+    cdm_rm_pk(dm_for_filter(), tf_2),
+    dm_rm_pk(dm_for_filter(), tf_2)
   )
 
   expect_identical(
@@ -290,13 +290,13 @@ test_that("dm_select_tbl() and dm_rename_tbl() work", {
   skip_on_cran()
 
   expect_equivalent_dm(
-    cdm_select_tbl(dm_for_filter(), t1_new = t1, t2, new_t6 = t6),
-    dm_select_tbl(dm_for_filter(), t1_new = t1, t2, new_t6 = t6)
+    cdm_select_tbl(dm_for_filter(), tf_1_new = tf_1, tf_2, new_tf_6 = tf_6),
+    dm_select_tbl(dm_for_filter(), tf_1_new = tf_1, tf_2, new_tf_6 = tf_6)
   )
 
   expect_equivalent_dm(
-    cdm_rename_tbl(dm_for_filter(), t1_new = t1, new_t6 = t6),
-    dm_rename_tbl(dm_for_filter(), t1_new = t1, new_t6 = t6)
+    cdm_rename_tbl(dm_for_filter(), tf_1_new = tf_1, new_tf_6 = tf_6),
+    dm_rename_tbl(dm_for_filter(), tf_1_new = tf_1, new_tf_6 = tf_6)
   )
 })
 
@@ -304,13 +304,13 @@ test_that("dm_select() and dm_rename() work", {
   skip_on_cran()
 
   expect_equivalent_tbl(
-    cdm_select(dm_for_filter(), t1, a_new = a) %>% tbl("t1"),
-    dm_select(dm_for_filter(), t1, a_new = a) %>% tbl("t1")
+    cdm_select(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1"),
+    dm_select(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1")
   )
 
   expect_equivalent_tbl(
-    cdm_rename(dm_for_filter(), t1, a_new = a) %>% tbl("t1"),
-    dm_rename(dm_for_filter(), t1, a_new = a) %>% tbl("t1")
+    cdm_rename(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1"),
+    dm_rename(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1")
   )
 })
 
@@ -318,22 +318,22 @@ test_that("dm_zoom_to() and related functions work", {
   skip_on_cran()
 
   expect_equivalent_dm(
-    cdm_zoom_to_tbl(dm_for_filter(), t1),
-    dm_zoom_to(dm_for_filter(), t1)
+    cdm_zoom_to_tbl(dm_for_filter(), tf_1),
+    dm_zoom_to(dm_for_filter(), tf_1)
   )
 
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter(), t1) %>% cdm_insert_zoomed_tbl("another_name"),
-    dm_zoom_to(dm_for_filter(), t1) %>% dm_insert_zoomed("another_name")
+    dm_zoom_to(dm_for_filter(), tf_1) %>% cdm_insert_zoomed_tbl("another_name"),
+    dm_zoom_to(dm_for_filter(), tf_1) %>% dm_insert_zoomed("another_name")
   )
 
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter(), t1) %>% cdm_update_zoomed_tbl(),
-    dm_zoom_to(dm_for_filter(), t1) %>% dm_update_zoomed()
+    dm_zoom_to(dm_for_filter(), tf_1) %>% cdm_update_zoomed_tbl(),
+    dm_zoom_to(dm_for_filter(), tf_1) %>% dm_update_zoomed()
   )
 
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter(), t1) %>% cdm_zoom_out(),
-    dm_zoom_to(dm_for_filter(), t1) %>% dm_discard_zoomed()
+    dm_zoom_to(dm_for_filter(), tf_1) %>% cdm_zoom_out(),
+    dm_zoom_to(dm_for_filter(), tf_1) %>% dm_discard_zoomed()
   )
 })

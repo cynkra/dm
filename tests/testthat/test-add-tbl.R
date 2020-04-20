@@ -47,22 +47,22 @@ test_that("dm_add_tbl() works", {
 
   # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
   expect_dm_error(
-    dm_add_tbl(dm_for_filter(), t1 = data_card_1(), repair = "check_unique"),
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "check_unique"),
     "need_unique_names"
   )
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
-    dm_add_tbl(dm_for_filter(), t1 = data_card_1(), quiet = TRUE) %>% src_tbls(),
-    c("t1...1", "t2", "t3", "t4", "t5", "t6", "t1...7")
+    dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), quiet = TRUE) %>% src_tbls(),
+    c("tf_1...1", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6", "tf_1...7")
   )
 
   expect_name_repair_message(
     expect_equivalent_dm(
-      dm_add_tbl(dm_for_filter(), t1 = data_card_1(), repair = "unique"),
+      dm_add_tbl(dm_for_filter(), tf_1 = data_card_1(), repair = "unique"),
       dm_for_filter() %>%
-        dm_rename_tbl(t1...1 = t1) %>%
-        dm_add_tbl(t1...7 = data_card_1())
+        dm_rename_tbl(tf_1...1 = tf_1) %>%
+        dm_add_tbl(tf_1...7 = data_card_1())
     )
   )
 
@@ -80,26 +80,26 @@ test_that("dm_add_tbl() works", {
 
   # can I use dm_select_tbl(), selecting among others the new table?
   expect_silent(
-    dm_add_tbl(dm_for_filter(), t7_new = t7) %>% dm_select_tbl(t1, t7_new, everything())
+    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7) %>% dm_select_tbl(tf_1, tf_7_new, everything())
   )
 })
 
 test_that("dm_rm_tbl() works", {
   # removes a table
   expect_equivalent_dm(
-    dm_rm_tbl(dm_for_filter_w_cycle(), t7),
+    dm_rm_tbl(dm_for_filter_w_cycle(), tf_7),
     dm_for_filter()
   )
 
   # removes more than one table
   expect_equivalent_dm(
-    dm_rm_tbl(dm_for_filter_w_cycle(), t7, t5, t3),
-    dm_select_tbl(dm_for_filter(), t1, t2, t4, t6)
+    dm_rm_tbl(dm_for_filter_w_cycle(), tf_7, tf_5, tf_3),
+    dm_select_tbl(dm_for_filter(), tf_1, tf_2, tf_4, tf_6)
   )
 
   # fails when table name is wrong
   expect_error(
-    dm_rm_tbl(dm_for_filter(), t7),
+    dm_rm_tbl(dm_for_filter(), tf_7),
     class = "vctrs_error_subscript"
   )
 
