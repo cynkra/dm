@@ -144,7 +144,6 @@ test_that("validator is silent", {
 })
 
 test_that("validator speaks up (sqlite)", {
-  # FIXME: PR #313: will this test fail, if chosen `src` is SQLite?
   expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter) %>%
       mutate(data = if_else(table == "t1", list(dm_for_filter_sqlite$t1), data))) %>%
