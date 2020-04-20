@@ -214,8 +214,6 @@ def_dm_for_filter <- dm_get_def(dm_for_filter)
 
 dm_for_filter_rev %<-%
   new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
-dm_for_filter_rev_sqlite %<-% copy_dm_to(sqlite, dm_for_filter_rev, unique_table_names = TRUE)
-
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 
@@ -228,8 +226,6 @@ dm_test_obj %<-% as_dm(list(
   dm_table_4 = d8
 ))
 
-dm_test_obj_sqlite %<-% copy_dm_to(sqlite, dm_test_obj)
-
 dm_test_obj_2 %<-% as_dm(list(
   dm_table_1 = d4,
   dm_table_2 = d7,
@@ -237,12 +233,9 @@ dm_test_obj_2 %<-% as_dm(list(
   dm_table_4 = d6
 ))
 
-dm_test_obj_2_sqlite %<-% copy_dm_to(sqlite, dm_test_obj_2, unique_table_names = TRUE)
-
 # for `dm_nrow()` ---------------------------------------------------------
 
 rows_dm_obj <- 24L
-
 
 # Complicated `dm` --------------------------------------------------------
 
@@ -324,7 +317,6 @@ iris_3_dis %<-% {
   iris_3 %>%
     rename_at(1:7, ~ sub("^", "iris_3.", .))
 }
-
 
 dm_for_disambiguate %<-% {
   as_dm(list(iris_1 = iris_1, iris_2 = iris_2, iris_3 = iris_3)) %>%
@@ -425,8 +417,6 @@ dm_for_flatten %<-% {
     dm_add_fk(fact, dim_4_key, dim_4)
 }
 
-dm_for_flatten_sqlite %<-% copy_dm_to(sqlite, dm_for_flatten)
-
 result_from_flatten %<-% {
   fact_clean %>%
     left_join(dim_1_clean, by = c("dim_1_key" = "dim_1_pk")) %>%
@@ -497,98 +487,4 @@ clear_postgres <- function() {
       pull(),
     ~ dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
   )
-}
-
-# Only run if the top level call is devtools::test() or testthat::test_check()
-if (is_this_a_test()) {
-  library(nycflights13)
-
-  message("connecting")
-
-  dbplyr::test_register_src("df", src_df(env = .GlobalEnv))
-
-  if (packageVersion("RSQLite") >= "2.1.1.9003") {
-    try(dbplyr::test_register_src("sqlite", src_sqlite(":memory:", create = TRUE)), silent = TRUE)
-  }
-
-  local(try(
-    {
-      con <- DBI::dbConnect(
-        RPostgres::Postgres(),
-        dbname = "postgres", host = "localhost", port = 5432,
-        user = "postgres", bigint = "integer"
-      )
-      src <- src_dbi(con, auto_disconnect = TRUE)
-      dbplyr::test_register_src("postgres", src)
-      clear_postgres()
-    },
-    silent = TRUE
-  ))
-
-
-  # This will only work, if run on TS's laptop
-  try(
-    {
-      source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
-      con_mssql <- mssql_con()
-      src_mssql <- src_dbi(con_mssql)
-      dbplyr::test_register_src("mssql", src_mssql)
-    },
-    silent = TRUE
-  )
-
-  message("loading into database")
-
-  dm_for_filter_src %<-% dm_test_load(dm_for_filter)
-  dm_for_filter_rev_src %<-% dm_test_load(dm_for_filter_rev)
-  dm_for_filter_w_cycle_src %<-% dm_test_load(dm_for_filter_w_cycle)
-  dm_test_obj_src %<-% dm_test_load(dm_test_obj)
-  dm_test_obj_2_src %<-% dm_test_load(dm_test_obj_2)
-  dm_for_flatten_src %<-% dm_test_load(dm_for_flatten)
-  dm_more_complex_src %<-% dm_test_load(dm_more_complex)
-  dm_for_disambiguate_src %<-% dm_test_load(dm_for_disambiguate)
-  dm_nycflights_small_src %<-% dm_test_load(dm_nycflights_small, set_key_constraints = FALSE)
-
-  message("loading data frames into database")
-
-  d1_src %<-% dbplyr::test_load(d1)
-  d2_src %<-% dbplyr::test_load(d2)
-  d3_src %<-% dbplyr::test_load(d3)
-  d4_src %<-% dbplyr::test_load(d4)
-  d5_src %<-% dbplyr::test_load(d5)
-  d6_src %<-% dbplyr::test_load(d6)
-
-  # names of sources for naming files for mismatch-comparison; 1 name for each src needs to be given
-  src_names %<-% names(d1_src) # e.g. gets src names of list entries of object d1_src
-  db_src_names %<-% setdiff(src_names, c("df"))
-  db_src_name %<-% db_src_names[1]
-
-  active_srcs <- tibble(src = src_names)
-  lookup <- tibble(
-    src = c("df", "sqlite", "postgres", "mssql"),
-    class_src = c("src_local", "src_SQLiteConnection", "src_PqConnection", "src_Microsoft SQL Server"),
-    class_con = c(NA_character_, "SQLiteConnection", "PqConnection", "Microsoft SQL Server")
-  )
-  active_srcs_class <- semi_join(lookup, active_srcs, by = "src") %>% pull(class_src)
-
-  data_check_key_src %<-% dbplyr::test_load(data)
-
-  data_1_src %<-% dbplyr::test_load(data_1)
-  data_2_src %<-% dbplyr::test_load(data_2)
-  data_3_src %<-% dbplyr::test_load(data_3)
-
-  data_ts_src %<-% dbplyr::test_load(data_ts)
-  data_ts_child_src %<-% dbplyr::test_load(data_ts_child)
-  data_ts_parent_src %<-% dbplyr::test_load(data_ts_parent)
-
-  list_of_data_ts_parent_and_child_src %<-% map2(
-    .x = data_ts_child_src,
-    .y = data_ts_parent_src,
-    ~ list("child_table" = .x, "parent_table" = .y)
-  )
-
-  t1_src %<-% dbplyr::test_load(t1)
-  t3_src %<-% dbplyr::test_load(t3)
-
-  test_srcs <- dbplyr:::test_srcs$get()
 }
