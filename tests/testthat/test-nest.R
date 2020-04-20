@@ -1,7 +1,7 @@
 test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
   skip_if_remote_src(my_test_src())
   expect_equivalent_tbl(
-    zoomed_dm_2 %>%
+    zoomed_dm_2() %>%
       nest_join_zoomed_dm() %>%
       pull_tbl(),
     tf_3() %>%
@@ -12,7 +12,7 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
   )
 
   expect_equivalent_tbl(
-    zoomed_dm_2 %>%
+    zoomed_dm_2() %>%
       nest_join_zoomed_dm(tf_4, tf_2) %>%
       pull_tbl(),
     tf_3() %>%
@@ -31,7 +31,7 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
   )
 
   expect_dm_error(
-    zoomed_dm_2 %>% select(g) %>% nest_join_zoomed_dm(),
+    zoomed_dm_2() %>% select(g) %>% nest_join_zoomed_dm(),
     "pk_not_tracked"
   )
 })

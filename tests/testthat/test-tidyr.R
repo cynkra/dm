@@ -1,6 +1,6 @@
 test_that("basic test: 'unite()'-methods work", {
   expect_equivalent_tbl(
-    unite(zoomed_dm, "new_col", c, e) %>% get_zoomed_tbl(),
+    unite(zoomed_dm(), "new_col", c, e) %>% get_zoomed_tbl(),
     unite(tf_2(), "new_col", c, e)
   )
 
@@ -12,7 +12,7 @@ test_that("basic test: 'unite()'-methods work", {
 
 test_that("basic test: 'separate()'-methods work", {
   expect_equivalent_tbl(
-    unite(zoomed_dm, "new_col", c, e) %>%
+    unite(zoomed_dm(), "new_col", c, e) %>%
       separate("new_col", c("c", "e")) %>%
       select(c, d, e) %>%
       get_zoomed_tbl(),
@@ -27,19 +27,19 @@ test_that("basic test: 'separate()'-methods work", {
 
 test_that("key tracking works", {
   expect_identical(
-    unite(zoomed_dm, "new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys("tf_2"),
+    unite(zoomed_dm(), "new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys("tf_2"),
     set_names("d")
   )
 
   expect_identical(
-    unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>%
+    unite(zoomed_dm(), "new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
     set_names(c("c", "d", "e"))
   )
 
   expect_identical(
-    unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>%
+    unite(zoomed_dm(), "new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       dm_add_fk(tf_2, new_col, tf_6) %>%
       dm_zoom_to(tf_2) %>%
@@ -50,7 +50,7 @@ test_that("key tracking works", {
   )
 
   expect_identical(
-    unite(zoomed_dm, "new_col", c, e, remove = FALSE) %>%
+    unite(zoomed_dm(), "new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       dm_add_fk(tf_2, new_col, tf_6) %>%
       dm_zoom_to(tf_2) %>%
