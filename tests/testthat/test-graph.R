@@ -1,12 +1,12 @@
 test_that("functions working with graphs do the right thing?", {
-  join_list_tbl_1 <- tibble(
+  join_list_tbl_1() <- tibble(
     lhs = c("t2", "t3", "t4", "t5", "t6"),
     rhs = c("t1", "t2", "t3", "t4", "t5"),
     rank = as.numeric(2:6),
     has_father = rep(TRUE, 5)
   )
 
-  join_list_tbl_3 <- tibble::tribble(
+  join_list_tbl_3() <- tibble::tribble(
     ~lhs, ~rhs, ~rank, ~has_father,
     "t2", "t3",     2,        TRUE,
     "t4", "t3",     3,        TRUE,
@@ -23,6 +23,6 @@ test_that("functions working with graphs do the right thing?", {
       ),
       directed = FALSE
     ),
-    create_graph_from_dm(dm_for_filter_w_cycle)
+    create_graph_from_dm(dm_for_filter_w_cycle())
   )
 })

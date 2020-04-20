@@ -1,14 +1,14 @@
 test_that("copy_dm_to() copies data frames to databases", {
   expect_equivalent_dm(
-    copy_dm_to(sqlite, dm_for_filter, unique_table_names = TRUE),
-    dm_for_filter
+    copy_dm_to(sqlite(), dm_for_filter(), unique_table_names = TRUE),
+    dm_for_filter()
   )
 })
 
 test_that("copy_dm_to() copies data frames from databases", {
   expect_equivalent_dm(
-    copy_dm_to(my_test_src, dm_for_filter_sqlite, unique_table_names = TRUE),
-    dm_for_filter_sqlite
+    copy_dm_to(my_test_src(), dm_for_filter_sqlite(), unique_table_names = TRUE),
+    dm_for_filter_sqlite()
   )
 })
 
@@ -17,12 +17,12 @@ test_that("copy_dm_to() copies data frames from databases", {
 
 test_that("copy_dm_to() rejects overwrite and types arguments", {
   expect_dm_error(
-    copy_dm_to(my_test_src, dm_for_filter, overwrite = TRUE),
+    copy_dm_to(my_test_src(), dm_for_filter(), overwrite = TRUE),
     class = "no_overwrite"
   )
 
   expect_dm_error(
-    copy_dm_to(my_test_src, dm_for_filter, types = character()),
+    copy_dm_to(my_test_src(), dm_for_filter(), types = character()),
     class = "no_types"
   )
 })

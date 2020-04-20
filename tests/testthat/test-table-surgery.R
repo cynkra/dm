@@ -8,13 +8,13 @@ reunite_parent_child_from_list_data_ts <-
 test_that("decompose_table() decomposes tables nicely on chosen source", {
   verify_output(
     decompose_table_data_ts,
-    decompose_table(data_ts, aef_id, a, e, f) %>% map(arrange_all)
+    decompose_table(data_ts(), aef_id, a, e, f) %>% map(arrange_all)
   )
 
   expect_equivalent_tbl(
-    decompose_table(data_ts, abcdef_id, a, b, c, d, e, f)$parent_table %>%
+    decompose_table(data_ts(), abcdef_id, a, b, c, d, e, f)$parent_table %>%
       select(-abcdef_id),
-    data_ts
+    data_ts()
   )
 })
 
@@ -43,26 +43,26 @@ test_that("decomposition works with {tidyselect}", {
 test_that("reunite_parent_child() reunites parent and child nicely on chosen source", {
   verify_output(
     reunite_parent_child_data_ts,
-    reunite_parent_child(data_ts_child, data_ts_parent, aef_id) %>% arrange_all()
+    reunite_parent_child(data_ts_child(), data_ts_parent(), aef_id) %>% arrange_all()
   )
 })
 
 test_that("reunite_parent_child_from_list() reunites parent and child nicely on chosen source", {
   verify_output(
     reunite_parent_child_from_list_data_ts,
-    reunite_parent_child_from_list(list_of_data_ts_parent_and_child, aef_id) %>% arrange_all()
+    reunite_parent_child_from_list(list_of_data_ts_parent_and_child(), aef_id) %>% arrange_all()
   )
 })
 
 
 test_that("table surgery functions fail in the expected ways?", {
   expect_error(
-    decompose_table(data_ts, aex_id, a, e, x),
+    decompose_table(data_ts(), aex_id, a, e, x),
     class = if_pkg_version("vctrs", "0.2.99.9004", "vctrs_error_subscript_oob")
   )
 
   expect_dm_error(
-    decompose_table(data_ts, a, a, e, x),
+    decompose_table(data_ts(), a, a, e, x),
     class = "dupl_new_id_col_name"
   )
 })

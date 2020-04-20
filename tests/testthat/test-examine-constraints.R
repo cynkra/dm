@@ -14,7 +14,7 @@ test_that("`dm_examine_constraints()` works", {
 
   # case of no constraints:
   expect_identical(
-    dm_examine_constraints(dm_test_obj),
+    dm_examine_constraints(dm_test_obj()),
     tibble(
       table = character(0),
       kind = character(0),
@@ -28,7 +28,7 @@ test_that("`dm_examine_constraints()` works", {
 
   # case of some constraints, all met:
   expect_identical(
-    dm_examine_constraints(dm_for_disambiguate),
+    dm_examine_constraints(dm_for_disambiguate()),
     tibble(
       table = c("iris_1", "iris_2"),
       kind = c("PK", "FK"),
@@ -42,7 +42,7 @@ test_that("`dm_examine_constraints()` works", {
 
   # case of some constraints, some violated:
   expect_identical(
-    dm_examine_constraints(dm_nycflights_small) %>%
+    dm_examine_constraints(dm_nycflights_small()) %>%
       mutate(problem = if_else(problem == "", "", "<reason>")),
     nyc_check
   )

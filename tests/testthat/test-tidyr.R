@@ -1,11 +1,11 @@
 test_that("basic test: 'unite()'-methods work", {
   expect_equivalent_tbl(
     unite(zoomed_dm, "new_col", c, e) %>% get_zoomed_tbl(),
-    unite(t2, "new_col", c, e)
+    unite(t2(), "new_col", c, e)
   )
 
   expect_dm_error(
-    unite(dm_for_filter),
+    unite(dm_for_filter()),
     "only_possible_w_zoom"
   )
 })
@@ -16,11 +16,11 @@ test_that("basic test: 'separate()'-methods work", {
       separate("new_col", c("c", "e")) %>%
       select(c, d, e) %>%
       get_zoomed_tbl(),
-    t2
+    t2()
   )
 
   expect_dm_error(
-    separate(dm_for_filter),
+    separate(dm_for_filter()),
     "only_possible_w_zoom"
   )
 })

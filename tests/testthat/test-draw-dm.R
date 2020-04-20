@@ -16,13 +16,13 @@ test_that("API", {
 test_that("`dm_set_colors()` works", {
   expect_identical(
     dm_set_colors(
-      dm_nycflights_small,
+      dm_nycflights_small(),
       blue = starts_with("air"),
       green = contains("h")
     ) %>%
       dm_get_colors(),
     set_names(
-      src_tbls(dm_nycflights_small),
+      src_tbls(dm_nycflights_small()),
       c("#00FF00FF", "default", "#0000FFFF", "#0000FFFF", "#00FF00FF")
     )
   )
@@ -32,12 +32,12 @@ test_that("`dm_set_colors()` works", {
 
   expect_identical(
     dm_set_colors(
-      dm_nycflights_small,
+      dm_nycflights_small(),
       !!!colset
     ) %>%
       dm_get_colors(),
     set_names(
-      src_tbls(dm_nycflights_small),
+      src_tbls(dm_nycflights_small()),
       c("#0000FFFF", "default", "default", "#00FF00FF", "default")
     )
   )
@@ -46,7 +46,7 @@ test_that("`dm_set_colors()` works", {
 test_that("`dm_set_colors()` errors if old syntax used", {
   expect_dm_error(
     dm_set_colors(
-      dm_nycflights_small,
+      dm_nycflights_small(),
       airports = ,
       airlines = "blue",
       flights = ,
@@ -59,7 +59,7 @@ test_that("`dm_set_colors()` errors if old syntax used", {
 test_that("`dm_set_colors()` errors with unnamed args", {
   expect_dm_error(
     dm_set_colors(
-      dm_nycflights_small,
+      dm_nycflights_small(),
       airports
     ),
     class = "only_named_args"
@@ -81,7 +81,7 @@ test_that("bad color", {
 
   expect_dm_error(
     dm_set_colors(
-      dm_nycflights_small,
+      dm_nycflights_small(),
       "zzz-bogus" = flights
     ),
     class = "cols_not_avail"
@@ -102,7 +102,7 @@ test_that("getter", {
 })
 
 test_that("datamodel-code for drawing", {
-  data_model_for_filter <- dm_get_data_model(dm_for_filter)
+  data_model_for_filter <- dm_get_data_model(dm_for_filter())
 
   expect_s3_class(
     data_model_for_filter,
@@ -124,7 +124,7 @@ test_that("get available colors", {
 
 test_that("helpers", {
   expect_identical(
-    dm_get_all_columns(dm_for_filter),
+    dm_get_all_columns(dm_for_filter()),
     tibble::tribble(
       ~table, ~id, ~column,
       "t1", 1L, "a",

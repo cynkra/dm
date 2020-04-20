@@ -1,5 +1,5 @@
 test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
-  skip_if_remote_src(my_test_src)
+  skip_if_remote_src(my_test_src())
   expect_equivalent_tbl(
     zoomed_dm_2 %>%
       nest_join_zoomed_dm() %>%
@@ -24,8 +24,8 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
 
   expect_message(
     expect_equivalent_dm(
-      dm_rm_pk(dm_for_filter, t3, TRUE) %>% dm_zoom_to(t3) %>% nest_join_zoomed_dm(),
-      dm_rm_pk(dm_for_filter, t3, TRUE) %>% dm_zoom_to(t3)
+      dm_rm_pk(dm_for_filter(), t3, TRUE) %>% dm_zoom_to(t3) %>% nest_join_zoomed_dm(),
+      dm_rm_pk(dm_for_filter(), t3, TRUE) %>% dm_zoom_to(t3)
     ),
     "didn't have a primary key"
   )
@@ -37,9 +37,9 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
 })
 
 test_that("'nest_join_zoomed_dm()' fails for DB-'dm'", {
-  skip_if_local_src(my_test_src)
+  skip_if_local_src(my_test_src())
   expect_dm_error(
-    dm_zoom_to(dm_for_filter, t3) %>% nest_join_zoomed_dm(),
+    dm_zoom_to(dm_for_filter(), t3) %>% nest_join_zoomed_dm(),
     "only_for_local_src"
   )
 })

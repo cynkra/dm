@@ -1,59 +1,59 @@
 test_that("dm_add_pk() works as intended?", {
-  expect_silent(dm_add_pk(dm_test_obj, dm_table_1, a))
+  expect_silent(dm_add_pk(dm_test_obj(), dm_table_1, a))
   expect_silent(
-    dm_add_pk(dm_test_obj, dm_table_1, a) %>%
+    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_add_pk(dm_table_1, b, force = TRUE)
   )
   expect_dm_error(
-    dm_add_pk(dm_test_obj, dm_table_1, qq),
+    dm_add_pk(dm_test_obj(), dm_table_1, qq),
     class = "wrong_col_names"
   )
   expect_dm_error(
-    dm_add_pk(dm_test_obj, dm_table_1, a) %>%
+    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_add_pk(dm_table_1, b),
     class = "key_set_force_false"
   )
   expect_dm_error(
-    dm_add_pk(dm_test_obj, dm_table_2, c, check = TRUE),
+    dm_add_pk(dm_test_obj(), dm_table_2, c, check = TRUE),
     class = "not_unique_key"
   )
   expect_silent(
-    dm_add_pk(dm_test_obj, dm_table_2, c)
+    dm_add_pk(dm_test_obj(), dm_table_2, c)
   )
 })
 
 test_that("dm_rm_pk() works as intended?", {
   expect_silent(
-    dm_add_pk(dm_test_obj, dm_table_1, a) %>%
+    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_rm_pk(dm_table_1)
   )
   expect_true(
-    dm_add_pk(dm_test_obj, dm_table_1, a) %>%
+    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_rm_pk(dm_table_2) %>% # still does its job, even if there was no key in the first place :)
       dm_has_pk(dm_table_1)
   )
   expect_dm_error(
-    dm_add_pk(dm_test_obj, dm_table_1, a) %>%
+    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_rm_pk(dm_table_5),
     class = "table_not_in_dm"
   )
 
   # test if error is thrown if FK points to PK that is about to be removed
   expect_dm_error(
-    dm_rm_pk(dm_for_filter, t4),
+    dm_rm_pk(dm_for_filter(), t4),
     "first_rm_fks"
   )
 
   # test logic if argument `rm_referencing_fks = TRUE`
   expect_equivalent_dm(
-    dm_rm_pk(dm_for_filter, t4, rm_referencing_fks = TRUE),
-    dm_rm_fk(dm_for_filter, t5, l, t4) %>%
+    dm_rm_pk(dm_for_filter(), t4, rm_referencing_fks = TRUE),
+    dm_rm_fk(dm_for_filter(), t5, l, t4) %>%
       dm_rm_pk(t4)
   )
 
   expect_equivalent_dm(
-    dm_rm_pk(dm_for_filter, t3, rm_referencing_fks = TRUE),
-    dm_rm_fk(dm_for_filter, t4, j, t3) %>%
+    dm_rm_pk(dm_for_filter(), t3, rm_referencing_fks = TRUE),
+    dm_rm_fk(dm_for_filter(), t4, j, t3) %>%
       dm_rm_fk(t2, e, t3) %>%
       dm_rm_pk(t3)
   )
@@ -61,29 +61,29 @@ test_that("dm_rm_pk() works as intended?", {
 
 test_that("dm_has_pk() works as intended?", {
   expect_false(
-    dm_has_pk(dm_test_obj, dm_table_2)
+    dm_has_pk(dm_test_obj(), dm_table_2)
   )
   expect_true(
-    dm_add_pk(dm_test_obj, dm_table_1, a) %>%
+    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_has_pk(dm_table_1)
   )
 })
 
 test_that("dm_get_pk() works as intended?", {
   expect_identical(
-    dm_get_pk(dm_test_obj, dm_table_1),
+    dm_get_pk(dm_test_obj(), dm_table_1),
     new_keys(character(0))
   )
   expect_identical(
-    dm_add_pk(dm_test_obj, dm_table_1, a) %>%
+    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_get_pk(dm_table_1),
     new_keys("a")
   )
   expect_equivalent_dm(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_1, a) %>%
       dm_add_pk(dm_table_1, b, force = TRUE),
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_1, b)
   )
 })
@@ -96,11 +96,11 @@ test_that("dm_enum_pk_candidates() works properly?", {
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
   expect_identical(
-    dm_enum_pk_candidates(dm_test_obj, dm_table_1),
+    dm_enum_pk_candidates(dm_test_obj(), dm_table_1),
     candidates_table_1
   )
   expect_identical(
-    dm_enum_pk_candidates(dm_test_obj, dm_table_2),
+    dm_enum_pk_candidates(dm_test_obj(), dm_table_2),
     candidates_table_2
   )
 })

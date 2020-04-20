@@ -1,11 +1,11 @@
 test_that("dm_add_fk() works as intended?", {
   expect_dm_error(
-    dm_add_fk(dm_test_obj, dm_table_1, a, dm_table_4),
+    dm_add_fk(dm_test_obj(), dm_table_1, a, dm_table_4),
     class = "ref_tbl_has_no_pk"
   )
 
   expect_true(
-    dm_add_pk(dm_test_obj, dm_table_4, c) %>%
+    dm_add_pk(dm_test_obj(), dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_has_fk(dm_table_1, dm_table_4)
   )
@@ -13,7 +13,7 @@ test_that("dm_add_fk() works as intended?", {
 
 test_that("dm_has_fk() and dm_get_fk() work as intended?", {
   expect_identical(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -22,7 +22,7 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
   )
 
   expect_true(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -30,7 +30,7 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
   )
 
   expect_identical(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -39,7 +39,7 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
   )
 
   expect_false(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -47,7 +47,7 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
   )
 
   expect_identical(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -58,7 +58,7 @@ test_that("dm_has_fk() and dm_get_fk() work as intended?", {
 
 test_that("dm_rm_fk() works as intended?", {
   expect_true(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -67,7 +67,7 @@ test_that("dm_rm_fk() works as intended?", {
   )
 
   expect_false(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -76,7 +76,7 @@ test_that("dm_rm_fk() works as intended?", {
   )
 
   expect_false(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -85,7 +85,7 @@ test_that("dm_rm_fk() works as intended?", {
   )
 
   expect_dm_error(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -94,7 +94,7 @@ test_that("dm_rm_fk() works as intended?", {
   )
 
   expect_dm_error(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
@@ -116,7 +116,7 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     mutate(columns = new_keys(columns))
 
   expect_identical(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_enum_fk_candidates(dm_table_1, dm_table_4) %>%
       mutate(why = if_else(why != "", "<reason>", "")) %>%
@@ -132,7 +132,7 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     mutate(columns = new_keys(columns))
 
   expect_identical(
-    dm_add_pk(dm_test_obj_2, dm_table_4, c) %>%
+    dm_add_pk(dm_test_obj_2(), dm_table_4, c) %>%
       dm_enum_fk_candidates(dm_table_3, dm_table_4) %>%
       mutate(why = if_else(why != "", "<reason>", "")),
     tbl_t3_t4
@@ -146,7 +146,7 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     mutate(columns = new_keys(columns))
 
   expect_identical(
-    dm_test_obj %>%
+    dm_test_obj() %>%
       dm_add_pk(dm_table_3, c) %>%
       dm_enum_fk_candidates(dm_table_4, dm_table_3),
     tbl_t4_t3
@@ -185,7 +185,7 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   )
 
   expect_dm_error(
-    dm_enum_fk_candidates(dm_test_obj, dm_table_1, dm_table_4),
+    dm_enum_fk_candidates(dm_test_obj(), dm_table_1, dm_table_4),
     class = "ref_tbl_has_no_pk"
   )
 })
@@ -194,7 +194,7 @@ test_that("enum_fk_candidates() works properly", {
   expect_silent(
     expect_identical(
       enum_fk_candidates(zoomed_dm, t3),
-      dm_enum_fk_candidates(dm_for_filter, t2, t3)
+      dm_enum_fk_candidates(dm_for_filter(), t2, t3)
     )
   )
 })
