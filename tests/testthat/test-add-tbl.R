@@ -2,80 +2,80 @@ test_that("dm_add_tbl() works", {
 
   # is a table added?
   expect_identical(
-    length(dm_get_tables(dm_add_tbl(dm_for_filter, d1))),
+    length(dm_get_tables(dm_add_tbl(dm_for_filter, data_card_1))),
     7L
   )
 
   # can I retrieve the tibble under its old name?
   expect_equivalent_tbl(
-    tbl(dm_add_tbl(dm_for_filter, d1), "d1"),
-    d1
+    tbl(dm_add_tbl(dm_for_filter, data_card_1), "data_card_1"),
+    data_card_1
   )
 
   # can I retrieve the tibble under a new name?
   expect_equivalent_tbl(
-    tbl(dm_add_tbl(dm_for_filter, test = d1), "test"),
-    d1
+    tbl(dm_add_tbl(dm_for_filter, test = data_card_1), "test"),
+    data_card_1
   )
 
   # we accept even weird table names, as long as they are unique
   expect_equivalent_tbl(
-    tbl(d1 %>% dm_add_tbl(dm_for_filter, .), "."),
-    d1
+    tbl(data_card_1 %>% dm_add_tbl(dm_for_filter, .), "."),
+    data_card_1
   )
 
   # do I avoid the warning when piping the table but setting the name?
   expect_silent(
     expect_equivalent_tbl(
-      tbl(d1 %>% dm_add_tbl(dm_for_filter, new_name = .), "new_name"),
-      d1
+      tbl(data_card_1 %>% dm_add_tbl(dm_for_filter, new_name = .), "new_name"),
+      data_card_1
     )
   )
 
   # adding more than 1 table:
   # 1. Is the resulting number of tables correct?
   expect_identical(
-    length(dm_get_tables(dm_add_tbl(dm_for_filter, d1, d2))),
+    length(dm_get_tables(dm_add_tbl(dm_for_filter, data_card_1, data_card_2))),
     8L
   )
 
   # 2. Is the resulting order of the tables correct?
   expect_identical(
-    src_tbls(dm_add_tbl(dm_for_filter, d1, d2)),
-    c(src_tbls(dm_for_filter), "d1", "d2")
+    src_tbls(dm_add_tbl(dm_for_filter, data_card_1, data_card_2)),
+    c(src_tbls(dm_for_filter), "data_card_1", "data_card_2")
   )
 
   # Is an error thrown in case I try to give the new table an old table's name if `repair = "check_unique"`?
   expect_dm_error(
-    dm_add_tbl(dm_for_filter, t1 = d1, repair = "check_unique"),
+    dm_add_tbl(dm_for_filter, t1 = data_card_1, repair = "check_unique"),
     "need_unique_names"
   )
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
-    dm_add_tbl(dm_for_filter, t1 = d1, quiet = TRUE) %>% src_tbls(),
+    dm_add_tbl(dm_for_filter, t1 = data_card_1, quiet = TRUE) %>% src_tbls(),
     c("t1...1", "t2", "t3", "t4", "t5", "t6", "t1...7")
   )
 
   expect_name_repair_message(
     expect_equivalent_dm(
-      dm_add_tbl(dm_for_filter, t1 = d1, repair = "unique"),
+      dm_add_tbl(dm_for_filter, t1 = data_card_1, repair = "unique"),
       dm_for_filter %>%
         dm_rename_tbl(t1...1 = t1) %>%
-        dm_add_tbl(t1...7 = d1)
+        dm_add_tbl(t1...7 = data_card_1)
     )
   )
 
   # error in case table srcs don't match
   expect_dm_error(
-    dm_add_tbl(dm_for_filter, d1_sqlite),
+    dm_add_tbl(dm_for_filter, data_card_1_sqlite),
     "not_same_src"
   )
 
   # adding tables to an empty `dm` works for all sources
   expect_equivalent_tbl(
-    dm_add_tbl(dm(), test = d1_sqlite)$test,
-    d1
+    dm_add_tbl(dm(), test = data_card_1_sqlite)$test,
+    data_card_1
   )
 
   # can I use dm_select_tbl(), selecting among others the new table?

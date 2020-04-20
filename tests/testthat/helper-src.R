@@ -29,15 +29,15 @@ my_test_src %<-% src_df(env = .GlobalEnv)
 
 message("for examine_cardinality...()")
 
-d1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
-d1_sqlite %<-% copy_to(sqlite, d1)
-d2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
-d3 %<-% tibble::tibble(c = 1:5)
-d4 %<-% tibble::tibble(c = c(1:5, 5L))
-d5 %<-% tibble::tibble(a = 1:5)
-d6 %<-% tibble::tibble(c = 1:4)
-d7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
-d8 %<-% tibble::tibble(c = c(1:6))
+data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
+data_card_1_sqlite %<-% copy_to(sqlite, data_card_1)
+data_card_2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
+data_card_3 %<-% tibble::tibble(c = 1:5)
+data_card_4 %<-% tibble::tibble(c = c(1:5, 5L))
+data_card_5 %<-% tibble::tibble(a = 1:5)
+data_card_6 %<-% tibble::tibble(c = 1:4)
+data_card_7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
+data_card_8 %<-% tibble::tibble(c = c(1:6))
 
 # for check_key() ---------------------------------------------------------
 
@@ -220,17 +220,17 @@ dm_for_filter_rev %<-%
 message("for tests on `dm` objects: dm_add_pk(), dm_add_fk()")
 
 dm_test_obj %<-% as_dm(list(
-  dm_table_1 = d2,
-  dm_table_2 = d4,
-  dm_table_3 = d7,
-  dm_table_4 = d8
+  dm_table_1 = data_card_2,
+  dm_table_2 = data_card_4,
+  dm_table_3 = data_card_7,
+  dm_table_4 = data_card_8
 ))
 
 dm_test_obj_2 %<-% as_dm(list(
-  dm_table_1 = d4,
-  dm_table_2 = d7,
-  dm_table_3 = d8,
-  dm_table_4 = d6
+  dm_table_1 = data_card_4,
+  dm_table_2 = data_card_7,
+  dm_table_3 = data_card_8,
+  dm_table_4 = data_card_6
 ))
 
 # for `dm_nrow()` ---------------------------------------------------------

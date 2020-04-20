@@ -654,14 +654,14 @@ test_that("key tracking works", {
 
 
 test_that("can use column as primary and foreign key", {
-  f <- tibble(d1 = 1:3)
-  d1 <- tibble(d1 = 1:3)
+  f <- tibble(data_card_1 = 1:3)
+  data_card_1 <- tibble(data_card_1 = 1:3)
 
   dm <-
-    dm(f, d1) %>%
-    dm_add_pk(f, d1) %>%
-    dm_add_pk(d1, d1) %>%
-    dm_add_fk(f, d1, d1)
+    dm(f, data_card_1) %>%
+    dm_add_pk(f, data_card_1) %>%
+    dm_add_pk(data_card_1, data_card_1) %>%
+    dm_add_fk(f, data_card_1, data_card_1)
 
   expect_equivalent_dm(
     dm %>%
