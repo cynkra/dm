@@ -41,29 +41,19 @@ test_that("check_key() checks primary key properly?", {
 })
 
 test_that("check_subset() checks if t1$c1 column values are subset of t2$c2 properly?", {
-  check_subset_2a_1a <- find_testthat_root_file(paste0("out/check-if-subset-2a-1a.txt"))
-
   expect_silent(check_subset(data_1, a, data_2, a))
 
   verify_output(
-    check_subset_2a_1a,
-    expect_dm_error(
-      check_subset(data_2, a, data_1, a),
-      class = "not_subset_of"
-    )
+    "out/check-if-subset-2a-1a.txt",
+    check_subset(data_2, a, data_1, a)
   )
 })
 
 test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
-  check_set_equality_1a_2a <- find_testthat_root_file(paste0("out/check-set-equality-1a-2a.txt"))
-
   expect_silent(check_set_equality(data_1, a, data_3, a))
 
   verify_output(
     check_set_equality_1a_2a,
-    expect_dm_error(
-      check_set_equality(data_1, a, data_2, a),
-      class = "sets_not_equal"
-    )
+    check_set_equality(data_1, a, data_2, a)
   )
 })
