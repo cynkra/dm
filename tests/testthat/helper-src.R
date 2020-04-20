@@ -44,7 +44,7 @@ data_card_8 %<-% tibble::tibble(c = c(1:6))
 message("for check_fk() and check_set_equality()")
 # for examine_cardinality...() ----------------------------------------------
 
-data %<-%
+data_mcard %<-%
   tribble(
     ~c1, ~c2, ~c3,
     1, 2, 3,
@@ -52,9 +52,9 @@ data %<-%
     1, 2, 4
   )
 
-data_1 %<-% tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-data_2 %<-% tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
-data_3 %<-% tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
+data_mcard_1 %<-% tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
+data_mcard_2 %<-% tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+data_mcard_3 %<-% tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
 # for table-surgery functions ---------------------------------------------
 
