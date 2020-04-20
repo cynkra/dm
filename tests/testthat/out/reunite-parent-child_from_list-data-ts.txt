@@ -1,4 +1,4 @@
-> reunite_parent_child_from_list(list_of_data_ts_parent_and_child, aef_id) %>%
+> reunite_parent_child_from_list(list_of_data_ts_parent_and_child(), aef_id) %>%
 +   arrange_all()
       b     c d         a e     f    
   <dbl> <int> <chr> <int> <chr> <lgl>

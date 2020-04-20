@@ -48,12 +48,12 @@ test_that("cdm_filter() behaves correctly", {
   skip_on_cran()
   expect_equivalent_tbl(
     cdm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2),
-    filter(tf_2, d > 4)
+    filter(tf_2(), d > 4)
   )
 
   expect_equivalent_tbl(
     dm_filter(dm_for_filter(), tf_1, a > 4) %>% cdm_apply_filters_to_tbl(tf_2),
-    filter(tf_2, d > 4)
+    filter(tf_2(), d > 4)
   )
 
   expect_equivalent_tbl_lists(
@@ -73,12 +73,12 @@ test_that("cdm_nrow() works?", {
 test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` work", {
   skip_on_cran()
   expect_equivalent_tbl(
-    cdm_flatten_to_tbl(dm_for_flatten(), fact()),
+    cdm_flatten_to_tbl(dm_for_flatten(), fact),
     result_from_flatten()
   )
 
   expect_equivalent_tbl(
-    cdm_join_to_tbl(dm_for_flatten(), fact(), dim_3()),
+    cdm_join_to_tbl(dm_for_flatten(), fact, dim_3),
     select(result_from_flatten(), fact:fact.something, dim_3.something)
   )
 

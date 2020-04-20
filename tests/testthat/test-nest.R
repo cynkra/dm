@@ -4,10 +4,10 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
     zoomed_dm_2 %>%
       nest_join_zoomed_dm() %>%
       pull_tbl(),
-    tf_3 %>%
-      nest_join(tf_2, by = c("f" = "e")) %>%
+    tf_3() %>%
+      nest_join(tf_2(), name = "tf_2", by = c("f" = "e")) %>%
       mutate(tf_2 = vctrs::as_list_of(tf_2)) %>%
-      nest_join(tf_4, by = c("f" = "j")) %>%
+      nest_join(tf_4(), name = "tf_4", by = c("f" = "j")) %>%
       mutate(tf_4 = vctrs::as_list_of(tf_4))
   )
 
@@ -15,10 +15,10 @@ test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
     zoomed_dm_2 %>%
       nest_join_zoomed_dm(tf_4, tf_2) %>%
       pull_tbl(),
-    tf_3 %>%
-      nest_join(tf_4, by = c("f" = "j")) %>%
+    tf_3() %>%
+      nest_join(tf_4(), name = "tf_4", by = c("f" = "j")) %>%
       mutate(tf_4 = vctrs::as_list_of(tf_4)) %>%
-      nest_join(tf_2, by = c("f" = "e")) %>%
+      nest_join(tf_2(), name = "tf_2", by = c("f" = "e")) %>%
       mutate(tf_2 = vctrs::as_list_of(tf_2))
   )
 

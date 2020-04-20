@@ -41,25 +41,26 @@ test_that("print() and format() methods for subclass `zoomed_dm` work", {
 
 
 test_that("dm_get_zoomed_tbl() works", {
-  # get zoomed tbl works
-  # since PR #313 this needs to be collected and arranged properly before comparison
   expect_identical(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
       dm_get_zoomed_tbl() %>%
-      mutate(zoom = map(zoom, function(tbl) {
-        collect(tbl) %>% arrange_if_no_list()
-      })),
-    tibble(
-      table = "tf_2",
-      zoom = list(collect(tf_2) %>% arrange_if_no_list())
-    )
+      pluck("table"),
+    "tf_2"
+  )
+  expect_equivalent_tbl(
+    dm_for_filter() %>%
+      dm_zoom_to(tf_2) %>%
+      dm_get_zoomed_tbl() %>%
+      pluck("zoom") %>%
+      pluck(1),
+    tf_2()
   )
 
   # function for getting only the tibble itself works
   expect_equivalent_tbl(
     dm_for_filter() %>% dm_zoom_to(tf_3) %>% get_zoomed_tbl(),
-    tf_3
+    tf_3()
   )
 })
 
@@ -68,7 +69,7 @@ test_that("dm_insert_zoomed() works", {
   expect_equivalent_dm(
     dm_zoom_to(dm_for_filter(), tf_4) %>% dm_insert_zoomed("tf_4_new"),
     dm_for_filter() %>%
-      dm_add_tbl(tf_4_new = tf_4) %>%
+      dm_add_tbl(tf_4_new = tf_4()) %>%
       dm_add_pk(tf_4_new, h) %>%
       dm_add_fk(tf_4_new, j, tf_3) %>%
       dm_add_fk(tf_5, l, tf_4_new)
@@ -85,7 +86,7 @@ test_that("dm_insert_zoomed() works", {
     expect_silent(dm_zoom_to(dm_for_filter(), tf_4) %>% dm_insert_zoomed("tf_4", repair = "unique", quiet = TRUE)),
     dm_for_filter() %>%
       dm_rename_tbl(tf_4...4 = tf_4) %>%
-      dm_add_tbl(tf_4...7 = tf_4) %>%
+      dm_add_tbl(tf_4...7 = tf_4()) %>%
       dm_add_pk(tf_4...7, h) %>%
       dm_add_fk(tf_4...7, j, tf_3) %>%
       dm_add_fk(tf_5, l, tf_4...7)
@@ -94,19 +95,18 @@ test_that("dm_insert_zoomed() works", {
 
 test_that("dm_update_tbl() works", {
   # setting table tf_7 as zoomed table for tf_6 and removing its primary key and foreign keys pointing to it
-  new_dm_for_filter() <- dm_get_def(dm_for_filter()) %>%
+  new_dm_for_filter <- dm_get_def(dm_for_filter()) %>%
     mutate(
-      zoom = if_else(table == "tf_6", list(tf_7), NULL)
+      zoom = if_else(table == "tf_6", list(tf_7()), NULL)
     ) %>%
-    new_dm3()
-  class(new_dm_for_filter()) <- c("zoomed_dm", "dm")
+    new_dm3(zoomed = TRUE)
 
   # test that the old table is updated correctly
   expect_equivalent_dm(
-    dm_update_zoomed(new_dm_for_filter()),
+    dm_update_zoomed(new_dm_for_filter),
     dm_for_filter() %>%
       dm_rm_tbl(tf_6) %>%
-      dm_add_tbl(tf_6 = !!tf_7()) %>%
+      dm_add_tbl(tf_6 = tf_7()) %>%
       dm_get_def() %>%
       new_dm3()
   )

@@ -14,13 +14,15 @@ test_that("dm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", 
 })
 
 test_that("dm_select_tbl() can reorder the tables in a `dm`", {
-  reordered_dm_for_filter() <- dm_get_def(dm_for_filter()) %>%
+  reordered_dm_for_filter <-
+    dm_for_filter() %>%
+    dm_get_def() %>%
     arrange(c(3:1, 6:4)) %>%
     new_dm3()
 
   expect_equivalent_dm(
     dm_select_tbl(dm_for_filter(), tf_3:tf_1, tf_6:tf_4),
-    reordered_dm_for_filter()
+    reordered_dm_for_filter
   )
 })
 

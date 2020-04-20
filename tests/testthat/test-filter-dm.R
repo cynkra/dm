@@ -67,17 +67,17 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
 test_that("we get filtered/unfiltered tables with respective funs", {
   expect_equivalent_tbl(
     dm_filter(dm_for_filter(), tf_1, a > 4) %>% tbl("tf_2"),
-    tf_2
+    tf_2()
   )
 
   expect_equivalent_tbl(
     dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2),
-    tf_2 %>% semi_join(filter(tf_1, a > 4), by = c("d" = "a"))
+    tf_2() %>% semi_join(filter(tf_1(), a > 4), by = c("d" = "a"))
   )
 
   expect_equivalent_tbl(
     dm_filter(dm_for_filter(), tf_1, a > 4) %>% tbl("tf_1"),
-    filter(tf_1, a > 4)
+    filter(tf_1(), a > 4)
   )
 
   expect_equivalent_tbl_lists(

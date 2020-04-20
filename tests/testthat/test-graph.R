@@ -1,12 +1,12 @@
 test_that("functions working with graphs do the right thing?", {
-  join_list_tbl_1() <- tibble(
+  join_list_tbl_1 <- tibble(
     lhs = c("tf_2", "tf_3", "tf_4", "tf_5", "tf_6"),
     rhs = c("tf_1", "tf_2", "tf_3", "tf_4", "tf_5"),
     rank = as.numeric(2:6),
     has_father = rep(TRUE, 5)
   )
 
-  join_list_tbl_3() <- tibble::tribble(
+  join_list_tbl_3 <- tibble::tribble(
     ~lhs, ~rhs, ~rank, ~has_father,
     "tf_2", "tf_3",     2,        TRUE,
     "tf_4", "tf_3",     3,        TRUE,

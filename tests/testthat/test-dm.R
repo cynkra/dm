@@ -228,19 +228,19 @@ test_that("validator speaks up when something's wrong", {
 test_that("`pull_tbl()`-methods work", {
   expect_equivalent_tbl(
     pull_tbl(dm_for_filter(), tf_5),
-    tf_5
+    tf_5()
   )
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_filter(), tf_3) %>%
       mutate(new_col = row_number() * 3) %>%
       pull_tbl(),
-    mutate(tf_3, new_col = row_number() * 3)
+    mutate(tf_3(), new_col = row_number() * 3)
   )
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_filter(), tf_1) %>% pull_tbl(tf_1),
-    tf_1
+    tf_1()
   )
 
   expect_dm_error(
@@ -265,7 +265,7 @@ test_that("`pull_tbl()`-methods work", {
 test_that("numeric subsetting works", {
 
   # check specifically for the right output in one case
-  expect_equivalent_tbl(dm_for_filter()[[4]], tf_4)
+  expect_equivalent_tbl(dm_for_filter()[[4]], tf_4())
 
   # compare numeric subsetting and subsetting by name on chosen src
   expect_equivalent_tbl(
@@ -281,25 +281,25 @@ test_that("numeric subsetting works", {
 })
 
 test_that("subsetting `dm` works", {
-  expect_equivalent_tbl(dm_for_filter()$tf_5, tf_5)
-  expect_equivalent_tbl(dm_for_filter()[["tf_3"]], tf_3)
+  expect_equivalent_tbl(dm_for_filter()$tf_5, tf_5())
+  expect_equivalent_tbl(dm_for_filter()[["tf_3"]], tf_3())
 })
 
 test_that("subsetting `zoomed_dm` works", {
   skip_if_remote_src(my_test_src())
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_2)$c,
-    pull(tf_2, c)
+    pull(tf_2(), c)
   )
 
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_3)[["g"]],
-    pull(tf_3, g)
+    pull(tf_3(), g)
   )
 
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_3)[c("g", "f", "g")],
-    tf_3[c("g", "f", "g")]
+    tf_3()[c("g", "f", "g")]
   )
 })
 

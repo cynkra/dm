@@ -238,8 +238,8 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_disambiguate(), iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
     left_join(
-      iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
-      iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
+      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
+      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
       by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
     )
   )
@@ -301,7 +301,7 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
   )
 
   expect_dm_error(
-    inner_join(dm_zoom_to(dm_for_filter(), tf_1), tf_7()),
+    inner_join(dm_zoom_to(dm_for_filter(), tf_1), tf_7),
     "table_not_in_dm"
   )
 })
@@ -384,8 +384,8 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_disambiguate(), iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
     left_join(
-      iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
-      iris_2 %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
+      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
+      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
       by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
     )
   )
@@ -625,7 +625,7 @@ test_that("key tracking works", {
 
   expect_identical(
     dm_for_flatten() %>%
-      dm_zoom_to(fact()) %>%
+      dm_zoom_to(fact) %>%
       select(dim_1_key, dim_3_key, dim_2_key) %>%
       dm_update_zoomed() %>%
       dm_get_all_fks_impl(),
@@ -655,13 +655,13 @@ test_that("key tracking works", {
 
 test_that("can use column as primary and foreign key", {
   f <- tibble(data_card_1 = 1:3)
-  data_card_1() <- tibble(data_card_1 = 1:3)
+  data_card_1 <- tibble(data_card_1 = 1:3)
 
   dm <-
-    dm(f, data_card_1()) %>%
-    dm_add_pk(f, data_card_1()) %>%
-    dm_add_pk(data_card_1(), data_card_1()) %>%
-    dm_add_fk(f, data_card_1(), data_card_1())
+    dm(f, data_card_1) %>%
+    dm_add_pk(f, data_card_1) %>%
+    dm_add_pk(data_card_1, data_card_1) %>%
+    dm_add_fk(f, data_card_1, data_card_1)
 
   expect_equivalent_dm(
     dm %>%

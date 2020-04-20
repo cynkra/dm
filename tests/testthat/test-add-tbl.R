@@ -27,7 +27,7 @@ test_that("dm_add_tbl() works", {
   # do I avoid the warning when piping the table but setting the name?
   expect_silent(
     expect_equivalent_tbl(
-      tbl(data_card_1() %>% dm_add_tbl(dm_for_filter(), new_name = .), "new_name"),
+      dm_for_filter() %>% dm_add_tbl(new_name = data_card_1()) %>% tbl("new_name"),
       data_card_1()
     )
   )
@@ -80,7 +80,7 @@ test_that("dm_add_tbl() works", {
 
   # can I use dm_select_tbl(), selecting among others the new table?
   expect_silent(
-    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7) %>% dm_select_tbl(tf_1, tf_7_new, everything())
+    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
   )
 })
 
@@ -99,7 +99,7 @@ test_that("dm_rm_tbl() works", {
 
   # fails when table name is wrong
   expect_error(
-    dm_rm_tbl(dm_for_filter(), tf_7),
+    dm_rm_tbl(dm_for_filter(), tf_9),
     class = "vctrs_error_subscript"
   )
 

@@ -3,7 +3,7 @@
 Message: dm()
 
 > # baseline
-> dm_for_filter %>% dm_paste()
+> dm_for_filter() %>% dm_paste()
 Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
   dm_add_pk(tf_1, a) %>%
   dm_add_pk(tf_2, c) %>%
@@ -18,7 +18,7 @@ Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
   dm_add_fk(tf_5, m, tf_6)
 
 > # changing the tab width
-> dm_for_filter %>% dm_paste(tab_width = 4)
+> dm_for_filter() %>% dm_paste(tab_width = 4)
 Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_2, c) %>%
@@ -33,7 +33,7 @@ Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
     dm_add_fk(tf_5, m, tf_6)
 
 > # we don't care if the tables really exist
-> dm_for_filter %>% dm_rename_tbl(tf_1_new = tf_1) %>% dm_paste()
+> dm_for_filter() %>% dm_rename_tbl(tf_1_new = tf_1) %>% dm_paste()
 Message: dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
   dm_add_pk(tf_1_new, a) %>%
   dm_add_pk(tf_2, c) %>%
@@ -48,8 +48,8 @@ Message: dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
   dm_add_fk(tf_5, m, tf_6)
 
 > # produce `dm_select()` statements in addition to the rest
-> dm_for_filter %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>% dm_paste(
-+   select = TRUE)
+> dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
++   dm_paste(select = TRUE)
 Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
   dm_select(tf_1, a) %>%
   dm_select(tf_2, c, d, e) %>%
@@ -69,7 +69,7 @@ Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
   dm_add_fk(tf_5, m, tf_6)
 
 > # produce code with colors
-> dm_for_filter %>% dm_set_colors(orange = tf_1:tf_3, darkgreen = tf_5:tf_6) %>%
+> dm_for_filter() %>% dm_set_colors(orange = tf_1:tf_3, darkgreen = tf_5:tf_6) %>%
 +   dm_paste(tab_width = 4)
 Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
     dm_set_colors(`#FFA500FF` = tf_1) %>%

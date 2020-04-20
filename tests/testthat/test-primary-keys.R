@@ -109,7 +109,7 @@ test_that("enum_pk_candidates() works properly", {
   expect_silent(
     expect_identical(
       enum_pk_candidates(zoomed_dm),
-      enum_pk_candidates(tf_2)
+      enum_pk_candidates(tf_2())
     )
   )
 })
