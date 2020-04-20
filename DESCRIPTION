@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.1.9003
-Date: 2020-04-03
+Version: 0.1.1.9004
+Date: 2020-04-12
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -37,6 +37,7 @@ Imports:
     cli,
     DBI,
     dplyr,
+    ellipsis,
     glue,
     igraph,
     lifecycle,
@@ -54,6 +55,7 @@ Suggests:
     DiagrammeR,
     DiagrammeRsvg,
     dbplyr,
+    digest,
     fansi,
     knitr,
     nycflights13,

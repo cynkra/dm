@@ -1,5 +1,11 @@
 .onLoad <- function(libname, pkgname) {
   backports::import(pkgname, c("...length"))
 
-  dm_financial_sqlite <<- memoise::memoise(dm_financial_sqlite)
+  if (getRversion() >= "3.4") {
+    dm_financial <<- memoise::memoise(dm_financial, cache = cache_attach())
+    dm_financial_sqlite <<- memoise::memoise(dm_financial_sqlite, cache = cache_attach())
+  }
+
+  flights_subset <<- memoise::memoise(flights_subset, cache = cache_attach())
+  weather_subset <<- memoise::memoise(weather_subset, cache = cache_attach())
 }

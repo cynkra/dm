@@ -11,6 +11,7 @@
 #' @importFrom igraph V E
 #' @importFrom utils head tail str packageVersion
 #' @import lifecycle
+#' @import ellipsis
 #' @importFrom grDevices col2rgb colors rgb
 #' @importFrom pillar pillar_shaft
 NULL

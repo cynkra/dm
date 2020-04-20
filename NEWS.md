@@ -1,3 +1,10 @@
+# dm 0.1.1.9004
+
+- New `dm_ptype()` (#301).
+- New `dm_financial()`.
+- Printing dm objects from database sources with many tables is now faster (#308, @gadenbuie).
+
+
 # dm 0.1.1.9003
 
 - New `dm_financial_sqlite()`.

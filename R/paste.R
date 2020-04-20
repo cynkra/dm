@@ -3,8 +3,8 @@
 #' `dm_paste()` takes an existing `dm` and emits the code necessary for its creation.
 #'
 #' @inheritParams dm_add_pk
-#' @param select Boolean, default `FALSE`. If `TRUE` will produce code for reducing to necessary columns.
-#'    visualizing the tables.
+#' @param select Boolean, default `FALSE`. If `TRUE` will produce code
+#'   for reducing to necessary columns.
 #' @param tab_width Indentation width for code from the second line onwards
 #'
 #' @details At the very least (if no keys exist in the given [`dm`]) a `dm()` statement is produced that -- when executed --

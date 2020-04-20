@@ -5,12 +5,8 @@ commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE) {
   if (is_empty(x)) {
     x <- ""
   } else if (length(x) > max_commas) {
-    x[[max_commas]] <- paste0(
-      cli::symbol$ellipsis, " (",
-      if (capped) ">= ",
-      length(x),
-      " total)"
-    )
+    cap <- if (!capped) paste0(" (", length(x), " total)")
+    x[[max_commas]] <- paste0(cli::symbol$ellipsis, cap)
     length(x) <- max_commas
   }
 
