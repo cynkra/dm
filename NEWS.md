@@ -1,3 +1,10 @@
+# dm 0.1.1.9005
+
+- `dm_from_src(schema = "...")` works on Postgres if `search_path` is not set on the connection.
+- New article "{dm} and databases".
+- `dm_nycflights13(subset = TRUE)` memoizes subset and also reduces the size of the `weather` table.
+
+
 # dm 0.1.1.9004
 
 - New `dm_ptype()` (#301).
