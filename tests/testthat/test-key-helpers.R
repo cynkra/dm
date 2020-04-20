@@ -53,7 +53,7 @@ test_that("check_set_equality() checks properly if 2 sets of values are equal?",
   expect_silent(check_set_equality(data_1, a, data_3, a))
 
   verify_output(
-    check_set_equality_1a_2a,
+    "out/check-set-equality-1a-2a.txt",
     check_set_equality(data_1, a, data_2, a)
   )
 })
