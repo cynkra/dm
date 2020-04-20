@@ -462,6 +462,8 @@ dm_nycflights_small_sqlite %<-% copy_dm_to(sqlite, dm_nycflights_small)
 zoomed_dm <- dm_zoom_to(dm_for_filter, t2)
 zoomed_dm_2 <- dm_zoom_to(dm_for_filter, t3)
 
+# FIXME: regarding PR #313: everything below this line needs to be at least reconsidered if not just dumped.
+
 # for database tests -------------------------------------------------
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test
