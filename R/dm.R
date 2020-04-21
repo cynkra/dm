@@ -796,6 +796,12 @@ collect.dm <- function(x, ...) {
   new_dm3(def, zoomed = is_zoomed(x))
 }
 
+#' @export
+collect.zoomed_dm <- function(x, ...) {
+  check_not_zoomed(x)
+}
+
+
 # FIXME: what about 'dim.dm()'?
 #' @export
 dim.zoomed_dm <- function(x) {

@@ -1,4 +1,6 @@
-test_src_df <- function() NULL
+test_src_df <- function() {
+  src_df(env = .GlobalEnv)
+}
 
 test_src_sqlite <- function() {
   src_sqlite(":memory:", create = TRUE)

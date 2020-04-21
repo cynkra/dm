@@ -17,3 +17,4 @@
 ^man/figures/logo\.png$
 ^CRAN-RELEASE$
 ^vignettes/wip$
+^Makefile$
