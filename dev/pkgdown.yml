@@ -17,7 +17,7 @@ articles:
   dm: dm.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
-last_built: 2020-04-21T05:06Z
+last_built: 2020-04-21T05:41Z
 urls:
   reference: https://krlmlr.github.io/dm/reference
   article: https://krlmlr.github.io/dm/articles
