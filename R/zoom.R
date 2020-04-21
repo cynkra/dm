@@ -328,7 +328,9 @@ check_not_zoomed <- function(dm) {
     return()
   }
 
-  fun_name <- as_string(sys.call(-1)[[1]])
+  fun_name <- gsub(".zoomed_dm", "", as_string(sys.call(-1)[[1]]))
+  # if a method for `dm()` is used for a `zoomed_dm`, we don't want `fun_name = method.zoomed_dm` but rather `fun_name = method`
+  fun_name <- sub("\\.zoomed_dm", "", fun_name)
   abort_only_possible_wo_zoom(fun_name)
 }
 
