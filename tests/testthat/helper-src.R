@@ -52,9 +52,11 @@ copy_to_my_test_src <- function(rhs, lhs) {
 
 sqlite %<-% src_sqlite(":memory:", create = TRUE)
 
-my_test_src_name %<--% {
+my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC", "df")
-  gsub("^test-", "", src)
+  name <- gsub("^test-", "", src)
+  message("Testing on ", name)
+  name
 }
 
 my_test_src %<--% {
