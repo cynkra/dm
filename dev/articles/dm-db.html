@@ -129,28 +129,23 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dm'</span>
-<span class="co">#&gt; The following object is masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter</span></pre></body></html></div>
 <div id="connecting-to-a-database" class="section level2">
 <h2 class="hasAnchor">
 <a href="#connecting-to-a-database" class="anchor"></a>Connecting to a database</h2>
-<p>A dm object can be created from a database which is accessible via {DBI}. When a dm object is created it can either import all the tables in the database, or a limited set provided as a list to the <code>tables</code> argument. For some databases, such as Postgres and SQL Server, primary and foreigh keys are also imported and do not have to be manually added afterwards.</p>
+<p>A dm object can be created from a database which is accessible via {DBI}. When a dm object is created it can either import all the tables in the database or the active schema, or a limited set. For some DBMS, such as Postgres and SQL Server, primary and foreigh keys are also imported and do not have to be manually added afterwards.</p>
 <p>To demonstrate, we connect to a <a href="https://relational.fit.cvut.cz/">relational dataset repository</a> with a database server that is publicly accessible without registration. There is a <a href="https://relational.fit.cvut.cz/dataset/Financial">financial dataset</a> that contains loan data, along with relevant information and transactions. We chose this loan dataset because the relationships between <code>loan</code>, <code>account</code>, <code>transactions</code> tables are a good representation of databases that record real-world business transactions. The repository uses a MariaDB server for which {dm} does not currently import primary or foreign keys, so we will need to add them.</p>
-<p>Creating a dm object takes a single call to <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code>.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RMariaDB</span>)
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RMariaDB</span>)
 <span class="no">my_db</span> <span class="kw">&lt;-</span> <span class="fu">dbConnect</span>(
   <span class="fu"><a href="https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html">MariaDB</a></span>(),
   <span class="kw">username</span> <span class="kw">=</span> <span class="st">'guest'</span>,
   <span class="kw">password</span> <span class="kw">=</span> <span class="st">'relational'</span>,
   <span class="kw">dbname</span> <span class="kw">=</span> <span class="st">'Financial_ijs'</span>,
   <span class="kw">host</span> <span class="kw">=</span> <span class="st">'relational.fit.cvut.cz'</span>
-)
-<span class="no">my_dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="no">my_db</span>)
+)</pre></body></html></div>
+<p>Creating a dm object takes a single call to <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code>.</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
 
+<span class="no">my_dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="no">my_db</span>)
 <span class="no">my_dm</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
@@ -434,7 +429,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x5ed8888&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x4d484e8&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></pre></body></html></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a destination, a {DBI} connection, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behaviour is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -490,7 +485,7 @@
 <span class="co">#&gt; [90mCall `lifecycle::last_warnings()` to see where this warning was generated.[39m</span>
 <span class="co">#&gt; [36mℹ[39m All constraints satisfied.</span>
 <span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span></pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_04_21_06_52_38_1&gt; [?? x 2]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_04_21_07_29_00_1&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
