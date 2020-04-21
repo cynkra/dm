@@ -318,7 +318,7 @@ test_that("method length.zoomed_dm() works locally", {
 test_that("as.list()-method works for `dm`", {
   expect_equivalent_tbl_lists(
     as.list(dm_for_filter()),
-    list_for_filter()
+    dm_get_tables(dm_for_filter())
   )
 })
 
