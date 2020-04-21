@@ -14,7 +14,7 @@ test_that("`dm_examine_constraints()` works", {
 
   # case of no constraints:
   expect_identical(
-    dm_examine_constraints(dm_test_obj),
+    dm_examine_constraints(dm_test_obj()),
     tibble(
       table = character(0),
       kind = character(0),
@@ -27,32 +27,24 @@ test_that("`dm_examine_constraints()` works", {
   )
 
   # case of some constraints, all met:
-  walk(
-    dm_for_disambiguate_src,
-    ~ expect_identical(
-      dm_examine_constraints(.),
-      tibble(
-        table = c("iris_1", "iris_2"),
-        kind = c("PK", "FK"),
-        columns = new_keys("key"),
-        ref_table = c(NA, "iris_1"),
-        is_key = TRUE,
-        problem = ""
-      ) %>%
-        new_dm_examine_constraints()
-    )
+  expect_identical(
+    dm_examine_constraints(dm_for_disambiguate()),
+    tibble(
+      table = c("iris_1", "iris_2"),
+      kind = c("PK", "FK"),
+      columns = new_keys("key"),
+      ref_table = c(NA, "iris_1"),
+      is_key = TRUE,
+      problem = ""
+    ) %>%
+      new_dm_examine_constraints()
   )
 
   # case of some constraints, some violated:
-  walk(
-    dm_nycflights_small_src,
-    function(dm_nycflights_small) {
-      expect_identical(
-        dm_examine_constraints(dm_nycflights_small) %>%
-          mutate(problem = if_else(problem == "", "", "<reason>")),
-        nyc_check
-      )
-    }
+  expect_identical(
+    dm_examine_constraints(dm_nycflights_small()) %>%
+      mutate(problem = if_else(problem == "", "", "<reason>")),
+    nyc_check
   )
 })
 

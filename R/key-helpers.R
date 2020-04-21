@@ -175,7 +175,7 @@ check_subset <- function(t1, c1, t2, c2) {
   setdiff_v1_v2 <- setdiff(v1, v2)
   print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
 
-  abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q))
+  abort_not_subset_of(as_label(t1q), as_name(c1q), as_label(t2q), as_name(c2q))
 }
 
 # similar to `check_subset()`, but evaluates to a boolean
