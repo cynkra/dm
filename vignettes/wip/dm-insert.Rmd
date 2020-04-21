@@ -68,21 +68,26 @@ Both target table and source columns/table must be compatible:
 
 
 ```{r}
-rows_insert <- function(.target, ..., .key = NULL) {
-  UseMethod("rows_insert", target)
+rows_insert <- function(.data, .key = NULL, ...) {
+  UseMethod("rows_insert", .data)
 }
 
 #' @export
-rows_insert.data.frame <- function(.target, ..., .key = NULL) {
-  source <- dots_to_df(...)
-  stopifnot(!anyDuplicated(vec_rbind(target[.key], source[.key])))
-  vec_rbind(target, source)
+rows_insert.data.frame <- function(.data, .key = NULL, ..., .sort = NULL) {
+  source <- dots_to_df(.data, .key, ...)
+  stopifnot(!anyDuplicated(vec_rbind(.data[.key], source[.key])))
+  out <- vec_rbind(.data, source)
+  if (isTRUE(.sort)) {
+    # FIXME: Faster implementation, sort before binding
+    out <- arrange(out, !!!syms(.key))
+  }
+  out
 }
 
-dots_to_df <- function(.target, ...) {
-  dots <- list2(...)
+dots_to_df <- function(.data, .key, ...) {
+  dots <- enquos(...)
   if (length(dots) == 1 && names2(dots) == "") {
-    source <- dots[[1]]
+    source <- ..1
   } else {
     stopifnot(is_named(dots))
     # Remove arguments that start with a dot, for extensibility
@@ -90,19 +95,19 @@ dots_to_df <- function(.target, ...) {
     source <- tibble(!!!dots)
   }
   
-  stopifnot(is_empty(setdiff(names(source), names(target))))
-  stopifnot(all(.key %in% intersect(names(source), names(target))))
+  stopifnot(is_empty(setdiff(names(source), names(.data))))
+  stopifnot(all(.key %in% intersect(names(source), names(.data))))
   
   source
 }
 
 #' @export
-rows_update.data.frame <- function(.target, ..., .key = NULL) {
-  source <- dots_to_df(...)
+rows_update.data.frame <- function(.data, .key = NULL, ...) {
+  source <- dots_to_df(.data, .key, ...)
   
-  idx <- vec_match(source[.key], target[.key])
-  .target[idx, names(source)] <- source
-  .target
+  idx <- vec_match(source[.key], .data[.key])
+  .data[idx, names(source)] <- source
+  .data
 }
 ```
 
@@ -116,7 +121,7 @@ This allows previewing the results of an update operation before materializing.
 
 On these backends, the following additional operations are useful:
 
-* delete — remove rows that match keys, a variant of `filter()`
+* delete — remove rows that match keys, a variant of `anti_join()`
 
 * truncate — remove all rows
 
@@ -126,14 +131,14 @@ On mutable backends, update operations return `NULL` if the update was carried o
 
 ```{r}
 #' @export
-rows_insert.tbl_dbi <- function(.target, ..., 
-                                .key = NULL, .persist = NULL,
+rows_insert.tbl_dbi <- function(.data, .key = NULL, ..., 
+                                .persist = NULL,
                                 .copy = NULL, .check = NULL) {
   # Message if .persist is NULL
   .persist <- validate_persist(.persist)
   
   # Also in dry-run mode, for early notification of problems
-  name <- target_table_name(.target, .persist)
+  name <- target_table_name(.data, .persist)
 
   # Copy to database if needed  
   source <- copy_dots_to_db(..., .copy = .copy)
@@ -141,33 +146,33 @@ rows_insert.tbl_dbi <- function(.target, ...,
   if (.persist) {
     # Checking optional, can rely on primary key constraint
     if (is_true(.check)) {
-      check_dupes(.target, source, .key)
+      check_dupes(.data, source, .key)
     }
   
     sql <- paste0(
       "INSERT INTO ", name, "\n",
       sql_render(source)
     )
-    dbExecute(remote_con(.target), sql)
+    dbExecute(remote_con(.data), sql)
     invisible(NULL)
   } else {
     # Checking mandatory by default, opt-out
     if (is_null(.check) || is_true(.check)) {
-      check_dupes(.target, source, .key)
+      check_dupes(.data, source, .key)
     }
-    union_all(.target, source)
+    union_all(.data, source)
   }
 }
 
 #' @export
-rows_update.tbl_dbi <- function(.target, ..., 
-                                .key = NULL, .persist = NULL,
+rows_update.tbl_dbi <- function(.data, .key = NULL, ..., 
+                                .persist = NULL,
                                 .copy = NULL, .check = NULL) {
   .persist <- validate_persist(.persist)
   
   # Also in dry-run mode, for early notification of problems
   # Already quoted!?!
-  name <- target_table_name(target, .persist)
+  name <- target_table_name(.data, .persist)
 
   source <- copy_dots_to_db(..., .copy = .copy)
 
@@ -177,18 +182,18 @@ rows_update.tbl_dbi <- function(.target, ...,
       sql_render(source),
       "INNER JOIN ..."
     )
-    dbExecute(.target$con, sql)
+    dbExecute(remote_con(.data), sql)
     invisible(NULL)
   } else {
     # Checking optional, can rely on primary key constraint
     if (is_true(.check)) {
-      check_superset(.target, source, .key)
+      check_superset(.data, source, .key)
     }
     
-    unchanged <- anti_join(.target, source, by = .key)
+    unchanged <- anti_join(.data, source, by = .key)
     updated <- 
-      .target %>% 
-      select(!!!.key -!!!setdiff(colnames(.target), colnames(source))) %>% 
+      .data %>% 
+      select(!!!.key -!!!setdiff(colnames(.data), colnames(source))) %>% 
       left_join(source, by = .key)
     
     union_all(unchanged, updated)
@@ -274,7 +279,7 @@ dm_check_persist <- function(target_dm, dm) {
 dm_run_persist <- function(target_dm, dm, operation, top_down, dry_run) {
   # topologically sort tables
   # run operation(target_tbl, source_tbl, dry_run = dry_run) for each table
-  # operation() returns NULL if no table is needed, otherwise a tbl
+  # operation() always returns tbl, only need to patch if not the same tbl
   # new_tables is list of non-NULL operation() values
 
   target_dm %>%
