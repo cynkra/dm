@@ -90,6 +90,8 @@ reference:
   - left_join.zoomed_dm
   - right_join.zoomed_dm
   - semi_join.zoomed_dm
+  - head.zoomed_dm
+  - tail.zoomed_dm
 
 - title: Flattening
   contents:
@@ -131,7 +133,10 @@ reference:
 - title: Miscellaneous
   contents:
   - dm_nycflights13
+  - dm_financial
+  - dm_financial_sqlite
   - dm_nrow
+  - dm_ptype
 
 navbar:
   title: ~
@@ -157,6 +162,8 @@ navbar:
       href: articles/dm-filtering.html
     - text: Defining a 'dm' object for your data
       href: articles/dm-setup.html
+    - text: Working with databases
+      href: articles/dm-db.html
     - text: Low level operations
       href: articles/dm-low-level.html
     - text: Function naming logic

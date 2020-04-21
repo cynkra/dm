@@ -5,7 +5,6 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
       "r-lib/cli",
       "r-dbi/DBI",
       "tidyverse/dplyr",
-      "rstudio/DT",
       "tidyverse/glue",
       "igraph/rigraph",
       "r-lib/lifecycle",
@@ -37,7 +36,6 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
 } else if (ci_has_env("TIC_ONLY_STYLER")) {
   # For caching
   get_stage("install") %>%
-    add_step(step_install_github(c("r-lib/styler"))) %>%
     add_step(step_install_cran("R.cache"))
 
   # Needs to be at the script stage so that caching works
