@@ -13,7 +13,7 @@ cache <- search_env("dm_cache")
   if (is.null(value)) {
     message("Deferring ", lhs)
     value <- function() {
-      #message("Evaluating ", lhs)
+      # message("Evaluating ", lhs)
       # FIXME #313: Copy to remote source
       rhs
     }
