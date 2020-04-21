@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9005</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -161,6 +161,25 @@
       
     </div>
 
+    <div id="dm-0-1-1-9006" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.1.9006">
+<a href="#dm-0-1-1-9006" class="anchor"></a>dm 0.1.1.9006<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/dm_paste.html">dm_paste()</a></code> supports writing the table definition via the new <code>options</code> argument. The <code>select</code> argument is soft-deprecated (#302).</li>
+<li>
+<code><a href="../reference/dm_paste.html">dm_paste()</a></code> can write the definition to a file via the new <code>path</code> argument (#302).</li>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code> gives a better error message when called on a <code>"zoomed_dm"</code> (#294).</li>
+<li>Add infrastructure to test multiple data sources (#327).</li>
+<li>Simplify tests: by default only data frames are tested (#312).</li>
+<li>
+<code><a href="../reference/dm_add_tbl.html">dm_add_tbl()</a></code> uses <code><a href="https://rlang.r-lib.org/reference/list2.html">rlang::list2()</a></code> internally, now accepts <code>:=</code> to specify table names.</li>
+<li>
+<code><a href="../reference/check_subset.html">check_subset()</a></code> gives a clean error message if the tables are complex expressions.</li>
+</ul>
+</div>
     <div id="dm-0-1-1-9005" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.1.9005">
 <a href="#dm-0-1-1-9005" class="anchor"></a>dm 0.1.1.9005<small> Unreleased </small>

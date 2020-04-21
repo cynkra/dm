@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9005</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -167,7 +167,7 @@
     <p><code>dm_paste()</code> takes an existing <code>dm</code> and emits the code necessary for its creation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_paste</span>(<span class='no'>dm</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tab_width</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_paste</span>(<span class='no'>dm</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>tab_width</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,59 +178,68 @@
     </tr>
     <tr>
       <th>select</th>
-      <td><p>Boolean, default <code>FALSE</code>. If <code>TRUE</code> will produce code
-for reducing to necessary columns.</p></td>
+      <td><p>Deprecated, see <code>"select"</code> in the <code>options</code> argument.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Must be empty.</p></td>
     </tr>
     <tr>
       <th>tab_width</th>
       <td><p>Indentation width for code from the second line onwards</p></td>
     </tr>
+    <tr>
+      <th>options</th>
+      <td><p>Formatting options. A character vector containing some of:</p><ul>
+<li><p><code>"tables"</code>: <code>tibble()</code> calls for empty table definitions
+derived from <code><a href='dm_ptype.html'>dm_ptype()</a></code>, overrides <code>"select"</code>.</p></li>
+<li><p><code>"select"</code>: <code><a href='dm_select.html'>dm_select()</a></code> statements for columns that are part
+of the dm.</p></li>
+<li><p><code>"pks"</code>: <code><a href='dm_add_pk.html'>dm_add_pk()</a></code> statements for primary keys.</p></li>
+<li><p><code>"keys"</code>: <code><a href='dm_add_fk.html'>dm_add_fk()</a></code> statements for foreign keys, implies <code>"pks"</code>.</p></li>
+<li><p><code>"color"</code>: <code><a href='dm_draw.html'>dm_set_colors()</a></code> statements to set color.</p></li>
+<li><p><code>"all"</code>: All options above except <code>"select"</code></p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>Output file, if <code>NULL</code> the code is printed to the console.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Code for producing the given <code>dm</code>.</p>
+    <p>Code for producing the prototype of the given <code>dm</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>At the very least (if no keys exist in the given <code><a href='dm.html'>dm</a></code>) a <code><a href='dm.html'>dm()</a></code> statement is produced that -- when executed --
-produces the same <code>dm</code>. In addition, the code for setting the existing primary keys as well as the relations between the
-tables is produced. If <code>select = TRUE</code>, statements are included to select the respective columns of each table of the <code>dm</code> (useful if
-only a subset of the columns of the original tables is used for the <code>dm</code>).</p>
-<p>Mind, that it is assumed, that the tables of the existing <code>dm</code> are available in the global environment under their names
-within the <code>dm</code>.</p>
+    <p>The code emitted by the function reproduces the structure of the <code>dm</code> object.
+The <code>options</code> argument controls the level of detail: keys, colors,
+table definitions.
+Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype()</a></code> for the underlying logic.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm()</span></div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm(airlines, airports, flights, planes, weather) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = airlines) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = airports) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#70AD47FF` = weather) %&gt;%</span>
 #&gt; <span class='message'>  dm_add_pk(airlines, carrier) %&gt;%</span>
 #&gt; <span class='message'>  dm_add_pk(airports, faa) %&gt;%</span>
 #&gt; <span class='message'>  dm_add_pk(planes, tailnum) %&gt;%</span>
 #&gt; <span class='message'>  dm_add_fk(flights, carrier, airlines) %&gt;%</span>
 #&gt; <span class='message'>  dm_add_fk(flights, origin, airports) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_fk(flights, tailnum, planes)</span></div><div class='input'>
+#&gt; <span class='message'>  dm_add_fk(flights, tailnum, planes) %&gt;%</span>
+#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = airlines) %&gt;%</span>
+#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = airports) %&gt;%</span>
+#&gt; <span class='message'>  dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
+#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
+#&gt; <span class='message'>  dm_set_colors(`#70AD47FF` = weather)</span></div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+  <span class='fu'>dm_paste</span>(<span class='kw'>options</span> <span class='kw'>=</span> <span class='st'>"select"</span>)</div><div class='output co'>#&gt; <span class='message'>dm(airlines, airports, flights, planes, weather) %&gt;%</span>
 #&gt; <span class='message'>  dm_select(airlines, carrier, name) %&gt;%</span>
 #&gt; <span class='message'>  dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%</span>
 #&gt; <span class='message'>  dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>
 #&gt; <span class='message'>  dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%</span>
-#&gt; <span class='message'>  dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = airlines) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = airports) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#70AD47FF` = weather) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_pk(airlines, carrier) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_pk(airports, faa) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_pk(planes, tailnum) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_fk(flights, carrier, airlines) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_fk(flights, origin, airports) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_fk(flights, tailnum, planes)</span></div></pre>
+#&gt; <span class='message'>  dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
