@@ -33,7 +33,7 @@ knit_print.grViz <- function(x, ...) {
 
 ## Connecting to a database
 
-A dm object can be created from a database which is accessible via {DBI}.
+A dm object can be created from a database which is accessible via {[DBI](https://dbi.r-dbi.org/)}.
 When a dm object is created it can either import all the tables in the database or the active schema, or a limited set.
 For some DBMS, such as Postgres and SQL Server, primary and foreigh keys are also imported and do not have to be manually added afterwards.
 
