@@ -401,10 +401,13 @@ cdm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
 cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
   deprecate_soft("0.1.0", "dm::cdm_paste()", "dm::dm_paste()")
 
-  code <- dm_paste_impl(
-    dm = dm, select = select,
-    tab_width = tab_width, color = FALSE
-  )
+  if (isTRUE(select)) {
+    options <- c("keys", "color", "select")
+  } else {
+    options <- c("keys", "color")
+  }
+
+  code <- dm_paste_impl(dm = dm, options, tab_width)
 
   # without "\n" in the end it looks weird when a warning is issued
   cat(code, "\n")
