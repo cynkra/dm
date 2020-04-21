@@ -35,12 +35,12 @@ test_that("dm_select() works for replacing pk", {
       dm_get_all_pks_impl(),
     tribble(
       ~table, ~pk_col,
-      "tf_1",       "a",
-      "tf_2",       "c",
-      "tf_3",   "new_f",
-      "tf_4",       "h",
-      "tf_5",       "k",
-      "tf_6",       "n"
+      "tf_1", "a",
+      "tf_2", "c",
+      "tf_3", "new_f",
+      "tf_4", "h",
+      "tf_5", "k",
+      "tf_6", "n"
     )
   )
 })
