@@ -6,35 +6,70 @@ if (!is_attached("dm_cache")) {
 }
 cache <- search_env("dm_cache")
 
-`%<-%` <- function(lhs, rhs) {
+`%<-%` <- function(lhs, rhs, env = caller_env()) {
+  defer_assign({{ lhs }}, copy_to_my_test_src(rhs, {{ lhs }}), env)
+}
+
+`%<--%` <- function(lhs, rhs, env = caller_env()) {
+  defer_assign({{ lhs }}, rhs, env)
+}
+
+defer_assign <- function(lhs, rhs, env) {
   lhs <- as_name(ensym(lhs))
 
   value <- get0(lhs, cache)
   if (is.null(value)) {
     message("Deferring ", lhs)
+
+    # Enable this for eager assignment:
+    # force(rhs)
+
     value <- function() {
-      # message("Evaluating ", lhs)
-      # FIXME #313: Copy to remote source
+      # message("Querying ", lhs)
       rhs
     }
     assign(lhs, value, cache)
   } else {
     message("Using cached ", lhs)
   }
-  assign(lhs, value, parent.frame())
+  assign(lhs, value, env)
   invisible(value)
 }
 
+copy_to_my_test_src <- function(rhs, lhs) {
+  name <- as_name(ensym(lhs))
+  # message("Evaluating ", name)
+
+  src <- my_test_src()
+  if (inherits(src, "src_local")) {
+    rhs
+  } else if (is_dm(rhs)) {
+    copy_dm_to(src, rhs, unique_table_names = TRUE)
+  } else {
+    copy_to(src, rhs, name = name, temporary = TRUE)
+  }
+}
+
 sqlite %<-% src_sqlite(":memory:", create = TRUE)
-# FIXME: PR #313: `my_test_src()` needs to get a real implementation with the `src` of the user's choice
-my_test_src %<-% src_df(env = .GlobalEnv)
+
+my_test_src_name <- {
+  src <- Sys.getenv("DM_TEST_SRC", "df")
+  name <- gsub("^test-", "", src)
+  message("Testing on ", name)
+  name
+}
+
+my_test_src %<--% {
+  fun <- paste0("test_src_", my_test_src_name)
+  eval_tidy(quo((!!sym(fun))()))
+}
 
 # for examine_cardinality...() ----------------------------------------------
 
 message("for examine_cardinality...()")
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
-data_card_1_sqlite %<-% copy_to(sqlite(), data_card_1())
+data_card_1_sqlite %<--% copy_to(sqlite(), data_card_1())
 data_card_2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 data_card_3 %<-% tibble::tibble(c = 1:5)
 data_card_4 %<-% tibble::tibble(c = c(1:5, 5L))
@@ -157,7 +192,6 @@ dm_for_filter_w_cycle %<-% {
 
 message("for testing filter and semi_join (2)")
 
-list_for_filter %<-% list(tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6())
 dm_for_filter %<-% {
   dm_for_filter_w_cycle() %>%
     dm_select_tbl(-tf_7)
@@ -214,10 +248,11 @@ output_3 %<-% list(
   )
 )
 
-def_dm_for_filter %<-% dm_get_def(dm_for_filter())
 
-dm_for_filter_rev %<-%
-  new_dm3(def_dm_for_filter()[rev(seq_len(nrow(def_dm_for_filter()))), ])
+dm_for_filter_rev %<-% {
+  def_dm_for_filter <- dm_get_def(dm_for_filter())
+  new_dm3(def_dm_for_filter[rev(seq_len(nrow(def_dm_for_filter))), ])
+}
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 
@@ -245,26 +280,27 @@ rows_dm_obj <- 24L
 
 message("complicated dm")
 
-list_for_filter_2 %<-%
-  modifyList(
-    list_for_filter(),
-    list(
-      tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11]),
-      tf_4_2 = tibble(
-        r = letters[2:6],
-        s = c("three", "five", "six", "seven", "eight"),
-        t = c(LETTERS[4:7], LETTERS[5])
-      ),
-      a = tibble(a_1 = letters[10:18], a_2 = 5:13),
-      b = tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6),
-      c = tibble(c_1 = 4:10),
-      d = tibble(d_1 = 1:6, b_1 = LETTERS[c(12:14, 13:15)]),
-      e = tibble(e_1 = 1:2, b_1 = LETTERS[c(12:13)])
-    )
+dm_more_complex_part %<-% {
+  dm(
+    tf_6_2 = tibble(p = letters[1:6], f = LETTERS[6:11]),
+    tf_4_2 = tibble(
+      r = letters[2:6],
+      s = c("three", "five", "six", "seven", "eight"),
+      t = c(LETTERS[4:7], LETTERS[5])
+    ),
+    a = tibble(a_1 = letters[10:18], a_2 = 5:13),
+    b = tibble(b_1 = LETTERS[12:15], b_2 = letters[12:15], b_3 = 9:6),
+    c = tibble(c_1 = 4:10),
+    d = tibble(d_1 = 1:6, b_1 = LETTERS[c(12:14, 13:15)]),
+    e = tibble(e_1 = 1:2, b_1 = LETTERS[c(12:13)])
   )
+}
 
 dm_more_complex %<-% {
-  as_dm(list_for_filter_2()) %>%
+  dm(
+    !!!dm_get_tables(dm_for_filter_w_cycle()),
+    !!!dm_get_tables(dm_more_complex_part())
+  ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_2, c) %>%
     dm_add_pk(tf_3, f) %>%
@@ -463,8 +499,8 @@ dm_nycflights_small %<-% {
 
 dm_nycflights_small_sqlite %<-% copy_dm_to(sqlite(), dm_nycflights_small())
 
-zoomed_dm %<-% dm_zoom_to(dm_for_filter(), tf_2)
-zoomed_dm_2 %<-% dm_zoom_to(dm_for_filter(), tf_3)
+zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)
+zoomed_dm_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 
 # FIXME: regarding PR #313: everything below this line needs to be at least reconsidered if not just dumped.
 
