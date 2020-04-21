@@ -41,7 +41,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
   # message("Evaluating ", name)
 
   src <- my_test_src()
-  if (is.null(src)) {
+  if (inherits(src, "src_local")) {
     rhs
   } else if (is_dm(rhs)) {
     copy_dm_to(src, rhs, unique_table_names = TRUE)
@@ -60,7 +60,7 @@ my_test_src_name <- {
 }
 
 my_test_src %<--% {
-  fun <- paste0("test_src_", my_test_src_name())
+  fun <- paste0("test_src_", my_test_src_name)
   eval_tidy(quo((!!sym(fun))()))
 }
 
@@ -69,7 +69,7 @@ my_test_src %<--% {
 message("for examine_cardinality...()")
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
-data_card_1_sqlite <- function() copy_to(sqlite(), data_card_1())
+data_card_1_sqlite %<--% function() copy_to(sqlite(), data_card_1())
 data_card_2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 data_card_3 %<-% tibble::tibble(c = 1:5)
 data_card_4 %<-% tibble::tibble(c = c(1:5, 5L))
