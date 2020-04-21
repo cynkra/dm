@@ -18,6 +18,12 @@ test_that("dm_add_tbl() works", {
     data_card_1()
   )
 
+  # use special names with :=
+  expect_identical(
+    names(dm_add_tbl(dm_for_filter(), dm := data_card_1(), repair := data_card_2())),
+    c(names(dm_for_filter()), "dm", "repair")
+  )
+
   # we accept even weird table names, as long as they are unique
   expect_equivalent_tbl(
     tbl(data_card_1() %>% dm_add_tbl(dm_for_filter(), .), "."),
