@@ -402,9 +402,9 @@ cdm_paste <- function(dm, select = FALSE, tab_width = 2) {
   deprecate_soft("0.1.0", "dm::cdm_paste()", "dm::dm_paste()")
 
   if (isTRUE(select)) {
-    options <- c("keys", "color", "select")
+    options <- c("keys", "select")
   } else {
-    options <- c("keys", "color")
+    options <- c("keys")
   }
 
   code <- dm_paste_impl(dm = dm, options, tab_width)
