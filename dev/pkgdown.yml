@@ -3,6 +3,7 @@ pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   dm-class-and-basic-operations: dm-class-and-basic-operations.html
+  dm-db: dm-db.html
   dm-filtering: dm-filtering.html
   dm-function-naming-logic: dm-function-naming-logic.html
   dm-good-to-know: dm-good-to-know.html
@@ -14,10 +15,9 @@ articles:
   dm-visualization: dm-visualization.html
   dm-zoom-to-table: dm-zoom-to-table.html
   dm: dm.html
-  dm-db: wip/dm-db.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
-last_built: 2020-04-16T06:16Z
+last_built: 2020-04-21T05:06Z
 urls:
   reference: https://krlmlr.github.io/dm/reference
   article: https://krlmlr.github.io/dm/articles

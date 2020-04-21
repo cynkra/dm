@@ -148,6 +148,9 @@
     <loc>https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-db.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-filtering.html</loc>
   </url>
   <url>
@@ -179,9 +182,6 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/wip/dm-db.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-shiny-dynafilter.html</loc>
