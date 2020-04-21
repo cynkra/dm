@@ -154,7 +154,7 @@ rows_insert.tbl_dbi <- function(.data, .key = NULL, ...,
       sql_render(source)
     )
     dbExecute(remote_con(.data), sql)
-    invisible(NULL)
+    invisible(.data)
   } else {
     # Checking mandatory by default, opt-out
     if (is_null(.check) || is_true(.check)) {
@@ -183,7 +183,7 @@ rows_update.tbl_dbi <- function(.data, .key = NULL, ...,
       "INNER JOIN ..."
     )
     dbExecute(remote_con(.data), sql)
-    invisible(NULL)
+    invisible(.data)
   } else {
     # Checking optional, can rely on primary key constraint
     if (is_true(.check)) {
