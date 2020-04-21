@@ -52,9 +52,12 @@ copy_to_my_test_src <- function(rhs, lhs) {
 
 sqlite %<-% src_sqlite(":memory:", create = TRUE)
 
+my_test_src_name %<--% {
+  Sys.getenv("DM_TEST_SRC", "df")
+}
+
 my_test_src %<--% {
-  test_src <- Sys.getenv("DM_TEST_SRC", "df")
-  fun <- paste0("test_src_", test_src)
+  fun <- paste0("test_src_", my_test_src_name())
   eval_tidy(quo((!!sym(fun))()))
 }
 
