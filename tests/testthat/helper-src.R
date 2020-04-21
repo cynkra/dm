@@ -69,7 +69,7 @@ my_test_src %<--% {
 message("for examine_cardinality...()")
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
-data_card_1_sqlite %<--% function() copy_to(sqlite(), data_card_1())
+data_card_1_sqlite %<--% copy_to(sqlite(), data_card_1())
 data_card_2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 data_card_3 %<-% tibble::tibble(c = 1:5)
 data_card_4 %<-% tibble::tibble(c = c(1:5, 5L))
