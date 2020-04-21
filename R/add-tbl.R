@@ -25,7 +25,7 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
   check_not_zoomed(dm)
 
   new_names <- names(exprs(..., .named = TRUE))
-  new_tables <- list(...)
+  new_tables <- list2(...)
 
   check_new_tbls(dm, new_tables)
 

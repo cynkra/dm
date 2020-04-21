@@ -1,9 +1,6 @@
 test_that("dm_nrow() works?", {
-  map(
-    dm_test_obj_src,
-    ~ expect_equal(
-      sum(dm_nrow(.x)),
-      rows_dm_obj
-    )
+  expect_identical(
+    as.integer(sum(dm_nrow(dm_test_obj()))),
+    rows_dm_obj
   )
 })
