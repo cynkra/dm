@@ -40,17 +40,12 @@ NULL
 
 #' @export
 #' @rdname rows-db
-rows_insert.tbl_SQLiteConnection <- function(.data, .key = NULL, ...,
+rows_insert.tbl_SQLiteConnection <- function(.data, ..., .key = NULL,
                                              .persist = NULL,
                                              .copy = NULL, .check = NULL) {
 
-  .key <- tidyselect::eval_select(
-    enexpr(.key),
-    tibble(!!!set_names(colnames(.data)))
-  )
-
-  # Copy to database if permitted and needed
-  source <- copy_dots_to_db(.data, .key, .copy, ...)
+  source <- dots_to_db(.data, .copy, ...)
+  .key <- db_key(source, {{.key}}, default = !!integer())
 
   # Message if .persist is NULL
   .persist <- validate_persist(.persist)
@@ -61,7 +56,7 @@ rows_insert.tbl_SQLiteConnection <- function(.data, .key = NULL, ...,
   if (.persist) {
     # Checking optional, can rely on primary key constraint
     if (is_true(.check)) {
-      check_db_dupes(.data, source, .key)
+      check_db_dupes(.data, source, )
     }
 
     columns_q <- colnames(source)
@@ -84,17 +79,12 @@ rows_insert.tbl_SQLiteConnection <- function(.data, .key = NULL, ...,
 
 #' @export
 #' @rdname rows-db
-rows_update.tbl_SQLiteConnection <- function(.data, .key = NULL, ...,
+rows_update.tbl_SQLiteConnection <- function(.data, ..., .key = NULL,
                                              .persist = NULL,
                                              .copy = NULL, .check = NULL) {
 
-  .key <- tidyselect::eval_select(
-    enexpr(.key),
-    tibble(!!!set_names(colnames(.data)))
-  )
-
-  # Copy to database if permitted and needed
-  source <- copy_dots_to_db(.data, .key, .copy, ...)
+  source <- dots_to_db(.data, .copy, ...)
+  .key <- db_key(source, {{.key}}, default = 1L)
 
   # Message if .persist is NULL
   .persist <- validate_persist(.persist)
@@ -103,7 +93,7 @@ rows_update.tbl_SQLiteConnection <- function(.data, .key = NULL, ...,
   name <- target_table_name(.data, .persist)
 
   # FIXME: Case when source has no extra columns
-  new_columns <- setdiff(colnames(source), names(.key))
+  new_columns <- setdiff(colnames(source), .key)
 
   if (.persist) {
     # Checking optional, can rely on primary key constraint
@@ -120,14 +110,14 @@ rows_update.tbl_SQLiteConnection <- function(.data, .key = NULL, ...,
       collapse = ", "
     )
 
-    new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(source), names(.key)))
+    new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(source), .key))
     new_columns_qq <- paste(new_columns_q, collapse = ", ")
     new_columns_qual_qq <- paste0(
       source_name, ".", new_columns_q,
       collapse = ", "
     )
 
-    key_columns_q <- DBI::dbQuoteIdentifier(con, names(.key))
+    key_columns_q <- DBI::dbQuoteIdentifier(con, .key)
     compare_qual_qq <- paste0(
       source_name, ".", key_columns_q,
       " = ",
@@ -157,11 +147,11 @@ rows_update.tbl_SQLiteConnection <- function(.data, .key = NULL, ...,
 
     existing_columns <- setdiff(colnames(.data), new_columns)
 
-    unchanged <- anti_join(.data, source, by = names(.key))
+    unchanged <- anti_join(.data, source, by = .key)
     updated <-
       .data %>%
       select(!!!existing_columns) %>%
-      inner_join(source, by = names(.key))
+      inner_join(source, by = .key)
 
     union_all(unchanged, updated)
   }
@@ -184,12 +174,35 @@ target_table_name <- function(x, persist) {
   name
 }
 
-copy_dots_to_db <- function(.data, .key, .copy, ...) {
-  df <- dots_to_df(.data, .key, ...)
+dots_to_db <- function(.data, .copy, ...) {
+  dots <- enquos(...)
+  if (length(dots) == 1 && names2(dots) == "") {
+    source <- ..1
+  } else {
+    stopifnot(is_named(dots))
+    # Remove arguments that start with a dot, for extensibility
+    dots <- dots[grepl("^[^.]", names(dots))]
+    source <- tibble(!!!dots)
+  }
+
+  stopifnot(is_empty(setdiff(colnames(source), colnames(.data))))
+
   if (is_null(.copy)) {
     .copy <- FALSE
   }
-  auto_copy(.data, df, copy = .copy)
+
+  auto_copy(.data, source, copy = .copy)
+}
+
+db_key <- function(.data, .key, default) {
+  .key <- enquo(.key)
+  if (quo_is_null(.key)) {
+    .key <- enquo(default)
+  }
+  names <- colnames(.data)
+  fake_data <- as_tibble(set_names(rep_along(names, list(logical())), names))
+  idx <- tidyselect::eval_select(.key, fake_data)
+  names[idx]
 }
 
 check_db_dupes <- function(.data, source, .key) {

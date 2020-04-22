@@ -10,6 +10,10 @@
 #'
 #' @param .data Target table object.
 #' @param .key Key columns, unquoted.
+#'   The default varies for the different operations:
+#'   - For `rows_insert()`: no keys.
+#'   - For `rows_update()`, `rows_patch()` and `rows_upsert()`: first column.
+#'   - For `rows_delete()`: all columns.
 #' @param ... New data.
 #'   If unnamed, must be a single object of the same class as `.data`.
 #'   If named, will be passed on to [tibble()].
@@ -30,21 +34,21 @@ NULL
 #' @param .sort Should the output be sorted by the key columns?
 #' @rdname rows
 #' @export
-rows_insert <- function(.data, .key = NULL, ...) {
+rows_insert <- function(.data, ..., .key = NULL) {
   UseMethod("rows_insert", .data)
 }
 
 #' @export
 #' @rdname rows
-rows_insert.data.frame <- function(.data, .key = NULL, ..., .sort = NULL) {
-  .key <- tidyselect::eval_select(enexpr(.key), .data)
+rows_insert.data.frame <- function(.data, ..., .key = NULL, .sort = NULL) {
+  source <- dots_to_df(.data, ...)
+  source_key <- df_key(source, {{.key}}, default = !!integer())
+  data_key <- df_key(.data, !!names(source)[source_key])
 
-  source <- dots_to_df(.data, .key, ...)
-  stopifnot(!anyDuplicated(vctrs::vec_rbind(.data[.key], source[names(.key)])))
   out <- vctrs::vec_rbind(.data, source)
   if (isTRUE(.sort)) {
     # FIXME: Faster implementation, sort before binding
-    out <- arrange(out, !!!.key)
+    out <- arrange(out, !!!data_key)
   }
   out
 }
@@ -53,23 +57,23 @@ rows_insert.data.frame <- function(.data, .key = NULL, ..., .sort = NULL) {
 #'
 #' `rows_update()` updates existing rows.
 #' This operation corresponds to `UPDATE` in SQL.
-#' `.key` is mandatory.
+#' `.key` is mandatory and defaults to the first column in `...`.
 #' No two rows with the same values may exist in the new data.
 #' Each row in the new data must have exactly one corresponding row
 #' in the existing data.
 #' @rdname rows
 #' @export
-rows_update <- function(.data, .key, ...) {
+rows_update <- function(.data, ..., .key = NULL) {
   UseMethod("rows_update", .data)
 }
 
 #' @export
-rows_update.data.frame <- function(.data, .key, ...) {
-  .key <- tidyselect::eval_select(enexpr(.key), .data)
+rows_update.data.frame <- function(.data, ..., .key = NULL) {
+  source <- dots_to_df(.data, ...)
+  source_key <- df_key(source, {{.key}}, default = !!1L)
+  data_key <- df_key(.data, !!names(source)[source_key])
 
-  source <- dots_to_df(.data, .key, ...)
-
-  idx <- vctrs::vec_match(source[names(.key)], .data[.key])
+  idx <- vctrs::vec_match(source[source_key], .data[data_key])
   # FIXME: Check key in .data?
   .data[idx, names(source)] <- source
   .data
@@ -80,22 +84,23 @@ rows_update.data.frame <- function(.data, .key, ...) {
 #' `rows_patch()` replaces missing values in existing rows.
 #' This operation corresponds to `UPDATE` using `COALESCE` expressions in SQL.
 #' It is similar to `rows_update()`, leaves non-missing values untouched.
-#' `.key` is mandatory.
+#' `.key` is mandatory and defaults to the first column in `...`.
 #' No two rows with the same values may exist in the new data.
 #' Each row in the new data must have exactly one corresponding row
 #' in the existing data.
 #' @rdname rows
 #' @export
-rows_patch <- function(.data, .key, ...) {
+rows_patch <- function(.data, ..., .key = NULL) {
   UseMethod("rows_patch", .data)
 }
 
 #' @export
-rows_patch.data.frame <- function(.data, .key, ...) {
-  .key <- tidyselect::eval_select(enexpr(.key), .data)
-  source <- dots_to_df(.data, .key, ...)
+rows_patch.data.frame <- function(.data, ..., .key = NULL) {
+  source <- dots_to_df(.data, ...)
+  source_key <- df_key(source, {{.key}}, default = !!1L)
+  data_key <- df_key(.data, !!names(source)[source_key])
 
-  idx <- vctrs::vec_match(source[names(.key)], .data[.key])
+  idx <- vctrs::vec_match(source[source_key], .data[data_key])
   # FIXME: Check key in .data?
 
   # FIXME: Do we need vec_coalesce()
@@ -110,22 +115,23 @@ rows_patch.data.frame <- function(.data, .key, ...) {
 #' `rows_upsert()` updates matching rows and adds new rows for mismatches.
 #' This operation corresponds to `INSERT ON DUPLICATE KEY UPDATE` or
 #' `INSERT ON CONFLICT` in some SQL variants.
-#' `.key` is mandatory.
+#' `.key` is mandatory and defaults to the first column in `...`.
 #' No two rows with the same values may exist in the new data.
 #' Each row in the new data must have exactly one corresponding row
 #' in the existing data.
 #' @rdname rows
 #' @export
-rows_upsert <- function(.data, .key, ...) {
+rows_upsert <- function(.data, ..., .key = NULL) {
   UseMethod("rows_upsert", .data)
 }
 
 #' @export
-rows_upsert.data.frame <- function(.data, .key, ..., .sort = NULL) {
-  .key <- tidyselect::eval_select(enexpr(.key), .data)
-  source <- dots_to_df(.data, .key, ...)
+rows_upsert.data.frame <- function(.data, ..., .key = NULL, .sort = NULL) {
+  source <- dots_to_df(.data, ...)
+  source_key <- df_key(source, {{.key}}, default = !!1L)
+  data_key <- df_key(.data, !!names(source)[source_key])
 
-  idx <- vctrs::vec_match(source[names(.key)], .data[.key])
+  idx <- vctrs::vec_match(source[source_key], .data[data_key])
   # FIXME: Check key in .data?
 
   new <- is.na(idx)
@@ -136,7 +142,7 @@ rows_upsert.data.frame <- function(.data, .key, ..., .sort = NULL) {
   out <- vctrs::vec_rbind(.data, source[new, ])
   if (isTRUE(.sort)) {
     # FIXME: Faster implementation, sort before binding
-    out <- arrange(out, !!!.key)
+    out <- arrange(out, !!!data_key)
   }
   out
 }
@@ -145,19 +151,20 @@ rows_upsert.data.frame <- function(.data, .key, ..., .sort = NULL) {
 #'
 #' `rows_delete()` deletes existing rows.
 #' This operation corresponds to `DELETE` in SQL.
-#' `.key` is mandatory, extra data in `...` is ignored.
+#' `.key` is mandatory and defaults to the entire data.
 #' @rdname rows
 #' @export
-rows_delete <- function(.data, .key, ...) {
+rows_delete <- function(.data, ..., .key = NULL) {
   UseMethod("rows_delete", .data)
 }
 
 #' @export
-rows_delete.data.frame <- function(.data, .key, ...) {
-  .key <- tidyselect::eval_select(enexpr(.key), .data)
-  source <- dots_to_df(.data, .key, ...)
+rows_delete.data.frame <- function(.data, ..., .key = NULL) {
+  source <- dots_to_df(.data, ...)
+  source_key <- df_key(source, {{.key}}, default = everything())
+  data_key <- df_key(.data, !!names(source)[source_key])
 
-  idx <- vctrs::vec_match(source[names(.key)], .data[.key])
+  idx <- vctrs::vec_match(source[source_key], .data[data_key])
   # FIXME: Check key in .data?
   .data[-idx[!is.na(idx)], ]
 }
@@ -166,15 +173,15 @@ rows_delete.data.frame <- function(.data, .key, ...) {
 #'
 #' `rows_truncate()` removes all rows.
 #' This operation corresponds to `TRUNCATE` in SQL.
-#' `.key` and `...` are ignored.
+#' `...` is ignored.
 #' @rdname rows
 #' @export
-rows_truncate <- function(.data, .key, ...) {
+rows_truncate <- function(.data, ...) {
   UseMethod("rows_truncate", .data)
 }
 
 #' @export
-rows_truncate.data.frame <- function(.data, .key = NULL, ...) {
+rows_truncate.data.frame <- function(.data, ...) {
   .data[integer(), ]
 }
 
@@ -182,7 +189,7 @@ rows_truncate.data.frame <- function(.data, .key = NULL, ...) {
 
 
 
-dots_to_df <- function(.data, .key, ...) {
+dots_to_df <- function(.data, ...) {
   dots <- enquos(...)
   if (length(dots) == 1 && names2(dots) == "") {
     source <- ..1
@@ -193,9 +200,15 @@ dots_to_df <- function(.data, .key, ...) {
     source <- tibble(!!!dots)
   }
 
-  stopifnot(is_empty(setdiff(colnames(source), colnames(.data))))
-  # Matched by tidyselect for .data
-  stopifnot(all(names(.key) %in% colnames(source)))
-
+  stopifnot(is_empty(setdiff(names(source), names(.data))))
+  # FIXME: Support .copy argument?
   source
+}
+
+df_key <- function(.data, .key, default) {
+  .key <- enquo(.key)
+  if (quo_is_null(.key)) {
+    .key <- enquo(default)
+  }
+  tidyselect::eval_select(.key, .data)
 }
