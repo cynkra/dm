@@ -8,8 +8,8 @@
 \usage{
 \method{rows_insert}{tbl_SQLiteConnection}(
   .data,
-  .key = NULL,
   ...,
+  .key = NULL,
   .persist = NULL,
   .copy = NULL,
   .check = NULL
@@ -17,8 +17,8 @@
 
 \method{rows_update}{tbl_SQLiteConnection}(
   .data,
-  .key = NULL,
   ...,
+  .key = NULL,
   .persist = NULL,
   .copy = NULL,
   .check = NULL
@@ -27,11 +27,17 @@
 \arguments{
 \item{.data}{Target table object.}
 
-\item{.key}{Key columns, unquoted.}
-
 \item{...}{New data.
 If unnamed, must be a single object of the same class as \code{.data}.
 If named, will be passed on to \code{\link[=tibble]{tibble()}}.}
+
+\item{.key}{Key columns, unquoted.
+The default varies for the different operations:
+\itemize{
+\item For \code{rows_insert()}: no keys.
+\item For \code{rows_update()}, \code{rows_patch()} and \code{rows_upsert()}: first column.
+\item For \code{rows_delete()}: all columns.
+}}
 
 \item{.persist}{Set to \code{FALSE} for running the operation without persisting.
 In this mode, a modified version of \code{.data} is returned.
@@ -69,12 +75,12 @@ Unlike \code{\link[=compute]{compute()}} or \code{\link[=copy_to]{copy_to()}}, n
 \examples{
 data <- memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
 
-try(rows_insert(data, a, a = 4, b = "z"))
-rows_insert(data, a, a = 4, b = "z", .copy = TRUE)
-rows_update(data, a, a = 2:3, b = "w", .copy = TRUE, .persist = FALSE)
+try(rows_insert(data, a = 4, b = "z"))
+rows_insert(data, a = 4, b = "z", .copy = TRUE)
+rows_update(data, a = 2:3, b = "w", .copy = TRUE, .persist = FALSE)
 
-rows_insert(data, a, memdb_frame(a = 4, b = "z"), .persist = TRUE)
+rows_insert(data, memdb_frame(a = 4, b = "z"), .persist = TRUE)
 data
-rows_update(data, a, memdb_frame(a = 2:3, b = "w"), .persist = TRUE)
+rows_update(data, memdb_frame(a = 2:3, b = "w"), .persist = TRUE)
 data
 }

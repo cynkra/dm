@@ -11,28 +11,34 @@
 \alias{rows_truncate}
 \title{Persisting data}
 \usage{
-rows_insert(.data, .key = NULL, ...)
+rows_insert(.data, ..., .key = NULL)
 
-\method{rows_insert}{data.frame}(.data, .key = NULL, ..., .sort = NULL)
+\method{rows_insert}{data.frame}(.data, ..., .key = NULL, .sort = NULL)
 
-rows_update(.data, .key, ...)
+rows_update(.data, ..., .key = NULL)
 
-rows_patch(.data, .key, ...)
+rows_patch(.data, ..., .key = NULL)
 
-rows_upsert(.data, .key, ...)
+rows_upsert(.data, ..., .key = NULL)
 
-rows_delete(.data, .key, ...)
+rows_delete(.data, ..., .key = NULL)
 
-rows_truncate(.data, .key, ...)
+rows_truncate(.data, ...)
 }
 \arguments{
 \item{.data}{Target table object.}
 
-\item{.key}{Key columns, unquoted.}
-
 \item{...}{New data.
 If unnamed, must be a single object of the same class as \code{.data}.
 If named, will be passed on to \code{\link[=tibble]{tibble()}}.}
+
+\item{.key}{Key columns, unquoted.
+The default varies for the different operations:
+\itemize{
+\item For \code{rows_insert()}: no keys.
+\item For \code{rows_update()}, \code{rows_patch()} and \code{rows_upsert()}: first column.
+\item For \code{rows_delete()}: all columns.
+}}
 
 \item{.sort}{Should the output be sorted by the key columns?}
 }
@@ -54,7 +60,7 @@ are permitted.
 
 \code{rows_update()} updates existing rows.
 This operation corresponds to \code{UPDATE} in SQL.
-\code{.key} is mandatory.
+\code{.key} is mandatory and defaults to the first column in \code{...}.
 No two rows with the same values may exist in the new data.
 Each row in the new data must have exactly one corresponding row
 in the existing data.
@@ -62,7 +68,7 @@ in the existing data.
 \code{rows_patch()} replaces missing values in existing rows.
 This operation corresponds to \code{UPDATE} using \code{COALESCE} expressions in SQL.
 It is similar to \code{rows_update()}, leaves non-missing values untouched.
-\code{.key} is mandatory.
+\code{.key} is mandatory and defaults to the first column in \code{...}.
 No two rows with the same values may exist in the new data.
 Each row in the new data must have exactly one corresponding row
 in the existing data.
@@ -70,26 +76,29 @@ in the existing data.
 \code{rows_upsert()} updates matching rows and adds new rows for mismatches.
 This operation corresponds to \verb{INSERT ON DUPLICATE KEY UPDATE} or
 \verb{INSERT ON CONFLICT} in some SQL variants.
-\code{.key} is mandatory.
+\code{.key} is mandatory and defaults to the first column in \code{...}.
 No two rows with the same values may exist in the new data.
 Each row in the new data must have exactly one corresponding row
 in the existing data.
 
 \code{rows_delete()} deletes existing rows.
 This operation corresponds to \code{DELETE} in SQL.
-\code{.key} is mandatory, extra data in \code{...} is ignored.
+\code{.key} is mandatory and defaults to the entire data.
 
 \code{rows_truncate()} removes all rows.
 This operation corresponds to \code{TRUNCATE} in SQL.
-\code{.key} and \code{...} are ignored.
+\code{...} is ignored.
 }
 \examples{
 data <- tibble(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
 
-rows_insert(data, a, a = 4, b = "z")
-rows_update(data, a, a = 2:3, b = "w")
-rows_patch(data, a, a = 2:3, b = "q")
-rows_upsert(data, a, a = 2:4, b = "x")
-rows_delete(data, a, a = 2:4)
+rows_insert(data, a = 4, b = "z")
+rows_update(data, a = 2:3, b = "z")
+rows_update(data, b = "z", a = 2:3, .key = a)
+rows_patch(data, tibble(a = 2:3, b = "z"))
+rows_upsert(data, a = 2:4, b = "z")
+rows_delete(data, a = 2:4)
+rows_delete(data, a = 2:4, b = "b")
+rows_delete(data, a = 2:4, b = "b", .key = a)
 rows_truncate(data)
 }
