@@ -21,7 +21,7 @@
 #' @return A tbl object of the same structure as `.data`.
 #'
 #' @name rows
-#' @example example/rows.R
+#' @example example/rows-d.R
 NULL
 
 
