@@ -191,13 +191,14 @@ rows_truncate.data.frame <- function(.data, ...) {
 
 dots_to_df <- function(.data, ...) {
   dots <- enquos(...)
+  # Remove arguments that start with a dot, for extensibility
+  dots <- dots[grepl("^[^.]", names(dots))]
+  source <- tibble(!!!dots)
+
   if (length(dots) == 1 && names2(dots) == "") {
     source <- ..1
   } else {
     stopifnot(is_named(dots))
-    # Remove arguments that start with a dot, for extensibility
-    dots <- dots[grepl("^[^.]", names(dots))]
-    source <- tibble(!!!dots)
   }
 
   stopifnot(is_empty(setdiff(names(source), names(.data))))
