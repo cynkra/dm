@@ -1,4 +1,6 @@
-verify_output("out/persist-tbl.txt", {
+scoped_options(lifecycle_verbosity = "quiet")
+
+verify_output("out/rows.txt", {
   # Truncated table:
   flights_init <- nycflights13::flights[0, ]
 

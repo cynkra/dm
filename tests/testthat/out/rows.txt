@@ -8,7 +8,6 @@
 
 > flights_jan_1 <- nycflights13::flights %>% filter(month == 1, day == 1)
 > print(count(flights_jan_1))
-# A tibble: 1 x 1
       n
   <int>
 1   842

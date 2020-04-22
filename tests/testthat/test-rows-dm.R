@@ -1,4 +1,6 @@
-verify_output("out/persist-dm.txt", {
+scoped_options(lifecycle_verbosity = "quiet")
+
+verify_output("out/rows-dm.txt", {
   # Entire dataset with all dimension tables populated
   # with flights and weather data truncated:
   flights_init <-
