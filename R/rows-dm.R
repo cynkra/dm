@@ -32,7 +32,7 @@
 #' @return A dm object of the same [dm_ptype()] as `target_dm`.
 #'   If `persist = TRUE`, [invisible] and identical to `target_dm`.
 #'
-#' @name persist-dm
+#' @name rows-dm
 #' @examples
 #' if (rlang::is_installed("RSQLite")) {
 #'   # Entire dataset with all dimension tables populated
@@ -115,7 +115,7 @@ NULL
 #' The primary keys must differ from existing records.
 #' This must be ensured by the caller and might be checked by the underlying database.
 #' Use `persist = FALSE` and apply [dm_examine_constraints()] to check beforehand.
-#' @rdname persist-dm
+#' @rdname rows-dm
 #' @export
 dm_insert <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
@@ -128,7 +128,7 @@ dm_insert <- function(target_dm, dm, ..., persist = NULL) {
 # `dm_update()` updates existing records.
 # Primary keys must match for all records to be updated.
 #
-# @rdname persist-dm
+# @rdname rows-dm
 # @export
 dm_update <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
@@ -141,7 +141,7 @@ dm_update <- function(target_dm, dm, ..., persist = NULL) {
 # `dm_upsert()` updates existing records and adds new records,
 # based on the primary key.
 #
-# @rdname persist-dm
+# @rdname rows-dm
 # @export
 dm_upsert <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
@@ -154,7 +154,7 @@ dm_upsert <- function(target_dm, dm, ..., persist = NULL) {
 # `dm_delete()` removes matching records, based on the primary key.
 # The order in which the tables are processed is reversed.
 #
-# @rdname persist-dm
+# @rdname rows-dm
 # @export
 dm_delete <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
@@ -167,7 +167,7 @@ dm_delete <- function(target_dm, dm, ..., persist = NULL) {
 # `dm_truncate()` removes all records, only for tables in `dm`.
 # The order in which the tables are processed is reversed.
 #
-# @rdname persist-dm
+# @rdname rows-dm
 # @export
 dm_truncate <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()

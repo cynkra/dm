@@ -28,7 +28,7 @@
 #' @return A tbl object of the same structure as `target`.
 #'   If `persist = TRUE`, [invisible] and identical to `target_dm`.
 #'
-#' @name persist-tbl
+#' @name rows
 #' @examples
 #' if (rlang::is_installed("RSQLite")) {
 #'   # Truncated table:
@@ -88,7 +88,7 @@ NULL
 #' tbl_insert
 #'
 #' `tbl_insert()` adds new records.
-#' @rdname persist-tbl
+#' @rdname rows
 #' @export
 tbl_insert <- function(target, source, ..., persist = NULL) {
   ellipsis::check_dots_used(action = warn)
