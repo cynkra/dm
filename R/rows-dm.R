@@ -33,79 +33,7 @@
 #'   If `persist = TRUE`, [invisible] and identical to `target_dm`.
 #'
 #' @name rows-dm
-#' @examples
-#' if (rlang::is_installed("RSQLite")) {
-#'   # Entire dataset with all dimension tables populated
-#'   # with flights and weather data truncated:
-#'   flights_init <-
-#'     dm_nycflights13() %>%
-#'     dm_zoom_to(flights) %>%
-#'     filter(FALSE) %>%
-#'     dm_update_zoomed() %>%
-#'     dm_zoom_to(weather) %>%
-#'     filter(FALSE) %>%
-#'     dm_update_zoomed()
-#'
-#'   sqlite <- src_sqlite(":memory:", create = TRUE)
-#'
-#'   # Target database:
-#'   flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
-#'   print(dm_nrow(flights_sqlite))
-#'
-#'   # First update:
-#'   flights_jan <-
-#'     dm_nycflights13() %>%
-#'     dm_select_tbl(flights, weather) %>%
-#'     dm_zoom_to(flights) %>%
-#'     filter(month == 1) %>%
-#'     dm_update_zoomed() %>%
-#'     dm_zoom_to(weather) %>%
-#'     filter(month == 1) %>%
-#'     dm_update_zoomed()
-#'   print(dm_nrow(flights_jan))
-#'
-#'   # Copy to temporary tables on the target database:
-#'   flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
-#'
-#'   # Dry run by default:
-#'   dm_insert(flights_sqlite, flights_jan_sqlite)
-#'   print(dm_nrow(flights_sqlite))
-#'
-#'   # Explicitly request persistence:
-#'   dm_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
-#'   print(dm_nrow(flights_sqlite))
-#'
-#'   # Second update:
-#'   flights_feb <-
-#'     dm_nycflights13() %>%
-#'     dm_select_tbl(flights, weather) %>%
-#'     dm_zoom_to(flights) %>%
-#'     filter(month == 2) %>%
-#'     dm_update_zoomed() %>%
-#'     dm_zoom_to(weather) %>%
-#'     filter(month == 2) %>%
-#'     dm_update_zoomed()
-#'
-#'   # Copy to temporary tables on the target database:
-#'   flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
-#'
-#'   # Explicit dry run:
-#'   flights_new <- dm_insert(
-#'     flights_sqlite,
-#'     flights_feb_sqlite,
-#'     persist = FALSE
-#'   )
-#'   print(dm_nrow(flights_new))
-#'   print(dm_nrow(flights_sqlite))
-#'
-#'   # Check for consistency before applying:
-#'   flights_new %>%
-#'     dm_examine_constraints()
-#'
-#'   # Apply:
-#'   dm_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
-#'   print(dm_nrow(flights_sqlite))
-#' }
+#' @example example/rows-dm.R
 NULL
 
 
@@ -120,7 +48,7 @@ NULL
 dm_insert <- function(target_dm, dm, ..., persist = NULL) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_insert, top_down = TRUE, persist)
+  dm_persist(target_dm, dm, rows_insert, top_down = TRUE, persist)
 }
 
 # dm_update
@@ -179,7 +107,7 @@ dm_persist <- function(target_dm, dm, operation, top_down, persist = NULL) {
   dm_check_persist(target_dm, dm)
 
   if (is_null(persist)) {
-    warn("Not persisting, use `persist = FALSE` to turn off this warning.")
+    message("Not persisting, use `persist = FALSE` to turn off this message.")
     persist <- FALSE
   }
 
@@ -226,7 +154,7 @@ check_keys_compatible <- function(target_dm, dm) {
 
 dm_run_persist <- function(target_dm, dm, tbl_op, top_down, persist) {
   # topologically sort tables
-  graph <- dm::create_graph_from_dm(target_dm, directed = TRUE)
+  graph <- create_graph_from_dm(target_dm, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
   tables <- intersect(names(topo), src_tbls(dm))
 
@@ -238,7 +166,7 @@ dm_run_persist <- function(target_dm, dm, tbl_op, top_down, persist) {
   # Use keyholder?
 
   # run operation(target_tbl, source_tbl, persist = persist) for each table
-  op_results <- map2(target_tbls, tbls, tbl_op, persist = persist)
+  op_results <- map2(target_tbls, tbls, tbl_op, .persist = persist)
 
   # operation() returns NULL if no table is needed, otherwise a tbl
   new_tables <- compact(op_results)
