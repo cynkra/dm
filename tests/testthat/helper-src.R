@@ -197,7 +197,7 @@ dm_for_filter %<-% {
     dm_select_tbl(-tf_7)
 }
 
-dm_for_filter_sqlite %<-% copy_dm_to(sqlite(), dm_for_filter())
+dm_for_filter_sqlite %<--% copy_dm_to(sqlite(), dm_for_filter())
 
 message("for testing filter and semi_join (3)")
 
