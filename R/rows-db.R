@@ -43,9 +43,8 @@ NULL
 rows_insert.tbl_SQLiteConnection <- function(.data, ..., .key = NULL,
                                              .persist = NULL,
                                              .copy = NULL, .check = NULL) {
-
   source <- dots_to_db(.data, .copy, ...)
-  .key <- db_key(source, {{.key}}, default = !!integer())
+  .key <- db_key(source, {{ .key }}, default = !!integer())
 
   # Message if .persist is NULL
   .persist <- validate_persist(.persist)
@@ -82,9 +81,8 @@ rows_insert.tbl_SQLiteConnection <- function(.data, ..., .key = NULL,
 rows_update.tbl_SQLiteConnection <- function(.data, ..., .key = NULL,
                                              .persist = NULL,
                                              .copy = NULL, .check = NULL) {
-
   source <- dots_to_db(.data, .copy, ...)
-  .key <- db_key(source, {{.key}}, default = 1L)
+  .key <- db_key(source, {{ .key }}, default = 1L)
 
   # Message if .persist is NULL
   .persist <- validate_persist(.persist)

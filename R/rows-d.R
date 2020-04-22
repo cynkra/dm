@@ -42,7 +42,7 @@ rows_insert <- function(.data, ..., .key = NULL) {
 #' @rdname rows
 rows_insert.data.frame <- function(.data, ..., .key = NULL, .sort = NULL) {
   source <- dots_to_df(.data, ...)
-  source_key <- df_key(source, {{.key}}, default = !!integer())
+  source_key <- df_key(source, {{ .key }}, default = !!integer())
   data_key <- df_key(.data, !!names(source)[source_key])
 
   out <- vctrs::vec_rbind(.data, source)
@@ -70,7 +70,7 @@ rows_update <- function(.data, ..., .key = NULL) {
 #' @export
 rows_update.data.frame <- function(.data, ..., .key = NULL) {
   source <- dots_to_df(.data, ...)
-  source_key <- df_key(source, {{.key}}, default = !!1L)
+  source_key <- df_key(source, {{ .key }}, default = !!1L)
   data_key <- df_key(.data, !!names(source)[source_key])
 
   idx <- vctrs::vec_match(source[source_key], .data[data_key])
@@ -97,7 +97,7 @@ rows_patch <- function(.data, ..., .key = NULL) {
 #' @export
 rows_patch.data.frame <- function(.data, ..., .key = NULL) {
   source <- dots_to_df(.data, ...)
-  source_key <- df_key(source, {{.key}}, default = !!1L)
+  source_key <- df_key(source, {{ .key }}, default = !!1L)
   data_key <- df_key(.data, !!names(source)[source_key])
 
   idx <- vctrs::vec_match(source[source_key], .data[data_key])
@@ -128,7 +128,7 @@ rows_upsert <- function(.data, ..., .key = NULL) {
 #' @export
 rows_upsert.data.frame <- function(.data, ..., .key = NULL, .sort = NULL) {
   source <- dots_to_df(.data, ...)
-  source_key <- df_key(source, {{.key}}, default = !!1L)
+  source_key <- df_key(source, {{ .key }}, default = !!1L)
   data_key <- df_key(.data, !!names(source)[source_key])
 
   idx <- vctrs::vec_match(source[source_key], .data[data_key])
@@ -161,7 +161,7 @@ rows_delete <- function(.data, ..., .key = NULL) {
 #' @export
 rows_delete.data.frame <- function(.data, ..., .key = NULL) {
   source <- dots_to_df(.data, ...)
-  source_key <- df_key(source, {{.key}}, default = everything())
+  source_key <- df_key(source, {{ .key }}, default = everything())
   data_key <- df_key(.data, !!names(source)[source_key])
 
   idx <- vctrs::vec_match(source[source_key], .data[data_key])
