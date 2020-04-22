@@ -66,55 +66,6 @@ Both target table and source columns/table must be compatible:
 - Key columns must be present in source.
 
 
-
-```{r}
-rows_insert <- function(.data, .key = NULL, ...) {
-  UseMethod("rows_insert", .data)
-}
-
-#' @export
-rows_insert.data.frame <- function(.data, .key = NULL, ..., .sort = NULL) {
-  source <- dots_to_df(.data, .key, ...)
-  stopifnot(!anyDuplicated(vec_rbind(.data[.key], source[.key])))
-  out <- vec_rbind(.data, source)
-  if (isTRUE(.sort)) {
-    # FIXME: Faster implementation, sort before binding
-    out <- arrange(out, !!!syms(.key))
-  }
-  out
-}
-
-dots_to_df <- function(.data, .key, ...) {
-  dots <- enquos(...)
-  if (length(dots) == 1 && names2(dots) == "") {
-    source <- ..1
-  } else {
-    stopifnot(is_named(dots))
-    # Remove arguments that start with a dot, for extensibility
-    dots <- dots[grepl("^[^.]"), names(dots)]
-    source <- tibble(!!!dots)
-  }
-  
-  stopifnot(is_empty(setdiff(colnames(source), colnames(.data))))
-  stopifnot(all(.key %in% intersect(colnames(source), colnames(.data))))
-  
-  source
-}
-
-rows_update <- function(.data, .key = NULL, ...) {
-  UseMethod("rows_update", .data)
-}
-
-#' @export
-rows_update.data.frame <- function(.data, .key = NULL, ...) {
-  source <- dots_to_df(.data, .key, ...)
-  
-  idx <- vec_match(source[.key], .data[.key])
-  .data[idx, names(source)] <- source
-  .data
-}
-```
-
 ### Mutable backends
 
 Some *mutable* backends, most notably databases, Google sheets and data.table, permit in-place update of the source data.
