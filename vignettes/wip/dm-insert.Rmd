@@ -95,10 +95,14 @@ dots_to_df <- function(.data, .key, ...) {
     source <- tibble(!!!dots)
   }
   
-  stopifnot(is_empty(setdiff(names(source), names(.data))))
-  stopifnot(all(.key %in% intersect(names(source), names(.data))))
+  stopifnot(is_empty(setdiff(colnames(source), colnames(.data))))
+  stopifnot(all(.key %in% intersect(colnames(source), colnames(.data))))
   
   source
+}
+
+rows_update <- function(.data, .key = NULL, ...) {
+  UseMethod("rows_update", .data)
 }
 
 #' @export
@@ -127,79 +131,11 @@ On these backends, the following additional operations are useful:
 
 Databases will require that the data is already on the database or ask the user to supply a `.copy` argument.
 
-On mutable backends, update operations return `NULL` if the update was carried out in-place.
+On mutable backends, update operations return the input, invisibly, if the update was carried out in-place.
 
-```{r}
-#' @export
-rows_insert.tbl_dbi <- function(.data, .key = NULL, ..., 
-                                .persist = NULL,
-                                .copy = NULL, .check = NULL) {
-  # Message if .persist is NULL
-  .persist <- validate_persist(.persist)
-  
-  # Also in dry-run mode, for early notification of problems
-  name <- target_table_name(.data, .persist)
+Challenges:
 
-  # Copy to database if needed  
-  source <- copy_dots_to_db(..., .copy = .copy)
-
-  if (.persist) {
-    # Checking optional, can rely on primary key constraint
-    if (is_true(.check)) {
-      check_dupes(.data, source, .key)
-    }
-  
-    sql <- paste0(
-      "INSERT INTO ", name, "\n",
-      sql_render(source)
-    )
-    dbExecute(remote_con(.data), sql)
-    invisible(.data)
-  } else {
-    # Checking mandatory by default, opt-out
-    if (is_null(.check) || is_true(.check)) {
-      check_dupes(.data, source, .key)
-    }
-    union_all(.data, source)
-  }
-}
-
-#' @export
-rows_update.tbl_dbi <- function(.data, .key = NULL, ..., 
-                                .persist = NULL,
-                                .copy = NULL, .check = NULL) {
-  .persist <- validate_persist(.persist)
-  
-  # Also in dry-run mode, for early notification of problems
-  # Already quoted!?!
-  name <- target_table_name(.data, .persist)
-
-  source <- copy_dots_to_db(..., .copy = .copy)
-
-  if (.persist) {
-    sql <- paste0(
-      "UPDATE ", name, "\n",
-      sql_render(source),
-      "INNER JOIN ..."
-    )
-    dbExecute(remote_con(.data), sql)
-    invisible(.data)
-  } else {
-    # Checking optional, can rely on primary key constraint
-    if (is_true(.check)) {
-      check_superset(.data, source, .key)
-    }
-    
-    unchanged <- anti_join(.data, source, by = .key)
-    updated <- 
-      .data %>% 
-      select(!!!.key -!!!setdiff(colnames(.data), colnames(source))) %>% 
-      left_join(source, by = .key)
-    
-    union_all(unchanged, updated)
-  }
-}
-```
+- How to make compatible with `sql_render()`?
 
 
 ## dm

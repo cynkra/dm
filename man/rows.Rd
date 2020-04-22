@@ -2,96 +2,94 @@
 % Please edit documentation in R/rows.R
 \name{rows}
 \alias{rows}
-\alias{tbl_insert}
-\title{Persisting data for single tables}
+\alias{rows_insert}
+\alias{rows_insert.data.frame}
+\alias{rows_update}
+\alias{rows_patch}
+\alias{rows_upsert}
+\alias{rows_delete}
+\alias{rows_truncate}
+\title{Persisting data}
 \usage{
-tbl_insert(target, source, ..., persist = NULL)
+rows_insert(.data, .key = NULL, ...)
+
+\method{rows_insert}{data.frame}(.data, .key = NULL, ..., .sort = NULL)
+
+rows_update(.data, .key, ...)
+
+rows_patch(.data, .key, ...)
+
+rows_upsert(.data, .key, ...)
+
+rows_delete(.data, .key, ...)
+
+rows_truncate(.data, .key, ...)
 }
 \arguments{
-\item{target}{Target table object.}
+\item{.data}{Target table object.}
 
-\item{source}{Source table object.}
+\item{.key}{Key columns, unquoted.}
 
-\item{...}{Must be empty.}
+\item{...}{New data.
+If unnamed, must be a single object of the same class as \code{.data}.
+If named, will be passed on to \code{\link[=tibble]{tibble()}}.}
 
-\item{persist}{Set to \code{TRUE} for running the operation without persisting.
-In this mode, a modified version of \code{target} is returned.
-This allows verifying the results of an operation before actually
-applying it.
-Set to \code{FALSE} to perform the update on the database table.
-By default, an informative message is shown.}
+\item{.sort}{Should the output be sorted by the key columns?}
 }
 \value{
-A tbl object of the same structure as \code{target}.
-If \code{persist = TRUE}, \link{invisible} and identical to \code{target_dm}.
+A tbl object of the same structure as \code{.data}.
 }
 \description{
 \lifecycle{experimental}
 
-These methods provide a framework for updating data in existing tables.
-Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created
-on the database.
-All operations expect that both existing and new data are presented
-in two compatible \link{tbl} objects on the same data source.
+These methods provide a framework for manipulating individual rows
+in existing tables, modeled after the SQL operations
+\code{INSERT}, \code{UPDATE} and \code{DELETE}.
+All operations expect existing and new data to be compatible.
 
-These operations, in contrast to all other operations,
-may lead to irreversible changes to the underlying database.
-Therefore, persistence must be requested explicitly with \code{persist = TRUE}.
-By default, an informative message is given.
+\code{rows_insert()} adds new rows.
+This operation corresponds to \code{INSERT} in SQL.
+If \code{.key} is given, no two rows with the same values in the key columns
+are permitted.
 
-\code{tbl_insert()} adds new records.
+\code{rows_update()} updates existing rows.
+This operation corresponds to \code{UPDATE} in SQL.
+\code{.key} is mandatory.
+No two rows with the same values may exist in the new data.
+Each row in the new data must have exactly one corresponding row
+in the existing data.
+
+\code{rows_patch()} replaces missing values in existing rows.
+This operation corresponds to \code{UPDATE} using \code{COALESCE} expressions in SQL.
+It is similar to \code{rows_update()}, leaves non-missing values untouched.
+\code{.key} is mandatory.
+No two rows with the same values may exist in the new data.
+Each row in the new data must have exactly one corresponding row
+in the existing data.
+
+\code{rows_upsert()} updates matching rows and adds new rows for mismatches.
+This operation corresponds to \verb{INSERT ON DUPLICATE KEY UPDATE} or
+\verb{INSERT ON CONFLICT} in some SQL variants.
+\code{.key} is mandatory.
+No two rows with the same values may exist in the new data.
+Each row in the new data must have exactly one corresponding row
+in the existing data.
+
+\code{rows_delete()} deletes existing rows.
+This operation corresponds to \code{DELETE} in SQL.
+\code{.key} is mandatory, extra data in \code{...} is ignored.
+
+\code{rows_truncate()} removes all rows.
+This operation corresponds to \code{TRUNCATE} in SQL.
+\code{.key} and \code{...} are ignored.
 }
 \examples{
-if (rlang::is_installed("RSQLite")) {
-  # Truncated table:
-  flights_init <- nycflights13::flights[0, ]
+data <- tibble(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
 
-  sqlite <- src_sqlite(":memory:", create = TRUE)
-
-  # Target database:
-  flights_sqlite <- copy_to(sqlite, flights_init, temporary = FALSE)
-  print(count(flights_sqlite))
-
-  # First update:
-  flights_jan_1 <-
-    nycflights13::flights \%>\%
-    filter(month == 1, day == 1)
-  print(count(flights_jan_1))
-
-  # Copy to temporary tables on the target database:
-  flights_jan_1_sqlite <- copy_to(sqlite, flights_jan_1)
-
-  # Dry run by default:
-  tbl_insert(flights_sqlite, flights_jan_1_sqlite)
-  print(count(flights_sqlite))
-
-  # Explicitly request persistence:
-  tbl_insert(flights_sqlite, flights_jan_1_sqlite, persist = TRUE)
-  print(count(flights_sqlite))
-
-  # Second update:
-  flights_jan_2 <-
-    nycflights13::flights \%>\%
-    filter(month == 1, day == 2)
-
-  # Copy to temporary tables on the target database:
-  flights_jan_2_sqlite <- copy_to(sqlite, flights_jan_2)
-
-  # Explicit dry run:
-  flights_new <- tbl_insert(
-    flights_sqlite,
-    flights_jan_2_sqlite,
-    persist = FALSE
-  )
-  print(count(flights_new))
-  print(count(flights_sqlite))
-
-  # Check for consistency before applying:
-  flights_new \%>\%
-    dplyr::count(year, month, day)
-
-  # Apply:
-  tbl_insert(flights_sqlite, flights_jan_2_sqlite, persist = TRUE)
-  print(count(flights_sqlite))
-}
+rows_insert(data, a, a = 4, b = "z")
+rows_update(data, a, a = 2:3, b = "w")
+rows_patch(data, a, a = 2:3, b = "q")
+rows_upsert(data, a, a = 2:4, b = "x")
+rows_delete(data, a, a = 2:4)
+rows_truncate(data)
 }
