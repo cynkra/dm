@@ -44,7 +44,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
   if (inherits(src, "src_local")) {
     rhs
   } else if (is_dm(rhs)) {
-    copy_dm_to(src, rhs, unique_table_names = TRUE)
+    copy_dm_to(src, rhs, unique_table_names = TRUE, set_key_constraints = FALSE)
   } else {
     copy_to(src, rhs, name = name, temporary = TRUE)
   }
