@@ -21,11 +21,12 @@ dm_paste(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL)
 derived from \code{\link[=dm_ptype]{dm_ptype()}}, overrides \code{"select"}.
 \item \code{"select"}: \code{\link[=dm_select]{dm_select()}} statements for columns that are part
 of the dm.
-\item \code{"pks"}: \code{\link[=dm_add_pk]{dm_add_pk()}} statements for primary keys.
-\item \code{"keys"}: \code{\link[=dm_add_fk]{dm_add_fk()}} statements for foreign keys, implies \code{"pks"}.
+\item \code{"keys"}: \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} statements for adding keys.
 \item \code{"color"}: \code{\link[=dm_set_colors]{dm_set_colors()}} statements to set color.
 \item \code{"all"}: All options above except \code{"select"}
-}}
+}
+
+Default \code{NULL} is equivalent to \code{c("keys", "color")}}
 
 \item{path}{Output file, if \code{NULL} the code is printed to the console.}
 }
