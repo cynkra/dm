@@ -35,21 +35,22 @@ NULL
 #' @rdname rows
 #' @export
 rows_insert <- function(.data, ..., .key = NULL) {
-  UseMethod("rows_insert", .data)
+  source <- dots_to_df(.data, ...)
+  source_key <- df_key(source, {{ .key }}, default = !!integer())
+  tbl_insert(.data, source, by = source_key)
 }
 
 #' @export
 #' @rdname rows
-rows_insert.data.frame <- function(.data, ..., .key = NULL, .sort = NULL) {
-  source <- dots_to_df(.data, ...)
-  source_key <- df_key(source, {{ .key }}, default = !!integer())
-  data_key <- df_key(.data, !!names(source)[source_key])
+tbl_insert <- function(x, y, ..., by) {
+  UseMethod("tbl_insert")
+}
 
+#' @export
+#' @rdname rows
+tbl_insert.data.frame <- function(x, y, ..., by) {
+  # FIXME: Check that keys are unique
   out <- vctrs::vec_rbind(.data, source)
-  if (isTRUE(.sort)) {
-    # FIXME: Faster implementation, sort before binding
-    out <- arrange(out, !!!data_key)
-  }
   out
 }
 
