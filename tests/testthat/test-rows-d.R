@@ -2,6 +2,7 @@ scoped_options(lifecycle_verbosity = "quiet")
 
 verify_output("out/rows-d.txt", {
   data <- tibble(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
+  data
 
   rows_insert(data, a = 4, b = "z")
   rows_update(data, a = 2:3, b = "z")
