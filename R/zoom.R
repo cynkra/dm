@@ -14,6 +14,9 @@
 #'
 #' `dm_discard_zoomed()` discards the zoomed table and returns the `dm` as it was before zooming.
 #'
+#' Please refer to `vignette("dm-zoom-to-table", package = "dm")`
+#' for a more detailed introduction.
+#'
 #' @inheritParams dm_add_pk
 #' @inheritParams vctrs::vec_as_names
 #'
@@ -72,8 +75,6 @@
 #' flights_zoomed_transformed %>%
 #'   dm_discard_zoomed()
 dm_zoom_to <- function(dm, table) {
-  # FIXME: to include in documentation after #185:
-  # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
   check_not_zoomed(dm)
   # for now only one table can be zoomed on
   zoom <- as_string(ensym(table))

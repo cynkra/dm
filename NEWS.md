@@ -1,3 +1,19 @@
+# dm 0.1.1.9004
+
+- New `dm_ptype()` (#301).
+- New `dm_financial()`.
+- Printing dm objects from database sources with many tables is now faster (#308, @gadenbuie).
+
+
+# dm 0.1.1.9003
+
+- New `dm_financial_sqlite()`.
+- `compute.zoomed_dm()` no longer throws an error.
+- Remove DT import (#295).
+- `check_key()` now also works on a zoomed dm.
+- `dm_from_src()` works for databases other than Postgres and MSSQL (#288).
+
+
 # dm 0.1.1.9002
 
 - Don't implement `nest_join()` for now (#168).
