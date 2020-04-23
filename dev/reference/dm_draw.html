@@ -267,8 +267,12 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 <p>For <code>dm_get_available_colors()</code>, a vector with the available colors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm_draw</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())
-<span class='fu'>dm_draw</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_draw</span>()
+
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_draw</span>(<span class='kw'>view_type</span> <span class='kw'>=</span> <span class='st'>"title_only"</span>)
+
 <span class='fu'>dm_get_available_colors</span>()</div><div class='output co'>#&gt;   [1] "default"              "white"                "aliceblue"           
 #&gt;   [4] "antiquewhite"         "antiquewhite1"        "antiquewhite2"       
 #&gt;   [7] "antiquewhite3"        "antiquewhite4"        "aquamarine"          
@@ -488,7 +492,9 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 #&gt; [649] "wheat2"               "wheat3"               "wheat4"              
 #&gt; [652] "whitesmoke"           "yellow"               "yellow1"             
 #&gt; [655] "yellow2"              "yellow3"              "yellow4"             
-#&gt; [658] "yellowgreen"         </div><div class='input'><span class='fu'>dm_get_colors</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
+#&gt; [658] "yellowgreen"         </div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_get_colors</span>()</div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
 #&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_set_colors</span>(
