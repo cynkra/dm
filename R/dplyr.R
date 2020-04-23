@@ -270,6 +270,7 @@ pull.dm <- function(.data, var = -1, name = NULL) {
 }
 
 #' @rdname dplyr_table_manipulation
+#' @inheritParams dplyr::pull
 #' @export
 pull.zoomed_dm <- function(.data, var = -1, ...) {
   tbl <- get_zoomed_tbl(.data)

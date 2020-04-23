@@ -52,6 +52,20 @@ By default, the value is \code{NULL}, which causes the function to issue a messa
 This argument is specific for the \code{slice.zoomed_dm()} method.}
 
 \item{x}{For \code{ungroup.zoomed_dm}: object of class \code{zoomed_dm}}
+
+\item{var}{A variable specified as:
+\itemize{
+\item a literal variable name
+\item a positive integer, giving the position counting from the left
+\item a negative integer, giving the position counting from the right.
+}
+
+The default returns the last column (on the assumption that's the
+column you've created most recently).
+
+This argument is taken by expression and supports
+\link[rlang:quasiquotation]{quasiquotation} (you can unquote column
+names and column locations).}
 }
 \description{
 Use these methods without the '.zoomed_dm' suffix (see examples).
