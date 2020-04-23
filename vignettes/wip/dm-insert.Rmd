@@ -80,7 +80,7 @@ On these backends, the following additional operations are useful:
 
 * truncate — remove all rows
 
-Databases will require that the data is already on the database or ask the user to supply a `.copy` argument.
+Databases will require that the data is already on the database or ask the user to supply a `copy` argument.
 
 On mutable backends, update operations return the input, invisibly, if the update was carried out in-place.
 

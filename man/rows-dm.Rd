@@ -2,28 +2,35 @@
 % Please edit documentation in R/rows-dm.R
 \name{rows-dm}
 \alias{rows-dm}
-\alias{dm_insert}
-\title{Persisting data for multiple tables}
+\alias{dm_rows_insert}
+\title{inplaceing data for multiple tables}
 \usage{
-dm_insert(target_dm, dm, ..., persist = NULL)
+dm_rows_insert(x, y, ..., inplace = NULL)
 }
 \arguments{
-\item{target_dm}{Target \code{dm} object.}
+\item{x}{Target \code{dm} object.}
 
-\item{dm}{\code{dm} object with new data.}
+\item{y}{\code{dm} object with new data.}
 
 \item{...}{Must be empty.}
 
-\item{persist}{Set to \code{TRUE} for running the operation without persisting.
-In this mode, a modified version of \code{target_dm} is returned.
+\item{inplace}{This argument is only relevant for mutable backends,
+e.g. databases or \pkg{dtplyr}.
+For data frames, these operations always return a modified copy
+of the data.
+An informative message is given if set to \code{TRUE}.
+
+For mutable backends, set to \code{FALSE} for running the operation
+without updating the data in place.
+In this mode, a modified version of \code{x} is returned, as for data frames.
 This allows verifying the results of an operation before actually
 applying it.
-Set to \code{FALSE} to perform the update on the database table.
-By default, an informative message is shown.}
+Set to \code{TRUE} to perform the update on the remote table.
+The default is \code{FALSE} with an informative message.}
 }
 \value{
-A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{target_dm}.
-If \code{persist = TRUE}, \link{invisible} and identical to \code{target_dm}.
+A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{x}.
+If \code{inplace = TRUE}, \link{invisible} and identical to \code{x}.
 }
 \description{
 \lifecycle{experimental}
@@ -40,85 +47,89 @@ tables receive insertions before child (fact) tables.
 
 These operations, in contrast to all other operations,
 may lead to irreversible changes to the underlying database.
-Therefore, persistence must be requested explicitly with \code{persist = TRUE}.
+Therefore, inplaceence must be requested explicitly with \code{inplace = TRUE}.
 By default, an informative message is given.
 
-\code{dm_insert()} adds new records.
+\code{dm_rows_insert()} adds new records.
 The primary keys must differ from existing records.
 This must be ensured by the caller and might be checked by the underlying database.
-Use \code{persist = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.
+Use \code{inplace = FALSE} and apply \code{\link[=dm_rows_examine_constraints]{dm_rows_examine_constraints()}} to check beforehand.
 }
 \examples{
+# Establish database connection:
 if (rlang::is_installed("RSQLite")) {
-  # Entire dataset with all dimension tables populated
-  # with flights and weather data truncated:
-  flights_init <-
-    dm_nycflights13() \%>\%
-    dm_zoom_to(flights) \%>\%
-    filter(FALSE) \%>\%
-    dm_update_zoomed() \%>\%
-    dm_zoom_to(weather) \%>\%
-    filter(FALSE) \%>\%
-    dm_update_zoomed()
-
-  sqlite <- src_sqlite(":memory:", create = TRUE)
-
-  # Target database:
-  flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
-  print(dm_nrow(flights_sqlite))
-
-  # First update:
-  flights_jan <-
-    dm_nycflights13() \%>\%
-    dm_select_tbl(flights, weather) \%>\%
-    dm_zoom_to(flights) \%>\%
-    filter(month == 1) \%>\%
-    dm_update_zoomed() \%>\%
-    dm_zoom_to(weather) \%>\%
-    filter(month == 1) \%>\%
-    dm_update_zoomed()
-  print(dm_nrow(flights_jan))
-
-  # Copy to temporary tables on the target database:
-  flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
-
-  # Dry run by default:
-  dm_insert(flights_sqlite, flights_jan_sqlite)
-  print(dm_nrow(flights_sqlite))
-
-  # Explicitly request persistence:
-  dm_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
-  print(dm_nrow(flights_sqlite))
-
-  # Second update:
-  flights_feb <-
-    dm_nycflights13() \%>\%
-    dm_select_tbl(flights, weather) \%>\%
-    dm_zoom_to(flights) \%>\%
-    filter(month == 2) \%>\%
-    dm_update_zoomed() \%>\%
-    dm_zoom_to(weather) \%>\%
-    filter(month == 2) \%>\%
-    dm_update_zoomed()
-
-  # Copy to temporary tables on the target database:
-  flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
-
-  # Explicit dry run:
-  flights_new <- dm_insert(
-    flights_sqlite,
-    flights_feb_sqlite,
-    persist = FALSE
-  )
-  print(dm_nrow(flights_new))
-  print(dm_nrow(flights_sqlite))
-
-  # Check for consistency before applying:
-  flights_new \%>\%
-    dm_examine_constraints()
-
-  # Apply:
-  dm_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
-  print(dm_nrow(flights_sqlite))
+  sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
+} else {
+  # Fallback, persistence won't work:
+  sqlite <- dplyr::src_df(env = rlang::new_environment())
 }
+
+# Entire dataset with all dimension tables populated
+# with flights and weather data truncated:
+flights_init <-
+  dm_nycflights13() \%>\%
+  dm_zoom_to(flights) \%>\%
+  filter(FALSE) \%>\%
+  dm_update_zoomed() \%>\%
+  dm_zoom_to(weather) \%>\%
+  filter(FALSE) \%>\%
+  dm_update_zoomed()
+
+# Target database:
+flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
+print(dm_nrow(flights_sqlite))
+
+# First update:
+flights_jan <-
+  dm_nycflights13() \%>\%
+  dm_select_tbl(flights, weather) \%>\%
+  dm_zoom_to(flights) \%>\%
+  filter(month == 1) \%>\%
+  dm_update_zoomed() \%>\%
+  dm_zoom_to(weather) \%>\%
+  filter(month == 1) \%>\%
+  dm_update_zoomed()
+print(dm_nrow(flights_jan))
+
+# Copy to temporary tables on the target database:
+flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
+
+# Dry run by default:
+dm_rows_insert(flights_sqlite, flights_jan_sqlite)
+print(dm_nrow(flights_sqlite))
+
+# Explicitly request persistence:
+dm_rows_insert(flights_sqlite, flights_jan_sqlite, inplace = TRUE)
+print(dm_nrow(flights_sqlite))
+
+# Second update:
+flights_feb <-
+  dm_nycflights13() \%>\%
+  dm_select_tbl(flights, weather) \%>\%
+  dm_zoom_to(flights) \%>\%
+  filter(month == 2) \%>\%
+  dm_update_zoomed() \%>\%
+  dm_zoom_to(weather) \%>\%
+  filter(month == 2) \%>\%
+  dm_update_zoomed()
+
+# Copy to temporary tables on the target database:
+flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
+
+# Explicit dry run:
+flights_new <- dm_rows_insert(
+  flights_sqlite,
+  flights_feb_sqlite,
+  inplace = FALSE
+)
+print(dm_nrow(flights_new))
+print(dm_nrow(flights_sqlite))
+
+# Check for consistency before applying:
+flights_new \%>\%
+  dm_examine_constraints()
+
+# Apply:
+dm_rows_insert(flights_sqlite, flights_feb_sqlite, inplace = TRUE)
+print(dm_nrow(flights_sqlite))
 }

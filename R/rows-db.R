@@ -1,4 +1,4 @@
-#' Persisting data for database tables
+#' Updating database tables
 #'
 #' @description
 #' \lifecycle{experimental}
@@ -12,27 +12,17 @@
 #' underlying storage.
 #' In contrast to all other operations,
 #' these operations may lead to irreversible changes to the underlying database.
-#' Therefore, persistence must be requested explicitly with `.persist = TRUE`.
+#' Therefore, in-place updates must be requested explicitly with `inplace = TRUE`.
 #' By default, an informative message is given.
 #' Unlike [compute()] or [copy_to()], no new tables are created.
 #'
 #' @inheritParams rows
-#' @param .persist
-#'   Set to `FALSE` for running the operation without persisting.
-#'   In this mode, a modified version of `.data` is returned.
-#'   This allows verifying the results of an operation before actually
-#'   applying it.
-#'   Set to `TRUE` to perform the update on the database table.
-#'   The default is `FALSE` with an informative message.
-#' @param .copy
-#'   Set to `TRUE` to automatically copy the new data to the database if
-#'   necessary.
-#' @param .check
+#' @param check
 #'   Set to `TRUE` to always check keys, or `FALSE` to never check.
-#'   The default is to check only if `.persist` is `TRUE` or `NULL`.
+#'   The default is to check only if `inplace` is `TRUE` or `NULL`.
 #'
-#' @return A tbl object of the same structure as `.data`.
-#'   If `.persist = TRUE`, [invisible] and identical to `.data`.
+#' @return A tbl object of the same structure as `x`.
+#'   If `inplace = TRUE`, [invisible] and identical to `x`.
 #'
 #' @name rows-db
 #' @example example/rows-db.R
@@ -40,174 +30,155 @@ NULL
 
 #' @export
 #' @rdname rows-db
-rows_insert.tbl_SQLiteConnection <- function(.data, ..., .key = NULL,
-                                             .persist = NULL,
-                                             .copy = NULL, .check = NULL) {
-  source <- dots_to_db(.data, .copy, ...)
-  .key <- db_key(source, {{ .key }}, default = !!integer())
+rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
+                                inplace = NULL, copy = FALSE, check = NULL) {
+  y <- auto_copy(x, y, copy = copy)
+  y_key <- db_key(y, by)
+  by <- names(y_key)
+  x_key <- db_key(x, by)
 
-  # Message if .persist is NULL
-  .persist <- validate_persist(.persist)
+  name <- target_table_name(x, inplace)
 
-  # Also in dry-run mode, for early notification of problems
-  name <- target_table_name(.data, .persist)
-
-  if (.persist) {
+  if (!is_null(name)) {
     # Checking optional, can rely on primary key constraint
-    if (is_true(.check)) {
-      check_db_dupes(.data, source, )
+    if (is_true(check)) {
+      check_db_dupes(x, y, by)
     }
 
-    columns_q <- colnames(source)
+    columns_q <- colnames(y)
     columns_qq <- paste(columns_q, collapse = ", ")
 
     sql <- paste0(
       "INSERT INTO ", name, " (", columns_qq, ")\n",
-      dbplyr::remote_query(source)
+      dbplyr::remote_query(y)
     )
-    dbExecute(dbplyr::remote_con(.data), sql)
-    invisible(NULL)
+    dbExecute(dbplyr::remote_con(x), sql)
+    invisible(x)
   } else {
     # Checking mandatory by default, opt-out
-    if (is_null(.check) || is_true(.check)) {
-      check_db_dupes(.data, source, .key)
+    if (is_null(check) || is_true(check)) {
+      check_db_dupes(x, y, by)
     }
-    union_all(.data, source)
+    union_all(x, y)
   }
 }
 
 #' @export
 #' @rdname rows-db
-rows_update.tbl_SQLiteConnection <- function(.data, ..., .key = NULL,
-                                             .persist = NULL,
-                                             .copy = NULL, .check = NULL) {
-  source <- dots_to_db(.data, .copy, ...)
-  .key <- db_key(source, {{ .key }}, default = 1L)
+rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
+                                inplace = NULL, copy = FALSE, check = NULL) {
+  y <- auto_copy(x, y, copy = copy)
+  y_key <- db_key(y, by)
+  by <- names(y_key)
+  x_key <- db_key(x, by)
 
-  # Message if .persist is NULL
-  .persist <- validate_persist(.persist)
+  # FIXME: Case when y has no extra columns
+  new_columns <- setdiff(colnames(y), by)
 
-  # Also in dry-run mode, for early notification of problems
-  name <- target_table_name(.data, .persist)
+  name <- target_table_name(x, inplace)
 
-  # FIXME: Case when source has no extra columns
-  new_columns <- setdiff(colnames(source), .key)
-
-  if (.persist) {
+  if (!is_null(name)) {
     # Checking optional, can rely on primary key constraint
-    if (is_true(.check)) {
-      check_db_superset(.data, source, .key)
+    if (is_true(check)) {
+      check_db_superset(x, y, by)
     }
 
-    con <- dbplyr::remote_con(.data)
+    con <- dbplyr::remote_con(x)
 
     # https://stackoverflow.com/a/47753166/946850
-    source_name <- DBI::dbQuoteIdentifier(con, "...source")
-    source_columns_qq <- paste(
-      DBI::dbQuoteIdentifier(con, colnames(source)),
+    y_name <- DBI::dbQuoteIdentifier(con, "...y")
+    y_columns_qq <- paste(
+      DBI::dbQuoteIdentifier(con, colnames(y)),
       collapse = ", "
     )
 
-    new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(source), .key))
+    new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
     new_columns_qq <- paste(new_columns_q, collapse = ", ")
     new_columns_qual_qq <- paste0(
-      source_name, ".", new_columns_q,
+      y_name, ".", new_columns_q,
       collapse = ", "
     )
 
-    key_columns_q <- DBI::dbQuoteIdentifier(con, .key)
+    key_columns_q <- DBI::dbQuoteIdentifier(con, by)
     compare_qual_qq <- paste0(
-      source_name, ".", key_columns_q,
+      y_name, ".", key_columns_q,
       " = ",
       name, ".", key_columns_q,
       collapse = " AND "
     )
 
     sql <- paste0(
-      "WITH ", source_name, "(", source_columns_qq, ") AS (\n",
-      sql_render(source),
+      "WITH ", y_name, "(", y_columns_qq, ") AS (\n",
+      sql_render(y),
       "\n)\n",
 
       "UPDATE ", name, "\n",
       "SET (", new_columns_qq, ") = (\n",
       "SELECT ", new_columns_qual_qq, "\n",
-      "FROM ", source_name, "\n",
+      "FROM ", y_name, "\n",
       "WHERE (", compare_qual_qq, "))\n",
-      "WHERE EXISTS (SELECT * FROM ", source_name, " WHERE ", compare_qual_qq, ")"
+      "WHERE EXISTS (SELECT * FROM ", y_name, " WHERE ", compare_qual_qq, ")"
     )
-    dbExecute(dbplyr::remote_con(.data), sql)
-    invisible(.data)
+    dbExecute(con, sql)
+    invisible(x)
   } else {
     # Checking optional, can rely on primary key constraint
-    if (is_null(.check) || is_true(.check)) {
-      check_db_superset(.data, source, .key)
+    if (is_null(check) || is_true(check)) {
+      check_db_superset(x, y, by)
     }
 
-    existing_columns <- setdiff(colnames(.data), new_columns)
+    existing_columns <- setdiff(colnames(x), new_columns)
 
-    unchanged <- anti_join(.data, source, by = .key)
+    unchanged <- anti_join(x, y, by = by)
     updated <-
-      .data %>%
+      x %>%
       select(!!!existing_columns) %>%
-      inner_join(source, by = .key)
+      inner_join(y, by = by)
 
     union_all(unchanged, updated)
   }
 }
 
-validate_persist <- function(persist) {
-  if (is_null(persist)) {
-    message('Not persisting, use `.persist = FALSE` to turn off this message. See `?"rows-db" for details.')
-    persist <- FALSE
-  }
-  is_true(persist)
-}
-
-target_table_name <- function(x, persist) {
+target_table_name <- function(x, inplace) {
   name <- dbplyr::remote_name(x)
-  if (is.null(name)) {
-    raise <- if (persist) abort else warn
-    raise("Can't determine name for target table.")
+
+  # Only write if requested
+  if (!is_null(name) && is_true(inplace)) {
+    return(name)
   }
-  name
+
+  # Abort if requested but can't write
+  if (is_null(name) && is_true(inplace)) {
+    abort("Can't determine name for target table. Set `inplace = FALSE` to return a lazy table.")
+  }
+
+  # Verbose by default
+  if (is_null(inplace)) {
+    if (is_null(name)) {
+      inform("Result is returned as lazy table, because `x` does not correspond to a table that can be updated. Use `inplace = FALSE` to mute this message.")
+    } else {
+      inform("Result is returned as lazy table. Use `inplace = FALSE` to mute this message, or `inplace = TRUE` to write to the underlying table.")
+    }
+  }
+
+  # Never write unless handled above
+  NULL
 }
 
-dots_to_db <- function(.data, .copy, ...) {
-  dots <- enquos(...)
-  # Remove arguments that start with a dot, for extensibility
-  dots <- dots[grepl("^[^.]", names(dots))]
-  source <- tibble(!!!dots)
 
-  if (length(dots) == 1 && names2(dots) == "") {
-    source <- ..1
+db_key <- function(y, by) {
+  if (is_null(by)) {
+    set_names(1L, colnames(y)[[1]])
   } else {
-    stopifnot(is_named(dots))
+    idx <- match(by, colnames(y))
+    set_names(idx, by)
   }
-
-  stopifnot(is_empty(setdiff(colnames(source), colnames(.data))))
-
-  if (is_null(.copy)) {
-    .copy <- FALSE
-  }
-
-  auto_copy(.data, source, copy = .copy)
 }
 
-db_key <- function(.data, .key, default) {
-  .key <- enquo(.key)
-  if (quo_is_null(.key)) {
-    .key <- enquo(default)
-  }
-  names <- colnames(.data)
-  fake_data <- as_tibble(set_names(rep_along(names, list(logical())), names))
-  idx <- tidyselect::eval_select(.key, fake_data)
-  names[idx]
-}
-
-check_db_dupes <- function(.data, source, .key) {
+check_db_dupes <- function(x, y, by) {
   # FIXME
 }
 
-check_db_superset <- function(.data, source, .key) {
+check_db_superset <- function(x, y, by) {
   # FIXME
 }

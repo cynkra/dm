@@ -3,47 +3,51 @@
 \name{rows}
 \alias{rows}
 \alias{rows_insert}
-\alias{rows_insert.data.frame}
 \alias{rows_update}
 \alias{rows_patch}
 \alias{rows_upsert}
 \alias{rows_delete}
 \alias{rows_truncate}
-\title{Persisting data}
+\title{Manipulate individual rows}
 \usage{
-rows_insert(.data, ..., .key = NULL)
+rows_insert(x, y, by = NULL, ..., copy = FALSE, inplace = NULL)
 
-\method{rows_insert}{data.frame}(.data, ..., .key = NULL, .sort = NULL)
+rows_update(x, y, by = NULL, ..., copy = FALSE, inplace = NULL)
 
-rows_update(.data, ..., .key = NULL)
+rows_patch(x, y, by = NULL, ..., copy = FALSE, inplace = NULL)
 
-rows_patch(.data, ..., .key = NULL)
+rows_upsert(x, y, by = NULL, ..., copy = FALSE, inplace = NULL)
 
-rows_upsert(.data, ..., .key = NULL)
+rows_delete(x, y, by = NULL, ..., copy = FALSE, inplace = NULL)
 
-rows_delete(.data, ..., .key = NULL)
-
-rows_truncate(.data, ...)
+rows_truncate(x, ..., copy = FALSE, inplace = NULL)
 }
 \arguments{
-\item{.data}{Target table object.}
+\item{x}{Target table object.}
 
-\item{...}{New data.
-If unnamed, must be a single object of the same class as \code{.data}.
-If named, will be passed on to \code{\link[=tibble]{tibble()}}.}
+\item{y}{Source table object. All columns in \code{y} must exist in \code{x}.}
 
-\item{.key}{Key columns, unquoted.
-The default varies for the different operations:
-\itemize{
-\item For \code{rows_insert()}: no keys.
-\item For \code{rows_update()}, \code{rows_patch()} and \code{rows_upsert()}: first column.
-\item For \code{rows_delete()}: all columns.
-}}
+\item{by}{Key columns as unnamed character vector.
+All columns in \code{by} must exist in \code{y} (and, by extension, in \code{x}).
+The default is the first column of \code{y}.}
 
-\item{.sort}{Should the output be sorted by the key columns?}
+\item{inplace}{This argument is only relevant for mutable backends,
+e.g. databases or \pkg{dtplyr}.
+For data frames, these operations always return a modified copy
+of the data.
+An informative message is given if set to \code{TRUE}.
+
+For mutable backends, set to \code{FALSE} for running the operation
+without updating the data in place.
+In this mode, a modified version of \code{x} is returned, as for data frames.
+This allows verifying the results of an operation before actually
+applying it.
+Set to \code{TRUE} to perform the update on the remote table.
+The default is \code{FALSE} with an informative message.}
 }
 \value{
-A tbl object of the same structure as \code{.data}.
+A tbl object of the same structure as \code{x}.
+On mutable backends, same as \code{x} if \code{inplace = TRUE}.
 }
 \description{
 \lifecycle{experimental}
@@ -55,12 +59,12 @@ All operations expect existing and new data to be compatible.
 
 \code{rows_insert()} adds new rows.
 This operation corresponds to \code{INSERT} in SQL.
-If \code{.key} is given, no two rows with the same values in the key columns
+If \code{by} is non-empty, no two rows with the same values in the key columns
 are permitted.
 
 \code{rows_update()} updates existing rows.
 This operation corresponds to \code{UPDATE} in SQL.
-\code{.key} is mandatory and defaults to the first column in \code{...}.
+\code{by} is mandatory and defaults to the first column in \code{y}.
 No two rows with the same values may exist in the new data.
 Each row in the new data must have exactly one corresponding row
 in the existing data.
@@ -68,7 +72,7 @@ in the existing data.
 \code{rows_patch()} replaces missing values in existing rows.
 This operation corresponds to \code{UPDATE} using \code{COALESCE} expressions in SQL.
 It is similar to \code{rows_update()}, leaves non-missing values untouched.
-\code{.key} is mandatory and defaults to the first column in \code{...}.
+\code{by} is mandatory and defaults to the first column in \code{y}.
 No two rows with the same values may exist in the new data.
 Each row in the new data must have exactly one corresponding row
 in the existing data.
@@ -76,14 +80,14 @@ in the existing data.
 \code{rows_upsert()} updates matching rows and adds new rows for mismatches.
 This operation corresponds to \verb{INSERT ON DUPLICATE KEY UPDATE} or
 \verb{INSERT ON CONFLICT} in some SQL variants.
-\code{.key} is mandatory and defaults to the first column in \code{...}.
+\code{by} is mandatory and defaults to the first column in \code{y}.
 No two rows with the same values may exist in the new data.
 Each row in the new data must have exactly one corresponding row
 in the existing data.
 
 \code{rows_delete()} deletes existing rows.
 This operation corresponds to \code{DELETE} in SQL.
-\code{.key} is mandatory and defaults to the entire data.
+\code{by} is mandatory and defaults to the first column in \code{y}.
 
 \code{rows_truncate()} removes all rows.
 This operation corresponds to \code{TRUNCATE} in SQL.
@@ -91,14 +95,15 @@ This operation corresponds to \code{TRUNCATE} in SQL.
 }
 \examples{
 data <- tibble(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
+data
 
-rows_insert(data, a = 4, b = "z")
-rows_update(data, a = 2:3, b = "z")
-rows_update(data, b = "z", a = 2:3, .key = a)
+rows_insert(data, tibble(a = 4, b = "z"))
+rows_update(data, tibble(a = 2:3, b = "z"))
+rows_update(data, tibble(b = "z", a = 2:3), by = "a")
 rows_patch(data, tibble(a = 2:3, b = "z"))
-rows_upsert(data, a = 2:4, b = "z")
-rows_delete(data, a = 2:4)
-rows_delete(data, a = 2:4, b = "b")
-rows_delete(data, a = 2:4, b = "b", .key = a)
+rows_upsert(data, tibble(a = 2:4, b = "z"))
+rows_delete(data, tibble(a = 2:4))
+rows_delete(data, tibble(a = 2:4, b = "b"))
+rows_delete(data, tibble(a = 2:4, b = "b"), by = c("a", "b"))
 rows_truncate(data)
 }

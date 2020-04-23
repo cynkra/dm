@@ -6,11 +6,11 @@
 2     2 b       1.5
 3     3 <NA>    2.5
 
-> rows_insert(data, a = 4, b = "z")
+> rows_insert(data, tibble(a = 4, b = "z"))
 Error: `x` and `y` must share the same src, set `copy` = TRUE (may be slow)
 
-> rows_insert(data, a = 4, b = "z", .copy = TRUE)
-Message: Not persisting, use `.persist = FALSE` to turn off this message. See `?"rows-db" for details.
+> rows_insert(data, tibble(a = 4, b = "z"), copy = TRUE)
+Message: Result is returned as lazy table. Use `inplace = FALSE` to mute this message, or `inplace = TRUE` to write to the underlying table.
 
       a b         c
   <dbl> <chr> <dbl>
@@ -19,14 +19,14 @@ Message: Not persisting, use `.persist = FALSE` to turn off this message. See `?
 3     3 <NA>    2.5
 4     4 z      NA  
 
-> rows_update(data, a = 2:3, b = "w", .copy = TRUE, .persist = FALSE)
+> rows_update(data, tibble(a = 2:3, b = "w"), copy = TRUE, inplace = FALSE)
       a b         c
   <int> <chr> <dbl>
 1     1 a       0.5
 2     2 w       1.5
 3     3 w       2.5
 
-> rows_insert(data, memdb_frame(a = 4, b = "z"), .persist = TRUE)
+> rows_insert(data, memdb_frame(a = 4, b = "z"), inplace = TRUE)
 > data
       a b         c
   <int> <chr> <dbl>
@@ -35,7 +35,7 @@ Message: Not persisting, use `.persist = FALSE` to turn off this message. See `?
 3     3 <NA>    2.5
 4     4 z      NA  
 
-> rows_update(data, memdb_frame(a = 2:3, b = "w"), .persist = TRUE)
+> rows_update(data, memdb_frame(a = 2:3, b = "w"), inplace = TRUE)
 > data
       a b         c
   <int> <chr> <dbl>

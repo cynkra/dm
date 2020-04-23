@@ -1,5 +1,5 @@
 # Establish database connection:
-if (!rlang::is_installed("RSQLite")) {
+if (rlang::is_installed("RSQLite")) {
   sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
 } else {
   # Fallback, persistence won't work:
@@ -37,11 +37,11 @@ print(dm_nrow(flights_jan))
 flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
 
 # Dry run by default:
-dm_insert(flights_sqlite, flights_jan_sqlite)
+dm_rows_insert(flights_sqlite, flights_jan_sqlite)
 print(dm_nrow(flights_sqlite))
 
 # Explicitly request persistence:
-dm_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
+dm_rows_insert(flights_sqlite, flights_jan_sqlite, inplace = TRUE)
 print(dm_nrow(flights_sqlite))
 
 # Second update:
@@ -59,10 +59,10 @@ flights_feb <-
 flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
 
 # Explicit dry run:
-flights_new <- dm_insert(
+flights_new <- dm_rows_insert(
   flights_sqlite,
   flights_feb_sqlite,
-  persist = FALSE
+  inplace = FALSE
 )
 print(dm_nrow(flights_new))
 print(dm_nrow(flights_sqlite))
@@ -72,5 +72,5 @@ flights_new %>%
   dm_examine_constraints()
 
 # Apply:
-dm_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
+dm_rows_insert(flights_sqlite, flights_feb_sqlite, inplace = TRUE)
 print(dm_nrow(flights_sqlite))

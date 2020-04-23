@@ -15,8 +15,8 @@ flights weather
     932      72 
 
 > flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
-> dm_insert(flights_sqlite, flights_jan_sqlite)
-Warning: Not persisting, use `persist = FALSE` to turn off this warning.
+> dm_rows_insert(flights_sqlite, flights_jan_sqlite)
+Message: Not persisting, use `inplace = FALSE` to turn off this message.
 
 -- Table source ----------------------------------------------------------------
 src:  sqlite 3.31.1 [:memory:]
@@ -30,31 +30,55 @@ Foreign keys: 3
 airlines airports  flights   planes  weather 
       16     1458        0     3322        0 
 
-> dm_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
+> dm_rows_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
+Error: `...` is not empty.
+
+We detected these problematic arguments:
+* `persist`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?
+
 > print(dm_nrow(flights_sqlite))
 airlines airports  flights   planes  weather 
-      16     1458      932     3322       72 
+      16     1458        0     3322        0 
 
 > flights_feb <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
 +   dm_zoom_to(flights) %>% filter(month == 2) %>% dm_update_zoomed() %>%
 +   dm_zoom_to(weather) %>% filter(month == 2) %>% dm_update_zoomed()
 > flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
-> flights_new <- dm_insert(flights_sqlite, flights_feb_sqlite, persist = FALSE)
+> flights_new <- dm_rows_insert(flights_sqlite, flights_feb_sqlite, persist = FALSE)
+Error: `...` is not empty.
+
+We detected these problematic arguments:
+* `persist`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?
+
 > print(dm_nrow(flights_new))
 airlines airports  flights   planes  weather 
-      16     1458     1761     3322      144 
+      16     1458      829     3322       72 
 
 > print(dm_nrow(flights_sqlite))
 airlines airports  flights   planes  weather 
-      16     1458      932     3322       72 
+      16     1458        0     3322        0 
 
 > flights_new %>% dm_examine_constraints()
-Message: ! Unsatisfied constraints:
+Message: [33m![39m Unsatisfied constraints:
 
-* Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
+* Table `flights`: foreign key tailnum into table `planes`: 135 entries (16.3%) of `flights$tailnum` not in `planes$tailnum`: N537MQ (4), N3GBAA (3), N509MQ (3), N534MQ (3), N719MQ (3), ...
 
-> dm_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
+> dm_rows_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
+Error: `...` is not empty.
+
+We detected these problematic arguments:
+* `persist`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?
+
 > print(dm_nrow(flights_sqlite))
 airlines airports  flights   planes  weather 
-      16     1458     1761     3322      144 
+      16     1458        0     3322        0 
 

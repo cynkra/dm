@@ -34,11 +34,11 @@ verify_output("out/rows-dm.txt", {
   flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
 
   # Dry run by default:
-  dm_insert(flights_sqlite, flights_jan_sqlite)
+  dm_rows_insert(flights_sqlite, flights_jan_sqlite)
   print(dm_nrow(flights_sqlite))
 
   # Explicitly request persistence:
-  dm_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
+  dm_rows_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
   print(dm_nrow(flights_sqlite))
 
   # Second update:
@@ -56,7 +56,7 @@ verify_output("out/rows-dm.txt", {
   flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
 
   # Explicit dry run:
-  flights_new <- dm_insert(
+  flights_new <- dm_rows_insert(
     flights_sqlite,
     flights_feb_sqlite,
     persist = FALSE
@@ -69,6 +69,6 @@ verify_output("out/rows-dm.txt", {
     dm_examine_constraints()
 
   # Apply:
-  dm_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
+  dm_rows_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
   print(dm_nrow(flights_sqlite))
 })

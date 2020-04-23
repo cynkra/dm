@@ -6,7 +6,7 @@
 2     2 b       1.5
 3     3 <NA>    2.5
 
-> rows_insert(data, a = 4, b = "z")
+> rows_insert(data, tibble(a = 4, b = "z"))
       a b         c
   <dbl> <chr> <dbl>
 1     1 a       0.5
@@ -14,14 +14,14 @@
 3     3 <NA>    2.5
 4     4 z      NA  
 
-> rows_update(data, a = 2:3, b = "z")
+> rows_update(data, tibble(a = 2:3, b = "z"))
       a b         c
   <int> <chr> <dbl>
 1     1 a       0.5
 2     2 z       1.5
 3     3 z       2.5
 
-> rows_update(data, b = "z", a = 2:3, .key = a)
+> rows_update(data, tibble(b = "z", a = 2:3), by = "a")
       a b         c
   <int> <chr> <dbl>
 1     1 a       0.5
@@ -35,7 +35,7 @@
 2     2 b       1.5
 3     3 z       2.5
 
-> rows_upsert(data, a = 2:4, b = "z")
+> rows_upsert(data, tibble(a = 2:4, b = "z"))
       a b         c
   <int> <chr> <dbl>
 1     1 a       0.5
@@ -43,21 +43,21 @@
 3     3 z       2.5
 4     4 z      NA  
 
-> rows_delete(data, a = 2:4)
+> rows_delete(data, tibble(a = 2:4))
       a b         c
   <int> <chr> <dbl>
 1     1 a       0.5
 
-> rows_delete(data, a = 2:4, b = "b")
+> rows_delete(data, tibble(a = 2:4, b = "b"))
+      a b         c
+  <int> <chr> <dbl>
+1     1 a       0.5
+
+> rows_delete(data, tibble(a = 2:4, b = "b"), by = c("a", "b"))
       a b         c
   <int> <chr> <dbl>
 1     1 a       0.5
 2     3 <NA>    2.5
-
-> rows_delete(data, a = 2:4, b = "b", .key = a)
-      a b         c
-  <int> <chr> <dbl>
-1     1 a       0.5
 
 > rows_truncate(data)
 # ... with 3 variables: a <int>, b <chr>, c <dbl>

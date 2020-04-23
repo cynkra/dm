@@ -1,4 +1,4 @@
-#' Persisting data for multiple tables
+#' inplaceing data for multiple tables
 #'
 #' @description
 #' \lifecycle{experimental}
@@ -15,125 +15,119 @@
 #'
 #' These operations, in contrast to all other operations,
 #' may lead to irreversible changes to the underlying database.
-#' Therefore, persistence must be requested explicitly with `persist = TRUE`.
+#' Therefore, inplaceence must be requested explicitly with `inplace = TRUE`.
 #' By default, an informative message is given.
 #'
-#' @param target_dm Target `dm` object.
-#' @param dm `dm` object with new data.
+#' @inheritParams rows_insert
+#' @param x Target `dm` object.
+#' @param y `dm` object with new data.
 #' @param ... Must be empty.
-#' @param persist
-#'   Set to `TRUE` for running the operation without persisting.
-#'   In this mode, a modified version of `target_dm` is returned.
-#'   This allows verifying the results of an operation before actually
-#'   applying it.
-#'   Set to `FALSE` to perform the update on the database table.
-#'   By default, an informative message is shown.
 #'
-#' @return A dm object of the same [dm_ptype()] as `target_dm`.
-#'   If `persist = TRUE`, [invisible] and identical to `target_dm`.
+#' @return A dm object of the same [dm_ptype()] as `x`.
+#'   If `inplace = TRUE`, [invisible] and identical to `x`.
 #'
 #' @name rows-dm
 #' @example example/rows-dm.R
 NULL
 
 
-#' dm_insert
+#' dm_rows_insert
 #'
-#' `dm_insert()` adds new records.
+#' `dm_rows_insert()` adds new records.
 #' The primary keys must differ from existing records.
 #' This must be ensured by the caller and might be checked by the underlying database.
-#' Use `persist = FALSE` and apply [dm_examine_constraints()] to check beforehand.
+#' Use `inplace = FALSE` and apply [dm_rows_examine_constraints()] to check beforehand.
 #' @rdname rows-dm
 #' @export
-dm_insert <- function(target_dm, dm, ..., persist = NULL) {
+dm_rows_insert <- function(x, y, ..., inplace = NULL) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, rows_insert, top_down = TRUE, persist)
+  dm_rows(x, y, rows_insert, top_down = TRUE, inplace)
 }
 
-# dm_update
+# dm_rows_update
 #
-# `dm_update()` updates existing records.
+# `dm_rows_update()` updates existing records.
 # Primary keys must match for all records to be updated.
 #
 # @rdname rows-dm
 # @export
-dm_update <- function(target_dm, dm, ..., persist = NULL) {
+dm_rows_update <- function(x, y, ..., inplace = NULL) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_update, top_down = TRUE, persist)
+  dm_rows(x, y, tbl_update, top_down = TRUE, inplace)
 }
 
-# dm_upsert
+# dm_rows_upsert
 #
-# `dm_upsert()` updates existing records and adds new records,
+# `dm_rows_upsert()` updates existing records and adds new records,
 # based on the primary key.
 #
 # @rdname rows-dm
 # @export
-dm_upsert <- function(target_dm, dm, ..., persist = NULL) {
+dm_rows_upsert <- function(x, y, ..., inplace = NULL) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_upsert, top_down = TRUE, persist)
+  dm_rows(x, y, tbl_upsert, top_down = TRUE, inplace)
 }
 
-# dm_delete
+# dm_rows_delete
 #
-# `dm_delete()` removes matching records, based on the primary key.
+# `dm_rows_delete()` removes matching records, based on the primary key.
 # The order in which the tables are processed is reversed.
 #
 # @rdname rows-dm
 # @export
-dm_delete <- function(target_dm, dm, ..., persist = NULL) {
+dm_rows_delete <- function(x, y, ..., inplace = NULL) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_delete, top_down = FALSE, persist)
+  dm_rows(x, y, tbl_delete, top_down = FALSE, inplace)
 }
 
-# dm_truncate
+# dm_rows_truncate
 #
-# `dm_truncate()` removes all records, only for tables in `dm`.
+# `dm_rows_truncate()` removes all records, only for tables in `dm`.
 # The order in which the tables are processed is reversed.
 #
 # @rdname rows-dm
 # @export
-dm_truncate <- function(target_dm, dm, ..., persist = NULL) {
+dm_rows_truncate <- function(x, y, ..., inplace = NULL) {
   check_dots_empty()
 
-  dm_persist(target_dm, dm, tbl_truncate, top_down = FALSE, persist)
+  dm_rows(x, y, tbl_truncate, top_down = FALSE, inplace)
 }
 
-dm_persist <- function(target_dm, dm, operation, top_down, persist = NULL) {
-  dm_check_persist(target_dm, dm)
+dm_rows <- function(x, y, operation, top_down, inplace = NULL) {
+  dm_rows_check(x, y)
 
-  if (is_null(persist)) {
-    message("Not persisting, use `persist = FALSE` to turn off this message.")
-    persist <- FALSE
+  if (is_null(inplace)) {
+    message("Not persisting, use `inplace = FALSE` to turn off this message.")
+    inplace <- FALSE
   }
 
-  dm_run_persist(target_dm, dm, operation, top_down, persist)
+  dm_rows_run(x, y, operation, top_down, inplace)
 }
 
-dm_check_persist <- function(target_dm, dm) {
-  check_not_zoomed(target_dm)
-  check_not_zoomed(dm)
+dm_rows_check <- function(x, y) {
+  check_not_zoomed(x)
+  check_not_zoomed(y)
 
-  check_same_src(target_dm, dm)
-  check_tables_superset(target_dm, dm)
-  tables <- dm_get_tables(dm)
-  walk2(dm_get_tables(target_dm)[names(tables)], tables, check_columns_superset)
-  check_keys_compatible(target_dm, dm)
+  check_same_src(x, y)
+  check_tables_superset(x, y)
+  tables <- dm_get_tables_impl(y)
+  walk2(dm_get_tables_impl(x)[names(tables)], tables, check_columns_superset)
+  check_keys_compatible(x, y)
 }
 
-check_same_src <- function(target_dm, dm) {
-  tables <- c(dm_get_tables_impl(target_dm), dm_get_tables_impl(dm))
+check_same_src <- function(x, y) {
+  tables <- c(dm_get_tables_impl(x), dm_get_tables_impl(y))
   if (!all_same_source(tables)) {
     abort_not_same_src()
   }
 }
 
-check_tables_superset <- function(target_dm, dm) {
-  tables_missing <- setdiff(src_tbls_impl(dm), src_tbls_impl(target_dm))
+check_tables_superset <- function(x, y) {
+  tables_missing <- setdiff(src_tbls_impl(y), src_tbls_impl(x))
   if (has_length(tables_missing)) {
     abort_tables_missing(tables_missing)
   }
@@ -146,36 +140,37 @@ check_columns_superset <- function(target_tbl, tbl) {
   }
 }
 
-check_keys_compatible <- function(target_dm, dm) {
+check_keys_compatible <- function(x, y) {
   # FIXME
 }
 
 
 
-dm_run_persist <- function(target_dm, dm, tbl_op, top_down, persist) {
+dm_rows_run <- function(x, y, tbl_op, top_down, inplace) {
   # topologically sort tables
-  graph <- create_graph_from_dm(target_dm, directed = TRUE)
+  graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
-  tables <- intersect(names(topo), src_tbls(dm))
+  tables <- intersect(names(topo), src_tbls(y))
 
   # extract keys
-  target_tbls <- dm_get_tables_impl(target_dm)[tables]
-  tbls <- dm_get_tables_impl(dm)[tables]
+  target_tbls <- dm_get_tables_impl(x)[tables]
+  tbls <- dm_get_tables_impl(y)[tables]
 
   # FIXME: Extract keys for upsert and delete
   # Use keyholder?
 
-  # run operation(target_tbl, source_tbl, persist = persist) for each table
-  op_results <- map2(target_tbls, tbls, tbl_op, .persist = persist)
+  # run operation(target_tbl, source_tbl, inplace = inplace) for each table
+  op_results <- map2(target_tbls, tbls, tbl_op, inplace = inplace)
 
-  # operation() returns NULL if no table is needed, otherwise a tbl
-  new_tables <- compact(op_results)
+  if (identical(unname(op_results), unname(target_tbls))) {
+    out <- x
+  } else {
+    out <-
+      x %>%
+      dm_patch_tbl(!!!op_results)
+  }
 
-  out <-
-    target_dm %>%
-    dm_patch_tbl(!!!new_tables)
-
-  if (persist) {
+  if (inplace) {
     invisible(out)
   } else {
     out

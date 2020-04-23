@@ -2,59 +2,43 @@
 % Please edit documentation in R/rows-db.R
 \name{rows-db}
 \alias{rows-db}
-\alias{rows_insert.tbl_SQLiteConnection}
-\alias{rows_update.tbl_SQLiteConnection}
-\title{Persisting data for database tables}
+\alias{rows_insert.tbl_dbi}
+\alias{rows_update.tbl_dbi}
+\title{Updating database tables}
 \usage{
-\method{rows_insert}{tbl_SQLiteConnection}(
-  .data,
-  ...,
-  .key = NULL,
-  .persist = NULL,
-  .copy = NULL,
-  .check = NULL
-)
+\method{rows_insert}{tbl_dbi}(x, y, by = NULL, ..., inplace = NULL, copy = FALSE, check = NULL)
 
-\method{rows_update}{tbl_SQLiteConnection}(
-  .data,
-  ...,
-  .key = NULL,
-  .persist = NULL,
-  .copy = NULL,
-  .check = NULL
-)
+\method{rows_update}{tbl_dbi}(x, y, by = NULL, ..., inplace = NULL, copy = FALSE, check = NULL)
 }
 \arguments{
-\item{.data}{Target table object.}
+\item{x}{Target table object.}
 
-\item{...}{New data.
-If unnamed, must be a single object of the same class as \code{.data}.
-If named, will be passed on to \code{\link[=tibble]{tibble()}}.}
+\item{y}{Source table object. All columns in \code{y} must exist in \code{x}.}
 
-\item{.key}{Key columns, unquoted.
-The default varies for the different operations:
-\itemize{
-\item For \code{rows_insert()}: no keys.
-\item For \code{rows_update()}, \code{rows_patch()} and \code{rows_upsert()}: first column.
-\item For \code{rows_delete()}: all columns.
-}}
+\item{by}{Key columns as unnamed character vector.
+All columns in \code{by} must exist in \code{y} (and, by extension, in \code{x}).
+The default is the first column of \code{y}.}
 
-\item{.persist}{Set to \code{FALSE} for running the operation without persisting.
-In this mode, a modified version of \code{.data} is returned.
+\item{inplace}{This argument is only relevant for mutable backends,
+e.g. databases or \pkg{dtplyr}.
+For data frames, these operations always return a modified copy
+of the data.
+An informative message is given if set to \code{TRUE}.
+
+For mutable backends, set to \code{FALSE} for running the operation
+without updating the data in place.
+In this mode, a modified version of \code{x} is returned, as for data frames.
 This allows verifying the results of an operation before actually
 applying it.
-Set to \code{TRUE} to perform the update on the database table.
+Set to \code{TRUE} to perform the update on the remote table.
 The default is \code{FALSE} with an informative message.}
 
-\item{.copy}{Set to \code{TRUE} to automatically copy the new data to the database if
-necessary.}
-
-\item{.check}{Set to \code{TRUE} to always check keys, or \code{FALSE} to never check.
-The default is to check only if \code{.persist} is \code{TRUE} or \code{NULL}.}
+\item{check}{Set to \code{TRUE} to always check keys, or \code{FALSE} to never check.
+The default is to check only if \code{inplace} is \code{TRUE} or \code{NULL}.}
 }
 \value{
-A tbl object of the same structure as \code{.data}.
-If \code{.persist = TRUE}, \link{invisible} and identical to \code{.data}.
+A tbl object of the same structure as \code{x}.
+If \code{inplace = TRUE}, \link{invisible} and identical to \code{x}.
 }
 \description{
 \lifecycle{experimental}
@@ -68,19 +52,20 @@ On mutable backends like databases, these operations manipulate the
 underlying storage.
 In contrast to all other operations,
 these operations may lead to irreversible changes to the underlying database.
-Therefore, persistence must be requested explicitly with \code{.persist = TRUE}.
+Therefore, in-place updates must be requested explicitly with \code{inplace = TRUE}.
 By default, an informative message is given.
 Unlike \code{\link[=compute]{compute()}} or \code{\link[=copy_to]{copy_to()}}, no new tables are created.
 }
 \examples{
 data <- memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
-
-try(rows_insert(data, a = 4, b = "z"))
-rows_insert(data, a = 4, b = "z", .copy = TRUE)
-rows_update(data, a = 2:3, b = "w", .copy = TRUE, .persist = FALSE)
-
-rows_insert(data, memdb_frame(a = 4, b = "z"), .persist = TRUE)
 data
-rows_update(data, memdb_frame(a = 2:3, b = "w"), .persist = TRUE)
+
+try(rows_insert(data, tibble(a = 4, b = "z")))
+rows_insert(data, tibble(a = 4, b = "z"), copy = TRUE)
+rows_update(data, tibble(a = 2:3, b = "w"), copy = TRUE, inplace = FALSE)
+
+rows_insert(data, memdb_frame(a = 4, b = "z"), inplace = TRUE)
+data
+rows_update(data, memdb_frame(a = 2:3, b = "w"), inplace = TRUE)
 data
 }
