@@ -13,6 +13,7 @@
 \alias{group_by.zoomed_dm}
 \alias{ungroup.zoomed_dm}
 \alias{summarise.zoomed_dm}
+\alias{pull.zoomed_dm}
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
 \method{filter}{zoomed_dm}(.data, ...)
@@ -36,6 +37,8 @@
 \method{ungroup}{zoomed_dm}(x, ...)
 
 \method{summarise}{zoomed_dm}(.data, ...)
+
+\method{pull}{zoomed_dm}(.data, var = -1, ...)
 }
 \arguments{
 \item{.data}{object of class \code{zoomed_dm}}

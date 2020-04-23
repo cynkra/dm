@@ -264,6 +264,18 @@ summarise.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @export
+pull.dm <- function(.data, var = -1, name = NULL) {
+  check_zoomed(.data)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+pull.zoomed_dm <- function(.data, var = -1, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  pull(tbl, var = {{ var }}, ...)
+}
+
 #' \pkg{dplyr} join methods for zoomed dm objects
 #'
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
@@ -473,15 +485,4 @@ unique_prefix <- function(x) {
 
   dots <- max(max(nchar(x, "bytes")), 3)
   glue_collapse(rep(".", dots))
-}
-
-#' @export
-pull.dm <- function(.data, var = -1, name = NULL) {
-  check_zoomed(.data)
-}
-
-#' @export
-pull.zoomed_dm <- function(.data, var = -1, name = NULL) {
-  tbl <- get_zoomed_tbl(.data)
-  pull(tbl, var = var, name = name)
 }
