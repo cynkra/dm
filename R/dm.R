@@ -98,29 +98,35 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
 dm_from_src <- function(src = NULL, table_names = NULL, ...) {
   if (is_null(src)) {
+    # FIXME: Check empty arguments and ellipsis
     return(empty_dm())
   }
   # both DBI-Connection and {dplyr}-src object are accepted
   src <- src_from_src_or_con(src)
-  src_tbl_names <- unique(src_tbls(src))
 
+  dm_learned <- dm_learn_from_db(src, ...)
+  if (!is.null(dm_learned)) {
+    tbls_in_dm <- src_tbls(dm_learned)
+
+    if (is_null(table_names)) {
+      return(dm_learned)
+    }
+
+    if (!all(table_names %in% tbls_in_dm)) {
+      abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, tbls_in_dm))
+    }
+    tbls_req <- intersect(tbls_in_dm, table_names)
+
+    return(dm_learned %>% dm_select_tbl(!!!tbls_req))
+  }
+
+  src_tbl_names <- unique(src_tbls(src))
   if (is_null(table_names)) {
-    auto_detect <- TRUE
     table_names <- src_tbl_names
   } else {
     if (!all(table_names %in% src_tbl_names)) {
       abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
     }
-    auto_detect <- FALSE
-  }
-  dm_learned <- dm_learn_from_db(src, ...)
-  if (!is.null(dm_learned)) {
-    tbls_in_dm <- src_tbls(dm_learned)
-    # `src_tbls()` show also temporary tables, but those are not included in the result of `dm_learn_from_db()`
-    # therefore, throw an error if `table_names` includes temporary tables.
-    tbls_req <- intersect(tbls_in_dm, table_names)
-    if (!auto_detect && (!identical(tbls_req, table_names))) abort_temp_table_requested(table_names, tbls_in_dm)
-    return(dm_learned %>% dm_select_tbl(!!!tbls_req))
   }
 
   tbls <- map(set_names(table_names), tbl, src = src)
@@ -435,7 +441,8 @@ dm_get_filters <- function(x) {
   }
 
   filter_df %>%
-    rename(filter = filter_expr)
+    rename(filter = filter_expr) %>%
+    mutate(filter = unname(filter))
 }
 
 dm_get_zoomed_tbl <- function(x) {
@@ -777,7 +784,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
 
 #' @export
 copy_to.zoomed_dm <- function(dest, df, name, overwrite, ...) {
-  check_not_zoomed(.data)
+  check_not_zoomed(dest)
 }
 
 #' @rdname dplyr_db
@@ -789,6 +796,12 @@ collect.dm <- function(x, ...) {
   def$data <- map(def$data, collect, ...)
   new_dm3(def, zoomed = is_zoomed(x))
 }
+
+#' @export
+collect.zoomed_dm <- function(x, ...) {
+  check_not_zoomed(x)
+}
+
 
 # FIXME: what about 'dim.dm()'?
 #' @export

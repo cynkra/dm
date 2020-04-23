@@ -1,6 +1,8 @@
 new_keys <- function(x) {
   # both c("a", "b") and list("a", "b") is accepted
-  if (inherits(x, "character")) x <- vctrs::vec_cast(x, list())
+  if (is.character(x)) {
+    x <- as.list(x)
+  }
   vctrs::new_list_of(x, character(), class = "dm_keys")
 }
 

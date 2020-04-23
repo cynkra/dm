@@ -16,3 +16,4 @@
 ^cran-comments\.md$
 ^man/figures/logo\.png$
 ^CRAN-RELEASE$
+^Makefile$

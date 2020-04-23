@@ -1,5 +1,0 @@
-      b     c d         a e     f    
-  <dbl> <int> <chr> <int> <chr> <lgl>
-1   1.1     5 a         1 c     TRUE 
-2   4.2     6 b         2 b     FALSE
-3   1.1     7 c         1 c     TRUE 
