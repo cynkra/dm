@@ -176,6 +176,64 @@ group_by.zoomed_dm <- function(.data, ...) {
 }
 
 #' @export
+group_data.dm <- function(.data) {
+  check_zoomed(.data)
+}
+
+#' @export
+group_data.zoomed_dm <- function(.data) {
+  tbl <- get_zoomed_tbl(.data)
+  group_data(tbl)
+}
+
+#' @export
+group_keys.dm <- function(.tbl, ...) {
+  check_zoomed(.tbl)
+}
+
+#' @export
+group_keys.zoomed_dm <- function(.tbl, ...) {
+  .data <- .tbl
+  tbl <- get_zoomed_tbl(.data)
+  group_keys(tbl, ...)
+}
+
+#' @export
+group_indices.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @export
+group_indices.zoomed_dm <- function(.data, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  group_indices(tbl, ...)
+}
+
+#' @export
+group_vars.dm <- function(x) {
+  check_zoomed(x)
+}
+
+#' @export
+group_vars.zoomed_dm <- function(x) {
+  .data <- x
+  tbl <- get_zoomed_tbl(.data)
+  group_vars(tbl)
+}
+
+#' @export
+groups.dm <- function(x) {
+  check_zoomed(x)
+}
+
+#' @export
+groups.zoomed_dm <- function(x) {
+  .data <- x
+  tbl <- get_zoomed_tbl(.data)
+  groups(tbl)
+}
+
+#' @export
 ungroup.dm <- function(x, ...) {
   check_zoomed(x)
 }
@@ -415,4 +473,15 @@ unique_prefix <- function(x) {
 
   dots <- max(max(nchar(x, "bytes")), 3)
   glue_collapse(rep(".", dots))
+}
+
+#' @export
+pull.dm <- function(.data, var = -1, name = NULL) {
+  check_zoomed(.data)
+}
+
+#' @export
+pull.zoomed_dm <- function(.data, var = -1, name = NULL) {
+  tbl <- get_zoomed_tbl(.data)
+  pull(tbl, var = var, name = name)
 }

@@ -441,7 +441,8 @@ dm_get_filters <- function(x) {
   }
 
   filter_df %>%
-    rename(filter = filter_expr)
+    rename(filter = filter_expr) %>%
+    mutate(filter = unname(filter))
 }
 
 dm_get_zoomed_tbl <- function(x) {
