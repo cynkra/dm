@@ -61,7 +61,8 @@ rows_insert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, inplace =
     idx <- vctrs::vec_match(y[y_key], x[x_key])
     bad <- which(!is.na(idx))
     if (has_length(bad)) {
-      abort(class = "dplyr_rows_insert_duplicate",
+      abort(
+        class = "dplyr_rows_insert_duplicate",
         "Attempting to insert duplicate rows.",
         location = bad
       )
@@ -218,7 +219,8 @@ check_rows_args <- function(x, y, by) {
 check_col_subset <- function(y, x) {
   bad <- setdiff(colnames(y), colnames(x))
   if (has_length(bad)) {
-    abort(class = "dplyr_rows_extra_column",
+    abort(
+      class = "dplyr_rows_extra_column",
       "All columns in `y` must exist in `x`.",
       name = bad
     )
@@ -234,7 +236,8 @@ check_by <- function(by, y) {
   }
   bad <- setdiff(by, colnames(y))
   if (has_length(bad)) {
-    abort(class = "dplyr_rows_extra_column",
+    abort(
+      class = "dplyr_rows_extra_column",
       "All `by` columns must exist in `y`.",
       name = bad
     )
