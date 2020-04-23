@@ -94,8 +94,9 @@ test_that("dm_filter() works as intended for reversed dm", {
     rev(output_1())
   )
 })
-
+4
 test_that("dm_filter() works as intended for inbetween table", {
+  skip_if_remote_src()
   expect_equivalent_tbl_lists(
     dm_filter(dm_for_filter(), tf_3, g == "five") %>% dm_apply_filters() %>% dm_get_tables(),
     output_3()

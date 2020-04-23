@@ -44,13 +44,14 @@ copy_to_my_test_src <- function(rhs, lhs) {
   if (inherits(src, "src_local")) {
     rhs
   } else if (is_dm(rhs)) {
+    # We want all dm operations to work with key constraints on the database
     copy_dm_to(src, rhs, unique_table_names = TRUE)
   } else {
     copy_to(src, rhs, name = name, temporary = TRUE)
   }
 }
 
-sqlite %<-% src_sqlite(":memory:", create = TRUE)
+sqlite %<--% src_sqlite(":memory:", create = TRUE)
 
 my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC", "df")
@@ -197,7 +198,7 @@ dm_for_filter %<-% {
     dm_select_tbl(-tf_7)
 }
 
-dm_for_filter_sqlite %<-% copy_dm_to(sqlite(), dm_for_filter())
+dm_for_filter_sqlite %<--% copy_dm_to(sqlite(), dm_for_filter())
 
 message("for testing filter and semi_join (3)")
 
@@ -364,8 +365,6 @@ dm_for_disambiguate %<-% {
     dm_add_fk(iris_2, key, iris_1)
 }
 
-dm_for_disambiguate_sqlite %<-% copy_dm_to(sqlite(), dm_for_disambiguate())
-
 dm_for_disambiguate_2 %<-% {
   as_dm(list(iris_1 = iris_1_dis(), iris_2 = iris_2_dis(), iris_3 = iris_3_dis())) %>%
     dm_add_pk(iris_1, key) %>%
@@ -496,8 +495,6 @@ dm_nycflights_small %<-% {
     dm_add_fk(flights, carrier, airlines) %>%
     dm_add_fk(flights, dest, airports)
 }
-
-dm_nycflights_small_sqlite %<-% copy_dm_to(sqlite(), dm_nycflights_small())
 
 zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)
 zoomed_dm_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)

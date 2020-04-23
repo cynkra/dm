@@ -36,14 +36,10 @@ test_that("'copy_to.dm()' works", {
     "no_overwrite"
   )
 
+  skip_if_remote_src()
   expect_equivalent_dm(
     copy_to(dm_for_filter(), mtcars, "car_table"),
     dm_add_tbl(dm_for_filter(), car_table = tibble(mtcars))
-  )
-
-  expect_dm_error(
-    copy_to(dm_for_filter(), mtcars, c("car_table", "another_table")),
-    "one_name_for_copy_to"
   )
 
   expect_name_repair_message(
@@ -52,6 +48,13 @@ test_that("'copy_to.dm()' works", {
       # `tibble()` call necessary cause of #322
       dm_add_tbl(dm_for_filter(), ...7 = tibble(mtcars))
     )
+  )
+})
+
+test_that("'copy_to.dm()' works (2)", {
+  expect_dm_error(
+    copy_to(dm_for_filter(), mtcars, c("car_table", "another_table")),
+    "one_name_for_copy_to"
   )
 
   # rename old and new tables if `repair = unique`
@@ -114,6 +117,7 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   test_1 <- map_chr(map(def_1$data, sql_render), as.character)
   test_2 <- map_chr(map(def_2$data, sql_render), as.character)
 
+  skip_if_remote_src()
   expect_true(!all(map_lgl(test_1, ~ !grepl("1.0 AS `c`", .))))
   expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS `c`", .))))
 })
@@ -124,6 +128,7 @@ test_that("some methods/functions for `zoomed_dm` work", {
     c("a", "b")
   )
 
+  skip_if_remote_src()
   # FIXME: test for 'ncol()'?
   expect_identical(
     dim(dm_zoom_to(dm_for_filter(), tf_1)),
@@ -307,6 +312,7 @@ test_that("methods for dm/zoomed_dm work", {
   expect_length(dm_for_filter(), 6L)
 
   expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
+  skip_if_remote_src()
   expect_identical(names(dm_zoom_to(dm_for_filter(), tf_2)), colnames(tf_2()))
 })
 
@@ -352,6 +358,7 @@ test_that("dm_get_con() errors", {
     class = "is_not_dm"
   )
 
+  skip_if_remote_src()
   expect_dm_error(
     dm_get_con(dm_for_filter()),
     class = "con_only_for_dbi"

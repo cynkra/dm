@@ -187,11 +187,16 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     anti_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
+  # SQLite doesn't implement right join
+  skip_if_src("sqlite")
+
   expect_equivalent_tbl(
     right_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
     right_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
+})
 
+test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   # fails if RHS not linked to zoomed table and no by is given
   expect_dm_error(
     left_join(zoomed_dm(), tf_4),
