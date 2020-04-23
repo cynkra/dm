@@ -198,7 +198,10 @@
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for zoomed_dm</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for zoomed_dm</span>
+<span class='fu'>pull</span>(<span class='no'>.data</span>, <span class='kw'>var</span> <span class='kw'>=</span> -<span class='fl'>1</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,6 +227,20 @@ This argument is specific for the <code>slice.zoomed_dm()</code> method.</p></td
     <tr>
       <th>x</th>
       <td><p>For <code>ungroup.zoomed_dm</code>: object of class <code>zoomed_dm</code></p></td>
+    </tr>
+    <tr>
+      <th>var</th>
+      <td><p>A variable specified as:</p><ul>
+<li><p>a literal variable name</p></li>
+<li><p>a positive integer, giving the position counting from the left</p></li>
+<li><p>a negative integer, giving the position counting from the right.</p></li>
+</ul>
+
+<p>The default returns the last column (on the assumption that's the
+column you've created most recently).</p>
+<p>This argument is taken by expression and supports
+<a href='https://rlang.r-lib.org/reference/nse-force.html'>quasiquotation</a> (you can unquote column
+names and column locations).</p></td>
     </tr>
     </table>
 
