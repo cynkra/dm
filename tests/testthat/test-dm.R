@@ -36,22 +36,25 @@ test_that("'copy_to.dm()' works", {
     "no_overwrite"
   )
 
+  skip_if_remote_src()
   expect_equivalent_dm(
     copy_to(dm_for_filter(), mtcars, "car_table"),
-    dm_add_tbl(dm_for_filter(), car_table = copy_to(my_test_src(), tibble(mtcars), name = unique_db_table_name("mtcars")))
-  )
-
-  expect_dm_error(
-    copy_to(dm_for_filter(), mtcars, c("car_table", "another_table")),
-    "one_name_for_copy_to"
+    dm_add_tbl(dm_for_filter(), car_table = tibble(mtcars))
   )
 
   expect_name_repair_message(
     expect_equivalent_dm(
       copy_to(dm_for_filter(), mtcars, ""),
       # `tibble()` call necessary cause of #322
-      dm_add_tbl(dm_for_filter(), ...7 = copy_to(my_test_src(), tibble(mtcars), name = unique_db_table_name("mtcars")))
+      dm_add_tbl(dm_for_filter(), ...7 = tibble(mtcars))
     )
+  )
+})
+
+test_that("'copy_to.dm()' works (2)", {
+  expect_dm_error(
+    copy_to(dm_for_filter(), mtcars, c("car_table", "another_table")),
+    "one_name_for_copy_to"
   )
 
   # rename old and new tables if `repair = unique`
@@ -114,8 +117,9 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   test_1 <- map_chr(map(def_1$data, sql_render), as.character)
   test_2 <- map_chr(map(def_2$data, sql_render), as.character)
 
-  expect_true(!all(map_lgl(test_1, ~ !grepl("1.0 AS", .))))
-  expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS", .))))
+  skip_if_remote_src()
+  expect_true(!all(map_lgl(test_1, ~ !grepl("1.0 AS `c`", .))))
+  expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS `c`", .))))
 })
 
 test_that("some methods/functions for `zoomed_dm` work", {
@@ -124,10 +128,11 @@ test_that("some methods/functions for `zoomed_dm` work", {
     c("a", "b")
   )
 
+  skip_if_remote_src()
   # FIXME: test for 'ncol()'?
   expect_identical(
     dim(dm_zoom_to(dm_for_filter(), tf_1)),
-    if (inherits(my_test_src(), "src_dbi")) c(NA_integer_, 2L) else c(10L, 2L)
+    c(10L, 2L)
   )
 })
 
@@ -307,10 +312,8 @@ test_that("methods for dm/zoomed_dm work", {
   expect_length(dm_for_filter(), 6L)
 
   expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
-  expect_identical(
-    names(dm_zoom_to(dm_for_filter(), tf_2)),
-    if (inherits(my_test_src(), "src_dbi")) c("src", "ops") else colnames(tf_2())
-  )
+  skip_if_remote_src()
+  expect_identical(names(dm_zoom_to(dm_for_filter(), tf_2)), colnames(tf_2()))
 })
 
 test_that("method length.zoomed_dm() works locally", {
