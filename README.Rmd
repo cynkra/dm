@@ -38,9 +38,39 @@ knit_print.grViz <- function(x, ...) {
 
 ## Overview
 
+FIXME: dm is a [grammar of joined tables](https://twitter.com/drob/status/1224851726068527106)?
+
 dm is an R package for building and manipulating relational databases to aid the querying of data models stored in local dataframes, and the construction of flat data models from relational databases.
 
+FIXME: Intro paragraph around three use cases for relational data models (=if you're working with more than one table/data frame in R)
+
+1. use data (example below)
+
+2. deploy data
+
+3. organize data
+
+END FIXME
+
 The intent behind dm is to bridge the gap in the data pipeline between individual dataframes and relational databases by providing methods to move data between different sources, and methods for performing data manipulation (eg, aggregation, summarisation, filtering, etc) and table manipulation (eg, joins, creation, deletion, etc) that are agnostic to the data source.
+
+FIXME: Immediate benefits of adopting dm, see "usage" for code
+
+- very easy to bring an existing relational data model into your R session.
+  We're using a built-in objects, it's easy with databases too.
+  Interface and behavior modeled after dplyr.
+  Little change to workflow -- behaves like a named list of tables
+
+- benefit 1: visualization, understand relationships between entities represented by the tables
+
+- benefit 2: simpler joins, "flatten" operation with column name disambiguation and automatic keys as an example
+
+- benefit 3: consistency checks, understand (and fix!) limitations of your data
+
+That's just the tip of the iceberg.
+See "Getting started" to hit the ground running and explore all the features.
+
+END FIXME
 
 Calling methods on a dm object for importing data sources, defining relationships between them, and specifying the sequence of operations to produce the required data, results in clearly specified and repeatable workflows. 
 dm's use of lazy evaluation minimises transfer and duplication of large datasets as you build your workflow, while providing snapshots of intermediate results for confirming your workflow is producing the expected results.
@@ -65,17 +95,54 @@ devtools::install_github("krlmlr/dm")
 ```
 
 ## Usage
-#FIXME - is this feasible for a library with all the features of dm?
-```r
-library(tidyverse)
-library(dm)
 
-flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
-#...etc
-``` 
+Load data as a dm object, see "Getting started" for details:
+
+```{r}
+library(dm)
+dm <- dm_nycflights13()
+dm
+```
+
+dm is a named list of tables:
+
+```{r}
+names(dm)
+nrow(dm$airports)
+dm$flights %>% 
+  count(origin)
+```
+
+Visualize relationships at any time:
+
+```{r draw}
+dm %>%
+  dm_draw()
+```
+
+Simple joins:
+
+```{r}
+dm %>% 
+  dm_flatten_to_tbl(flights)
+```
+
+Check consistency:
+
+```{r}
+dm %>% 
+  dm_examine_constraints()
+```
+
+That's just the tip of the iceberg.
+See "Getting started" to hit the ground running and explore all the features.
+
+END FIXME
+
 ## Getting help
 
-If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/krlmlr/dm/issues). For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
+If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/krlmlr/dm/issues).
+For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
 
 
 ---
