@@ -198,6 +198,8 @@ ground running and explore all the features.
 
 END FIXME
 
+FIXME: Standing on the shoulders of giants? Perhaps a short version?
+
 ## Getting help
 
 If you encounter a clear bug, please file an issue with a minimal

@@ -31,6 +31,33 @@ library(dm)
 
 The goal of the package {dm} and its `dm` class is to facilitate working with multiple related tables.
 
+FIXME Raw structure:
+
+Financial
+
+
+- manually connect to database and use `dm_from_src()`, link to article with even more options
+
+- visualize (without connections)
+
+- pk/fk
+
+- visualize
+
+- flatten
+
+- zoom + summarize
+
+- check constraints
+
+- immediate next steps?
+
+- further reading: comprehensive list of all articles, one paragraph per article, with link
+
+- standing on the shoulders of giants, full version?
+
+END FIXME
+
 An object of the `dm` class contains the data in the tables, and metadata about the tables, such as
 
 - the names of the tables
