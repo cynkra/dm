@@ -1,7 +1,9 @@
 ---
 title: "Getting Started"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    lib_dir: assets
 vignette: >
   %\VignetteIndexEntry{Getting Started}
   %\VignetteEncoding{UTF-8}
