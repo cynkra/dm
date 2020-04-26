@@ -1,9 +1,7 @@
 ---
 title: "Introduction to dm"
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_vignette:
-    lib_dir: assets
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{dm overview}
   %\VignetteEncoding{UTF-8}

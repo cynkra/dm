@@ -2,9 +2,7 @@
 title: "{dm} and databases"
 date: "`r Sys.Date()`"
 author: James Wondrasek, Kirill Müller
-output: 
-  rmarkdown::html_vignette:
-    lib_dir: assets
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{{dm} and databases}
   %\VignetteEncoding{UTF-8}
