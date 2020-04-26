@@ -7,13 +7,6 @@ print_grViz <- function(x, ...) {
   structure(DiagrammeRsvg::export_svg(x), class = "dm_draw")
 }
 
-knit_print_grViz <- function(x, ...) {
-  x %>%
-    DiagrammeRsvg::export_svg() %>%
-    c("`````{=html}\n", ., "\n`````\n") %>%
-    knitr::asis_output()
-}
-
 register_pkgdown_methods <- function() {
   if (Sys.getenv("IN_PKGDOWN") == "") {
     return()
@@ -22,5 +15,4 @@ register_pkgdown_methods <- function() {
   stopifnot(rlang::is_installed(c("DiagrammeR", "DiagrammeRsvg")))
   vctrs::s3_register("pkgdown::replay_html", "dm_draw", replay_html_dm_draw)
   vctrs::s3_register("base::print", "grViz", print_grViz)
-  vctrs::s3_register("knitr::knit_print", "grViz", knit_print_grViz)
 }
