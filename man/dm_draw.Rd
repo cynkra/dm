@@ -99,7 +99,9 @@ dm_nycflights13(color = FALSE) \%>\%
   dm_draw()
 
 # Splicing is supported:
-nyc_cols <- dm_get_colors(dm_nycflights13())
+nyc_cols <-
+  dm_nycflights13() \%>\%
+  dm_get_colors()
 nyc_cols
 
 dm_nycflights13(color = FALSE) \%>\%
