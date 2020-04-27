@@ -42,7 +42,7 @@ check_key <- function(.data, ...) {
   duplicate_rows <-
     .data %>%
     select(!!!cols_chosen) %>%
-    safe_count(!!!syms(names(cols_chosen))) %>%
+    count(!!!syms(names(cols_chosen))) %>%
     select(n) %>%
     filter(n > 1) %>%
     head(1) %>%
@@ -62,7 +62,7 @@ is_unique_key <- function(.data, column) {
 
   duplicate_rows <-
     .data %>%
-    safe_count(value = !!col_expr) %>%
+    count(value = !!col_expr) %>%
     filter(n != 1) %>%
     arrange(value) %>%
     utils::head(MAX_COMMAS + 1) %>%

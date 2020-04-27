@@ -366,7 +366,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     left_join(t1_join, t2_join, by = "value") %>%
       # if value is NULL, this also counts as a match -- consistent with fk semantics
       mutate(mismatch_or_null = if_else(is.na(match), value, NULL)) %>%
-      safe_count(mismatch_or_null) %>%
+      count(mismatch_or_null) %>%
       ungroup() %>% # dbplyr problem?
       mutate(n_mismatch = sum(if_else(is.na(mismatch_or_null), 0L, n), na.rm = TRUE)) %>%
       mutate(n_total = sum(n, na.rm = TRUE)) %>%
