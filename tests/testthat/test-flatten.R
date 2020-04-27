@@ -287,18 +287,30 @@ test_that("tests with 'bad_dm' work", {
     dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1)
   )
 
+
+  # filtered `dm`
+  expect_equivalent_tbl(
+    dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = semi_join),
+    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
+  )
+
+  # fails when there is a cycle
+  expect_dm_error(
+    dm_nycflights_small() %>%
+      dm_add_fk(flights, origin, airports) %>%
+      dm_flatten_to_tbl(flights),
+    "no_cycles"
+  )
+
+  # full & right join not available on SQLite
+  skip_if_src("sqlite")
+
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, join = full_join),
     tbl_1() %>%
       full_join(tbl_2(), by = c("a" = "id")) %>%
       full_join(tbl_3(), by = c("b" = "id"))
-  )
-
-  # filtered `dm`
-  expect_equivalent_tbl(
-    dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = semi_join),
-    dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
   )
 
   # filtered `dm`
@@ -327,13 +339,5 @@ test_that("tests with 'bad_dm' work", {
   expect_dm_error(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = right_join),
     class = c("apply_filters_first_right_join", "apply_filters_first")
-  )
-
-  # fails when there is a cycle
-  expect_dm_error(
-    dm_nycflights_small() %>%
-      dm_add_fk(flights, origin, airports) %>%
-      dm_flatten_to_tbl(flights),
-    "no_cycles"
   )
 })
