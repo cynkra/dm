@@ -4,9 +4,9 @@ test_that("dm_add_pk() works as intended?", {
     dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_add_pk(dm_table_1, b, force = TRUE)
   )
-  expect_dm_error(
+  expect_error(
     dm_add_pk(dm_test_obj(), dm_table_1, qq),
-    class = "wrong_col_names"
+    class = "vctrs_error_subscript_oob"
   )
   expect_dm_error(
     dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
@@ -112,4 +112,14 @@ test_that("enum_pk_candidates() works properly", {
       enum_pk_candidates(tf_2())
     )
   )
+})
+
+verify_output("out/primary-keys-compound.txt", {
+  dm_nycflights13() %>%
+    dm_add_pk(weather, c(origin, time_hour))
+
+  "# FIXME"
+  dm_nycflights13() %>%
+    dm_add_pk(weather, c(origin, time_hour)) %>%
+    dm_get_all_pks()
 })

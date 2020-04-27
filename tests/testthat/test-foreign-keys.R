@@ -93,13 +93,13 @@ test_that("dm_rm_fk() works as intended?", {
     class = "rm_fk_col_missing"
   )
 
-  expect_dm_error(
+  expect_error(
     dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, z, dm_table_4),
-    class = "is_not_fkc"
+    class = "vctrs_error_subscript_oob"
   )
 })
 
@@ -197,4 +197,16 @@ test_that("enum_fk_candidates() works properly", {
       dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_3)
     )
   )
+})
+
+verify_output("out/foreign-keys-compound.txt", {
+  dm_nycflights13() %>%
+    dm_add_pk(weather, c(origin, time_hour)) %>%
+    dm_add_fk(flights, c(origin, time_hour), weather)
+
+  "# FIXME"
+  dm_nycflights13() %>%
+    dm_add_pk(weather, c(origin, time_hour)) %>%
+    dm_add_fk(flights, c(origin, time_hour), weather) %>%
+    dm_get_all_pks()
 })

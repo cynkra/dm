@@ -47,13 +47,13 @@
 #' )
 dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
 
+  table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  col_expr <- ensym(columns)
-  col_name <- as_name(col_expr)
-  check_col_input(dm, table_name, col_name)
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  col_expr <- enexpr(columns)
+  col_name <- names(eval_select_indices(col_expr, colnames(table)))
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
@@ -101,7 +101,7 @@ dm_has_pk <- function(dm, table) {
 }
 
 dm_has_pk_impl <- function(dm, table) {
-  has_length(dm_get_pk_impl(dm, table))
+  has_length(dm_get_pk2_impl(dm, table))
 }
 
 #' Primary key column names
@@ -139,17 +139,23 @@ dm_get_pk <- function(dm, table) {
   check_not_zoomed(dm)
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
-  new_keys(dm_get_pk_impl(dm, table_name))
+  new_keys(dm_get_pk2_impl(dm, table_name))
 }
 
 dm_get_pk_impl <- function(dm, table_name) {
+  out <- dm_get_pk2_impl(dm, table_name)
+  if (is_empty(out)) {
+    character()
+  } else {
+    out[[1]]
+  }
+}
+
+dm_get_pk2_impl <- function(dm, table_name) {
   # Optimized
-  dm %>%
-    dm_get_def() %>%
-    select(table, pks) %>%
-    filter(table == !!table_name) %>%
-    unnest_pks() %>%
-    pull(column)
+  def <- dm_get_def(dm)
+  pks <- def$pks[[which(def$table == table_name)]]
+  pks$column
 }
 
 #' Get all primary keys of a [`dm`] object

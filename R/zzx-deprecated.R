@@ -311,7 +311,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
     return(dm)
   }
   if (quo_is_null(column_quo)) {
-    cols <- fk_cols
+    cols <- fk_cols[[1]]
   }
   else {
     cols <- as_name(ensym(columns))
@@ -322,7 +322,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
       )
     }
   }
-  dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
+  dm_rm_fk_impl(dm, table_name, list(cols), ref_table_name)
 }
 
 #' @rdname deprecated
@@ -575,7 +575,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     new_dm3(zoomed = TRUE)
 
   dm_wo_outgoing_fks %>%
-    dm_update_zoomed_outgoing_fks(new_tbl_name_chr, is_upd = FALSE) %>%
+    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr) %>%
     dm_clean_zoomed()
 }
 

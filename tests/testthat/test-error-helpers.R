@@ -19,8 +19,6 @@ test_that("error messages do not change", {
     abort_last_col_missing()
     abort_no_cycles()
     abort_tables_not_reachable_from_start()
-    abort_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one", "col_2"))
-    abort_wrong_col_names("table_name", c("col_1", "col_2"), "col_one")
     abort_dupl_new_id_col_name("tibbletable")
     abort_no_overwrite()
     abort_no_types()

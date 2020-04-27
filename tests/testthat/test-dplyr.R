@@ -138,8 +138,12 @@ test_that("basic test: 'slice()'-methods work", {
   # silent when no PK available
   expect_silent(
     expect_equivalent_tbl(
-      slice(dm_zoom_to(dm_for_disambiguate(), iris_3), 1:3) %>% get_zoomed_tbl(),
-      slice(iris_3(), 1:3)
+      dm_for_disambiguate() %>%
+        dm_zoom_to(iris_3) %>%
+        slice(1:3) %>%
+        get_zoomed_tbl(),
+      iris_3() %>%
+        slice(1:3)
     )
   )
 
@@ -448,7 +452,10 @@ test_that("key tracking works", {
   # rename()
 
   expect_identical(
-    zoomed_grouped_out_dm %>% rename(c_new = c) %>% dm_update_zoomed() %>% dm_get_pk(tf_2),
+    zoomed_grouped_out_dm %>%
+      rename(c_new = c) %>%
+      dm_update_zoomed() %>%
+      dm_get_pk(tf_2),
     new_keys("c_new")
   )
 

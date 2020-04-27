@@ -43,29 +43,34 @@
 #'   dm_draw()
 dm_add_fk <- function(dm, table, columns, ref_table, check = FALSE) {
   check_not_zoomed(dm)
+
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
-  column_name <- as_name(ensym(columns))
-  check_col_input(dm, table_name, column_name)
+  table <- dm_get_tables_impl(dm)[[table_name]]
+  col_expr <- enexpr(columns)
+  col_name <- names(eval_select_indices(col_expr, colnames(table)))
 
-  ref_column_name <- dm_get_pk_impl(dm, ref_table_name)
+  ref_col_name <- dm_get_pk_impl(dm, ref_table_name)
 
-  if (is_empty(ref_column_name)) {
+  if (is_empty(ref_col_name)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
+
+  # FIXME: Clean check with proper error message
+  stopifnot(length(ref_col_name) == length(col_name))
 
   if (check) {
     tbl_obj <- dm_get_tables(dm)[[table_name]]
     ref_tbl_obj <- dm_get_tables(dm)[[ref_table_name]]
 
-    if (!is_subset(tbl_obj, !!column_name, ref_tbl_obj, !!ref_column_name)) {
-      abort_not_subset_of(table_name, column_name, ref_table_name, ref_column_name)
+    if (!is_subset(tbl_obj, !!col_name, ref_tbl_obj, !!ref_col_name)) {
+      abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name)
     }
   }
 
-  dm_add_fk_impl(dm, table_name, column_name, ref_table_name)
+  dm_add_fk_impl(dm, table_name, col_name, ref_table_name)
 }
 
 
@@ -104,7 +109,7 @@ dm_has_fk <- function(dm, table, ref_table) {
 }
 
 dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
-  has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
+  has_length(dm_get_fk2_impl(dm, table_name, ref_table_name))
 }
 
 #' Foreign key column names
@@ -139,12 +144,23 @@ dm_get_fk <- function(dm, table, ref_table) {
   table_name <- as_name(ensym(table))
   ref_table_name <- as_name(ensym(ref_table))
 
-  new_keys(dm_get_fk_impl(dm, table_name, ref_table_name))
+  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+
+  new_keys(dm_get_fk2_impl(dm, table_name, ref_table_name))
+}
+
+dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
+  def <- dm_get_def(dm)
+  i <- which(def$table == ref_table_name)
+
+  fks <- def$fks[[i]]
+  fks %>%
+    filter(table == !!table_name) %>%
+    pull(column)
 }
 
 dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
-  check_correct_input(dm, c(table_name, ref_table_name), 2L)
-
+  # FIXME: Replace calls to this function by dm_get_fk2_impl()
   fks <- dm_get_data_model_fks(dm)
   fks$column[fks$table == table_name & fks$ref == ref_table_name]
 }
@@ -180,6 +196,7 @@ dm_get_all_fks <- function(dm) {
 }
 
 dm_get_all_fks_impl <- function(dm) {
+  # FIXME: Obliterate
   dm_get_data_model_fks(dm) %>%
     select(child_table = table, child_fk_cols = column, parent_table = ref) %>%
     arrange(child_table, child_fk_cols)
@@ -218,7 +235,7 @@ dm_rm_fk <- function(dm, table, columns, ref_table) {
 
   check_correct_input(dm, c(table_name, ref_table_name), 2L)
 
-  fk_cols <- dm_get_fk_impl(dm, table_name, ref_table_name)
+  fk_cols <- dm_get_fk2_impl(dm, table_name, ref_table_name)
   if (is_empty(fk_cols)) {
     return(dm)
   }
@@ -226,9 +243,9 @@ dm_rm_fk <- function(dm, table, columns, ref_table) {
   if (quo_is_null(column_quo)) {
     cols <- fk_cols
   } else {
-    # FIXME: Add tidyselect support
-    cols <- as_name(ensym(columns))
-    if (!all(cols %in% fk_cols)) {
+    col_idx <- eval_select_indices(column_quo, colnames(dm_get_tables(dm)[[table_name]]))
+    cols <- list(names(col_idx))
+    if (!vctrs::vec_in(cols, fk_cols)) {
       abort_is_not_fkc(table_name, cols, ref_table_name, fk_cols)
     }
   }
@@ -237,15 +254,11 @@ dm_rm_fk <- function(dm, table, columns, ref_table) {
 }
 
 dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
-
-  # FIXME: compound keys
-  cols <- as.list(cols)
-
   def <- dm_get_def(dm)
   i <- which(def$table == ref_table_name)
 
   fks <- def$fks[[i]]
-  fks <- fks[fks$table != table_name | is.na(vctrs::vec_match(fks$column, cols)), ]
+  fks <- fks[fks$table != table_name | is.na(vctrs::vec_match(fks$column, unclass(cols))), ]
   def$fks[[i]] <- fks
 
   new_dm3(def)

@@ -1,0 +1,21 @@
+> dm_nycflights13() %>% dm_add_pk(weather, c(origin, time_hour)) %>% dm_add_fk(
++   flights, c(origin, time_hour), weather)
+-- Table source ----------------------------------------------------------------
+src:  <environment: R_GlobalEnv>
+-- Metadata --------------------------------------------------------------------
+Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+Columns: 53
+Primary keys: 4
+Foreign keys: 4
+
+
+FIXME
+=====
+
+> dm_nycflights13() %>% dm_add_pk(weather, c(origin, time_hour)) %>% dm_add_fk(
++   flights, c(origin, time_hour), weather) %>% dm_get_all_pks()
+Error: Assigned data `flatten_chr(pk_df$column)` must be compatible with existing data.
+x Existing data has 4 rows.
+x Assigned data has 5 rows.
+i Only vectors of size 1 are recycled.
+
