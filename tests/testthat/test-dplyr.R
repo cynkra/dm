@@ -301,6 +301,11 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
   )
 
   expect_dm_error(
+    full_join(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+
+  expect_dm_error(
     right_join(dm_for_filter()),
     "only_possible_w_zoom"
   )
@@ -308,123 +313,6 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
   expect_dm_error(
     inner_join(dm_zoom_to(dm_for_filter(), tf_1), tf_7),
     "table_not_in_dm"
-  )
-})
-
-
-test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
-  expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    left_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    inner_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    inner_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    full_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    full_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    semi_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    semi_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    anti_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    anti_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    right_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    right_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  # fails if RHS not linked to zoomed table and no by is given
-  expect_dm_error(
-    left_join(zoomed_dm(), tf_4),
-    "tables_not_neighbours"
-  )
-
-  # works, if by is given
-  expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    left_join(tf_2(), tf_4(), by = c("e" = "j"))
-  )
-
-  # explicitly select columns from RHS using argument `select`
-  expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, e), by = c("f" = "e"))
-  )
-
-  # explicitly select and rename columns from RHS using argument `select`
-  expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), d_new = d, e)) %>% dm_update_zoomed() %>% tbl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, d_new = d, e), by = c("f" = "e"))
-  )
-
-  # a former FK-relation could not be tracked
-  expect_dm_error(
-    zoomed_dm() %>% mutate(e = e) %>% left_join(tf_3),
-    "fk_not_tracked"
-  )
-
-  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-  expect_identical(
-    left_join(zoomed_dm(), tf_3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(tf_2, tf_1),
-    new_keys("tf_2.d")
-  )
-
-  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-  expect_identical(
-    semi_join(zoomed_dm(), tf_3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(tf_2, tf_1),
-    new_keys("d")
-  )
-
-  # multi-column "by" argument
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_for_disambiguate(), iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
-    left_join(
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
-      by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
-    )
-  )
-})
-
-test_that("basic test: 'join()'-methods for `dm` throws error", {
-  expect_dm_error(
-    left_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    inner_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    full_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    semi_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    anti_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    right_join(dm_for_filter()),
-    "only_possible_w_zoom"
   )
 
   skip("No nest_join() for now")
