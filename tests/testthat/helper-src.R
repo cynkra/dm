@@ -499,7 +499,6 @@ dm_nycflights_small %<-% {
     dm_add_fk(flights, dest, airports)
 }
 
-# FIXME: using %<-% leads to error: "`df` must be a local dataframe or a remote tbl_sql"; why?
 zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)
 zoomed_dm_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 
