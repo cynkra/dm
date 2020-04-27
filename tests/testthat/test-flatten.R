@@ -78,6 +78,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
+  skip_if_src("sqlite")
   expect_equivalent_tbl(
     dm_flatten_to_tbl(dm_for_flatten(), fact, join = full_join),
     fact_clean() %>%
@@ -131,6 +132,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'nest_join()'", {
 
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
+  skip_if_src("sqlite")
   expect_equivalent_tbl(
     expect_warning(
       dm_flatten_to_tbl(dm_for_flatten(), fact, join = right_join),
@@ -202,20 +204,6 @@ test_that("`dm_squash_to_tbl()` does the right things", {
     9L
   )
 
-  # full_join:
-  expect_equivalent_tbl(
-    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
-    full_join(tf_5(), tf_4(), by = c("l" = "h")) %>%
-      full_join(tf_3(), by = c("j" = "f"))
-  )
-
-  # skipping inner_join, not gaining new info
-
-  # right_join:
-  expect_dm_error(
-    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = right_join),
-    class = "squash_limited"
-  )
 
   # semi_join:
   expect_dm_error(
@@ -233,6 +221,22 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   expect_dm_error(
     dm_squash_to_tbl(dm_for_filter_w_cycle(), tf_5),
     "no_cycles"
+  )
+
+  skip_if_src("sqlite")
+  # full_join:
+  expect_equivalent_tbl(
+    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
+    full_join(tf_5(), tf_4(), by = c("l" = "h")) %>%
+      full_join(tf_3(), by = c("j" = "f"))
+  )
+
+  # skipping inner_join, not gaining new info
+
+  # right_join:
+  expect_dm_error(
+    dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = right_join),
+    class = "squash_limited"
   )
 })
 
