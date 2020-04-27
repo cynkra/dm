@@ -379,8 +379,7 @@ unnest_pks <- function(def) {
   if (!("column" %in% names(pk_df))) {
     pk_df$column <- character()
   } else {
-    # This is expected to break with compound keys
-    pk_df$column <- flatten_chr(pk_df$column)
+    pk_df$column <- flatten_key(pk_df$column)
   }
 
   pk_df
@@ -403,12 +402,23 @@ dm_get_data_model_fks <- function(x) {
   }
 
   fk_df %>%
-    # This is expected to break with compound keys
-    mutate(ref_col = flatten_chr(column)) %>%
+    mutate(ref_col = flatten_key(column)) %>%
     select(-column) %>%
     unnest(fks) %>%
-    mutate(column = flatten_chr(column)) %>%
+    mutate(column = flatten_key(column)) %>%
     select(ref, column, table, ref_col)
+}
+
+flatten_key <- function(x) {
+  map_chr(x, format_draw_key)
+}
+
+format_draw_key <- function(x) {
+  if (length(x) == 1) {
+    x
+  } else {
+    paste0("(", paste(x, collapse = ", "), ")")
+  }
 }
 
 #' Get filter expressions

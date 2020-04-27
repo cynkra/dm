@@ -154,4 +154,14 @@ test_that("output", {
       cli::cat_line(),
     "out/nycflights13.svg"
   )
+
+  expect_known_output(
+    dm_nycflights13() %>%
+      dm_add_pk(weather, c(origin, time_hour)) %>%
+      dm_add_fk(flights, c(origin, time_hour), weather) %>%
+      dm_draw() %>%
+      DiagrammeRsvg::export_svg() %>%
+      cli::cat_line(),
+    "out/nycflights13-compound.svg"
+  )
 })

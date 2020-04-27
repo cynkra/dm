@@ -95,9 +95,9 @@ dm_get_data_model <- function(x) {
     dm_get_all_columns(x) %>%
     # Hack: datamodelr requires `type` column
     mutate(type = "integer") %>%
-    left_join(keys, by = c("table", "column")) %>%
+    full_join(keys, by = c("table", "column")) %>%
+    full_join(references_for_columns, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
-    left_join(references_for_columns, by = c("table", "column")) %>%
     # for compatibility with print method from {datamodelr}
     as.data.frame()
 
