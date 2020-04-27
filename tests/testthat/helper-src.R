@@ -45,6 +45,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
     rhs
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
+    # FIXME: this way we need to skip all tests with nycflights
     copy_dm_to(src, rhs, unique_table_names = TRUE)
   } else {
     copy_to(src, rhs, name = name, temporary = TRUE)
