@@ -120,7 +120,7 @@
       <h1 data-toc-skip>{dm} and databases</h1>
                         <h4 class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 class="date">2020-04-24</h4>
+            <h4 class="date">2020-04-27</h4>
       
       
       <div class="hidden name"><code>dm-db.Rmd</code></div>
@@ -255,7 +255,7 @@
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">my_dm_keys</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span>(<span class="no">loans</span>)
 <span class="co">#&gt; Renamed columns:</span>
-<span class="co">#&gt; * date -&gt; loans$loans.date, accounts$accounts.date</span></pre></body></html></div>
+<span class="co">#&gt; * date -&gt; loans.date, accounts.date</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 10]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
 #&gt;       id account_id loans.date amount duration payments status district_id
@@ -278,7 +278,7 @@
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span>(<span class="no">loans</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render</a></span>()
 <span class="co">#&gt; Renamed columns:</span>
-<span class="co">#&gt; * date -&gt; loans$loans.date, accounts$accounts.date</span>
+<span class="co">#&gt; * date -&gt; loans.date, accounts.date</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.`id` AS `id`, `LHS`.`account_id` AS `account_id`, `LHS`.`loans.date` AS `loans.date`, `LHS`.`amount` AS `amount`, `LHS`.`duration` AS `duration`, `LHS`.`payments` AS `payments`, `LHS`.`status` AS `status`, `RHS`.`district_id` AS `district_id`, `RHS`.`frequency` AS `frequency`, `RHS`.`accounts.date` AS `accounts.date`</span>
 <span class="co">#&gt; FROM (SELECT `id`, `account_id`, `date` AS `loans.date`, `amount`, `duration`, `payments`, `status`</span>
 <span class="co">#&gt; FROM `loans`) `LHS`</span>
@@ -429,7 +429,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x61ca0a0&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x5f3a698&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></pre></body></html></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a destination, a {DBI} connection, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behaviour is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -441,7 +441,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">id</span>, <span class="no">amount</span>, <span class="no">duration</span>, <span class="no">A3</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()
 <span class="co">#&gt; Renamed columns:</span>
-<span class="co">#&gt; * date -&gt; loans$loans.date, accounts$accounts.date</span>
+<span class="co">#&gt; * date -&gt; loans.date, accounts.date</span>
 
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(<span class="no">amount</span> ~ <span class="no">duration</span> + <span class="no">A3</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">loans_df</span>)
 
@@ -485,7 +485,7 @@
 <span class="co">#&gt; [90mCall `lifecycle::last_warnings()` to see where this warning was generated.[39m</span>
 <span class="co">#&gt; [36mℹ[39m All constraints satisfied.</span>
 <span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span></pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_04_24_02_48_54_1&gt; [?? x 2]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_04_27_16_31_25_1&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>

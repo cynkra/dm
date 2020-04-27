@@ -738,7 +738,9 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 </svg>
 <div class='input'>
 <span class='co'># Splicing is supported:</span>
-<span class='no'>nyc_cols</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_get_colors</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())
+<span class='no'>nyc_cols</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_get_colors</span>()
 <span class='no'>nyc_cols</span></div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
 #&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>

@@ -244,8 +244,8 @@ each nested column entry would be a tibble of one row), an error will be thrown 
     <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_flatten_to_tbl</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
-#&gt; <span class='message'>* year -&gt; flights$flights.year, planes$planes.year</span>
-#&gt; <span class='message'>* name -&gt; airlines$airlines.name, airports$airports.name</span></div><div class='output co'>#&gt; # A tibble: 11,227 x 35
+#&gt; <span class='message'>* year -&gt; flights.year, planes.year</span>
+#&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span></div><div class='output co'>#&gt; # A tibble: 11,227 x 35
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
 #&gt;  1         2013     1    10        3           2359         4      426
