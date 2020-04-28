@@ -3,6 +3,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
 
   #  expecting silent: ------------------------------------------------------
 
+  # FIXME: this should work after 15 May 2020 (dplyr update)
   expect_silent(check_cardinality_0_n(parent_table = data_card_1(), pk_column = a, child_table = data_card_3(), fk_column = c))
 
   expect_silent(check_cardinality_1_n(data_card_1(), a, data_card_3(), c))
