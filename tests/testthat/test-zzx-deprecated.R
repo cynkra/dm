@@ -226,6 +226,8 @@ test_that("cdm_learn_from_db() works from PG", {
 
 test_that("cdm_examine_constraints() works", {
   skip_on_cran()
+  skip_if_src("postgres")
+  skip_if_src("mssql")
 
   expect_identical(
     cdm_check_constraints(bad_dm()),
