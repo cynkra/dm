@@ -487,3 +487,25 @@ unique_prefix <- function(x) {
   dots <- max(max(nchar(x, "bytes")), 3)
   glue_collapse(rep(".", dots))
 }
+
+# Workaround for dev dplyr + dbplyr
+safe_count <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = group_by_drop_default(x)) {
+  quos <- enquos(...)
+
+  if (has_length(quos)) {
+    named <- names2(quos) != ""
+    if (any(named)) {
+      quos <- as.list(quos)
+      named_quos <- quos[named]
+      x <- mutate(x, !!!named_quos)
+      quos[named] <- syms(names2(quos)[named])
+      names(quos) <- NULL
+    }
+    out <- group_by(x, !!!quos, .add = TRUE, .drop = .drop)
+  } else {
+    out <- x
+  }
+
+  out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
+  ungroup(out)
+}
