@@ -80,10 +80,16 @@ These are the standard colors also returned by \code{grDevices::colors()} plus a
 table color with the name "default".
 }
 \examples{
-dm_draw(dm_nycflights13())
-dm_draw(dm_nycflights13(cycle = TRUE))
+dm_nycflights13() \%>\%
+  dm_draw()
+
+dm_nycflights13(cycle = TRUE) \%>\%
+  dm_draw(view_type = "title_only")
+
 dm_get_available_colors()
-dm_get_colors(dm_nycflights13())
+
+dm_nycflights13() \%>\%
+  dm_get_colors()
 
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
@@ -93,7 +99,9 @@ dm_nycflights13(color = FALSE) \%>\%
   dm_draw()
 
 # Splicing is supported:
-nyc_cols <- dm_get_colors(dm_nycflights13())
+nyc_cols <-
+  dm_nycflights13() \%>\%
+  dm_get_colors()
 nyc_cols
 
 dm_nycflights13(color = FALSE) \%>\%

@@ -1,3 +1,14 @@
+# dm 0.1.1.9006
+
+- `dm_paste()` supports writing the table definition via the new `options` argument. The `select` argument is soft-deprecated (#302).
+- `dm_paste()` can write the definition to a file via the new `path` argument (#302).
+- `collect()` gives a better error message when called on a `"zoomed_dm"` (#294).
+- Add infrastructure to test multiple data sources (#327).
+- Simplify tests: by default only data frames are tested (#312).
+- `dm_add_tbl()` uses `rlang::list2()` internally, now accepts `:=` to specify table names.
+- `check_subset()` gives a clean error message if the tables are complex expressions.
+
+
 # dm 0.1.1.9005
 
 - `dm_from_src(schema = "...")` works on Postgres if `search_path` is not set on the connection.

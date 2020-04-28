@@ -441,7 +441,8 @@ dm_get_filters <- function(x) {
   }
 
   filter_df %>%
-    rename(filter = filter_expr)
+    rename(filter = filter_expr) %>%
+    mutate(filter = unname(filter))
 }
 
 dm_get_zoomed_tbl <- function(x) {
@@ -795,6 +796,12 @@ collect.dm <- function(x, ...) {
   def$data <- map(def$data, collect, ...)
   new_dm3(def, zoomed = is_zoomed(x))
 }
+
+#' @export
+collect.zoomed_dm <- function(x, ...) {
+  check_not_zoomed(x)
+}
+
 
 # FIXME: what about 'dim.dm()'?
 #' @export

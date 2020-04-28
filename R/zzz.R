@@ -8,4 +8,6 @@
 
   flights_subset <<- memoise::memoise(flights_subset, cache = cache_attach())
   weather_subset <<- memoise::memoise(weather_subset, cache = cache_attach())
+
+  register_pkgdown_methods()
 }

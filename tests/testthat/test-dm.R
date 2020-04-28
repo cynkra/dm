@@ -369,7 +369,7 @@ test_that("dm_get_con() works", {
   skip_if_local_src()
   expect_identical(
     dm_get_con(dm_for_filter()),
-    my_test_src()$con
+    remote_con(my_test_src())
   )
 })
 

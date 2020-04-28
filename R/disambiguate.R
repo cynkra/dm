@@ -76,7 +76,7 @@ explain_col_rename <- function(recipe) {
     mutate(renames = map(renames, ~ enframe(., "new", "old"))) %>%
     unnest(renames) %>%
     nest(data = -old) %>%
-    mutate(sub_text = map_chr(data, ~ paste0(.$table, "$", .$new, collapse = ", "))) %>%
+    mutate(sub_text = map_chr(data, ~ paste0(.x$new, collapse = ", "))) %>%
     mutate(text = paste0("* ", old, " -> ", sub_text)) %>%
     pull()
 
