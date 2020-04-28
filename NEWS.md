@@ -1,3 +1,12 @@
+# dm 0.1.1.9007
+
+- Ensure tests pass on remote sources (#334).
+- Disambiguation message now only lists column names for easier copy-pasting.
+- `dm_draw()` output is shown in examples (#251).
+- Implement `pull()`, `group_data()`, `group_indices()`, `group_vars()`, `group_keys()` and `groups()` for `"zoomed_dm"`.
+- Fix compatibility with dplyr 1.0.0 (#203).
+
+
 # dm 0.1.1.9006
 
 - `dm_paste()` supports writing the table definition via the new `options` argument. The `select` argument is soft-deprecated (#302).

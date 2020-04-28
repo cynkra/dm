@@ -76,8 +76,8 @@ test_that("basic test: 'ungroup()'-methods work", {
 
 test_that("basic test: 'summarise()'-methods work", {
   expect_equivalent_tbl(
-    summarise(zoomed_dm(), d_2 = mean(d)) %>% get_zoomed_tbl(),
-    summarise(tf_2(), d_2 = mean(d))
+    summarise(zoomed_dm(), d_2 = mean(d, na.rm = TRUE)) %>% get_zoomed_tbl(),
+    summarise(tf_2(), d_2 = mean(d, na.rm = TRUE))
   )
 
   expect_dm_error(
@@ -88,8 +88,8 @@ test_that("basic test: 'summarise()'-methods work", {
 
 test_that("basic test: 'filter()'-methods work", {
   expect_equivalent_tbl(
-    filter(zoomed_dm(), d > mean(d)) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    filter(tf_2(), d > mean(d))
+    filter(zoomed_dm(), d > mean(d, na.rm = TRUE)) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    filter(tf_2(), d > mean(d, na.rm = TRUE))
   )
 
   expect_dm_error(
@@ -130,6 +130,7 @@ test_that("basic test: 'arrange()'-methods work", {
 })
 
 test_that("basic test: 'slice()'-methods work", {
+  skip_if_remote_src()
   expect_message(
     expect_equivalent_tbl(slice(zoomed_dm(), 3:6) %>% get_zoomed_tbl(), slice(tf_2(), 3:6)),
     "`slice.zoomed_dm\\(\\)` can potentially"
@@ -176,10 +177,6 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     inner_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
-  expect_equivalent_tbl(
-    full_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    full_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
 
   expect_equivalent_tbl(
     semi_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
@@ -193,6 +190,10 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 
   # SQLite doesn't implement right join
   skip_if_src("sqlite")
+  expect_equivalent_tbl(
+    full_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
+    full_join(tf_2(), tf_1(), by = c("d" = "a"))
+  )
 
   expect_equivalent_tbl(
     right_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
@@ -262,6 +263,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
     fixed = TRUE
   )
 
+  skip_if_src("sqlite")
   # test RHS-by name collision
   expect_equivalent_dm(
     dm_for_filter() %>%
@@ -289,10 +291,6 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     "only_possible_w_zoom"
   )
 
-  expect_dm_error(
-    full_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
 
   expect_dm_error(
     semi_join(dm_for_filter()),
@@ -301,6 +299,11 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
 
   expect_dm_error(
     anti_join(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+
+  expect_dm_error(
+    full_join(dm_for_filter()),
     "only_possible_w_zoom"
   )
 
@@ -313,123 +316,6 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     inner_join(dm_zoom_to(dm_for_filter(), tf_1), tf_7),
     "table_not_in_dm"
   )
-})
-
-
-test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
-  expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    left_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    inner_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    inner_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    full_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    full_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    semi_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    semi_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    anti_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    anti_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  expect_equivalent_tbl(
-    right_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    right_join(tf_2(), tf_1(), by = c("d" = "a"))
-  )
-
-  # fails if RHS not linked to zoomed table and no by is given
-  expect_dm_error(
-    left_join(zoomed_dm(), tf_4),
-    "tables_not_neighbours"
-  )
-
-  # works, if by is given
-  expect_equivalent_tbl(
-    left_join(zoomed_dm(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    left_join(tf_2(), tf_4(), by = c("e" = "j"))
-  )
-
-  # explicitly select columns from RHS using argument `select`
-  expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), e)) %>% dm_update_zoomed() %>% tbl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, e), by = c("f" = "e"))
-  )
-
-  # explicitly select and rename columns from RHS using argument `select`
-  expect_equivalent_tbl(
-    left_join(zoomed_dm_2(), tf_2, select = c(starts_with("c"), d_new = d, e)) %>% dm_update_zoomed() %>% tbl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, d_new = d, e), by = c("f" = "e"))
-  )
-
-  # a former FK-relation could not be tracked
-  expect_dm_error(
-    zoomed_dm() %>% mutate(e = e) %>% left_join(tf_3),
-    "fk_not_tracked"
-  )
-
-  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-  expect_identical(
-    left_join(zoomed_dm(), tf_3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(tf_2, tf_1),
-    new_keys("tf_2.d")
-  )
-
-  # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
-  expect_identical(
-    semi_join(zoomed_dm(), tf_3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(tf_2, tf_1),
-    new_keys("d")
-  )
-
-  # multi-column "by" argument
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_for_disambiguate(), iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
-    left_join(
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
-      by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
-    )
-  )
-})
-
-test_that("basic test: 'join()'-methods for `dm` throws error", {
-  expect_dm_error(
-    left_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    inner_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    full_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    semi_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    anti_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
-
-  expect_dm_error(
-    right_join(dm_for_filter()),
-    "only_possible_w_zoom"
-  )
 
   skip("No nest_join() for now")
   expect_dm_error(
@@ -437,7 +323,6 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     "only_possible_w_zoom"
   )
 })
-
 
 # test key tracking for all methods ---------------------------------------
 
@@ -591,50 +476,6 @@ test_that("key tracking works", {
     dm_get_all_fks_impl(dm_for_filter())
   )
 
-  # keys tracking when there are no keys to track
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
-  )
-
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      summarize(avg_wind_speed = mean(wind_speed)) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
-  )
-
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
-  )
-
-  # keys tracking when there are no keys to track
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
-  )
-
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      summarize(avg_wind_speed = mean(wind_speed)) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
-  )
-
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
-  )
-
   expect_identical(
     dm_for_flatten() %>%
       dm_zoom_to(fact) %>%
@@ -646,12 +487,6 @@ test_that("key tracking works", {
       filter(child_fk_cols != "dim_4_key")
   )
 
-  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_cols(), set_names(c("d", "e")))
-  expect_message(
-    expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% get_tracked_cols(), set_names(c("c", "d", "e"))),
-    "Keeping PK"
-  )
-  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% get_tracked_cols(), set_names(c("c", "d", "e")))
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
@@ -662,6 +497,60 @@ test_that("key tracking works", {
     dm_filter(dm_for_filter(), tf_2, d < 6) %>%
       dm_rename(tf_2, c_new = c, d_new = d)
   )
+
+  # slice() and dm_nycflights_13() (with FK constraints) do not work on DB
+  skip_if_remote_src()
+
+  # keys tracking when there are no keys to track
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
+  )
+
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      summarize(avg_wind_speed = mean(wind_speed)) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
+  )
+
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
+  )
+
+  # keys tracking when there are no keys to track
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
+  )
+
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      summarize(avg_wind_speed = mean(wind_speed)) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
+  )
+
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
+  )
+
+  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_cols(), set_names(c("d", "e")))
+  expect_message(
+    expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% get_tracked_cols(), set_names(c("c", "d", "e"))),
+    "Keeping PK"
+  )
+  expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% get_tracked_cols(), set_names(c("c", "d", "e")))
 })
 
 
@@ -684,6 +573,7 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
+  skip_if_remote_src()
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
