@@ -11,7 +11,12 @@ before_install:
   - R -q -e 'tic::before_install()'
 install: R -q -e 'tic::install()'
 after_install: R -q -e 'tic::after_install()'
-before_script: R -q -e 'tic::before_script()'
+before_script:
+- R -q -e 'tic::before_script()'
+- travis_retry mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;" -uroot
+- travis_retry mysql -e "CREATE USER '"${USER}"'@'localhost'; FLUSH PRIVILEGES;" -uroot || true
+- travis_retry mysql -e "GRANT ALL PRIVILEGES ON test.* TO '"${USER}"'@'localhost'; FLUSH PRIVILEGES;" -uroot
+
 script: R -q -e 'tic::script()'
 after_success: R -q -e 'tic::after_success()'
 after_failure: R -q -e 'tic::after_failure()'
@@ -27,6 +32,7 @@ after_script: R -q -e 'tic::after_script()'
 
 # Custom parts:
 
+#addons
 addons:
   apt:
     packages:
@@ -96,3 +102,4 @@ env:
 
 #services
 services:
+- MySQL
