@@ -501,11 +501,16 @@ safe_count <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = gro
       quos[named] <- syms(names2(quos)[named])
       names(quos) <- NULL
     }
-    out <- group_by(x, !!!quos, .add = TRUE, .drop = .drop)
+    out <- group_by(x, !!!quos, .add = FALSE, .drop = .drop)
   } else {
-    out <- x
+    out <- ungroup(x)
   }
 
-  out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
+  # Compatibility for dplyr < 1.0.0
+  if (is.null(name)) {
+    out <- tally(out, wt = !!enquo(wt), sort = sort)
+  } else {
+    out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
+  }
   ungroup(out)
 }
