@@ -19,7 +19,7 @@ defer_assign <- function(lhs, rhs, env) {
 
   value <- get0(lhs, cache)
   if (is.null(value)) {
-    message("Deferring ", lhs)
+    #message("Deferring ", lhs)
 
     # Enable this for eager assignment:
     # force(rhs)
@@ -59,8 +59,8 @@ sqlite %<--% src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconn
 
 my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC", "df")
-  name <- gsub("^test-", "", src)
-  message("Testing on ", name)
+  name <- gsub("^.*-", "", src)
+  inform(crayon::green(paste0("Testing on ", name)))
   name
 }
 
@@ -70,8 +70,6 @@ my_test_src %<--% {
 }
 
 # for examine_cardinality...() ----------------------------------------------
-
-message("for examine_cardinality...()")
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
 data_card_1_sqlite %<--% copy_to(sqlite(), data_card_1())
@@ -84,9 +82,6 @@ data_card_7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
 data_card_8 %<-% tibble::tibble(c = c(1:6))
 
 # for check_key() ---------------------------------------------------------
-
-message("for check_fk() and check_set_equality()")
-# for examine_cardinality...() ----------------------------------------------
 
 data_mcard %<-%
   tribble(
@@ -101,8 +96,6 @@ data_mcard_2 %<-% tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 data_mcard_3 %<-% tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
 # for table-surgery functions ---------------------------------------------
-
-message("for table surgery")
 
 data_ts %<-% tibble(
   a = as.integer(c(1, 2, 1)),
@@ -133,8 +126,6 @@ list_of_data_ts_parent_and_child %<-% list(
 )
 
 # for testing filter and semi_join ---------------------------------------------
-
-message("for testing filter and semi_join")
 
 # the following is for testing the filtering functionality:
 tf_1 %<-% tibble(
@@ -195,16 +186,12 @@ dm_for_filter_w_cycle %<-% {
     dm_add_fk(tf_7, q, tf_2)
 }
 
-message("for testing filter and semi_join (2)")
-
 dm_for_filter %<-% {
   dm_for_filter_w_cycle() %>%
     dm_select_tbl(-tf_7)
 }
 
 dm_for_filter_sqlite %<--% copy_dm_to(sqlite(), dm_for_filter())
-
-message("for testing filter and semi_join (3)")
 
 output_1 %<-% list(
   tf_1 = tibble(a = c(4:7), b = LETTERS[4:7]),
@@ -261,8 +248,6 @@ dm_for_filter_rev %<-% {
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 
-message("for tests on `dm` objects: dm_add_pk(), dm_add_fk()")
-
 dm_test_obj %<-% as_dm(list(
   dm_table_1 = data_card_2(),
   dm_table_2 = data_card_4(),
@@ -282,8 +267,6 @@ dm_test_obj_2 %<-% as_dm(list(
 rows_dm_obj <- 24L
 
 # Complicated `dm` --------------------------------------------------------
-
-message("complicated dm")
 
 dm_more_complex_part %<-% {
   dm(
@@ -334,8 +317,6 @@ dm_more_complex %<-% {
 
 # for testing `dm_disambiguate_cols()` ----------------------------------------
 
-message("for dm_disambiguate_cols()")
-
 iris_1 %<-% {
   as_tibble(iris) %>%
     mutate(key = row_number()) %>%
@@ -375,9 +356,7 @@ dm_for_disambiguate_2 %<-% {
     dm_add_fk(iris_2, iris_2.key, iris_1)
 }
 
-# star schema data model for testing `dm_flatten_to_tbl()`
-
-message("star schema")
+# star schema data model for testing `dm_flatten_to_tbl()` ------
 
 fact %<-% tibble(
   fact = c(
