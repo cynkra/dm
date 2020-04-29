@@ -1,3 +1,6 @@
+> dm() %>% dm_examine_constraints()
+Message: i No constraints defined.
+
 > dm_nycflights13() %>% dm_examine_constraints()
 Message: ! Unsatisfied constraints:
 

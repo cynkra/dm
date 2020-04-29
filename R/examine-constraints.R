@@ -50,12 +50,16 @@ new_dm_examine_constraints <- function(x) {
 
 #' @export
 print.dm_examine_constraints <- function(x, ...) {
-  problem_df <-
+  key_df <-
     x %>%
-    as_tibble() %>%
+    as_tibble()
+  problem_df <-
+    key_df %>%
     filter(problem != "")
 
-  if (nrow(problem_df) == 0) {
+  if (nrow(key_df) == 0) {
+    cli::cli_alert_info("No constraints defined.")
+  } else if (nrow(problem_df) == 0) {
     cli::cli_alert_info("All constraints satisfied.")
   } else {
     cli::cli_alert_warning("Unsatisfied constraints:")

@@ -13,7 +13,9 @@ nyc_check <- tibble::tribble(
 test_that("`dm_examine_constraints()` works", {
 
   # FIXME: remove after 15 May 2020 (dplyr update)?
-  if (packageVersion("dbplyr") >= "1.4.3" && packageVersion("dplyr") < "1") skip("slight package incompatibility")
+  if (packageVersion("dbplyr") >= "1.4.3" && packageVersion("dplyr") < "0.8.99") {
+    skip("slight package incompatibility")
+  }
 
   # case of no constraints:
   expect_identical(
@@ -59,6 +61,8 @@ test_that("output", {
   skip_if_src("mssql")
 
   verify_output("out/examine-constraints.txt", {
+    dm() %>% dm_examine_constraints()
+
     dm_nycflights13() %>% dm_examine_constraints()
     dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
     dm_nycflights13(cycle = TRUE) %>%
