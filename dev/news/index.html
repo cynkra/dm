@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9007</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9008</span>
       </span>
     </div>
 
@@ -161,6 +161,20 @@
       
     </div>
 
+    <div id="dm-0-1-1-9008" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.1.9008">
+<a href="#dm-0-1-1-9008" class="anchor"></a>dm 0.1.1.9008<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code>, <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> now work for columns named <code>n</code>.</li>
+<li>
+<code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> now prints a different message if a dm has no constraints defined.</li>
+<li>Fix lifecycle warning in <code><a href="../reference/dm_paste.html">dm_paste()</a></code>.</li>
+<li>
+<code>dm_set_key_constraints()</code> (and by extension <code>dm_copy_to(set_key_constraints = TRUE)</code>) now quote identifiers for the SQL that creates foreign keys on the database.</li>
+</ul>
+</div>
     <div id="dm-0-1-1-9007" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.1.9007">
 <a href="#dm-0-1-1-9007" class="anchor"></a>dm 0.1.1.9007<small> Unreleased </small>
