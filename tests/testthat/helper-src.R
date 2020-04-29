@@ -64,9 +64,26 @@ my_test_src_name <- {
   name
 }
 
-my_test_src %<--% {
+my_test_src_fun %<--% {
   fun <- paste0("test_src_", my_test_src_name)
-  eval_tidy(quo((!!sym(fun))()))
+  get0(fun, inherits = TRUE)
+}
+
+my_test_src_cache %<--% {
+  my_test_src_fun()()
+}
+
+my_test_src <- function() {
+  fun <- my_test_src_fun()
+  if (is.null(fun)) {
+    skip(paste0("Data source not known: ", my_test_src_name))
+  }
+  tryCatch(
+    my_test_src_cache(),
+    error = function(e) {
+      skip(paste0("Data source ", my_test_src_name, " not accessible: ", conditionMessage(e)))
+    }
+  )
 }
 
 # for examine_cardinality...() ----------------------------------------------
