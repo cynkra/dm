@@ -16,7 +16,10 @@ test_src_postgres <- function() {
 }
 
 test_src_mssql <- function() {
-  source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
-  con_mssql <- mssql_con()
-  src_mssql <- src_dbi(con_mssql, auto_disconnect = TRUE)
+  con <- DBI::dbConnect(
+    odbc::odbc(),
+    "mssql-test",
+    uid = "kirill", pwd = keyring::key_get("mssql", "kirill")
+  )
+  src_dbi(con, auto_disconnect = TRUE)
 }
