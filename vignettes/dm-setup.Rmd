@@ -22,15 +22,23 @@ The five tables that we are working with contain information about all flights t
   - the names of transport organizations (`name`) 
   - their abbreviated codes (`carrier`)
 - `airports` indicates the ports of departure (`origin`) and of destination (`dest`)
-- `weather` contains meterological information at each hour
-- `planes` describes characteristics of aircrafts
+- `weather` contains meteorological information at each hour
+- `planes` describes characteristics of the aircraft
 
 Once we've loaded `nycflights13`, the aforementioned tables are all in our work environment, ready to be accessed.
 
 ```{r setup, message=FALSE}
 library(dm)
 library(nycflights13)
+
+airports
 ```
+
+Your own data probably will not be available in an R package.
+It is sufficient if you can load it as data frames into your R session.
+If the data is too large, consider connecting to the database instead.
+See `vignette("dm-db", package = "dm")` for details.
+
 
 # Adding Tables
 
@@ -39,6 +47,7 @@ For that, we can use `dm()`.
 
 ```{r}
 flights_dm_no_keys <- dm(airlines, airports, flights, planes, weather)
+flights_dm_no_keys
 ```
 
 The `as_dm()` function is an alternative that works if you already have a list of tables.
