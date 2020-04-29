@@ -21,7 +21,10 @@ tick <- function(x) {
 }
 
 default_local_src <- function() {
-  src_df(env = .GlobalEnv)
+  structure(
+    list(tbl_f = as_tibble, name = "<environment: R_GlobalEnv>", env = .GlobalEnv),
+    class = c("src_local", "src")
+  )
 }
 
 # next 2 are borrowed from {tibble}:
