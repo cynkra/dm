@@ -33,6 +33,7 @@ addons:
     - libmysqlclient-dev
     - libssh2-1-dev
     - libsodium-dev
+    - libv8-dev
 
 # Header
 language: r
@@ -92,11 +93,6 @@ env:
   - _R_CHECK_SYSTEM_CLOCK_=false
   - MAKEFLAGS="-j 2"
   - _R_CHECK_PACKAGE_DEPENDS_IGNORE_MISSING_ENHANCES_="true"
-
-addons:
-  apt:
-    packages:
-      - libv8-dev
 
 #services
 services:
