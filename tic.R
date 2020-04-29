@@ -46,6 +46,7 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
 
   if (ci_has_env("id_rsa")) {
     get_stage("deploy") %>%
+      add_code_step(styler::cache_info()) %>%
       add_code_step(styler::style_pkg()) %>%
       add_step(step_setup_ssh()) %>%
       add_step(step_push_deploy())
