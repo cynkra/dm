@@ -342,7 +342,7 @@ iris_1 %<-% {
 }
 iris_2 %<-% {
   iris_1() %>%
-    mutate(other_col = TRUE)
+    mutate(other_col = 1L)
 }
 iris_3 %<-% {
   iris_2() %>%

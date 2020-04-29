@@ -238,9 +238,9 @@ test_that("`pull_tbl()`-methods work", {
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_filter(), tf_3) %>%
-      mutate(new_col = row_number() * 3) %>%
+      mutate(new_col = row_number(f) * 3) %>%
       pull_tbl(),
-    mutate(tf_3(), new_col = row_number() * 3)
+    mutate(tf_3(), new_col = row_number(f) * 3)
   )
 
   expect_equivalent_tbl(
@@ -369,7 +369,7 @@ test_that("dm_get_con() works", {
   skip_if_local_src()
   expect_identical(
     dm_get_con(dm_for_filter()),
-    remote_con(my_test_src())
+    con_from_src_or_con(my_test_src())
   )
 })
 

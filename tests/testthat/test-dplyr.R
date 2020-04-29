@@ -119,8 +119,8 @@ test_that("basic test: 'arrange()'-methods work", {
 
   # arrange within groups
   expect_equivalent_tbl(
-    group_by(zoomed_dm(), e) %>% arrange(desc(e), .by_group = TRUE) %>% get_zoomed_tbl(),
-    arrange(group_by(tf_2(), e), desc(e), .by_group = TRUE)
+    group_by(zoomed_dm(), e) %>% arrange(desc(d), .by_group = TRUE) %>% get_zoomed_tbl(),
+    arrange(group_by(tf_2(), e), desc(d), .by_group = TRUE)
   )
 
   expect_dm_error(
