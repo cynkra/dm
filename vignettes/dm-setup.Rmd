@@ -91,6 +91,7 @@ dm_enum_fk_candidates(
 To define how your tables are related, use `dm_add_fk()` to add foreign keys. First, define the tables that you wish to connect by parameterizing the `dm_add_fk()` function with `table` and `ref_table` options. 
 
 Then indicate in `column` which column of `table` refers to `ref_table`'s primary key, which you've defined above. 
+Voilà, here's your `dm` object that you can work with:
 
 ```{r}
 flights_dm_all_keys <-
@@ -102,19 +103,13 @@ flights_dm_all_keys
 ```
 
 
-Voilà, here's your `dm` object that you can work with:
-
-```{r}
-flights_dm_all_keys
-```
-
 ## Visualization
 
 Use `dm_draw()` at any stage of the process to get a visual representation:
 
 ```{r}
 flights_dm_no_keys %>%
-  dm_draw(view_type = "TB")
+  dm_draw(rankdir = "TB", view_type = "all")
 
 flights_dm_no_keys %>%
   dm_add_pk(airlines, carrier) %>% 
@@ -144,12 +139,13 @@ flights_dm_all_keys %>%
   dm_examine_constraints()
 ```
 
-The results are presented in a human-readable form, but also 
+The results are presented in a human-readable form, and stored internally as a tibble for programmatic inspection.
 
 
-## Programmatically Retrieve Keys
+## Programing
 
-Helper functions
+Helper functions are available to access details on keys and check results.
+
 Call `dm_get_all_pks()` to retrieve a data frame with your primary keys:
 
 ```{r}
@@ -161,4 +157,12 @@ A data frame of foreign keys is retrieved with `dm_get_all_fks()`:
 ```{r}
 flights_dm_all_keys %>% 
   dm_get_all_pks()
+```
+
+Use `tibble::as_tibble()` on the result of `dm_examine_constraints()` to programmatically inspect which constaints are not satisfied:
+
+```{r}
+flights_dm_all_keys %>% 
+  dm_examine_constraints() %>% 
+  tibble::as_tibble()
 ```
