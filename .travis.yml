@@ -66,6 +66,10 @@ jobs:
   - stage: full
     os: osx
   - r: release
+    env:
+    - MODE=db-tests
+    script: make -j 2 -O qtest-sqlite qtest-postgres
+  - r: release
   - r: devel
     env:
     - TIC_DEV_VERSIONS=TRUE
