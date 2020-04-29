@@ -32,6 +32,7 @@ addons:
     packages:
     - libmysqlclient-dev
     - libssh2-1-dev
+    - libsodium-dev
 
 # Header
 language: r
