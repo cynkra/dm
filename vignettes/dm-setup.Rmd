@@ -159,10 +159,10 @@ flights_dm_all_keys %>%
   dm_get_all_pks()
 ```
 
-Use `as_tibble()` on the result of `dm_examine_constraints()` to programmatically inspect which constaints are not satisfied:
+Use `tibble::as_tibble()` on the result of `dm_examine_constraints()` to programmatically inspect which constaints are not satisfied:
 
 ```{r}
 flights_dm_all_keys %>% 
   dm_examine_constraints() %>% 
-  as_tibble()
+  tibble::as_tibble()
 ```
