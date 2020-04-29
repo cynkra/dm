@@ -35,13 +35,13 @@ library(nycflights13)
 # Adding Tables
 
 First, we will tell `dm` which tables we want to work with and how they are connected. 
-For that, we can use `dm` or `as_dm()`, which accepts lists of objects. 
-You must explicitly name the objects if you use `list()` (e.g., `list("airlines" = airlines, "flights" = flights)`) — here we use `tibble::lst()`, which automatically names the components of the list.
+For that, we can use `dm()`.
 
 ```{r}
-flights_dm_no_keys <- tibble::lst(airlines, airports, flights, planes, weather) %>%
-  as_dm()
+flights_dm_no_keys <- dm(airlines, airports, flights, planes, weather)
 ```
+
+The `as_dm()` function is an alternative that works if you already have a list of tables.
 
 # Defining Keys
 
@@ -61,17 +61,12 @@ dm_enum_pk_candidates(
 Now, add the primary keys that you have identified:
 
 ```{r}
-flights_dm_only_pks <- flights_dm_no_keys %>%
-  dm_add_pk(table = airlines, column = carrier) %>%
+flights_dm_only_pks <- 
+  flights_dm_no_keys %>%
+  dm_add_pk(table = airlines, columns = carrier) %>%
   dm_add_pk(airports, faa) %>%
   dm_add_pk(planes, tailnum)
 flights_dm_only_pks
-```
-
-To review the primary keys after setting them, call `dm_get_all_pks()`.
-
-```{r}
-dm_get_all_pks(flights_dm_only_pks)
 ```
 
 ## Foreign Keys
@@ -87,26 +82,74 @@ dm_enum_fk_candidates(
 To define how your tables are related, use `dm_add_fk()` to add foreign keys. First, define the tables that you wish to connect by parameterizing the `dm_add_fk()` function with `table` and `ref_table` options. 
 
 Then indicate in `column` which column of `table` refers to `ref_table`'s primary key, which you've defined above. 
-Use `check = FALSE` to omit consistency checks.
 
 ```{r}
-flights_dm_all_keys <- flights_dm_only_pks %>%
-  dm_add_fk(table = flights, column = tailnum, ref_table = planes, check = FALSE) %>%
+flights_dm_all_keys <-
+  flights_dm_only_pks %>%
+  dm_add_fk(table = flights, columns = tailnum, ref_table = planes) %>%
   dm_add_fk(flights, carrier, airlines) %>%
   dm_add_fk(flights, origin, airports)
 flights_dm_all_keys
 ```
 
-## Retrieving Keys
-
-To retrieve your keys later on, use `dm_get_all_fks()`, or `dm_get_fk()` for its singular version. 
-
-```{r}
-dm_get_all_pks(flights_dm_all_keys)
-```
 
 Voilà, here's your `dm` object that you can work with:
 
 ```{r}
 flights_dm_all_keys
+```
+
+## Visualization
+
+Use `dm_draw()` at any stage of the process to get a visual representation:
+
+```{r}
+flights_dm_no_keys %>%
+  dm_draw(view_type = "TB")
+
+flights_dm_no_keys %>%
+  dm_add_pk(airlines, carrier) %>% 
+  dm_draw()
+
+flights_dm_only_pks %>%
+  dm_add_fk(flights, tailnum, planes) %>% 
+  dm_draw()
+
+flights_dm_all_keys %>% 
+  dm_draw()
+```
+
+
+## Integrity Checks
+
+Check the constraints for your new data model or for intermediate steps:
+
+```{r}
+flights_dm_no_keys %>%
+  dm_examine_constraints()
+
+flights_dm_only_pks %>%
+  dm_examine_constraints()
+
+flights_dm_all_keys %>% 
+  dm_examine_constraints()
+```
+
+The results are presented in a human-readable form, but also 
+
+
+## Programmatically Retrieve Keys
+
+Helper functions
+Call `dm_get_all_pks()` to retrieve a data frame with your primary keys:
+
+```{r}
+dm_get_all_pks(flights_dm_only_pks)
+```
+
+A data frame of foreign keys is retrieved with `dm_get_all_fks()`:
+
+```{r}
+flights_dm_all_keys %>% 
+  dm_get_all_pks()
 ```
