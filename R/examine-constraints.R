@@ -99,11 +99,13 @@ check_pk_constraints <- function(dm) {
     ))
   }
   table_names <- pull(pks, table)
-  tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
-    map2(syms(pks$pk_col), ~ select(.x, !!.y))
-  tbl_is_pk <- map_dfr(tbls, enum_pk_candidates_impl) %>%
+
+  tbls <- map(set_names(table_names), ~ tbl(dm, .))
+
+  tbl_is_pk <- map2_dfr(tbls, pks$pk_col, enum_pk_candidates_impl) %>%
     mutate(table = table_names) %>%
     rename(is_key = candidate, problem = why)
+
   tibble(
     table = table_names,
     kind = "PK",

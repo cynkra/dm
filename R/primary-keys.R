@@ -288,16 +288,21 @@ dm_enum_pk_candidates <- function(dm, table) {
     mutate(columns = new_keys(columns))
 }
 
-enum_pk_candidates_impl <- function(table) {
-  map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
-    enframe("column") %>%
-    # Workaround: Can't call bind_rows() here with dplyr < 0.9.0
-    # Can't call unnest() either for an unknown reason
-    mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
-    select(-value) %>%
-    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none"), capped = TRUE))) %>%
-    select(-data) %>%
-    mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
-    select(-values) %>%
+enum_pk_candidates_impl <- function(table, columns = colnames(table)) {
+  map_chr(set_names(columns), function(x) check_pk(table, {{ x }})) %>%
+    enframe("column", "why") %>%
+    mutate(candidate = (why == "")) %>%
+    select(column, candidate, why) %>%
     arrange(desc(candidate), column)
+}
+
+check_pk <- function(table, column) {
+  duplicate_values <- is_unique_key(table, {{ column }})
+  if (duplicate_values$unique) {
+    return("")
+  }
+
+  fun <- ~ format(.x, trim = TRUE, justify = "none")
+  values <- commas(duplicate_values$data[[1]]$value, capped = TRUE, fun = fun)
+  paste0("has duplicate values: ", values)
 }
