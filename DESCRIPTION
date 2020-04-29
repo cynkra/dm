@@ -53,13 +53,16 @@ Imports:
     vctrs (>= 0.2.0)
 Suggests: 
     brio,
+    crayon,
     DiagrammeR,
     DiagrammeRsvg,
     dbplyr,
     digest,
     fansi,
+    keyring,
     knitr,
     nycflights13,
+    odbc,
     rmarkdown,
     RMariaDB,
     RPostgres,
