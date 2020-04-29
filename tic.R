@@ -1,3 +1,8 @@
+if (ci_get_env("MODE") == "db-tests") {
+  get_stage("install") %>%
+    add_step(step_install_cran("devtools"))
+}
+
 if (ci_has_env("TIC_DEV_VERSIONS")) {
   get_stage("install") %>%
     add_step(step_install_github(upgrade = "always", c(
