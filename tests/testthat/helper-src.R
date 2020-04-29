@@ -19,7 +19,7 @@ defer_assign <- function(lhs, rhs, env) {
 
   value <- get0(lhs, cache)
   if (is.null(value)) {
-    #message("Deferring ", lhs)
+    # message("Deferring ", lhs)
 
     # Enable this for eager assignment:
     # force(rhs)
