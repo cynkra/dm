@@ -62,7 +62,8 @@ is_unique_key <- function(.data, column) {
 
   duplicate_rows <-
     .data %>%
-    safe_count(value = !!col_expr) %>%
+    select(value = !!col_expr) %>%
+    safe_count(value) %>%
     filter(n != 1) %>%
     arrange(value) %>%
     utils::head(MAX_COMMAS + 1) %>%

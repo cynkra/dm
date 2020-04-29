@@ -16,3 +16,7 @@ Message: ! Unsatisfied constraints:
 +   dm_examine_constraints()
 Message: i All constraints satisfied.
 
+> # n column
+> dm_for_filter_w_cycle() %>% dm_examine_constraints()
+Message: i All constraints satisfied.
+

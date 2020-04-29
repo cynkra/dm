@@ -68,6 +68,10 @@ test_that("output", {
     dm_nycflights13(cycle = TRUE) %>%
       dm_select_tbl(-flights) %>%
       dm_examine_constraints()
+
+    "n column"
+    dm_for_filter_w_cycle() %>%
+      dm_examine_constraints()
   })
 })
 
