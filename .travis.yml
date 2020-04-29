@@ -61,16 +61,16 @@ jobs:
   - r: release
     env:
     - TIC_ONLY_STYLER=true
+  - r: release
+    env:
+    - MODE=db-tests
+    script: make -j 3 -O qtest-sqlite qtest-postgres qtest-maria
   - r: 3.3
   - stage: docs
     env:
     - TIC_BUILD_PKGDOWN=true
   - stage: full
     os: osx
-  - r: release
-    env:
-    - MODE=db-tests
-    script: make -j 2 -O qtest-sqlite qtest-postgres
   - r: release
   - r: devel
     env:

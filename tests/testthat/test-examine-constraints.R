@@ -31,6 +31,8 @@ test_that("`dm_examine_constraints()` works", {
       new_dm_examine_constraints()
   )
 
+  skip_if_src("maria")
+
   # case of some constraints, all met:
   expect_identical(
     dm_examine_constraints(dm_for_disambiguate()),
@@ -57,8 +59,7 @@ test_that("`dm_examine_constraints()` works", {
 })
 
 test_that("output", {
-  skip_if_src("postgres")
-  skip_if_src("mssql")
+  skip_if_remote_src()
 
   verify_output("out/examine-constraints.txt", {
     dm() %>% dm_examine_constraints()
@@ -76,8 +77,7 @@ test_that("output", {
 })
 
 test_that("output as tibble", {
-  skip_if_src("postgres")
-  skip_if_src("mssql")
+  skip_if_remote_src()
 
   verify_output("out/examine-constraints-as-tibble.txt", {
     dm_nycflights13(cycle = TRUE) %>%

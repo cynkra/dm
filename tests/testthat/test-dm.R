@@ -236,13 +236,16 @@ test_that("`pull_tbl()`-methods work", {
     tf_5()
   )
 
+  skip_if_src("maria")
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_filter(), tf_3) %>%
       mutate(new_col = row_number(f) * 3) %>%
       pull_tbl(),
     mutate(tf_3(), new_col = row_number(f) * 3)
   )
+})
 
+test_that("`pull_tbl()`-methods work (2)", {
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_filter(), tf_1) %>% pull_tbl(tf_1),
     tf_1()

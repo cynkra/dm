@@ -15,6 +15,11 @@ test_src_postgres <- function() {
   src_dbi(con, auto_disconnect = TRUE)
 }
 
+test_src_maria <- function() {
+  con <- DBI::dbConnect(RMariaDB::MariaDB(), dbname = "test")
+  src_dbi(con, auto_disconnect = TRUE)
+}
+
 test_src_mssql <- function() {
   con <- DBI::dbConnect(
     odbc::odbc(),

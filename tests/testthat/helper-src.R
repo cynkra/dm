@@ -45,6 +45,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
     rhs
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
+    # message(name)
     suppressMessages(copy_dm_to(src, rhs, unique_table_names = TRUE))
   } else if (inherits(rhs, "list")) {
     suppressMessages(
@@ -184,9 +185,9 @@ tf_7 %<-% tibble(
 )
 
 dm_for_filter_w_cycle %<-% {
-  as_dm(list(
+  dm(
     tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
-  )) %>%
+  ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_2, c) %>%
     dm_add_pk(tf_3, f) %>%
@@ -479,14 +480,12 @@ bad_dm %<-% {
 }
 
 dm_nycflights_small %<-% {
-  as_dm(
-    list(
-      flights = nycflights13::flights %>% slice(1:800),
-      planes = nycflights13::planes,
-      airlines = nycflights13::airlines,
-      airports = nycflights13::airports,
-      weather = nycflights13::weather %>% slice(1:800)
-    )
+  dm(
+    flights = nycflights13::flights %>% slice(1:800),
+    planes = nycflights13::planes,
+    airlines = nycflights13::airlines,
+    airports = nycflights13::airports,
+    weather = nycflights13::weather %>% slice(1:800)
   ) %>%
     dm_add_pk(planes, tailnum) %>%
     dm_add_pk(airlines, carrier) %>%
