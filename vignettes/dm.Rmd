@@ -65,18 +65,6 @@ fin_dm
 The dm object interrogates the RDBMS for table and column information and, where implemented, primary and foreign keys. 
 Currently, primary and foreign keys are only available from Postgres and MSSQL servers. 
 
-## Visualizing a data model
-
-We can display a visual summary of the dm.
-The default is to display the table name and any defined keys.
-
-```{r visualize}
-
-fin_dm %>%
-  dm_draw()
-
-```
-
 ## Linking tables by adding keys
 
 The public RDBMS is a MariaDB, which does not provide key metadata.
@@ -96,6 +84,13 @@ fin_dm_keys <-
   dm_add_pk(districts, id) %>%
   dm_add_fk(accounts, district_id, districts)
 ```
+
+## Visualizing a data model
+
+We can display a visual summary of the dm.
+The default is to display the table name and any defined keys.
+
+FIXME
 
 Visualizing the dm in its current state we now see the keys we have created and how they link the tables together.
 
