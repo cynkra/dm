@@ -19,7 +19,9 @@ register_if_dplyr_hasnt <- function(...) {
   dplyr_methods <- mget(names(methods), dplyr_ns, mode = "function", ifnotfound = list(NULL))
   methods <- methods[map_lgl(dplyr_methods, is.null)]
 
-  if (is_empty(methods)) return()
+  if (is_empty(methods)) {
+    return()
+  }
 
   methods <- map(methods, eval_tidy)
   classes <- sub("^[^.]*.", "", names(methods))

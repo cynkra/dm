@@ -6,7 +6,9 @@ register_if_dbplyr_hasnt <- function(...) {
   dbplyr_methods <- mget(names(methods), dbplyr_ns, mode = "function", ifnotfound = list(NULL))
   methods <- methods[map_lgl(dbplyr_methods, is.null)]
 
-  if (is_empty(methods)) return()
+  if (is_empty(methods)) {
+    return()
+  }
 
   methods <- map(methods, eval_tidy)
   classes <- sub("^[^.]*.", "", names(methods))
