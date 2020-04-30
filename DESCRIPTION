@@ -34,7 +34,7 @@ Depends:
     R (>= 3.3)
 Imports:
     backports,
-    cli,
+    cli (>= 2.0.0),
     DBI,
     dplyr,
     ellipsis,
