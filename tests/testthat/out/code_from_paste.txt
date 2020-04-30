@@ -49,7 +49,7 @@ Message: dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
 
 > # produce `dm_select()` statements in addition to the rest
 > dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
-+   dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L))) %>% dm_paste(options = "select")
++   dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>% dm_paste(options = "select")
 Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, x) %>%
   dm_select(tf_1, a) %>%
   dm_select(tf_2, c, d, e) %>%

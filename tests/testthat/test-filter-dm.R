@@ -108,7 +108,7 @@ test_that("dm_filter() works without primary keys", {
     dm_for_filter() %>%
       dm_rm_pk(tf_5, rm_referencing_fks = TRUE) %>%
       dm_filter(tf_5, l == "c") %>%
-      compute()
+      collect()
   )
 })
 
