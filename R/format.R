@@ -1,6 +1,6 @@
 MAX_COMMAS <- 6L
 
-commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE) {
+commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE, fun = identity) {
   if (is_null(max_commas)) max_commas <- MAX_COMMAS
   if (is_empty(x)) {
     x <- ""
@@ -10,7 +10,8 @@ commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE) {
     length(x) <- max_commas
   }
 
-  glue_collapse(x, sep = ", ")
+  fun <- as_function(fun)
+  glue_collapse(fun(x), sep = ", ")
 }
 
 tick <- function(x) {
@@ -21,7 +22,10 @@ tick <- function(x) {
 }
 
 default_local_src <- function() {
-  src_df(env = .GlobalEnv)
+  structure(
+    list(tbl_f = as_tibble, name = "<environment: R_GlobalEnv>", env = .GlobalEnv),
+    class = c("src_local", "src")
+  )
 }
 
 # next 2 are borrowed from {tibble}:

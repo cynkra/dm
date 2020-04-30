@@ -1,3 +1,6 @@
+> dm() %>% dm_examine_constraints()
+Message: i No constraints defined.
+
 > dm_nycflights13() %>% dm_examine_constraints()
 Message: ! Unsatisfied constraints:
 
@@ -11,5 +14,9 @@ Message: ! Unsatisfied constraints:
 
 > dm_nycflights13(cycle = TRUE) %>% dm_select_tbl(-flights) %>%
 +   dm_examine_constraints()
+Message: i All constraints satisfied.
+
+> # n column
+> dm_for_filter_w_cycle() %>% dm_examine_constraints()
 Message: i All constraints satisfied.
 

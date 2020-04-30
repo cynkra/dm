@@ -36,14 +36,17 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
 } else if (ci_has_env("TIC_ONLY_STYLER")) {
   # For caching
   get_stage("install") %>%
-    add_step(step_install_cran("R.cache"))
+    add_step(step_install_cran("R.cache")) %>%
+    add_code_step(dir.create("~/.Rcache", showWarnings = FALSE))
 
   # Needs to be at the script stage so that caching works
   get_stage("script") %>%
+    add_code_step(styler::cache_info()) %>%
     add_code_step(styler::style_pkg())
 
   if (ci_has_env("id_rsa")) {
     get_stage("deploy") %>%
+      add_code_step(styler::cache_info()) %>%
       add_code_step(styler::style_pkg()) %>%
       add_step(step_setup_ssh()) %>%
       add_step(step_push_deploy())

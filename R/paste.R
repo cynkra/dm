@@ -41,7 +41,7 @@ dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
                      options = NULL, path = NULL) {
   check_dots_empty(action = warn)
 
-  options <- check_paste_options(options, select)
+  options <- check_paste_options(options, select, caller_env())
 
   if (!is.null(path)) {
     stopifnot(rlang::is_installed("brio"))
@@ -57,7 +57,7 @@ dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
   invisible(dm)
 }
 
-check_paste_options <- function(options, select) {
+check_paste_options <- function(options, select, env) {
   allowed_options <- c("all", "tables", "keys", "select", "color")
 
   if (is.null(options)) {
@@ -69,7 +69,7 @@ check_paste_options <- function(options, select) {
   }
 
   if (!is.null(select)) {
-    deprecate_soft("0.1.2", "dm::dm_paste(select = )", "dm::dm_paste(options = 'select')")
+    deprecate_soft("0.1.2", "dm::dm_paste(select = )", "dm::dm_paste(options = 'select')", env = env)
     if (isTRUE(select)) {
       options <- c(options, "select")
     }
@@ -160,7 +160,7 @@ dm_paste_pks <- function(dm) {
 
 dm_paste_fks <- function(dm) {
   # FIXME: this will fail with compound keys
-  tbl_fks <- dm_get_all_fks_impl(dm) %>%
+  dm_get_all_fks_impl(dm) %>%
     mutate(code = glue("dm_add_fk({tick_if_needed(child_table)}, {tick_if_needed(child_fk_cols)}, {tick_if_needed(parent_table)})")) %>%
     pull()
 }

@@ -54,7 +54,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
   }
 }
 
-sqlite %<--% src_sqlite(":memory:", create = TRUE)
+sqlite %<--% src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 
 my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC", "df")

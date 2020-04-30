@@ -1,9 +1,9 @@
 test_src_df <- function() {
-  src_df(env = .GlobalEnv)
+  default_local_src()
 }
 
 test_src_sqlite <- function() {
-  src_sqlite(":memory:", create = TRUE)
+  src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 }
 
 test_src_postgres <- function() {

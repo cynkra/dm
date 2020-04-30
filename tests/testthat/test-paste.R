@@ -1,5 +1,3 @@
-local_options(lifecycle_verbosity = "warning")
-
 test_that("path argument", {
   path <- tempfile()
   dm() %>% dm_paste(path = path)
@@ -25,7 +23,7 @@ verify_output("out/code_from_paste.txt", {
   dm_for_filter() %>%
     dm_select(tf_5, k = k, m) %>%
     dm_select(tf_1, a) %>%
-    dm_add_tbl(x = tibble()) %>%
+    dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L))) %>%
     dm_paste(options = "select")
 
   "produce code with colors"

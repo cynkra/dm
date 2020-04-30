@@ -21,7 +21,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
 
   expect_identical(
     examine_cardinality(data_card_8(), c, data_card_2(), a),
-    "injective mapping ( child: 0 or 1 -> parent: 1)"
+    "injective mapping (child: 0 or 1 -> parent: 1)"
   )
 
   expect_identical(

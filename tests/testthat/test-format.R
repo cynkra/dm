@@ -12,8 +12,5 @@ test_that("commas() works", {
 })
 
 test_that("default_local_src() works", {
-  expect_identical(
-    default_local_src(),
-    src_df(env = .GlobalEnv)
-  )
+  expect_s3_class(default_local_src(), "src")
 })
