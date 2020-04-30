@@ -63,6 +63,7 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   skip_if_src("sqlite")
+  skip_if_src("maria")
   expect_equivalent_tbl(
     dm_flatten_to_tbl(dm_for_flatten(), fact, join = full_join),
     fact_clean() %>%
@@ -158,6 +159,8 @@ test_that("`dm_squash_to_tbl()` does the right things", {
   )
 
   skip_if_src("sqlite")
+  skip_if_src("maria")
+
   # full_join:
   expect_equivalent_tbl(
     dm_squash_to_tbl(dm_more_complex(), tf_5, tf_4, tf_3, join = full_join),
@@ -280,6 +283,8 @@ test_that("tests with 'bad_dm' work", {
       left_join(tbl_2(), by = c("a" = "id")) %>%
       left_join(tbl_3(), by = c("b" = "id"))
   )
+
+  skip_if_src("maria")
 
   # filtered `dm`
   expect_equivalent_tbl(

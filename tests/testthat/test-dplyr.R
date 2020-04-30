@@ -87,11 +87,19 @@ test_that("basic test: 'summarise()'-methods work", {
 })
 
 test_that("basic test: 'filter()'-methods work", {
-  expect_equivalent_tbl(
-    filter(zoomed_dm(), d > mean(d, na.rm = TRUE)) %>% dm_update_zoomed() %>% tbl("tf_2"),
-    filter(tf_2(), d > mean(d, na.rm = TRUE))
-  )
+  skip_if_src("maria")
 
+  expect_equivalent_tbl(
+    zoomed_dm() %>%
+      filter(d > mean(d, na.rm = TRUE)) %>%
+      dm_update_zoomed() %>%
+      tbl("tf_2"),
+    tf_2() %>%
+      filter(d > mean(d, na.rm = TRUE))
+  )
+})
+
+test_that("basic test: 'filter()'-methods work (2)", {
   expect_dm_error(
     filter(dm_for_filter()),
     "only_possible_w_zoom"
@@ -119,8 +127,8 @@ test_that("basic test: 'arrange()'-methods work", {
 
   # arrange within groups
   expect_equivalent_tbl(
-    group_by(zoomed_dm(), e) %>% arrange(desc(e), .by_group = TRUE) %>% get_zoomed_tbl(),
-    arrange(group_by(tf_2(), e), desc(e), .by_group = TRUE)
+    group_by(zoomed_dm(), e) %>% arrange(desc(d), .by_group = TRUE) %>% get_zoomed_tbl(),
+    arrange(group_by(tf_2(), e), desc(d), .by_group = TRUE)
   )
 
   expect_dm_error(
@@ -186,6 +194,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
 
   # SQLite doesn't implement right join
   skip_if_src("sqlite")
+  skip_if_src("maria")
   expect_equivalent_tbl(
     full_join(zoomed_dm(), tf_1) %>% dm_update_zoomed() %>% tbl("tf_2"),
     full_join(tf_2(), tf_1(), by = c("d" = "a"))
@@ -240,6 +249,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
     new_keys("d")
   )
 
+  skip_if_src("maria")
   # multi-column "by" argument
   expect_equivalent_tbl(
     dm_zoom_to(dm_for_disambiguate(), iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
@@ -249,7 +259,9 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
       by = c("key", "Sepal.Width" = "iris_2.y.Sepal.Width", "other_col")
     )
   )
+})
 
+test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   # auto-added RHS-by argument
   expect_message(
     dm_zoom_to(dm_for_disambiguate(), iris_2) %>%
