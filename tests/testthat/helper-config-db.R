@@ -7,11 +7,7 @@ test_src_sqlite <- function() {
 }
 
 test_src_postgres <- function() {
-  con <- DBI::dbConnect(
-    RPostgres::Postgres(),
-    dbname = "postgres", host = "localhost", port = 5432,
-    user = "postgres", bigint = "integer"
-  )
+  con <- DBI::dbConnect(RPostgres::Postgres())
   src_dbi(con, auto_disconnect = TRUE)
 }
 
