@@ -19,7 +19,7 @@
 #' * `rows_delete()` deletes rows (like `DELETE`); key values in `y` must
 #'   exist in `x`.
 #'
-#' @inheritParams left_join
+#' @inheritParams dplyr::left_join
 #' @param x,y A pair of data frames or data frame extensions (e.g. a tibble).
 #'   `y` must have the same columns of `x` or a subset.
 #' @param by An unnamed character vector giving the key columns. The key
