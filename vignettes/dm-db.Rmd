@@ -1,5 +1,5 @@
 ---
-title: "{dm} and databases"
+title: "Connect to a database"
 date: "`r Sys.Date()`"
 author: James Wondrasek, Kirill Müller
 output: rmarkdown::html_vignette
