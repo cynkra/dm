@@ -34,6 +34,7 @@ after_script: R -q -e 'tic::after_script()'
 
 #addons
 addons:
+  postgresql: "9.4"
   apt:
     packages:
     - libmysqlclient-dev
@@ -104,3 +105,4 @@ env:
 #services
 services:
 - MySQL
+- postgresql
