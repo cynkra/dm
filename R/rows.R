@@ -89,7 +89,8 @@ rows_insert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
   idx <- vctrs::vec_match(y[key], x[key])
   bad <- which(!is.na(idx))
   if (has_length(bad)) {
-    abort(class = "dplyr_rows_insert_duplicate",
+    abort(
+      class = "dplyr_rows_insert_duplicate",
       "Attempting to insert duplicate rows.",
       location = bad
     )
@@ -117,7 +118,8 @@ rows_update.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(class = "dplyr_rows_update_missing",
+    abort(
+      class = "dplyr_rows_update_missing",
       "Attempting to update missing rows.",
       location = bad
     )
@@ -146,7 +148,8 @@ rows_patch.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place =
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(class = "dplyr_rows_patch_missing",
+    abort(
+      class = "dplyr_rows_patch_missing",
       "Attempting to patch missing rows.",
       location = bad
     )
@@ -209,7 +212,8 @@ rows_delete.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(class = "dplyr_rows_delete_missing",
+    abort(
+      class = "dplyr_rows_delete_missing",
       "Attempting to delete missing rows.",
       location = bad
     )
