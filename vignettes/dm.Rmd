@@ -152,9 +152,8 @@ When building our own model, or changing existing models by adding tables or key
 `dm_examine_constrains()` checks all primary and foreign keys and reports if they violate their expected constraints.
 
 ```{r constraints}
-
-#FIXME
-
+fin_dm_total %>% 
+  dm_examine_constraints()
 ```
 
 For more on constraint checking, including cardinality and finding candidate columns for keys, see the [Constraint](#FIXME) documentation.
