@@ -14,7 +14,7 @@ Insert
 Message: Matching, by = "a"
 
       a b         c
-* <dbl> <chr> <dbl>
+  <dbl> <chr> <dbl>
 1     1 a       0.5
 2     2 b       1.5
 3     3 <NA>    2.5
@@ -68,7 +68,7 @@ Error: Attempting to patch missing rows.
 Message: Matching, by = "a"
 
       a b         c
-* <int> <chr> <dbl>
+  <int> <chr> <dbl>
 1     1 a       0.5
 2     2 z       1.5
 3     3 z       2.5
