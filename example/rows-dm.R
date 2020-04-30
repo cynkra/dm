@@ -41,7 +41,7 @@ dm_rows_insert(flights_sqlite, flights_jan_sqlite)
 print(dm_nrow(flights_sqlite))
 
 # Explicitly request persistence:
-dm_rows_insert(flights_sqlite, flights_jan_sqlite, inplace = TRUE)
+dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
 print(dm_nrow(flights_sqlite))
 
 # Second update:
@@ -62,7 +62,7 @@ flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
 flights_new <- dm_rows_insert(
   flights_sqlite,
   flights_feb_sqlite,
-  inplace = FALSE
+  in_place = FALSE
 )
 print(dm_nrow(flights_new))
 print(dm_nrow(flights_sqlite))
@@ -72,5 +72,5 @@ flights_new %>%
   dm_examine_constraints()
 
 # Apply:
-dm_rows_insert(flights_sqlite, flights_feb_sqlite, inplace = TRUE)
+dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
 print(dm_nrow(flights_sqlite))

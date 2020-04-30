@@ -12,17 +12,17 @@
 #' underlying storage.
 #' In contrast to all other operations,
 #' these operations may lead to irreversible changes to the underlying database.
-#' Therefore, in-place updates must be requested explicitly with `inplace = TRUE`.
+#' Therefore, in-place updates must be requested explicitly with `in_place = TRUE`.
 #' By default, an informative message is given.
 #' Unlike [compute()] or [copy_to()], no new tables are created.
 #'
 #' @inheritParams rows
 #' @param check
 #'   Set to `TRUE` to always check keys, or `FALSE` to never check.
-#'   The default is to check only if `inplace` is `TRUE` or `NULL`.
+#'   The default is to check only if `in_place` is `TRUE` or `NULL`.
 #'
 #' @return A tbl object of the same structure as `x`.
-#'   If `inplace = TRUE`, [invisible] and identical to `x`.
+#'   If `in_place = TRUE`, [invisible] and identical to `x`.
 #'
 #' @name rows-db
 #' @example example/rows-db.R
@@ -31,13 +31,13 @@ NULL
 #' @export
 #' @rdname rows-db
 rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
-                                inplace = NULL, copy = FALSE, check = NULL) {
+                                in_place = NULL, copy = FALSE, check = NULL) {
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
   by <- names(y_key)
   x_key <- db_key(x, by)
 
-  name <- target_table_name(x, inplace)
+  name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
     # Checking optional, can rely on primary key constraint
@@ -66,7 +66,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
 #' @export
 #' @rdname rows-db
 rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
-                                inplace = NULL, copy = FALSE, check = NULL) {
+                                in_place = NULL, copy = FALSE, check = NULL) {
   y <- auto_copy(x, y, copy = copy)
   y_key <- db_key(y, by)
   by <- names(y_key)
@@ -75,7 +75,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
   # FIXME: Case when y has no extra columns
   new_columns <- setdiff(colnames(y), by)
 
-  name <- target_table_name(x, inplace)
+  name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
     # Checking optional, can rely on primary key constraint
@@ -139,25 +139,25 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
   }
 }
 
-target_table_name <- function(x, inplace) {
+target_table_name <- function(x, in_place) {
   name <- dbplyr::remote_name(x)
 
   # Only write if requested
-  if (!is_null(name) && is_true(inplace)) {
+  if (!is_null(name) && is_true(in_place)) {
     return(name)
   }
 
   # Abort if requested but can't write
-  if (is_null(name) && is_true(inplace)) {
-    abort("Can't determine name for target table. Set `inplace = FALSE` to return a lazy table.")
+  if (is_null(name) && is_true(in_place)) {
+    abort("Can't determine name for target table. Set `in_place = FALSE` to return a lazy table.")
   }
 
   # Verbose by default
-  if (is_null(inplace)) {
+  if (is_null(in_place)) {
     if (is_null(name)) {
-      inform("Result is returned as lazy table, because `x` does not correspond to a table that can be updated. Use `inplace = FALSE` to mute this message.")
+      inform("Result is returned as lazy table, because `x` does not correspond to a table that can be updated. Use `in_place = FALSE` to mute this message.")
     } else {
-      inform("Result is returned as lazy table. Use `inplace = FALSE` to mute this message, or `inplace = TRUE` to write to the underlying table.")
+      inform("Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.")
     }
   }
 

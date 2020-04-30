@@ -1,4 +1,4 @@
-#' inplaceing data for multiple tables
+#' Modifying rows for multiple tables
 #'
 #' @description
 #' \lifecycle{experimental}
@@ -15,7 +15,7 @@
 #'
 #' These operations, in contrast to all other operations,
 #' may lead to irreversible changes to the underlying database.
-#' Therefore, inplaceence must be requested explicitly with `inplace = TRUE`.
+#' Therefore, in-place operation must be requested explicitly with `in_place = TRUE`.
 #' By default, an informative message is given.
 #'
 #' @inheritParams rows_insert
@@ -24,7 +24,7 @@
 #' @param ... Must be empty.
 #'
 #' @return A dm object of the same [dm_ptype()] as `x`.
-#'   If `inplace = TRUE`, [invisible] and identical to `x`.
+#'   If `in_place = TRUE`, [invisible] and identical to `x`.
 #'
 #' @name rows-dm
 #' @example example/rows-dm.R
@@ -36,13 +36,13 @@ NULL
 #' `dm_rows_insert()` adds new records.
 #' The primary keys must differ from existing records.
 #' This must be ensured by the caller and might be checked by the underlying database.
-#' Use `inplace = FALSE` and apply [dm_rows_examine_constraints()] to check beforehand.
+#' Use `in_place = FALSE` and apply [dm_rows_examine_constraints()] to check beforehand.
 #' @rdname rows-dm
 #' @export
-dm_rows_insert <- function(x, y, ..., inplace = NULL) {
+dm_rows_insert <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_insert, top_down = TRUE, inplace)
+  dm_rows(x, y, rows_insert, top_down = TRUE, in_place)
 }
 
 # dm_rows_update
@@ -52,10 +52,10 @@ dm_rows_insert <- function(x, y, ..., inplace = NULL) {
 #
 # @rdname rows-dm
 # @export
-dm_rows_update <- function(x, y, ..., inplace = NULL) {
+dm_rows_update <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, tbl_update, top_down = TRUE, inplace)
+  dm_rows(x, y, rows_update, top_down = TRUE, in_place)
 }
 
 # dm_rows_upsert
@@ -65,10 +65,10 @@ dm_rows_update <- function(x, y, ..., inplace = NULL) {
 #
 # @rdname rows-dm
 # @export
-dm_rows_upsert <- function(x, y, ..., inplace = NULL) {
+dm_rows_upsert <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, tbl_upsert, top_down = TRUE, inplace)
+  dm_rows(x, y, rows_upsert, top_down = TRUE, in_place)
 }
 
 # dm_rows_delete
@@ -78,10 +78,10 @@ dm_rows_upsert <- function(x, y, ..., inplace = NULL) {
 #
 # @rdname rows-dm
 # @export
-dm_rows_delete <- function(x, y, ..., inplace = NULL) {
+dm_rows_delete <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, tbl_delete, top_down = FALSE, inplace)
+  dm_rows(x, y, rows_delete, top_down = FALSE, in_place)
 }
 
 # dm_rows_truncate
@@ -91,21 +91,21 @@ dm_rows_delete <- function(x, y, ..., inplace = NULL) {
 #
 # @rdname rows-dm
 # @export
-dm_rows_truncate <- function(x, y, ..., inplace = NULL) {
+dm_rows_truncate <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, tbl_truncate, top_down = FALSE, inplace)
+  dm_rows(x, y, rows_truncate, top_down = FALSE, in_place)
 }
 
-dm_rows <- function(x, y, operation, top_down, inplace = NULL) {
+dm_rows <- function(x, y, operation, top_down, in_place = NULL) {
   dm_rows_check(x, y)
 
-  if (is_null(inplace)) {
-    message("Not persisting, use `inplace = FALSE` to turn off this message.")
-    inplace <- FALSE
+  if (is_null(in_place)) {
+    message("Not persisting, use `in_place = FALSE` to turn off this message.")
+    in_place <- FALSE
   }
 
-  dm_rows_run(x, y, operation, top_down, inplace)
+  dm_rows_run(x, y, operation, top_down, in_place)
 }
 
 dm_rows_check <- function(x, y) {
@@ -146,7 +146,7 @@ check_keys_compatible <- function(x, y) {
 
 
 
-dm_rows_run <- function(x, y, tbl_op, top_down, inplace) {
+dm_rows_run <- function(x, y, rows_op, top_down, in_place) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
@@ -159,8 +159,8 @@ dm_rows_run <- function(x, y, tbl_op, top_down, inplace) {
   # FIXME: Extract keys for upsert and delete
   # Use keyholder?
 
-  # run operation(target_tbl, source_tbl, inplace = inplace) for each table
-  op_results <- map2(target_tbls, tbls, tbl_op, inplace = inplace)
+  # run operation(target_tbl, source_tbl, in_place = in_place) for each table
+  op_results <- map2(target_tbls, tbls, rows_op, in_place = in_place)
 
   if (identical(unname(op_results), unname(target_tbls))) {
     out <- x
@@ -170,7 +170,7 @@ dm_rows_run <- function(x, y, tbl_op, top_down, inplace) {
       dm_patch_tbl(!!!op_results)
   }
 
-  if (inplace) {
+  if (in_place) {
     invisible(out)
   } else {
     out
