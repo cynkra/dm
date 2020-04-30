@@ -36,7 +36,7 @@ NULL
 #' `dm_rows_insert()` adds new records.
 #' The primary keys must differ from existing records.
 #' This must be ensured by the caller and might be checked by the underlying database.
-#' Use `in_place = FALSE` and apply [dm_rows_examine_constraints()] to check beforehand.
+#' Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
 #' @rdname rows-dm
 #' @export
 dm_rows_insert <- function(x, y, ..., in_place = NULL) {
