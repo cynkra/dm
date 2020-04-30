@@ -38,7 +38,7 @@ verify_output("out/rows-dm.txt", {
   print(dm_nrow(flights_sqlite))
 
   # Explicitly request persistence:
-  dm_rows_insert(flights_sqlite, flights_jan_sqlite, persist = TRUE)
+  dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
   print(dm_nrow(flights_sqlite))
 
   # Second update:
@@ -59,7 +59,7 @@ verify_output("out/rows-dm.txt", {
   flights_new <- dm_rows_insert(
     flights_sqlite,
     flights_feb_sqlite,
-    persist = FALSE
+    in_place = FALSE
   )
   print(dm_nrow(flights_new))
   print(dm_nrow(flights_sqlite))
@@ -69,6 +69,6 @@ verify_output("out/rows-dm.txt", {
     dm_examine_constraints()
 
   # Apply:
-  dm_rows_insert(flights_sqlite, flights_feb_sqlite, persist = TRUE)
+  dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
   print(dm_nrow(flights_sqlite))
 })
