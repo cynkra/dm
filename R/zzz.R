@@ -11,7 +11,7 @@
 
   register_pkgdown_methods()
 
-  replace_if_dplyr_has(rows_insert)
+  pkg <- replace_if_dplyr_has(rows_insert)
   replace_if_dplyr_has(rows_update)
   replace_if_dplyr_has(rows_patch)
   replace_if_dplyr_has(rows_upsert)
@@ -21,4 +21,9 @@
   register_if_dplyr_hasnt(rows_patch.data.frame)
   register_if_dplyr_hasnt(rows_upsert.data.frame)
   register_if_dplyr_hasnt(rows_delete.data.frame)
+
+  if (pkg == "dplyr") {
+    vctrs::s3_register("dplyr::rows_insert", "tbl_dbi")
+    vctrs::s3_register("dplyr::rows_update", "tbl_dbi")
+  }
 }

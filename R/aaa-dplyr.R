@@ -5,6 +5,9 @@ replace_if_dplyr_has <- function(fun) {
   value <- mget(fun, dplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
   if (!is.null(value)) {
     assign(fun, value, inherits = TRUE)
+    "dplyr"
+  } else {
+    "dm"
   }
 }
 
