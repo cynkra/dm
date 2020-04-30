@@ -12,6 +12,19 @@ expect_equivalent_dm <- function(dm1, dm2) {
   expect_equal(dm_get_all_fks_impl(dm1), dm_get_all_fks_impl(dm2))
 }
 
+expect_equivalent_why <- function(ex1, ex2) {
+  if (inherits(my_test_src(), "src_dbi")) {
+    ex1 <-
+      ex1 %>%
+      mutate(why = (why != ""))
+    ex2 <-
+      ex2 %>%
+      mutate(why = (why != ""))
+  }
+
+  expect_identical(ex1, ex2)
+}
+
 expect_dm_error <- function(expr, class) {
   expect_error(expr, class = dm_error(class))
 }
@@ -27,9 +40,13 @@ expect_name_repair_message <- function(expr) {
 }
 
 arrange_if_no_list <- function(tbl) {
-  arrange_if(tbl, function(x) {
-    !is_list(x)
-  })
+  if (inherits(tbl, "tbl_dbi")) {
+    arrange_all(tbl)
+  } else {
+    arrange_if(tbl, function(x) {
+      !is_list(x)
+    })
+  }
 }
 
 # are two tables identical minus the `src`

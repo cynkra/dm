@@ -192,7 +192,7 @@ test_that("dm_enum_fk_candidates() works as intended?", {
 
 test_that("enum_fk_candidates() works properly", {
   expect_silent(
-    expect_identical(
+    expect_equivalent_why(
       enum_fk_candidates(zoomed_dm(), tf_3),
       dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_3)
     )

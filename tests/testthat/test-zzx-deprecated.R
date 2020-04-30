@@ -186,6 +186,7 @@ test_that("other FK functions work", {
     dm_rm_fk(dm_for_filter(), tf_2, d, tf_1)
   )
 
+  skip_if_remote_src()
   expect_identical(
     cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1),
     dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
@@ -226,6 +227,8 @@ test_that("cdm_learn_from_db() works from PG", {
 
 test_that("cdm_examine_constraints() works", {
   skip_on_cran()
+  skip_if_src("postgres")
+  skip_if_src("mssql")
 
   expect_identical(
     cdm_check_constraints(bad_dm()),

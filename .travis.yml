@@ -11,7 +11,12 @@ before_install:
   - R -q -e 'tic::before_install()'
 install: R -q -e 'tic::install()'
 after_install: R -q -e 'tic::after_install()'
-before_script: R -q -e 'tic::before_script()'
+before_script:
+- R -q -e 'tic::before_script()'
+- travis_retry mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;" -uroot
+- travis_retry mysql -e "CREATE USER '"${USER}"'@'localhost'; FLUSH PRIVILEGES;" -uroot || true
+- travis_retry mysql -e "GRANT ALL PRIVILEGES ON test.* TO '"${USER}"'@'localhost'; FLUSH PRIVILEGES;" -uroot
+
 script: R -q -e 'tic::script()'
 after_success: R -q -e 'tic::after_success()'
 after_failure: R -q -e 'tic::after_failure()'
@@ -27,11 +32,16 @@ after_script: R -q -e 'tic::after_script()'
 
 # Custom parts:
 
+#addons
 addons:
+  postgresql: "9.4"
   apt:
     packages:
+    - libpq-dev
     - libmysqlclient-dev
     - libssh2-1-dev
+    - libsodium-dev
+    - libv8-dev
 
 # Header
 language: r
@@ -59,6 +69,11 @@ jobs:
   - r: release
     env:
     - TIC_ONLY_STYLER=true
+  - r: release
+    env:
+    - MODE=db-tests
+    # MariaDB and MSSQL need pull requests from dbplyr and RMariaDB
+    script: make -j 3 -O qtest-sqlite qtest-postgres
   - r: 3.3
   - stage: docs
     env:
@@ -88,10 +103,7 @@ env:
   - MAKEFLAGS="-j 2"
   - _R_CHECK_PACKAGE_DEPENDS_IGNORE_MISSING_ENHANCES_="true"
 
-addons:
-  apt:
-    packages:
-      - libv8-dev
-
 #services
 services:
+- MySQL
+- postgresql

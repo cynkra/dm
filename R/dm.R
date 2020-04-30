@@ -510,7 +510,6 @@ format.dm <- function(x, ...) {
 }
 
 #' @export
-#' @import cli
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
   def <- dm_get_def(x)
