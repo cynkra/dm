@@ -70,7 +70,8 @@ jobs:
   - r: release
     env:
     - MODE=db-tests
-    script: make -j 3 -O qtest-sqlite qtest-postgres qtest-maria
+    # MariaDB and MSSQL need pull requests from dbplyr and RMariaDB
+    script: make -j 3 -O qtest-sqlite qtest-postgres
   - r: 3.3
   - stage: docs
     env:
