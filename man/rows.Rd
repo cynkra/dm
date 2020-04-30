@@ -31,6 +31,13 @@ and \code{y}.
 By default, we use the first column in \code{y}, since the first column is
 a reasonable place to put an identifier variable.}
 
+\item{...}{Other parameters passed onto methods.}
+
+\item{copy}{If \code{x} and \code{y} are not from the same data source,
+and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
+same src as \code{x}.  This allows you to join tables across srcs, but
+it is a potentially expensive operation so you must opt into it.}
+
 \item{in_place}{Should \code{x} be modified in place? This argument is only
 relevant for mutable backends (e.g. databases, data.tables).
 

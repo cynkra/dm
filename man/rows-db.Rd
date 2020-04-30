@@ -6,39 +6,44 @@
 \alias{rows_update.tbl_dbi}
 \title{Updating database tables}
 \usage{
-\method{rows_insert}{tbl_dbi}(x, y, by = NULL, ..., inplace = NULL, copy = FALSE, check = NULL)
+\method{rows_insert}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
 
-\method{rows_update}{tbl_dbi}(x, y, by = NULL, ..., inplace = NULL, copy = FALSE, check = NULL)
+\method{rows_update}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
 }
 \arguments{
-\item{x}{Target table object.}
+\item{x}{A pair of data frames or data frame extensions (e.g. a tibble).
+\code{y} must have the same columns of \code{x} or a subset.}
 
-\item{y}{Source table object. All columns in \code{y} must exist in \code{x}.}
+\item{y}{A pair of data frames or data frame extensions (e.g. a tibble).
+\code{y} must have the same columns of \code{x} or a subset.}
 
-\item{by}{Key columns as unnamed character vector.
-All columns in \code{by} must exist in \code{y} (and, by extension, in \code{x}).
-The default is the first column of \code{y}.}
+\item{by}{An unnamed character vector giving the key columns. The key
+values must uniquely identify each row (i.e. each combination of key
+values occurs at most once), and the key columns must exist in both \code{x}
+and \code{y}.
 
-\item{inplace}{This argument is only relevant for mutable backends,
-e.g. databases or \pkg{dtplyr}.
-For data frames, these operations always return a modified copy
-of the data.
-An informative message is given if set to \code{TRUE}.
+By default, we use the first column in \code{y}, since the first column is
+a reasonable place to put an identifier variable.}
 
-For mutable backends, set to \code{FALSE} for running the operation
-without updating the data in place.
-In this mode, a modified version of \code{x} is returned, as for data frames.
-This allows verifying the results of an operation before actually
-applying it.
-Set to \code{TRUE} to perform the update on the remote table.
-The default is \code{FALSE} with an informative message.}
+\item{...}{Other parameters passed onto methods.}
+
+\item{in_place}{Should \code{x} be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).
+
+When \code{TRUE}, a modified version of \code{x} is returned invisibly;
+when \code{FALSE}, a new object representing the resulting changes is returned.}
+
+\item{copy}{If \code{x} and \code{y} are not from the same data source,
+and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
+same src as \code{x}.  This allows you to join tables across srcs, but
+it is a potentially expensive operation so you must opt into it.}
 
 \item{check}{Set to \code{TRUE} to always check keys, or \code{FALSE} to never check.
-The default is to check only if \code{inplace} is \code{TRUE} or \code{NULL}.}
+The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.}
 }
 \value{
 A tbl object of the same structure as \code{x}.
-If \code{inplace = TRUE}, \link{invisible} and identical to \code{x}.
+If \code{in_place = TRUE}, \link{invisible} and identical to \code{x}.
 }
 \description{
 \lifecycle{experimental}
@@ -52,7 +57,7 @@ On mutable backends like databases, these operations manipulate the
 underlying storage.
 In contrast to all other operations,
 these operations may lead to irreversible changes to the underlying database.
-Therefore, in-place updates must be requested explicitly with \code{inplace = TRUE}.
+Therefore, in-place updates must be requested explicitly with \code{in_place = TRUE}.
 By default, an informative message is given.
 Unlike \code{\link[=compute]{compute()}} or \code{\link[=copy_to]{copy_to()}}, no new tables are created.
 }
@@ -62,10 +67,10 @@ data
 
 try(rows_insert(data, tibble(a = 4, b = "z")))
 rows_insert(data, tibble(a = 4, b = "z"), copy = TRUE)
-rows_update(data, tibble(a = 2:3, b = "w"), copy = TRUE, inplace = FALSE)
+rows_update(data, tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
 
-rows_insert(data, memdb_frame(a = 4, b = "z"), inplace = TRUE)
+rows_insert(data, memdb_frame(a = 4, b = "z"), in_place = TRUE)
 data
-rows_update(data, memdb_frame(a = 2:3, b = "w"), inplace = TRUE)
+rows_update(data, memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
 data
 }

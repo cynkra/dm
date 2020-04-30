@@ -3,9 +3,9 @@
 \name{rows-dm}
 \alias{rows-dm}
 \alias{dm_rows_insert}
-\title{inplaceing data for multiple tables}
+\title{Modifying rows for multiple tables}
 \usage{
-dm_rows_insert(x, y, ..., inplace = NULL)
+dm_rows_insert(x, y, ..., in_place = NULL)
 }
 \arguments{
 \item{x}{Target \code{dm} object.}
@@ -14,23 +14,15 @@ dm_rows_insert(x, y, ..., inplace = NULL)
 
 \item{...}{Must be empty.}
 
-\item{inplace}{This argument is only relevant for mutable backends,
-e.g. databases or \pkg{dtplyr}.
-For data frames, these operations always return a modified copy
-of the data.
-An informative message is given if set to \code{TRUE}.
+\item{in_place}{Should \code{x} be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).
 
-For mutable backends, set to \code{FALSE} for running the operation
-without updating the data in place.
-In this mode, a modified version of \code{x} is returned, as for data frames.
-This allows verifying the results of an operation before actually
-applying it.
-Set to \code{TRUE} to perform the update on the remote table.
-The default is \code{FALSE} with an informative message.}
+When \code{TRUE}, a modified version of \code{x} is returned invisibly;
+when \code{FALSE}, a new object representing the resulting changes is returned.}
 }
 \value{
 A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{x}.
-If \code{inplace = TRUE}, \link{invisible} and identical to \code{x}.
+If \code{in_place = TRUE}, \link{invisible} and identical to \code{x}.
 }
 \description{
 \lifecycle{experimental}
@@ -47,13 +39,13 @@ tables receive insertions before child (fact) tables.
 
 These operations, in contrast to all other operations,
 may lead to irreversible changes to the underlying database.
-Therefore, inplaceence must be requested explicitly with \code{inplace = TRUE}.
+Therefore, in-place operation must be requested explicitly with \code{in_place = TRUE}.
 By default, an informative message is given.
 
 \code{dm_rows_insert()} adds new records.
 The primary keys must differ from existing records.
 This must be ensured by the caller and might be checked by the underlying database.
-Use \code{inplace = FALSE} and apply \code{\link[=dm_rows_examine_constraints]{dm_rows_examine_constraints()}} to check beforehand.
+Use \code{in_place = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.
 }
 \examples{
 # Establish database connection:
@@ -99,7 +91,7 @@ dm_rows_insert(flights_sqlite, flights_jan_sqlite)
 print(dm_nrow(flights_sqlite))
 
 # Explicitly request persistence:
-dm_rows_insert(flights_sqlite, flights_jan_sqlite, inplace = TRUE)
+dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
 print(dm_nrow(flights_sqlite))
 
 # Second update:
@@ -120,7 +112,7 @@ flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
 flights_new <- dm_rows_insert(
   flights_sqlite,
   flights_feb_sqlite,
-  inplace = FALSE
+  in_place = FALSE
 )
 print(dm_nrow(flights_new))
 print(dm_nrow(flights_sqlite))
@@ -130,6 +122,6 @@ flights_new \%>\%
   dm_examine_constraints()
 
 # Apply:
-dm_rows_insert(flights_sqlite, flights_feb_sqlite, inplace = TRUE)
+dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
 print(dm_nrow(flights_sqlite))
 }
