@@ -1,3 +1,11 @@
+# dm 0.1.1.9008
+
+- `examine_cardinality()`, `dm_examine_constraints()` and `enum_pk_candidates()` now work for columns named `n`.
+- `dm_examine_constraints()` now prints a different message if a dm has no constraints defined.
+- Fix lifecycle warning in `dm_paste()`.
+- `dm_set_key_constraints()` (and by extension `dm_copy_to(set_key_constraints = TRUE)`) now quote identifiers for the SQL that creates foreign keys on the database.
+
+
 # dm 0.1.1.9007
 
 - Ensure tests pass on remote sources (#334).

@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.1.9007
-Date: 2020-04-28
+Version: 0.1.1.9008
+Date: 2020-04-29
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -34,7 +34,7 @@ Depends:
     R (>= 3.3)
 Imports:
     backports,
-    cli,
+    cli (>= 2.0.0),
     DBI,
     dplyr,
     ellipsis,
@@ -53,13 +53,16 @@ Imports:
     vctrs (>= 0.2.0)
 Suggests: 
     brio,
+    crayon,
     DiagrammeR,
     DiagrammeRsvg,
     dbplyr,
     digest,
     fansi,
+    keyring,
     knitr,
     nycflights13,
+    odbc,
     rmarkdown,
     RMariaDB,
     RPostgres,
