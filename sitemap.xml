@@ -49,6 +49,9 @@
     <loc>https://krlmlr.github.io/dm/reference/dm_filter.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/dm_financial.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_flatten_to_tbl.html</loc>
   </url>
   <url>
@@ -94,6 +97,9 @@
     <loc>https://krlmlr.github.io/dm/reference/dm_paste.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/dm_ptype.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/reference/dm_rename.html</loc>
   </url>
   <url>
@@ -136,7 +142,13 @@
     <loc>https://krlmlr.github.io/dm/reference/tidyr_table_manipulation.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/utils_table_manipulation.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-db.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-filtering.html</loc>
@@ -170,9 +182,6 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/wip/dm-db.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-shiny-dynafilter.html</loc>

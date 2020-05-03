@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -51,7 +55,6 @@ set key.
 dm_rm_pk() removes a primary key from a table and leaves the dm object otherwise unaltered.
 Foreign keys that point to the table from other tables, can be optionally removed as well." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -69,7 +72,7 @@ Foreign keys that point to the table from other tables, can be optionally remove
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -83,7 +86,7 @@ Foreign keys that point to the table from other tables, can be optionally remove
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -122,6 +125,9 @@ Foreign keys that point to the table from other tables, can be optionally remove
     </li>
     <li>
       <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
+      <a href="../articles/dm-db.html">Working with databases</a>
     </li>
     <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
@@ -234,16 +240,90 @@ with current semantics.</p>
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_from_src.html'>dm_from_src</a></span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))
-<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) {
+  <span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(
+    <span class='kw'>planes</span> <span class='kw'>=</span> <span class='kw pkg'>nycflights13</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/nycflights13/man/planes.html'>planes</a></span>,
+    <span class='kw'>airports</span> <span class='kw'>=</span> <span class='kw pkg'>nycflights13</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/nycflights13/man/airports.html'>airports</a></span>
+  )
+} <span class='kw'>else</span> {
+  <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"Using mock-up data, install the nycflights13 package to fix."</span>)
+  <span class='no'>nycflights_dm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm.html'>dm</a></span>(
+    <span class='kw'>planes</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>tailnum</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>2</span>], <span class='kw'>manufacturer</span> <span class='kw'>=</span> <span class='st'>"Acme"</span>),
+    <span class='kw'>airports</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>faa</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>())
+  )
+}
 
+<span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg width="62pt" height="98pt"
+ viewBox="0.00 0.00 62.00 98.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 94)">
+<title>%0</title>
+<g id="a_graph0"><a xlink:title="Data Model">
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-94 58,-94 58,4 -4,4"/>
+</a>
+</g>
+<!-- airports -->
+<g id="node1" class="node">
+<title>airports</title>
+<polygon fill="#efebdd" stroke="transparent" points="4,-8 4,-28 50,-28 50,-8 4,-8"/>
+<text text-anchor="start" x="5.6192" y="-13.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text>
+<polygon fill="none" stroke="#555555" points="3,-7 3,-29 51,-29 51,-7 3,-7"/>
+</g>
+<!-- planes -->
+<g id="node2" class="node">
+<title>planes</title>
+<polygon fill="#efebdd" stroke="transparent" points="8,-62 8,-82 47,-82 47,-62 8,-62"/>
+<text text-anchor="start" x="9.6178" y="-67.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text>
+<polygon fill="none" stroke="#555555" points="6.5,-61 6.5,-83 47.5,-83 47.5,-61 6.5,-61"/>
+</g>
+</g>
+</svg>
+<div class='input'>
 <span class='co'># the following works</span>
 <span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_add_pk</span>(<span class='no'>planes</span>, <span class='no'>tailnum</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_add_pk</span>(<span class='no'>airports</span>, <span class='no'>faa</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
-
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg width="62pt" height="110pt"
+ viewBox="0.00 0.00 62.00 110.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 106)">
+<title>%0</title>
+<g id="a_graph0"><a xlink:title="Data Model">
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-106 58,-106 58,4 -4,4"/>
+</a>
+</g>
+<!-- airports -->
+<g id="node1" class="node">
+<title>airports</title>
+<polygon fill="#efebdd" stroke="transparent" points="4,-21 4,-41 50,-41 50,-21 4,-21"/>
+<text text-anchor="start" x="5.6192" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#000000">airports</text>
+<polygon fill="#ffffff" stroke="transparent" points="4,-1 4,-21 50,-21 50,-1 4,-1"/>
+<text text-anchor="start" x="6" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text>
+<polygon fill="none" stroke="#555555" points="3,0 3,-42 51,-42 51,0 3,0"/>
+</g>
+<!-- planes -->
+<g id="node2" class="node">
+<title>planes</title>
+<polygon fill="#efebdd" stroke="transparent" points="4,-81 4,-101 50,-101 50,-81 4,-81"/>
+<text text-anchor="start" x="9.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text>
+<polygon fill="#ffffff" stroke="transparent" points="4,-61 4,-81 50,-81 50,-61 4,-61"/>
+<text text-anchor="start" x="5.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text>
+<polygon fill="none" stroke="#555555" points="3,-60 3,-102 51,-102 51,-60 3,-60"/>
+</g>
+</g>
+</svg>
+<div class='input'>
 <span class='co'># the following does not work (throws an error)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(
   <span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
@@ -251,18 +331,83 @@ with current semantics.</p>
 )</div><div class='output co'>#&gt; Error : (`manufacturer`) not a unique key of `table_from_dm`.</div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_rm_pk</span>(<span class='no'>airports</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()</div></pre>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg width="152pt" height="198pt"
+ viewBox="0.00 0.00 152.00 198.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 194)">
+<title>%0</title>
+<g id="a_graph0"><a xlink:title="Data Model">
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-194 148,-194 148,4 -4,4"/>
+</a>
+</g>
+<!-- airlines -->
+<g id="node1" class="node">
+<title>airlines</title>
+<polygon fill="#ed7d31" stroke="transparent" points="95,-81 95,-101 140,-101 140,-81 95,-81"/>
+<text text-anchor="start" x="96.8969" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airlines</text>
+<polygon fill="#fbe5d5" stroke="transparent" points="95,-61 95,-81 140,-81 140,-61 95,-61"/>
+<text text-anchor="start" x="97" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text>
+<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="93.5,-60 93.5,-102 140.5,-102 140.5,-60 93.5,-60"/>
+</g>
+<!-- airports -->
+<g id="node2" class="node">
+<title>airports</title>
+<polygon fill="#ed7d31" stroke="transparent" points="4,-108 4,-128 50,-128 50,-108 4,-108"/>
+<text text-anchor="start" x="5.6192" y="-113.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airports</text>
+<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="3,-107 3,-129 51,-129 51,-107 3,-107"/>
+</g>
+<!-- flights -->
+<g id="node3" class="node">
+<title>flights</title>
+<polygon fill="#5b9bd5" stroke="transparent" points="4,-61 4,-81 50,-81 50,-61 4,-61"/>
+<text text-anchor="start" x="9.1115" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">flights</text>
+<polygon fill="#deebf6" stroke="transparent" points="4,-41 4,-61 50,-61 50,-41 4,-41"/>
+<text text-anchor="start" x="6" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text>
+<polygon fill="#deebf6" stroke="transparent" points="4,-21 4,-41 50,-41 50,-21 4,-21"/>
+<text text-anchor="start" x="5.6115" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text>
+<polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="3,-20 3,-82 51,-82 51,-20 3,-20"/>
+</g>
+<!-- flights&#45;&gt;airlines -->
+<g id="edge1" class="edge">
+<title>flights:carrier&#45;&gt;airlines:carrier</title>
+<path fill="none" stroke="#555555" d="M50,-51C67.9536,-51 72.0056,-64.4583 84.9633,-69.2948"/>
+<polygon fill="#555555" stroke="#555555" points="84.555,-72.7755 95,-71 85.7275,-65.8744 84.555,-72.7755"/>
+</g>
+<!-- planes -->
+<g id="node4" class="node">
+<title>planes</title>
+<polygon fill="#ed7d31" stroke="transparent" points="94,-21 94,-41 140,-41 140,-21 94,-21"/>
+<text text-anchor="start" x="99.1178" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text>
+<polygon fill="#fbe5d5" stroke="transparent" points="94,-1 94,-21 140,-21 140,-1 94,-1"/>
+<text text-anchor="start" x="95.6115" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text>
+<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="93,0 93,-42 141,-42 141,0 93,0"/>
+</g>
+<!-- flights&#45;&gt;planes -->
+<g id="edge2" class="edge">
+<title>flights:tailnum&#45;&gt;planes:tailnum</title>
+<path fill="none" stroke="#555555" d="M50,-31C67.4533,-31 71.4111,-17.7969 83.8035,-12.8457"/>
+<polygon fill="#555555" stroke="#555555" points="84.7834,-16.2253 94,-11 83.5365,-9.3372 84.7834,-16.2253"/>
+</g>
+<!-- weather -->
+<g id="node5" class="node">
+<title>weather</title>
+<polygon fill="#70ad47" stroke="transparent" points="3,-162 3,-182 51,-182 51,-162 3,-162"/>
+<text text-anchor="start" x="4.8492" y="-167.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text>
+<polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="2,-161 2,-183 52,-183 52,-161 2,-161"/>
+</g>
+</g>
+</svg>
+</pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#compound-keys">Compound keys</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -273,7 +418,7 @@ with current semantics.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

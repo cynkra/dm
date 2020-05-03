@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -70,7 +74,6 @@ To get a filtered table, use dm_apply_filters_to_tbl(), to apply filters to all 
 is_dm() returns TRUE if the input is of class dm.
 as_dm() coerces objects to the dm class" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -88,7 +91,7 @@ as_dm() coerces objects to the dm class" />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -102,7 +105,7 @@ as_dm() coerces objects to the dm class" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -141,6 +144,9 @@ as_dm() coerces objects to the dm class" />
     </li>
     <li>
       <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
+      <a href="../articles/dm-db.html">Working with databases</a>
     </li>
     <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
@@ -313,11 +319,15 @@ and importing the primary and foreign keys</p></li>
 #&gt;  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
 #&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
 #&gt; # … with 1,448 more rows</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()</div><div class='output co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_src</span>()</div><div class='output co'>#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; tbls:</div><div class='input'><span class='co'># this works only when tables of `dm` are on DB</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(), <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()) <span class='kw'>%&gt;%</span>
-    <span class='fu'>dm_get_con</span>()
-}
+#&gt; tbls:</div><div class='input'>
+<span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(
+  <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(),
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
+  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_get_con</span>()</div><div class='output co'>#&gt; &lt;SQLiteConnection&gt;
+#&gt;   Path: :memory:
+#&gt;   Extensions: TRUE</div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_tables</span>()</div><div class='output co'>#&gt; $airlines
 #&gt; # A tibble: 16 x 2
 #&gt;    carrier name                       
@@ -390,20 +400,20 @@ and importing the primary and foreign keys</p></li>
 #&gt; # … with 3,312 more rows
 #&gt; 
 #&gt; $weather
-#&gt; # A tibble: 26,115 x 15
+#&gt; # A tibble: 861 x 15
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
 #&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-#&gt;  1 EWR     2013     1     1     1  39.0  26.1  59.4      270      10.4 
-#&gt;  2 EWR     2013     1     1     2  39.0  27.0  61.6      250       8.06
-#&gt;  3 EWR     2013     1     1     3  39.0  28.0  64.4      240      11.5 
-#&gt;  4 EWR     2013     1     1     4  39.9  28.0  62.2      250      12.7 
-#&gt;  5 EWR     2013     1     1     5  39.0  28.0  64.4      260      12.7 
-#&gt;  6 EWR     2013     1     1     6  37.9  28.0  67.2      240      11.5 
-#&gt;  7 EWR     2013     1     1     7  39.0  28.0  64.4      240      15.0 
-#&gt;  8 EWR     2013     1     1     8  39.9  28.0  62.2      250      10.4 
-#&gt;  9 EWR     2013     1     1     9  39.9  28.0  62.2      260      15.0 
-#&gt; 10 EWR     2013     1     1    10  41    28.0  59.6      260      13.8 
-#&gt; # … with 26,105 more rows, and 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;,
+#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06
+#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
+#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
+#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
+#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
+#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
+#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
+#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
+#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
+#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
+#&gt; # … with 851 more rows, and 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;,
 #&gt; #   pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;
 #&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='dm_get_filters.html'>dm_get_filters</a></span>()</div><div class='output co'>#&gt; # A tibble: 0 x 3
 #&gt; # … with 3 variables: table &lt;chr&gt;, filter &lt;list&gt;, zoomed &lt;lgl&gt;</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>validate_dm</span>()
@@ -441,15 +451,10 @@ and importing the primary and foreign keys</p></li>
 #&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
 #&gt; # … with 1,448 more rows</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -460,7 +465,7 @@ and importing the primary and foreign keys</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

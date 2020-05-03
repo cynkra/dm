@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Function reference" />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -62,7 +65,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -115,6 +118,9 @@
     </li>
     <li>
       <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
+    </li>
+    <li>
+      <a href="../articles/dm-db.html">Working with databases</a>
     </li>
     <li>
       <a href="../articles/dm-low-level.html">Low level operations</a>
@@ -169,6 +175,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -180,7 +191,7 @@
         <td>
           <p><code><a href="dm_from_src.html">dm_from_src()</a></code> </p>
         </td>
-        <td><p>dm_from_src()</p></td>
+        <td><p>Load a dm from a remote data source</p></td>
       </tr><tr>
         
         <td>
@@ -201,6 +212,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -233,6 +249,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -247,6 +268,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -285,6 +311,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -335,6 +366,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -349,6 +385,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -358,21 +399,27 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">filter(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
+          <p><code><a href="dplyr_table_manipulation.html">filter(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">pull(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
         </td>
-        <td><p><span class="pkg">dplyr</span> table manipulation methods for <code>zoomed_dm</code> objects</p></td>
+        <td><p><span class="pkg">dplyr</span> table manipulation methods for zoomed dm objects</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="tidyr_table_manipulation.html">unite(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
         </td>
-        <td><p><span class="pkg">tidyr</span> data manipulation methods for <code>zoomed_dm</code> objects</p></td>
+        <td><p><span class="pkg">tidyr</span> table manipulation methods for zoomed dm objects</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dplyr_join.html">left_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
         </td>
-        <td><p><span class="pkg">dplyr</span> join methods for <code>zoomed_dm</code> objects</p></td>
+        <td><p><span class="pkg">dplyr</span> join methods for zoomed dm objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="utils_table_manipulation.html">head(<i>&lt;zoomed_dm&gt;</i>)</a></code> <code><a href="utils_table_manipulation.html">tail(<i>&lt;zoomed_dm&gt;</i>)</a></code> </p>
+        </td>
+        <td><p><span class="pkg">utils</span> table manipulation methods for <code>zoomed_dm</code> objects</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -381,6 +428,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -407,6 +459,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -433,6 +490,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -447,6 +509,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -467,6 +534,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -505,40 +577,44 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
           <p><code><a href="dm_nycflights13.html">dm_nycflights13()</a></code> </p>
         </td>
-        <td><p>Creates a <code>dm</code> object for the <span class="pkg">nycflights13</span> data</p></td>
+        <td><p>Creates a dm object for the <span class="pkg">nycflights13</span> data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dm_financial.html">dm_financial()</a></code> <code><a href="dm_financial.html">dm_financial_sqlite()</a></code> </p>
+        </td>
+        <td><p>Creates a dm object for the Financial data</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dm_nrow.html">dm_nrow()</a></code> </p>
         </td>
         <td><p>Number of rows</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dm_ptype.html">dm_ptype()</a></code> </p>
+        </td>
+        <td><p>Prototype for a dm object</p></td>
       </tr>
     </tbody>
     </table>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-creation-and-basic-functionality">Creation and basic functionality</a></li>
-      <li><a href="#section-tables">Tables</a></li>
-      <li><a href="#section-table-retrieval-table-info-and-db-interaction-methods-dplyr-">Table retrieval, table info and DB interaction methods (`dplyr`)</a></li>
-      <li><a href="#section-primary-keys">Primary keys</a></li>
-      <li><a href="#section-foreign-keys">Foreign keys</a></li>
-      <li><a href="#section-visualization">Visualization</a></li>
-      <li><a href="#section-zooming">Zooming</a></li>
-      <li><a href="#section-flattening">Flattening</a></li>
-      <li><a href="#section-filtering-and-column-selection">Filtering and column selection</a></li>
-      <li><a href="#section-upload">Upload</a></li>
-      <li><a href="#section-table-surgery">Table surgery</a></li>
-      <li><a href="#section-check-keys-and-cardinalities">Check keys and cardinalities</a></li>
-      <li><a href="#section-miscellaneous">Miscellaneous</a></li>
-    </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -549,7 +625,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
