@@ -119,7 +119,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class ‘dm’ and basic operations</h1>
             
-            <h4 class="date">2020-04-30</h4>
+            <h4 class="date">2020-05-03</h4>
       
       
       <div class="hidden name"><code>dm-class-and-basic-operations.Rmd</code></div>
@@ -366,7 +366,7 @@
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">flights_dm_with_fk</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span>(<span class="kw">table</span> <span class="kw">=</span> <span class="no">flights</span>, <span class="kw">column</span> <span class="kw">=</span> <span class="no">dest</span>, <span class="kw">ref_table</span> <span class="kw">=</span> <span class="no">airports</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span>(<span class="no">flights</span>, <span class="no">airports</span>)
-<span class="co">#&gt; Error: (`dest`) is not a foreign key of table `flights` into table `airports`. Foreign key columns are: (`origin`).</span>
+<span class="co">#&gt; Error: (`dest`) is not a foreign key of table `flights` into table `airports`.</span>
 <span class="no">flights_dm_with_fk</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span>(<span class="no">flights</span>, <span class="no">origin</span>, <span class="no">airports</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span>(<span class="no">flights</span>, <span class="no">airports</span>)
