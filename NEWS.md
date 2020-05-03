@@ -1,3 +1,8 @@
+# dm 0.1.2
+
+- Same as previous version.
+
+
 # dm 0.1.1.9010
 
 - `dm_from_src()` gives a warning if tables cannot be accessed with `table_name = NULL`. If `table_names` is set, an error is raised instead (#348).
