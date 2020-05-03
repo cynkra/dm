@@ -306,3 +306,25 @@ check_pk <- function(table, column) {
   values <- commas(duplicate_values$data[[1]]$value, capped = TRUE, fun = fun)
   paste0("has duplicate values: ", values)
 }
+
+
+# Error -------------------------------------------------------------------
+
+abort_key_set_force_false <- function(table) {
+  abort(error_txt_key_set_force_false(table), .subclass = dm_error_full("key_set_force_false"))
+}
+
+error_txt_key_set_force_false <- function(table) {
+  glue("Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key.")
+}
+
+abort_first_rm_fks <- function(table, fk_tables) {
+  abort(error_txt_first_rm_fks(table, fk_tables), .subclass = dm_error_full("first_rm_fks"))
+}
+
+error_txt_first_rm_fks <- function(table, fk_tables) {
+  glue(
+    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
+    "First remove those or set `rm_referencing_fks = TRUE`."
+  )
+}

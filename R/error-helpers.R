@@ -10,16 +10,6 @@ dm_error_full <- function(x) {
   c(dm_error(x), "dm_error")
 }
 
-# abort and text for primary key handling errors --------------------------
-
-abort_key_set_force_false <- function(table) {
-  abort(error_txt_key_set_force_false(table), .subclass = dm_error_full("key_set_force_false"))
-}
-
-error_txt_key_set_force_false <- function(table) {
-  glue("Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key.")
-}
-
 # abort and text for key-helper functions ---------------------------------
 
 abort_not_unique_key <- function(table_name, column_names) {
@@ -108,33 +98,6 @@ error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
     "ref_table {tick(ref_table_name)} needs a primary key first. ",
     "Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key."
   )
-}
-
-abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                             parent_table_name, actual_fk_colnames) {
-  abort(
-    error_txt_is_not_fkc(
-      child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
-    ),
-    .subclass = dm_error_full("is_not_fkc")
-  )
-}
-
-error_txt_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                                 parent_table_name, actual_fk_colnames) {
-  glue(
-    "({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}. ",
-    "Foreign key columns are: ({commas(tick(actual_fk_colnames))})."
-  )
-}
-
-abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
-}
-
-error_txt_rm_fk_col_missing <- function() {
-  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 }
 
 # error helpers for draw_dm -----------------------------------------------
@@ -255,17 +218,6 @@ abort_key_constraints_need_db <- function() {
 
 error_txt_key_constraints_need_db <- function() {
   "Setting key constraints only works if the tables of the `dm` are on a database."
-}
-
-abort_first_rm_fks <- function(table, fk_tables) {
-  abort(error_txt_first_rm_fks(table, fk_tables), .subclass = dm_error_full("first_rm_fks"))
-}
-
-error_txt_first_rm_fks <- function(table, fk_tables) {
-  glue(
-    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
-    "First remove those or set `rm_referencing_fks = TRUE`."
-  )
 }
 
 abort_no_src_or_con <- function() {
