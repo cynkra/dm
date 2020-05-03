@@ -1,92 +1,51 @@
 # dm 0.1.2
 
-- Same as previous version.
+## Features
 
-
-# dm 0.1.1.9010
-
-- `dm_from_src()` gives a warning if tables cannot be accessed with `table_name = NULL`. If `table_names` is set, an error is raised instead (#348).
-
-
-# dm 0.1.1.9009
-
-- `dm_from_src()` gains `learn_keys` argument to control querying of primary and foreign keys from the database (#340).
-- Remove use of deprecated `src_df()` (#336).
-- Fix visualization of column that acts as a foreign key more than once (#37).
-- `dm_add_pk()`, `dm_rm_pk()`, `dm_add_fk()` and `dm_rm_fk()` are now stricter when keys exists or when attempting to remove keys that don't exist. A more relaxed mode of operation may be added later (#214).
-- Testing on SQLite, Postgres, RMariaDB, and SQL Server, requires development versions and various pull requests.
-
-
-# dm 0.1.1.9008
-
-- `examine_cardinality()`, `dm_examine_constraints()` and `enum_pk_candidates()` now work for columns named `n`.
+- `dm_from_src()` now works for databases other than Postgres and MSSQL (#288), gives a warning if tables cannot be accessed with `table_name = NULL` (#348), and gains `learn_keys` argument to control querying of primary and foreign keys from the database (#340).
 - `dm_examine_constraints()` now prints a different message if a dm has no constraints defined.
-- Fix lifecycle warning in `dm_paste()`.
-- `dm_set_key_constraints()` (and by extension `dm_copy_to(set_key_constraints = TRUE)`) now quote identifiers for the SQL that creates foreign keys on the database.
-
-
-# dm 0.1.1.9007
-
-- Ensure tests pass on remote sources (#334).
 - Disambiguation message now only lists column names for easier copy-pasting.
-- `dm_draw()` output is shown in examples (#251).
-- Implement `pull()`, `group_data()`, `group_indices()`, `group_vars()`, `group_keys()` and `groups()` for `"zoomed_dm"`.
-- Fix compatibility with dplyr 1.0.0 (#203).
-
-
-# dm 0.1.1.9006
-
-- `dm_paste()` supports writing the table definition via the new `options` argument. The `select` argument is soft-deprecated (#302).
-- `dm_paste()` can write the definition to a file via the new `path` argument (#302).
-- `collect()` gives a better error message when called on a `"zoomed_dm"` (#294).
-- Add infrastructure to test multiple data sources (#327).
-- Simplify tests: by default only data frames are tested (#312).
+- New methods for `"zoomed_dm"`: `head()`, `tail()`, `pull()`, `group_data()`, `group_indices()`, `group_vars()`, `group_keys()` and `groups()` (#236, #203).
+- `dm_paste()` supports writing colors and the table definition via the new `options` argument. The definition can be written to a file via the new `path` argument. The `select` argument is soft-deprecated (#218, #302).
 - `dm_add_tbl()` uses `rlang::list2()` internally, now accepts `:=` to specify table names.
-- `check_subset()` gives a clean error message if the tables are complex expressions.
-
-
-# dm 0.1.1.9005
-
-- `dm_from_src(schema = "...")` works on Postgres if `search_path` is not set on the connection.
-- New article "{dm} and databases" (#309, @jawond).
-- `dm_nycflights13(subset = TRUE)` memoizes subset and also reduces the size of the `weather` table.
-
-
-# dm 0.1.1.9004
-
 - New `dm_ptype()` (#301).
-- New `dm_financial()`.
+- New `dm_financial()` and `dm_financial_sqlite()`.
 - Printing dm objects from database sources with many tables is now faster (#308, @gadenbuie).
-
-
-# dm 0.1.1.9003
-
-- New `dm_financial_sqlite()`.
-- `compute.zoomed_dm()` no longer throws an error.
-- Remove DT import (#295).
 - `check_key()` now also works on a zoomed dm.
-- `dm_from_src()` works for databases other than Postgres and MSSQL (#288).
-
-
-# dm 0.1.1.9002
-
-- Don't implement `nest_join()` for now (#168).
-
-
-# dm 0.1.1.9001
-
-- New `nest_join()` method for `zoomed_dm` (#168).
-- Reorganize tests (#76).
-- `dm_paste()` produces code for setting colors (#218).
 - Key columns are always selected in a join operation, with a message (#153).
-- New `head()` and `tail()` methods for `zoomed_dm` (#236).
-- Expand definitions of deprecated functions (#204).
 - Support alpha colors for the table colors (#279).
 
 
-# dm 0.1.1.9000
+## Bug fixes
 
-Same as previous version.
+- Fix visualization of column that acts as a foreign key more than once (#37).
+- `dm_add_pk()`, `dm_rm_pk()`, `dm_add_fk()` and `dm_rm_fk()` are now stricter when keys exists or when attempting to remove keys that don't exist. A more relaxed mode of operation may be added later (#214).
+- `examine_cardinality()`, `dm_examine_constraints()` and `enum_pk_candidates()` now work for columns named `n`.
+- `dm_set_key_constraints()` (and by extension `dm_copy_to(set_key_constraints = TRUE)`) now quote identifiers for the SQL that creates foreign keys on the database.
+- `collect()` gives a better error message when called on a `"zoomed_dm"` (#294).
+- `check_subset()` gives a clean error message if the tables are complex expressions.
+- `dm_from_src(schema = "...")` works on Postgres if `search_path` is not set on the connection.
+- `compute.zoomed_dm()` no longer throws an error.
+- Remove unused DT import (#295).
+
+
+## Compatibility
+
+- Remove use of deprecated `src_df()` (#336).
+- Fix compatibility with dplyr 1.0.0 (#203).
+
+
+## Documentation
+
+- `dm_draw()` output is shown in examples (#251).
+- New article "{dm} and databases" (#309, @jawond).
+
+
+## Internal
+
+- Testing on local data frames (by default), optionally also SQLite, Postgres, RMariaDB, and SQL Server. Currently requires development versions and various pull requests (#334, #327, #312, #76).
+- `dm_nycflights13(subset = TRUE)` memoizes subset and also reduces the size of the `weather` table.
+- Expand definitions of deprecated functions (#204).
 
 
 # dm 0.1.1
