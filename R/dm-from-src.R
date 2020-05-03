@@ -76,7 +76,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
       }
 
       if (!all(table_names %in% tbls_in_dm)) {
-        abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, tbls_in_dm))
+        abort_tbl_access(setdiff(table_names, tbls_in_dm))
       }
       tbls_req <- intersect(tbls_in_dm, table_names)
 
@@ -86,9 +86,6 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
 
   src_tbl_names <- unique(src_tbls(src))
   if (!is_null(table_names)) {
-    if (!all(table_names %in% src_tbl_names)) {
-      abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
-    }
     src_tbl_names <- table_names
   }
 
