@@ -14,7 +14,7 @@ test_that("error messages do not change", {
     abort_not_bijective("child_table_name", "fk_col_name")
     abort_not_injective("child_table_name", "fk_col_name")
     abort_ref_tbl_has_no_pk("parent_table")
-    abort_is_not_fkc("child_table_name", c("wrong_fk_colname", "and_one_more"), "parent_table_name", c("actual_fk_colname", "and_one_more"))
+    abort_is_not_fkc("child_table_name", c("wrong_fk_colname", "and_one_more"), "parent_table_name")
     abort_rm_fk_col_missing()
     abort_last_col_missing()
     abort_no_cycles()
