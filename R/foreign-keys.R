@@ -216,12 +216,9 @@ dm_get_all_fks_impl <- function(dm) {
 #' @export
 #' @examples
 #'
-#' dm_rm_fk(
-#'   dm_nycflights13(cycle = TRUE),
-#'   flights,
-#'   dest,
-#'   airports
-#' )
+#' dm_nycflights13(cycle = TRUE) %>%
+#'   dm_rm_fk(flights, dest, airports) %>%
+#'   dm_draw()
 dm_rm_fk <- function(dm, table, columns, ref_table) {
   check_not_zoomed(dm)
 
@@ -413,4 +410,34 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     "{as.character(n_mismatch)} entries ({percentage_missing}%) of ",
     "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}"
   )
+}
+
+
+# Errors ------------------------------------------------------------------
+
+abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
+                             parent_table_name, actual_fk_colnames) {
+  abort(
+    error_txt_is_not_fkc(
+      child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
+    ),
+    .subclass = dm_error_full("is_not_fkc")
+  )
+}
+
+error_txt_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
+                                 parent_table_name, actual_fk_colnames) {
+  glue(
+    "({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
+    "{tick(child_table_name)} into table {tick(parent_table_name)}. ",
+    "Foreign key columns are: ({commas(tick(actual_fk_colnames))})."
+  )
+}
+
+abort_rm_fk_col_missing <- function() {
+  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
+}
+
+error_txt_rm_fk_col_missing <- function() {
+  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 }
