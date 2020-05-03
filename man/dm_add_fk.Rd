@@ -61,12 +61,9 @@ nycflights_dm \%>\%
   dm_add_fk(flights, tailnum, planes) \%>\%
   dm_draw()
 
-dm_rm_fk(
-  dm_nycflights13(cycle = TRUE),
-  flights,
-  dest,
-  airports
-)
+dm_nycflights13(cycle = TRUE) \%>\%
+  dm_rm_fk(flights, dest, airports) \%>\%
+  dm_draw()
 }
 \seealso{
 Other foreign key functions: 

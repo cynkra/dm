@@ -199,12 +199,9 @@ dm_get_all_fks_impl <- function(dm) {
 #' @export
 #' @examples
 #'
-#' dm_rm_fk(
-#'   dm_nycflights13(cycle = TRUE),
-#'   flights,
-#'   dest,
-#'   airports
-#' )
+#' dm_nycflights13(cycle = TRUE) %>%
+#'   dm_rm_fk(flights, dest, airports) %>%
+#'   dm_draw()
 dm_rm_fk <- function(dm, table, columns, ref_table) {
   check_not_zoomed(dm)
 
