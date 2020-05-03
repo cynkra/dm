@@ -391,17 +391,6 @@ abort_one_name_for_copy_to <- function(name) {
   )
 }
 
-# table not on src --------------------------------------------------------
-
-abort_req_tbl_not_avail <- function(avail, missing) {
-  abort(error_txt_req_tbl_not_avail(avail, missing), .subclass = dm_error_full("req_tbl_not_avail"))
-}
-
-error_txt_req_tbl_not_avail <- function(avail, missing) {
-  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
-}
-
-
 # table for which key should be set not in list of tables when creating dm -----------------------
 
 abort_unnamed_table_list <- function() {
