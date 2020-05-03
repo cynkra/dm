@@ -85,15 +85,22 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   }
 
   src_tbl_names <- unique(src_tbls(src))
-  if (is_null(table_names)) {
-    table_names <- src_tbl_names
-  } else {
+  if (!is_null(table_names)) {
     if (!all(table_names %in% src_tbl_names)) {
       abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
     }
+    src_tbl_names <- table_names
   }
 
-  tbls <- map(set_names(table_names), tbl, src = src)
+  tbls <- map(set_names(src_tbl_names), possibly(tbl, NULL), src = src)
+  bad <- map_lgl(tbls, is_null)
+  if (any(bad)) {
+    if (is_null(table_names)) {
+      warn_tbl_access(names(tbls)[bad])
+    } else {
+      abort_tbl_access(names(tbls)[bad])
+    }
+  }
 
   new_dm(tbls)
 }
@@ -109,10 +116,26 @@ error_txt_learn_keys <- function() {
   "Failed to learn keys from database. Use `learn_keys = FALSE` to work around."
 }
 
-abort_req_tbl_not_avail <- function(avail, missing) {
-  abort(error_txt_req_tbl_not_avail(avail, missing), .subclass = dm_error_full("req_tbl_not_avail"))
+abort_tbl_access <- function(bad) {
+  dm_abort(
+    error_txt_tbl_access(bad),
+    "tbl_access"
+  )
 }
 
-error_txt_req_tbl_not_avail <- function(avail, missing) {
-  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
+warn_tbl_access <- function(bad) {
+  dm_warn(
+    c(
+      error_txt_tbl_access(bad),
+      i = "Set the `table_name` argument to avoid this warning."
+    ),
+    "tbl_access"
+  )
+}
+
+error_txt_tbl_access <- function(bad) {
+  c(
+    glue("Table(s) {commas(tick(bad))} cannot be accessed."),
+    i = "Use `tbl(src, ...)` to troubleshoot."
+  )
 }

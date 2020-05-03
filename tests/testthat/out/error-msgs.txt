@@ -76,6 +76,12 @@ Error: Parameter `table_names` in `copy_dm_to()` needs to be a named vector whos
 > abort_key_constraints_need_db()
 Error: Setting key constraints only works if the tables of the `dm` are on a database.
 
+> abort_pk_not_defined("table")
+Error: Table `table` does not have a primary key.
+
+> abort_fk_exists("child", c("child_1", "child_2"), "parent")
+Error: (`child_1`, `child_2`) is alreay a foreign key of table `child` into table `parent`.
+
 > abort_first_rm_fks("parent", c("child_1", "child_2"))
 Error: There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those or set `rm_referencing_fks = TRUE`.
 
@@ -127,9 +133,12 @@ Error: You can't call `dm_zoom_to()` on a `zoomed_dm`. Consider using one of `dm
 > abort_only_possible_w_zoom("dm_update_zoomed")
 Error: You can't call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.
 
-> abort_req_tbl_not_avail(c("dull", "boring", "common_knowledge"), c(
-+   "fascinating", "interesting"))
-Error: Table(s) `fascinating`, `interesting` not available on `src`. Available tables are: `dull`, `boring`, `common_knowledge`.
+> abort_learn_keys()
+Error: Failed to learn keys from database. Use `learn_keys = FALSE` to work around.
+
+> abort_tbl_access("accessdenied")
+Error: Table(s) `accessdenied` cannot be accessed.
+i Use `tbl(src, ...)` to troubleshoot.
 
 > abort_unnamed_table_list()
 Error: Table list in `new_dm()` needs to be named.
