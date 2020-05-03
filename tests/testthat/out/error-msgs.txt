@@ -32,8 +32,8 @@ Error: 0..1 cardinality (injectivity from child table to parent table) is not gi
 Error: ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.
 
 > abort_is_not_fkc("child_table_name", c("wrong_fk_colname", "and_one_more"),
-+ "parent_table_name", c("actual_fk_colname", "and_one_more"))
-Error: (`wrong_fk_colname`, `and_one_more`) is not a foreign key of table `child_table_name` into table `parent_table_name`. Foreign key columns are: (`actual_fk_colname`, `and_one_more`).
++ "parent_table_name")
+Error: (`wrong_fk_colname`, `and_one_more`) is not a foreign key of table `child_table_name` into table `parent_table_name`.
 
 > abort_rm_fk_col_missing()
 Error: Parameter `columns` has to be set. Pass `NULL` for removing all references.

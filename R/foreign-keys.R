@@ -447,7 +447,7 @@ error_txt_is_not_fkc <- function(child_table_name, colnames,
                                  parent_table_name) {
   glue(
     "({commas(tick(colnames))}) is not a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}. "
+    "{tick(child_table_name)} into table {tick(parent_table_name)}."
   )
 }
 
