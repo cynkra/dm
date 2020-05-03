@@ -95,7 +95,24 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
 #'
 #' @export
 #' @examples
-#' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+#' dm_from_src_demo <- function() {
+#'   if (!rlang::is_installed("DBI")) {
+#'     message("Install the DBI package to run this example.")
+#'   }
+#'
+#'   con <- DBI::dbConnect(
+#'     RMariaDB::MariaDB(),
+#'     username = "guest",
+#'     password = "relational",
+#'     dbname = "Financial_ijs",
+#'     host = "relational.fit.cvut.cz"
+#'   )
+#'   on.exit(DBI::dbDisconnect(con))
+#'
+#'   dm_from_src(con)
+#' }
+#'
+#' dm_from_src_demo()
 dm_from_src <- function(src = NULL, table_names = NULL, ...) {
   if (is_null(src)) {
     # FIXME: Check empty arguments and ellipsis

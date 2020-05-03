@@ -53,7 +53,19 @@ with current semantics.
 }
 
 \examples{
-nycflights_dm <- dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+if (rlang::is_installed("nycflights13")) {
+  nycflights_dm <- dm(
+    planes = nycflights13::planes,
+    airports = nycflights13::airports
+  )
+} else {
+  message("Using mock-up data, install the nycflights13 package to fix.")
+  nycflights_dm <- dm(
+    planes = tibble(tailnum = letters[1:2], manufacturer = "Acme"),
+    airports = tibble(faa = character())
+  )
+}
+
 nycflights_dm \%>\%
   dm_draw()
 
