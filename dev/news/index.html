@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9009</span>
       </span>
     </div>
 
@@ -161,6 +161,20 @@
       
     </div>
 
+    <div id="dm-0-1-1-9009" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.1.9009">
+<a href="#dm-0-1-1-9009" class="anchor"></a>dm 0.1.1.9009<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> gains <code>learn_keys</code> argument to control querying of primary and foreign keys from the database (#340).</li>
+<li>Remove use of deprecated <code>src_df()</code> (#336).</li>
+<li>Fix visualization of column that acts as a foreign key more than once (#37).</li>
+<li>
+<code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>, <code><a href="../reference/dm_add_pk.html">dm_rm_pk()</a></code>, <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> and <code><a href="../reference/dm_add_fk.html">dm_rm_fk()</a></code> are now stricter when keys exists or when attempting to remove keys that don’t exist. A more relaxed mode of operation may be added later (#214).</li>
+<li>Testing on SQLite, Postgres, RMariaDB, and SQL Server, requires development versions and various pull requests.</li>
+</ul>
+</div>
     <div id="dm-0-1-1-9008" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.1.9008">
 <a href="#dm-0-1-1-9008" class="anchor"></a>dm 0.1.1.9008<small> Unreleased </small>

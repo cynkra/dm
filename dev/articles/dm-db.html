@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9009</span>
       </span>
     </div>
 
@@ -343,6 +343,7 @@
 <p><code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> forces the computation of a query, in this case the query or multiple queries created by the dm to represent all operations that have been performed but not yet evaluated. The results are stored in temporary tables on the database server that will be deleted when your session ends. If you want results to persist across sessions in permanent tables, <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> must be called with the argument <code>temporary = FALSE</code> and a table name for the <code>name</code> argument. See the <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> documentation for more details.</p>
 <p>Calling <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> requires write access, otherwise an error is returned. Our example DBMS, relational.fit.cvut.cz, does not allow write access. As a workaround to demonstrate the usage of <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code>, we will use <code><a href="../reference/dm_financial.html">dm_financial_sqlite()</a></code>, a convenience function that handles the copying of the dm from the remote DBMS to a local SQLite database we can write to.</p>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">my_dm_sqlite</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_financial.html">dm_financial_sqlite</a></span>()
+<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span>
 
 <span class="no">my_dm_total</span> <span class="kw">&lt;-</span>
   <span class="no">my_dm_sqlite</span> <span class="kw">%&gt;%</span>
@@ -429,7 +430,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x5d25160&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x5d6df18&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></pre></body></html></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a destination, a {DBI} connection, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behaviour is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -481,7 +482,7 @@
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span>()
 <span class="co">#&gt; [36mℹ[39m All constraints satisfied.</span>
 <span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span></pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_05_03_17_09_43_1&gt; [?? x 2]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_05_03_18_17_21_1&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>

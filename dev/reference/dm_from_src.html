@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>dm_from_src() — dm_from_src • dm</title>
+<title>Load a dm from a remote data source — dm_from_src • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="dm_from_src() — dm_from_src" />
+<meta property="og:title" content="Load a dm from a remote data source — dm_from_src" />
 <meta property="og:description" content="dm_from_src() creates a dm from some or all tables in a src
 (a database or an environment) or which are accessible via a DBI-Connection.
 For Postgres and SQL Server databases, primary and foreign keys
@@ -83,7 +83,7 @@ are imported from the database." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9009</span>
       </span>
     </div>
 
@@ -161,7 +161,7 @@ are imported from the database." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>dm_from_src()</h1>
+    <h1>Load a dm from a remote data source</h1>
     
     <div class="hidden name"><code>dm_from_src.Rd</code></div>
     </div>
@@ -173,7 +173,7 @@ For Postgres and SQL Server databases, primary and foreign keys
 are imported from the database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_from_src</span>(<span class='kw'>src</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_from_src</span>(<span class='kw'>src</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>learn_keys</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,6 +186,14 @@ are imported from the database.</p>
     <tr>
       <th>table_names</th>
       <td><p>A character vector of the names of the tables to include.</p></td>
+    </tr>
+    <tr>
+      <th>learn_keys</th>
+      <td><p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+<p>Set to <code>TRUE</code> to query the definition of primary and
+foreign keys from the database.
+Currently works only for Postgres and SQL Server databases.
+The default attempts to query and issues an informative message.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -201,13 +209,26 @@ and <code>table_type</code> (default: <code>"BASE TABLE"</code>) for Postgres da
     <p>A <code>dm</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm_from_src</span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>pkg</span> <span class='kw'>=</span> <span class='st'>"nycflights13"</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>dm_from_src_demo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+  <span class='kw'>if</span> (!<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"DBI"</span>)) {
+    <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"Install the DBI package to run this example."</span>)
+  }
+
+  <span class='no'>con</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(
+    <span class='kw pkg'>RMariaDB</span><span class='kw ns'>::</span><span class='fu'><a href='https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html'>MariaDB</a></span>(),
+    <span class='kw'>username</span> <span class='kw'>=</span> <span class='st'>"guest"</span>,
+    <span class='kw'>password</span> <span class='kw'>=</span> <span class='st'>"relational"</span>,
+    <span class='kw'>dbname</span> <span class='kw'>=</span> <span class='st'>"Financial_ijs"</span>,
+    <span class='kw'>host</span> <span class='kw'>=</span> <span class='st'>"relational.fit.cvut.cz"</span>
+  )
+  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span>(<span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>con</span>))
+
+  <span class='fu'>dm_from_src</span>(<span class='no'>con</span>)
+}
+
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>dm_from_src_demo</span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
