@@ -9,8 +9,15 @@ test_that("dm_add_pk() works as intended?", {
     class = "vctrs_error_subscript_oob"
   )
   expect_dm_error(
-    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, a) %>%
       dm_add_pk(dm_table_1, b),
+    class = "key_set_force_false"
+  )
+  expect_dm_error(
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, a) %>%
+      dm_add_pk(dm_table_1, a),
     class = "key_set_force_false"
   )
   expect_dm_error(
@@ -27,13 +34,14 @@ test_that("dm_rm_pk() works as intended?", {
     dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
       dm_rm_pk(dm_table_1)
   )
-  expect_true(
-    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
-      dm_rm_pk(dm_table_2) %>% # still does its job, even if there was no key in the first place :)
-      dm_has_pk(dm_table_1)
+  expect_dm_error(
+    dm_test_obj() %>%
+      dm_rm_pk(dm_table_1),
+    class = "pk_not_defined"
   )
   expect_dm_error(
-    dm_add_pk(dm_test_obj(), dm_table_1, a) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_1, a) %>%
       dm_rm_pk(dm_table_5),
     class = "table_not_in_dm"
   )
@@ -47,13 +55,15 @@ test_that("dm_rm_pk() works as intended?", {
   # test logic if argument `rm_referencing_fks = TRUE`
   expect_equivalent_dm(
     dm_rm_pk(dm_for_filter(), tf_4, rm_referencing_fks = TRUE),
-    dm_rm_fk(dm_for_filter(), tf_5, l, tf_4) %>%
+    dm_for_filter() %>%
+      dm_rm_fk(tf_5, l, tf_4) %>%
       dm_rm_pk(tf_4)
   )
 
   expect_equivalent_dm(
     dm_rm_pk(dm_for_filter(), tf_3, rm_referencing_fks = TRUE),
-    dm_rm_fk(dm_for_filter(), tf_4, j, tf_3) %>%
+    dm_for_filter() %>%
+      dm_rm_fk(tf_4, j, tf_3) %>%
       dm_rm_fk(tf_2, e, tf_3) %>%
       dm_rm_pk(tf_3)
   )

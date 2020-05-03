@@ -78,8 +78,20 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
   def <- dm_get_def(dm)
 
   i <- which(def$table == ref_table)
+
+  fks <- def$fks[[i]]
+
+  existing <- fks$table == table & !is.na(vctrs::vec_match(fks$column, list(column)))
+  if (any(existing)) {
+    if (dm_is_strict_keys(dm)) {
+      abort_fk_exists(table, column, ref_table)
+    }
+
+    return(dm)
+  }
+
   def$fks[[i]] <- vctrs::vec_rbind(
-    def$fks[[i]],
+    fks,
     new_fk(table, list(column))
   )
 
@@ -234,7 +246,8 @@ dm_rm_fk <- function(dm, table, columns, ref_table) {
 
   fk_cols <- dm_get_fk2_impl(dm, table_name, ref_table_name)
   if (is_empty(fk_cols)) {
-    return(dm)
+    # FIXME: Simplify, check is already done in dm_rm_fk_impl()
+    abort_is_not_fkc(table_name, fk_cols, ref_table_name)
   }
 
   if (quo_is_null(column_quo)) {
@@ -242,9 +255,6 @@ dm_rm_fk <- function(dm, table, columns, ref_table) {
   } else {
     col_idx <- eval_select_indices(column_quo, colnames(dm_get_tables(dm)[[table_name]]))
     cols <- list(names(col_idx))
-    if (!vctrs::vec_in(cols, fk_cols)) {
-      abort_is_not_fkc(table_name, cols, ref_table_name, fk_cols)
-    }
   }
 
   dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
@@ -255,7 +265,13 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
   i <- which(def$table == ref_table_name)
 
   fks <- def$fks[[i]]
-  fks <- fks[fks$table != table_name | is.na(vctrs::vec_match(fks$column, unclass(cols))), ]
+
+  ii <- fks$table != table_name | is.na(vctrs::vec_match(fks$column, unclass(cols)))
+  if (all(ii)) {
+    abort_is_not_fkc(table_name, cols, ref_table_name)
+  }
+
+  fks <- fks[ii, ]
   def$fks[[i]] <- fks
 
   new_dm3(def)
@@ -415,22 +431,37 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 
 # Errors ------------------------------------------------------------------
 
-abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                             parent_table_name, actual_fk_colnames) {
+abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
+  abort(
+    error_txt_fk_exists(
+      child_table_name, colnames, parent_table_name
+    ),
+    .subclass = dm_error_full("fk_exists")
+  )
+}
+
+error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
+  glue(
+    "({commas(tick(colnames))}) is alreay a foreign key of table ",
+    "{tick(child_table_name)} into table {tick(parent_table_name)}."
+  )
+}
+
+abort_is_not_fkc <- function(child_table_name, colnames,
+                             parent_table_name) {
   abort(
     error_txt_is_not_fkc(
-      child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
+      child_table_name, colnames, parent_table_name
     ),
     .subclass = dm_error_full("is_not_fkc")
   )
 }
 
-error_txt_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                                 parent_table_name, actual_fk_colnames) {
+error_txt_is_not_fkc <- function(child_table_name, colnames,
+                                 parent_table_name) {
   glue(
-    "({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}. ",
-    "Foreign key columns are: ({commas(tick(actual_fk_colnames))})."
+    "({commas(tick(colnames))}) is not a foreign key of table ",
+    "{tick(child_table_name)} into table {tick(parent_table_name)}. "
   )
 }
 
