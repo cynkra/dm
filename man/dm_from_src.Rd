@@ -52,5 +52,7 @@ dm_from_src_demo <- function() {
   dm_from_src(con)
 }
 
+\dontrun{
 dm_from_src_demo()
+}
 }

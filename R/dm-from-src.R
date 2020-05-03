@@ -44,7 +44,9 @@
 #'   dm_from_src(con)
 #' }
 #'
+#' \dontrun{
 #' dm_from_src_demo()
+#' }
 dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
   if (is_null(src)) {
