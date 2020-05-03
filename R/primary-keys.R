@@ -72,7 +72,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 
   if (!force && NROW(def$pks[[i]]) > 0) {
     if (!dm_is_strict_keys(dm) &&
-        identical(def$pks[[i]]$column[[1]], column)) {
+      identical(def$pks[[i]]$column[[1]], column)) {
       return(dm)
     }
 
