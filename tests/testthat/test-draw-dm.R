@@ -165,4 +165,15 @@ test_that("output", {
       cli::cat_line(),
     "out/nycflights13.svg"
   )
+
+  # Multi-fk (#37)
+  expect_known_output(
+    dm_nycflights13() %>%
+      dm_zoom_to(planes) %>%
+      dm_insert_zoomed("planes_copy") %>%
+      dm_draw() %>%
+      DiagrammeRsvg::export_svg() %>%
+      cli::cat_line(),
+    "out/nycflights13-multi-fk.svg"
+  )
 })
