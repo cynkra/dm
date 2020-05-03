@@ -1,3 +1,12 @@
+# dm 0.1.1.9009
+
+- `dm_from_src()` gains `learn_keys` argument to control querying of primary and foreign keys from the database (#340).
+- Remove use of deprecated `src_df()` (#336).
+- Fix visualization of column that acts as a foreign key more than once (#37).
+- `dm_add_pk()`, `dm_rm_pk()`, `dm_add_fk()` and `dm_rm_fk()` are now stricter when keys exists or when attempting to remove keys that don't exist. A more relaxed mode of operation may be added later (#214).
+- Testing on SQLite, Postgres, RMariaDB, and SQL Server, requires development versions and various pull requests.
+
+
 # dm 0.1.1.9008
 
 - `examine_cardinality()`, `dm_examine_constraints()` and `enum_pk_candidates()` now work for columns named `n`.
