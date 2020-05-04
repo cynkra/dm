@@ -1,4 +1,5 @@
 knitr::opts_chunk$set(
+  error = (Sys.getenv("IN_PKGDOWN") == ""),
   message = TRUE,
   collapse = TRUE,
   comment = "#>"
