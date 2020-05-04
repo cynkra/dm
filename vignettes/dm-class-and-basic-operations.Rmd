@@ -1,31 +1,19 @@
 ---
-title: "Class 'dm' and basic operations"
+title: "Class dm and basic operations"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Class 'dm' and basic operations}
+  %\VignetteIndexEntry{Technical: Class dm and basic operations}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
-library(dm)
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
-knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
-    knitr::asis_output()
-}
-```
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
 
 The goal of the {dm} package and the `dm` class that comes with it, is to make your life easier when you are dealing with data from several different tables.
 

@@ -74,66 +74,6 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
   dm
 }
 
-#' dm_from_src()
-#'
-#' `dm_from_src()` creates a [dm] from some or all tables in a [src]
-#' (a database or an environment) or which are accessible via a DBI-Connection.
-#' For Postgres and SQL Server databases, primary and foreign keys
-#' are imported from the database.
-#'
-#' @param src A \pkg{dplyr} table source object or a
-#'   [`DBI::DBIConnection-class`] object is accepted.
-#' @param table_names A character vector of the names of the tables to include.
-#' @param ...
-#'   \lifecycle{experimental}
-#'
-#'   Additional parameters for the schema learning query.
-#'   Currently supports `schema` (default: `"public"`)
-#'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
-#'
-#' @return A `dm` object.
-#'
-#' @export
-#' @examples
-#' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
-dm_from_src <- function(src = NULL, table_names = NULL, ...) {
-  if (is_null(src)) {
-    # FIXME: Check empty arguments and ellipsis
-    return(empty_dm())
-  }
-  # both DBI-Connection and {dplyr}-src object are accepted
-  src <- src_from_src_or_con(src)
-
-  dm_learned <- dm_learn_from_db(src, ...)
-  if (!is.null(dm_learned)) {
-    tbls_in_dm <- src_tbls(dm_learned)
-
-    if (is_null(table_names)) {
-      return(dm_learned)
-    }
-
-    if (!all(table_names %in% tbls_in_dm)) {
-      abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, tbls_in_dm))
-    }
-    tbls_req <- intersect(tbls_in_dm, table_names)
-
-    return(dm_learned %>% dm_select_tbl(!!!tbls_req))
-  }
-
-  src_tbl_names <- unique(src_tbls(src))
-  if (is_null(table_names)) {
-    table_names <- src_tbl_names
-  } else {
-    if (!all(table_names %in% src_tbl_names)) {
-      abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
-    }
-  }
-
-  tbls <- map(set_names(table_names), tbl, src = src)
-
-  new_dm(tbls)
-}
-
 #' A low-level constructor
 #'
 #' @description

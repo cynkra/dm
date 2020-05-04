@@ -146,25 +146,27 @@ navbar:
     href: articles/dm.html
   - text: Reference
     href: reference/index.html
-  - text: Articles
+  - text: Tutorials
     menu:
-    - text: Introduction to Relational Data Models
+    - text: Connect to a database
+      href: articles/dm-db.html
+    - text: Create a dm object from data frames
+      href: articles/dm-df.html
+    - text: Introduction to relational data models
       href: articles/dm-introduction-relational-data-models.html
+  - text: Technical articles
+    menu:
     - text: Class 'dm' and basic operations
       href: articles/dm-class-and-basic-operations.html
-    - text: Visualizing 'dm' objects
+    - text: Visualizing dm objects
       href: articles/dm-visualization.html
-    - text: Joining in Relational Data Models
+    - text: Joining in relational data models
       href: articles/dm-joining.html
     - text: Zooming and manipulating tables
       href: articles/dm-zoom-to-table.html
-    - text: Filtering in Relational Data Models
+    - text: Filtering in relational data models
       href: articles/dm-filtering.html
-    - text: Defining a 'dm' object for your data
-      href: articles/dm-setup.html
-    - text: Working with databases
-      href: articles/dm-db.html
-    - text: Low level operations
+    - text: Checking keys
       href: articles/dm-low-level.html
     - text: Function naming logic
       href: articles/dm-function-naming-logic.html

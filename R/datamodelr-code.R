@@ -112,7 +112,7 @@ bdm_create_graph <- function(
 }
 
 bdm_render_graph <- function(graph, width = NULL, height = NULL) {
-  if (!requireNamespace("DiagrammeR", quietly = TRUE)) {
+  if (!rlang::is_installed("DiagrammeR")) {
     stop("DiagrammeR package needed for this function to work. Please install it.",
       call. = FALSE
     )

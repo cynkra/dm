@@ -2,12 +2,42 @@
 
 # error class generator ---------------------------------------------------
 
+format_msg_and_bullets <- function(bullets) {
+  if (length(bullets) <= 1) {
+    bullets
+  } else {
+    paste0(bullets[[1]], "\n", format_error_bullets(bullets[-1]))
+  }
+}
+
 dm_error <- function(x) {
   paste0("dm_error_", x)
 }
 
 dm_error_full <- function(x) {
   c(dm_error(x), "dm_error")
+}
+
+dm_abort <- function(bullets, class) {
+  abort(
+    format_msg_and_bullets(bullets),
+    .subclass = dm_error_full(class)
+  )
+}
+
+dm_warning <- function(x) {
+  paste0("dm_warning_", x)
+}
+
+dm_warning_full <- function(x) {
+  c(dm_warning(x), "dm_warning")
+}
+
+dm_warn <- function(bullets, class) {
+  warn(
+    format_msg_and_bullets(bullets),
+    .subclass = dm_warning_full(class)
+  )
 }
 
 # abort and text for key-helper functions ---------------------------------
@@ -365,17 +395,6 @@ abort_one_name_for_copy_to <- function(name) {
     .subclass = dm_error_full("one_name_for_copy_to")
   )
 }
-
-# table not on src --------------------------------------------------------
-
-abort_req_tbl_not_avail <- function(avail, missing) {
-  abort(error_txt_req_tbl_not_avail(avail, missing), .subclass = dm_error_full("req_tbl_not_avail"))
-}
-
-error_txt_req_tbl_not_avail <- function(avail, missing) {
-  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
-}
-
 
 # table for which key should be set not in list of tables when creating dm -----------------------
 

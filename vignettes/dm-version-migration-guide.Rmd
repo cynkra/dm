@@ -3,29 +3,17 @@ title: "Migration guide: 'cdm' -> 'dm'"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Migration guide: 'cdm' -> 'dm'}
+  %\VignetteIndexEntry{Technical: Migration guide: 'cdm' -> 'dm'}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
-knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
-    knitr::asis_output()
-}
-library(dm)
-```
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
 
 This vignette describes which changes are necessary to adapt your code when updating the {dm} package version from a version `0.0.5` or lower to `0.0.6` or higher.
 

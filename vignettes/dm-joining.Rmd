@@ -1,9 +1,9 @@
 ---
-title: "Joining in Relational Data Models"
+title: "Joining in relational data models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Joining}
+  %\VignetteIndexEntry{Technical: Joining in relational data models}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -11,21 +11,10 @@ editor_options:
 author: Katharina Brunner
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
-knit_print.grViz <- function(x, ...) {
-  x %>%
-    DiagrammeRsvg::export_svg() %>%
-    c("`````{=html}\n", ., "\n`````\n") %>%
-    knitr::asis_output()
-}
-```
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
 
 The {dm} package offers functions to work with relational data models in R.
 A common task for multiple, separated tables that have a shared attribute is merging the data.
@@ -40,7 +29,6 @@ First, we load the packages that we need:
 ```{r message=FALSE, warning=FALSE}
 library(dm)
 library(tidyverse)
-library(nycflights13)
 ```
 
 ## Data: nycflights13
@@ -51,7 +39,7 @@ This dataset contains information about the 336 776 flights that departed from N
 The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13`.
 
 First, we have to create a `dm` object from the {nycflights13} data.
-This is implmeneted with `dm::dm_nycflights13`.
+This is implemented with `dm::dm_nycflights13()`.
 
 A [data model object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm) contains the data as well as metadata.
 

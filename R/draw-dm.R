@@ -161,12 +161,14 @@ dm_set_colors <- function(dm, ...) {
   # get table names for each color (name_spec argument is not needed)
   selected_tables <- eval_select_table(quo(c(...)), src_tbls_impl(dm), unique = FALSE)
 
+  # convert color names to hex color codes (if already hex code this is a no-op)
+  # avoid error from mutate()
+  names(selected_tables) <- col_to_hex(names(selected_tables))
+
   display_df <-
     selected_tables %>%
     enframe(name = "new_display", value = "table") %>%
-    # convert color names to hex color codes (if already hex code this is a no-op)
-    mutate(new_display = col_to_hex(new_display)) %>%
-    # needs to be done like this, cause `distinct()` would keep the first one
+    # needs to be done like this, `distinct()` would keep the first one
     filter(!duplicated(table, fromLast = TRUE))
 
   def <-

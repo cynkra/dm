@@ -1,9 +1,9 @@
 ---
-title: "Introduction to Relational Data Models"
+title: "Introduction to relational data models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to Relational Data Models}
+  %\VignetteIndexEntry{How to: Understand relational data models}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -11,24 +11,10 @@ editor_options:
 author: Katharina Brunner
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
-knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
-    knitr::asis_output()
-}
-
-library(tidyverse)
-library(dm)
-```
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
 
 Multiple, linked tables are common within computer science. 
 Because many R users have backgrounds in other disciplines, we present **six important terms in relational data modeling** to help you to jump-start working with {dm}. These terms are:

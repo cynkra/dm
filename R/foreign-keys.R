@@ -33,7 +33,19 @@
 #'
 #' @export
 #' @examples
-#' nycflights_dm <- dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+#' if (rlang::is_installed("nycflights13")) {
+#'   nycflights_dm <- dm(
+#'     planes = nycflights13::planes,
+#'     flights = nycflights13::flights
+#'   )
+#' } else {
+#'   message("Using mock-up data, install the nycflights13 package to fix.")
+#'   nycflights_dm <- dm(
+#'     planes = tibble(tailnum = character()),
+#'     flights = tibble(tailnum = character())
+#'   )
+#' }
+#'
 #' nycflights_dm %>%
 #'   dm_draw()
 #'
