@@ -11,9 +11,13 @@ editor_options:
 ---
 
 
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
+
 This document describes how you can get your data into a `dm` object. 
 
-Although the example that we will be using is included in `dm`, and you can see it by running `dm_nycflights13()`, we will be going through the built-in example one more time here, step by step.
+Although the example that we will be using is included in `dm`, and you can see it by running `dm::dm_nycflights13()`, we will be going through the built-in example one more time here, step by step.
 
 The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013, and are available through the [`nycflights13`](https://github.com/hadley/nycflights13) package: 
 
@@ -25,10 +29,9 @@ The five tables that we are working with contain information about all flights t
 - `weather` contains meteorological information at each hour
 - `planes` describes characteristics of the aircraft
 
-Once we've loaded `nycflights13`, the aforementioned tables are all in our work environment, ready to be accessed.
+Once we've loaded {nycflights13}, the aforementioned tables are all in our work environment, ready to be accessed.
 
-```{r setup, message=FALSE}
-library(dm)
+```{r nycflights13, message=FALSE}
 library(nycflights13)
 
 airports
@@ -46,6 +49,8 @@ First, we will tell `dm` which tables we want to work with and how they are conn
 For that, we can use `dm()`.
 
 ```{r}
+library(dm)
+
 flights_dm_no_keys <- dm(airlines, airports, flights, planes, weather)
 flights_dm_no_keys
 ```

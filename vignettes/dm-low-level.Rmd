@@ -10,20 +10,10 @@ editor_options:
   chunk_output_type: console
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r setup, include = FALSE}
-library(tibble)
-library(dm)
-
-knitr::opts_chunk$set(
-  error = TRUE,
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
 
 In this document we will present several specialised functions for conducting basic tests about key conditions and about relations between tables.
 We will also describe functions that can be used for splitting and uniting tables.
