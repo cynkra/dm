@@ -147,7 +147,7 @@ my_dm_keys %>%
 ## Performing operations on tables by "zooming"
 
 As the dm is a collection of tables, if we wish to perform operations on an individual table we set it as the context for those operations using `dm_zoom_to()`.
-See `vignette("dm-zoom-to-table", package = "dm")` for more detail on zooming.
+See `vignette("dm-zoom-to-table")` for more detail on zooming.
 
 Since dm operations are transient unless explicitly requested, our chain of manipulations on the selected table are made permanent by assigning the result of `dm_insert_zoomed()` to a new object, `my_dm_total`.
 This is a new dm object, derived from the original, with a new lazy table `total_loans` linked to the `accounts` table.
