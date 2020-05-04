@@ -1,4 +1,5 @@
 knitr::opts_chunk$set(
+  message = TRUE,
   collapse = TRUE,
   comment = "#>"
 )
