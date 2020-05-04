@@ -37,6 +37,8 @@ data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 and you want to know if `a` is a primary key for `data_1`, you can use the `check_key()` function:
 
 ```{r}
+library(dm)
+
 check_key(data_1, a)
 ```
 

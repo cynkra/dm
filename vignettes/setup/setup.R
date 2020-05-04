@@ -1,4 +1,3 @@
-```{r setup-setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -13,7 +12,9 @@ knit_print.grViz <- function(x, ...) {
     knitr::asis_output()
 }
 
+# If input loads dm...
 input <- readLines(knitr::current_input())
-stop(knitr::current_input())
-stopifnot(rlang::has_length(grep("library(dm)", input, fixed = TRUE)))
-```
+if (rlang::has_length(grep("^library[(]dm[)]", input))) {
+  # we load it here to omit warnings
+  library(dm)
+}
