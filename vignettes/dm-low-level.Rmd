@@ -1,9 +1,9 @@
 ---
-title: "Low level operations"
+title: "Checking keys"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Low level operations}
+  %\VignetteIndexEntry{Technical: Checking keys}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

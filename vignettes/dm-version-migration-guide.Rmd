@@ -3,7 +3,7 @@ title: "Migration guide: 'cdm' -> 'dm'"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Migration guide: 'cdm' -> 'dm'}
+  %\VignetteIndexEntry{Technical: Migration guide: 'cdm' -> 'dm'}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

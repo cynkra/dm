@@ -3,7 +3,7 @@ title: "Create a dm object from data frames"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Preparing your data}
+  %\VignetteIndexEntry{How to: Create a dm object from data frames}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -40,7 +40,7 @@ airports
 Your own data probably will not be available in an R package.
 It is sufficient if you can load it as data frames into your R session.
 If the data is too large, consider connecting to the database instead.
-See `vignette("dm-db", package = "dm")` for details.
+See `vignette("dm-db")` for details.
 
 
 # Adding Tables

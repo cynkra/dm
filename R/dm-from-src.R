@@ -89,11 +89,16 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
     src_tbl_names <- table_names
   }
 
-  tbls <- map(set_names(src_tbl_names), possibly(tbl, NULL), src = src)
+  tbls <-
+    src_tbl_names %>%
+    set_names() %>%
+    map(possibly(tbl, NULL), src = src)
+
   bad <- map_lgl(tbls, is_null)
   if (any(bad)) {
     if (is_null(table_names)) {
       warn_tbl_access(names(tbls)[bad])
+      tbls <- tbls[!bad]
     } else {
       abort_tbl_access(names(tbls)[bad])
     }
