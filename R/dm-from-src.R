@@ -96,7 +96,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   tbls <-
     ident %>%
     set_names(src_tbl_names) %>%
-    map(ident_q) %>%
+    map(dbplyr::ident_q) %>%
     map(possibly(tbl, NULL), src = src)
 
   bad <- map_lgl(tbls, is_null)
