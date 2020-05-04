@@ -160,11 +160,11 @@ navbar:
       href: articles/dm-class-and-basic-operations.html
     - text: Visualizing 'dm' objects
       href: articles/dm-visualization.html
-    - text: Joining in Relational Data Models
+    - text: Joining in relational data models
       href: articles/dm-joining.html
     - text: Zooming and manipulating tables
       href: articles/dm-zoom-to-table.html
-    - text: Filtering in Relational Data Models
+    - text: Filtering in relational data models
       href: articles/dm-filtering.html
     - text: Low level operations
       href: articles/dm-low-level.html

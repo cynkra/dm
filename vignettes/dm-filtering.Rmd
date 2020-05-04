@@ -45,7 +45,7 @@ By default it only uses a subset of the complete data though: only the flights o
 A [data model object](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm) contains data from the source tables, and metadata about the tables.
 
 If you would like to create a `dm` object from tables other than the example data, you can use the `new_dm()`, `dm()` or `as_dm()` functions.
-See `vignette("dm-setup")` for details.
+See `vignette("dm-df")` for details.
 
 ```{r}
 dm <- dm_nycflights13()
