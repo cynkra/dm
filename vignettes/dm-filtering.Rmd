@@ -1,9 +1,9 @@
 ---
-title: "Filtering in Relational Data Models"
+title: "Filtering in relational data models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Filtering}
+  %\VignetteIndexEntry{Technical: Filtering in relational data models}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:

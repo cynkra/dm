@@ -158,7 +158,7 @@ navbar:
     menu:
     - text: Class 'dm' and basic operations
       href: articles/dm-class-and-basic-operations.html
-    - text: Visualizing 'dm' objects
+    - text: Visualizing dm objects
       href: articles/dm-visualization.html
     - text: Joining in relational data models
       href: articles/dm-joining.html
@@ -166,7 +166,7 @@ navbar:
       href: articles/dm-zoom-to-table.html
     - text: Filtering in relational data models
       href: articles/dm-filtering.html
-    - text: Low level operations
+    - text: Checking keys
       href: articles/dm-low-level.html
     - text: Function naming logic
       href: articles/dm-function-naming-logic.html
