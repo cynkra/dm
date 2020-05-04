@@ -91,7 +91,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
 
   # FIXME: Why does dbplyr seem to quote identifiers the wrong way
   #        with MariaDB?
-  ident <- dbQuoteIdentifier(con_from_src_or_con(src), src_tbl_names)
+  ident <- DBI::dbQuoteIdentifier(con_from_src_or_con(src), src_tbl_names)
 
   tbls <-
     ident %>%
