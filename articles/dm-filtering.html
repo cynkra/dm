@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Filtering in Relational Data Models • dm</title>
+<title>Filtering in relational data models • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Filtering in Relational Data Models">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Filtering in relational data models">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -52,37 +52,46 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
+      <a href="../articles/dm-db.html">Connect to a database</a>
     </li>
     <li>
+      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+    </li>
+    <li>
+      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Technical articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+      <a href="../articles/dm-joining.html">Joining in relational data models</a>
     </li>
     <li>
       <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
-      <a href="../articles/dm-db.html">Working with databases</a>
-    </li>
-    <li>
-      <a href="../articles/dm-low-level.html">Low level operations</a>
+      <a href="../articles/dm-low-level.html">Checking keys</a>
     </li>
     <li>
       <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
@@ -116,7 +125,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Filtering in Relational Data Models</h1>
+      <h1 data-toc-skip>Filtering in relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
             <h4 class="date">2020-05-04</h4>
@@ -143,7 +152,7 @@
 <p>To start with our exploration, we have to create a <code>dm</code> object from the {nycflights13} data. The built-in <code><a href="../reference/dm_nycflights13.html">dm::dm_nycflights13()</a></code> function takes care of this.</p>
 <p>By default it only uses a subset of the complete data though: only the flights on the 10th of each month are considered, reducing the number of rows in the <code>flights</code> table to 11 227.</p>
 <p>A <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm">data model object</a> contains data from the source tables, and metadata about the tables.</p>
-<p>If you would like to create a <code>dm</code> object from tables other than the example data, you can use the <code><a href="../reference/dm.html">new_dm()</a></code>, <code><a href="../reference/dm.html">dm()</a></code> or <code><a href="../reference/dm.html">as_dm()</a></code> functions. See <code><a href="../articles/dm-setup.html">vignette("dm-setup")</a></code> for details.</p>
+<p>If you would like to create a <code>dm</code> object from tables other than the example data, you can use the <code><a href="../reference/dm.html">new_dm()</a></code>, <code><a href="../reference/dm.html">dm()</a></code> or <code><a href="../reference/dm.html">as_dm()</a></code> functions. See <code><a href="../articles/dm-df.html">vignette("dm-df")</a></code> for details.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()</pre></body></html></div>
 <p>The console output of the ’dm` object shows its data and metadata, and is colored for clarity:</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">dm</span></pre></body></html></div>
@@ -367,29 +376,29 @@
   <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu">map</span>(<span class="kw pkg">dbplyr</span><span class="kw ns">::</span><span class="no"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render</a></span>)
 <span class="co">#&gt; $flights</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM flights_2020_05_04_02_33_51_1 AS `LHS`</span>
+<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM flights_2020_05_04_04_12_32_1 AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM airlines_2020_05_04_02_33_51_2</span>
+<span class="co">#&gt; FROM airlines_2020_05_04_04_12_32_2</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM airports_2020_05_04_02_33_51_3</span>
+<span class="co">#&gt; FROM airports_2020_05_04_04_12_32_3</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airlines</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM airlines_2020_05_04_02_33_51_2</span>
+<span class="co">#&gt; FROM airlines_2020_05_04_04_12_32_2</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_05_04_02_33_51_1 AS `LHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_05_04_04_12_32_1 AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM airports_2020_05_04_02_33_51_3</span>
+<span class="co">#&gt; FROM airports_2020_05_04_04_12_32_3</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )) AS `RHS`</span>
@@ -398,13 +407,13 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airports</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM airports_2020_05_04_02_33_51_3</span>
+<span class="co">#&gt; FROM airports_2020_05_04_04_12_32_3</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_05_04_02_33_51_1 AS `LHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_05_04_04_12_32_1 AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM airlines_2020_05_04_02_33_51_2</span>
+<span class="co">#&gt; FROM airlines_2020_05_04_04_12_32_2</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )) AS `RHS`</span>

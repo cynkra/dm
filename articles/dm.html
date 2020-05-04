@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Getting Started • dm</title>
+<title>Getting started with dm • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Getting started with dm">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -52,37 +52,46 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
+      <a href="../articles/dm-db.html">Connect to a database</a>
     </li>
     <li>
+      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+    </li>
+    <li>
+      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Technical articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+      <a href="../articles/dm-joining.html">Joining in relational data models</a>
     </li>
     <li>
       <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
-      <a href="../articles/dm-db.html">Working with databases</a>
-    </li>
-    <li>
-      <a href="../articles/dm-low-level.html">Low level operations</a>
+      <a href="../articles/dm-low-level.html">Checking keys</a>
     </li>
     <li>
       <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
@@ -116,7 +125,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Getting Started</h1>
+      <h1 data-toc-skip>Getting started with dm</h1>
             
             <h4 class="date">2020-05-04</h4>
       
@@ -162,21 +171,28 @@
 <div id="create" class="section level2">
 <h2 class="hasAnchor">
 <a href="#create" class="anchor"></a>Creating <code>dm</code> objects:</h2>
-<p>The <a href="https://github.com/hadley/nycflights13">{nycflights13}</a> package offers a nice example of interconnected tables. The most straightforward way of squeezing those tables into a <code>dm</code> object is:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">flights_dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="fu">src_df</span>(<span class="kw">pkg</span> <span class="kw">=</span> <span class="st">"nycflights13"</span>))
+<p>The <a href="https://github.com/hadley/nycflights13">{nycflights13}</a> package offers a nice example of interconnected tables. The most straightforward way of squeezing those tables into a dm object is the <code><a href="../reference/dm.html">dm()</a></code> function:</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">nycflights13</span>)
+
+<span class="no">flights_dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span>(
+  <span class="no">flights</span>,
+  <span class="no">airlines</span>,
+  <span class="no">airports</span>,
+  <span class="no">planes</span>,
+  <span class="no">weather</span>
+)
 <span class="no">flights_dm</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Tables: `flights`, `airlines`, `airports`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0
 </span></code></pre>
 <p>This fairly verbose output shows the data and metadata of a <code>dm</code> object. The various components can be accessed with functions of the type <code>dm_get_...()</code>, e.g.:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/dm.html">dm_get_src</a></span>(<span class="no">flights_dm</span>)
-<span class="co">#&gt; src:  &lt;environment: R_GlobalEnv&gt;</span>
-<span class="co">#&gt; tbls:</span>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span>(<span class="no">flights_dm</span>))
+<span class="co">#&gt; [1] "flights"  "airlines" "airports" "planes"   "weather"</span>
 <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>(<span class="no">flights_dm</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 2</span><span>
 #&gt; </span><span style="color: #555555;"># … with 2 variables: table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, pk_col </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>
@@ -186,18 +202,36 @@
 #&gt; </span><span style="color: #555555;"># … with 3 variables: child_table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, child_fk_cols </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span style="color: #555555;">,</span><span>
 #&gt; </span><span style="color: #555555;">#   parent_table </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
-<p>Notably, the function <code><a href="../reference/dm.html">dm_get_tables()</a></code> returns a named list containing the individual tables.</p>
+<p>The function <code><a href="../reference/dm.html">dm_get_tables()</a></code> returns a named list containing the individual tables. The dm object also behaves like a named list of tables:</p>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">flights_dm</span>)
+<span class="co">#&gt; [1] "flights"  "airlines" "airports" "planes"   "weather"</span>
+<span class="no">flights_dm</span>$<span class="no">airports</span></pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,458 x 8</span><span>
+#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
+#&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
+#&gt; </span><span style="color: #555555;"> 2</span><span> 06A   Moton Field Municipa…  32.5  -</span><span style="color: #BB0000;">85.7</span><span>   264    -</span><span style="color: #BB0000;">6</span><span> A     America/Chic…
+#&gt; </span><span style="color: #555555;"> 3</span><span> 06C   Schaumburg Regional    42.0  -</span><span style="color: #BB0000;">88.1</span><span>   801    -</span><span style="color: #BB0000;">6</span><span> A     America/Chic…
+#&gt; </span><span style="color: #555555;"> 4</span><span> 06N   Randall Airport        41.4  -</span><span style="color: #BB0000;">74.4</span><span>   523    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
+#&gt; </span><span style="color: #555555;"> 5</span><span> 09J   Jekyll Island Airport  31.1  -</span><span style="color: #BB0000;">81.4</span><span>    11    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
+#&gt; </span><span style="color: #555555;"> 6</span><span> 0A9   Elizabethton Municip…  36.4  -</span><span style="color: #BB0000;">82.2</span><span>  </span><span style="text-decoration: underline;">1</span><span>593    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
+#&gt; </span><span style="color: #555555;"> 7</span><span> 0G6   Williams County Airp…  41.5  -</span><span style="color: #BB0000;">84.5</span><span>   730    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
+#&gt; </span><span style="color: #555555;"> 8</span><span> 0G7   Finger Lakes Regiona…  42.9  -</span><span style="color: #BB0000;">76.8</span><span>   492    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
+#&gt; </span><span style="color: #555555;"> 9</span><span> 0P2   Shoestring Aviation …  39.8  -</span><span style="color: #BB0000;">76.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>000    -</span><span style="color: #BB0000;">5</span><span> U     America/New_…
+#&gt; </span><span style="color: #555555;">10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style="color: #BB0000;">123.</span><span>    108    -</span><span style="color: #BB0000;">8</span><span> A     America/Los_…
+#&gt; </span><span style="color: #555555;"># … with 1,448 more rows</span><span>
+</span></code></pre>
 </div>
 <div id="keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#keys" class="anchor"></a>Keys and visualization</h2>
 <p>As you can see in the output above, no keys have been set so far. We will use <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> and <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> to add primary keys (pk) and foreign keys (fk):</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">flights_dm_with_one_key</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">flights_dm_with_one_key</span> <span class="kw">&lt;-</span>
   <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(<span class="no">airlines</span>, <span class="no">carrier</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span>(<span class="no">flights</span>, <span class="no">carrier</span>, <span class="no">airlines</span>)</pre></body></html></div>
 <p>After you set the keys and establish relations, you can create a graphical representation of your data model with <code><a href="../reference/dm_draw.html">dm_draw()</a></code>:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">flights_dm_with_one_key</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">flights_dm_with_one_key</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>()</pre></body></html></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="212pt" viewbox="0.00 0.00 152.00 212.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 208)"><title>%0</title>
@@ -210,7 +244,7 @@
 <path fill="none" stroke="#555555" d="M47,-11C64.5,-11 71.2334,-11 84.8642,-11"></path><polygon fill="#555555" stroke="#555555" points="85,-14.5001 95,-11 85,-7.5001 85,-14.5001"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#efebdd" stroke="transparent" points="8,-122 8,-142 47,-142 47,-122 8,-122"></polygon><text text-anchor="start" x="9.6178" y="-127.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="none" stroke="#555555" points="6.5,-121 6.5,-143 47.5,-143 47.5,-121 6.5,-121"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#efebdd" stroke="transparent" points="3,-176 3,-196 51,-196 51,-176 3,-176"></polygon><text text-anchor="start" x="4.8492" y="-181.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="2,-175 2,-197 52,-197 52,-175 2,-175"></polygon></g></g></svg><p>The <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code> function provides a shortcut: the <code>dm</code> object returned by this function contains all tables (by default a reduced version of table <code>flights</code>), defines all primary and foreign keys, and even assigns colors to the different types of tables. We will be using the <code>dm</code> object created by this function from now on.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">flights_dm_with_keys</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">flights_dm_with_keys</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="no">flights_dm_with_keys</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>()</pre></body></html></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -239,7 +273,7 @@
 </ol>
 <p>The function <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> essentially calls <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code> for each table of the <code>dm</code> and creates a new <code>dm</code> object from the result.</p>
 <p>Currently, this only works if the graph induced by the fk relations is cycle free, the default for <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code>:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">flights_dm_acyclic</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">flights_dm_acyclic</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()
 <span class="no">flights_dm_acyclic</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>()</pre></body></html></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -255,7 +289,7 @@
 <polygon fill="#ed7d31" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#fbe5d5" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M50,-71C65.5833,-71 71.8532,-71 83.6529,-71"></path><polygon fill="#555555" stroke="#555555" points="84,-74.5001 94,-71 84,-67.5001 84,-74.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="3,-148 3,-168 51,-168 51,-148 3,-148"></polygon><text text-anchor="start" x="4.8492" y="-153.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="2,-147 2,-169 52,-169 52,-147 2,-147"></polygon></g></g></svg><p>Let’s set two filters:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">us_flights_from_jfk_prepared</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">us_flights_from_jfk_prepared</span> <span class="kw">&lt;-</span>
   <span class="no">flights_dm_acyclic</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span>(<span class="no">airports</span>, <span class="no">name</span> <span class="kw">==</span> <span class="st">"John F Kennedy Intl"</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span>(<span class="no">airlines</span>, <span class="no">name</span> <span class="kw">==</span> <span class="st">"US Airways Inc."</span>)
@@ -272,14 +306,14 @@
 #&gt; airports: name == "John F Kennedy Intl"
 </span></code></pre>
 <p>With <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code>, you can apply all filters and therefore update all tables in the <code>dm</code>, so that they contain only the rows that are relevant to the filters. The effect of the filters can be seen when counting the rows:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">us_flights_from_jfk</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span>(<span class="no">us_flights_from_jfk_prepared</span>)
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">us_flights_from_jfk</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span>(<span class="no">us_flights_from_jfk_prepared</span>)
 <span class="no">us_flights_from_jfk</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu">map_int</span>(<span class="no">nrow</span>)
 <span class="co">#&gt; airlines airports  flights   planes  weather </span>
 <span class="co">#&gt;        1        1       95       67      861</span></pre></body></html></div>
 <p>Alternatively, you can just pull out one of the tables from <code>dm</code> to answer the question which planes were used to service the US Airways flights that departed from JFK airport:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span>(<span class="no">us_flights_from_jfk</span>, <span class="st">"planes"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span>(<span class="no">us_flights_from_jfk</span>, <span class="st">"planes"</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 67 x 9</span><span>
 #&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>         </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
@@ -296,7 +330,7 @@
 #&gt; </span><span style="color: #555555;"># … with 57 more rows</span><span>
 </span></code></pre>
 <p>Each of the planes in the result set above was a part of at least one US Airways flight departing from JFK. Do they have any common characteristics?</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span>(<span class="no">us_flights_from_jfk</span>, <span class="st">"planes"</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span>(<span class="no">us_flights_from_jfk</span>, <span class="st">"planes"</span>) <span class="kw">%&gt;%</span>
   <span class="fu">count</span>(<span class="no">model</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 6 x 2</span><span>
 #&gt;   model               n
@@ -309,7 +343,7 @@
 #&gt; </span><span style="color: #555555;">6</span><span> ERJ 190-100 IGW     1
 </span></code></pre>
 <p>For comparison, let’s look at the equivalent manual query in {dplyr} syntax:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">flights</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">flights</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(<span class="no">airports</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> <span class="kw">=</span> <span class="st">"faa"</span>)) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">name</span> <span class="kw">==</span> <span class="st">"John F Kennedy Intl"</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(<span class="no">airlines</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"carrier"</span>) <span class="kw">%&gt;%</span>
@@ -322,7 +356,7 @@
 <h3 class="hasAnchor">
 <a href="#join" class="anchor"></a>Joining two tables</h3>
 <p>The <code><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl()</a></code> function joins two immediately related tables in a data model. The definition of the primary and foreign key constraints is used to define the relationship.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">flights_dm_with_keys</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">flights_dm_with_keys</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span>(<span class="no">airlines</span>, <span class="no">flights</span>, <span class="kw">join</span> <span class="kw">=</span> <span class="no">left_join</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 20</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -343,7 +377,7 @@
 #&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span style="color: #555555;">, name </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
 <p>The same operation using {dplyr} syntax looks like this:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">nycflights13</span>)
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">nycflights13</span>)
 <span class="no">airlines</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(<span class="no">flights</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"carrier"</span>)</pre></body></html></div>
 <p>Omitting the <code>by</code> argument leads to a warning.</p>
@@ -353,13 +387,13 @@
 <h2 class="hasAnchor">
 <a href="#copy" class="anchor"></a>Copy a <code>dm</code> object to a DB or learn from it</h2>
 <p><code>dm</code> objects can be transferred from one <code>src</code> to another. The relevant verb is <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>, which will copy both data and key constraints.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">src_sqlite</span> <span class="kw">&lt;-</span> <span class="fu">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="kw">create</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">src_sqlite</span> <span class="kw">&lt;-</span> <span class="fu">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="kw">create</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="no">src_sqlite</span>
 <span class="co">#&gt; src:  sqlite 3.30.1 [:memory:]</span>
 <span class="co">#&gt; tbls:</span>
 <span class="no">flights_dm_with_keys_remote</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="no">src_sqlite</span>, <span class="no">flights_dm_with_keys</span>)</pre></body></html></div>
 <p>As a result, the tables are transferred to the target data source, and all keys will be contained in the returned data model.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">src_sqlite</span>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">src_sqlite</span>
 <span class="co">#&gt; src:  sqlite 3.30.1 [:memory:]</span>
 <span class="co">#&gt; tbls: airlines, airports, flights, planes, sqlite_stat1, sqlite_stat4,</span>
 <span class="co">#&gt;   weather</span>
@@ -373,7 +407,7 @@
 #&gt; Foreign keys: 4
 </span></code></pre>
 <p>In the opposite direction, <code>dm</code> objects can also be “learned” from a DB, including the key constraints, by utilizing the DB’s meta-information tables. Unfortunately, this currently only works for MSSQL and Postgres, so we cannot show the results here just yet:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">flights_dm_from_remote</span> <span class="kw">&lt;-</span> <span class="fu">dm_learn_from_db</span>(<span class="no">src_sqlite</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">flights_dm_from_remote</span> <span class="kw">&lt;-</span> <span class="fu">dm_learn_from_db</span>(<span class="no">src_sqlite</span>)</pre></body></html></div>
 </div>
 <div id="further-reading" class="section level2">
 <h2 class="hasAnchor">

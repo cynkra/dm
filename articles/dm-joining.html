@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Joining in Relational Data Models • dm</title>
+<title>Joining in relational data models • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Joining in Relational Data Models">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Joining in relational data models">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -52,37 +52,46 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
+      <a href="../articles/dm-db.html">Connect to a database</a>
     </li>
     <li>
+      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+    </li>
+    <li>
+      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Technical articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+      <a href="../articles/dm-joining.html">Joining in relational data models</a>
     </li>
     <li>
       <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
-      <a href="../articles/dm-db.html">Working with databases</a>
-    </li>
-    <li>
-      <a href="../articles/dm-low-level.html">Low level operations</a>
+      <a href="../articles/dm-low-level.html">Checking keys</a>
     </li>
     <li>
       <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
@@ -116,7 +125,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Joining in Relational Data Models</h1>
+      <h1 data-toc-skip>Joining in relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
             <h4 class="date">2020-05-04</h4>
@@ -133,14 +142,13 @@
 <p><a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#model">Relational data models</a> consist of multiple tables that are linked with <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#fk">foreign keys</a>. They are the building blocks for joining tables. Read more about relational data models in the vignette <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models">“Introduction to Relational Data Models”</a>.</p>
 <p>First, we load the packages that we need:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">nycflights13</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)</pre></body></html></div>
 <div id="data-nycflights13" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-nycflights13" class="anchor"></a>Data: nycflights13</h2>
 <p>To explore filtering with {dm}, we’ll use the {nycflights13} data with its tables <code>flights</code>, <code>planes</code>, <code>airlines</code> and <code>airports</code>.</p>
 <p>This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code>?nycflights13</code>.</p>
-<p>First, we have to create a <code>dm</code> object from the {nycflights13} data. This is implmeneted with <code><a href="../reference/dm_nycflights13.html">dm::dm_nycflights13</a></code>.</p>
+<p>First, we have to create a <code>dm</code> object from the {nycflights13} data. This is implemented with <code><a href="../reference/dm_nycflights13.html">dm::dm_nycflights13()</a></code>.</p>
 <p>A <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm">data model object</a> contains the data as well as metadata.</p>
 <p>If you would like to create a <code>dm</code> from other tables, please look at <code><a href="../reference/dm.html">?dm</a></code> and the function <code><a href="../reference/dm.html">new_dm()</a></code>.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()</pre></body></html></div>

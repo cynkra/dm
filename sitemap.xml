@@ -151,13 +151,13 @@
     <loc>https://krlmlr.github.io/dm/articles/dm-db.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/articles/dm-df.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-filtering.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-function-naming-logic.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-good-to-know.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html</loc>
@@ -167,9 +167,6 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-low-level.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-setup.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/dm-version-migration-guide.html</loc>
