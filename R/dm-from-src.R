@@ -89,15 +89,22 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
     src_tbl_names <- table_names
   }
 
-  # FIXME: Why does dbplyr seem to quote identifiers the wrong way
-  #        with MariaDB?
-  ident <- DBI::dbQuoteIdentifier(con_from_src_or_con(src), src_tbl_names)
+  if (is_db(src)) {
+    # FIXME: Why does dbplyr seem to quote identifiers the wrong way
+    #        with MariaDB?
+    ident <- DBI::dbQuoteIdentifier(con_from_src_or_con(src), src_tbl_names)
 
-  tbls <-
-    ident %>%
-    set_names(src_tbl_names) %>%
-    map(dbplyr::ident_q) %>%
-    map(possibly(tbl, NULL), src = src)
+    tbls <-
+      ident %>%
+      set_names(src_tbl_names) %>%
+      map(dbplyr::ident_q) %>%
+      map(possibly(tbl, NULL), src = src)
+  } else {
+    tbls <-
+      src_tbl_names %>%
+      set_names() %>%
+      map(possibly(tbl, NULL), src = src)
+  }
 
   bad <- map_lgl(tbls, is_null)
   if (any(bad)) {
