@@ -2,7 +2,7 @@
 title: "Zooming and manipulating tables"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Zooming and manipulating tables}
+  %\VignetteIndexEntry{Technical: Zooming and manipulating tables}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,8 +23,7 @@ The first approach is rather self-explanatory, so let us have a closer look at t
 
 Some general information about "zooming" to a table of a `dm`:
 - all information stored in the original `dm` is kept, including the originally zoomed table
-- an object of class `zoomed_dm` is produced
-- a copy of the original table is available for transformations
+- an object of class `zoomed_dm` is produced, presenting a view of the table for transformations
 - you do not need to specify the table when calling `select()`, `mutate()` and other table manipulation functions
 
 {dm} provides methods for many of the {dplyr}-verbs for a `zoomed_dm` which behave the way you are used to, affecting only the zoomed table and leaving the rest of the `dm` untouched.

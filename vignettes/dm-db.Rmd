@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 author: James Wondrasek, Kirill Müller
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{{dm} and databases}
+  %\VignetteIndexEntry{How to: Connect to a database}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:

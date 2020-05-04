@@ -1,9 +1,9 @@
 ---
-title: "Introduction to Relational Data Models"
+title: "Introduction to relational data models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to Relational Data Models}
+  %\VignetteIndexEntry{How to: Understand relational data models}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

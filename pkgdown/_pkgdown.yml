@@ -152,10 +152,10 @@ navbar:
       href: articles/dm-db.html
     - text: Create a dm object from data frames
       href: articles/dm-df.html
+    - text: Introduction to relational data models
+      href: articles/dm-introduction-relational-data-models.html
   - text: Technical articles
     menu:
-    - text: Introduction to Relational Data Models
-      href: articles/dm-introduction-relational-data-models.html
     - text: Class 'dm' and basic operations
       href: articles/dm-class-and-basic-operations.html
     - text: Visualizing 'dm' objects
