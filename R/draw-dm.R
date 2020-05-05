@@ -21,10 +21,16 @@
 #' when printed, produces the output seen in the viewer as a side effect.
 #'
 #' @examples
-#' dm_draw(dm_nycflights13())
-#' dm_draw(dm_nycflights13(cycle = TRUE))
+#' dm_nycflights13() %>%
+#'   dm_draw()
+#'
+#' dm_nycflights13(cycle = TRUE) %>%
+#'   dm_draw(view_type = "title_only")
+#'
 #' dm_get_available_colors()
-#' dm_get_colors(dm_nycflights13())
+#'
+#' dm_nycflights13() %>%
+#'   dm_get_colors()
 dm_draw <- function(dm,
                     rankdir = "LR",
                     col_attr = "column",
@@ -134,7 +140,9 @@ dm_get_all_columns <- function(x) {
 #'   dm_draw()
 #'
 #' # Splicing is supported:
-#' nyc_cols <- dm_get_colors(dm_nycflights13())
+#' nyc_cols <-
+#'   dm_nycflights13() %>%
+#'   dm_get_colors()
 #' nyc_cols
 #'
 #' dm_nycflights13(color = FALSE) %>%
@@ -153,12 +161,14 @@ dm_set_colors <- function(dm, ...) {
   # get table names for each color (name_spec argument is not needed)
   selected_tables <- eval_select_table(quo(c(...)), src_tbls_impl(dm), unique = FALSE)
 
+  # convert color names to hex color codes (if already hex code this is a no-op)
+  # avoid error from mutate()
+  names(selected_tables) <- col_to_hex(names(selected_tables))
+
   display_df <-
     selected_tables %>%
     enframe(name = "new_display", value = "table") %>%
-    # convert color names to hex color codes (if already hex code this is a no-op)
-    mutate(new_display = col_to_hex(new_display)) %>%
-    # needs to be done like this, cause `distinct()` would keep the first one
+    # needs to be done like this, `distinct()` would keep the first one
     filter(!duplicated(table, fromLast = TRUE))
 
   def <-
@@ -195,6 +205,7 @@ dm_get_colors <- function(dm) {
   dm_get_def(dm) %>%
     select(table, display) %>%
     select(display, table) %>%
+    mutate(display = coalesce(display, "default")) %>%
     deframe()
 }
 

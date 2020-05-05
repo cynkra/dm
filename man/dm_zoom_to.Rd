@@ -62,6 +62,9 @@ The filter conditions for the zoomed table are added to the original filter cond
 \code{dm_insert_zoomed()} adds a new table to the \code{dm}.
 
 \code{dm_discard_zoomed()} discards the zoomed table and returns the \code{dm} as it was before zooming.
+
+Please refer to \code{vignette("dm-zoom-to-table", package = "dm")}
+for a more detailed introduction.
 }
 \details{
 Whenever possible, the key relations of the original table are transferred to the resulting table

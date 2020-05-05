@@ -42,7 +42,7 @@ check_key <- function(.data, ...) {
   duplicate_rows <-
     .data %>%
     select(!!!cols_chosen) %>%
-    count(!!!syms(names(cols_chosen))) %>%
+    safe_count(!!!syms(names(cols_chosen))) %>%
     select(n) %>%
     filter(n > 1) %>%
     head(1) %>%
@@ -62,7 +62,8 @@ is_unique_key <- function(.data, column) {
 
   duplicate_rows <-
     .data %>%
-    count(value = !!col_expr) %>%
+    select(value = !!col_expr) %>%
+    safe_count(value) %>%
     filter(n != 1) %>%
     arrange(value) %>%
     utils::head(MAX_COMMAS + 1) %>%
@@ -175,7 +176,7 @@ check_subset <- function(t1, c1, t2, c2) {
   setdiff_v1_v2 <- setdiff(v1, v2)
   print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
 
-  abort_not_subset_of(as_name(t1q), as_name(c1q), as_name(t2q), as_name(c2q))
+  abort_not_subset_of(as_label(t1q), as_name(c1q), as_label(t2q), as_name(c2q))
 }
 
 # similar to `check_subset()`, but evaluates to a boolean
@@ -194,48 +195,6 @@ is_subset <- function(t1, c1, t2, c2) {
   v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
 
   if (!all(v1 %in% v2)) FALSE else TRUE
-}
-
-check_pk_constraints <- function(dm) {
-  pks <- dm_get_all_pks_impl(dm)
-  if (nrow(pks) == 0) {
-    return(tibble(
-      table = character(0),
-      kind = character(0),
-      column = character(0),
-      ref_table = NA_character_,
-      is_key = logical(0),
-      problem = character(0)
-    ))
-  }
-  table_names <- pull(pks, table)
-  tbls <- map(set_names(table_names), ~ tbl(dm, .)) %>%
-    map2(syms(pks$pk_col), ~ select(.x, !!.y))
-  tbl_is_pk <- map_dfr(tbls, enum_pk_candidates_impl) %>%
-    mutate(table = table_names) %>%
-    rename(is_key = candidate, problem = why)
-  tibble(
-    table = table_names,
-    kind = "PK",
-    column = pks$pk_col,
-    ref_table = NA_character_
-  ) %>%
-    left_join(tbl_is_pk, by = c("table", "column"))
-}
-
-check_fk_constraints <- function(dm) {
-  fks <- left_join(dm_get_all_fks_impl(dm), dm_get_all_pks_impl(dm), by = c("parent_table" = "table"))
-  pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
-  cts <- pull(fks, child_table) %>% map(tbl, src = dm)
-  fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
-    select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = pk_col)
-  mutate(
-    fks_tibble,
-    problem = pmap_chr(fks_tibble, check_fk),
-    is_key = if_else(problem == "", TRUE, FALSE),
-    kind = "FK"
-  ) %>%
-    select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
 }
 
 new_tracked_cols <- function(dm, selected) {

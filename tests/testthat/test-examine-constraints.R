@@ -12,9 +12,14 @@ nyc_check <- tibble::tribble(
 
 test_that("`dm_examine_constraints()` works", {
 
+  # FIXME: remove after 15 May 2020 (dplyr update)?
+  if (packageVersion("dbplyr") >= "1.4.3" && packageVersion("dplyr") < "0.8.99") {
+    skip("slight package incompatibility")
+  }
+
   # case of no constraints:
   expect_identical(
-    dm_examine_constraints(dm_test_obj),
+    dm_examine_constraints(dm_test_obj()),
     tibble(
       table = character(0),
       kind = character(0),
@@ -26,47 +31,54 @@ test_that("`dm_examine_constraints()` works", {
       new_dm_examine_constraints()
   )
 
+  skip_if_src("maria")
+
   # case of some constraints, all met:
-  walk(
-    dm_for_disambiguate_src,
-    ~ expect_identical(
-      dm_examine_constraints(.),
-      tibble(
-        table = c("iris_1", "iris_2"),
-        kind = c("PK", "FK"),
-        columns = new_keys("key"),
-        ref_table = c(NA, "iris_1"),
-        is_key = TRUE,
-        problem = ""
-      ) %>%
-        new_dm_examine_constraints()
-    )
+  expect_identical(
+    dm_examine_constraints(dm_for_disambiguate()),
+    tibble(
+      table = c("iris_1", "iris_2"),
+      kind = c("PK", "FK"),
+      columns = new_keys("key"),
+      ref_table = c(NA, "iris_1"),
+      is_key = TRUE,
+      problem = ""
+    ) %>%
+      new_dm_examine_constraints()
   )
 
+  skip_if_src("postgres")
+  skip_if_src("mssql")
+
   # case of some constraints, some violated:
-  walk(
-    dm_nycflights_small_src,
-    function(dm_nycflights_small) {
-      expect_identical(
-        dm_examine_constraints(dm_nycflights_small) %>%
-          mutate(problem = if_else(problem == "", "", "<reason>")),
-        nyc_check
-      )
-    }
+  expect_identical(
+    dm_examine_constraints(dm_nycflights_small()) %>%
+      mutate(problem = if_else(problem == "", "", "<reason>")),
+    nyc_check
   )
 })
 
 test_that("output", {
+  skip_if_remote_src()
+
   verify_output("out/examine-constraints.txt", {
+    dm() %>% dm_examine_constraints()
+
     dm_nycflights13() %>% dm_examine_constraints()
     dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
     dm_nycflights13(cycle = TRUE) %>%
       dm_select_tbl(-flights) %>%
       dm_examine_constraints()
+
+    "n column"
+    dm_for_filter_w_cycle() %>%
+      dm_examine_constraints()
   })
 })
 
 test_that("output as tibble", {
+  skip_if_remote_src()
+
   verify_output("out/examine-constraints-as-tibble.txt", {
     dm_nycflights13(cycle = TRUE) %>%
       dm_examine_constraints() %>%

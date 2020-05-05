@@ -74,60 +74,6 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
   dm
 }
 
-#' dm_from_src()
-#'
-#' `dm_from_src()` creates a [dm] from some or all tables in a [src]
-#' (a database or an environment) or which are accessible via a DBI-Connection.
-#' For Postgres and SQL Server databases, primary and foreign keys
-#' are imported from the database.
-#'
-#' @param src A \pkg{dplyr} table source object or a
-#'   [`DBI::DBIConnection-class`] object is accepted.
-#' @param table_names A character vector of the names of the tables to include.
-#' @param ...
-#'   \lifecycle{experimental}
-#'
-#'   Additional parameters for the schema learning query.
-#'   Currently supports `schema` (default: `"public"`)
-#'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
-#'
-#' @return A `dm` object.
-#'
-#' @export
-#' @examples
-#' dm_from_src(dplyr::src_df(pkg = "nycflights13"))
-dm_from_src <- function(src = NULL, table_names = NULL, ...) {
-  if (is_null(src)) {
-    return(empty_dm())
-  }
-  # both DBI-Connection and {dplyr}-src object are accepted
-  src <- src_from_src_or_con(src)
-  src_tbl_names <- unique(src_tbls(src))
-
-  if (is_null(table_names)) {
-    auto_detect <- TRUE
-    table_names <- src_tbl_names
-  } else {
-    if (!all(table_names %in% src_tbl_names)) {
-      abort_req_tbl_not_avail(src_tbl_names, setdiff(table_names, src_tbl_names))
-    }
-    auto_detect <- FALSE
-  }
-  dm_learned <- dm_learn_from_db(src, ...)
-  if (!is.null(dm_learned)) {
-    tbls_in_dm <- src_tbls(dm_learned)
-    # `src_tbls()` show also temporary tables, but those are not included in the result of `dm_learn_from_db()`
-    # therefore, throw an error if `table_names` includes temporary tables.
-    tbls_req <- intersect(tbls_in_dm, table_names)
-    if (!auto_detect && (!identical(tbls_req, table_names))) abort_temp_table_requested(table_names, tbls_in_dm)
-    return(dm_learned %>% dm_select_tbl(!!!tbls_req))
-  }
-
-  tbls <- map(set_names(table_names), tbl, src = src)
-
-  new_dm(tbls)
-}
-
 #' A low-level constructor
 #'
 #' @description
@@ -302,6 +248,10 @@ debug_validate_dm <- function(dm) {
 #' @export
 dm_get_src <- function(x) {
   check_not_zoomed(x)
+  dm_get_src_impl(x)
+}
+
+dm_get_src_impl <- function(x) {
   tables <- dm_get_tables_impl(x)
   tbl_src(tables[1][[1]])
 }
@@ -431,7 +381,8 @@ dm_get_filters <- function(x) {
   }
 
   filter_df %>%
-    rename(filter = filter_expr)
+    rename(filter = filter_expr) %>%
+    mutate(filter = unname(filter))
 }
 
 dm_get_zoomed_tbl <- function(x) {
@@ -499,18 +450,27 @@ format.dm <- function(x, ...) {
 }
 
 #' @export
-#' @import cli
 print.dm <- function(x, ...) {
   cat_rule("Table source", col = "green")
+  def <- dm_get_def(x)
   src <- dm_get_src(x)
+  db_info <- NULL
 
-  db_info <- strsplit(format(src), "\n")[[1]][[1]]
+  if (!is.null(src$con) && nrow(def) >= 0) {
+    # FIXME: change to pillar::tbl_sum() once it's there
+    tbl_str <- tibble::tbl_sum(def$data[[1]])
+    if ("Database" %in% names(tbl_str)) {
+      db_info <- paste0("src:  ", tbl_str[["Database"]])
+    }
+  }
+  if (is.null(db_info)) {
+    db_info <- strsplit(format(src), "\n")[[1]][[1]]
+  }
 
   cat_line(db_info)
 
   cat_rule("Metadata", col = "violet")
 
-  def <- dm_get_def(x)
   cat_line("Tables: ", commas(tick(def$table)))
   cat_line("Columns: ", def_get_n_columns(def))
   cat_line("Primary keys: ", def_get_n_pks(def))
@@ -717,8 +677,9 @@ compute.dm <- function(x, ...) {
 #' @rdname dplyr_db
 #' @export
 compute.zoomed_dm <- function(x, ...) {
-  zoomed_df <- get_zoomed_tbl(x) %>%
-    compute(zoomed_df, ...)
+  zoomed_df <-
+    get_zoomed_tbl(x) %>%
+    compute(...)
   replace_zoomed_tbl(x, zoomed_df)
 }
 
@@ -762,7 +723,7 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
 
 #' @export
 copy_to.zoomed_dm <- function(dest, df, name, overwrite, ...) {
-  check_not_zoomed(.data)
+  check_not_zoomed(dest)
 }
 
 #' @rdname dplyr_db
@@ -772,8 +733,14 @@ collect.dm <- function(x, ...) {
 
   def <- dm_get_def(x)
   def$data <- map(def$data, collect, ...)
-  new_dm3(def)
+  new_dm3(def, zoomed = is_zoomed(x))
 }
+
+#' @export
+collect.zoomed_dm <- function(x, ...) {
+  check_not_zoomed(x)
+}
+
 
 # FIXME: what about 'dim.dm()'?
 #' @export

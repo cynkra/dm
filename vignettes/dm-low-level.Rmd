@@ -1,32 +1,28 @@
 ---
-title: "Low level operations"
+title: "Checking keys"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Low level operations}
+  %\VignetteIndexEntry{Technical: Checking keys}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r setup, include = FALSE}
-library(tibble)
-library(dm)
-
-knitr::opts_chunk$set(
-  error = TRUE,
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
 
 In this document we will present several specialised functions for conducting basic tests about key conditions and about relations between tables.
 We will also describe functions that can be used for splitting and uniting tables.
+
+```{r}
+library(tidyverse)
+library(dm)
+```
+
 
 ## Testing key constraints
 
@@ -46,7 +42,7 @@ data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 
 and you want to know if `a` is a primary key for `data_1`, you can use the `check_key()` function:
 
-```{r}
+```{r error = TRUE}
 check_key(data_1, a)
 ```
 
@@ -67,21 +63,21 @@ check_subset(data_1, a, data_2, a)
 This function is important for determining if a column is a foreign key to some other table.
 What about the inverse relation?
 
-```{r}
+```{r error = TRUE}
 check_subset(data_2, a, data_1, a)
 ```
 
 It should be kept in mind that `check_subset()` does not test if column `c2` is a unique key of table `t2`.
 In order to find out if a (child) table `t1` contains a column `c1` that is a foreign key to a (parent) table `t2` with the corresponding column `c2`, the following method should be used:
 
-```{r, eval = FALSE}
+```{r eval=FALSE}
 check_key(t2, c2)
 check_subset(t1, c1, t2, c2)
 ```
 
-To check both directions at once, and to find out if the unique values of `c_1` in `t_1` are the same as those of `c_2` in `t_2`, {dm} provides the function `check_set_equality()` (this would fail with a longer error message and is therefore not evaluated):
+To check both directions at once, and to find out if the unique values of `c_1` in `t_1` are the same as those of `c_2` in `t_2`, {dm} provides the function `check_set_equality()`:
 
-```{r eval=FALSE}
+```{r error=TRUE}
 check_set_equality(data_1, a, data_2, a)
 ```
 
@@ -142,7 +138,7 @@ d4 <- tibble(a = c(2:5, 5))
 
 Here are some examples of how the cardinality testing functions can be used:
 
-```{r}
+```{r error=TRUE}
 # This does not pass, `c` is not unique key of d2:
 check_cardinality_0_n(d2, c, d1, a)
 

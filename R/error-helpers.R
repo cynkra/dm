@@ -2,6 +2,14 @@
 
 # error class generator ---------------------------------------------------
 
+format_msg_and_bullets <- function(bullets) {
+  if (length(bullets) <= 1) {
+    bullets
+  } else {
+    paste0(bullets[[1]], "\n", format_error_bullets(bullets[-1]))
+  }
+}
+
 dm_error <- function(x) {
   paste0("dm_error_", x)
 }
@@ -10,14 +18,26 @@ dm_error_full <- function(x) {
   c(dm_error(x), "dm_error")
 }
 
-# abort and text for primary key handling errors --------------------------
-
-abort_key_set_force_false <- function(table) {
-  abort(error_txt_key_set_force_false(table), .subclass = dm_error_full("key_set_force_false"))
+dm_abort <- function(bullets, class) {
+  abort(
+    format_msg_and_bullets(bullets),
+    .subclass = dm_error_full(class)
+  )
 }
 
-error_txt_key_set_force_false <- function(table) {
-  glue("Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key.")
+dm_warning <- function(x) {
+  paste0("dm_warning_", x)
+}
+
+dm_warning_full <- function(x) {
+  c(dm_warning(x), "dm_warning")
+}
+
+dm_warn <- function(bullets, class) {
+  warn(
+    format_msg_and_bullets(bullets),
+    .subclass = dm_warning_full(class)
+  )
 }
 
 # abort and text for key-helper functions ---------------------------------
@@ -108,33 +128,6 @@ error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
     "ref_table {tick(ref_table_name)} needs a primary key first. ",
     "Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key."
   )
-}
-
-abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                             parent_table_name, actual_fk_colnames) {
-  abort(
-    error_txt_is_not_fkc(
-      child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
-    ),
-    .subclass = dm_error_full("is_not_fkc")
-  )
-}
-
-error_txt_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                                 parent_table_name, actual_fk_colnames) {
-  glue(
-    "({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}. ",
-    "Foreign key columns are: ({commas(tick(actual_fk_colnames))})."
-  )
-}
-
-abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
-}
-
-error_txt_rm_fk_col_missing <- function() {
-  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 }
 
 # error helpers for draw_dm -----------------------------------------------
@@ -255,17 +248,6 @@ abort_key_constraints_need_db <- function() {
 
 error_txt_key_constraints_need_db <- function() {
   "Setting key constraints only works if the tables of the `dm` are on a database."
-}
-
-abort_first_rm_fks <- function(table, fk_tables) {
-  abort(error_txt_first_rm_fks(table, fk_tables), .subclass = dm_error_full("first_rm_fks"))
-}
-
-error_txt_first_rm_fks <- function(table, fk_tables) {
-  glue(
-    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
-    "First remove those or set `rm_referencing_fks = TRUE`."
-  )
 }
 
 abort_no_src_or_con <- function() {
@@ -439,17 +421,6 @@ abort_one_name_for_copy_to <- function(name) {
   )
 }
 
-# table not on src --------------------------------------------------------
-
-abort_req_tbl_not_avail <- function(avail, missing) {
-  abort(error_txt_req_tbl_not_avail(avail, missing), .subclass = dm_error_full("req_tbl_not_avail"))
-}
-
-error_txt_req_tbl_not_avail <- function(avail, missing) {
-  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
-}
-
-
 # table for which key should be set not in list of tables when creating dm -----------------------
 
 abort_unnamed_table_list <- function() {
@@ -486,16 +457,29 @@ error_txt_fk_not_tracked <- function(x_orig_name, y_name) {
   )
 }
 
-# RHS-by column not selected ----------------------------------------------
+# lost track of PK-column(s) -----------------------------------
 
-abort_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  abort(error_txt_need_to_select_rhs_by(y_name, rhs_by), .subclass = dm_error_full("need_to_select_rhs_by"))
+abort_pk_not_tracked <- function(orig_table, orig_pk) {
+  abort(error_txt_pk_not_tracked(orig_table, orig_pk), .subclass = dm_error_full("pk_not_tracked"))
 }
 
-error_txt_need_to_select_rhs_by <- function(y_name, rhs_by) {
-  glue("You need to select by-column {tick(rhs_by)} of RHS-table {tick(y_name)}.")
+error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
+  glue(
+    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {tick(orig_table)} got lost ",
+    "in transformations. Therefore it is not possible to use `nest.zoomed_dm()`."
+  )
 }
 
+
+# only for local src ------------------------------------------------------
+
+abort_only_for_local_src <- function(src_dm) {
+  abort(error_txt_only_for_local_src(format_classes(class(src_dm))), .subclass = dm_error_full("only_for_local_src"))
+}
+
+error_txt_only_for_local_src <- function(src_class) {
+  glue("`nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: {src_class}.")
+}
 
 # dm invalid --------------------------------------------------------------
 

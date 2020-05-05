@@ -1,10 +1,10 @@
 utils::globalVariables(c(
   # pipe
   ".",
-
+  #
   # nesting
   "data",
-
+  #
   # nycflights13
   "airlines",
   "airports",
@@ -15,7 +15,7 @@ utils::globalVariables(c(
   "planes",
   "tailnum",
   "weather",
-
+  #
   # dm
   "arrange_col",
   "candidate",
@@ -73,5 +73,19 @@ utils::globalVariables(c(
   "values",
   "why",
   "zoom",
-  "zoomed"
+  "zoomed",
+  #
+  # financial
+  "account_id",
+  "accounts",
+  "cards",
+  "client_id",
+  "clients",
+  "disp_id",
+  "disps",
+  "district_id",
+  "districts",
+  "loans",
+  "orders",
+  "trans"
 ))

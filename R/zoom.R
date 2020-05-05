@@ -14,6 +14,9 @@
 #'
 #' `dm_discard_zoomed()` discards the zoomed table and returns the `dm` as it was before zooming.
 #'
+#' Please refer to `vignette("dm-zoom-to-table", package = "dm")`
+#' for a more detailed introduction.
+#'
 #' @inheritParams dm_add_pk
 #' @inheritParams vctrs::vec_as_names
 #'
@@ -72,9 +75,6 @@
 #' flights_zoomed_transformed %>%
 #'   dm_discard_zoomed()
 dm_zoom_to <- function(dm, table) {
-  # FIXME: to include in documentation after #185:
-  # Please refer to `vignette("dm-zoom-to-table")` for a more thorough introduction.
-  check_dm(dm)
   check_not_zoomed(dm)
   # for now only one table can be zoomed on
   zoom <- as_string(ensym(table))
@@ -82,16 +82,12 @@ dm_zoom_to <- function(dm, table) {
 
   cols <- list(get_all_cols(dm, zoom))
 
-  structure(
-    new_dm3(
-      dm_get_def(dm) %>%
-        mutate(
-          zoom = if_else(table == !!zoom, data, list(NULL)),
-          col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
-        )
-    ),
-    class = c("zoomed_dm", "dm")
-  )
+  dm_get_def(dm) %>%
+    mutate(
+      zoom = if_else(table == !!zoom, data, list(NULL)),
+      col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
+    ) %>%
+    new_dm3(zoomed = TRUE)
 }
 
 is_zoomed <- function(dm) {
@@ -123,8 +119,10 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     }
     new_tbl_name_chr <- as_string(enexpr(new_tbl_name))
   }
-  names_list <-
-    repair_table_names(old_names = src_tbls_impl(dm), new_names = new_tbl_name_chr, repair, quiet)
+  names_list <- repair_table_names(
+    old_names = src_tbls_impl(dm),
+    new_names = new_tbl_name_chr, repair, quiet
+  )
   # rename dm in case of name repair
   dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
   new_tbl_name_chr <- names_list$new_names
@@ -146,18 +144,20 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   upd_inc_fks <- update_zoomed_incoming_fks(dm)
 
   dm_wo_outgoing_fks <-
-    update_filter(dm, old_tbl_name, vctrs::list_of(old_filters)) %>%
+    dm %>%
+    update_filter(old_tbl_name, vctrs::list_of(old_filters)) %>%
     dm_add_tbl_impl(new_tbl, new_tbl_name_chr, vctrs::list_of(new_filters)) %>%
     dm_get_def() %>%
     mutate(
-      pks = if_else(table == new_tbl_name_chr, upd_pk, pks),
-      fks = if_else(table == new_tbl_name_chr, upd_inc_fks, fks)
+      pks = if_else(table == new_tbl_name_chr, !!upd_pk, pks),
+      fks = if_else(table == new_tbl_name_chr, !!upd_inc_fks, fks)
     ) %>%
     new_dm3(zoomed = TRUE)
 
   # outgoing FKs: potentially in several rows, based on the old table;
   # renamed(?) FK columns if they still exist
-  dm_update_zoomed_outgoing_fks(dm_wo_outgoing_fks, new_tbl_name_chr, is_upd = FALSE) %>%
+  dm_wo_outgoing_fks %>%
+    dm_update_zoomed_outgoing_fks(new_tbl_name_chr, is_upd = FALSE) %>%
     dm_clean_zoomed()
 }
 
@@ -328,8 +328,18 @@ check_not_zoomed <- function(dm) {
     return()
   }
 
-  fun_name <- as_string(sys.call(-1)[[1]])
+  fun_name <- gsub(".zoomed_dm", "", as_string(sys.call(-1)[[1]]))
+  # if a method for `dm()` is used for a `zoomed_dm`, we don't want `fun_name = method.zoomed_dm` but rather `fun_name = method`
+  fun_name <- sub("\\.zoomed_dm", "", fun_name)
   abort_only_possible_wo_zoom(fun_name)
+}
+
+# For `nest.zoomed_dm()`, we need the incoming foreign keys of the originally zoomed table
+get_orig_in_fks <- function(zoomed_dm, orig_table) {
+  # FIXME: maybe there is a more efficient implementation possible?
+  dm_get_all_fks_impl(zoomed_dm) %>%
+    filter(parent_table == orig_table) %>%
+    select(-parent_table)
 }
 
 get_all_cols <- function(dm, table_name) {

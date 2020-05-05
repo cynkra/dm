@@ -1,0 +1,72 @@
+#' Creates a dm object for the Financial data
+#'
+#' @description
+#' \lifecycle{experimental}
+#'
+#' `dm_financial()` creates an example [`dm`] object from the tables at
+#' <https://relational.fit.cvut.cz/dataset/Financial>.
+#' The connection is established once per session,
+#' subsequent calls return the same connection.
+#'
+#' @return A `dm` object.
+#'
+#' @export
+#' @examples
+#' \dontrun{
+#' if (rlang::is_installed("RMariaDB")) {
+#'   dm_financial() %>%
+#'     dm_draw()
+#' }
+#' }
+dm_financial <- function() {
+  stopifnot(rlang::is_installed("RMariaDB"))
+
+  my_db <- DBI::dbConnect(
+    RMariaDB::MariaDB(),
+    username = "guest",
+    password = "relational",
+    dbname = "Financial_ijs",
+    host = "relational.fit.cvut.cz"
+  )
+
+  my_dm <-
+    dm_from_src(my_db) %>%
+    dm_add_pk(districts, id) %>%
+    dm_add_pk(accounts, id) %>%
+    dm_add_pk(clients, id) %>%
+    dm_add_pk(loans, id) %>%
+    dm_add_pk(orders, id) %>%
+    dm_add_pk(disps, id) %>%
+    dm_add_pk(cards, id) %>%
+    dm_add_pk(trans, id) %>%
+    dm_add_fk(loans, account_id, accounts) %>%
+    dm_add_fk(orders, account_id, accounts) %>%
+    dm_add_fk(disps, account_id, accounts) %>%
+    dm_add_fk(disps, client_id, clients) %>%
+    dm_add_fk(accounts, district_id, districts) %>%
+    dm_add_fk(cards, disp_id, disps) %>%
+    dm_add_fk(trans, account_id, accounts) %>%
+    dm_set_colors(darkgreen = loans)
+
+  my_dm
+}
+
+#' dm_financial_sqlite()
+#'
+#' `dm_financial_sqlite()` copies the data to a temporary SQLite database.
+#' The data is downloaded once per session, subsequent calls return the same database.
+#' The `trans` table is excluded due to its size.
+#' @rdname dm_financial
+#' @export
+dm_financial_sqlite <- function() {
+  stopifnot(rlang::is_installed("RSQLite"))
+
+  my_dm <-
+    dm_financial() %>%
+    dm_select_tbl(-trans)
+
+  sqlite_db <- DBI::dbConnect(RSQLite::SQLite())
+  sqlite_dm <- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)
+
+  sqlite_dm
+}

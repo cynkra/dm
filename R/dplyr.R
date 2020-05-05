@@ -176,6 +176,64 @@ group_by.zoomed_dm <- function(.data, ...) {
 }
 
 #' @export
+group_data.dm <- function(.data) {
+  check_zoomed(.data)
+}
+
+#' @export
+group_data.zoomed_dm <- function(.data) {
+  tbl <- get_zoomed_tbl(.data)
+  group_data(tbl)
+}
+
+#' @export
+group_keys.dm <- function(.tbl, ...) {
+  check_zoomed(.tbl)
+}
+
+#' @export
+group_keys.zoomed_dm <- function(.tbl, ...) {
+  .data <- .tbl
+  tbl <- get_zoomed_tbl(.data)
+  group_keys(tbl, ...)
+}
+
+#' @export
+group_indices.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @export
+group_indices.zoomed_dm <- function(.data, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  group_indices(tbl, ...)
+}
+
+#' @export
+group_vars.dm <- function(x) {
+  check_zoomed(x)
+}
+
+#' @export
+group_vars.zoomed_dm <- function(x) {
+  .data <- x
+  tbl <- get_zoomed_tbl(.data)
+  group_vars(tbl)
+}
+
+#' @export
+groups.dm <- function(x) {
+  check_zoomed(x)
+}
+
+#' @export
+groups.zoomed_dm <- function(x) {
+  .data <- x
+  tbl <- get_zoomed_tbl(.data)
+  groups(tbl)
+}
+
+#' @export
 ungroup.dm <- function(x, ...) {
   check_zoomed(x)
 }
@@ -206,6 +264,19 @@ summarise.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
+#' @export
+pull.dm <- function(.data, var = -1, name = NULL) {
+  check_zoomed(.data)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @inheritParams dplyr::pull
+#' @export
+pull.zoomed_dm <- function(.data, var = -1, ...) {
+  tbl <- get_zoomed_tbl(.data)
+  pull(tbl, var = {{ var }}, ...)
+}
+
 #' \pkg{dplyr} join methods for zoomed dm objects
 #'
 #' Use these methods without the '.zoomed_dm' suffix (see examples).
@@ -218,6 +289,7 @@ summarise.dm <- function(.data, ...) {
 #' @param suffix Disabled, since columns are disambiguated automatically if necessary, changing the column names to `table_name.column_name`.
 #' @param select Select a subset of the \strong{RHS-table}'s columns, the syntax being `select = c(col_1, col_2, col_3)` (unquoted or quoted).
 #' This argument is specific for the `join`-methods for `zoomed_dm`.
+#' The table's `by` column(s) are automatically added if missing in the selection.
 #' @param ... see [`dplyr::join`]
 #' @examples
 #' flights_dm <- dm_nycflights13()
@@ -330,20 +402,21 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     select_quo <- quo(everything())
   }
 
-  selected <- eval_select_both(select_quo, colnames(y_tbl))
+  selected <- eval_select_both(select_quo, colnames(y_tbl))$names
 
   if (is_null(by)) {
     by <- get_by(x, x_orig_name, y_name)
-    if (!any(selected$names == by)) abort_need_to_select_rhs_by(y_name, unname(by))
 
+    # If the original FK-relation between original `x` and `y` got lost, `by` needs to be provided explicitly
     if (!all(names(by) %in% get_tracked_cols(x))) abort_fk_not_tracked(x_orig_name, y_name)
   }
 
   by <- repair_by(by)
 
-  new_col_names <- get_tracked_cols(x)
+  # selection without RHS `by`; only this is needed for disambiguation and by-columns are added later on for all join-types
+  selected_wo_by <- selected[selected %in% setdiff(selected, by)]
 
-  y_tbl <- select(y_tbl, !!!selected$indices)
+  new_col_names <- get_tracked_cols(x)
 
   if (disambiguate) {
     x_disambig_name <- x_orig_name
@@ -356,7 +429,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     table_colnames <-
       vctrs::vec_rbind(
         tibble(table = x_disambig_name, column = colnames(x_tbl)),
-        tibble(table = y_disambig_name, column = colnames(y_tbl)) %>% filter(!(column %in% by))
+        tibble(table = y_disambig_name, column = names(selected_wo_by))
       )
 
     recipe <- compute_disambiguate_cols_recipe(table_colnames, sep = ".")
@@ -376,12 +449,68 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
     }
 
     if (has_length(y_renames)) {
-      y_tbl <- y_tbl %>% rename(!!!y_renames[[1]])
+      names(selected_wo_by) <- recode(names(selected_wo_by), !!!prep_recode(y_renames[[1]]))
     }
   }
+
+  # inform user in case RHS `by` column(s) are added
+  if (!all(by %in% selected)) {
+    new_cols <- glue_collapse(tick_if_needed(setdiff(by, selected)), ", ")
+    message(glue("Using `select = c({as_label(select_quo)}, {new_cols})`."))
+  }
+
+  # rename RHS `by` columns in the tibble to avoid after-the-fact disambiguation collision
+  prefix <- unique_prefix(names(selected_wo_by))
+  by_rhs_rename <- by
+  names(by_rhs_rename) <- paste0(prefix, seq_along(by_rhs_rename))
+  stopifnot(!any(names(selected_wo_by) %in% names(by_rhs_rename)))
+
+  # complete vector of selection consisting of selection without by and the newly named by-columns
+  selected_repaired <- c(selected_wo_by, by_rhs_rename)
+
+  y_tbl <- select(y_tbl, !!!selected_repaired)
+
+  # the `by` argument needs to be updated: LHS stays, RHS needs to be replaced with new names
+  repaired_by <- set_names(recode(by, !!!prep_recode(by_rhs_rename)), names(by))
 
   # in case key columns of x_tbl have the same name as selected columns of y_tbl
   # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
   # We can track the new column names
-  list(x_tbl = x_tbl, y_tbl = y_tbl, by = by, new_col_names = new_col_names)
+  list(x_tbl = x_tbl, y_tbl = y_tbl, by = repaired_by, new_col_names = new_col_names)
+}
+
+unique_prefix <- function(x) {
+  if (is_empty(x)) {
+    return("...")
+  }
+
+  dots <- max(max(nchar(x, "bytes")), 3)
+  glue_collapse(rep(".", dots))
+}
+
+# Workaround for dev dplyr + dbplyr
+safe_count <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = group_by_drop_default(x)) {
+  quos <- enquos(...)
+
+  if (has_length(quos)) {
+    named <- names2(quos) != ""
+    if (any(named)) {
+      quos <- as.list(quos)
+      named_quos <- quos[named]
+      x <- mutate(x, !!!named_quos)
+      quos[named] <- syms(names2(quos)[named])
+      names(quos) <- NULL
+    }
+    out <- group_by(x, !!!quos, .add = FALSE, .drop = .drop)
+  } else {
+    out <- ungroup(x)
+  }
+
+  # Compatibility for dplyr < 1.0.0
+  if (is.null(name)) {
+    out <- tally(out, wt = !!enquo(wt), sort = sort)
+  } else {
+    out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
+  }
+  ungroup(out)
 }

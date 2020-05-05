@@ -30,7 +30,19 @@
 #'
 #' @export
 #' @examples
-#' nycflights_dm <- dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+#' if (rlang::is_installed("nycflights13")) {
+#'   nycflights_dm <- dm(
+#'     planes = nycflights13::planes,
+#'     airports = nycflights13::airports
+#'   )
+#' } else {
+#'   message("Using mock-up data, install the nycflights13 package to fix.")
+#'   nycflights_dm <- dm(
+#'     planes = tibble(tailnum = letters[1:2], manufacturer = "Acme"),
+#'     airports = tibble(faa = character())
+#'   )
+#' }
+#'
 #' nycflights_dm %>%
 #'   dm_draw()
 #'
@@ -71,6 +83,11 @@ dm_add_pk_impl <- function(dm, table, column, force) {
   i <- which(def$table == table)
 
   if (!force && NROW(def$pks[[i]]) > 0) {
+    if (!dm_is_strict_keys(dm) &&
+      identical(def$pks[[i]]$column[[1]], column)) {
+      return(dm)
+    }
+
     abort_key_set_force_false(table)
   }
 
@@ -97,7 +114,11 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' @export
 dm_has_pk <- function(dm, table) {
   check_not_zoomed(dm)
-  has_length(dm_get_pk(dm, {{ table }}))
+  dm_has_pk_impl(dm, as_string(ensym(table)))
+}
+
+dm_has_pk_impl <- function(dm, table) {
+  has_length(dm_get_pk_impl(dm, table))
 }
 
 #' Primary key column names
@@ -208,14 +229,25 @@ dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
   table_name <- as_name(ensym(table))
   check_correct_input(dm, table_name)
 
-  def <- dm_get_def(dm)
-
   if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
     affected <- dm_get_referencing_tables(dm, !!table_name)
     abort_first_rm_fks(table_name, affected)
   }
-  def$pks[def$table == table_name] <- list(new_pk())
-  def$fks[def$table == table_name] <- list(new_fk())
+
+  dm_rm_pk_impl(dm, table_name)
+}
+
+dm_rm_pk_impl <- function(dm, table_name) {
+  def <- dm_get_def(dm)
+
+  i <- which(def$table == table_name)
+
+  if (nrow(def$pks[[i]]) == 0 && dm_is_strict_keys(dm)) {
+    abort_pk_not_defined(table_name)
+  }
+
+  def$pks[[i]] <- new_pk()
+  def$fks[[i]] <- new_fk()
 
   new_dm3(def)
 }
@@ -284,16 +316,51 @@ dm_enum_pk_candidates <- function(dm, table) {
     mutate(columns = new_keys(columns))
 }
 
-enum_pk_candidates_impl <- function(table) {
-  map(set_names(colnames(table)), function(x) is_unique_key(table, {{ x }})) %>%
-    enframe("column") %>%
-    # Workaround: Can't call bind_rows() here with dplyr < 0.9.0
-    # Can't call unnest() either for an unknown reason
-    mutate(candidate = map_lgl(value, "unique"), data = map(value, list("data", 1))) %>%
-    select(-value) %>%
-    mutate(values = map_chr(data, ~ commas(format(.$value, trim = TRUE, justify = "none"), capped = TRUE))) %>%
-    select(-data) %>%
-    mutate(why = if_else(candidate, "", paste0("has duplicate values: ", values))) %>%
-    select(-values) %>%
+enum_pk_candidates_impl <- function(table, columns = colnames(table)) {
+  map_chr(set_names(columns), function(x) check_pk(table, {{ x }})) %>%
+    enframe("column", "why") %>%
+    mutate(candidate = (why == "")) %>%
+    select(column, candidate, why) %>%
     arrange(desc(candidate), column)
+}
+
+check_pk <- function(table, column) {
+  duplicate_values <- is_unique_key(table, {{ column }})
+  if (duplicate_values$unique) {
+    return("")
+  }
+
+  fun <- ~ format(.x, trim = TRUE, justify = "none")
+  values <- commas(duplicate_values$data[[1]]$value, capped = TRUE, fun = fun)
+  paste0("has duplicate values: ", values)
+}
+
+
+# Error -------------------------------------------------------------------
+
+abort_pk_not_defined <- function(table) {
+  abort(error_txt_pk_not_defined(table), .subclass = dm_error_full("pk_not_defined"))
+}
+
+error_txt_pk_not_defined <- function(table) {
+  glue("Table {tick(table)} does not have a primary key.")
+}
+
+abort_key_set_force_false <- function(table) {
+  abort(error_txt_key_set_force_false(table), .subclass = dm_error_full("key_set_force_false"))
+}
+
+error_txt_key_set_force_false <- function(table) {
+  glue("Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key.")
+}
+
+abort_first_rm_fks <- function(table, fk_tables) {
+  abort(error_txt_first_rm_fks(table, fk_tables), .subclass = dm_error_full("first_rm_fks"))
+}
+
+error_txt_first_rm_fks <- function(table, fk_tables) {
+  glue(
+    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
+    "First remove those or set `rm_referencing_fks = TRUE`."
+  )
 }

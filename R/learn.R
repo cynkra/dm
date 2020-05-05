@@ -66,10 +66,12 @@ dm_learn_from_db <- function(dest, ...) {
     transmute(name = table, value = schema_if(schema, table)) %>%
     deframe()
 
-  legacy_new_dm(
-    tables = map(table_names, ~ tbl(con, dbplyr::ident_q(.x))),
-    data_model = get_datamodel_from_overview(overview)
-  )
+  # FIXME: Use tbl_sql(vars = ...)
+  tables <- map(table_names, ~ tbl(con, dbplyr::ident_q(.x)))
+
+  data_model <- get_datamodel_from_overview(overview)
+
+  legacy_new_dm(tables, data_model)
 }
 
 schema_if <- function(schema, table) {
@@ -180,10 +182,11 @@ postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABL
 }
 
 # FIXME: only needed for `dm_learn_from_db()` <- needs to be implemented in a different manner
-legacy_new_dm <- function(tables, data_model) {
-  if (is_missing(tables) && is_missing(data_model)) {
+legacy_new_dm <- function(tables = NULL, data_model = NULL) {
+  if (is_null(tables) && is_null(data_model)) {
     return(empty_dm())
   }
+
   if (!all_same_source(tables)) abort_not_same_src()
   stopifnot(is.data_model(data_model))
 
@@ -226,7 +229,7 @@ legacy_new_dm <- function(tables, data_model) {
   pks <-
     pks %>%
     # Legacy compatibility
-    mutate(column = vctrs::vec_cast(column, list())) %>%
+    mutate(column = as.list(column, list())) %>%
     nest_compat(pks = -table)
 
   pks <-

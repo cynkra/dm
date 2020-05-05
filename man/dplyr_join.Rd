@@ -34,7 +34,8 @@ If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}
 \item{suffix}{Disabled, since columns are disambiguated automatically if necessary, changing the column names to \code{table_name.column_name}.}
 
 \item{select}{Select a subset of the \strong{RHS-table}'s columns, the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
-This argument is specific for the \code{join}-methods for \code{zoomed_dm}.}
+This argument is specific for the \code{join}-methods for \code{zoomed_dm}.
+The table's \code{by} column(s) are automatically added if missing in the selection.}
 
 \item{...}{see \code{\link[dplyr:join]{dplyr::join}}}
 }

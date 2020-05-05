@@ -112,7 +112,7 @@ bdm_create_graph <- function(
 }
 
 bdm_render_graph <- function(graph, width = NULL, height = NULL) {
-  if (!requireNamespace("DiagrammeR", quietly = TRUE)) {
+  if (!rlang::is_installed("DiagrammeR")) {
     stop("DiagrammeR package needed for this function to work. Please install it.",
       call. = FALSE
     )
@@ -168,13 +168,13 @@ bdm_create_graph_list <- function(
 
   switch(view_type,
     all = {},
-
+    #
     keys_only = {
       tables <- lapply(tables, function(tab) {
         tab[tab[["key"]] > 0 | !is.na(tab[, "ref"]), ]
       })
     },
-
+    #
     title_only = {
       tables <- lapply(tables, function(tab) {
         tab[0L, ]
@@ -199,7 +199,6 @@ bdm_create_graph_list <- function(
       shape = "plaintext",
       type = "upper",
       segment = data_model$tables[order(data_model$tables$table), "segment"],
-
       stringsAsFactors = FALSE
     )
 
@@ -321,7 +320,7 @@ to_html_table <- function(x,
       )
     ),
     # rows
-    sapply(seq_len(nrow(x)), function(r) {
+    unique(sapply(seq_len(nrow(x)), function(r) {
       html_tr(c(
         # cells
         sapply(cols, function(col_name) {
@@ -330,7 +329,7 @@ to_html_table <- function(x,
           html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
         })
       ))
-    })
+    }))
   ))
 }
 
@@ -351,7 +350,7 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
       bgcolor = "#FFFFFF"
     )
   } else {
-    header_bgcol_rgb <- col2rgb(palette_id)
+    header_bgcol_rgb <- col2rgb(palette_id, alpha = TRUE)
     bodycol_rgb <- calc_bodycol_rgb(header_bgcol_rgb)
     bodycol <- hex_from_rgb(bodycol_rgb)
     # if header background too dark, use white font color
