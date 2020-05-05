@@ -1,32 +1,18 @@
 ---
-title: "Visualizing 'dm' objects"
+title: "Visualizing dm objects"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Visualizing 'dm' objects}
+  %\VignetteIndexEntry{Techincal: Visualizing dm objects}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
-library(dplyr)
-library(dm)
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
-
-knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
-    knitr::asis_output()
-}
-```
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
 
 Once you have all your primary keys set and all foreign key relations defined, a graphical representation of your data model offers a condensed view of the tables and the relationships between the tables.
 The following functions can be used to visualize the `dm` object:^[The code for the functions in this section is borrowed from the [{datamodelr}](https://github.com/bergant/datamodelr) package.]

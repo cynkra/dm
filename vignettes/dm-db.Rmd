@@ -1,10 +1,10 @@
 ---
-title: "{dm} and databases"
+title: "Connect to a database"
 date: "`r Sys.Date()`"
 author: James Wondrasek, Kirill Müller
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{{dm} and databases}
+  %\VignetteIndexEntry{How to: Connect to a database}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -13,23 +13,8 @@ editor_options:
 
 
 ``````{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
-
-knit_print.grViz <- function(x, ...) {
-  x %>%
-    DiagrammeRsvg::export_svg() %>%
-    c("`````{=html}\n", ., "\n`````\n") %>%
-    knitr::asis_output()
-}
+source("setup/setup.R")
 ``````
-
-
-
 
 ## Connecting to a database
 
@@ -162,7 +147,7 @@ my_dm_keys %>%
 ## Performing operations on tables by "zooming"
 
 As the dm is a collection of tables, if we wish to perform operations on an individual table we set it as the context for those operations using `dm_zoom_to()`.
-See `vignette("dm-zoom-to-table", package = "dm")` for more detail on zooming.
+See `vignette("dm-zoom-to-table")` for more detail on zooming.
 
 Since dm operations are transient unless explicitly requested, our chain of manipulations on the selected table are made permanent by assigning the result of `dm_insert_zoomed()` to a new object, `my_dm_total`.
 This is a new dm object, derived from the original, with a new lazy table `total_loans` linked to the `accounts` table.

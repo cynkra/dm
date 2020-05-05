@@ -7,6 +7,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
   get_stage("install") %>%
     add_step(step_install_github(upgrade = "always", c(
       "mllg/backports",
+      "r-lib/brio",
       "r-lib/cli",
       "r-dbi/DBI",
       "tidyverse/dplyr",

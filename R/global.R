@@ -73,5 +73,19 @@ utils::globalVariables(c(
   "values",
   "why",
   "zoom",
-  "zoomed"
+  "zoomed",
+  #
+  # financial
+  "account_id",
+  "accounts",
+  "cards",
+  "client_id",
+  "clients",
+  "disp_id",
+  "disps",
+  "district_id",
+  "districts",
+  "loans",
+  "orders",
+  "trans"
 ))

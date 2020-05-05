@@ -1,33 +1,18 @@
 ---
-title: "Getting Started"
+title: "Getting started with dm"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting Started}
+  %\VignetteIndexEntry{First read: Getting started with dm}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-fansi::set_knit_hooks(knitr::knit_hooks)
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
-
-knit_print.grViz <- function(x, ...) {
-  x %>% 
-    DiagrammeRsvg::export_svg() %>% 
-    c("`````{=html}\n", ., "\n`````\n") %>% 
-    knitr::asis_output()
-}
-library(nycflights13)
-library(tidyverse)
-library(dm)
-```
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
 
 The goal of the package {dm} and its `dm` class is to facilitate working with multiple related tables.
 
@@ -72,10 +57,18 @@ library(dm)
 ## Creating `dm` objects: {#create}
 
 The [{nycflights13}](https://github.com/hadley/nycflights13) package offers a nice example of interconnected tables.
-The most straightforward way of squeezing those tables into a `dm` object is:
+The most straightforward way of squeezing those tables into a dm object is the `dm()` function:
 
 ```{r message=FALSE}
-flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
+library(nycflights13)
+
+flights_dm <- dm(
+  flights,
+  airlines,
+  airports,
+  planes,
+  weather
+)
 flights_dm
 ```
 
@@ -83,12 +76,19 @@ This fairly verbose output shows the data and metadata of a `dm` object.
 The various components can be accessed with functions of the type `dm_get_...()`, e.g.:
 
 ```{r}
-dm_get_src(flights_dm)
+names(dm_get_tables(flights_dm))
 dm_get_all_pks(flights_dm)
 dm_get_all_fks(flights_dm)
 ```
 
-Notably, the function `dm_get_tables()` returns a named list containing the individual tables.
+The function `dm_get_tables()` returns a named list containing the individual tables.
+The dm object also behaves like a named list of tables:
+
+```{r}
+names(flights_dm)
+flights_dm$airports
+```
+
 
 ## Keys and visualization {#keys}
 
