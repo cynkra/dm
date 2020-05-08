@@ -84,3 +84,43 @@ test_that("Learning from SQLite works (#288)?", {
     dm(test = tibble(a = 1:3))
   )
 })
+
+test_that("Learning keys from SQLite works", {
+  src_sqlite <- skip_if_error(src_sqlite(":memory:", TRUE))
+  con_sqlite <- src_sqlite$con
+  on.exit(dbDisconnect(con_sqlite))
+
+  dbExecute(con_sqlite, "CREATE TABLE first (id INTEGER PRIMARY KEY)")
+  dbExecute(con_sqlite, paste(
+    "CREATE TABLE second (",
+    "id INTEGER PRIMARY KEY, first_id INTEGER,",
+    "FOREIGN KEY (first_id) REFERENCES first (id))"
+  ))
+  dbExecute(con_sqlite, paste(
+    "CREATE TABLE third (",
+    "id INTEGER PRIMARY KEY, first_id INTEGER, second_id INTEGER,",
+    "FOREIGN KEY (first_id) REFERENCES first (id),",
+    "FOREIGN KEY (second_id) REFERENCES second (id))"
+  ))
+
+  x <- dm_from_src(src_sqlite, learn_keys = TRUE)
+  expect_equivalent(
+    dplyr::mutate_all(dm_get_all_fks(x), format, justify = "none"),
+    tibble::tribble(
+      ~child_table, ~child_fk_cols, ~parent_table,
+          "second",     "first_id",       "first",
+           "third",     "first_id",       "first",
+           "third",    "second_id",      "second"
+    )
+  )
+
+  expect_equivalent(
+    dplyr::mutate_all(dm_get_all_pks(x), format, justify = "none"),
+    tibble::tribble(
+        ~table, ~pk_col,
+       "first",    "id",
+      "second",    "id",
+       "third",    "id"
+    )
+  )
+})

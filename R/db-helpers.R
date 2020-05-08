@@ -163,6 +163,11 @@ is_postgres <- function(dest) {
     inherits(dest, "PqConnection")
 }
 
+is_sqlite <- function(dest) {
+  inherits(dest, "SQLiteConnection") ||
+    inherits(dest, "src_SQLiteConnection")
+}
+
 src_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest else dbplyr::src_dbi(dest)
 }

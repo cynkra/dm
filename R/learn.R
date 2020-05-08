@@ -85,6 +85,9 @@ db_learn_query <- function(dest, ...) {
   if (is_postgres(dest)) {
     return(postgres_learn_query(dest, ...))
   }
+  if (is_sqlite(dest)) {
+    return(sqlite_learn_query())
+  }
 }
 
 mssql_learn_query <- function() { # taken directly from {datamodelr}
@@ -179,6 +182,34 @@ postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABL
     dbQuoteString(con, schema),
     dbQuoteString(con, table_type)
   )
+}
+
+sqlite_learn_query <- function() {
+  "SELECT
+    NULL as schema,
+    c.*,
+    fk.ref,
+    fk.ref_col
+  FROM (
+    SELECT
+      m.name as 'table',
+      c.name as column,
+      c.pk as 'key',
+      c.'type',
+      c.'notnull' as mandatory,
+      c.cid + 1 as column_order
+    FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) m
+    JOIN pragma_table_info(m.name) c ON m.type = 'table'
+  ) c
+  LEFT JOIN (
+    SELECT
+      m.name as 'table',
+      fk.'table' as ref,
+      fk.'from' as column,
+      fk.'to' as ref_col
+    FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) m
+    JOIN pragma_foreign_key_list(m.name) fk
+  ) fk  ON c.'table' = fk.'table' AND c.column = fk.column"
 }
 
 # FIXME: only needed for `dm_learn_from_db()` <- needs to be implemented in a different manner
