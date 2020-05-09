@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9009</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
       </span>
     </div>
 
@@ -53,37 +53,46 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
+      <a href="../articles/dm-db.html">Connect to a database</a>
     </li>
     <li>
+      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+    </li>
+    <li>
+      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Technical articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+      <a href="../articles/dm-joining.html">Joining in relational data models</a>
     </li>
     <li>
       <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
-      <a href="../articles/dm-db.html">Working with databases</a>
-    </li>
-    <li>
-      <a href="../articles/dm-low-level.html">Low level operations</a>
+      <a href="../articles/dm-low-level.html">Checking keys</a>
     </li>
     <li>
       <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
@@ -120,7 +129,7 @@
       <h1 data-toc-skip>Zooming and manipulating tables</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm-zoom-to-table.Rmd"><code>vignettes/dm-zoom-to-table.Rmd</code></a></small>
       <div class="hidden name"><code>dm-zoom-to-table.Rmd</code></div>
 
     </div>
@@ -137,7 +146,7 @@
 <h2 class="hasAnchor">
 <a href="#enabling-dplyr-workflow-within-a-dm" class="anchor"></a>Enabling {dplyr}-workflow within a <code>dm</code>
 </h2>
-<p>Some general information about “zooming” to a table of a <code>dm</code>: - all information stored in the original <code>dm</code> is kept, including the originally zoomed table - an object of class <code>zoomed_dm</code> is produced - a copy of the original table is available for transformations - you do not need to specify the table when calling <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and other table manipulation functions</p>
+<p>Some general information about “zooming” to a table of a <code>dm</code>: - all information stored in the original <code>dm</code> is kept, including the originally zoomed table - an object of class <code>zoomed_dm</code> is produced, presenting a view of the table for transformations - you do not need to specify the table when calling <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and other table manipulation functions</p>
 <p>{dm} provides methods for many of the {dplyr}-verbs for a <code>zoomed_dm</code> which behave the way you are used to, affecting only the zoomed table and leaving the rest of the <code>dm</code> untouched. When you are finished with transforming the table, there are three options to proceed:</p>
 <ol style="list-style-type: decimal">
 <li>use <code><a href="../reference/dm_zoom_to.html">dm_update_zoomed()</a></code> if you want to replace the originally zoomed table with the new table</li>
@@ -157,6 +166,14 @@
 <p>Imagine you want to have a column in <code>flights</code>, specifying if a flight left before noon or after. Just like with {dplyr}, we can tackle this with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>. Let us do this step by step:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="no">flights_dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()
 <span class="no">flights_dm</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>

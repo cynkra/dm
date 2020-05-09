@@ -4,20 +4,19 @@ pkgdown_sha: ~
 articles:
   dm-class-and-basic-operations: dm-class-and-basic-operations.html
   dm-db: dm-db.html
+  dm-df: dm-df.html
   dm-filtering: dm-filtering.html
   dm-function-naming-logic: dm-function-naming-logic.html
-  dm-good-to-know: dm-good-to-know.html
   dm-introduction-relational-data-models: dm-introduction-relational-data-models.html
   dm-joining: dm-joining.html
   dm-low-level: dm-low-level.html
-  dm-setup: dm-setup.html
   dm-version-migration-guide: dm-version-migration-guide.html
   dm-visualization: dm-visualization.html
   dm-zoom-to-table: dm-zoom-to-table.html
   dm: dm.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
-last_built: 2020-05-03T18:16Z
+last_built: 2020-05-09T05:17Z
 urls:
   reference: https://krlmlr.github.io/dm/reference
   article: https://krlmlr.github.io/dm/articles

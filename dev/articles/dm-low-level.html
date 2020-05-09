@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Low level operations • dm</title>
+<title>Checking keys • dm</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Low level operations">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Checking keys">
 <meta property="og:description" content="dm">
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
 <meta name="robots" content="noindex">
@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9009</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
       </span>
     </div>
 
@@ -53,37 +53,46 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a>
+      <a href="../articles/dm-db.html">Connect to a database</a>
     </li>
     <li>
+      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+    </li>
+    <li>
+      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Technical articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
       <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing 'dm' objects</a>
+      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in Relational Data Models</a>
+      <a href="../articles/dm-joining.html">Joining in relational data models</a>
     </li>
     <li>
       <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in Relational Data Models</a>
+      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-setup.html">Defining a 'dm' object for your data</a>
-    </li>
-    <li>
-      <a href="../articles/dm-db.html">Working with databases</a>
-    </li>
-    <li>
-      <a href="../articles/dm-low-level.html">Low level operations</a>
+      <a href="../articles/dm-low-level.html">Checking keys</a>
     </li>
     <li>
       <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
@@ -117,19 +126,28 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Low level operations</h1>
+      <h1 data-toc-skip>Checking keys</h1>
             
-            <h4 class="date">2020-05-03</h4>
+            <h4 class="date">2020-05-09</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm-low-level.Rmd"><code>vignettes/dm-low-level.Rmd</code></a></small>
       <div class="hidden name"><code>dm-low-level.Rmd</code></div>
 
     </div>
 
     
     
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 <p>In this document we will present several specialised functions for conducting basic tests about key conditions and about relations between tables. We will also describe functions that can be used for splitting and uniting tables.</p>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
+<span class="co">#&gt; ── [1mAttaching packages[22m ────────────────────────────────── tidyverse 1.3.0 ──</span>
+<span class="co">#&gt; [32m✔[39m [34mggplot2[39m 3.3.0     [32m✔[39m [34mpurrr  [39m 0.3.4</span>
+<span class="co">#&gt; [32m✔[39m [34mtibble [39m 3.0.1     [32m✔[39m [34mdplyr  [39m 0.8.5</span>
+<span class="co">#&gt; [32m✔[39m [34mtidyr  [39m 1.0.3     [32m✔[39m [34mstringr[39m 1.4.0</span>
+<span class="co">#&gt; [32m✔[39m [34mreadr  [39m 1.3.1     [32m✔[39m [34mforcats[39m 0.5.0</span>
+<span class="co">#&gt; ── [1mConflicts[22m ───────────────────────────────────── tidyverse_conflicts() ──</span>
+<span class="co">#&gt; [31m✖[39m [34mdplyr[39m::[32mfilter()[39m masks [34mdm[39m::filter(), [34mstats[39m::filter()</span>
+<span class="co">#&gt; [31m✖[39m [34mdplyr[39m::[32mlag()[39m    masks [34mstats[39m::lag()</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)</pre></body></html></div>
 <div id="testing-key-constraints" class="section level2">
 <h2 class="hasAnchor">
 <a href="#testing-key-constraints" class="anchor"></a>Testing key constraints</h2>
@@ -140,30 +158,37 @@
 <li><code><a href="../reference/check_set_equality.html">check_set_equality(t1, c1, t2, c2)</a></code></li>
 </ol>
 <p>When you have tables (data frames) that are connected by key relations, this package can help you to verify the assumed key relations and/or determine the existing key relations between the tables. For example, if you have tables:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">data_1</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">a</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>), <span class="kw">b</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">1</span>), <span class="kw">c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>))
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">data_1</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">a</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>), <span class="kw">b</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">1</span>), <span class="kw">c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>))
 <span class="no">data_2</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">a</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>), <span class="kw">b</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>), <span class="kw">c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>))</pre></body></html></div>
 <p>and you want to know if <code>a</code> is a primary key for <code>data_1</code>, you can use the <code><a href="../reference/check_key.html">check_key()</a></code> function:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/check_key.html">check_key</a></span>(<span class="no">data_1</span>, <span class="no">a</span>)
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/check_key.html">check_key</a></span>(<span class="no">data_1</span>, <span class="no">a</span>)
 <span class="co">#&gt; Error: (`a`) not a unique key of `data_1`.</span></pre></body></html></div>
 <p>Mind the error message when a test is not passed.</p>
 <p>For <code>data_2</code>, column <code>a</code> is a key:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/check_key.html">check_key</a></span>(<span class="no">data_2</span>, <span class="no">a</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/check_key.html">check_key</a></span>(<span class="no">data_2</span>, <span class="no">a</span>)</pre></body></html></div>
 <p>To see if a column of one table contains only those values that are also present in another column of another table, the <code><a href="../reference/check_subset.html">check_subset()</a></code> function can be used:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span>(<span class="no">data_1</span>, <span class="no">a</span>, <span class="no">data_2</span>, <span class="no">a</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span>(<span class="no">data_1</span>, <span class="no">a</span>, <span class="no">data_2</span>, <span class="no">a</span>)</pre></body></html></div>
 <p>This function is important for determining if a column is a foreign key to some other table. What about the inverse relation?</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span>(<span class="no">data_2</span>, <span class="no">a</span>, <span class="no">data_1</span>, <span class="no">a</span>)
-<span class="co">#&gt; # A tibble: 1 x 3</span>
-<span class="co">#&gt;       a     b     c</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     3     6     9</span>
-<span class="co">#&gt; Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`.</span></pre></body></html></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span>(<span class="no">data_2</span>, <span class="no">a</span>, <span class="no">data_1</span>, <span class="no">a</span>)</pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span><span>
+#&gt;       a     b     c
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span>     3     6     9
+</span></code></pre>
+<pre><code>#&gt; Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`.</code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not test if column <code>c2</code> is a unique key of table <code>t2</code>. In order to find out if a (child) table <code>t1</code> contains a column <code>c1</code> that is a foreign key to a (parent) table <code>t2</code> with the corresponding column <code>c2</code>, the following method should be used:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/check_key.html">check_key</a></span>(<span class="no">t2</span>, <span class="no">c2</span>)
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/check_key.html">check_key</a></span>(<span class="no">t2</span>, <span class="no">c2</span>)
 <span class="fu"><a href="../reference/check_subset.html">check_subset</a></span>(<span class="no">t1</span>, <span class="no">c1</span>, <span class="no">t2</span>, <span class="no">c2</span>)</pre></body></html></div>
-<p>To check both directions at once, and to find out if the unique values of <code>c_1</code> in <code>t_1</code> are the same as those of <code>c_2</code> in <code>t_2</code>, {dm} provides the function <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code> (this would fail with a longer error message and is therefore not evaluated):</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span>(<span class="no">data_1</span>, <span class="no">a</span>, <span class="no">data_2</span>, <span class="no">a</span>)</pre></body></html></div>
+<p>To check both directions at once, and to find out if the unique values of <code>c_1</code> in <code>t_1</code> are the same as those of <code>c_2</code> in <code>t_2</code>, {dm} provides the function <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>:</p>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span>(<span class="no">data_1</span>, <span class="no">a</span>, <span class="no">data_2</span>, <span class="no">a</span>)</pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span><span>
+#&gt;       a     b     c
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span>     3     6     9
+</span></code></pre>
+<pre><code>#&gt; Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`..</code></pre>
 <p>Introducing one more table enables us to show how it looks when the test is passed:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">data_3</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">a</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>), <span class="kw">b</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>), <span class="kw">c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>))
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">data_3</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">a</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>), <span class="kw">b</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>), <span class="kw">c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>))
 
 <span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span>(<span class="no">data_1</span>, <span class="no">a</span>, <span class="no">data_3</span>, <span class="no">a</span>)</pre></body></html></div>
 <p>If the test is passed, the return value of the function will be the first table parameter (invisibly). This ensures that the functions can be conveniently used in a pipe configuration.</p>
@@ -196,12 +221,12 @@
 <h3 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h3>
 <p>Given the following three data frames:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">d1</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">a</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">5</span>)
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">d1</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">a</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">5</span>)
 <span class="no">d2</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>:<span class="fl">5</span>,<span class="fl">5</span>))
 <span class="no">d3</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">c</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>)
 <span class="no">d4</span> <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">a</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>:<span class="fl">5</span>, <span class="fl">5</span>))</pre></body></html></div>
 <p>Here are some examples of how the cardinality testing functions can be used:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># This does not pass, `c` is not unique key of d2:</span>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="co"># This does not pass, `c` is not unique key of d2:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span>(<span class="no">d2</span>, <span class="no">c</span>, <span class="no">d1</span>, <span class="no">a</span>)
 <span class="co">#&gt; Error: (`c`) not a unique key of `d2`.</span>
 
@@ -215,7 +240,7 @@
 <span class="co"># This passes:</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_1</a></span>(<span class="no">d1</span>, <span class="no">a</span>, <span class="no">d3</span>, <span class="no">c</span>)</pre></body></html></div>
 <p><code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> returns the type of relation, e.g.:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span>(<span class="no">d1</span>, <span class="no">a</span>, <span class="no">d3</span>, <span class="no">c</span>)
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span>(<span class="no">d1</span>, <span class="no">a</span>, <span class="no">d3</span>, <span class="no">c</span>)
 <span class="co">#&gt; [1] "injective mapping (child: 0 or 1 -&gt; parent: 1)"</span>
 <span class="fu"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span>(<span class="no">d1</span>, <span class="no">a</span>, <span class="no">d2</span>, <span class="no">c</span>)
 <span class="co">#&gt; [1] "surjective mapping (child: 1 to n -&gt; parent: 1)"</span>
@@ -235,77 +260,80 @@
 <li><code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list(list_of_parent_child_tables, id_column)</a></code></li>
 </ol>
 <p>The first function implements table normalization. An existing table is split into a parent table (i.e. a lookup table) and a child table (containing the observations), linked by a key column (here: <code>new_id_column</code>). Basically, a foreign key relation would be created, pointing from the <code>new_id_column</code> of the child table to the parent table’s corresponding column, which can be seen as the parent table’s primary key column. The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> does that, as can be seen in the following example:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">mtcars_tibble</span> <span class="kw">&lt;-</span> <span class="fu">as_tibble</span>(<span class="no">mtcars</span>)
-<span class="no">mtcars_tibble</span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
-<span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span>
-<span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span>
-<span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span>
-<span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span>
-<span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span>
-<span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span>
-<span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span>
-<span class="co">#&gt; # … with 22 more rows</span>
-<span class="no">decomposed_table</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span>(<span class="no">mtcars_tibble</span>, <span class="no">am_gear_carb_id</span>, <span class="no">am</span>, <span class="no">gear</span>, <span class="no">carb</span>)
-<span class="no">decomposed_table</span>
-<span class="co">#&gt; $child_table</span>
-<span class="co">#&gt; # A tibble: 32 x 9</span>
-<span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs am_gear_carb_id</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;           &lt;int&gt;</span>
-<span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0               9</span>
-<span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0               9</span>
-<span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1               7</span>
-<span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1               1</span>
-<span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0               2</span>
-<span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1               1</span>
-<span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0               4</span>
-<span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1               5</span>
-<span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1               5</span>
-<span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1               6</span>
-<span class="co">#&gt; # … with 22 more rows</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $parent_table</span>
-<span class="co">#&gt; # A tibble: 13 x 4</span>
-<span class="co">#&gt;    am_gear_carb_id    am  gear  carb</span>
-<span class="co">#&gt;              &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1               1     0     3     1</span>
-<span class="co">#&gt;  2               2     0     3     2</span>
-<span class="co">#&gt;  3               3     0     3     3</span>
-<span class="co">#&gt;  4               4     0     3     4</span>
-<span class="co">#&gt;  5               5     0     4     2</span>
-<span class="co">#&gt;  6               6     0     4     4</span>
-<span class="co">#&gt;  7               7     1     4     1</span>
-<span class="co">#&gt;  8               8     1     4     2</span>
-<span class="co">#&gt;  9               9     1     4     4</span>
-<span class="co">#&gt; 10              10     1     5     2</span>
-<span class="co">#&gt; 11              11     1     5     4</span>
-<span class="co">#&gt; 12              12     1     5     6</span>
-<span class="co">#&gt; 13              13     1     5     8</span></pre></body></html></div>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">mtcars_tibble</span> <span class="kw">&lt;-</span> <span class="fu">as_tibble</span>(<span class="no">mtcars</span>)
+<span class="no">mtcars_tibble</span></pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 32 x 11</span><span>
+#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+#&gt; </span><span style="color: #555555;"> 2</span><span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+#&gt; </span><span style="color: #555555;"> 3</span><span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+#&gt; </span><span style="color: #555555;"> 4</span><span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+#&gt; </span><span style="color: #555555;"> 5</span><span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+#&gt; </span><span style="color: #555555;"> 6</span><span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+#&gt; </span><span style="color: #555555;"> 7</span><span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+#&gt; </span><span style="color: #555555;"> 8</span><span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+#&gt; </span><span style="color: #555555;"> 9</span><span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+#&gt; </span><span style="color: #555555;">10</span><span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+#&gt; </span><span style="color: #555555;"># … with 22 more rows</span><span>
+</span></code></pre>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">decomposed_table</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span>(<span class="no">mtcars_tibble</span>, <span class="no">am_gear_carb_id</span>, <span class="no">am</span>, <span class="no">gear</span>, <span class="no">carb</span>)
+<span class="no">decomposed_table</span></pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; $child_table
+#&gt; <span style="color: #555555;"># A tibble: 32 x 9</span><span>
+#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs am_gear_carb_id
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span>  21       6  160    110  3.9   2.62  16.5     0               9
+#&gt; </span><span style="color: #555555;"> 2</span><span>  21       6  160    110  3.9   2.88  17.0     0               9
+#&gt; </span><span style="color: #555555;"> 3</span><span>  22.8     4  108     93  3.85  2.32  18.6     1               7
+#&gt; </span><span style="color: #555555;"> 4</span><span>  21.4     6  258    110  3.08  3.22  19.4     1               1
+#&gt; </span><span style="color: #555555;"> 5</span><span>  18.7     8  360    175  3.15  3.44  17.0     0               2
+#&gt; </span><span style="color: #555555;"> 6</span><span>  18.1     6  225    105  2.76  3.46  20.2     1               1
+#&gt; </span><span style="color: #555555;"> 7</span><span>  14.3     8  360    245  3.21  3.57  15.8     0               4
+#&gt; </span><span style="color: #555555;"> 8</span><span>  24.4     4  147.    62  3.69  3.19  20       1               5
+#&gt; </span><span style="color: #555555;"> 9</span><span>  22.8     4  141.    95  3.92  3.15  22.9     1               5
+#&gt; </span><span style="color: #555555;">10</span><span>  19.2     6  168.   123  3.92  3.44  18.3     1               6
+#&gt; </span><span style="color: #555555;"># … with 22 more rows</span><span>
+#&gt; 
+#&gt; $parent_table
+#&gt; </span><span style="color: #555555;"># A tibble: 13 x 4</span><span>
+#&gt;    am_gear_carb_id    am  gear  carb
+#&gt;              </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span>               1     0     3     1
+#&gt; </span><span style="color: #555555;"> 2</span><span>               2     0     3     2
+#&gt; </span><span style="color: #555555;"> 3</span><span>               3     0     3     3
+#&gt; </span><span style="color: #555555;"> 4</span><span>               4     0     3     4
+#&gt; </span><span style="color: #555555;"> 5</span><span>               5     0     4     2
+#&gt; </span><span style="color: #555555;"> 6</span><span>               6     0     4     4
+#&gt; </span><span style="color: #555555;"> 7</span><span>               7     1     4     1
+#&gt; </span><span style="color: #555555;"> 8</span><span>               8     1     4     2
+#&gt; </span><span style="color: #555555;"> 9</span><span>               9     1     4     4
+#&gt; </span><span style="color: #555555;">10</span><span>              10     1     5     2
+#&gt; </span><span style="color: #555555;">11</span><span>              11     1     5     4
+#&gt; </span><span style="color: #555555;">12</span><span>              12     1     5     6
+#&gt; </span><span style="color: #555555;">13</span><span>              13     1     5     8
+</span></code></pre>
 <p>A new column is created, with which the two tables can be joined again, essentially creating the original table.</p>
 <p>The functions that do the inverse operation, i.e. join a parent and a child table and subsequently drop the <code>new_id_column</code>, are <code><a href="../reference/reunite_parent_child.html">reunite_parent_child()</a></code> and <code><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list()</a></code>. The former takes as arguments two tables and the unquoted name of the ID column, and the latter takes as arguments a list of two tables plus the unquoted name of the ID column:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">parent_table</span> <span class="kw">&lt;-</span> <span class="no">decomposed_table</span>$<span class="no">parent_table</span>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">parent_table</span> <span class="kw">&lt;-</span> <span class="no">decomposed_table</span>$<span class="no">parent_table</span>
 <span class="no">child_table</span> <span class="kw">&lt;-</span> <span class="no">decomposed_table</span>$<span class="no">child_table</span>
-<span class="fu"><a href="../reference/reunite_parent_child.html">reunite_parent_child</a></span>(<span class="no">child_table</span>, <span class="no">parent_table</span>, <span class="kw">id_column</span> <span class="kw">=</span> <span class="no">am_gear_carb_id</span>)
-<span class="co">#&gt; # A tibble: 32 x 11</span>
-<span class="co">#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt;  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt;  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt;  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span>
-<span class="co">#&gt;  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span>
-<span class="co">#&gt;  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span>
-<span class="co">#&gt;  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span>
-<span class="co">#&gt;  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span>
-<span class="co">#&gt;  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span>
-<span class="co">#&gt; 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span>
-<span class="co">#&gt; # … with 22 more rows</span></pre></body></html></div>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="co"># Shortcut:</span>
+<span class="fu"><a href="../reference/reunite_parent_child.html">reunite_parent_child</a></span>(<span class="no">child_table</span>, <span class="no">parent_table</span>, <span class="kw">id_column</span> <span class="kw">=</span> <span class="no">am_gear_carb_id</span>)</pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 32 x 11</span><span>
+#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+#&gt; </span><span style="color: #555555;"> 2</span><span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+#&gt; </span><span style="color: #555555;"> 3</span><span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+#&gt; </span><span style="color: #555555;"> 4</span><span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+#&gt; </span><span style="color: #555555;"> 5</span><span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+#&gt; </span><span style="color: #555555;"> 6</span><span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+#&gt; </span><span style="color: #555555;"> 7</span><span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+#&gt; </span><span style="color: #555555;"> 8</span><span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+#&gt; </span><span style="color: #555555;"> 9</span><span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+#&gt; </span><span style="color: #555555;">10</span><span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+#&gt; </span><span style="color: #555555;"># … with 22 more rows</span><span>
+</span></code></pre>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="co"># Shortcut:</span>
 <span class="fu"><a href="../reference/reunite_parent_child.html">reunite_parent_child_from_list</a></span>(<span class="no">decomposed_table</span>, <span class="kw">id_column</span> <span class="kw">=</span> <span class="no">am_gear_carb_id</span>)</pre></body></html></div>
 <p>Currently these functions only exist as a low-level operation on tables. We plan to extend this operation to <code>dm</code> objects in the future.</p>
 </div>
