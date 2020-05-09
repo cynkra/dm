@@ -16,6 +16,12 @@ editor_options:
 source("setup/setup.R")
 ``````
 
+```{r tweak, include = FALSE}
+# relational.fit may be down
+knitr::opts_chunk$set(error = TRUE)
+```
+
+
 ## Connecting to a database
 
 A dm object can be created from a database which is accessible via {[DBI](https://dbi.r-dbi.org/)}.
