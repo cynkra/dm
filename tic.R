@@ -40,6 +40,7 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
   get_stage("script") %>%
     add_code_step(devtools::test(reporter = c("progress", "fail")))
 } else if (ci_has_env("TIC_ONLY_STYLER")) {
+ if (!ci_is_tag()) {
   # For caching
   get_stage("install") %>%
     add_step(step_install_cran("R.cache")) %>%
@@ -57,6 +58,7 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
       add_step(step_setup_ssh()) %>%
       add_step(step_push_deploy())
   }
+ }
 } else if (ci_has_env("TIC_BUILD_PKGDOWN")) {
   do_pkgdown()
 } else {
