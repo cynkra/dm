@@ -123,9 +123,9 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   test_1 <- map_chr(map(def_1$data, sql_render), as.character)
   test_2 <- map_chr(map(def_2$data, sql_render), as.character)
 
-  skip_if_src_not_in(c("df", "mssql"))
-  expect_true(!all(map_lgl(test_1, ~ !grepl("1.0 AS `c`", .))))
-  expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS `c`", .))))
+  skip_if_src_not_in(c("mssql"))
+  expect_true(any(map_lgl(test_1, ~ grepl("1.0 AS `c`", gsub("\"", "`", .)))))
+  expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS `c`", gsub("\"", "`", .)))))
 })
 
 test_that("some methods/functions for `zoomed_dm` work", {
