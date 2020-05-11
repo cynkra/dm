@@ -2,7 +2,6 @@ rlang::local_options(lifecycle_verbosity = "quiet")
 
 test_that("cdm_add_tbl() works", {
   skip_on_cran()
-  skip_if_remote_src()
   expect_equivalent_dm(
     cdm_add_tbl(dm_for_filter(), cars_table = mtcars),
     dm_add_tbl(dm_for_filter(), cars_table = mtcars)
@@ -57,7 +56,6 @@ test_that("cdm_filter() behaves correctly", {
     filter(tf_2(), d > 4)
   )
 
-  skip_if_remote_src()
   expect_equivalent_tbl_lists(
     dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>% cdm_apply_filters() %>% dm_get_tables(),
     output_1()
@@ -186,7 +184,6 @@ test_that("other FK functions work", {
     dm_rm_fk(dm_for_filter(), tf_2, d, tf_1)
   )
 
-  skip_if_remote_src()
   expect_identical(
     cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1),
     dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
