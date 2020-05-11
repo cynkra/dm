@@ -39,14 +39,20 @@ test_that("'copy_to.dm()' works", {
   skip_if_src_not_in(c("df", "mssql"))
   expect_equivalent_dm(
     copy_to(dm_for_filter(), mtcars, "car_table"),
-    dm_add_tbl(dm_for_filter(), car_table = tibble(mtcars))
+    dm_add_tbl(
+      dm_for_filter(),
+      car_table = copy_to(my_test_src(), tibble(mtcars), name = unique_db_table_name("mtcars_1"))
+    )
   )
 
   expect_name_repair_message(
     expect_equivalent_dm(
       copy_to(dm_for_filter(), mtcars, ""),
       # `tibble()` call necessary cause of #322
-      dm_add_tbl(dm_for_filter(), ...7 = tibble(mtcars))
+      dm_add_tbl(
+        dm_for_filter(),
+        ...7 = copy_to(my_test_src(), tibble(mtcars), name = unique_db_table_name("mtcars_2"))
+      )
     )
   )
 })
