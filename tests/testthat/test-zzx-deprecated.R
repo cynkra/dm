@@ -3,8 +3,8 @@ rlang::local_options(lifecycle_verbosity = "quiet")
 test_that("cdm_add_tbl() works", {
   skip_on_cran()
   expect_equivalent_dm(
-    cdm_add_tbl(dm_for_filter(), cars_table = mtcars),
-    dm_add_tbl(dm_for_filter(), cars_table = mtcars)
+    cdm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars"))),
+    dm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars")))
   )
 })
 
