@@ -135,10 +135,9 @@ test_that("some methods/functions for `zoomed_dm` work", {
   )
 
   skip_if_src_not_in(c("df", "mssql"))
-  # FIXME: test for 'ncol()'?
   expect_identical(
     dim(dm_zoom_to(dm_for_filter(), tf_1)),
-    c(10L, 2L)
+    if (inherits(my_test_src(), "src_dbi")) c(NA_integer_, 2L) else c(10L, 2L)
   )
 })
 
