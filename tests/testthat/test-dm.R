@@ -302,17 +302,21 @@ test_that("subsetting `zoomed_dm` works", {
   skip_if_src_not_in(c("df", "mssql"))
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_2)$c,
-    pull(tf_2(), c)
+    if (inherits(my_test_src(), "src_dbi")) NULL else pull(tf_2(), c)
   )
 
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_3)[["g"]],
-    pull(tf_3(), g)
+    if (inherits(my_test_src(), "src_dbi")) NULL else pull(tf_3(), g)
   )
 
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_3)[c("g", "f", "g")],
-    tf_3()[c("g", "f", "g")]
+    if (inherits(my_test_src(), "src_dbi"))
+      {
+      na_null_list <- list(NULL, NULL, NULL)
+      names(na_null_list) <- NA_character_
+      na_null_list} else tf_3()[c("g", "f", "g")]
   )
 })
 
