@@ -138,7 +138,7 @@ test_that("basic test: 'arrange()'-methods work", {
 })
 
 test_that("basic test: 'slice()'-methods work", {
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_message(
     expect_equivalent_tbl(slice(zoomed_dm(), 3:6) %>% get_zoomed_tbl(), slice(tf_2(), 3:6)),
     "`slice.zoomed_dm\\(\\)` can potentially"
@@ -504,7 +504,7 @@ test_that("key tracking works", {
   )
 
   # slice() and dm_nycflights_13() (with FK constraints) do not work on DB
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
 
   # keys tracking when there are no keys to track
   expect_equivalent_tbl(
@@ -578,7 +578,7 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
