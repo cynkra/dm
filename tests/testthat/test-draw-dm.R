@@ -14,7 +14,6 @@ test_that("API", {
 })
 
 test_that("`dm_set_colors()` works", {
-
   expect_identical(
     dm_set_colors(
       dm_nycflights_small(),
@@ -45,7 +44,6 @@ test_that("`dm_set_colors()` works", {
 })
 
 test_that("`dm_set_colors()` errors if old syntax used", {
-
   expect_dm_error(
     dm_set_colors(
       dm_nycflights_small(),

@@ -58,7 +58,6 @@ test_that("`dm_examine_constraints()` works", {
 })
 
 test_that("output", {
-
   verify_output("out/examine-constraints.txt", {
     dm() %>% dm_examine_constraints()
 
@@ -75,7 +74,6 @@ test_that("output", {
 })
 
 test_that("output as tibble", {
-
   verify_output("out/examine-constraints-as-tibble.txt", {
     dm_nycflights13(cycle = TRUE) %>%
       dm_examine_constraints() %>%
