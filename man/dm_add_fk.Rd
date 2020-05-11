@@ -39,7 +39,7 @@ respect to the primary key of table \code{ref_table}.
 If \code{check == TRUE}, then it will first check if the values in columns \code{columns} are a subset
 of the values of the primary key in table \code{ref_table}.
 
-\code{dm_rm_fk()} can remove either one reference between two tables, or all references at once, if argument \code{column = NULL}.
+\code{dm_rm_fk()} can remove either one reference between two tables, or all references at once, if argument \code{columns = NULL}.
 All arguments may be provided quoted or unquoted.
 }
 \section{Compound keys}{
