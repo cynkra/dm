@@ -382,7 +382,7 @@ test_that("dm_get_con() errors", {
     class = "is_not_dm"
   )
 
-  skip_if_src_not_in(c("df", "mssql"))
+  skip_if_remote_src()
   expect_dm_error(
     dm_get_con(dm_for_filter()),
     class = "con_only_for_dbi"
