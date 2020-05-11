@@ -138,7 +138,7 @@ test_that("basic test: 'arrange()'-methods work", {
 })
 
 test_that("basic test: 'slice()'-methods work", {
-  skip_if_src_not_in(c("df", "mssql"))
+  skip_if_remote_src()
   expect_message(
     expect_equivalent_tbl(slice(zoomed_dm(), 3:6) %>% get_zoomed_tbl(), slice(tf_2(), 3:6)),
     "`slice.zoomed_dm\\(\\)` can potentially"
