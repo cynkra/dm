@@ -134,10 +134,10 @@ test_that("some methods/functions for `zoomed_dm` work", {
     c("a", "b")
   )
 
-  skip_if_src_not_in(c("df", "mssql"))
+  skip_if_remote_src()
   expect_identical(
     dim(dm_zoom_to(dm_for_filter(), tf_1)),
-    if (inherits(my_test_src(), "src_dbi")) c(NA_integer_, 2L) else c(10L, 2L)
+    c(10L, 2L)
   )
 })
 
@@ -299,26 +299,20 @@ test_that("subsetting `dm` works", {
 })
 
 test_that("subsetting `zoomed_dm` works", {
-  skip_if_src_not_in(c("df", "mssql"))
+  skip_if_remote_src()
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_2)$c,
-    if (inherits(my_test_src(), "src_dbi")) NULL else pull(tf_2(), c)
+    pull(tf_2(), c)
   )
 
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_3)[["g"]],
-    if (inherits(my_test_src(), "src_dbi")) NULL else pull(tf_3(), g)
+    pull(tf_3(), g)
   )
 
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_3)[c("g", "f", "g")],
-    if (inherits(my_test_src(), "src_dbi")) {
-      na_null_list <- list(NULL, NULL, NULL)
-      names(na_null_list) <- NA_character_
-      na_null_list
-    } else {
-      tf_3()[c("g", "f", "g")]
-    }
+    tf_3()[c("g", "f", "g")]
   )
 })
 
@@ -326,16 +320,16 @@ test_that("methods for dm/zoomed_dm work", {
   expect_length(dm_for_filter(), 6L)
 
   expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
-  skip_if_src_not_in(c("df", "mssql"))
+  skip_if_remote_src()
   expect_identical(
     names(dm_zoom_to(dm_for_filter(), tf_2)),
-    if (inherits(my_test_src(), "src_dbi")) c("src", "ops") else colnames(tf_2())
+    colnames(tf_2())
   )
 })
 
 test_that("method length.zoomed_dm() works locally", {
-  skip_if_src_not_in(c("df", "mssql"))
-  expect_length(dm_zoom_to(dm_for_filter(), tf_2), if (inherits(my_test_src(), "src_dbi")) 2L else 3L)
+  skip_if_remote_src()
+  expect_length(dm_zoom_to(dm_for_filter(), tf_2), 3L)
 })
 
 test_that("as.list()-method works for `dm`", {
