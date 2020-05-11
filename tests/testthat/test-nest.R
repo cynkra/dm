@@ -1,5 +1,5 @@
 test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
-
+  skip_if_remote_src()
   expect_equivalent_tbl(
     zoomed_dm_2() %>%
       nest_join_zoomed_dm() %>%
