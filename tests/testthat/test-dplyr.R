@@ -508,9 +508,9 @@ test_that("key tracking works", {
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
-      summarize(avg_wind_speed = mean(wind_speed)) %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
+    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
@@ -522,9 +522,9 @@ test_that("key tracking works", {
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
-      summarize(avg_wind_speed = mean(wind_speed)) %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
+    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
@@ -577,10 +577,10 @@ test_that("'summarize_at()' etc. work", {
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
-      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max)) %>%
+      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE) %>%
       get_zoomed_tbl(),
     pull_tbl(dm_nycflights_small(), airports) %>%
-      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max))
+      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE)
   )
 
   # #357: median not working on MSSQL
@@ -589,20 +589,20 @@ test_that("'summarize_at()' etc. work", {
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
       select(3:6) %>%
-      summarize_all(list(mean = mean, median = median)) %>%
+      summarize_all(list(mean = mean, median = median), na.rm = TRUE) %>%
       get_zoomed_tbl(),
     pull_tbl(dm_nycflights_small(), airports) %>%
       select(3:6) %>%
-      summarize_all(list(mean = mean, median = median))
+      summarize_all(list(mean = mean, median = median)), na.rm = TRUE
   )
 
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
-      summarize_if(is_double, list(mean = mean, median = median)) %>%
+      summarize_if(is_double, list(mean = mean, median = median), na.rm = TRUE) %>%
       get_zoomed_tbl(),
     pull_tbl(dm_nycflights_small(), airports) %>%
-      summarize_if(is_double, list(mean = mean, median = median))
+      summarize_if(is_double, list(mean = mean, median = median), na.rm = TRUE)
   )
 })
 
