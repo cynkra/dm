@@ -325,7 +325,10 @@ test_that("methods for dm/zoomed_dm work", {
 
   expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
   skip_if_src_not_in(c("df", "mssql"))
-  expect_identical(names(dm_zoom_to(dm_for_filter(), tf_2)), colnames(tf_2()))
+  expect_identical(
+    names(dm_zoom_to(dm_for_filter(), tf_2)),
+    if (inherits(my_test_src(), "src_dbi")) c("src", "ops") else colnames(tf_2())
+  )
 })
 
 test_that("method length.zoomed_dm() works locally", {
