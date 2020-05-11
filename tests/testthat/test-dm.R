@@ -36,7 +36,7 @@ test_that("'copy_to.dm()' works", {
     "no_overwrite"
   )
 
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_equivalent_dm(
     copy_to(dm_for_filter(), mtcars, "car_table"),
     dm_add_tbl(dm_for_filter(), car_table = tibble(mtcars))
@@ -117,7 +117,7 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   test_1 <- map_chr(map(def_1$data, sql_render), as.character)
   test_2 <- map_chr(map(def_2$data, sql_render), as.character)
 
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_true(!all(map_lgl(test_1, ~ !grepl("1.0 AS `c`", .))))
   expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS `c`", .))))
 })
@@ -128,7 +128,7 @@ test_that("some methods/functions for `zoomed_dm` work", {
     c("a", "b")
   )
 
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   # FIXME: test for 'ncol()'?
   expect_identical(
     dim(dm_zoom_to(dm_for_filter(), tf_1)),
@@ -294,7 +294,7 @@ test_that("subsetting `dm` works", {
 })
 
 test_that("subsetting `zoomed_dm` works", {
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_2)$c,
     pull(tf_2(), c)
@@ -315,12 +315,12 @@ test_that("methods for dm/zoomed_dm work", {
   expect_length(dm_for_filter(), 6L)
 
   expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_identical(names(dm_zoom_to(dm_for_filter(), tf_2)), colnames(tf_2()))
 })
 
 test_that("method length.zoomed_dm() works locally", {
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_length(dm_zoom_to(dm_for_filter(), tf_2), 3L)
 })
 
@@ -333,7 +333,7 @@ test_that("as.list()-method works for `dm`", {
 
 test_that("as.list()-method works for `zoomed_dm`", {
   # as.list() is no-op for `tbl_sql` object
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_identical(
     as.list(dm_for_filter() %>% dm_zoom_to(tf_4)),
     as.list(tf_4())
@@ -361,7 +361,7 @@ test_that("dm_get_con() errors", {
     class = "is_not_dm"
   )
 
-  skip_if_remote_src()
+  skip_if_src_not_in(c("df", "mssql"))
   expect_dm_error(
     dm_get_con(dm_for_filter()),
     class = "con_only_for_dbi"
