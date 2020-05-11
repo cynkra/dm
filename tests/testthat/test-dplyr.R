@@ -583,6 +583,8 @@ test_that("'summarize_at()' etc. work", {
       summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max))
   )
 
+  # #357: median not working on MSSQL
+  skip_if_src("mssql")
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
