@@ -535,7 +535,7 @@ test_that("key tracking works", {
   )
 
   # slice() doesn't work on DB and reformatting a datetime on a DB is
-  # currently not possible with a mere `format()` call -> skipping
+  # currently not possible with a mere `format()` call -> skipping; cf. #358
   skip_if_remote_src()
   # keys tracking when there are no keys to track
   expect_equivalent_tbl(
