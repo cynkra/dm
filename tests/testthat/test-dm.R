@@ -345,13 +345,22 @@ test_that("as.list()-method works for `dm`", {
 
 test_that("as.list()-method works for `zoomed_dm`", {
   # as.list() is no-op for `tbl_sql` object
-  skip_if_src_not_in(c("df", "mssql"))
+  # the test fails though on a DB, because the temporary name in `ops` of the lazy table differs
+  skip_if_remote_src()
   expect_identical(
     as.list(dm_for_filter() %>% dm_zoom_to(tf_4)),
     as.list(tf_4())
   )
 })
 
+test_that("as.list()-method does nothing for remote `zoomed_dm`", {
+  # as.list() is no-op for `tbl_sql` object
+  skip_if_local_src()
+  expect_identical(
+    as.list(dm_for_filter() %>% dm_zoom_to(tf_4)) %>% collect(),
+    as.list(tf_4()) %>% collect()
+  )
+})
 
 # test getters: -----------------------------------------------------------
 
