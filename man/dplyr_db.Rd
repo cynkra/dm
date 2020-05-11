@@ -15,7 +15,7 @@
 
 \method{compute}{zoomed_dm}(x, ...)
 
-\method{src_tbls}{dm}(x)
+\method{src_tbls}{dm}(x, ...)
 
 \method{copy_to}{dm}(
   dest,
