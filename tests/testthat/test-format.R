@@ -1,5 +1,4 @@
 test_that("commas() works", {
-  skip_if_remote_src()
   expect_equal(
     # `strsplit()` creates vector, which is 1 longer than number of split-characters found
     length(strsplit(commas(fact()$fact), ",")[[1]]),
