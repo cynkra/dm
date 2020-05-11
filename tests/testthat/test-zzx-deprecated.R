@@ -185,8 +185,10 @@ test_that("other FK functions work", {
   )
 
   expect_identical(
-    cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1),
-    dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
+    cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1) %>%
+      mutate(why = if_else(why != "", "<reason>", "")),
+    dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1) %>%
+      mutate(why = if_else(why != "", "<reason>", ""))
   )
 })
 
