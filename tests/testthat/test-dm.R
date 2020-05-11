@@ -312,11 +312,13 @@ test_that("subsetting `zoomed_dm` works", {
 
   expect_identical(
     dm_zoom_to(dm_for_filter(), tf_3)[c("g", "f", "g")],
-    if (inherits(my_test_src(), "src_dbi"))
-      {
+    if (inherits(my_test_src(), "src_dbi")) {
       na_null_list <- list(NULL, NULL, NULL)
       names(na_null_list) <- NA_character_
-      na_null_list} else tf_3()[c("g", "f", "g")]
+      na_null_list
+    } else {
+      tf_3()[c("g", "f", "g")]
+    }
   )
 })
 
