@@ -333,7 +333,7 @@ test_that("methods for dm/zoomed_dm work", {
 
 test_that("method length.zoomed_dm() works locally", {
   skip_if_src_not_in(c("df", "mssql"))
-  expect_length(dm_zoom_to(dm_for_filter(), tf_2), 3L)
+  expect_length(dm_zoom_to(dm_for_filter(), tf_2), if (inherits(my_test_src(), "src_dbi")) 2L else 3L)
 })
 
 test_that("as.list()-method works for `dm`", {
