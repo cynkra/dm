@@ -27,7 +27,6 @@ test_that("check_key() checks primary key properly?", {
   )
 
   # if {tidyselect} selects nothing
-  skip_if_remote_src()
   expect_dm_error(
     check_key(data_mcard(), starts_with("d")),
     "not_unique_key"
