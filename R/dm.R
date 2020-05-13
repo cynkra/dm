@@ -695,7 +695,7 @@ compute.zoomed_dm <- function(x, ...) {
 
 #' @rdname dplyr_db
 #' @export
-src_tbls.dm <- function(x) {
+src_tbls.dm <- function(x, ...) {
   # The x argument here is a dm object
   dm <- x
   check_not_zoomed(x)
