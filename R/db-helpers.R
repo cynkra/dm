@@ -157,3 +157,12 @@ src_from_src_or_con <- function(dest) {
 con_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest$con else dest
 }
+
+repair_table_names_for_db <- function(table_names, schema, temporary) {
+  if (temporary) {
+    if (!is_null(schema)) warning("Ignoring argument `schema` because `temporary = TRUE`.")
+    set_names(dbplyr::ident_q(unique_db_table_name(table_names)), table_names)
+  } else {
+    set_names(dbplyr::ident_q(schema_if(schema, table_names)), table_names)
+  }
+}
