@@ -43,7 +43,6 @@ orig_table_names <- c("t1", "t2", "t3")
 
 test_that("repair_table_names_for_db() works properly", {
   verify_output("out/repair_table_names_for_db.txt", {
-
     test_repair_table_names_for_db(table_names = orig_table_names, schema = NULL, temporary = TRUE)
     test_repair_table_names_for_db(table_names = orig_table_names, schema = NULL, temporary = FALSE)
     test_repair_table_names_for_db(table_names = orig_table_names, schema = "test", temporary = TRUE)
