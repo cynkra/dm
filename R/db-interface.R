@@ -42,11 +42,11 @@
 copy_dm_to <- function(dest, dm, ...,
                        types = NULL, overwrite = NULL,
                        indexes = NULL, unique_indexes = NULL,
-                       set_key_constraints = TRUE, unique_table_names = FALSE,
-                       table_names = NULL,
+                       set_key_constraints = TRUE,
+                       table_names = repair_table_names_for_db(src_tbls(dm), schema, temporary),
+                       schema = NULL,
                        temporary = TRUE) {
   # for the time being, we will be focusing on MSSQL
-  # we expect the src (dest) to already point to the correct schema
   # we want to
   #   1. change `dm_get_src(dm)` to `dest`
   #   2. copy the tables to `dest`
@@ -88,7 +88,7 @@ copy_dm_to <- function(dest, dm, ...,
   dest <- src_from_src_or_con(dest)
   dm <- collect(dm)
 
-  copy_data <- build_copy_data(dm, dest, table_names, unique_table_names)
+  copy_data <- build_copy_data(dm, dest, table_names)
 
   new_tables <- copy_list_of_tables_to(
     dest,
