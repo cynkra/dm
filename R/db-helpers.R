@@ -174,3 +174,8 @@ schema_if <- function(schema, table) {
     paste0(schema, ".", table)
   }
 }
+
+schema_missing <- function(dest, schema) {
+  # FIXME: TBI -> https://github.com/krlmlr/dm/issues/23
+  FALSE
+}

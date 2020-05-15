@@ -68,16 +68,25 @@ copy_dm_to <- function(dest, dm, ...,
     abort_no_unique_indexes()
   }
 
-  if (!is.null(table_names)) {
-    if (unique_table_names) {
-      abort_unique_table_names_or_table_names()
-    }
+  # in case the schema does not exist on the DB, it needs to be created first
+  if (!is_null(schema)) {
+    if (schema_missing(dest, schema)) {abort_schema_missing(schema)}
+  }
 
+  # in case `table_names` was chosen by the user, check if the input makes sense:
+  # 1. is there one name per dm-table?
+  # 2. are there any duplicated table names?
+  # 3. is it a named character or ident_q vector with the correct names?
+  if (!identical(table_names, repair_table_names_for_db(src_tbls(dm), schema, temporary))) {
+    if (length(table_names) != length(src_tbls(dm))) {abort_all_tbls_need_db_names()}
+    if (as.logical(anyDuplicated(table_names))) {abort_only_unique_db_names(table_names)}
     not_found <- setdiff(names2(table_names), src_tbls(dm))
     if (has_length(not_found)) {
       if (any(not_found == "")) abort_need_named_vec(src_tbls(dm))
       abort_table_not_in_dm(unique(not_found), src_tbls(dm))
     }
+    # add the schema and create an `ident`-class object from the table names
+    table_names <- ident_q(schema_if(schema, table_names))
   }
 
   check_not_zoomed(dm)
@@ -153,4 +162,26 @@ dm_set_key_constraints <- function(dm) {
   walk(queries, ~ dbExecute(con, .))
 
   invisible(dm)
+}
+
+# Errors ------------------------------------------------------------------
+
+abort_all_tbls_need_db_names <- function() {
+  abort(error_txt_all_tbls_need_db_names(), .subclass = dm_error_full("all_tbls_need_db_names"))
+}
+
+error_txt_all_tbls_need_db_names <- function() {
+  paste0(
+    "Parameter `table_names` in `copy_dm_to()` should provide exactly one name for each table in the ",
+    "`dm` but the numbers differ. Leave it empty for automatic naming."
+  )
+}
+
+abort_only_unique_db_names <- function(table_names) {
+  dupl_names <- unique(table_names[duplicated(table_names)])
+  abort(error_txt_only_unique_db_names(dupl_names), .subclass = dm_error_full("only_unique_db_names"))
+}
+
+error_txt_only_unique_db_names <- function(dupl_names) {
+  glue::glue("No duplicated names allowed for parameter `table_names`. Duplicated names: {commas(tick(dupl_names))}")
 }
