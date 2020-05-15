@@ -5,14 +5,14 @@ test_that("data source found", {
 
 test_that("copy_dm_to() copies data frames to databases", {
   expect_equivalent_dm(
-    copy_dm_to(sqlite(), dm_for_filter(), unique_table_names = TRUE),
+    copy_dm_to(sqlite(), dm_for_filter()),
     dm_for_filter()
   )
 })
 
 test_that("copy_dm_to() copies data frames from databases", {
   expect_equivalent_dm(
-    copy_dm_to(my_test_src(), dm_for_filter_sqlite(), unique_table_names = TRUE),
+    copy_dm_to(my_test_src(), dm_for_filter_sqlite()),
     dm_for_filter_sqlite()
   )
 })
