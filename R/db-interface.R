@@ -191,3 +191,11 @@ abort_only_unique_db_names <- function(table_names) {
 error_txt_only_unique_db_names <- function(dupl_names) {
   glue::glue("No duplicated names allowed for parameter `table_names`. Duplicated names: {commas(tick(dupl_names))}")
 }
+
+abort_schema_missing <- function(schema) {
+  abort(error_txt_schema_missing(schema), .subclass = dm_error_full("schema_missing"))
+}
+
+error_txt_schema_missing <- function(schema) {
+  glue::glue("No schema with name {tick(schema)} found.")
+}
