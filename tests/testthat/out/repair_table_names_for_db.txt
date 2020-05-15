@@ -1,0 +1,26 @@
+> test_repair_table_names_for_db(table_names = orig_table_names, schema = NULL,
++   temporary = TRUE)
+<IDENT> t1_2020_05_15_10_45_29_0
+<IDENT> t2_2020_05_15_10_45_29_0
+<IDENT> t3_2020_05_15_10_45_29_0
+
+> test_repair_table_names_for_db(table_names = orig_table_names, schema = NULL,
++   temporary = FALSE)
+<IDENT> t1
+<IDENT> t2
+<IDENT> t3
+
+> test_repair_table_names_for_db(table_names = orig_table_names, schema = "test",
++   temporary = TRUE)
+Warning in repair_table_names_for_db(table_names, schema, temporary): Ignoring argument `schema` because `temporary = TRUE`.
+
+<IDENT> t1_2020_05_15_10_45_29_0
+<IDENT> t2_2020_05_15_10_45_29_0
+<IDENT> t3_2020_05_15_10_45_29_0
+
+> test_repair_table_names_for_db(table_names = orig_table_names, schema = "test",
++   temporary = FALSE)
+<IDENT> test.t1
+<IDENT> test.t2
+<IDENT> test.t3
+

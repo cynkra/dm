@@ -31,3 +31,22 @@ test_that("copy_dm_to() rejects overwrite and types arguments", {
     class = "no_types"
   )
 })
+
+# set up for test: in order for the unique table names to return the same result each time, we need to trick the function
+test_repair_table_names_for_db <- function(table_names, schema, temporary) {
+  testthat::with_mock(
+    unique_db_table_name = function(table_name) glue::glue("{table_name}_2020_05_15_10_45_29_0"),
+    repair_table_names_for_db(table_names, schema, temporary)
+  )
+}
+orig_table_names <- c("t1", "t2", "t3")
+
+test_that("repair_table_names_for_db() works properly", {
+  verify_output("out/repair_table_names_for_db.txt", {
+
+    test_repair_table_names_for_db(table_names = orig_table_names, schema = NULL, temporary = TRUE)
+    test_repair_table_names_for_db(table_names = orig_table_names, schema = NULL, temporary = FALSE)
+    test_repair_table_names_for_db(table_names = orig_table_names, schema = "test", temporary = TRUE)
+    test_repair_table_names_for_db(table_names = orig_table_names, schema = "test", temporary = FALSE)
+  })
+})
