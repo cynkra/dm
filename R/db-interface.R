@@ -70,7 +70,9 @@ copy_dm_to <- function(dest, dm, ...,
 
   # in case the schema does not exist on the DB, it needs to be created first
   if (!is_null(schema)) {
-    if (schema_missing(dest, schema)) {abort_schema_missing(schema)}
+    if (schema_missing(dest, schema)) {
+      abort_schema_missing(schema)
+    }
   }
 
   # in case `table_names` was chosen by the user, check if the input makes sense:
@@ -78,8 +80,12 @@ copy_dm_to <- function(dest, dm, ...,
   # 2. are there any duplicated table names?
   # 3. is it a named character or ident_q vector with the correct names?
   if (!identical(table_names, repair_table_names_for_db(src_tbls(dm), schema, temporary))) {
-    if (length(table_names) != length(src_tbls(dm))) {abort_all_tbls_need_db_names()}
-    if (as.logical(anyDuplicated(table_names))) {abort_only_unique_db_names(table_names)}
+    if (length(table_names) != length(src_tbls(dm))) {
+      abort_all_tbls_need_db_names()
+    }
+    if (as.logical(anyDuplicated(table_names))) {
+      abort_only_unique_db_names(table_names)
+    }
     not_found <- setdiff(names2(table_names), src_tbls(dm))
     if (has_length(not_found)) {
       if (any(not_found == "")) abort_need_named_vec(src_tbls(dm))
