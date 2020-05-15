@@ -74,10 +74,6 @@ dm_learn_from_db <- function(dest, ...) {
   legacy_new_dm(tables, data_model)
 }
 
-schema_if <- function(schema, table) {
-  if_else(is.na(schema), table, paste0(schema, ".", table))
-}
-
 db_learn_query <- function(dest, ...) {
   if (is_mssql(dest)) {
     return(mssql_learn_query())

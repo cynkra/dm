@@ -166,3 +166,11 @@ repair_table_names_for_db <- function(table_names, schema, temporary) {
     set_names(dbplyr::ident_q(schema_if(schema, table_names)), table_names)
   }
 }
+
+schema_if <- function(schema, table) {
+  if (is.na(schema) || is_empty(schema)) {
+    table
+  } else {
+    paste0(schema, ".", table)
+  }
+}
