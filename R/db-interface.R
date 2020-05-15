@@ -43,7 +43,7 @@ copy_dm_to <- function(dest, dm, ...,
                        types = NULL, overwrite = NULL,
                        indexes = NULL, unique_indexes = NULL,
                        set_key_constraints = TRUE,
-                       table_names = repair_table_names_for_db(src_tbls(dm), schema, temporary),
+                       table_names = NULL,
                        schema = NULL,
                        temporary = TRUE) {
   # for the time being, we will be focusing on MSSQL
@@ -79,7 +79,7 @@ copy_dm_to <- function(dest, dm, ...,
   # 1. is there one name per dm-table?
   # 2. are there any duplicated table names?
   # 3. is it a named character or ident_q vector with the correct names?
-  if (!identical(table_names, repair_table_names_for_db(src_tbls(dm), schema, temporary))) {
+  if (!is_null(table_names)) {
     if (length(table_names) != length(src_tbls(dm))) {
       abort_all_tbls_need_db_names()
     }
@@ -93,6 +93,8 @@ copy_dm_to <- function(dest, dm, ...,
     }
     # add the schema and create an `ident`-class object from the table names
     table_names <- ident_q(schema_if(schema, table_names))
+  } else {
+    table_names <- repair_table_names_for_db(src_tbls(dm), schema, temporary)
   }
 
   check_not_zoomed(dm)
