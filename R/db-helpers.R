@@ -76,7 +76,6 @@ build_copy_data <- function(dm, dest, table_names) {
 # Not exported, to give us flexibility to change easily
 copy_list_of_tables_to <- function(dest, copy_data,
                                    ..., overwrite = FALSE, df = NULL, name = NULL, types = NULL) {
-  #
   pmap(copy_data, copy_to, dest = dest, overwrite = overwrite, ...)
 }
 
