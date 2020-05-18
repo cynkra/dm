@@ -3,16 +3,25 @@ test_that("data source found", {
   expect_silent(my_test_src_fun()())
 })
 
+# ensure that we have one DB and one local `src`
+if (inherits(my_test_src(), "src_dbi")) {
+  remote_test_src <- my_test_src()
+  local_test_src <- default_local_src()
+} else {
+  remote_test_src <- sqlite()
+  local_test_src <- my_test_src()
+}
+
 test_that("copy_dm_to() copies data frames to databases", {
   expect_equivalent_dm(
-    copy_dm_to(sqlite(), dm_for_filter()),
-    dm_for_filter()
+    copy_dm_to(remote_test_src, collect(dm_for_filter())),
+    collect(dm_for_filter())
   )
 })
 
 test_that("copy_dm_to() copies data frames from databases", {
   expect_equivalent_dm(
-    copy_dm_to(my_test_src(), dm_for_filter_sqlite()),
+    copy_dm_to(local_test_src, dm_for_filter_sqlite()),
     dm_for_filter_sqlite()
   )
 })
