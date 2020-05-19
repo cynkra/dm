@@ -17,6 +17,16 @@ test_that("copy_dm_to() copies data frames to databases", {
     copy_dm_to(remote_test_src, collect(dm_for_filter())),
     collect(dm_for_filter())
   )
+
+  expect_warning(
+    expect_equivalent_dm(
+      copy_dm_to(remote_test_src, collect(dm_for_filter()), schema = "test_dm"),
+      collect(dm_for_filter())
+    ),
+    "Ignoring argument `schema` because `temporary = TRUE`."
+  )
+
+  # FIXME: How to test writing permanent tables without and be sure they are removed at the end independent what 'my_test_src()' is?
 })
 
 test_that("copy_dm_to() copies data frames from databases", {
