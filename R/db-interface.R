@@ -14,17 +14,28 @@
 #'
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
-#' @param table_names A named character vector, containing the names that you want the tables in the `dm` to have
-#'   after copying them to the database.
-#'   The table names within the `dm` will remain unchanged.
-#'   The name of each element of the vector needs to be one of the table names of the `dm`.
-#'   Those tables of the `dm` that are not addressed will be called by their original name on the database.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
-#' @param unique_table_names Boolean, if `FALSE` (default), the original table names will be used, if `TRUE`,
-#'   unique table names will be created based on the original table names.
+#' @param schema If intending to write a permanent table to a DB, a name for an existing schema can be specified.
 #' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
+#' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
+#'
+#'  If left `NULL` (default), the names will be determined automatically depending on the arguments `schema` and `temporary`:
+#'
+#'  1. `'schema = NULL`, `temporary = TRUE'` (default): unique table names based on the names of the tables in the `dm` are created
+#'  1. `'schema != NULL`, `temporary = TRUE'`: schema will be ignored (a warning is issued) and unique table names are created
+#'  1. `'schema = NULL`, `temporary = FALSE'`: For writing permanent tables on `dest`, the table names in the `dm` are used as names for the tables on `dest`
+#'  1. `'schema != NULL`, `temporary = FALSE'`: Same as in the last point, but it is written to an **existing** schema on `dest`
+#'
+#'  Alternatively, you can chose table names yourself by providing a named `character` or `ident_q` vector:
+#'    the names of this vector need to correspond to the table names in the `dm`, its values are the desired names on `dest`.
+#'    If you chose a name containing a ".", everything before it will be interpreted as a schema name and
+#'    everything after it as a table name.
+#'
+#'  Again, the table names within the `dm` will remain unchanged.
+#'
+#'  If `table_names != NULL`, names for all tables need to be provided.
 #' @param ... Possible further arguments passed to [dplyr::copy_to()], which is used on each table.
 #'
 #' @family DB interaction functions

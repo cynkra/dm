@@ -13,8 +13,8 @@ copy_dm_to(
   indexes = NULL,
   unique_indexes = NULL,
   set_key_constraints = TRUE,
-  unique_table_names = FALSE,
   table_names = NULL,
+  schema = NULL,
   temporary = TRUE
 )
 }
@@ -29,14 +29,26 @@ copy_dm_to(
 
 \item{set_key_constraints}{Boolean variable, if \code{TRUE} will mirror \code{dm} key constraints on a database.}
 
-\item{unique_table_names}{Boolean, if \code{FALSE} (default), the original table names will be used, if \code{TRUE},
-unique table names will be created based on the original table names.}
+\item{table_names}{Desired names for the tables on \code{dest}; the names within the \code{dm} remain unchanged.
 
-\item{table_names}{A named character vector, containing the names that you want the tables in the \code{dm} to have
-after copying them to the database.
-The table names within the \code{dm} will remain unchanged.
-The name of each element of the vector needs to be one of the table names of the \code{dm}.
-Those tables of the \code{dm} that are not addressed will be called by their original name on the database.}
+If left \code{NULL} (default), the names will be determined automatically depending on the arguments \code{schema} and \code{temporary}:
+\enumerate{
+\item \verb{'schema = NULL}, \verb{temporary = TRUE'} (default): unique table names based on the names of the tables in the \code{dm} are created
+\item \verb{'schema != NULL}, \verb{temporary = TRUE'}: schema will be ignored (a warning is issued) and unique table names are created
+\item \verb{'schema = NULL}, \verb{temporary = FALSE'}: For writing permanent tables on \code{dest}, the table names in the \code{dm} are used as names for the tables on \code{dest}
+\item \verb{'schema != NULL}, \verb{temporary = FALSE'}: Same as in the last point, but it is written to an \strong{existing} schema on \code{dest}
+}
+
+Alternatively, you can chose table names yourself by providing a named \code{character} or \code{ident_q} vector:
+the names of this vector need to correspond to the table names in the \code{dm}, its values are the desired names on \code{dest}.
+If you chose a name containing a ".", everything before it will be interpreted as a schema name and
+everything after it as a table name.
+
+Again, the table names within the \code{dm} will remain unchanged.
+
+If \code{table_names != NULL}, names for all tables need to be provided.}
+
+\item{schema}{If intending to write a permanent table to a DB, a name for an existing schema can be specified.}
 
 \item{temporary}{Boolean variable, if \code{TRUE}, only temporary tables will be created.
 These tables will vanish when disconnecting from the database.}
