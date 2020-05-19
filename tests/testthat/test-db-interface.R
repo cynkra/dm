@@ -34,6 +34,19 @@ test_that("copy_dm_to() copies data frames from databases", {
     copy_dm_to(local_test_src, dm_for_filter_sqlite()),
     dm_for_filter_sqlite()
   )
+
+  expect_warning(
+    expect_equivalent_dm(
+      copy_dm_to(local_test_src, dm_for_filter_sqlite(), schema = "test_dm"),
+      dm_for_filter_sqlite()
+    ),
+    "Ignoring argument `schema` because `temporary = TRUE`."
+  )
+
+  # FIXME: the following leads to a dm of unchanged table names (as expected), but tables `test_dm.tf_1` etc. appear
+  # in .GlobalEnv; shall we instead just forward `copy_dm_to(local_test_src, ...)` to `collect()`?
+  #
+  # copy_dm_to(local_test_src, dm_for_filter_sqlite(), schema = "test_dm", temporary = FALSE),
 })
 
 # FIXME: Add test that set_key_constraints = FALSE doesn't set key constraints,
