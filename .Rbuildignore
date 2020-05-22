@@ -17,3 +17,5 @@
 ^man/figures/logo\.png$
 ^CRAN-RELEASE$
 ^Makefile$
+^\.ccache$
+^\.github$
