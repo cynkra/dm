@@ -27,7 +27,7 @@ jobs:
           # [Custom matrix env var]
           - { os: macOS-latest, r: "devel", id: "default" }
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "release", pkgdown: "true", id: "pkgdown"}
+          - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
           # [Custom matrix env var]
@@ -46,6 +46,14 @@ jobs:
       _R_CHECK_SYSTEM_CLOCK_: false
       # [Custom env var]
       _R_CHECK_PACKAGE_DEPENDS_IGNORE_MISSING_ENHANCES: true
+      # [Custom env var]
+      TIC_DEV_VERSIONS: ${{ matrix.config.TIC_DEV_VERSIONS }}
+      # [Custom env var]
+      TIC_ONLY_TESTS: ${{ matrix.config.TIC_ONLY_TESTS }}
+      # [Custom env var]
+      TIC_ONLY_STYLER: ${{ matrix.config.TIC_ONLY_STYLER }}
+      # [Custom env var]
+      MODE: ${{ matrix.config.MODE }}
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       CRAN: ${{ matrix.config.cran }}
