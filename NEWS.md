@@ -1,3 +1,8 @@
+# dm 0.1.2.9002
+
+- Better testing for MSSQL (#339).
+
+
 # dm 0.1.2.9001
 
 - Fix compatibility with dplyr 1.0.0.
