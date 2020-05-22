@@ -504,7 +504,7 @@ test_that("key tracking works", {
 
   # dm_nycflights_13() (with FK constraints) doesn't work on DB
   # here, FK constraints are not implemented on the DB
-  skip_if_src_not_in(c("df", "mssql"))
+  skip_if_src_not("df", "mssql")
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
@@ -573,7 +573,7 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
-  skip_if_src_not_in(c("df", "mssql"))
+  skip_if_src_not("df", "mssql")
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%

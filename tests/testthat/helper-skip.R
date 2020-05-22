@@ -19,6 +19,6 @@ skip_if_src <- function(name) {
   if (my_test_src_name == name) skip(paste0("does not work on ", name))
 }
 
-skip_if_src_not_in <- function(names) {
-  if (!(my_test_src_name %in% names)) skip(paste0("does not work on ", my_test_src_name))
+skip_if_src_not <- function(...) {
+  if (!(my_test_src_name %in% c(...))) skip(paste0("does not work on ", my_test_src_name))
 }

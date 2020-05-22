@@ -36,7 +36,7 @@ test_that("'copy_to.dm()' works", {
     "no_overwrite"
   )
 
-  skip_if_src_not_in(c("df", "mssql"))
+  skip_if_src_not("df", "mssql")
   expect_equivalent_dm(
     copy_to(dm_for_filter(), mtcars, "car_table"),
     dm_add_tbl(
@@ -123,7 +123,7 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
   test_1 <- map_chr(map(def_1$data, sql_render), as.character)
   test_2 <- map_chr(map(def_2$data, sql_render), as.character)
 
-  skip_if_src_not_in(c("mssql"))
+  skip_if_src_not("mssql")
   expect_true(any(map_lgl(test_1, ~ grepl("1.0 AS .c.", .))))
   expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS `c`", gsub("\"", "`", .)))))
 })
