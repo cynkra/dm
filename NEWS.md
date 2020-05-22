@@ -1,3 +1,8 @@
+# dm 0.1.2.9001
+
+- Fix compatibility with dplyr 1.0.0.
+
+
 # dm 0.1.2.9000
 
 - Internal changes only.
