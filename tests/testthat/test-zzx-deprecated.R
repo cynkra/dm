@@ -2,6 +2,7 @@ rlang::local_options(lifecycle_verbosity = "quiet")
 
 test_that("cdm_add_tbl() works", {
   skip_on_cran()
+  skip_if_remote_src()
   expect_equivalent_dm(
     cdm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars"))),
     dm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars")))
@@ -56,6 +57,7 @@ test_that("cdm_filter() behaves correctly", {
     filter(tf_2(), d > 4)
   )
 
+  skip_if_remote_src()
   expect_equivalent_tbl_lists(
     dm_filter(dm_for_filter(), tf_1, a > 3, a < 8) %>% cdm_apply_filters() %>% dm_get_tables(),
     output_1()
@@ -184,6 +186,7 @@ test_that("other FK functions work", {
     dm_rm_fk(dm_for_filter(), tf_2, d, tf_1)
   )
 
+  skip_if_remote_src()
   expect_identical(
     cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1) %>%
       mutate(why = if_else(why != "", "<reason>", "")),
@@ -226,7 +229,7 @@ test_that("cdm_learn_from_db() works from PG", {
 
 test_that("cdm_examine_constraints() works", {
   skip_on_cran()
-  skip_if_src("postgres")
+  skip_if_remote_src()
 
   expect_identical(
     cdm_check_constraints(bad_dm()),

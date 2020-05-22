@@ -2,16 +2,22 @@ MAX_COMMAS <- 6L
 
 commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE, fun = identity) {
   if (is_null(max_commas)) max_commas <- MAX_COMMAS
+  fun <- as_function(fun)
+
   if (is_empty(x)) {
     x <- ""
   } else if (length(x) > max_commas) {
     cap <- if (!capped) paste0(" (", length(x), " total)")
-    x[[max_commas]] <- paste0(cli::symbol$ellipsis, cap)
-    length(x) <- max_commas
+
+    x <- c(
+      fun(x[seq_len(max_commas - 1)]),
+      paste0(cli::symbol$ellipsis, cap)
+    )
+  } else {
+    x <- fun(x)
   }
 
-  fun <- as_function(fun)
-  glue_collapse(fun(x), sep = ", ")
+  glue_collapse(x, sep = ", ")
 }
 
 tick <- function(x) {

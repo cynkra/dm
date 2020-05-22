@@ -502,7 +502,7 @@ test_that("key tracking works", {
       dm_rename(tf_2, c_new = c, d_new = d)
   )
 
-  # dm_nycflights_13() (with FK constraints) doesn't work on DB
+  # dm_nycflights13() (with FK constraints) doesn't work on DB
   # here, FK constraints are not implemented on the DB
   skip_if_src_not("df", "mssql")
 
@@ -573,36 +573,37 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
-  skip_if_src_not("df", "mssql")
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
       summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE) %>%
       get_zoomed_tbl(),
-    pull_tbl(dm_nycflights_small(), airports) %>%
+    dm_nycflights_small() %>%
+      pull_tbl(airports) %>%
       summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE)
   )
 
-  # #357: median not working on MSSQL
-  skip_if_src("mssql")
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
       select(3:6) %>%
-      summarize_all(list(mean = mean, median = median), na.rm = TRUE) %>%
+      summarize_all(list(mean = mean, sum = sum), na.rm = TRUE) %>%
       get_zoomed_tbl(),
-    pull_tbl(dm_nycflights_small(), airports) %>%
+    dm_nycflights_small() %>%
+      pull_tbl(airports) %>%
       select(3:6) %>%
-      summarize_all(list(mean = mean, median = median), na.rm = TRUE)
+      summarize_all(list(mean = mean, sum = sum), na.rm = TRUE)
   )
 
+  skip_if_remote_src()
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
-      summarize_if(is_double, list(mean = mean, median = median), na.rm = TRUE) %>%
+      summarize_if(is_double, list(mean = mean, sum = sum), na.rm = TRUE) %>%
       get_zoomed_tbl(),
-    pull_tbl(dm_nycflights_small(), airports) %>%
-      summarize_if(is_double, list(mean = mean, median = median), na.rm = TRUE)
+    dm_nycflights_small() %>%
+      pull_tbl(airports) %>%
+      summarize_if(is_double, list(mean = mean, sum = sum), na.rm = TRUE)
   )
 })
 
