@@ -41,7 +41,8 @@ test_that("'copy_to.dm()' works", {
   # `tibble()` call necessary, #322
   car_table <- copy_to(
     my_test_src(),
-    tibble(mtcars), name = unique_db_table_name("mtcars_1")
+    tibble(mtcars),
+    name = unique_db_table_name("mtcars_1")
   )
 
   expect_equivalent_dm(
