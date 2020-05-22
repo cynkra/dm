@@ -138,7 +138,7 @@ data_ts_parent %<-% tibble(
   f = c(TRUE, FALSE)
 )
 
-list_of_data_ts_parent_and_child %<-% list(
+list_of_data_ts_parent_and_child %<--% list(
   child_table = data_ts_child(),
   parent_table = data_ts_parent()
 )

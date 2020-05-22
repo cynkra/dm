@@ -4,8 +4,8 @@ test_that("cdm_add_tbl() works", {
   skip_on_cran()
   skip_if_remote_src()
   expect_equivalent_dm(
-    cdm_add_tbl(dm_for_filter(), cars_table = mtcars),
-    dm_add_tbl(dm_for_filter(), cars_table = mtcars)
+    cdm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars"))),
+    dm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars")))
   )
 })
 
@@ -188,8 +188,10 @@ test_that("other FK functions work", {
 
   skip_if_remote_src()
   expect_identical(
-    cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1),
-    dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1)
+    cdm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1) %>%
+      mutate(why = if_else(why != "", "<reason>", "")),
+    dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_1) %>%
+      mutate(why = if_else(why != "", "<reason>", ""))
   )
 })
 
@@ -227,8 +229,7 @@ test_that("cdm_learn_from_db() works from PG", {
 
 test_that("cdm_examine_constraints() works", {
   skip_on_cran()
-  skip_if_src("postgres")
-  skip_if_src("mssql")
+  skip_if_remote_src()
 
   expect_identical(
     cdm_check_constraints(bad_dm()),

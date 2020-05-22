@@ -115,7 +115,6 @@ test_that("dm_update_tbl() works", {
 # after #271:
 test_that("all cols are tracked in zoomed table", {
   skip_if_src("postgres")
-  skip_if_src("mssql")
 
   expect_identical(
     dm_zoom_to(dm_nycflights_small(), flights) %>% get_tracked_cols(),
