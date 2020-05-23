@@ -17,68 +17,45 @@ rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rst
 
 ## Overview
 
-FIXME: dm is a [grammar of joined
-tables](https://twitter.com/drob/status/1224851726068527106)?
+dm bridges the gap in the data pipeline between individual data frames
+and relational databases. It’s a [grammar of joined
+tables](https://twitter.com/drob/status/1224851726068527106) that
+provides a consistent set of verbs for building, using and deploying
+relational data models. For individual researchers, it broadens the
+scope of datasets they can work with and how they work with them. For
+organizations, it enables teams to quickly and efficiently create and
+share large, complex datasets.
 
-dm is an R package for building and manipulating relational databases to
-aid the querying of data models stored in local dataframes, and the
-construction of flat data models from relational databases.
+dm objects encapsulate relational data models built on top of lazy
+tables. They can be constructed from local data frames or an RDBMS. dm’s
+lazy evaluation allows it to scale from datasets that fit in memory to
+databases with billions of rows.
 
-FIXME: Intro paragraph around three use cases for relational data models
-(=if you’re working with more than one table/data frame in R)
+dm objects support the full suite of dplyr data manipulation verbs along
+with additional methods for constructing and verifying relational data
+models, including key selection, key creation, and rigorous constraint
+checking. Once a data model is complete, dm provides methods for
+deploying it to an RDBMS.
 
-1.  use data (example below)
+## Why use dm
 
-2.  deploy data
+dm makes it easy to bring an existing relational data model into your R
+session. As the dm object behaves like a named list of tables it
+requires little change to incorporate it within existing workflows. The
+dm interface and behavior is modeled after dplyr, so you may already be
+familiar with many of its verbs. dm also offers:
 
-3.  organize data
-
-END FIXME
-
-The intent behind dm is to bridge the gap in the data pipeline between
-individual dataframes and relational databases by providing methods to
-move data between different sources, and methods for performing data
-manipulation (eg, aggregation, summarisation, filtering, etc) and table
-manipulation (eg, joins, creation, deletion, etc) that are agnostic to
-the data source.
-
-FIXME: Immediate benefits of adopting dm, see “usage” for code
-
-  - very easy to bring an existing relational data model into your R
-    session. We’re using a built-in objects, it’s easy with databases
-    too. Interface and behavior modeled after dplyr. Little change to
-    workflow – behaves like a named list of tables
-
-  - benefit 1: visualization, understand relationships between entities
+  - visualization to help you understand relationships between entities
     represented by the tables
+  - simpler joins that “know” how tables are related, including a
+    “flatten” operation that automatically follows keys and performs
+    column name disambiguation
+  - consistency and constraint checks to help you understand (and fix)
+    the limitations of your data
 
-  - benefit 2: simpler joins, “flatten” operation with column name
-    disambiguation and automatic keys as an example
-
-  - benefit 3: consistency checks, understand (and fix\!) limitations of
-    your data
-
-That’s just the tip of the iceberg. See “Getting started” to hit the
-ground running and explore all the features.
-
-END FIXME
-
-Calling methods on a dm object for importing data sources, defining
-relationships between them, and specifying the sequence of operations to
-produce the required data, results in clearly specified and repeatable
-workflows. dm’s use of lazy evaluation minimises transfer and
-duplication of large datasets as you build your workflow, while
-providing snapshots of intermediate results for confirming your workflow
-is producing the expected results.
-
-dm builds upon the [DBI](https://github.com/r-dbi/DBI) package for
-interfacing with over 30 DBMS’s, [dplyr](https://dplyr.tidyverse.org/)
-for its database interaction methods and its grammar of data
-manipulation, and [tidyr](https://tidyr.tidyverse.org/) for its column
-operations.
-
-If you are new to dm, the best place to begin is the [Getting Started
-article](https://krlmlr.github.io/dm/articles/dm.html).
+That’s just the tip of the iceberg. See [Getting
+started](https://krlmlr.github.io/dm/articles/dm.html) to hit the ground
+running and explore all the features.
 
 ## Installation
 
@@ -98,7 +75,8 @@ devtools::install_github("krlmlr/dm")
 
 ## Usage
 
-Load data as a dm object, see “Getting started” for details:
+Load data as a dm object (see [Getting
+started](https://krlmlr.github.io/dm/articles/dm.html) for details).
 
 ``` r
 library(dm)
@@ -107,14 +85,8 @@ dm
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-</span></CODE></PRE>
-
-    #> Warning: `src_local()` is deprecated as of dplyr 1.0.0.
-    #> [90mThis warning is displayed once every 8 hours.[39m
-    #> [90mCall `lifecycle::last_warnings()` to see where this warning was generated.[39m
-
-<PRE class="fansi fansi-output"><CODE>#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; <span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -155,13 +127,13 @@ Simple joins:
 dm %>% 
   dm_flatten_to_tbl(flights)
 #> Renamed columns:
-#> * year -> flights$flights.year, planes$planes.year
-#> * name -> airlines$airlines.name, airports$airports.name
+#> * year -> flights.year, planes.year
+#> * name -> airlines.name, airports.name
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 11,227 x 35</span><span>
 #&gt;    </span><span style='font-weight: bold;'>flights.year</span><span> </span><span style='font-weight: bold;'>month</span><span>   </span><span style='font-weight: bold;'>day</span><span> </span><span style='font-weight: bold;'>dep_time</span><span> </span><span style='font-weight: bold;'>sched_dep_time</span><span> </span><span style='font-weight: bold;'>dep_delay</span><span> </span><span style='font-weight: bold;'>arr_time</span><span>
-#&gt;  </span><span style='color: #555555;'>*</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426
 #&gt; </span><span style='color: #555555;'> 2</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447
 #&gt; </span><span style='color: #555555;'> 3</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634
@@ -192,13 +164,6 @@ dm %>%
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …
 </span></CODE></PRE>
-
-That’s just the tip of the iceberg. See “Getting started” to hit the
-ground running and explore all the features.
-
-END FIXME
-
-FIXME: Standing on the shoulders of giants? Perhaps a short version?
 
 ## Getting help
 

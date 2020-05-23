@@ -36,17 +36,25 @@ test_that("'copy_to.dm()' works", {
     "no_overwrite"
   )
 
-  skip_if_remote_src()
-  expect_equivalent_dm(
-    copy_to(dm_for_filter(), mtcars, "car_table"),
-    dm_add_tbl(dm_for_filter(), car_table = tibble(mtcars))
+  skip_if_src_not("df", "mssql")
+
+  # `tibble()` call necessary, #322
+  car_table <- copy_to(
+    my_test_src(),
+    tibble(mtcars),
+    name = unique_db_table_name("mtcars_1")
   )
 
+  expect_equivalent_dm(
+    copy_to(dm_for_filter(), mtcars, "car_table"),
+    dm_add_tbl(dm_for_filter(), car_table)
+  )
+
+  # FIXME: Why doe we do name repair in copy_to()?
   expect_name_repair_message(
     expect_equivalent_dm(
       copy_to(dm_for_filter(), mtcars, ""),
-      # `tibble()` call necessary cause of #322
-      dm_add_tbl(dm_for_filter(), ...7 = tibble(mtcars))
+      dm_add_tbl(dm_for_filter(), ...7 = car_table)
     )
   )
 })
@@ -98,28 +106,34 @@ test_that("'compute.dm()' computes tables on DB", {
     dm_filter(tf_1, a > 3) %>%
     compute() %>%
     dm_get_def()
-  test <- map_chr(map(def$data, sql_render), as.character)
-  # no filtering is part of the SQL-query anymore, since the filtered table is "computed"
-  expect_true(all(map_lgl(test, ~ !grepl("WHERE", .))))
+
+  remote_names <- map_chr(def$data, dbplyr::remote_name)
+  expect_true(all(remote_names != ""))
 })
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
   skip_if_local_src()
-  zoomed_dm_for_compute <- dm_for_filter() %>%
+  zoomed_dm_for_compute <-
+    dm_for_filter() %>%
     dm_zoom_to(tf_1) %>%
     mutate(c = a + 1)
-  # "1" is without computing
-  def_1 <- dm_update_zoomed(zoomed_dm_for_compute) %>% dm_get_def()
-  # "2" is with computing
-  def_2 <- compute(zoomed_dm_for_compute) %>%
+
+  # without computing
+  def <-
+    zoomed_dm_for_compute %>%
     dm_update_zoomed() %>%
     dm_get_def()
-  test_1 <- map_chr(map(def_1$data, sql_render), as.character)
-  test_2 <- map_chr(map(def_2$data, sql_render), as.character)
 
-  skip_if_remote_src()
-  expect_true(!all(map_lgl(test_1, ~ !grepl("1.0 AS `c`", .))))
-  expect_true(all(map_lgl(test_2, ~ !grepl("1.0 AS `c`", .))))
+  remote_names <- map(def$data, dbplyr::remote_name)
+  expect_true(any(map_lgl(remote_names, is_null)))
+
+  # with computing
+  def <- compute(zoomed_dm_for_compute) %>%
+    dm_update_zoomed() %>%
+    dm_get_def()
+
+  remote_names <- map_chr(def$data, dbplyr::remote_name)
+  expect_true(all(remote_names != ""))
 })
 
 test_that("some methods/functions for `zoomed_dm` work", {
@@ -128,12 +142,30 @@ test_that("some methods/functions for `zoomed_dm` work", {
     c("a", "b")
   )
 
+  expect_identical(
+    ncol(dm_zoom_to(dm_for_filter(), tf_1)),
+    2L
+  )
+
   skip_if_remote_src()
-  # FIXME: test for 'ncol()'?
   expect_identical(
     dim(dm_zoom_to(dm_for_filter(), tf_1)),
     c(10L, 2L)
   )
+  expect_identical(
+    names(dm_zoom_to(dm_for_filter(), tf_2)),
+    colnames(tf_2())
+  )
+  expect_length(dm_zoom_to(dm_for_filter(), tf_2), 3L)
+  expect_equivalent_tbl_lists(
+    as.list(dm_for_filter()),
+    dm_get_tables(dm_for_filter())
+  )
+})
+
+test_that("length and names for dm work", {
+  expect_length(dm_for_filter(), 6L)
+  expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
 })
 
 test_that("validator is silent", {
@@ -311,35 +343,13 @@ test_that("subsetting `zoomed_dm` works", {
   )
 })
 
-test_that("methods for dm/zoomed_dm work", {
-  expect_length(dm_for_filter(), 6L)
-
-  expect_identical(names(dm_for_filter()), src_tbls(dm_for_filter()))
-  skip_if_remote_src()
-  expect_identical(names(dm_zoom_to(dm_for_filter(), tf_2)), colnames(tf_2()))
-})
-
-test_that("method length.zoomed_dm() works locally", {
-  skip_if_remote_src()
-  expect_length(dm_zoom_to(dm_for_filter(), tf_2), 3L)
-})
-
-test_that("as.list()-method works for `dm`", {
-  expect_equivalent_tbl_lists(
-    as.list(dm_for_filter()),
-    dm_get_tables(dm_for_filter())
-  )
-})
-
-test_that("as.list()-method works for `zoomed_dm`", {
-  # as.list() is no-op for `tbl_sql` object
+test_that("as.list()-method works for local `zoomed_dm`", {
   skip_if_remote_src()
   expect_identical(
     as.list(dm_for_filter() %>% dm_zoom_to(tf_4)),
     as.list(tf_4())
   )
 })
-
 
 # test getters: -----------------------------------------------------------
 

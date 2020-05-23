@@ -6,7 +6,6 @@ reunite_parent_child_from_list_data_ts <-
   find_testthat_root_file(paste0("out/reunite-parent-child_from_list-data-ts.txt"))
 
 test_that("decompose_table() decomposes tables nicely on chosen source", {
-  skip_if_remote_src()
   verify_output(
     decompose_table_data_ts,
     decompose_table(data_ts(), aef_id, a, e, f) %>% map(arrange_all)
@@ -44,7 +43,6 @@ test_that("decomposition works with {tidyselect}", {
 })
 
 test_that("reunite_parent_child() reunites parent and child nicely on chosen source", {
-  skip_if_remote_src()
   verify_output(
     reunite_parent_child_data_ts,
     reunite_parent_child(data_ts_child(), data_ts_parent(), aef_id) %>% arrange_all()
@@ -52,7 +50,6 @@ test_that("reunite_parent_child() reunites parent and child nicely on chosen sou
 })
 
 test_that("reunite_parent_child_from_list() reunites parent and child nicely on chosen source", {
-  skip_if_remote_src()
   verify_output(
     reunite_parent_child_from_list_data_ts,
     reunite_parent_child_from_list(list_of_data_ts_parent_and_child(), aef_id) %>% arrange_all()

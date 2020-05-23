@@ -272,7 +272,6 @@ test_that("`dm_join_to_tbl()` works", {
 # tests that do not work on DB when keys are set ('bad_dm' and 'nycflights'; currently PG and MSSQL)
 test_that("tests with 'bad_dm' work", {
   skip_if_src("postgres")
-  skip_if_src("mssql")
 
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
 
