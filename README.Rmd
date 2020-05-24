@@ -34,7 +34,7 @@ knit_print.grViz <- function(x, ...) {
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
-# dm
+# [dm](https://krlmlr.github.io/dm)
 
 ## Overview
 
@@ -117,6 +117,8 @@ Check consistency:
 dm %>%
   dm_examine_constraints()
 ```
+
+Learn more in the [dm intro](https://krlmlr.github.io/dm/articles/dm.html).
 
 ## Getting help
 
