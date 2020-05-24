@@ -1,3 +1,8 @@
+# dm 0.1.2.9004
+
+- Avoid `src_sqlite()` in vignettes (#372).
+
+
 # dm 0.1.2.9003
 
 - Rename vignettes (#349).
