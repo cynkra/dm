@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%")
 
-fansi::set_knit_hooks(knitr::knit_hooks)
+fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
 options(crayon.enabled = TRUE, width = 75, cli.width = 75, pillar.bold = TRUE)
 
 knit_print.grViz <- function(x, ..., options) {

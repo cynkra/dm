@@ -159,8 +159,10 @@ Check consistency:
 ``` r
 dm %>%
   dm_examine_constraints()
-#> [33m![39m Unsatisfied constraints:
 ```
+
+<PRE class="fansi fansi-message"><CODE>#&gt; <span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:
+</span></CODE></PRE>
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …
 </span></CODE></PRE>
