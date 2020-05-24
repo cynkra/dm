@@ -37,7 +37,7 @@ data model is complete, dm provides methods for deploying it to an
 RDBMS. This allows it to scale from datasets that fit in memory to
 databases with billions of rows.
 
-## Why use dm
+## Features
 
 dm makes it easy to bring an existing relational data model into your R
 session. As the dm object behaves like a named list of tables it
