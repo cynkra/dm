@@ -483,13 +483,13 @@ dm_nycflights_small_base %<-% {
   dm(
     flights =
       nycflights13::flights %>%
-      slice(1:800),
+        slice(1:800),
     planes = nycflights13::planes,
     airlines = nycflights13::airlines,
     airports = nycflights13::airports,
     weather =
       nycflights13::weather %>%
-      slice(1:800)
+        slice(1:800)
   )
 }
 
