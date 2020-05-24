@@ -2,21 +2,22 @@ pandoc: '2.2'
 pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
-  dm-class-and-basic-operations: dm-class-and-basic-operations.html
-  dm-db: dm-db.html
-  dm-df: dm-df.html
-  dm-filtering: dm-filtering.html
-  dm-function-naming-logic: dm-function-naming-logic.html
-  dm-introduction-relational-data-models: dm-introduction-relational-data-models.html
-  dm-joining: dm-joining.html
-  dm-low-level: dm-low-level.html
-  dm-version-migration-guide: dm-version-migration-guide.html
-  dm-visualization: dm-visualization.html
-  dm-zoom-to-table: dm-zoom-to-table.html
   dm: dm.html
+  howto-dm-db: howto-dm-db.html
+  howto-dm-df: howto-dm-df.html
+  howto-dm-theory: howto-dm-theory.html
+  tech-dm-cdm: tech-dm-cdm.html
+  tech-dm-class: tech-dm-class.html
+  tech-dm-draw: tech-dm-draw.html
+  tech-dm-filter: tech-dm-filter.html
+  tech-dm-join: tech-dm-join.html
+  tech-dm-low-level: tech-dm-low-level.html
+  tech-dm-naming: tech-dm-naming.html
+  tech-dm-zoom: tech-dm-zoom.html
+  dm-readme-old: wip/dm-readme-old.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
-last_built: 2020-05-05T05:53Z
+last_built: 2020-05-24T19:16Z
 urls:
   reference: https://krlmlr.github.io/dm/reference
   article: https://krlmlr.github.io/dm/articles

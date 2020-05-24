@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -58,13 +58,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-db.html">Connect to a database</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
     </li>
     <li>
-      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+      <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
   </ul>
 </li>
@@ -76,28 +76,28 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
+      <a href="../articles/tech-dm-join.html">Joining in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
+      <a href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in relational data models</a>
+      <a href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+      <a href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
+      <a href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
     </li>
     <li>
-      <a href="../articles/dm-low-level.html">Checking keys</a>
+      <a href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
+      <a href="../articles/tech-dm-naming.html">Function naming logic</a>
     </li>
     <li>
-      <a href="../articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
+      <a href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -128,10 +128,10 @@
       <h1 data-toc-skip>Joining in relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2020-05-05</h4>
+            <h4 class="date">2020-05-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm-joining.Rmd"><code>vignettes/dm-joining.Rmd</code></a></small>
-      <div class="hidden name"><code>dm-joining.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-join.Rmd"><code>vignettes/tech-dm-join.Rmd</code></a></small>
+      <div class="hidden name"><code>tech-dm-join.Rmd</code></div>
 
     </div>
 
@@ -139,7 +139,7 @@
     
 <p>The {dm} package offers functions to work with relational data models in R. A common task for multiple, separated tables that have a shared attribute is merging the data.</p>
 <p>This document introduces you to the joining functions of {dm} and shows how to apply them using data from the <a href="https://github.com/hadley/nycflights13">{nycflights13}</a> package.</p>
-<p><a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#model">Relational data models</a> consist of multiple tables that are linked with <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#fk">foreign keys</a>. They are the building blocks for joining tables. Read more about relational data models in the vignette <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models">“Introduction to Relational Data Models”</a>.</p>
+<p><a href="https://krlmlr.github.io/dm/articles/howto-dm-theory#model">Relational data models</a> consist of multiple tables that are linked with <a href="https://krlmlr.github.io/dm/articles/howto-dm-theory#fk">foreign keys</a>. They are the building blocks for joining tables. Read more about relational data models in the vignette <a href="https://krlmlr.github.io/dm/articles/howto-dm-theory">“Introduction to Relational Data Models”</a>.</p>
 <p>First, we load the packages that we need:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)</pre></body></html></div>
@@ -149,7 +149,7 @@
 <p>To explore filtering with {dm}, we’ll use the {nycflights13} data with its tables <code>flights</code>, <code>planes</code>, <code>airlines</code> and <code>airports</code>.</p>
 <p>This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code>?nycflights13</code>.</p>
 <p>First, we have to create a <code>dm</code> object from the {nycflights13} data. This is implemented with <code><a href="../reference/dm_nycflights13.html">dm::dm_nycflights13()</a></code>.</p>
-<p>A <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#class-dm">data model object</a> contains the data as well as metadata.</p>
+<p>A <a href="https://krlmlr.github.io/dm/articles/tech-dm-class.html#class-dm">data model object</a> contains the data as well as metadata.</p>
 <p>If you would like to create a <code>dm</code> from other tables, please look at <code><a href="../reference/dm.html">?dm</a></code> and the function <code><a href="../reference/dm.html">new_dm()</a></code>.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()</pre></body></html></div>
 </div>
@@ -160,7 +160,7 @@
 <div id="how-it-works" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-it-works" class="anchor"></a>How it works</h3>
-<p>A join is the combination of two tables based on shared information. In technical terms, we merge the tables that need to be directly connected by a <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models#fk">foreign key relation</a>.</p>
+<p>A join is the combination of two tables based on shared information. In technical terms, we merge the tables that need to be directly connected by a <a href="https://krlmlr.github.io/dm/articles/howto-dm-theory#fk">foreign key relation</a>.</p>
 <p>The existing links can be inspected in two ways:</p>
 <ol style="list-style-type: decimal">
 <li>Visually, by drawing the data model with <code><a href="../reference/dm_draw.html">dm_draw()</a></code>

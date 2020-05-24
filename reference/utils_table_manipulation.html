@@ -82,7 +82,7 @@ The methods for regular dm objects extract the first or last tables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -102,13 +102,13 @@ The methods for regular dm objects extract the first or last tables." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-db.html">Connect to a database</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
     </li>
     <li>
-      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+      <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
   </ul>
 </li>
@@ -120,28 +120,28 @@ The methods for regular dm objects extract the first or last tables." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
+      <a href="../articles/tech-dm-join.html">Joining in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
+      <a href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-joining.html">Joining in relational data models</a>
+      <a href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+      <a href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
+      <a href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
     </li>
     <li>
-      <a href="../articles/dm-low-level.html">Checking keys</a>
+      <a href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
+      <a href="../articles/tech-dm-naming.html">Function naming logic</a>
     </li>
     <li>
-      <a href="../articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
+      <a href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -195,10 +195,15 @@ The methods for regular <code>dm</code> objects extract the first or last tables
     </tr>
     <tr>
       <th>n</th>
-      <td><p>a single integer.  If positive or zero, size for the resulting
-    object: number of elements for a vector (including lists), rows for
-    a matrix or data frame or lines for a function.  If negative, all but
-    the <code>n</code> last/first number of elements of <code>x</code>.</p></td>
+      <td><p>an integer vector of length up to <code><a href='https://rdrr.io/r/base/dim.html'>dim(x)</a></code> (or 1,
+    for non-dimensioned objects). Values specify the indices to be
+    selected in the corresponding dimension (or along the length) of the
+    object. A positive value of <code>n[i]</code> includes the first/last
+    <code>n[i]</code> indices in that dimension, while a negative value
+    excludes the last/first <code><a href='https://rdrr.io/r/base/MathFun.html'>abs(n[i])</a></code>, including all remaining
+    indices. <code>NA</code> or non-specified values (when <code>length(n) &lt;
+      length(dim(x))</code>) select all indices in that dimension. Must
+    contain at least one non-missing value.</p></td>
     </tr>
     <tr>
       <th>...</th>
