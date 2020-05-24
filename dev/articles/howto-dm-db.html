@@ -438,14 +438,14 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x5371f68&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x5582a70&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></pre></body></html></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
 </div>
-<div id="adding-local-data-frames-to-a-rdbms" class="section level2">
+<div id="adding-local-data-frames-to-an-rdbms" class="section level2">
 <h2 class="hasAnchor">
-<a href="#adding-local-data-frames-to-a-rdbms" class="anchor"></a>Adding local data frames to a RDBMS</h2>
+<a href="#adding-local-data-frames-to-an-rdbms" class="anchor"></a>Adding local data frames to an RDBMS</h2>
 <p>If you need to add local data frames to an existing database, the shortest path is to use <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to()</a></code>. It takes the same arguments as <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>, except the second argument, instead of expecting a dm, expects a data frame.</p>
 <p>The example below estimates a linear model from attributes in the <code>loans</code> and <code>districts</code> tables, inserts residuals into the database, and links them to the <code>loans</code> table.</p>
 <div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">loans_df</span> <span class="kw">&lt;-</span>
@@ -495,7 +495,7 @@
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
 <div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span></pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_05_24_10_24_18_1&gt; [?? x 2]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_05_24_10_48_25_1&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
