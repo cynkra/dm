@@ -142,7 +142,7 @@ navbar:
   title: ~
   type: default
   left:
-  - text: Getting started with dm
+  - text: Intro
     href: articles/dm.html
   - text: Reference
     href: reference/index.html
