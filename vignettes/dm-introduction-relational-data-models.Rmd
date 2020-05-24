@@ -204,9 +204,9 @@ copy_dm_to(src_sqlite, dm)
 src_sqlite
 ```
 
-In the opposite direction, `dm` can also be populated with data from a DB. Unfortunately, this currently works only for MSSQL and Postgres, but not for Sqlite.
+In the opposite direction, `dm` can also be populated with data from a DB. Unfortunately, this currently works only for MSSQL and Postgres, but not for SQLite.
 Therefore, we cannot show the results here just yet:
 
 ```{r eval=FALSE}
-dm_learn_from_db(src_sqlite)
+dm_from_src(src_sqlite)
 ```
