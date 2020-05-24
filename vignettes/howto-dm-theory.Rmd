@@ -92,7 +92,7 @@ For example: The column `carrier` in `flights` can be joined with the column `ca
 
 The links between the tables are established through [primary keys](#pk) and [foreign keys](#fk).
 
-Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/dm-visualization.html).
+Further Reading: The {dm} methods for [visualizing data models](https://krlmlr.github.io/dm/articles/tech-dm-draw.html).
 
 ## 3. Primary Keys {#pk}
 
@@ -117,7 +117,7 @@ dm %>%
   dm_enum_pk_candidates(airports)
 ```
 
-Further Reading: The {dm} package offers several functions for dealing with [primary keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#pk).
+Further Reading: The {dm} package offers several functions for dealing with [primary keys](https://krlmlr.github.io/dm/articles/tech-dm-class.html#pk).
 
 ## 4. Foreign Keys {#fk}
 
@@ -142,7 +142,7 @@ dm %>%
 ```
 
 
-Further Reading: All {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html#foreign-keys).
+Further Reading: All {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/tech-dm-class.html#foreign-keys).
 
 ## 5. Normalization {#normalization}
 

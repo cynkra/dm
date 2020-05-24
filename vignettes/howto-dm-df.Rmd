@@ -45,7 +45,7 @@ airports
 Your own data will probably not be available as an R package.
 Whatever format it is in, you will need to be able to load it as data frames into your R session.
 If the data is too large, consider using dm to connect to the database instead.
-See `vignette("dm-db")` for details on using dm with databases.
+See `vignette("howto-dm-db")` for details on using dm with databases.
 
 ## Adding Tables
 

@@ -19,7 +19,7 @@ source("setup/setup.R")
 In this article we're going show you how easy it is to move from connecting to the database holding your data to producing the results you need.
 It's meant to be a quick and friendly introduction to {dm}, so it is low on details and caveats.
 Links to detailed documentation are provided at the end.
-(If your data is in data frames instead of a database and you're in a hurry, jump over to `vignette("dm-df")`.)
+(If your data is in data frames instead of a database and you're in a hurry, jump over to `vignette("howto-dm-df")`.)
 
 ## Creating a dm object
 
@@ -156,7 +156,7 @@ fin_dm_total$total_loans
 
 Note that in the above example we use `dm_insert_zoomed()` to add the results as a new table to our data model.
 This table is temporary and will be deleted when our session ends.
-If you want to make permanent changes to your data model on an RDBMS please see the "Persisting results" section in `vignette("dm-db")`.
+If you want to make permanent changes to your data model on an RDBMS please see the "Persisting results" section in `vignette("howto-dm-db")`.
 
 
 ## Checking constraints
@@ -171,43 +171,43 @@ fin_dm_total %>%
   dm_examine_constraints()
 ```
 
-For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see `vignette("dm-low-level")`.
+For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see `vignette("tech-dm-low-level")`.
 
 ## Next Steps
 
 Now that you have been introduced to the basic operation of dm, the next step is to learn more about the dm methods that your particular use case requires.
 
-Is your data in an RDBMS? Then move on to `vignette("dm-db")` for a more detailed looking at working with an existing relational data model.
+Is your data in an RDBMS? Then move on to `vignette("howto-dm-db")` for a more detailed looking at working with an existing relational data model.
 
-If your data is in data frames, then you want to read `vignette("dm-df")` next.
+If your data is in data frames, then you want to read `vignette("howto-dm-df")` next.
 
-If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("dm-introduction-relational-data-models")`.
+If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
-If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("dm-joining")`, `vignette("dm-filtering")`, or `vignette("dm-zoom-to-table")` is a good next step.
+If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
 
 ## Further reading
 
-`vignette("dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
+`vignette("howto-dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
 
-`vignette("dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
+`vignette("howto-dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
 
-`vignette("dm-introduction-relational-data-models")` - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
+`vignette("howto-dm-theory")` - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
 
-`vignette("dm-joining")` - Joining is how separate, linked tables are virtually combined in order to perform operations, generate summaries, or prepare data for extraction. This article covers dm's methods for creating the different kind of joins along with usage examples.
+`vignette("tech-dm-join")` - Joining is how separate, linked tables are virtually combined in order to perform operations, generate summaries, or prepare data for extraction. This article covers dm's methods for creating the different kind of joins along with usage examples.
 
-`vignette("dm-zoom-to-table")` - Learn how to manipulate the data in the tables in your dm using dplyr verbs.
+`vignette("tech-dm-zoom")` - Learn how to manipulate the data in the tables in your dm using dplyr verbs.
 
-`vignette("dm-filtering")` - Need a subset of your data across tables? This introduction to dm's filtering methods will show you how to apply them to data that is separated into multiple tables.
+`vignette("tech-dm-filter")` - Need a subset of your data across tables? This introduction to dm's filtering methods will show you how to apply them to data that is separated into multiple tables.
 
-`vignette("dm-visualization")` - A quick guide to dm's methods for drawing your data model for exploration, verification or documentation purposes. Learn how to customize the diagrams.
+`vignette("tech-dm-draw")` - A quick guide to dm's methods for drawing your data model for exploration, verification or documentation purposes. Learn how to customize the diagrams.
 
-`vignette("dm-low-level")` - If your data model needs to be rock solid, this article covers the dm methods for checking every aspect of the model. It covers key constraints, cardinalities between tables, and methods for normalization as you construct your data model.
+`vignette("tech-dm-low-level")` - If your data model needs to be rock solid, this article covers the dm methods for checking every aspect of the model. It covers key constraints, cardinalities between tables, and methods for normalization as you construct your data model.
 
-`vignette("dm-class-and-basic-operations")` - A detailed overview of the `"dm"` class.
+`vignette("tech-dm-class")` - A detailed overview of the `"dm"` class.
 
-`vignette("dm-function-naming-logic")` - Making sense of dm's API.
+`vignette("tech-dm-naming")` - Making sense of dm's API.
 
-`vignette("dm-version-migration-guide")` - If you're an early adopter, used dm version 0.0.5 or lower and want to migrate your code, this is for you.
+`vignette("tech-dm-cdm")` - If you're an early adopter, used dm version 0.0.5 or lower and want to migrate your code, this is for you.
 
 ## Standing on the shoulders of giants
 
