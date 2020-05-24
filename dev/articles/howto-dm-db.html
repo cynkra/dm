@@ -59,13 +59,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
     </li>
     <li>
-      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+      <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
   </ul>
 </li>
@@ -77,28 +77,28 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-joining.html">Joining in relational data models</a>
+      <a href="../articles/tech-dm-join.html">Joining in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+      <a href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
+      <a href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
+      <a href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-low-level.html">Model verification - keys, constraints and normalization</a>
+      <a href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
     </li>
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
+      <a href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
+      <a href="../articles/tech-dm-naming.html">Function naming logic</a>
     </li>
     <li>
-      <a href="../articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
+      <a href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -131,8 +131,8 @@
             
             <h4 class="date">2020-05-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm-db.Rmd"><code>vignettes/dm-db.Rmd</code></a></small>
-      <div class="hidden name"><code>dm-db.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-db.Rmd"><code>vignettes/howto-dm-db.Rmd</code></a></small>
+      <div class="hidden name"><code>howto-dm-db.Rmd</code></div>
 
     </div>
 
@@ -297,7 +297,7 @@
 <div id="performing-operations-on-tables-by-zooming" class="section level2">
 <h2 class="hasAnchor">
 <a href="#performing-operations-on-tables-by-zooming" class="anchor"></a>Performing operations on tables by “zooming”</h2>
-<p>As the dm is a collection of tables, if we wish to perform operations on an individual table we set it as the context for those operations using <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code>. See <code><a href="../articles/dm-zoom-to-table.html">vignette("dm-zoom-to-table")</a></code> for more detail on zooming.</p>
+<p>As the dm is a collection of tables, if we wish to perform operations on an individual table we set it as the context for those operations using <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code>. See <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> for more detail on zooming.</p>
 <p>dm operations are transient unless persistence is explicitly requested. To make our chain of manipulations on the selected table permanent we assign the result of <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> to a new object, <code>my_dm_total</code>. This is a new dm object, derived from <code>my_dm_keys</code>, with a new lazy table <code>total_loans</code> linked to the <code>accounts</code> table. The subsequent section describes how to materialize the results on the database.</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">my_dm_total</span> <span class="kw">&lt;-</span>
   <span class="no">my_dm_keys</span> <span class="kw">%&gt;%</span>
@@ -438,7 +438,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x60434f0&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x5371f68&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></pre></body></html></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -495,7 +495,7 @@
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
 <div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span></pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_05_24_05_10_10_1&gt; [?? x 2]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_05_24_10_24_18_1&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>

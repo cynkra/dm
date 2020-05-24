@@ -145,40 +145,40 @@
     <loc>https://krlmlr.github.io/dm/reference/utils_table_manipulation.html</loc>
   </url>
   <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-db.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-df.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-filtering.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-function-naming-logic.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-joining.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-low-level.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-version-migration-guide.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-visualization.html</loc>
-  </url>
-  <url>
-    <loc>https://krlmlr.github.io/dm/articles/dm-zoom-to-table.html</loc>
-  </url>
-  <url>
     <loc>https://krlmlr.github.io/dm/articles/dm.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/howto-dm-db.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/howto-dm-df.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/howto-dm-theory.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/tech-dm-cdm.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/tech-dm-class.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/tech-dm-draw.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/tech-dm-filter.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/tech-dm-join.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/tech-dm-low-level.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/tech-dm-naming.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/tech-dm-zoom.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-readme-old.html</loc>

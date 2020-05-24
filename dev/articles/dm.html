@@ -59,13 +59,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
     </li>
     <li>
-      <a href="../articles/dm-df.html">Create a dm object from data frames</a>
+      <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/dm-introduction-relational-data-models.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
   </ul>
 </li>
@@ -77,28 +77,28 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/dm-joining.html">Joining in relational data models</a>
+      <a href="../articles/tech-dm-join.html">Joining in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-zoom-to-table.html">Zooming and manipulating tables</a>
+      <a href="../articles/tech-dm-zoom.html">Zooming and manipulating tables</a>
     </li>
     <li>
-      <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
+      <a href="../articles/tech-dm-filter.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
+      <a href="../articles/tech-dm-draw.html">Visualizing dm objects</a>
     </li>
     <li>
-      <a href="../articles/dm-low-level.html">Model verification - keys, constraints and normalization</a>
+      <a href="../articles/tech-dm-low-level.html">Model verification - keys, constraints and normalization</a>
     </li>
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
+      <a href="../articles/tech-dm-class.html">Class 'dm' and basic operations</a>
     </li>
     <li>
-      <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
+      <a href="../articles/tech-dm-naming.html">Function naming logic</a>
     </li>
     <li>
-      <a href="../articles/dm-version-migration-guide.html">Migration guide: 'cdm' -&gt; 'dm'</a>
+      <a href="../articles/tech-dm-cdm.html">Migration guide: 'cdm' -&gt; 'dm'</a>
     </li>
   </ul>
 </li>
@@ -140,7 +140,7 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>In this article we’re going show you how easy it is to move from connecting to the database holding your data to producing the results you need. It’s meant to be a quick and friendly introduction to {dm}, so it is low on details and caveats. Links to detailed documentation are provided at the end. (If your data is in data frames instead of a database and you’re in a hurry, jump over to <code><a href="../articles/dm-df.html">vignette("dm-df")</a></code>.)</p>
+<p>In this article we’re going show you how easy it is to move from connecting to the database holding your data to producing the results you need. It’s meant to be a quick and friendly introduction to {dm}, so it is low on details and caveats. Links to detailed documentation are provided at the end. (If your data is in data frames instead of a database and you’re in a hurry, jump over to <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code>.)</p>
 </div>
 <div id="creating-a-dm-object" class="section level2">
 <h2 class="hasAnchor">
@@ -327,7 +327,7 @@
 #&gt; </span><span style="color: #555555;">10</span><span>        110       </span><span style="text-decoration: underline;">162</span><span>576
 #&gt; </span><span style="color: #555555;"># … with more rows</span><span>
 </span></code></pre>
-<p>Note that in the above example we use <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> to add the results as a new table to our data model. This table is temporary and will be deleted when our session ends. If you want to make permanent changes to your data model on an RDBMS please see the “Persisting results” section in <code><a href="../articles/dm-db.html">vignette("dm-db")</a></code>.</p>
+<p>Note that in the above example we use <code><a href="../reference/dm_zoom_to.html">dm_insert_zoomed()</a></code> to add the results as a new table to our data model. This table is temporary and will be deleted when our session ends. If you want to make permanent changes to your data model on an RDBMS please see the “Persisting results” section in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>.</p>
 </div>
 <div id="checking-constraints" class="section level2">
 <h2 class="hasAnchor">
@@ -338,31 +338,31 @@
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span>()</pre></body></html></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
-<p>For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see <code><a href="../articles/dm-low-level.html">vignette("dm-low-level")</a></code>.</p>
+<p>For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see <code><a href="../articles/tech-dm-low-level.html">vignette("tech-dm-low-level")</a></code>.</p>
 </div>
 <div id="next-steps" class="section level2">
 <h2 class="hasAnchor">
 <a href="#next-steps" class="anchor"></a>Next Steps</h2>
 <p>Now that you have been introduced to the basic operation of dm, the next step is to learn more about the dm methods that your particular use case requires.</p>
-<p>Is your data in an RDBMS? Then move on to <code><a href="../articles/dm-db.html">vignette("dm-db")</a></code> for a more detailed looking at working with an existing relational data model.</p>
-<p>If your data is in data frames, then you want to read <code><a href="../articles/dm-df.html">vignette("dm-df")</a></code> next.</p>
-<p>If you feel you need to know more about relational data models in order to get the most out of dm, check out <code><a href="../articles/dm-introduction-relational-data-models.html">vignette("dm-introduction-relational-data-models")</a></code>.</p>
-<p>If you’re familiar with relational data models but want to know how to work with them in dm, then any of <code><a href="../articles/dm-joining.html">vignette("dm-joining")</a></code>, <code><a href="../articles/dm-filtering.html">vignette("dm-filtering")</a></code>, or <code><a href="../articles/dm-zoom-to-table.html">vignette("dm-zoom-to-table")</a></code> is a good next step.</p>
+<p>Is your data in an RDBMS? Then move on to <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for a more detailed looking at working with an existing relational data model.</p>
+<p>If your data is in data frames, then you want to read <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> next.</p>
+<p>If you feel you need to know more about relational data models in order to get the most out of dm, check out <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
+<p>If you’re familiar with relational data models but want to know how to work with them in dm, then any of <code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code>, <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code>, or <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> is a good next step.</p>
 </div>
 <div id="further-reading" class="section level2">
 <h2 class="hasAnchor">
 <a href="#further-reading" class="anchor"></a>Further reading</h2>
-<p><code><a href="../articles/dm-db.html">vignette("dm-db")</a></code> - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.</p>
-<p><code><a href="../articles/dm-df.html">vignette("dm-df")</a></code> - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.</p>
-<p><code><a href="../articles/dm-introduction-relational-data-models.html">vignette("dm-introduction-relational-data-models")</a></code> - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
-<p><code><a href="../articles/dm-joining.html">vignette("dm-joining")</a></code> - Joining is how separate, linked tables are virtually combined in order to perform operations, generate summaries, or prepare data for extraction. This article covers dm’s methods for creating the different kind of joins along with usage examples.</p>
-<p><code><a href="../articles/dm-zoom-to-table.html">vignette("dm-zoom-to-table")</a></code> - Learn how to manipulate the data in the tables in your dm using dplyr verbs.</p>
-<p><code><a href="../articles/dm-filtering.html">vignette("dm-filtering")</a></code> - Need a subset of your data across tables? This introduction to dm’s filtering methods will show you how to apply them to data that is separated into multiple tables.</p>
-<p><code><a href="../articles/dm-visualization.html">vignette("dm-visualization")</a></code> - A quick guide to dm’s methods for drawing your data model for exploration, verification or documentation purposes. Learn how to customize the diagrams.</p>
-<p><code><a href="../articles/dm-low-level.html">vignette("dm-low-level")</a></code> - If your data model needs to be rock solid, this article covers the dm methods for checking every aspect of the model. It covers key constraints, cardinalities between tables, and methods for normalization as you construct your data model.</p>
-<p><code><a href="../articles/dm-class-and-basic-operations.html">vignette("dm-class-and-basic-operations")</a></code> - A detailed overview of the <code>"dm"</code> class.</p>
-<p><code><a href="../articles/dm-function-naming-logic.html">vignette("dm-function-naming-logic")</a></code> - Making sense of dm’s API.</p>
-<p><code><a href="../articles/dm-version-migration-guide.html">vignette("dm-version-migration-guide")</a></code> - If you’re an early adopter, used dm version 0.0.5 or lower and want to migrate your code, this is for you.</p>
+<p><code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.</p>
+<p><code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.</p>
+<p><code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
+<p><code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code> - Joining is how separate, linked tables are virtually combined in order to perform operations, generate summaries, or prepare data for extraction. This article covers dm’s methods for creating the different kind of joins along with usage examples.</p>
+<p><code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> - Learn how to manipulate the data in the tables in your dm using dplyr verbs.</p>
+<p><code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code> - Need a subset of your data across tables? This introduction to dm’s filtering methods will show you how to apply them to data that is separated into multiple tables.</p>
+<p><code><a href="../articles/tech-dm-draw.html">vignette("tech-dm-draw")</a></code> - A quick guide to dm’s methods for drawing your data model for exploration, verification or documentation purposes. Learn how to customize the diagrams.</p>
+<p><code><a href="../articles/tech-dm-low-level.html">vignette("tech-dm-low-level")</a></code> - If your data model needs to be rock solid, this article covers the dm methods for checking every aspect of the model. It covers key constraints, cardinalities between tables, and methods for normalization as you construct your data model.</p>
+<p><code><a href="../articles/tech-dm-class.html">vignette("tech-dm-class")</a></code> - A detailed overview of the <code>"dm"</code> class.</p>
+<p><code><a href="../articles/tech-dm-naming.html">vignette("tech-dm-naming")</a></code> - Making sense of dm’s API.</p>
+<p><code><a href="../articles/tech-dm-cdm.html">vignette("tech-dm-cdm")</a></code> - If you’re an early adopter, used dm version 0.0.5 or lower and want to migrate your code, this is for you.</p>
 </div>
 <div id="standing-on-the-shoulders-of-giants" class="section level2">
 <h2 class="hasAnchor">
