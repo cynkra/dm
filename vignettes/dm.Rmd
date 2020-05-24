@@ -120,7 +120,7 @@ fin_dm_keys %>%
 Apart from the rows printed above, no data has been fetched from the database.
 Use `select()` to reduce the number of columns fetched, and `collect()` to retrieve the entire result for local processing.
 
-```{r squash}
+```{r model}
 loans_df <-
   fin_dm_keys %>%
   dm_squash_to_tbl(loans) %>%
