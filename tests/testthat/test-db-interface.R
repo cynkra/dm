@@ -18,14 +18,6 @@ test_that("copy_dm_to() copies data frames to databases", {
     collect(dm_for_filter())
   )
 
-  expect_warning(
-    expect_equivalent_dm(
-      copy_dm_to(remote_test_src, collect(dm_for_filter()), schema = "test_dm"),
-      collect(dm_for_filter())
-    ),
-    "Ignoring argument `schema` because `temporary = TRUE`."
-  )
-
   # FIXME: How to test writing permanent tables without and be sure they are removed at the end independent what 'my_test_src()' is?
 })
 
@@ -33,14 +25,6 @@ test_that("copy_dm_to() copies data frames from databases", {
   expect_equivalent_dm(
     copy_dm_to(local_test_src, dm_for_filter_sqlite()),
     dm_for_filter_sqlite()
-  )
-
-  expect_warning(
-    expect_equivalent_dm(
-      copy_dm_to(local_test_src, dm_for_filter_sqlite(), schema = "test_dm"),
-      dm_for_filter_sqlite()
-    ),
-    "Ignoring argument `schema` because `temporary = TRUE`."
   )
 
   # FIXME: the following leads to a dm of unchanged table names (as expected), but tables `test_dm.tf_1` etc. appear
@@ -65,19 +49,17 @@ test_that("copy_dm_to() rejects overwrite and types arguments", {
 })
 
 # set up for test: in order for the unique table names to return the same result each time, we need to trick the function
-test_repair_table_names_for_db <- function(table_names, schema, temporary) {
+test_repair_table_names_for_db <- function(table_names, temporary) {
   testthat::with_mock(
     unique_db_table_name = function(table_name) glue::glue("{table_name}_2020_05_15_10_45_29_0"),
-    repair_table_names_for_db(table_names, schema, temporary)
+    repair_table_names_for_db(table_names, temporary)
   )
 }
 orig_table_names <- c("t1", "t2", "t3")
 
 test_that("repair_table_names_for_db() works properly", {
   verify_output("out/repair_table_names_for_db.txt", {
-    test_repair_table_names_for_db(table_names = orig_table_names, schema = NULL, temporary = TRUE)
-    test_repair_table_names_for_db(table_names = orig_table_names, schema = NULL, temporary = FALSE)
-    test_repair_table_names_for_db(table_names = orig_table_names, schema = "test", temporary = TRUE)
-    test_repair_table_names_for_db(table_names = orig_table_names, schema = "test", temporary = FALSE)
+    test_repair_table_names_for_db(table_names = orig_table_names, temporary = TRUE)
+    test_repair_table_names_for_db(table_names = orig_table_names, temporary = FALSE)
   })
 })

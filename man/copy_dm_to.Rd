@@ -13,6 +13,7 @@ copy_dm_to(
   indexes = NULL,
   unique_indexes = NULL,
   set_key_constraints = TRUE,
+  unique_table_names = NULL,
   table_names = NULL,
   schema = NULL,
   temporary = TRUE
@@ -23,38 +24,45 @@ copy_dm_to(
 
 \item{dm}{A \code{dm} object.}
 
-\item{...}{Possible further arguments passed to \code{\link[dplyr:copy_to]{dplyr::copy_to()}}, which is used on each table.}
+\item{...}{Passed on to \code{\link[dplyr:copy_to]{dplyr::copy_to()}}, which is used on each table.}
 
 \item{overwrite, types, indexes, unique_indexes}{Must remain \code{NULL}.}
 
 \item{set_key_constraints}{Boolean variable, if \code{TRUE} will mirror \code{dm} key constraints on a database.}
 
-\item{table_names}{Desired names for the tables on \code{dest}; the names within the \code{dm} remain unchanged.
+\item{unique_table_names}{Deprecated.}
 
-If left \code{NULL} (default), the names will be determined automatically depending on the arguments \code{schema} and \code{temporary}:
+\item{table_names}{Desired names for the tables on \code{dest}; the names within the \code{dm} remain unchanged.
+Can be \code{NULL}, a named character vector, a function or a one-sided formula.
+
+If left \code{NULL} (default), the names will be determined automatically depending on the \code{temporary} argument:
 \enumerate{
-\item \verb{'schema = NULL}, \verb{temporary = TRUE'} (default): unique table names based on the names of the tables in the \code{dm} are created
-\item \verb{'schema != NULL}, \verb{temporary = TRUE'}: schema will be ignored (a warning is issued) and unique table names are created
-\item \verb{'schema = NULL}, \verb{temporary = FALSE'}: For writing permanent tables on \code{dest}, the table names in the \code{dm} are used as names for the tables on \code{dest}
-\item \verb{'schema != NULL}, \verb{temporary = FALSE'}: Same as in the last point, but it is written to an \strong{existing} schema on \code{dest}
+\item \code{temporary = TRUE} (default): unique table names based on the names of the tables in the \code{dm} are created.
+\item \code{temporary = FALSE}: the table names in the \code{dm} are used as names for the tables on \code{dest}.
 }
 
-Alternatively, you can chose table names yourself by providing a named \code{character} or \code{ident_q} vector:
-the names of this vector need to correspond to the table names in the \code{dm}, its values are the desired names on \code{dest}.
-If you chose a name containing a ".", everything before it will be interpreted as a schema name and
-everything after it as a table name.
+If a function or one-sided formula, \code{table_names} is converted to a function
+using \code{\link[rlang:as_function]{rlang::as_function()}}.
+This function is called with the table names of the \code{dm} object
+as only argument, and is expected to return a character vector
+of the same length.
+Use \code{table_names = ~ dbplyr::in_schema("schema_name", .x)}
+to specify the same schema for all tables.
+Use \code{table_names = identity} with \code{temporary = TRUE}
+to avoid making temporary tables unique.
 
-Again, the table names within the \code{dm} will remain unchanged.
-
-If \code{table_names != NULL}, names for all tables need to be provided.}
-
-\item{schema}{If intending to write a permanent table to a DB, a name for an existing schema can be specified.}
+If a named character vector,
+the names of this vector need to correspond to the table names in the \code{dm},
+and its values are the desired names on \code{dest}.
+Use qualified names corresponding to your database's syntax
+to specify e.g. database and schema for your tables.}
 
 \item{temporary}{Boolean variable, if \code{TRUE}, only temporary tables will be created.
 These tables will vanish when disconnecting from the database.}
 }
 \value{
-A \code{dm} object on the given \code{src}.
+A \code{dm} object on the given \code{src} with the same table names
+as the input \code{dm}.
 }
 \description{
 \code{copy_dm_to()} takes a \link[dplyr:src_dbi]{dplyr::src_dbi} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
@@ -71,11 +79,26 @@ The arguments are included in the signature to avoid passing them via the
 \code{...} ellipsis.
 }
 \examples{
-src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-iris_dm <- copy_dm_to(
-  src_sqlite,
-  as_dm(list(iris = iris)),
+con <- DBI::dbConnect(RSQLite::SQLite())
+
+# Copy to temporary tables:
+temp_dm <- copy_dm_to(
+  con,
+  dm_nycflights13(),
   set_key_constraints = FALSE
 )
+
+# Persist, explicitly specify table names:
+persistent_dm <- copy_dm_to(
+  con,
+  dm_nycflights13(),
+  temporary = FALSE,
+  table_names = ~ paste0("flights_", .x)
+)
+persistent_dm \%>\%
+  dm_get_tables() \%>\%
+  lapply(dbplyr::remote_name)
+
+DBI::dbDisconnect(con)
 }
 \concept{DB interaction functions}

@@ -113,7 +113,7 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes =
   copy_dm_to(
     dest = dest, dm = dm, ... = ..., types = types,
     overwrite = overwrite, indexes = indexes, unique_indexes = unique_indexes,
-    set_key_constraints = set_key_constraints, unique_table_names = unique_table_names,
+    set_key_constraints = set_key_constraints,
     table_names = table_names, temporary = temporary
   )
 }

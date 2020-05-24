@@ -16,44 +16,66 @@
 #' @param dm A `dm` object.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
 #' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
-#' @param schema If intending to write a permanent table to a DB, a name for an existing schema can be specified.
+#' @param unique_table_names Deprecated.
 #' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
+#'    Can be `NULL`, a named character vector, a function or a one-sided formula.
 #'
-#'  If left `NULL` (default), the names will be determined automatically depending on the arguments `schema` and `temporary`:
+#'   If left `NULL` (default), the names will be determined automatically depending on the `temporary` argument:
 #'
-#'  1. `'schema = NULL`, `temporary = TRUE'` (default): unique table names based on the names of the tables in the `dm` are created
-#'  1. `'schema != NULL`, `temporary = TRUE'`: schema will be ignored (a warning is issued) and unique table names are created
-#'  1. `'schema = NULL`, `temporary = FALSE'`: For writing permanent tables on `dest`, the table names in the `dm` are used as names for the tables on `dest`
-#'  1. `'schema != NULL`, `temporary = FALSE'`: Same as in the last point, but it is written to an **existing** schema on `dest`
+#'   1. `temporary = TRUE` (default): unique table names based on the names of the tables in the `dm` are created.
+#'   1. `temporary = FALSE`: the table names in the `dm` are used as names for the tables on `dest`.
 #'
-#'  Alternatively, you can chose table names yourself by providing a named `character` or `ident_q` vector:
-#'    the names of this vector need to correspond to the table names in the `dm`, its values are the desired names on `dest`.
-#'    If you chose a name containing a ".", everything before it will be interpreted as a schema name and
-#'    everything after it as a table name.
+#'   If a function or one-sided formula, `table_names` is converted to a function
+#'   using [rlang::as_function()].
+#'   This function is called with the table names of the `dm` object
+#'   as only argument, and is expected to return a character vector
+#'   of the same length.
+#'   Use `table_names = ~ dbplyr::in_schema("schema_name", .x)`
+#'   to specify the same schema for all tables.
+#'   Use `table_names = identity` with `temporary = TRUE`
+#'   to avoid making temporary tables unique.
 #'
-#'  Again, the table names within the `dm` will remain unchanged.
-#'
-#'  If `table_names != NULL`, names for all tables need to be provided.
-#' @param ... Possible further arguments passed to [dplyr::copy_to()], which is used on each table.
+#'   If a named character vector,
+#'   the names of this vector need to correspond to the table names in the `dm`,
+#'   and its values are the desired names on `dest`.
+#'   Use qualified names corresponding to your database's syntax
+#'   to specify e.g. database and schema for your tables.
+#' @param ... Passed on to [dplyr::copy_to()], which is used on each table.
 #'
 #' @family DB interaction functions
 #'
-#' @return A `dm` object on the given `src`.
+#' @return A `dm` object on the given `src` with the same table names
+#'   as the input `dm`.
 #'
 #' @examples
-#' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-#' iris_dm <- copy_dm_to(
-#'   src_sqlite,
-#'   as_dm(list(iris = iris)),
+#' con <- DBI::dbConnect(RSQLite::SQLite())
+#'
+#' # Copy to temporary tables:
+#' temp_dm <- copy_dm_to(
+#'   con,
+#'   dm_nycflights13(),
 #'   set_key_constraints = FALSE
 #' )
+#'
+#' # Persist, explicitly specify table names:
+#' persistent_dm <- copy_dm_to(
+#'   con,
+#'   dm_nycflights13(),
+#'   temporary = FALSE,
+#'   table_names = ~ paste0("flights_", .x)
+#' )
+#' persistent_dm %>%
+#'   dm_get_tables() %>%
+#'   lapply(dbplyr::remote_name)
+#'
+#' DBI::dbDisconnect(con)
 #' @export
 copy_dm_to <- function(dest, dm, ...,
                        types = NULL, overwrite = NULL,
                        indexes = NULL, unique_indexes = NULL,
-                       set_key_constraints = TRUE,
+                       set_key_constraints = TRUE, unique_table_names = NULL,
                        table_names = NULL,
                        schema = NULL,
                        temporary = TRUE) {
@@ -79,10 +101,10 @@ copy_dm_to <- function(dest, dm, ...,
     abort_no_unique_indexes()
   }
 
-  # in case the schema does not exist on the DB, it needs to be created first
-  if (!is_null(schema)) {
-    if (schema_missing(dest, schema)) {
-      abort_schema_missing(schema)
+  if (!is_null(unique_table_names)) {
+    # FIXME: Deprecation warning
+    if (is.null(table_names) && temporary) {
+      table_names <- identity
     }
   }
 
@@ -90,7 +112,15 @@ copy_dm_to <- function(dest, dm, ...,
   # 1. is there one name per dm-table?
   # 2. are there any duplicated table names?
   # 3. is it a named character or ident_q vector with the correct names?
-  if (!is_null(table_names)) {
+  if (is_null(table_names)) {
+    table_names <- repair_table_names_for_db(src_tbls(dm), temporary)
+  } else if (is_function(table_names) || is_bare_formula(table_names)) {
+    table_name_fun <- as_function(table_names)
+    # FIXME: Derive table names
+  } else {
+    # FIXME: Extract to a helper function,
+    # check identical(sort(names1), sort(names2)),
+    # use only one error with different hints
     if (length(table_names) != length(src_tbls(dm))) {
       abort_all_tbls_need_db_names()
     }
@@ -103,9 +133,7 @@ copy_dm_to <- function(dest, dm, ...,
       abort_table_not_in_dm(unique(not_found), src_tbls(dm))
     }
     # add the schema and create an `ident`-class object from the table names
-    table_names <- ident_q(schema_if(schema, table_names))
-  } else {
-    table_names <- repair_table_names_for_db(src_tbls(dm), schema, temporary)
+    table_names <- ident_q(table_names[src_tbls(dm)])
   }
 
   check_not_zoomed(dm)
@@ -203,12 +231,4 @@ abort_only_unique_db_names <- function(table_names) {
 
 error_txt_only_unique_db_names <- function(dupl_names) {
   glue::glue("No duplicated names allowed for parameter `table_names`. Duplicated names: {commas(tick(dupl_names))}")
-}
-
-abort_schema_missing <- function(schema) {
-  abort(error_txt_schema_missing(schema), .subclass = dm_error_full("schema_missing"))
-}
-
-error_txt_schema_missing <- function(schema) {
-  glue::glue("No schema with name {tick(schema)} found.")
 }
