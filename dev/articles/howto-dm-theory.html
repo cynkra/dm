@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9003</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9004</span>
       </span>
     </div>
 
@@ -398,18 +398,32 @@
 <p>{dm} is built upon relational data models but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases, SQL, short for Structured Querying Language, plays an important role: it was invented for the purpose of querying relational databases.</p>
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>
 <p>Therefore, {dm} can copy data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
-<p>For example, let’s create a local Sqlite database and copy the <code>dm</code> object to it:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">src_sqlite</span> <span class="kw">&lt;-</span> <span class="fu">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="kw">create</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">src_sqlite</span>
-<span class="co">#&gt; src:  sqlite 3.30.1 [:memory:]</span>
-<span class="co">#&gt; tbls:</span>
-<span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="no">src_sqlite</span>, <span class="no">dm</span>)
-<span class="no">src_sqlite</span>
-<span class="co">#&gt; src:  sqlite 3.30.1 [:memory:]</span>
-<span class="co">#&gt; tbls: airlines, airports, flights, planes, sqlite_stat1, sqlite_stat4,</span>
-<span class="co">#&gt;   weather</span></pre></body></html></div>
-<p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, this currently works only for MSSQL and Postgres, but not for SQLite. Therefore, we cannot show the results here just yet:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="no">src_sqlite</span>)</pre></body></html></div>
+<p>For example, let’s create a local SQLite database and copy the <code>dm</code> object to it:</p>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">con_sqlite</span> <span class="kw">&lt;-</span> <span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(<span class="kw pkg">RSQLite</span><span class="kw ns">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span>())
+<span class="no">con_sqlite</span>
+<span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
+<span class="co">#&gt;   Path: </span>
+<span class="co">#&gt;   Extensions: TRUE</span>
+<span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span>(<span class="no">con_sqlite</span>)
+<span class="co">#&gt; character(0)</span>
+
+<span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="no">con_sqlite</span>, <span class="no">dm</span>)
+<span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span>(<span class="no">con_sqlite</span>)
+<span class="co">#&gt; [1] "airlines"     "airports"     "flights"      "planes"      </span>
+<span class="co">#&gt; [5] "sqlite_stat1" "sqlite_stat4" "weather"</span></pre></body></html></div>
+<p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="no">con_sqlite</span>)
+<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.30.1 []
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
+#&gt; Columns: 62
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
+<p>Remember to terminate the database connection:</p>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span>(<span class="no">con_sqlite</span>)</pre></body></html></div>
 </div>
   </div>
 
