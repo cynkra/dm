@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9002</span>
       </span>
     </div>
 
@@ -62,7 +62,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/dm-db.html">Connect to a database</a>
+      <a href="articles/dm-db.html">Create a dm object from a database</a>
     </li>
     <li>
       <a href="articles/dm-df.html">Create a dm object from data frames</a>
@@ -80,12 +80,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="articles/dm-visualization.html">Visualizing dm objects</a>
-    </li>
-    <li>
       <a href="articles/dm-joining.html">Joining in relational data models</a>
     </li>
     <li>
@@ -95,7 +89,13 @@
       <a href="articles/dm-filtering.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="articles/dm-low-level.html">Checking keys</a>
+      <a href="articles/dm-visualization.html">Visualizing dm objects</a>
+    </li>
+    <li>
+      <a href="articles/dm-low-level.html">Model verification - keys, constraints and normalization</a>
+    </li>
+    <li>
+      <a href="articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
       <a href="articles/dm-function-naming-logic.html">Function naming logic</a>
@@ -128,84 +128,74 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
-
 <div id="dm" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#dm" class="anchor"></a>dm</h1></div>
-<p>{dm} is an R package that provides tools for working with multiple related tables, stored as data frames or in a relational database.</p>
-<p><strong>Contents</strong></p>
-<ul>
-<li>
-<a href="#background">Background</a> explains the philosophy behind the package and the problem that it tries to solve</li>
-<li>
-<a href="#example">Example</a> illustrates the general concept with a simple example</li>
-<li>
-<a href="#features">Features</a> gives an overview of the scope of the package</li>
-<li>
-<a href="#installation">Installation</a> describes how to install the package</li>
-<li>
-<a href="#more-information">More information</a> lists more detailed documentation sources</li>
-<li>
-<a href="#standing-on-the-shoulders-of-giants">Standing on the shoulders of giants</a> credits related work</li>
-</ul>
-<div id="background" class="section level2">
+<a href="#dm" class="anchor"></a><a href="https://krlmlr.github.io/dm">dm</a>
+</h1></div>
+<!-- badges: start -->
+
+<div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#background" class="anchor"></a>Background</h2>
-<p>Relational databases and flat tables, like data frames or spreadsheets, present data in fundamentally different ways.</p>
-<p>In data frames and spreadsheets, all data is presented together in one large table with many rows and columns. This means that the data is accessible in one location but has the disadvantage that the same values may be repeated multiple times, resulting in bloated tables with redundant data. In the worst case scenario, a data frame may have many rows and columns but only a single value different in each row.</p>
-<p>Relational databases, on the other hand, do not keep all data together but split it into multiple smaller tables. That separation into sub-tables has several advantages:</p>
-<ul>
-<li>all information is stored only once, avoiding repetition and conserving memory</li>
-<li>all information is updated only once and in one place, improving consistency and avoiding errors that may result from updating the same value in multiple locations</li>
-<li>all information is organized by topic and segmented into smaller tables that are easier to handle</li>
-</ul>
-<p>Separation of data, thus, helps with data quality, and explains the continuing popularity of relational databases in production-level data management.</p>
-<p>The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modelling or plotting data. To be mapped uniquely, the entities would need to be designated as <em>keys</em>, and the separate tables collated together through a process called <em>joining</em>.</p>
-<p>In R, there already exist packages that support handling inter-linked tables but the code is complex and requires multiple command sequences. The goal of the {dm} package is to simplify the data management processes in R while keeping the advantages of relational data models and the core concept of splitting one table into multiple tables. In this way, you can have the best of both worlds: manage your data as a collection of linked tables, then flatten multiple tables into one for an analysis with {dplyr} or other packages, on an as-needed basis.</p>
-<p>Although {dm} is built upon relational data models, it is not a database itself. It can work transparently with both relational database systems and in-memory data, and copy data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>.</p>
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p>dm bridges the gap in the data pipeline between individual data frames and relational databases. It’s a <a href="https://twitter.com/drob/status/1224851726068527106">grammar of joined tables</a> that provides a consistent set of verbs for building, using and deploying relational data models. For individual researchers, it broadens the scope of datasets they can work with and how they work with them. For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.</p>
+<p>dm objects encapsulate relational data models constructed from local data frames or lazy tables connected to an RDBMS. dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking. Once a data model is complete, dm provides methods for deploying it to an RDBMS. This allows it to scale from datasets that fit in memory to databases with billions of rows.</p>
 </div>
-<div id="example" class="section level2">
+<div id="features" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p>As an example, consider the <a href="https://github.com/hadley/nycflights13"><code>nycflights13</code></a> dataset about the flights that departed New York City airports in 2013. The dataset contains five tables: the main <code>flights</code> table with links to the <code>airlines</code>, <code>planes</code> and <code>airports</code> tables, and the <code>weather</code> table without explicit links.</p>
-<p>Assume that your task is to merge all tables, except the <code>weather</code> table.</p>
-<p><img src="reference/figures/README-draw-1.png" width="100%"></p>
-<p>In the classical <a href="https://dplyr.tidyverse.org">{dplyr}</a> notation, you would need three <code><a href="https://dplyr.tidyverse.org/reference/join.html">left_join()</a></code> calls to merge the <code>flights</code> table gradually to the <code>airlines</code>, <code>planes</code> and <code>airports</code> tables to create one wide data frame:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">nycflights13</span>)
-
-<span class="no">flights</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(<span class="no">airlines</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"carrier"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(<span class="no">planes</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"tailnum"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(<span class="no">airports</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> <span class="kw">=</span> <span class="st">"faa"</span>))</pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 35</span><span>
-#&gt;    </span><span style="font-weight: bold;">year.x</span><span> </span><span style="font-weight: bold;">month</span><span>   </span><span style="font-weight: bold;">day</span><span> </span><span style="font-weight: bold;">dep_time</span><span> </span><span style="font-weight: bold;">sched_dep_time</span><span> </span><span style="font-weight: bold;">dep_delay</span><span> </span><span style="font-weight: bold;">arr_time</span><span>
-#&gt;     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;"> 1</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      517            515         2      830
-#&gt; </span><span style="color: #555555;"> 2</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      533            529         4      850
-#&gt; </span><span style="color: #555555;"> 3</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      542            540         2      923
-#&gt; </span><span style="color: #555555;"> 4</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      544            545        -</span><span style="color: #BB0000;">1</span><span>     </span><span style="text-decoration: underline;">1</span><span>004
-#&gt; </span><span style="color: #555555;"> 5</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      554            600        -</span><span style="color: #BB0000;">6</span><span>      812
-#&gt; </span><span style="color: #555555;"> 6</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      554            558        -</span><span style="color: #BB0000;">4</span><span>      740
-#&gt; </span><span style="color: #555555;"> 7</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      555            600        -</span><span style="color: #BB0000;">5</span><span>      913
-#&gt; </span><span style="color: #555555;"> 8</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      709
-#&gt; </span><span style="color: #555555;"> 9</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      838
-#&gt; </span><span style="color: #555555;">10</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      558            600        -</span><span style="color: #BB0000;">2</span><span>      753
-#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 28 more variables: </span><span style="color: #555555;font-weight: bold;">sched_arr_time</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">arr_delay</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">carrier</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">flight</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">tailnum</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">origin</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">dest</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">air_time</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">distance</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">hour</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">minute</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">time_hour</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">name.x</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">year.y</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">type</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">manufacturer</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">model</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">engines</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">seats</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">speed</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">engine</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">name.y</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">lat</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">lon</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">alt</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">tz</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">dst</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">tzone</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
+<a href="#features" class="anchor"></a>Features</h2>
+<p>dm makes it easy to bring an existing relational data model into your R session. As the dm object behaves like a named list of tables it requires little change to incorporate it within existing workflows. The dm interface and behavior is modeled after dplyr, so you may already be familiar with many of its verbs. dm also offers:</p>
+<ul>
+<li>visualization to help you understand relationships between entities represented by the tables</li>
+<li>simpler joins that “know” how tables are related, including a “flatten” operation that automatically follows keys and performs column name disambiguation</li>
+<li>consistency and constraint checks to help you understand (and fix) the limitations of your data</li>
+</ul>
+<p>That’s just the tip of the iceberg. See <a href="https://krlmlr.github.io/dm/articles/dm.html">Getting started</a> to hit the ground running and explore all the features.</p>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>The latest stable version of the {dm} package can be obtained from <a href="https://CRAN.R-project.org/package=dm">CRAN</a> with the command</p>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"dm"</span>)</pre></div>
+<p>The latest development version of {dm} can be installed from GitHub.</p>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("devtools")</span>
+<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"krlmlr/dm"</span>)</pre></div>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<p>Create a dm object (see <a href="https://krlmlr.github.io/dm/articles/dm.html">Getting started</a> for details).</p>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
+<span class="no">dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>()
+<span class="no">dm</span></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 3
 </span></code></pre>
-<p>With the {dm} package, you would create <a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html">a <code>dm</code> object</a>. After that you would be able to use the links between the tables as often as you wish, without explicitly referring to the relations ever again.</p>
-<p>For the example data set, you can use <code><a href="reference/dm_nycflights13.html">dm_nycflights13()</a></code> to create the <code>dm</code> object, and a single command for merging the tables. The task of joining the four <code>flights</code>, <code>airlines</code>, <code>planes</code> and <code>airports</code> tables then boils down to:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
-
-<span class="fu"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span>(<span class="kw">start</span> <span class="kw">=</span> <span class="no">flights</span>)
+<p>dm is a named list of tables:</p>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">dm</span>)
+<span class="co">#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">dm</span>$<span class="no">airports</span>)
+<span class="co">#&gt; [1] 1458</span>
+<span class="no">dm</span>$<span class="no">flights</span> <span class="kw">%&gt;%</span>
+  <span class="fu">count</span>(<span class="no">origin</span>)</pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
+#&gt;   </span><span style="font-weight: bold;">origin</span><span>     </span><span style="font-weight: bold;">n</span><span>
+#&gt; </span><span style="color: #555555;">*</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span> EWR     </span><span style="text-decoration: underline;">4</span><span>043
+#&gt; </span><span style="color: #555555;">2</span><span> JFK     </span><span style="text-decoration: underline;">3</span><span>661
+#&gt; </span><span style="color: #555555;">3</span><span> LGA     </span><span style="text-decoration: underline;">3</span><span>523
+</span></code></pre>
+<p>Visualize relationships at any time:</p>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="no">dm</span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="reference/dm_draw.html">dm_draw</a></span>()</pre></div>
+<p><img src="reference/figures/README-draw.svg"></p>
+<p>Simple joins:</p>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="no">dm</span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span>(<span class="no">flights</span>)
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * year -&gt; flights.year, planes.year</span>
 <span class="co">#&gt; * name -&gt; airlines.name, airports.name</span></pre></div>
@@ -231,150 +221,19 @@
 #&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">manufacturer</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">model</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">engines</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">seats</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
 #&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">speed</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">engine</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
-<p>The example data model for {nycflights13} is integrated in {dm} and defines primary and foreign keys to identify the common points between the tables. For data other than the example data, the <code>dm</code> object would need to be created by using the <code><a href="reference/dm.html">dm()</a></code> constructor and by adding keys using <code><a href="reference/dm_add_pk.html">dm_add_pk()</a></code> and <code><a href="reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
-</div>
-<div id="features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#features" class="anchor"></a>Features</h2>
-<p>The {dm} package helps with the challenges that arise with working with relational data models.</p>
-<div id="compound-object" class="section level3">
-<h3 class="hasAnchor">
-<a href="#compound-object" class="anchor"></a>Compound object</h3>
-<p>The <code>dm</code> class manages several related tables. It stores both the <strong>data</strong> and the <strong>metadata</strong> in a compound object.</p>
-<ul>
-<li>data: a table source storing all tables</li>
-<li>metadata: table names, column names, primary and foreign keys</li>
-</ul>
-<p>This concept helps separating the join logic from the code: declare your relationships once, as part of your data, then use them in your code without repeating yourself.</p>
-<p>Various operations on <code>dm</code> objects are implemented. They either affect the data (e.g., a filter), or the metadata (e.g., definition of keys), or both (e.g., creation of a new table).</p>
-</div>
-<div id="storage-agnostic" class="section level3">
-<h3 class="hasAnchor">
-<a href="#storage-agnostic" class="anchor"></a>Storage agnostic</h3>
-<p>The {dm} package augments <a href="https://dplyr.tidyverse.org/">{dplyr}</a>/<a href="https://dbplyr.tidyverse.org/">{dbplyr}</a> workflows. Generally, if you can use {dplyr} on your data, it’s likely that you can use {dm} too. This includes local data frames, relational database systems, and many more.</p>
-</div>
-<div id="data-preparation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#data-preparation" class="anchor"></a>Data preparation</h3>
-<p>A battery of utilities helps with creating a tidy relational data model.</p>
-<ul>
-<li>Splitting and rejoining tables</li>
-<li>Determining key candidates</li>
-<li>Checking keys and cardinalities</li>
-</ul>
-</div>
-<div id="filtering-and-joining" class="section level3">
-<h3 class="hasAnchor">
-<a href="#filtering-and-joining" class="anchor"></a>Filtering and joining</h3>
-<p>Similarly to <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code>, a filtering function <code><a href="reference/dm_filter.html">dm_filter()</a></code> is available for <code>dm</code> objects. You need to provide the <code>dm</code> object, the table whose rows you want to filter, and the filter expression. The actual effect of the filtering will only be realized once you use <code>dm_apply_filters</code>. Before that, the filter conditions are merely stored within the <code>dm</code>. After using <code><a href="reference/dm_filter.html">dm_apply_filters()</a></code> a <code>dm</code> object is returned whose tables only contain rows that are related to the reduced rows in the filtered table. This currently only works for cycle-free relationships between the tables.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">FALSE</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/dm.html">dm_get_tables</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu">map_int</span>(<span class="no">nrow</span>)
-<span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;       16     1458    11227     3322      861</span>
-
-<span class="fu"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">FALSE</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/dm_filter.html">dm_filter</a></span>(<span class="no">planes</span>, <span class="no">year</span> <span class="kw">==</span> <span class="fl">2000</span>, <span class="no">manufacturer</span> <span class="kw">==</span> <span class="st">"BOEING"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/dm_filter.html">dm_apply_filters</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/dm.html">dm_get_tables</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu">map_int</span>(<span class="no">nrow</span>)
-<span class="co">#&gt; airlines airports  flights   planes  weather </span>
-<span class="co">#&gt;        4        3      220      134      861</span></pre></div>
-<p>For joining two tables using their relationship defined in the <code>dm</code>, you can use <code><a href="reference/dm_join_to_tbl.html">dm_join_to_tbl()</a></code>:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">FALSE</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span>(<span class="no">airports</span>, <span class="no">flights</span>, <span class="kw">join</span> <span class="kw">=</span> <span class="no">semi_join</span>)</pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 19</span><span>
-#&gt;     </span><span style="font-weight: bold;">year</span><span> </span><span style="font-weight: bold;">month</span><span>   </span><span style="font-weight: bold;">day</span><span> </span><span style="font-weight: bold;">dep_time</span><span> </span><span style="font-weight: bold;">sched_dep_time</span><span> </span><span style="font-weight: bold;">dep_delay</span><span> </span><span style="font-weight: bold;">arr_time</span><span>
-#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;"> 1</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10        3           </span><span style="text-decoration: underline;">2</span><span>359         4      426
-#&gt; </span><span style="color: #555555;"> 2</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10       16           </span><span style="text-decoration: underline;">2</span><span>359        17      447
-#&gt; </span><span style="color: #555555;"> 3</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      450            500       -</span><span style="color: #BB0000;">10</span><span>      634
-#&gt; </span><span style="color: #555555;"> 4</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      520            525        -</span><span style="color: #BB0000;">5</span><span>      813
-#&gt; </span><span style="color: #555555;"> 5</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      530            530         0      824
-#&gt; </span><span style="color: #555555;"> 6</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      531            540        -</span><span style="color: #BB0000;">9</span><span>      832
-#&gt; </span><span style="color: #555555;"> 7</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      535            540        -</span><span style="color: #BB0000;">5</span><span>     </span><span style="text-decoration: underline;">1</span><span>015
-#&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      546            600       -</span><span style="color: #BB0000;">14</span><span>      645
-#&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      549            600       -</span><span style="color: #BB0000;">11</span><span>      652
-#&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      550            600       -</span><span style="color: #BB0000;">10</span><span>      649
-#&gt; </span><span style="color: #555555;"># … with 11,217 more rows, and 12 more variables: </span><span style="color: #555555;font-weight: bold;">sched_arr_time</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">arr_delay</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">carrier</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">flight</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">tailnum</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">origin</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">dest</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">air_time</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">distance</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">hour</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   </span><span style="color: #555555;font-weight: bold;">minute</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, </span><span style="color: #555555;font-weight: bold;">time_hour</span><span style="color: #555555;"> </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
+<p>Check consistency:</p>
+<div class="sourceCode" id="cb7"><pre class="r"><span class="no">dm</span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="reference/dm_examine_constraints.html">dm_examine_constraints</a></span>()</pre></div>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #BBBB00;">!</span><span> Unsatisfied constraints:
 </span></code></pre>
-<p>In our <code>dm</code>, the <code>origin</code> column of the <code>flights</code> table points to the <code>airports</code> table. Since all <code>nycflights13</code>-flights depart from New York, only these airports are included in the semi-join.</p>
-</div>
-<div id="from-and-to-databases" class="section level3">
-<h3 class="hasAnchor">
-<a href="#from-and-to-databases" class="anchor"></a>From and to databases</h3>
-<p>In order to transfer an existing <code>dm</code> object to a DB, you can call <code>dm_copy_to()</code> with the target DB and the <code>dm</code> object:</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="no">src_sqlite</span> <span class="kw">&lt;-</span> <span class="fu">src_sqlite</span>(<span class="st">":memory:"</span>, <span class="kw">create</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">src_sqlite</span>
-<span class="co">#&gt; src:  sqlite 3.31.1 [:memory:]</span>
-<span class="co">#&gt; tbls:</span>
-<span class="no">nycflights13_remote</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="no">src_sqlite</span>, <span class="fu"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
-<span class="no">nycflights13_remote</span></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.31.1 [:memory:]
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 4
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BB0000;">●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …
 </span></code></pre>
-<p>The key constraints from the original object are also copied to the newly created object. With the default setting <code>set_key_constraints = TRUE</code> for <code>dm_copy_to()</code>, key constraints are also established on the target DB. Currently this feature is only supported for MSSQL and Postgres database management systems (DBMS).</p>
-<p>It is also possible to automatically create a <code>dm</code> object from the permanent tables of a DB. Again, for now just MSSQL and Postgres are supported for this feature, so the next chunk is not evaluated. The support for other DBMS will be implemented in a future update.</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="no">src_postgres</span> <span class="kw">&lt;-</span> <span class="fu">src_postgres</span>()
-<span class="no">nycflights13_from_remote</span> <span class="kw">&lt;-</span> <span class="fu">dm_learn_from_db</span>(<span class="no">src_postgres</span>)</pre></div>
+<p>Learn more in the <a href="https://krlmlr.github.io/dm/articles/dm.html">Getting started</a> article.</p>
 </div>
-</div>
-<div id="installation" class="section level2">
+<div id="getting-help" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>The latest stable version of the {dm} package can be obtained from <a href="https://CRAN.R-project.org/package=dm">CRAN</a> with the command</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"dm"</span>)</pre></div>
-<p>The latest development version of {dm} can be installed from GitHub.</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="co"># install.packages("devtools")</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"krlmlr/dm"</span>)</pre></div>
-</div>
-<div id="more-information" class="section level2">
-<h2 class="hasAnchor">
-<a href="#more-information" class="anchor"></a>More information</h2>
-<p>For an introduction into relational data models and to jump-start working with {dm}, please see the article <a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html">“Introduction to Relational Data Models”</a>.</p>
-<p>If you would like to learn more about {dm}, the <a href="https://krlmlr.github.io/dm/articles/dm.html">Intro article</a> is a good place to start.</p>
-<p>Further resources:</p>
-<ul>
-<li><a href="https://krlmlr.github.io/dm/reference/index.html">Function reference</a></li>
-<li>
-<a href="https://krlmlr.github.io/dm/articles/dm-introduction-relational-data-models.html">Introduction to Relational Data Models</a> article</li>
-<li>
-<a href="https://krlmlr.github.io/dm/articles/dm-joining.html">Joining</a> article</li>
-<li>
-<a href="https://krlmlr.github.io/dm/articles/dm-filtering.html">Filtering</a> article</li>
-<li>
-<a href="https://krlmlr.github.io/dm/articles/dm-class-and-basic-operations.html">Class ‘dm’ and basic operations</a> article</li>
-<li>
-<a href="https://krlmlr.github.io/dm/articles/dm-visualization.html">Visualizing ‘dm’ objects</a> article</li>
-<li>
-<a href="https://krlmlr.github.io/dm/articles/dm-low-level.html">Low-level operations</a> article <!-- FIXME: vignettes missing;  once there, needs to be linked -->
-</li>
-</ul>
-</div>
-<div id="standing-on-the-shoulders-of-giants" class="section level2">
-<h2 class="hasAnchor">
-<a href="#standing-on-the-shoulders-of-giants" class="anchor"></a>Standing on the shoulders of giants</h2>
-<p>The {dm} package follows the tidyverse principles:</p>
-<ul>
-<li>
-<code>dm</code> objects are immutable (your data will never be overwritten in place)</li>
-<li>many functions used on <code>dm</code> objects are pipeable (i.e., return new <code>dm</code> objects)</li>
-<li>tidy evaluation is used (unquoted function parameters are supported)</li>
-</ul>
-<p>The {dm} package builds heavily upon the <a href="https://github.com/bergant/datamodelr">{datamodelr} package</a>, and upon the <a href="https://www.tidyverse.org/">tidyverse</a>. We’re looking forward to a good collaboration!</p>
-<p>The <a href="https://github.com/russHyde/polyply">{polyply} package</a> has a similar intent with a slightly different interface.</p>
-<p>The <a href="https://github.com/jangorecki/data.cube">{data.cube} package</a> has quite the same intent using <code>array</code>-like interface.</p>
-<p>Articles in the <a href="https://github.com/WinVector/rquery">{rquery} package</a> discuss <a href="https://github.com/WinVector/rquery/blob/master/extras/JoinController.md">join controllers</a> and <a href="https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md">join dependency sorting</a>, with the intent to move the declaration of table relationships from code to data.</p>
-<p>The <a href="https://github.com/thomasp85/tidygraph">{tidygraph} package</a> stores a network as two related tables of <code>nodes</code> and <code>edges</code>, compatible with {dplyr} workflows.</p>
-<p>In object-oriented programming languages, <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">object-relational mapping</a> is a similar concept that attempts to map a set of related tables to a class hierarchy.</p>
+<a href="#getting-help" class="anchor"></a>Getting help</h2>
+<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on <a href="https://github.com/krlmlr/dm/issues">GitHub</a>. For questions and other discussion, please use <a href="https://community.rstudio.com/">community.rstudio.com</a>.</p>
 <hr>
 <p>License: MIT © cynkra GmbH.</p>
 <p>Funded by:</p>
@@ -383,7 +242,6 @@
 <p>Please note that the ‘dm’ project is released with a <a href="https://krlmlr.github.io/dm/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

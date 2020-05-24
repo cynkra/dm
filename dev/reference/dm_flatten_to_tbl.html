@@ -81,7 +81,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9002</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-db.html">Connect to a database</a>
+      <a href="../articles/dm-db.html">Create a dm object from a database</a>
     </li>
     <li>
       <a href="../articles/dm-df.html">Create a dm object from data frames</a>
@@ -119,12 +119,6 @@ Both functions perform a disambiguation of column names and a cascade of joins."
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
-    </li>
-    <li>
       <a href="../articles/dm-joining.html">Joining in relational data models</a>
     </li>
     <li>
@@ -134,7 +128,13 @@ Both functions perform a disambiguation of column names and a cascade of joins."
       <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-low-level.html">Checking keys</a>
+      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
+    </li>
+    <li>
+      <a href="../articles/dm-low-level.html">Model verification - keys, constraints and normalization</a>
+    </li>
+    <li>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
       <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
@@ -202,7 +202,7 @@ for example a fact table in a star schema.</p></td>
 The order of the tables here determines
 the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
-If this includes tables that are not direct neighbours of <code>start</code>,
+If this includes tables that are not direct neighbors of <code>start</code>,
 it will only work with <code>dm_squash_to_tbl()</code> (given one of the allowed join-methods).
 <code>tidyselect</code> is supported, see <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> for details on the semantics.</p></td>
     </tr>

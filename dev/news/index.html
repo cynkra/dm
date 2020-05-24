@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9002</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-db.html">Connect to a database</a>
+      <a href="../articles/dm-db.html">Create a dm object from a database</a>
     </li>
     <li>
       <a href="../articles/dm-df.html">Create a dm object from data frames</a>
@@ -117,12 +117,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
-    </li>
-    <li>
-      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
-    </li>
-    <li>
       <a href="../articles/dm-joining.html">Joining in relational data models</a>
     </li>
     <li>
@@ -132,7 +126,13 @@
       <a href="../articles/dm-filtering.html">Filtering in relational data models</a>
     </li>
     <li>
-      <a href="../articles/dm-low-level.html">Checking keys</a>
+      <a href="../articles/dm-visualization.html">Visualizing dm objects</a>
+    </li>
+    <li>
+      <a href="../articles/dm-low-level.html">Model verification - keys, constraints and normalization</a>
+    </li>
+    <li>
+      <a href="../articles/dm-class-and-basic-operations.html">Class 'dm' and basic operations</a>
     </li>
     <li>
       <a href="../articles/dm-function-naming-logic.html">Function naming logic</a>
@@ -170,6 +170,22 @@
       <small>Source: <a href='https://github.com/krlmlr/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-0-1-2-9002" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.2.9002">
+<a href="#dm-0-1-2-9002" class="anchor"></a>dm 0.1.2.9002<small> Unreleased </small>
+</h1>
+<ul>
+<li>Better testing for MSSQL (<a href='https://github.com/krlmlr/dm/issues/339'>#339</a>).</li>
+</ul>
+</div>
+    <div id="dm-0-1-2-9001" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.2.9001">
+<a href="#dm-0-1-2-9001" class="anchor"></a>dm 0.1.2.9001<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fix compatibility with dplyr 1.0.0.</li>
+</ul>
+</div>
     <div id="dm-0-1-2-9000" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.2.9000">
 <a href="#dm-0-1-2-9000" class="anchor"></a>dm 0.1.2.9000<small> Unreleased </small>
@@ -314,7 +330,7 @@
 <li>Relax test for cycles in relationship graph (<a href='https://github.com/krlmlr/dm/issues/198'>#198</a>).</li>
 <li>Return <code>ref_table</code> column in <code>dm_check_constraints()</code> (<a href='https://github.com/krlmlr/dm/issues/178'>#178</a>).</li>
 <li>
-<code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> shows simpified views (<a href='https://github.com/krlmlr/dm/issues/123'>#123</a>).</li>
+<code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> shows simplified views (<a href='https://github.com/krlmlr/dm/issues/123'>#123</a>).</li>
 <li>Edits to README (<a href='https://github.com/krlmlr/dm/issues/172'>#172</a>, <a href='https://github.com/bbecane'>@bbecane</a>).</li>
 <li>Extend <code><a href="../reference/dm.html">validate_dm()</a></code> (<a href='https://github.com/krlmlr/dm/issues/173'>#173</a>).</li>
 <li>Fix zooming into table that uses an FK column as primary key (<a href='https://github.com/krlmlr/dm/issues/193'>#193</a>).</li>
