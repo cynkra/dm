@@ -24,7 +24,7 @@ knit_print.grViz <- function(x, ..., options) {
   path <- paste0(options$fig.path, options$label, ".svg")
   writeLines(svg, path)
   
-  knitr::asis_output('<img src="', path, '" />')
+  knitr::asis_output(paste0('<img src="', path, '" />'))
 }
 vctrs::s3_register("knitr::knit_print", "grViz")
 ```
