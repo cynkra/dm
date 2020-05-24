@@ -19,15 +19,12 @@ source("setup/setup.R")
 # Building data models from data frames with dm
 
 dm allows you to create your own relational data models from local data frames.
-A data model allows you the full power of queries and data manipulations.
 Once your data model is complete, you can deploy it a range of DBMSs using dm.
 
 ## Creating a dm object from data frames
 
-The example data set that we will be using is included in `dm`. 
-You can examine it by running `dm::dm_nycflights13()`.  
-
-The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013, and are available through the [`nycflights13`](https://github.com/hadley/nycflights13) package: 
+The example data set that we will be using is available through the [`nycflights13`](https://github.com/hadley/nycflights13) package.
+The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013:
 
 - `flights` represents the trips taken by planes
 - `airlines` includes
@@ -48,7 +45,7 @@ airports
 Your own data will probably not be available as an R package.
 Whatever format it is in, you will need to be able to load it as data frames into your R session.
 If the data is too large, consider using dm to connect to the database instead.
-See `vignette("dm-db", package="dm")` for details on using dm with databases.
+See `vignette("dm-db")` for details on using dm with databases.
 
 ## Adding Tables
 
@@ -145,7 +142,7 @@ flights_dm_all_keys %>%
 
 ## Integrity Checks
 
-As well as checking our data model visually, dm can examine the constraints we have created by the additon of keys and verify that they are sensible.
+As well as checking our data model visually, dm can examine the constraints we have created by the addition of keys and verify that they are sensible.
 
 ```{r}
 flights_dm_no_keys %>%
@@ -158,7 +155,7 @@ flights_dm_all_keys %>%
   dm_examine_constraints()
 ```
 
-The results are presented in a human-readable form, and stored internally as a tibble for programmatic inspection.
+The results are presented in a human-readable form, and available as a tibble for programmatic inspection.
 
 
 ## Programing
@@ -168,7 +165,8 @@ Helper functions are available to access details on keys and check results.
 `dm_get_all_pks()` returns a data frame with our primary keys:
 
 ```{r}
-dm_get_all_pks(flights_dm_only_pks)
+flights_dm_only_pks %>%
+  dm_get_all_pks()
 ```
 
 A data frame of foreign keys is retrieved with `dm_get_all_fks()`:
@@ -178,11 +176,10 @@ flights_dm_all_keys %>%
   dm_get_all_pks()
 ```
 
-We can use `tibble::as_tibble()` on the result of `dm_examine_constraints()` to programmatically inspect which constaints are not satisfied:
+We can use `tibble::as_tibble()` on the result of `dm_examine_constraints()` to programmatically inspect which constraints are not satisfied:
 
 ```{r}
 flights_dm_all_keys %>%
   dm_examine_constraints() %>%
   tibble::as_tibble()
 ```
-

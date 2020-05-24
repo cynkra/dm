@@ -26,16 +26,14 @@ scope of datasets they can work with and how they work with them. For
 organizations, it enables teams to quickly and efficiently create and
 share large, complex datasets.
 
-dm objects encapsulate relational data models built on top of lazy
-tables. They can be constructed from local data frames or an RDBMS. dm’s
-lazy evaluation allows it to scale from datasets that fit in memory to
+dm objects encapsulate relational data models constructed from local
+data frames or lazy tables connected to an RDBMS. dm objects support the
+full suite of dplyr data manipulation verbs along with additional
+methods for constructing and verifying relational data models, including
+key selection, key creation, and rigorous constraint checking. Once a
+data model is complete, dm provides methods for deploying it to an
+RDBMS. This allows it to scale from datasets that fit in memory to
 databases with billions of rows.
-
-dm objects support the full suite of dplyr data manipulation verbs along
-with additional methods for constructing and verifying relational data
-models, including key selection, key creation, and rigorous constraint
-checking. Once a data model is complete, dm provides methods for
-deploying it to an RDBMS.
 
 ## Why use dm
 
@@ -75,7 +73,7 @@ devtools::install_github("krlmlr/dm")
 
 ## Usage
 
-Load data as a dm object (see [Getting
+Create a dm object (see [Getting
 started](https://krlmlr.github.io/dm/articles/dm.html) for details).
 
 ``` r
