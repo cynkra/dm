@@ -158,7 +158,7 @@ flights_dm_all_keys %>%
 The results are presented in a human-readable form, and available as a tibble for programmatic inspection.
 
 
-## Programing
+## Programming
 
 Helper functions are available to access details on keys and check results.
 

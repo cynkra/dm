@@ -260,7 +260,7 @@ dm_financial_sqlite
 As demonstrated, `copy_dm_to()` takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the `temporary` argument set to FALSE as this is a deployment and we want it to be permanent.
 The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.
 
-The default behaviour is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.
+The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.
 
 ## Adding local data frames to a RDBMS
 
