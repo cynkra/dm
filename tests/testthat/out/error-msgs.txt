@@ -94,11 +94,11 @@ Error: Updating `dm` objects not supported.
 > abort_only_possible_wo_filters("find_wisdom")
 Error: You can't call `find_wisdom()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.
 
-> abort_tables_not_neighbours("subjects", "king")
+> abort_tables_not_neighbors("subjects", "king")
 Error: Tables `subjects` and `king` are not directly linked by a foreign key relation.
 
 > abort_only_parents()
-Error: When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_squash_to_tbl()` as an alternative.
+Error: When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_squash_to_tbl()` as an alternative.
 
 > abort_not_same_src()
 Error: Not all tables in the object share the same `src`.

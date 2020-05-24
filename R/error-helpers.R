@@ -278,11 +278,11 @@ error_txt_only_possible_wo_filters <- function(fun_name) {
 
 # no foreign key relation -------------------------------------------------
 
-abort_tables_not_neighbours <- function(t1_name, t2_name) {
-  abort(error_txt_tables_not_neighbours(t1_name, t2_name), .subclass = dm_error_full("tables_not_neighbours"))
+abort_tables_not_neighbors <- function(t1_name, t2_name) {
+  abort(error_txt_tables_not_neighbors(t1_name, t2_name), .subclass = dm_error_full("tables_not_neighbors"))
 }
 
-error_txt_tables_not_neighbours <- function(t1_name, t2_name) {
+error_txt_tables_not_neighbors <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
@@ -295,7 +295,7 @@ abort_only_parents <- function() {
 error_txt_only_parents <- function() {
   paste0(
     "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` ",
-    "have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
+    "have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
     "use `dm_squash_to_tbl()` as an alternative."
   )
 }
