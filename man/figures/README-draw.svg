@@ -8,10 +8,6 @@
  viewBox="0.00 0.00 152.00 184.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 180)">
 <title>%0</title>
-<g id="a_graph0"><a xlink:title="Data Model">
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-180 148,-180 148,4 -4,4"/>
-</a>
-</g>
 <!-- airlines -->
 <g id="node1" class="node">
 <title>airlines</title>
