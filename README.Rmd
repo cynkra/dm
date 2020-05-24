@@ -121,7 +121,7 @@ dm %>%
   dm_examine_constraints()
 ```
 
-Learn more in the [dm intro](https://krlmlr.github.io/dm/articles/dm.html).
+Learn more in the [Getting started](https://krlmlr.github.io/dm/articles/dm.html) article.
 
 ## Getting help
 

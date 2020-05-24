@@ -167,8 +167,8 @@ dm %>%
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …
 </span></CODE></PRE>
 
-Learn more in the [dm
-intro](https://krlmlr.github.io/dm/articles/dm.html).
+Learn more in the [Getting
+started](https://krlmlr.github.io/dm/articles/dm.html) article.
 
 ## Getting help
 
