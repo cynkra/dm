@@ -1,4 +1,8 @@
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# [dm](https://krlmlr.github.io/dm)
+
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -12,8 +16,6 @@ status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/pac
 [![Launch
 rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
-
-# [dm](https://krlmlr.github.io/dm)
 
 ## Overview
 

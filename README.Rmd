@@ -4,6 +4,8 @@ output:
     html_preview: false
 ---
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 ```{r setup, include = FALSE}
 library(tidyverse)
 pkgload::load_all()
@@ -26,6 +28,8 @@ knit_print.grViz <- function(x, ...) {
 }
 ```
 
+# [dm](https://krlmlr.github.io/dm)
+
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis build status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
@@ -33,8 +37,6 @@ knit_print.grViz <- function(x, ...) {
 [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
-
-# [dm](https://krlmlr.github.io/dm)
 
 ## Overview
 
