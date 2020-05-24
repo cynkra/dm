@@ -262,7 +262,7 @@ The dm is copied to the DBI connection and a new dm, with the DBI connection as 
 
 The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.
 
-## Adding local data frames to a RDBMS
+## Adding local data frames to an RDBMS
 
 If you need to add local data frames to an existing database, the shortest path is to use `copy_to()`.
 It takes the same arguments as `copy_dm_to()`, except the second argument, instead of expecting a dm, expects a data frame.
