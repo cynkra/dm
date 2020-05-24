@@ -7,7 +7,7 @@ vignette: >
   %\VignetteIndexEntry{How to: Create a dm object from data frames}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -29,9 +29,9 @@ You can examine it by running `dm::dm_nycflights13()`.
 
 The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013, and are available through the [`nycflights13`](https://github.com/hadley/nycflights13) package: 
 
-- `flights` represents the trips taken by planes 
-- `airlines` includes 
-  - the names of transport organizations (`name`) 
+- `flights` represents the trips taken by planes
+- `airlines` includes
+  - the names of transport organizations (`name`)
   - their abbreviated codes (`carrier`)
 - `airports` indicates the ports of departure (`origin`) and of destination (`dest`)
 - `weather` contains meteorological information at each hour
@@ -52,7 +52,7 @@ See `vignette("dm-db", package="dm")` for details on using dm with databases.
 
 ## Adding Tables
 
-Our first step will be to tell `dm` which tables we want to work with and how they are connected. 
+Our first step will be to tell `dm` which tables we want to work with and how they are connected.
 For that we can use `dm()`, passing in the table names as arguments.
 
 ```{r}
@@ -70,7 +70,7 @@ Even though we now have a `dm` object that contains all our data, we have not sp
 
 ## Primary Keys
 
-`dm` offers `dm_enum_pk_candidates()` to identify viable primary keys, and `dm_add_pk()` to add them. 
+`dm` offers `dm_enum_pk_candidates()` to identify viable primary keys, and `dm_add_pk()` to add them.
 ```{r}
 dm_enum_pk_candidates(
   dm = flights_dm_no_keys,
@@ -81,7 +81,7 @@ dm_enum_pk_candidates(
 Now, we add the primary keys that we have identified:
 
 ```{r}
-flights_dm_only_pks <- 
+flights_dm_only_pks <-
   flights_dm_no_keys %>%
   dm_add_pk(table = airlines, columns = carrier) %>%
   dm_add_pk(airports, faa) %>%
@@ -93,8 +93,8 @@ Note that we demonstrate both named and positional arguments above.
 
 ## Foreign Keys
 
-To define how our tables are related, we use `dm_add_fk()` to add foreign keys. 
-In calling `dm_add_fk()` the `table` argument is the table that needs a foreign key to link it to a second table. 
+To define how our tables are related, we use `dm_add_fk()` to add foreign keys.
+In calling `dm_add_fk()` the `table` argument is the table that needs a foreign key to link it to a second table.
 `ref_table` is the table to be linked to and it needs a primary key already defined for it.
 
 ```{r}
@@ -119,7 +119,7 @@ flights_dm_all_keys <-
 flights_dm_all_keys
 ```
 
-Having created the required primary and foreign keys to link all the tables together, we now have a relational data model we can work with. 
+Having created the required primary and foreign keys to link all the tables together, we now have a relational data model we can work with.
 
 ## Visualization
 
@@ -131,14 +131,14 @@ flights_dm_no_keys %>%
   dm_draw(rankdir = "TB", view_type = "all")
 
 flights_dm_no_keys %>%
-  dm_add_pk(airlines, carrier) %>% 
+  dm_add_pk(airlines, carrier) %>%
   dm_draw()
 
 flights_dm_only_pks %>%
-  dm_add_fk(flights, tailnum, planes) %>% 
+  dm_add_fk(flights, tailnum, planes) %>%
   dm_draw()
 
-flights_dm_all_keys %>% 
+flights_dm_all_keys %>%
   dm_draw()
 ```
 
@@ -154,7 +154,7 @@ flights_dm_no_keys %>%
 flights_dm_only_pks %>%
   dm_examine_constraints()
 
-flights_dm_all_keys %>% 
+flights_dm_all_keys %>%
   dm_examine_constraints()
 ```
 
@@ -174,15 +174,15 @@ dm_get_all_pks(flights_dm_only_pks)
 A data frame of foreign keys is retrieved with `dm_get_all_fks()`:
 
 ```{r}
-flights_dm_all_keys %>% 
+flights_dm_all_keys %>%
   dm_get_all_pks()
 ```
 
 We can use `tibble::as_tibble()` on the result of `dm_examine_constraints()` to programmatically inspect which constaints are not satisfied:
 
 ```{r}
-flights_dm_all_keys %>% 
-  dm_examine_constraints() %>% 
+flights_dm_all_keys %>%
+  dm_examine_constraints() %>%
   tibble::as_tibble()
 ```
 

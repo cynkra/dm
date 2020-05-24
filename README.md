@@ -100,7 +100,7 @@ names(dm)
 #> [1] "airlines" "airports" "flights"  "planes"   "weather"
 nrow(dm$airports)
 #> [1] 1458
-dm$flights %>% 
+dm$flights %>%
   count(origin)
 ```
 
@@ -124,7 +124,7 @@ dm %>%
 Simple joins:
 
 ``` r
-dm %>% 
+dm %>%
   dm_flatten_to_tbl(flights)
 #> Renamed columns:
 #> * year -> flights.year, planes.year
@@ -157,7 +157,7 @@ dm %>%
 Check consistency:
 
 ``` r
-dm %>% 
+dm %>%
   dm_examine_constraints()
 #> [33m![39m Unsatisfied constraints:
 ```
