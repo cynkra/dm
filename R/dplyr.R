@@ -485,7 +485,7 @@ unique_prefix <- function(x) {
   }
 
   dots <- max(max(nchar(x, "bytes")), 3)
-  glue_collapse(rep(".", dots))
+  paste(rep(".", dots), collapse = "")
 }
 
 # Workaround for dev dplyr + dbplyr
