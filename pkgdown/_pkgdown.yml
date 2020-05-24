@@ -148,7 +148,7 @@ navbar:
     href: reference/index.html
   - text: Tutorials
     menu:
-    - text: Connect to a database
+    - text: Create a dm object from a database
       href: articles/dm-db.html
     - text: Create a dm object from data frames
       href: articles/dm-df.html
@@ -156,18 +156,18 @@ navbar:
       href: articles/dm-introduction-relational-data-models.html
   - text: Technical articles
     menu:
-    - text: Class 'dm' and basic operations
-      href: articles/dm-class-and-basic-operations.html
-    - text: Visualizing dm objects
-      href: articles/dm-visualization.html
     - text: Joining in relational data models
       href: articles/dm-joining.html
     - text: Zooming and manipulating tables
       href: articles/dm-zoom-to-table.html
     - text: Filtering in relational data models
       href: articles/dm-filtering.html
-    - text: Checking keys
+    - text: Visualizing dm objects
+      href: articles/dm-visualization.html
+    - text: Model verification - keys, constraints and normalization
       href: articles/dm-low-level.html
+    - text: Class 'dm' and basic operations
+      href: articles/dm-class-and-basic-operations.html
     - text: Function naming logic
       href: articles/dm-function-naming-logic.html
     - text: 'Migration guide: ''cdm'' -> ''dm'''
