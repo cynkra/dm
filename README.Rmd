@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
-)
+  out.width = "100%")
 
 fansi::set_knit_hooks(knitr::knit_hooks)
 options(crayon.enabled = TRUE, width = 75, cli.width = 75, pillar.bold = TRUE)
@@ -26,6 +25,7 @@ knit_print.grViz <- function(x, ...) {
     c("`````{=html}\n", ., "\n`````\n") %>%
     knitr::asis_output()
 }
+vctrs::s3_register("knitr::knit_print", "grViz")
 ```
 
 # [dm](https://krlmlr.github.io/dm)
@@ -101,7 +101,7 @@ dm$flights %>%
 
 Visualize relationships at any time:
 
-```{r draw}
+```{r draw, screenshot.force = FALSE}
 dm %>%
   dm_draw()
 ```
