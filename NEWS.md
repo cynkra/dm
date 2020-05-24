@@ -1,3 +1,13 @@
+# dm 0.1.2.9002
+
+- Better testing for MSSQL (#339).
+
+
+# dm 0.1.2.9001
+
+- Fix compatibility with dplyr 1.0.0.
+
+
 # dm 0.1.2.9000
 
 - Internal changes only.
@@ -95,7 +105,7 @@
 - Implement `copy_to()` for `dm` objects (#129).
 - Relax test for cycles in relationship graph (#198).
 - Return `ref_table` column in `dm_check_constraints()` (#178).
-- `str()` shows simpified views (#123).
+- `str()` shows simplified views (#123).
 - Edits to README (#172, @bbecane).
 - Extend `validate_dm()` (#173).
 - Fix zooming into table that uses an FK column as primary key (#193).

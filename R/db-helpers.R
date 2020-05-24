@@ -8,9 +8,8 @@ unique_db_table_name <- local({
 })
 
 systime_convenient <- function() {
-  gsub(":", "_", as.character(Sys.time())) %>%
-    gsub("-", "_", .) %>%
-    sub(" ", "_", .)
+  time <- as.character(Sys.time())
+  gsub("[-: ]", "_", time)
 }
 
 # Internal copy helper functions
