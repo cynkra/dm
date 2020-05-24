@@ -1,3 +1,10 @@
+# dm 0.1.2.9003
+
+- Rename vignettes (#349).
+- Rename error class `"dm_error_tables_not_neighbours"` to `"dm_error_tables_not_neighbors"`.
+- Shortened README and intro article (#192, @jawond).
+
+
 # dm 0.1.2.9002
 
 - Better testing for MSSQL (#339).
