@@ -119,7 +119,7 @@ dm %>%
   dm_draw()
 ```
 
-<img src="man/figures/README-draw-1.png" width="100%" />
+<img src="man/figures/README-draw.svg" />
 
 Simple joins:
 
