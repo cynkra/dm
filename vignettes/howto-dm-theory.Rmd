@@ -196,17 +196,26 @@ In production, the data is stored in a relational database and {dm} is used to w
 
 Therefore, {dm} can copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works transparently with both in-memory data and with relational database systems.
 
-For example, let's create a local Sqlite database and copy the `dm` object to it:
+For example, let's create a local SQLite database and copy the `dm` object to it:
+
 ```{r}
-src_sqlite <- src_sqlite(":memory:", create = TRUE)
-src_sqlite
-copy_dm_to(src_sqlite, dm)
-src_sqlite
+con_sqlite <- DBI::dbConnect(RSQLite::SQLite())
+con_sqlite
+DBI::dbListTables(con_sqlite)
+
+copy_dm_to(con_sqlite, dm)
+DBI::dbListTables(con_sqlite)
 ```
 
-In the opposite direction, `dm` can also be populated with data from a DB. Unfortunately, this currently works only for MSSQL and Postgres, but not for SQLite.
-Therefore, we cannot show the results here just yet:
+In the opposite direction, `dm` can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite.
+Therefore, the dm contains the tables but not the keys:
 
-```{r eval=FALSE}
-dm_from_src(src_sqlite)
+```{r}
+dm_from_src(con_sqlite)
+```
+
+Remember to terminate the database connection:
+
+```{r disconnect}
+DBI::dbDisconnect(con_sqlite)
 ```
