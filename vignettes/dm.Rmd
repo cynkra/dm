@@ -60,7 +60,7 @@ The dm object can be accessed like a named list of tables:
 ```{r names}
 names(fin_dm)
 fin_dm$loans
-count(fin_dm$trans)
+dplyr::count(fin_dm$trans)
 ```
 
 Here we focus on the `loans`, `accounts`, `districts` and `trans` tables:
