@@ -10,7 +10,7 @@
 > rows_insert(data, tibble(a = 4, b = "z"))
 Error: `x` and `y` must share the same src, set `copy` = TRUE (may be slow).
 
-> rows_insert(data, tibble(a = 4, b = "z"), copy = TRUE)
+> rows_insert(data, test_frame(a = 4, b = "z"))
 Message: Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
 
       a b         c
@@ -20,14 +20,15 @@ Message: Result is returned as lazy table. Use `in_place = FALSE` to mute this m
 3     3 <NA>    2.5
 4     4 z      NA  
 
-> rows_update(data, tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
+> suppressMessages(rows_update(data, tibble(a = 2:3, b = "w"), copy = TRUE,
++ in_place = FALSE))
       a b         c
   <int> <chr> <dbl>
 1     1 a       0.5
 2     2 w       1.5
 3     3 w       2.5
 
-> rows_update(data, tibble(a = 2:3), copy = TRUE, in_place = FALSE)
+> suppressMessages(rows_update(data, tibble(a = 2:3), copy = TRUE, in_place = FALSE))
       a b         c
   <int> <chr> <dbl>
 1     1 a       0.5
