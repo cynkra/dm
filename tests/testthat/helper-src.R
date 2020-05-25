@@ -87,6 +87,16 @@ my_test_src <- function() {
   )
 }
 
+test_frame <- function(...) {
+  src <- my_test_src()
+
+  df <- tibble(...)
+  name <- unique_db_table_name("test_frame")
+
+  copy_to(src, df, name = name)
+  tbl(src, name)
+}
+
 # for examine_cardinality...() ----------------------------------------------
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
