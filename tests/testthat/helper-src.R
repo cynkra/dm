@@ -126,9 +126,9 @@ data_ts %<-% tibble(
 
 data_ts_child %<-% tibble(
   b = c(1.1, 4.2, 1.1),
-  aef_id = as.integer(c(1, 2, 1)),
   c = as.integer(c(5, 6, 7)),
   d = c("a", "b", "c"),
+  aef_id = as.integer(c(1, 2, 1)),
 )
 
 data_ts_parent %<-% tibble(
@@ -138,7 +138,7 @@ data_ts_parent %<-% tibble(
   f = c(TRUE, FALSE)
 )
 
-list_of_data_ts_parent_and_child %<-% list(
+list_of_data_ts_parent_and_child %<--% list(
   child_table = data_ts_child(),
   parent_table = data_ts_parent()
 )
@@ -479,14 +479,23 @@ bad_dm %<-% {
     dm_add_fk(tbl_1, b, tbl_3)
 }
 
-dm_nycflights_small %<-% {
+dm_nycflights_small_base %<-% {
   dm(
-    flights = nycflights13::flights %>% slice(1:800),
+    flights =
+      nycflights13::flights %>%
+        slice(1:800),
     planes = nycflights13::planes,
     airlines = nycflights13::airlines,
     airports = nycflights13::airports,
-    weather = nycflights13::weather %>% slice(1:800)
-  ) %>%
+    weather =
+      nycflights13::weather %>%
+        slice(1:800)
+  )
+}
+
+# Do not add PK and FK constraints to the database
+dm_nycflights_small %<--% {
+  dm_nycflights_small_base() %>%
     dm_add_pk(planes, tailnum) %>%
     dm_add_pk(airlines, carrier) %>%
     dm_add_pk(airports, faa) %>%
