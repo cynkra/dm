@@ -1,4 +1,4 @@
-dm 0.1.3
+dm 0.1.3: dplyr 1.0.0 compatibility
 
 ## Cran Repository Policy
 
