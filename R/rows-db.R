@@ -190,7 +190,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
 
   sql <- paste0(
     "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
-    sql_render(y),
+    dbplyr::sql_render(y),
     "\n)\n",
 
     "UPDATE ", p$name, "\n",
@@ -212,7 +212,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
   # https://stackoverflow.com/a/2334741/946850
   sql <- paste0(
     "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
-    sql_render(y),
+    dbplyr::sql_render(y),
     "\n)\n",
 
     "UPDATE ", p$name, "\n",
@@ -234,7 +234,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
   # https://stackoverflow.com/a/19346375/946850
   sql <- paste0(
     "UPDATE ", p$name, "\n",
-    "  INNER JOIN (\n", sql_render(y), "\n) AS ", p$y_name, "\n",
+    "  INNER JOIN (\n", dbplyr::sql_render(y), "\n) AS ", p$y_name, "\n",
     "  ON ", p$compare_qual_qq, "\n",
     "SET\n",
     paste0("  ", p$target_columns_qual_qq, " = ", p$new_columns_qual_qq, collapse = ",\n")
