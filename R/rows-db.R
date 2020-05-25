@@ -223,3 +223,47 @@ sql_rows_update.default <- function(x, y, by, ...) {
   )
   sql
 }
+
+#' @export
+`sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, ...) {
+  name <- dbplyr::remote_name(x)
+  con <- dbplyr::remote_con(x)
+
+  # https://stackoverflow.com/a/2334741/946850
+
+  # https://stackoverflow.com/a/47753166/946850
+  y_name <- DBI::dbQuoteIdentifier(con, "...y")
+  y_columns_qq <- paste(
+    DBI::dbQuoteIdentifier(con, colnames(y)),
+    collapse = ", "
+  )
+
+  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
+  new_columns_qq <- paste(new_columns_q, collapse = ", ")
+  new_columns_qual_qq <- paste0(
+    y_name, ".", new_columns_q,
+    collapse = ", "
+  )
+
+  key_columns_q <- DBI::dbQuoteIdentifier(con, by)
+  compare_qual_qq <- paste0(
+    y_name, ".", key_columns_q,
+    " = ",
+    name, ".", key_columns_q,
+    collapse = " AND "
+  )
+
+  sql <- paste0(
+    "WITH ", y_name, "(", y_columns_qq, ") AS (\n",
+    sql_render(y),
+    "\n)\n",
+
+    "UPDATE ", name, "\n",
+    "SET\n",
+    paste("  ", new_columns_qq, " = ", new_columns_qual_qq, collapse = ",\n"), "\n",
+    "FROM ", y_name, "\n",
+    "  INNER JOIN ", name, "\n",
+    "  ON ", compare_qual_qq
+  )
+  sql
+}
