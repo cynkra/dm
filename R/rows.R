@@ -71,6 +71,7 @@ NULL
 
 
 #' @rdname rows
+#' @export
 rows_insert <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   # Need action = warn, because methods may have
   # side effects that persist even after we abort
@@ -78,6 +79,7 @@ rows_insert <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   UseMethod("rows_insert")
 }
 
+#' @export
 rows_insert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   key <- rows_check_key(by, x, y)
   y <- auto_copy(x, y, copy = copy)
@@ -89,8 +91,7 @@ rows_insert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
   idx <- vctrs::vec_match(y[key], x[key])
   bad <- which(!is.na(idx))
   if (has_length(bad)) {
-    abort(
-      class = "dplyr_rows_insert_duplicate",
+    abort(class = "dplyr_rows_insert_duplicate",
       "Attempting to insert duplicate rows.",
       location = bad
     )
@@ -100,6 +101,7 @@ rows_insert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 }
 
 #' @rdname rows
+#' @export
 rows_update <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   # Need action = warn, because methods may have
   # side effects that persist even after we abort
@@ -107,6 +109,7 @@ rows_update <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   UseMethod("rows_update", x)
 }
 
+#' @export
 rows_update.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   key <- rows_check_key(by, x, y)
   y <- auto_copy(x, y, copy = copy)
@@ -118,8 +121,7 @@ rows_update.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(
-      class = "dplyr_rows_update_missing",
+    abort(class = "dplyr_rows_update_missing",
       "Attempting to update missing rows.",
       location = bad
     )
@@ -130,6 +132,7 @@ rows_update.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 }
 
 #' @rdname rows
+#' @export
 rows_patch <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   # Need action = warn, because methods may have
   # side effects that persist even after we abort
@@ -137,6 +140,7 @@ rows_patch <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   UseMethod("rows_patch", x)
 }
 
+#' @export
 rows_patch.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   key <- rows_check_key(by, x, y)
   y <- auto_copy(x, y, copy = copy)
@@ -148,8 +152,7 @@ rows_patch.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place =
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(
-      class = "dplyr_rows_patch_missing",
+    abort(class = "dplyr_rows_patch_missing",
       "Attempting to patch missing rows.",
       location = bad
     )
@@ -162,6 +165,7 @@ rows_patch.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place =
 }
 
 #' @rdname rows
+#' @export
 rows_upsert <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   # Need action = warn, because methods may have
   # side effects that persist even after we abort
@@ -187,6 +191,7 @@ rows_upsert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 }
 
 #' @rdname rows
+#' @export
 rows_delete <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   # Need action = warn, because methods may have
   # side effects that persist even after we abort
@@ -194,6 +199,7 @@ rows_delete <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   UseMethod("rows_delete", x)
 }
 
+#' @export
 rows_delete.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   key <- rows_check_key(by, x, y)
   y <- auto_copy(x, y, copy = copy)
@@ -213,8 +219,7 @@ rows_delete.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(
-      class = "dplyr_rows_delete_missing",
+    abort(class = "dplyr_rows_delete_missing",
       "Attempting to delete missing rows.",
       location = bad
     )
