@@ -187,49 +187,48 @@ sql_rows_update.default <- function(x, y, by, ...) {
   name <- dbplyr::remote_name(x)
   con <- dbplyr::remote_con(x)
 
-  # https://stackoverflow.com/a/47753166/946850
-  y_name <- DBI::dbQuoteIdentifier(con, "...y")
-  y_columns_qq <- paste(
-    DBI::dbQuoteIdentifier(con, colnames(y)),
-    collapse = ", "
-  )
-
-  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
-  new_columns_qq <- paste(new_columns_q, collapse = ", ")
-  new_columns_qual_qq <- paste0(
-    y_name, ".", new_columns_q,
-    collapse = ", "
-  )
-
-  key_columns_q <- DBI::dbQuoteIdentifier(con, by)
-  compare_qual_qq <- paste0(
-    y_name, ".", key_columns_q,
-    " = ",
-    name, ".", key_columns_q,
-    collapse = " AND "
-  )
+  p <- sql_rows_update_prep(x, y, by)
 
   sql <- paste0(
-    "WITH ", y_name, "(", y_columns_qq, ") AS (\n",
+    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
     sql_render(y),
     "\n)\n",
 
-    "UPDATE ", name, "\n",
-    "SET (", new_columns_qq, ") = (\n",
-    "SELECT ", new_columns_qual_qq, "\n",
-    "FROM ", y_name, "\n",
-    "WHERE (", compare_qual_qq, "))\n",
-    "WHERE EXISTS (SELECT * FROM ", y_name, " WHERE ", compare_qual_qq, ")"
+    "UPDATE ", p$name, "\n",
+    "SET (", p$new_columns_qq, ") = (\n",
+    "SELECT ", p$new_columns_qual_qq, "\n",
+    "FROM ", p$y_name, "\n",
+    "WHERE (", p$compare_qual_qq, "))\n",
+    "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")"
   )
   sql
 }
 
 #' @export
 `sql_rows_update.tbl_Microsoft SQL Server` <- function(x, y, by, ...) {
-  name <- dbplyr::remote_name(x)
   con <- dbplyr::remote_con(x)
 
+  p <- sql_rows_update_prep(x, y, by)
+
   # https://stackoverflow.com/a/2334741/946850
+  sql <- paste0(
+    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
+    sql_render(y),
+    "\n)\n",
+
+    "UPDATE ", p$name, "\n",
+    "SET\n",
+    paste("  ", p$new_columns_qq, " = ", p$new_columns_qual_qq, collapse = ",\n"), "\n",
+    "FROM ", p$y_name, "\n",
+    "  INNER JOIN ", p$name, "\n",
+    "  ON ", p$compare_qual_qq
+  )
+  sql
+}
+
+sql_rows_update_prep <- function(x, y, by) {
+  con <- dbplyr::remote_con(x)
+  name <- dbplyr::remote_name(x)
 
   # https://stackoverflow.com/a/47753166/946850
   y_name <- DBI::dbQuoteIdentifier(con, "...y")
@@ -253,17 +252,10 @@ sql_rows_update.default <- function(x, y, by, ...) {
     collapse = " AND "
   )
 
-  sql <- paste0(
-    "WITH ", y_name, "(", y_columns_qq, ") AS (\n",
-    sql_render(y),
-    "\n)\n",
-
-    "UPDATE ", name, "\n",
-    "SET\n",
-    paste("  ", new_columns_qq, " = ", new_columns_qual_qq, collapse = ",\n"), "\n",
-    "FROM ", y_name, "\n",
-    "  INNER JOIN ", name, "\n",
-    "  ON ", compare_qual_qq
+  tibble(
+    name, y_name,
+    y_columns_qq,
+    new_columns_qq, new_columns_qual_qq,
+    compare_qual_qq
   )
-  sql
 }
