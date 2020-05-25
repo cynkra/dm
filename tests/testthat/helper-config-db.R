@@ -1,22 +1,26 @@
 test_src_df <- function() {
-  src_df(env = .GlobalEnv)
+  default_local_src()
 }
 
 test_src_sqlite <- function() {
-  src_sqlite(":memory:", create = TRUE)
+  src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 }
 
 test_src_postgres <- function() {
-  con <- DBI::dbConnect(
-    RPostgres::Postgres(),
-    dbname = "postgres", host = "localhost", port = 5432,
-    user = "postgres", bigint = "integer"
-  )
+  con <- DBI::dbConnect(RPostgres::Postgres())
+  src_dbi(con, auto_disconnect = TRUE)
+}
+
+test_src_maria <- function() {
+  con <- DBI::dbConnect(RMariaDB::MariaDB(), dbname = "test")
   src_dbi(con, auto_disconnect = TRUE)
 }
 
 test_src_mssql <- function() {
-  source("/Users/tobiasschieferdecker/git/cynkra/dm/.Rprofile")
-  con_mssql <- mssql_con()
-  src_mssql <- src_dbi(con_mssql, auto_disconnect = TRUE)
+  con <- DBI::dbConnect(
+    odbc::odbc(),
+    "mssql-test",
+    uid = "kirill", pwd = keyring::key_get("mssql", "kirill")
+  )
+  src_dbi(con, auto_disconnect = TRUE)
 }

@@ -8,9 +8,8 @@ unique_db_table_name <- local({
 })
 
 systime_convenient <- function() {
-  gsub(":", "_", as.character(Sys.time())) %>%
-    gsub("-", "_", .) %>%
-    sub(" ", "_", .)
+  time <- as.character(Sys.time())
+  gsub("[-: ]", "_", time)
 }
 
 # Internal copy helper functions
@@ -114,7 +113,7 @@ queries_set_fk_relations <- function(dest, fk_information) {
         db_parent_tables,
         parent_pk_col
       ),
-      ~ glue("ALTER TABLE {..1} ADD FOREIGN KEY ({..2}) REFERENCES {..3}({..4}) ON DELETE CASCADE ON UPDATE CASCADE")
+      ~ glue_sql("ALTER TABLE {`..1`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`..3`} ({`..4`*}) ON DELETE CASCADE ON UPDATE CASCADE", .con = dest)
     )
   } else {
     return(character())

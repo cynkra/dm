@@ -86,7 +86,8 @@ dm_nycflights13() \%>\%
 dm_nycflights13(cycle = TRUE) \%>\%
   dm_draw(view_type = "title_only")
 
-dm_get_available_colors()
+head(dm_get_available_colors())
+length(dm_get_available_colors())
 
 dm_nycflights13() \%>\%
   dm_get_colors()
@@ -99,7 +100,9 @@ dm_nycflights13(color = FALSE) \%>\%
   dm_draw()
 
 # Splicing is supported:
-nyc_cols <- dm_get_colors(dm_nycflights13())
+nyc_cols <-
+  dm_nycflights13() \%>\%
+  dm_get_colors()
 nyc_cols
 
 dm_nycflights13(color = FALSE) \%>\%

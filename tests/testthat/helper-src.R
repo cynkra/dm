@@ -19,7 +19,7 @@ defer_assign <- function(lhs, rhs, env) {
 
   value <- get0(lhs, cache)
   if (is.null(value)) {
-    message("Deferring ", lhs)
+    # message("Deferring ", lhs)
 
     # Enable this for eager assignment:
     # force(rhs)
@@ -45,29 +45,49 @@ copy_to_my_test_src <- function(rhs, lhs) {
     rhs
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
-    copy_dm_to(src, rhs, unique_table_names = TRUE)
+    # message(name)
+    suppressMessages(copy_dm_to(src, rhs, unique_table_names = TRUE))
+  } else if (inherits(rhs, "list")) {
+    suppressMessages(
+      map(rhs, ~ copy_to(src, .x, name = unique_db_table_name(name), temporary = TRUE))
+    )
   } else {
-    copy_to(src, rhs, name = name, temporary = TRUE)
+    suppressMessages(copy_to(src, rhs, name = name, temporary = TRUE))
   }
 }
 
-sqlite %<--% src_sqlite(":memory:", create = TRUE)
+sqlite %<--% src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 
 my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC", "df")
-  name <- gsub("^test-", "", src)
-  message("Testing on ", name)
+  name <- gsub("^.*-", "", src)
+  inform(crayon::green(paste0("Testing on ", name)))
   name
 }
 
-my_test_src %<--% {
+my_test_src_fun %<--% {
   fun <- paste0("test_src_", my_test_src_name)
-  eval_tidy(quo((!!sym(fun))()))
+  get0(fun, inherits = TRUE)
+}
+
+my_test_src_cache %<--% {
+  my_test_src_fun()()
+}
+
+my_test_src <- function() {
+  fun <- my_test_src_fun()
+  if (is.null(fun)) {
+    skip(paste0("Data source not known: ", my_test_src_name))
+  }
+  tryCatch(
+    my_test_src_cache(),
+    error = function(e) {
+      skip(paste0("Data source ", my_test_src_name, " not accessible: ", conditionMessage(e)))
+    }
+  )
 }
 
 # for examine_cardinality...() ----------------------------------------------
-
-message("for examine_cardinality...()")
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
 data_card_1_sqlite %<--% copy_to(sqlite(), data_card_1())
@@ -80,9 +100,6 @@ data_card_7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
 data_card_8 %<-% tibble::tibble(c = c(1:6))
 
 # for check_key() ---------------------------------------------------------
-
-message("for check_fk() and check_set_equality()")
-# for examine_cardinality...() ----------------------------------------------
 
 data_mcard %<-%
   tribble(
@@ -98,8 +115,6 @@ data_mcard_3 %<-% tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
 # for table-surgery functions ---------------------------------------------
 
-message("for table surgery")
-
 data_ts %<-% tibble(
   a = as.integer(c(1, 2, 1)),
   b = c(1.1, 4.2, 1.1),
@@ -111,9 +126,9 @@ data_ts %<-% tibble(
 
 data_ts_child %<-% tibble(
   b = c(1.1, 4.2, 1.1),
-  aef_id = as.integer(c(1, 2, 1)),
   c = as.integer(c(5, 6, 7)),
   d = c("a", "b", "c"),
+  aef_id = as.integer(c(1, 2, 1)),
 )
 
 data_ts_parent %<-% tibble(
@@ -123,14 +138,12 @@ data_ts_parent %<-% tibble(
   f = c(TRUE, FALSE)
 )
 
-list_of_data_ts_parent_and_child %<-% list(
+list_of_data_ts_parent_and_child %<--% list(
   child_table = data_ts_child(),
   parent_table = data_ts_parent()
 )
 
 # for testing filter and semi_join ---------------------------------------------
-
-message("for testing filter and semi_join")
 
 # the following is for testing the filtering functionality:
 tf_1 %<-% tibble(
@@ -172,9 +185,9 @@ tf_7 %<-% tibble(
 )
 
 dm_for_filter_w_cycle %<-% {
-  as_dm(list(
+  dm(
     tf_1 = tf_1(), tf_2 = tf_2(), tf_3 = tf_3(), tf_4 = tf_4(), tf_5 = tf_5(), tf_6 = tf_6(), tf_7 = tf_7()
-  )) %>%
+  ) %>%
     dm_add_pk(tf_1, a) %>%
     dm_add_pk(tf_2, c) %>%
     dm_add_pk(tf_3, f) %>%
@@ -191,16 +204,12 @@ dm_for_filter_w_cycle %<-% {
     dm_add_fk(tf_7, q, tf_2)
 }
 
-message("for testing filter and semi_join (2)")
-
 dm_for_filter %<-% {
   dm_for_filter_w_cycle() %>%
     dm_select_tbl(-tf_7)
 }
 
 dm_for_filter_sqlite %<--% copy_dm_to(sqlite(), dm_for_filter())
-
-message("for testing filter and semi_join (3)")
 
 output_1 %<-% list(
   tf_1 = tibble(a = c(4:7), b = LETTERS[4:7]),
@@ -257,8 +266,6 @@ dm_for_filter_rev %<-% {
 
 # for tests on `dm` objects: dm_add_pk(), dm_add_fk() ------------------------
 
-message("for tests on `dm` objects: dm_add_pk(), dm_add_fk()")
-
 dm_test_obj %<-% as_dm(list(
   dm_table_1 = data_card_2(),
   dm_table_2 = data_card_4(),
@@ -278,8 +285,6 @@ dm_test_obj_2 %<-% as_dm(list(
 rows_dm_obj <- 24L
 
 # Complicated `dm` --------------------------------------------------------
-
-message("complicated dm")
 
 dm_more_complex_part %<-% {
   dm(
@@ -330,8 +335,6 @@ dm_more_complex %<-% {
 
 # for testing `dm_disambiguate_cols()` ----------------------------------------
 
-message("for dm_disambiguate_cols()")
-
 iris_1 %<-% {
   as_tibble(iris) %>%
     mutate(key = row_number()) %>%
@@ -339,7 +342,7 @@ iris_1 %<-% {
 }
 iris_2 %<-% {
   iris_1() %>%
-    mutate(other_col = TRUE)
+    mutate(other_col = 1L)
 }
 iris_3 %<-% {
   iris_2() %>%
@@ -371,9 +374,7 @@ dm_for_disambiguate_2 %<-% {
     dm_add_fk(iris_2, iris_2.key, iris_1)
 }
 
-# star schema data model for testing `dm_flatten_to_tbl()`
-
-message("star schema")
+# star schema data model for testing `dm_flatten_to_tbl()` ------
 
 fact %<-% tibble(
   fact = c(
@@ -478,16 +479,23 @@ bad_dm %<-% {
     dm_add_fk(tbl_1, b, tbl_3)
 }
 
-dm_nycflights_small %<-% {
-  as_dm(
-    list(
-      flights = nycflights13::flights %>% slice(1:800),
-      planes = nycflights13::planes,
-      airlines = nycflights13::airlines,
-      airports = nycflights13::airports,
-      weather = nycflights13::weather %>% slice(1:800)
-    )
-  ) %>%
+dm_nycflights_small_base %<-% {
+  dm(
+    flights =
+      nycflights13::flights %>%
+        slice(1:800),
+    planes = nycflights13::planes,
+    airlines = nycflights13::airlines,
+    airports = nycflights13::airports,
+    weather =
+      nycflights13::weather %>%
+        slice(1:800)
+  )
+}
+
+# Do not add PK and FK constraints to the database
+dm_nycflights_small %<--% {
+  dm_nycflights_small_base() %>%
     dm_add_pk(planes, tailnum) %>%
     dm_add_pk(airlines, carrier) %>%
     dm_add_pk(airports, faa) %>%

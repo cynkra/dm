@@ -186,7 +186,7 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
     return("surjective mapping (child: 1 to n -> parent: 1)")
   } else
   if (max_1) {
-    return("injective mapping ( child: 0 or 1 -> parent: 1)")
+    return("injective mapping (child: 0 or 1 -> parent: 1)")
   }
   "generic mapping (child: 0 to n -> parent: 1)"
 }

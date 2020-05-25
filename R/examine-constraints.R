@@ -50,12 +50,16 @@ new_dm_examine_constraints <- function(x) {
 
 #' @export
 print.dm_examine_constraints <- function(x, ...) {
-  problem_df <-
+  key_df <-
     x %>%
-    as_tibble() %>%
+    as_tibble()
+  problem_df <-
+    key_df %>%
     filter(problem != "")
 
-  if (nrow(problem_df) == 0) {
+  if (nrow(key_df) == 0) {
+    cli::cli_alert_info("No constraints defined.")
+  } else if (nrow(problem_df) == 0) {
     cli::cli_alert_info("All constraints satisfied.")
   } else {
     cli::cli_alert_warning("Unsatisfied constraints:")
@@ -80,4 +84,48 @@ print.dm_examine_constraints <- function(x, ...) {
 
 kind_to_long <- function(kind) {
   if_else(kind == "PK", "primary key", "foreign key")
+}
+
+check_pk_constraints <- function(dm) {
+  pks <- dm_get_all_pks_impl(dm)
+  if (nrow(pks) == 0) {
+    return(tibble(
+      table = character(0),
+      kind = character(0),
+      column = character(0),
+      ref_table = NA_character_,
+      is_key = logical(0),
+      problem = character(0)
+    ))
+  }
+  table_names <- pull(pks, table)
+
+  tbls <- map(set_names(table_names), ~ tbl(dm, .))
+
+  tbl_is_pk <- map2_dfr(tbls, pks$pk_col, enum_pk_candidates_impl) %>%
+    mutate(table = table_names) %>%
+    rename(is_key = candidate, problem = why)
+
+  tibble(
+    table = table_names,
+    kind = "PK",
+    column = pks$pk_col,
+    ref_table = NA_character_
+  ) %>%
+    left_join(tbl_is_pk, by = c("table", "column"))
+}
+
+check_fk_constraints <- function(dm) {
+  fks <- left_join(dm_get_all_fks_impl(dm), dm_get_all_pks_impl(dm), by = c("parent_table" = "table"))
+  pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
+  cts <- pull(fks, child_table) %>% map(tbl, src = dm)
+  fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
+    select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = pk_col)
+  mutate(
+    fks_tibble,
+    problem = pmap_chr(fks_tibble, check_fk),
+    is_key = if_else(problem == "", TRUE, FALSE),
+    kind = "FK"
+  ) %>%
+    select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
 }

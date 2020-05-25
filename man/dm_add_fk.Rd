@@ -39,7 +39,7 @@ respect to the primary key of table \code{ref_table}.
 If \code{check == TRUE}, then it will first check if the values in columns \code{columns} are a subset
 of the values of the primary key in table \code{ref_table}.
 
-\code{dm_rm_fk()} can remove either one reference between two tables, or all references at once, if argument \code{column = NULL}.
+\code{dm_rm_fk()} can remove either one reference between two tables, or all references at once, if argument \code{columns = NULL}.
 All arguments may be provided quoted or unquoted.
 }
 \section{Compound keys}{
@@ -52,7 +52,19 @@ with current semantics.
 }
 
 \examples{
-nycflights_dm <- dm_from_src(dplyr::src_df(pkg = "nycflights13"))
+if (rlang::is_installed("nycflights13")) {
+  nycflights_dm <- dm(
+    planes = nycflights13::planes,
+    flights = nycflights13::flights
+  )
+} else {
+  message("Using mock-up data, install the nycflights13 package to fix.")
+  nycflights_dm <- dm(
+    planes = tibble(tailnum = character()),
+    flights = tibble(tailnum = character())
+  )
+}
+
 nycflights_dm \%>\%
   dm_draw()
 
@@ -61,12 +73,9 @@ nycflights_dm \%>\%
   dm_add_fk(flights, tailnum, planes) \%>\%
   dm_draw()
 
-dm_rm_fk(
-  dm_nycflights13(cycle = TRUE),
-  flights,
-  dest,
-  airports
-)
+dm_nycflights13(cycle = TRUE) \%>\%
+  dm_rm_fk(flights, dest, airports) \%>\%
+  dm_draw()
 }
 \seealso{
 Other foreign key functions: 

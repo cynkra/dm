@@ -57,6 +57,8 @@ test_that("`dm_set_colors()` errors if old syntax used", {
 })
 
 test_that("`dm_set_colors()` errors with unnamed args", {
+  skip_if_src("postgres")
+
   expect_dm_error(
     dm_set_colors(
       dm_nycflights_small(),
@@ -89,6 +91,7 @@ test_that("bad color", {
 })
 
 test_that("getter", {
+  skip_if_src("postgres")
   expect_equal(
     dm_get_colors(dm_nycflights13()),
     c(
@@ -153,5 +156,16 @@ test_that("output", {
       DiagrammeRsvg::export_svg() %>%
       cli::cat_line(),
     "out/nycflights13.svg"
+  )
+
+  # Multi-fk (#37)
+  expect_known_output(
+    dm_nycflights13() %>%
+      dm_zoom_to(planes) %>%
+      dm_insert_zoomed("planes_copy") %>%
+      dm_draw() %>%
+      DiagrammeRsvg::export_svg() %>%
+      cli::cat_line(),
+    "out/nycflights13-multi-fk.svg"
   )
 })

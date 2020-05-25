@@ -27,6 +27,8 @@ test_that("dm_select_tbl() can reorder the tables in a `dm`", {
 })
 
 test_that("dm_select_tbl() remembers all FKs", {
+  skip_if_src("postgres")
+
   reordered_dm_nycflights_small_cycle <- dm_add_fk(dm_nycflights_small(), flights, origin, airports) %>%
     dm_get_def() %>%
     filter(!(table %in% c("airlines", "planes"))) %>%

@@ -12,7 +12,7 @@
 #' The order of the tables here determines
 #'   the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
-#'   If this includes tables that are not direct neighbours of `start`,
+#'   If this includes tables that are not direct neighbors of `start`,
 #'   it will only work with `dm_squash_to_tbl()` (given one of the allowed join-methods).
 #'   `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @family flattening functions
@@ -203,7 +203,7 @@ parent_child_table <- function(dm, table_1, table_2) {
     )
 
   if (nrow(rel) == 0) {
-    abort_tables_not_neighbours(t1_name, t2_name)
+    abort_tables_not_neighbors(t1_name, t2_name)
   }
 
   if (nrow(rel) > 1) {
@@ -240,7 +240,7 @@ check_flatten_to_tbl <- function(
 
 
   # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
-  # Then only one level of hierarchy is allowed (direct neighbours to table `start`).
+  # Then only one level of hierarchy is allowed (direct neighbors to table `start`).
   if (!squash && has_grandparent) {
     abort_only_parents()
   }

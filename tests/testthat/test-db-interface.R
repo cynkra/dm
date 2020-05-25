@@ -1,3 +1,8 @@
+test_that("data source found", {
+  expect_false(is_null(my_test_src_fun()))
+  expect_silent(my_test_src_fun()())
+})
+
 test_that("copy_dm_to() copies data frames to databases", {
   expect_equivalent_dm(
     copy_dm_to(sqlite(), dm_for_filter(), unique_table_names = TRUE),

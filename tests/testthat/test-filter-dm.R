@@ -96,7 +96,6 @@ test_that("dm_filter() works as intended for reversed dm", {
 })
 4
 test_that("dm_filter() works as intended for inbetween table", {
-  skip_if_remote_src()
   expect_equivalent_tbl_lists(
     dm_filter(dm_for_filter(), tf_3, g == "five") %>% dm_apply_filters() %>% dm_get_tables(),
     output_3()
@@ -108,7 +107,7 @@ test_that("dm_filter() works without primary keys", {
     dm_for_filter() %>%
       dm_rm_pk(tf_5, rm_referencing_fks = TRUE) %>%
       dm_filter(tf_5, l == "c") %>%
-      compute()
+      collect()
   )
 })
 

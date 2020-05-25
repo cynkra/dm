@@ -2,6 +2,14 @@
 
 # error class generator ---------------------------------------------------
 
+format_msg_and_bullets <- function(bullets) {
+  if (length(bullets) <= 1) {
+    bullets
+  } else {
+    paste0(bullets[[1]], "\n", format_error_bullets(bullets[-1]))
+  }
+}
+
 dm_error <- function(x) {
   paste0("dm_error_", x)
 }
@@ -10,14 +18,26 @@ dm_error_full <- function(x) {
   c(dm_error(x), "dm_error")
 }
 
-# abort and text for primary key handling errors --------------------------
-
-abort_key_set_force_false <- function(table) {
-  abort(error_txt_key_set_force_false(table), .subclass = dm_error_full("key_set_force_false"))
+dm_abort <- function(bullets, class) {
+  abort(
+    format_msg_and_bullets(bullets),
+    .subclass = dm_error_full(class)
+  )
 }
 
-error_txt_key_set_force_false <- function(table) {
-  glue("Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key.")
+dm_warning <- function(x) {
+  paste0("dm_warning_", x)
+}
+
+dm_warning_full <- function(x) {
+  c(dm_warning(x), "dm_warning")
+}
+
+dm_warn <- function(bullets, class) {
+  warn(
+    format_msg_and_bullets(bullets),
+    .subclass = dm_warning_full(class)
+  )
 }
 
 # abort and text for key-helper functions ---------------------------------
@@ -108,33 +128,6 @@ error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
     "ref_table {tick(ref_table_name)} needs a primary key first. ",
     "Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key."
   )
-}
-
-abort_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                             parent_table_name, actual_fk_colnames) {
-  abort(
-    error_txt_is_not_fkc(
-      child_table_name, wrong_fk_colnames, parent_table_name, actual_fk_colnames
-    ),
-    .subclass = dm_error_full("is_not_fkc")
-  )
-}
-
-error_txt_is_not_fkc <- function(child_table_name, wrong_fk_colnames,
-                                 parent_table_name, actual_fk_colnames) {
-  glue(
-    "({commas(tick(wrong_fk_colnames))}) is not a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}. ",
-    "Foreign key columns are: ({commas(tick(actual_fk_colnames))})."
-  )
-}
-
-abort_rm_fk_col_missing <- function() {
-  abort(error_txt_rm_fk_col_missing(), .subclass = dm_error_full("rm_fk_col_missing"))
-}
-
-error_txt_rm_fk_col_missing <- function() {
-  "Parameter `columns` has to be set. Pass `NULL` for removing all references."
 }
 
 # error helpers for draw_dm -----------------------------------------------
@@ -257,17 +250,6 @@ error_txt_key_constraints_need_db <- function() {
   "Setting key constraints only works if the tables of the `dm` are on a database."
 }
 
-abort_first_rm_fks <- function(table, fk_tables) {
-  abort(error_txt_first_rm_fks(table, fk_tables), .subclass = dm_error_full("first_rm_fks"))
-}
-
-error_txt_first_rm_fks <- function(table, fk_tables) {
-  glue(
-    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
-    "First remove those or set `rm_referencing_fks = TRUE`."
-  )
-}
-
 abort_no_src_or_con <- function() {
   abort(error_txt_no_src_or_con(), .subclass = dm_error_full("no_src_or_con"))
 }
@@ -296,11 +278,11 @@ error_txt_only_possible_wo_filters <- function(fun_name) {
 
 # no foreign key relation -------------------------------------------------
 
-abort_tables_not_neighbours <- function(t1_name, t2_name) {
-  abort(error_txt_tables_not_neighbours(t1_name, t2_name), .subclass = dm_error_full("tables_not_neighbours"))
+abort_tables_not_neighbors <- function(t1_name, t2_name) {
+  abort(error_txt_tables_not_neighbors(t1_name, t2_name), .subclass = dm_error_full("tables_not_neighbors"))
 }
 
-error_txt_tables_not_neighbours <- function(t1_name, t2_name) {
+error_txt_tables_not_neighbors <- function(t1_name, t2_name) {
   glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
@@ -313,7 +295,7 @@ abort_only_parents <- function() {
 error_txt_only_parents <- function() {
   paste0(
     "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `start` ",
-    "have to be its direct neighbours. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
+    "have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
     "use `dm_squash_to_tbl()` as an alternative."
   )
 }
@@ -438,17 +420,6 @@ abort_one_name_for_copy_to <- function(name) {
     .subclass = dm_error_full("one_name_for_copy_to")
   )
 }
-
-# table not on src --------------------------------------------------------
-
-abort_req_tbl_not_avail <- function(avail, missing) {
-  abort(error_txt_req_tbl_not_avail(avail, missing), .subclass = dm_error_full("req_tbl_not_avail"))
-}
-
-error_txt_req_tbl_not_avail <- function(avail, missing) {
-  glue("Table(s) {commas(tick(missing))} not available on `src`. Available tables are: {commas(tick(avail))}.")
-}
-
 
 # table for which key should be set not in list of tables when creating dm -----------------------
 

@@ -5,9 +5,18 @@ test_that("dm_add_fk() works as intended?", {
   )
 
   expect_true(
-    dm_add_pk(dm_test_obj(), dm_table_4, c) %>%
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_has_fk(dm_table_1, dm_table_4)
+  )
+
+  expect_dm_error(
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4) %>%
+      dm_add_fk(dm_table_1, a, dm_table_4),
+    class = "fk_exists"
   )
 })
 
@@ -101,6 +110,15 @@ test_that("dm_rm_fk() works as intended?", {
       dm_rm_fk(dm_table_2, z, dm_table_4),
     class = "is_not_fkc"
   )
+
+  expect_dm_error(
+    dm_test_obj() %>%
+      dm_add_pk(dm_table_4, c) %>%
+      dm_add_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(dm_table_2, c, dm_table_4) %>%
+      dm_rm_fk(dm_table_2, c, dm_table_4),
+    class = "is_not_fkc"
+  )
 })
 
 
@@ -192,7 +210,7 @@ test_that("dm_enum_fk_candidates() works as intended?", {
 
 test_that("enum_fk_candidates() works properly", {
   expect_silent(
-    expect_identical(
+    expect_equivalent_why(
       enum_fk_candidates(zoomed_dm(), tf_3),
       dm_enum_fk_candidates(dm_for_filter(), tf_2, tf_3)
     )

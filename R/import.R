@@ -1,3 +1,5 @@
+#' @import cli
+#' @importFrom glue glue glue_sql
 #' @import rlang
 #' @importFrom vctrs vec_ptype_abbr
 #' @import dplyr

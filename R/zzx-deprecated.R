@@ -50,7 +50,7 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
     return("surjective mapping (child: 1 to n -> parent: 1)")
   }
   else if (max_1) {
-    return("injective mapping ( child: 0 or 1 -> parent: 1)")
+    return("injective mapping (child: 0 or 1 -> parent: 1)")
   }
   "generic mapping (child: 0 to n -> parent: 1)"
 }
@@ -317,8 +317,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
     cols <- as_name(ensym(columns))
     if (!all(cols %in% fk_cols)) {
       abort_is_not_fkc(
-        table_name, cols, ref_table_name,
-        fk_cols
+        table_name, cols, ref_table_name
       )
     }
   }

@@ -1,6 +1,4 @@
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
-  card_0_n_data_card_1_data_card_2_df <- find_testthat_root_file(paste0("out/card-0-n-data_card_1-data_card_2.txt"))
-
   #  expecting silent: ------------------------------------------------------
 
   expect_silent(check_cardinality_0_n(parent_table = data_card_1(), pk_column = a, child_table = data_card_3(), fk_column = c))
@@ -20,7 +18,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
 
   expect_identical(
     examine_cardinality(data_card_8(), c, data_card_2(), a),
-    "injective mapping ( child: 0 or 1 -> parent: 1)"
+    "injective mapping (child: 0 or 1 -> parent: 1)"
   )
 
   expect_identical(
@@ -41,7 +39,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   # expect specific errors and sometimes specific output due to errors ---------------
 
   verify_output(
-    card_0_n_data_card_1_data_card_2_df,
+    "out/card-0-n-data_card_1-data_card_2.txt",
     expect_dm_error(
       check_cardinality_0_n(
         parent_table = data_card_1(),

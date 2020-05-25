@@ -4,6 +4,8 @@ output:
     html_preview: false
 ---
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 ```{r setup, include = FALSE}
 library(tidyverse)
 pkgload::load_all()
@@ -12,12 +14,22 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
-)
+  out.width = "100%")
 
-fansi::set_knit_hooks(knitr::knit_hooks)
+fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
 options(crayon.enabled = TRUE, width = 75, cli.width = 75, pillar.bold = TRUE)
+
+knit_print.grViz <- function(x, ..., options) {
+  svg <- DiagrammeRsvg::export_svg(x)
+  path <- paste0(options$fig.path, options$label, ".svg")
+  writeLines(svg, path)
+  
+  knitr::asis_output(paste0('<img src="', path, '" />'))
+}
+vctrs::s3_register("knitr::knit_print", "grViz")
 ```
+
+# [dm](https://krlmlr.github.io/dm)
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
@@ -27,20 +39,32 @@ options(crayon.enabled = TRUE, width = 75, cli.width = 75, pillar.bold = TRUE)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
-# dm
-
 ## Overview
 
-dm is an R package for building and manipulating relational databases to aid the querying of data models stored in local dataframes, and the construction of flat data models from relational databases.
+dm bridges the gap in the data pipeline between individual data frames and relational databases.
+It's a [grammar of joined tables](https://twitter.com/drob/status/1224851726068527106) that provides a consistent set of verbs for building, using and deploying relational data models.
+For individual researchers, it broadens the scope of datasets they can work with and how they work with them.
+For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.
 
-The intent behind dm is to bridge the gap in the data pipeline between individual dataframes and relational databases by providing methods to move data between different sources, and methods for performing data manipulation (eg, aggregation, summarisation, filtering, etc) and table manipulation (eg, joins, creation, deletion, etc) that are agnostic to the data source.
+dm objects encapsulate relational data models constructed from local data frames or lazy tables connected to an RDBMS.
+dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking.
+Once a data model is complete, dm provides methods for deploying it to an RDBMS.
+This allows it to scale from datasets that fit in memory to databases with billions of rows.
 
-Calling methods on a dm object for importing data sources, defining relationships between them, and specifying the sequence of operations to produce the required data, results in clearly specified and repeatable workflows. 
-dm's use of lazy evaluation minimises transfer and duplication of large datasets as you build your workflow, while providing snapshots of intermediate results for confirming your workflow is producing the expected results.
+## Features
 
-dm builds upon the [DBI](https://github.com/r-dbi/DBI) package for interfacing with over 30 DBMS's, [dplyr](https://dplyr.tidyverse.org/) for its database interaction methods and its grammar of data manipulation, and [tidyr](https://tidyr.tidyverse.org/) for its column operations. 
+dm makes it easy to bring an existing relational data model into your R session.
+As the dm object behaves like a named list of tables it requires little change to incorporate it within existing workflows.
+The dm interface and behavior is modeled after dplyr, so you may already be familiar with many of its verbs.
+dm also offers:
 
-If you are new to dm, the best place to begin is the [Getting Started article](https://krlmlr.github.io/dm/articles/dm.html).
+- visualization to help you understand relationships between entities represented by the tables
+- simpler joins that "know" how tables are related, including a "flatten" operation that automatically follows keys and performs column name disambiguation
+- consistency and constraint checks to help you understand (and fix) the limitations of your data
+
+That's just the tip of the iceberg.
+See [Getting started](https://krlmlr.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
+
 
 ## Installation
 
@@ -58,17 +82,51 @@ devtools::install_github("krlmlr/dm")
 ```
 
 ## Usage
-#FIXME - is this feasible for a library with all the features of dm?
-```r
-library(tidyverse)
-library(dm)
 
-flights_dm <- dm_from_src(src_df(pkg = "nycflights13"))
-#...etc
-``` 
+Create a dm object (see [Getting started](https://krlmlr.github.io/dm/articles/dm.html) for details).
+
+```{r}
+library(dm)
+dm <- dm_nycflights13()
+dm
+```
+
+dm is a named list of tables:
+
+```{r}
+names(dm)
+nrow(dm$airports)
+dm$flights %>%
+  count(origin)
+```
+
+Visualize relationships at any time:
+
+```{r draw, screenshot.force = FALSE}
+dm %>%
+  dm_draw()
+```
+
+Simple joins:
+
+```{r}
+dm %>%
+  dm_flatten_to_tbl(flights)
+```
+
+Check consistency:
+
+```{r}
+dm %>%
+  dm_examine_constraints()
+```
+
+Learn more in the [Getting started](https://krlmlr.github.io/dm/articles/dm.html) article.
+
 ## Getting help
 
-If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/krlmlr/dm/issues). For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
+If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/krlmlr/dm/issues).
+For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
 
 
 ---

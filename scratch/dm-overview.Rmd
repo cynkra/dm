@@ -1,9 +1,7 @@
 ---
 title: "Introduction to dm"
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_vignette:
-    lib_dir: assets
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{dm overview}
   %\VignetteEncoding{UTF-8}
@@ -19,6 +17,13 @@ knitr::opts_chunk$set(
 )
 fansi::set_knit_hooks(knitr::knit_hooks)
 options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+
+knit_print.grViz <- function(x, ...) {
+  x %>% 
+    DiagrammeRsvg::export_svg() %>% 
+    c("`````{=html}\n", ., "\n`````\n") %>% 
+    knitr::asis_output()
+}
 ```
 
 The goal of both the package dm and the class `dm` - which comes along with it - is to make your life easier when you have to deal with data models the data therein.

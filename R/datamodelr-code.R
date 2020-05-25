@@ -112,7 +112,7 @@ bdm_create_graph <- function(
 }
 
 bdm_render_graph <- function(graph, width = NULL, height = NULL) {
-  if (!requireNamespace("DiagrammeR", quietly = TRUE)) {
+  if (!rlang::is_installed("DiagrammeR")) {
     stop("DiagrammeR package needed for this function to work. Please install it.",
       call. = FALSE
     )
@@ -320,7 +320,7 @@ to_html_table <- function(x,
       )
     ),
     # rows
-    sapply(seq_len(nrow(x)), function(r) {
+    unique(sapply(seq_len(nrow(x)), function(r) {
       html_tr(c(
         # cells
         sapply(cols, function(col_name) {
@@ -329,7 +329,7 @@ to_html_table <- function(x,
           html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
         })
       ))
-    })
+    }))
   ))
 }
 
