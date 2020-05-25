@@ -189,3 +189,24 @@ dm_patch_tbl <- function(dm, ...) {
   def[idx, "data"] <- list(unname(new_tables))
   new_dm3(def)
 }
+
+
+# Errors ------------------------------------------------------------------
+
+abort_columns_missing <- function(...) {
+  # FIXME
+  abort("")
+}
+
+error_txt_columns_missing <- function(...) {
+  # FIXME
+}
+
+abort_tables_missing <- function(...) {
+  # FIXME
+  abort("")
+}
+
+error_txt_tables_missing <- function(...) {
+  # FIXME
+}
