@@ -225,6 +225,23 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
   sql
 }
 
+#' @export
+`sql_rows_update.tbl_MariaDBConnection` <- function(x, y, by, ...) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_update_prep(x, y, by)
+
+  # https://stackoverflow.com/a/19346375/946850
+  sql <- paste0(
+    "UPDATE ", p$name, "\n",
+    "  INNER JOIN (\n", sql_render(y), "\n) AS ", p$y_name, "\n",
+    "  ON ", p$compare_qual_qq, "\n",
+    "SET\n",
+    paste0("  ", p$target_columns_qual_qq, " = ", p$new_columns_qual_qq, collapse = ",\n")
+  )
+  sql
+}
+
 sql_rows_update_prep <- function(x, y, by) {
   con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
