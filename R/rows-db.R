@@ -72,7 +72,6 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
   by <- names(y_key)
   x_key <- db_key(x, by)
 
-  # FIXME: Case when y has no extra columns
   new_columns <- setdiff(colnames(y), by)
 
   name <- target_table_name(x, in_place)
@@ -81,6 +80,10 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     # Checking optional, can rely on primary key constraint
     if (is_true(check)) {
       check_db_superset(x, y, by)
+    }
+
+    if (is_empty(new_columns)) {
+      return(invisible(x))
     }
 
     con <- dbplyr::remote_con(x)
@@ -125,6 +128,10 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     # Checking optional, can rely on primary key constraint
     if (is_null(check) || is_true(check)) {
       check_db_superset(x, y, by)
+    }
+
+    if (is_empty(new_columns)) {
+      return(x)
     }
 
     existing_columns <- setdiff(colnames(x), new_columns)
