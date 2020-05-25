@@ -68,8 +68,5 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
       print(sessioninfo::session_info())
     })
 
-  do_package_checks(
-    error_on = if (getRversion() >= "3.4") "note" else "warning",
-    dependencies = c("Depends", "Imports", "LinkingTo", "Suggests", "Enhances")
-  )
+  do_package_checks(error_on = if (getRversion() >= "3.4") "note" else "warning")
 }
