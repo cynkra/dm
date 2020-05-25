@@ -173,6 +173,7 @@ sql_rows_insert.tbl_sql <- function(x, y, ...) {
     "INSERT INTO ", name, " (", columns_qq, ")\n",
     dbplyr::remote_query(y)
   )
+  glue::as_glue(sql)
 }
 
 #' @export
@@ -200,7 +201,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
     "WHERE (", p$compare_qual_qq, "))\n",
     "WHERE EXISTS (SELECT * FROM ", p$y_name, " WHERE ", p$compare_qual_qq, ")"
   )
-  sql
+  glue::as_glue(sql)
 }
 
 #' @export
@@ -222,7 +223,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
     "  INNER JOIN ", p$y_name, "\n",
     "  ON ", p$compare_qual_qq
   )
-  sql
+  glue::as_glue(sql)
 }
 
 #' @export
@@ -239,7 +240,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
     "SET\n",
     paste0("  ", p$target_columns_qual_qq, " = ", p$new_columns_qual_qq, collapse = ",\n")
   )
-  sql
+  glue::as_glue(sql)
 }
 
 #' @export
@@ -260,7 +261,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
     "FROM ", p$y_name, "\n",
     "WHERE ", p$compare_qual_qq
   )
-  sql
+  glue::as_glue(sql)
 }
 
 sql_rows_update_prep <- function(x, y, by) {
