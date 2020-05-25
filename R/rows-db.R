@@ -151,7 +151,19 @@ check_db_superset <- function(x, y, by) {
   # FIXME
 }
 
-sql_rows_insert <- function(x, y) {
+#' @description
+#' The `sql_rows_*()` functions return the SQL used for the corresponding
+#' `rows_*()` function with `in_place = FALSE`.
+#'
+#' @export
+#' @rdname rows-db
+sql_rows_insert <- function(x, y, ...) {
+  ellipsis::check_dots_used()
+  UseMethod("sql_rows_insert")
+}
+
+#' @export
+sql_rows_insert.default <- function(x, y) {
   name <- dbplyr::remote_name(x)
 
   columns_q <- colnames(y)
@@ -163,7 +175,15 @@ sql_rows_insert <- function(x, y) {
   )
 }
 
-sql_rows_update <- function(x, y, by) {
+#' @export
+#' @rdname rows-db
+sql_rows_update <- function(x, y, by, ...) {
+  ellipsis::check_dots_used()
+  UseMethod("sql_rows_update")
+}
+
+#' @export
+sql_rows_update.default <- function(x, y, by, ...) {
   name <- dbplyr::remote_name(x)
   con <- dbplyr::remote_con(x)
 

@@ -4,11 +4,17 @@
 \alias{rows-db}
 \alias{rows_insert.tbl_dbi}
 \alias{rows_update.tbl_dbi}
+\alias{sql_rows_insert}
+\alias{sql_rows_update}
 \title{Updating database tables}
 \usage{
 \method{rows_insert}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
 
 \method{rows_update}{tbl_dbi}(x, y, by = NULL, ..., in_place = NULL, copy = FALSE, check = NULL)
+
+sql_rows_insert(x, y, ...)
+
+sql_rows_update(x, y, by, ...)
 }
 \arguments{
 \item{x}{A pair of data frames or data frame extensions (e.g. a tibble).
@@ -60,6 +66,9 @@ these operations may lead to irreversible changes to the underlying database.
 Therefore, in-place updates must be requested explicitly with \code{in_place = TRUE}.
 By default, an informative message is given.
 Unlike \code{\link[=compute]{compute()}} or \code{\link[=copy_to]{copy_to()}}, no new tables are created.
+
+The \verb{sql_rows_*()} functions return the SQL used for the corresponding
+\verb{rows_*()} function with \code{in_place = FALSE}.
 }
 \examples{
 data <- memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
