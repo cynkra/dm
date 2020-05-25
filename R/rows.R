@@ -72,7 +72,9 @@ NULL
 
 #' @rdname rows
 rows_insert <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
-  ellipsis::check_dots_used()
+  # Need action = warn, because methods may have
+  # side effects that persist even after we abort
+  ellipsis::check_dots_used(action = warn)
   UseMethod("rows_insert")
 }
 
@@ -87,8 +89,7 @@ rows_insert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
   idx <- vctrs::vec_match(y[key], x[key])
   bad <- which(!is.na(idx))
   if (has_length(bad)) {
-    abort(
-      class = "dplyr_rows_insert_duplicate",
+    abort(class = "dplyr_rows_insert_duplicate",
       "Attempting to insert duplicate rows.",
       location = bad
     )
@@ -99,7 +100,9 @@ rows_insert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
 #' @rdname rows
 rows_update <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
-  ellipsis::check_dots_used()
+  # Need action = warn, because methods may have
+  # side effects that persist even after we abort
+  ellipsis::check_dots_used(action = warn)
   UseMethod("rows_update", x)
 }
 
@@ -114,8 +117,7 @@ rows_update.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(
-      class = "dplyr_rows_update_missing",
+    abort(class = "dplyr_rows_update_missing",
       "Attempting to update missing rows.",
       location = bad
     )
@@ -127,7 +129,9 @@ rows_update.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
 #' @rdname rows
 rows_patch <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
-  ellipsis::check_dots_used()
+  # Need action = warn, because methods may have
+  # side effects that persist even after we abort
+  ellipsis::check_dots_used(action = warn)
   UseMethod("rows_patch", x)
 }
 
@@ -142,8 +146,7 @@ rows_patch.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place =
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(
-      class = "dplyr_rows_patch_missing",
+    abort(class = "dplyr_rows_patch_missing",
       "Attempting to patch missing rows.",
       location = bad
     )
@@ -157,10 +160,13 @@ rows_patch.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place =
 
 #' @rdname rows
 rows_upsert <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
-  ellipsis::check_dots_used()
+  # Need action = warn, because methods may have
+  # side effects that persist even after we abort
+  ellipsis::check_dots_used(action = warn)
   UseMethod("rows_upsert", x)
 }
 
+#' @export
 rows_upsert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
   key <- rows_check_key(by, x, y)
   y <- auto_copy(x, y, copy = copy)
@@ -179,7 +185,9 @@ rows_upsert.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
 #' @rdname rows
 rows_delete <- function(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE) {
-  ellipsis::check_dots_used()
+  # Need action = warn, because methods may have
+  # side effects that persist even after we abort
+  ellipsis::check_dots_used(action = warn)
   UseMethod("rows_delete", x)
 }
 
@@ -202,8 +210,7 @@ rows_delete.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, in_place 
 
   bad <- which(is.na(idx))
   if (has_length(bad)) {
-    abort(
-      class = "dplyr_rows_delete_missing",
+    abort(class = "dplyr_rows_delete_missing",
       "Attempting to delete missing rows.",
       location = bad
     )
@@ -244,13 +251,13 @@ rows_check_key_df <- function(df, by, df_name) {
     abort(glue("All `by` columns must exist in `{df_name}`."))
   }
   if (vctrs::vec_duplicate_any(df[by])) {
-    abort(glue("`{df_name}` key values are not unique"))
+    abort(glue("`{df_name}` key values are not unique."))
   }
 }
 
 rows_df_in_place <- function(in_place) {
   if (is_true(in_place)) {
-    abort("Data frames only support `in_place = FALSE`")
+    abort("Data frames only support `in_place = FALSE`.")
   }
 }
 
