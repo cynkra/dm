@@ -242,6 +242,9 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
   sql
 }
 
+#' @export
+`sql_rows_update.tbl_PostgresConnection` <- `sql_rows_update.tbl_MariaDBConnection`
+
 sql_rows_update_prep <- function(x, y, by) {
   con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
