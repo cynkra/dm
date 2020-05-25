@@ -8,7 +8,7 @@
 3     3 <NA>    2.5
 
 > rows_insert(data, tibble(a = 4, b = "z"))
-Error: `x` and `y` must share the same src, set `copy` = TRUE (may be slow).
+Error: `x` and `y` must share the same src, set `copy` = TRUE (may be slow)
 
 > rows_insert(data, test_frame(a = 4, b = "z"))
 Message: Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.
