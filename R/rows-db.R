@@ -45,14 +45,9 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
       check_db_dupes(x, y, by)
     }
 
-    columns_q <- colnames(y)
-    columns_qq <- paste(columns_q, collapse = ", ")
-
-    sql <- paste0(
-      "INSERT INTO ", name, " (", columns_qq, ")\n",
-      dbplyr::remote_query(y)
-    )
-    dbExecute(dbplyr::remote_con(x), sql)
+    con <- dbplyr::remote_con(x)
+    sql <- sql_rows_insert(x, y)
+    dbExecute(con, sql, immediate = TRUE)
     invisible(x)
   } else {
     # Checking mandatory by default, opt-out
@@ -87,42 +82,8 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     }
 
     con <- dbplyr::remote_con(x)
-
-    # https://stackoverflow.com/a/47753166/946850
-    y_name <- DBI::dbQuoteIdentifier(con, "...y")
-    y_columns_qq <- paste(
-      DBI::dbQuoteIdentifier(con, colnames(y)),
-      collapse = ", "
-    )
-
-    new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
-    new_columns_qq <- paste(new_columns_q, collapse = ", ")
-    new_columns_qual_qq <- paste0(
-      y_name, ".", new_columns_q,
-      collapse = ", "
-    )
-
-    key_columns_q <- DBI::dbQuoteIdentifier(con, by)
-    compare_qual_qq <- paste0(
-      y_name, ".", key_columns_q,
-      " = ",
-      name, ".", key_columns_q,
-      collapse = " AND "
-    )
-
-    sql <- paste0(
-      "WITH ", y_name, "(", y_columns_qq, ") AS (\n",
-      sql_render(y),
-      "\n)\n",
-
-      "UPDATE ", name, "\n",
-      "SET (", new_columns_qq, ") = (\n",
-      "SELECT ", new_columns_qual_qq, "\n",
-      "FROM ", y_name, "\n",
-      "WHERE (", compare_qual_qq, "))\n",
-      "WHERE EXISTS (SELECT * FROM ", y_name, " WHERE ", compare_qual_qq, ")"
-    )
-    dbExecute(con, sql)
+    sql <- sql_rows_update(x, y, by)
+    dbExecute(con, sql, immediate = TRUE)
     invisible(x)
   } else {
     # Checking optional, can rely on primary key constraint
@@ -188,4 +149,57 @@ check_db_dupes <- function(x, y, by) {
 
 check_db_superset <- function(x, y, by) {
   # FIXME
+}
+
+sql_rows_insert <- function(x, y) {
+  name <- dbplyr::remote_name(x)
+
+  columns_q <- colnames(y)
+  columns_qq <- paste(columns_q, collapse = ", ")
+
+  sql <- paste0(
+    "INSERT INTO ", name, " (", columns_qq, ")\n",
+    dbplyr::remote_query(y)
+  )
+}
+
+sql_rows_update <- function(x, y, by) {
+  name <- dbplyr::remote_name(x)
+  con <- dbplyr::remote_con(x)
+
+  # https://stackoverflow.com/a/47753166/946850
+  y_name <- DBI::dbQuoteIdentifier(con, "...y")
+  y_columns_qq <- paste(
+    DBI::dbQuoteIdentifier(con, colnames(y)),
+    collapse = ", "
+  )
+
+  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
+  new_columns_qq <- paste(new_columns_q, collapse = ", ")
+  new_columns_qual_qq <- paste0(
+    y_name, ".", new_columns_q,
+    collapse = ", "
+  )
+
+  key_columns_q <- DBI::dbQuoteIdentifier(con, by)
+  compare_qual_qq <- paste0(
+    y_name, ".", key_columns_q,
+    " = ",
+    name, ".", key_columns_q,
+    collapse = " AND "
+  )
+
+  sql <- paste0(
+    "WITH ", y_name, "(", y_columns_qq, ") AS (\n",
+    sql_render(y),
+    "\n)\n",
+
+    "UPDATE ", name, "\n",
+    "SET (", new_columns_qq, ") = (\n",
+    "SELECT ", new_columns_qual_qq, "\n",
+    "FROM ", y_name, "\n",
+    "WHERE (", compare_qual_qq, "))\n",
+    "WHERE EXISTS (SELECT * FROM ", y_name, " WHERE ", compare_qual_qq, ")"
+  )
+  sql
 }
