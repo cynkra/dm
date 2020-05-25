@@ -217,9 +217,9 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
 
     "UPDATE ", p$name, "\n",
     "SET\n",
-    paste("  ", p$new_columns_qq, " = ", p$new_columns_qual_qq, collapse = ",\n"), "\n",
-    "FROM ", p$y_name, "\n",
-    "  INNER JOIN ", p$name, "\n",
+    paste0("  ", p$new_columns_qq, " = ", p$new_columns_qual_qq, collapse = ",\n"), "\n",
+    "FROM ", p$name, "\n",
+    "  INNER JOIN ", p$y_name, "\n",
     "  ON ", p$compare_qual_qq
   )
   sql
