@@ -15,16 +15,8 @@ flights weather
     932      72 
 
 > flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
-> dm_rows_insert(flights_sqlite, flights_jan_sqlite)
+> out <- dm_rows_insert(flights_sqlite, flights_jan_sqlite)
 Message: Not persisting, use `in_place = FALSE` to turn off this message.
-
--- Table source ----------------------------------------------------------------
-src:  sqlite 3.31.1 [:memory:]
--- Metadata --------------------------------------------------------------------
-Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-Columns: 53
-Primary keys: 3
-Foreign keys: 3
 
 > print(dm_nrow(flights_sqlite))
 airlines airports  flights   planes  weather 

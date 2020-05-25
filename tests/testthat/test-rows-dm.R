@@ -34,7 +34,7 @@ verify_output("out/rows-dm.txt", {
   flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
 
   # Dry run by default:
-  dm_rows_insert(flights_sqlite, flights_jan_sqlite)
+  out <- dm_rows_insert(flights_sqlite, flights_jan_sqlite)
   print(dm_nrow(flights_sqlite))
 
   # Explicitly request persistence:
