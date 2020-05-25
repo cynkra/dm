@@ -268,3 +268,7 @@ rows_df_in_place <- function(in_place) {
 rows_bind <- function(x, y) {
   dplyr_reconstruct(vctrs::vec_rbind(x, y), x)
 }
+
+dplyr_row_slice <- function(x, i) x[i, ]
+
+dplyr_reconstruct <- function(x, y) x
