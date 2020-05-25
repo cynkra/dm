@@ -31,7 +31,8 @@ and \code{y}.
 By default, we use the first column in \code{y}, since the first column is
 a reasonable place to put an identifier variable.}
 
-\item{...}{Other parameters passed onto methods.}
+\item{...}{other parameters passed onto methods, for instance, \code{na_matches}
+to control how \code{NA} values are matched.  See \link[dplyr]{join.tbl_df} for more.}
 
 \item{in_place}{Should \code{x} be modified in place? This argument is only
 relevant for mutable backends (e.g. databases, data.tables).

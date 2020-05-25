@@ -31,7 +31,8 @@ and \code{y}.
 By default, we use the first column in \code{y}, since the first column is
 a reasonable place to put an identifier variable.}
 
-\item{...}{Other parameters passed onto methods.}
+\item{...}{other parameters passed onto methods, for instance, \code{na_matches}
+to control how \code{NA} values are matched.  See \link[dplyr]{join.tbl_df} for more.}
 
 \item{copy}{If \code{x} and \code{y} are not from the same data source,
 and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
