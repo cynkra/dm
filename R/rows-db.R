@@ -250,7 +250,7 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
 
   # https://www.postgresql.org/docs/9.5/sql-update.html
   sql <- paste0(
-    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
+    "WITH ", p$y_name, " AS (\n",
     dbplyr::sql_render(y),
     "\n)\n",
 
