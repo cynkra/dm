@@ -243,7 +243,25 @@ sql_rows_update.tbl_sql <- function(x, y, by, ...) {
 }
 
 #' @export
-`sql_rows_update.tbl_PostgresConnection` <- `sql_rows_update.tbl_MariaDBConnection`
+`sql_rows_update.tbl_PostgresConnection` <- function(x, y, by, ...) {
+  con <- dbplyr::remote_con(x)
+
+  p <- sql_rows_update_prep(x, y, by)
+
+  # https://www.postgresql.org/docs/9.5/sql-update.html
+  sql <- paste0(
+    "WITH ", p$y_name, "(", p$y_columns_qq, ") AS (\n",
+    dbplyr::sql_render(y),
+    "\n)\n",
+
+    "UPDATE ", p$name, "\n",
+    "SET\n",
+    paste0("  ", p$new_columns_qq, " = ", p$new_columns_qual_qq, collapse = ",\n"), "\n",
+    "FROM ", p$y_name, "\n",
+    "WHERE ", p$compare_qual_qq
+  )
+  sql
+}
 
 sql_rows_update_prep <- function(x, y, by) {
   con <- dbplyr::remote_con(x)
