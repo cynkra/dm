@@ -163,7 +163,7 @@ sql_rows_insert <- function(x, y, ...) {
 }
 
 #' @export
-sql_rows_insert.default <- function(x, y) {
+sql_rows_insert.tbl_sql <- function(x, y) {
   name <- dbplyr::remote_name(x)
 
   columns_q <- colnames(y)
@@ -183,8 +183,7 @@ sql_rows_update <- function(x, y, by, ...) {
 }
 
 #' @export
-sql_rows_update.default <- function(x, y, by, ...) {
-  name <- dbplyr::remote_name(x)
+sql_rows_update.tbl_sql <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
