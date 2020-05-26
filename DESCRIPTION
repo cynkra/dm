@@ -77,6 +77,8 @@ VignetteBuilder:
     knitr
 RdMacros: 
     lifecycle
+Remotes: 
+    r-lib/testthat
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",

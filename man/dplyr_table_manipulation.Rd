@@ -65,7 +65,7 @@ column you've created most recently).
 
 This argument is taken by expression and supports
 \link[rlang:quasiquotation]{quasiquotation} (you can unquote column
-names and column locations).}
+names and column positions).}
 }
 \description{
 Use these methods without the '.zoomed_dm' suffix (see examples).
