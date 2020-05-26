@@ -53,6 +53,8 @@ jobs:
       # [Custom env var]
       TIC_ONLY_STYLER: ${{ matrix.config.TIC_ONLY_STYLER }}
       # [Custom env var]
+      DM_TEST_SRC: ${{ matrix.config.DM_TEST_SRC }}
+      # [Custom env var]
       MODE: ${{ matrix.config.MODE }}
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -177,7 +179,7 @@ jobs:
           # for DiagrammeRsvg
           brew install v8
 
-      - name: "[Custom block] [macOS] Install v8"
+      - name: "[Custom block] [macOS] Sqlite"
         if: runner.os == 'macOS' && runner.DM_TEST_SRC == 'test-sqlite'
         run: |
           brew install sqlite
