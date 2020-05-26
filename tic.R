@@ -38,7 +38,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
 
 if (ci_has_env("TIC_ONLY_TESTS")) {
   get_stage("script") %>%
-    add_code_step(devtools::test(reporter = c("progress", "fail")))
+    add_code_step(devtools::test(reporter = c("summary")))
 } else if (ci_has_env("TIC_ONLY_STYLER")) {
   if (!ci_is_tag()) {
     # For caching
