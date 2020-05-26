@@ -33,7 +33,7 @@ NULL
 
 #' dm_rows_insert
 #'
-#' `dm_rows_insert()` adds new records.
+#' `dm_rows_insert()` adds new records via [rows_insert()].
 #' The primary keys must differ from existing records.
 #' This must be ensured by the caller and might be checked by the underlying database.
 #' Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
@@ -45,52 +45,68 @@ dm_rows_insert <- function(x, y, ..., in_place = NULL) {
   dm_rows(x, y, rows_insert, top_down = TRUE, in_place)
 }
 
-# dm_rows_update
-#
-# `dm_rows_update()` updates existing records.
-# Primary keys must match for all records to be updated.
-#
-# @rdname rows-dm
-# @export
+#' dm_rows_update
+#'
+#' `dm_rows_update()` updates existing records via [rows_update()].
+#' Primary keys must match for all records to be updated.
+#'
+#' @rdname rows-dm
+#' @export
 dm_rows_update <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
   dm_rows(x, y, rows_update, top_down = TRUE, in_place)
 }
 
-# dm_rows_upsert
-#
-# `dm_rows_upsert()` updates existing records and adds new records,
-# based on the primary key.
-#
-# @rdname rows-dm
-# @export
+#' dm_rows_patch
+#'
+#' `dm_rows_patch()` updates missing values in existing records
+#' via [rows_patch()].
+#' Primary keys must match for all records to be patched.
+#'
+#' @rdname rows-dm
+#' @export
+dm_rows_patch <- function(x, y, ..., in_place = NULL) {
+  check_dots_empty()
+
+  dm_rows(x, y, rows_patch, top_down = TRUE, in_place)
+}
+
+#' dm_rows_upsert
+#'
+#' `dm_rows_upsert()` updates existing records and adds new records,
+#' based on the primary key, via [rows_upsert()].
+#'
+#' @rdname rows-dm
+#' @export
 dm_rows_upsert <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
   dm_rows(x, y, rows_upsert, top_down = TRUE, in_place)
 }
 
-# dm_rows_delete
-#
-# `dm_rows_delete()` removes matching records, based on the primary key.
-# The order in which the tables are processed is reversed.
-#
-# @rdname rows-dm
-# @export
+#' dm_rows_delete
+#'
+#' `dm_rows_delete()` removes matching records via [rows_delete()],
+#' based on the primary key.
+#' The order in which the tables are processed is reversed.
+#'
+#' @rdname rows-dm
+#' @export
 dm_rows_delete <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
   dm_rows(x, y, rows_delete, top_down = FALSE, in_place)
 }
 
-# dm_rows_truncate
-#
-# `dm_rows_truncate()` removes all records, only for tables in `dm`.
-# The order in which the tables are processed is reversed.
-#
-# @rdname rows-dm
-# @export
+#' dm_rows_truncate
+#'
+#' `dm_rows_truncate()` removes all records via [rows_truncate()],
+#' only for tables in `dm`.
+#' The order in which the tables are processed is reversed.
+#'
+#' @rdname rows-dm
+#' @export
 dm_rows_truncate <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 

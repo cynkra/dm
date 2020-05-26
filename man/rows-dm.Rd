@@ -3,9 +3,24 @@
 \name{rows-dm}
 \alias{rows-dm}
 \alias{dm_rows_insert}
+\alias{dm_rows_update}
+\alias{dm_rows_patch}
+\alias{dm_rows_upsert}
+\alias{dm_rows_delete}
+\alias{dm_rows_truncate}
 \title{Modifying rows for multiple tables}
 \usage{
 dm_rows_insert(x, y, ..., in_place = NULL)
+
+dm_rows_update(x, y, ..., in_place = NULL)
+
+dm_rows_patch(x, y, ..., in_place = NULL)
+
+dm_rows_upsert(x, y, ..., in_place = NULL)
+
+dm_rows_delete(x, y, ..., in_place = NULL)
+
+dm_rows_truncate(x, y, ..., in_place = NULL)
 }
 \arguments{
 \item{x}{Target \code{dm} object.}
@@ -42,10 +57,28 @@ may lead to irreversible changes to the underlying database.
 Therefore, in-place operation must be requested explicitly with \code{in_place = TRUE}.
 By default, an informative message is given.
 
-\code{dm_rows_insert()} adds new records.
+\code{dm_rows_insert()} adds new records via \code{\link[=rows_insert]{rows_insert()}}.
 The primary keys must differ from existing records.
 This must be ensured by the caller and might be checked by the underlying database.
 Use \code{in_place = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.
+
+\code{dm_rows_update()} updates existing records via \code{\link[=rows_update]{rows_update()}}.
+Primary keys must match for all records to be updated.
+
+\code{dm_rows_patch()} updates missing values in existing records
+via \code{\link[=rows_patch]{rows_patch()}}.
+Primary keys must match for all records to be patched.
+
+\code{dm_rows_upsert()} updates existing records and adds new records,
+based on the primary key, via \code{\link[=rows_upsert]{rows_upsert()}}.
+
+\code{dm_rows_delete()} removes matching records via \code{\link[=rows_delete]{rows_delete()}},
+based on the primary key.
+The order in which the tables are processed is reversed.
+
+\code{dm_rows_truncate()} removes all records via \code{\link[=rows_truncate]{rows_truncate()}},
+only for tables in \code{dm}.
+The order in which the tables are processed is reversed.
 }
 \examples{
 # Establish database connection:
