@@ -137,7 +137,7 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>dm bridges the gap in the data pipeline between individual data frames and relational databases. It’s a <a href="https://twitter.com/drob/status/1224851726068527106">grammar of joined tables</a> that provides a consistent set of verbs for building, using and deploying relational data models. For individual researchers, it broadens the scope of datasets they can work with and how they work with them. For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.</p>
+<p>dm bridges the gap in the data pipeline between individual data frames and relational databases. It’s a <a href="https://twitter.com/drob/status/1224851726068527106">grammar of joined tables</a> that provides a consistent set of verbs for consuming, creating, and deploying relational data models. For individual researchers, it broadens the scope of datasets they can work with and how they work with them. For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.</p>
 <p>dm objects encapsulate relational data models constructed from local data frames or lazy tables connected to an RDBMS. dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking. Once a data model is complete, dm provides methods for deploying it to an RDBMS. This allows it to scale from datasets that fit in memory to databases with billions of rows.</p>
 </div>
 <div id="features" class="section level2">
@@ -184,7 +184,7 @@
   <span class="fu">count</span>(<span class="no">origin</span>)</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
 #&gt;   </span><span style="font-weight: bold;">origin</span><span>     </span><span style="font-weight: bold;">n</span><span>
-#&gt; </span><span style="color: #555555;">*</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> EWR     </span><span style="text-decoration: underline;">4</span><span>043
 #&gt; </span><span style="color: #555555;">2</span><span> JFK     </span><span style="text-decoration: underline;">3</span><span>661
 #&gt; </span><span style="color: #555555;">3</span><span> LGA     </span><span style="text-decoration: underline;">3</span><span>523
