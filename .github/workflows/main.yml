@@ -29,6 +29,8 @@ jobs:
           # [Custom matrix env var]
           - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
           # [Custom matrix env var]
+          - { os: windows-latest, r: "release", id: "default" }
+          # [Custom matrix env var]
           - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: "release", MODE: "db-tests", id: "db-tests" }
