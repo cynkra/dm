@@ -16,6 +16,8 @@
 ^cran-comments\.md$
 ^man/figures/logo\.png$
 ^CRAN-RELEASE$
+^vignettes/wip$
 ^Makefile$
 ^\.ccache$
 ^\.github$
+^example$

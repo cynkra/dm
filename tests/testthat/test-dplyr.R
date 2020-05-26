@@ -210,7 +210,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   # fails if RHS not linked to zoomed table and no by is given
   expect_dm_error(
     left_join(zoomed_dm(), tf_4),
-    "tables_not_neighbours"
+    "tables_not_neighbors"
   )
 
   # works, if by is given

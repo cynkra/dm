@@ -34,7 +34,7 @@ test_that("error messages do not change", {
     abort_no_src_or_con()
     abort_update_not_supported()
     abort_only_possible_wo_filters("find_wisdom")
-    abort_tables_not_neighbours("subjects", "king")
+    abort_tables_not_neighbors("subjects", "king")
     abort_only_parents()
     abort_not_same_src()
     abort_what_a_weird_object("monster")

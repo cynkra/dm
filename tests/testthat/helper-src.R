@@ -87,6 +87,23 @@ my_test_src <- function() {
   )
 }
 
+test_frame <- function(...) {
+  src <- my_test_src()
+
+  df <- tibble(...)
+
+  if (inherits(src, "src_Microsoft SQL Server")) {
+    name <- paste0("##", unique_db_table_name("test_frame"))
+    temporary <- FALSE
+  } else {
+    name <- unique_db_table_name("test_frame")
+    temporary <- TRUE
+  }
+
+  copy_to(src, df, name = name, temporary = temporary)
+  tbl(src, name)
+}
+
 # for examine_cardinality...() ----------------------------------------------
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
@@ -126,9 +143,9 @@ data_ts %<-% tibble(
 
 data_ts_child %<-% tibble(
   b = c(1.1, 4.2, 1.1),
-  aef_id = as.integer(c(1, 2, 1)),
   c = as.integer(c(5, 6, 7)),
   d = c("a", "b", "c"),
+  aef_id = as.integer(c(1, 2, 1)),
 )
 
 data_ts_parent %<-% tibble(
@@ -479,14 +496,23 @@ bad_dm %<-% {
     dm_add_fk(tbl_1, b, tbl_3)
 }
 
-dm_nycflights_small %<-% {
+dm_nycflights_small_base %<-% {
   dm(
-    flights = nycflights13::flights %>% slice(1:800),
+    flights =
+      nycflights13::flights %>%
+        slice(1:800),
     planes = nycflights13::planes,
     airlines = nycflights13::airlines,
     airports = nycflights13::airports,
-    weather = nycflights13::weather %>% slice(1:800)
-  ) %>%
+    weather =
+      nycflights13::weather %>%
+        slice(1:800)
+  )
+}
+
+# Do not add PK and FK constraints to the database
+dm_nycflights_small %<--% {
+  dm_nycflights_small_base() %>%
     dm_add_pk(planes, tailnum) %>%
     dm_add_pk(airlines, carrier) %>%
     dm_add_pk(airports, faa) %>%
