@@ -178,7 +178,7 @@ jobs:
           brew install v8
 
       - name: "[Custom block] [macOS] Install v8"
-        if: runner.os == 'macOS' && runner.DM_TEST_SRC == "test-sqlite"
+        if: runner.os == 'macOS' && runner.DM_TEST_SRC == 'test-sqlite'
         run: |
           brew install sqlite
 
