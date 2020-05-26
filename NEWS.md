@@ -1,3 +1,12 @@
+# dm 0.1.3.9001
+
+- New `dm_rows_insert()`, `dm_rows_update()`, `dm_rows_patch()`, `dm_rows_upsert()`, `dm_rows_delete()` and `dm_rows_truncate()`, calling the corresponding `rows_*()` method for every table (#319).
+
+- New `rows_truncate()` (#319).
+
+- Added `rows_insert()` and `rows_update()` methods for SQLite, Postgres, MariaDB and MSSQL (#319).
+
+
 # dm 0.1.3.9000
 
 - Same as previous version.
