@@ -22,11 +22,11 @@ rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rst
 dm bridges the gap in the data pipeline between individual data frames
 and relational databases. It’s a [grammar of joined
 tables](https://twitter.com/drob/status/1224851726068527106) that
-provides a consistent set of verbs for building, using and deploying
-relational data models. For individual researchers, it broadens the
-scope of datasets they can work with and how they work with them. For
-organizations, it enables teams to quickly and efficiently create and
-share large, complex datasets.
+provides a consistent set of verbs for consuming, creating, and
+deploying relational data models. For individual researchers, it
+broadens the scope of datasets they can work with and how they work with
+them. For organizations, it enables teams to quickly and efficiently
+create and share large, complex datasets.
 
 dm objects encapsulate relational data models constructed from local
 data frames or lazy tables connected to an RDBMS. dm objects support the
@@ -106,7 +106,7 @@ dm$flights %>%
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 3 x 2</span><span>
 #&gt;   </span><span style='font-weight: bold;'>origin</span><span>     </span><span style='font-weight: bold;'>n</span><span>
-#&gt; </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> EWR     </span><span style='text-decoration: underline;'>4</span><span>043
 #&gt; </span><span style='color: #555555;'>2</span><span> JFK     </span><span style='text-decoration: underline;'>3</span><span>661
 #&gt; </span><span style='color: #555555;'>3</span><span> LGA     </span><span style='text-decoration: underline;'>3</span><span>523
