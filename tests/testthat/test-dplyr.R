@@ -210,7 +210,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   # fails if RHS not linked to zoomed table and no by is given
   expect_dm_error(
     left_join(zoomed_dm(), tf_4),
-    "tables_not_neighbours"
+    "tables_not_neighbors"
   )
 
   # works, if by is given
@@ -492,7 +492,6 @@ test_that("key tracking works", {
       filter(child_fk_cols != "dim_4_key")
   )
 
-
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
   expect_equivalent_dm(
     dm_zoom_to(dm_for_filter(), tf_2) %>%
@@ -503,51 +502,47 @@ test_that("key tracking works", {
       dm_rename(tf_2, c_new = c, d_new = d)
   )
 
-  # slice() and dm_nycflights_13() (with FK constraints) do not work on DB
+  # dm_nycflights13() (with FK constraints) doesn't work on DB
+  # here, FK constraints are not implemented on the DB
+  skip_if_src_not("df", "mssql")
+
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+  )
+
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
+  )
+
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+  )
+
+  expect_equivalent_tbl(
+    dm_zoom_to(dm_nycflights_small(), weather) %>%
+      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
+      get_zoomed_tbl(),
+    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
+  )
+
+  # slice() doesn't work on DB and reformatting a datetime on a DB is
+  # currently not possible with a mere `format()` call -> skipping; cf. #358
   skip_if_remote_src()
-
   # keys tracking when there are no keys to track
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       get_zoomed_tbl(),
     tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
-  )
-
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      summarize(avg_wind_speed = mean(wind_speed)) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
-  )
-
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
-  )
-
-  # keys tracking when there are no keys to track
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
-  )
-
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      summarize(avg_wind_speed = mean(wind_speed)) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed))
-  )
-
-  expect_equivalent_tbl(
-    dm_zoom_to(dm_nycflights_small(), weather) %>%
-      transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
-      get_zoomed_tbl(),
-    tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_cols(), set_names(c("d", "e")))
@@ -578,34 +573,37 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
+  expect_equivalent_tbl(
+    dm_nycflights_small() %>%
+      dm_zoom_to(airports) %>%
+      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE) %>%
+      get_zoomed_tbl(),
+    dm_nycflights_small() %>%
+      pull_tbl(airports) %>%
+      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE)
+  )
+
+  expect_equivalent_tbl(
+    dm_nycflights_small() %>%
+      dm_zoom_to(airports) %>%
+      select(3:6) %>%
+      summarize_all(list(mean = mean, sum = sum), na.rm = TRUE) %>%
+      get_zoomed_tbl(),
+    dm_nycflights_small() %>%
+      pull_tbl(airports) %>%
+      select(3:6) %>%
+      summarize_all(list(mean = mean, sum = sum), na.rm = TRUE)
+  )
+
   skip_if_remote_src()
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
-      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max)) %>%
+      summarize_if(is_double, list(mean = mean, sum = sum), na.rm = TRUE) %>%
       get_zoomed_tbl(),
-    pull_tbl(dm_nycflights_small(), airports) %>%
-      summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max))
-  )
-
-  expect_equivalent_tbl(
     dm_nycflights_small() %>%
-      dm_zoom_to(airports) %>%
-      select(3:6) %>%
-      summarize_all(list(mean = mean, median = median)) %>%
-      get_zoomed_tbl(),
-    pull_tbl(dm_nycflights_small(), airports) %>%
-      select(3:6) %>%
-      summarize_all(list(mean = mean, median = median))
-  )
-
-  expect_equivalent_tbl(
-    dm_nycflights_small() %>%
-      dm_zoom_to(airports) %>%
-      summarize_if(is_double, list(mean = mean, median = median)) %>%
-      get_zoomed_tbl(),
-    pull_tbl(dm_nycflights_small(), airports) %>%
-      summarize_if(is_double, list(mean = mean, median = median))
+      pull_tbl(airports) %>%
+      summarize_if(is_double, list(mean = mean, sum = sum), na.rm = TRUE)
   )
 })
 

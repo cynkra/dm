@@ -11,7 +11,7 @@ qtest: qtest-sqlite qtest-postgres qtest-mssql
 test: test-sqlite test-postgres test-mssql
 
 qtest-%:
-	DM_TEST_SRC=$@ time R -q -e 'options("testthat.summary.omit_skips" = TRUE, "crayon.enabled" = TRUE); devtools::test(reporter = c("summary", "fail"))'
+	DM_TEST_SRC=$@ time R -q -e 'options("testthat.summary.omit_skips" = TRUE, "crayon.enabled" = TRUE); devtools::test(filter = "${DM_TEST_FILTER}", reporter = c("summary", "fail"))'
 
 test-%:
-	DM_TEST_SRC=$@ time R -q -e 'devtools::test(reporter = c("progress", "summary", "fail"))'
+	DM_TEST_SRC=$@ time R -q -e 'devtools::test(filter = "${DM_TEST_FILTER}", reporter = c("progress", "summary", "fail"))'

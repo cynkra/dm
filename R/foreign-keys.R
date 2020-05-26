@@ -211,7 +211,7 @@ dm_get_all_fks_impl <- function(dm) {
 
 #' Remove the reference(s) from one [`dm`] table to another
 #'
-#' @description `dm_rm_fk()` can remove either one reference between two tables, or all references at once, if argument `column = NULL`.
+#' @description `dm_rm_fk()` can remove either one reference between two tables, or all references at once, if argument `columns = NULL`.
 #' All arguments may be provided quoted or unquoted.
 #'
 #' @rdname dm_add_fk
