@@ -23,21 +23,21 @@ jobs:
         config:
           # Custom configs
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true,  id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS" }
+          - { os: macOS-latest, r: "release", DM_TEST_SRC: "test-sqlite", TIC_ONLY_TESTS: true,  id: "Test SQLITE" }
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", id: "default" }
-          # [Custom matrix env var]
-          - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", MODE: "db-tests", id: "db-tests" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.6, id: "default" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.5, id: "default" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.4, id: "default" }
+          # - { os: macOS-latest, r: "devel", id: "default" }
+          # # [Custom matrix env var]
+          # - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
+          # # [Custom matrix env var]
+          # - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
+          # # [Custom matrix env var]
+          # - { os: ubuntu-latest, r: "release", MODE: "db-tests", id: "db-tests" }
+          # # [Custom matrix env var]
+          # - { os: ubuntu-latest, r: 3.6, id: "default" }
+          # # [Custom matrix env var]
+          # - { os: ubuntu-latest, r: 3.5, id: "default" }
+          # # [Custom matrix env var]
+          # - { os: ubuntu-latest, r: 3.4, id: "default" }
 
     env:
       # [Custom env var]
@@ -88,7 +88,7 @@ jobs:
       # macOS: ~ 1 min 30s
       # Windows: never finishes
       - uses: r-lib/actions/setup-tinytex@v1
-        if: runner.os != 'Windows'
+        if: runner.id == 'pkgdown'
 
       - uses: r-lib/actions/setup-pandoc@master
 
