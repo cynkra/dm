@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select columns — dm_select • dm</title>
+<title>Truncate all rows — rows_truncate • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,10 @@
 
 
 
-<meta property="og:title" content="Select columns — dm_select" />
-<meta property="og:description" content="Select columns of your dm using syntax that is similar to dplyr::select()." />
+<meta property="og:title" content="Truncate all rows — rows_truncate" />
+<meta property="og:description" content="rows_truncate() removes all rows.
+This operation corresponds to TRUNCATE in SQL.
+... is ignored." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 
 
@@ -167,60 +169,48 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select columns</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/select.R'><code>R/select.R</code></a></small>
-    <div class="hidden name"><code>dm_select.Rd</code></div>
+    <h1>Truncate all rows</h1>
+    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/rows-truncate.R'><code>R/rows-truncate.R</code></a></small>
+    <div class="hidden name"><code>rows_truncate.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Select columns of your <code><a href='dm.html'>dm</a></code> using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code>.</p>
+    <p><code>rows_truncate()</code> removes all rows.
+This operation corresponds to <code>TRUNCATE</code> in SQL.
+<code>...</code> is ignored.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_select</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>rows_truncate</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr>
-    <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
+      <th>x</th>
+      <td><p>A data frame or data frame extension (e.g. a tibble).</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>One or more unquoted expressions separated by commas.
-You can treat
-variable names as if they were positions, and use expressions like x:y
-to select the ranges of variables.</p>
-<p>Use named arguments, e.g. new_name = old_name, to rename the selected variables.</p>
-<p>The arguments in ... are automatically quoted and evaluated in a context where
-column names represent column positions.
-They also support unquoting and splicing.
-See <code><a href='https://dplyr.tidyverse.org/articles/programming.html'>vignette("programming", package = "dplyr")</a></code> for an introduction to those concepts.</p>
-<p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></td>
+      <td><p>other parameters passed onto methods, for instance, <code>na_matches</code>
+to control how <code>NA</code> values are matched.  See <a href='https://dplyr.tidyverse.org/reference/join.tbl_df.html'>join.tbl_df</a> for more.</p></td>
+    </tr>
+    <tr>
+      <th>copy</th>
+      <td><p>If <code>x</code> and <code>y</code> are not from the same data source,
+and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
+same src as <code>x</code>.  This allows you to join tables across srcs, but
+it is a potentially expensive operation so you must opt into it.</p></td>
+    </tr>
+    <tr>
+      <th>in_place</th>
+      <td><p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).</p>
+<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+when <code>FALSE</code>, a new object representing the resulting changes is returned.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An updated <code>dm</code> with the columns of <code>table</code> reduced and/or renamed.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>If key columns are renamed, then the meta-information of the <code>dm</code> is updated accordingly.
-If key columns are removed, then all related relations are dropped as well.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_select</span>(<span class='no'>airports</span>, <span class='kw'>code</span> <span class='kw'>=</span> <span class='no'>faa</span>, <span class='kw'>altitude</span> <span class='kw'>=</span> <span class='no'>alt</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 47
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

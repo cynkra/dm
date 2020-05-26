@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9004</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.3.9001</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with dm</h1>
             
-            <h4 class="date">2020-05-24</h4>
+            <h4 class="date">2020-05-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm.Rmd"><code>vignettes/dm.Rmd</code></a></small>
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -206,9 +206,11 @@
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;int64&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> 1056320
 </span></code></pre>
-<p>Here we focus on the <code>loans</code>, <code>accounts</code>, <code>districts</code> and <code>trans</code> tables:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">fin_dm_small</span> <span class="kw">&lt;-</span> <span class="no">fin_dm</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"loans"</span>, <span class="st">"accounts"</span>, <span class="st">"districts"</span>, <span class="st">"trans"</span>)]</pre></body></html></div>
-<p>The <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb offers a way to do the same in a <code><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></code> pipe.</p>
+<p>At the same time, most <code>dm</code> functions are pipe-friendly and support tidy evaluation. We can use <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> or the <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> verb to derive a smaller dm with the <code>loans</code>, <code>accounts</code>, <code>districts</code> and <code>trans</code> tables:</p>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">fin_dm_small</span> <span class="kw">&lt;-</span> <span class="no">fin_dm</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"loans"</span>, <span class="st">"accounts"</span>, <span class="st">"districts"</span>, <span class="st">"trans"</span>)]
+<span class="no">fin_dm_small</span> <span class="kw">&lt;-</span>
+  <span class="no">fin_dm</span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span>(<span class="no">loans</span>, <span class="no">accounts</span>, <span class="no">districts</span>, <span class="no">trans</span>)</pre></body></html></div>
 </div>
 <div id="linking-tables-by-adding-keys" class="section level2">
 <h2 class="hasAnchor">
