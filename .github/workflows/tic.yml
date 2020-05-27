@@ -8,7 +8,7 @@ on:
     # * is a special character in YAML so you have to quote this string
     - cron: "0 4 * * *"
 
-name: R CMD Check via {tic}
+name: tic
 
 jobs:
   R-CMD-check:
@@ -40,6 +40,8 @@ jobs:
           - { os: ubuntu-latest, r: 3.5, id: "default" }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: 3.4, id: "default" }
+          # [Custom matrix env var]
+          - { os: ubuntu-latest, r: 3.3, id: "default" }
 
     env:
       # [Custom env var]
@@ -90,7 +92,7 @@ jobs:
       # macOS: ~ 1 min 30s
       # Windows: never finishes
       - uses: r-lib/actions/setup-tinytex@v1
-        if: runner.os != 'Windows'
+        if: runner.id == 'pkgdown'
 
       - uses: r-lib/actions/setup-pandoc@master
 
