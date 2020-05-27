@@ -23,11 +23,13 @@ jobs:
         config:
           # Custom configs
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true,  id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS" }
+          - { os: macOS-latest, r: "devel", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true, id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS", cache: "dev" }
           # [Custom matrix env var]
           - { os: macOS-latest, r: "devel", id: "default" }
           # [Custom matrix env var]
           - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
+          # [Custom matrix env var]
+          - { os: windows-latest, r: "release", id: "default" }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
           # [Custom matrix env var]
@@ -113,8 +115,8 @@ jobs:
         uses: pat-s/always-upload-cache@v1.2.0
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}
 
       - name: "[Cache] Cache ccache"
         if: runner.os != 'Windows'
