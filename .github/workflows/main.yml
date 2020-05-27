@@ -38,6 +38,8 @@ jobs:
           - { os: ubuntu-latest, r: 3.5, id: "default" }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: 3.4, id: "default" }
+          # [Custom matrix env var]
+          - { os: ubuntu-latest, r: 3.3, id: "default" }
 
     env:
       # [Custom env var]
