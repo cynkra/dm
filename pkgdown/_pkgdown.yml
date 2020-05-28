@@ -1,8 +1,77 @@
 url: https://krlmlr.github.io/dm
 
 template:
-  assets:
-  - pkgdown/assets
+  package: cynkratemplate
+  default_assets: false
+
+navbar:
+  title: ~
+  type: default
+  structure:
+    left:  [release-doc, devel-doc]
+    right: [reference, Intro, Tutorials, Technical, News, github]
+  components:
+    home: ~
+    news: ~
+    intro: ~
+    articles: ~
+    release-doc:
+      text: release
+      href: https://krlmlr.github.io/dm/index.html
+    devel-doc:
+      text: devel
+      href: https://krlmlr.github.io/dm/dev/index.html
+    Intro:
+     text: Intro
+     menu:
+      - text: Intro
+        href: articles/dm.html
+      - text: Reference
+        href: reference/index.html
+    Tutorials:
+      text: Tutorials
+      menu:
+      - text: Connect to a database
+        href: articles/dm-db.html
+      - text: Create a dm object from data frames
+        href: articles/dm-df.html
+      - text: Introduction to relational data models
+        href: articles/dm-introduction-relational-data-models.html
+    Technical:
+      text: "Technical articles"
+      menu:
+      - text: Class 'dm' and basic operations
+        href: articles/dm-class-and-basic-operations.html
+      - text: Visualizing dm objects
+        href: articles/dm-visualization.html
+      - text: Joining in relational data models
+        href: articles/dm-joining.html
+      - text: Zooming and manipulating tables
+        href: articles/dm-zoom-to-table.html
+      - text: Filtering in relational data models
+        href: articles/dm-filtering.html
+      - text: Checking keys
+        href: articles/dm-low-level.html
+      - text: Function naming logic
+        href: articles/dm-function-naming-logic.html
+      - text: 'Migration guide: ''cdm'' -> ''dm'''
+        href: articles/dm-version-migration-guide.html
+    News:
+      text: News
+      href: news/index.html
+
+development:
+  mode: auto
+
+authors:
+  Kirill Müller:
+    href: http://krlmlr.info
+  energie360° AG:
+    html: '<img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/>'
+    href: https://www.energie360.ch
+  cynkra GmbH:
+    html: '<img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
+    href: https://www.cynkra.com
 
 reference:
 - title: Creation and basic functionality
@@ -111,7 +180,6 @@ reference:
 - title: Upload
   contents:
   - copy_dm_to
-  - dm_rows_insert
 
 - title: Table surgery
   contents:
@@ -138,56 +206,3 @@ reference:
   - dm_financial_sqlite
   - dm_nrow
   - dm_ptype
-
-navbar:
-  title: ~
-  type: default
-  left:
-  - text: Intro
-    href: articles/dm.html
-  - text: Reference
-    href: reference/index.html
-  - text: Tutorials
-    menu:
-    - text: Create a dm object from a database
-      href: articles/howto-dm-db.html
-    - text: Create a dm object from data frames
-      href: articles/howto-dm-df.html
-    - text: Introduction to relational data models
-      href: articles/howto-dm-theory.html
-  - text: Technical articles
-    menu:
-    - text: Joining in relational data models
-      href: articles/tech-dm-join.html
-    - text: Zooming and manipulating tables
-      href: articles/tech-dm-zoom.html
-    - text: Filtering in relational data models
-      href: articles/tech-dm-filter.html
-    - text: Visualizing dm objects
-      href: articles/tech-dm-draw.html
-    - text: Model verification - keys, constraints and normalization
-      href: articles/tech-dm-low-level.html
-    - text: Class 'dm' and basic operations
-      href: articles/tech-dm-class.html
-    - text: Function naming logic
-      href: articles/tech-dm-naming.html
-    - text: 'Migration guide: ''cdm'' -> ''dm'''
-      href: articles/tech-dm-cdm.html
-  - text: News
-    href: news/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/krlmlr/dm
-
-development:
-  mode: auto
-
-authors:
-  Kirill Müller:
-    href: http://krlmlr.info
-  energie360° AG:
-    html: '<img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/>'
-    href: https://www.energie360.ch
-  cynkra GmbH:
-    html: '<img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
-    href: https://www.cynkra.com
