@@ -111,6 +111,7 @@ reference:
 - title: Upload
   contents:
   - copy_dm_to
+  - dm_rows_insert
 
 - title: Table surgery
   contents:
@@ -148,30 +149,30 @@ navbar:
     href: reference/index.html
   - text: Tutorials
     menu:
-    - text: Connect to a database
-      href: articles/dm-db.html
+    - text: Create a dm object from a database
+      href: articles/howto-dm-db.html
     - text: Create a dm object from data frames
-      href: articles/dm-df.html
+      href: articles/howto-dm-df.html
     - text: Introduction to relational data models
-      href: articles/dm-introduction-relational-data-models.html
+      href: articles/howto-dm-theory.html
   - text: Technical articles
     menu:
-    - text: Class 'dm' and basic operations
-      href: articles/dm-class-and-basic-operations.html
-    - text: Visualizing dm objects
-      href: articles/dm-visualization.html
     - text: Joining in relational data models
-      href: articles/dm-joining.html
+      href: articles/tech-dm-join.html
     - text: Zooming and manipulating tables
-      href: articles/dm-zoom-to-table.html
+      href: articles/tech-dm-zoom.html
     - text: Filtering in relational data models
-      href: articles/dm-filtering.html
-    - text: Checking keys
-      href: articles/dm-low-level.html
+      href: articles/tech-dm-filter.html
+    - text: Visualizing dm objects
+      href: articles/tech-dm-draw.html
+    - text: Model verification - keys, constraints and normalization
+      href: articles/tech-dm-low-level.html
+    - text: Class 'dm' and basic operations
+      href: articles/tech-dm-class.html
     - text: Function naming logic
-      href: articles/dm-function-naming-logic.html
+      href: articles/tech-dm-naming.html
     - text: 'Migration guide: ''cdm'' -> ''dm'''
-      href: articles/dm-version-migration-guide.html
+      href: articles/tech-dm-cdm.html
   - text: News
     href: news/index.html
   right:

@@ -1,15 +1,12 @@
-decompose_table_data_ts <-
-  find_testthat_root_file(paste0("out/decompose-table-data-ts.txt"))
-reunite_parent_child_data_ts <-
-  find_testthat_root_file(paste0("out/reunite-parent-child-data-ts.txt"))
-reunite_parent_child_from_list_data_ts <-
-  find_testthat_root_file(paste0("out/reunite-parent-child_from_list-data-ts.txt"))
-
 test_that("decompose_table() decomposes tables nicely on chosen source", {
-  skip_if_remote_src()
-  verify_output(
-    decompose_table_data_ts,
-    decompose_table(data_ts(), aef_id, a, e, f) %>% map(arrange_all)
+  out <- decompose_table(data_ts(), aef_id, a, e, f)
+  expect_equivalent_tbl(
+    out$parent_table,
+    list_of_data_ts_parent_and_child()$parent_table
+  )
+  expect_equivalent_tbl(
+    out$child_table,
+    list_of_data_ts_parent_and_child()$child_table
   )
 })
 
@@ -44,19 +41,35 @@ test_that("decomposition works with {tidyselect}", {
 })
 
 test_that("reunite_parent_child() reunites parent and child nicely on chosen source", {
-  skip_if_remote_src()
-  verify_output(
-    reunite_parent_child_data_ts,
-    reunite_parent_child(data_ts_child(), data_ts_parent(), aef_id) %>% arrange_all()
+  out <- reunite_parent_child(
+    list_of_data_ts_parent_and_child()$child_table,
+    list_of_data_ts_parent_and_child()$parent_table,
+    aef_id
   )
+  ref <-
+    left_join(
+      list_of_data_ts_parent_and_child()$child_table,
+      list_of_data_ts_parent_and_child()$parent_table,
+      by = "aef_id"
+    ) %>%
+    select(-aef_id)
+
+  expect_equivalent_tbl(out, ref)
 })
 
 test_that("reunite_parent_child_from_list() reunites parent and child nicely on chosen source", {
-  skip_if_remote_src()
-  verify_output(
-    reunite_parent_child_from_list_data_ts,
-    reunite_parent_child_from_list(list_of_data_ts_parent_and_child(), aef_id) %>% arrange_all()
+  out <- reunite_parent_child_from_list(
+    list_of_data_ts_parent_and_child(), aef_id
   )
+  ref <-
+    left_join(
+      list_of_data_ts_parent_and_child()$child_table,
+      list_of_data_ts_parent_and_child()$parent_table,
+      by = "aef_id"
+    ) %>%
+    select(-aef_id)
+
+  expect_equivalent_tbl(out, ref)
 })
 
 

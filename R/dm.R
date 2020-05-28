@@ -5,7 +5,7 @@
 #' It is inspired by [datamodelr](https://github.com/bergant/datamodelr),
 #' and extends the idea by offering operations to access the data in the tables.
 #'
-#' `dm()` creates a `dm` object from one or multiple [tbl] objects
+#' `dm()` creates a `dm` object from [tbl] objects
 #' (tibbles or lazy data objects).
 #'
 #' @param ... Tables to add to the `dm` object.

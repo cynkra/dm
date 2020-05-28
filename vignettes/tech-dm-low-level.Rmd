@@ -1,10 +1,10 @@
 ---
-title: "Checking keys"
+title: "Model verification - keys, constraints and normalization"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Technical: Checking keys}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Technical: Model verification - keys, constraints and normalization}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
@@ -15,7 +15,7 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-In this document we will present several specialised functions for conducting basic tests about key conditions and about relations between tables.
+In this document we will present several specialized functions for conducting basic tests about key conditions and about relations between tables.
 We will also describe functions that can be used for splitting and uniting tables.
 
 ```{r}
@@ -113,7 +113,7 @@ The numbers '0', '1' and 'n' refer to the number of values in the child table's 
 'n' means more than one in this context, with no upper limit.
 
 `0_n` means, that for each value of the `parent_key_column`, the number of corresponding records in the child table is unrestricted.
-`1_n` means, that for each value of the `parent_key_column` there is at least one coresponding record in the child table.
+`1_n` means, that for each value of the `parent_key_column` there is at least one corresponding record in the child table.
 This means that there is a "surjective" relation from the child table to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 
 `0_1` means, that for each value of the `parent_key_column`, at least zero and at most one value has to correspond to it in the column of the child table. 
