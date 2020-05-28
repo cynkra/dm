@@ -1,33 +1,25 @@
-# dm 0.1.3
+# dm 0.1.3.9001
+
+- New `dm_rows_insert()`, `dm_rows_update()`, `dm_rows_patch()`, `dm_rows_upsert()`, `dm_rows_delete()` and `dm_rows_truncate()`, calling the corresponding `rows_*()` method for every table (#319).
+
+- New `rows_truncate()` (#319).
+
+- Added `rows_insert()` and `rows_update()` methods for SQLite, Postgres, MariaDB and MSSQL (#319).
+
+
+# dm 0.1.3.9000
 
 - Same as previous version.
 
 
-# dm 0.1.2.9004
+# dm 0.1.3
 
 - Avoid `src_sqlite()` in vignettes (#372).
-
-
-# dm 0.1.2.9003
-
 - Rename vignettes (#349).
 - Rename error class `"dm_error_tables_not_neighbours"` to `"dm_error_tables_not_neighbors"`.
 - Shortened README and intro article (#192, @jawond).
-
-
-# dm 0.1.2.9002
-
 - Better testing for MSSQL (#339).
-
-
-# dm 0.1.2.9001
-
 - Fix compatibility with dplyr 1.0.0.
-
-
-# dm 0.1.2.9000
-
-- Internal changes only.
 
 
 # dm 0.1.2

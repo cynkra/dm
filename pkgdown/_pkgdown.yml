@@ -111,6 +111,7 @@ reference:
 - title: Upload
   contents:
   - copy_dm_to
+  - dm_rows_insert
 
 - title: Table surgery
   contents:

@@ -33,7 +33,7 @@ vctrs::s3_register("knitr::knit_print", "grViz")
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![Travis build status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
+[![R build status](https://github.com/krlmlr/dm/workflows/tic/badge.svg)](https://github.com/krlmlr/dm/actions)
 [![Codecov test coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
@@ -42,7 +42,7 @@ vctrs::s3_register("knitr::knit_print", "grViz")
 ## Overview
 
 dm bridges the gap in the data pipeline between individual data frames and relational databases.
-It's a [grammar of joined tables](https://twitter.com/drob/status/1224851726068527106) that provides a consistent set of verbs for building, using and deploying relational data models.
+It's a [grammar of joined tables](https://twitter.com/drob/status/1224851726068527106) that provides a consistent set of verbs for consuming, creating, and deploying relational data models.
 For individual researchers, it broadens the scope of datasets they can work with and how they work with them.
 For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.
 
