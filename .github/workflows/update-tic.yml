@@ -18,7 +18,7 @@ jobs:
           - { os: macOS-latest, r: "release" }
 
     env:
-      # use GITHUB_TOKEN from GItHub to workaround rate limits in {remotes}
+      # use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
@@ -35,7 +35,7 @@ jobs:
         run: |
             brew install curl libsodium
             Rscript -e "if (!requireNamespace('remotes')) install.packages('remotes', type = 'source')"
-            Rscript -e "remotes::install_github('ropensci/tic', dependencies = TRUE)" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()" -e "tic::before_install()" -e "tic::install()"
+            Rscript -e "remotes::install_github('ropensci/tic', dependencies = TRUE)"
 
       - name: "[Stage] Update YAMLs"
         run: |
@@ -45,7 +45,7 @@ jobs:
         uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.TIC_UPDATE }}
-          title: "Update tic templates"
+          title: "Update tic templates [ci-skip]"
           commit-message: "update tic templates"
           body: "{tic} templates can be updated :rocket: :robot:"
           branch: update-tic
