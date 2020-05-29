@@ -157,7 +157,7 @@
 <div id="join" class="section level2">
 <h2 class="hasAnchor">
 <a href="#join" class="anchor"></a>Joining a <code>dm</code> object</h2>
-<p>{dm} allows you to join two tables of a <code>dm</code> object based on a shared column. You can use all join functions that you know from the <a href="https://dplyr.tidyverse.org/reference/join.html">{dplyr} package</a>. Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join. See <code><a href="https://dplyr.tidyverse.org/reference/join.html">?dplyr::join</a></code> for details.</p>
+<p>{dm} allows you to join two tables of a <code>dm</code> object based on a shared column. You can use all join functions that you know from the <a href="https://dplyr.tidyverse.org/reference/join.html">{dplyr} package</a>. Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join. See <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">?dplyr::join</a></code> for details.</p>
 <div id="how-it-works" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-it-works" class="anchor"></a>How it works</h3>
@@ -318,7 +318,7 @@
 #&gt; </span><span style="color: #555555;">#   manufacturer </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, model </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, engines </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, seats </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
 #&gt; </span><span style="color: #555555;">#   speed </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, engine </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
-<p>Be aware that all column names need to be unique. The <code>dm_flatten_to_tbl</code> cares about automatically renaming the relevant columns and prints if something was changed, e.g. <code>name -&gt; airlines.name</code>.</p>
+<p>Be aware that all column names need to be unique. The <code>dm_flatten_to_tbl</code> cares about automatically renaming the relevant columns and prints if something was changed, e.g. <code>name -&gt; airlines.name</code>.</p>
 </div>
 </div>
   </div>
