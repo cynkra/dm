@@ -19,6 +19,8 @@ source("setup/setup.R")
 # Working with databases
 
 A dm object can be created from any database that has a {[DBI](https://dbi.r-dbi.org/)} backend ([see list](https://github.com/r-dbi/backends)).
+If you're new to databases, you may want to first read our introduction to them here `vignette("howto-dm-theory")`.
+
 When a dm object is created it can either import all the tables in the database, the active schema or a limited set.
 For some RDBMS, such as Postgres and SQL Server, primary and foreign keys are also imported and do not have to be manually added afterwards.
 
@@ -73,11 +75,12 @@ my_manual_dm
 
 ## Define Primary and Foreign Keys
 
-Primary keys and foreign keys are how relational database tables are linked with each other.
+[Primary keys](https://krlmlr.github.io/dm/articles/howto-dm-theory.html#pk) and [foreign keys](https://krlmlr.github.io/dm/articles/howto-dm-theory.html#fk) are how relational database tables are linked with each other.
 A primary key is a column that has a unique value for each row within a table.
 A foreign key is a column containing the primary key for a row in another table.[^compound]
 Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
+For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
 
 [^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/krlmlr/dm/issues/3).
 
