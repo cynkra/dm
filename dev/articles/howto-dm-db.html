@@ -438,7 +438,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7fc640e04908&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x7fdb3e0eb1c8&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></pre></body></html></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -495,7 +495,7 @@
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
 <div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span></pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_06_04_04_10_29_1&gt; [?? x 2]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_06_04_04_55_13_1&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
