@@ -112,6 +112,9 @@ reference:
   contents:
   - copy_dm_to
   - dm_rows_insert
+  - rows-db
+  - rows
+  - rows_truncate
 
 - title: Table surgery
   contents:
