@@ -69,16 +69,17 @@ In fact, using a dm as a nicer list for organizing your data frames in your envi
 Member referencing, by subscript and by name, and list and slice manipulation functions work just as you would expect on a dm object.
 
 ```{r listlike}
-
-#FIXME examples of dm behaving like a list. maybe around dmt <- dm(iris, mtcars), because printing this out is nice and compact?
-
+names(flights_dm_no_keys)
+flights_dm_no_keys$airports
+flights_dm_no_keys[c("airports", "flights")]
 ```
 
 ## Defining Keys
 
-Even though we now have a `dm` object that contains all our data, we have not specified how our five tables are connected. To do this we need to define primary keys and foreign keys on the tables.
+Even though we now have a `dm` object that contains all our data, we have not specified how our five tables are connected.
+To do this we need to define primary keys and foreign keys on the tables.
 
-[Primary keys](https://krlmlr.github.io/dm/articles/howto-dm-theory.html#pk) and [foreign keys](https://krlmlr.github.io/dm/articles/howto-dm-theory.html#fk) are how relational database tables are linked with each other.
+Primary keys and foreign keys are how relational database tables are linked with each other.
 A primary key is a column that has a unique value for each row within a table.
 A foreign key is a column containing the primary key for a row in another table.[^compound]
 Foreign keys act as cross references between tables.
