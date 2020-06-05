@@ -27,7 +27,7 @@
 #'   Currently these checks are no-ops and need yet to be implemented.
 #'
 #' @return A tbl object of the same structure as `x`.
-#'   If `in_place = TRUE`, a modified version of `x` is returned invisibly.
+#'   If `in_place = TRUE`, the underlying data is updated as a side effect and `x` is returned, invisibly.
 #'
 #' @name rows-db
 #' @example example/rows-db.R
