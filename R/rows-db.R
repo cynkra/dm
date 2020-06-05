@@ -24,6 +24,8 @@
 #'   Set to `TRUE` to always check keys, or `FALSE` to never check.
 #'   The default is to check only if `in_place` is `TRUE` or `NULL`.
 #'
+#'   Currently these checks are no-ops and need yet to be implemented.
+#'
 #' @return A tbl object of the same structure as `x`.
 #'   If `in_place = TRUE`, a modified version of `x` is returned invisibly.
 #'

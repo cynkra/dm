@@ -45,7 +45,9 @@ same src as \code{x}.  This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.}
 
 \item{check}{Set to \code{TRUE} to always check keys, or \code{FALSE} to never check.
-The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.}
+The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.
+
+Currently these checks are no-ops and need yet to be implemented.}
 }
 \value{
 A tbl object of the same structure as \code{x}.
