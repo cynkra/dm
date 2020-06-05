@@ -37,7 +37,7 @@ when \code{FALSE}, a new object representing the resulting changes is returned.}
 }
 \value{
 A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{x}.
-If \code{in_place = TRUE}, \link{invisible} and identical to \code{x}.
+If \code{in_place = TRUE}, a modified version of \code{x} is returned invisibly.
 }
 \description{
 \lifecycle{experimental}

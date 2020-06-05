@@ -24,7 +24,7 @@
 #' @param ... Must be empty.
 #'
 #' @return A dm object of the same [dm_ptype()] as `x`.
-#'   If `in_place = TRUE`, [invisible] and identical to `x`.
+#'   If `in_place = TRUE`, a modified version of `x` is returned invisibly.
 #'
 #' @name rows-dm
 #' @example example/rows-dm.R
