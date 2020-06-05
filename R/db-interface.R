@@ -116,8 +116,8 @@ copy_dm_to <- function(dest, dm, ...,
     table_names <- repair_table_names_for_db(src_tbls(dm), temporary)
   } else {
     if (is_function(table_names) || is_bare_formula(table_names)) {
-    table_name_fun <- as_function(table_names)
-    table_names <- set_names(table_name_fun(src_tbls(dm)), src_tbls(dm))
+      table_name_fun <- as_function(table_names)
+      table_names <- set_names(table_name_fun(src_tbls(dm)), src_tbls(dm))
     }
     check_naming(table_names, src_tbls(dm))
     # add the schema and create an `ident`-class object from the table names
@@ -206,9 +206,11 @@ check_naming <- function(table_names, dm_table_names) {
   problems <- "Problem(s) with argument `table_names` in `copy_to_dm`:"
   if (length(table_names) != length(dm_table_names)) {
     problems <- c(
-      problems, paste0("should provide exactly one name for each table in the ",
-      "`dm` but the numbers differ. Leave it empty for automatic naming.")
+      problems, paste0(
+        "should provide exactly one name for each table in the ",
+        "`dm` but the numbers differ. Leave it empty for automatic naming."
       )
+    )
     # abort_all_tbls_need_db_names()
   }
   if (as.logical(anyDuplicated(table_names))) {
@@ -218,13 +220,16 @@ check_naming <- function(table_names, dm_table_names) {
   }
   not_found <- setdiff(names2(table_names), dm_table_names)
   if (has_length(not_found)) {
-    if (any(not_found == "")) problems <- c(
-      problems,
-      glue::glue(
-        "needs to be a named vector whose names ",
-        "are the original table names (returned by e.g. `src_tbls()`): {commas(tick(dm_table_names))}.")
+    if (any(not_found == "")) {
+      problems <- c(
+        problems,
+        glue::glue(
+          "needs to be a named vector whose names ",
+          "are the original table names (returned by e.g. `src_tbls()`): {commas(tick(dm_table_names))}."
+        )
       )
-    if (any(not_found != "")) problems <- c(problems, error_txt_table_not_in_dm(not_found[not_found != ""], dm_table_names))   # abort_need_named_vec(src_tbls(dm))
+    }
+    if (any(not_found != "")) problems <- c(problems, error_txt_table_not_in_dm(not_found[not_found != ""], dm_table_names)) # abort_need_named_vec(src_tbls(dm))
     # abort_table_not_in_dm(unique(not_found), src_tbls(dm))
   }
   if (length(problems) > 1) {
