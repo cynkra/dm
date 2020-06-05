@@ -231,17 +231,6 @@ error_txt_no_unique_indexes <- function() {
   "`copy_dm_to()` does not support the `unique_indexes` argument."
 }
 
-abort_need_named_vec <- function(table_names) {
-  abort(error_txt_need_named_vec(table_names), .subclass = dm_error_full("need_named_vec"))
-}
-
-error_txt_need_named_vec <- function(table_names) {
-  glue(
-    "Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names ",
-    "are the original table names (returned by e.g. `src_tbls()`): {commas(tick(table_names))}."
-  )
-}
-
 abort_key_constraints_need_db <- function() {
   abort(error_txt_key_constraints_need_db(), .subclass = dm_error_full("key_constraints_need_db"))
 }
