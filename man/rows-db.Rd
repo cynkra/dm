@@ -57,7 +57,10 @@ If \code{in_place = TRUE}, a modified version of \code{x} is returned invisibly.
 These methods provide a framework for manipulating individual rows
 in existing tables.
 All operations expect that both existing and new data are presented
-in two compatible \link{tbl} objects on the same data source.
+in two compatible \link{tbl} objects.
+
+If \code{y} lives on a different data source than \code{x}, it can be copied automatically
+by setting \code{copy = TRUE}, just like for \code{\link[dplyr:left_join]{dplyr::left_join()}}.
 
 On mutable backends like databases, these operations manipulate the
 underlying storage.
@@ -69,6 +72,7 @@ Unlike \code{\link[=compute]{compute()}} or \code{\link[=copy_to]{copy_to()}}, n
 
 The \verb{sql_rows_*()} functions return the SQL used for the corresponding
 \verb{rows_*()} function with \code{in_place = FALSE}.
+\code{y} needs to be located on the same data source as \code{x}.
 }
 \examples{
 data <- dbplyr::memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)

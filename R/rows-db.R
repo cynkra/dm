@@ -6,7 +6,10 @@
 #' These methods provide a framework for manipulating individual rows
 #' in existing tables.
 #' All operations expect that both existing and new data are presented
-#' in two compatible [tbl] objects on the same data source.
+#' in two compatible [tbl] objects.
+#'
+#' If `y` lives on a different data source than `x`, it can be copied automatically
+#' by setting `copy = TRUE`, just like for [`dplyr::left_join()`].
 #'
 #' On mutable backends like databases, these operations manipulate the
 #' underlying storage.
@@ -154,6 +157,7 @@ check_db_superset <- function(x, y, by) {
 #' @description
 #' The `sql_rows_*()` functions return the SQL used for the corresponding
 #' `rows_*()` function with `in_place = FALSE`.
+#' `y` needs to be located on the same data source as `x`.
 #'
 #' @export
 #' @rdname rows-db
