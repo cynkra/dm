@@ -163,6 +163,7 @@ check_db_superset <- function(x, y, by) {
 #' @rdname rows-db
 sql_rows_insert <- function(x, y, ...) {
   ellipsis::check_dots_used()
+  # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_insert")
 }
 
@@ -184,6 +185,7 @@ sql_rows_insert.tbl_sql <- function(x, y, ...) {
 #' @rdname rows-db
 sql_rows_update <- function(x, y, by, ...) {
   ellipsis::check_dots_used()
+  # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_update")
 }
 
