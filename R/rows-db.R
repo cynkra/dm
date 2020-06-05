@@ -54,6 +54,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
     invisible(x)
   } else {
     # Checking mandatory by default, opt-out
+    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
     if (is_null(check) || is_true(check)) {
       check_db_dupes(x, y, by)
     }
@@ -90,6 +91,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     invisible(x)
   } else {
     # Checking optional, can rely on primary key constraint
+    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
     if (is_null(check) || is_true(check)) {
       check_db_superset(x, y, by)
     }
