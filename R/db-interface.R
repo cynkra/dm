@@ -116,7 +116,8 @@ copy_dm_to <- function(dest, dm, ...,
     table_names <- repair_table_names_for_db(src_tbls(dm), temporary)
   } else if (is_function(table_names) || is_bare_formula(table_names)) {
     table_name_fun <- as_function(table_names)
-    # FIXME: Derive table names
+    table_names <- set_names(table_name_fun(src_tbls(dm)), src_tbls(dm))
+    table_names <- ident_q(table_names[src_tbls(dm)])
   } else {
     # FIXME: Extract to a helper function,
     # check identical(sort(names1), sort(names2)),
