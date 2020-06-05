@@ -22,7 +22,7 @@
 #'   The default is to check only if `in_place` is `TRUE` or `NULL`.
 #'
 #' @return A tbl object of the same structure as `x`.
-#'   If `in_place = TRUE`, [invisible] and identical to `x`.
+#'   If `in_place = TRUE`, a modified version of `x` is returned invisibly.
 #'
 #' @name rows-db
 #' @example example/rows-db.R

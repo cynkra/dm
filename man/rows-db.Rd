@@ -49,7 +49,7 @@ The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.}
 }
 \value{
 A tbl object of the same structure as \code{x}.
-If \code{in_place = TRUE}, \link{invisible} and identical to \code{x}.
+If \code{in_place = TRUE}, a modified version of \code{x} is returned invisibly.
 }
 \description{
 \lifecycle{experimental}
