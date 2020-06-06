@@ -44,7 +44,7 @@ If left \code{NULL} (default), the names will be determined automatically depend
 If a function or one-sided formula, \code{table_names} is converted to a function
 using \code{\link[rlang:as_function]{rlang::as_function()}}.
 This function is called with the table names of the \code{dm} object
-as only argument, and is expected to return a character vector
+as the only argument, and is expected to return a character vector
 of the same length.
 Use \code{table_names = ~ dbplyr::in_schema("schema_name", .x)}
 to specify the same schema for all tables.
