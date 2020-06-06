@@ -30,7 +30,7 @@
 #'   If a function or one-sided formula, `table_names` is converted to a function
 #'   using [rlang::as_function()].
 #'   This function is called with the table names of the `dm` object
-#'   as only argument, and is expected to return a character vector
+#'   as the only argument, and is expected to return a character vector
 #'   of the same length.
 #'   Use `table_names = ~ dbplyr::in_schema("schema_name", .x)`
 #'   to specify the same schema for all tables.
