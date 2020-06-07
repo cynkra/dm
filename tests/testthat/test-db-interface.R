@@ -53,7 +53,6 @@ test_repair_table_names_for_db <- function(table_names, temporary) {
 
   testthat::with_mock(
     unique_db_table_name = my_unique_db_table_name,
-
     {
       expect_equal(
         repair_table_names_for_db(table_names, temporary = TRUE),
