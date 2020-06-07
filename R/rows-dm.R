@@ -18,7 +18,7 @@
 #' Therefore, in-place operation must be requested explicitly with `in_place = TRUE`.
 #' By default, an informative message is given.
 #'
-#' @inheritParams rows_insert
+#' @inheritParams dplyr::rows_insert
 #' @param x Target `dm` object.
 #' @param y `dm` object with new data.
 #' @param ... Must be empty.

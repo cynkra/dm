@@ -19,7 +19,7 @@
 #' By default, an informative message is given.
 #' Unlike [compute()] or [copy_to()], no new tables are created.
 #'
-#' @inheritParams rows
+#' @inheritParams dplyr::rows_insert
 #' @param check
 #'   Set to `TRUE` to always check keys, or `FALSE` to never check.
 #'   The default is to check only if `in_place` is `TRUE` or `NULL`.
