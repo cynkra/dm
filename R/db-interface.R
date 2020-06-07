@@ -122,7 +122,7 @@ copy_dm_to <- function(dest, dm, ...,
     }
     check_naming(table_names, src_tbls(dm))
     # add the schema and create an `ident`-class object from the table names
-    table_names <- ident_q(table_names[src_tbls(dm)])
+    table_names <- dbplyr::ident_q(table_names[src_tbls(dm)])
   }
 
   check_not_zoomed(dm)
@@ -210,7 +210,7 @@ check_naming <- function(table_names, dm_table_names) {
 # Errors ------------------------------------------------------------------
 
 abort_copy_dm_to_table_names <- function(problems) {
-  abort(problems, .subclass = dm_error_full("copy_dm_to_table_names"))
+  abort(error_txt_copy_dm_to_table_names(), .subclass = dm_error_full("copy_dm_to_table_names"))
 }
 
 error_txt_copy_dm_to_table_names <- function() {
