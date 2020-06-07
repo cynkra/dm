@@ -87,7 +87,7 @@ my_test_src <- function() {
   )
 }
 
-test_frame <- function(...) {
+test_src_frame <- function(...) {
   src <- my_test_src()
 
   df <- tibble(...)
