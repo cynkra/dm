@@ -1,7 +1,7 @@
 #' @import cli
 #' @importFrom glue glue glue_sql
 #' @import rlang
-#' @importFrom vctrs vec_ptype_abbr
+#' @importFrom vctrs vec_ptype_abbr vec_slice
 #' @import dplyr
 #' @import DBI
 #' @import tibble

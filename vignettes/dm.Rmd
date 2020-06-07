@@ -63,13 +63,15 @@ fin_dm$loans
 dplyr::count(fin_dm$trans)
 ```
 
-Here we focus on the `loans`, `accounts`, `districts` and `trans` tables:
+At the same time, most `dm` functions are pipe-friendly and support tidy evaluation.
+We can use `[` or the `dm_select_tbl()` verb to derive a smaller dm with the `loans`, `accounts`, `districts` and `trans` tables:
 
 ```{r select}
 fin_dm_small <- fin_dm[c("loans", "accounts", "districts", "trans")]
+fin_dm_small <-
+  fin_dm %>%
+  dm_select_tbl(loans, accounts, districts, trans)
 ```
-
-The `dm_select_tbl()` verb offers a way to do the same in a `%>%` pipe.
 
 
 ## Linking tables by adding keys
