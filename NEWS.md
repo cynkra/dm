@@ -1,20 +1,6 @@
 # dm 0.1.4
 
-- Same as previous version.
-
-
-# dm 0.1.3.9002
-
-- `copy_dm_to()` also accepts a function as the `table_names` argument. The `unique_table_names()` argument is deprecated (#80).
-- Missing arguments now give a better error message (#388).
-- Empty `dm` object prints as `dm()` (#386).
-- Add TL;DR to README (#377, @jawond).
-- Add content from old README to `howto-dm-theory.Rmd` (#378, @jawond).
-- Require dplyr >= 1.0.0.
-- Use GitHub Actions (#369, @pat-s).
-
-
-# dm 0.1.3.9001
+## Features
 
 - New `dm_rows_insert()`, `dm_rows_update()`, `dm_rows_patch()`, `dm_rows_upsert()`, `dm_rows_delete()` and `dm_rows_truncate()`, calling the corresponding `rows_*()` method for every table (#319).
 
@@ -22,10 +8,23 @@
 
 - Added `rows_insert()` and `rows_update()` methods for SQLite, Postgres, MariaDB and MSSQL (#319).
 
+- Missing arguments now give a better error message (#388).
 
-# dm 0.1.3.9000
+- Empty `dm` object prints as `dm()` (#386).
 
-- Same as previous version.
+- `copy_dm_to()` also accepts a function as the `table_names` argument. The `unique_table_names()` argument is deprecated (#80).
+
+## Documentation
+
+- Add TL;DR to README (#377, @jawond).
+
+- Add content from old README to `howto-dm-theory.Rmd` (#378, @jawond).
+
+## Internal
+
+- Require dplyr >= 1.0.0.
+
+- Use GitHub Actions (#369, @pat-s).
 
 
 # dm 0.1.3
