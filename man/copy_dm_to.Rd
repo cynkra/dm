@@ -15,7 +15,6 @@ copy_dm_to(
   set_key_constraints = TRUE,
   unique_table_names = NULL,
   table_names = NULL,
-  schema = NULL,
   temporary = TRUE
 )
 }
@@ -49,7 +48,7 @@ of the same length.
 Use \code{table_names = ~ dbplyr::in_schema("schema_name", .x)}
 to specify the same schema for all tables.
 Use \code{table_names = identity} with \code{temporary = TRUE}
-to avoid making temporary tables unique.
+to avoid giving temporary tables unique names.
 
 If a named character vector,
 the names of this vector need to correspond to the table names in the \code{dm},
@@ -81,7 +80,7 @@ The arguments are included in the signature to avoid passing them via the
 \examples{
 con <- DBI::dbConnect(RSQLite::SQLite())
 
-# Copy to temporary tables:
+# Copy to temporary tables, unique table names by default:
 temp_dm <- copy_dm_to(
   con,
   dm_nycflights13(),
@@ -95,9 +94,7 @@ persistent_dm <- copy_dm_to(
   temporary = FALSE,
   table_names = ~ paste0("flights_", .x)
 )
-persistent_dm \%>\%
-  dm_get_tables() \%>\%
-  lapply(dbplyr::remote_name)
+dbplyr::remote_name(persistent_dm$planes)
 
 DBI::dbDisconnect(con)
 }
