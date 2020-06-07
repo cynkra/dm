@@ -9,7 +9,7 @@
 #' in two compatible [tbl] objects.
 #'
 #' If `y` lives on a different data source than `x`, it can be copied automatically
-#' by setting `copy = TRUE`, just like for [`dplyr::left_join()`].
+#' by setting `copy = TRUE`, just like for [dplyr::left_join()].
 #'
 #' On mutable backends like databases, these operations manipulate the
 #' underlying storage.

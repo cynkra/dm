@@ -51,7 +51,7 @@ Currently these checks are no-ops and need yet to be implemented.}
 }
 \value{
 A tbl object of the same structure as \code{x}.
-If \code{in_place = TRUE}, a modified version of \code{x} is returned invisibly.
+If \code{in_place = TRUE}, the underlying data is updated as a side effect and \code{x} is returned, invisibly.
 }
 \description{
 \lifecycle{experimental}
