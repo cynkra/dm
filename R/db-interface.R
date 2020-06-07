@@ -100,7 +100,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   if (!is_null(unique_table_names)) {
     lifecycle::deprecate_soft(
-      "0.1.4", "copy_dm_to(unique_table_names = ",
+      "0.1.4", "copy_dm_to(unique_table_names = )",
       details = "Use `table_names = identity` to use unchanged names for temporary tables."
     )
 
