@@ -38,8 +38,7 @@ dm_is_referenced <- function(dm, table) {
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
   check_not_zoomed(dm)
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
+  table <- dm_tbl_name(dm, {{ table }})
 
   def <- dm_get_def(dm)
   i <- which(def$table == table)

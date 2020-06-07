@@ -59,9 +59,7 @@
 #' )
 dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   col_expr <- ensym(columns)
   col_name <- as_name(col_expr)
@@ -114,7 +112,8 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' @export
 dm_has_pk <- function(dm, table) {
   check_not_zoomed(dm)
-  dm_has_pk_impl(dm, as_string(ensym(table)))
+  table_name <- dm_tbl_name(dm, {{ table }})
+  dm_has_pk_impl(dm, table_name)
 }
 
 dm_has_pk_impl <- function(dm, table) {
@@ -154,8 +153,7 @@ dm_has_pk_impl <- function(dm, table) {
 #' @export
 dm_get_pk <- function(dm, table) {
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
 }
 
@@ -226,8 +224,7 @@ dm_get_all_pks_impl <- function(dm) {
 #' @export
 dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
     affected <- dm_get_referencing_tables(dm, !!table_name)
@@ -307,8 +304,7 @@ dm_enum_pk_candidates <- function(dm, table) {
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
 
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   table <- dm_get_tables_impl(dm)[[table_name]]
   enum_pk_candidates_impl(table) %>%

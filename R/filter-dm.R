@@ -146,8 +146,7 @@ dm_apply_filters <- function(dm) {
 #' @export
 dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   dm_get_filtered_table(dm, table_name)
 }

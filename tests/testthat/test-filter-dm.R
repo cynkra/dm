@@ -121,6 +121,6 @@ test_that("dm_filter() returns original `dm` object when ellipsis empty", {
 test_that("dm_filter() fails when no table name is provided", {
   expect_dm_error(
     dm_filter(dm_for_filter()),
-    class = "table_not_in_dm"
+    class = "table_missing"
   )
 })

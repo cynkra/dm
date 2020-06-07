@@ -8,11 +8,7 @@ Error: (`Rudolph`) not a unique key of `Christmas`.
 Error: (`elves`, `Rudolph`, `mulled_wine`) not a unique key of `Christmas`.
 
 > abort_table_not_in_dm("laziness", "hard_work")
-Error: Table(s) `laziness` not in `dm` object. Available table names: `hard_work`.
-
-> abort_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus",
-+   "overtime"))
-Error: Table(s) `laziness`, `daydreaming` not in `dm` object. Available table names: `hard_work`, `focus`, `overtime`.
+Error: Table `laziness` not in `dm` object. Available table names: `hard_work`.
 
 > abort_not_subset_of("playing", "game", "hunting", "game")
 Error: Column `game` of table `playing` contains values (see above) that are not present in column `game` of table `hunting`.
