@@ -84,7 +84,7 @@ By default, temporary tables will be created and the key constraints will be set
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -193,7 +193,7 @@ By default, temporary tables will be created and the key constraints will be set
   <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>unique_indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
@@ -211,7 +211,7 @@ By default, temporary tables will be created and the key constraints will be set
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Possible further arguments passed to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code>, which is used on each table.</p></td>
+      <td><p>Passed on to <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to()</a></code>, which is used on each table.</p></td>
     </tr>
     <tr>
       <th>overwrite, types, indexes, unique_indexes</th>
@@ -223,16 +223,31 @@ By default, temporary tables will be created and the key constraints will be set
     </tr>
     <tr>
       <th>unique_table_names</th>
-      <td><p>Boolean, if <code>FALSE</code> (default), the original table names will be used, if <code>TRUE</code>,
-unique table names will be created based on the original table names.</p></td>
+      <td><p>Deprecated.</p></td>
     </tr>
     <tr>
       <th>table_names</th>
-      <td><p>A named character vector, containing the names that you want the tables in the <code>dm</code> to have
-after copying them to the database.
-The table names within the <code>dm</code> will remain unchanged.
-The name of each element of the vector needs to be one of the table names of the <code>dm</code>.
-Those tables of the <code>dm</code> that are not addressed will be called by their original name on the database.</p></td>
+      <td><p>Desired names for the tables on <code>dest</code>; the names within the <code>dm</code> remain unchanged.
+Can be <code>NULL</code>, a named character vector, a function or a one-sided formula.</p>
+<p>If left <code>NULL</code> (default), the names will be determined automatically depending on the <code>temporary</code> argument:</p><ol>
+<li><p><code>temporary = TRUE</code> (default): unique table names based on the names of the tables in the <code>dm</code> are created.</p></li>
+<li><p><code>temporary = FALSE</code>: the table names in the <code>dm</code> are used as names for the tables on <code>dest</code>.</p></li>
+</ol>
+
+<p>If a function or one-sided formula, <code>table_names</code> is converted to a function
+using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::as_function()</a></code>.
+This function is called with the table names of the <code>dm</code> object
+as the only argument, and is expected to return a character vector
+of the same length.
+Use <code>table_names = ~ dbplyr::in_schema("schema_name", .x)</code>
+to specify the same schema for all tables.
+Use <code>table_names = identity</code> with <code>temporary = TRUE</code>
+to avoid giving temporary tables unique names.</p>
+<p>If a named character vector,
+the names of this vector need to correspond to the table names in the <code>dm</code>,
+and its values are the desired names on <code>dest</code>.
+Use qualified names corresponding to your database's syntax
+to specify e.g. database and schema for your tables.</p></td>
     </tr>
     <tr>
       <th>temporary</th>
@@ -243,7 +258,8 @@ These tables will vanish when disconnecting from the database.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>dm</code> object on the given <code>src</code>.</p>
+    <p>A <code>dm</code> object on the given <code>src</code> with the same table names
+as the input <code>dm</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>No tables will be overwritten; passing <code>overwrite = TRUE</code> to the function will give an error.
@@ -253,12 +269,24 @@ The arguments are included in the signature to avoid passing them via the
 <code>...</code> ellipsis.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>src_sqlite</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_dbi.html'>src_sqlite</a></span>(<span class='st'>":memory:"</span>, <span class='kw'>create</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>iris_dm</span> <span class='kw'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
-  <span class='no'>src_sqlite</span>,
-  <span class='fu'><a href='dm.html'>as_dm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>)),
+    <pre class="examples"><div class='input'><span class='no'>con</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>())
+
+<span class='co'># Copy to temporary tables, unique table names by default:</span>
+<span class='no'>temp_dm</span> <span class='kw'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
+  <span class='no'>con</span>,
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
   <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</div></pre>
+)
+
+<span class='co'># Persist, explicitly specify table names:</span>
+<span class='no'>persistent_dm</span> <span class='kw'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
+  <span class='no'>con</span>,
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>table_names</span> <span class='kw'>=</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"flights_"</span>, <span class='no'>.x</span>)
+)
+<span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span>(<span class='no'>persistent_dm</span>$<span class='no'>planes</span>)</div><div class='output co'>#&gt; &lt;IDENT&gt; flights_planes</div><div class='input'>
+<span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>con</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -133,10 +133,20 @@
 </h1></div>
 <!-- badges: start -->
 
+<div id="tldr" class="section level2">
+<h2 class="hasAnchor">
+<a href="#tldr" class="anchor"></a>TL;DR</h2>
+<p>Are you using multiple data frames or database tables in R? Organize them with dm.</p>
+<ul>
+<li>Use it like a list of tables today.</li>
+<li>Build data models tomorrow.</li>
+<li>Deploy the models to your organization’s RDBMS the day after.</li>
+</ul>
+</div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>dm bridges the gap in the data pipeline between individual data frames and relational databases. It’s a <a href="https://twitter.com/drob/status/1224851726068527106">grammar of joined tables</a> that provides a consistent set of verbs for building, using and deploying relational data models. For individual researchers, it broadens the scope of datasets they can work with and how they work with them. For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.</p>
+<p>dm bridges the gap in the data pipeline between individual data frames and relational databases. It’s a <a href="https://twitter.com/drob/status/1224851726068527106">grammar of joined tables</a> that provides a consistent set of verbs for consuming, creating, and deploying relational data models. For individual researchers, it broadens the scope of datasets they can work with and how they work with them. For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.</p>
 <p>dm objects encapsulate relational data models constructed from local data frames or lazy tables connected to an RDBMS. dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking. Once a data model is complete, dm provides methods for deploying it to an RDBMS. This allows it to scale from datasets that fit in memory to databases with billions of rows.</p>
 </div>
 <div id="features" class="section level2">
@@ -287,7 +297,7 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-<li><a href="https://travis-ci.org/krlmlr/dm"><img src="https://travis-ci.org/krlmlr/dm.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://github.com/krlmlr/dm/actions"><img src="https://github.com/krlmlr/dm/workflows/tic/badge.svg" alt="R build status"></a></li>
 <li><a href="https://codecov.io/gh/krlmlr/dm?branch=master"><img src="https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://CRAN.R-project.org/package=dm"><img src="https://www.r-pkg.org/badges/version/dm" alt="CRAN status"></a></li>
 <li><a href="https://rstudio.cloud/project/523482"><img src="https://img.shields.io/badge/rstudio-cloud-blue.svg" alt="Launch rstudio.cloud"></a></li>

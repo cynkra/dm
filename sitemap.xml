@@ -139,6 +139,15 @@
     <loc>https://krlmlr.github.io/dm/reference/reunite_parent_child.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/rows-db.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/rows-dm.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/rows_truncate.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/reference/tidyr_table_manipulation.html</loc>
   </url>
   <url>
@@ -179,6 +188,9 @@
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/tech-dm-zoom.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/wip/dm-insert.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/wip/dm-readme-old.html</loc>

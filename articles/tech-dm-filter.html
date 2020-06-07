@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@
       <h1 data-toc-skip>Filtering in relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2020-05-26</h4>
+            <h4 class="date">2020-06-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-filter.Rmd"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-filter.Rmd</code></div>
@@ -215,7 +215,7 @@
 <li>Calling <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> or <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> methods for <code>dm</code> objects on a <code>dm</code>: this results in a new <code>dm</code> that contains the same tables as before. Each table is the result of a <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code> call, meaning that the effects of the filter conditions on each of the tables are taken into account.</li>
 </ol>
 <p>Currently, this only works if the graph induced by the foreign key relations is cycle free. Fortunately, this is the default for <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code>.</p>
-<p>Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_rename_tbl()</a></code>, <code><a href="../reference/dm_select.html">dm_select()</a></code>, <code><a href="../reference/dm_rename.html">dm_rename()</a></code> and <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code>. In these cases consider applying the filters with <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> first.</p>
+<p>Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_rename_tbl()</a></code>, <code><a href="../reference/dm_select.html">dm_select()</a></code>, <code><a href="../reference/dm_rename.html">dm_rename()</a></code> and <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code>. In these cases consider applying the filters with <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> first.</p>
 </div>
 <div id="filtering-examples" class="section level3">
 <h3 class="hasAnchor">
@@ -333,8 +333,8 @@
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">airlines_filtered</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">airlines</span>, <span class="no">name</span> <span class="kw">==</span> <span class="st">"Delta Air Lines Inc."</span>)
 <span class="no">airports_filtered</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">airports</span>, <span class="no">name</span> <span class="kw">!=</span> <span class="st">"John F Kennedy Intl"</span>)
 <span class="no">flights</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">semi_join</a></span>(<span class="no">airlines_filtered</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"carrier"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">semi_join</a></span>(<span class="no">airports_filtered</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> <span class="kw">=</span> <span class="st">"faa"</span>)) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join</a></span>(<span class="no">airlines_filtered</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"carrier"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join</a></span>(<span class="no">airports_filtered</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> <span class="kw">=</span> <span class="st">"faa"</span>)) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">month</span> <span class="kw">==</span> <span class="fl">5</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 2,340 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -369,36 +369,36 @@
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">dm</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span>(<span class="no">flights</span>, <span class="no">airlines</span>, <span class="no">airports</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span>(<span class="no">flights</span>, <span class="no">month</span> <span class="kw">==</span> <span class="fl">5</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="kw pkg">dbplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">src_memdb</a></span>(), <span class="no">.</span>, <span class="kw">unique_table_names</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="kw pkg">dbplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html">src_memdb</a></span>(), <span class="no">.</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span>(<span class="no">airlines</span>, <span class="no">name</span> <span class="kw">==</span> <span class="st">"Delta Air Lines Inc."</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span>(<span class="no">airports</span>, <span class="no">name</span> <span class="kw">!=</span> <span class="st">"John F Kennedy Intl"</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu">map</span>(<span class="kw pkg">dbplyr</span><span class="kw ns">::</span><span class="no"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render</a></span>)
 <span class="co">#&gt; $flights</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM flights_2020_05_26_02_43_45_1 AS `LHS`</span>
+<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM `flights_2020_06_07_12_08_10_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM airlines_2020_05_26_02_43_45_2</span>
+<span class="co">#&gt; FROM `airlines_2020_06_07_12_08_10_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM airports_2020_05_26_02_43_45_3</span>
+<span class="co">#&gt; FROM `airports_2020_06_07_12_08_10_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airlines</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM airlines_2020_05_26_02_43_45_2</span>
+<span class="co">#&gt; FROM `airlines_2020_06_07_12_08_10_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_05_26_02_43_45_1 AS `LHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_06_07_12_08_10_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM airports_2020_05_26_02_43_45_3</span>
+<span class="co">#&gt; FROM `airports_2020_06_07_12_08_10_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )) AS `RHS`</span>
@@ -407,13 +407,13 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airports</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM airports_2020_05_26_02_43_45_3</span>
+<span class="co">#&gt; FROM `airports_2020_06_07_12_08_10_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM flights_2020_05_26_02_43_45_1 AS `LHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_06_07_12_08_10_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM airlines_2020_05_26_02_43_45_2</span>
+<span class="co">#&gt; FROM `airlines_2020_06_07_12_08_10_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )) AS `RHS`</span>
