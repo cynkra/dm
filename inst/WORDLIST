@@ -17,6 +17,7 @@ dbplyr
 DBs
 denormalized
 dev
+dimensioned
 disambiguated
 disambiguates
 disambiguations
@@ -60,7 +61,6 @@ rstudio
 RStudio
 schemas
 sqlite
-Sqlite
 src
 stringr
 surjective
