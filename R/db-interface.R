@@ -120,7 +120,7 @@ copy_dm_to <- function(dest, dm, ...,
       table_name_fun <- as_function(table_names)
       table_names <- set_names(table_name_fun(src_tbls(dm)), src_tbls(dm))
     }
-    check_naming(table_names, src_tbls(dm))
+    check_naming(names(table_names), src_tbls(dm))
     # add the schema and create an `ident`-class object from the table names
     table_names <- dbplyr::ident_q(table_names[src_tbls(dm)])
   }
