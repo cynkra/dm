@@ -26,11 +26,6 @@ test_that("copy_dm_to() copies data frames from databases", {
     copy_dm_to(local_test_src, dm_for_filter_sqlite()),
     dm_for_filter_sqlite()
   )
-
-  # FIXME: the following leads to a dm of unchanged table names (as expected), but tables `test_dm.tf_1` etc. appear
-  # in .GlobalEnv; shall we instead just forward `copy_dm_to(local_test_src, ...)` to `collect()`?
-  #
-  # copy_dm_to(local_test_src, dm_for_filter_sqlite(), schema = "test_dm", temporary = FALSE),
 })
 
 # FIXME: Add test that set_key_constraints = FALSE doesn't set key constraints,
@@ -50,16 +45,24 @@ test_that("copy_dm_to() rejects overwrite and types arguments", {
 
 # set up for test: in order for the unique table names to return the same result each time, we need to trick the function
 test_repair_table_names_for_db <- function(table_names, temporary) {
+  orig_table_names <- c("t1", "t2", "t3")
+
+  my_unique_db_table_name <- function(table_name) {
+    glue::glue("{table_name}_2020_05_15_10_45_29_0")
+  }
+
   testthat::with_mock(
-    unique_db_table_name = function(table_name) glue::glue("{table_name}_2020_05_15_10_45_29_0"),
-    repair_table_names_for_db(table_names, temporary)
+    unique_db_table_name = my_unique_db_table_name,
+
+    {
+      expect_equal(
+        repair_table_names_for_db(table_names, temporary = TRUE),
+        my_unique_db_table_name(table_names)
+      )
+      expect_equal(
+        repair_table_names_for_db(table_names, temporary = FALSE),
+        table_names
+      )
+    }
   )
 }
-orig_table_names <- c("t1", "t2", "t3")
-
-test_that("repair_table_names_for_db() works properly", {
-  verify_output("out/repair_table_names_for_db.txt", {
-    test_repair_table_names_for_db(table_names = orig_table_names, temporary = TRUE)
-    test_repair_table_names_for_db(table_names = orig_table_names, temporary = FALSE)
-  })
-})

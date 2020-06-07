@@ -35,7 +35,7 @@
 #'   Use `table_names = ~ dbplyr::in_schema("schema_name", .x)`
 #'   to specify the same schema for all tables.
 #'   Use `table_names = identity` with `temporary = TRUE`
-#'   to avoid making temporary tables unique.
+#'   to avoid giving temporary tables unique names.
 #'
 #'   If a named character vector,
 #'   the names of this vector need to correspond to the table names in the `dm`,
@@ -52,7 +52,7 @@
 #' @examples
 #' con <- DBI::dbConnect(RSQLite::SQLite())
 #'
-#' # Copy to temporary tables:
+#' # Copy to temporary tables, unique table names by default:
 #' temp_dm <- copy_dm_to(
 #'   con,
 #'   dm_nycflights13(),
@@ -66,9 +66,7 @@
 #'   temporary = FALSE,
 #'   table_names = ~ paste0("flights_", .x)
 #' )
-#' persistent_dm %>%
-#'   dm_get_tables() %>%
-#'   lapply(dbplyr::remote_name)
+#' dbplyr::remote_name(persistent_dm$planes)
 #'
 #' DBI::dbDisconnect(con)
 #' @export
@@ -77,7 +75,6 @@ copy_dm_to <- function(dest, dm, ...,
                        indexes = NULL, unique_indexes = NULL,
                        set_key_constraints = TRUE, unique_table_names = NULL,
                        table_names = NULL,
-                       schema = NULL,
                        temporary = TRUE) {
   # for the time being, we will be focusing on MSSQL
   # we want to
@@ -102,8 +99,12 @@ copy_dm_to <- function(dest, dm, ...,
   }
 
   if (!is_null(unique_table_names)) {
-    # FIXME: Deprecation warning
-    if (is.null(table_names) && temporary) {
+    lifecycle::deprecate_soft(
+      "0.1.4", "copy_dm_to(unique_table_names = ",
+      details = "Use `table_names = identity` to use unchanged names for temporary tables."
+    )
+
+    if (is.null(table_names) && temporary && !unique_table_names) {
       table_names <- identity
     }
   }
@@ -200,67 +201,18 @@ dm_set_key_constraints <- function(dm) {
 }
 
 check_naming <- function(table_names, dm_table_names) {
-  # FIXME: Extract to a helper function,
-  # check identical(sort(names1), sort(names2)),
-  # use only one error with different hints
-  problems <- "Problem(s) with argument `table_names` in `copy_to_dm`:"
-  if (length(table_names) != length(dm_table_names)) {
-    problems <- c(
-      problems, paste0(
-        "should provide exactly one name for each table in the ",
-        "`dm` but the numbers differ. Leave it empty for automatic naming."
-      )
-    )
-    # abort_all_tbls_need_db_names()
+  if (!identical(sort(table_names), sort(dm_table_names))) {
+    abort_copy_dm_to_table_names()
   }
-  if (as.logical(anyDuplicated(table_names))) {
-    dupl_names <- unique(table_names[duplicated(table_names)])
-    problems <- c(problems, glue::glue("No duplicated names allowed. Duplicated names: {commas(tick(dupl_names))}"))
-    # abort_only_unique_db_names(table_names)
-  }
-  not_found <- setdiff(names2(table_names), dm_table_names)
-  if (has_length(not_found)) {
-    if (any(not_found == "")) {
-      problems <- c(
-        problems,
-        glue::glue(
-          "needs to be a named vector whose names ",
-          "are the original table names (returned by e.g. `src_tbls()`): {commas(tick(dm_table_names))}."
-        )
-      )
-    }
-    if (any(not_found != "")) problems <- c(problems, error_txt_table_not_in_dm(not_found[not_found != ""], dm_table_names)) # abort_need_named_vec(src_tbls(dm))
-    # abort_table_not_in_dm(unique(not_found), src_tbls(dm))
-  }
-  if (length(problems) > 1) {
-    abort_problem_with_table_names(problems)
-  }
-  NULL
 }
 
 
 # Errors ------------------------------------------------------------------
 
-abort_problem_with_table_names <- function(problems) {
-  abort(problems, .subclass = dm_error_full("problem_with_table_names"))
+abort_copy_dm_to_table_names <- function(problems) {
+  abort(problems, .subclass = dm_error_full("copy_dm_to_table_names"))
 }
 
-abort_all_tbls_need_db_names <- function() {
-  abort(error_txt_all_tbls_need_db_names(), .subclass = dm_error_full("all_tbls_need_db_names"))
-}
-
-error_txt_all_tbls_need_db_names <- function() {
-  paste0(
-    "`table_names` should provide exactly one name for each table in the ",
-    "`dm` but the numbers differ. Leave it empty for automatic naming."
-  )
-}
-
-abort_only_unique_db_names <- function(table_names) {
-  dupl_names <- unique(table_names[duplicated(table_names)])
-  abort(error_txt_only_unique_db_names(dupl_names), .subclass = dm_error_full("only_unique_db_names"))
-}
-
-error_txt_only_unique_db_names <- function(dupl_names) {
-  glue::glue("No duplicated names allowed for parameter `table_names`. Duplicated names: {commas(tick(dupl_names))}")
+error_txt_copy_dm_to_table_names <- function() {
+  "`table_names` must have names that are the same as the table names in `dm`."
 }
