@@ -65,6 +65,21 @@ dplyr::tbl
 dplyr::arrange
 
 #' @export
+dplyr::rows_insert
+
+#' @export
+dplyr::rows_update
+
+#' @export
+dplyr::rows_patch
+
+#' @export
+dplyr::rows_upsert
+
+#' @export
+dplyr::rows_delete
+
+#' @export
 tidyr::unite
 
 #' @export
