@@ -141,15 +141,17 @@
 <div id="working-with-databases" class="section level1">
 <h1 class="hasAnchor">
 <a href="#working-with-databases" class="anchor"></a>Working with databases</h1>
-<p>A dm object can be created from any database that has a {<a href="https://dbi.r-dbi.org/">DBI</a>} backend (<a href="https://github.com/r-dbi/backends">see list</a>). When a dm object is created it can either import all the tables in the database, the active schema or a limited set. For some RDBMS, such as Postgres and SQL Server, primary and foreign keys are also imported and do not have to be manually added afterwards.</p>
-<p>To demonstrate, we connect to a <a href="https://relational.fit.cvut.cz/">relational dataset repository</a> with a database server that is publicly accessible without registration. There is a <a href="https://relational.fit.cvut.cz/dataset/Financial">financial dataset</a> that contains loan data along with relevant account information and transactions. We chose this dataset because the relationships between <code>loan</code>, <code>account</code>, <code>transactions</code> tables are a good representation of databases that record real-world business transactions. The repository uses a MariaDB server for which {dm} does not currently import primary or foreign keys, so we will need to add them.</p>
+<p>A dm object can be created from any database that has a {<a href="https://dbi.r-dbi.org/">DBI</a>} backend (<a href="https://github.com/r-dbi/backends">see list</a>).</p>
+<p>When a dm object is created it can either import all the tables in the database, the active schema or a limited set. For some RDBMS, such as Postgres and SQL Server, primary and foreign keys are also imported and do not have to be manually added afterwards.</p>
+<p>There is a <a href="https://relational.fit.cvut.cz/dataset/Financial">financial dataset</a> that contains loan data along with relevant account information and transactions. We chose this dataset because the relationships between <code>loan</code>, <code>account</code>, <code>transactions</code> tables are a good representation of databases that record real-world business transactions. The repository uses a MariaDB server for which {dm} does not currently import primary or foreign keys, so we will need to add them.</p>
+<p>The dataset is available on database server that is publicly accessible without registration. Connection details will vary for your database, see <code><a href="https://dbi.r-dbi.org/articles/DBI.html">vignette("DBI", package = "DBI")</a></code> for further information.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RMariaDB</span>)
 <span class="no">my_db</span> <span class="kw">&lt;-</span> <span class="fu">dbConnect</span>(
   <span class="fu"><a href="https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html">MariaDB</a></span>(),
-  <span class="kw">username</span> <span class="kw">=</span> <span class="st">'guest'</span>,
-  <span class="kw">password</span> <span class="kw">=</span> <span class="st">'relational'</span>,
-  <span class="kw">dbname</span> <span class="kw">=</span> <span class="st">'Financial_ijs'</span>,
-  <span class="kw">host</span> <span class="kw">=</span> <span class="st">'relational.fit.cvut.cz'</span>
+  <span class="kw">username</span> <span class="kw">=</span> <span class="st">"guest"</span>,
+  <span class="kw">password</span> <span class="kw">=</span> <span class="st">"relational"</span>,
+  <span class="kw">dbname</span> <span class="kw">=</span> <span class="st">"Financial_ijs"</span>,
+  <span class="kw">host</span> <span class="kw">=</span> <span class="st">"relational.fit.cvut.cz"</span>
 )</pre></body></html></div>
 <p>Creating a dm object takes a single call to <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> with the DBI connection object as its argument.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
@@ -192,7 +194,7 @@
 <div id="define-primary-and-foreign-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#define-primary-and-foreign-keys" class="anchor"></a>Define Primary and Foreign Keys</h2>
-<p>Primary keys and foreign keys are how relational database tables are linked with each other. A primary key is a column that has a unique value for each row within a table. A foreign key is a column containing the primary key for a row in another table.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Foreign keys act as cross references between tables. They specify the relationships that gives us the <em>relational</em> database.</p>
+<p>Primary keys and foreign keys are how relational database tables are linked with each other. A primary key is a column that has a unique value for each row within a table. A foreign key is a column containing the primary key for a row in another table.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Foreign keys act as cross references between tables. They specify the relationships that gives us the <em>relational</em> database. For more information on keys and a crash course on databases, see <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 <p>The <a href="https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg">model diagram</a> provided by our test database loosely illustrates the intended relationships between tables. In the diagram we can see that the <code>loans</code> table should be linked to the <code>accounts</code> table. Below we create those links in 3 steps:</p>
 <ol style="list-style-type: decimal">
 <li>Add a primary key <code>id</code> to the <code>accounts</code> table</li>
@@ -438,7 +440,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7fe9c1e6f010&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x7fb92e71e740&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></pre></body></html></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -495,7 +497,7 @@
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
 <div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span></pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_06_07_03_37_30_1&gt; [?? x 2]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_06_07_05_31_59_1&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
