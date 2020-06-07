@@ -659,7 +659,7 @@ tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
   check_not_zoomed(dm)
-  check_correct_input(dm, from, 1L)
+  from <- dm_tbl_name(dm, !!from)
 
   dm_get_tables_impl(dm)[[from]]
 }
