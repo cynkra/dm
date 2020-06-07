@@ -399,8 +399,10 @@ test_that("dm_get_filters() works", {
 })
 
 test_that("output", {
-  nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
   verify_output("out/output.txt", {
+    print(dm())
+
+    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
     nyc_flights_dm
 
     nyc_flights_dm %>%

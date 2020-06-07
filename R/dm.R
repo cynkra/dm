@@ -451,12 +451,22 @@ format.dm <- function(x, ...) {
 
 #' @export
 print.dm <- function(x, ...) {
-  cat_rule("Table source", col = "green")
+  show_dm(x)
+  invisible(x)
+}
+
+show_dm <- function(x) {
   def <- dm_get_def(x)
+  if (nrow(def) == 0) {
+    cat_line("dm()")
+    return()
+  }
+
+  cat_rule("Table source", col = "green")
   src <- dm_get_src(x)
   db_info <- NULL
 
-  if (!is.null(src$con) && nrow(def) >= 0) {
+  if (!is.null(src$con)) {
     # FIXME: change to pillar::tbl_sum() once it's there
     tbl_str <- tibble::tbl_sum(def$data[[1]])
     if ("Database" %in% names(tbl_str)) {
@@ -481,8 +491,6 @@ print.dm <- function(x, ...) {
     cat_rule("Filters", col = "orange")
     walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
   }
-
-  invisible(x)
 }
 
 def_get_n_tables <- function(def) {

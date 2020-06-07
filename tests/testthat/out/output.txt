@@ -1,3 +1,7 @@
+> print(dm())
+dm()
+
+> nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
 > nyc_flights_dm
 -- Table source ----------------------------------------------------------------
 src:  <environment: R_GlobalEnv>
