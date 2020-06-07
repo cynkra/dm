@@ -15,4 +15,4 @@ OK
 ## CRAN failures
 
 - [x] Checked on 2020-06-07, errors found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [ ] NOTE: r-patched-solaris-x86, please upgrade libpq on the Solaris machine
+- [ ] NOTE: r-patched-solaris-x86 doesn't have RPostgres
