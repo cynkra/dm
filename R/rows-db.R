@@ -195,7 +195,7 @@ sql_rows_update <- function(x, y, by, ...) {
 }
 
 #' @export
-sql_rows_update.tbl_sql <- function(x, y, by, ...) {
+sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
