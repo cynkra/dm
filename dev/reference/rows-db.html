@@ -51,7 +51,9 @@
 These methods provide a framework for manipulating individual rows
 in existing tables.
 All operations expect that both existing and new data are presented
-in two compatible tbl objects on the same data source.
+in two compatible tbl objects.
+If y lives on a different data source than x, it can be copied automatically
+by setting copy = TRUE, just like for dplyr::left_join().
 On mutable backends like databases, these operations manipulate the
 underlying storage.
 In contrast to all other operations,
@@ -60,7 +62,8 @@ Therefore, in-place updates must be requested explicitly with in_place = TRUE.
 By default, an informative message is given.
 Unlike compute() or copy_to(), no new tables are created.
 The sql_rows_*() functions return the SQL used for the corresponding
-rows_*() function with in_place = FALSE." />
+rows_*() function with in_place = FALSE.
+y needs to be located on the same data source as x." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 
 
@@ -190,7 +193,9 @@ rows_*() function with in_place = FALSE." />
 <p>These methods provide a framework for manipulating individual rows
 in existing tables.
 All operations expect that both existing and new data are presented
-in two compatible <a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a> objects on the same data source.</p>
+in two compatible <a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a> objects.</p>
+<p>If <code>y</code> lives on a different data source than <code>x</code>, it can be copied automatically
+by setting <code>copy = TRUE</code>, just like for <code><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>dplyr::left_join()</a></code>.</p>
 <p>On mutable backends like databases, these operations manipulate the
 underlying storage.
 In contrast to all other operations,
@@ -199,7 +204,8 @@ Therefore, in-place updates must be requested explicitly with <code>in_place = T
 By default, an informative message is given.
 Unlike <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code> or <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to()</a></code>, no new tables are created.</p>
 <p>The <code>sql_rows_*()</code> functions return the SQL used for the corresponding
-<code>rows_*()</code> function with <code>in_place = FALSE</code>.</p>
+<code>rows_*()</code> function with <code>in_place = FALSE</code>.
+<code>y</code> needs to be located on the same data source as <code>x</code>.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for tbl_dbi</span>
@@ -255,14 +261,16 @@ it is a potentially expensive operation so you must opt into it.</p></td>
     <tr>
       <th>check</th>
       <td><p>Set to <code>TRUE</code> to always check keys, or <code>FALSE</code> to never check.
-The default is to check only if <code>in_place</code> is <code>TRUE</code> or <code>NULL</code>.</p></td>
+The default is to check only if <code>in_place</code> is <code>TRUE</code> or <code>NULL</code>.</p>
+<p>Currently these checks are no-ops and need yet to be implemented.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A tbl object of the same structure as <code>x</code>.
-If <code>in_place = TRUE</code>, <a href='https://rdrr.io/r/base/invisible.html'>invisible</a> and identical to <code>x</code>.</p>
+If <code>in_place = TRUE</code>, the underlying data is updated as a side effect,
+and <code>x</code> is returned, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>memdb_frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>NA</span>)], <span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>0.5</span> + <span class='fl'>0</span>:<span class='fl'>2</span>)

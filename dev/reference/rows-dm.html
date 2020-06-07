@@ -273,7 +273,8 @@ when <code>FALSE</code>, a new object representing the resulting changes is retu
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A dm object of the same <code><a href='dm_ptype.html'>dm_ptype()</a></code> as <code>x</code>.
-If <code>in_place = TRUE</code>, <a href='https://rdrr.io/r/base/invisible.html'>invisible</a> and identical to <code>x</code>.</p>
+If <code>in_place = TRUE</code>, the underlying data is updated as a side effect,
+and <code>x</code> is returned, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Establish database connection:</span>
