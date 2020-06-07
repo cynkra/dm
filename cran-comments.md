@@ -1,4 +1,4 @@
-dm 0.1.3: dplyr 1.0.0 compatibility
+dm 0.1.4
 
 ## Cran Repository Policy
 
@@ -7,12 +7,16 @@ dm 0.1.3: dplyr 1.0.0 compatibility
 ## R CMD check results
 
 - [x] Checked locally, R 4.0.0
-- [x] Checked on CI system, R 4.0.0
-- [x] Checked on win-builder, R devel
+- [ ] Checked on CI system, R 4.0.1
+- [ ] Checked on win-builder, R devel
 
 OK
 
+- [ ] Explain R CMD check failures or remove this line.
+
 ## CRAN failures
 
-- [x] Checked on 2020-05-24, errors found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [x] NOTE: r-patched-solaris-x86: Moved RPostgres to "Enhances", please upgrade libpq on the Solaris machines.
+- [x] Checked on 2020-06-07, errors found: https://cran.r-project.org/web/checks/check_results_dm.html
+- [ ] NOTE: r-patched-solaris-x86
+
+Check results at: https://cran.r-project.org/web/checks/check_results_dm.html
