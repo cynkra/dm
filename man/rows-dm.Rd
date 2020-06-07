@@ -37,7 +37,8 @@ when \code{FALSE}, a new object representing the resulting changes is returned.}
 }
 \value{
 A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{x}.
-If \code{in_place = TRUE}, the underlying data is updated as a side effect and \code{x} is returned, invisibly.
+If \code{in_place = TRUE}, the underlying data is updated as a side effect,
+and \code{x} is returned, invisibly.
 }
 \description{
 \lifecycle{experimental}
