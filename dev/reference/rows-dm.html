@@ -283,8 +283,10 @@ and <code>x</code> is returned, invisibly.</p>
 } <span class='kw'>else</span> {
   <span class='co'># Fallback, persistence won't work:</span>
   <span class='no'>sqlite</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env.html'>new_environment</a></span>())
-}
-
+}</div><div class='output co'>#&gt; <span class='warning'>Warning: `src_sqlite()` is deprecated as of dplyr 1.0.0.</span>
+#&gt; <span class='warning'>Please use `tbl()` directly with a database connection</span>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
+#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='input'>
 <span class='co'># Entire dataset with all dimension tables populated</span>
 <span class='co'># with flights and weather data truncated:</span>
 <span class='no'>flights_init</span> <span class='kw'>&lt;-</span>
@@ -313,10 +315,10 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_jan</span>))</div><div class='output co'>#&gt; flights weather 
 #&gt;     932      72 </div><div class='input'>
 <span class='co'># Copy to temporary tables on the target database:</span>
-<span class='no'>flights_jan_sqlite</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='no'>sqlite</span>, <span class='no'>flights_jan</span>, <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>flights_jan_sqlite</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='no'>sqlite</span>, <span class='no'>flights_jan</span>)
 
 <span class='co'># Dry run by default:</span>
-<span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_jan_sqlite</span>)</div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+<span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_jan_sqlite</span>)</div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  sqlite 3.30.1 [:memory:]
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -340,7 +342,7 @@ and <code>x</code> is returned, invisibly.</p>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span>()
 
 <span class='co'># Copy to temporary tables on the target database:</span>
-<span class='no'>flights_feb_sqlite</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='no'>sqlite</span>, <span class='no'>flights_feb</span>, <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>flights_feb_sqlite</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='no'>sqlite</span>, <span class='no'>flights_feb</span>)
 
 <span class='co'># Explicit dry run:</span>
 <span class='no'>flights_new</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_rows_insert</span>(
