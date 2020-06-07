@@ -111,9 +111,6 @@ Error: `dm_..._to_tbl()` with join method `join_tightly` generally wouldn't prod
 > abort_no_flatten_with_nest_join()
 Error: `dm_..._to_tbl()` can't be called with `join = nest_join`, see the help pages for these functions. Consider `join = left_join`.
 
-> abort_unique_table_names_or_table_names()
-Error: Can supply either `table_names` or `unique_table_names = TRUE`, not both.
-
 > abort_is_not_dm("blob")
 Error: Required class `dm` but instead is `blob`.
 

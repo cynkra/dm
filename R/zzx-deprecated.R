@@ -110,6 +110,13 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes =
                         unique_indexes = NULL, set_key_constraints = TRUE, unique_table_names = FALSE,
                         table_names = NULL, temporary = TRUE) {
   deprecate_soft("0.1.0", "dm::cdm_copy_to()", "dm::copy_dm_to()")
+
+  if (!is_null(unique_table_names)) {
+    if (is.null(table_names) && temporary && !unique_table_names) {
+      table_names <- identity
+    }
+  }
+
   copy_dm_to(
     dest = dest, dm = dm, ... = ..., types = types,
     overwrite = overwrite, indexes = indexes, unique_indexes = unique_indexes,

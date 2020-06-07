@@ -335,16 +335,6 @@ error_txt_no_flatten_with_nest_join <- function() {
   )
 }
 
-# either explicit table names, or auto-unique ones ------------------------
-
-abort_unique_table_names_or_table_names <- function() {
-  abort(error_txt_unique_table_names_or_table_names(), .subclass = dm_error_full("unique_table_names_or_table_names"))
-}
-
-error_txt_unique_table_names_or_table_names <- function() {
-  "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
-}
-
 
 # object is not a `dm` (but should be one) --------------------------------
 abort_is_not_dm <- function(obj_class) {

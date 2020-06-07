@@ -40,7 +40,6 @@ test_that("error messages do not change", {
     abort_squash_limited()
     abort_apply_filters_first("join_tightly")
     abort_no_flatten_with_nest_join()
-    abort_unique_table_names_or_table_names()
     abort_is_not_dm("blob")
     abort_con_only_for_dbi()
     abort_only_possible_wo_zoom("dm_zoom_to")
