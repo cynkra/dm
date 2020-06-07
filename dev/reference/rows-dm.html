@@ -109,7 +109,7 @@ The order in which the tables are processed is reversed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.3.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.4.9000</span>
       </span>
     </div>
 
@@ -215,18 +215,18 @@ tables receive insertions before child (fact) tables.</p>
 may lead to irreversible changes to the underlying database.
 Therefore, in-place operation must be requested explicitly with <code>in_place = TRUE</code>.
 By default, an informative message is given.</p>
-<p><code>dm_rows_insert()</code> adds new records via <code><a href='rows.html'>rows_insert()</a></code>.
+<p><code>dm_rows_insert()</code> adds new records via <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert()</a></code>.
 The primary keys must differ from existing records.
 This must be ensured by the caller and might be checked by the underlying database.
 Use <code>in_place = FALSE</code> and apply <code><a href='dm_examine_constraints.html'>dm_examine_constraints()</a></code> to check beforehand.</p>
-<p><code>dm_rows_update()</code> updates existing records via <code><a href='rows.html'>rows_update()</a></code>.
+<p><code>dm_rows_update()</code> updates existing records via <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update()</a></code>.
 Primary keys must match for all records to be updated.</p>
 <p><code>dm_rows_patch()</code> updates missing values in existing records
-via <code><a href='rows.html'>rows_patch()</a></code>.
+via <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_patch()</a></code>.
 Primary keys must match for all records to be patched.</p>
 <p><code>dm_rows_upsert()</code> updates existing records and adds new records,
-based on the primary key, via <code><a href='rows.html'>rows_upsert()</a></code>.</p>
-<p><code>dm_rows_delete()</code> removes matching records via <code><a href='rows.html'>rows_delete()</a></code>,
+based on the primary key, via <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_upsert()</a></code>.</p>
+<p><code>dm_rows_delete()</code> removes matching records via <code><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_delete()</a></code>,
 based on the primary key.
 The order in which the tables are processed is reversed.</p>
 <p><code>dm_rows_truncate()</code> removes all records via <code><a href='rows_truncate.html'>rows_truncate()</a></code>,
