@@ -25,7 +25,6 @@ test_that("error messages do not change", {
     abort_no_types()
     abort_no_indexes()
     abort_no_unique_indexes()
-    abort_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
     abort_key_constraints_need_db()
     abort_pk_not_defined("table")
     abort_fk_exists("child", c("child_1", "child_2"), "parent")
