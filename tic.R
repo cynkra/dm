@@ -5,6 +5,9 @@ get_stage("install") %>%
 get_stage("install") %>%
   add_step(tic::step_install_cran("cli"))
 
+get_stage("install") %>%
+  add_step(tic::step_install_cran("testthat"))
+
 get_stage("after_deploy") %>%
   add_step(step_run_code(print(gh::gh("/rate_limit"))))
 
