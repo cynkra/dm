@@ -386,7 +386,7 @@ anti_join.zoomed_dm <- function(x, y, by = NULL, copy = NULL, suffix = NULL, sel
 }
 
 prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) {
-  y_name <- dm_tbl_name(dm, {{ y }})
+  y_name <- dm_tbl_name(x, {{ y }})
   select_quo <- enquo(selected)
 
   if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")

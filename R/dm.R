@@ -558,7 +558,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 `$.dm` <- function(x, name) {
-  table <- dm_tbl_name(dm, {{ name }})
+  table <- dm_tbl_name(x, {{ name }})
   tbl(x, table)
 }
 

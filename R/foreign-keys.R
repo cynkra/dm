@@ -348,7 +348,7 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
   check_no_filter(zoomed_dm)
 
   table_name <- orig_name_zoomed(zoomed_dm)
-  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
+  ref_table_name <- dm_tbl_name(zoomed_dm, {{ ref_table }})
 
   ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
