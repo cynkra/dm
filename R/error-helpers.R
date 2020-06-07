@@ -50,16 +50,6 @@ error_txt_not_unique_key <- function(table_name, column_names) {
   glue("({commas(tick(column_names))}) not a unique key of {tick(table_name)}.")
 }
 
-# general error: table not part of `dm` -----------------------------------
-
-abort_table_not_in_dm <- function(table_name, dm_tables) {
-  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = dm_error_full("table_not_in_dm"))
-}
-
-error_txt_table_not_in_dm <- function(table_name, dm_tables) {
-  glue("Table(s) {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}.")
-}
-
 # error: is not subset of -------------------------------------------------
 
 abort_not_subset_of <- function(table_name_1, colname_1,
