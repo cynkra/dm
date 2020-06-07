@@ -61,9 +61,32 @@ flights_dm_no_keys
 
 The `as_dm()` function is an alternative that works if you already have a list of tables.
 
+## A dm is a list
+
+dm objects behave like lists with a user- and console-friendly print format. 
+In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.
+
+Member referencing, by subscript and by name, and list and slice manipulation functions work just as you would expect on a dm object.
+
+```{r listlike}
+names(flights_dm_no_keys)
+flights_dm_no_keys$airports
+flights_dm_no_keys[c("airports", "flights")]
+```
+
 ## Defining Keys
 
-Even though we now have a `dm` object that contains all our data, we have not specified how our five tables are connected (the foreign keys), and which column(s) uniquely identify the observations within the tables (the primary keys).
+Even though we now have a `dm` object that contains all our data, we have not specified how our five tables are connected.
+To do this we need to define primary keys and foreign keys on the tables.
+
+Primary keys and foreign keys are how relational database tables are linked with each other.
+A primary key is a column that has a unique value for each row within a table.
+A foreign key is a column containing the primary key for a row in another table.[^compound]
+Foreign keys act as cross references between tables.
+They specify the relationships that gives us the *relational* database. 
+For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
+
+[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/krlmlr/dm/issues/3).
 
 ## Primary Keys
 
