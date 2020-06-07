@@ -22,9 +22,9 @@ rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rst
 Are you using multiple data frames or database tables in R? Organize
 them with dm.
 
-  - Use it like a list of tables today.
+  - Use it today (if only like a list of tables).
   - Build data models tomorrow.
-  - Deploy the models to your organization’s RDBMS the day after.
+  - Deploy the data models to your organization’s RDBMS the day after.
 
 ## Overview
 
@@ -115,7 +115,7 @@ dm$flights %>%
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #555555;'># A tibble: 3 x 2</span><span>
 #&gt;   </span><span style='font-weight: bold;'>origin</span><span>     </span><span style='font-weight: bold;'>n</span><span>
-#&gt; </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> EWR     </span><span style='text-decoration: underline;'>4</span><span>043
 #&gt; </span><span style='color: #555555;'>2</span><span> JFK     </span><span style='text-decoration: underline;'>3</span><span>661
 #&gt; </span><span style='color: #555555;'>3</span><span> LGA     </span><span style='text-decoration: underline;'>3</span><span>523
