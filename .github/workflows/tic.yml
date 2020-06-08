@@ -71,7 +71,7 @@ jobs:
       # macOS >= 10.15.4 linking
       SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
       # use GITHUB_TOKEN from GItHub to workaround rate limits in {remotes}
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.DM_PAT }}
 
     steps:
       - uses: actions/checkout@v2.1.1
