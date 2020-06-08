@@ -14,6 +14,25 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
+    services:
+      postgres:
+        image: postgres
+        ports:
+        - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test_db
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+        ports:
+        - 1433:1433
+        env:
+          ACCEPT_EULA: Y
+
+          SA_PASSWORD: Password12
+
     # [Custom matrix name]
     name: ${{ matrix.config.os }} (${{ matrix.config.r }}) (${{ matrix.config.id }})
 
@@ -52,6 +71,8 @@ jobs:
       TIC_ONLY_STYLER: ${{ matrix.config.TIC_ONLY_STYLER }}
       # [Custom env var]
       MODE: ${{ matrix.config.MODE }}
+      # [Custom env var]
+      ODBCSYSINI: ${{ github.workspace }}/.github/odbc
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       CRAN: ${{ matrix.config.cran }}
@@ -131,6 +152,16 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt install libpq-dev libmysqlclient-dev libssh2-1-dev libsodium-dev libv8-dev
+          # PostgreSQL drivers
+          sudo apt-get install -y unixodbc-dev odbc-postgresql devscripts
+
+      - name: "[Custom block] Install SQL Server Driver"
+        run: |
+          curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+          apt-get update
+          ACCEPT_EULA=Y apt-get install -y msodbcsql17
+        shell: sudo bash {0}
 
       # install ccache and write config file
       # mirror the setup described in https://github.com/rmacoslib/r-macos-rtools
