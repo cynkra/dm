@@ -337,7 +337,7 @@ with current semantics.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(
   <span class='no'>nycflights_dm</span> <span class='kw'>%&gt;%</span>
     <span class='fu'>dm_add_pk</span>(<span class='no'>planes</span>, <span class='no'>manufacturer</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-)</div><div class='output co'>#&gt; Error : (`manufacturer`) not a unique key of `table_from_dm`.</div><div class='input'>
+)</div><div class='output co'>#&gt; Error : (`manufacturer`) not a unique key of `planes`.</div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_rm_pk</span>(<span class='no'>airports</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
