@@ -63,7 +63,7 @@ All operations expect that both existing and new data are presented
 in two compatible \link{tbl} objects.
 
 If \code{y} lives on a different data source than \code{x}, it can be copied automatically
-by setting \code{copy = TRUE}, just like for \code{\link[dplyr:left_join]{dplyr::left_join()}}.
+by setting \code{copy = TRUE}, just like for \code{\link[dplyr:mutate-joins]{dplyr::left_join()}}.
 
 On mutable backends like databases, these operations manipulate the
 underlying storage.

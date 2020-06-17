@@ -25,7 +25,7 @@ If this includes tables that are not direct neighbors of \code{start},
 it will only work with \code{dm_squash_to_tbl()} (given one of the allowed join-methods).
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
-\item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
+\item{join}{The type of join to be performed, see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.}
 }
 \value{
 A single table that results from consecutively joining all affected tables to the \code{start} table.
