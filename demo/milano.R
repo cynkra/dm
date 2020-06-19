@@ -32,7 +32,7 @@ set.seed(20200314)
 
 
 ## ----connect, cache = FALSE----
-library(DBI)  #<<
+library(DBI) # <<
 
 mydb <- dbConnect(
   RMariaDB::MariaDB(),
@@ -58,22 +58,38 @@ financial_dm <- function(mydb) {
     dm_add_pk(trans, id) %>%
     dm_add_pk(disps, id) %>%
     dm_add_pk(cards, id) %>%
-    dm_add_fk(loans, account_id,
-      accounts) %>%
-    dm_add_fk(orders, account_id,
-      accounts) %>%
-    dm_add_fk(trans, account_id,
-      accounts) %>%
-    dm_add_fk(disps, account_id,
-      accounts) %>%
-    dm_add_fk(disps, client_id,
-      clients) %>%
-    dm_add_fk(accounts,
-      district_id, districts) %>%
-    dm_add_fk(clients,
-      district_id, districts) %>%
-    dm_add_fk(cards, disp_id,
-      disps) %>%
+    dm_add_fk(
+      loans, account_id,
+      accounts
+    ) %>%
+    dm_add_fk(
+      orders, account_id,
+      accounts
+    ) %>%
+    dm_add_fk(
+      trans, account_id,
+      accounts
+    ) %>%
+    dm_add_fk(
+      disps, account_id,
+      accounts
+    ) %>%
+    dm_add_fk(
+      disps, client_id,
+      clients
+    ) %>%
+    dm_add_fk(
+      accounts,
+      district_id, districts
+    ) %>%
+    dm_add_fk(
+      clients,
+      district_id, districts
+    ) %>%
+    dm_add_fk(
+      cards, disp_id,
+      disps
+    ) %>%
     dm_rm_tbl(tkeys) %>%
     dm_set_colors(orange = accounts)
 }
