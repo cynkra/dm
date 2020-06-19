@@ -14,8 +14,6 @@
 ##
 ##
 
-
-
 # The dm package helps
 
 ## 1. **consume** data models
