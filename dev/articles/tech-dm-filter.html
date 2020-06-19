@@ -123,7 +123,7 @@
 
       
 
-      </header><script src="tech-dm-filter_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Filtering in relational data models</h1>
@@ -216,7 +216,7 @@
 <li>Calling <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> or <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> methods for <code>dm</code> objects on a <code>dm</code>: this results in a new <code>dm</code> that contains the same tables as before. Each table is the result of a <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code> call, meaning that the effects of the filter conditions on each of the tables are taken into account.</li>
 </ol>
 <p>Currently, this only works if the graph induced by the foreign key relations is cycle free. Fortunately, this is the default for <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code>.</p>
-<p>Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_rename_tbl()</a></code>, <code><a href="../reference/dm_select.html">dm_select()</a></code>, <code><a href="../reference/dm_rename.html">dm_rename()</a></code> and <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code>. In these cases consider applying the filters with <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> first.</p>
+<p>Keep in mind that several {dm} functions will refuse to work when unevaluated filter conditions exist, such as, e.g. <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code>, <code><a href="../reference/dm_select_tbl.html">dm_rename_tbl()</a></code>, <code><a href="../reference/dm_select.html">dm_select()</a></code>, <code><a href="../reference/dm_rename.html">dm_rename()</a></code> and <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code>. In these cases consider applying the filters with <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> first.</p>
 </div>
 <div id="filtering-examples" class="section level3">
 <h3 class="hasAnchor">
@@ -377,29 +377,29 @@
   <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu">map</span>(<span class="kw pkg">dbplyr</span><span class="kw ns">::</span><span class="no"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render</a></span>)
 <span class="co">#&gt; $flights</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM `flights_2020_06_19_07_19_14_1` AS `LHS`</span>
+<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM `flights_2020_06_19_07_23_14_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_2020_06_19_07_19_14_1`</span>
+<span class="co">#&gt; FROM `airlines_2020_06_19_07_23_14_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_2020_06_19_07_19_14_1`</span>
+<span class="co">#&gt; FROM `airports_2020_06_19_07_23_14_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airlines</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_2020_06_19_07_19_14_1`</span>
+<span class="co">#&gt; FROM `airlines_2020_06_19_07_23_14_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_06_19_07_19_14_1` AS `LHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_06_19_07_23_14_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_2020_06_19_07_19_14_1`</span>
+<span class="co">#&gt; FROM `airports_2020_06_19_07_23_14_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )) AS `RHS`</span>
@@ -408,13 +408,13 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airports</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_2020_06_19_07_19_14_1`</span>
+<span class="co">#&gt; FROM `airports_2020_06_19_07_23_14_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_06_19_07_19_14_1` AS `LHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_06_19_07_23_14_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_2020_06_19_07_19_14_1`</span>
+<span class="co">#&gt; FROM `airlines_2020_06_19_07_23_14_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )) AS `RHS`</span>

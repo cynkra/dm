@@ -1,4 +1,4 @@
-pandoc: 2.7.3
+pandoc: '2.2'
 pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
@@ -18,7 +18,7 @@ articles:
   dm-readme-old: wip/dm-readme-old.html
   dm-shiny-dynafilter: wip/dm-shiny-dynafilter.html
   dm-tips-and-tricks: wip/dm-tips-and-tricks.html
-last_built: 2020-06-19T07:16Z
+last_built: 2020-06-19T07:21Z
 urls:
   reference: https://krlmlr.github.io/dm/reference
   article: https://krlmlr.github.io/dm/articles
