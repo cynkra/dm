@@ -295,39 +295,39 @@ and importing the primary and foreign keys</p></li>
 </div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm</span>(<span class='no'>iris</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+    <pre class="examples"><div class='input'><span class='fu'>dm</span>(<span class='no'>iris</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `iris`, `mtcars`
 #&gt; Columns: 16
 #&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>new_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>new_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `iris`, `mtcars`
 #&gt; Columns: 16
 #&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `iris`, `mtcars`
 #&gt; Columns: 16
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0</div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span>(<span class='st'>"airports"</span>)</div><div class='output co'>#&gt; # A tibble: 1,458 x 8
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span>(<span class='st'>"airports"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
-#&gt;    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
-#&gt;  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
-#&gt;  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
-#&gt;  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
-#&gt;  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
-#&gt;  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
-#&gt;  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
-#&gt;  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
-#&gt;  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
-#&gt;  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
-#&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
-#&gt; # … with 1,448 more rows</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()</div><div class='output co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_src</span>()</div><div class='output co'>#&gt; src:  &lt;environment: R_GlobalEnv&gt;
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
+#&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 2</span><span> 06A   Moton Field Municipal A…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chicago
+#&gt; </span><span style='color: #555555;'> 3</span><span> 06C   Schaumburg Regional       42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chicago
+#&gt; </span><span style='color: #555555;'> 4</span><span> 06N   Randall Airport           41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 5</span><span> 09J   Jekyll Island Airport     31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 6</span><span> 0A9   Elizabethton Municipal …  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 7</span><span> 0G6   Williams County Airport   41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 8</span><span> 0G7   Finger Lakes Regional A…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…
+#&gt; </span><span style='color: #555555;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…
+#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()</div><div class='output co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_src</span>()</div><div class='output co'>#&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; tbls:</div><div class='input'>
 <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(
   <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(),
@@ -336,132 +336,132 @@ and importing the primary and foreign keys</p></li>
 ) <span class='kw'>%&gt;%</span>
   <span class='fu'>dm_get_con</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: The `unique_table_names` argument of `copy_dm_to()` is deprecated as of lifecycle 0.1.4.</span>
 #&gt; <span class='warning'>Use `table_names = identity` to use unchanged names for temporary tables.</span>
-#&gt; <span class='warning'>This warning is displayed once every 8 hours.</span>
-#&gt; <span class='warning'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span></div><div class='output co'>#&gt; &lt;SQLiteConnection&gt;
+#&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
+#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='output co'>#&gt; &lt;SQLiteConnection&gt;
 #&gt;   Path: :memory:
 #&gt;   Extensions: TRUE</div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_tables</span>()</div><div class='output co'>#&gt; $airlines
-#&gt; # A tibble: 16 x 2
+#&gt; </span><span style='color: #555555;'># A tibble: 16 x 2</span><span>
 #&gt;    carrier name                       
-#&gt;    &lt;chr&gt;   &lt;chr&gt;                      
-#&gt;  1 9E      Endeavor Air Inc.          
-#&gt;  2 AA      American Airlines Inc.     
-#&gt;  3 AS      Alaska Airlines Inc.       
-#&gt;  4 B6      JetBlue Airways            
-#&gt;  5 DL      Delta Air Lines Inc.       
-#&gt;  6 EV      ExpressJet Airlines Inc.   
-#&gt;  7 F9      Frontier Airlines Inc.     
-#&gt;  8 FL      AirTran Airways Corporation
-#&gt;  9 HA      Hawaiian Airlines Inc.     
-#&gt; 10 MQ      Envoy Air                  
-#&gt; 11 OO      SkyWest Airlines Inc.      
-#&gt; 12 UA      United Air Lines Inc.      
-#&gt; 13 US      US Airways Inc.            
-#&gt; 14 VX      Virgin America             
-#&gt; 15 WN      Southwest Airlines Co.     
-#&gt; 16 YV      Mesa Airlines Inc.         
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                      
+#&gt; </span><span style='color: #555555;'> 1</span><span> 9E      Endeavor Air Inc.          
+#&gt; </span><span style='color: #555555;'> 2</span><span> AA      American Airlines Inc.     
+#&gt; </span><span style='color: #555555;'> 3</span><span> AS      Alaska Airlines Inc.       
+#&gt; </span><span style='color: #555555;'> 4</span><span> B6      JetBlue Airways            
+#&gt; </span><span style='color: #555555;'> 5</span><span> DL      Delta Air Lines Inc.       
+#&gt; </span><span style='color: #555555;'> 6</span><span> EV      ExpressJet Airlines Inc.   
+#&gt; </span><span style='color: #555555;'> 7</span><span> F9      Frontier Airlines Inc.     
+#&gt; </span><span style='color: #555555;'> 8</span><span> FL      AirTran Airways Corporation
+#&gt; </span><span style='color: #555555;'> 9</span><span> HA      Hawaiian Airlines Inc.     
+#&gt; </span><span style='color: #555555;'>10</span><span> MQ      Envoy Air                  
+#&gt; </span><span style='color: #555555;'>11</span><span> OO      SkyWest Airlines Inc.      
+#&gt; </span><span style='color: #555555;'>12</span><span> UA      United Air Lines Inc.      
+#&gt; </span><span style='color: #555555;'>13</span><span> US      US Airways Inc.            
+#&gt; </span><span style='color: #555555;'>14</span><span> VX      Virgin America             
+#&gt; </span><span style='color: #555555;'>15</span><span> WN      Southwest Airlines Co.     
+#&gt; </span><span style='color: #555555;'>16</span><span> YV      Mesa Airlines Inc.         
 #&gt; 
 #&gt; $airports
-#&gt; # A tibble: 1,458 x 8
+#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
-#&gt;    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
-#&gt;  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
-#&gt;  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
-#&gt;  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
-#&gt;  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
-#&gt;  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
-#&gt;  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
-#&gt;  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
-#&gt;  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
-#&gt;  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
-#&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
-#&gt; # … with 1,448 more rows
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
+#&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 2</span><span> 06A   Moton Field Municipal A…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chicago
+#&gt; </span><span style='color: #555555;'> 3</span><span> 06C   Schaumburg Regional       42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chicago
+#&gt; </span><span style='color: #555555;'> 4</span><span> 06N   Randall Airport           41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 5</span><span> 09J   Jekyll Island Airport     31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 6</span><span> 0A9   Elizabethton Municipal …  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 7</span><span> 0G6   Williams County Airport   41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 8</span><span> 0G7   Finger Lakes Regional A…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…
+#&gt; </span><span style='color: #555555;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…
+#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span>
 #&gt; 
 #&gt; $flights
-#&gt; # A tibble: 11,227 x 19
+#&gt; </span><span style='color: #555555;'># A tibble: 11,227 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
-#&gt;  1  2013     1    10        3           2359         4      426            437
-#&gt;  2  2013     1    10       16           2359        17      447            444
-#&gt;  3  2013     1    10      450            500       -10      634            648
-#&gt;  4  2013     1    10      520            525        -5      813            820
-#&gt;  5  2013     1    10      530            530         0      824            829
-#&gt;  6  2013     1    10      531            540        -9      832            850
-#&gt;  7  2013     1    10      535            540        -5     1015           1017
-#&gt;  8  2013     1    10      546            600       -14      645            709
-#&gt;  9  2013     1    10      549            600       -11      652            724
-#&gt; 10  2013     1    10      550            600       -10      649            703
-#&gt; # … with 11,217 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
-#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
-#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
+#&gt; </span><span style='color: #555555;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447            444
+#&gt; </span><span style='color: #555555;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634            648
+#&gt; </span><span style='color: #555555;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813            820
+#&gt; </span><span style='color: #555555;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530         0      824            829
+#&gt; </span><span style='color: #555555;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832            850
+#&gt; </span><span style='color: #555555;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015           </span><span style='text-decoration: underline;'>1</span><span>017
+#&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600       -</span><span style='color: #BB0000;'>14</span><span>      645            709
+#&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600       -</span><span style='color: #BB0000;'>11</span><span>      652            724
+#&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600       -</span><span style='color: #BB0000;'>10</span><span>      649            703
+#&gt; </span><span style='color: #555555;'># … with 11,217 more rows, and 11 more variables: arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>
 #&gt; 
 #&gt; $planes
-#&gt; # A tibble: 3,322 x 9
+#&gt; </span><span style='color: #555555;'># A tibble: 3,322 x 9</span><span>
 #&gt;    tailnum  year type          manufacturer   model  engines seats speed engine 
-#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
-#&gt;  1 N10156   2004 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…
-#&gt;  2 N102UW   1998 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  3 N103US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  4 N104UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  5 N10575   2002 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…
-#&gt;  6 N105UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  7 N107US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  8 N108UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt;  9 N109UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt; 10 N110UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
-#&gt; # … with 3,312 more rows
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  
+#&gt; </span><span style='color: #555555;'> 1</span><span> N10156   </span><span style='text-decoration: underline;'>2</span><span>004 Fixed wing m… EMBRAER        EMB-1…       2    55    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'> 2</span><span> N102UW   </span><span style='text-decoration: underline;'>1</span><span>998 Fixed wing m… AIRBUS INDUST… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'> 3</span><span> N103US   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'> 4</span><span> N104UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'> 5</span><span> N10575   </span><span style='text-decoration: underline;'>2</span><span>002 Fixed wing m… EMBRAER        EMB-1…       2    55    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'> 6</span><span> N105UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'> 7</span><span> N107US   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'> 8</span><span> N108UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'> 9</span><span> N109UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'>10</span><span> N110UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo-…
+#&gt; </span><span style='color: #555555;'># … with 3,312 more rows</span><span>
 #&gt; 
 #&gt; $weather
-#&gt; # A tibble: 861 x 15
+#&gt; </span><span style='color: #555555;'># A tibble: 861 x 15</span><span>
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-#&gt;  1 EWR     2013     1    10     0  41    32    70.1      230       8.06
-#&gt;  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
-#&gt;  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
-#&gt;  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
-#&gt;  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
-#&gt;  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
-#&gt;  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
-#&gt;  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
-#&gt;  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
-#&gt; 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
-#&gt; # … with 851 more rows, and 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;,
-#&gt; #   pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;
-#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='dm_get_filters.html'>dm_get_filters</a></span>()</div><div class='output co'>#&gt; # A tibble: 0 x 3
-#&gt; # … with 3 variables: table &lt;chr&gt;, filter &lt;list&gt;, zoomed &lt;lgl&gt;</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>validate_dm</span>()
-<span class='fu'>is_dm</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()[<span class='st'>"airports"</span>]</div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     0  41    32    70.1      230       8.06
+#&gt; </span><span style='color: #555555;'> 2</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     1  39.0  30.0  69.9      210       9.21
+#&gt; </span><span style='color: #555555;'> 3</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     2  39.0  28.9  66.8      230       6.90
+#&gt; </span><span style='color: #555555;'> 4</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     3  39.9  27.0  59.5      270       5.75
+#&gt; </span><span style='color: #555555;'> 5</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     4  41    26.1  55.0      320       6.90
+#&gt; </span><span style='color: #555555;'> 6</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     5  41    26.1  55.0      300      12.7 
+#&gt; </span><span style='color: #555555;'> 7</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     6  39.9  25.0  54.8      280       6.90
+#&gt; </span><span style='color: #555555;'> 8</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     7  41    25.0  52.6      330       6.90
+#&gt; </span><span style='color: #555555;'> 9</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     8  43.0  25.0  48.7      330       8.06
+#&gt; </span><span style='color: #555555;'>10</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     9  45.0  23    41.6      320      17.3 
+#&gt; </span><span style='color: #555555;'># … with 851 more rows, and 5 more variables: wind_gust </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, precip </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   pressure </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, visib </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>
+#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='dm_get_filters.html'>dm_get_filters</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 0 x 3</span><span>
+#&gt; </span><span style='color: #555555;'># … with 3 variables: table </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, filter </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, zoomed </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>validate_dm</span>()
+<span class='fu'>is_dm</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()[<span class='st'>"airports"</span>]</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airports`
 #&gt; Columns: 8
 #&gt; Primary keys: 1
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()<span class='kw'>[[</span><span class='st'>"airports"</span>]]</div><div class='output co'>#&gt; # A tibble: 1,458 x 8
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()<span class='kw'>[[</span><span class='st'>"airports"</span>]]</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
-#&gt;    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
-#&gt;  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
-#&gt;  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
-#&gt;  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
-#&gt;  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
-#&gt;  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
-#&gt;  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
-#&gt;  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
-#&gt;  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
-#&gt;  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
-#&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
-#&gt; # … with 1,448 more rows</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()$<span class='no'>airports</span></div><div class='output co'>#&gt; # A tibble: 1,458 x 8
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
+#&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 2</span><span> 06A   Moton Field Municipal A…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chicago
+#&gt; </span><span style='color: #555555;'> 3</span><span> 06C   Schaumburg Regional       42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chicago
+#&gt; </span><span style='color: #555555;'> 4</span><span> 06N   Randall Airport           41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 5</span><span> 09J   Jekyll Island Airport     31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 6</span><span> 0A9   Elizabethton Municipal …  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 7</span><span> 0G6   Williams County Airport   41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 8</span><span> 0G7   Finger Lakes Regional A…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…
+#&gt; </span><span style='color: #555555;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…
+#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()$<span class='no'>airports</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
-#&gt;    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
-#&gt;  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
-#&gt;  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
-#&gt;  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
-#&gt;  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
-#&gt;  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
-#&gt;  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
-#&gt;  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
-#&gt;  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
-#&gt;  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
-#&gt; 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
-#&gt; # … with 1,448 more rows</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
+#&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 2</span><span> 06A   Moton Field Municipal A…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chicago
+#&gt; </span><span style='color: #555555;'> 3</span><span> 06C   Schaumburg Regional       42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chicago
+#&gt; </span><span style='color: #555555;'> 4</span><span> 06N   Randall Airport           41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 5</span><span> 09J   Jekyll Island Airport     31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 6</span><span> 0A9   Elizabethton Municipal …  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 7</span><span> 0G6   Williams County Airport   41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 8</span><span> 0G7   Finger Lakes Regional A…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
+#&gt; </span><span style='color: #555555;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…
+#&gt; </span><span style='color: #555555;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…
+#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

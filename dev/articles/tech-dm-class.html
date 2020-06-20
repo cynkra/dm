@@ -123,12 +123,12 @@
 
       
 
-      </header><div class="row">
+      </header><script src="tech-dm-class_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 class="date">2020-06-19</h4>
+            <h4 class="date">2020-06-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-class.Rmd"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -265,7 +265,7 @@
 <li><code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code></li>
 </ol>
 <p>Currently <code>dm</code> objects only support one-column primary keys. If your tables have unique compound keys, adding a surrogate key column might be helpful. If you created a <code>dm</code> object according to the examples in <a href="#ex_dm">“Examples of <code>dm</code> objects”</a>, your object does not yet have any primary keys set. So let’s add one.</p>
-<p><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> has an option to check if the column of the table given by the user is a unique key; for performance reasons, the check will not be executed unless requested. Since the <code>iris</code> dataset does not have any unique one-column keys, we will use the <code>nycflights13</code> tables, i.e. <code>flights_dm</code> from above.</p>
+<p><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> has an option to check if the column of the table given by the user is a unique key; for performance reasons, the check will not be executed unless requested. Since the <code>iris</code> dataset does not have any unique one-column keys, we will use the <code>nycflights13</code> tables, i.e. <code>flights_dm</code> from above.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span>(<span class="no">flights_dm</span>, <span class="no">airports</span>)
 <span class="co">#&gt; [1] FALSE</span>
 <span class="no">flights_dm_with_key</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(<span class="no">flights_dm</span>, <span class="no">airports</span>, <span class="no">faa</span>)
@@ -380,7 +380,7 @@
   <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span>(<span class="no">flights</span>, <span class="no">airports</span>)
 <span class="co">#&gt; &lt;list_of&lt;character&gt;[0]&gt;</span></pre></body></html></div>
 <p>Since the primary keys are defined in the <code>dm</code> object, you do not need to provide the referenced column name of <code>ref_table</code>. This is always the primary key column of the table.</p>
-<p>Another function for getting to know your data better (cf. <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
+<p>Another function for getting to know your data better (cf. <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span>(<span class="no">flights_dm_with_key</span>, <span class="no">weather</span>, <span class="no">airports</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span><span>
 #&gt;    columns    candidate why                                                
