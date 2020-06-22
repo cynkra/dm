@@ -39,17 +39,6 @@ jobs:
         r: ['release']
 
     env:
-      CRAN: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"
-      ODBCSYSINI: ${{ github.workspace }}/.github/odbc
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-r@master
-        with:
-          r-version: ${{ matrix.r}}
-
-    env:
       # [Custom env var]
       CRAN: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"
       # [Custom env var]
@@ -82,6 +71,12 @@ jobs:
       # use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
       GITHUB_PAT: ${{ secrets.DM_PAT }}
 
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@master
+        with:
+          r-version: ${{ matrix.r}}
 
       - name: "[Linux] Prepare"
         if: runner.os == 'Linux'
