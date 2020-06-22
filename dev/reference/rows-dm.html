@@ -285,8 +285,8 @@ and <code>x</code> is returned, invisibly.</p>
   <span class='no'>sqlite</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_local.html'>src_df</a></span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env.html'>new_environment</a></span>())
 }</div><div class='output co'>#&gt; <span class='warning'>Warning: `src_sqlite()` is deprecated as of dplyr 1.0.0.</span>
 #&gt; <span class='warning'>Please use `tbl()` directly with a database connection</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='input'>
+#&gt; <span class='warning'>This warning is displayed once every 8 hours.</span>
+#&gt; <span class='warning'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span></div><div class='input'>
 <span class='co'># Entire dataset with all dimension tables populated</span>
 <span class='co'># with flights and weather data truncated:</span>
 <span class='no'>flights_init</span> <span class='kw'>&lt;-</span>
@@ -318,9 +318,9 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='no'>flights_jan_sqlite</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='no'>sqlite</span>, <span class='no'>flights_jan</span>)
 
 <span class='co'># Dry run by default:</span>
-<span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_jan_sqlite</span>)</div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+<span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_jan_sqlite</span>)</div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; ── Table source ────────────────────────────────────────────────────────────────
 #&gt; src:  sqlite 3.30.1 [:memory:]
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -355,11 +355,11 @@ and <code>x</code> is returned, invisibly.</p>
 #&gt;       16     1458      932     3322       72 </div><div class='input'>
 <span class='co'># Check for consistency before applying:</span>
 <span class='no'>flights_new</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_examine_constraints.html'>dm_examine_constraints</a></span>()</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</div><div class='input'>
+  <span class='fu'><a href='dm_examine_constraints.html'>dm_examine_constraints</a></span>()</div><div class='output co'>#&gt; <span class='message'>! Unsatisfied constraints:</span></div><div class='output co'>#&gt; ● Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</div><div class='input'>
 <span class='co'># Apply:</span>
 <span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_feb_sqlite</span>, <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16     1458     1761     3322      144 </div></span></pre>
+#&gt;       16     1458     1761     3322      144 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
