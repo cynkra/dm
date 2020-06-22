@@ -70,7 +70,7 @@ jobs:
       TIC_BUILD_PKGDOWN: ${{ matrix.config.pkgdown }}
       # macOS >= 10.15.4 linking
       SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
-      # use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
+      # [Custom env var] use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
       GITHUB_PAT: ${{ secrets.DM_PAT }}
 
     steps:
