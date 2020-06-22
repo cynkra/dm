@@ -85,6 +85,7 @@ jobs:
           Rscript -e "if (!requireNamespace('remotes')) install.packages('remotes', type = 'source')"
           Rscript -e "if (getRversion() < '3.2' && !requireNamespace('curl')) install.packages('curl', type = 'source')"
           sudo apt install libglpk-dev # igraph
+          sudo apt install libv8-dev # v8
 
       - name: Setup MySQL
         run: |
