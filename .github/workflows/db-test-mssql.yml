@@ -80,13 +80,7 @@ jobs:
           sudo apt install libglpk-dev # igraph
           sudo apt install libv8-dev # v8
 
-      # - name: Setup MySQL
-      #   run: |
-      #     sudo systemctl start mysql.service
-      #     mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE `test`;'
-      #     .github/odbc/install-mariadb-driver.sh
-
-      - name: Install SQL Server Driver
+      - name: Install MSSQL Server Driver
         run: |
           curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
           curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
