@@ -14,6 +14,15 @@ jobs:
 
     name: r-${{ matrix.r }}
 
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+        ports:
+        - 1433:1433
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: Password12
+
     strategy:
       fail-fast: false
       matrix:
@@ -71,11 +80,11 @@ jobs:
           sudo apt install libglpk-dev # igraph
           sudo apt install libv8-dev # v8
 
-      - name: Setup MySQL
-        run: |
-          sudo systemctl start mysql.service
-          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE `test`;'
-          .github/odbc/install-mariadb-driver.sh
+      # - name: Setup MySQL
+      #   run: |
+      #     sudo systemctl start mysql.service
+      #     mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE `test`;'
+      #     .github/odbc/install-mariadb-driver.sh
 
       - name: Install SQL Server Driver
         run: |
@@ -92,6 +101,9 @@ jobs:
 
       - name: "[Stage] Script"
         run: Rscript -e 'tic::script()'
+        env:
+          LIB_DIR: /usr/lib/x86_64-linux-gnu/
+          INCLUDE_DIR: /usr/include
 
       - name: Upload check results
         if: failure()

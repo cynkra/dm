@@ -90,6 +90,9 @@ jobs:
 
       - name: "[Stage] Script"
         run: Rscript -e 'tic::script()'
+        env:
+          LIB_DIR: /usr/lib/x86_64-linux-gnu/
+          INCLUDE_DIR: /usr/include
 
       - name: Upload check results
         if: failure()
