@@ -55,8 +55,6 @@ jobs:
       # [Custom env var]
       TIC_DEV_VERSIONS: ${{ matrix.config.TIC_DEV_VERSIONS }}
       # [Custom env var]
-      TIC_ONLY_TESTS: ${{ matrix.config.TIC_ONLY_TESTS }}
-      # [Custom env var]
       TIC_ONLY_STYLER: ${{ matrix.config.TIC_ONLY_STYLER }}
       # [Custom env var]
       MODE: ${{ matrix.config.MODE }}
