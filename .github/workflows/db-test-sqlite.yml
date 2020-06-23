@@ -12,7 +12,7 @@ jobs:
   db-tests:
     runs-on: ubuntu-16.04
 
-    # services:
+    services:
     #   postgres:
     #     image: postgres
     #     ports:
