@@ -10,7 +10,7 @@ name: db-test-sqlite
 
 jobs:
   db-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
 
     services:
       sqlserver:
