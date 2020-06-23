@@ -10,18 +10,9 @@ name: db-test-sqlite
 
 jobs:
   db-tests:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     services:
-    #   postgres:
-    #     image: postgres
-    #     ports:
-    #     - 5432:5432
-    #     env:
-    #       POSTGRES_USER: postgres
-    #       POSTGRES_PASSWORD: password
-    #       POSTGRES_DB: test
-    #     options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       sqlserver:
         image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
         ports:
@@ -30,7 +21,7 @@ jobs:
           ACCEPT_EULA: Y
           SA_PASSWORD: Password12
 
-    name: ${{ matrix.r }}
+    name: r-${{ matrix.r }}
 
     strategy:
       fail-fast: false
@@ -40,7 +31,10 @@ jobs:
 
     env:
       # [Custom env var]
+      MODE: db-tests
+      # [Custom env var]
       DM_TEST_SRC: test-sqlite
+      # [Custom env var]
       TIC_ONLY_TESTS: true
       # [Custom env var]
       CRAN: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"
@@ -88,28 +82,9 @@ jobs:
           sudo apt install libglpk-dev # igraph
           sudo apt install libv8-dev # v8
 
-      # - name: Setup MySQL
-      #   run: |
-      #     sudo systemctl start mysql.service
-      #     mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE `test`;'
-      #     .github/odbc/install-mariadb-driver.sh
-
       - name: Install SQLite Driver
         run: |
           sudo apt-get install -y libsqliteodbc
-
-      # - name: Install PostgreSQL Driver
-      #   run: |
-      #     sudo apt-get install -y unixodbc-dev odbc-postgresql devscripts
-
-      - name: Install SQL Server Driver
-        run: |
-          curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-          curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-          apt-get update
-          ACCEPT_EULA=Y apt-get install -y msodbcsql17
-          sqlcmd -U SA -P 'Password12' -Q 'CREATE DATABASE test;'
-        shell: sudo bash {0}
 
       - name: "[Stage] Install"
         if: matrix.config.os != 'macOS-latest' || matrix.config.r != 'devel'
