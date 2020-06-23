@@ -110,10 +110,17 @@ cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes =
                         unique_indexes = NULL, set_key_constraints = TRUE, unique_table_names = FALSE,
                         table_names = NULL, temporary = TRUE) {
   deprecate_soft("0.1.0", "dm::cdm_copy_to()", "dm::copy_dm_to()")
+
+  if (!is_null(unique_table_names)) {
+    if (is.null(table_names) && temporary && !unique_table_names) {
+      table_names <- identity
+    }
+  }
+
   copy_dm_to(
     dest = dest, dm = dm, ... = ..., types = types,
     overwrite = overwrite, indexes = indexes, unique_indexes = unique_indexes,
-    set_key_constraints = set_key_constraints, unique_table_names = unique_table_names,
+    set_key_constraints = set_key_constraints,
     table_names = table_names, temporary = temporary
   )
 }
@@ -193,7 +200,7 @@ cdm_nrow <- function(dm) {
 cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()", "dm::dm_flatten_to_tbl()")
   join_name <- deparse(substitute(join))
-  start <- as_string(ensym(start))
+  start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
@@ -204,7 +211,7 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   deprecate_soft("0.1.0", "dm::cdm_squash_to_tbl()", "dm::dm_squash_to_tbl()")
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
-  start <- as_string(ensym(start))
+  start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
 }
 
@@ -217,8 +224,8 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))
 
-  t1_name <- as_string(ensym(table_1))
-  t2_name <- as_string(ensym(table_2))
+  t1_name <- dm_tbl_name(dm, {{ table_1 }})
+  t2_name <- dm_tbl_name(dm, {{ table_2 }})
 
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
   start <- rel$child_table
@@ -244,8 +251,7 @@ cdm_apply_filters_to_tbl <- function(dm, table) {
     "dm::dm_apply_filters_to_tbl()"
   )
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
   dm_get_filtered_table(dm, table_name)
 }
 
@@ -271,7 +277,9 @@ cdm_add_fk <- function(dm, table, column, ref_table, check = FALSE) {
 cdm_has_fk <- function(dm, table, ref_table) {
   deprecate_soft("0.1.0", "dm::cdm_has_fk()", "dm::dm_has_fk()")
   check_not_zoomed(dm)
-  dm_has_fk_impl(dm, as_name(ensym(table)), as_name(ensym(ref_table)))
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
+  dm_has_fk_impl(dm, table_name, ref_table_name)
 }
 
 #' @rdname deprecated
@@ -280,8 +288,8 @@ cdm_has_fk <- function(dm, table, ref_table) {
 cdm_get_fk <- function(dm, table, ref_table) {
   deprecate_soft("0.1.0", "dm::cdm_get_fk()", "dm::dm_get_fk()")
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-  ref_table_name <- as_name(ensym(ref_table))
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
   new_keys(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
@@ -303,9 +311,8 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
   if (quo_is_missing(column_quo)) {
     abort_rm_fk_col_missing()
   }
-  table_name <- as_name(ensym(table))
-  ref_table_name <- as_name(ensym(ref_table))
-  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
   fk_cols <- dm_get_fk_impl(dm, table_name, ref_table_name)
   if (is_empty(fk_cols)) {
     return(dm)
@@ -331,9 +338,9 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) {
   deprecate_soft("0.1.0", "dm::cdm_enum_fk_candidates()", "dm::dm_enum_fk_candidates()")
   check_not_zoomed(dm)
   check_no_filter(dm)
-  table_name <- as_string(ensym(table))
-  ref_table_name <- as_string(ensym(ref_table))
-  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
+
   ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)
@@ -363,8 +370,7 @@ cdm_get_referencing_tables <- function(dm, table) {
     "dm::dm_get_referencing_tables()"
   )
   check_not_zoomed(dm)
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
+  table <- dm_tbl_name(dm, {{ table }})
   def <- dm_get_def(dm)
   i <- which(def$table == table)
   def$fks[[i]]$table
@@ -429,8 +435,7 @@ cdm_has_pk <- function(dm, table) {
 cdm_get_pk <- function(dm, table) {
   deprecate_soft("0.1.0", "dm::cdm_get_pk()", "dm::dm_get_pk()")
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
 }
 
@@ -448,8 +453,7 @@ cdm_get_all_pks <- function(dm) {
 cdm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
   deprecate_soft("0.1.0", "dm::cdm_rm_pk()", "dm::dm_rm_pk()")
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
   def <- dm_get_def(dm)
   if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
     affected <- dm_get_referencing_tables(dm, !!table_name)
@@ -467,8 +471,7 @@ cdm_enum_pk_candidates <- function(dm, table) {
   deprecate_soft("0.1.0", "dm::cdm_enum_pk_candidates()", "dm::dm_enum_pk_candidates()")
   check_no_filter(dm)
 
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   table <- dm_get_tables_impl(dm)[[table_name]]
   enum_pk_candidates_impl(table)
@@ -496,7 +499,8 @@ cdm_rename_tbl <- function(dm, ...) {
 cdm_select <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_select()", "dm::dm_select()")
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
+  table_name <- dm_tbl_name(dm, {{ table }})
+
   dm_zoom_to(dm, !!table_name) %>%
     select(...) %>%
     dm_update_zoomed()
@@ -508,7 +512,8 @@ cdm_select <- function(dm, table, ...) {
 cdm_rename <- function(dm, table, ...) {
   deprecate_soft("0.1.0", "dm::cdm_rename()", "dm::dm_rename()")
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
+  table_name <- dm_tbl_name(dm, {{ table }})
+
   dm_zoom_to(dm, !!table_name) %>%
     rename(...) %>%
     dm_update_zoomed()
@@ -520,8 +525,8 @@ cdm_rename <- function(dm, table, ...) {
 cdm_zoom_to_tbl <- function(dm, table) {
   deprecate_soft("0.1.0", "dm::cdm_zoom_to_tbl()", "dm::dm_zoom_to()")
   check_not_zoomed(dm)
-  zoom <- as_string(ensym(table))
-  check_correct_input(dm, zoom)
+  zoom <- dm_tbl_name(dm, {{ table }})
+
   cols <- list(get_all_cols(dm, zoom))
   dm_get_def(dm) %>%
     mutate(

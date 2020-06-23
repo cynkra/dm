@@ -77,8 +77,7 @@
 dm_zoom_to <- function(dm, table) {
   check_not_zoomed(dm)
   # for now only one table can be zoomed on
-  zoom <- as_string(ensym(table))
-  check_correct_input(dm, zoom)
+  zoom <- dm_tbl_name(dm, {{ table }})
 
   cols <- list(get_all_cols(dm, zoom))
 

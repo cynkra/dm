@@ -13,27 +13,15 @@ systime_convenient <- function() {
 }
 
 # Internal copy helper functions
-build_copy_data <- function(dm, dest, table_names, unique_table_names) {
+build_copy_data <- function(dm, dest, table_names) {
   source <-
     dm %>%
     dm_apply_filters() %>%
     dm_get_tables_impl()
 
-  # Also need table names for local src (?)
-  if (!is.null(table_names)) {
-    mapped_names <- unname(table_names[names(source)])
-    dest_names <- coalesce(mapped_names, names(source))
-  } else if (unique_table_names) {
-    dest_names <- map_chr(names(source), unique_db_table_name)
-  } else {
-    dest_names <- names(source)
-  }
-
   copy_data_base <-
-    source %>%
-    as.list() %>%
-    enframe(name = "source_name", value = "df") %>%
-    mutate(name = map(!!dest_names, dbplyr::ident_q))
+    tibble(source_name = src_tbls(dm), name = table_names) %>%
+    mutate(df = map(source_name, function(x) tbl(dm, x)))
 
   if (is_db(dest)) {
     dest_con <- con_from_src_or_con(dest)
@@ -87,7 +75,6 @@ build_copy_data <- function(dm, dest, table_names, unique_table_names) {
 # Not exported, to give us flexibility to change easily
 copy_list_of_tables_to <- function(dest, copy_data,
                                    ..., overwrite = FALSE, df = NULL, name = NULL, types = NULL) {
-  #
   pmap(copy_data, copy_to, dest = dest, overwrite = overwrite, ...)
 }
 
@@ -168,4 +155,12 @@ src_from_src_or_con <- function(dest) {
 
 con_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest$con else dest
+}
+
+repair_table_names_for_db <- function(table_names, temporary) {
+  if (temporary) {
+    set_names(dbplyr::ident_q(unique_db_table_name(table_names)), table_names)
+  } else {
+    set_names(dbplyr::ident_q(table_names), table_names)
+  }
 }

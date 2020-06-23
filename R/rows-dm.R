@@ -18,13 +18,14 @@
 #' Therefore, in-place operation must be requested explicitly with `in_place = TRUE`.
 #' By default, an informative message is given.
 #'
-#' @inheritParams rows_insert
+#' @inheritParams dplyr::rows_insert
 #' @param x Target `dm` object.
 #' @param y `dm` object with new data.
 #' @param ... Must be empty.
 #'
 #' @return A dm object of the same [dm_ptype()] as `x`.
-#'   If `in_place = TRUE`, [invisible] and identical to `x`.
+#'   If `in_place = TRUE`, the underlying data is updated as a side effect,
+#'   and `x` is returned, invisibly.
 #'
 #' @name rows-dm
 #' @example example/rows-dm.R

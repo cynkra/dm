@@ -206,11 +206,11 @@ To show the SQL query behind a `dm_filter()`, we copy the `flights`, `airlines` 
 
 Then we filter the data, and print the corresponding SQL statement with `dbplyr::sql_render()`.
 
-```{r, warning=F}
+```{r, warning=FALSE}
 dm %>%
   dm_select_tbl(flights, airlines, airports) %>%
   dm_filter(flights, month == 5) %>% 
-  copy_dm_to(dbplyr::src_memdb(), ., unique_table_names = TRUE) %>% 
+  copy_dm_to(dbplyr::src_memdb(), .) %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
   dm_apply_filters() %>% 

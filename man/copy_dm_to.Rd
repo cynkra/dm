@@ -13,7 +13,7 @@ copy_dm_to(
   indexes = NULL,
   unique_indexes = NULL,
   set_key_constraints = TRUE,
-  unique_table_names = FALSE,
+  unique_table_names = NULL,
   table_names = NULL,
   temporary = TRUE
 )
@@ -23,26 +23,45 @@ copy_dm_to(
 
 \item{dm}{A \code{dm} object.}
 
-\item{...}{Possible further arguments passed to \code{\link[dplyr:copy_to]{dplyr::copy_to()}}, which is used on each table.}
+\item{...}{Passed on to \code{\link[dplyr:copy_to]{dplyr::copy_to()}}, which is used on each table.}
 
 \item{overwrite, types, indexes, unique_indexes}{Must remain \code{NULL}.}
 
 \item{set_key_constraints}{Boolean variable, if \code{TRUE} will mirror \code{dm} key constraints on a database.}
 
-\item{unique_table_names}{Boolean, if \code{FALSE} (default), the original table names will be used, if \code{TRUE},
-unique table names will be created based on the original table names.}
+\item{unique_table_names}{Deprecated.}
 
-\item{table_names}{A named character vector, containing the names that you want the tables in the \code{dm} to have
-after copying them to the database.
-The table names within the \code{dm} will remain unchanged.
-The name of each element of the vector needs to be one of the table names of the \code{dm}.
-Those tables of the \code{dm} that are not addressed will be called by their original name on the database.}
+\item{table_names}{Desired names for the tables on \code{dest}; the names within the \code{dm} remain unchanged.
+Can be \code{NULL}, a named character vector, a function or a one-sided formula.
+
+If left \code{NULL} (default), the names will be determined automatically depending on the \code{temporary} argument:
+\enumerate{
+\item \code{temporary = TRUE} (default): unique table names based on the names of the tables in the \code{dm} are created.
+\item \code{temporary = FALSE}: the table names in the \code{dm} are used as names for the tables on \code{dest}.
+}
+
+If a function or one-sided formula, \code{table_names} is converted to a function
+using \code{\link[rlang:as_function]{rlang::as_function()}}.
+This function is called with the table names of the \code{dm} object
+as the only argument, and is expected to return a character vector
+of the same length.
+Use \code{table_names = ~ dbplyr::in_schema("schema_name", .x)}
+to specify the same schema for all tables.
+Use \code{table_names = identity} with \code{temporary = TRUE}
+to avoid giving temporary tables unique names.
+
+If a named character vector,
+the names of this vector need to correspond to the table names in the \code{dm},
+and its values are the desired names on \code{dest}.
+Use qualified names corresponding to your database's syntax
+to specify e.g. database and schema for your tables.}
 
 \item{temporary}{Boolean variable, if \code{TRUE}, only temporary tables will be created.
 These tables will vanish when disconnecting from the database.}
 }
 \value{
-A \code{dm} object on the given \code{src}.
+A \code{dm} object on the given \code{src} with the same table names
+as the input \code{dm}.
 }
 \description{
 \code{copy_dm_to()} takes a \link[dplyr:src_dbi]{dplyr::src_dbi} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
@@ -59,11 +78,24 @@ The arguments are included in the signature to avoid passing them via the
 \code{...} ellipsis.
 }
 \examples{
-src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-iris_dm <- copy_dm_to(
-  src_sqlite,
-  as_dm(list(iris = iris)),
+con <- DBI::dbConnect(RSQLite::SQLite())
+
+# Copy to temporary tables, unique table names by default:
+temp_dm <- copy_dm_to(
+  con,
+  dm_nycflights13(),
   set_key_constraints = FALSE
 )
+
+# Persist, explicitly specify table names:
+persistent_dm <- copy_dm_to(
+  con,
+  dm_nycflights13(),
+  temporary = FALSE,
+  table_names = ~ paste0("flights_", .x)
+)
+dbplyr::remote_name(persistent_dm$planes)
+
+DBI::dbDisconnect(con)
 }
 \concept{DB interaction functions}

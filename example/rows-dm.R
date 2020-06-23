@@ -34,7 +34,7 @@ flights_jan <-
 print(dm_nrow(flights_jan))
 
 # Copy to temporary tables on the target database:
-flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
+flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
 
 # Dry run by default:
 dm_rows_insert(flights_sqlite, flights_jan_sqlite)
@@ -56,7 +56,7 @@ flights_feb <-
   dm_update_zoomed()
 
 # Copy to temporary tables on the target database:
-flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
+flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
 
 # Explicit dry run:
 flights_new <- dm_rows_insert(

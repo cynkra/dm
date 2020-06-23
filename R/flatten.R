@@ -60,7 +60,7 @@
 dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   check_not_zoomed(dm)
   join_name <- deparse(substitute(join))
-  start <- as_string(ensym(start))
+  start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
@@ -70,13 +70,12 @@ dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   check_not_zoomed(dm)
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
-  start <- as_string(ensym(start))
+  start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
 }
 
 
 dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
-  check_correct_input(dm, start)
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
@@ -180,9 +179,8 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))
 
-  t1_name <- as_string(ensym(table_1))
-  t2_name <- as_string(ensym(table_2))
-  check_correct_input(dm, c(t1_name, t2_name), 2L)
+  t1_name <- dm_tbl_name(dm, {{ table_1 }})
+  t2_name <- dm_tbl_name(dm, {{ table_2 }})
 
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
   start <- rel$child_table
@@ -192,8 +190,8 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
-  t1_name <- as_string(ensym(table_1))
-  t2_name <- as_string(ensym(table_2))
+  t1_name <- dm_tbl_name(dm, {{ table_1 }})
+  t2_name <- dm_tbl_name(dm, {{ table_2 }})
 
   rel <-
     dm_get_all_fks(dm) %>%

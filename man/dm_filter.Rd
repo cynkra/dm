@@ -57,7 +57,7 @@ with corresponding key values.
 Tables that are not connected to any table with an active filter are left unchanged.
 This results in a new \code{dm} class object without any filter conditions.
 \item Calling \code{dm_apply_filters_to_tbl()}: the remaining rows of the requested table are calculated by performing a sequence
-of semi-joins (\code{\link[dplyr:semi_join]{dplyr::semi_join()}}) starting from each table that has been filtered to the requested table
+of semi-joins (\code{\link[dplyr:filter-joins]{dplyr::semi_join()}}) starting from each table that has been filtered to the requested table
 (similar to 1. but only for one table).
 }
 

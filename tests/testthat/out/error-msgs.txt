@@ -8,11 +8,7 @@ Error: (`Rudolph`) not a unique key of `Christmas`.
 Error: (`elves`, `Rudolph`, `mulled_wine`) not a unique key of `Christmas`.
 
 > abort_table_not_in_dm("laziness", "hard_work")
-Error: Table(s) `laziness` not in `dm` object. Available table names: `hard_work`.
-
-> abort_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus",
-+   "overtime"))
-Error: Table(s) `laziness`, `daydreaming` not in `dm` object. Available table names: `hard_work`, `focus`, `overtime`.
+Error: Table `laziness` not in `dm` object. Available table names: `hard_work`.
 
 > abort_not_subset_of("playing", "game", "hunting", "game")
 Error: Column `game` of table `playing` contains values (see above) that are not present in column `game` of table `hunting`.
@@ -70,9 +66,6 @@ Error: `copy_dm_to()` does not support the `indexes` argument.
 > abort_no_unique_indexes()
 Error: `copy_dm_to()` does not support the `unique_indexes` argument.
 
-> abort_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
-Error: Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names are the original table names (returned by e.g. `src_tbls()`): `activity`, `income`, `expenses`, `loss_or_gain`.
-
 > abort_key_constraints_need_db()
 Error: Setting key constraints only works if the tables of the `dm` are on a database.
 
@@ -117,9 +110,6 @@ Error: `dm_..._to_tbl()` with join method `join_tightly` generally wouldn't prod
 
 > abort_no_flatten_with_nest_join()
 Error: `dm_..._to_tbl()` can't be called with `join = nest_join`, see the help pages for these functions. Consider `join = left_join`.
-
-> abort_unique_table_names_or_table_names()
-Error: Can supply either `table_names` or `unique_table_names = TRUE`, not both.
 
 > abort_is_not_dm("blob")
 Error: Required class `dm` but instead is `blob`.
