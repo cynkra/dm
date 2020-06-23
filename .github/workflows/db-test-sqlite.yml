@@ -50,8 +50,6 @@ jobs:
       TIC_DEV_VERSIONS: ${{ matrix.config.TIC_DEV_VERSIONS }}
       # [Custom env var]
       TIC_ONLY_STYLER: ${{ matrix.config.TIC_ONLY_STYLER }}
-      # [Custom env var]
-      MODE: ${{ matrix.config.MODE }}
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       # make sure to run `tic::use_ghactions_deploy()` to set up deployment
