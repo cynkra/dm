@@ -274,44 +274,44 @@ and <code>x</code> is returned, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>memdb_frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>NA</span>)], <span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>0.5</span> + <span class='fl'>0</span>:<span class='fl'>2</span>)
-<span class='no'>data</span></div><div class='output co'>#&gt; # Source:   table&lt;dbplyr_001&gt; [?? x 3]
-#&gt; # Database: sqlite 3.30.1 [:memory:]
+<span class='no'>data</span></div><div class='output co'>#&gt; <span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
+#&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
-#&gt;   &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1     1 a       0.5
-#&gt; 2     2 b       1.5
-#&gt; 3     3 &lt;NA&gt;    2.5</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span>(<span class='no'>data</span>, <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"z"</span>)))</div><div class='output co'>#&gt; Error : `x` and `y` must share the same src, set `copy` = TRUE (may be slow).</div><div class='input'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span>(<span class='no'>data</span>, <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"z"</span>), <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.</span></div><div class='output co'>#&gt; # Source:   lazy query [?? x 3]
-#&gt; # Database: sqlite 3.30.1 [:memory:]
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1 a       0.5
+#&gt; </span><span style='color: #555555;'>2</span><span>     2 b       1.5
+#&gt; </span><span style='color: #555555;'>3</span><span>     3 </span><span style='color: #BB0000;'>NA</span><span>      2.5</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span>(<span class='no'>data</span>, <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"z"</span>)))</div><div class='output co'>#&gt; Error : `x` and `y` must share the same src, set `copy` = TRUE (may be slow).</div><div class='input'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span>(<span class='no'>data</span>, <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"z"</span>), <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   lazy query [?? x 3]</span><span>
+#&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
-#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1     1 a       0.5
-#&gt; 2     2 b       1.5
-#&gt; 3     3 &lt;NA&gt;    2.5
-#&gt; 4     4 z      NA  </div><div class='input'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span>(<span class='no'>data</span>, <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"w"</span>), <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; # Source:   lazy query [?? x 3]
-#&gt; # Database: sqlite 3.30.1 [:memory:]
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1 a       0.5
+#&gt; </span><span style='color: #555555;'>2</span><span>     2 b       1.5
+#&gt; </span><span style='color: #555555;'>3</span><span>     3 </span><span style='color: #BB0000;'>NA</span><span>      2.5
+#&gt; </span><span style='color: #555555;'>4</span><span>     4 z      </span><span style='color: #BB0000;'>NA</span><span>  </div><div class='input'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span>(<span class='no'>data</span>, <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"w"</span>), <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   lazy query [?? x 3]</span><span>
+#&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
-#&gt;   &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1     1 a       0.5
-#&gt; 2     2 w       1.5
-#&gt; 3     3 w       2.5</div><div class='input'>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1 a       0.5
+#&gt; </span><span style='color: #555555;'>2</span><span>     2 w       1.5
+#&gt; </span><span style='color: #555555;'>3</span><span>     3 w       2.5</div><div class='input'>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_insert</a></span>(<span class='no'>data</span>, <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>memdb_frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"z"</span>), <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>data</span></div><div class='output co'>#&gt; # Source:   table&lt;dbplyr_001&gt; [?? x 3]
-#&gt; # Database: sqlite 3.30.1 [:memory:]
+<span class='no'>data</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
+#&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
-#&gt;   &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1     1 a       0.5
-#&gt; 2     2 b       1.5
-#&gt; 3     3 &lt;NA&gt;    2.5
-#&gt; 4     4 z      NA  </div><div class='input'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span>(<span class='no'>data</span>, <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>memdb_frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"w"</span>), <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>data</span></div><div class='output co'>#&gt; # Source:   table&lt;dbplyr_001&gt; [?? x 3]
-#&gt; # Database: sqlite 3.30.1 [:memory:]
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1 a       0.5
+#&gt; </span><span style='color: #555555;'>2</span><span>     2 b       1.5
+#&gt; </span><span style='color: #555555;'>3</span><span>     3 </span><span style='color: #BB0000;'>NA</span><span>      2.5
+#&gt; </span><span style='color: #555555;'>4</span><span>     4 z      </span><span style='color: #BB0000;'>NA</span><span>  </div><div class='input'><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rows.html'>rows_update</a></span>(<span class='no'>data</span>, <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>memdb_frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"w"</span>), <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>data</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
+#&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
-#&gt;   &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1     1 a       0.5
-#&gt; 2     2 w       1.5
-#&gt; 3     3 w       2.5
-#&gt; 4     4 z      NA  </div></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1 a       0.5
+#&gt; </span><span style='color: #555555;'>2</span><span>     2 w       1.5
+#&gt; </span><span style='color: #555555;'>3</span><span>     3 w       2.5
+#&gt; </span><span style='color: #555555;'>4</span><span>     4 z      </span><span style='color: #BB0000;'>NA</span><span>  </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
