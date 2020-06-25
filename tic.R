@@ -46,9 +46,12 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     )))
 }
 
-if (ci_has_env("TIC_ONLY_TESTS")) {
+if (ci_has_env("TIC_DEV_VERSIONS")) {
   get_stage("script") %>%
     add_code_step(devtools::test(reporter = c("summary")))
+} else if (ci_has_env("TIC_ONLY_TESTS")) {
+  get_stage("script") %>%
+    add_code_step(devtools::test(reporter = c("summary", "fail")))
 } else if (ci_has_env("TIC_ONLY_STYLER")) {
   if (!ci_is_tag()) {
     # For caching
