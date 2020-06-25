@@ -30,7 +30,8 @@ test_src_mssql <- function() {
     con <- DBI::dbConnect(
       odbc::odbc(),
       "mssql-test",
-      uid = "kirill", pwd = "Password12"
+      pwd = "Password12",
+      port = 1433
     )
   } else {
     con <- DBI::dbConnect(
