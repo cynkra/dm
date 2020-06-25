@@ -12,7 +12,7 @@ test_src_postgres <- function() {
                           dbname = "test",
                           user = "postgres",
                           password = "password",
-                          ports = 5432)
+                          port = 5432)
   } else {
     con <- DBI::dbConnect(RPostgres::Postgres())
   }
