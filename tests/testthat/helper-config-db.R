@@ -7,7 +7,15 @@ test_src_sqlite <- function() {
 }
 
 test_src_postgres <- function() {
-  con <- DBI::dbConnect(RPostgres::Postgres())
+  if (!is.null(Sys.getenv("CI"))) {
+    con <- DBI::dbConnect(RPostgres::Postgres(),
+                          dbname = "test",
+                          user = "postgres",
+                          password = "password",
+                          ports = 5432)
+  } else {
+    con <- DBI::dbConnect(RPostgres::Postgres())
+  }
   dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }
 
@@ -17,10 +25,17 @@ test_src_maria <- function() {
 }
 
 test_src_mssql <- function() {
-  con <- DBI::dbConnect(
-    odbc::odbc(),
-    "mssql-test",
-    uid = "kirill", pwd = keyring::key_get("mssql", "kirill")
-  )
+  if (!is.null(Sys.getenv("CI"))) {
+    con <- DBI::dbConnect(
+      odbc::odbc(),
+      "mssql-test",
+      uid = "kirill", pwd = "Password12")
+  } else {
+    con <- DBI::dbConnect(
+      odbc::odbc(),
+      "mssql-test",
+      uid = "kirill", pwd = keyring::key_get("mssql", "kirill")
+    )
+  }
   dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }
