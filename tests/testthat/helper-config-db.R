@@ -8,12 +8,7 @@ test_src_sqlite <- function() {
 
 test_src_postgres <- function() {
   if (!is.null(Sys.getenv("CI"))) {
-    con <- DBI::dbConnect(RPostgres::Postgres(),
-      dbname = "test",
-      user = "postgres",
-      password = "password",
-      port = 5432
-    )
+    con <- DBI::dbConnect(odbc::odbc(), "PostgreSQL")
   } else {
     con <- DBI::dbConnect(RPostgres::Postgres())
   }
@@ -30,6 +25,7 @@ test_src_mssql <- function() {
     con <- DBI::dbConnect(
       odbc::odbc(),
       "mssql-test",
+      uid = "SA",
       pwd = "Password12",
       port = 1433
     )
