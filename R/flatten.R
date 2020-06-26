@@ -205,7 +205,7 @@ parent_child_table <- function(dm, table_1, table_2) {
   }
 
   if (nrow(rel) > 1) {
-    abort_no_cycles()
+    abort_no_cycles(create_graph_from_dm(dm))
   }
 
   rel
@@ -229,7 +229,7 @@ check_flatten_to_tbl <- function(
 
   # Cycles not yet supported
   if (length(V(g)) - 1 != length(E(g))) {
-    abort_no_cycles()
+    abort_no_cycles(g)
   }
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
   if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
