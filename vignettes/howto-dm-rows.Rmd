@@ -45,12 +45,15 @@ Note the Table Source portion when printing each of the dm objects.
 
 We will now create a row to insert in the `accounts` table. 
 As `dm_rows_insert()` requires primary keys to be unique, we will first find the current maximum primary key and start our numbering beyond that. 
+
 ``````{r }
 library(dplyr)
 
 #FIXME - this seems really inefficient. Is there a cleaner way to get the max value in a column?
-new_id <- max(dm_sqlite$accounts %>% pull(id)) + 1
-
+new_id <- 
+  dm_sqlite$accounts %>% 
+  summarize(new_id = max(id, na.rm = TRUE) + 1L) %>% 
+  pull()
 ``````
 
 Next, we will use {dplyr}'s `add_row()` to create a new account entry.
