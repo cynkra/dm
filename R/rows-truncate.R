@@ -15,7 +15,6 @@ rows_truncate <- function(x, ..., in_place = FALSE) {
 #' @export
 rows_truncate.tbl_sql <- function(x, ...,
                                   in_place = NULL) {
-
   name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
