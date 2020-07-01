@@ -99,6 +99,31 @@ test_that("'copy_to.dm()' works (2)", {
   )
 })
 
+test_that("'collect.dm()' collects tables on DB", {
+  def <-
+    dm_for_filter() %>%
+    dm_filter(tf_1, a > 3) %>%
+    collect() %>%
+    dm_get_def()
+
+  is_df <- map_lgl(def$data, is.data.frame)
+  expect_true(all(is_df))
+})
+
+test_that("'collect.zoomed_dm()' collects tables, with message", {
+  zoomed_dm_for_collect <-
+    dm_for_filter() %>%
+    dm_zoom_to(tf_1) %>%
+    mutate(c = a + 1)
+
+  expect_message(
+    out <- zoomed_dm_for_collect %>% collect(),
+    "pull_tbl"
+  )
+
+  expect_s3_class(out, "data.frame")
+})
+
 test_that("'compute.dm()' computes tables on DB", {
   skip_if_local_src()
   def <-
@@ -399,8 +424,10 @@ test_that("dm_get_filters() works", {
 })
 
 test_that("output", {
-  nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
   verify_output("out/output.txt", {
+    print(dm())
+
+    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
     nyc_flights_dm
 
     nyc_flights_dm %>%

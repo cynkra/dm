@@ -13,7 +13,7 @@ dm_join_to_tbl(dm, table_1, table_2, join = left_join)
 
 \item{table_2}{The second table of the join.}
 
-\item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
+\item{join}{The type of join to be performed, see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.}
 }
 \value{
 The resulting table of the join.

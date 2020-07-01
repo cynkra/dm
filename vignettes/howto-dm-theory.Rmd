@@ -45,7 +45,18 @@ The elements are just named differently:
 | Column     | Attribute  |
 | Row        | Tuple     |
 
-The separation of data into multiple tables helps to improve data quality but in order to take full advantage of the approach, an associated data model is needed to overcome the difficulties that arise with joining multiple tables. 
+Relational databases, unlike data frames, do not keep all data in one large table but instead split it into multiple smaller tables.
+That separation into sub-tables has several advantages:
+
+- all information is stored only once, avoiding redundancy and conserving memory
+- all information needs to be updated only once and in one place, improving consistency and avoiding errors that may result from updating the same value in multiple locations
+- all information is organized by topic and segmented into smaller tables that are easier to handle
+
+It is for these reasons that separation of data helps with data quality, and they explain the popularity of relational databases in production-level data management.
+
+The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modeling or plotting data.
+
+Thus, to take full advantage of the relational database approach, an associated data model is needed to overcome the challenges that arise when working with multiple tables. 
 
 Let's illustrate this challenge with the data from the [`nycflights13` dataset](https://github.com/hadley/nycflights13) that
 contains detailed information about the 336776 flights that departed from New York City in 2013.

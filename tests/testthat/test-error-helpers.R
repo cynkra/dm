@@ -6,7 +6,6 @@ test_that("error messages do not change", {
     abort_not_unique_key("Christmas", "Rudolph")
     abort_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
     abort_table_not_in_dm("laziness", "hard_work")
-    abort_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus", "overtime"))
     abort_not_subset_of("playing", "game", "hunting", "game")
     abort_sets_not_equal(c("A problem occurred", "And another, even worse problem, occurred shortly after"))
     # The mentioned reasons for not being bijective and injective are the same, but this is intended:
@@ -26,7 +25,6 @@ test_that("error messages do not change", {
     abort_no_types()
     abort_no_indexes()
     abort_no_unique_indexes()
-    abort_need_named_vec(c("activity", "income", "expenses", "loss_or_gain"))
     abort_key_constraints_need_db()
     abort_pk_not_defined("table")
     abort_fk_exists("child", c("child_1", "child_2"), "parent")
@@ -42,7 +40,6 @@ test_that("error messages do not change", {
     abort_squash_limited()
     abort_apply_filters_first("join_tightly")
     abort_no_flatten_with_nest_join()
-    abort_unique_table_names_or_table_names()
     abort_is_not_dm("blob")
     abort_con_only_for_dbi()
     abort_only_possible_wo_zoom("dm_zoom_to")

@@ -25,17 +25,26 @@ dm_test_load <- function(x,
 # internal helper functions:
 
 # validates, that `table` is character and is part of the `dm` object
-check_correct_input <- function(dm, table, n = NULL) {
-  if (!is_character(table, n)) {
-    if (is.null(n)) {
-      abort("`table` must be a character vector.")
-    } else {
-      abort(paste0("`table` must be a character vector of length ", n, "."))
-    }
+dm_tbl_name <- function(dm, table) {
+  table_name <- as_name(ensym(table))
+
+  # Missing argument?
+  if (table_name == "") {
+    arg_name <- deparse(uncurly(substitute(table)))
+    abort_table_missing(arg_name)
   }
-  if (!all(table %in% src_tbls_impl(dm))) {
-    abort_table_not_in_dm(setdiff(table, src_tbls_impl(dm)), src_tbls_impl(dm))
+
+  if (!(table_name %in% src_tbls_impl(dm))) {
+    abort_table_not_in_dm(table_name, src_tbls_impl(dm))
   }
+
+  table_name
+}
+
+uncurly <- function(call) {
+  # Transforms {{ x }} to x
+  # Doesn't work for other expression patterns
+  call[[2]][[2]]
 }
 
 check_dm <- function(dm) {
@@ -113,4 +122,22 @@ check_one_zoom <- function(def, zoomed) {
       abort_dm_invalid("Key tracker for zoomed table activated despite `dm` not a `zoomed_dm`.")
     }
   }
+}
+
+# general error: table not part of `dm` -----------------------------------
+
+abort_table_missing <- function(arg_name) {
+  abort(error_txt_table_missing(arg_name), .subclass = dm_error_full("table_missing"))
+}
+
+error_txt_table_missing <- function(arg_name) {
+  glue("Must pass {tick(arg_name)} argument.")
+}
+
+abort_table_not_in_dm <- function(table_name, dm_tables) {
+  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = dm_error_full("table_not_in_dm"))
+}
+
+error_txt_table_not_in_dm <- function(table_name, dm_tables) {
+  glue("Table {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}.")
 }

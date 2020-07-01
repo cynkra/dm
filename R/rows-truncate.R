@@ -4,7 +4,7 @@
 #' This operation corresponds to `TRUNCATE` in SQL.
 #' `...` is ignored.
 #'
-#' @inheritParams rows_insert
+#' @inheritParams dplyr::rows_insert
 #' @param x A data frame or data frame extension (e.g. a tibble).
 #' @export
 rows_truncate <- function(x, ..., copy = FALSE, in_place = FALSE) {

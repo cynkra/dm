@@ -1,3 +1,13 @@
+get_stage("install") %>%
+  add_step(step_run_code(print(gh::gh("/rate_limit"))))
+
+# https://github.com/r-lib/cli/issues/154
+get_stage("install") %>%
+  add_step(tic::step_install_cran("cli"))
+
+get_stage("after_deploy") %>%
+  add_step(step_run_code(print(gh::gh("/rate_limit"))))
+
 if (ci_get_env("MODE") == "db-tests") {
   get_stage("install") %>%
     add_step(step_install_cran("devtools"))
@@ -8,7 +18,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     add_step(step_install_github(upgrade = "always", c(
       "mllg/backports",
       "r-lib/brio",
-      "r-lib/cli",
+      # "r-lib/cli", # https://github.com/r-lib/cli/issues/154
       "r-dbi/DBI",
       "tidyverse/dplyr",
       "tidyverse/glue",
@@ -36,9 +46,12 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     )))
 }
 
-if (ci_has_env("TIC_ONLY_TESTS")) {
+if (ci_has_env("TIC_DEV_VERSIONS")) {
   get_stage("script") %>%
     add_code_step(devtools::test(reporter = c("summary")))
+} else if (ci_has_env("TIC_ONLY_TESTS")) {
+  get_stage("script") %>%
+    add_code_step(devtools::test(reporter = c("summary", "fail")))
 } else if (ci_has_env("TIC_ONLY_STYLER")) {
   if (!ci_is_tag()) {
     # For caching
