@@ -18,6 +18,7 @@
 ## Internal
 
 - Testing SQLite, Postgres and SQL Server on GitHub Actions (#408, @pat-s).
+- Testing packages with all "Suggests" uninstalled.
 
 
 # dm 0.1.4.9000
