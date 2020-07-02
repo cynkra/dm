@@ -106,6 +106,8 @@ test_that("cdm_get_src() works", {
 })
 
 test_that("cdm_get_con() works", {
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   skip_on_cran()
 
   expect_dm_error(
