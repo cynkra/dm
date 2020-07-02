@@ -26,6 +26,8 @@ jobs:
           - { os: ubuntu-latest, r: 3.6, id: "default" }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: 3.3, id: "default" }
+          # [Custom matrix env var]
+          - { os: ubuntu-latest, r: "release", TIC_ONLY_IMPORTS: true, id: "TIC_ONLY_IMPORTS" }
 
     env:
       # [Custom env var]
@@ -36,6 +38,8 @@ jobs:
       _R_CHECK_PACKAGE_DEPENDS_IGNORE_MISSING_ENHANCES: true
       # [Custom env var]
       TIC_DEV_VERSIONS: ${{ matrix.config.TIC_DEV_VERSIONS }}
+      # [Custom env var]
+      TIC_ONLY_IMPORTS: ${{ matrix.config.TIC_ONLY_IMPORTS }}
       # [Custom env var]
       TIC_ONLY_TESTS: ${{ matrix.config.TIC_ONLY_TESTS }}
       # [Custom env var]
@@ -88,8 +92,8 @@ jobs:
         uses: pat-s/always-upload-cache@v2.0.0
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
 
       # install ccache and write config file
       - name: "[Linux] Prepare"
