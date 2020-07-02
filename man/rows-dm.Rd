@@ -82,6 +82,7 @@ only for tables in \code{dm}.
 The order in which the tables are processed is reversed.
 }
 \examples{
+\dontshow{if (rlang::is_installed("RSQLite")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Establish database connection:
 sqlite <- DBI::dbConnect(RSQLite::SQLite())
 
@@ -155,4 +156,5 @@ dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
 print(dm_nrow(flights_sqlite))
 
 DBI::dbDisconnect(sqlite)
+\dontshow{\}) # examplesIf}
 }
