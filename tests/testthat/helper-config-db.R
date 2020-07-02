@@ -8,7 +8,14 @@ test_src_sqlite <- function() {
 
 test_src_postgres <- function() {
   if (!is.null(Sys.getenv("CI"))) {
-    con <- DBI::dbConnect(RPostgres::Postgres(), user = "postgres")
+    con <- DBI::dbConnect(
+      RPostgres::Postgres(),
+      dbname = "test",
+      host = "localhost",
+      port = 5432,
+      user = "postgres",
+      password = "password"
+    )
   } else {
     con <- DBI::dbConnect(RPostgres::Postgres())
   }
