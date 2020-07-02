@@ -80,6 +80,7 @@ These are the standard colors also returned by \code{grDevices::colors()} plus a
 table color with the name "default".
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_draw()
 
@@ -91,6 +92,8 @@ length(dm_get_available_colors())
 
 dm_nycflights13() \%>\%
   dm_get_colors()
+\dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(
@@ -108,4 +111,5 @@ nyc_cols
 dm_nycflights13(color = FALSE) \%>\%
   dm_set_colors(!!!nyc_cols) \%>\%
   dm_draw()
+\dontshow{\}) # examplesIf}
 }

@@ -25,10 +25,10 @@ The data is downloaded once per session, subsequent calls return the same databa
 The \code{trans} table is excluded due to its size.
 }
 \examples{
+\dontshow{if (rlang::is_installed("RMariaDB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontrun{
-if (rlang::is_installed("RMariaDB")) {
-  dm_financial() \%>\%
-    dm_draw()
+dm_financial() \%>\%
+  dm_draw()
 }
-}
+\dontshow{\}) # examplesIf}
 }

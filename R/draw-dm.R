@@ -20,7 +20,7 @@
 #' @return For `dm_draw()`: returns an object of class `grViz` (see also [DiagrammeR::grViz()]), which,
 #' when printed, produces the output seen in the viewer as a side effect.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_draw()
 #'
@@ -131,7 +131,9 @@ dm_get_all_columns <- function(x) {
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @rdname dm_draw
-#' @examples
+#'
+#' @export
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #'
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
@@ -149,7 +151,6 @@ dm_get_all_columns <- function(x) {
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(!!!nyc_cols) %>%
 #'   dm_draw()
-#' @export
 dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
   if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
