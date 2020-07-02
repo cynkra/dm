@@ -84,7 +84,8 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
   if (ci_has_env("TIC_ONLY_IMPORTS")) {
     # VignetteBuilder not installed?
     get_stage("install") %>%
-      add_step(step_install_cran(c("rmarkdown", "testthat")))
+      add_step(step_install_cran("rmarkdown")) %>%
+      add_step(step_install_cran("testthat"))
 
     do_package_checks(dependencies = c("Depends", "Imports"))
   } else {
