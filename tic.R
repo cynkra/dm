@@ -6,6 +6,7 @@ get_stage("after_deploy") %>%
 
 if (ci_get_env("MODE") == "db-tests") {
   get_stage("install") %>%
+    add_step(step_install_deps()) %>%
     add_step(step_install_cran("devtools"))
 }
 
