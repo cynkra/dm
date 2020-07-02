@@ -21,11 +21,6 @@
 - Testing packages with all "Suggests" uninstalled.
 
 
-# dm 0.1.4.9000
-
-- Same as previous version.
-
-
 # dm 0.1.4
 
 ## Features
