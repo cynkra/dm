@@ -1,4 +1,4 @@
-dm 0.1.5
+dm 0.1.5: Conditionally use suggested DiagrammeRsvg
 
 ## Cran Repository Policy
 
@@ -7,13 +7,7 @@ dm 0.1.5
 ## R CMD check results
 
 - [x] Checked locally, R 4.0.1
-- [ ] Checked on CI system, R 4.0.2
-- [ ] Checked on win-builder, R devel
+- [x] Checked on CI system, R 4.0.2
+- [x] Checked on win-builder, R devel
 
 OK
-
-- [ ] Explain R CMD check failures or remove this line.
-
-## CRAN failures
-
-Initial release.
