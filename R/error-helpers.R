@@ -132,12 +132,17 @@ error_txt_last_col_missing <- function() {
 
 # errors in graph-functions -----------------------------------------------
 
-abort_no_cycles <- function() {
-  abort(error_txt_no_cycles(), .subclass = dm_error_full("no_cycles"))
+abort_no_cycles <- function(g) {
+  shortest_cycle <- igraph::girth(g) %>%
+    pluck("circle") %>%
+    names()
+  # add the first element after the last element, so it's more clear that it's a cycle
+  shortest_cycle <- paste(c(shortest_cycle, shortest_cycle[1]), collapse = " -> ")
+  abort(error_txt_no_cycles(shortest_cycle), .subclass = dm_error_full("no_cycles"))
 }
 
-error_txt_no_cycles <- function() {
-  "Cycles in the relationship graph not yet supported."
+error_txt_no_cycles <- function(shortest_cycle) {
+  c("Cycles in the relationship graph not yet supported.", glue::glue("Shortest cycle: {shortest_cycle}"))
 }
 
 
