@@ -264,7 +264,7 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #' most likely used interactively.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table) {
