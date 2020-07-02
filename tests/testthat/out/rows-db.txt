@@ -21,6 +21,13 @@ Message: Result is returned as lazy table. Use `in_place = FALSE` to mute this m
 3      3 <NA>     2.5
 4      4 z       NA  
 
+> data %>% arrange(select)
+  select where exists
+   <int> <chr>  <dbl>
+1      1 a        0.5
+2      2 b        1.5
+3      3 <NA>     2.5
+
 > suppressMessages(rows_update(data, tibble(select = 2:3, where = "w"), copy = TRUE,
 + in_place = FALSE))
   select where exists
@@ -30,6 +37,28 @@ Message: Result is returned as lazy table. Use `in_place = FALSE` to mute this m
 3      3 w        2.5
 
 > suppressMessages(rows_update(data, tibble(select = 2:3), copy = TRUE, in_place = FALSE))
+  select where exists
+   <int> <chr>  <dbl>
+1      1 a        0.5
+2      2 b        1.5
+3      3 <NA>     2.5
+
+> data %>% arrange(select)
+  select where exists
+   <int> <chr>  <dbl>
+1      1 a        0.5
+2      2 b        1.5
+3      3 <NA>     2.5
+
+> rows_insert(data, test_src_frame(select = 4, where = "z"), in_place = FALSE)
+  select where exists
+   <dbl> <chr>  <dbl>
+1      1 a        0.5
+2      2 b        1.5
+3      3 <NA>     2.5
+4      4 z       NA  
+
+> data %>% arrange(select)
   select where exists
    <int> <chr>  <dbl>
 1      1 a        0.5
@@ -62,4 +91,19 @@ Message: Result is returned as lazy table. Use `in_place = FALSE` to mute this m
 2      2 w        1.5
 3      3 w        2.5
 4      4 z       NA  
+
+> rows_truncate(data, in_place = FALSE)
+# ... with 3 variables: select <int>, where <chr>, exists <dbl>
+
+> data %>% arrange(select)
+  select where exists
+   <int> <chr>  <dbl>
+1      1 a        0.5
+2      2 w        1.5
+3      3 w        2.5
+4      4 z       NA  
+
+> rows_truncate(data, in_place = TRUE)
+> data %>% arrange(select)
+# ... with 3 variables: select <int>, where <chr>, exists <dbl>
 

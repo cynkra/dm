@@ -35,23 +35,19 @@ For Postgres and SQL Server databases, primary and foreign keys
 are imported from the database.
 }
 \examples{
-dm_from_src_demo <- function() {
-  if (!rlang::is_installed("DBI")) {
-    message("Install the DBI package to run this example.")
-  }
-
-  con <- DBI::dbConnect(
-    RMariaDB::MariaDB(),
-    username = "guest",
-    password = "relational",
-    dbname = "Financial_ijs",
-    host = "relational.fit.cvut.cz"
-  )
-  on.exit(DBI::dbDisconnect(con))
-
-  dm_from_src(con)
-}
+\dontshow{if (rlang::is_installed("RMariaDB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontrun{
-dm_from_src_demo()
+con <- DBI::dbConnect(
+  RMariaDB::MariaDB(),
+  username = "guest",
+  password = "relational",
+  dbname = "Financial_ijs",
+  host = "relational.fit.cvut.cz"
+)
+
+dm_from_src(con)
+
+DBI::dbDisconnect(con)
 }
+\dontshow{\}) # examplesIf}
 }

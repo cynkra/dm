@@ -83,12 +83,7 @@ The order in which the tables are processed is reversed.
 }
 \examples{
 # Establish database connection:
-if (rlang::is_installed("RSQLite")) {
-  sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-} else {
-  # Fallback, persistence won't work:
-  sqlite <- dplyr::src_df(env = rlang::new_environment())
-}
+sqlite <- DBI::dbConnect(RSQLite::SQLite())
 
 # Entire dataset with all dimension tables populated
 # with flights and weather data truncated:
@@ -158,4 +153,6 @@ flights_new \%>\%
 # Apply:
 dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
 print(dm_nrow(flights_sqlite))
+
+DBI::dbDisconnect(sqlite)
 }
