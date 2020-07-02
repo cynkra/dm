@@ -31,7 +31,7 @@ test_that("dm_select_tbl() remembers all FKs", {
   skip_if_not_installed("nycflights13")
 
   reordered_dm_nycflights_small_cycle <-
-    dm_nycflights_small()
+    dm_nycflights_small() %>%
     dm_add_fk(flights, origin, airports) %>%
     dm_get_def() %>%
     filter(!(table %in% c("airlines", "planes"))) %>%
