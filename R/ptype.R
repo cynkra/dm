@@ -12,7 +12,7 @@
 #'
 #' @inheritParams dm_get_fk
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5
 #' dm_financial() %>%
 #'   dm_ptype()
 #'
