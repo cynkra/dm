@@ -174,9 +174,10 @@ sql_rows_insert <- function(x, y, ...) {
 
 #' @export
 sql_rows_insert.tbl_sql <- function(x, y, ...) {
+  con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
 
-  columns_q <- colnames(y)
+  columns_q <- DBI::dbQuoteIdentifier(con, colnames(y))
   columns_qq <- paste(columns_q, collapse = ", ")
 
   sql <- paste0(
