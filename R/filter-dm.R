@@ -122,7 +122,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' @return For `dm_apply_filters()`: an updated `dm` object (filter effects evaluated for all tables).
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nyc %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
