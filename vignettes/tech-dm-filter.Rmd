@@ -125,7 +125,17 @@ rows_per_table
 sum(rows_per_table)
 ```
 
-The total number of rows in the `dm` drops from `r format(sum(dm_nrow(dm)), big.mark = " ")` to `r format(sum(dm_nrow(dm_apply_filters(filtered_dm))), big.mark = " ")` (the only unaffected table is the disconnected `weather` table).
+```{r}
+sum_nrow <- NA
+sum_nrow_filtered <- NA
+```
+
+```{r}
+sum_nrow <- sum(dm_nrow(dm))
+sum_nrow_filtered <- sum(dm_nrow(dm_apply_filters(filtered_dm)))
+```
+
+The total number of rows in the `dm` drops from `r format(sum_nrow, big.mark = " ")` to `r format(sum_nrow_filtered, big.mark = " ")` (the only unaffected table is the disconnected `weather` table).
 
 Next example:
 
