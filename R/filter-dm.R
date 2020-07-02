@@ -218,7 +218,7 @@ get_all_filtered_connected <- function(dm, table) {
   # 1. speed things up
   # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
   graph <- igraph::induced_subgraph(graph, target_tables)
-  if (length(E(graph)) >= length(V(graph))) abort_no_cycles()
+  if (length(E(graph)) >= length(V(graph))) abort_no_cycles(graph)
   paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
 
   # All edges with finite distance as tidy data frame
