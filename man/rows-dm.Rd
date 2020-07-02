@@ -82,7 +82,7 @@ only for tables in \code{dm}.
 The order in which the tables are processed is reversed.
 }
 \examples{
-\dontshow{if (rlang::is_installed("RSQLite")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Establish database connection:
 sqlite <- DBI::dbConnect(RSQLite::SQLite())
 

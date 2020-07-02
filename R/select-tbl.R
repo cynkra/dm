@@ -12,7 +12,7 @@
 #' @param ... One or more table names of the tables of the [`dm`] object.
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_select_tbl(airports, fl = flights)
 #' @export
@@ -31,7 +31,7 @@ dm_select_tbl <- function(dm, ...) {
 #'
 #' @rdname dm_select_tbl
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export

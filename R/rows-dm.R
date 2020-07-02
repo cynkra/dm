@@ -28,7 +28,7 @@
 #'   and `x` is returned, invisibly.
 #'
 #' @name rows-dm
-#' @examplesIf rlang::is_installed("RSQLite")
+#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")
 #' # Establish database connection:
 #' sqlite <- DBI::dbConnect(RSQLite::SQLite())
 #'

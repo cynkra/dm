@@ -19,10 +19,12 @@ key of the \code{table} argument, \code{FALSE} otherwise.
 Is a table of a \code{\link{dm}} referenced by another table?
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_is_referenced(airports)
 dm_nycflights13() \%>\%
   dm_is_referenced(flights)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other functions utilizing foreign key relations: 

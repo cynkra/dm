@@ -108,7 +108,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #' @family foreign key functions
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_has_fk(flights, airports)
 #' dm_nycflights13() %>%
@@ -145,7 +145,7 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #' pointing to the primary key of `ref_table`.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_fk(flights, airports)
 #' dm_nycflights13(cycle = TRUE) %>%
@@ -185,8 +185,9 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #'
 #' @family foreign key functions
 #'
-#' @examples
-#' dm_get_all_fks(dm_nycflights13())
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_get_all_fks()
 #' @export
 dm_get_all_fks <- function(dm) {
   check_not_zoomed(dm)
@@ -303,7 +304,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 #'
 #' @family foreign key functions
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_enum_fk_candidates(flights, airports)
 #'

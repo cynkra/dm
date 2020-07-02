@@ -12,7 +12,7 @@
 #'
 #' @details see manual for the corresponding functions in \pkg{utils}.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' zoomed <- dm_nycflights13() %>%
 #'   dm_zoom_to(flights) %>%
 #'   head(4)
