@@ -31,6 +31,7 @@
 #' @examples
 #' dm() %>%
 #'   dm_paste()
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste()

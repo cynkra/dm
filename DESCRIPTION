@@ -71,7 +71,6 @@ Suggests:
     RMariaDB,
     rmarkdown,
     RPostgres,
-    rprojroot,
     RSQLite,
     testthat (>= 2.1.0),
     tidyverse,

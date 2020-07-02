@@ -1,6 +1,3 @@
-try(library(dbplyr), silent = TRUE)
-library(rprojroot)
-
 if (!is_attached("dm_cache")) {
   ((attach))(new_environment(), pos = length(search()) - 1, name = "dm_cache")
 }

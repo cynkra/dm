@@ -29,5 +29,8 @@ because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.
 }
 \examples{
-dm_disambiguate_cols(dm_nycflights13())
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_disambiguate_cols()
+\dontshow{\}) # examplesIf}
 }

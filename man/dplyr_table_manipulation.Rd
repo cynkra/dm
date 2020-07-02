@@ -71,6 +71,7 @@ names and column locations).}
 Use these methods without the '.zoomed_dm' suffix (see examples).
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 zoomed <- dm_nycflights13() \%>\%
   dm_zoom_to(flights) \%>\%
   group_by(month) \%>\%
@@ -78,4 +79,5 @@ zoomed <- dm_nycflights13() \%>\%
   summarize(avg_air_time = mean(air_time, na.rm = TRUE))
 zoomed
 dm_insert_zoomed(zoomed, new_tbl_name = "avg_air_time_per_month")
+\dontshow{\}) # examplesIf}
 }

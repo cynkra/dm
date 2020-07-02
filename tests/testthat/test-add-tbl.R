@@ -72,6 +72,13 @@ test_that("dm_add_tbl() works", {
     )
   )
 
+  # can I use dm_select_tbl(), selecting among others the new table?
+  expect_silent(
+    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
+  )
+
+  skip_if_not_installed("dbplyr")
+
   # error in case table srcs don't match
   expect_dm_error(
     dm_add_tbl(dm_for_filter(), data_card_1_sqlite()),
@@ -82,11 +89,6 @@ test_that("dm_add_tbl() works", {
   expect_equivalent_tbl(
     dm_add_tbl(dm(), test = data_card_1_sqlite())$test,
     data_card_1()
-  )
-
-  # can I use dm_select_tbl(), selecting among others the new table?
-  expect_silent(
-    dm_add_tbl(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
   )
 })
 

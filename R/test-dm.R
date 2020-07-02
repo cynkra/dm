@@ -8,6 +8,7 @@
 #' @examples
 #' dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
 #' dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE))
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_test_obj <- dm_nycflights13(cycle = TRUE)
 #' dm_test_obj_srcs <- dm_test_load(dm_test_obj)

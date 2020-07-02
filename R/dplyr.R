@@ -4,7 +4,7 @@
 #' @param .data object of class `zoomed_dm`
 #' @param ... see corresponding function in package \pkg{dplyr} or \pkg{tidyr}
 #' @name dplyr_table_manipulation
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' zoomed <- dm_nycflights13() %>%
 #'   dm_zoom_to(flights) %>%
 #'   group_by(month) %>%
@@ -291,7 +291,7 @@ pull.zoomed_dm <- function(.data, var = -1, ...) {
 #' This argument is specific for the `join`-methods for `zoomed_dm`.
 #' The table's `by` column(s) are automatically added if missing in the selection.
 #' @param ... see [`dplyr::join`]
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' flights_dm <- dm_nycflights13()
 #' dm_zoom_to(flights_dm, flights) %>%
 #'   left_join(airports, select = c(faa, name))

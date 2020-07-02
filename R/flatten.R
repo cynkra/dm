@@ -52,7 +52,7 @@
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_select_tbl(-weather) %>%
 #'   dm_flatten_to_tbl(flights)
@@ -165,14 +165,19 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #' @family flattening functions
 #'
 #' @export
-#' @examples
-#' dm_join_to_tbl(dm_nycflights13(), airports, flights)
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_join_to_tbl(airports, flights)
 #'
 #' # same result is achieved with:
-#' dm_join_to_tbl(dm_nycflights13(), flights, airports)
+#' dm_nycflights13() %>%
+#'   dm_join_to_tbl(flights, airports)
 #'
 #' # this gives an error, because the tables are not directly linked to each other:
-#' try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
+#' try(
+#'   dm_nycflights13() %>%
+#'     dm_join_to_tbl(airlines, airports)
+#' )
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   check_not_zoomed(dm)
   force(join)

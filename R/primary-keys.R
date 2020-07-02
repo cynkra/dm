@@ -96,7 +96,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'
 #' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_has_pk(flights)
 #' dm_nycflights13() %>%
@@ -137,7 +137,7 @@ dm_has_pk_impl <- function(dm, table) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_pk(flights)
 #' dm_nycflights13() %>%
@@ -181,7 +181,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'   }
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_all_pks()
 dm_get_all_pks <- function(dm) {
@@ -264,7 +264,7 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #' most likely used interactively.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table) {
@@ -285,7 +285,7 @@ enum_pk_candidates <- function(table) {
 #'
 #' @rdname enum_pk_candidates
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nycflights13() %>%
 #'   dm_enum_pk_candidates(airports)
