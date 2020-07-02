@@ -35,8 +35,7 @@ For Postgres and SQL Server databases, primary and foreign keys
 are imported from the database.
 }
 \examples{
-\dontshow{if (rlang::is_installed("RMariaDB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontrun{
+\dontshow{if (rlang::is_installed("RMariaDB") && getRversion() >= 3.5) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 con <- DBI::dbConnect(
   RMariaDB::MariaDB(),
   username = "guest",
@@ -48,6 +47,5 @@ con <- DBI::dbConnect(
 dm_from_src(con)
 
 DBI::dbDisconnect(con)
-}
 \dontshow{\}) # examplesIf}
 }
