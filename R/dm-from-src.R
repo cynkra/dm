@@ -26,7 +26,7 @@
 #' @return A `dm` object.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("RMariaDB")
+#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5
 #' con <- DBI::dbConnect(
 #'   RMariaDB::MariaDB(),
 #'   username = "guest",
