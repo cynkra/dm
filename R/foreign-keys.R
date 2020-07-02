@@ -32,7 +32,7 @@
 #' @return For `dm_add_fk()`: An updated `dm` with an additional foreign key relation.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13")
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
 #'   flights = nycflights13::flights
@@ -212,8 +212,7 @@ dm_get_all_fks_impl <- function(dm) {
 #' @return For `dm_rm_fk()`: An updated `dm` without the given foreign key relation.
 #'
 #' @export
-#' @examples
-#'
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13(cycle = TRUE) %>%
 #'   dm_rm_fk(flights, dest, airports) %>%
 #'   dm_draw()

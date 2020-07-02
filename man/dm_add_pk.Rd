@@ -53,7 +53,7 @@ with current semantics.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
   airports = nycflights13::airports
@@ -74,10 +74,11 @@ try(
     dm_add_pk(planes, manufacturer, check = TRUE)
 )
 \dontshow{\}) # examplesIf}
-
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
   dm_draw()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 

@@ -52,7 +52,7 @@ with current semantics.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
   flights = nycflights13::flights
@@ -66,10 +66,11 @@ nycflights_dm \%>\%
   dm_add_fk(flights, tailnum, planes) \%>\%
   dm_draw()
 \dontshow{\}) # examplesIf}
-
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13(cycle = TRUE) \%>\%
   dm_rm_fk(flights, dest, airports) \%>\%
   dm_draw()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 

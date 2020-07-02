@@ -29,7 +29,7 @@
 #' @return For `dm_add_pk()`: An updated `dm` with an additional primary key.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13")
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
 #'   airports = nycflights13::airports
@@ -208,8 +208,7 @@ dm_get_all_pks_impl <- function(dm) {
 #'
 #' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
 #'
-#' @examples
-#'
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   dm_draw()
