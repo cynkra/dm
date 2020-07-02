@@ -29,19 +29,11 @@
 #' @return For `dm_add_pk()`: An updated `dm` with an additional primary key.
 #'
 #' @export
-#' @examples
-#' if (rlang::is_installed("nycflights13")) {
-#'   nycflights_dm <- dm(
-#'     planes = nycflights13::planes,
-#'     airports = nycflights13::airports
-#'   )
-#' } else {
-#'   message("Using mock-up data, install the nycflights13 package to fix.")
-#'   nycflights_dm <- dm(
-#'     planes = tibble(tailnum = letters[1:2], manufacturer = "Acme"),
-#'     airports = tibble(faa = character())
-#'   )
-#' }
+#' @examplesIf rlang::is_installed("nycflights13")
+#' nycflights_dm <- dm(
+#'   planes = nycflights13::planes,
+#'   airports = nycflights13::airports
+#' )
 #'
 #' nycflights_dm %>%
 #'   dm_draw()
@@ -52,7 +44,7 @@
 #'   dm_add_pk(airports, faa, check = TRUE) %>%
 #'   dm_draw()
 #'
-#' # the following does not work (throws an error)
+#' # the following throws an error:
 #' try(
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)

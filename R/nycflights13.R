@@ -20,11 +20,9 @@
 #' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
 #' @export
-#' @examples
-#' if (rlang::is_installed("nycflights13")) {
-#'   dm_nycflights13() %>%
-#'     dm_draw()
-#' }
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' dm_nycflights13() %>%
+#'   dm_draw()
 dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
   airlines <- nycflights13::airlines
   airports <- nycflights13::airports
