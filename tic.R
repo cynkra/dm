@@ -81,8 +81,15 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
       print(sessioninfo::session_info())
     })
 
-  do_package_checks(
-    error_on = if (getRversion() >= "3.4") "note" else "warning",
-    dependencies = if (ci_has_env("TIC_ONLY_IMPORTS")) c("Depends", "Imports") else TRUE
-  )
+  if (ci_has_env("TIC_ONLY_IMPORTS")) {
+    # VignetteBuilder not installed?
+    get_stage("install") %>%
+      step_install_cran("rmarkdown")
+
+    do_package_checks(dependencies = c("Depends", "Imports"))
+  } else {
+    do_package_checks(
+      error_on = if (getRversion() >= "3.4") "note" else "warning"
+    )
+  }
 }
