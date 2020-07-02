@@ -82,7 +82,7 @@ This operation corresponds to TRUNCATE in SQL.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -180,7 +180,9 @@ This operation corresponds to <code>TRUNCATE</code> in SQL.
 <code>...</code> is ignored.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rows_truncate</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>rows_truncate</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>sql_rows_truncate</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,13 +194,6 @@ This operation corresponds to <code>TRUNCATE</code> in SQL.
     <tr>
       <th>...</th>
       <td><p>Other parameters passed onto methods.</p></td>
-    </tr>
-    <tr>
-      <th>copy</th>
-      <td><p>If <code>x</code> and <code>y</code> are not from the same data source,
-and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
-same src as <code>x</code>.  This allows you to join tables across srcs, but
-it is a potentially expensive operation so you must opt into it.</p></td>
     </tr>
     <tr>
       <th>in_place</th>

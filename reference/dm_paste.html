@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -229,27 +229,27 @@ Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm()</span></div><div class='input'>
+  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm::dm()</span></div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm(airlines, airports, flights, planes, weather) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_pk(airlines, carrier) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_pk(airports, faa) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_pk(planes, tailnum) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_fk(flights, carrier, airlines) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_fk(flights, origin, airports) %&gt;%</span>
-#&gt; <span class='message'>  dm_add_fk(flights, tailnum, planes) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = airlines) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = airports) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
-#&gt; <span class='message'>  dm_set_colors(`#70AD47FF` = weather)</span></div><div class='input'>
+  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_add_pk(airlines, carrier) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_add_pk(airports, faa) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_add_pk(planes, tailnum) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_add_fk(flights, carrier, airlines) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_add_fk(flights, origin, airports) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_add_fk(flights, tailnum, planes) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_set_colors(`#ED7D31FF` = airlines) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_set_colors(`#ED7D31FF` = airports) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_set_colors(`#70AD47FF` = weather)</span></div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>(<span class='kw'>options</span> <span class='kw'>=</span> <span class='st'>"select"</span>)</div><div class='output co'>#&gt; <span class='message'>dm(airlines, airports, flights, planes, weather) %&gt;%</span>
-#&gt; <span class='message'>  dm_select(airlines, carrier, name) %&gt;%</span>
-#&gt; <span class='message'>  dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%</span>
-#&gt; <span class='message'>  dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>
-#&gt; <span class='message'>  dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%</span>
-#&gt; <span class='message'>  dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</span></div></pre>
+  <span class='fu'>dm_paste</span>(<span class='kw'>options</span> <span class='kw'>=</span> <span class='st'>"select"</span>)</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_select(airlines, carrier, name) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%</span>
+#&gt; <span class='message'>  dm::dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

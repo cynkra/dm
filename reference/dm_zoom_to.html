@@ -88,7 +88,7 @@ for a more detailed introduction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -268,9 +268,36 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 <p>And -- last but not least -- also the tidyr-functions <code><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite()</a></code> and <code><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate()</a></code> are supported for <code>zoomed_dm</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>flights_zoomed</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_zoom_to</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>) <span class='kw'>&amp;&amp;</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"DiagrammeR"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
+<span class='no'>flights_zoomed</span> <span class='kw'>&lt;-</span> <span class='fu'>dm_zoom_to</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>)
 
-<span class='no'>flights_zoomed</span></div><div class='output co'>#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
+<span class='no'>flights_zoomed</span>
+
+<span class='no'>flights_zoomed_transformed</span> <span class='kw'>&lt;-</span>
+  <span class='no'>flights_zoomed</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am_pm_dep</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>dep_time</span> <span class='kw'>&lt;</span> <span class='fl'>1200</span>, <span class='st'>"am"</span>, <span class='st'>"pm"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='co'># `by`-argument of `left_join()` can be explicitly given</span>
+  <span class='co'># otherwise the key-relation is used</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span>(<span class='no'>airports</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>year</span>:<span class='no'>dep_time</span>, <span class='no'>am_pm_dep</span>, <span class='fu'>everything</span>())
+
+<span class='no'>flights_zoomed_transformed</span>
+
+<span class='co'># replace table `flights` with the zoomed table</span>
+<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_update_zoomed</span>()
+
+<span class='co'># insert the zoomed table as a new table</span>
+<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_insert_zoomed</span>(<span class='st'>"extended_flights"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
+
+<span class='co'># discard the zoomed table</span>
+<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_discard_zoomed</span>()
+}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; flights_zoomed &lt;- dm_zoom_to(dm_nycflights13(), flights)
+#&gt; &gt; flights_zoomed
+#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
@@ -286,16 +313,12 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600       -</span><span style='color: #BB0000;'>10</span><span>      649            703
 #&gt; </span><span style='color: #555555;'># … with 11,217 more rows, and 11 more variables: arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span></div><div class='input'>
-<span class='no'>flights_zoomed_transformed</span> <span class='kw'>&lt;-</span>
-  <span class='no'>flights_zoomed</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am_pm_dep</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>dep_time</span> <span class='kw'>&lt;</span> <span class='fl'>1200</span>, <span class='st'>"am"</span>, <span class='st'>"pm"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='co'># `by`-argument of `left_join()` can be explicitly given</span>
-  <span class='co'># otherwise the key-relation is used</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span>(<span class='no'>airports</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>year</span>:<span class='no'>dep_time</span>, <span class='no'>am_pm_dep</span>, <span class='fu'>everything</span>())
-
-<span class='no'>flights_zoomed_transformed</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Zoomed table: flights</span><span>
+#&gt; </span><span style='color: #555555;'>#   air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>
+#&gt; &gt; flights_zoomed_transformed &lt;- flights_zoomed %&gt;% mutate(am_pm_dep = ifelse(dep_time &lt; 
+#&gt; +     1200, "am", "pm")) %&gt;% left_join(airports) %&gt;% select(year:dep_time, am_pm_dep, 
+#&gt; +     everything())
+#&gt; &gt; flights_zoomed_transformed
+#&gt; </span><span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 27</span><span>
 #&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
@@ -313,135 +336,19 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 #&gt; </span><span style='color: #555555;'>#   arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, lat </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lon </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, alt </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, tz </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   dst </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, tzone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
-<span class='co'># replace table `flights` with the zoomed table</span>
-<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_update_zoomed</span>()</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>#   dst </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, tzone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; &gt; flights_zoomed_transformed %&gt;% dm_update_zoomed()
+#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 61
 #&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'>
-<span class='co'># insert the zoomed table as a new table</span>
-<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_insert_zoomed</span>(<span class='st'>"extended_flights"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.40.1 (20161225.0304)
- -->
-<!-- Title: %0 Pages: 1 -->
-<svg width="197pt" height="244pt"
- viewBox="0.00 0.00 197.00 244.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 240)">
-<title>%0</title>
-<g id="a_graph0"><a xlink:title="Data Model">
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-240 193,-240 193,4 -4,4"/>
-</a>
-</g>
-<!-- airlines -->
-<g id="node1" class="node">
-<title>airlines</title>
-<polygon fill="#ed7d31" stroke="transparent" points="140,-151 140,-171 185,-171 185,-151 140,-151"/>
-<text text-anchor="start" x="141.8969" y="-156.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airlines</text>
-<polygon fill="#fbe5d5" stroke="transparent" points="140,-131 140,-151 185,-151 185,-131 140,-131"/>
-<text text-anchor="start" x="142" y="-137.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="138.5,-130 138.5,-172 185.5,-172 185.5,-130 138.5,-130"/>
-</g>
-<!-- airports -->
-<g id="node2" class="node">
-<title>airports</title>
-<polygon fill="#ed7d31" stroke="transparent" points="139,-24 139,-44 185,-44 185,-24 139,-24"/>
-<text text-anchor="start" x="140.6192" y="-29.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airports</text>
-<polygon fill="#fbe5d5" stroke="transparent" points="139,-4 139,-24 185,-24 185,-4 139,-4"/>
-<text text-anchor="start" x="141" y="-10.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="138,-3 138,-45 186,-45 186,-3 138,-3"/>
-</g>
-<!-- extended_flights -->
-<g id="node3" class="node">
-<title>extended_flights</title>
-<polygon fill="#efebdd" stroke="transparent" points="1.5,-161 1.5,-181 98.5,-181 98.5,-161 1.5,-161"/>
-<text text-anchor="start" x="3.3443" y="-166.4" font-family="Times,serif" font-size="14.00" fill="#000000">extended_flights</text>
-<polygon fill="#ffffff" stroke="transparent" points="1.5,-141 1.5,-161 98.5,-161 98.5,-141 1.5,-141"/>
-<text text-anchor="start" x="3.5" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text>
-<polygon fill="#ffffff" stroke="transparent" points="1.5,-121 1.5,-141 98.5,-141 98.5,-121 1.5,-121"/>
-<text text-anchor="start" x="3.5" y="-126.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="#ffffff" stroke="transparent" points="1.5,-101 1.5,-121 98.5,-121 98.5,-101 1.5,-101"/>
-<text text-anchor="start" x="3.5" y="-106.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text>
-<polygon fill="none" stroke="#555555" points="0,-100 0,-182 99,-182 99,-100 0,-100"/>
-</g>
-<!-- extended_flights&#45;&gt;airlines -->
-<g id="edge2" class="edge">
-<title>extended_flights:carrier&#45;&gt;airlines:carrier</title>
-<path fill="none" stroke="#555555" d="M98.5,-151C113.4704,-151 118.8418,-144.7738 129.7626,-142.1471"/>
-<polygon fill="#555555" stroke="#555555" points="130.452,-145.5919 140,-141 129.6724,-138.6354 130.452,-145.5919"/>
-</g>
-<!-- extended_flights&#45;&gt;airports -->
-<g id="edge4" class="edge">
-<title>extended_flights:origin&#45;&gt;airports:faa</title>
-<path fill="none" stroke="#555555" d="M98.5,-111C141.2031,-111 100.6444,-29.9555 129.0369,-16.026"/>
-<polygon fill="#555555" stroke="#555555" points="129.898,-19.4226 139,-14 128.5031,-12.563 129.898,-19.4226"/>
-</g>
-<!-- planes -->
-<g id="node5" class="node">
-<title>planes</title>
-<polygon fill="#ed7d31" stroke="transparent" points="139,-86 139,-106 185,-106 185,-86 139,-86"/>
-<text text-anchor="start" x="144.1178" y="-91.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text>
-<polygon fill="#fbe5d5" stroke="transparent" points="139,-66 139,-86 185,-86 185,-66 139,-66"/>
-<text text-anchor="start" x="140.6115" y="-72.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="138,-65 138,-107 186,-107 186,-65 138,-65"/>
-</g>
-<!-- extended_flights&#45;&gt;planes -->
-<g id="edge6" class="edge">
-<title>extended_flights:tailnum&#45;&gt;planes:tailnum</title>
-<path fill="none" stroke="#555555" d="M98.5,-131C124.825,-131 113.1205,-89.6392 129.3438,-78.6528"/>
-<polygon fill="#555555" stroke="#555555" points="130.2845,-82.0241 139,-76 128.4301,-75.2742 130.2845,-82.0241"/>
-</g>
-<!-- flights -->
-<g id="node4" class="node">
-<title>flights</title>
-<polygon fill="#5b9bd5" stroke="transparent" points="26.5,-61 26.5,-81 72.5,-81 72.5,-61 26.5,-61"/>
-<text text-anchor="start" x="31.6115" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">flights</text>
-<polygon fill="#deebf6" stroke="transparent" points="26.5,-41 26.5,-61 72.5,-61 72.5,-41 26.5,-41"/>
-<text text-anchor="start" x="28.5" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text>
-<polygon fill="#deebf6" stroke="transparent" points="26.5,-21 26.5,-41 72.5,-41 72.5,-21 26.5,-21"/>
-<text text-anchor="start" x="28.1115" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="#deebf6" stroke="transparent" points="26.5,-1 26.5,-21 72.5,-21 72.5,-1 26.5,-1"/>
-<text text-anchor="start" x="28.5" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text>
-<polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="25.5,0 25.5,-82 73.5,-82 73.5,0 25.5,0"/>
-</g>
-<!-- flights&#45;&gt;airlines -->
-<g id="edge1" class="edge">
-<title>flights:carrier&#45;&gt;airlines:carrier</title>
-<path fill="none" stroke="#555555" d="M72.5,-51C118.5938,-51 94.5746,-127.4868 129.7132,-139.4379"/>
-<polygon fill="#555555" stroke="#555555" points="129.5878,-142.9589 140,-141 130.6388,-136.0382 129.5878,-142.9589"/>
-</g>
-<!-- flights&#45;&gt;airports -->
-<g id="edge3" class="edge">
-<title>flights:origin&#45;&gt;airports:faa</title>
-<path fill="none" stroke="#555555" d="M72.5,-11C98.3874,-11 107.2344,-13.2969 128.8617,-13.8711"/>
-<polygon fill="#555555" stroke="#555555" points="128.9563,-17.3725 139,-14 129.0453,-10.373 128.9563,-17.3725"/>
-</g>
-<!-- flights&#45;&gt;planes -->
-<g id="edge5" class="edge">
-<title>flights:tailnum&#45;&gt;planes:tailnum</title>
-<path fill="none" stroke="#555555" d="M72.5,-31C104.4227,-31 103.8902,-67.0084 128.9669,-74.6039"/>
-<polygon fill="#555555" stroke="#555555" points="128.613,-78.0883 139,-76 129.5778,-71.1551 128.613,-78.0883"/>
-</g>
-<!-- weather -->
-<g id="node6" class="node">
-<title>weather</title>
-<polygon fill="#70ad47" stroke="transparent" points="25.5,-208 25.5,-228 73.5,-228 73.5,-208 25.5,-208"/>
-<text text-anchor="start" x="27.3492" y="-213.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text>
-<polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="24.5,-207 24.5,-229 74.5,-229 74.5,-207 24.5,-207"/>
-</g>
-</g>
-</svg>
-<div class='input'>
-<span class='co'># discard the zoomed table</span>
-<span class='no'>flights_zoomed_transformed</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_discard_zoomed</span>()</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+#&gt; Foreign keys: 3
+#&gt; &gt; flights_zoomed_transformed %&gt;% dm_insert_zoomed("extended_flights") %&gt;% 
+#&gt; +     dm_draw()
+#&gt; &gt; flights_zoomed_transformed %&gt;% dm_discard_zoomed()
+#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
