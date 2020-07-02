@@ -12,10 +12,8 @@
 #'
 #' @export
 #' @examplesIf rlang::is_installed("RMariaDB")
-#' \dontrun{
 #' dm_financial() %>%
 #'   dm_draw()
-#' }
 dm_financial <- function() {
   stopifnot(rlang::is_installed("RMariaDB"))
 

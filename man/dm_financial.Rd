@@ -26,9 +26,7 @@ The \code{trans} table is excluded due to its size.
 }
 \examples{
 \dontshow{if (rlang::is_installed("RMariaDB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontrun{
 dm_financial() \%>\%
   dm_draw()
-}
 \dontshow{\}) # examplesIf}
 }

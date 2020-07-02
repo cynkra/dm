@@ -27,7 +27,6 @@
 #'
 #' @export
 #' @examplesIf rlang::is_installed("RMariaDB")
-#' \dontrun{
 #' con <- DBI::dbConnect(
 #'   RMariaDB::MariaDB(),
 #'   username = "guest",
@@ -39,7 +38,6 @@
 #' dm_from_src(con)
 #'
 #' DBI::dbDisconnect(con)
-#' }
 dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
   if (is_null(src)) {

@@ -13,14 +13,12 @@
 #' @inheritParams dm_get_fk
 #' @export
 #' @examples
-#' \dontrun{
 #' dm_financial() %>%
 #'   dm_ptype()
 #'
 #' dm_financial() %>%
 #'   dm_ptype() %>%
 #'   dm_nrow()
-#' }
 dm_ptype <- function(dm) {
   check_not_zoomed(dm)
 
