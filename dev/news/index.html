@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.4.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.4.9002</span>
       </span>
     </div>
 
@@ -170,6 +170,23 @@
       <small>Source: <a href='https://github.com/krlmlr/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-0149002" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.4.9002">
+<a href="#dm-0149002" class="anchor"></a>dm 0.1.4.9002<small> Unreleased </small>
+</h1>
+<ul>
+<li>Testing SQLite, Postgres and SQL Server on GitHub Actions (<a href='https://github.com/krlmlr/dm/issues/408'>#408</a>, <a href='https://github.com/pat-s'>@pat-s</a>).</li>
+<li>
+<code><a href="../reference/dm_paste.html">dm_paste()</a></code> generates self-contained code (<a href='https://github.com/krlmlr/dm/issues/401'>#401</a>).</li>
+<li>Errors regarding cycles in the relationship graph now show the shortest cycle (<a href='https://github.com/krlmlr/dm/issues/405'>#405</a>).</li>
+<li>Avoid <code>src_sqlite()</code> in examples (<a href='https://github.com/krlmlr/dm/issues/372'>#372</a>).</li>
+<li>Implement <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> for databases.</li>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_insert()</a></code> works if column names consist of SQL keywords (<a href='https://github.com/krlmlr/dm/issues/409'>#409</a>).</li>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code> works on a zoomed dm, with a message.</li>
+</ul>
+</div>
     <div id="dm-0149001" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.4.9001">
 <a href="#dm-0149001" class="anchor"></a>dm 0.1.4.9001<small> Unreleased </small>
