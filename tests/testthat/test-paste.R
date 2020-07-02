@@ -1,4 +1,6 @@
 test_that("path argument", {
+  skip_if_not_installed("brio")
+
   path <- tempfile()
   dm() %>% dm_paste(path = path)
   expect_identical(readLines(path), "dm::dm()")

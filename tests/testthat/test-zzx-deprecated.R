@@ -19,6 +19,7 @@ test_that("cdm_rm_tbl() works", {
 
 test_that("cdm_copy_to() behaves correctly", {
   skip_on_cran()
+  skip_if_not_installed("dbplyr")
 
   expect_equivalent_dm(
     cdm_copy_to(sqlite(), dm_for_filter(), unique_table_names = TRUE),
@@ -36,6 +37,8 @@ test_that("cdm_disambiguate_cols() works as intended", {
 
 test_that("cdm_get_colors() behaves as intended", {
   skip_on_cran()
+  skip_if_not_installed("nycflights13")
+
   expect_equal(
     cdm_get_colors(cdm_nycflights13()),
     set_names(

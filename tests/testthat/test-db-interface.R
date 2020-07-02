@@ -3,6 +3,8 @@ test_that("data source found", {
   expect_silent(my_test_src_fun()())
 })
 
+skip_if_not_installed("dbplyr")
+
 # ensure that we have one DB and one local `src`
 if (inherits(my_test_src(), "src_dbi")) {
   remote_test_src <- my_test_src()

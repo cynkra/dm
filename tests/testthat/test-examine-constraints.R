@@ -43,6 +43,7 @@ test_that("`dm_examine_constraints()` works", {
   )
 
   skip_if_src("postgres")
+  skip_if_not_installed("nycflights13")
 
   # case of some constraints, some violated:
   expect_identical(
@@ -52,26 +53,22 @@ test_that("`dm_examine_constraints()` works", {
   )
 })
 
-test_that("output", {
-  verify_output("out/examine-constraints.txt", {
-    dm() %>% dm_examine_constraints()
+if (rlang::is_installed("nycflights13")) verify_output("out/examine-constraints.txt", {
+  dm() %>% dm_examine_constraints()
 
-    dm_nycflights13() %>% dm_examine_constraints()
-    dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
-    dm_nycflights13(cycle = TRUE) %>%
-      dm_select_tbl(-flights) %>%
-      dm_examine_constraints()
+  dm_nycflights13() %>% dm_examine_constraints()
+  dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
+  dm_nycflights13(cycle = TRUE) %>%
+    dm_select_tbl(-flights) %>%
+    dm_examine_constraints()
 
-    "n column"
-    dm_for_filter_w_cycle() %>%
-      dm_examine_constraints()
-  })
+  "n column"
+  dm_for_filter_w_cycle() %>%
+    dm_examine_constraints()
 })
 
-test_that("output as tibble", {
-  verify_output("out/examine-constraints-as-tibble.txt", {
-    dm_nycflights13(cycle = TRUE) %>%
-      dm_examine_constraints() %>%
-      as_tibble()
-  })
+if (rlang::is_installed("nycflights13")) verify_output("out/examine-constraints-as-tibble.txt", {
+  dm_nycflights13(cycle = TRUE) %>%
+    dm_examine_constraints() %>%
+    as_tibble()
 })
