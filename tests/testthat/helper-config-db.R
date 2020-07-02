@@ -8,7 +8,7 @@ test_src_sqlite <- function() {
 
 test_src_postgres <- function() {
   if (!is.null(Sys.getenv("CI"))) {
-    con <- DBI::dbConnect(odbc::odbc(), "PostgreSQL")
+    con <- DBI::dbConnect(RPostgres::Postgres(), user = "postgres")
   } else {
     con <- DBI::dbConnect(RPostgres::Postgres())
   }
