@@ -1,7 +1,7 @@
 test_that("path argument", {
   path <- tempfile()
   dm() %>% dm_paste(path = path)
-  expect_identical(readLines(path), "dm()")
+  expect_identical(readLines(path), "dm::dm()")
 })
 
 local_options(lifecycle_verbosity = "warning")
