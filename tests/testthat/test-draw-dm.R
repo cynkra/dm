@@ -150,6 +150,8 @@ test_that("helpers", {
 })
 
 test_that("output", {
+  skip_if_not_installed("DiagrammeRsvg")
+
   expect_known_output(
     dm_nycflights13() %>%
       dm_draw() %>%
