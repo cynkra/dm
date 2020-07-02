@@ -7,7 +7,7 @@ test_src_sqlite <- function() {
 }
 
 test_src_postgres <- function() {
-  if (!is.null(Sys.getenv("CI"))) {
+  if (Sys.getenv("CI") != "") {
     con <- DBI::dbConnect(
       RPostgres::Postgres(),
       dbname = "test",
@@ -28,7 +28,7 @@ test_src_maria <- function() {
 }
 
 test_src_mssql <- function() {
-  if (!is.null(Sys.getenv("CI"))) {
+  if (Sys.getenv("CI") != "") {
     con <- DBI::dbConnect(
       odbc::odbc(),
       "mssql-test",
