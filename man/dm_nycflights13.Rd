@@ -31,8 +31,8 @@ between the \code{flights} table and the \code{planes} tables is "weak", it does
 data integrity constraints.
 }
 \examples{
-if (rlang::is_installed("nycflights13")) {
-  dm_nycflights13() \%>\%
-    dm_draw()
-}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_draw()
+\dontshow{\}) # examplesIf}
 }

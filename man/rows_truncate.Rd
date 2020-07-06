@@ -2,19 +2,17 @@
 % Please edit documentation in R/rows-truncate.R
 \name{rows_truncate}
 \alias{rows_truncate}
+\alias{sql_rows_truncate}
 \title{Truncate all rows}
 \usage{
-rows_truncate(x, ..., copy = FALSE, in_place = FALSE)
+rows_truncate(x, ..., in_place = FALSE)
+
+sql_rows_truncate(x, ...)
 }
 \arguments{
 \item{x}{A data frame or data frame extension (e.g. a tibble).}
 
 \item{...}{Other parameters passed onto methods.}
-
-\item{copy}{If \code{x} and \code{y} are not from the same data source,
-and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
-same src as \code{x}.  This allows you to join tables across srcs, but
-it is a potentially expensive operation so you must opt into it.}
 
 \item{in_place}{Should \code{x} be modified in place? This argument is only
 relevant for mutable backends (e.g. databases, data.tables).

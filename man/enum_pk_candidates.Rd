@@ -42,11 +42,15 @@ most likely used interactively.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 nycflights13::flights \%>\%
   enum_pk_candidates()
+\dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 dm_nycflights13() \%>\%
   dm_enum_pk_candidates(airports)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 

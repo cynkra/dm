@@ -52,7 +52,7 @@
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_select_tbl(-weather) %>%
 #'   dm_flatten_to_tbl(flights)
@@ -165,14 +165,19 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #' @family flattening functions
 #'
 #' @export
-#' @examples
-#' dm_join_to_tbl(dm_nycflights13(), airports, flights)
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_join_to_tbl(airports, flights)
 #'
 #' # same result is achieved with:
-#' dm_join_to_tbl(dm_nycflights13(), flights, airports)
+#' dm_nycflights13() %>%
+#'   dm_join_to_tbl(flights, airports)
 #'
 #' # this gives an error, because the tables are not directly linked to each other:
-#' try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
+#' try(
+#'   dm_nycflights13() %>%
+#'     dm_join_to_tbl(airlines, airports)
+#' )
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   check_not_zoomed(dm)
   force(join)
@@ -205,7 +210,7 @@ parent_child_table <- function(dm, table_1, table_2) {
   }
 
   if (nrow(rel) > 1) {
-    abort_no_cycles()
+    abort_no_cycles(create_graph_from_dm(dm))
   }
 
   rel
@@ -229,7 +234,7 @@ check_flatten_to_tbl <- function(
 
   # Cycles not yet supported
   if (length(V(g)) - 1 != length(E(g))) {
-    abort_no_cycles()
+    abort_no_cycles(g)
   }
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
   if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)

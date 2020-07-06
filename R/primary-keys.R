@@ -29,19 +29,11 @@
 #' @return For `dm_add_pk()`: An updated `dm` with an additional primary key.
 #'
 #' @export
-#' @examples
-#' if (rlang::is_installed("nycflights13")) {
-#'   nycflights_dm <- dm(
-#'     planes = nycflights13::planes,
-#'     airports = nycflights13::airports
-#'   )
-#' } else {
-#'   message("Using mock-up data, install the nycflights13 package to fix.")
-#'   nycflights_dm <- dm(
-#'     planes = tibble(tailnum = letters[1:2], manufacturer = "Acme"),
-#'     airports = tibble(faa = character())
-#'   )
-#' }
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' nycflights_dm <- dm(
+#'   planes = nycflights13::planes,
+#'   airports = nycflights13::airports
+#' )
 #'
 #' nycflights_dm %>%
 #'   dm_draw()
@@ -52,7 +44,7 @@
 #'   dm_add_pk(airports, faa, check = TRUE) %>%
 #'   dm_draw()
 #'
-#' # the following does not work (throws an error)
+#' # the following throws an error:
 #' try(
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
@@ -104,7 +96,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'
 #' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_has_pk(flights)
 #' dm_nycflights13() %>%
@@ -145,7 +137,7 @@ dm_has_pk_impl <- function(dm, table) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_pk(flights)
 #' dm_nycflights13() %>%
@@ -189,7 +181,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'   }
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_all_pks()
 dm_get_all_pks <- function(dm) {
@@ -216,8 +208,7 @@ dm_get_all_pks_impl <- function(dm) {
 #'
 #' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
 #'
-#' @examples
-#'
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   dm_draw()
@@ -273,7 +264,7 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #' most likely used interactively.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table) {
@@ -294,7 +285,7 @@ enum_pk_candidates <- function(table) {
 #'
 #' @rdname enum_pk_candidates
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nycflights13() %>%
 #'   dm_enum_pk_candidates(airports)

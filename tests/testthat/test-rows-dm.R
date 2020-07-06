@@ -1,6 +1,6 @@
 scoped_options(lifecycle_verbosity = "quiet")
 
-verify_output("out/rows-dm.txt", {
+if (rlang::is_installed("nycflights13")) verify_output("out/rows-dm.txt", {
   # Entire dataset with all dimension tables populated
   # with flights and weather data truncated:
   flights_init <-
@@ -12,7 +12,7 @@ verify_output("out/rows-dm.txt", {
     filter(FALSE) %>%
     dm_update_zoomed()
 
-  sqlite <- src_sqlite(":memory:", create = TRUE)
+  sqlite <- dbConnect(RSQLite::SQLite())
 
   # Target database:
   flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)

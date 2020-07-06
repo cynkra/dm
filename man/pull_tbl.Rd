@@ -22,6 +22,7 @@ This function has methods for both \code{dm} classes:
 }
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # For an unzoomed dm you need to specify the table to pull:
 dm_nycflights13() \%>\%
   pull_tbl(airports)
@@ -30,4 +31,5 @@ dm_nycflights13() \%>\%
 dm_nycflights13() \%>\%
   dm_zoom_to(airports) \%>\%
   pull_tbl()
+\dontshow{\}) # examplesIf}
 }

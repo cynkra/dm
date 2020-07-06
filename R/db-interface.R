@@ -49,7 +49,7 @@
 #' @return A `dm` object on the given `src` with the same table names
 #'   as the input `dm`.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #' con <- DBI::dbConnect(RSQLite::SQLite())
 #'
 #' # Copy to temporary tables, unique table names by default:
@@ -166,18 +166,19 @@ copy_dm_to <- function(dest, dm, ...,
 #'
 #' @return Returns the `dm`, invisibly. Side effect: installing key constraints on DB.
 #'
-#' @examples
-#' src_sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-#' iris_dm <- copy_dm_to(
-#'   src_sqlite,
-#'   as_dm(list(iris = iris)),
+#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")
+#' # Setting key constraints not yet supported on SQLite,
+#' # try this with SQL Server or Postgres instead:
+#' sqlite <- DBI::dbConnect(RSQLite::SQLite())
+#'
+#' flights_dm <- copy_dm_to(
+#'   sqlite,
+#'   dm_nycflights13(),
 #'   set_key_constraints = FALSE
 #' )
 #'
-#' # there are no key constraints in `as_dm(list(iris = iris))`
-#' # but if there were, and if we had already implemented setting key
-#' # constraints for SQLite, the following command would do something:
-#' dm_set_key_constraints(iris_dm)
+#' dm_set_key_constraints(flights_dm)
+#' DBI::dbDisconnect(sqlite)
 #' @noRd
 dm_set_key_constraints <- function(dm) {
   if (!is_src_db(dm) && !is_this_a_test()) abort_key_constraints_need_db()

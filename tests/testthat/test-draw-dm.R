@@ -14,6 +14,8 @@ test_that("API", {
 })
 
 test_that("`dm_set_colors()` works", {
+  skip_if_not_installed("nycflights13")
+
   expect_identical(
     dm_set_colors(
       dm_nycflights_small(),
@@ -44,6 +46,7 @@ test_that("`dm_set_colors()` works", {
 })
 
 test_that("`dm_set_colors()` errors if old syntax used", {
+  skip_if_not_installed("nycflights13")
   expect_dm_error(
     dm_set_colors(
       dm_nycflights_small(),
@@ -57,6 +60,7 @@ test_that("`dm_set_colors()` errors if old syntax used", {
 })
 
 test_that("`dm_set_colors()` errors with unnamed args", {
+  skip_if_not_installed("nycflights13")
   skip_if_src("postgres")
 
   expect_dm_error(
@@ -80,6 +84,7 @@ test_that("last", {
 
 test_that("bad color", {
   skip_if_not(getRversion() >= "3.5")
+  skip_if_not_installed("nycflights13")
 
   expect_dm_error(
     dm_set_colors(
@@ -92,6 +97,8 @@ test_that("bad color", {
 
 test_that("getter", {
   skip_if_src("postgres")
+  skip_if_not_installed("nycflights13")
+
   expect_equal(
     dm_get_colors(dm_nycflights13()),
     c(
@@ -150,6 +157,9 @@ test_that("helpers", {
 })
 
 test_that("output", {
+  skip_if_not_installed("DiagrammeRsvg")
+  skip_if_not_installed("nycflights13")
+
   expect_known_output(
     dm_nycflights13() %>%
       dm_draw() %>%

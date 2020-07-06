@@ -36,9 +36,11 @@ The methods for regular \code{dm} objects extract the first or last tables.
 see manual for the corresponding functions in \pkg{utils}.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 zoomed <- dm_nycflights13() \%>\%
   dm_zoom_to(flights) \%>\%
   head(4)
 zoomed
 dm_insert_zoomed(zoomed, new_tbl_name = "head_flights")
+\dontshow{\}) # examplesIf}
 }

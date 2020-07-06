@@ -1,7 +1,7 @@
 > flights_init <- dm_nycflights13() %>% dm_zoom_to(flights) %>% filter(FALSE) %>%
 +   dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(FALSE) %>%
 +   dm_update_zoomed()
-> sqlite <- src_sqlite(":memory:", create = TRUE)
+> sqlite <- dbConnect(RSQLite::SQLite())
 > flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
 > print(dm_nrow(flights_sqlite))
 airlines airports  flights   planes  weather 

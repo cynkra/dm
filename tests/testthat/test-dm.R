@@ -1,4 +1,6 @@
 test_that("can access tables", {
+  skip_if_not_installed("nycflights13")
+
   expect_identical(tbl(dm_nycflights13(), "airlines"), nycflights13::airlines)
   expect_dm_error(
     tbl(dm_nycflights13(), "x"),
@@ -86,6 +88,8 @@ test_that("'copy_to.dm()' works (2)", {
     "need_unique_names"
   )
 
+  skip_if_not_installed("dbplyr")
+
   # copying `tibble` from chosen src to sqlite() `dm`
   expect_equivalent_dm(
     copy_to(dm_for_filter_sqlite(), data_card_1(), "test_table"),
@@ -97,6 +101,31 @@ test_that("'copy_to.dm()' works (2)", {
     copy_to(dm_for_filter(), data_card_1_sqlite(), "test_table_1"),
     dm_add_tbl(dm_for_filter(), test_table_1 = data_card_1())
   )
+})
+
+test_that("'collect.dm()' collects tables on DB", {
+  def <-
+    dm_for_filter() %>%
+    dm_filter(tf_1, a > 3) %>%
+    collect() %>%
+    dm_get_def()
+
+  is_df <- map_lgl(def$data, is.data.frame)
+  expect_true(all(is_df))
+})
+
+test_that("'collect.zoomed_dm()' collects tables, with message", {
+  zoomed_dm_for_collect <-
+    dm_for_filter() %>%
+    dm_zoom_to(tf_1) %>%
+    mutate(c = a + 1)
+
+  expect_message(
+    out <- zoomed_dm_for_collect %>% collect(),
+    "pull_tbl"
+  )
+
+  expect_s3_class(out, "data.frame")
 })
 
 test_that("'compute.dm()' computes tables on DB", {
@@ -181,6 +210,8 @@ test_that("validator is silent", {
 })
 
 test_that("validator speaks up (sqlite())", {
+  skip_if_not_installed("dbplyr")
+
   expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter()) %>%
       mutate(data = if_else(table == "tf_1", list(dm_for_filter_sqlite()$tf_1), data))) %>%
@@ -398,17 +429,17 @@ test_that("dm_get_filters() works", {
   )
 })
 
-test_that("output", {
-  verify_output("out/output.txt", {
-    print(dm())
+skip_if_not_installed("nycflights13")
 
-    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
-    nyc_flights_dm
+verify_output("out/output.txt", {
+  print(dm())
 
-    nyc_flights_dm %>%
-      format()
+  nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
+  nyc_flights_dm
 
-    nyc_flights_dm %>%
-      dm_filter(flights, origin == "EWR")
-  })
+  nyc_flights_dm %>%
+    format()
+
+  nyc_flights_dm %>%
+    dm_filter(flights, origin == "EWR")
 })

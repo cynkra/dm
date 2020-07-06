@@ -33,9 +33,10 @@
 #'
 #' @export
 #' @examples
-#' dm(iris, mtcars)
-#' new_dm(list(iris = iris, mtcars = mtcars))
-#' as_dm(list(iris = iris, mtcars = mtcars))
+#' dm(trees, mtcars)
+#' new_dm(list(trees = trees, mtcars = mtcars))
+#' as_dm(list(trees = trees, mtcars = mtcars))
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
 #' dm_nycflights13() %>% tbl("airports")
 #' dm_nycflights13() %>% src_tbls()
@@ -746,7 +747,9 @@ collect.dm <- function(x, ...) {
 
 #' @export
 collect.zoomed_dm <- function(x, ...) {
-  check_not_zoomed(x)
+  message("Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.")
+
+  collect(pull_tbl(x))
 }
 
 
@@ -811,7 +814,7 @@ empty_dm <- function() {
 #'
 #' @return The requested table
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' # For an unzoomed dm you need to specify the table to pull:
 #' dm_nycflights13() %>%
 #'   pull_tbl(airports)

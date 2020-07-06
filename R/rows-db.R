@@ -31,7 +31,18 @@
 #'   and `x` is returned, invisibly.
 #'
 #' @name rows-db
-#' @example example/rows-db.R
+#' @examplesIf rlang::is_installed("dbplyr")
+#' data <- dbplyr::memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
+#' data
+#'
+#' try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
+#' rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)
+#' rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
+#'
+#' rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
+#' data
+#' rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
+#' data
 NULL
 
 #' @export
@@ -174,9 +185,10 @@ sql_rows_insert <- function(x, y, ...) {
 
 #' @export
 sql_rows_insert.tbl_sql <- function(x, y, ...) {
+  con <- dbplyr::remote_con(x)
   name <- dbplyr::remote_name(x)
 
-  columns_q <- colnames(y)
+  columns_q <- DBI::dbQuoteIdentifier(con, colnames(y))
   columns_qq <- paste(columns_q, collapse = ", ")
 
   sql <- paste0(

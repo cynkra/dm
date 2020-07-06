@@ -57,7 +57,7 @@
 #'
 #' @return For `dm_filter()`: an updated `dm` object (filter executed for given table, and condition stored).
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nyc <- dm_nycflights13()
 #' dm_nyc_filtered <-
 #'   dm_nycflights13() %>%
@@ -122,7 +122,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' @return For `dm_apply_filters()`: an updated `dm` object (filter effects evaluated for all tables).
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nyc %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
@@ -218,7 +218,7 @@ get_all_filtered_connected <- function(dm, table) {
   # 1. speed things up
   # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
   graph <- igraph::induced_subgraph(graph, target_tables)
-  if (length(E(graph)) >= length(V(graph))) abort_no_cycles()
+  if (length(E(graph)) >= length(V(graph))) abort_no_cycles(graph)
   paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
 
   # All edges with finite distance as tidy data frame
