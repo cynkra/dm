@@ -123,3 +123,8 @@ test_that("enum_pk_candidates() works properly", {
     )
   )
 })
+
+verify_output("out/primary-keys.txt", {
+  dm(x = tibble(a = c(1, 1))) %>%
+    dm_add_pk(x, a, check = TRUE)
+})

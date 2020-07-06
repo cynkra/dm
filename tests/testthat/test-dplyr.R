@@ -505,6 +505,8 @@ test_that("key tracking works", {
   # dm_nycflights13() (with FK constraints) doesn't work on DB
   # here, FK constraints are not implemented on the DB
   skip_if_src_not("df", "mssql")
+  skip_if_not_installed("dbplyr")
+  skip_if_not_installed("nycflights13")
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
@@ -544,7 +546,10 @@ test_that("key tracking works", {
       get_zoomed_tbl(),
     tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
+})
 
+
+test_that("key tracking works for slice()", {
   expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_cols(), set_names(c("d", "e")))
   expect_message(
     expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% get_tracked_cols(), set_names(c("c", "d", "e"))),
@@ -573,6 +578,8 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
+  skip_if_not_installed("nycflights13")
+
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%

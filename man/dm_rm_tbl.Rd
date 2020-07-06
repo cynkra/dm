@@ -19,8 +19,10 @@ The \code{dm} without the removed table(s) that were present in the initial \cod
 Removes one or more tables from a \code{\link{dm}}.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_rm_tbl(airports)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=dm_add_tbl]{dm_add_tbl()}}, \code{\link[=dm_select_tbl]{dm_select_tbl()}}

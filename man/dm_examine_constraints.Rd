@@ -32,6 +32,8 @@ For the foreign key constraints, the tests check if for each foreign key constra
 form a subset of the values of the referenced column.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_examine_constraints()
+\dontshow{\}) # examplesIf}
 }

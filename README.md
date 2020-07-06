@@ -17,6 +17,15 @@ status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/pac
 rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
+## TL;DR
+
+Are you using multiple data frames or database tables in R? Organize
+them with dm.
+
+  - Use it today (if only like a list of tables).
+  - Build data models tomorrow.
+  - Deploy the data models to your organization’s RDBMS the day after.
+
 ## Overview
 
 dm bridges the gap in the data pipeline between individual data frames

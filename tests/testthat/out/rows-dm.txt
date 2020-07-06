@@ -1,7 +1,7 @@
 > flights_init <- dm_nycflights13() %>% dm_zoom_to(flights) %>% filter(FALSE) %>%
 +   dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(FALSE) %>%
 +   dm_update_zoomed()
-> sqlite <- src_sqlite(":memory:", create = TRUE)
+> sqlite <- dbConnect(RSQLite::SQLite())
 > flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
 > print(dm_nrow(flights_sqlite))
 airlines airports  flights   planes  weather 
@@ -14,7 +14,7 @@ airlines airports  flights   planes  weather
 flights weather 
     932      72 
 
-> flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
+> flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
 > out <- dm_rows_insert(flights_sqlite, flights_jan_sqlite)
 Message: Not persisting, use `in_place = FALSE` to turn off this message.
 
@@ -30,7 +30,7 @@ airlines airports  flights   planes  weather
 > flights_feb <- dm_nycflights13() %>% dm_select_tbl(flights, weather) %>%
 +   dm_zoom_to(flights) %>% filter(month == 2) %>% dm_update_zoomed() %>%
 +   dm_zoom_to(weather) %>% filter(month == 2) %>% dm_update_zoomed()
-> flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
+> flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
 > flights_new <- dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = FALSE)
 > print(dm_nrow(flights_new))
 airlines airports  flights   planes  weather 

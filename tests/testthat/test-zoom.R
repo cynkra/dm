@@ -115,9 +115,12 @@ test_that("dm_update_tbl() works", {
 # after #271:
 test_that("all cols are tracked in zoomed table", {
   skip_if_src("postgres")
+  skip_if_not_installed("nycflights13")
 
   expect_identical(
-    dm_zoom_to(dm_nycflights_small(), flights) %>% get_tracked_cols(),
+    dm_nycflights_small() %>%
+      dm_zoom_to(flights) %>%
+      get_tracked_cols(),
     set_names(colnames(tbl(dm_nycflights_small(), "flights")))
   )
 })

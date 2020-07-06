@@ -1,84 +1,84 @@
 > # empty
 > empty_dm() %>% dm_paste()
-Message: dm()
+Message: dm::dm()
 
 > # baseline
 > dm_for_filter() %>% dm_paste()
-Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
-  dm_add_pk(tf_1, a) %>%
-  dm_add_pk(tf_2, c) %>%
-  dm_add_pk(tf_3, f) %>%
-  dm_add_pk(tf_4, h) %>%
-  dm_add_pk(tf_5, k) %>%
-  dm_add_pk(tf_6, n) %>%
-  dm_add_fk(tf_2, d, tf_1) %>%
-  dm_add_fk(tf_2, e, tf_3) %>%
-  dm_add_fk(tf_4, j, tf_3) %>%
-  dm_add_fk(tf_5, l, tf_4) %>%
-  dm_add_fk(tf_5, m, tf_6)
+Message: dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+  dm::dm_add_pk(tf_1, a) %>%
+  dm::dm_add_pk(tf_2, c) %>%
+  dm::dm_add_pk(tf_3, f) %>%
+  dm::dm_add_pk(tf_4, h) %>%
+  dm::dm_add_pk(tf_5, k) %>%
+  dm::dm_add_pk(tf_6, n) %>%
+  dm::dm_add_fk(tf_2, d, tf_1) %>%
+  dm::dm_add_fk(tf_2, e, tf_3) %>%
+  dm::dm_add_fk(tf_4, j, tf_3) %>%
+  dm::dm_add_fk(tf_5, l, tf_4) %>%
+  dm::dm_add_fk(tf_5, m, tf_6)
 
 > # changing the tab width
 > dm_for_filter() %>% dm_paste(tab_width = 4)
-Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
-    dm_add_pk(tf_1, a) %>%
-    dm_add_pk(tf_2, c) %>%
-    dm_add_pk(tf_3, f) %>%
-    dm_add_pk(tf_4, h) %>%
-    dm_add_pk(tf_5, k) %>%
-    dm_add_pk(tf_6, n) %>%
-    dm_add_fk(tf_2, d, tf_1) %>%
-    dm_add_fk(tf_2, e, tf_3) %>%
-    dm_add_fk(tf_4, j, tf_3) %>%
-    dm_add_fk(tf_5, l, tf_4) %>%
-    dm_add_fk(tf_5, m, tf_6)
+Message: dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+    dm::dm_add_pk(tf_1, a) %>%
+    dm::dm_add_pk(tf_2, c) %>%
+    dm::dm_add_pk(tf_3, f) %>%
+    dm::dm_add_pk(tf_4, h) %>%
+    dm::dm_add_pk(tf_5, k) %>%
+    dm::dm_add_pk(tf_6, n) %>%
+    dm::dm_add_fk(tf_2, d, tf_1) %>%
+    dm::dm_add_fk(tf_2, e, tf_3) %>%
+    dm::dm_add_fk(tf_4, j, tf_3) %>%
+    dm::dm_add_fk(tf_5, l, tf_4) %>%
+    dm::dm_add_fk(tf_5, m, tf_6)
 
 > # we don't care if the tables really exist
 > dm_for_filter() %>% dm_rename_tbl(tf_1_new = tf_1) %>% dm_paste()
-Message: dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
-  dm_add_pk(tf_1_new, a) %>%
-  dm_add_pk(tf_2, c) %>%
-  dm_add_pk(tf_3, f) %>%
-  dm_add_pk(tf_4, h) %>%
-  dm_add_pk(tf_5, k) %>%
-  dm_add_pk(tf_6, n) %>%
-  dm_add_fk(tf_2, d, tf_1_new) %>%
-  dm_add_fk(tf_2, e, tf_3) %>%
-  dm_add_fk(tf_4, j, tf_3) %>%
-  dm_add_fk(tf_5, l, tf_4) %>%
-  dm_add_fk(tf_5, m, tf_6)
+Message: dm::dm(tf_1_new, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+  dm::dm_add_pk(tf_1_new, a) %>%
+  dm::dm_add_pk(tf_2, c) %>%
+  dm::dm_add_pk(tf_3, f) %>%
+  dm::dm_add_pk(tf_4, h) %>%
+  dm::dm_add_pk(tf_5, k) %>%
+  dm::dm_add_pk(tf_6, n) %>%
+  dm::dm_add_fk(tf_2, d, tf_1_new) %>%
+  dm::dm_add_fk(tf_2, e, tf_3) %>%
+  dm::dm_add_fk(tf_4, j, tf_3) %>%
+  dm::dm_add_fk(tf_5, l, tf_4) %>%
+  dm::dm_add_fk(tf_5, m, tf_6)
 
 > # produce `dm_select()` statements in addition to the rest
 > dm_for_filter() %>% dm_select(tf_5, k = k, m) %>% dm_select(tf_1, a) %>%
 +   dm_add_tbl(x = copy_to_my_test_src(tibble(q = 1L), qq)) %>% dm_paste(options = "select")
-Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, x) %>%
-  dm_select(tf_1, a) %>%
-  dm_select(tf_2, c, d, e) %>%
-  dm_select(tf_3, f, g) %>%
-  dm_select(tf_4, h, i, j) %>%
-  dm_select(tf_5, k, m) %>%
-  dm_select(tf_6, n, o) %>%
-  dm_select(x, q)
+Message: dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6, x) %>%
+  dm::dm_select(tf_1, a) %>%
+  dm::dm_select(tf_2, c, d, e) %>%
+  dm::dm_select(tf_3, f, g) %>%
+  dm::dm_select(tf_4, h, i, j) %>%
+  dm::dm_select(tf_5, k, m) %>%
+  dm::dm_select(tf_6, n, o) %>%
+  dm::dm_select(x, q)
 
 > # produce code with colors
 > dm_for_filter() %>% dm_set_colors(orange = tf_1:tf_3, darkgreen = tf_5:tf_6) %>%
 +   dm_paste()
-Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
-  dm_add_pk(tf_1, a) %>%
-  dm_add_pk(tf_2, c) %>%
-  dm_add_pk(tf_3, f) %>%
-  dm_add_pk(tf_4, h) %>%
-  dm_add_pk(tf_5, k) %>%
-  dm_add_pk(tf_6, n) %>%
-  dm_add_fk(tf_2, d, tf_1) %>%
-  dm_add_fk(tf_2, e, tf_3) %>%
-  dm_add_fk(tf_4, j, tf_3) %>%
-  dm_add_fk(tf_5, l, tf_4) %>%
-  dm_add_fk(tf_5, m, tf_6) %>%
-  dm_set_colors(`#FFA500FF` = tf_1) %>%
-  dm_set_colors(`#FFA500FF` = tf_2) %>%
-  dm_set_colors(`#FFA500FF` = tf_3) %>%
-  dm_set_colors(`#006400FF` = tf_5) %>%
-  dm_set_colors(`#006400FF` = tf_6)
+Message: dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
+  dm::dm_add_pk(tf_1, a) %>%
+  dm::dm_add_pk(tf_2, c) %>%
+  dm::dm_add_pk(tf_3, f) %>%
+  dm::dm_add_pk(tf_4, h) %>%
+  dm::dm_add_pk(tf_5, k) %>%
+  dm::dm_add_pk(tf_6, n) %>%
+  dm::dm_add_fk(tf_2, d, tf_1) %>%
+  dm::dm_add_fk(tf_2, e, tf_3) %>%
+  dm::dm_add_fk(tf_4, j, tf_3) %>%
+  dm::dm_add_fk(tf_5, l, tf_4) %>%
+  dm::dm_add_fk(tf_5, m, tf_6) %>%
+  dm::dm_set_colors(`#FFA500FF` = tf_1) %>%
+  dm::dm_set_colors(`#FFA500FF` = tf_2) %>%
+  dm::dm_set_colors(`#FFA500FF` = tf_3) %>%
+  dm::dm_set_colors(`#006400FF` = tf_5) %>%
+  dm::dm_set_colors(`#006400FF` = tf_6)
 
 > # tick if needed
 > a <- tibble(x = 1)
@@ -86,27 +86,27 @@ Message: dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
 > dm(a) %>% dm_zoom_to(a) %>% dm_insert_zoomed("a b") %>% dm_add_pk(a, "a b") %>%
 +   dm_add_fk("a b", "a b", a) %>% dm_set_colors(green = "a b") %>% dm_paste(
 +   options = "all")
-Message: a <- tibble(
+Message: a <- tibble::tibble(
   `a b` = numeric(0)
 )
 
-`a b` <- tibble(
+`a b` <- tibble::tibble(
   `a b` = numeric(0)
 )
 
-dm(a, `a b`) %>%
-  dm_add_pk(a, `a b`) %>%
-  dm_add_fk(`a b`, `a b`, a) %>%
-  dm_set_colors(`#00FF00FF` = `a b`)
+dm::dm(a, `a b`) %>%
+  dm::dm_add_pk(a, `a b`) %>%
+  dm::dm_add_fk(`a b`, `a b`, a) %>%
+  dm::dm_set_colors(`#00FF00FF` = `a b`)
 
 > # all of nycflights13
 > dm_nycflights13() %>% dm_paste(options = "all")
-Message: airlines <- tibble(
+Message: airlines <- tibble::tibble(
   carrier = character(0),
   name = character(0)
 )
 
-airports <- tibble(
+airports <- tibble::tibble(
   faa = character(0),
   name = character(0),
   lat = numeric(0),
@@ -117,7 +117,7 @@ airports <- tibble(
   tzone = character(0)
 )
 
-flights <- tibble(
+flights <- tibble::tibble(
   year = integer(0),
   month = integer(0),
   day = integer(0),
@@ -139,7 +139,7 @@ flights <- tibble(
   time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt"))
 )
 
-planes <- tibble(
+planes <- tibble::tibble(
   tailnum = character(0),
   year = integer(0),
   type = character(0),
@@ -151,7 +151,7 @@ planes <- tibble(
   engine = character(0)
 )
 
-weather <- tibble(
+weather <- tibble::tibble(
   origin = character(0),
   year = integer(0),
   month = integer(0),
@@ -169,25 +169,25 @@ weather <- tibble(
   time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt"))
 )
 
-dm(airlines, airports, flights, planes, weather) %>%
-  dm_add_pk(airlines, carrier) %>%
-  dm_add_pk(airports, faa) %>%
-  dm_add_pk(planes, tailnum) %>%
-  dm_add_fk(flights, carrier, airlines) %>%
-  dm_add_fk(flights, origin, airports) %>%
-  dm_add_fk(flights, tailnum, planes) %>%
-  dm_set_colors(`#ED7D31FF` = airlines) %>%
-  dm_set_colors(`#ED7D31FF` = airports) %>%
-  dm_set_colors(`#5B9BD5FF` = flights) %>%
-  dm_set_colors(`#ED7D31FF` = planes) %>%
-  dm_set_colors(`#70AD47FF` = weather)
+dm::dm(airlines, airports, flights, planes, weather) %>%
+  dm::dm_add_pk(airlines, carrier) %>%
+  dm::dm_add_pk(airports, faa) %>%
+  dm::dm_add_pk(planes, tailnum) %>%
+  dm::dm_add_fk(flights, carrier, airlines) %>%
+  dm::dm_add_fk(flights, origin, airports) %>%
+  dm::dm_add_fk(flights, tailnum, planes) %>%
+  dm::dm_set_colors(`#ED7D31FF` = airlines) %>%
+  dm::dm_set_colors(`#ED7D31FF` = airports) %>%
+  dm::dm_set_colors(`#5B9BD5FF` = flights) %>%
+  dm::dm_set_colors(`#ED7D31FF` = planes) %>%
+  dm::dm_set_colors(`#70AD47FF` = weather)
 
 > # deprecation warning for select argument
 > dm() %>% dm_paste(select = TRUE)
 Warning: The `select` argument of `dm_paste()` is deprecated as of dm 0.1.2.
 Please use the `options` argument instead.
 
-Message: dm()
+Message: dm::dm()
 
 > # error for bad option
 > dm() %>% dm_paste(options = c("bogus", "all", "mad"))

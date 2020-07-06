@@ -1,6 +1,6 @@
 scoped_options(lifecycle_verbosity = "quiet")
 
-verify_output("out/rows-dm.txt", {
+if (rlang::is_installed("nycflights13")) verify_output("out/rows-dm.txt", {
   # Entire dataset with all dimension tables populated
   # with flights and weather data truncated:
   flights_init <-
@@ -12,7 +12,7 @@ verify_output("out/rows-dm.txt", {
     filter(FALSE) %>%
     dm_update_zoomed()
 
-  sqlite <- src_sqlite(":memory:", create = TRUE)
+  sqlite <- dbConnect(RSQLite::SQLite())
 
   # Target database:
   flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
@@ -31,7 +31,7 @@ verify_output("out/rows-dm.txt", {
   print(dm_nrow(flights_jan))
 
   # Copy to temporary tables on the target database:
-  flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
+  flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
 
   # Dry run by default:
   out <- dm_rows_insert(flights_sqlite, flights_jan_sqlite)
@@ -53,7 +53,7 @@ verify_output("out/rows-dm.txt", {
     dm_update_zoomed()
 
   # Copy to temporary tables on the target database:
-  flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
+  flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
 
   # Explicit dry run:
   flights_new <- dm_rows_insert(

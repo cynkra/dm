@@ -52,18 +52,11 @@ with current semantics.
 }
 
 \examples{
-if (rlang::is_installed("nycflights13")) {
-  nycflights_dm <- dm(
-    planes = nycflights13::planes,
-    flights = nycflights13::flights
-  )
-} else {
-  message("Using mock-up data, install the nycflights13 package to fix.")
-  nycflights_dm <- dm(
-    planes = tibble(tailnum = character()),
-    flights = tibble(tailnum = character())
-  )
-}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+nycflights_dm <- dm(
+  planes = nycflights13::planes,
+  flights = nycflights13::flights
+)
 
 nycflights_dm \%>\%
   dm_draw()
@@ -72,10 +65,12 @@ nycflights_dm \%>\%
   dm_add_pk(planes, tailnum) \%>\%
   dm_add_fk(flights, tailnum, planes) \%>\%
   dm_draw()
-
+\dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13(cycle = TRUE) \%>\%
   dm_rm_fk(flights, dest, airports) \%>\%
   dm_draw()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 

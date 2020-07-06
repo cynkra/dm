@@ -33,9 +33,10 @@
 #'
 #' @export
 #' @examples
-#' dm(iris, mtcars)
-#' new_dm(list(iris = iris, mtcars = mtcars))
-#' as_dm(list(iris = iris, mtcars = mtcars))
+#' dm(trees, mtcars)
+#' new_dm(list(trees = trees, mtcars = mtcars))
+#' as_dm(list(trees = trees, mtcars = mtcars))
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #'
 #' dm_nycflights13() %>% tbl("airports")
 #' dm_nycflights13() %>% src_tbls()
@@ -451,12 +452,22 @@ format.dm <- function(x, ...) {
 
 #' @export
 print.dm <- function(x, ...) {
-  cat_rule("Table source", col = "green")
+  show_dm(x)
+  invisible(x)
+}
+
+show_dm <- function(x) {
   def <- dm_get_def(x)
+  if (nrow(def) == 0) {
+    cat_line("dm()")
+    return()
+  }
+
+  cat_rule("Table source", col = "green")
   src <- dm_get_src(x)
   db_info <- NULL
 
-  if (!is.null(src$con) && nrow(def) >= 0) {
+  if (!is.null(src$con)) {
     # FIXME: change to pillar::tbl_sum() once it's there
     tbl_str <- tibble::tbl_sum(def$data[[1]])
     if ("Database" %in% names(tbl_str)) {
@@ -481,8 +492,6 @@ print.dm <- function(x, ...) {
     cat_rule("Filters", col = "orange")
     walk2(filters$table, filters$filter, ~ cat_line(paste0(.x, ": ", as_label(.y))))
   }
-
-  invisible(x)
 }
 
 def_get_n_tables <- function(def) {
@@ -558,7 +567,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 `$.dm` <- function(x, name) {
-  table <- as_string(ensym(name))
+  table <- dm_tbl_name(x, {{ name }})
   tbl(x, table)
 }
 
@@ -659,7 +668,7 @@ tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
   check_not_zoomed(dm)
-  check_correct_input(dm, from, 1L)
+  from <- dm_tbl_name(dm, !!from)
 
   dm_get_tables_impl(dm)[[from]]
 }
@@ -738,7 +747,9 @@ collect.dm <- function(x, ...) {
 
 #' @export
 collect.zoomed_dm <- function(x, ...) {
-  check_not_zoomed(x)
+  message("Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.")
+
+  collect(pull_tbl(x))
 }
 
 
@@ -803,7 +814,7 @@ empty_dm <- function() {
 #'
 #' @return The requested table
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' # For an unzoomed dm you need to specify the table to pull:
 #' dm_nycflights13() %>%
 #'   pull_tbl(airports)

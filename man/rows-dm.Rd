@@ -37,7 +37,8 @@ when \code{FALSE}, a new object representing the resulting changes is returned.}
 }
 \value{
 A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{x}.
-If \code{in_place = TRUE}, \link{invisible} and identical to \code{x}.
+If \code{in_place = TRUE}, the underlying data is updated as a side effect,
+and \code{x} is returned, invisibly.
 }
 \description{
 \lifecycle{experimental}
@@ -81,13 +82,9 @@ only for tables in \code{dm}.
 The order in which the tables are processed is reversed.
 }
 \examples{
+\dontshow{if (rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Establish database connection:
-if (rlang::is_installed("RSQLite")) {
-  sqlite <- dplyr::src_sqlite(":memory:", create = TRUE)
-} else {
-  # Fallback, persistence won't work:
-  sqlite <- dplyr::src_df(env = rlang::new_environment())
-}
+sqlite <- DBI::dbConnect(RSQLite::SQLite())
 
 # Entire dataset with all dimension tables populated
 # with flights and weather data truncated:
@@ -117,7 +114,7 @@ flights_jan <-
 print(dm_nrow(flights_jan))
 
 # Copy to temporary tables on the target database:
-flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan, unique_table_names = TRUE)
+flights_jan_sqlite <- copy_dm_to(sqlite, flights_jan)
 
 # Dry run by default:
 dm_rows_insert(flights_sqlite, flights_jan_sqlite)
@@ -139,7 +136,7 @@ flights_feb <-
   dm_update_zoomed()
 
 # Copy to temporary tables on the target database:
-flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb, unique_table_names = TRUE)
+flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
 
 # Explicit dry run:
 flights_new <- dm_rows_insert(
@@ -157,4 +154,7 @@ flights_new \%>\%
 # Apply:
 dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
 print(dm_nrow(flights_sqlite))
+
+DBI::dbDisconnect(sqlite)
+\dontshow{\}) # examplesIf}
 }

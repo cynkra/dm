@@ -90,6 +90,7 @@ The join-methods for \code{zoomed_dm} have an extra argument \code{select} that 
 And -- last but not least -- also the {tidyr}-functions \code{unite()} and \code{separate()} are supported for \code{zoomed_dm}.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 
 flights_zoomed
@@ -116,4 +117,5 @@ flights_zoomed_transformed \%>\%
 # discard the zoomed table
 flights_zoomed_transformed \%>\%
   dm_discard_zoomed()
+\dontshow{\}) # examplesIf}
 }

@@ -47,7 +47,7 @@
 #' @return For `dm_zoom_to()`: A `zoomed_dm` object.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 #'
 #' flights_zoomed
@@ -77,8 +77,7 @@
 dm_zoom_to <- function(dm, table) {
   check_not_zoomed(dm)
   # for now only one table can be zoomed on
-  zoom <- as_string(ensym(table))
-  check_correct_input(dm, zoom)
+  zoom <- dm_tbl_name(dm, {{ table }})
 
   cols <- list(get_all_cols(dm, zoom))
 
