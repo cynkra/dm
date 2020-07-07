@@ -19,7 +19,7 @@ source("setup/setup.R")
 ## dm functions for persisting rows
 
 `dm` stands on the shoulders of {dplyr} to provide functions that allow you to specify which rows, and the columns within those rows, you would like to persist on the RDBMS.
-Following SQL nomenclature, these functions are named around `dm_rows_insert()` for adding new rows, and `d,_rows_update()` for making changes to existing rows.
+Following SQL nomenclature, these functions are named around `dm_rows_insert()` for adding new rows, and `dm_rows_update()` for making changes to existing rows.
 
 The functions require that the rows to be inserted or updated are in a table compatible with the destination table.
 For rows being updated, only the columns being updated need to be included in the table, but the primary key column must be present and the ids in that column must be present in the destination table.
@@ -45,12 +45,15 @@ Note the Table Source portion when printing each of the dm objects.
 
 We will now create a row to insert in the `accounts` table. 
 As `dm_rows_insert()` requires primary keys to be unique, we will first find the current maximum primary key and start our numbering beyond that. 
+
 ``````{r }
 library(dplyr)
 
 #FIXME - this seems really inefficient. Is there a cleaner way to get the max value in a column?
-new_id <- max(dm_sqlite$accounts %>% pull(id)) + 1
-
+new_id <- 
+  dm_sqlite$accounts %>% 
+  summarize(new_id = max(id, na.rm = TRUE) + 1L) %>% 
+  pull()
 ``````
 
 Next, we will use {dplyr}'s `add_row()` to create a new account entry.
@@ -59,9 +62,7 @@ This requires us to remove the current, empty `account` table from the dm object
 
 ```````{r }
 #FIXME and here is my naive attempt to get a row into a table in dm. What's a more idiomatic way to do this?
-new_account <- dm_empty$accounts %>% add_row(id = 11383, district_id = 18, frequency = "dummy", date = 9736 )
-dm_data <- dm_empty %>% dm_rm_tbl(accounts) %>% dm_add_tbl(accounts = new_account)
+new_account <- tibble(id = 11383, district_id = 18, frequency = "dummy", date = 9736)
+dm_data <- dm(accounts = new_account)
 
 ``````
-
-

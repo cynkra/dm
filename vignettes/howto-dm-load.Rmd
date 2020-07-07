@@ -161,7 +161,7 @@ In this tutorial we have demonstrated how simple it is to load a database into a
 While loading a dm from most RDBMS currently requires you to manually set key relations, dm provides methods to make this straightforward.
 It is planned that future versions of dm will support automatic key creation for more RDBMS.
 
-The next step is to read `vignette('howto-dm-copy`), where moving your dm into an RDBMS is covered.
+The next step is to read `vignette("howto-dm-copy")`, where moving your dm into an RDBMS is covered.
 
 ## Further reading
 
