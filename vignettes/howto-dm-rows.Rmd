@@ -62,9 +62,8 @@ This requires us to remove the current, empty `account` table from the dm object
 
 ```````{r }
 #FIXME and here is my naive attempt to get a row into a table in dm. What's a more idiomatic way to do this?
-new_account <- dm_empty$accounts %>% add_row(id = 11383, district_id = 18, frequency = "dummy", date = 9736 )
-dm_data <- dm_empty %>% dm_rm_tbl(accounts) %>% dm_add_tbl(accounts = new_account)
+new_account <- tibble(id = 11383, district_id = 18, frequency = "dummy", date = 9736)
+dm_data <- dm(accounts = new_account)
 
 ``````
-
 
