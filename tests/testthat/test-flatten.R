@@ -298,6 +298,8 @@ test_that("tests with 'bad_dm' work", {
     dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
   )
 
+  skip_if_not_installed("nycflights13")
+
   # fails when there is a cycle
   expect_dm_error(
     dm_nycflights_small() %>%
@@ -305,9 +307,13 @@ test_that("tests with 'bad_dm' work", {
       dm_flatten_to_tbl(flights),
     "no_cycles"
   )
+})
 
+test_that("tests with 'bad_dm' work (2)", {
   # full & right join not available on SQLite
   skip_if_src("sqlite")
+
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
 
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(

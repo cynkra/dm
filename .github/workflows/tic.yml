@@ -31,17 +31,15 @@ jobs:
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: 3.6, id: "default" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", MODE: "db-tests", id: "db-tests" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
+          - { os: ubuntu-latest, r: 3.6, id: "default" }
           # [Custom matrix env var]
           - { os: windows-latest, r: "release", id: "default" }
           # [Custom matrix env var]
           - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", id: "default" }
+          - { os: ubuntu-latest, r: 3.3, id: "default" }
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true, id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS", cache: "dev" }
+          - { os: ubuntu-latest, r: "release", TIC_ONLY_IMPORTS: true, id: "TIC_ONLY_IMPORTS" }
 
     env:
       # [Custom env var] use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
@@ -55,7 +53,9 @@ jobs:
       # [Custom env var]
       TIC_DEV_VERSIONS: ${{ matrix.config.TIC_DEV_VERSIONS }}
       # [Custom env var]
-      _R_CHECK_PACKAGE_DEPENDS_IGNORE_MISSING_ENHANCES: true
+      TIC_ONLY_IMPORTS: ${{ matrix.config.TIC_ONLY_IMPORTS }}
+      # [Custom env var]
+      TIC_ONLY_TESTS: ${{ matrix.config.TIC_ONLY_TESTS }}
       # [Custom env var]
       _R_CHECK_SYSTEM_CLOCK_: false
       # [Custom env var]
@@ -103,8 +103,14 @@ jobs:
         uses: pat-s/always-upload-cache@v2.0.0
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
+
+      # install ccache and write config file
+      - name: "[Linux] Prepare"
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt install libcurl4-openssl-dev
 
       - name: "[Custom block] [Linux] Install libraries"
         if: runner.os == 'Linux'
@@ -116,17 +122,6 @@ jobs:
         run: |
           Rscript -e "if (!requireNamespace('remotes')) install.packages('remotes', type = 'source')"
           Rscript -e "if (getRversion() < '3.2' && !requireNamespace('curl')) install.packages('curl', type = 'source')"
-
-      - name: "[Custom block] [Linux] Install MySQL & Postgresql"
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt install postgresql postgresql-contrib
-          sudo /etc/init.d/mysql start
-
-      - name: "[Custom block] [macOS] Install MySQL & Postgresql"
-        if: runner.os == 'macOS'
-        run: |
-          brew install mysql
 
       - name: "[Custom block] [macOS] Install v8"
         if: runner.os == 'macOS'

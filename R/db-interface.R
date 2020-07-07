@@ -49,7 +49,7 @@
 #' @return A `dm` object on the given `src` with the same table names
 #'   as the input `dm`.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")
 #' con <- DBI::dbConnect(RSQLite::SQLite())
 #'
 #' # Copy to temporary tables, unique table names by default:
@@ -166,7 +166,7 @@ copy_dm_to <- function(dest, dm, ...,
 #'
 #' @return Returns the `dm`, invisibly. Side effect: installing key constraints on DB.
 #'
-#' @examplesIf rlang::is_installed("RSQLite")
+#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")
 #' # Setting key constraints not yet supported on SQLite,
 #' # try this with SQL Server or Postgres instead:
 #' sqlite <- DBI::dbConnect(RSQLite::SQLite())

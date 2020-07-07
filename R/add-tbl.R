@@ -82,7 +82,7 @@ dm_add_tbl_impl <- function(dm, tbls, table_name, filters = vctrs::list_of(new_f
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_rm_tbl(airports)
 dm_rm_tbl <- function(dm, ...) {

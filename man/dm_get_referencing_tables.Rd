@@ -20,8 +20,12 @@ This function returns the names of all tables that point to the primary key
 of a table.
 }
 \examples{
-dm_get_referencing_tables(dm_nycflights13(), airports)
-dm_get_referencing_tables(dm_nycflights13(), flights)
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_get_referencing_tables(airports)
+dm_nycflights13() \%>\%
+  dm_get_referencing_tables(flights)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other functions utilizing foreign key relations: 

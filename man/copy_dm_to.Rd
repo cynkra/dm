@@ -78,6 +78,7 @@ The arguments are included in the signature to avoid passing them via the
 \code{...} ellipsis.
 }
 \examples{
+\dontshow{if (rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 con <- DBI::dbConnect(RSQLite::SQLite())
 
 # Copy to temporary tables, unique table names by default:
@@ -97,5 +98,6 @@ persistent_dm <- copy_dm_to(
 dbplyr::remote_name(persistent_dm$planes)
 
 DBI::dbDisconnect(con)
+\dontshow{\}) # examplesIf}
 }
 \concept{DB interaction functions}

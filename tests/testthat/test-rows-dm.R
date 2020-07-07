@@ -1,6 +1,6 @@
 scoped_options(lifecycle_verbosity = "quiet")
 
-verify_output("out/rows-dm.txt", {
+if (rlang::is_installed("nycflights13")) verify_output("out/rows-dm.txt", {
   # Entire dataset with all dimension tables populated
   # with flights and weather data truncated:
   flights_init <-

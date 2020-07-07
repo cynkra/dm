@@ -43,6 +43,7 @@ The table's \code{by} column(s) are automatically added if missing in the select
 Use these methods without the '.zoomed_dm' suffix (see examples).
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 flights_dm <- dm_nycflights13()
 dm_zoom_to(flights_dm, flights) \%>\%
   left_join(airports, select = c(faa, name))
@@ -50,4 +51,5 @@ dm_zoom_to(flights_dm, flights) \%>\%
 # this should illustrate that tables don't necessarily need to be connected
 dm_zoom_to(flights_dm, airports) \%>\%
   semi_join(airlines, by = "name")
+\dontshow{\}) # examplesIf}
 }

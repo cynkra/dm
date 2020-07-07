@@ -6,7 +6,7 @@
 #'
 #' @return A named vector with the number of rows for each table.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_filter(airports, faa %in% c("EWR", "LGA")) %>%
 #'   dm_apply_filters() %>%
@@ -31,7 +31,7 @@ get_by <- function(dm, lhs_name, rhs_name) {
     abort_tables_not_neighbors(lhs_name, rhs_name)
   }
 
-  if (length(lhs_col) > 1 || length(rhs_col) > 1) abort_no_cycles()
+  if (length(lhs_col) > 1 || length(rhs_col) > 1) abort_no_cycles(create_graph_from_dm(dm))
   # Construct a `by` argument of the form `c("lhs_col[1]" = "rhs_col[1]", ...)`
   # as required by `*_join()`
   by <- rhs_col
