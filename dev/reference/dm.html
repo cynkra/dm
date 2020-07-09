@@ -105,7 +105,7 @@ as_dm() coerces objects to the dm class" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
       </span>
     </div>
 
@@ -295,26 +295,46 @@ and importing the primary and foreign keys</p></li>
 </div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm</span>(<span class='no'>iris</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+    <pre class="examples"><div class='input'><span class='fu'>dm</span>(<span class='no'>trees</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `iris`, `mtcars`
-#&gt; Columns: 16
+#&gt; Tables: `trees`, `mtcars`
+#&gt; Columns: 14
 #&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>new_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>new_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>trees</span> <span class='kw'>=</span> <span class='no'>trees</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `iris`, `mtcars`
-#&gt; Columns: 16
+#&gt; Tables: `trees`, `mtcars`
+#&gt; Columns: 14
 #&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iris</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>trees</span> <span class='kw'>=</span> <span class='no'>trees</span>, <span class='kw'>mtcars</span> <span class='kw'>=</span> <span class='no'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `iris`, `mtcars`
-#&gt; Columns: 16
+#&gt; Tables: `trees`, `mtcars`
+#&gt; Columns: 14
 #&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span>(<span class='st'>"airports"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
+#&gt; Foreign keys: 0</div><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>) <span class='kw'>&amp;&amp;</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"dbplyr"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
+
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span>(<span class='st'>"airports"</span>)
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_src</span>()
+
+<span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(
+  <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(),
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
+  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+) <span class='kw'>%&gt;%</span>
+  <span class='fu'>dm_get_con</span>()
+
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_tables</span>()
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='dm_get_filters.html'>dm_get_filters</a></span>()
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>validate_dm</span>()
+<span class='fu'>is_dm</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()[<span class='st'>"airports"</span>]
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()<span class='kw'>[[</span><span class='st'>"airports"</span>]]
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()$<span class='no'>airports</span>
+}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nycflights13() %&gt;% tbl("airports")
+#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
 #&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
@@ -327,20 +347,21 @@ and importing the primary and foreign keys</p></li>
 #&gt; </span><span style='color: #555555;'> 8</span><span> 0G7   Finger Lakes Regional A…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
 #&gt; </span><span style='color: #555555;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…
 #&gt; </span><span style='color: #555555;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…
-#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()</div><div class='output co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_src</span>()</div><div class='output co'>#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; tbls:</div><div class='input'>
-<span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(
-  <span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(),
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
-  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-) <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_get_con</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: The `unique_table_names` argument of `copy_dm_to()` is deprecated as of lifecycle 0.1.4.</span>
+#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span>
+#&gt; &gt; dm_nycflights13() %&gt;% src_tbls()
+#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" 
+#&gt; &gt; dm_nycflights13() %&gt;% dm_get_src()
+#&gt; src:  &lt;environment: R_GlobalEnv&gt;
+#&gt; tbls:
+#&gt; &gt; copy_dm_to(dbplyr::src_memdb(), dm_nycflights13(), unique_table_names = TRUE) %&gt;% 
+#&gt; +     dm_get_con()</div><div class='output co'>#&gt; <span class='warning'>Warning: The `unique_table_names` argument of `copy_dm_to()` is deprecated as of lifecycle 0.1.4.</span>
 #&gt; <span class='warning'>Use `table_names = identity` to use unchanged names for temporary tables.</span>
 #&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
 #&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='output co'>#&gt; &lt;SQLiteConnection&gt;
 #&gt;   Path: :memory:
-#&gt;   Extensions: TRUE</div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>dm_get_tables</span>()</div><div class='output co'>#&gt; $airlines
+#&gt;   Extensions: TRUE
+#&gt; &gt; dm_nycflights13() %&gt;% dm_get_tables()
+#&gt; $airlines
 #&gt; </span><span style='color: #555555;'># A tibble: 16 x 2</span><span>
 #&gt;    carrier name                       
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                      
@@ -427,15 +448,23 @@ and importing the primary and foreign keys</p></li>
 #&gt; </span><span style='color: #555555;'>10</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     9  45.0  23    41.6      320      17.3 
 #&gt; </span><span style='color: #555555;'># … with 851 more rows, and 5 more variables: wind_gust </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, precip </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   pressure </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, visib </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>
-#&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='dm_get_filters.html'>dm_get_filters</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 0 x 3</span><span>
-#&gt; </span><span style='color: #555555;'># … with 3 variables: table </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, filter </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, zoomed </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>validate_dm</span>()
-<span class='fu'>is_dm</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()[<span class='st'>"airports"</span>]</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+#&gt; 
+#&gt; &gt; dm_nycflights13() %&gt;% dm_get_filters()
+#&gt; </span><span style='color: #555555;'># A tibble: 0 x 3</span><span>
+#&gt; </span><span style='color: #555555;'># … with 3 variables: table </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, filter </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, zoomed </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>
+#&gt; &gt; dm_nycflights13() %&gt;% validate_dm()
+#&gt; &gt; is_dm(dm_nycflights13())
+#&gt; [1] TRUE
+#&gt; &gt; dm_nycflights13()["airports"]
+#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airports`
 #&gt; Columns: 8
 #&gt; Primary keys: 1
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()<span class='kw'>[[</span><span class='st'>"airports"</span>]]</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
+#&gt; Foreign keys: 0
+#&gt; &gt; dm_nycflights13()[["airports"]]
+#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
 #&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
@@ -448,7 +477,9 @@ and importing the primary and foreign keys</p></li>
 #&gt; </span><span style='color: #555555;'> 8</span><span> 0G7   Finger Lakes Regional A…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
 #&gt; </span><span style='color: #555555;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…
 #&gt; </span><span style='color: #555555;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…
-#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()$<span class='no'>airports</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
+#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span>
+#&gt; &gt; dm_nycflights13()$airports
+#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
 #&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…

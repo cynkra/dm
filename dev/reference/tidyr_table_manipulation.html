@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
       </span>
     </div>
 
@@ -221,11 +221,18 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>zoom_united</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
+<span class='no'>zoom_united</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='no'>flights</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>year</span>, <span class='no'>month</span>, <span class='no'>day</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></span>(<span class='st'>"month_day"</span>, <span class='no'>month</span>, <span class='no'>day</span>)
-<span class='no'>zoom_united</span></div><div class='output co'>#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
+<span class='no'>zoom_united</span>
+<span class='no'>zoom_united</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='no'>month_day</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"month"</span>, <span class='st'>"day"</span>))
+}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; zoom_united &lt;- dm_nycflights13() %&gt;% dm_zoom_to(flights) %&gt;% select(year, 
+#&gt; +     month, day) %&gt;% unite("month_day", month, day)
+#&gt; &gt; zoom_united
+#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 2</span><span>
 #&gt;     year month_day
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    
@@ -239,8 +246,9 @@
 #&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 1_10     
 #&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 1_10     
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 1_10     
-#&gt; </span><span style='color: #555555;'># … with 11,217 more rows</span><span></div><div class='input'><span class='no'>zoom_united</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='no'>month_day</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"month"</span>, <span class='st'>"day"</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># Zoomed table: flights</span><span>
+#&gt; </span><span style='color: #555555;'># … with 11,217 more rows</span><span>
+#&gt; &gt; zoom_united %&gt;% separate(month_day, c("month", "day"))
+#&gt; </span><span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 3</span><span>
 #&gt;     year month day  
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>

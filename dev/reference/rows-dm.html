@@ -109,7 +109,7 @@ The order in which the tables are processed is reversed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.4.9002</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
       </span>
     </div>
 
@@ -277,7 +277,8 @@ If <code>in_place = TRUE</code>, the underlying data is updated as a side effect
 and <code>x</code> is returned, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Establish database connection:</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"RSQLite"</span>) <span class='kw'>&amp;&amp;</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
+<span class='co'># Establish database connection:</span>
 <span class='no'>sqlite</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>())
 
 <span class='co'># Entire dataset with all dimension tables populated</span>
@@ -293,8 +294,8 @@ and <code>x</code> is returned, invisibly.</p>
 
 <span class='co'># Target database:</span>
 <span class='no'>flights_sqlite</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='no'>sqlite</span>, <span class='no'>flights_init</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16     1458        0     3322        0 </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))
+
 <span class='co'># First update:</span>
 <span class='no'>flights_jan</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
@@ -305,24 +306,19 @@ and <code>x</code> is returned, invisibly.</p>
   <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>month</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_jan</span>))</div><div class='output co'>#&gt; flights weather 
-#&gt;     932      72 </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_jan</span>))
+
 <span class='co'># Copy to temporary tables on the target database:</span>
 <span class='no'>flights_jan_sqlite</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='no'>sqlite</span>, <span class='no'>flights_jan</span>)
 
 <span class='co'># Dry run by default:</span>
-<span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_jan_sqlite</span>)</div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 []
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16     1458        0     3322        0 </div><div class='input'>
+<span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_jan_sqlite</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))
+
 <span class='co'># Explicitly request persistence:</span>
 <span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_jan_sqlite</span>, <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16     1458      932     3322       72 </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))
+
 <span class='co'># Second update:</span>
 <span class='no'>flights_feb</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
@@ -343,17 +339,63 @@ and <code>x</code> is returned, invisibly.</p>
   <span class='no'>flights_feb_sqlite</span>,
   <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_new</span>))</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16     1458     1761     3322      144 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16     1458      932     3322       72 </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_new</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))
+
 <span class='co'># Check for consistency before applying:</span>
 <span class='no'>flights_new</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_examine_constraints.html'>dm_examine_constraints</a></span>()</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</div><div class='input'>
+  <span class='fu'><a href='dm_examine_constraints.html'>dm_examine_constraints</a></span>()
+
 <span class='co'># Apply:</span>
 <span class='fu'>dm_rows_insert</span>(<span class='no'>flights_sqlite</span>, <span class='no'>flights_feb_sqlite</span>, <span class='kw'>in_place</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16     1458     1761     3322      144 </div><div class='input'>
-<span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>sqlite</span>)</div></span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='no'>flights_sqlite</span>))
+
+<span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>sqlite</span>)
+}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; sqlite &lt;- DBI::dbConnect(RSQLite::SQLite())
+#&gt; &gt; flights_init &lt;- dm_nycflights13() %&gt;% dm_zoom_to(flights) %&gt;% filter(FALSE) %&gt;% 
+#&gt; +     dm_update_zoomed() %&gt;% dm_zoom_to(weather) %&gt;% filter(FALSE) %&gt;% dm_update_zoomed()
+#&gt; &gt; flights_sqlite &lt;- copy_dm_to(sqlite, flights_init, temporary = FALSE)
+#&gt; &gt; print(dm_nrow(flights_sqlite))
+#&gt; airlines airports  flights   planes  weather 
+#&gt;       16     1458        0     3322        0 
+#&gt; &gt; flights_jan &lt;- dm_nycflights13() %&gt;% dm_select_tbl(flights, weather) %&gt;% 
+#&gt; +     dm_zoom_to(flights) %&gt;% filter(month == 1) %&gt;% dm_update_zoomed() %&gt;% dm_zoom_to(weather) %&gt;% 
+#&gt; +     filter(month == 1) %&gt;% dm_update_zoomed()
+#&gt; &gt; print(dm_nrow(flights_jan))
+#&gt; flights weather 
+#&gt;     932      72 
+#&gt; &gt; flights_jan_sqlite &lt;- copy_dm_to(sqlite, flights_jan)
+#&gt; &gt; dm_rows_insert(flights_sqlite, flights_jan_sqlite)</div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.30.1 []
+#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 3
+#&gt; &gt; print(dm_nrow(flights_sqlite))
+#&gt; airlines airports  flights   planes  weather 
+#&gt;       16     1458        0     3322        0 
+#&gt; &gt; dm_rows_insert(flights_sqlite, flights_jan_sqlite, in_place = TRUE)
+#&gt; &gt; print(dm_nrow(flights_sqlite))
+#&gt; airlines airports  flights   planes  weather 
+#&gt;       16     1458      932     3322       72 
+#&gt; &gt; flights_feb &lt;- dm_nycflights13() %&gt;% dm_select_tbl(flights, weather) %&gt;% 
+#&gt; +     dm_zoom_to(flights) %&gt;% filter(month == 2) %&gt;% dm_update_zoomed() %&gt;% dm_zoom_to(weather) %&gt;% 
+#&gt; +     filter(month == 2) %&gt;% dm_update_zoomed()
+#&gt; &gt; flights_feb_sqlite &lt;- copy_dm_to(sqlite, flights_feb)
+#&gt; &gt; flights_new &lt;- dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = FALSE)
+#&gt; &gt; print(dm_nrow(flights_new))
+#&gt; airlines airports  flights   planes  weather 
+#&gt;       16     1458     1761     3322      144 
+#&gt; &gt; print(dm_nrow(flights_sqlite))
+#&gt; airlines airports  flights   planes  weather 
+#&gt;       16     1458      932     3322       72 
+#&gt; &gt; flights_new %&gt;% dm_examine_constraints()</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …
+#&gt; &gt; dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
+#&gt; &gt; print(dm_nrow(flights_sqlite))
+#&gt; airlines airports  flights   planes  weather 
+#&gt;       16     1458     1761     3322      144 
+#&gt; &gt; DBI::dbDisconnect(sqlite)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
