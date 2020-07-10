@@ -128,7 +128,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 class="date">2020-07-09</h4>
+            <h4 class="date">2020-07-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-class.Rmd"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -233,7 +233,14 @@
 </span></code></pre>
 <p>We can get the list of tables with <code><a href="../reference/dm.html">dm_get_tables()</a></code> and the <code>src</code> object with <code><a href="../reference/dm.html">dm_get_src()</a></code>.</p>
 <p>In order to pull a specific table from a <code>dm</code>, use:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="no">flights_dm</span>, <span class="st">"airports"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="no">flights_dm</span>, <span class="st">"airports"</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
@@ -291,7 +298,14 @@
   <span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span>(<span class="no">airports</span>)
 <span class="co">#&gt; [1] FALSE</span></pre></body></html></div>
 <p>If you still need to get to know your data better, and it is already available in the form of a <code>dm</code> object, you can use the <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> function in order to get information about which columns of the table are unique keys:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(<span class="no">flights_dm_with_key</span>, <span class="no">airports</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(<span class="no">flights_dm_with_key</span>, <span class="no">airports</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 x 3</span><span>
 #&gt;   columns candidate why                                                    
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                                  
@@ -305,14 +319,28 @@
 #&gt; </span><span style="color: #555555;">8</span><span> tzone   FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: America/Anchorage, America/Chic…
 </span></code></pre>
 <p>The <code>flights</code> table does not have any one-column primary key candidates:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(<span class="no">flights_dm_with_key</span>, <span class="no">flights</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span>(<span class="no">candidate</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(<span class="no">flights_dm_with_key</span>, <span class="no">flights</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span>(<span class="no">candidate</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
 #&gt;   candidate     n
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> FALSE        19
 </span></code></pre>
 <p>To get an overview over all tables with primary keys, use <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>(<span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>(<span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
 #&gt;   table    pk_col 
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span> 
@@ -381,7 +409,14 @@
 <span class="co">#&gt; &lt;list_of&lt;character&gt;[0]&gt;</span></pre></body></html></div>
 <p>Since the primary keys are defined in the <code>dm</code> object, you do not need to provide the referenced column name of <code>ref_table</code>. This is always the primary key column of the table.</p>
 <p>Another function for getting to know your data better (cf. <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span>(<span class="no">flights_dm_with_key</span>, <span class="no">weather</span>, <span class="no">airports</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span>(<span class="no">flights_dm_with_key</span>, <span class="no">weather</span>, <span class="no">airports</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span><span>
 #&gt;    columns    candidate why                                                
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                              
@@ -402,7 +437,14 @@
 #&gt; </span><span style="color: #555555;">15</span><span> year       FALSE     </span><span style="color: #555555;">"</span><span>Can't join on `x$value` x `y$value` because of in…
 </span></code></pre>
 <p>Get an overview of all foreign key relations with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span>(<span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span>(<span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 4 x 3</span><span>
 #&gt;   child_table child_fk_cols parent_table
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>       

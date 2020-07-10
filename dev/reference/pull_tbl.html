@@ -213,8 +213,13 @@ With pull_tbl.zoomed_dm() you will retrieve the zoomed table in the current stat
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='no'>airports</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>pull_tbl</span>()
-}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nycflights13() %&gt;% pull_tbl(airports)
-#&gt; <span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
+}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nycflights13() %&gt;% pull_tbl(airports)</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
 #&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
@@ -228,8 +233,13 @@ With pull_tbl.zoomed_dm() you will retrieve the zoomed table in the current stat
 #&gt; </span><span style='color: #555555;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…
 #&gt; </span><span style='color: #555555;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…
 #&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span>
-#&gt; &gt; dm_nycflights13() %&gt;% dm_zoom_to(airports) %&gt;% pull_tbl()
-#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
+#&gt; &gt; dm_nycflights13() %&gt;% dm_zoom_to(airports) %&gt;% pull_tbl()</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                       lat    lon   alt    tz dst   tzone          
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
 #&gt; </span><span style='color: #555555;'> 1</span><span> 04G   Lansdowne Airport         41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…

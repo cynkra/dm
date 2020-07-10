@@ -278,8 +278,13 @@ the filter.</p>
 <span class='co'># only the three New York airports.</span>
 }) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nyc &lt;- dm_nycflights13()
 #&gt; &gt; dm_nyc_filtered &lt;- dm_nycflights13() %&gt;% dm_filter(airports, name == "John F Kennedy Intl")
-#&gt; &gt; dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
-#&gt; <span style='color: #555555;'># A tibble: 3,661 x 19</span><span>
+#&gt; &gt; dm_apply_filters_to_tbl(dm_nyc_filtered, flights)</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3,661 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437

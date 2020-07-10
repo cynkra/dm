@@ -129,7 +129,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2020-07-09</h4>
+            <h4 class="date">2020-07-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-theory.Rmd"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -199,7 +199,14 @@
 <span class="no">flights</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">airlines</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"carrier"</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">planes</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"tailnum"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">airports</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> <span class="kw">=</span> <span class="st">"faa"</span>))</pre></body></html></div>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">airports</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> <span class="kw">=</span> <span class="st">"faa"</span>))
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 35</span><span>
 #&gt;    year.x month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
@@ -259,7 +266,14 @@
 <p>Example: In the <code>airlines</code> table of <code>nycflights13</code> the column <code>carrier</code> is the primary key.</p>
 <p>You can get all primary keys in a <code>dm</code> by calling <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>()</pre></body></html></div>
+  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>()
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
 #&gt;   table    pk_col 
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span> 
@@ -269,7 +283,14 @@
 </span></code></pre>
 <p>If an attribute is suitable as a primary key, it can be checked with <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>. Which columns of the <code>airlines</code> table can serve as a primary key?</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(<span class="no">airports</span>)</pre></body></html></div>
+  <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(<span class="no">airports</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 x 3</span><span>
 #&gt;   columns candidate why                                                    
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                                  
@@ -290,7 +311,14 @@
 <p>The <strong>counterpart of a primary key in one table is the foreign key in another table</strong>. In order to join two tables, the primary key of the first table needs to be available in the second table as well. This second column is called the <em>foreign key</em> (abbreviated with fk).</p>
 <p>For example, if you want to link the <code>airlines</code> table to the <code>flights</code> table, the primary key in <code>airlines</code> needs to match the foreign key in <code>flights</code>. This condition is satisfied because the column <code>carrier</code> is present as a primary key in the <code>airlines</code> table as well as a foreign key in the <code>flights</code> table. You can find foreign key candidates with the function <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, they are marked with <code>TRUE</code> in the <code>candidate</code> column.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span>(<span class="no">flights</span>, <span class="no">airlines</span>)</pre></body></html></div>
+  <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span>(<span class="no">flights</span>, <span class="no">airlines</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 19 x 3</span><span>
 #&gt;    columns      candidate why                                              
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                            
@@ -332,7 +360,14 @@
 <span class="no">airlines</span>[<span class="no">airlines</span>$<span class="no">carrier</span> <span class="kw">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span>] <span class="kw">&lt;-</span> <span class="st">"United broke my guitar"</span>
 
 <span class="no">airlines</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">carrier</span> <span class="kw">==</span> <span class="st">"UA"</span>)</pre></body></html></div>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">carrier</span> <span class="kw">==</span> <span class="st">"UA"</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
 #&gt;   carrier name                  
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 
@@ -343,7 +378,14 @@
 <span class="no">flights</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">airlines</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">flight</span>, <span class="no">name</span>)
-<span class="co">#&gt; Joining, by = "carrier"</span></pre></body></html></div>
+<span class="co">#&gt; Joining, by = "carrier"</span>
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 2</span><span>
 #&gt;    flight name                    
 #&gt;     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                   
@@ -364,9 +406,16 @@
 <p>The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> extracts two new tables and creates a new key <code>model_id</code>, that links both tables.</p>
 <p>This results in a <code>parent_table</code> and a <code>child_table</code> that differ massively in the number of rows:</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">planes</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span>(<span class="no">model_id</span>, <span class="no">model</span>, <span class="no">manufacturer</span>, <span class="no">type</span>, <span class="no">engines</span>, <span class="no">seats</span>, <span class="no">manufacturer</span>, <span class="no">speed</span>)</pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; $child_table
-#&gt; <span style="color: #555555;"># A tibble: 3,322 x 4</span><span>
+  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span>(<span class="no">model_id</span>, <span class="no">model</span>, <span class="no">manufacturer</span>, <span class="no">type</span>, <span class="no">engines</span>, <span class="no">seats</span>, <span class="no">manufacturer</span>, <span class="no">speed</span>)
+<span class="co">#&gt; $child_table</span>
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3,322 x 4</span><span>
 #&gt;    tailnum  year engine    model_id
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;"> 1</span><span> N10156   </span><span style="text-decoration: underline;">2</span><span>004 Turbo-fan      120
@@ -382,7 +431,15 @@
 #&gt; </span><span style="color: #555555;"># … with 3,312 more rows</span><span>
 #&gt; 
 #&gt; $parent_table
-#&gt; </span><span style="color: #555555;"># A tibble: 147 x 7</span><span>
+</span></code></pre>
+<pre><code>#&gt; Warning: `...` is not empty.
+#&gt; 
+#&gt; We detected these problematic arguments:
+#&gt; * `needs_dots`
+#&gt; 
+#&gt; These dots only exist to allow future extensions and should be empty.
+#&gt; Did you misspecify an argument?</code></pre>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 147 x 7</span><span>
 #&gt;    model_id model     manufacturer type                 engines seats speed
 #&gt;       </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                  </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;"> 1</span><span>        1 150       CESSNA       Fixed wing single e…       1     2    90
@@ -407,7 +464,7 @@
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>
 <p>Therefore, {dm} can copy data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the <code>dm</code> object to it:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">con_sqlite</span> <span class="kw">&lt;-</span> <span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(<span class="kw pkg">RSQLite</span><span class="kw ns">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span>())
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">con_sqlite</span> <span class="kw">&lt;-</span> <span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(<span class="kw pkg">RSQLite</span><span class="kw ns">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span>())
 <span class="no">con_sqlite</span>
 <span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
 <span class="co">#&gt;   Path: </span>
@@ -417,23 +474,23 @@
 
 <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="no">con_sqlite</span>, <span class="no">dm</span>)
 <span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span>(<span class="no">con_sqlite</span>)
-<span class="co">#&gt; [1] "airlines_2020_07_09_04_09_22_1" "airports_2020_07_09_04_09_22_1"</span>
-<span class="co">#&gt; [3] "flights_2020_07_09_04_09_22_1"  "planes_2020_07_09_04_09_22_1"  </span>
+<span class="co">#&gt; [1] "airlines_2020_07_10_04_12_18_1" "airports_2020_07_10_04_12_18_1"</span>
+<span class="co">#&gt; [3] "flights_2020_07_10_04_12_18_1"  "planes_2020_07_10_04_12_18_1"  </span>
 <span class="co">#&gt; [5] "sqlite_stat1"                   "sqlite_stat4"                  </span>
-<span class="co">#&gt; [7] "weather_2020_07_09_04_09_22_1"</span></pre></body></html></div>
+<span class="co">#&gt; [7] "weather_2020_07_10_04_12_18_1"</span></pre></body></html></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="no">con_sqlite</span>)
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="no">con_sqlite</span>)
 <span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  sqlite 3.30.1 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines_2020_07_09_04_09_22_1`, `airports_2020_07_09_04_09_22_1`, `flights_2020_07_09_04_09_22_1`, `planes_2020_07_09_04_09_22_1`, `sqlite_stat1`, … (7 total)
+#&gt; Tables: `airlines_2020_07_10_04_12_18_1`, `airports_2020_07_10_04_12_18_1`, `flights_2020_07_10_04_12_18_1`, `planes_2020_07_10_04_12_18_1`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0
 </span></code></pre>
 <p>Remember to terminate the database connection:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span>(<span class="no">con_sqlite</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span>(<span class="no">con_sqlite</span>)</pre></body></html></div>
 </div>
   </div>
 

@@ -128,7 +128,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Migration guide: ‘cdm’ -&gt; ‘dm’</h1>
             
-            <h4 class="date">2020-07-09</h4>
+            <h4 class="date">2020-07-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-cdm.Rmd"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-cdm.Rmd</code></div>
@@ -163,7 +163,14 @@
 <p>Formerly you would access the “filtered” tables using the following syntax:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
 <span class="no">flights_dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="no">flights_dm</span>, <span class="st">"airports"</span>)</pre></body></html></div>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="no">flights_dm</span>, <span class="st">"airports"</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,458 x 8</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
@@ -179,7 +186,14 @@
 #&gt; </span><span style="color: #555555;">10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style="color: #BB0000;">123.</span><span>    108    -</span><span style="color: #BB0000;">8</span><span> A     America/Los_…
 #&gt; </span><span style="color: #555555;"># … with 1,448 more rows</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">flights_dm</span>$<span class="no">planes</span></pre></body></html></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">flights_dm</span>$<span class="no">planes</span>
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3,322 x 9</span><span>
 #&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>         </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
@@ -195,7 +209,14 @@
 #&gt; </span><span style="color: #555555;">10</span><span> N110UW   </span><span style="text-decoration: underline;">1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style="color: #BB0000;">NA</span><span> Turbo…
 #&gt; </span><span style="color: #555555;"># … with 3,312 more rows</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">flights_dm</span><span class="kw">[[</span><span class="st">"weather"</span>]]</pre></body></html></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">flights_dm</span><span class="kw">[[</span><span class="st">"weather"</span>]]
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 861 x 15</span><span>
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
@@ -213,7 +234,14 @@
 #&gt; </span><span style="color: #555555;">#   precip </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, pressure </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, visib </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
 </span></code></pre>
 <p>After the update the same result is achieved by this type of function call:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span>(<span class="no">flights_dm</span>, <span class="no">airlines</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span>(<span class="no">flights_dm</span>, <span class="no">airlines</span>)
+<span class="co">#&gt; Warning: `...` is not empty.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; We detected these problematic arguments:</span>
+<span class="co">#&gt; * `needs_dots`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
+<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 16 x 2</span><span>
 #&gt;    carrier name                       
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                      

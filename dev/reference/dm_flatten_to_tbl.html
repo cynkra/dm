@@ -256,7 +256,13 @@ each nested column entry would be a tibble of one row), an error will be thrown 
   <span class='fu'>dm_flatten_to_tbl</span>(<span class='no'>flights</span>)
 }) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nycflights13() %&gt;% dm_select_tbl(-weather) %&gt;% dm_flatten_to_tbl(flights)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* year -&gt; flights.year, planes.year</span>
-#&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 11,227 x 35</span><span>
+#&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 11,227 x 35</span><span>
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>         </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426

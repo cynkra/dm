@@ -287,8 +287,13 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='no'>data</span>
 }) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; data &lt;- dbplyr::memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 
 #&gt; +     0:2)
-#&gt; &gt; data
-#&gt; <span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
+#&gt; &gt; data</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
 #&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -297,7 +302,13 @@ and <code>x</code> is returned, invisibly.</p>
 #&gt; </span><span style='color: #555555;'>3</span><span>     3 </span><span style='color: #BB0000;'>NA</span><span>      2.5
 #&gt; &gt; try(rows_insert(data, tibble::tibble(a = 4, b = "z")))
 #&gt; Error : `x` and `y` must share the same src, set `copy` = TRUE (may be slow).
-#&gt; &gt; rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)</div><div class='output co'>#&gt; <span class='message'>Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   lazy query [?? x 3]</span><span>
+#&gt; &gt; rows_insert(data, tibble::tibble(a = 4, b = "z"), copy = TRUE)</div><div class='output co'>#&gt; <span class='message'>Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   lazy query [?? x 3]</span><span>
 #&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -305,8 +316,13 @@ and <code>x</code> is returned, invisibly.</p>
 #&gt; </span><span style='color: #555555;'>2</span><span>     2 b       1.5
 #&gt; </span><span style='color: #555555;'>3</span><span>     3 </span><span style='color: #BB0000;'>NA</span><span>      2.5
 #&gt; </span><span style='color: #555555;'>4</span><span>     4 z      </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; &gt; rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)
-#&gt; </span><span style='color: #555555;'># Source:   lazy query [?? x 3]</span><span>
+#&gt; &gt; rows_update(data, tibble::tibble(a = 2:3, b = "w"), copy = TRUE, in_place = FALSE)</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   lazy query [?? x 3]</span><span>
 #&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -314,8 +330,13 @@ and <code>x</code> is returned, invisibly.</p>
 #&gt; </span><span style='color: #555555;'>2</span><span>     2 w       1.5
 #&gt; </span><span style='color: #555555;'>3</span><span>     3 w       2.5
 #&gt; &gt; rows_insert(data, dbplyr::memdb_frame(a = 4, b = "z"), in_place = TRUE)
-#&gt; &gt; data
-#&gt; </span><span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
+#&gt; &gt; data</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
 #&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -324,8 +345,13 @@ and <code>x</code> is returned, invisibly.</p>
 #&gt; </span><span style='color: #555555;'>3</span><span>     3 </span><span style='color: #BB0000;'>NA</span><span>      2.5
 #&gt; </span><span style='color: #555555;'>4</span><span>     4 z      </span><span style='color: #BB0000;'>NA</span><span>  
 #&gt; &gt; rows_update(data, dbplyr::memdb_frame(a = 2:3, b = "w"), in_place = TRUE)
-#&gt; &gt; data
-#&gt; </span><span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
+#&gt; &gt; data</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># Source:   table&lt;dbplyr_001&gt; [?? x 3]</span><span>
 #&gt; </span><span style='color: #555555;'># Database: sqlite 3.30.1 [:memory:]</span><span>
 #&gt;       a b         c
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
