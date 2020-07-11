@@ -128,7 +128,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with dm</h1>
             
-            <h4 class="date">2020-07-10</h4>
+            <h4 class="date">2020-07-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm.Rmd"><code>vignettes/dm.Rmd</code></a></small>
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -150,7 +150,7 @@
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RMariaDB</span>)
 
 <span class="no">fin_db</span> <span class="kw">&lt;-</span> <span class="fu">dbConnect</span>(
-  <span class="fu"><a href="https://rdrr.io/pkg/RMariaDB/man/dbConnect-MariaDBDriver-method.html">MariaDB</a></span>(),
+  <span class="fu"><a href="https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html">MariaDB</a></span>(),
   <span class="kw">username</span> <span class="kw">=</span> <span class="st">'guest'</span>,
   <span class="kw">password</span> <span class="kw">=</span> <span class="st">'relational'</span>,
   <span class="kw">dbname</span> <span class="kw">=</span> <span class="st">'Financial_ijs'</span>,
@@ -178,14 +178,7 @@
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">fin_dm</span>)
 <span class="co">#&gt; [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    </span>
 <span class="co">#&gt; [7] "orders"    "tkeys"     "trans"</span>
-<span class="no">fin_dm</span>$<span class="no">loans</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">fin_dm</span>$<span class="no">loans</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans&gt; [?? x 7]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
 #&gt;       id account_id date       amount duration payments status
@@ -202,14 +195,7 @@
 #&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">4</span><span>990        110 1997-09-08 </span><span style="text-decoration: underline;">162</span><span>576       36     </span><span style="text-decoration: underline;">4</span><span>516 C     
 #&gt; </span><span style="color: #555555;"># … with more rows</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span>(<span class="no">fin_dm</span>$<span class="no">trans</span>)
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span>(<span class="no">fin_dm</span>$<span class="no">trans</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 1]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
 #&gt;         n
@@ -265,14 +251,7 @@
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">fin_dm_keys</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl</a></span>(<span class="no">loans</span>)
 <span class="co">#&gt; Renamed columns:</span>
-<span class="co">#&gt; * date -&gt; loans.date, accounts.date</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="co">#&gt; * date -&gt; loans.date, accounts.date</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 25]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
 #&gt;       id account_id loans.date amount duration payments status district_id
@@ -329,14 +308,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span>(<span class="st">"total_loans"</span>)
 
-<span class="no">fin_dm_total</span>$<span class="no">total_loans</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">fin_dm_total</span>$<span class="no">total_loans</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
 #&gt;    account_id total_amount

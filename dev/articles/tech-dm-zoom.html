@@ -188,14 +188,7 @@
   <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">flights</span>)
 <span class="co"># The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.</span>
-<span class="no">flights_zoomed</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">flights_zoomed</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span><span>
 #&gt; </span><span style="color: #555555;"># A tibble:     11,227 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -221,14 +214,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">am_pm_dep</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span>(<span class="no">dep_time</span> <span class="kw">&lt;</span> <span class="fl">1200</span>, <span class="st">"am"</span>, <span class="st">"pm"</span>)) <span class="kw">%&gt;%</span>
   <span class="co"># in order to see our changes in the output we use `select()` for reordering the columns</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">year</span>:<span class="no">dep_time</span>, <span class="no">am_pm_dep</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">everything</a></span>())
-<span class="no">flights_zoomed_mutate</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">flights_zoomed_mutate</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span><span>
 #&gt; </span><span style="color: #555555;"># A tibble:     11,227 x 20</span><span>
 #&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
@@ -287,14 +273,7 @@
 <span class="no">weather_zoomed</span> <span class="kw">&lt;-</span>
   <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">weather</span>)
-<span class="no">weather_zoomed</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">weather_zoomed</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: weather</span><span>
 #&gt; </span><span style="color: #555555;"># A tibble:     861 x 15</span><span>
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
@@ -313,14 +292,7 @@
 #&gt; </span><span style="color: #555555;">#   precip </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, pressure </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, visib </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
 </span></code></pre>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span>
-<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span>(<span class="no">weather_zoomed</span>)
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span>(<span class="no">weather_zoomed</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span><span>
 #&gt;    columns    candidate why                                                
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                              
@@ -351,14 +323,7 @@
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html">unite</a></span>(<span class="st">"origin_slot_id"</span>, <span class="no">origin</span>, <span class="no">time_hour_fmt</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">origin_slot_id</span>, <span class="fu"><a href="https://tidyr.tidyverse.org/reference/reexports.html">everything</a></span>())
 <span class="co"># check if we the result is as expected:</span>
-<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span>(<span class="no">weather_zoomed_mutate</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">candidate</span>)
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span>(<span class="no">weather_zoomed_mutate</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">candidate</span>)</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span><span>
 #&gt;   columns        candidate why  
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>         </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
@@ -491,14 +456,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">planes</span>, <span class="kw">select</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">tailnum</span>, <span class="kw">plane_type</span> <span class="kw">=</span> <span class="no">type</span>)) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span>(<span class="st">"flights_plane_type"</span>)
 <span class="co"># this is how the table looks now</span>
-<span class="no">joined_flights_dm</span>$<span class="no">flights_plane_type</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">joined_flights_dm</span>$<span class="no">flights_plane_type</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 11</span><span>
 #&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
@@ -543,14 +501,7 @@
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">flights</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">dep_delay</span>:-<span class="no">arr_delay</span>, -<span class="no">air_time</span>:-<span class="no">time_hour</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">planes</span>, <span class="kw">select</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">tailnum</span>, <span class="kw">plane_type</span> <span class="kw">=</span> <span class="no">type</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span>()
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span>()</pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 11</span><span>
 #&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 

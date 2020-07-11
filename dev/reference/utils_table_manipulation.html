@@ -226,13 +226,8 @@ The methods for regular <code>dm</code> objects extract the first or last tables
 <span class='no'>zoomed</span>
 <span class='fu'><a href='dm_zoom_to.html'>dm_insert_zoomed</a></span>(<span class='no'>zoomed</span>, <span class='kw'>new_tbl_name</span> <span class='kw'>=</span> <span class='st'>"head_flights"</span>)
 }) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; zoomed &lt;- dm_nycflights13() %&gt;% dm_zoom_to(flights) %&gt;% head(4)
-#&gt; &gt; zoomed</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>We detected these problematic arguments:</span>
-#&gt; <span class='warning'>* `needs_dots`</span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
-#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
+#&gt; &gt; zoomed
+#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     4 x 19</span><span>
 #&gt;    year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>

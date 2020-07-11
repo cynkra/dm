@@ -129,7 +129,7 @@
       <h1 data-toc-skip>Create a dm object from a database</h1>
                         <h4 class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 class="date">2020-07-10</h4>
+            <h4 class="date">2020-07-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-db.Rmd"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-db.Rmd</code></div>
@@ -147,7 +147,7 @@
 <p>The dataset is available on database server that is publicly accessible without registration. Connection details will vary for your database, see <code><a href="https://dbi.r-dbi.org/articles/DBI.html">vignette("DBI", package = "DBI")</a></code> for further information.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RMariaDB</span>)
 <span class="no">my_db</span> <span class="kw">&lt;-</span> <span class="fu">dbConnect</span>(
-  <span class="fu"><a href="https://rdrr.io/pkg/RMariaDB/man/dbConnect-MariaDBDriver-method.html">MariaDB</a></span>(),
+  <span class="fu"><a href="https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html">MariaDB</a></span>(),
   <span class="kw">username</span> <span class="kw">=</span> <span class="st">"guest"</span>,
   <span class="kw">password</span> <span class="kw">=</span> <span class="st">"relational"</span>,
   <span class="kw">dbname</span> <span class="kw">=</span> <span class="st">"Financial_ijs"</span>,
@@ -265,14 +265,7 @@
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">my_dm_keys</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span>(<span class="no">loans</span>)
 <span class="co">#&gt; Renamed columns:</span>
-<span class="co">#&gt; * date -&gt; loans.date, accounts.date</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="co">#&gt; * date -&gt; loans.date, accounts.date</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 10]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
 #&gt;       id account_id loans.date amount duration payments status district_id
@@ -316,14 +309,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span>(<span class="st">"total_loans"</span>)
 
-<span class="no">my_dm_total</span>$<span class="no">total_loans</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">my_dm_total</span>$<span class="no">total_loans</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
 #&gt;    account_id total_amount
@@ -381,14 +367,7 @@
   <span class="no">my_dm_total</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()
 
-<span class="no">my_dm_total_computed</span>$<span class="no">total_loans</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">my_dm_total_computed</span>$<span class="no">total_loans</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;dbplyr_010&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;    account_id total_amount
@@ -415,14 +394,7 @@
   <span class="no">my_dm_total</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()
 
-<span class="no">my_dm_local</span>$<span class="no">total_loans</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
+<span class="no">my_dm_local</span>$<span class="no">total_loans</span></pre></body></html></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 682 x 2</span><span>
 #&gt;    account_id total_amount
 #&gt;         </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
@@ -468,7 +440,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7ff9c3de3518&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x7f91fbe5f450&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></pre></body></html></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -524,15 +496,8 @@
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span>()</pre></body></html></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span>
-<span class="co">#&gt; Warning: `...` is not empty.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; We detected these problematic arguments:</span>
-<span class="co">#&gt; * `needs_dots`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span>
-<span class="co">#&gt; Did you misspecify an argument?</span></pre></body></html></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_07_10_04_11_46_1&gt; [?? x 2]</span><span>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">my_dm_sqlite_resid</span>$<span class="no">loans_residuals</span></pre></body></html></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_07_11_04_10_11_1&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
