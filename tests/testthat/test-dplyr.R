@@ -550,6 +550,7 @@ test_that("key tracking works", {
 
 
 test_that("key tracking works for slice()", {
+  skip_if_remote_src()
   expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_tracked_cols(), set_names(c("d", "e")))
   expect_message(
     expect_identical(slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2)) %>% get_tracked_cols(), set_names(c("c", "d", "e"))),
