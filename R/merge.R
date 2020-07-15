@@ -1,5 +1,5 @@
 dm_merge <- function(...) {
-  if (dots_n(...) == 0) abort_empty_ellipsis("dm_merge")
+  if (dots_n(...) == 0) abort_empty_ellipsis("dm_merge()")
   dms <- list2(...)
   walk(dms, check_dm)
   walk(dms, check_not_zoomed)
