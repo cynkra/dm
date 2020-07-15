@@ -1,3 +1,18 @@
+#' Merge several `dm`
+#'
+#' Create a single `dm` from one or more `dm`-objects.
+#'
+#' @param ... `dm`-objects to merge. If left empty, an error will be thrown.
+#'
+#' @details Table names need to be unique.
+#'
+#' @return `dm` containing the tables and key relations of all `dm`-objects.
+#' @export
+#'
+#' @examples
+#' dm_1 <- dm_nycflights13()
+#' dm_2 <- dm(mtcars, iris)
+#' dm_merge(dm_1, dm_2)
 dm_merge <- function(...) {
   if (dots_n(...) == 0) abort_empty_ellipsis("dm_merge()")
   dms <- list2(...)
