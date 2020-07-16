@@ -15,7 +15,7 @@ test_that("dm_bind() works?", {
   )
 })
 
-test_that("are empty_dm() handled correctly?", {
+test_that("are empty_dm() and empty ellipsis handled correctly?", {
   expect_equivalent_dm(
     dm_bind(empty_dm()),
     empty_dm()
@@ -25,10 +25,11 @@ test_that("are empty_dm() handled correctly?", {
     dm_bind(empty_dm(), empty_dm(), empty_dm()),
     empty_dm()
   )
-})
 
-test_that("error if empty ellipsis", {
-  expect_dm_error(dm_bind(), "empty_ellipsis")
+  expect_equivalent_dm(
+    dm_bind(),
+    empty_dm()
+  )
 })
 
 test_that("by default error if duplicate table names", {
@@ -42,14 +43,24 @@ test_that("auto-renaming works", {
       "New names"
       ),
     bind_rows(
-      dm_get_def(dm_for_filter()),
+      dm_get_def(
+        dm_rename_tbl(
+          dm_for_filter(),
+          tf_1...1 = tf_1,
+          tf_2...2 = tf_2,
+          tf_3...3 = tf_3,
+          tf_4...4 = tf_4,
+          tf_5...5 = tf_5,
+          tf_6...6 = tf_6)),
       dm_get_def(dm_for_flatten()),
-      dm_get_def(dm_for_filter())
-    ) %>%
-      mutate(table = c(
-        "tf_1...1", "tf_2...2", "tf_3...3", "tf_4...4", "tf_5...5", "tf_6...6",
-        "fact", "dim_1", "dim_2", "dim_3", "dim_4",
-        "tf_1...12", "tf_2...13", "tf_3...14", "tf_4...15", "tf_5...16", "tf_6...17")
+      dm_get_def(dm_rename_tbl(
+        dm_for_filter(),
+        tf_1...12 = tf_1,
+        tf_2...13 = tf_2,
+        tf_3...14 = tf_3,
+        tf_4...15 = tf_4,
+        tf_5...16 = tf_5,
+        tf_6...17 = tf_6))
       ) %>%
       new_dm3()
   )
