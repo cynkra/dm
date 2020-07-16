@@ -4,7 +4,7 @@ dm()
 > dm_bind(empty_dm())
 dm()
 
-> dm_bind(dm_bind(dm_for_filter()))
+> dm_bind(dm_for_filter()) %>% collect()
 -- Table source ----------------------------------------------------------------
 src:  <environment: R_GlobalEnv>
 -- Metadata --------------------------------------------------------------------
@@ -13,7 +13,8 @@ Columns: 15
 Primary keys: 6
 Foreign keys: 5
 
-> dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique")
+> dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>%
++   collect()
 Message: New names:
 * tf_1 -> tf_1...1
 * tf_2 -> tf_2...2
@@ -31,7 +32,7 @@ Primary keys: 16
 Foreign keys: 14
 
 > dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique",
-+ quiet = TRUE)
++ quiet = TRUE) %>% collect()
 -- Table source ----------------------------------------------------------------
 src:  <environment: R_GlobalEnv>
 -- Metadata --------------------------------------------------------------------

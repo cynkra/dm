@@ -73,9 +73,9 @@ test_that("auto-renaming works", {
 verify_output("out/bind.txt", {
   dm_bind()
   dm_bind(empty_dm())
-  dm_bind(dm_bind(dm_for_filter()))
-  dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique")
-  dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE)
+  dm_bind(dm_for_filter()) %>% collect()
+  dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>% collect()
+  dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>% collect()
   dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
   dm_bind(dm_for_flatten(), dm_for_filter_sqlite())
 })
