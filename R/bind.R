@@ -15,6 +15,7 @@
 #' dm_2 <- dm(mtcars, iris)
 #' dm_bind(dm_1, dm_2)
 dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
+  # special case empty ellipsis, cause otherwise we get an empty data.frame of class `dm`
   if (dots_n(...) == 0) return(dm())
   dms <- list2(...)
 
