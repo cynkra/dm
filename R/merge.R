@@ -36,13 +36,3 @@ dm_merge <- function(..., repair = "check_unique", quiet = FALSE) {
   vctrs::vec_rbind(!!!new_defs) %>%
     new_dm3()
 }
-
-
-# error handling ----------------------------------------------------------
-
-abort_empty_ellipsis <- function(function_name) {
-  abort(
-    glue("No argument provided for `...` in {tick(function_name)}."),
-    class = dm_error_full("empty_ellipsis")
-  )
-}
