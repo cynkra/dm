@@ -15,7 +15,7 @@
 #' dm_2 <- dm(mtcars, iris)
 #' dm_merge(dm_1, dm_2)
 dm_merge <- function(..., repair = "check_unique", quiet = FALSE) {
-  if (dots_n(...) == 0) abort_empty_ellipsis("dm_merge()")
+  if (dots_n(...) == 0) return(dm())
   dms <- list2(...)
 
   walk(dms, check_dm)
