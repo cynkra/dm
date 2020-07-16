@@ -2,7 +2,7 @@
 #'
 #' Create a single `dm` from one or more `dm`-objects.
 #'
-#' @param ... `dm`-objects to merge. If left empty, an error will be thrown.
+#' @param ... `dm`-objects to bind together.
 #' @inheritParams dm_add_tbl
 #'
 #' @details By default table names need to be unique.
@@ -13,8 +13,8 @@
 #' @examples
 #' dm_1 <- dm_nycflights13()
 #' dm_2 <- dm(mtcars, iris)
-#' dm_merge(dm_1, dm_2)
-dm_merge <- function(..., repair = "check_unique", quiet = FALSE) {
+#' dm_bind(dm_1, dm_2)
+dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
   if (dots_n(...) == 0) return(dm())
   dms <- list2(...)
 
