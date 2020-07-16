@@ -25,7 +25,7 @@ dm_merge <- function(..., repair = "check_unique", quiet = FALSE) {
   new_table_names <- repair_names_vec(table_names, repair, quiet)
 
   dms_def <- map(dms, dm_get_def)
-  reduce(dms_def, bind_rows) %>%
+  vec_rbind(dms_def) %>%
     mutate(table = new_table_names) %>%
     new_dm3()
 }
