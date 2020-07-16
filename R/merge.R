@@ -21,12 +21,19 @@ dm_merge <- function(..., repair = "check_unique", quiet = FALSE) {
   walk(dms, check_dm)
   walk(dms, check_not_zoomed)
 
+  # repair table names
   table_names <- map(dms, src_tbls) %>% flatten_chr()
   new_table_names <- repair_names_vec(table_names, repair, quiet)
+  # need to individually rename tables for each `dm`
+  ntables_dms <- map(dms, length)
+  dms_indices <-
+    map2(lag(cumsum(ntables_dms), default = 0), map(ntables_dms, seq_len), `+`)
+  renaming_recipe <- map(dms_indices, ~ set_names(table_names[.x], new_table_names[.x]))
 
-  dms_def <- map(dms, dm_get_def)
-  vec_rbind(dms_def) %>%
-    mutate(table = new_table_names) %>%
+  dms_renamed <- map2(dms, renaming_recipe, dm_rename_tbl)
+
+  new_defs <- map(dms_renamed, dm_get_def)
+  vctrs::vec_rbind(!!!new_defs) %>%
     new_dm3()
 }
 
