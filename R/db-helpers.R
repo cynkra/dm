@@ -125,7 +125,7 @@ get_db_table_names <- function(dm) {
   }
   tibble(
     table_name = src_tbls(dm),
-    remote_name = map_chr(dm_get_tables_impl(dm), list("ops", "x"))
+    remote_name = map_chr(dm_get_tables_impl(dm), dbplyr::remote_name)
   )
 }
 
