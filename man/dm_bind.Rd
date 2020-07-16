@@ -7,7 +7,7 @@
 dm_bind(..., repair = "check_unique", quiet = FALSE)
 }
 \arguments{
-\item{...}{\code{dm}-objects to bind together.}
+\item{...}{\code{dm} objects to bind together.}
 
 \item{repair}{Either a string or a function. If a string, it must
 be one of \code{"check_unique"}, \code{"minimal"}, \code{"unique"}, or \code{"universal"}.
@@ -33,13 +33,13 @@ universal repairing. Set \code{quiet} to \code{TRUE} to silence the
 messages.}
 }
 \value{
-\code{dm} containing the tables and key relations of all \code{dm}-objects.
+\code{dm} containing the tables and key relations of all \code{dm} objects.
 }
 \description{
-Create a single \code{dm} from two or more \code{dm}-objects.
+Create a single \code{dm} from two or more \code{dm} objects.
 }
 \details{
-The \code{dm}-objects have to share the same \code{src}. By default table names need to be unique.
+The \code{dm} objects have to share the same \code{src}. By default table names need to be unique.
 }
 \examples{
 dm_1 <- dm_nycflights13()

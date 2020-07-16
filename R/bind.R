@@ -1,13 +1,13 @@
 #' Merge several `dm`
 #'
-#' Create a single `dm` from two or more `dm`-objects.
+#' Create a single `dm` from two or more `dm` objects.
 #'
-#' @param ... `dm`-objects to bind together.
+#' @param ... `dm` objects to bind together.
 #' @inheritParams dm_add_tbl
 #'
-#' @details The `dm`-objects have to share the same `src`. By default table names need to be unique.
+#' @details The `dm` objects have to share the same `src`. By default table names need to be unique.
 #'
-#' @return `dm` containing the tables and key relations of all `dm`-objects.
+#' @return `dm` containing the tables and key relations of all `dm` objects.
 #' @export
 #'
 #' @examples

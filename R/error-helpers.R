@@ -295,7 +295,7 @@ error_txt_not_same_src <- function(dm_bind = FALSE) {
   if (!dm_bind) {
     "Not all tables in the object share the same `src`."
   } else {
-    "All `dm`-objects need to share the same `src`."
+    "All `dm` objects need to share the same `src`."
   }
 }
 
