@@ -1,6 +1,6 @@
 #' Merge several `dm`
 #'
-#' Create a single `dm` from one or more `dm`-objects.
+#' Create a single `dm` from two or more `dm`-objects.
 #'
 #' @param ... `dm`-objects to bind together.
 #' @inheritParams dm_add_tbl

@@ -36,7 +36,7 @@ messages.}
 \code{dm} containing the tables and key relations of all \code{dm}-objects.
 }
 \description{
-Create a single \code{dm} from one or more \code{dm}-objects.
+Create a single \code{dm} from two or more \code{dm}-objects.
 }
 \details{
 By default table names need to be unique.
