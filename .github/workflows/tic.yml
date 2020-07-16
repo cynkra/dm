@@ -116,6 +116,12 @@ jobs:
           # for DiagrammeRsvg
           brew install v8
 
+      - name: "[Custom block] [macOS] Install mariadb-connector-c"
+        if: runner.os == 'macOS'
+        run: |
+          # for RMariaDB
+          brew install mariadb-connector-c
+
       - name: "[Stage] Install"
         if: matrix.config.os != 'macOS-latest' || matrix.config.r != 'devel'
         run: Rscript -e "remotes::install_github('ropensci/tic')" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()" -e "tic::before_install()" -e "tic::install()"
