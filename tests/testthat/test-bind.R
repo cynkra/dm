@@ -38,9 +38,8 @@ test_that("by default error if duplicate table names", {
 
 test_that("auto-renaming works", {
   expect_equivalent_dm(
-    expect_message(
-      dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique"),
-      "New names"
+    expect_name_repair_message(
+      dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique")
       ),
     bind_rows(
       dm_get_def(
