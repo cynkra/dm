@@ -100,7 +100,8 @@ queries_set_fk_relations <- function(dest, fk_information) {
         db_parent_tables,
         parent_pk_col
       ),
-      ~ glue_sql("ALTER TABLE {`..1`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`..3`} ({`..4`*}) ON DELETE CASCADE ON UPDATE CASCADE", .con = dest)
+      # FIXME: Find a better way to quote identifiers, especially in conjunction with loading from schema
+      ~ glue_sql("ALTER TABLE {..1} ADD FOREIGN KEY ({..2*}) REFERENCES {..3} ({..4*}) ON DELETE CASCADE ON UPDATE CASCADE", .con = dest)
     )
   } else {
     return(character())
