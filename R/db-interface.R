@@ -121,9 +121,10 @@ copy_dm_to <- function(dest, dm, ...,
       table_names <- set_names(table_name_fun(src_tbls(dm)), src_tbls(dm))
     }
     check_naming(names(table_names), src_tbls(dm))
-    # add the schema and create an `ident`-class object from the table names
-    table_names <- dbplyr::ident_q(table_names[src_tbls(dm)])
   }
+
+  # create `ident`-class objects from the table names
+  table_names <- map(table_names[src_tbls(dm)], dbplyr::ident_q)
 
   check_not_zoomed(dm)
 

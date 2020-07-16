@@ -159,8 +159,8 @@ con_from_src_or_con <- function(dest) {
 
 repair_table_names_for_db <- function(table_names, temporary) {
   if (temporary) {
-    set_names(dbplyr::ident_q(unique_db_table_name(table_names)), table_names)
+    set_names(unique_db_table_name(table_names), table_names)
   } else {
-    set_names(dbplyr::ident_q(table_names), table_names)
+    set_names(table_names, table_names)
   }
 }
