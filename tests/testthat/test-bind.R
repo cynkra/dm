@@ -32,8 +32,9 @@ test_that("are empty_dm() and empty ellipsis handled correctly?", {
   )
 })
 
-test_that("by default error if duplicate table names", {
+test_that("errors: duplicate table names, src mismatches", {
   expect_dm_error(dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter()), "need_unique_names")
+  expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_sqlite()), "not_same_src")
 })
 
 test_that("auto-renaming works", {
@@ -76,4 +77,5 @@ verify_output("out/bind.txt", {
   dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique")
   dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE)
   dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
+  dm_bind(dm_for_flatten(), dm_for_filter_sqlite())
 })

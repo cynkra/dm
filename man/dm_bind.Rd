@@ -39,7 +39,7 @@ messages.}
 Create a single \code{dm} from two or more \code{dm}-objects.
 }
 \details{
-By default table names need to be unique.
+The \code{dm}-objects have to share the same \code{src}. By default table names need to be unique.
 }
 \examples{
 dm_1 <- dm_nycflights13()

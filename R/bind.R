@@ -5,7 +5,7 @@
 #' @param ... `dm`-objects to bind together.
 #' @inheritParams dm_add_tbl
 #'
-#' @details By default table names need to be unique.
+#' @details The `dm`-objects have to share the same `src`. By default table names need to be unique.
 #'
 #' @return `dm` containing the tables and key relations of all `dm`-objects.
 #' @export
@@ -20,6 +20,9 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 
   walk(dms, check_dm)
   walk(dms, check_not_zoomed)
+  if (!all_same_source(map(dms, dm_get_tables_impl) %>% flatten())) {
+    abort_not_same_src(dm_bind = TRUE)
+  }
 
   # repair table names
   table_names <- map(dms, src_tbls) %>% flatten_chr()
