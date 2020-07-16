@@ -26,22 +26,6 @@ jobs:
           - { os: macOS-latest, r: "devel", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true, id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS", cache: "dev" }
           # [Custom matrix env var]
           - { os: macOS-latest, r: "devel", id: "default" }
-          # [Custom matrix env var]
-          - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
-          # [Custom matrix env var]
-          - { os: windows-latest, r: "release", id: "default" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.6, id: "default" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.5, id: "default" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.4, id: "default" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.3, id: "default" }
-          # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", TIC_ONLY_IMPORTS: true, id: "TIC_ONLY_IMPORTS" }
 
     env:
       # [Custom env var]
