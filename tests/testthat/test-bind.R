@@ -34,6 +34,7 @@ test_that("are empty_dm() and empty ellipsis handled correctly?", {
 
 test_that("errors: duplicate table names, src mismatches", {
   expect_dm_error(dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter()), "need_unique_names")
+  skip_if_not_installed("dbplyr")
   expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_sqlite()), "not_same_src")
 })
 
@@ -70,6 +71,12 @@ test_that("auto-renaming works", {
   )
 })
 
+# FIXME: this and "out/bind_src_mismatch_error.txt" can be removed, once the FIXME below is resolved
+test_that("test error output for src mismatches", {
+  skip_if_not_installed("dbplyr")
+  verify_output("out/bind_src_mismatch_error.txt", dm_bind(dm_for_flatten(), dm_for_filter_sqlite()))
+})
+
 verify_output("out/bind.txt", {
   dm_bind()
   dm_bind(empty_dm())
@@ -77,5 +84,6 @@ verify_output("out/bind.txt", {
   dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique") %>% collect()
   dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>% collect()
   dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
-  dm_bind(dm_for_flatten(), dm_for_filter_sqlite())
+  # FIXME: this would fail for TIC_ONLY_IMPORTS, cause {dbplyr} is missing; is there a way to skip in `verify_output()`?
+  # dm_bind(dm_for_flatten(), dm_for_filter_sqlite())
 })
