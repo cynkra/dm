@@ -42,7 +42,9 @@ Create a single \code{dm} from two or more \code{dm} objects.
 The \code{dm} objects have to share the same \code{src}. By default table names need to be unique.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_1 <- dm_nycflights13()
 dm_2 <- dm(mtcars, iris)
 dm_bind(dm_1, dm_2)
+\dontshow{\}) # examplesIf}
 }

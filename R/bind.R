@@ -10,7 +10,7 @@
 #' @return `dm` containing the tables and key relations of all `dm` objects.
 #' @export
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_1 <- dm_nycflights13()
 #' dm_2 <- dm(mtcars, iris)
 #' dm_bind(dm_1, dm_2)
