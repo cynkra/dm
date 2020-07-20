@@ -29,19 +29,11 @@
 #' @return For `dm_add_pk()`: An updated `dm` with an additional primary key.
 #'
 #' @export
-#' @examples
-#' if (rlang::is_installed("nycflights13")) {
-#'   nycflights_dm <- dm(
-#'     planes = nycflights13::planes,
-#'     airports = nycflights13::airports
-#'   )
-#' } else {
-#'   message("Using mock-up data, install the nycflights13 package to fix.")
-#'   nycflights_dm <- dm(
-#'     planes = tibble(tailnum = letters[1:2], manufacturer = "Acme"),
-#'     airports = tibble(faa = character())
-#'   )
-#' }
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' nycflights_dm <- dm(
+#'   planes = nycflights13::planes,
+#'   airports = nycflights13::airports
+#' )
 #'
 #' nycflights_dm %>%
 #'   dm_draw()
@@ -52,16 +44,14 @@
 #'   dm_add_pk(airports, faa, check = TRUE) %>%
 #'   dm_draw()
 #'
-#' # the following does not work (throws an error)
+#' # the following throws an error:
 #' try(
 #'   nycflights_dm %>%
 #'     dm_add_pk(planes, manufacturer, check = TRUE)
 #' )
 dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   col_expr <- ensym(columns)
   col_name <- as_name(col_expr)
@@ -69,7 +59,7 @@ dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
-    check_key(table_from_dm, !!col_expr)
+    eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
   }
 
   dm_add_pk_impl(dm, table_name, col_name, force)
@@ -106,7 +96,7 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #'
 #' @return A logical value: `TRUE` if the given table has a primary key, `FALSE` otherwise.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_has_pk(flights)
 #' dm_nycflights13() %>%
@@ -114,7 +104,8 @@ dm_add_pk_impl <- function(dm, table, column, force) {
 #' @export
 dm_has_pk <- function(dm, table) {
   check_not_zoomed(dm)
-  dm_has_pk_impl(dm, as_string(ensym(table)))
+  table_name <- dm_tbl_name(dm, {{ table }})
+  dm_has_pk_impl(dm, table_name)
 }
 
 dm_has_pk_impl <- function(dm, table) {
@@ -146,7 +137,7 @@ dm_has_pk_impl <- function(dm, table) {
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_pk(flights)
 #' dm_nycflights13() %>%
@@ -154,8 +145,7 @@ dm_has_pk_impl <- function(dm, table) {
 #' @export
 dm_get_pk <- function(dm, table) {
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
 }
 
@@ -191,7 +181,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'   }
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_get_all_pks()
 dm_get_all_pks <- function(dm) {
@@ -218,16 +208,14 @@ dm_get_all_pks_impl <- function(dm) {
 #'
 #' @return For `dm_rm_pk()`: An updated `dm` without the indicated primary key.
 #'
-#' @examples
-#'
+#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_rm_pk(airports, rm_referencing_fks = TRUE) %>%
 #'   dm_draw()
 #' @export
 dm_rm_pk <- function(dm, table, rm_referencing_fks = FALSE) {
   check_not_zoomed(dm)
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   if (!rm_referencing_fks && dm_is_referenced(dm, !!table_name)) {
     affected <- dm_get_referencing_tables(dm, !!table_name)
@@ -276,7 +264,7 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #' most likely used interactively.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' nycflights13::flights %>%
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table) {
@@ -297,7 +285,7 @@ enum_pk_candidates <- function(table) {
 #'
 #' @rdname enum_pk_candidates
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nycflights13() %>%
 #'   dm_enum_pk_candidates(airports)
@@ -307,8 +295,7 @@ dm_enum_pk_candidates <- function(dm, table) {
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
 
-  table_name <- as_name(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   table <- dm_get_tables_impl(dm)[[table_name]]
   enum_pk_candidates_impl(table) %>%

@@ -53,18 +53,11 @@ with current semantics.
 }
 
 \examples{
-if (rlang::is_installed("nycflights13")) {
-  nycflights_dm <- dm(
-    planes = nycflights13::planes,
-    airports = nycflights13::airports
-  )
-} else {
-  message("Using mock-up data, install the nycflights13 package to fix.")
-  nycflights_dm <- dm(
-    planes = tibble(tailnum = letters[1:2], manufacturer = "Acme"),
-    airports = tibble(faa = character())
-  )
-}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+nycflights_dm <- dm(
+  planes = nycflights13::planes,
+  airports = nycflights13::airports
+)
 
 nycflights_dm \%>\%
   dm_draw()
@@ -75,15 +68,17 @@ nycflights_dm \%>\%
   dm_add_pk(airports, faa, check = TRUE) \%>\%
   dm_draw()
 
-# the following does not work (throws an error)
+# the following throws an error:
 try(
   nycflights_dm \%>\%
     dm_add_pk(planes, manufacturer, check = TRUE)
 )
-
+\dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_rm_pk(airports, rm_referencing_fks = TRUE) \%>\%
   dm_draw()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 

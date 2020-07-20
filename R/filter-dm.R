@@ -57,7 +57,7 @@
 #'
 #' @return For `dm_filter()`: an updated `dm` object (filter executed for given table, and condition stored).
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nyc <- dm_nycflights13()
 #' dm_nyc_filtered <-
 #'   dm_nycflights13() %>%
@@ -122,7 +122,7 @@ set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
 #'
 #' @return For `dm_apply_filters()`: an updated `dm` object (filter effects evaluated for all tables).
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nyc %>%
 #'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
@@ -146,8 +146,7 @@ dm_apply_filters <- function(dm) {
 #' @export
 dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
-  check_correct_input(dm, table_name)
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   dm_get_filtered_table(dm, table_name)
 }
@@ -156,6 +155,7 @@ dm_apply_filters_to_tbl <- function(dm, table) {
 # the requested table
 dm_get_filtered_table <- function(dm, from) {
   filters <- dm_get_filters(dm)
+  # Shortcut for speed, not really necessary
   if (nrow(filters) == 0) {
     return(dm_get_tables(dm)[[from]])
   }
@@ -210,16 +210,20 @@ get_all_filtered_connected <- function(dm, table) {
   # as target. This avoids a warning.
   target_tables <- names(finite_distances)
 
+  if (is_empty(intersect(target_tables, filtered_tables))) {
+    return(new_filtered_edges(table))
+  }
+
   # use only subgraph to
   # 1. speed things up
   # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
   graph <- igraph::induced_subgraph(graph, target_tables)
-  if (length(E(graph)) >= length(V(graph))) abort_no_cycles()
+  if (length(E(graph)) >= length(V(graph))) abort_no_cycles(graph)
   paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
 
   # All edges with finite distance as tidy data frame
   all_edges <-
-    tibble(
+    new_filtered_edges(
       node = names(V(graph)),
       parent = names(paths$predecessors),
       # all of `graph`, `paths` and `finite_distances` are based on the same subset of tables,
@@ -244,6 +248,10 @@ get_all_filtered_connected <- function(dm, table) {
   # and testing
   edges %>%
     arrange(-distance)
+}
+
+new_filtered_edges <- function(node, parent = node, distance = 0) {
+  tibble(node, parent, distance)
 }
 
 check_no_filter <- function(dm) {

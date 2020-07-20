@@ -1,4 +1,29 @@
-# dm 0.1.3.9001
+# dm 0.1.5
+
+## Features
+
+- `dm_paste()` generates self-contained code (#401).
+- Errors regarding cycles in the relationship graph now show the shortest cycle (#405).
+- Implement `rows_truncate()` for databases.
+- `collect()` works on a zoomed dm, with a message.
+- The data model is drawn in a more compact way if it comprises of multiple connected components.
+- `dm_add_pk(check = TRUE)` gives a better error message.
+
+## Bug fixes
+
+- `rows_insert()` works if column names consist of SQL keywords (#409).
+- Cycles in other connected components don't affect filtering in a cycle-free component.
+- Avoid `src_sqlite()` in examples (#372).
+
+## Internal
+
+- Testing SQLite, Postgres and SQL Server on GitHub Actions (#408, @pat-s).
+- Testing packages with all "Suggests" uninstalled.
+
+
+# dm 0.1.4
+
+## Features
 
 - New `dm_rows_insert()`, `dm_rows_update()`, `dm_rows_patch()`, `dm_rows_upsert()`, `dm_rows_delete()` and `dm_rows_truncate()`, calling the corresponding `rows_*()` method for every table (#319).
 
@@ -6,10 +31,23 @@
 
 - Added `rows_insert()` and `rows_update()` methods for SQLite, Postgres, MariaDB and MSSQL (#319).
 
+- Missing arguments now give a better error message (#388).
 
-# dm 0.1.3.9000
+- Empty `dm` object prints as `dm()` (#386).
 
-- Same as previous version.
+- `copy_dm_to()` also accepts a function as the `table_names` argument. The `unique_table_names()` argument is deprecated (#80).
+
+## Documentation
+
+- Add TL;DR to README (#377, @jawond).
+
+- Add content from old README to `howto-dm-theory.Rmd` (#378, @jawond).
+
+## Internal
+
+- Require dplyr >= 1.0.0.
+
+- Use GitHub Actions (#369, @pat-s).
 
 
 # dm 0.1.3

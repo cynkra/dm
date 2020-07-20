@@ -31,10 +31,12 @@ Therefore the function may return vectors of length greater than one in the futu
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_get_fk(flights, airports)
 dm_nycflights13(cycle = TRUE) \%>\%
   dm_get_fk(flights, airports)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 

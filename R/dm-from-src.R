@@ -26,26 +26,18 @@
 #' @return A `dm` object.
 #'
 #' @export
-#' @examples
-#' dm_from_src_demo <- function() {
-#'   if (!rlang::is_installed("DBI")) {
-#'     message("Install the DBI package to run this example.")
-#'   }
+#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5
+#' con <- DBI::dbConnect(
+#'   RMariaDB::MariaDB(),
+#'   username = "guest",
+#'   password = "relational",
+#'   dbname = "Financial_ijs",
+#'   host = "relational.fit.cvut.cz"
+#' )
 #'
-#'   con <- DBI::dbConnect(
-#'     RMariaDB::MariaDB(),
-#'     username = "guest",
-#'     password = "relational",
-#'     dbname = "Financial_ijs",
-#'     host = "relational.fit.cvut.cz"
-#'   )
-#'   on.exit(DBI::dbDisconnect(con))
+#' dm_from_src(con)
 #'
-#'   dm_from_src(con)
-#' }
-#' \dontrun{
-#' dm_from_src_demo()
-#' }
+#' DBI::dbDisconnect(con)
 dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
   if (is_null(src)) {

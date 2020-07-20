@@ -31,6 +31,7 @@
 #' @examples
 #' dm() %>%
 #'   dm_paste()
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste()
@@ -139,7 +140,7 @@ dm_paste_tables <- function(dm, tab) {
 }
 
 dm_paste_construct <- function(dm) {
-  glue("dm({glue_collapse1(tick_if_needed(src_tbls(dm)), ', ')})")
+  glue("dm::dm({glue_collapse1(tick_if_needed(src_tbls(dm)), ', ')})")
 }
 
 dm_paste_select <- function(dm) {
@@ -147,28 +148,28 @@ dm_paste_select <- function(dm) {
     dm_get_def() %>%
     mutate(cols = map(data, colnames)) %>%
     mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) %>%
-    mutate(code = glue("dm_select({tick_if_needed(table)}{cols})")) %>%
+    mutate(code = glue("dm::dm_select({tick_if_needed(table)}{cols})")) %>%
     pull()
 }
 
 dm_paste_pks <- function(dm) {
   # FIXME: this will fail with compound keys
   dm_get_all_pks_impl(dm) %>%
-    mutate(code = glue("dm_add_pk({tick_if_needed(table)}, {tick_if_needed(pk_col)})")) %>%
+    mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {tick_if_needed(pk_col)})")) %>%
     pull()
 }
 
 dm_paste_fks <- function(dm) {
   # FIXME: this will fail with compound keys
   dm_get_all_fks_impl(dm) %>%
-    mutate(code = glue("dm_add_fk({tick_if_needed(child_table)}, {tick_if_needed(child_fk_cols)}, {tick_if_needed(parent_table)})")) %>%
+    mutate(code = glue("dm::dm_add_fk({tick_if_needed(child_table)}, {tick_if_needed(child_fk_cols)}, {tick_if_needed(parent_table)})")) %>%
     pull()
 }
 
 dm_paste_color <- function(dm) {
   colors <- dm_get_colors(dm)
   colors <- colors[names(colors) != "default"]
-  glue("dm_set_colors({tick_if_needed(names(colors))} = {tick_if_needed(colors)})")
+  glue("dm::dm_set_colors({tick_if_needed(names(colors))} = {tick_if_needed(colors)})")
 }
 
 df_paste <- function(x, tab) {
@@ -182,7 +183,7 @@ df_paste <- function(x, tab) {
     )
   }
 
-  paste0("tibble(", cols, ")")
+  paste0("tibble::tibble(", cols, ")")
 }
 
 deparse_line <- function(x) {

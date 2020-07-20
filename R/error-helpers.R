@@ -50,16 +50,6 @@ error_txt_not_unique_key <- function(table_name, column_names) {
   glue("({commas(tick(column_names))}) not a unique key of {tick(table_name)}.")
 }
 
-# general error: table not part of `dm` -----------------------------------
-
-abort_table_not_in_dm <- function(table_name, dm_tables) {
-  abort(error_txt_table_not_in_dm(table_name, dm_tables), .subclass = dm_error_full("table_not_in_dm"))
-}
-
-error_txt_table_not_in_dm <- function(table_name, dm_tables) {
-  glue("Table(s) {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}.")
-}
-
 # error: is not subset of -------------------------------------------------
 
 abort_not_subset_of <- function(table_name_1, colname_1,
@@ -142,12 +132,17 @@ error_txt_last_col_missing <- function() {
 
 # errors in graph-functions -----------------------------------------------
 
-abort_no_cycles <- function() {
-  abort(error_txt_no_cycles(), .subclass = dm_error_full("no_cycles"))
+abort_no_cycles <- function(g) {
+  shortest_cycle <- igraph::girth(g) %>%
+    pluck("circle") %>%
+    names()
+  # add the first element after the last element, so it's more clear that it's a cycle
+  shortest_cycle <- paste(c(shortest_cycle, shortest_cycle[1]), collapse = " -> ")
+  abort(error_txt_no_cycles(shortest_cycle), .subclass = dm_error_full("no_cycles"))
 }
 
-error_txt_no_cycles <- function() {
-  "Cycles in the relationship graph not yet supported."
+error_txt_no_cycles <- function(shortest_cycle) {
+  c("Cycles in the relationship graph not yet supported.", glue::glue("Shortest cycle: {shortest_cycle}"))
 }
 
 
@@ -229,17 +224,6 @@ abort_no_unique_indexes <- function() {
 
 error_txt_no_unique_indexes <- function() {
   "`copy_dm_to()` does not support the `unique_indexes` argument."
-}
-
-abort_need_named_vec <- function(table_names) {
-  abort(error_txt_need_named_vec(table_names), .subclass = dm_error_full("need_named_vec"))
-}
-
-error_txt_need_named_vec <- function(table_names) {
-  glue(
-    "Parameter `table_names` in `copy_dm_to()` needs to be a named vector whose names ",
-    "are the original table names (returned by e.g. `src_tbls()`): {commas(tick(table_names))}."
-  )
 }
 
 abort_key_constraints_need_db <- function() {
@@ -354,16 +338,6 @@ error_txt_no_flatten_with_nest_join <- function() {
     "`dm_..._to_tbl()` can't be called with `join = nest_join`, ",
     "see the help pages for these functions. Consider `join = left_join`."
   )
-}
-
-# either explicit table names, or auto-unique ones ------------------------
-
-abort_unique_table_names_or_table_names <- function() {
-  abort(error_txt_unique_table_names_or_table_names(), .subclass = dm_error_full("unique_table_names_or_table_names"))
-}
-
-error_txt_unique_table_names_or_table_names <- function() {
-  "Can supply either `table_names` or `unique_table_names = TRUE`, not both."
 }
 
 

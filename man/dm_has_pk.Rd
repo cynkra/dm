@@ -18,10 +18,12 @@ A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} 
 \code{dm_has_pk()} checks if a given table has columns marked as its primary key.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_has_pk(flights)
 dm_nycflights13() \%>\%
   dm_has_pk(planes)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 

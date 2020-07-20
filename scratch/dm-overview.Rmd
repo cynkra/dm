@@ -69,8 +69,8 @@ Thus you can use this for example on a postgres database that you access via `sr
 
 Another way of creating a `dm` object is calling `as_dm()` on a list of `tbls`:
 ```{r}
-iris_dm <- as_dm(list("iris1" = iris, "iris2" = iris))
-iris_dm
+trees_dm <- as_dm(list("trees1" = trees, "trees2" = trees))
+trees_dm
 ```
 
 ## Methods for `dm` objects
@@ -93,7 +93,7 @@ As of yet `dm` objects only support one-column primary keys. If your tables have
 If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 By default `dm_add_pk()` checks if the column of the table given by the user is a unique key.
-Since the `iris` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`.
+Since the `trees` dataset does not have any unique one-column keys, we will use the `nycflights13` tables, i.e. `flights_dm`.
 
 ```{r}
 dm_has_pk(flights_dm, airports)

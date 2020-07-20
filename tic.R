@@ -1,5 +1,12 @@
+get_stage("install") %>%
+  add_step(step_run_code(print(gh::gh("/rate_limit"))))
+
+get_stage("after_deploy") %>%
+  add_step(step_run_code(print(gh::gh("/rate_limit"))))
+
 if (ci_get_env("MODE") == "db-tests") {
   get_stage("install") %>%
+    add_step(step_install_deps()) %>%
     add_step(step_install_cran("devtools"))
 }
 
@@ -8,7 +15,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     add_step(step_install_github(upgrade = "always", c(
       "mllg/backports",
       "r-lib/brio",
-      "r-lib/cli",
+      # "r-lib/cli", # https://github.com/r-lib/cli/issues/154
       "r-dbi/DBI",
       "tidyverse/dplyr",
       "tidyverse/glue",
@@ -36,30 +43,36 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     )))
 }
 
-if (ci_has_env("TIC_ONLY_TESTS")) {
+if (ci_has_env("TIC_DEV_VERSIONS")) {
   get_stage("script") %>%
-    add_code_step(devtools::test(reporter = c("progress", "fail")))
+    add_code_step(devtools::test(reporter = c("summary")))
+} else if (ci_has_env("TIC_ONLY_TESTS")) {
+  get_stage("script") %>%
+    add_code_step(devtools::test(reporter = c("summary", "fail")))
 } else if (ci_has_env("TIC_ONLY_STYLER")) {
- if (!ci_is_tag()) {
-  # For caching
-  get_stage("install") %>%
-    add_step(step_install_cran("R.cache")) %>%
-    add_code_step(dir.create("~/.Rcache", showWarnings = FALSE))
+  if (!ci_is_tag()) {
+    # For caching
+    get_stage("install") %>%
+      add_step(step_install_cran("R.cache")) %>%
+      add_code_step(dir.create("~/.Rcache", showWarnings = FALSE))
 
-  # Needs to be at the script stage so that caching works
-  get_stage("script") %>%
-    add_code_step(styler::cache_info()) %>%
-    add_code_step(styler::style_pkg())
-
-  if (ci_has_env("id_rsa")) {
-    get_stage("deploy") %>%
+    # Needs to be at the script stage so that caching works
+    get_stage("script") %>%
       add_code_step(styler::cache_info()) %>%
-      add_code_step(styler::style_pkg()) %>%
-      add_step(step_setup_ssh()) %>%
-      add_step(step_push_deploy())
+      add_code_step(styler::style_pkg())
+
+    if (ci_has_env("id_rsa")) {
+      get_stage("deploy") %>%
+        add_code_step(styler::cache_info()) %>%
+        add_code_step(styler::style_pkg()) %>%
+        add_step(step_setup_ssh()) %>%
+        add_step(step_push_deploy())
+    }
   }
- }
 } else if (ci_has_env("TIC_BUILD_PKGDOWN")) {
+  get_stage("install") %>%
+    add_step(step_install_github("cynkra/cynkratemplate"))
+
   do_pkgdown()
 } else {
   get_stage("before_script") %>%
@@ -68,5 +81,16 @@ if (ci_has_env("TIC_ONLY_TESTS")) {
       print(sessioninfo::session_info())
     })
 
-  do_package_checks(error_on = if (getRversion() >= "3.4") "note" else "warning")
+  if (ci_has_env("TIC_ONLY_IMPORTS")) {
+    # VignetteBuilder not installed?
+    get_stage("install") %>%
+      add_step(step_install_cran("rmarkdown")) %>%
+      add_step(step_install_cran("testthat"))
+
+    do_package_checks(dependencies = c("Depends", "Imports"))
+  } else {
+    do_package_checks(
+      error_on = if (getRversion() >= "3.4") "note" else "warning"
+    )
+  }
 }

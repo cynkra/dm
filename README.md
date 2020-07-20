@@ -7,8 +7,8 @@
 
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![Travis build
-status](https://travis-ci.org/krlmlr/dm.svg?branch=master)](https://travis-ci.org/krlmlr/dm)
+[![R build
+status](https://github.com/krlmlr/dm/workflows/tic/badge.svg)](https://github.com/krlmlr/dm/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
 [![CRAN
@@ -16,6 +16,15 @@ status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/pac
 [![Launch
 rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
+
+## TL;DR
+
+Are you using multiple data frames or database tables in R? Organize
+them with dm.
+
+  - Use it today (if only like a list of tables).
+  - Build data models tomorrow.
+  - Deploy the data models to your organization’s RDBMS the day after.
 
 ## Overview
 

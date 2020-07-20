@@ -21,13 +21,14 @@
 #'
 #' @return An updated `dm` with the columns of `table` renamed.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_rename(airports, code = faa, altitude = alt)
 #' @export
 dm_rename <- function(dm, table, ...) {
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
+  table_name <- dm_tbl_name(dm, {{ table }})
+
   dm_zoom_to(dm, !!table_name) %>%
     rename(...) %>%
     dm_update_zoomed()
@@ -43,13 +44,13 @@ dm_rename <- function(dm, table, ...) {
 #'
 #' @return An updated `dm` with the columns of `table` reduced and/or renamed.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_select(airports, code = faa, altitude = alt)
 #' @export
 dm_select <- function(dm, table, ...) {
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
+  table_name <- dm_tbl_name(dm, {{ table }})
 
   dm_zoom_to(dm, !!table_name) %>%
     select(...) %>%

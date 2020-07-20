@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.3.9001
-Date: 2020-05-26
+Version: 0.1.5
+Date: 2020-07-02
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -41,7 +41,7 @@ Imports:
     backports,
     cli (>= 2.0.0),
     DBI,
-    dplyr,
+    dplyr (>= 1.0.0),
     ellipsis,
     glue,
     igraph,
@@ -71,7 +71,6 @@ Suggests:
     RMariaDB,
     rmarkdown,
     RPostgres,
-    rprojroot,
     RSQLite,
     testthat (>= 2.1.0),
     tidyverse,
@@ -80,10 +79,8 @@ VignetteBuilder:
     knitr
 RdMacros: 
     lifecycle
-Remotes: 
-    r-lib/testthat
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1.9000

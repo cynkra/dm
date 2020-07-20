@@ -11,13 +11,9 @@
 #' @return A `dm` object.
 #'
 #' @export
-#' @examples
-#' \dontrun{
-#' if (rlang::is_installed("RMariaDB")) {
-#'   dm_financial() %>%
-#'     dm_draw()
-#' }
-#' }
+#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5 && rlang::is_installed("DiagrammeR")
+#' dm_financial() %>%
+#'   dm_draw()
 dm_financial <- function() {
   stopifnot(rlang::is_installed("RMariaDB"))
 

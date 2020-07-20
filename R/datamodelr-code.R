@@ -231,7 +231,9 @@ dot_graph <- function(graph, columnArrows = FALSE) {
   dot_attr <- paste0(
     sprintf("graph [%s]\n\n", paste(graph$graph_attrs, collapse = ", ")),
     sprintf("node [%s]\n\n", paste(graph$node_attrs, collapse = ", ")),
-    sprintf("edge [%s]\n\n", paste(graph$edge_attrs, collapse = ", "))
+    sprintf("edge [%s]\n\n", paste(graph$edge_attrs, collapse = ", ")),
+    "pack=true\n",
+    'packmode= "node"\n'
   )
   segments <- unique(graph$nodes_df$segment)
   segments <- segments[!is.na(segments)]

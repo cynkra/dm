@@ -52,7 +52,7 @@
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `start` table.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_select_tbl(-weather) %>%
 #'   dm_flatten_to_tbl(flights)
@@ -60,7 +60,7 @@
 dm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   check_not_zoomed(dm)
   join_name <- deparse(substitute(join))
-  start <- as_string(ensym(start))
+  start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = FALSE)
 }
 
@@ -70,13 +70,12 @@ dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   check_not_zoomed(dm)
   join_name <- deparse(substitute(join))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
-  start <- as_string(ensym(start))
+  start <- dm_tbl_name(dm, {{ start }})
   dm_flatten_to_tbl_impl(dm, start, ..., join = join, join_name = join_name, squash = TRUE)
 }
 
 
 dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
-  check_correct_input(dm, start)
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
@@ -166,23 +165,27 @@ dm_flatten_to_tbl_impl <- function(dm, start, ..., join, join_name, squash) {
 #' @family flattening functions
 #'
 #' @export
-#' @examples
-#' dm_join_to_tbl(dm_nycflights13(), airports, flights)
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_join_to_tbl(airports, flights)
 #'
 #' # same result is achieved with:
-#' dm_join_to_tbl(dm_nycflights13(), flights, airports)
+#' dm_nycflights13() %>%
+#'   dm_join_to_tbl(flights, airports)
 #'
 #' # this gives an error, because the tables are not directly linked to each other:
-#' try(dm_join_to_tbl(dm_nycflights13(), airlines, airports))
+#' try(
+#'   dm_nycflights13() %>%
+#'     dm_join_to_tbl(airlines, airports)
+#' )
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   check_not_zoomed(dm)
   force(join)
   stopifnot(is_function(join))
   join_name <- deparse(substitute(join))
 
-  t1_name <- as_string(ensym(table_1))
-  t2_name <- as_string(ensym(table_2))
-  check_correct_input(dm, c(t1_name, t2_name), 2L)
+  t1_name <- dm_tbl_name(dm, {{ table_1 }})
+  t2_name <- dm_tbl_name(dm, {{ table_2 }})
 
   rel <- parent_child_table(dm, {{ table_1 }}, {{ table_2 }})
   start <- rel$child_table
@@ -192,8 +195,8 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
-  t1_name <- as_string(ensym(table_1))
-  t2_name <- as_string(ensym(table_2))
+  t1_name <- dm_tbl_name(dm, {{ table_1 }})
+  t2_name <- dm_tbl_name(dm, {{ table_2 }})
 
   rel <-
     dm_get_all_fks(dm) %>%
@@ -207,7 +210,7 @@ parent_child_table <- function(dm, table_1, table_2) {
   }
 
   if (nrow(rel) > 1) {
-    abort_no_cycles()
+    abort_no_cycles(create_graph_from_dm(dm))
   }
 
   rel
@@ -231,7 +234,7 @@ check_flatten_to_tbl <- function(
 
   # Cycles not yet supported
   if (length(V(g)) - 1 != length(E(g))) {
-    abort_no_cycles()
+    abort_no_cycles(g)
   }
   if (join_name == "nest_join") abort_no_flatten_with_nest_join()
   if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)

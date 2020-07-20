@@ -29,7 +29,10 @@ Therefore the \code{child_fk_cols} column may contain vectors of length greater 
 }
 
 \examples{
-dm_get_all_fks(dm_nycflights13())
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_get_all_fks()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 

@@ -27,7 +27,7 @@
 
 \item{by}{If left \code{NULL} (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now \code{x})
 and the other table (\code{y}).
-If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}), you can also join tables that are not connected in the \code{dm}.}
+If you provide a value (for the syntax see \code{\link[dplyr:mutate-joins]{dplyr::join}}), you can also join tables that are not connected in the \code{dm}.}
 
 \item{copy}{Disabled, since all tables in a \code{dm} are by definition on the same \code{src}.}
 
@@ -37,12 +37,13 @@ If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}
 This argument is specific for the \code{join}-methods for \code{zoomed_dm}.
 The table's \code{by} column(s) are automatically added if missing in the selection.}
 
-\item{...}{see \code{\link[dplyr:join]{dplyr::join}}}
+\item{...}{see \code{\link[dplyr:mutate-joins]{dplyr::join}}}
 }
 \description{
 Use these methods without the '.zoomed_dm' suffix (see examples).
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 flights_dm <- dm_nycflights13()
 dm_zoom_to(flights_dm, flights) \%>\%
   left_join(airports, select = c(faa, name))
@@ -50,4 +51,5 @@ dm_zoom_to(flights_dm, flights) \%>\%
 # this should illustrate that tables don't necessarily need to be connected
 dm_zoom_to(flights_dm, airports) \%>\%
   semi_join(airlines, by = "name")
+\dontshow{\}) # examplesIf}
 }

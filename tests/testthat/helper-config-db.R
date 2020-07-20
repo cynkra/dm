@@ -3,24 +3,45 @@ test_src_df <- function() {
 }
 
 test_src_sqlite <- function() {
-  src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
+  dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 }
 
 test_src_postgres <- function() {
-  con <- DBI::dbConnect(RPostgres::Postgres())
-  src_dbi(con, auto_disconnect = TRUE)
+  if (Sys.getenv("CI") != "") {
+    con <- DBI::dbConnect(
+      RPostgres::Postgres(),
+      dbname = "test",
+      host = "localhost",
+      port = 5432,
+      user = "postgres",
+      password = "password"
+    )
+  } else {
+    con <- DBI::dbConnect(RPostgres::Postgres())
+  }
+  dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }
 
 test_src_maria <- function() {
   con <- DBI::dbConnect(RMariaDB::MariaDB(), dbname = "test")
-  src_dbi(con, auto_disconnect = TRUE)
+  dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }
 
 test_src_mssql <- function() {
-  con <- DBI::dbConnect(
-    odbc::odbc(),
-    "mssql-test",
-    uid = "kirill", pwd = keyring::key_get("mssql", "kirill")
-  )
-  src_dbi(con, auto_disconnect = TRUE)
+  if (Sys.getenv("CI") != "") {
+    con <- DBI::dbConnect(
+      odbc::odbc(),
+      "mssql-test",
+      uid = "SA",
+      pwd = "Password12",
+      port = 1433
+    )
+  } else {
+    con <- DBI::dbConnect(
+      odbc::odbc(),
+      "mssql-test",
+      uid = "kirill", pwd = keyring::key_get("mssql", "kirill")
+    )
+  }
+  dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }

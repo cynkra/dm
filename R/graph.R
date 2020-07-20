@@ -10,7 +10,7 @@
 #' @family functions utilizing foreign key relations
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_is_referenced(airports)
 #' dm_nycflights13() %>%
@@ -32,14 +32,15 @@ dm_is_referenced <- function(dm, table) {
 #'
 #' @family functions utilizing foreign key relations
 #'
-#' @examples
-#' dm_get_referencing_tables(dm_nycflights13(), airports)
-#' dm_get_referencing_tables(dm_nycflights13(), flights)
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_get_referencing_tables(airports)
+#' dm_nycflights13() %>%
+#'   dm_get_referencing_tables(flights)
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
   check_not_zoomed(dm)
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
+  table <- dm_tbl_name(dm, {{ table }})
 
   def <- dm_get_def(dm)
   i <- which(def$table == table)

@@ -1,6 +1,3 @@
-try(library(dbplyr), silent = TRUE)
-library(rprojroot)
-
 if (!is_attached("dm_cache")) {
   ((attach))(new_environment(), pos = length(search()) - 1, name = "dm_cache")
 }
@@ -46,7 +43,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
     # message(name)
-    suppressMessages(copy_dm_to(src, rhs, unique_table_names = TRUE))
+    suppressMessages(copy_dm_to(src, rhs))
   } else if (inherits(rhs, "list")) {
     suppressMessages(
       map(rhs, ~ copy_to(src, .x, name = unique_db_table_name(name), temporary = TRUE))
@@ -56,7 +53,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
   }
 }
 
-sqlite %<--% src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
+sqlite %<--% dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 
 my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC", "df")
@@ -77,17 +74,17 @@ my_test_src_cache %<--% {
 my_test_src <- function() {
   fun <- my_test_src_fun()
   if (is.null(fun)) {
-    skip(paste0("Data source not known: ", my_test_src_name))
+    abort(paste0("Data source not known: ", my_test_src_name))
   }
   tryCatch(
     my_test_src_cache(),
     error = function(e) {
-      skip(paste0("Data source ", my_test_src_name, " not accessible: ", conditionMessage(e)))
+      abort(paste0("Data source ", my_test_src_name, " not accessible: ", conditionMessage(e)))
     }
   )
 }
 
-test_frame <- function(...) {
+test_src_frame <- function(...) {
   src <- my_test_src()
 
   df <- tibble(...)
