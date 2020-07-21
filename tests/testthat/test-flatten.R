@@ -271,6 +271,7 @@ test_that("`dm_join_to_tbl()` works", {
 
 # tests that do not work on DB when keys are set ('bad_dm' and 'nycflights'; currently PG and MSSQL)
 test_that("tests with 'bad_dm' work", {
+  # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
@@ -310,6 +311,9 @@ test_that("tests with 'bad_dm' work", {
 })
 
 test_that("tests with 'bad_dm' work (2)", {
+  # can't create bad_dm() on Postgres due to strict constraint checks
+  skip_if_src("postgres")
+
   # full & right join not available on SQLite
   skip_if_src("sqlite")
 

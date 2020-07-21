@@ -1,0 +1,3 @@
+> dm_bind(dm_for_flatten(), dm_for_filter_sqlite())
+Error: All `dm` objects need to share the same `src`.
+

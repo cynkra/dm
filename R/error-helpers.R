@@ -287,12 +287,16 @@ error_txt_only_parents <- function() {
 # not all tables have the same src ----------------------------------------
 
 
-abort_not_same_src <- function() {
-  abort(error_txt_not_same_src(), .subclass = dm_error_full("not_same_src"))
+abort_not_same_src <- function(dm_bind = FALSE) {
+  abort(error_txt_not_same_src(dm_bind), .subclass = dm_error_full("not_same_src"))
 }
 
-error_txt_not_same_src <- function() {
-  "Not all tables in the object share the same `src`."
+error_txt_not_same_src <- function(dm_bind = FALSE) {
+  if (!dm_bind) {
+    "Not all tables in the object share the same `src`."
+  } else {
+    "All `dm` objects need to share the same `src`."
+  }
 }
 
 # Something other than tables are put in a `dm` ------------------
