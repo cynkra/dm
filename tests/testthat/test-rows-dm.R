@@ -135,3 +135,51 @@ verify_output("out/rows-dm-update.txt", {
     dm_get_tables() %>%
     map(arrange_all)
 })
+
+verify_output("out/rows-dm-truncate.txt", {
+  skip_if_local_src()
+
+  suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_for_filter()))
+
+  dm_truncate_local <- dm(
+    tf_2 = tibble(
+      c = c("worm"),
+      d = 10L,
+    ),
+    tf_5 = tibble(
+      k = 3L,
+      m = "tree",
+    ),
+  )
+
+  dm_truncate_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_truncate_local))
+
+  dm_copy %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_rows_truncate(dm_truncate_copy) %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_rows_truncate(dm_truncate_copy, in_place = FALSE) %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_get_tables() %>%
+    map(arrange_all)
+
+  dm_copy %>%
+    dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
+
+  dm_copy %>%
+    dm_get_tables() %>%
+    map(arrange_all)
+})
