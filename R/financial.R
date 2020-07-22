@@ -11,7 +11,7 @@
 #' @return A `dm` object.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5 && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5 && rlang::is_installed("DiagrammeR") && class(try(dm_financial(), silent = TRUE) != "try-error")
 #' dm_financial() %>%
 #'   dm_draw()
 dm_financial <- function() {
