@@ -15,11 +15,15 @@ verify_output("out/rows-db.txt", {
 
   rows_insert(data, test_src_frame(select = 4, where = "z"), in_place = FALSE)
   data %>% arrange(select)
+  rows_update(data, test_src_frame(select = 0L, where = "a"), by = "where", in_place = FALSE)
+  data %>% arrange(select)
   rows_insert(data, test_src_frame(select = 4, where = "z"), in_place = TRUE)
   data %>% arrange(select)
   rows_update(data, test_src_frame(select = 2:3, where = "w"), in_place = TRUE)
   data %>% arrange(select)
   rows_update(data, test_src_frame(select = 2:3), in_place = TRUE)
+  data %>% arrange(select)
+  rows_update(data, test_src_frame(select = 0L, where = "a"), by = "where", in_place = TRUE)
   data %>% arrange(select)
 
   rows_truncate(data, in_place = FALSE)
