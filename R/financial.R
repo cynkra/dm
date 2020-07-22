@@ -11,7 +11,7 @@
 #' @return A `dm` object.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5 && rlang::is_installed("DiagrammeR") && class(try(dm_financial(), silent = TRUE) != "try-error")
+#' @examplesIf dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")
 #' dm_financial() %>%
 #'   dm_draw()
 dm_financial <- function() {
@@ -45,6 +45,21 @@ dm_financial <- function() {
     dm_set_colors(darkgreen = loans)
 
   my_dm
+}
+
+dm_has_financial <- function() {
+  # Crashes observed with R < 3.5:
+  if (getRversion() < 3.5) return(FALSE)
+
+  # Connectivity:
+  try_connect <- try(dm_financial(), silent = TRUE)
+  if (class(try_connect) == "try-error") return(FALSE)
+
+  # Accessing the connection:
+  try_count <- try(collect(count(dm_financial()$district)), silent = TRUE)
+  if (class(try_count) == "try-error") return(FALSE)
+
+  TRUE
 }
 
 #' dm_financial_sqlite()
