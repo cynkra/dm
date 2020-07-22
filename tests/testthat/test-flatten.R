@@ -330,7 +330,7 @@ test_that("tests with 'bad_dm' work (2)", {
   # filtered `dm`
   expect_dm_error(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = full_join),
-    class = c("apply_filters_first_full_join", "apply_filters_first")
+    class = "apply_filters_first_full_join"
   )
 
   # flatten bad_dm() (no referential integrity)
@@ -352,6 +352,6 @@ test_that("tests with 'bad_dm' work (2)", {
   # filtered `dm`
   expect_dm_error(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = right_join),
-    class = c("apply_filters_first_right_join", "apply_filters_first")
+    class = "apply_filters_first_right_join"
   )
 })
