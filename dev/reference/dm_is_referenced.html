@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -176,7 +176,7 @@
     <p>Is a table of a <code><a href='dm.html'>dm</a></code> referenced by another table?</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_is_referenced</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_is_referenced</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -201,15 +201,9 @@ key of the <code>table</code> argument, <code>FALSE</code> otherwise.</p>
 <code><a href='dm_get_referencing_tables.html'>dm_get_referencing_tables</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_is_referenced</span>(<span class='no'>airports</span>)
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_is_referenced</span>(<span class='no'>flights</span>)
-}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nycflights13() %&gt;% dm_is_referenced(airports)
-#&gt; [1] TRUE
-#&gt; &gt; dm_nycflights13() %&gt;% dm_is_referenced(flights)
-#&gt; [1] FALSE</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_is_referenced</span>(<span class='kw'>airports</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_is_referenced</span>(<span class='kw'>flights</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -225,7 +219,7 @@ key of the <code>table</code> argument, <code>FALSE</code> otherwise.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

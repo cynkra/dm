@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Flatten a part of a <code>dm</code> into a wide table — dm_flatten_to_tbl • dm</title>
+<title>Flatten a part of a dm into a wide table — dm_flatten_to_tbl • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="Flatten a part of a <code>dm</code> into a wide table — dm_flatten_to_tbl" />
+<meta property="og:title" content="Flatten a part of a dm into a wide table — dm_flatten_to_tbl" />
 <meta property="og:description" content="dm_flatten_to_tbl() and dm_squash_to_tbl() gather all information of interest in one place in a wide table.
 Both functions perform a disambiguation of column names and a cascade of joins." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
@@ -81,7 +81,7 @@ Both functions perform a disambiguation of column names and a cascade of joins."
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -178,9 +178,9 @@ Both functions perform a disambiguation of column names and a cascade of joins."
 Both functions perform a disambiguation of column names and a cascade of joins.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)
+    <pre class="usage"><span class='fu'>dm_flatten_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>start</span>, <span class='kw'>...</span>, join = <span class='kw'>left_join</span>)
 
-<span class='fu'>dm_squash_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
+<span class='fu'>dm_squash_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>start</span>, <span class='kw'>...</span>, join = <span class='kw'>left_join</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,11 +250,9 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 <code><a href='dm_join_to_tbl.html'>dm_join_to_tbl</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(-<span class='no'>weather</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_flatten_to_tbl</span>(<span class='no'>flights</span>)
-}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nycflights13() %&gt;% dm_select_tbl(-weather) %&gt;% dm_flatten_to_tbl(flights)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(<span class='op'>-</span><span class='kw'>weather</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_flatten_to_tbl</span>(<span class='kw'>flights</span>)</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* year -&gt; flights.year, planes.year</span>
 #&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 11,227 x 35</span><span>
 #&gt;    flights.year month   day dep_time sched_dep_time dep_delay arr_time
@@ -291,7 +289,7 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

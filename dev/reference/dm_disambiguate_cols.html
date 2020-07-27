@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -176,7 +176,7 @@
     <p>This function ensures that all columns in a <code>dm</code> have unique names.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_disambiguate_cols</span>(<span class='no'>dm</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_disambiguate_cols</span>(<span class='kw'>dm</span>, sep = <span class='st'>"."</span>, quiet = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,10 +209,8 @@ because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_disambiguate_cols</span>()
-}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nycflights13() %&gt;% dm_disambiguate_cols()</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_disambiguate_cols</span>()</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span>
 #&gt; <span class='message'>* year -&gt; flights.year, planes.year, weather.year</span>
 #&gt; <span class='message'>* month -&gt; flights.month, weather.month</span>
@@ -241,7 +239,7 @@ making that column name "unique" as well.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

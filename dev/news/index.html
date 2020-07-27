@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -170,6 +170,20 @@
       <small>Source: <a href='https://github.com/krlmlr/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-0159001" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.5.9001">
+<a href="#dm-0159001" class="anchor"></a>dm 0.1.5.9001<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/dm_financial.html">dm_financial()</a></code> no longer prints message about <code>learn_keys = FALSE</code>.</li>
+<li>Examples involving <code><a href="../reference/dm_financial.html">dm_financial()</a></code> are not run if connection can’t be established.</li>
+<li>
+<code><a href="../reference/rows-dm.html">dm_rows_update()</a></code> and related functions now use the primary keys defined in <code>x</code> for establishing matching rows.</li>
+<li>new function ‘dm_bind()’ for binding two or more ‘dm’ objects together</li>
+<li>Fix database tests on CI (<a href='https://github.com/krlmlr/dm/issues/416'>#416</a>).</li>
+</ul>
+</div>
     <div id="dm-0159000" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.5.9000">
 <a href="#dm-0159000" class="anchor"></a>dm 0.1.5.9000<small> Unreleased </small>
@@ -204,7 +218,7 @@
 <li>
 <code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_insert()</a></code> works if column names consist of SQL keywords (<a href='https://github.com/krlmlr/dm/issues/409'>#409</a>).</li>
 <li>Cycles in other connected components don’t affect filtering in a cycle-free component.</li>
-<li>Avoid <code>src_sqlite()</code> in examples (<a href='https://github.com/krlmlr/dm/issues/372'>#372</a>).</li>
+<li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_sqlite()</a></code> in examples (<a href='https://github.com/krlmlr/dm/issues/372'>#372</a>).</li>
 </ul>
 </div>
 <div id="internal" class="section level2">
@@ -254,7 +268,7 @@
 <a href="#dm-013" class="anchor"></a>dm 0.1.3<small> 2020-05-25 </small>
 </h1>
 <ul>
-<li>Avoid <code>src_sqlite()</code> in vignettes (<a href='https://github.com/krlmlr/dm/issues/372'>#372</a>).</li>
+<li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_sqlite()</a></code> in vignettes (<a href='https://github.com/krlmlr/dm/issues/372'>#372</a>).</li>
 <li>Rename vignettes (<a href='https://github.com/krlmlr/dm/issues/349'>#349</a>).</li>
 <li>Rename error class <code>"dm_error_tables_not_neighbours"</code> to <code>"dm_error_tables_not_neighbors"</code>.</li>
 <li>Shortened README and intro article (<a href='https://github.com/krlmlr/dm/issues/192'>#192</a>, <a href='https://github.com/jawond'>@jawond</a>).</li>
@@ -275,7 +289,7 @@
 <li>
 <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> now prints a different message if a dm has no constraints defined.</li>
 <li>Disambiguation message now only lists column names for easier copy-pasting.</li>
-<li>New methods for <code>"zoomed_dm"</code>: <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code>, <code>pull()</code>, <code>group_data()</code>, <code>group_indices()</code>, <code>group_vars()</code>, <code>group_keys()</code> and <code>groups()</code> (<a href='https://github.com/krlmlr/dm/issues/236'>#236</a>, <a href='https://github.com/krlmlr/dm/issues/203'>#203</a>).</li>
+<li>New methods for <code>"zoomed_dm"</code>: <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/pull.html">pull()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html">group_data()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html">group_indices()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html">group_vars()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_data.html">group_keys()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/group_data.html">groups()</a></code> (<a href='https://github.com/krlmlr/dm/issues/236'>#236</a>, <a href='https://github.com/krlmlr/dm/issues/203'>#203</a>).</li>
 <li>
 <code><a href="../reference/dm_paste.html">dm_paste()</a></code> supports writing colors and the table definition via the new <code>options</code> argument. The definition can be written to a file via the new <code>path</code> argument. The <code>select</code> argument is soft-deprecated (<a href='https://github.com/krlmlr/dm/issues/218'>#218</a>, <a href='https://github.com/krlmlr/dm/issues/302'>#302</a>).</li>
 <li>
@@ -307,7 +321,7 @@
 <li>
 <code><a href="../reference/dm_from_src.html">dm_from_src(schema = "...")</a></code> works on Postgres if <code>search_path</code> is not set on the connection.</li>
 <li>
-<code><a href="../reference/dplyr_db.html">compute.zoomed_dm()</a></code> no longer throws an error.</li>
+<code><a href="../reference/tbl.dm.html">compute.zoomed_dm()</a></code> no longer throws an error.</li>
 <li>Remove unused DT import (<a href='https://github.com/krlmlr/dm/issues/295'>#295</a>).</li>
 </ul>
 </div>
@@ -315,7 +329,7 @@
 <h2 class="hasAnchor">
 <a href="#compatibility" class="anchor"></a>Compatibility</h2>
 <ul>
-<li>Remove use of deprecated <code>src_df()</code> (<a href='https://github.com/krlmlr/dm/issues/336'>#336</a>).</li>
+<li>Remove use of deprecated <code><a href="https://dplyr.tidyverse.org/reference/src_local.html">src_df()</a></code> (<a href='https://github.com/krlmlr/dm/issues/336'>#336</a>).</li>
 <li>Fix compatibility with dplyr 1.0.0 (<a href='https://github.com/krlmlr/dm/issues/203'>#203</a>).</li>
 </ul>
 </div>
@@ -419,7 +433,7 @@
 <li>
 <code><a href="../reference/deprecated.html">cdm_filter()</a></code> and <code><a href="../reference/dplyr_table_manipulation.html">filter.zoomed_dm()</a></code> apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in <code><a href="../reference/deprecated.html">cdm_apply_filters()</a></code>. This now allows using a variety of operations on filtered <code>dm</code> objects (<a href='https://github.com/krlmlr/dm/issues/124'>#124</a>).</li>
 <li>
-<code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code>, <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code>, <code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code>, <code>distinct()</code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>, <code>slice()</code>, <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/unite.html">unite()</a></code> implemented for zoomed dm-s (<a href='https://github.com/krlmlr/dm/issues/130'>#130</a>).</li>
+<code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code>, <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code>, <code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html">slice()</a></code>, <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/unite.html">unite()</a></code> implemented for zoomed dm-s (<a href='https://github.com/krlmlr/dm/issues/130'>#130</a>).</li>
 <li>Joins on zoomed dm objects now supported (<a href='https://github.com/krlmlr/dm/issues/121'>#121</a>). Joins use the same column name disambiguation algorithm as <code><a href="../reference/deprecated.html">cdm_flatten_to_tbl()</a></code> (<a href='https://github.com/krlmlr/dm/issues/147'>#147</a>).</li>
 <li>
 <code><a href="../reference/dplyr_table_manipulation.html">slice.zoomed_dm()</a></code>: user decides in arg <code>.keep_pk</code> if PK column is tracked or not (<a href='https://github.com/krlmlr/dm/issues/152'>#152</a>).</li>
@@ -428,9 +442,9 @@
 <code><a href="../reference/enum_pk_candidates.html">enum_pk_candidates()</a></code> works with zoomed dm-s (<a href='https://github.com/krlmlr/dm/issues/156'>#156</a>).</li>
 <li>New <code><a href="../reference/dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> (<a href='https://github.com/krlmlr/dm/issues/156'>#156</a>).</li>
 <li>Add name repair argument for both <code><a href="../reference/deprecated.html">cdm_insert_zoomed_tbl()</a></code> and <code><a href="../reference/deprecated.html">cdm_add_tbl()</a></code>, defaulting to renaming of old and new tables when adding tables with duplicate names (<a href='https://github.com/krlmlr/dm/issues/132'>#132</a>).</li>
-<li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code>tibble()</code>, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/dm.html">validate_dm()</a></code> checks internal consistency (<a href='https://github.com/krlmlr/dm/issues/69'>#69</a>).</li>
+<li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code>, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/dm.html">validate_dm()</a></code> checks internal consistency (<a href='https://github.com/krlmlr/dm/issues/69'>#69</a>).</li>
 <li>
-<code><a href="../reference/dplyr_db.html">compute.dm()</a></code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> on all tables (<a href='https://github.com/krlmlr/dm/issues/135'>#135</a>).</li>
+<code><a href="../reference/tbl.dm.html">compute.dm()</a></code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> on all tables (<a href='https://github.com/krlmlr/dm/issues/135'>#135</a>).</li>
 </ul>
 </div>
 <div id="documentation-2" class="section level2">
@@ -768,7 +782,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

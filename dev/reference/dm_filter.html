@@ -86,7 +86,7 @@ dm_apply_filters_to_tbl() retrieves one specific table of the dm that is updated
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -188,11 +188,11 @@ These conditions will be stored in the <code><a href='dm.html'>dm</a></code>, an
 <p><code>dm_apply_filters_to_tbl()</code> retrieves one specific table of the <code>dm</code> that is updated according to the filter conditions and the foreign key relations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>dm_filter</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>...</span>)
 
-<span class='fu'>dm_apply_filters</span>(<span class='no'>dm</span>)
+<span class='fu'>dm_apply_filters</span>(<span class='kw'>dm</span>)
 
-<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
+<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -255,31 +255,12 @@ in order to present them in a cleaner interface.</p>
 the filter.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
-<span class='no'>dm_nyc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()
-<span class='no'>dm_nyc_filtered</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_filter</span>(<span class='no'>airports</span>, <span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"John F Kennedy Intl"</span>)
+    <pre class="examples"><div class='input'><span class='kw'>dm_nyc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()
+<span class='kw'>dm_nyc_filtered</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='kw'>airports</span>, <span class='kw'>name</span> <span class='op'>==</span> <span class='st'>"John F Kennedy Intl"</span>)
 
-<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='no'>dm_nyc_filtered</span>, <span class='no'>flights</span>)
-
-<span class='no'>dm_nyc_filtered</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_apply_filters</span>()
-
-<span class='co'># If you want to keep only those rows in the parent tables</span>
-<span class='co'># whose primary key values appear as foreign key values in</span>
-<span class='co'># `flights`, you can set a `TRUE` filter in `flights`:</span>
-<span class='no'>dm_nyc</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_filter</span>(<span class='no'>flights</span>, <span class='fl'>1</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_apply_filters</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>()
-<span class='co'># note that in this example, the only affected table is</span>
-<span class='co'># `airports` because the departure airports in `flights` are</span>
-<span class='co'># only the three New York airports.</span>
-}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nyc &lt;- dm_nycflights13()
-#&gt; &gt; dm_nyc_filtered &lt;- dm_nycflights13() %&gt;% dm_filter(airports, name == "John F Kennedy Intl")
-#&gt; &gt; dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
-#&gt; <span style='color: #555555;'># A tibble: 3,661 x 19</span><span>
+<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='kw'>dm_nyc_filtered</span>, <span class='kw'>flights</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3,661 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
@@ -294,25 +275,29 @@ the filter.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      607            601         6      932            918
 #&gt; </span><span style='color: #555555;'># … with 3,651 more rows, and 11 more variables: arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>
-#&gt; &gt; dm_nyc_filtered %&gt;% dm_apply_filters()
-#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+#&gt; </span><span style='color: #555555;'>#   air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span></div><div class='input'>
+<span class='kw'>dm_nyc_filtered</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_apply_filters</span>()</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-#&gt; &gt; dm_nyc %&gt;% dm_filter(flights, 1 == 1) %&gt;% dm_apply_filters() %&gt;% dm_nrow()
-#&gt; airlines airports  flights   planes  weather 
-#&gt;       16        3    11227     2345      861 </div><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
+#&gt; Foreign keys: 3</div><div class='input'>
+<span class='co'># If you want to keep only those rows in the parent tables</span>
+<span class='co'># whose primary key values appear as foreign key values in</span>
+<span class='co'># `flights`, you can set a `TRUE` filter in `flights`:</span>
+<span class='kw'>dm_nyc</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='kw'>flights</span>, <span class='fl'>1</span> <span class='op'>==</span> <span class='fl'>1</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_apply_filters</span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>()</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+#&gt;       16        3    11227     2345      861 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
+<span class='co'># `airports` because the departure airports in `flights` are</span>
+<span class='co'># only the three New York airports.</span>
 
-<span class='no'>dm_nyc</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_filter</span>(<span class='no'>planes</span>, <span class='no'>engine</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()
-}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; dm_nyc %&gt;% dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %&gt;% 
-#&gt; +     compute()
-#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
+<span class='kw'>dm_nyc</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_filter</span>(<span class='kw'>planes</span>, <span class='kw'>engine</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -334,7 +319,7 @@ the filter.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

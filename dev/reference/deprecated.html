@@ -82,7 +82,7 @@ with a dm_ prefix." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -180,127 +180,127 @@ Most functions with the <code>cdm_</code> prefix have an identical alternative
 with a <code>dm_</code> prefix.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_if_subset</span>(<span class='no'>t1</span>, <span class='no'>c1</span>, <span class='no'>t2</span>, <span class='no'>c2</span>)
+    <pre class="usage"><span class='fu'>check_if_subset</span>(<span class='kw'>t1</span>, <span class='kw'>c1</span>, <span class='kw'>t2</span>, <span class='kw'>c2</span>)
 
-<span class='fu'>check_cardinality</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
+<span class='fu'>check_cardinality</span>(<span class='kw'>parent_table</span>, <span class='kw'>pk_column</span>, <span class='kw'>child_table</span>, <span class='kw'>fk_column</span>)
 
-<span class='fu'>cdm_get_src</span>(<span class='no'>x</span>)
+<span class='fu'>cdm_get_src</span>(<span class='kw'>x</span>)
 
-<span class='fu'>cdm_get_con</span>(<span class='no'>x</span>)
+<span class='fu'>cdm_get_con</span>(<span class='kw'>x</span>)
 
-<span class='fu'>cdm_get_tables</span>(<span class='no'>x</span>)
+<span class='fu'>cdm_get_tables</span>(<span class='kw'>x</span>)
 
-<span class='fu'>cdm_get_filter</span>(<span class='no'>x</span>)
+<span class='fu'>cdm_get_filter</span>(<span class='kw'>x</span>)
 
-<span class='fu'>cdm_add_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>, <span class='kw'>repair</span> <span class='kw'>=</span> <span class='st'>"unique"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>cdm_add_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>, repair = <span class='st'>"unique"</span>, quiet = <span class='fl'>FALSE</span>)
 
-<span class='fu'>cdm_rm_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)
+<span class='fu'>cdm_rm_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>)
 
 <span class='fu'>cdm_copy_to</span>(
-  <span class='no'>dest</span>,
-  <span class='no'>dm</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>unique_indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>dest</span>,
+  <span class='kw'>dm</span>,
+  <span class='kw'>...</span>,
+  types = <span class='kw'>NULL</span>,
+  overwrite = <span class='kw'>NULL</span>,
+  indexes = <span class='kw'>NULL</span>,
+  unique_indexes = <span class='kw'>NULL</span>,
+  set_key_constraints = <span class='fl'>TRUE</span>,
+  unique_table_names = <span class='fl'>FALSE</span>,
+  table_names = <span class='kw'>NULL</span>,
+  temporary = <span class='fl'>TRUE</span>
 )
 
-<span class='fu'>cdm_disambiguate_cols</span>(<span class='no'>dm</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>cdm_disambiguate_cols</span>(<span class='kw'>dm</span>, sep = <span class='st'>"."</span>, quiet = <span class='fl'>FALSE</span>)
 
 <span class='fu'>cdm_draw</span>(
-  <span class='no'>dm</span>,
-  <span class='kw'>rankdir</span> <span class='kw'>=</span> <span class='st'>"LR"</span>,
-  <span class='kw'>col_attr</span> <span class='kw'>=</span> <span class='st'>"column"</span>,
-  <span class='kw'>view_type</span> <span class='kw'>=</span> <span class='st'>"keys_only"</span>,
-  <span class='kw'>columnArrows</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>graph_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>node_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>edge_attrs</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>focus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>graph_name</span> <span class='kw'>=</span> <span class='st'>"Data Model"</span>
+  <span class='kw'>dm</span>,
+  rankdir = <span class='st'>"LR"</span>,
+  col_attr = <span class='st'>"column"</span>,
+  view_type = <span class='st'>"keys_only"</span>,
+  columnArrows = <span class='fl'>TRUE</span>,
+  graph_attrs = <span class='st'>""</span>,
+  node_attrs = <span class='st'>""</span>,
+  edge_attrs = <span class='st'>""</span>,
+  focus = <span class='kw'>NULL</span>,
+  graph_name = <span class='st'>"Data Model"</span>
 )
 
-<span class='fu'>cdm_set_colors</span>(<span class='no'>dm</span>, <span class='no'>...</span>)
+<span class='fu'>cdm_set_colors</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>)
 
-<span class='fu'>cdm_get_colors</span>(<span class='no'>dm</span>)
+<span class='fu'>cdm_get_colors</span>(<span class='kw'>dm</span>)
 
 <span class='fu'>cdm_get_available_colors</span>()
 
-<span class='fu'>cdm_filter</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
+<span class='fu'>cdm_filter</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>...</span>)
 
-<span class='fu'>cdm_nrow</span>(<span class='no'>dm</span>)
+<span class='fu'>cdm_nrow</span>(<span class='kw'>dm</span>)
 
-<span class='fu'>cdm_flatten_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)
+<span class='fu'>cdm_flatten_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>start</span>, <span class='kw'>...</span>, join = <span class='kw'>left_join</span>)
 
-<span class='fu'>cdm_squash_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>start</span>, <span class='no'>...</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)
+<span class='fu'>cdm_squash_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>start</span>, <span class='kw'>...</span>, join = <span class='kw'>left_join</span>)
 
-<span class='fu'>cdm_join_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table_1</span>, <span class='no'>table_2</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)
+<span class='fu'>cdm_join_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>table_1</span>, <span class='kw'>table_2</span>, join = <span class='kw'>left_join</span>)
 
-<span class='fu'>cdm_apply_filters</span>(<span class='no'>dm</span>)
+<span class='fu'>cdm_apply_filters</span>(<span class='kw'>dm</span>)
 
-<span class='fu'>cdm_apply_filters_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+<span class='fu'>cdm_apply_filters_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)
 
-<span class='fu'>cdm_add_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>cdm_add_pk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>column</span>, check = <span class='fl'>FALSE</span>, force = <span class='fl'>FALSE</span>)
 
-<span class='fu'>cdm_add_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>column</span>, <span class='no'>ref_table</span>, <span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>cdm_add_fk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>column</span>, <span class='kw'>ref_table</span>, check = <span class='fl'>FALSE</span>)
 
-<span class='fu'>cdm_has_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)
+<span class='fu'>cdm_has_fk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>ref_table</span>)
 
-<span class='fu'>cdm_get_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)
+<span class='fu'>cdm_get_fk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>ref_table</span>)
 
-<span class='fu'>cdm_get_all_fks</span>(<span class='no'>dm</span>)
+<span class='fu'>cdm_get_all_fks</span>(<span class='kw'>dm</span>)
 
-<span class='fu'>cdm_rm_fk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>columns</span>, <span class='no'>ref_table</span>)
+<span class='fu'>cdm_rm_fk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>columns</span>, <span class='kw'>ref_table</span>)
 
-<span class='fu'>cdm_enum_fk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>ref_table</span>)
+<span class='fu'>cdm_enum_fk_candidates</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>ref_table</span>)
 
-<span class='fu'>cdm_is_referenced</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+<span class='fu'>cdm_is_referenced</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)
 
-<span class='fu'>cdm_get_referencing_tables</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+<span class='fu'>cdm_get_referencing_tables</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)
 
-<span class='fu'>cdm_learn_from_db</span>(<span class='no'>dest</span>)
+<span class='fu'>cdm_learn_from_db</span>(<span class='kw'>dest</span>)
 
-<span class='fu'>cdm_check_constraints</span>(<span class='no'>dm</span>)
+<span class='fu'>cdm_check_constraints</span>(<span class='kw'>dm</span>)
 
-<span class='fu'>cdm_nycflights13</span>(<span class='kw'>cycle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>cdm_nycflights13</span>(cycle = <span class='fl'>FALSE</span>, color = <span class='fl'>TRUE</span>, subset = <span class='fl'>TRUE</span>)
 
-<span class='fu'>cdm_paste</span>(<span class='no'>dm</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tab_width</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>cdm_paste</span>(<span class='kw'>dm</span>, select = <span class='fl'>FALSE</span>, tab_width = <span class='fl'>2</span>)
 
-<span class='fu'>cdm_has_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+<span class='fu'>cdm_has_pk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)
 
-<span class='fu'>cdm_get_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+<span class='fu'>cdm_get_pk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)
 
-<span class='fu'>cdm_get_all_pks</span>(<span class='no'>dm</span>)
+<span class='fu'>cdm_get_all_pks</span>(<span class='kw'>dm</span>)
 
-<span class='fu'>cdm_rm_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='kw'>rm_referencing_fks</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>cdm_rm_pk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, rm_referencing_fks = <span class='fl'>FALSE</span>)
 
-<span class='fu'>cdm_enum_pk_candidates</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+<span class='fu'>cdm_enum_pk_candidates</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)
 
-<span class='fu'>cdm_select_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)
+<span class='fu'>cdm_select_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>)
 
-<span class='fu'>cdm_rename_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)
+<span class='fu'>cdm_rename_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>)
 
-<span class='fu'>cdm_select</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
+<span class='fu'>cdm_select</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>...</span>)
 
-<span class='fu'>cdm_rename</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)
+<span class='fu'>cdm_rename</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>...</span>)
 
-<span class='fu'>cdm_zoom_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table</span>)
+<span class='fu'>cdm_zoom_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)
 
 <span class='fu'>cdm_insert_zoomed_tbl</span>(
-  <span class='no'>dm</span>,
-  <span class='kw'>new_tbl_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>repair</span> <span class='kw'>=</span> <span class='st'>"unique"</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>dm</span>,
+  new_tbl_name = <span class='kw'>NULL</span>,
+  repair = <span class='st'>"unique"</span>,
+  quiet = <span class='fl'>FALSE</span>
 )
 
-<span class='fu'>cdm_update_zoomed_tbl</span>(<span class='no'>dm</span>)
+<span class='fu'>cdm_update_zoomed_tbl</span>(<span class='kw'>dm</span>)
 
-<span class='fu'>cdm_zoom_out</span>(<span class='no'>dm</span>)</pre>
+<span class='fu'>cdm_zoom_out</span>(<span class='kw'>dm</span>)</pre>
 
 
 
@@ -319,7 +319,7 @@ with a <code>dm_</code> prefix.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

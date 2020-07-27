@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title><span class="pkg">tidyr</span> table manipulation methods for zoomed dm objects — tidyr_table_manipulation • dm</title>
+<title>tidyr table manipulation methods for zoomed dm objects — tidyr_table_manipulation • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="<span class="pkg">tidyr</span> table manipulation methods for zoomed dm objects — tidyr_table_manipulation" />
+<meta property="og:title" content="tidyr table manipulation methods for zoomed dm objects — tidyr_table_manipulation" />
 <meta property="og:description" content="Use these methods without the '.zoomed_dm' suffix (see examples)." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -177,10 +177,10 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for zoomed_dm</span>
-<span class='fu'><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></span>(<span class='no'>data</span>, <span class='no'>col</span>, <span class='no'>...</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></span>(<span class='kw'>data</span>, <span class='kw'>col</span>, <span class='kw'>...</span>, sep = <span class='st'>"_"</span>, remove = <span class='fl'>TRUE</span>, na.rm = <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for zoomed_dm</span>
-<span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='no'>data</span>, <span class='no'>col</span>, <span class='no'>into</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"[^[:alnum:]]+"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='kw'>data</span>, <span class='kw'>col</span>, <span class='kw'>into</span>, sep = <span class='st'>"[^[:alnum:]]+"</span>, remove = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -221,18 +221,11 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
-<span class='no'>zoom_united</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='no'>flights</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>year</span>, <span class='no'>month</span>, <span class='no'>day</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></span>(<span class='st'>"month_day"</span>, <span class='no'>month</span>, <span class='no'>day</span>)
-<span class='no'>zoom_united</span>
-<span class='no'>zoom_united</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='no'>month_day</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"month"</span>, <span class='st'>"day"</span>))
-}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; zoom_united &lt;- dm_nycflights13() %&gt;% dm_zoom_to(flights) %&gt;% select(year, 
-#&gt; +     month, day) %&gt;% unite("month_day", month, day)
-#&gt; &gt; zoom_united
-#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
+    <pre class="examples"><div class='input'><span class='kw'>zoom_united</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='kw'>flights</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='kw'>year</span>, <span class='kw'>month</span>, <span class='kw'>day</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></span>(<span class='st'>"month_day"</span>, <span class='kw'>month</span>, <span class='kw'>day</span>)
+<span class='kw'>zoom_united</span></div><div class='output co'>#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 2</span><span>
 #&gt;     year month_day
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    
@@ -246,9 +239,8 @@
 #&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 1_10     
 #&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 1_10     
 #&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013 1_10     
-#&gt; </span><span style='color: #555555;'># … with 11,217 more rows</span><span>
-#&gt; &gt; zoom_united %&gt;% separate(month_day, c("month", "day"))
-#&gt; </span><span style='color: #555555;'># Zoomed table: flights</span><span>
+#&gt; </span><span style='color: #555555;'># … with 11,217 more rows</span><span></div><div class='input'><span class='kw'>zoom_united</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='kw'>month_day</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"month"</span>, <span class='st'>"day"</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 3</span><span>
 #&gt;     year month day  
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
@@ -278,7 +270,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

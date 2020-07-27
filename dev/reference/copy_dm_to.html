@@ -84,7 +84,7 @@ By default, temporary tables will be created and the key constraints will be set
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -185,17 +185,17 @@ By default, temporary tables will be created and the key constraints will be set
     </div>
 
     <pre class="usage"><span class='fu'>copy_dm_to</span>(
-  <span class='no'>dest</span>,
-  <span class='no'>dm</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>unique_indexes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>unique_table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>table_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>dest</span>,
+  <span class='kw'>dm</span>,
+  <span class='kw'>...</span>,
+  types = <span class='kw'>NULL</span>,
+  overwrite = <span class='kw'>NULL</span>,
+  indexes = <span class='kw'>NULL</span>,
+  unique_indexes = <span class='kw'>NULL</span>,
+  set_key_constraints = <span class='fl'>TRUE</span>,
+  unique_table_names = <span class='kw'>NULL</span>,
+  table_names = <span class='kw'>NULL</span>,
+  temporary = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -269,33 +269,24 @@ The arguments are included in the signature to avoid passing them via the
 <code>...</code> ellipsis.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"RSQLite"</span>) <span class='kw'>&amp;&amp;</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"nycflights13"</span>) <span class='kw'>&amp;&amp;</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_installed.html'>is_installed</a></span>(<span class='st'>"dbplyr"</span>)) (<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/numeric_version.html'>getRversion</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.4"</span>) <span class='no'>withAutoprint</span> <span class='kw'>else</span> <span class='no'>force</span>)({ <span class='co'># examplesIf</span>
-<span class='no'>con</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>())
+    <pre class="examples"><div class='input'><span class='kw'>con</span> <span class='op'>&lt;-</span> <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw'>RSQLite</span>::<span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>())
 
 <span class='co'># Copy to temporary tables, unique table names by default:</span>
-<span class='no'>temp_dm</span> <span class='kw'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
-  <span class='no'>con</span>,
+<span class='kw'>temp_dm</span> <span class='op'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
+  <span class='kw'>con</span>,
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
-  <span class='kw'>set_key_constraints</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  set_key_constraints = <span class='fl'>FALSE</span>
 )
 
 <span class='co'># Persist, explicitly specify table names:</span>
-<span class='no'>persistent_dm</span> <span class='kw'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
-  <span class='no'>con</span>,
+<span class='kw'>persistent_dm</span> <span class='op'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
+  <span class='kw'>con</span>,
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>table_names</span> <span class='kw'>=</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"flights_"</span>, <span class='no'>.x</span>)
+  temporary = <span class='fl'>FALSE</span>,
+  table_names = <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"flights_"</span>, <span class='kw'>.x</span>)
 )
-<span class='kw pkg'>dbplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span>(<span class='no'>persistent_dm</span>$<span class='no'>planes</span>)
-
-<span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>con</span>)
-}) <span class='co'># examplesIf</span></div><div class='output co'>#&gt; &gt; con &lt;- DBI::dbConnect(RSQLite::SQLite())
-#&gt; &gt; temp_dm &lt;- copy_dm_to(con, dm_nycflights13(), set_key_constraints = FALSE)
-#&gt; &gt; persistent_dm &lt;- copy_dm_to(con, dm_nycflights13(), temporary = FALSE, 
-#&gt; +     table_names = ~paste0("flights_", .x))
-#&gt; &gt; dbplyr::remote_name(persistent_dm$planes)
-#&gt; &lt;IDENT&gt; flights_planes
-#&gt; &gt; DBI::dbDisconnect(con)</div></pre>
+<span class='kw'>dbplyr</span>::<span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span>(<span class='kw'>persistent_dm</span><span class='op'>$</span><span class='kw'>planes</span>)</div><div class='output co'>#&gt; &lt;IDENT&gt; flights_planes</div><div class='input'>
+<span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>con</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -311,7 +302,7 @@ The arguments are included in the signature to avoid passing them via the
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

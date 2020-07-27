@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
       </span>
     </div>
 
@@ -164,8 +164,9 @@
 <h3 class="hasAnchor">
 <a href="#use-case-1-add-a-new-column-to-an-existing-table" class="anchor"></a>Use case 1: Add a new column to an existing table</h3>
 <p>Imagine you want to have a column in <code>flights</code>, specifying if a flight left before noon or after. Just like with {dplyr}, we can tackle this with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>. Let us do this step by step:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dm</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://krlmlr.github.io/dm">dm</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -174,8 +175,9 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="no">flights_dm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()
-<span class="no">flights_dm</span></pre></body></html></div>
+<span class="kw">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>()
+<span class="kw">flights_dm</span>
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
@@ -184,11 +186,13 @@
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3
 </span></code></pre>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">flights_zoomed</span> <span class="kw">&lt;-</span>
-  <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">flights</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">flights_zoomed</span> <span class="op">&lt;-</span> 
+  <span class="kw">flights_dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="kw">flights</span>)
 <span class="co"># The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.</span>
-<span class="no">flights_zoomed</span></pre></body></html></div>
+<span class="kw">flights_zoomed</span>
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span><span>
 #&gt; </span><span style="color: #555555;"># A tibble:     11,227 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -208,13 +212,15 @@
 #&gt; </span><span style="color: #555555;">#   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
 #&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">
-<span class="no">flights_zoomed_mutate</span> <span class="kw">&lt;-</span>
-  <span class="no">flights_zoomed</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">am_pm_dep</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span>(<span class="no">dep_time</span> <span class="kw">&lt;</span> <span class="fl">1200</span>, <span class="st">"am"</span>, <span class="st">"pm"</span>)) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+
+<span class="kw">flights_zoomed_mutate</span> <span class="op">&lt;-</span> 
+  <span class="kw">flights_zoomed</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(am_pm_dep = <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span>(<span class="kw">dep_time</span> <span class="op">&lt;</span> <span class="fl">1200</span>, <span class="st">"am"</span>, <span class="st">"pm"</span>)) <span class="op">%&gt;%</span> 
   <span class="co"># in order to see our changes in the output we use `select()` for reordering the columns</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">year</span>:<span class="no">dep_time</span>, <span class="no">am_pm_dep</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">everything</a></span>())
-<span class="no">flights_zoomed_mutate</span></pre></body></html></div>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">year</span><span class="op">:</span><span class="kw">dep_time</span>, <span class="kw">am_pm_dep</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span>())
+<span class="kw">flights_zoomed_mutate</span>
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: flights</span><span>
 #&gt; </span><span style="color: #555555;"># A tibble:     11,227 x 20</span><span>
 #&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
@@ -234,13 +240,15 @@
 #&gt; </span><span style="color: #555555;">#   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
 #&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">
+<div class="sourceCode" id="cb4"><pre class="downlit">
+
 <span class="co"># To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:</span>
-<span class="no">updated_flights_dm</span> <span class="kw">&lt;-</span>
-  <span class="no">flights_zoomed_mutate</span> <span class="kw">%&gt;%</span>
+<span class="kw">updated_flights_dm</span> <span class="op">&lt;-</span> 
+  <span class="kw">flights_zoomed_mutate</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span>()
 <span class="co"># The only difference in the `dm` print output is the increased number of columns</span>
-<span class="no">updated_flights_dm</span></pre></body></html></div>
+<span class="kw">updated_flights_dm</span>
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
@@ -249,8 +257,10 @@
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3
 </span></code></pre>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># The schematic view of the data model remains unchanged</span>
-<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="no">updated_flights_dm</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># The schematic view of the data model remains unchanged</span>
+<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="kw">updated_flights_dm</span>)
+</pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="200pt" viewbox="0.00 0.00 152.00 200.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 196)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -269,11 +279,13 @@
 <h3 class="hasAnchor">
 <a href="#use-case-2-creation-of-a-surrogate-key" class="anchor"></a>Use case 2: Creation of a surrogate key</h3>
 <p>The same course of action could, for example, be employed to create a surrogate key for a table. We can do this for the <code>weather</code> table.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyr</span>)
-<span class="no">weather_zoomed</span> <span class="kw">&lt;-</span>
-  <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">weather</span>)
-<span class="no">weather_zoomed</span></pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tidyr.tidyverse.org">tidyr</a></span>)
+<span class="kw">weather_zoomed</span> <span class="op">&lt;-</span> 
+  <span class="kw">flights_dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="kw">weather</span>)
+<span class="kw">weather_zoomed</span>
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Zoomed table: weather</span><span>
 #&gt; </span><span style="color: #555555;"># A tibble:     861 x 15</span><span>
 #&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
@@ -291,8 +303,10 @@
 #&gt; </span><span style="color: #555555;"># … with 851 more rows, and 5 more variables: wind_gust </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
 #&gt; </span><span style="color: #555555;">#   precip </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, pressure </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, visib </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span>
-<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span>(<span class="no">weather_zoomed</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="co"># Maybe there is some hidden candidate for a primary key that we overlooked</span>
+<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span>(<span class="kw">weather_zoomed</span>)
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span><span>
 #&gt;    columns    candidate why                                                
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                              
@@ -312,28 +326,32 @@
 #&gt; </span><span style="color: #555555;">14</span><span> wind_speed FALSE     has duplicate values: 0.00000, 3.45234, 4.60312, 5…
 #&gt; </span><span style="color: #555555;">15</span><span> year       FALSE     has duplicate values: 2013
 </span></code></pre>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># Seems we have to construct a column with unique values</span>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># Seems we have to construct a column with unique values</span>
 <span class="co"># This can be done by combining column `origin` with `time_hour`, if the latter </span>
 <span class="co"># is converted to a single time zone first; all within the `dm`:</span>
-<span class="no">weather_zoomed_mutate</span> <span class="kw">&lt;-</span>
-  <span class="no">weather_zoomed</span> <span class="kw">%&gt;%</span>
+<span class="kw">weather_zoomed_mutate</span> <span class="op">&lt;-</span> 
+  <span class="kw">weather_zoomed</span> <span class="op">%&gt;%</span> 
   <span class="co"># first convert all times to the same time zone:</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">time_hour_fmt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="no">time_hour</span>, <span class="kw">tz</span> <span class="kw">=</span> <span class="st">"UTC"</span>)) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(time_hour_fmt = <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="kw">time_hour</span>, tz = <span class="st">"UTC"</span>)) <span class="op">%&gt;%</span> 
   <span class="co"># paste together as character the airport code and the time</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html">unite</a></span>(<span class="st">"origin_slot_id"</span>, <span class="no">origin</span>, <span class="no">time_hour_fmt</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">origin_slot_id</span>, <span class="fu"><a href="https://tidyr.tidyverse.org/reference/reexports.html">everything</a></span>())
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html">unite</a></span>(<span class="st">"origin_slot_id"</span>, <span class="kw">origin</span>, <span class="kw">time_hour_fmt</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">origin_slot_id</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span>())
 <span class="co"># check if we the result is as expected:</span>
-<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span>(<span class="no">weather_zoomed_mutate</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">candidate</span>)</pre></body></html></div>
+<span class="fu"><a href="../reference/enum_pk_candidates.html">enum_pk_candidates</a></span>(<span class="kw">weather_zoomed_mutate</span>) <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">candidate</span>)
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 3</span><span>
 #&gt;   columns        candidate why  
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>         </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> origin_slot_id TRUE      </span><span style="color: #555555;">""</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">flights_upd_weather_dm</span> <span class="kw">&lt;-</span>
-  <span class="no">weather_zoomed_mutate</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(<span class="no">weather</span>, <span class="no">origin_slot_id</span>)
-<span class="no">flights_upd_weather_dm</span></pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">flights_upd_weather_dm</span> <span class="op">&lt;-</span> 
+  <span class="kw">weather_zoomed_mutate</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span>() <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(<span class="kw">weather</span>, <span class="kw">origin_slot_id</span>)
+<span class="kw">flights_upd_weather_dm</span>
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
@@ -342,16 +360,18 @@
 #&gt; Primary keys: 4
 #&gt; Foreign keys: 3
 </span></code></pre>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># creating the coveted FK relation between `flights` and `weather`</span>
-<span class="no">extended_flights_dm</span> <span class="kw">&lt;-</span>
-  <span class="no">flights_upd_weather_dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">flights</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">time_hour_fmt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="no">time_hour</span>, <span class="kw">tz</span> <span class="kw">=</span> <span class="st">"UTC"</span>)) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="co"># creating the coveted FK relation between `flights` and `weather`</span>
+<span class="kw">extended_flights_dm</span> <span class="op">&lt;-</span> 
+  <span class="kw">flights_upd_weather_dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="kw">flights</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(time_hour_fmt = <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="kw">time_hour</span>, tz = <span class="st">"UTC"</span>)) <span class="op">%&gt;%</span> 
   <span class="co"># need to keep `origin` as FK to airports, so `remove = FALSE`</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html">unite</a></span>(<span class="st">"origin_slot_id"</span>, <span class="no">origin</span>, <span class="no">time_hour_fmt</span>, <span class="kw">remove</span> <span class="kw">=</span> <span class="fl">FALSE</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span>(<span class="no">flights</span>, <span class="no">origin_slot_id</span>, <span class="no">weather</span>)
-<span class="no">extended_flights_dm</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>()</pre></body></html></div>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html">unite</a></span>(<span class="st">"origin_slot_id"</span>, <span class="kw">origin</span>, <span class="kw">time_hour_fmt</span>, remove = <span class="fl">FALSE</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_update_zoomed</a></span>() <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span>(<span class="kw">flights</span>, <span class="kw">origin_slot_id</span>, <span class="kw">weather</span>)
+<span class="kw">extended_flights_dm</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>()
+</pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="212pt" height="230pt" viewbox="0.00 0.00 212.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 226)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -372,7 +392,9 @@
 <a href="#use-case-3-disentangle-dm" class="anchor"></a>Use case 3: Disentangle <code>dm</code>
 </h3>
 <p>If you look at the <code>dm</code> created by <code><a href="../reference/dm_nycflights13.html">dm_nycflights13(cycle = TRUE)</a></code>, you see that two columns of <code>flights</code> relate to one and the same table, <code>airports</code>. One column stands for the departure airport and the other for the arrival airport.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(cycle = <span class="fl">TRUE</span>))
+</pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="153pt" height="187pt" viewbox="0.00 0.00 153.00 187.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 183)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -387,18 +409,20 @@
 <polygon fill="#ed7d31" stroke="transparent" points="95,-81 95,-101 141,-101 141,-81 95,-81"></polygon><text text-anchor="start" x="100.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#fbe5d5" stroke="transparent" points="95,-61 95,-81 141,-81 141,-61 95,-61"></polygon><text text-anchor="start" x="96.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="94,-60 94,-102 142,-102 142,-60 94,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge4" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M51,-61C67.1374,-61 72.8091,-67.4752 84.8583,-70.0046"></path><polygon fill="#555555" stroke="#555555" points="84.7059,-73.5064 95,-71 85.3897,-66.5399 84.7059,-73.5064"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
 <polygon fill="#70ad47" stroke="transparent" points="3,-151 3,-171 51,-171 51,-151 3,-151"></polygon><text text-anchor="start" x="4.8492" y="-156.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="2,-150 2,-172 52,-172 52,-150 2,-150"></polygon></g></g></svg><p>In such cases it can be beneficial, to “disentangle” the <code>dm</code> by duplicating the referred table. One way to do this in the {dm}-framework is as follows:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">disentangled_flights_dm</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(<span class="kw">cycle</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="kw">disentangled_flights_dm</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(cycle = <span class="fl">TRUE</span>) <span class="op">%&gt;%</span> 
   <span class="co"># zooming and immediately inserting essentially creates a copy of the original table</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">airports</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="kw">airports</span>) <span class="op">%&gt;%</span> 
   <span class="co"># reinserting the `airports` table under the name `destination`</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span>(<span class="st">"destination"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span>(<span class="st">"destination"</span>) <span class="op">%&gt;%</span> 
   <span class="co"># renaming the originally zoomed table</span>
-  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_rename_tbl</a></span>(<span class="kw">origin</span> <span class="kw">=</span> <span class="no">airports</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_rename_tbl</a></span>(origin = <span class="kw">airports</span>) <span class="op">%&gt;%</span> 
   <span class="co"># Key relations are also duplicated, so the wrong ones need to be removed</span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span>(<span class="no">flights</span>, <span class="no">dest</span>, <span class="no">origin</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span>(<span class="no">flights</span>, <span class="no">origin</span>, <span class="no">destination</span>)
-<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="no">disentangled_flights_dm</span>)</pre></body></html></div>
+  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span>(<span class="kw">flights</span>, <span class="kw">dest</span>, <span class="kw">origin</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span>(<span class="kw">flights</span>, <span class="kw">origin</span>, <span class="kw">destination</span>)
+<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="kw">disentangled_flights_dm</span>)
+</pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="174pt" height="236pt" viewbox="0.00 0.00 174.00 236.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 232)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -420,12 +444,14 @@
 <a href="#use-case-4-add-summary-table-to-dm" class="anchor"></a>Use case 4: Add summary table to <code>dm</code>
 </h3>
 <p>Here is an example for adding a summary of a table as a new table to a <code>dm</code> (FK-relations are taken care of automatically):</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">dm_with_summary</span> <span class="kw">&lt;-</span>
-  <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">flights</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span>(<span class="no">origin</span>, <span class="no">carrier</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="kw">dm_with_summary</span> <span class="op">&lt;-</span> 
+  <span class="kw">flights_dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="kw">flights</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span>(<span class="kw">origin</span>, <span class="kw">carrier</span>) <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span>(<span class="st">"dep_carrier_count"</span>)
-<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="no">dm_with_summary</span>)</pre></body></html></div>
+<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="kw">dm_with_summary</span>)
+</pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="205pt" height="236pt" viewbox="0.00 0.00 205.00 236.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 232)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -447,16 +473,18 @@
 <h3 class="hasAnchor">
 <a href="#use-case-5-joining-tables" class="anchor"></a>Use case 5: Joining tables</h3>
 <p>If you would like to join some or all of the columns of one table to another, you can make use of one of the <code>join</code>-methods for a <code>zoomed_dm</code>. In addition to the usual arguments for the {dplyr}-joins, by supplying the <code>select</code> argument you can specify which columns of the RHS-table you want to be included in the join. For the syntax please see the example below. The LHS-table of a join is always the zoomed table.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">joined_flights_dm</span> <span class="kw">&lt;-</span>
-  <span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">flights</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="kw">joined_flights_dm</span> <span class="op">&lt;-</span> 
+  <span class="kw">flights_dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="kw">flights</span>) <span class="op">%&gt;%</span> 
   <span class="co"># let's first reduce the number of columns of flights</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">dep_delay</span>:-<span class="no">arr_delay</span>, -<span class="no">air_time</span>:-<span class="no">time_hour</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span><span class="kw">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="kw">arr_delay</span>, <span class="op">-</span><span class="kw">air_time</span><span class="op">:</span><span class="op">-</span><span class="kw">time_hour</span>) <span class="op">%&gt;%</span> 
   <span class="co"># in the {dm}-method for the joins you can specify which columns you want to add to the zoomed table</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">planes</span>, <span class="kw">select</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">tailnum</span>, <span class="kw">plane_type</span> <span class="kw">=</span> <span class="no">type</span>)) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">planes</span>, select = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">tailnum</span>, plane_type = <span class="kw">type</span>)) <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/dm_zoom_to.html">dm_insert_zoomed</a></span>(<span class="st">"flights_plane_type"</span>)
 <span class="co"># this is how the table looks now</span>
-<span class="no">joined_flights_dm</span>$<span class="no">flights_plane_type</span></pre></body></html></div>
+<span class="kw">joined_flights_dm</span><span class="op">$</span><span class="kw">flights_plane_type</span>
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 11</span><span>
 #&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
@@ -473,8 +501,10 @@
 #&gt; </span><span style="color: #555555;"># … with 11,217 more rows, and 2 more variables: dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
 #&gt; </span><span style="color: #555555;">#   plane_type </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="co"># also here, the FK-relations are transferred to the new table</span>
-<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="no">joined_flights_dm</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="co"># also here, the FK-relations are transferred to the new table</span>
+<span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>(<span class="kw">joined_flights_dm</span>)
+</pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="270pt" height="236pt" viewbox="0.00 0.00 270.00 236.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 232)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -497,11 +527,13 @@
 <h3 class="hasAnchor">
 <a href="#tip-accessing-the-zoomed-table" class="anchor"></a>Tip: Accessing the zoomed table</h3>
 <p>At each point you can retrieve the zoomed table by calling <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> on a <code>zoomed_dm</code>. To use our last example once more:</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">flights_dm</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="no">flights</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">dep_delay</span>:-<span class="no">arr_delay</span>, -<span class="no">air_time</span>:-<span class="no">time_hour</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">planes</span>, <span class="kw">select</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">tailnum</span>, <span class="kw">plane_type</span> <span class="kw">=</span> <span class="no">type</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="kw">flights_dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span>(<span class="kw">flights</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span><span class="kw">dep_delay</span><span class="op">:</span><span class="op">-</span><span class="kw">arr_delay</span>, <span class="op">-</span><span class="kw">air_time</span><span class="op">:</span><span class="op">-</span><span class="kw">time_hour</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">planes</span>, select = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">tailnum</span>, plane_type = <span class="kw">type</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/pull_tbl.html">pull_tbl</a></span>()
+</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 11</span><span>
 #&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
@@ -546,7 +578,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
