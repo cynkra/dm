@@ -53,11 +53,11 @@ dm_has_financial <- function() {
 
   # Connectivity:
   try_connect <- try(dm_financial(), silent = TRUE)
-  if (class(try_connect) == "try-error") return(FALSE)
+  if (inherits(try_connect, "try-error")) return(FALSE)
 
   # Accessing the connection:
-  try_count <- try(collect(count(dm_financial()$district)), silent = TRUE)
-  if (class(try_count) == "try-error") return(FALSE)
+  try_count <- try(collect(count(dm_financial()$districts)), silent = TRUE)
+  if (inherits(try_connect, "try-error")) return(FALSE)
 
   TRUE
 }
