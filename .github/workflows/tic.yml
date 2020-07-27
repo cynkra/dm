@@ -23,9 +23,7 @@ jobs:
         config:
           # Custom configs
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true, id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS", cache: "dev" }
-          # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", id: "default" }
+          - { os: macOS-latest, r: "release", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true, id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS", cache: "dev" }
           # [Custom matrix env var]
           - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
           # [Custom matrix env var]
