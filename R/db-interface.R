@@ -20,7 +20,7 @@
 #' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
-#'    Can be `NULL`, a named character vector, a function or a one-sided formula.
+#'   Can be `NULL`, a named character vector, a function or a one-sided formula.
 #'
 #'   If left `NULL` (default), the names will be determined automatically depending on the `temporary` argument:
 #'
@@ -112,29 +112,50 @@ copy_dm_to <- function(dest, dm, ...,
     }
   }
 
-  # in case `table_names` was chosen by the user, check if the input makes sense:
-  # 1. is there one name per dm-table?
-  # 2. are there any duplicated table names?
-  # 3. is it a named character or ident_q vector with the correct names?
-  if (is_null(table_names)) {
-    table_names <- repair_table_names_for_db(src_tbls(dm), temporary)
-  } else {
-    if (is_function(table_names) || is_bare_formula(table_names)) {
-      table_name_fun <- as_function(table_names)
-      table_names <- set_names(table_name_fun(src_tbls(dm)), src_tbls(dm))
-    }
-    check_naming(names(table_names), src_tbls(dm))
-  }
+  dest <- src_from_src_or_con(dest)
+  src_names <- src_tbls(dm)
 
-  # create `ident`-class objects from the table names
-  table_names <- map(table_names[src_tbls(dm)], dbplyr::ident_q)
+  if (is_db(dest)) {
+    dest_con <- con_from_src_or_con(dest)
+
+    # in case `table_names` was chosen by the user, check if the input makes sense:
+    # 1. is there one name per dm-table?
+    # 2. are there any duplicated table names?
+    # 3. is it a named character or ident_q vector with the correct names?
+    if (is.null(table_names)) {
+      table_names <- repair_table_names_for_db(src_names, temporary, dest_con)
+
+      # https://github.com/tidyverse/dbplyr/issues/487
+      if (is_mssql(dest)) {
+        temporary <- FALSE
+      }
+    } else {
+      src_names_quoted <- quote_ids(set_names(src_names), dest_con)
+
+      if (is_function(table_names) || is_bare_formula(table_names)) {
+        table_name_fun <- as_function(table_names)
+        table_names <- set_names(table_name_fun(src_names_quoted), src_names)
+      }
+      check_naming(names(table_names), src_names)
+    }
+
+    # create `ident`-class objects from the table names
+    table_names <- map(table_names[src_names], dbplyr::ident_q)
+  } else {
+    # FIXME: Other data sources than local and database possible
+    if (!is.null(table_names)) {
+      lifecycle::deprecate_soft(
+        "0.1.6", "copy_dm_to(table_names = 'must be NULL if copying to a local source')"
+      )
+    }
+    table_names <- set_names(src_names)
+  }
 
   check_not_zoomed(dm)
 
   # FIXME: if same_src(), can use compute() but need to set NOT NULL
   # constraints
 
-  dest <- src_from_src_or_con(dest)
   dm <- collect(dm)
 
   copy_data <- build_copy_data(dm, dest, table_names)
