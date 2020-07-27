@@ -78,3 +78,18 @@ test_repair_table_names_for_db <- function(table_names, temporary) {
     }
   )
 }
+
+test_that("table identifiers are quoted", {
+  skip_if_local_src()
+
+  # Implicitly created with copy_dm_to()
+  dm <- dm_test_obj()
+  remote_names <-
+    dm %>%
+    dm_get_tables() %>%
+    map_chr(dbplyr::remote_name)
+
+  con <- dm_get_con(dm)
+  pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_]+"))
+  expect_true(all(grepl(pattern, remote_names)))
+})
