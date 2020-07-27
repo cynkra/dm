@@ -83,13 +83,9 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
     src_tbl_names <- table_names
   }
 
-  quoted_src_table_names <- map(
-    src_tbl_names,
-    ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
-  )
-
   tbls <-
-    set_names(quoted_src_table_names, src_tbl_names) %>%
+    set_names(src_tbl_names) %>%
+    quote_ids(con) %>%
     map(possibly(tbl, NULL), src = src)
 
   bad <- map_lgl(tbls, is_null)
@@ -105,6 +101,12 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   new_dm(tbls)
 }
 
+quote_ids <- function(x, con) {
+  map(
+    x,
+    ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
+  )
+}
 
 # Errors ------------------------------------------------------------------
 
