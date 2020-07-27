@@ -2,8 +2,12 @@
 ## revision date: 2020-05-21
 on:
   push:
+    branches:
+    - master
+    - docs
   pull_request:
-  # for now, CRON jobs only run on the default branch of the repo (i.e. usually on master)
+    branches:
+    - master
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron: "0 4 * * *"
