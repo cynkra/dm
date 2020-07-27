@@ -83,7 +83,10 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
     src_tbl_names <- table_names
   }
 
-  quoted_src_table_names <- DBI::dbQuoteIdentifier(con, src_tbl_names)
+  quoted_src_table_names <- map(
+    src_tbl_names,
+    ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
+  )
 
   tbls <-
     set_names(quoted_src_table_names, src_tbl_names) %>%
