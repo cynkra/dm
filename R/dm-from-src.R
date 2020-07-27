@@ -46,6 +46,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   }
   # both DBI-Connection and {dplyr}-src object are accepted
   src <- src_from_src_or_con(src)
+  con <- con_from_src_or_con(src)
 
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
     dm_learned <- dm_learn_from_db(src, ...)
@@ -76,14 +77,16 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
     }
   }
 
-  src_tbl_names <- unique(src_tbls(src))
-  if (!is_null(table_names)) {
+  if (is_null(table_names)) {
+    src_tbl_names <- unique(src_tbls(src))
+  } else {
     src_tbl_names <- table_names
   }
 
+  quoted_src_table_names <- DBI::dbQuoteIdentifier(con, src_tbl_names)
+
   tbls <-
-    src_tbl_names %>%
-    set_names() %>%
+    set_names(quoted_src_table_names, src_tbl_names) %>%
     map(possibly(tbl, NULL), src = src)
 
   bad <- map_lgl(tbls, is_null)

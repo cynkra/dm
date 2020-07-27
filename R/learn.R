@@ -56,14 +56,17 @@ dm_learn_from_db <- function(dest, ...) {
     dbGetQuery(con, sql) %>%
     as_tibble()
   if (nrow(overview) == 0) {
-    return(NULL)
-  } else {
-    overview <- arrange(overview, table)
+    return()
   }
 
-  table_names <- overview %>%
+  table_names <-
+    overview %>%
+    arrange(table) %>%
     select(schema, table) %>%
-    transmute(name = table, value = schema_if(schema, table)) %>%
+    transmute(
+      name = table,
+      value = schema_if(schema, DBI::dbQuoteIdentifier(con, table))
+    ) %>%
     deframe()
 
   # FIXME: Use tbl_sql(vars = ...)

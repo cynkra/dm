@@ -29,7 +29,7 @@
 #'
 #'   If a function or one-sided formula, `table_names` is converted to a function
 #'   using [rlang::as_function()].
-#'   This function is called with the table names of the `dm` object
+#'   This function is called with the quoted table names of the `dm` object
 #'   as the only argument, and is expected to return a character vector
 #'   of the same length.
 #'   Use `table_names = ~ dbplyr::in_schema("schema_name", .x)`
@@ -39,9 +39,12 @@
 #'
 #'   If a named character vector,
 #'   the names of this vector need to correspond to the table names in the `dm`,
-#'   and its values are the desired names on `dest`.
+#'   and its values are the desired names on `dest`, quoted.
 #'   Use qualified names corresponding to your database's syntax
 #'   to specify e.g. database and schema for your tables.
+#'
+#'   All object names must be quoted with [DBI::dbQuoteIdentifier()]
+#'   to avoid SQL syntax errors.
 #' @param ... Passed on to [dplyr::copy_to()], which is used on each table.
 #'
 #' @family DB interaction functions
