@@ -1,9 +1,9 @@
 # dm 0.1.5.9001
 
 - `dm_financial()` no longer prints message about `learn_keys = FALSE`.
-- Examples involving `dm_financial()` are not run if connection can't be established.
+- Examples involving `dm_financial()` are not run if connection can't be established (#418).
 - `dm_rows_update()` and related functions now use the primary keys defined in `x` for establishing matching rows.
-- new function 'dm_bind()' for binding two or more 'dm' objects together
+- New `dm_bind()` for binding two or more 'dm' objects together (#417).
 - Fix database tests on CI (#416).
 
 
