@@ -14,8 +14,7 @@ eval_select_table_indices <- function(quo, table_names, unique = TRUE) {
   tryCatch(
     eval_select_indices(quo, table_names, unique = unique),
     vctrs_error_subscript = function(cnd) {
-      # https://github.com/r-lib/vctrs/issues/786
-      cnd$subscript_elt <- "element"
+      cnd$subscript_elt <- "table"
       cnd_signal(cnd)
     }
   )
@@ -25,8 +24,7 @@ eval_rename_table_indices <- function(quo, table_names) {
   tryCatch(
     eval_rename_indices(quo, table_names),
     vctrs_error_subscript = function(cnd) {
-      # https://github.com/r-lib/vctrs/issues/786
-      cnd$subscript_elt <- "element"
+      cnd$subscript_elt <- "table"
       cnd_signal(cnd)
     }
   )
