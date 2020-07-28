@@ -1,0 +1,8 @@
+> dm_nycflights13() %>% dm_select_tbl(zeppelins)
+Error: Can't subset tables that don't exist.
+x Table `zeppelins` doesn't exist.
+
+> dm_nycflights13() %>% dm_rename_tbl(vessels = zeppelins)
+Error: Can't rename tables that don't exist.
+x Table `zeppelins` doesn't exist.
+

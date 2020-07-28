@@ -17,3 +17,11 @@ test_that("tidyselecting tables works", {
     set_names(table_names, c("table_1_new", "table_2", "table_3_new"))
   )
 })
+
+verify_output("out/tidyselect.txt", {
+  dm_nycflights13() %>%
+    dm_select_tbl(zeppelins)
+
+  dm_nycflights13() %>%
+    dm_rename_tbl(vessels = zeppelins)
+})
