@@ -166,6 +166,11 @@ copy_dm_to <- function(dest, dm, ...,
 
   dm <- collect(dm)
 
+  # Shortcut necessary to avoid copying into .GlobalEnv
+  if (!is_db(dest)) {
+    return(dm)
+  }
+
   copy_data <- build_copy_data(dm, dest, table_names_out)
 
   new_tables <- copy_list_of_tables_to(
