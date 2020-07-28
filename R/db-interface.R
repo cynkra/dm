@@ -29,22 +29,27 @@
 #'
 #'   If a function or one-sided formula, `table_names` is converted to a function
 #'   using [rlang::as_function()].
-#'   This function is called with the quoted table names of the `dm` object
-#'   as the only argument, and is expected to return a character vector
-#'   of the same length.
-#'   Use `table_names = ~ dbplyr::in_schema("schema_name", .x)`
+#'   This function is called with the unquoted table names of the `dm` object
+#'   as the only argument.
+#'   The output of this function is processed by [DBI::dbQuoteIdentifier()],
+#'   that result should be a vector of identifiers of the same length
+#'   as the original table names.
+#'
+#'   Use a variant of
+#'   `table_names = ~ DBI::SQL(dbplyr::in_schema("schema_name", .x))`
 #'   to specify the same schema for all tables.
 #'   Use `table_names = identity` with `temporary = TRUE`
 #'   to avoid giving temporary tables unique names.
 #'
 #'   If a named character vector,
 #'   the names of this vector need to correspond to the table names in the `dm`,
-#'   and its values are the desired names on `dest`, quoted.
+#'   and its values are the desired names on `dest`.
+#'   The value is processed by [DBI::dbQuoteIdentifier()],
+#'   that result should be a vector of identifiers of the same length
+#'   as the original table names.
+#'
 #'   Use qualified names corresponding to your database's syntax
 #'   to specify e.g. database and schema for your tables.
-#'
-#'   All object names must be quoted with [DBI::dbQuoteIdentifier()]
-#'   to avoid SQL syntax errors.
 #' @param ... Passed on to [dplyr::copy_to()], which is used on each table.
 #'
 #' @family DB interaction functions
@@ -123,24 +128,27 @@ copy_dm_to <- function(dest, dm, ...,
     # 2. are there any duplicated table names?
     # 3. is it a named character or ident_q vector with the correct names?
     if (is.null(table_names)) {
-      table_names <- repair_table_names_for_db(src_names, temporary, dest_con)
+      table_names_out <- repair_table_names_for_db(src_names, temporary, dest_con)
 
       # https://github.com/tidyverse/dbplyr/issues/487
       if (is_mssql(dest)) {
         temporary <- FALSE
       }
     } else {
-      src_names_quoted <- quote_ids(set_names(src_names), dest_con)
-
       if (is_function(table_names) || is_bare_formula(table_names)) {
         table_name_fun <- as_function(table_names)
-        table_names <- set_names(table_name_fun(src_names_quoted), src_names)
+        table_names_out <- set_names(table_name_fun(src_names), src_names)
+      } else {
+        table_names_out <- table_names
       }
-      check_naming(names(table_names), src_names)
+      check_naming(names(table_names_out), src_names)
+
+      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
+      # names(table_names_out) <- src_names
     }
 
     # create `ident`-class objects from the table names
-    table_names <- map(table_names[src_names], dbplyr::ident_q)
+    table_names_out <- map(table_names_out, dbplyr::ident_q)
   } else {
     # FIXME: Other data sources than local and database possible
     if (!is.null(table_names)) {
@@ -148,7 +156,7 @@ copy_dm_to <- function(dest, dm, ...,
         "0.1.6", "copy_dm_to(table_names = 'must be NULL if copying to a local source')"
       )
     }
-    table_names <- set_names(src_names)
+    table_names_out <- set_names(src_names)
   }
 
   check_not_zoomed(dm)
@@ -158,7 +166,7 @@ copy_dm_to <- function(dest, dm, ...,
 
   dm <- collect(dm)
 
-  copy_data <- build_copy_data(dm, dest, table_names)
+  copy_data <- build_copy_data(dm, dest, table_names_out)
 
   new_tables <- copy_list_of_tables_to(
     dest,
