@@ -248,6 +248,11 @@ ungroup.zoomed_dm <- function(x, ...) {
   replace_zoomed_tbl(x, ungrouped_tbl)
 }
 
+#' @export
+summarise.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
 #' @rdname dplyr_table_manipulation
 #' @export
 summarise.zoomed_dm <- function(.data, ...) {
@@ -257,11 +262,6 @@ summarise.zoomed_dm <- function(.data, ...) {
   summarized_tbl <- summarize(tbl, ...)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
-}
-
-#' @export
-summarise.dm <- function(.data, ...) {
-  check_zoomed(.data)
 }
 
 #' @export
