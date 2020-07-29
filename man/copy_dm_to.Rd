@@ -42,10 +42,14 @@ If left \code{NULL} (default), the names will be determined automatically depend
 
 If a function or one-sided formula, \code{table_names} is converted to a function
 using \code{\link[rlang:as_function]{rlang::as_function()}}.
-This function is called with the table names of the \code{dm} object
-as the only argument, and is expected to return a character vector
-of the same length.
-Use \code{table_names = ~ dbplyr::in_schema("schema_name", .x)}
+This function is called with the unquoted table names of the \code{dm} object
+as the only argument.
+The output of this function is processed by \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}},
+that result should be a vector of identifiers of the same length
+as the original table names.
+
+Use a variant of
+\code{table_names = ~ DBI::SQL(dbplyr::in_schema("schema_name", .x))}
 to specify the same schema for all tables.
 Use \code{table_names = identity} with \code{temporary = TRUE}
 to avoid giving temporary tables unique names.
@@ -53,6 +57,10 @@ to avoid giving temporary tables unique names.
 If a named character vector,
 the names of this vector need to correspond to the table names in the \code{dm},
 and its values are the desired names on \code{dest}.
+The value is processed by \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}},
+that result should be a vector of identifiers of the same length
+as the original table names.
+
 Use qualified names corresponding to your database's syntax
 to specify e.g. database and schema for your tables.}
 
