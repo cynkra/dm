@@ -93,7 +93,7 @@ To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters 
 dm(trees, mtcars)
 new_dm(list(trees = trees, mtcars = mtcars))
 as_dm(list(trees = trees, mtcars = mtcars))
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 dm_nycflights13() \%>\% tbl("airports")
 dm_nycflights13() \%>\% src_tbls()
