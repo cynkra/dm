@@ -32,13 +32,13 @@ As in the previous tutorial, `vignette("howto-dm-copy")`, we start by using a co
 
 ``````{r }
 library(dm)
-dm_sqlite <- dm_financial_sqlite()
-dm_sqlite
-dm_nrow(dm_sqlite)
-
-dm_empty <- dm_ptype(dm_sqlite)
-dm_empty
-dm_nrow(dm_empty)
+# dm_sqlite <- dm_financial_sqlite()
+# dm_sqlite
+# dm_nrow(dm_sqlite)
+# 
+# dm_empty <- dm_ptype(dm_sqlite)
+# dm_empty
+# dm_nrow(dm_empty)
 ``````
 
 Note the Table Source portion when printing each of the dm objects.
@@ -50,10 +50,10 @@ As `dm_rows_insert()` requires primary keys to be unique, we will first find the
 ``````{r }
 library(dplyr)
 
-new_id <- 
-  dm_sqlite$accounts %>% 
-  summarize(new_id = max(id, na.rm = TRUE) + 1L) %>% 
-  pull()
+# new_id <- 
+#   dm_sqlite$accounts %>% 
+#   summarize(new_id = max(id, na.rm = TRUE) + 1L) %>% 
+#   pull()
 ``````
 
 `summarize()` returns a new data frame with a single row and a single column, `new_id`.
@@ -67,9 +67,9 @@ Then we create a new dm object with a single table, `accounts`, with this tibble
 
 ```````{r }
 
-new_account <- tibble(id = new_id, district_id = 18, frequency = "POPLATEK MESICNE", date = 9736)
-dm_data <- dm(accounts = new_account)
-dm_data
+# new_account <- tibble(id = new_id, district_id = 18, frequency = "POPLATEK MESICNE", date = 9736)
+# dm_data <- dm(accounts = new_account)
+# dm_data
 ``````
 
 Note that the src for dm_data is the R environment as it is a local object.
@@ -79,11 +79,11 @@ To achieve this we retrieve the RDBMS connection used by `dm_sqlite` and copy ou
 
 ``````{r }
 
-dest_src <- dm_get_con(dm_sqlite) 
-dm_data_sqlite <- 
-  dm_data %>%
-  copy_dm_to(dest_src, .)
-dm_data_sqlite
+# dest_src <- dm_get_con(dm_sqlite) 
+# dm_data_sqlite <- 
+#   dm_data %>%
+#   copy_dm_to(dest_src, .)
+# dm_data_sqlite
 
 ``````
 
@@ -95,12 +95,12 @@ We first do a test run that returns a new dm object showing the result of the op
 We can verify this by inspecting the `dm_sqlite` object to see its row counts have not changed.
 
 ``````{r }
-dm_sqlite %>% 
-  dm_rows_insert(dm_data_sqlite) %>% 
-  dm_nrow()
-
-dm_sqlite %>% 
-  dm_nrow()
+# dm_sqlite %>% 
+#   dm_rows_insert(dm_data_sqlite) %>% 
+#   dm_nrow()
+# 
+# dm_sqlite %>% 
+#   dm_nrow()
 
 ``````
 
@@ -110,11 +110,11 @@ Now, on inspection, dm_sqlite shows an increased row count.
 This change will now persist across RDBMS sessions, while `dm_data_sqlite` will be deleted when the current session is closed. 
 
 ``````{r }
-dm_sqlite %>% 
-  dm_rows_insert(dm_data_sqlite, in_place = TRUE)
-
-dm_sqlite %>% 
-  dm_nrow()
+# dm_sqlite %>% 
+#   dm_rows_insert(dm_data_sqlite, in_place = TRUE)
+# 
+# dm_sqlite %>% 
+#   dm_nrow()
 ``````
 
 
@@ -136,10 +136,10 @@ If you are copying the data to deploy it or to persist it, read XXXX.
 ``````{r }
 
 library(dm)
-dm_sqlite <- dm_financial_sqlite()
-dm_sqlite
-
-accounts <- pull_tbl(dm_sqlite,accounts)
+# dm_sqlite <- dm_financial_sqlite()
+# dm_sqlite
+# 
+# accounts <- pull_tbl(dm_sqlite,accounts)
 
 ``````
 
@@ -187,6 +187,11 @@ Note the foreign key of `NA` in the `child` tibble.
 {dm} doesn't check your key values when you create a dm.
 You may want to use `dm_examine_constraints()` after it is created.
 
+Be aware that when using `dm_examine_constraints()` foreign keys may be NULL (`NA`).
+Null foreign keys are counted as a match. 
+In some cases this doesn't make sense and non-NULL columns should be enforced by the RDBMS. 
+Currently {dm} does not specify or check non-NULL constraints for columns.
+
 ``````{r }
 parent <- tibble(value=c('A', 'B', 'C'), pk=1:3)
 child <- tibble(value=c('a', 'b', 'c'), pk=1:3, fk=c(1,1,NA))
@@ -201,12 +206,13 @@ dm_examine_constraints(demo_dm)
 ``````
 
 Table modification methods work as expected on local dm objects, returning a new dm with the modifications in place.
-dm objects whose src is a database treat all operations as temporary unless you state explicitly by argument to commit them. 
-To demonstrate this we will copy `demo_dm` into an SQLite database.
+dm objects whose source is a database treat all operations as temporary unless you state explicitly by including the argument `temporary=FALSE` to commit them. 
+
+Below we copy `demo_dm` into an SQLite database.
 
 ``````{r }
 library(DBI)
-sqlite_db <- DBI::dbConnect(RSQLite::SQLite())
+sqlite_db <- DBI::dbConnect(RSQLite::SQLite(":memory:"))
 demo_sql <- copy_dm_to(sqlite_db, demo_dm, temporary=FALSE)
 demo_sql
 
@@ -214,7 +220,7 @@ demo_sql
 
 # Insert
 
-To demonstrate `dm_rows_insert()` we create a dm containing tables holding the rows we want to insert and copy it to `sqlite_db`, the same source as `demo_sql`.
+To demonstrate `dm_rows_insert()` we create a dm with tables containing the rows we want to insert and copy it to `sqlite_db`, the same source as `demo_sql`.
 We are going to add `parent` and `child` table entries for the letter "D".
 
 ``````{r }
@@ -226,7 +232,8 @@ demo_sql$child
 
 ``````
 
-This gives us a warning that changes will not be persisted, and inspecting the `child` table of the resulting dm and `demo_sql`, we can see that's exactly what happened. 
+This gives us a warning that changes will not be persisted, and inspecting the `child` table of the resulting `dm_d` and `demo_sql`, we can see that's exactly what happened.
+{dm} returned to us a dm object with our inserted rows in place, but the underlying database has not changed.
 
 We repeat the operation, this time with the argument `in_place=TRUE` and the changes now persist in`demo_sql`.
 
@@ -239,7 +246,7 @@ demo_sql$child
 # Update
 
 `dm_rows_update()` works the same as `dm_rows_insert()`.
-We create the dm object and copy it the same source as the destination.
+We create the dm object and copy it to the same source as the destination.
 Here we will change the foreign key for the row in `child` containing "b" to point to the correct row in `parent`.
 And we will persist the changes.
 
@@ -255,7 +262,7 @@ demo_sql$child
 
 # Delete
 
-`dm_rows_delete()` is not currently implemented to work with RDBMS, so we will shift our demonstrations back to the local R environment.
+`dm_rows_delete()` is not currently implemented to work with an RDBMS, so we will shift our demonstrations back to the local R environment.
 We've made changes to `demo_sql` so we use `collect()` to copy the current tables from SQLite.
 Then we undo the `dm_rows_insert()` we did previously by using the same dm definition to supply the rows to be deleted.
 Note that persistence is not a concern with local dms. 
@@ -286,7 +293,7 @@ dm_patched$child
 ``````
 
 These operations can be piped together in a sequence.
-This is normally how you would use {dm}: building up a sequence of operations using temporary results until it is complete and correct.
+This is normally how you would use {dm} - building up a sequence of operations using temporary results until it is complete and correct.
 For clarity we are using the result from each previous operation as the destination for the operation that follows so our changes our cumulative.
 
 # Upsert
@@ -305,7 +312,12 @@ dm_upserted$child
 
 
 ``````{r }
+
 # Truncate
+dm_truncated <- dm(parent=tibble(value='D', pk=4)) %>%
+                dm_rows_truncate(dm_upserted, .)
+dm_truncated$parent
+dm_truncated$child
 
 ``````
 
