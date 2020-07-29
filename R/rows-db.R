@@ -19,7 +19,7 @@
 #' By default, an informative message is given.
 #' Unlike [compute()] or [copy_to()], no new tables are created.
 #'
-#' @inheritParams rows
+#' @inheritParams dplyr::rows_insert
 #' @param check
 #'   Set to `TRUE` to always check keys, or `FALSE` to never check.
 #'   The default is to check only if `in_place` is `TRUE` or `NULL`.
@@ -195,7 +195,7 @@ sql_rows_update <- function(x, y, by, ...) {
 }
 
 #' @export
-sql_rows_update.tbl_sql <- function(x, y, by, ...) {
+sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)

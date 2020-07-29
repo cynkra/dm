@@ -25,6 +25,11 @@
 \alias{src_tbls}
 \alias{tbl}
 \alias{arrange}
+\alias{rows_insert}
+\alias{rows_update}
+\alias{rows_patch}
+\alias{rows_upsert}
+\alias{rows_delete}
 \alias{unite}
 \alias{separate}
 \title{Objects exported from other packages}
@@ -34,7 +39,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{anti_join}}, \code{\link[dplyr]{arrange}}, \code{\link[dplyr]{collect}}, \code{\link[dplyr]{compute}}, \code{\link[dplyr]{copy_to}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr]{full_join}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr]{inner_join}}, \code{\link[dplyr]{left_join}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{rename}}, \code{\link[dplyr]{right_join}}, \code{\link[dplyr]{select}}, \code{\link[dplyr]{semi_join}}, \code{\link[dplyr]{src_tbls}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr]{summarize}}, \code{\link[dplyr]{tbl}}, \code{\link[dplyr]{transmute}}, \code{\link[dplyr]{ungroup}}}
+  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{anti_join}}, \code{\link[dplyr]{arrange}}, \code{\link[dplyr]{collect}}, \code{\link[dplyr]{compute}}, \code{\link[dplyr]{copy_to}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr]{full_join}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr]{inner_join}}, \code{\link[dplyr]{left_join}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{rename}}, \code{\link[dplyr]{right_join}}, \code{\link[dplyr]{rows_delete}}, \code{\link[dplyr]{rows_insert}}, \code{\link[dplyr]{rows_patch}}, \code{\link[dplyr]{rows_update}}, \code{\link[dplyr]{rows_upsert}}, \code{\link[dplyr]{select}}, \code{\link[dplyr]{semi_join}}, \code{\link[dplyr]{src_tbls}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr]{summarize}}, \code{\link[dplyr]{tbl}}, \code{\link[dplyr]{transmute}}, \code{\link[dplyr]{ungroup}}}
 
   \item{tidyr}{\code{\link[tidyr]{separate}}, \code{\link[tidyr]{unite}}}
 }}

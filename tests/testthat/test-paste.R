@@ -4,6 +4,8 @@ test_that("path argument", {
   expect_identical(readLines(path), "dm()")
 })
 
+local_options(lifecycle_verbosity = "warning")
+
 verify_output("out/code_from_paste.txt", {
   "empty"
   empty_dm() %>% dm_paste()

@@ -9,7 +9,7 @@ test_that("Learning from MSSQL works?", {
   # create an object on the MSSQL-DB that can be learned
   if (!any(src_tbls(src_mssql) %>%
     grepl("^tf_1_", .))) {
-    copy_dm_to(src_mssql, dm_for_filter(), unique_table_names = TRUE, temporary = FALSE)
+    copy_dm_to(src_mssql, dm_for_filter(), temporary = FALSE, table_names = unique_db_table_name)
   }
 
   dm_for_filter_mssql_learned <- dm_from_src(src_mssql)
@@ -39,7 +39,7 @@ test_that("Learning from Postgres works?", {
 
   # create an object on the Postgres-DB that can be learned
   if (is_postgres_empty()) {
-    copy_dm_to(con_postgres, dm_for_filter(), unique_table_names = TRUE, temporary = FALSE)
+    copy_dm_to(con_postgres, dm_for_filter(), temporary = FALSE, table_names = unique_db_table_name)
   }
 
   dm_for_filter_postgres_learned <- dm_from_src(src_postgres)

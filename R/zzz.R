@@ -10,20 +10,4 @@
   weather_subset <<- memoise::memoise(weather_subset, cache = cache_attach())
 
   register_pkgdown_methods()
-
-  pkg <- replace_if_dplyr_has(rows_insert)
-  replace_if_dplyr_has(rows_update)
-  replace_if_dplyr_has(rows_patch)
-  replace_if_dplyr_has(rows_upsert)
-  replace_if_dplyr_has(rows_delete)
-  register_if_dplyr_hasnt(rows_insert.data.frame)
-  register_if_dplyr_hasnt(rows_update.data.frame)
-  register_if_dplyr_hasnt(rows_patch.data.frame)
-  register_if_dplyr_hasnt(rows_upsert.data.frame)
-  register_if_dplyr_hasnt(rows_delete.data.frame)
-
-  if (pkg == "dplyr") {
-    vctrs::s3_register("dplyr::rows_insert", "tbl_dbi")
-    vctrs::s3_register("dplyr::rows_update", "tbl_dbi")
-  }
 }
