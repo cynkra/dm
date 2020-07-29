@@ -1,32 +1,29 @@
 # dm 0.1.6
 
-- Same as previous version.
-
-
-# dm 0.1.5.9002
+## Breaking changes
 
 - `dm_get_src()` returns `NULL` for local data sources (#394).
-- `dm` objects with local data sources no longer show the "Table source" part in the output.
-- `copy_dm_to()` gives a better error message for bad `table_names` (#397).
 - Local target in `copy_dm_to()` gives a deprecation message (#395).
-- Use `withCallingHandlers()` where appropriate (#422).
-- For databases, the underlying SQL table names are quoted early to avoid later SQL syntax errors (#419).
+
+## Features
+
+- `copy_dm_to()` gives a better error message for bad `table_names` (#397).
+- `dm` objects with local data sources no longer show the "Table source" part in the output.
 - Error messages now refer to "tables", not "elements" (#413).
-- Consistent definition of `.dm` and `.zoomed_dm` methods (#300).
-
-
-# dm 0.1.5.9001
-
-- `dm_financial()` no longer prints message about `learn_keys = FALSE`.
-- Examples involving `dm_financial()` are not run if connection can't be established (#418).
-- `dm_rows_update()` and related functions now use the primary keys defined in `x` for establishing matching rows.
 - New `dm_bind()` for binding two or more 'dm' objects together (#417).
+
+## Bug fixes
+
+- For databases, the underlying SQL table names are quoted early to avoid later SQL syntax errors (#419).
+- `dm_financial()` no longer prints message about `learn_keys = FALSE`.
+- `dm_rows_update()` and related functions now use the primary keys defined in `x` for establishing matching rows.
+
+## Internal
+
+- Use `withCallingHandlers()` where appropriate (#422).
+- Consistent definition of `.dm` and `.zoomed_dm` methods (#300).
+- Examples involving `dm_financial()` are not run if connection can't be established (#418).
 - Fix database tests on CI (#416).
-
-
-# dm 0.1.5.9000
-
-- Internal changes only.
 
 
 # dm 0.1.5
