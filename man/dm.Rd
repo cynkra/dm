@@ -45,7 +45,8 @@ For \code{dm()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
 
 For \code{validate_dm()}: Returns the \code{dm}, invisibly, after finishing all checks.
 
-For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object.
+For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object,
+or \code{NULL} if the \code{dm} objcet contains data frames.
 
 For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
 
