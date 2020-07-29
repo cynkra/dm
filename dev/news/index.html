@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.5.9002</span>
       </span>
     </div>
 
@@ -170,6 +170,24 @@
       <small>Source: <a href='https://github.com/krlmlr/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-0159002" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.5.9002">
+<a href="#dm-0159002" class="anchor"></a>dm 0.1.5.9002<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/dm.html">dm_get_src()</a></code> returns <code>NULL</code> for local data sources (<a href='https://github.com/krlmlr/dm/issues/394'>#394</a>).</li>
+<li>
+<code>dm</code> objects with local data sources no longer show the “Table source” part in the output.</li>
+<li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gives a better error message for bad <code>table_names</code> (<a href='https://github.com/krlmlr/dm/issues/397'>#397</a>).</li>
+<li>Local target in <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gives a deprecation message (<a href='https://github.com/krlmlr/dm/issues/395'>#395</a>).</li>
+<li>Use <code><a href="https://rdrr.io/r/base/conditions.html">withCallingHandlers()</a></code> where appropriate (<a href='https://github.com/krlmlr/dm/issues/422'>#422</a>).</li>
+<li>For databases, the underlying SQL table names are quoted early to avoid later SQL syntax errors (<a href='https://github.com/krlmlr/dm/issues/419'>#419</a>).</li>
+<li>Error messages now refer to “tables”, not “elements” (<a href='https://github.com/krlmlr/dm/issues/413'>#413</a>).</li>
+<li>Consistent definition of <code>.dm</code> and <code>.zoomed_dm</code> methods (<a href='https://github.com/krlmlr/dm/issues/300'>#300</a>).</li>
+</ul>
+</div>
     <div id="dm-0159001" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.5.9001">
 <a href="#dm-0159001" class="anchor"></a>dm 0.1.5.9001<small> Unreleased </small>
