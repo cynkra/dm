@@ -156,11 +156,10 @@ copy_dm_to <- function(dest, dm, ...,
     table_names_out <- map(table_names_out, dbplyr::ident_q)
   } else {
     # FIXME: Other data sources than local and database possible
-    if (!is.null(table_names)) {
-      lifecycle::deprecate_soft(
-        "0.1.6", "dm::copy_dm_to(table_names = 'must be NULL if copying to a local source')"
-      )
-    }
+    lifecycle::deprecate_soft(
+      "0.1.6", "dm::copy_dm_to(dest = 'must refer to a remote data source')",
+      "dm::collect.dm()"
+    )
     table_names_out <- set_names(src_names)
   }
 

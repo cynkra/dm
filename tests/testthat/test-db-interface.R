@@ -18,7 +18,9 @@ test_that("copy_dm_to() copies data frames to databases", {
 
 test_that("copy_dm_to() copies data frames from any source", {
   expect_equivalent_dm(
-    copy_dm_to(default_local_src(), dm_for_filter()),
+    expect_deprecated(
+      copy_dm_to(default_local_src(), dm_for_filter())
+    ),
     dm_for_filter()
   )
 })
@@ -33,6 +35,7 @@ test_that("copy_dm_to() copies to SQLite", {
 })
 
 test_that("copy_dm_to() copies from SQLite", {
+  skip_if_local_src()
   skip_if_not_installed("RSQLite")
 
   expect_equivalent_dm(
