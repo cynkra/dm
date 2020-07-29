@@ -163,9 +163,7 @@
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">dm</span>
 </pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -239,9 +237,7 @@
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span>(<span class="kw">airports</span>, <span class="kw">name</span> <span class="op">==</span> <span class="st">"John F Kennedy Intl"</span>)
 <span class="kw">filtered_dm</span>
 </pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -291,9 +287,7 @@
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span>(<span class="kw">flights</span>, <span class="kw">month</span> <span class="op">==</span> <span class="fl">5</span>)
 <span class="kw">dm_delta_may</span>
 </pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -414,29 +408,29 @@
   <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span>() <span class="op">%&gt;%</span>
   <span class="fu">map</span>(<span class="kw">dbplyr</span>::<span class="kw"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render</a></span>)
 <span class="co">#&gt; $flights</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM `flights_2020_07_29_19_59_55_1` AS `LHS`</span>
+<span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT * FROM `flights_2020_07_29_20_26_17_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_2020_07_29_19_59_55_1`</span>
+<span class="co">#&gt; FROM `airlines_2020_07_29_20_26_17_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_2020_07_29_19_59_55_1`</span>
+<span class="co">#&gt; FROM `airports_2020_07_29_20_26_17_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airlines</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_2020_07_29_19_59_55_1`</span>
+<span class="co">#&gt; FROM `airlines_2020_07_29_20_26_17_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_07_29_19_59_55_1` AS `LHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_07_29_20_26_17_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_2020_07_29_19_59_55_1`</span>
+<span class="co">#&gt; FROM `airports_2020_07_29_20_26_17_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`origin` = `RHS`.`faa`)</span>
 <span class="co">#&gt; )) AS `RHS`</span>
@@ -445,13 +439,13 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $airports</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT * FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airports_2020_07_29_19_59_55_1`</span>
+<span class="co">#&gt; FROM `airports_2020_07_29_20_26_17_1`</span>
 <span class="co">#&gt; WHERE (`name` != 'John F Kennedy Intl')) AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
-<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_07_29_19_59_55_1` AS `LHS`</span>
+<span class="co">#&gt;   SELECT 1 FROM (SELECT * FROM `flights_2020_07_29_20_26_17_1` AS `LHS`</span>
 <span class="co">#&gt; WHERE EXISTS (</span>
 <span class="co">#&gt;   SELECT 1 FROM (SELECT *</span>
-<span class="co">#&gt; FROM `airlines_2020_07_29_19_59_55_1`</span>
+<span class="co">#&gt; FROM `airlines_2020_07_29_20_26_17_1`</span>
 <span class="co">#&gt; WHERE (`name` = 'Delta Air Lines Inc.')) AS `RHS`</span>
 <span class="co">#&gt;   WHERE (`LHS`.`carrier` = `RHS`.`carrier`)</span>
 <span class="co">#&gt; )) AS `RHS`</span>

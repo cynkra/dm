@@ -316,9 +316,7 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 #&gt; </span><span style='color: #555555;'>#   dst </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, tzone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># replace table `flights` with the zoomed table</span>
 <span class='kw'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_update_zoomed</span>()</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+  <span class='fu'>dm_update_zoomed</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 61
 #&gt; Primary keys: 3
@@ -441,9 +439,7 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 <div class='input'>
 <span class='co'># discard the zoomed table</span>
 <span class='kw'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_discard_zoomed</span>()</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+  <span class='fu'>dm_discard_zoomed</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3

@@ -271,7 +271,8 @@ to be included in the <code>dm</code> object.</p></td>
 
     <p>For <code>dm()</code>, <code>new_dm()</code>, <code>as_dm()</code>: A <code>dm</code> object.</p>
 <p>For <code>validate_dm()</code>: Returns the <code>dm</code>, invisibly, after finishing all checks.</p>
-<p>For <code>dm_get_src()</code>: the <span class="pkg">dplyr</span> source for a <code>dm</code> object.</p>
+<p>For <code>dm_get_src()</code>: the <span class="pkg">dplyr</span> source for a <code>dm</code> object,
+or <code>NULL</code> if the <code>dm</code> objcet contains data frames.</p>
 <p>For <code>dm_get_con()</code>: The <code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> for <code>dm</code> objects.</p>
 <p>For <code>dm_get_tables()</code>: A named list with the tables constituting the <code>dm</code>.</p>
 <p>For <code>is_dm()</code>: Boolean, is this object a <code>dm</code>.</p>
@@ -295,21 +296,15 @@ and importing the primary and foreign keys</p></li>
 </div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm</span>(<span class='kw'>trees</span>, <span class='kw'>mtcars</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+    <pre class="examples"><div class='input'><span class='fu'>dm</span>(<span class='kw'>trees</span>, <span class='kw'>mtcars</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `trees`, `mtcars`
 #&gt; Columns: 14
 #&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>new_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(trees = <span class='kw'>trees</span>, mtcars = <span class='kw'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>new_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(trees = <span class='kw'>trees</span>, mtcars = <span class='kw'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `trees`, `mtcars`
 #&gt; Columns: 14
 #&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(trees = <span class='kw'>trees</span>, mtcars = <span class='kw'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+#&gt; Foreign keys: 0</div><div class='input'><span class='fu'>as_dm</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(trees = <span class='kw'>trees</span>, mtcars = <span class='kw'>mtcars</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `trees`, `mtcars`
 #&gt; Columns: 14
 #&gt; Primary keys: 0
@@ -327,8 +322,7 @@ and importing the primary and foreign keys</p></li>
 #&gt; </span><span style='color: #555555;'> 8</span><span> 0G7   Finger Lakes Regional A…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_Yo…
 #&gt; </span><span style='color: #555555;'> 9</span><span> 0P2   Shoestring Aviation Air…  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_Yo…
 #&gt; </span><span style='color: #555555;'>10</span><span> 0S9   Jefferson County Intl     48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_An…
-#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()</div><div class='output co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span> <span class='fu'>dm_get_src</span>()</div><div class='output co'>#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; tbls:</div><div class='input'>
+#&gt; </span><span style='color: #555555;'># … with 1,448 more rows</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/src_tbls.html'>src_tbls</a></span>()</div><div class='output co'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather" </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span> <span class='fu'>dm_get_src</span>()</div><div class='output co'>#&gt; NULL</div><div class='input'>
 <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(
   <span class='kw'>dbplyr</span>::<span class='fu'><a href='https://dbplyr.tidyverse.org/reference/memdb_frame.html'>src_memdb</a></span>(),
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
@@ -429,9 +423,7 @@ and importing the primary and foreign keys</p></li>
 #&gt; </span><span style='color: #555555;'>#   pressure </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, visib </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>
 #&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span> <span class='fu'><a href='dm_get_filters.html'>dm_get_filters</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 0 x 3</span><span>
 #&gt; </span><span style='color: #555555;'># … with 3 variables: table </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, filter </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, zoomed </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span> <span class='fu'>validate_dm</span>()
-<span class='fu'>is_dm</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()[<span class='st'>"airports"</span>]</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+<span class='fu'>is_dm</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>()[<span class='st'>"airports"</span>]</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airports`
 #&gt; Columns: 8
 #&gt; Primary keys: 1

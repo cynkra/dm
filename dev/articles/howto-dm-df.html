@@ -195,9 +195,7 @@
 <span class="kw">flights_dm_no_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span>(<span class="kw">airlines</span>, <span class="kw">airports</span>, <span class="kw">flights</span>, <span class="kw">planes</span>, <span class="kw">weather</span>)
 <span class="kw">flights_dm_no_keys</span>
 </pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 0
@@ -233,9 +231,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="kw">flights_dm_no_keys</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"airports"</span>, <span class="st">"flights"</span>)]
 </pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airports`, `flights`
 #&gt; Columns: 27
 #&gt; Primary keys: 0
@@ -280,9 +276,7 @@
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span>(<span class="kw">planes</span>, <span class="kw">tailnum</span>)
 <span class="kw">flights_dm_only_pks</span>
 </pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -333,9 +327,7 @@
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span>(<span class="kw">flights</span>, <span class="kw">origin</span>, <span class="kw">airports</span>)
 <span class="kw">flights_dm_all_keys</span>
 </pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
