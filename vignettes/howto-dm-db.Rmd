@@ -19,22 +19,26 @@ source("setup/setup.R")
 # Working with databases
 
 A dm object can be created from any database that has a {[DBI](https://dbi.r-dbi.org/)} backend ([see list](https://github.com/r-dbi/backends)).
+
 When a dm object is created it can either import all the tables in the database, the active schema or a limited set.
 For some RDBMS, such as Postgres and SQL Server, primary and foreign keys are also imported and do not have to be manually added afterwards.
 
-To demonstrate, we connect to a [relational dataset repository](https://relational.fit.cvut.cz/) with a database server that is publicly accessible without registration.
 There is a [financial dataset](https://relational.fit.cvut.cz/dataset/Financial) that contains loan data along with relevant account information and transactions.
 We chose this dataset because the relationships between `loan`, `account`, `transactions` tables are a good representation of databases that record real-world business transactions.
 The repository uses a MariaDB server for which {dm} does not currently import primary or foreign keys, so we will need to add them.
+
+The dataset is available on database server that is publicly accessible without registration.
+Connection details will vary for your database, see `vignette("DBI", package = "DBI")` for further information.
+
 
 ``````{r }
 library(RMariaDB)
 my_db <- dbConnect(
   MariaDB(),
-  username = 'guest',
-  password = 'relational',
-  dbname = 'Financial_ijs',
-  host = 'relational.fit.cvut.cz'
+  username = "guest",
+  password = "relational",
+  dbname = "Financial_ijs",
+  host = "relational.fit.cvut.cz"
 )
 ``````
 
@@ -78,6 +82,7 @@ A primary key is a column that has a unique value for each row within a table.
 A foreign key is a column containing the primary key for a row in another table.[^compound]
 Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
+For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
 
 [^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/krlmlr/dm/issues/3).
 
