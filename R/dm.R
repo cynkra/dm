@@ -371,6 +371,12 @@ dm_get_data_model_fks <- function(x) {
 dm_get_filters <- function(x) {
   check_not_zoomed(x)
 
+  deprecate_soft("0.1.6", "dm_get_filters()")
+
+  dm_get_filters_impl(x)
+}
+
+dm_get_filters_impl <- function(x) {
   filter_df <-
     dm_get_def(x) %>%
     select(table, filters) %>%
