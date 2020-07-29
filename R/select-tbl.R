@@ -49,7 +49,6 @@ dm_select_tbl_impl <- function(dm, selected, needs_repair = TRUE, repair = "uniq
   if (is_empty(selected)) {
     return(empty_dm())
   }
-  check_correct_input(dm, selected)
 
   def <-
     dm_get_def(dm) %>%

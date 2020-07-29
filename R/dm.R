@@ -576,7 +576,7 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 
 #' @export
 `$.dm` <- function(x, name) {
-  table <- dm_tbl_name(dm, {{ name }})
+  table <- dm_tbl_name(x, {{ name }})
   tbl(x, table)
 }
 
@@ -677,7 +677,7 @@ tbl.dm <- function(src, from, ...) {
   # The src argument here is a dm object
   dm <- src
   check_not_zoomed(dm)
-  check_correct_input(dm, from, 1L)
+  from <- dm_tbl_name(dm, !!from)
 
   dm_get_tables_impl(dm)[[from]]
 }

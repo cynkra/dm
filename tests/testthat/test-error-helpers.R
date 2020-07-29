@@ -6,7 +6,6 @@ test_that("error messages do not change", {
     abort_not_unique_key("Christmas", "Rudolph")
     abort_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
     abort_table_not_in_dm("laziness", "hard_work")
-    abort_table_not_in_dm(c("laziness", "daydreaming"), c("hard_work", "focus", "overtime"))
     abort_not_subset_of("playing", "game", "hunting", "game")
     abort_sets_not_equal(c("A problem occurred", "And another, even worse problem, occurred shortly after"))
     # The mentioned reasons for not being bijective and injective are the same, but this is intended:
