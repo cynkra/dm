@@ -90,6 +90,6 @@ test_that("table identifiers are quoted", {
     map_chr(dbplyr::remote_name)
 
   con <- dm_get_con(dm)
-  pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_]+"))
+  pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+"))
   expect_true(all(grepl(pattern, remote_names)))
 })
