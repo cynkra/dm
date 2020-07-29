@@ -92,7 +92,7 @@ db_learn_query <- function(dest, ...) {
 
 mssql_learn_query <- function() { # taken directly from {datamodelr}
   "select
-    NULL as [schema],
+    schema_name(tabs.schema_id) as [schema],
     tabs.name as [table],
     cols.name as [column],
     isnull(ind_col.column_id, 0) as [key],
