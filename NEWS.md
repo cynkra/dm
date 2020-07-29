@@ -1,24 +1,23 @@
 # dm 0.1.5
 
-- Same as previous version.
+## Features
 
-
-# dm 0.1.4.9002
-
-- Testing SQLite, Postgres and SQL Server on GitHub Actions (#408, @pat-s).
 - `dm_paste()` generates self-contained code (#401).
 - Errors regarding cycles in the relationship graph now show the shortest cycle (#405).
-- Avoid `src_sqlite()` in examples (#372).
 - Implement `rows_truncate()` for databases.
-- `rows_insert()` works if column names consist of SQL keywords (#409).
 - `collect()` works on a zoomed dm, with a message.
-
-
-# dm 0.1.4.9001
-
 - The data model is drawn in a more compact way if it comprises of multiple connected components.
-- Cycles in other connected components don't affect filtering in a cycle-free component.
 - `dm_add_pk(check = TRUE)` gives a better error message.
+
+## Bug fixes
+
+- `rows_insert()` works if column names consist of SQL keywords (#409).
+- Cycles in other connected components don't affect filtering in a cycle-free component.
+- Avoid `src_sqlite()` in examples (#372).
+
+## Internal
+
+- Testing SQLite, Postgres and SQL Server on GitHub Actions (#408, @pat-s).
 
 
 # dm 0.1.4.9000
