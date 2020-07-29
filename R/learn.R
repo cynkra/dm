@@ -62,7 +62,7 @@ dm_learn_from_db <- function(dest, ...) {
   table_names <-
     overview %>%
     arrange(table) %>%
-    select(schema, table) %>%
+    distinct(schema, table) %>%
     transmute(
       name = table,
       value = schema_if(schema, DBI::dbQuoteIdentifier(con, table))
