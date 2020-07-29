@@ -40,3 +40,9 @@ sql_rows_truncate.tbl_sql <- function(x, ...) {
   name <- dbplyr::remote_name(x)
   paste0("TRUNCATE TABLE ", name)
 }
+
+#' @export
+sql_rows_truncate.tbl_SQLiteConnection <- function(x, ...) {
+  name <- dbplyr::remote_name(x)
+  paste0("DELETE FROM ", name)
+}
