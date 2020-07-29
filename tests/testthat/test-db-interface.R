@@ -56,8 +56,11 @@ test_that("copy_dm_to() rejects overwrite and types arguments", {
   )
 })
 
-# set up for test: in order for the unique table names to return the same result each time, we need to trick the function
-test_repair_table_names_for_db <- function(table_names, temporary) {
+test_that("default table repair works", {
+  skip_if_local_src()
+
+  con <- con_from_src_or_con(my_test_src())
+
   orig_table_names <- c("t1", "t2", "t3")
 
   my_unique_db_table_name <- function(table_name) {
@@ -68,16 +71,16 @@ test_repair_table_names_for_db <- function(table_names, temporary) {
     unique_db_table_name = my_unique_db_table_name,
     {
       expect_equal(
-        repair_table_names_for_db(table_names, temporary = TRUE),
-        my_unique_db_table_name(table_names)
+        repair_table_names_for_db(table_names, temporary = TRUE, con),
+        quote_ids(my_unique_db_table_name(table_names), con)
       )
       expect_equal(
-        repair_table_names_for_db(table_names, temporary = FALSE),
-        table_names
+        repair_table_names_for_db(table_names, temporary = FALSE, con),
+        quote_ids(table_names, con)
       )
     }
   )
-}
+})
 
 test_that("table identifiers are quoted", {
   skip_if_local_src()
