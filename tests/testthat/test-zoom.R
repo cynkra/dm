@@ -83,7 +83,7 @@ test_that("dm_insert_zoomed() works", {
 
   # test that in case of 'repair = unique' and duplicate table names -> renames of old and new
   expect_equivalent_dm(
-    expect_warning(dm_zoom_to(dm_for_filter(), tf_4) %>% dm_insert_zoomed("tf_4", repair = "unique", quiet = TRUE), "blurb"),
+    expect_silent(dm_zoom_to(dm_for_filter(), tf_4) %>% dm_insert_zoomed("tf_4", repair = "unique", quiet = TRUE)),
     dm_for_filter() %>%
       dm_rename_tbl(tf_4...4 = tf_4) %>%
       dm_add_tbl(tf_4...7 = tf_4()) %>%
