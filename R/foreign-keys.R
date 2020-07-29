@@ -55,10 +55,8 @@
 #'   dm_draw()
 dm_add_fk <- function(dm, table, columns, ref_table, check = FALSE) {
   check_not_zoomed(dm)
-
-  table_name <- as_name(ensym(table))
-  ref_table_name <- as_name(ensym(ref_table))
-  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
   table <- dm_get_tables_impl(dm)[[table_name]]
   col_expr <- enexpr(columns)
@@ -129,7 +127,9 @@ dm_add_fk_impl <- function(dm, table, column, ref_table) {
 #'   dm_has_fk(airports, flights)
 dm_has_fk <- function(dm, table, ref_table) {
   check_not_zoomed(dm)
-  dm_has_fk_impl(dm, as_name(ensym(table)), as_name(ensym(ref_table)))
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
+  dm_has_fk_impl(dm, table_name, ref_table_name)
 }
 
 dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
@@ -165,10 +165,8 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 dm_get_fk <- function(dm, table, ref_table) {
   check_not_zoomed(dm)
 
-  table_name <- as_name(ensym(table))
-  ref_table_name <- as_name(ensym(ref_table))
-
-  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
   new_keys(dm_get_fk2_impl(dm, table_name, ref_table_name))
 }
@@ -251,10 +249,8 @@ dm_rm_fk <- function(dm, table, columns, ref_table) {
   if (quo_is_missing(column_quo)) {
     abort_rm_fk_col_missing()
   }
-  table_name <- as_name(ensym(table))
-  ref_table_name <- as_name(ensym(ref_table))
-
-  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
   fk_cols <- dm_get_fk2_impl(dm, table_name, ref_table_name)
   if (is_empty(fk_cols)) {
@@ -342,10 +338,8 @@ dm_enum_fk_candidates <- function(dm, table, ref_table) {
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
   check_no_filter(dm)
-  table_name <- as_string(ensym(table))
-  ref_table_name <- as_string(ensym(ref_table))
-
-  check_correct_input(dm, c(table_name, ref_table_name), 2L)
+  table_name <- dm_tbl_name(dm, {{ table }})
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
   ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
 
@@ -367,8 +361,7 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
   check_no_filter(zoomed_dm)
 
   table_name <- orig_name_zoomed(zoomed_dm)
-  ref_table_name <- as_string(ensym(ref_table))
-  check_correct_input(zoomed_dm, ref_table_name)
+  ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
   ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
