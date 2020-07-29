@@ -2,8 +2,11 @@
 ## revision date: 2020-05-21
 on:
   push:
+    branches:
+    - master
   pull_request:
-  # for now, CRON jobs only run on the default branch of the repo (i.e. usually on master)
+    branches:
+    - master
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron: "0 4 * * *"
@@ -23,9 +26,7 @@ jobs:
         config:
           # Custom configs
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true, id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS", cache: "dev" }
-          # [Custom matrix env var]
-          - { os: macOS-latest, r: "devel", id: "default" }
+          - { os: macOS-latest, r: "release", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true, id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS", cache: "dev" }
           # [Custom matrix env var]
           - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
           # [Custom matrix env var]

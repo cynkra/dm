@@ -26,6 +26,7 @@ reference:
   - dm_select_tbl
   - dm_rename_tbl
   - pull_tbl
+  - dm_bind
 
 - title: Table retrieval, table info and DB interaction methods (`dplyr`)
   contents:
