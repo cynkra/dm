@@ -27,13 +27,6 @@ tick <- function(x) {
   paste0("`", x, "`")
 }
 
-default_local_src <- function() {
-  structure(
-    list(tbl_f = as_tibble, name = "<environment: R_GlobalEnv>", env = .GlobalEnv),
-    class = c("src_local", "src")
-  )
-}
-
 # next 2 are borrowed from {tibble}:
 tick_if_needed <- function(x) {
   needs_ticks <- !is_syntactic(x)

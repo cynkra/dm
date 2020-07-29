@@ -1,5 +1,5 @@
 test_src_df <- function() {
-  default_local_src()
+  NULL
 }
 
 test_src_sqlite <- function() {
