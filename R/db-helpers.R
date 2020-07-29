@@ -172,3 +172,13 @@ repair_table_names_for_db <- function(table_names, temporary, con) {
   names <- set_names(names, table_names)
   quote_ids(names, con)
 }
+
+db_standard_schema <- function(src) {
+  if (is_mssql(src)) {
+    "dbo"
+  } else if (is_postgres(src)) {
+    "public"
+  } else {
+    character(0)
+  }
+}

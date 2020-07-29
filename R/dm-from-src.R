@@ -38,7 +38,7 @@
 #' dm_from_src(con)
 #'
 #' DBI::dbDisconnect(con)
-dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
+dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL, schema = NULL,
                         ...) {
   if (is_null(src)) {
     # FIXME: Check empty arguments and ellipsis
@@ -49,7 +49,8 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   con <- con_from_src_or_con(src)
 
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
-    dm_learned <- dm_learn_from_db(src, ...)
+    if (is.null(schema)) schema <- db_standard_schema(src)
+    dm_learned <- dm_learn_from_db(src, schema = schema, ...)
 
     if (is.null(dm_learned)) {
       if (isTRUE(learn_keys)) {
