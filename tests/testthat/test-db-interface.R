@@ -61,23 +61,22 @@ test_that("default table repair works", {
 
   con <- con_from_src_or_con(my_test_src())
 
-  orig_table_names <- c("t1", "t2", "t3")
+  table_names <- c("t1", "t2", "t3")
+
+  calls <- 0
 
   my_unique_db_table_name <- function(table_name) {
+    calls <<- calls + 1
     glue::glue("{table_name}_2020_05_15_10_45_29_0")
   }
 
   testthat::with_mock(
     unique_db_table_name = my_unique_db_table_name,
     {
-      expect_equal(
-        repair_table_names_for_db(table_names, temporary = TRUE, con),
-        quote_ids(my_unique_db_table_name(table_names), con)
-      )
-      expect_equal(
-        repair_table_names_for_db(table_names, temporary = FALSE, con),
-        quote_ids(table_names, con)
-      )
+      repair_table_names_for_db(table_names, temporary = FALSE, con)
+      expect_equal(calls, 0)
+      repair_table_names_for_db(table_names, temporary = TRUE, con)
+      expect_gt(calls, 0)
     }
   )
 })
