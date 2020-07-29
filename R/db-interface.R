@@ -107,7 +107,7 @@ copy_dm_to <- function(dest, dm, ...,
   }
 
   if (!is.null(unique_table_names)) {
-    lifecycle::deprecate_soft(
+    deprecate_soft(
       "0.1.4", "dm::copy_dm_to(unique_table_names = )",
       details = "Use `table_names = identity` to use unchanged names for temporary tables."
     )
@@ -156,7 +156,7 @@ copy_dm_to <- function(dest, dm, ...,
     table_names_out <- map(table_names_out, dbplyr::ident_q)
   } else {
     # FIXME: Other data sources than local and database possible
-    lifecycle::deprecate_soft(
+    deprecate_soft(
       "0.1.6", "dm::copy_dm_to(dest = 'must refer to a remote data source')",
       "dm::collect.dm()"
     )
