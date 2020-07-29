@@ -67,7 +67,7 @@ dm_add_pk <- function(dm, table, columns, check = FALSE, force = FALSE) {
 
   if (check) {
     table_from_dm <- dm_get_filtered_table(dm, table_name)
-    check_key(table_from_dm, !!col_expr)
+    eval_tidy(expr(check_key(!!sym(table_name), !!col_expr)), list2(!!table_name := table_from_dm))
   }
 
   dm_add_pk_impl(dm, table_name, col_name, force)
