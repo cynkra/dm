@@ -55,7 +55,7 @@ Imports:
     tibble,
     tidyr (>= 1.0.0),
     tidyselect (>= 1.0.0),
-    vctrs (>= 0.2.0)
+    vctrs (>= 0.3.2)
 Suggests: 
     brio,
     crayon,
