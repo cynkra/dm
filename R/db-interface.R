@@ -143,6 +143,11 @@ copy_dm_to <- function(dest, dm, ...,
       }
       check_naming(names(table_names_out), src_names)
 
+      if (anyDuplicated(table_names_out)) {
+        problem <- table_names_out[duplicated(table_names_out)][[1]]
+        abort_copy_dm_to_table_names_duplicated(problem)
+      }
+
       table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
       # names(table_names_out) <- src_names
     }
@@ -248,10 +253,21 @@ check_naming <- function(table_names, dm_table_names) {
 
 # Errors ------------------------------------------------------------------
 
-abort_copy_dm_to_table_names <- function(problems) {
+abort_copy_dm_to_table_names <- function() {
   abort(error_txt_copy_dm_to_table_names(), .subclass = dm_error_full("copy_dm_to_table_names"))
 }
 
 error_txt_copy_dm_to_table_names <- function() {
   "`table_names` must have names that are the same as the table names in `dm`."
+}
+
+abort_copy_dm_to_table_names_duplicated <- function(problem) {
+  abort(error_txt_copy_dm_to_table_names_duplicated(problem), .subclass = dm_error_full("copy_dm_to_table_names_duplicated"))
+}
+
+error_txt_copy_dm_to_table_names_duplicated <- function(problem) {
+  c(
+    "`table_names` must be unique.",
+    i = paste0("Duplicate: ", tick(problem))
+  )
 }

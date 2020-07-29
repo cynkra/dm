@@ -56,6 +56,18 @@ test_that("copy_dm_to() rejects overwrite and types arguments", {
   )
 })
 
+test_that("copy_dm_to() fails with duplicate table names", {
+  skip_if_local_src()
+
+  bad_names <- set_names(names(dm_for_filter()))
+  bad_names[[2]] <- bad_names[[1]]
+
+  expect_dm_error(
+    copy_dm_to(my_test_src(), dm_for_filter(), table_names = bad_names),
+    class = "copy_dm_to_table_names_duplicated"
+  )
+})
+
 test_that("default table repair works", {
   skip_if_local_src()
 
