@@ -5,27 +5,38 @@ test_that("data source found", {
 
 skip_if_not_installed("dbplyr")
 
-# ensure that we have one DB and one local `src`
-if (inherits(my_test_src(), "src_dbi")) {
-  remote_test_src <- my_test_src()
-  local_test_src <- default_local_src()
-} else {
-  remote_test_src <- sqlite()
-  local_test_src <- my_test_src()
-}
-
 test_that("copy_dm_to() copies data frames to databases", {
+  skip_if_local_src()
+
   expect_equivalent_dm(
-    copy_dm_to(remote_test_src, collect(dm_for_filter())),
-    collect(dm_for_filter())
+    copy_dm_to(my_test_src(), collect(dm_for_filter())),
+    dm_for_filter()
   )
 
   # FIXME: How to test writing permanent tables without and be sure they are removed at the end independent what 'my_test_src()' is?
 })
 
-test_that("copy_dm_to() copies data frames from databases", {
+test_that("copy_dm_to() copies data frames from any source", {
   expect_equivalent_dm(
-    copy_dm_to(local_test_src, dm_for_filter_sqlite()),
+    copy_dm_to(default_local_src(), dm_for_filter()),
+    dm_for_filter()
+  )
+})
+
+test_that("copy_dm_to() copies to SQLite", {
+  skip_if_not_installed("RSQLite")
+
+  expect_equivalent_dm(
+    copy_dm_to(test_src_sqlite(), dm_for_filter()),
+    dm_for_filter()
+  )
+})
+
+test_that("copy_dm_to() copies from SQLite", {
+  skip_if_not_installed("RSQLite")
+
+  expect_equivalent_dm(
+    copy_dm_to(my_test_src(), dm_for_filter_sqlite()),
     dm_for_filter_sqlite()
   )
 })
@@ -67,3 +78,18 @@ test_repair_table_names_for_db <- function(table_names, temporary) {
     }
   )
 }
+
+test_that("table identifiers are quoted", {
+  skip_if_local_src()
+
+  # Implicitly created with copy_dm_to()
+  dm <- dm_test_obj()
+  remote_names <-
+    dm %>%
+    dm_get_tables() %>%
+    map_chr(dbplyr::remote_name)
+
+  con <- dm_get_con(dm)
+  pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+"))
+  expect_true(all(grepl(pattern, remote_names)))
+})
