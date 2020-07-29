@@ -445,15 +445,14 @@ as_dm.src <- function(x) {
 }
 
 #' @export
-format.dm <- function(x, ...) {
-  def <- dm_get_def(x)
-  glue("dm: {def_get_n_tables(def)} tables, {def_get_n_columns(def)} columns, {def_get_n_pks(def)} primary keys, {def_get_n_fks(def)} foreign keys")
+print.dm <- function(x, ...) { # for both dm and zoomed_dm
+  show_dm(x)
+  invisible(x)
 }
 
 #' @export
-print.dm <- function(x, ...) {
-  show_dm(x)
-  invisible(x)
+print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+  format(x, ..., n = NULL, width = NULL, n_extra = NULL)
 }
 
 show_dm <- function(x) {
@@ -494,6 +493,24 @@ show_dm <- function(x) {
   }
 }
 
+#' @export
+format.dm <- function(x, ...) { # for both dm and zoomed_dm
+  def <- dm_get_def(x)
+  glue("dm: {def_get_n_tables(def)} tables, {def_get_n_columns(def)} columns, {def_get_n_pks(def)} primary keys, {def_get_n_fks(def)} foreign keys")
+}
+
+#' @export
+format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
+  df <- get_zoomed_tbl(x)
+  # so far only 1 table can be zoomed on
+  zoomed_df <- new_zoomed_df(
+    df,
+    name_df = orig_name_zoomed(x)
+  )
+  cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
+  invisible(x)
+}
+
 def_get_n_tables <- function(def) {
   nrow(def)
 }
@@ -508,23 +525,6 @@ def_get_n_pks <- function(def) {
 
 def_get_n_fks <- function(def) {
   sum(map_int(def$fks, vctrs::vec_size))
-}
-
-#' @export
-print.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  format(x, ..., n = NULL, width = NULL, n_extra = NULL)
-}
-
-#' @export
-format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  df <- get_zoomed_tbl(x)
-  # so far only 1 table can be zoomed on
-  zoomed_df <- new_zoomed_df(
-    df,
-    name_df = orig_name_zoomed(x)
-  )
-  cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
-  invisible(x)
 }
 
 new_zoomed_df <- function(x, ...) {
@@ -560,15 +560,15 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`$.zoomed_dm` <- function(x, name) {
-  name <- ensym(name)
-  eval_tidy(quo(`$`(get_zoomed_tbl(x), !!name)))
+`$.dm` <- function(x, name) { # for both dm and zoomed_dm
+  table <- dm_tbl_name(x, {{ name }})
+  tbl(x, table)
 }
 
 #' @export
-`$.dm` <- function(x, name) {
-  table <- dm_tbl_name(x, {{ name }})
-  tbl(x, table)
+`$.zoomed_dm` <- function(x, name) {
+  name <- ensym(name)
+  eval_tidy(quo(`$`(get_zoomed_tbl(x), !!name)))
 }
 
 #' @export
@@ -577,24 +577,19 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-`[[.zoomed_dm` <- function(x, id) {
-  `[[`(get_zoomed_tbl(x), id)
-}
-
-#' @export
-`[[.dm` <- function(x, id) {
+`[[.dm` <- function(x, id) { # for both dm and zoomed_dm
   if (is.numeric(id)) id <- src_tbls(x)[id] else id <- as_string(id)
   tbl(x, id)
 }
 
 #' @export
-`[[<-.dm` <- function(x, name, value) {
-  abort_update_not_supported()
+`[[.zoomed_dm` <- function(x, id) {
+  `[[`(get_zoomed_tbl(x), id)
 }
 
 #' @export
-`[.zoomed_dm` <- function(x, id) {
-  `[`(get_zoomed_tbl(x), id)
+`[[<-.dm` <- function(x, name, value) {
+  abort_update_not_supported()
 }
 
 #' @export
@@ -604,6 +599,11 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
   dm_select_tbl(x, !!!id)
 }
 
+#' @export
+`[.zoomed_dm` <- function(x, id) { # for both dm and zoomed_dm
+  `[`(get_zoomed_tbl(x), id)
+}
+
 
 #' @export
 `[<-.dm` <- function(x, name, value) {
@@ -611,13 +611,13 @@ format.zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
 }
 
 #' @export
-names.zoomed_dm <- function(x) {
-  names(get_zoomed_tbl(x))
+names.dm <- function(x) { # for both dm and zoomed_dm
+  src_tbls(x)
 }
 
 #' @export
-names.dm <- function(x) {
-  src_tbls(x)
+names.zoomed_dm <- function(x) {
+  names(get_zoomed_tbl(x))
 }
 
 
@@ -627,13 +627,13 @@ names.dm <- function(x) {
 }
 
 #' @export
-length.zoomed_dm <- function(x) {
-  length(get_zoomed_tbl(x))
+length.dm <- function(x) { # for both dm and zoomed_dm
+  length(src_tbls(x))
 }
 
 #' @export
-length.dm <- function(x) {
-  length(src_tbls(x))
+length.zoomed_dm <- function(x) {
+  length(get_zoomed_tbl(x))
 }
 
 #' @export
@@ -642,7 +642,7 @@ length.dm <- function(x) {
 }
 
 #' @export
-str.dm <- function(object, ...) {
+str.dm <- function(object, ...) { # for both dm and zoomed_dm
   object <- dm_get_def(object) %>%
     select(table, pks, fks, filters)
   str(object)
@@ -665,9 +665,10 @@ str.zoomed_dm <- function(object, ...) {
 #' @rdname dplyr_db
 #' @export
 tbl.dm <- function(src, from, ...) {
+  check_not_zoomed(src)
+
   # The src argument here is a dm object
   dm <- src
-  check_not_zoomed(dm)
   from <- dm_tbl_name(dm, !!from)
 
   dm_get_tables_impl(dm)[[from]]
@@ -676,7 +677,7 @@ tbl.dm <- function(src, from, ...) {
 #' @param x Either a `dm` or a `zoomed_dm`; the latter leads to an error for `src_tbls.dm()`
 #' @rdname dplyr_db
 #' @export
-compute.dm <- function(x, ...) {
+compute.dm <- function(x, ...) { # for both dm and zoomed_dm
   dm_apply_filters(x) %>%
     dm_get_def() %>%
     mutate(data = map(data, compute, ...)) %>%
@@ -695,10 +696,8 @@ compute.zoomed_dm <- function(x, ...) {
 #' @rdname dplyr_db
 #' @export
 src_tbls.dm <- function(x, ...) {
-  # The x argument here is a dm object
-  dm <- x
   check_not_zoomed(x)
-  src_tbls_impl(dm)
+  src_tbls_impl(x)
 }
 
 src_tbls_impl <- function(dm) {
@@ -715,6 +714,8 @@ src_tbls_impl <- function(dm) {
 #' @param repair,quiet Name repair options; cf. [`vctrs::vec_as_names`]
 #' @export
 copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FALSE, temporary = TRUE, repair = "unique", quiet = FALSE, ...) {
+  check_not_zoomed(dest)
+
   if (!(inherits(df, "data.frame") || inherits(df, "tbl_dbi"))) abort_only_data_frames_supported()
   if (overwrite) abort_no_overwrite()
   if (length(name) != 1) abort_one_name_for_copy_to(name)
@@ -730,14 +731,9 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
   dm_add_tbl_impl(dest, list(df), names_list$new_names)
 }
 
-#' @export
-copy_to.zoomed_dm <- function(dest, df, name, overwrite, ...) {
-  check_not_zoomed(dest)
-}
-
 #' @rdname dplyr_db
 #' @export
-collect.dm <- function(x, ...) {
+collect.dm <- function(x, ...) { # for both dm and zoomed_dm
   x <- dm_apply_filters(x)
 
   def <- dm_get_def(x)
@@ -755,12 +751,12 @@ collect.zoomed_dm <- function(x, ...) {
 
 # FIXME: what about 'dim.dm()'?
 #' @export
-dim.zoomed_dm <- function(x) {
+dim.zoomed_dm <- function(x) { # dm method provided by base
   dim(get_zoomed_tbl(x))
 }
 
 #' @export
-dimnames.zoomed_dm <- function(x) {
+dimnames.zoomed_dm <- function(x) { # dm method provided by base
   dimnames(get_zoomed_tbl(x))
 }
 
@@ -829,7 +825,7 @@ pull_tbl <- function(dm, table) {
 }
 
 #' @export
-pull_tbl.dm <- function(dm, table) {
+pull_tbl.dm <- function(dm, table) { # for both dm and zoomed_dm
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
   table_name <- as_string(enexpr(table))
   if (table_name == "") abort_no_table_provided()
@@ -841,7 +837,11 @@ pull_tbl.zoomed_dm <- function(dm, table) {
   table_name <- as_string(enexpr(table))
   tbl_zoomed <- dm_get_zoomed_tbl(dm)
   if (table_name == "") {
-    if (nrow(tbl_zoomed) == 1) tbl_zoomed$zoom[[1]] else abort_not_pulling_multiple_zoomed()
+    if (nrow(tbl_zoomed) == 1) {
+      tbl_zoomed$zoom[[1]]
+    } else {
+      abort_not_pulling_multiple_zoomed()
+    }
   } else if (!(table_name %in% tbl_zoomed$table)) {
     abort_table_not_zoomed(table_name, tbl_zoomed$table)
   } else {
@@ -852,7 +852,7 @@ pull_tbl.zoomed_dm <- function(dm, table) {
 }
 
 #' @export
-as.list.dm <- function(x, ...) {
+as.list.dm <- function(x, ...) { # for both dm and zoomed_dm
   dm_get_tables_impl(x)
 }
 
