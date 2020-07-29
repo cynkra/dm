@@ -1,6 +1,9 @@
 get_stage("install") %>%
   add_step(step_run_code(print(gh::gh("/rate_limit"))))
 
+get_stage("after_deploy") %>%
+  add_step(step_run_code(print(gh::gh("/rate_limit"))))
+
 if (ci_get_env("MODE") == "db-tests") {
   get_stage("install") %>%
     add_step(step_install_cran("devtools"))

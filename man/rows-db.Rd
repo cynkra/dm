@@ -45,11 +45,14 @@ same src as \code{x}.  This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.}
 
 \item{check}{Set to \code{TRUE} to always check keys, or \code{FALSE} to never check.
-The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.}
+The default is to check only if \code{in_place} is \code{TRUE} or \code{NULL}.
+
+Currently these checks are no-ops and need yet to be implemented.}
 }
 \value{
 A tbl object of the same structure as \code{x}.
-If \code{in_place = TRUE}, \link{invisible} and identical to \code{x}.
+If \code{in_place = TRUE}, the underlying data is updated as a side effect,
+and \code{x} is returned, invisibly.
 }
 \description{
 \lifecycle{experimental}
@@ -57,7 +60,10 @@ If \code{in_place = TRUE}, \link{invisible} and identical to \code{x}.
 These methods provide a framework for manipulating individual rows
 in existing tables.
 All operations expect that both existing and new data are presented
-in two compatible \link{tbl} objects on the same data source.
+in two compatible \link{tbl} objects.
+
+If \code{y} lives on a different data source than \code{x}, it can be copied automatically
+by setting \code{copy = TRUE}, just like for \code{\link[dplyr:left_join]{dplyr::left_join()}}.
 
 On mutable backends like databases, these operations manipulate the
 underlying storage.
@@ -69,6 +75,7 @@ Unlike \code{\link[=compute]{compute()}} or \code{\link[=copy_to]{copy_to()}}, n
 
 The \verb{sql_rows_*()} functions return the SQL used for the corresponding
 \verb{rows_*()} function with \code{in_place = FALSE}.
+\code{y} needs to be located on the same data source as \code{x}.
 }
 \examples{
 data <- dbplyr::memdb_frame(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)

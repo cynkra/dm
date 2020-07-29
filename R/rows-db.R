@@ -6,7 +6,10 @@
 #' These methods provide a framework for manipulating individual rows
 #' in existing tables.
 #' All operations expect that both existing and new data are presented
-#' in two compatible [tbl] objects on the same data source.
+#' in two compatible [tbl] objects.
+#'
+#' If `y` lives on a different data source than `x`, it can be copied automatically
+#' by setting `copy = TRUE`, just like for [dplyr::left_join()].
 #'
 #' On mutable backends like databases, these operations manipulate the
 #' underlying storage.
@@ -21,8 +24,11 @@
 #'   Set to `TRUE` to always check keys, or `FALSE` to never check.
 #'   The default is to check only if `in_place` is `TRUE` or `NULL`.
 #'
+#'   Currently these checks are no-ops and need yet to be implemented.
+#'
 #' @return A tbl object of the same structure as `x`.
-#'   If `in_place = TRUE`, [invisible] and identical to `x`.
+#'   If `in_place = TRUE`, the underlying data is updated as a side effect,
+#'   and `x` is returned, invisibly.
 #'
 #' @name rows-db
 #' @example example/rows-db.R
@@ -51,6 +57,7 @@ rows_insert.tbl_dbi <- function(x, y, by = NULL, ...,
     invisible(x)
   } else {
     # Checking mandatory by default, opt-out
+    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
     if (is_null(check) || is_true(check)) {
       check_db_dupes(x, y, by)
     }
@@ -87,6 +94,7 @@ rows_update.tbl_dbi <- function(x, y, by = NULL, ...,
     invisible(x)
   } else {
     # Checking optional, can rely on primary key constraint
+    # FIXME: contrary to doc currently also checks if `in_place = FALSE`
     if (is_null(check) || is_true(check)) {
       check_db_superset(x, y, by)
     }
@@ -154,11 +162,13 @@ check_db_superset <- function(x, y, by) {
 #' @description
 #' The `sql_rows_*()` functions return the SQL used for the corresponding
 #' `rows_*()` function with `in_place = FALSE`.
+#' `y` needs to be located on the same data source as `x`.
 #'
 #' @export
 #' @rdname rows-db
 sql_rows_insert <- function(x, y, ...) {
   ellipsis::check_dots_used()
+  # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_insert")
 }
 
@@ -180,6 +190,7 @@ sql_rows_insert.tbl_sql <- function(x, y, ...) {
 #' @rdname rows-db
 sql_rows_update <- function(x, y, by, ...) {
   ellipsis::check_dots_used()
+  # FIXME: check here same src for x and y? if not -> error.
   UseMethod("sql_rows_update")
 }
 
