@@ -19,9 +19,9 @@ test_that("tidyselecting tables works", {
 })
 
 verify_output("out/tidyselect.txt", {
-  dm_nycflights13() %>%
-    dm_select_tbl(zeppelins)
+  dm_for_filter() %>%
+    dm_select_tbl(tf_7)
 
-  dm_nycflights13() %>%
-    dm_rename_tbl(vessels = zeppelins)
+  dm_for_filter() %>%
+    dm_rename_tbl(tf_0 = tf_7)
 })
