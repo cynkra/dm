@@ -1,3 +1,10 @@
+# dm 0.1.4.9001
+
+- The data model is drawn in a more compact way if it comprises of multiple connected components.
+- Cycles in other connected components don't affect filtering in a cycle-free component.
+- `dm_add_pk(check = TRUE)` gives a better error message.
+
+
 # dm 0.1.4.9000
 
 - Same as previous version.

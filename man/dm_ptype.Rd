@@ -20,12 +20,12 @@ This is useful for performing creation and population of a database
 in separate steps.
 }
 \examples{
-\dontrun{
+\dontshow{if (rlang::is_installed("RMariaDB") && getRversion() >= 3.5) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_financial() \%>\%
   dm_ptype()
 
 dm_financial() \%>\%
   dm_ptype() \%>\%
   dm_nrow()
-}
+\dontshow{\}) # examplesIf}
 }

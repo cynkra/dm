@@ -756,7 +756,9 @@ collect.dm <- function(x, ...) {
 
 #' @export
 collect.zoomed_dm <- function(x, ...) {
-  check_not_zoomed(x)
+  message("Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.")
+
+  collect(pull_tbl(x))
 }
 
 

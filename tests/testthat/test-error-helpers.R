@@ -16,7 +16,7 @@ test_that("error messages do not change", {
     abort_is_not_fkc("child_table_name", c("wrong_fk_colname", "and_one_more"), "parent_table_name")
     abort_rm_fk_col_missing()
     abort_last_col_missing()
-    abort_no_cycles()
+    abort_no_cycles(create_graph_from_dm(dm_for_filter_w_cycle()))
     abort_tables_not_reachable_from_start()
     abort_dupl_new_id_col_name("tibbletable")
     abort_no_overwrite()

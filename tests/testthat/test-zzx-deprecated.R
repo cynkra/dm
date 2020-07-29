@@ -252,10 +252,10 @@ test_that("cdm_paste() works", {
   expect_output(
     cdm_paste(dm_for_filter(), FALSE, 4),
     paste0(
-      "dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%\n    dm_add_pk(tf_1, a) %>%\n    dm_add_pk(tf_2, c) %>%",
-      "\n    dm_add_pk(tf_3, f) %>%\n    dm_add_pk(tf_4, h) %>%\n    dm_add_pk(tf_5, k) %>%\n    ",
-      "dm_add_pk(tf_6, n) %>%\n    dm_add_fk(tf_2, d, tf_1) %>%\n    dm_add_fk(tf_2, e, tf_3) %>%\n    ",
-      "dm_add_fk(tf_4, j, tf_3) %>%\n    dm_add_fk(tf_5, l, tf_4) %>%\n    dm_add_fk(tf_5, m, tf_6)"
+      "dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%\n    dm::dm_add_pk(tf_1, a) %>%\n    dm::dm_add_pk(tf_2, c) %>%",
+      "\n    dm::dm_add_pk(tf_3, f) %>%\n    dm::dm_add_pk(tf_4, h) %>%\n    dm::dm_add_pk(tf_5, k) %>%\n    ",
+      "dm::dm_add_pk(tf_6, n) %>%\n    dm::dm_add_fk(tf_2, d, tf_1) %>%\n    dm::dm_add_fk(tf_2, e, tf_3) %>%\n    ",
+      "dm::dm_add_fk(tf_4, j, tf_3) %>%\n    dm::dm_add_fk(tf_5, l, tf_4) %>%\n    dm::dm_add_fk(tf_5, m, tf_6)"
     ),
     fixed = TRUE
   )
