@@ -38,7 +38,7 @@
 #'   # the `dm` from the SQLite DB
 #'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
 #' }
-dm_learn_from_db <- function(dest, ...) {
+dm_learn_from_db <- function(dest, schema, ...) {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
@@ -47,7 +47,7 @@ dm_learn_from_db <- function(dest, ...) {
     return()
   }
 
-  sql <- db_learn_query(con, ...)
+  sql <- db_learn_query(con, schema, ...)
   if (is.null(sql)) {
     return()
   }
@@ -83,12 +83,12 @@ schema_if <- function(schema, table, con) {
   if_else(is.na(schema), table_sql, paste0(DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
 }
 
-db_learn_query <- function(dest, ...) {
+db_learn_query <- function(dest, schema, ...) {
   if (is_mssql(dest)) {
-    return(mssql_learn_query(dest, ...))
+    return(mssql_learn_query(dest, schema))
   }
   if (is_postgres(dest)) {
-    return(postgres_learn_query(dest, ...))
+    return(postgres_learn_query(dest, schema = schema, ...))
   }
 }
 
@@ -122,11 +122,11 @@ mssql_learn_query <- function(con, schema = "dbo") { # taken directly from {data
       and ind_col.column_id = cols.column_id
     left outer join sys.systypes [types] on
       types.xusertype = cols.system_type_id
-  where tabs.schema_id = schema_id(%s)
+  where schema_name(tabs.schema_id) = %s
   order by
     tabs.create_date,
     cols.column_id",
-  DBI::dbQuoteString(con, schema)
+  dbQuoteString(con, schema)
   )
 }
 
