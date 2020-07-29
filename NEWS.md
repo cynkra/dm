@@ -1,3 +1,8 @@
+# dm 0.1.6
+
+- Same as previous version.
+
+
 # dm 0.1.5.9002
 
 - `dm_get_src()` returns `NULL` for local data sources (#394).
