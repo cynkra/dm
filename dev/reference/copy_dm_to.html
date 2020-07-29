@@ -236,17 +236,23 @@ Can be <code>NULL</code>, a named character vector, a function or a one-sided fo
 
 <p>If a function or one-sided formula, <code>table_names</code> is converted to a function
 using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::as_function()</a></code>.
-This function is called with the table names of the <code>dm</code> object
-as the only argument, and is expected to return a character vector
-of the same length.
-Use <code>table_names = ~ dbplyr::in_schema("schema_name", .x)</code>
+This function is called with the unquoted table names of the <code>dm</code> object
+as the only argument.
+The output of this function is processed by <code><a href='https://dbi.r-dbi.org/reference/dbQuoteIdentifier.html'>DBI::dbQuoteIdentifier()</a></code>,
+that result should be a vector of identifiers of the same length
+as the original table names.</p>
+<p>Use a variant of
+<code>table_names = ~ DBI::SQL(dbplyr::in_schema("schema_name", .x))</code>
 to specify the same schema for all tables.
 Use <code>table_names = identity</code> with <code>temporary = TRUE</code>
 to avoid giving temporary tables unique names.</p>
 <p>If a named character vector,
 the names of this vector need to correspond to the table names in the <code>dm</code>,
 and its values are the desired names on <code>dest</code>.
-Use qualified names corresponding to your database's syntax
+The value is processed by <code><a href='https://dbi.r-dbi.org/reference/dbQuoteIdentifier.html'>DBI::dbQuoteIdentifier()</a></code>,
+that result should be a vector of identifiers of the same length
+as the original table names.</p>
+<p>Use qualified names corresponding to your database's syntax
 to specify e.g. database and schema for your tables.</p></td>
     </tr>
     <tr>
@@ -285,7 +291,7 @@ The arguments are included in the signature to avoid passing them via the
   temporary = <span class='fl'>FALSE</span>,
   table_names = <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"flights_"</span>, <span class='kw'>.x</span>)
 )
-<span class='kw'>dbplyr</span>::<span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span>(<span class='kw'>persistent_dm</span><span class='op'>$</span><span class='kw'>planes</span>)</div><div class='output co'>#&gt; &lt;IDENT&gt; flights_planes</div><div class='input'>
+<span class='kw'>dbplyr</span>::<span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span>(<span class='kw'>persistent_dm</span><span class='op'>$</span><span class='kw'>planes</span>)</div><div class='output co'>#&gt; &lt;IDENT&gt; `flights_planes`</div><div class='input'>
 <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>con</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
