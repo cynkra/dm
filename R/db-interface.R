@@ -106,9 +106,9 @@ copy_dm_to <- function(dest, dm, ...,
     abort_no_unique_indexes()
   }
 
-  if (!is_null(unique_table_names)) {
+  if (!is.null(unique_table_names)) {
     lifecycle::deprecate_soft(
-      "0.1.4", "copy_dm_to(unique_table_names = )",
+      "0.1.4", "dm::copy_dm_to(unique_table_names = )",
       details = "Use `table_names = identity` to use unchanged names for temporary tables."
     )
 
@@ -153,7 +153,7 @@ copy_dm_to <- function(dest, dm, ...,
     # FIXME: Other data sources than local and database possible
     if (!is.null(table_names)) {
       lifecycle::deprecate_soft(
-        "0.1.6", "copy_dm_to(table_names = 'must be NULL if copying to a local source')"
+        "0.1.6", "dm::copy_dm_to(table_names = 'must be NULL if copying to a local source')"
       )
     }
     table_names_out <- set_names(src_names)
