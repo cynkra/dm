@@ -6,7 +6,7 @@
 #'
 #' @return A named vector with the number of rows for each table.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_filter(airports, faa %in% c("EWR", "LGA")) %>%
 #'   dm_apply_filters() %>%

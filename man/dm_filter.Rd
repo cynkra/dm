@@ -80,6 +80,7 @@ the filter.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nyc <- dm_nycflights13()
 dm_nyc_filtered <-
   dm_nycflights13() \%>\%
@@ -100,6 +101,7 @@ dm_nyc \%>\%
 # note that in this example, the only affected table is
 # `airports` because the departure airports in `flights` are
 # only the three New York airports.
+\dontshow{\}) # examplesIf}
 
 dm_nyc \%>\%
   dm_filter(planes, engine \%in\% c("Reciprocating", "4 Cycle")) \%>\%

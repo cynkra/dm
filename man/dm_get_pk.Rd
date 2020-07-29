@@ -35,10 +35,12 @@ this function returns a slit of character vectors.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_get_pk(flights)
 dm_nycflights13() \%>\%
   dm_get_pk(planes)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other primary key functions: 

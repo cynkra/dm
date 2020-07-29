@@ -21,7 +21,7 @@
 #'
 #' @return An updated `dm` with the columns of `table` renamed.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_rename(airports, code = faa, altitude = alt)
 #' @export
@@ -44,7 +44,7 @@ dm_rename <- function(dm, table, ...) {
 #'
 #' @return An updated `dm` with the columns of `table` reduced and/or renamed.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_select(airports, code = faa, altitude = alt)
 #' @export

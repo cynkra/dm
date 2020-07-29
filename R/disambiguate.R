@@ -16,8 +16,9 @@
 #'
 #' @return A `dm` whose column names are unambiguous.
 #'
-#' @examples
-#' dm_disambiguate_cols(dm_nycflights13())
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_disambiguate_cols()
 #' @export
 dm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
   check_not_zoomed(dm)

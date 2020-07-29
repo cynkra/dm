@@ -57,7 +57,7 @@
 #'
 #' @return For `dm_filter()`: an updated `dm` object (filter executed for given table, and condition stored).
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nyc <- dm_nycflights13()
 #' dm_nyc_filtered <-
 #'   dm_nycflights13() %>%

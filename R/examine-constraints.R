@@ -22,7 +22,7 @@
 #' form a subset of the values of the referenced column.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
 dm_examine_constraints <- function(dm) {
