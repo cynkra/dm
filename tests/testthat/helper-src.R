@@ -38,7 +38,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
   # message("Evaluating ", name)
 
   src <- my_test_src()
-  if (inherits(src, "src_local")) {
+  if (is.null(src)) {
     rhs
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
@@ -88,9 +88,12 @@ test_src_frame <- function(...) {
   src <- my_test_src()
 
   df <- tibble(...)
+  if (is.null(src)) {
+    return(df)
+  }
 
-  if (inherits(src, "src_Microsoft SQL Server")) {
-    name <- paste0("##", unique_db_table_name("test_frame"))
+  if (is_mssql(src)) {
+    name <- paste0("#", unique_db_table_name("test_frame"))
     temporary <- FALSE
   } else {
     name <- unique_db_table_name("test_frame")
@@ -481,7 +484,7 @@ result_from_flatten %<-% {
 
 # 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
-tbl_1 %<-% tibble(a = c(1, 2, 4, 5), b = a)
+tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5)), b = a)
 tbl_2 %<-% tibble(id = 1:2, c = letters[1:2])
 tbl_3 %<-% tibble(id = 2:4, d = letters[2:4])
 

@@ -20,7 +20,7 @@
 #' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
-#'    Can be `NULL`, a named character vector, a function or a one-sided formula.
+#'   Can be `NULL`, a named character vector, a function or a one-sided formula.
 #'
 #'   If left `NULL` (default), the names will be determined automatically depending on the `temporary` argument:
 #'
@@ -29,10 +29,14 @@
 #'
 #'   If a function or one-sided formula, `table_names` is converted to a function
 #'   using [rlang::as_function()].
-#'   This function is called with the table names of the `dm` object
-#'   as the only argument, and is expected to return a character vector
-#'   of the same length.
-#'   Use `table_names = ~ dbplyr::in_schema("schema_name", .x)`
+#'   This function is called with the unquoted table names of the `dm` object
+#'   as the only argument.
+#'   The output of this function is processed by [DBI::dbQuoteIdentifier()],
+#'   that result should be a vector of identifiers of the same length
+#'   as the original table names.
+#'
+#'   Use a variant of
+#'   `table_names = ~ DBI::SQL(dbplyr::in_schema("schema_name", .x))`
 #'   to specify the same schema for all tables.
 #'   Use `table_names = identity` with `temporary = TRUE`
 #'   to avoid giving temporary tables unique names.
@@ -40,6 +44,10 @@
 #'   If a named character vector,
 #'   the names of this vector need to correspond to the table names in the `dm`,
 #'   and its values are the desired names on `dest`.
+#'   The value is processed by [DBI::dbQuoteIdentifier()],
+#'   that result should be a vector of identifiers of the same length
+#'   as the original table names.
+#'
 #'   Use qualified names corresponding to your database's syntax
 #'   to specify e.g. database and schema for your tables.
 #' @param ... Passed on to [dplyr::copy_to()], which is used on each table.
@@ -98,9 +106,9 @@ copy_dm_to <- function(dest, dm, ...,
     abort_no_unique_indexes()
   }
 
-  if (!is_null(unique_table_names)) {
-    lifecycle::deprecate_soft(
-      "0.1.4", "copy_dm_to(unique_table_names = )",
+  if (!is.null(unique_table_names)) {
+    deprecate_soft(
+      "0.1.4", "dm::copy_dm_to(unique_table_names = )",
       details = "Use `table_names = identity` to use unchanged names for temporary tables."
     )
 
@@ -109,20 +117,50 @@ copy_dm_to <- function(dest, dm, ...,
     }
   }
 
-  # in case `table_names` was chosen by the user, check if the input makes sense:
-  # 1. is there one name per dm-table?
-  # 2. are there any duplicated table names?
-  # 3. is it a named character or ident_q vector with the correct names?
-  if (is_null(table_names)) {
-    table_names <- repair_table_names_for_db(src_tbls(dm), temporary)
-  } else {
-    if (is_function(table_names) || is_bare_formula(table_names)) {
-      table_name_fun <- as_function(table_names)
-      table_names <- set_names(table_name_fun(src_tbls(dm)), src_tbls(dm))
+  dest <- src_from_src_or_con(dest)
+  src_names <- src_tbls(dm)
+
+  if (is_db(dest)) {
+    dest_con <- con_from_src_or_con(dest)
+
+    # in case `table_names` was chosen by the user, check if the input makes sense:
+    # 1. is there one name per dm-table?
+    # 2. are there any duplicated table names?
+    # 3. is it a named character or ident_q vector with the correct names?
+    if (is.null(table_names)) {
+      table_names_out <- repair_table_names_for_db(src_names, temporary, dest_con)
+
+      # https://github.com/tidyverse/dbplyr/issues/487
+      if (is_mssql(dest)) {
+        temporary <- FALSE
+      }
+    } else {
+      if (is_function(table_names) || is_bare_formula(table_names)) {
+        table_name_fun <- as_function(table_names)
+        table_names_out <- set_names(table_name_fun(src_names), src_names)
+      } else {
+        table_names_out <- table_names
+      }
+      check_naming(names(table_names_out), src_names)
+
+      if (anyDuplicated(table_names_out)) {
+        problem <- table_names_out[duplicated(table_names_out)][[1]]
+        abort_copy_dm_to_table_names_duplicated(problem)
+      }
+
+      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
+      # names(table_names_out) <- src_names
     }
-    check_naming(names(table_names), src_tbls(dm))
-    # add the schema and create an `ident`-class object from the table names
-    table_names <- dbplyr::ident_q(table_names[src_tbls(dm)])
+
+    # create `ident`-class objects from the table names
+    table_names_out <- map(table_names_out, dbplyr::ident_q)
+  } else {
+    # FIXME: Other data sources than local and database possible
+    deprecate_soft(
+      "0.1.6", "dm::copy_dm_to(dest = 'must refer to a remote data source')",
+      "dm::collect.dm()"
+    )
+    table_names_out <- set_names(src_names)
   }
 
   check_not_zoomed(dm)
@@ -130,10 +168,14 @@ copy_dm_to <- function(dest, dm, ...,
   # FIXME: if same_src(), can use compute() but need to set NOT NULL
   # constraints
 
-  dest <- src_from_src_or_con(dest)
   dm <- collect(dm)
 
-  copy_data <- build_copy_data(dm, dest, table_names)
+  # Shortcut necessary to avoid copying into .GlobalEnv
+  if (!is_db(dest)) {
+    return(dm)
+  }
+
+  copy_data <- build_copy_data(dm, dest, table_names_out)
 
   new_tables <- copy_list_of_tables_to(
     dest,
@@ -210,10 +252,21 @@ check_naming <- function(table_names, dm_table_names) {
 
 # Errors ------------------------------------------------------------------
 
-abort_copy_dm_to_table_names <- function(problems) {
+abort_copy_dm_to_table_names <- function() {
   abort(error_txt_copy_dm_to_table_names(), .subclass = dm_error_full("copy_dm_to_table_names"))
 }
 
 error_txt_copy_dm_to_table_names <- function() {
   "`table_names` must have names that are the same as the table names in `dm`."
+}
+
+abort_copy_dm_to_table_names_duplicated <- function(problem) {
+  abort(error_txt_copy_dm_to_table_names_duplicated(problem), .subclass = dm_error_full("copy_dm_to_table_names_duplicated"))
+}
+
+error_txt_copy_dm_to_table_names_duplicated <- function(problem) {
+  c(
+    "`table_names` must be unique.",
+    i = paste0("Duplicate: ", tick(problem))
+  )
 }

@@ -1,4 +1,6 @@
 test_that("path argument", {
+  skip_if_not_installed("brio")
+
   path <- tempfile()
   dm() %>% dm_paste(path = path)
   expect_identical(readLines(path), "dm::dm()")
@@ -6,7 +8,7 @@ test_that("path argument", {
 
 local_options(lifecycle_verbosity = "warning")
 
-verify_output("out/code_from_paste.txt", {
+if (rlang::is_installed("nycflights13")) verify_output("out/code_from_paste.txt", {
   "empty"
   empty_dm() %>% dm_paste()
 

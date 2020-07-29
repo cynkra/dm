@@ -1,4 +1,6 @@
 test_that("can access tables", {
+  skip_if_not_installed("nycflights13")
+
   expect_identical(tbl(dm_nycflights13(), "airlines"), nycflights13::airlines)
   expect_dm_error(
     tbl(dm_nycflights13(), "x"),
@@ -39,11 +41,7 @@ test_that("'copy_to.dm()' works", {
   skip_if_src_not("df", "mssql")
 
   # `tibble()` call necessary, #322
-  car_table <- copy_to(
-    my_test_src(),
-    tibble(mtcars),
-    name = unique_db_table_name("mtcars_1")
-  )
+  car_table <- test_src_frame(!!!mtcars)
 
   expect_equivalent_dm(
     copy_to(dm_for_filter(), mtcars, "car_table"),
@@ -61,21 +59,21 @@ test_that("'copy_to.dm()' works", {
 
 test_that("'copy_to.dm()' works (2)", {
   expect_dm_error(
-    copy_to(dm_for_filter(), mtcars, c("car_table", "another_table")),
+    copy_to(dm(), mtcars, c("car_table", "another_table")),
     "one_name_for_copy_to"
   )
 
   # rename old and new tables if `repair = unique`
   expect_name_repair_message(
     expect_equivalent_dm(
-      dm(mtcars) %>% copy_to(mtcars),
+      copy_to(dm(mtcars), mtcars),
       dm(mtcars...1 = mtcars, mtcars...2 = tibble(mtcars))
     )
   )
 
   expect_equivalent_dm(
     expect_silent(
-      dm(mtcars) %>% copy_to(mtcars, quiet = TRUE)
+      copy_to(dm(mtcars), mtcars, quiet = TRUE)
     ),
     dm(mtcars...1 = mtcars, mtcars...2 = tibble(mtcars))
   )
@@ -85,6 +83,8 @@ test_that("'copy_to.dm()' works (2)", {
     dm(mtcars) %>% copy_to(mtcars, repair = "check_unique"),
     "need_unique_names"
   )
+
+  skip_if_not_installed("dbplyr")
 
   # copying `tibble` from chosen src to sqlite() `dm`
   expect_equivalent_dm(
@@ -206,6 +206,8 @@ test_that("validator is silent", {
 })
 
 test_that("validator speaks up (sqlite())", {
+  skip_if_not_installed("dbplyr")
+
   expect_dm_error(
     new_dm3(dm_get_def(dm_for_filter()) %>%
       mutate(data = if_else(table == "tf_1", list(dm_for_filter_sqlite()$tf_1), data))) %>%
@@ -423,17 +425,17 @@ test_that("dm_get_filters() works", {
   )
 })
 
-test_that("output", {
-  verify_output("out/output.txt", {
-    print(dm())
+skip_if_not_installed("nycflights13")
 
-    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
-    nyc_flights_dm
+verify_output("out/output.txt", {
+  print(dm())
 
-    nyc_flights_dm %>%
-      format()
+  nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
+  nyc_flights_dm
 
-    nyc_flights_dm %>%
-      dm_filter(flights, origin == "EWR")
-  })
+  nyc_flights_dm %>%
+    format()
+
+  nyc_flights_dm %>%
+    dm_filter(flights, origin == "EWR")
 })

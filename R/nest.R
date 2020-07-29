@@ -1,7 +1,7 @@
 nest_join_zoomed_dm <- function(x, ...) {
   zoomed_dm <- x
   src_dm <- dm_get_src_impl(zoomed_dm)
-  if (!inherits(src_dm, "src_local")) {
+  if (!is.null(src_dm)) {
     abort_only_for_local_src(src_dm)
   }
 

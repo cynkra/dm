@@ -10,7 +10,3 @@ verify_output("out/commas.txt", {
   commas(letters, capped = TRUE)
   commas(letters, fun = tick)
 })
-
-test_that("default_local_src() works", {
-  expect_s3_class(default_local_src(), "src")
-})

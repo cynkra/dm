@@ -271,6 +271,7 @@ test_that("`dm_join_to_tbl()` works", {
 
 # tests that do not work on DB when keys are set ('bad_dm' and 'nycflights'; currently PG and MSSQL)
 test_that("tests with 'bad_dm' work", {
+  # can't create bad_dm() on Postgres due to strict constraint checks
   skip_if_src("postgres")
 
   bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
@@ -298,6 +299,8 @@ test_that("tests with 'bad_dm' work", {
     dm_apply_filters(bad_filtered_dm) %>% dm_flatten_to_tbl(tbl_1, join = semi_join)
   )
 
+  skip_if_not_installed("nycflights13")
+
   # fails when there is a cycle
   expect_dm_error(
     dm_nycflights_small() %>%
@@ -305,9 +308,16 @@ test_that("tests with 'bad_dm' work", {
       dm_flatten_to_tbl(flights),
     "no_cycles"
   )
+})
+
+test_that("tests with 'bad_dm' work (2)", {
+  # can't create bad_dm() on Postgres due to strict constraint checks
+  skip_if_src("postgres")
 
   # full & right join not available on SQLite
   skip_if_src("sqlite")
+
+  bad_filtered_dm <- dm_filter(bad_dm(), tbl_1, a != 4)
 
   # flatten bad_dm() (no referential integrity)
   expect_equivalent_tbl(
@@ -320,7 +330,7 @@ test_that("tests with 'bad_dm' work", {
   # filtered `dm`
   expect_dm_error(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = full_join),
-    class = c("apply_filters_first_full_join", "apply_filters_first")
+    class = "apply_filters_first_full_join"
   )
 
   # flatten bad_dm() (no referential integrity)
@@ -342,6 +352,6 @@ test_that("tests with 'bad_dm' work", {
   # filtered `dm`
   expect_dm_error(
     dm_flatten_to_tbl(bad_filtered_dm, tbl_1, join = right_join),
-    class = c("apply_filters_first_right_join", "apply_filters_first")
+    class = "apply_filters_first_right_join"
   )
 })
