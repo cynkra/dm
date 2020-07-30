@@ -38,6 +38,38 @@ test_that("Standard learning from MSSQL (schema 'dbo') works?", {
   )
 })
 
+
+test_that("Learning from specific schema on MSSQL works?", {
+
+  src_mssql <- skip_if_error(src_test("mssql"))
+  # this schema name should be special enough to avoid any conflicts
+  DBI::dbExecute(src_mssql$con, "CREATE SCHEMA testthat_for_dm")
+
+  table_names <- src_tbls(dm_for_disambiguate())
+  copy_dm_to(src_mssql, dm_for_disambiguate(), temporary = FALSE, table_names = function(x) {in_schema("testthat_for_dm", x)})
+
+  dm_for_filter_mssql_learned <- dm_from_src(src_mssql, schema = "testthat_for_dm")
+  DBI::dbExecute(src_mssql$con, "DROP TABLE \"testthat_for_dm\".iris_3")
+  DBI::dbExecute(src_mssql$con, "DROP TABLE \"testthat_for_dm\".iris_2")
+  DBI::dbExecute(src_mssql$con, "DROP TABLE \"testthat_for_dm\".iris_1")
+  DBI::dbExecute(src_mssql$con, "DROP SCHEMA testthat_for_dm")
+
+  def_learned_reclassed <-
+    dm_for_filter_mssql_learned %>%
+    dm_get_def() %>%
+    select(-data)
+
+  def_original <-
+    dm_get_def(dm_for_disambiguate()) %>%
+    select(-data)
+
+  expect_identical(
+    def_learned_reclassed,
+    def_original
+  )
+})
+
+
 # dm_learn_from_postgres() --------------------------------------------------
 test_that("Learning from Postgres works?", {
   src_postgres <- skip_if_error(src_test("postgres"))
