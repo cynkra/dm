@@ -125,7 +125,7 @@ mssql_learn_query <- function(con, schema = "dbo") { # taken directly from {data
   order by
     tabs.create_date,
     cols.column_id",
-  dbQuoteString(con, schema)
+    dbQuoteString(con, schema)
   )
 }
 
