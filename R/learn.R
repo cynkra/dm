@@ -122,11 +122,11 @@ mssql_learn_query <- function(con, schema = "dbo") { # taken directly from {data
       and ind_col.column_id = cols.column_id
     left outer join sys.systypes [types] on
       types.xusertype = cols.system_type_id
-  where tabs.schema_id = schema_id(%s)
+  where tabs.schema_id = schema_id('%s')
   order by
     tabs.create_date,
     cols.column_id",
-    dbQuoteString(con, schema)
+    schema
   )
 }
 
