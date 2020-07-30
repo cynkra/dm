@@ -38,7 +38,7 @@
 #' dm_from_src(con)
 #'
 #' DBI::dbDisconnect(con)
-dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL, schema = NULL,
+dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
                         ...) {
   if (is_null(src)) {
     # FIXME: Check empty arguments and ellipsis
