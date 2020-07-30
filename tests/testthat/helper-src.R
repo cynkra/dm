@@ -38,7 +38,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
   # message("Evaluating ", name)
 
   src <- my_test_src()
-  if (inherits(src, "src_local")) {
+  if (is.null(src)) {
     rhs
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
@@ -88,9 +88,12 @@ test_src_frame <- function(...) {
   src <- my_test_src()
 
   df <- tibble(...)
+  if (is.null(src)) {
+    return(df)
+  }
 
-  if (inherits(src, "src_Microsoft SQL Server")) {
-    name <- paste0("##", unique_db_table_name("test_frame"))
+  if (is_mssql(src)) {
+    name <- paste0("#", unique_db_table_name("test_frame"))
     temporary <- FALSE
   } else {
     name <- unique_db_table_name("test_frame")

@@ -64,7 +64,7 @@ dm <- function(..., .name_repair = c("check_unique", "unique", "universal", "min
   if (has_length(quos)) {
     src_index <- c(which(names(quos) == "src"), 1)[[1]]
     if (is.src(tbls[[src_index]])) {
-      lifecycle::deprecate_soft("0.0.4.9001", "dm::dm(src = )", "dm_from_src()")
+      deprecate_soft("0.0.4.9001", "dm::dm(src = )", "dm_from_src()")
       return(invoke(dm_from_src, tbls))
     }
   }
@@ -244,7 +244,8 @@ debug_validate_dm <- function(dm) {
 #'
 #' @rdname dm
 #'
-#' @return For `dm_get_src()`: the \pkg{dplyr} source for a `dm` object.
+#' @return For `dm_get_src()`: the \pkg{dplyr} source for a `dm` object,
+#'   or `NULL` if the `dm` objcet contains data frames.
 #'
 #' @export
 dm_get_src <- function(x) {
@@ -431,9 +432,9 @@ as_dm.default <- function(x) {
 
 tbl_src <- function(x) {
   if (is_empty(x) || is.data.frame(x)) {
-    default_local_src()
+    NULL
   } else if (inherits(x, "tbl_sql")) {
-    x$src
+    dbplyr::remote_src(x)
   } else {
     abort_what_a_weird_object(class(x)[[1]])
   }
@@ -462,22 +463,22 @@ show_dm <- function(x) {
     return()
   }
 
-  cat_rule("Table source", col = "green")
   src <- dm_get_src(x)
-  db_info <- NULL
+  if (!is.null(src)) {
+    cat_rule("Table source", col = "green")
+    db_info <- NULL
 
-  if (!is.null(src$con)) {
     # FIXME: change to pillar::tbl_sum() once it's there
     tbl_str <- tibble::tbl_sum(def$data[[1]])
     if ("Database" %in% names(tbl_str)) {
       db_info <- paste0("src:  ", tbl_str[["Database"]])
     }
-  }
-  if (is.null(db_info)) {
-    db_info <- strsplit(format(src), "\n")[[1]][[1]]
-  }
+    if (is.null(db_info)) {
+      db_info <- strsplit(format(src), "\n")[[1]][[1]]
+    }
 
-  cat_line(db_info)
+    cat_line(db_info)
+  }
 
   cat_rule("Metadata", col = "violet")
 
@@ -722,8 +723,13 @@ copy_to.dm <- function(dest, df, name = deparse(substitute(df)), overwrite = FAL
   # src: if `df` on a different src:
   # if `df_list` is on DB and `dest` is local, collect `df_list`
   # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
-  df <- copy_to(dm_get_src(dest), df, unique_db_table_name(name), temporary = temporary, ...)
-  # FIXME: should we allow `overwrite` argument?
+  dest_src <- dm_get_src(dest)
+  if (is.null(dest_src)) {
+    df <- as_tibble(collect(df))
+  } else {
+    # FIXME: should we allow `overwrite` argument?
+    df <- copy_to(dest_src, df, unique_db_table_name(name), temporary = temporary, ...)
+  }
   names_list <- repair_table_names(src_tbls(dest), name, repair, quiet)
   # rename old tables with potentially new names
   dest <- dm_rename_tbl(dest, !!!names_list$new_old_names)
