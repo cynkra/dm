@@ -266,7 +266,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name) {
 
 #' Foreign key candidates
 #'
-#' @description \lifecycle{questioning}
+#' @description `r lifecycle::badge("questioning")`
 #'
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
 #' to reference the primary key column of another table of the [`dm`] object.

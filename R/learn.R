@@ -9,7 +9,7 @@
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #' @param ...
-#'   \lifecycle{experimental}
+#'   `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
 #'   Currently supports `schema` (default: `"public"`)
