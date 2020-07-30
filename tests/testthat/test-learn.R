@@ -1,6 +1,6 @@
 # FIXME: #313: learn only from current source
 
-test_that("Learning from MSSQL works?", {
+test_that("Standard learning from MSSQL (schema 'dbo') works?", {
 
 
   # dm_learn_from_mssql() --------------------------------------------------
@@ -12,7 +12,13 @@ test_that("Learning from MSSQL works?", {
     copy_dm_to(src_mssql, dm_for_filter(), temporary = FALSE, table_names = unique_db_table_name)
   }
 
-  dm_for_filter_mssql_learned <- dm_from_src(src_mssql)
+  dm_for_filter_mssql_learned_all <- dm_from_src(src_mssql)
+
+  # in case there happen to be other tables in schema "dbo"
+  dm_for_filter_mssql_learned <- dm_select_tbl(
+    dm_for_filter_mssql_learned_all,
+    which(grepl("tf_[1-6]_[0-9]{4}_[0-9_]{5}_[0-9]", names(dm_for_filter_mssql_learned_raw)))
+  )
 
   def_learned_renamed_reclassed <-
     dm_rename_tbl(
