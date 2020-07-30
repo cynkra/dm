@@ -182,57 +182,56 @@
 <h1 class="page-header" data-toc-text="0.1.6">
 <a href="#dm-016" class="anchor"></a>dm 0.1.6<small> 2020-07-29 </small>
 </h1>
-<ul>
-<li>Same as previous version.</li>
-</ul>
-</div>
-    <div id="dm-0159002" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.5.9002">
-<a href="#dm-0159002" class="anchor"></a>dm 0.1.5.9002<small> Unreleased </small>
-</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code><a href="../reference/dm.html">dm_get_src()</a></code> returns <code>NULL</code> for local data sources (<a href='https://github.com/krlmlr/dm/issues/394'>#394</a>).</li>
-<li>
-<code>dm</code> objects with local data sources no longer show the “Table source” part in the output.</li>
-<li>
-<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gives a better error message for bad <code>table_names</code> (<a href='https://github.com/krlmlr/dm/issues/397'>#397</a>).</li>
 <li>Local target in <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gives a deprecation message (<a href='https://github.com/krlmlr/dm/issues/395'>#395</a>).</li>
-<li>Use <code><a href="https://rdrr.io/r/base/conditions.html">withCallingHandlers()</a></code> where appropriate (<a href='https://github.com/krlmlr/dm/issues/422'>#422</a>).</li>
-<li>For databases, the underlying SQL table names are quoted early to avoid later SQL syntax errors (<a href='https://github.com/krlmlr/dm/issues/419'>#419</a>).</li>
-<li>Error messages now refer to “tables”, not “elements” (<a href='https://github.com/krlmlr/dm/issues/413'>#413</a>).</li>
-<li>Consistent definition of <code>.dm</code> and <code>.zoomed_dm</code> methods (<a href='https://github.com/krlmlr/dm/issues/300'>#300</a>).</li>
 </ul>
 </div>
-    <div id="dm-0159001" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.5.9001">
-<a href="#dm-0159001" class="anchor"></a>dm 0.1.5.9001<small> Unreleased </small>
-</h1>
+<div id="features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features" class="anchor"></a>Features</h2>
 <ul>
 <li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gives a better error message for bad <code>table_names</code> (<a href='https://github.com/krlmlr/dm/issues/397'>#397</a>).</li>
+<li>
+<code>dm</code> objects with local data sources no longer show the “Table source” part in the output.</li>
+<li>Error messages now refer to “tables”, not “elements” (<a href='https://github.com/krlmlr/dm/issues/413'>#413</a>).</li>
+<li>New <code><a href="../reference/dm_bind.html">dm_bind()</a></code> for binding two or more ‘dm’ objects together (<a href='https://github.com/krlmlr/dm/issues/417'>#417</a>).</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>For databases, the underlying SQL table names are quoted early to avoid later SQL syntax errors (<a href='https://github.com/krlmlr/dm/issues/419'>#419</a>).</li>
+<li>
 <code><a href="../reference/dm_financial.html">dm_financial()</a></code> no longer prints message about <code>learn_keys = FALSE</code>.</li>
-<li>Examples involving <code><a href="../reference/dm_financial.html">dm_financial()</a></code> are not run if connection can’t be established (<a href='https://github.com/krlmlr/dm/issues/418'>#418</a>).</li>
 <li>
 <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code> and related functions now use the primary keys defined in <code>x</code> for establishing matching rows.</li>
-<li>New <code><a href="../reference/dm_bind.html">dm_bind()</a></code> for binding two or more ‘dm’ objects together (<a href='https://github.com/krlmlr/dm/issues/417'>#417</a>).</li>
+</ul>
+</div>
+<div id="internal" class="section level2">
+<h2 class="hasAnchor">
+<a href="#internal" class="anchor"></a>Internal</h2>
+<ul>
+<li>Use <code><a href="https://rdrr.io/r/base/conditions.html">withCallingHandlers()</a></code> where appropriate (<a href='https://github.com/krlmlr/dm/issues/422'>#422</a>).</li>
+<li>Consistent definition of <code>.dm</code> and <code>.zoomed_dm</code> methods (<a href='https://github.com/krlmlr/dm/issues/300'>#300</a>).</li>
+<li>Examples involving <code><a href="../reference/dm_financial.html">dm_financial()</a></code> are not run if connection can’t be established (<a href='https://github.com/krlmlr/dm/issues/418'>#418</a>).</li>
 <li>Fix database tests on CI (<a href='https://github.com/krlmlr/dm/issues/416'>#416</a>).</li>
 </ul>
 </div>
-    <div id="dm-0159000" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.5.9000">
-<a href="#dm-0159000" class="anchor"></a>dm 0.1.5.9000<small> Unreleased </small>
-</h1>
-<ul>
-<li>Internal changes only.</li>
-</ul>
 </div>
     <div id="dm-015" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.5">
 <a href="#dm-015" class="anchor"></a>dm 0.1.5<small> 2020-07-03 </small>
 </h1>
-<div id="features" class="section level2">
+<div id="features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features" class="anchor"></a>Features</h2>
+<a href="#features-1" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code><a href="../reference/dm_paste.html">dm_paste()</a></code> generates self-contained code (<a href='https://github.com/krlmlr/dm/issues/401'>#401</a>).</li>
@@ -245,9 +244,9 @@
 <code><a href="../reference/dm_add_pk.html">dm_add_pk(check = TRUE)</a></code> gives a better error message.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>
 <code><a href="https://dplyr.tidyverse.org/reference/rows.html">rows_insert()</a></code> works if column names consist of SQL keywords (<a href='https://github.com/krlmlr/dm/issues/409'>#409</a>).</li>
@@ -255,9 +254,9 @@
 <li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html">src_sqlite()</a></code> in examples (<a href='https://github.com/krlmlr/dm/issues/372'>#372</a>).</li>
 </ul>
 </div>
-<div id="internal" class="section level2">
+<div id="internal-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal" class="anchor"></a>Internal</h2>
+<a href="#internal-1" class="anchor"></a>Internal</h2>
 <ul>
 <li>Testing SQLite, Postgres and SQL Server on GitHub Actions (<a href='https://github.com/krlmlr/dm/issues/408'>#408</a>, <a href='https://github.com/pat-s'>@pat-s</a>).</li>
 <li>Testing packages with all “Suggests” uninstalled.</li>
@@ -268,9 +267,9 @@
 <h1 class="page-header" data-toc-text="0.1.4">
 <a href="#dm-014" class="anchor"></a>dm 0.1.4<small> 2020-06-07 </small>
 </h1>
-<div id="features-1" class="section level2">
+<div id="features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-1" class="anchor"></a>Features</h2>
+<a href="#features-2" class="anchor"></a>Features</h2>
 <ul>
 <li><p>New <code><a href="../reference/rows-dm.html">dm_rows_insert()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_update()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_patch()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_upsert()</a></code>, <code><a href="../reference/rows-dm.html">dm_rows_delete()</a></code> and <code><a href="../reference/rows-dm.html">dm_rows_truncate()</a></code>, calling the corresponding <code>rows_*()</code> method for every table (<a href='https://github.com/krlmlr/dm/issues/319'>#319</a>).</p></li>
 <li><p>New <code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> (<a href='https://github.com/krlmlr/dm/issues/319'>#319</a>).</p></li>
@@ -288,9 +287,9 @@
 <li><p>Add content from old README to <code>howto-dm-theory.Rmd</code> (<a href='https://github.com/krlmlr/dm/issues/378'>#378</a>, <a href='https://github.com/jawond'>@jawond</a>).</p></li>
 </ul>
 </div>
-<div id="internal-1" class="section level2">
+<div id="internal-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-1" class="anchor"></a>Internal</h2>
+<a href="#internal-2" class="anchor"></a>Internal</h2>
 <ul>
 <li><p>Require dplyr &gt;= 1.0.0.</p></li>
 <li><p>Use GitHub Actions (<a href='https://github.com/krlmlr/dm/issues/369'>#369</a>, <a href='https://github.com/pat-s'>@pat-s</a>).</p></li>
@@ -314,9 +313,9 @@
 <h1 class="page-header" data-toc-text="0.1.2">
 <a href="#dm-012" class="anchor"></a>dm 0.1.2<small> 2020-05-04 </small>
 </h1>
-<div id="features-2" class="section level2">
+<div id="features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-2" class="anchor"></a>Features</h2>
+<a href="#features-3" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> now works for databases other than Postgres and MSSQL (<a href='https://github.com/krlmlr/dm/issues/288'>#288</a>), gives a warning if tables cannot be accessed with <code>table_name = NULL</code> (<a href='https://github.com/krlmlr/dm/issues/348'>#348</a>), and gains <code>learn_keys</code> argument to control querying of primary and foreign keys from the database (<a href='https://github.com/krlmlr/dm/issues/340'>#340</a>).</li>
@@ -337,9 +336,9 @@
 <li>Support alpha colors for the table colors (<a href='https://github.com/krlmlr/dm/issues/279'>#279</a>).</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix visualization of column that acts as a foreign key more than once (<a href='https://github.com/krlmlr/dm/issues/37'>#37</a>).</li>
 <li>
@@ -376,9 +375,9 @@
 <li>New article “{dm} and databases” (<a href='https://github.com/krlmlr/dm/issues/309'>#309</a>, <a href='https://github.com/jawond'>@jawond</a>).</li>
 </ul>
 </div>
-<div id="internal-2" class="section level2">
+<div id="internal-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-2" class="anchor"></a>Internal</h2>
+<a href="#internal-3" class="anchor"></a>Internal</h2>
 <ul>
 <li>Testing on local data frames (by default), optionally also SQLite, Postgres, RMariaDB, and SQL Server. Currently requires development versions and various pull requests (<a href='https://github.com/krlmlr/dm/issues/334'>#334</a>, <a href='https://github.com/krlmlr/dm/issues/327'>#327</a>, <a href='https://github.com/krlmlr/dm/issues/312'>#312</a>, <a href='https://github.com/krlmlr/dm/issues/76'>#76</a>).</li>
 <li>
@@ -460,9 +459,9 @@
 <h1 class="page-header" data-toc-text="0.0.5">
 <a href="#dm-005" class="anchor"></a>dm 0.0.5<small> Unreleased </small>
 </h1>
-<div id="features-3" class="section level2">
+<div id="features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-3" class="anchor"></a>Features</h2>
+<a href="#features-4" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code><a href="../reference/deprecated.html">cdm_filter()</a></code> and <code><a href="../reference/dplyr_table_manipulation.html">filter.zoomed_dm()</a></code> apply the filter instantly, the expression is recorded only for display purposes and for terminating the search for filtered tables in <code><a href="../reference/deprecated.html">cdm_apply_filters()</a></code>. This now allows using a variety of operations on filtered <code>dm</code> objects (<a href='https://github.com/krlmlr/dm/issues/124'>#124</a>).</li>
@@ -489,9 +488,9 @@
 <li>Add explanation for empty <code>dm</code> (<a href='https://github.com/krlmlr/dm/issues/100'>#100</a>).</li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Avoid asterisk when printing local <code>zoomed_dm</code> (<a href='https://github.com/krlmlr/dm/issues/131'>#131</a>).</li>
 <li>
@@ -601,9 +600,9 @@
 <h1 class="page-header" data-toc-text="0.0.2">
 <a href="#dm-002" class="anchor"></a>dm 0.0.2<small> Unreleased </small>
 </h1>
-<div id="breaking-changes" class="section level2">
+<div id="breaking-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>Requires tidyr &gt;= 1.0.0.</li>
 <li>
@@ -667,9 +666,9 @@
 <li>Add setup article (<a href='https://github.com/krlmlr/dm/issues/7'>#7</a>).</li>
 </ul>
 </div>
-<div id="internal-3" class="section level2">
+<div id="internal-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-3" class="anchor"></a>Internal</h2>
+<a href="#internal-4" class="anchor"></a>Internal</h2>
 <ul>
 <li>Using simpler internal data structure to store primary and foreign key relations (<a href='https://github.com/krlmlr/dm/issues/26'>#26</a>).</li>
 <li>New <code>nse_function()</code> replaces <code>h()</code> for marking functions as NSE to avoid R CMD check warnings.</li>
