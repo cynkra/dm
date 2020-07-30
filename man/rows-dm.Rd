@@ -41,7 +41,7 @@ If \code{in_place = TRUE}, the underlying data is updated as a side effect,
 and \code{x} is returned, invisibly.
 }
 \description{
-\lifecycle{experimental}
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 These functions provide a framework for updating data in existing tables.
 Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created

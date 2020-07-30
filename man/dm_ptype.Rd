@@ -10,7 +10,7 @@ dm_ptype(dm)
 \item{dm}{A \code{dm} object.}
 }
 \description{
-\lifecycle{experimental}
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 The prototype contains all tables, all primary and foreign keys,
 but no data.

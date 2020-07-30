@@ -10,14 +10,14 @@
 #' @param table_names
 #'   A character vector of the names of the tables to include.
 #' @param learn_keys
-#'   \lifecycle{experimental}
+#'   `r lifecycle::badge("experimental")`
 #'
 #'   Set to `TRUE` to query the definition of primary and
 #'   foreign keys from the database.
 #'   Currently works only for Postgres and SQL Server databases.
 #'   The default attempts to query and issues an informative message.
 #' @param ...
-#'   \lifecycle{experimental}
+#'   `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
 #'   Currently supports `schema` (default: `"public"`)

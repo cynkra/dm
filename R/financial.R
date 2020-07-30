@@ -1,7 +1,7 @@
 #' Creates a dm object for the Financial data
 #'
 #' @description
-#' \lifecycle{experimental}
+#' `r lifecycle::badge("experimental")`
 #'
 #' `dm_financial()` creates an example [`dm`] object from the tables at
 #' <https://relational.fit.cvut.cz/dataset/Financial>.

@@ -23,7 +23,7 @@ A tibble with the following columns:
 }
 }
 \description{
-\lifecycle{questioning}
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a>}}{\strong{Questioning}}
 
 \code{enum_pk_candidates()} checks for each column of a
 table if the column contains only unique values, and is thus

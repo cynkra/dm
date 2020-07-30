@@ -4,6 +4,8 @@ on:
   push:
     branches:
     - master
+    - docs
+    - cran-*
   pull_request:
     branches:
     - master
