@@ -1,12 +1,6 @@
 # FIXME: #313: learn only from current source
 
-# produces a randomized schema name with a length of 4-10 characters
-# consisting of the symbols in `reservoir`
-random_schema <- function() {
-  reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
-  how_long <- sample(4:10, 1)
-  paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
-}
+test_that("Standard learning from MSSQL (schema 'dbo') works?", {
 
 schema_name <- random_schema()
 
@@ -17,30 +11,34 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   src_db <- my_test_src()
 
   # create an object on the MSSQL-DB that can be learned
-  dm_for_filter_copied <- copy_dm_to(src_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
-  order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
-  remote_tbl_names <- map_chr(
-    set_names(order_of_deletion),
-    ~ dbplyr::remote_name(dm_for_filter_copied[[.x]])
+  if (!any(src_tbls(src_mssql) %>%
+    grepl("^tf_1_", .))) {
+    copy_dm_to(src_mssql, dm_for_filter(), temporary = FALSE, table_names = unique_db_table_name)
+  }
+
+  dm_for_filter_mssql_learned_all <- dm_from_src(src_mssql)
+
+  # in case there happen to be other tables in schema "dbo"
+  dm_for_filter_mssql_learned <- dm_select_tbl(
+    dm_for_filter_mssql_learned_all,
+    which(grepl("tf_[1-6]_[0-9]{4}_[0-9_]{5}_[0-9]", names(dm_for_filter_mssql_learned_raw)))
   )
 
-  withr::defer(
-    walk(
-      dm_get_tables_impl(dm_for_filter_copied)[order_of_deletion],
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
-    )
-  )
+  def_learned_renamed_reclassed <-
+    dm_rename_tbl(
+      dm_for_filter_mssql_learned,
+      structure(src_tbls(dm_for_filter_mssql_learned), names = src_tbls(dm_for_filter()))
+    ) %>%
+    dm_get_def() %>%
+    select(-data)
 
-  dm_db_learned_all <- dm_from_src(src_db)
+  def_original <-
+    dm_get_def(dm_for_filter()) %>%
+    select(-data)
 
-  # in case there happen to be other tables in schema "dbo" or "public"
-  dm_db_learned <-
-    dm_db_learned_all %>%
-    dm_select_tbl(!!!remote_tbl_names)
-
-  expect_equivalent_dm(
-    dm_db_learned,
-    dm_for_filter()[order_of_deletion]
+  expect_identical(
+    def_learned_renamed_reclassed,
+    def_original
   )
 })
 
