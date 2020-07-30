@@ -142,8 +142,9 @@ copy_dm_to <- function(dest, dm, ...,
         table_names_out <- table_names
       }
       check_naming(names(table_names_out), src_names)
-
-      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
+      if (!inherits(table_names_out,"ident_q")) {
+        table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
+      }
       # names(table_names_out) <- src_names
     }
 
