@@ -139,14 +139,13 @@ test_that("Learning from specific schema on Postgres works?", {
   def_learned_reclassed <-
     dm_for_filter_pg_learned %>%
     dm_get_def() %>%
-    arrange(table) %>%
     select(-data)
 
   def_original <-
     dm_get_def(dm_for_disambiguate()) %>%
     select(-data)
 
-  expect_identical(
+  expect_equivalent_tbl(
     def_learned_reclassed,
     def_original
   )
