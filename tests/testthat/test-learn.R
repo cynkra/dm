@@ -122,14 +122,14 @@ test_that("Learning from specific schema on Postgres works?", {
   table_names <- src_tbls(dm_for_disambiguate())
   copy_dm_to(src_postgres, dm_for_disambiguate(), temporary = FALSE, table_names = function(x) {in_schema("testthat_for_dm", x)})
 
-  dm_for_filter_mssql_learned <- dm_from_src(src_postgres, schema = "testthat_for_dm")
+  dm_for_filter_pg_learned <- dm_from_src(src_postgres, schema = "testthat_for_dm")
   DBI::dbExecute(con_postgres, "DROP TABLE \"testthat_for_dm\".iris_3")
   DBI::dbExecute(con_postgres, "DROP TABLE \"testthat_for_dm\".iris_2")
   DBI::dbExecute(con_postgres, "DROP TABLE \"testthat_for_dm\".iris_1")
   DBI::dbExecute(con_postgres, "DROP SCHEMA testthat_for_dm")
 
   def_learned_reclassed <-
-    dm_for_filter_mssql_learned %>%
+    dm_for_filter_pg_learned %>%
     dm_get_def() %>%
     arrange(table) %>%
     select(-data)
