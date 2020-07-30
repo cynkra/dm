@@ -66,7 +66,7 @@ dm_learn_from_db <- function(dest, ...) {
     distinct(schema, table) %>%
     transmute(
       name = table,
-      value = schema_if(schema, DBI::dbQuoteIdentifier(con, table))
+      value = schema_if(schema, table, con)
     ) %>%
     deframe()
 
@@ -78,8 +78,9 @@ dm_learn_from_db <- function(dest, ...) {
   legacy_new_dm(tables, data_model)
 }
 
-schema_if <- function(schema, table) {
-  if_else(is.na(schema), table, paste0(schema, ".", table))
+schema_if <- function(schema, table, con) {
+  table_sql <- DBI::dbQuoteIdentifier(con, table)
+  if_else(is.na(schema), table_sql, paste0(DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
 }
 
 db_learn_query <- function(dest, ...) {
