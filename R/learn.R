@@ -38,7 +38,7 @@
 #'   # the `dm` from the SQLite DB
 #'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
 #' }
-dm_learn_from_db <- function(dest, schema, ...) {
+dm_learn_from_db <- function(dest, ...) {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
@@ -47,7 +47,7 @@ dm_learn_from_db <- function(dest, schema, ...) {
     return()
   }
 
-  sql <- db_learn_query(con, schema, ...)
+  sql <- db_learn_query(con, ...)
   if (is.null(sql)) {
     return()
   }
@@ -83,12 +83,12 @@ schema_if <- function(schema, table, con) {
   if_else(is.na(schema), table_sql, paste0(DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
 }
 
-db_learn_query <- function(dest, schema, ...) {
+db_learn_query <- function(dest, ...) {
   if (is_mssql(dest)) {
-    return(mssql_learn_query(dest, schema))
+    return(mssql_learn_query(dest, ...))
   }
   if (is_postgres(dest)) {
-    return(postgres_learn_query(dest, schema = schema, ...))
+    return(postgres_learn_query(dest, ...))
   }
 }
 
