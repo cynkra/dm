@@ -109,8 +109,8 @@ jobs:
         uses: pat-s/always-upload-cache@v2.0.0
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ matrix.config.r }}-${{ matrix.config.cache }}-${{ matrix.config.id }}-${{ steps.date.outputs.date }}
-          restore-keys: ${{ runner.os }}-r1-${{ matrix.config.r }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
 
       # install ccache and write config file
       - name: "[Linux] Prepare"
