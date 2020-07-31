@@ -243,6 +243,16 @@ dm_set_key_constraints <- function(dm) {
   invisible(dm)
 }
 
+get_db_table_names <- function(dm) {
+  if (!is_src_db(dm)) {
+    return(tibble(table_name = src_tbls(dm), remote_name = src_tbls(dm)))
+  }
+  tibble(
+    table_name = src_tbls(dm),
+    remote_name = map_chr(dm_get_tables_impl(dm), dbplyr::remote_name)
+  )
+}
+
 check_naming <- function(table_names, dm_table_names) {
   if (!identical(sort(table_names), sort(dm_table_names))) {
     abort_copy_dm_to_table_names()

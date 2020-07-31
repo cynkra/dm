@@ -13,7 +13,7 @@ dm_financial_sqlite()
 A \code{dm} object.
 }
 \description{
-\lifecycle{experimental}
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 \code{dm_financial()} creates an example \code{\link{dm}} object from the tables at
 \url{https://relational.fit.cvut.cz/dataset/Financial}.
