@@ -9,7 +9,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') works?", {
   # create an object on the MSSQL-DB that can be learned
   if (!any(src_tbls(src_mssql) %>%
     grepl("^tf_1_", .))) {
-    copy_dm_to(src_mssql, dm_for_filter(), temporary = FALSE, table_names = unique_db_table_name)
+    dm_for_filter_copied <- copy_dm_to(src_mssql, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
   }
 
   dm_for_filter_mssql_learned_all <- dm_from_src(src_mssql)
