@@ -126,7 +126,7 @@ mssql_learn_query <- function(con, schema = "dbo") { # taken directly from {data
   order by
     tabs.create_date,
     cols.column_id",
-    schema
+  gsub("(^|[^'])(['])($|[^'])", "\\1\\2\\2\\3", schema)
   )
 }
 
