@@ -29,7 +29,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') works?", {
   )
 
   walk(
-    dm_get_tables_impl(dm_for_filter_mssql_learned)[c(2, 1, 5, 6, 4, 3)],
+    dm_get_tables_impl(dm_for_filter_mssql_learned)[c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")],
     ~ dbExecute(src_mssql$con, paste0("DROP TABLE ", dbplyr::remote_name(.x)))
   )
 })
