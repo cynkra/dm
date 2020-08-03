@@ -15,8 +15,9 @@ test_that("Standard learning from MSSQL (schema 'dbo') works?", {
   dm_for_filter_mssql_learned_all <- dm_from_src(src_mssql)
 
   # in case there happen to be other tables in schema "dbo"
-  dm_for_filter_mssql_learned <- dm_select_tbl(
-    dm_for_filter_mssql_learned_all,
+  dm_for_filter_mssql_learned <-
+    dm_for_filter_mssql_learned_all %>%
+    dm_select_tbl(
     which(grepl("tf_[1-6]_[0-9]{4}_[0-9_]{5}_[0-9]", names(dm_for_filter_mssql_learned_all)))
   ) %>% dm_select_tbl(
     tf_1 = starts_with("tf_1"), tf_2 = starts_with("tf_2"), tf_3 = starts_with("tf_3"),
