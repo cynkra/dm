@@ -46,7 +46,12 @@ test_that("Learning from specific schema on MSSQL works?", {
   DBI::dbExecute(con_mssql, "CREATE SCHEMA testthat_for_dm")
 
   table_names <- src_tbls(dm_for_disambiguate())
-  copy_dm_to(src_mssql, dm_for_disambiguate(), temporary = FALSE, table_names = function(x) {dbplyr::in_schema("testthat_for_dm", x)})
+  dm_for_disambiguate_copied <- copy_dm_to(
+    src_mssql,
+    dm_for_disambiguate(),
+    temporary = FALSE,
+    table_names = ~ DBI::SQL(dbplyr::in_schema("testthat_for_dm", .x))
+  )
 
   dm_for_filter_mssql_learned <- dm_from_src(src_mssql, schema = "testthat_for_dm")
 
