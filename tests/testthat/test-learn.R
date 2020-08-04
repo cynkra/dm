@@ -41,29 +41,38 @@ test_that("Learning from specific schema on MSSQL works?", {
   src_mssql <- my_test_src()
   con_mssql <- src_mssql$con
 
-  # this schema name should be special enough to avoid any conflicts
-  try(DBI::dbExecute(con_mssql, "DROP SCHEMA testthat_for_dm"), silent = TRUE)
-  DBI::dbExecute(con_mssql, "CREATE SCHEMA testthat_for_dm")
+  schema_name <- "testthat_for_dm"
 
-  table_names <- src_tbls(dm_for_disambiguate())
+  # this schema name should be special enough to avoid any conflicts
+  try(DBI::dbExecute(con_mssql, paste0("DROP SCHEMA ", schema_name)), silent = TRUE)
+  DBI::dbExecute(con_mssql, paste0("CREATE SCHEMA ", schema_name))
+
   dm_for_disambiguate_copied <- copy_dm_to(
     src_mssql,
     dm_for_disambiguate(),
     temporary = FALSE,
-    table_names = ~ DBI::SQL(dbplyr::in_schema("testthat_for_dm", .x))
+    table_names = ~ DBI::SQL(dbplyr::in_schema(schema_name, .x))
+  )
+  order_of_deletion <- c("iris_3", "iris_2", "iris_1")
+  remote_tbl_names <- set_names(paste0("\"", schema_name, "\".", order_of_deletion), order_of_deletion)
+
+  withr::defer(
+    {
+      walk(
+        remote_tbl_names,
+        ~ dbExecute(con_mssql, paste0("DROP TABLE ", .x))
+      )
+      dbExecute(con_mssql, paste0("DROP SCHEMA ", schema_name))
+    }
   )
 
-  dm_for_filter_mssql_learned <- dm_from_src(src_mssql, schema = "testthat_for_dm")
+  dm_for_filter_mssql_learned <- dm_from_src(src_mssql, schema = schema_name) %>%
+    dm_select_tbl(!!!order_of_deletion)
 
   expect_equivalent_dm(
     dm_for_filter_mssql_learned,
-    dm_for_disambiguate()
+    dm_for_disambiguate()[order_of_deletion]
   )
-
-  DBI::dbExecute(con_mssql, "DROP TABLE \"testthat_for_dm\".iris_3")
-  DBI::dbExecute(con_mssql, "DROP TABLE \"testthat_for_dm\".iris_2")
-  DBI::dbExecute(con_mssql, "DROP TABLE \"testthat_for_dm\".iris_1")
-  DBI::dbExecute(con_mssql, "DROP SCHEMA testthat_for_dm")
 })
 
 
