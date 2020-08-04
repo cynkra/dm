@@ -148,9 +148,7 @@ copy_dm_to <- function(dest, dm, ...,
         abort_copy_dm_to_table_names_duplicated(problem)
       }
 
-      if (!inherits(table_names_out,"ident_q")) {
-        table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
-      }
+      table_names_out <- unclass(DBI::dbQuoteIdentifier(dest_con, table_names_out[src_names]))
       # names(table_names_out) <- src_names
     }
 
