@@ -7,30 +7,30 @@ test_that("Standard learning from MSSQL (schema 'dbo') works?", {
   src_mssql <- my_test_src()
 
   # create an object on the MSSQL-DB that can be learned
-  if (!any(src_tbls(src_mssql) %>%
-    grepl("^tf_1_", .))) {
-    dm_for_filter_copied <- copy_dm_to(src_mssql, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
-  }
+  dm_for_filter_copied <- copy_dm_to(src_mssql, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
+  remote_tbl_names <- map_chr(
+    order_of_deletion,
+    ~dbplyr::remote_name(dm_for_filter_copied[[.x]])
+  ) %>% set_names(order_of_deletion)
+
+  withr::defer(
+    walk(
+      dm_get_tables_impl(dm_for_filter_copied)[order_of_deletion],
+      ~ dbExecute(src_mssql$con, paste0("DROP TABLE ", dbplyr::remote_name(.x)))
+    )
+  )
 
   dm_for_filter_mssql_learned_all <- dm_from_src(src_mssql)
 
   # in case there happen to be other tables in schema "dbo"
   dm_for_filter_mssql_learned <-
     dm_for_filter_mssql_learned_all %>%
-    dm_select_tbl(
-    which(grepl("tf_[1-6]_[0-9]{4}_[0-9_]{5}_[0-9]", names(dm_for_filter_mssql_learned_all)))
-  ) %>% dm_select_tbl(
-    tf_1 = starts_with("tf_1"), tf_2 = starts_with("tf_2"), tf_3 = starts_with("tf_3"),
-    tf_4 = starts_with("tf_4"), tf_5 = starts_with("tf_5"), tf_6 = starts_with("tf_6"))
+    dm_select_tbl(!!!remote_tbl_names)
 
   expect_equivalent_dm(
     dm_for_filter_mssql_learned,
-    dm_for_filter()
-  )
-
-  walk(
-    dm_get_tables_impl(dm_for_filter_mssql_learned)[c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")],
-    ~ dbExecute(src_mssql$con, paste0("DROP TABLE ", dbplyr::remote_name(.x)))
+    dm_for_filter()[order_of_deletion]
   )
 })
 
