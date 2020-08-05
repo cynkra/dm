@@ -51,20 +51,20 @@ test_that("Learning from specific schema on MSSQL works?", {
   src_mssql <- my_test_src()
   con_mssql <- src_mssql$con
 
-  schema_name <- "testthat_for_dm"
+  schema_name_q <- DBI::dbQuoteIdentifier(con_mssql, schema_name)
 
   # this schema name should be special enough to avoid any conflicts
-  try(DBI::dbExecute(con_mssql, paste0("DROP SCHEMA ", schema_name)), silent = TRUE)
-  DBI::dbExecute(con_mssql, paste0("CREATE SCHEMA ", schema_name))
+  try(DBI::dbExecute(con_mssql, paste0("DROP SCHEMA ", schema_name_q)), silent = TRUE)
+  DBI::dbExecute(con_mssql, paste0("CREATE SCHEMA ", schema_name_q))
 
   dm_for_disambiguate_copied <- copy_dm_to(
     src_mssql,
     dm_for_disambiguate(),
     temporary = FALSE,
-    table_names = ~ DBI::SQL(dbplyr::in_schema(schema_name, .x))
+    table_names = ~ DBI::SQL(dbplyr::in_schema(schema_name_q, .x))
   )
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
-  remote_tbl_names <- set_names(paste0("\"", schema_name, "\".", order_of_deletion), order_of_deletion)
+  remote_tbl_names <- set_names(paste0(schema_name_q, order_of_deletion), order_of_deletion)
 
   withr::defer(
     {
@@ -72,7 +72,7 @@ test_that("Learning from specific schema on MSSQL works?", {
         remote_tbl_names,
         ~ dbExecute(con_mssql, paste0("DROP TABLE ", .x))
       )
-      dbExecute(con_mssql, paste0("DROP SCHEMA ", schema_name))
+      dbExecute(con_mssql, paste0("DROP SCHEMA ", schema_name_q))
     }
   )
 
