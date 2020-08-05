@@ -128,7 +128,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 class="date">2020-08-04</h4>
+            <h4 class="date">2020-08-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-class.Rmd"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -229,7 +229,7 @@
 <span class="kw">flights_dm</span>
 </pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpO8l18M/nycflights13.sqlite]
+#&gt; src:  sqlite 3.30.1 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpzvK7Tg/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -268,7 +268,7 @@
 </pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.30.1
-#&gt; #   [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpO8l18M/nycflights13.sqlite]</span><span>
+#&gt; #   [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpzvK7Tg/nycflights13.sqlite]</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
 #&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
@@ -306,7 +306,7 @@
 <span class="kw">flights_dm_with_key</span>
 </pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpO8l18M/nycflights13.sqlite]
+#&gt; src:  sqlite 3.30.1 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpzvK7Tg/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -387,7 +387,7 @@
 <span class="kw">flights_dm_with_key</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span>(<span class="kw">flights</span>, <span class="kw">origin</span>, <span class="kw">airports</span>)
 </pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpO8l18M/nycflights13.sqlite]
+#&gt; src:  sqlite 3.30.1 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpzvK7Tg/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
