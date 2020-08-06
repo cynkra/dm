@@ -1,6 +1,8 @@
 ## tic GitHub Actions template: custom-deploy
 ## revision date: 2020-05-21
+# [Custom header]
 on:
+  workflow_dispatch:
   push:
     branches:
     - master
@@ -30,7 +32,7 @@ jobs:
           # [Custom matrix env var]
           - { os: macOS-latest, r: "release", TIC_ONLY_TESTS: true, TIC_DEV_VERSIONS: true, id: "TIC_ONLY_TESTS & TIC_DEV_VERSIONS", cache: "dev" }
           # [Custom matrix env var]
-          - { os: macOS-latest, r: "release", pkgdown: true, id: "pkgdown"}
+          - { os: macOS-latest, r: "release", pkgdown: true, latex: true, id: "pkgdown"}
           # [Custom matrix env var]
           - { os: windows-latest, r: "release", id: "default" }
           # [Custom matrix env var]
@@ -91,7 +93,7 @@ jobs:
       # macOS: ~ 1 min 30s
       # Windows: never finishes
       - uses: r-lib/actions/setup-tinytex@v1
-        if: runner.id == 'pkgdown'
+        if: matrix.config.latex == 'true'
 
       - uses: r-lib/actions/setup-pandoc@master
 
@@ -104,7 +106,7 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date '+%d-%m')"
 
-      - name: "[Cache] Cache R packages"
+      - name: "[Custom block] [Cache] Cache R packages"
         if: runner.os != 'Windows'
         uses: pat-s/always-upload-cache@v2.0.0
         with:
