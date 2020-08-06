@@ -106,14 +106,6 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date '+%d-%m')"
 
-      - name: "[Custom block] [Cache] Cache R packages"
-        if: runner.os != 'Windows'
-        uses: pat-s/always-upload-cache@v2.0.0
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
-
       # install ccache and write config file
       - name: "[Linux] Prepare"
         if: runner.os == 'Linux'
