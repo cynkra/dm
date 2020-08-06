@@ -69,7 +69,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
         add_step(step_push_deploy())
     }
   }
-} else if (ci_has_env("TIC_BUILD_PKGDOWN")) {
+} else if (ci_has_env("BUILD_PKGDOWN")) {
   get_stage("install") %>%
     add_step(step_install_github("krlmlr/pkgdown@fix/examples-dontshow")) %>%
     add_step(step_install_github("cynkra/cynkratemplate"))

@@ -18,7 +18,7 @@ on:
 name: tic
 
 jobs:
-  R-CMD-check:
+  all:
     runs-on: ${{ matrix.config.os }}
 
     # [Custom matrix name]
@@ -74,7 +74,7 @@ jobs:
       RGL_USE_NULL: true
       # if you use bookdown or blogdown, replace "PKGDOWN" by the respective
       # capitalized term. This also might need to be done in tic.R
-      TIC_BUILD_PKGDOWN: ${{ matrix.config.pkgdown }}
+      BUILD_PKGDOWN: ${{ matrix.config.pkgdown }}
       # macOS >= 10.15.4 linking
       SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
       # [Custom env var] use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
