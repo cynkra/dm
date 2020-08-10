@@ -3,9 +3,11 @@ test_that("cdm_add_tbl() works", {
   skip_if_remote_src()
   local_options(lifecycle_verbosity = "quiet")
 
+  mtcars_tbl <- test_src_frame(!!!mtcars)
+
   expect_equivalent_dm(
-    cdm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars"))),
-    dm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars")))
+    cdm_add_tbl(dm_for_filter(), cars_table = mtcars_tbl),
+    dm_add_tbl(dm_for_filter(), cars_table = mtcars_tbl)
   )
 })
 
@@ -130,7 +132,7 @@ test_that("cdm_get_con() works", {
     class = "is_not_dm"
   )
 
-  if (inherits(my_test_src(), "src_local")) {
+  if (is.null(my_test_src())) {
     expect_dm_error(
       cdm_get_con(dm_for_filter()),
       class = "con_only_for_dbi"
@@ -371,4 +373,8 @@ test_that("dm_zoom_to() and related functions work", {
     dm_zoom_to(dm_for_filter(), tf_1) %>% cdm_zoom_out(),
     dm_zoom_to(dm_for_filter(), tf_1) %>% dm_discard_zoomed()
   )
+})
+
+test_that("default_local_src() works", {
+  expect_s3_class(default_local_src(), "src")
 })

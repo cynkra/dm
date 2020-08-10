@@ -1,7 +1,7 @@
 #' Prototype for a dm object
 #'
 #' @description
-#' \lifecycle{experimental}
+#' `r lifecycle::badge("experimental")`
 #'
 #' The prototype contains all tables, all primary and foreign keys,
 #' but no data.

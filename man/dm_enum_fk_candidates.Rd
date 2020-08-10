@@ -27,7 +27,7 @@ A tibble with the following columns:
 }
 }
 \description{
-\lifecycle{questioning}
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a>}}{\strong{Questioning}}
 
 Determine which columns would be good candidates to be used as foreign keys of a table,
 to reference the primary key column of another table of the \code{\link{dm}} object.

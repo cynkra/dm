@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.5.9001
-Date: 2020-07-27
+Version: 0.1.6.9000
+Date: 2020-07-29
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -55,7 +55,7 @@ Imports:
     tibble,
     tidyr (>= 1.0.0),
     tidyselect (>= 1.0.0),
-    vctrs (>= 0.2.0)
+    vctrs (>= 0.3.2)
 Suggests: 
     brio,
     crayon,
@@ -77,8 +77,6 @@ Suggests:
     withr
 VignetteBuilder: 
     knitr
-RdMacros: 
-    lifecycle
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",

@@ -1,7 +1,7 @@
 #' Modifying rows for multiple tables
 #'
 #' @description
-#' \lifecycle{experimental}
+#' `r lifecycle::badge("experimental")`
 #'
 #' These functions provide a framework for updating data in existing tables.
 #' Unlike [compute()], [copy_to()] or [copy_dm_to()], no new tables are created

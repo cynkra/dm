@@ -1,7 +1,7 @@
 #' Filtering
 #'
 #' @description
-#' \lifecycle{questioning}
+#' `r lifecycle::badge("questioning")`
 #'
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
