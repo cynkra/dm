@@ -21,3 +21,4 @@
 ^\.ccache$
 ^\.github$
 ^example$
+^vignettes/abstracts$

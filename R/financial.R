@@ -1,7 +1,7 @@
 #' Creates a dm object for the Financial data
 #'
 #' @description
-#' \lifecycle{experimental}
+#' `r lifecycle::badge("experimental")`
 #'
 #' `dm_financial()` creates an example [`dm`] object from the tables at
 #' <https://relational.fit.cvut.cz/dataset/Financial>.
@@ -26,7 +26,7 @@ dm_financial <- function() {
   )
 
   my_dm <-
-    dm_from_src(my_db) %>%
+    dm_from_src(my_db, learn_keys = FALSE) %>%
     dm_add_pk(districts, id) %>%
     dm_add_pk(accounts, id) %>%
     dm_add_pk(clients, id) %>%
@@ -53,11 +53,11 @@ dm_has_financial <- function() {
 
   # Connectivity:
   try_connect <- try(dm_financial(), silent = TRUE)
-  if (class(try_connect) == "try-error") return(FALSE)
+  if (inherits(try_connect, "try-error")) return(FALSE)
 
   # Accessing the connection:
-  try_count <- try(collect(count(dm_financial()$district)), silent = TRUE)
-  if (class(try_count) == "try-error") return(FALSE)
+  try_count <- try(collect(count(dm_financial()$districts)), silent = TRUE)
+  if (inherits(try_connect, "try-error")) return(FALSE)
 
   TRUE
 }

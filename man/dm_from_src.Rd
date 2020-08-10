@@ -12,14 +12,14 @@ dm_from_src(src = NULL, table_names = NULL, learn_keys = NULL, ...)
 
 \item{table_names}{A character vector of the names of the tables to include.}
 
-\item{learn_keys}{\lifecycle{experimental}
+\item{learn_keys}{\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 Set to \code{TRUE} to query the definition of primary and
 foreign keys from the database.
 Currently works only for Postgres and SQL Server databases.
 The default attempts to query and issues an informative message.}
 
-\item{...}{\lifecycle{experimental}
+\item{...}{\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 Additional parameters for the schema learning query.
 Currently supports \code{schema} (default: \code{"public"})

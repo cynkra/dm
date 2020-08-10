@@ -1,7 +1,7 @@
 #' Updating database tables
 #'
 #' @description
-#' \lifecycle{experimental}
+#' `r lifecycle::badge("experimental")`
 #'
 #' These methods provide a framework for manipulating individual rows
 #' in existing tables.

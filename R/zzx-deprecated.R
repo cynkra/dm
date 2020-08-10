@@ -60,7 +60,18 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
 #' @export
 cdm_get_src <- function(x) {
   deprecate_soft("0.1.0", "dm::cdm_get_src()", "dm::dm_get_src()")
-  dm_get_src(x = x)
+  out <- dm_get_src(x = x)
+  if (is.null(out)) {
+    out <- default_local_src()
+  }
+  out
+}
+
+default_local_src <- function() {
+  structure(
+    list(tbl_f = as_tibble, name = "<environment: R_GlobalEnv>", env = .GlobalEnv),
+    class = c("src_local", "src")
+  )
 }
 
 #' @rdname deprecated

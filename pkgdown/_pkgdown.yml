@@ -16,7 +16,6 @@ reference:
   - dm_get_src
   - dm_get_con
   - dm_get_tables
-  - dm_get_filters
   - dm_paste
 
 - title: Tables
@@ -26,6 +25,7 @@ reference:
   - dm_select_tbl
   - dm_rename_tbl
   - pull_tbl
+  - dm_bind
 
 - title: Table retrieval, table info and DB interaction methods (`dplyr`)
   contents:
@@ -100,11 +100,15 @@ reference:
   - dm_join_to_tbl
   - dm_disambiguate_cols
 
-- title: Filtering and column selection
+- title: Filtering
   contents:
   - dm_filter
   - dm_apply_filters
   - dm_apply_filters_to_tbl
+  - dm_get_filters
+
+- title: Column selection
+  contents:
   - dm_rename
   - dm_select
 

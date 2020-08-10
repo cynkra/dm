@@ -1,7 +1,7 @@
 #' Decompose a table into two linked tables
 #'
 #' @description
-#' \lifecycle{questioning}
+#' `r lifecycle::badge("questioning")`
 #'
 #' Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
 #'
@@ -81,7 +81,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' Merge two tables that are linked by a foreign key relation
 #'
 #' @description
-#' \lifecycle{questioning}
+#' `r lifecycle::badge("questioning")`
 #'
 #' Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 #'

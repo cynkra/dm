@@ -19,12 +19,12 @@
 #' zoomed
 #' dm_insert_zoomed(zoomed, new_tbl_name = "head_flights")
 #' @export
-head.zoomed_dm <- function(x, n = 6L, ...) {
+head.zoomed_dm <- function(x, n = 6L, ...) { # dm method provided by utils
   replace_zoomed_tbl(x, head(get_zoomed_tbl(x), n, ...))
 }
 
 #' @rdname utils_table_manipulation
 #' @export
-tail.zoomed_dm <- function(x, n = 6L, ...) {
+tail.zoomed_dm <- function(x, n = 6L, ...) { # dm method provided by utils
   replace_zoomed_tbl(x, tail(get_zoomed_tbl(x), n, ...))
 }
