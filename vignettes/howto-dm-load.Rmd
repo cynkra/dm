@@ -31,10 +31,10 @@ The repository uses a MariaDB server for which {dm} does not currently import pr
 library(RMariaDB)
 my_db <- dbConnect(
   MariaDB(),
-  username = 'guest',
-  password = 'relational',
-  dbname = 'Financial_ijs',
-  host = 'relational.fit.cvut.cz'
+  username = "guest",
+  password = "relational",
+  dbname = "Financial_ijs",
+  host = "relational.fit.cvut.cz"
 )
 ``````
 
@@ -200,4 +200,3 @@ my_dm_total %>%
 my_dm_total$total_loans %>%
   sql_render()
 ``````
-

@@ -71,11 +71,12 @@ In some cases this doesn't make sense and non-NULL columns should be enforced by
 Currently {dm} does not specify or check non-NULL constraints for columns.
 
 ``````{r }
-parent <- tibble(value=c('A', 'B', 'C'), pk=1:3)
-child <- tibble(value=c('a', 'b', 'c'), pk=1:3, fk=c(1,1,NA))
+parent <- tibble(value = c("A", "B", "C"), pk = 1:3)
+child <- tibble(value = c("a", "b", "c"), pk = 1:3, fk = c(1, 1, NA))
 
-demo_dm <- dm(parent=parent, child=child) %>%
-  dm_add_pk(parent,pk) %>%
+demo_dm <-
+  dm(parent = parent, child = child) %>%
+  dm_add_pk(parent, pk) %>%
   dm_add_pk(child, pk) %>%
   dm_add_fk(child, fk, parent)
 
@@ -94,9 +95,8 @@ As `demo_dm` will be the destination dm for the examples, the argument `temporar
 ``````{r }
 library(DBI)
 sqlite_db <- DBI::dbConnect(RSQLite::SQLite(":memory:"))
-demo_sql <- copy_dm_to(sqlite_db, demo_dm, temporary=FALSE)
+demo_sql <- copy_dm_to(sqlite_db, demo_dm, temporary = FALSE)
 demo_sql
-
 ``````
 
 {dm}'s table modification methods can be piped together to create a repeatable sequence of operations that returns a dm incorporating all the changes required.
@@ -108,12 +108,14 @@ To demonstrate `dm_rows_insert()` we create a dm with tables containing the rows
 We are going to add `parent` and `child` table entries for the letter "D".
 
 ``````{r }
-dm_insert_in <- dm(parent=tibble(value='D',pk=4),child=tibble(value='d',pk=4,fk=4)) %>%
-              copy_dm_to(sqlite_db, ., temporary=TRUE)
-dm_insert_out <- demo_sql %>% dm_rows_insert(dm_insert_in)
+dm_insert_in <-
+  dm(parent = tibble(value = "D", pk = 4), child = tibble(value = "d", pk = 4, fk = 4)) %>%
+  copy_dm_to(sqlite_db, ., temporary = TRUE)
+dm_insert_out <-
+  demo_sql %>%
+  dm_rows_insert(dm_insert_in)
 dm_insert_out$child
 demo_sql$child
-
 ``````
 
 This gives us a warning that changes will not be persisted, and inspecting the `child` table of the resulting `dm_insert_out` and `demo_sql`, we can see that's exactly what happened.
@@ -122,9 +124,10 @@ This gives us a warning that changes will not be persisted, and inspecting the `
 We repeat the operation, this time with the argument `in_place=TRUE` and the changes now persist in`demo_sql`.
 
 ``````{r }
-dm_insert_out <- demo_sql %>% dm_rows_insert(dm_insert_in, in_place=TRUE)
+dm_insert_out <-
+  demo_sql %>%
+  dm_rows_insert(dm_insert_in, in_place = TRUE)
 demo_sql$child
-
 ``````
 
 ## `dm_rows_update()` {#update}
@@ -136,12 +139,14 @@ And we will persist the changes.
 
 ``````{r }
 
-dm_update_in <- dm(child=tibble(value='b',pk=2,fk=2)) %>% 
-              copy_dm_to(sqlite_db, ., temporary=TRUE)
+dm_update_in <-
+  dm(child = tibble(value = "b", pk = 2, fk = 2)) %>%
+  copy_dm_to(sqlite_db, ., temporary = TRUE)
 
-dm_update_out <- demo_sql %>% dm_rows_update(dm_update_in, in_place=TRUE )
+dm_update_out <-
+  demo_sql %>%
+  dm_rows_update(dm_update_in, in_place = TRUE)
 demo_sql$child
-
 ``````
 
 ## `dm_rows_delete()` {#delete}
@@ -156,10 +161,10 @@ local_dm <- collect(demo_sql)
 local_dm$parent
 local_dm$child
 
-dm_deleted <- dm(parent=tibble(value='D',pk=4),child=tibble(value='d',pk=4,fk=4)) %>%
-              dm_rows_delete(local_dm, .)
+dm_deleted <-
+  dm(parent = tibble(value = "D", pk = 4), child = tibble(value = "d", pk = 4, fk = 4)) %>%
+  dm_rows_delete(local_dm, .)
 dm_deleted$child
-
 ``````
 
 ## `dm_rows_patch()` {#patch}
@@ -168,11 +173,10 @@ dm_deleted$child
 We use it here to fix the missing foreign key in the `child` table.
 
 ``````{r }
-
-dm_patched <- dm(child=tibble(value="c",pk=3,fk=3)) %>% 
-              dm_rows_patch(dm_deleted, .)
+dm_patched <-
+  dm(child = tibble(value = "c", pk = 3, fk = 3)) %>%
+  dm_rows_patch(dm_deleted, .)
 dm_patched$child
-
 ``````
 
 ## `dm_rows_upsert()` {#upsert}
@@ -181,12 +185,11 @@ dm_patched$child
 In this example we add the letter "D" back to our dm, and update the foreign key for "b".
 
 ``````{r }
-
-dm_upserted <- dm(parent=tibble(value='D', pk=4), child=tibble(value=c('b','d'),pk=c(2,4),fk=c(3,4))) %>%
-               dm_rows_upsert(dm_patched, .)
+dm_upserted <-
+  dm(parent = tibble(value = "D", pk = 4), child = tibble(value = c("b", "d"), pk = c(2, 4), fk = c(3, 4))) %>%
+  dm_rows_upsert(dm_patched, .)
 dm_upserted$parent
 dm_upserted$child
-
 ``````
 
 ## `dm_rows_truncate()` {#truncate}
@@ -200,24 +203,26 @@ The first step is to create a dm object with the tables we want to truncate.
 To demonstrate `dm_rows_truncate()` we can create a dm object with a tibble containing the values for a single row to specify the table we want to truncate.
 
 ``````{r }
-
-dm_trunc_in <- dm(child=tibble(value='b',pk=2,fk=2)) %>%
-            copy_dm_to(sqlite_db, ., temporary=TRUE)
-dm_trunc_out  <- demo_sql %>% dm_rows_truncate(dm_trunc_in,in_place=FALSE)
+dm_trunc_in <-
+  dm(child = tibble(value = "b", pk = 2, fk = 2)) %>%
+  copy_dm_to(sqlite_db, ., temporary = TRUE)
+dm_trunc_out <-
+  demo_sql %>%
+  dm_rows_truncate(dm_trunc_in, in_place = FALSE)
 dm_trunc_out$child
-
 ``````
 
 We can also start with a pre-existing dm, `demo_dm`, and remove the tables we don't want to truncate.
 
 ``````{r }
-
-dm_trunc_in <- demo_dm %>% dm_rm_tbl(parent) %>%
-            copy_dm_to(sqlite_db, ., temporary=TRUE)
-dm_trunc_out  <- demo_sql %>% dm_rows_truncate(dm_trunc_in,in_place=TRUE)
+dm_trunc_in <- demo_dm %>%
+  dm_rm_tbl(parent) %>%
+  copy_dm_to(sqlite_db, ., temporary = TRUE)
+dm_trunc_out <-
+  demo_sql %>%
+  dm_rows_truncate(dm_trunc_in, in_place = TRUE)
 dm_trunc_out$child
 dm_trunc_out$parent
-
 ``````
 
 ## Conclusion {#conclusion}
@@ -237,5 +242,3 @@ If your data is in data frames, then you may want to read `vignette("howto-dm-df
 If you feel you need to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
 If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
-
-

@@ -31,10 +31,10 @@ The repository uses a MariaDB server for which {dm} does not currently import pr
 library(RMariaDB)
 my_db <- dbConnect(
   MariaDB(),
-  username = 'guest',
-  password = 'relational',
-  dbname = 'Financial_ijs',
-  host = 'relational.fit.cvut.cz'
+  username = "guest",
+  password = "relational",
+  dbname = "Financial_ijs",
+  host = "relational.fit.cvut.cz"
 )
 ``````
 
