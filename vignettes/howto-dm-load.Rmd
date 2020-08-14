@@ -145,33 +145,6 @@ my_dm_keys %>%
   sql_render()
 ``````
 
-## Persisting results
-
-dm provides many of the {dplyr} methods for making changes you have made to the database permanent.
-For example, `compute()` forces the computation of the query, or multiple queries, created by the dm to represent all operations that have been performed but not yet evaluated.
-The results of `compute()` are stored in temporary tables on the database server and will be deleted when your session ends.
-
-For more details on `compute()` as well as methods and techniques for persisting results please read `vignette('howto-dm-copy`).
-You may also wish to read the `compute()` documentation for more details.
-
-
-## Conclusion
-
-In this tutorial we have demonstrated how simple it is to load a database into a dm object and begin working with it.
-While loading a dm from most RDBMS currently requires you to manually set key relations, dm provides methods to make this straightforward.
-It is planned that future versions of dm will support automatic key creation for more RDBMS.
-
-The next step is to read `vignette("howto-dm-copy")`, where moving your dm into an RDBMS is covered.
-
-## Further reading
-
-`vignette("howto-dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
-
-`vignette("howto-dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
-
-`vignette("howto-dm-theory")` - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
-
-#FIXME is this section below unnecessary and can be deleted or do you want it brought back into this tutorial?
 
 ## Performing operations on tables by "zooming"
 
@@ -200,3 +173,30 @@ my_dm_total %>%
 my_dm_total$total_loans %>%
   sql_render()
 ``````
+
+
+## Persisting results
+
+dm provides many of the {dplyr} methods for making changes you have made to the database permanent.
+For example, `compute()` forces the computation of the query, or multiple queries, created by the dm to represent all operations that have been performed but not yet evaluated.
+The results of `compute()` are stored in temporary tables on the database server and will be deleted when your session ends.
+
+For more details on `compute()` as well as methods and techniques for persisting results please read `vignette('howto-dm-copy`).
+You may also wish to read the `compute()` documentation for more details.
+
+
+## Conclusion
+
+In this tutorial we have demonstrated how simple it is to load a database into a dm object and begin working with it.
+While loading a dm from most RDBMS currently requires you to manually set key relations, dm provides methods to make this straightforward.
+It is planned that future versions of dm will support automatic key creation for more RDBMS.
+
+The next step is to read `vignette("howto-dm-copy")`, where moving your dm into an RDBMS is covered.
+
+## Further reading
+
+`vignette("howto-dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
+
+`vignette("howto-dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
+
+`vignette("howto-dm-theory")` - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
