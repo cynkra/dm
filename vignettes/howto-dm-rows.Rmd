@@ -33,13 +33,13 @@ There are 6 methods:
 All six methods take the same arguments and using them follows the same process. 
 To start, a dm object is created containing the tables, and rows, that you want to change.
 This dm is then copied into the same source as the dm you want to modify.
-With the dm in the same RDBMS as the destination dm, you call the appropriate method, such as `dm_rows_insert()`, to make your planned changes, along with an argument of `in_place=False` so you can confirm you achieve the changes that you want.
+With the dm in the same RDBMS as the destination dm, you call the appropriate method, such as `dm_rows_insert()`, to make your planned changes, along with an argument of `in_place = FALSE` so you can confirm you achieve the changes that you want.
 
 This verification can be done visually, looking at row counts and the like, or using {dm}'s constraint checking method, `dm_examine_constraints()`.
 The biggest danger is damaging key relations between data spread across multiple tables by deleting or duplicating rows and their keys.
 `dm_examine_constraints()` will catch errors where primary keys are duplicated or foreign keys do not have a matching primary key (unless the foreign key value is `NA`).
 
-With the changes confirmed, you execute the method again, this time with the argument `in_place=TRUE` to make the changes permanent.
+With the changes confirmed, you execute the method again, this time with the argument `in_place = TRUE` to make the changes permanent.
 
 Each method has its own requirements in order to maintain database consistency. 
 These involve constraints on primary key values as they are how rows are identified.
@@ -53,7 +53,7 @@ These involve constraints on primary key values as they are how rows are identif
 | dm_rows_delete() | Removes matching records based on the primary key. The order in which the tables are processed is reversed.|
 | dm_rows_truncate() | Removes all records, only for tables in dm. Truncation is performed by truncating child tables before parent tables. |
 
-For `dm_rows_delete()` and `dm_rows_truncate()` tables linked to other tables via foreign keys are processed first. 
+For `dm_rows_delete()` and `dm_rows_truncate()`, tables linked to other tables via foreign keys are processed first. 
 For example, a database of nations with three linked tables, Country <- Province <- City.
 Foreign keys in `City` link rows to a row in `Province` and foreign keys in `Province` link rows to a row in `Country`.
 If it was discovered that Molvania, an imaginary country, was accidentally included in the database, on providing a dm object containing the `Country`, `Province` and `City` tables with all rows associated with it, the entries in the `City` table would be deleted first, followed by entries in the `Province` table, then its row in the `Country` table.
@@ -85,11 +85,11 @@ dm_examine_constraints(demo_dm)
 ``````
 
 Table modification methods work as expected on local dm objects, returning a new dm with the modifications in place.
-dm objects whose source is a database treat all operations as temporary unless you request explicitly to commit them by including the argument `temporary=FALSE`. 
+dm objects whose source is a database treat all operations as temporary unless you request explicitly to commit them by including the argument `temporary = FALSE`. 
 
 Below we copy `demo_dm` into an SQLite database.
 Note: the default for the method used, `copy_dm_to()`, is to create temporary tables that will be automatically deleted when your sessions ends.
-As `demo_dm` will be the destination dm for the examples, the argument `temporary=FALSE` is used to make this distinction apparent.
+As `demo_dm` will be the destination dm for the examples, the argument `temporary = FALSE` is used to make this distinction apparent.
 
 
 ``````{r }
@@ -108,8 +108,10 @@ To demonstrate `dm_rows_insert()` we create a dm with tables containing the rows
 We are going to add `parent` and `child` table entries for the letter "D".
 
 ``````{r }
+new_parent <- tibble(value = "D", pk = 4)
+new_child <- tibble(value = "d", pk = 4, fk = 4)
 dm_insert_in <-
-  dm(parent = tibble(value = "D", pk = 4), child = tibble(value = "d", pk = 4, fk = 4)) %>%
+  dm(parent = new_parent, child = new_child) %>%
   copy_dm_to(sqlite_db, ., temporary = TRUE)
 dm_insert_out <-
   demo_sql %>%
@@ -121,7 +123,7 @@ demo_sql$child
 This gives us a warning that changes will not be persisted, and inspecting the `child` table of the resulting `dm_insert_out` and `demo_sql`, we can see that's exactly what happened.
 {dm} returned to us a dm object with our inserted rows in place, but the underlying database has not changed.
 
-We repeat the operation, this time with the argument `in_place=TRUE` and the changes now persist in`demo_sql`.
+We repeat the operation, this time with the argument `in_place = TRUE` and the changes now persist in `demo_sql`.
 
 ``````{r }
 dm_insert_out <-
@@ -138,9 +140,10 @@ Here we will change the foreign key for the row in `child` containing "b" to poi
 And we will persist the changes.
 
 ``````{r }
+new_child <- tibble(value = "b", pk = 2, fk = 2)
 
 dm_update_in <-
-  dm(child = tibble(value = "b", pk = 2, fk = 2)) %>%
+  dm(child = new_child) %>%
   copy_dm_to(sqlite_db, ., temporary = TRUE)
 
 dm_update_out <-
@@ -162,7 +165,7 @@ local_dm$parent
 local_dm$child
 
 dm_deleted <-
-  dm(parent = tibble(value = "D", pk = 4), child = tibble(value = "d", pk = 4, fk = 4)) %>%
+  dm(parent = new_parent, child = new_child) %>%
   dm_rows_delete(local_dm, .)
 dm_deleted$child
 ``````
@@ -173,8 +176,10 @@ dm_deleted$child
 We use it here to fix the missing foreign key in the `child` table.
 
 ``````{r }
+updated_child <- tibble(value = "c", pk = 3, fk = 3)
+
 dm_patched <-
-  dm(child = tibble(value = "c", pk = 3, fk = 3)) %>%
+  dm(child = updated_child) %>%
   dm_rows_patch(dm_deleted, .)
 dm_patched$child
 ``````
@@ -185,8 +190,11 @@ dm_patched$child
 In this example we add the letter "D" back to our dm, and update the foreign key for "b".
 
 ``````{r }
+upserted_parent <- tibble(value = "D", pk = 4)
+upserted_child <- tibble(value = c("b", "d"), pk = c(2, 4), fk = c(3, 4))
+
 dm_upserted <-
-  dm(parent = tibble(value = "D", pk = 4), child = tibble(value = c("b", "d"), pk = c(2, 4), fk = c(3, 4))) %>%
+  dm(parent = upserted_parent, child = upserted_child) %>%
   dm_rows_upsert(dm_patched, .)
 dm_upserted$parent
 dm_upserted$child
@@ -200,30 +208,22 @@ The function derives its name from the SQL `TRUNCATE TABLE` statement, so we wil
 The first step is to create a dm object with the tables we want to truncate.
 `dm_rows_truncate()` looks at the table names in the source dm to select tables for truncation, and then uses their column names to confirm the tables match and should be truncated.
 
-To demonstrate `dm_rows_truncate()` we can create a dm object with a tibble containing the values for a single row to specify the table we want to truncate.
+To demonstrate `dm_rows_truncate()` we create a dm with the table we want to truncate.
+A convenient way to achieve this is to subset the table from the target dm with `dm_select_tbl()`.
+The contents of the table do not matter.
 
 ``````{r }
 dm_trunc_in <-
-  dm(child = tibble(value = "b", pk = 2, fk = 2)) %>%
-  copy_dm_to(sqlite_db, ., temporary = TRUE)
+  demo_sql %>%
+  dm_select_tbl(child)
+dm_trunc_in
+
 dm_trunc_out <-
   demo_sql %>%
   dm_rows_truncate(dm_trunc_in, in_place = FALSE)
 dm_trunc_out$child
 ``````
 
-We can also start with a pre-existing dm, `demo_dm`, and remove the tables we don't want to truncate.
-
-``````{r }
-dm_trunc_in <- demo_dm %>%
-  dm_rm_tbl(parent) %>%
-  copy_dm_to(sqlite_db, ., temporary = TRUE)
-dm_trunc_out <-
-  demo_sql %>%
-  dm_rows_truncate(dm_trunc_in, in_place = TRUE)
-dm_trunc_out$child
-dm_trunc_out$parent
-``````
 
 ## Conclusion {#conclusion}
 
