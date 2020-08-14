@@ -27,7 +27,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   withr::defer(
     walk(
       dm_get_tables_impl(dm_for_filter_copied)[order_of_deletion],
-      ~ dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x)))
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
     )
   )
 
@@ -68,9 +68,9 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     {
       walk(
         remote_tbl_names,
-        ~ dbExecute(con_db, paste0("DROP TABLE ", .x))
+        ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
       )
-      dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q))
+      try(dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
     }
   )
 
