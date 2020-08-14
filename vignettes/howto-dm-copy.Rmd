@@ -17,8 +17,6 @@ source("setup/setup.R")
 ``````
 
 
-## Copying relational models into an RDBMS
-
 In this tutorial we run through techniques for persisting an entire relational model as well as individual tables.
 For modifying and persisting changes to your relational model at the row-level see `vignette("howto-dm-rows")`.
 
@@ -38,21 +36,25 @@ Persistence, because it is intended to make permanent changes, requires write ac
 To enable you to execute the examples in this tutorial SQLite will be used and all operations will be performed locally. 
 {dm} is designed so there is no difference between the code used to manipulate a local SQLite database and a remote RDBMS.
 
-To create a relational model we will use the dm convenience function `dm_financial_sqlite()` that handles the copying of the same model from the remote RDBMS used in the previous tutorial, `vignette("howto-dm-load")`, into a dm hosted by an SQLite database, followed by `collect()`, which retrieves all tables and returns them as a local dm object. 
+To create a relational model we will use the dm convenience function `dm_financial()` used in the previous tutorial, `vignette("howto-dm-load")`, followed by `collect()`, which retrieves all tables and returns them as a local dm object.
+Before downloading, the `trans` table is excluded due to its size.
 
 ``````{r }
 library(dm)
 library(dplyr)
 library(dbplyr)
 
-fin_dm <- dm_financial_sqlite() %>% collect()
+fin_dm <-
+  dm_financial() %>%
+  dm_select_tbl(-trans) %>%
+  collect()
 
 fin_dm
 ``````
 
 It is just as simple to move a local relational model into an RDBMS. 
 Note that in the call to `copy_dm_to()` the argument `temporary = FALSE` is supplied. 
-Without this argument the model would still be copied into the database, but the argument would default to `temporary = TRUE` and the model would be deleted once your session ends. 
+Without this argument the model would still be copied into the database, but the argument would default to `temporary = TRUE` and the data would be deleted once your session ends. 
 
 ``````{r }
 destination_db <- DBI::dbConnect(RSQLite::SQLite())
@@ -64,7 +66,7 @@ deployed_dm
 fin_dm
 ``````
 
-In the output you can observe that the `src` for `deployed_dm` is SQLite, while for `fin_dm` it remains `R_GlobalEnv`.
+In the output you can observe that the `src` for `deployed_dm` is SQLite, while for `fin_dm` the source is not indicated -- it is a local data model.
 
 Copying a relational model into an empty database is the simplest use case for `copy_dm_to()`.
 If you want to copy a model into an RDBMS that is already populated, be aware that `copy_dm_to()` will not overwrite pre-existing tables.
