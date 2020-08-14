@@ -62,7 +62,7 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     table_names = ~ DBI::SQL(dbplyr::in_schema(schema_name_q, .x))
   )
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
-  remote_tbl_names <- set_names(paste0(schema_name_q, order_of_deletion), order_of_deletion)
+  remote_tbl_names <- set_names(paste0(schema_name_q, ".", order_of_deletion), order_of_deletion)
 
   withr::defer(
     {
