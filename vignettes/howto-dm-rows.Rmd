@@ -71,6 +71,9 @@ In some cases this doesn't make sense and non-NULL columns should be enforced by
 Currently {dm} does not specify or check non-NULL constraints for columns.
 
 ``````{r }
+library(tidyverse)
+library(dm)
+
 parent <- tibble(value = c("A", "B", "C"), pk = 1:3)
 child <- tibble(value = c("a", "b", "c"), pk = 1:3, fk = c(1, 1, NA))
 
