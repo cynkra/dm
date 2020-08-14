@@ -31,15 +31,15 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     )
   )
 
-  dm_for_filter_db_learned_all <- dm_from_src(src_db)
+  dm_db_learned_all <- dm_from_src(src_db)
 
   # in case there happen to be other tables in schema "dbo" or "public"
-  dm_for_filter_db_learned <-
-    dm_for_filter_db_learned_all %>%
+  dm_db_learned <-
+    dm_db_learned_all %>%
     dm_select_tbl(!!!remote_tbl_names)
 
   expect_equivalent_dm(
-    dm_for_filter_db_learned,
+    dm_db_learned,
     dm_for_filter()[order_of_deletion]
   )
 })
@@ -74,11 +74,11 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     }
   )
 
-  dm_for_filter_db_learned <- dm_from_src(src_db, schema = schema_name) %>%
+  dm_db_learned <- dm_from_src(src_db, schema = schema_name) %>%
     dm_select_tbl(!!!order_of_deletion)
 
   expect_equivalent_dm(
-    dm_for_filter_db_learned,
+    dm_db_learned,
     dm_for_disambiguate()[order_of_deletion]
   )
 })
