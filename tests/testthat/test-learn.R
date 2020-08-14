@@ -20,9 +20,9 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   dm_for_filter_copied <- copy_dm_to(src_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
   order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
   remote_tbl_names <- map_chr(
-    order_of_deletion,
-    ~dbplyr::remote_name(dm_for_filter_copied[[.x]])
-  ) %>% set_names(order_of_deletion)
+    set_names(order_of_deletion),
+    ~ dbplyr::remote_name(dm_for_filter_copied[[.x]])
+  )
 
   withr::defer(
     walk(
