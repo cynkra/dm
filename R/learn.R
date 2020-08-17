@@ -55,6 +55,7 @@ dm_learn_from_db <- function(dest, ...) {
   overview <-
     dbGetQuery(con, sql) %>%
     as_tibble()
+
   if (nrow(overview) == 0) {
     return()
   }
@@ -62,10 +63,10 @@ dm_learn_from_db <- function(dest, ...) {
   table_names <-
     overview %>%
     arrange(table) %>%
-    select(schema, table) %>%
+    distinct(schema, table) %>%
     transmute(
       name = table,
-      value = schema_if(schema, DBI::dbQuoteIdentifier(con, table))
+      value = schema_if(schema, table, con)
     ) %>%
     deframe()
 
@@ -77,22 +78,24 @@ dm_learn_from_db <- function(dest, ...) {
   legacy_new_dm(tables, data_model)
 }
 
-schema_if <- function(schema, table) {
-  if_else(is.na(schema), table, paste0(schema, ".", table))
+schema_if <- function(schema, table, con) {
+  table_sql <- DBI::dbQuoteIdentifier(con, table)
+  if_else(is.na(schema), table_sql, paste0(DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
 }
 
 db_learn_query <- function(dest, ...) {
   if (is_mssql(dest)) {
-    return(mssql_learn_query())
+    return(mssql_learn_query(dest, ...))
   }
   if (is_postgres(dest)) {
     return(postgres_learn_query(dest, ...))
   }
 }
 
-mssql_learn_query <- function() { # taken directly from {datamodelr}
+mssql_learn_query <- function(con, schema = "dbo") { # taken directly from {datamodelr} and subsequently tweaked a little
+  sprintf(
   "select
-    NULL as [schema],
+    schema_name(tabs.schema_id) as [schema],
     tabs.name as [table],
     cols.name as [column],
     isnull(ind_col.column_id, 0) as [key],
@@ -119,9 +122,12 @@ mssql_learn_query <- function() { # taken directly from {datamodelr}
       and ind_col.column_id = cols.column_id
     left outer join sys.systypes [types] on
       types.xusertype = cols.system_type_id
+  where tabs.schema_id = schema_id(%s)
   order by
     tabs.create_date,
-    cols.column_id"
+    cols.column_id",
+  DBI::dbQuoteString(con, schema)
+  )
 }
 
 postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABLE") {
