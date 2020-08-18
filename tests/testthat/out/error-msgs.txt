@@ -44,6 +44,14 @@ Error: Cycles in the relationship graph not yet supported.
 > abort_tables_not_reachable_from_start()
 Error: All selected tables must be reachable from `start`.
 
+> abort_wrong_col_names("table_name", c("col_1", "col_2"), c("col_one", "col_2"))
+Error: Not all specified variables `col_one`, `col_2` are columns of `table_name`. Its columns are: 
+`col_1`, `col_2`.
+
+> abort_wrong_col_names("table_name", c("col_1", "col_2"), "col_one")
+Error: `col_one` is not a column of `table_name`. Its columns are: 
+`col_1`, `col_2`.
+
 > abort_dupl_new_id_col_name("tibbletable")
 Error: `new_id_column` can't have an identical name as one of the columns of `tibbletable`.
 

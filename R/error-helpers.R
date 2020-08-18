@@ -160,6 +160,31 @@ error_txt_tables_not_reachable_from_start <- function() {
 
 # errors in table surgery -------------------------------------------------
 
+abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
+  abort(error_txt_wrong_col_names(table_name, actual_colnames, wrong_colnames),
+        .subclass = dm_error_full("wrong_col_names")
+  )
+}
+
+error_txt_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
+  if (length(wrong_colnames) > 1) {
+    glue(
+      "Not all specified variables ",
+      "{commas(tick(wrong_colnames))} ",
+      "are columns of {tick(table_name)}. ",
+      "Its columns are: \n",
+      "{commas(tick(actual_colnames))}."
+    )
+  } else {
+    glue(
+      "{tick(wrong_colnames)} is not a column of ",
+      "{tick(table_name)}. Its columns are: \n",
+      "{commas(tick(actual_colnames))}."
+    )
+  }
+}
+
+
 abort_dupl_new_id_col_name <- function(table_name) {
   abort(error_txt_dupl_new_id_col_name(table_name), .subclass = dm_error_full("dupl_new_id_col_name"))
 }
