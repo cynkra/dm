@@ -58,3 +58,10 @@ if (rlang::is_installed("nycflights13")) verify_output("out/code_from_paste.txt"
   dm() %>%
     dm_paste(options = c("bogus", "all", "mad"))
 })
+
+
+verify_output("out/compound-paste.txt", {
+  # FIXME: `dm_paste()` needs to be tweaked, cf. result
+  dm_nycflights13(compound = TRUE) %>%
+    dm_paste()
+})
