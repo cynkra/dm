@@ -123,3 +123,12 @@ test_that("dm_rm_tbl() works", {
     dm_for_disambiguate()
   )
 })
+
+verify_output(
+  "out/compound_add_tbl.txt", {
+    nyc_comp <- dm_nycflights13(compound = TRUE)
+    dm_add_tbl(nyc_comp, mtcars)
+    dm_rm_tbl(nyc_comp, planes)
+    dm_rm_tbl(nyc_comp, weather)
+  }
+)
