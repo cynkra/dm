@@ -1,5 +1,4 @@
-> dm_nycflights13() %>% dm_add_pk(weather, c(origin, time_hour)) %>% dm_add_fk(
-+   flights, c(origin, time_hour), weather) %>% dm_flatten_to_tbl(flights)
+> dm_nycflights13(compound = TRUE) %>% dm_flatten_to_tbl(flights)
 Message: Renamed columns:
 * year -> flights.year, planes.year, weather.year
 * month -> flights.month, weather.month
