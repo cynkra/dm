@@ -86,3 +86,5 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
     class = "not_bijective"
   )
 })
+
+# FIXME: needs tests with compound keys
