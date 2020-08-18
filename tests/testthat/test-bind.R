@@ -87,3 +87,10 @@ verify_output("out/bind.txt", {
   # FIXME: this would fail for TIC_ONLY_IMPORTS, cause {dbplyr} is missing; is there a way to skip in `verify_output()`?
   # dm_bind(dm_for_flatten(), dm_for_filter_sqlite())
 })
+
+verify_output("out/compound_bind.txt", {
+  nyc_comp <- dm_nycflights13(compound = TRUE)
+  dm_bind(nyc_comp, nyc_comp, repair = "unique")
+  dm_bind(dm_for_filter(), nyc_comp)
+  dm_bind(nyc_comp, dm_for_filter())
+})
