@@ -1,4 +1,0 @@
-> dm_nycflights13() %>% dm_add_pk(weather, c(origin, time_hour)) %>% dm_add_fk(
-+   flights, c(origin, time_hour), weather) %>% dm_flatten_to_tbl()
-Error: Table(s) `` not in `dm` object. Available table names: `airlines`, `airports`, `flights`, `planes`, `weather`.
-
