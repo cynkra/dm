@@ -29,68 +29,6 @@ Considerations for which approach to use depend on a number of factors.
 For newly created relational models those factors are the size of your model and network bandwidth.
 For models that are updates to existing models on an RDBMS, deciding factors are the size of the changes and their complexity. 
 
-## Persisting a relational model with `copy_dm_to()`
-
-To demonstrate persisting a model we will use an SQLite database.
-Persistence, because it is intended to make permanent changes, requires write access to the source RDBMS.
-To enable you to execute the examples in this tutorial SQLite will be used and all operations will be performed locally. 
-{dm} is designed so there is no difference between the code used to manipulate a local SQLite database and a remote RDBMS.
-
-To create a relational model we will use the dm convenience function `dm_financial()` used in the previous tutorial, `vignette("howto-dm-load")`, followed by `collect()`, which retrieves all tables and returns them as a local dm object.
-Before downloading, the `trans` table is excluded due to its size.
-
-``````{r }
-library(dm)
-library(dplyr)
-library(dbplyr)
-
-fin_dm <-
-  dm_financial() %>%
-  dm_select_tbl(-trans) %>%
-  collect()
-
-fin_dm
-``````
-
-It is just as simple to move a local relational model into an RDBMS. 
-Note that in the call to `copy_dm_to()` the argument `temporary = FALSE` is supplied. 
-Without this argument the model would still be copied into the database, but the argument would default to `temporary = TRUE` and the data would be deleted once your session ends. 
-
-``````{r }
-destination_db <- DBI::dbConnect(RSQLite::SQLite())
-
-deployed_dm <-
-  copy_dm_to(destination_db, fin_dm, temporary = FALSE)
-
-deployed_dm
-fin_dm
-``````
-
-In the output you can observe that the `src` for `deployed_dm` is SQLite, while for `fin_dm` the source is not indicated -- it is a local data model.
-
-Copying a relational model into an empty database is the simplest use case for `copy_dm_to()`.
-If you want to copy a model into an RDBMS that is already populated, be aware that `copy_dm_to()` will not overwrite pre-existing tables.
-In this case you will need to use the `table_names` argument to give the tables unique names.
-
-`table_names` can be a named character vector, with the names matching the table names in the dm object and the values containing the desired names in the RDBMS, or a function or one-sided formula.
-In the example below, `paste0()` is used to add a prefix to the table names to provide uniqueness.
-
-``````{r }
-dup_dm <-
-  copy_dm_to(destination_db, fin_dm, temporary = FALSE, table_names = ~ paste0("dup_", .x))
-
-dup_dm
-dup_dm$accounts
-deployed_dm$accounts
-``````
-
-Note the first line of the output for `dup_dm$accounts`.
-The table name is `accounts` in the dm but it is backed by the table `dup_accounts` in the RDBMS.
-`dm_deployed$accounts` shows us that this table is still backed by the `accounts` table from the `copy_dm_to()` operation we performed in the preceding example.
-
-Managing tables in the RDBMS is outside the scope of `dm`. 
-If you find you need to remove tables or perform operations directly on the RDBMS, see the [{DBI}](https://www.r-dbi.org/) package.
-
 ## Persisting individual tables
 
 After adding columns to create links between tables or adding tables after calculating summaries of data, you might want the changes to your relational model to persist.
@@ -171,6 +109,68 @@ my_dm_total_inplace$total_loans %>%
   sql_render()
 ``````
 
+
+## Persisting a relational model with `copy_dm_to()`
+
+To demonstrate persisting a model we will use an SQLite database.
+Persistence, because it is intended to make permanent changes, requires write access to the source RDBMS.
+To enable you to execute the examples in this tutorial SQLite will be used and all operations will be performed locally. 
+{dm} is designed so there is no difference between the code used to manipulate a local SQLite database and a remote RDBMS.
+
+To create a relational model we will use the dm convenience function `dm_financial()` used in the previous tutorial, `vignette("howto-dm-load")`, followed by `collect()`, which retrieves all tables and returns them as a local dm object.
+Before downloading, the `trans` table is excluded due to its size.
+
+``````{r }
+library(dm)
+library(dplyr)
+library(dbplyr)
+
+fin_dm <-
+  dm_financial() %>%
+  dm_select_tbl(-trans) %>%
+  collect()
+
+fin_dm
+``````
+
+It is just as simple to move a local relational model into an RDBMS. 
+Note that in the call to `copy_dm_to()` the argument `temporary = FALSE` is supplied. 
+Without this argument the model would still be copied into the database, but the argument would default to `temporary = TRUE` and the data would be deleted once your session ends. 
+
+``````{r }
+destination_db <- DBI::dbConnect(RSQLite::SQLite())
+
+deployed_dm <-
+  copy_dm_to(destination_db, fin_dm, temporary = FALSE)
+
+deployed_dm
+fin_dm
+``````
+
+In the output you can observe that the `src` for `deployed_dm` is SQLite, while for `fin_dm` the source is not indicated -- it is a local data model.
+
+Copying a relational model into an empty database is the simplest use case for `copy_dm_to()`.
+If you want to copy a model into an RDBMS that is already populated, be aware that `copy_dm_to()` will not overwrite pre-existing tables.
+In this case you will need to use the `table_names` argument to give the tables unique names.
+
+`table_names` can be a named character vector, with the names matching the table names in the dm object and the values containing the desired names in the RDBMS, or a function or one-sided formula.
+In the example below, `paste0()` is used to add a prefix to the table names to provide uniqueness.
+
+``````{r }
+dup_dm <-
+  copy_dm_to(destination_db, fin_dm, temporary = FALSE, table_names = ~ paste0("dup_", .x))
+
+dup_dm
+dup_dm$accounts
+deployed_dm$accounts
+``````
+
+Note the first line of the output for `dup_dm$accounts`.
+The table name is `accounts` in the dm but it is backed by the table `dup_accounts` in the RDBMS.
+`dm_deployed$accounts` shows us that this table is still backed by the `accounts` table from the `copy_dm_to()` operation we performed in the preceding example.
+
+Managing tables in the RDBMS is outside the scope of `dm`. 
+If you find you need to remove tables or perform operations directly on the RDBMS, see the [{DBI}](https://www.r-dbi.org/) package.
 
 ## Conclusion
 
