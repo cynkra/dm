@@ -1,6 +1,4 @@
 > dm_nycflights13() %>% dm_add_pk(weather, c(origin, time_hour))
--- Table source ----------------------------------------------------------------
-src:  <environment: R_GlobalEnv>
 -- Metadata --------------------------------------------------------------------
 Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 Columns: 53
