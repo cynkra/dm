@@ -1,4 +1,4 @@
-> dm_nycflights13(compound = TRUE) %>% dm_flatten_to_tbl(flights)
+> nyc_comp() %>% dm_flatten_to_tbl(flights)
 Message: Renamed columns:
 * year -> flights.year, planes.year, weather.year
 * month -> flights.month, weather.month
