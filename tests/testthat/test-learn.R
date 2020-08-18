@@ -1,74 +1,86 @@
 # FIXME: #313: learn only from current source
 
-test_that("Learning from MSSQL works?", {
+# produces a randomized schema name with a length of 4-10 characters
+# consisting of the symbols in `reservoir`
+random_schema <- function() {
+  reservoir <- c(letters, LETTERS, "'", "-", "_", as.character(0:9))
+  how_long <- sample(4:10, 1)
+  paste0(reservoir[sample(seq_len(length(reservoir)), how_long, replace = TRUE)], collapse = "")
+}
 
+schema_name <- random_schema()
 
+test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') works?", {
+
+  skip_if_src_not(c("mssql", "postgres"))
   # dm_learn_from_mssql() --------------------------------------------------
-  src_mssql <- skip_if_error(src_test("mssql"))
+  src_db <- my_test_src()
 
   # create an object on the MSSQL-DB that can be learned
-  if (!any(src_tbls(src_mssql) %>%
-    grepl("^tf_1_", .))) {
-    copy_dm_to(src_mssql, dm_for_filter(), temporary = FALSE, table_names = unique_db_table_name)
-  }
+  dm_for_filter_copied <- copy_dm_to(src_db, dm_for_filter(), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
+  remote_tbl_names <- map_chr(
+    set_names(order_of_deletion),
+    ~ dbplyr::remote_name(dm_for_filter_copied[[.x]])
+  )
 
-  dm_for_filter_mssql_learned <- dm_from_src(src_mssql)
+  withr::defer(
+    walk(
+      dm_get_tables_impl(dm_for_filter_copied)[order_of_deletion],
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+    )
+  )
 
-  def_learned_renamed_reclassed <-
-    dm_rename_tbl(
-      dm_for_filter_mssql_learned,
-      structure(src_tbls(dm_for_filter_mssql_learned), names = src_tbls(dm_for_filter()))
-    ) %>%
-    dm_get_def() %>%
-    select(-data)
+  dm_db_learned_all <- dm_from_src(src_db)
 
-  def_original <-
-    dm_get_def(dm_for_filter()) %>%
-    select(-data)
+  # in case there happen to be other tables in schema "dbo" or "public"
+  dm_db_learned <-
+    dm_db_learned_all %>%
+    dm_select_tbl(!!!remote_tbl_names)
 
-  expect_identical(
-    def_learned_renamed_reclassed,
-    def_original
+  expect_equivalent_dm(
+    dm_db_learned,
+    dm_for_filter()[order_of_deletion]
   )
 })
 
-# dm_learn_from_postgres() --------------------------------------------------
-test_that("Learning from Postgres works?", {
-  src_postgres <- skip_if_error(src_test("postgres"))
-  con_postgres <- src_postgres$con
 
-  # create an object on the Postgres-DB that can be learned
-  if (is_postgres_empty()) {
-    copy_dm_to(con_postgres, dm_for_filter(), temporary = FALSE, table_names = unique_db_table_name)
-  }
+test_that("Learning from specific schema on MSSQL or Postgres works?", {
 
-  dm_for_filter_postgres_learned <- dm_from_src(src_postgres)
-  dm_for_filter_postges_learned_from_con <- dm_from_src(con_postgres)
+  skip_if_src_not(c("mssql", "postgres"))
+  src_db <- my_test_src()
+  con_db <- src_db$con
 
-  dm_postgres_learned_renamed <-
-    dm_rename_tbl(
-      dm_for_filter_postgres_learned,
-      !!!set_names(src_tbls(dm_for_filter_postgres_learned), src_tbls(dm_for_filter()))
-    )
+  schema_name_q <- DBI::dbQuoteIdentifier(con_db, schema_name)
 
-  dm_postgres_learned_from_con_renamed <-
-    dm_rename_tbl(
-      dm_for_filter_postges_learned_from_con,
-      !!!set_names(src_tbls(dm_for_filter_postges_learned_from_con), src_tbls(dm_for_filter()))
-    )
+  DBI::dbExecute(con_db, paste0("CREATE SCHEMA ", schema_name_q))
 
-  expect_equivalent_dm(
-    dm_postgres_learned_renamed,
-    dm_for_filter()
+  dm_for_disambiguate_copied <- copy_dm_to(
+    src_db,
+    dm_for_disambiguate(),
+    temporary = FALSE,
+    table_names = ~ DBI::SQL(dbplyr::in_schema(schema_name_q, .x))
+  )
+  order_of_deletion <- c("iris_3", "iris_2", "iris_1")
+  remote_tbl_names <- set_names(paste0(schema_name_q, ".", order_of_deletion), order_of_deletion)
+
+  withr::defer(
+    {
+      walk(
+        remote_tbl_names,
+        ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+      )
+      try(dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
+    }
   )
 
-  expect_equivalent_dm(
-    dm_postgres_learned_from_con_renamed,
-    dm_for_filter()
-  )
+  dm_db_learned <- dm_from_src(src_db, schema = schema_name) %>%
+    dm_select_tbl(!!!order_of_deletion)
 
-  # clean up Postgres-DB
-  clear_postgres()
+  expect_equivalent_dm(
+    dm_db_learned,
+    dm_for_disambiguate()[order_of_deletion]
+  )
 })
 
 test_that("Learning from SQLite works (#288)?", {

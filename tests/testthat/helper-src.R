@@ -530,12 +530,12 @@ zoomed_dm_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 
 # postgres needs to be cleaned of t?_2019_* tables for learn-test
 get_test_tables_from_postgres <- function() {
-  src_postgres <- src_test("postgres")
+  src_postgres <- my_test_src()
   con_postgres <- src_postgres$con
 
   dbGetQuery(con_postgres, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
     as_tibble() %>%
-    filter(grepl("^t[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
+    filter(grepl("^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
 }
 
 is_postgres_empty <- function() {
@@ -543,7 +543,7 @@ is_postgres_empty <- function() {
 }
 
 clear_postgres <- function() {
-  src_postgres <- src_test("postgres")
+  src_postgres <- my_test_src()
   con_postgres <- src_postgres$con
 
   walk(
