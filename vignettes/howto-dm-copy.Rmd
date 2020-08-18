@@ -111,6 +111,42 @@ my_dm_total_inplace$total_loans %>%
 ``````
 
 
+## Adding local data frames to an RDBMS
+
+FIXME: Integrate with flow.
+
+If you need to add local data frames to an existing database, the shortest path is to use `copy_to()`.
+It takes the same arguments as `copy_dm_to()`, except the second argument, instead of expecting a dm, expects a data frame.
+
+The example below estimates a linear model from attributes in the `loans` and `districts` tables, inserts residuals into the database, and links them to the `loans` table.
+
+```{r}
+loans_df <-
+  my_dm_sqlite %>%
+  dm_squash_to_tbl(loans) %>%
+  select(id, amount, duration, A3) %>%
+  collect()
+
+model <- lm(amount ~ duration + A3, data = loans_df)
+
+loans_residuals <- tibble::tibble(
+  id = loans_df$id,
+  resid = unname(residuals(model))
+)
+
+my_dm_sqlite_resid <-
+  copy_to(my_dm_sqlite, loans_residuals, temporary = FALSE) %>%
+  dm_add_pk(loans_residuals, id) %>%
+  dm_add_fk(loans_residuals, id, loans)
+
+my_dm_sqlite_resid %>%
+  dm_draw()
+my_dm_sqlite_resid %>%
+  dm_examine_constraints()
+my_dm_sqlite_resid$loans_residuals
+```
+
+
 ## Persisting a relational model with `copy_dm_to()`
 
 To demonstrate persisting a model we will use an SQLite database.
