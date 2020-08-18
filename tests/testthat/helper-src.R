@@ -521,6 +521,8 @@ dm_nycflights_small %<--% {
     dm_add_fk(flights, dest, airports)
 }
 
+nyc_comp %<-% dm_nycflights13(compound = TRUE)
+
 zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)
 zoomed_dm_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)
 

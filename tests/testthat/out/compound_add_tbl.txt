@@ -1,19 +1,18 @@
-> nyc_comp <- dm_nycflights13(compound = TRUE)
-> dm_add_tbl(nyc_comp, mtcars)
+> dm_add_tbl(nyc_comp(), res_flat = result_from_flatten())
 -- Metadata --------------------------------------------------------------------
-Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `mtcars`
-Columns: 64
+Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `res_flat`
+Columns: 63
 Primary keys: 4
 Foreign keys: 4
 
-> dm_rm_tbl(nyc_comp, planes)
+> dm_rm_tbl(nyc_comp(), planes)
 -- Metadata --------------------------------------------------------------------
 Tables: `airlines`, `airports`, `flights`, `weather`
 Columns: 44
 Primary keys: 3
 Foreign keys: 3
 
-> dm_rm_tbl(nyc_comp, weather)
+> dm_rm_tbl(nyc_comp(), weather)
 -- Metadata --------------------------------------------------------------------
 Tables: `airlines`, `airports`, `flights`, `planes`
 Columns: 38

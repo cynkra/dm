@@ -357,6 +357,6 @@ test_that("tests with 'bad_dm' work (2)", {
 })
 
 verify_output("out/compound-flatten.txt", {
-  dm_nycflights13(compound = TRUE) %>%
+  nyc_comp() %>%
     dm_flatten_to_tbl(flights)
 })
