@@ -439,3 +439,35 @@ verify_output("out/output.txt", {
   nyc_flights_dm %>%
     dm_filter(flights, origin == "EWR")
 })
+
+
+# Compound tests ----------------------------------------------------------
+
+car_table <- test_src_frame(!!!mtcars)
+
+verify_output(
+  "out/compound-dm.txt", {
+    copy_to(nyc_comp(), mtcars, "car_table")
+    dm_add_tbl(nyc_comp(), car_table)
+    nyc_comp() %>%
+      collect()
+    nyc_comp() %>%
+      dm_filter(flights, day == 10) %>%
+      compute() %>%
+      collect() %>%
+      dm_get_def()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      mutate(origin_new = paste0(origin, " airport")) %>%
+      compute() %>%
+      dm_update_zoomed() %>%
+      collect() %>%
+      dm_get_def()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      collect()
+    pull_tbl(nyc_comp(), weather)
+    dm_zoom_to(nyc_comp(), weather) %>%
+      pull_tbl()
+  }
+)
