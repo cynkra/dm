@@ -1,16 +1,20 @@
-rlang::local_options(lifecycle_verbosity = "quiet")
-
 test_that("cdm_add_tbl() works", {
   skip_on_cran()
   skip_if_remote_src()
+  local_options(lifecycle_verbosity = "quiet")
+
+  mtcars_tbl <- test_src_frame(!!!mtcars)
+
   expect_equivalent_dm(
-    cdm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars"))),
-    dm_add_tbl(dm_for_filter(), cars_table = copy_to(my_test_src(), mtcars, name = unique_db_table_name("mtcars")))
+    cdm_add_tbl(dm_for_filter(), cars_table = mtcars_tbl),
+    dm_add_tbl(dm_for_filter(), cars_table = mtcars_tbl)
   )
 })
 
 test_that("cdm_rm_tbl() works", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_equivalent_dm(
     cdm_rm_tbl(dm_for_flatten(), starts_with("dim")),
     dm_rm_tbl(dm_for_flatten(), starts_with("dim"))
@@ -20,6 +24,7 @@ test_that("cdm_rm_tbl() works", {
 test_that("cdm_copy_to() behaves correctly", {
   skip_on_cran()
   skip_if_not_installed("dbplyr")
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
     cdm_copy_to(sqlite(), dm_for_filter(), unique_table_names = TRUE),
@@ -29,6 +34,8 @@ test_that("cdm_copy_to() behaves correctly", {
 
 test_that("cdm_disambiguate_cols() works as intended", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_equivalent_dm(
     cdm_disambiguate_cols(dm_for_disambiguate()),
     dm_disambiguate_cols(dm_for_disambiguate())
@@ -38,6 +45,7 @@ test_that("cdm_disambiguate_cols() works as intended", {
 test_that("cdm_get_colors() behaves as intended", {
   skip_on_cran()
   skip_if_not_installed("nycflights13")
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_equal(
     cdm_get_colors(cdm_nycflights13()),
@@ -50,6 +58,8 @@ test_that("cdm_get_colors() behaves as intended", {
 
 test_that("cdm_filter() behaves correctly", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_equivalent_tbl(
     cdm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters_to_tbl(tf_2),
     filter(tf_2(), d > 4)
@@ -69,6 +79,8 @@ test_that("cdm_filter() behaves correctly", {
 
 test_that("cdm_nrow() works?", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_equal(
     sum(cdm_nrow(dm_test_obj())),
     rows_dm_obj
@@ -77,6 +89,8 @@ test_that("cdm_nrow() works?", {
 
 test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` work", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
+
   expect_equivalent_tbl(
     cdm_flatten_to_tbl(dm_for_flatten(), fact),
     result_from_flatten()
@@ -96,6 +110,7 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
 
 test_that("cdm_get_src() works", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_dm_error(
     cdm_get_src(1),
@@ -109,16 +124,15 @@ test_that("cdm_get_src() works", {
 })
 
 test_that("cdm_get_con() works", {
-  rlang::local_options(lifecycle_verbosity = "quiet")
-
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_dm_error(
     cdm_get_con(1),
     class = "is_not_dm"
   )
 
-  if (inherits(my_test_src(), "src_local")) {
+  if (is.null(my_test_src())) {
     expect_dm_error(
       cdm_get_con(dm_for_filter()),
       class = "con_only_for_dbi"
@@ -131,6 +145,7 @@ test_that("cdm_get_con() works", {
 
 test_that("cdm_get_tables() works", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_tbl_lists(
     cdm_get_tables(dm_for_filter()),
@@ -140,6 +155,7 @@ test_that("cdm_get_tables() works", {
 
 test_that("cdm_get_filter() works", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_identical(
     cdm_get_filter(dm_for_filter()),
@@ -154,6 +170,7 @@ test_that("cdm_get_filter() works", {
 
 test_that("cdm_add_pk() and cdm_add_fk() work", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
     cdm_add_pk(dm_test_obj(), dm_table_4, c),
@@ -170,6 +187,7 @@ test_that("cdm_add_pk() and cdm_add_fk() work", {
 
 test_that("other FK functions work", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_true(cdm_has_fk(dm_for_filter(), tf_2, tf_1))
 
@@ -202,6 +220,7 @@ test_that("other FK functions work", {
 
 test_that("graph-functions work", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_identical(
     cdm_is_referenced(dm_for_filter(), tf_3),
@@ -216,6 +235,7 @@ test_that("graph-functions work", {
 
 test_that("cdm_learn_from_db() works from PG", {
   skip("not testing deprecated learning from DB: test too slow")
+  local_options(lifecycle_verbosity = "quiet")
 
   src_postgres <- skip_if_error(src_test("postgres"))
   con_postgres <- src_postgres$con
@@ -235,6 +255,7 @@ test_that("cdm_learn_from_db() works from PG", {
 test_that("cdm_examine_constraints() works", {
   skip_on_cran()
   skip_if_remote_src()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_identical(
     cdm_check_constraints(bad_dm()),
@@ -253,6 +274,7 @@ test_that("cdm_nycflights13() works", {
 
 test_that("cdm_paste() works", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_output(
     cdm_paste(dm_for_filter(), FALSE, 4),
@@ -268,6 +290,7 @@ test_that("cdm_paste() works", {
 
 test_that("other PK functions work", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_identical(
     cdm_has_pk(dm_for_filter(), tf_1),
@@ -299,6 +322,7 @@ test_that("other PK functions work", {
 
 test_that("dm_select_tbl() and dm_rename_tbl() work", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
     cdm_select_tbl(dm_for_filter(), tf_1_new = tf_1, tf_2, new_tf_6 = tf_6),
@@ -313,6 +337,7 @@ test_that("dm_select_tbl() and dm_rename_tbl() work", {
 
 test_that("dm_select() and dm_rename() work", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_tbl(
     cdm_select(dm_for_filter(), tf_1, a_new = a) %>% tbl("tf_1"),
@@ -327,6 +352,7 @@ test_that("dm_select() and dm_rename() work", {
 
 test_that("dm_zoom_to() and related functions work", {
   skip_on_cran()
+  local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
     cdm_zoom_to_tbl(dm_for_filter(), tf_1),
@@ -347,4 +373,8 @@ test_that("dm_zoom_to() and related functions work", {
     dm_zoom_to(dm_for_filter(), tf_1) %>% cdm_zoom_out(),
     dm_zoom_to(dm_for_filter(), tf_1) %>% dm_discard_zoomed()
   )
+})
+
+test_that("default_local_src() works", {
+  expect_s3_class(default_local_src(), "src")
 })

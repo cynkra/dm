@@ -13,7 +13,7 @@ dm_financial_sqlite()
 A \code{dm} object.
 }
 \description{
-\lifecycle{experimental}
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 \code{dm_financial()} creates an example \code{\link{dm}} object from the tables at
 \url{https://relational.fit.cvut.cz/dataset/Financial}.
@@ -25,7 +25,7 @@ The data is downloaded once per session, subsequent calls return the same databa
 The \code{trans} table is excluded due to its size.
 }
 \examples{
-\dontshow{if (rlang::is_installed("RMariaDB") && getRversion() >= 3.5 && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dm_financial() \%>\%
   dm_draw()
 \dontshow{\}) # examplesIf}

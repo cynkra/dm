@@ -1,7 +1,7 @@
 #' Creates a dm object for the Financial data
 #'
 #' @description
-#' \lifecycle{experimental}
+#' `r lifecycle::badge("experimental")`
 #'
 #' `dm_financial()` creates an example [`dm`] object from the tables at
 #' <https://relational.fit.cvut.cz/dataset/Financial>.
@@ -11,7 +11,7 @@
 #' @return A `dm` object.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5 && rlang::is_installed("DiagrammeR")
+#' @examplesIf dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")
 #' dm_financial() %>%
 #'   dm_draw()
 dm_financial <- function() {
@@ -26,7 +26,7 @@ dm_financial <- function() {
   )
 
   my_dm <-
-    dm_from_src(my_db) %>%
+    dm_from_src(my_db, learn_keys = FALSE) %>%
     dm_add_pk(districts, id) %>%
     dm_add_pk(accounts, id) %>%
     dm_add_pk(clients, id) %>%
@@ -45,6 +45,21 @@ dm_financial <- function() {
     dm_set_colors(darkgreen = loans)
 
   my_dm
+}
+
+dm_has_financial <- function() {
+  # Crashes observed with R < 3.5:
+  if (getRversion() < 3.5) return(FALSE)
+
+  # Connectivity:
+  try_connect <- try(dm_financial(), silent = TRUE)
+  if (inherits(try_connect, "try-error")) return(FALSE)
+
+  # Accessing the connection:
+  try_count <- try(collect(count(dm_financial()$districts)), silent = TRUE)
+  if (inherits(try_connect, "try-error")) return(FALSE)
+
+  TRUE
 }
 
 #' dm_financial_sqlite()

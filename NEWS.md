@@ -1,3 +1,31 @@
+# dm 0.1.6
+
+## Breaking changes
+
+- `dm_get_src()` returns `NULL` for local data sources (#394).
+- Local target in `copy_dm_to()` gives a deprecation message (#395).
+
+## Features
+
+- `copy_dm_to()` gives a better error message for bad `table_names` (#397).
+- `dm` objects with local data sources no longer show the "Table source" part in the output.
+- Error messages now refer to "tables", not "elements" (#413).
+- New `dm_bind()` for binding two or more 'dm' objects together (#417).
+
+## Bug fixes
+
+- For databases, the underlying SQL table names are quoted early to avoid later SQL syntax errors (#419).
+- `dm_financial()` no longer prints message about `learn_keys = FALSE`.
+- `dm_rows_update()` and related functions now use the primary keys defined in `x` for establishing matching rows.
+
+## Internal
+
+- Use `withCallingHandlers()` where appropriate (#422).
+- Consistent definition of `.dm` and `.zoomed_dm` methods (#300).
+- Examples involving `dm_financial()` are not run if connection can't be established (#418).
+- Fix database tests on CI (#416).
+
+
 # dm 0.1.5
 
 ## Features

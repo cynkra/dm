@@ -100,7 +100,7 @@ queries_set_fk_relations <- function(dest, fk_information) {
         db_parent_tables,
         parent_pk_col
       ),
-      ~ glue_sql("ALTER TABLE {`..1`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`..3`} ({`..4`*}) ON DELETE CASCADE ON UPDATE CASCADE", .con = dest)
+      ~ glue_sql("ALTER TABLE {`DBI::SQL(..1)`} ADD FOREIGN KEY ({`..2`*}) REFERENCES {`DBI::SQL(..3)`} ({`..4`*}) ON DELETE CASCADE ON UPDATE CASCADE", .con = dest)
     )
   } else {
     return(character())
@@ -125,7 +125,7 @@ get_db_table_names <- function(dm) {
   }
   tibble(
     table_name = src_tbls(dm),
-    remote_name = map_chr(dm_get_tables_impl(dm), list("ops", "x"))
+    remote_name = map_chr(dm_get_tables_impl(dm), dbplyr::remote_name)
   )
 }
 
@@ -157,10 +157,18 @@ con_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest$con else dest
 }
 
-repair_table_names_for_db <- function(table_names, temporary) {
+repair_table_names_for_db <- function(table_names, temporary, con) {
   if (temporary) {
-    set_names(dbplyr::ident_q(unique_db_table_name(table_names)), table_names)
+    # FIXME: Better logic for temporary table names
+    if (is_mssql(con)) {
+      names <- paste0("#", table_names)
+    } else {
+      names <- table_names
+    }
+    names <- unique_db_table_name(names)
   } else {
-    set_names(dbplyr::ident_q(table_names), table_names)
+    names <- table_names
   }
+  names <- set_names(names, table_names)
+  quote_ids(names, con)
 }

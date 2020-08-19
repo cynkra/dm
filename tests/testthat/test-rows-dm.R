@@ -1,6 +1,6 @@
 scoped_options(lifecycle_verbosity = "quiet")
 
-if (rlang::is_installed("nycflights13")) verify_output("out/rows-dm.txt", {
+if (rlang::is_installed("nycflights13") && rlang::is_installed("RSQLite")) verify_output("out/rows-dm.txt", {
   # Entire dataset with all dimension tables populated
   # with flights and weather data truncated:
   flights_init <-
@@ -71,4 +71,115 @@ if (rlang::is_installed("nycflights13")) verify_output("out/rows-dm.txt", {
   # Apply:
   dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
   print(dm_nrow(flights_sqlite))
+})
+
+verify_output("out/rows-dm-update.txt", {
+  skip_if_local_src()
+
+  # Test bad column order
+  dm_filter_rearranged <-
+    dm_for_filter() %>%
+    dm_select(tf_2, d, everything()) %>%
+    dm_select(tf_4, i, everything()) %>%
+    dm_select(tf_5, l, m, everything())
+
+  suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_filter_rearranged))
+
+  dm_update_local <- dm(
+    tf_1 = tibble(
+      a = 2L,
+      b = "q"
+    ),
+    tf_2 = tibble(
+      c = c("worm"),
+      d = 10L,
+    ),
+    tf_4 = tibble(
+      h = "e",
+      i = "sieben",
+    ),
+    tf_5 = tibble(
+      k = 3L,
+      m = "tree",
+    ),
+  )
+
+  dm_update_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_update_local))
+
+  dm_copy %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_rows_update(dm_update_copy) %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_rows_update(dm_update_copy, in_place = FALSE) %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_get_tables() %>%
+    map(arrange_all)
+
+  dm_copy %>%
+    dm_rows_update(dm_update_copy, in_place = TRUE)
+
+  dm_copy %>%
+    dm_get_tables() %>%
+    map(arrange_all)
+})
+
+verify_output("out/rows-dm-truncate.txt", {
+  skip_if_local_src()
+
+  suppressMessages(dm_copy <- copy_dm_to(my_test_src(), dm_for_filter()))
+
+  dm_truncate_local <- dm(
+    tf_2 = tibble(
+      c = c("worm"),
+      d = 10L,
+    ),
+    tf_5 = tibble(
+      k = 3L,
+      m = "tree",
+    ),
+  )
+
+  dm_truncate_copy <- suppressMessages(copy_dm_to(my_test_src(), dm_truncate_local))
+
+  dm_copy %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_rows_truncate(dm_truncate_copy) %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_rows_truncate(dm_truncate_copy, in_place = FALSE) %>%
+    pull_tbl(tf_2) %>%
+    arrange_all()
+
+  dm_copy %>%
+    dm_get_tables() %>%
+    map(arrange_all)
+
+  dm_copy %>%
+    dm_rows_truncate(dm_truncate_copy, in_place = TRUE)
+
+  dm_copy %>%
+    dm_get_tables() %>%
+    map(arrange_all)
 })

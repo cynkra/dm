@@ -10,14 +10,14 @@
 #' @param table_names
 #'   A character vector of the names of the tables to include.
 #' @param learn_keys
-#'   \lifecycle{experimental}
+#'   `r lifecycle::badge("experimental")`
 #'
 #'   Set to `TRUE` to query the definition of primary and
 #'   foreign keys from the database.
 #'   Currently works only for Postgres and SQL Server databases.
 #'   The default attempts to query and issues an informative message.
 #' @param ...
-#'   \lifecycle{experimental}
+#'   `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
 #'   Currently supports `schema` (default: `"public"`)
@@ -26,7 +26,7 @@
 #' @return A `dm` object.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5
+#' @examplesIf dm:::dm_has_financial()
 #' con <- DBI::dbConnect(
 #'   RMariaDB::MariaDB(),
 #'   username = "guest",
@@ -46,6 +46,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   }
   # both DBI-Connection and {dplyr}-src object are accepted
   src <- src_from_src_or_con(src)
+  con <- con_from_src_or_con(src)
 
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
     dm_learned <- dm_learn_from_db(src, ...)
@@ -76,14 +77,15 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
     }
   }
 
-  src_tbl_names <- unique(src_tbls(src))
-  if (!is_null(table_names)) {
+  if (is_null(table_names)) {
+    src_tbl_names <- unique(src_tbls(src))
+  } else {
     src_tbl_names <- table_names
   }
 
   tbls <-
-    src_tbl_names %>%
-    set_names() %>%
+    set_names(src_tbl_names) %>%
+    quote_ids(con) %>%
     map(possibly(tbl, NULL), src = src)
 
   bad <- map_lgl(tbls, is_null)
@@ -99,6 +101,14 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   new_dm(tbls)
 }
 
+quote_ids <- function(x, con) {
+  if (is.null(con)) return(x)
+
+  map(
+    x,
+    ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
+  )
+}
 
 # Errors ------------------------------------------------------------------
 

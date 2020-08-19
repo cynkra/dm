@@ -1,7 +1,7 @@
 #' Prototype for a dm object
 #'
 #' @description
-#' \lifecycle{experimental}
+#' `r lifecycle::badge("experimental")`
 #'
 #' The prototype contains all tables, all primary and foreign keys,
 #' but no data.
@@ -12,7 +12,7 @@
 #'
 #' @inheritParams dm_get_fk
 #' @export
-#' @examplesIf rlang::is_installed("RMariaDB") && getRversion() >= 3.5
+#' @examplesIf dm:::dm_has_financial()
 #' dm_financial() %>%
 #'   dm_ptype()
 #'

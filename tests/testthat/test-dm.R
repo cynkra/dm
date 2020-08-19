@@ -41,11 +41,7 @@ test_that("'copy_to.dm()' works", {
   skip_if_src_not("df", "mssql")
 
   # `tibble()` call necessary, #322
-  car_table <- copy_to(
-    my_test_src(),
-    tibble(mtcars),
-    name = unique_db_table_name("mtcars_1")
-  )
+  car_table <- test_src_frame(!!!mtcars)
 
   expect_equivalent_dm(
     copy_to(dm_for_filter(), mtcars, "car_table"),
@@ -63,21 +59,21 @@ test_that("'copy_to.dm()' works", {
 
 test_that("'copy_to.dm()' works (2)", {
   expect_dm_error(
-    copy_to(dm_for_filter(), mtcars, c("car_table", "another_table")),
+    copy_to(dm(), mtcars, c("car_table", "another_table")),
     "one_name_for_copy_to"
   )
 
   # rename old and new tables if `repair = unique`
   expect_name_repair_message(
     expect_equivalent_dm(
-      dm(mtcars) %>% copy_to(mtcars),
+      copy_to(dm(mtcars), mtcars),
       dm(mtcars...1 = mtcars, mtcars...2 = tibble(mtcars))
     )
   )
 
   expect_equivalent_dm(
     expect_silent(
-      dm(mtcars) %>% copy_to(mtcars, quiet = TRUE)
+      copy_to(dm(mtcars), mtcars, quiet = TRUE)
     ),
     dm(mtcars...1 = mtcars, mtcars...2 = tibble(mtcars))
   )

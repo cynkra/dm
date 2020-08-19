@@ -3,8 +3,6 @@ dm()
 
 > nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
 > nyc_flights_dm
--- Table source ----------------------------------------------------------------
-src:  <environment: R_GlobalEnv>
 -- Metadata --------------------------------------------------------------------
 Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 Columns: 53
@@ -15,8 +13,6 @@ Foreign keys: 4
 dm: 5 tables, 53 columns, 3 primary keys, 4 foreign keys
 
 > nyc_flights_dm %>% dm_filter(flights, origin == "EWR")
--- Table source ----------------------------------------------------------------
-src:  <environment: R_GlobalEnv>
 -- Metadata --------------------------------------------------------------------
 Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 Columns: 53

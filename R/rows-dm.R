@@ -1,7 +1,7 @@
 #' Modifying rows for multiple tables
 #'
 #' @description
-#' \lifecycle{experimental}
+#' `r lifecycle::badge("experimental")`
 #'
 #' These functions provide a framework for updating data in existing tables.
 #' Unlike [compute()], [copy_to()] or [copy_dm_to()], no new tables are created
@@ -116,7 +116,7 @@ NULL
 dm_rows_insert <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_insert, top_down = TRUE, in_place)
+  dm_rows(x, y, rows_insert, top_down = TRUE, in_place, require_keys = FALSE)
 }
 
 #' dm_rows_update
@@ -129,7 +129,7 @@ dm_rows_insert <- function(x, y, ..., in_place = NULL) {
 dm_rows_update <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_update, top_down = TRUE, in_place)
+  dm_rows(x, y, rows_update, top_down = TRUE, in_place, require_keys = TRUE)
 }
 
 #' dm_rows_patch
@@ -143,7 +143,7 @@ dm_rows_update <- function(x, y, ..., in_place = NULL) {
 dm_rows_patch <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_patch, top_down = TRUE, in_place)
+  dm_rows(x, y, rows_patch, top_down = TRUE, in_place, require_keys = TRUE)
 }
 
 #' dm_rows_upsert
@@ -156,7 +156,7 @@ dm_rows_patch <- function(x, y, ..., in_place = NULL) {
 dm_rows_upsert <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_upsert, top_down = TRUE, in_place)
+  dm_rows(x, y, rows_upsert, top_down = TRUE, in_place, require_keys = TRUE)
 }
 
 #' dm_rows_delete
@@ -170,7 +170,7 @@ dm_rows_upsert <- function(x, y, ..., in_place = NULL) {
 dm_rows_delete <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_delete, top_down = FALSE, in_place)
+  dm_rows(x, y, rows_delete, top_down = FALSE, in_place, require_keys = TRUE)
 }
 
 #' dm_rows_truncate
@@ -184,10 +184,10 @@ dm_rows_delete <- function(x, y, ..., in_place = NULL) {
 dm_rows_truncate <- function(x, y, ..., in_place = NULL) {
   check_dots_empty()
 
-  dm_rows(x, y, rows_truncate, top_down = FALSE, in_place)
+  dm_rows(x, y, rows_truncate, top_down = FALSE, in_place, require_keys = FALSE)
 }
 
-dm_rows <- function(x, y, operation, top_down, in_place = NULL) {
+dm_rows <- function(x, y, operation, top_down, in_place, require_keys) {
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
@@ -195,7 +195,7 @@ dm_rows <- function(x, y, operation, top_down, in_place = NULL) {
     in_place <- FALSE
   }
 
-  dm_rows_run(x, y, operation, top_down, in_place)
+  dm_rows_run(x, y, operation, top_down, in_place, require_keys)
 }
 
 dm_rows_check <- function(x, y) {
@@ -236,21 +236,31 @@ check_keys_compatible <- function(x, y) {
 
 
 
-dm_rows_run <- function(x, y, rows_op, top_down, in_place) {
+dm_rows_run <- function(x, y, rows_op, top_down, in_place, require_keys) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
   tables <- intersect(names(topo), src_tbls(y))
 
-  # extract keys
+  # Use tables and keys
   target_tbls <- dm_get_tables_impl(x)[tables]
   tbls <- dm_get_tables_impl(y)[tables]
 
-  # FIXME: Extract keys for upsert and delete
-  # Use keyholder?
+  if (require_keys) {
+    # FIXME: Better error message if keys not found
+    keys <- deframe(dm_get_all_pks(x))[tables]
+  } else {
+    keys <- rep_along(tables, list(NULL))
+  }
+
+  # FIXME: Use keyholder?
 
   # run operation(target_tbl, source_tbl, in_place = in_place) for each table
-  op_results <- map2(target_tbls, tbls, rows_op, in_place = in_place)
+  op_results <- pmap(
+    list(x = target_tbls, y = tbls, by = keys),
+    rows_op,
+    in_place = in_place
+  )
 
   if (identical(unname(op_results), unname(target_tbls))) {
     out <- x

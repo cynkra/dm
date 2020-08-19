@@ -19,7 +19,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
       "r-dbi/DBI",
       "tidyverse/dplyr",
       "tidyverse/glue",
-      "igraph/rigraph",
+      # "igraph/rigraph", # https://github.com/igraph/rigraph/issues/384
       "r-lib/lifecycle",
       "tidyverse/magrittr",
       "tidyverse/purrr",
