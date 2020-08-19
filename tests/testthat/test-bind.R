@@ -88,7 +88,7 @@ verify_output("out/bind.txt", {
   # dm_bind(dm_for_flatten(), dm_for_filter_sqlite())
 })
 
-verify_output("out/compound_bind.txt", {
+verify_output("out/compound-bind.txt", {
   dm_bind(nyc_comp(), nyc_comp(), repair = "unique")
   dm_bind(dm_for_filter(), nyc_comp())
   dm_bind(nyc_comp(), dm_for_filter())

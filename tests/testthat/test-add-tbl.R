@@ -125,7 +125,7 @@ test_that("dm_rm_tbl() works", {
 })
 
 verify_output(
-  "out/compound_add_tbl.txt", {
+  "out/compound-add_tbl.txt", {
     dm_add_tbl(nyc_comp(), res_flat = result_from_flatten())
     dm_rm_tbl(nyc_comp(), planes)
     dm_rm_tbl(nyc_comp(), weather)
