@@ -4,7 +4,7 @@
 \alias{dm_nycflights13}
 \title{Creates a dm object for the \pkg{nycflights13} data}
 \usage{
-dm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE)
+dm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE, compound = FALSE)
 }
 \arguments{
 \item{cycle}{Boolean.
@@ -18,6 +18,9 @@ between those tables will be produced.}
 colors assigned to different tables for visualization with \code{dm_draw()}.}
 
 \item{subset}{Boolean, if \code{TRUE} (default), the \code{flights} table is reduced to flights with column \code{day} equal to 10.}
+
+\item{compound}{Boolean, if \code{FALSE} (default), no link will be established between tables \code{flights} and \code{weather}.
+If \code{TRUE}, a foreign key relation using two columns (\code{origin}, \code{time_hour}) will be established.}
 }
 \value{
 A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
