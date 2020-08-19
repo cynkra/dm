@@ -6,3 +6,7 @@ test_that("dm_disambiguate_cols() works as intended", {
     dm_for_disambiguate_2()
   )
 })
+
+verify_output("out/compound-disambiguate.txt", {
+  dm_disambiguate_cols(nyc_comp())
+})
