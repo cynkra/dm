@@ -110,3 +110,7 @@ test_that("table identifiers are quoted", {
   pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+"))
   expect_true(all(grepl(pattern, remote_names)))
 })
+
+# FIXME: Testing `copy_dm_to()` of a dm with compound keys is pretty much redundant,
+# since `%<-%`() already uses this function for the `nyc_comp`, which is used for a lot of
+# other tests, which would all fail, should the copying part not work
