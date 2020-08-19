@@ -180,9 +180,7 @@ test_that("output", {
   )
 
   expect_known_output(
-    dm_nycflights13() %>%
-      dm_add_pk(weather, c(origin, time_hour)) %>%
-      dm_add_fk(flights, c(origin, time_hour), weather) %>%
+    nyc_comp() %>%
       dm_draw() %>%
       DiagrammeRsvg::export_svg() %>%
       cli::cat_line(),
