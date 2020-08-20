@@ -137,3 +137,19 @@ test_that("dm_filter() fails when no table name is provided", {
     class = "table_missing"
   )
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+verify_output(
+  "out/compound-filter.txt", {
+  nyc_comp() %>%
+    dm_filter(flights, sched_dep_time <= 1200) %>%
+    dm_apply_filters() %>%
+    dm_nrow()
+  nyc_comp() %>%
+    dm_filter(weather, pressure < 1020) %>%
+    dm_apply_filters() %>%
+    dm_nrow()
+  }
+)
