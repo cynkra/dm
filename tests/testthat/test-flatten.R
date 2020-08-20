@@ -356,6 +356,9 @@ test_that("tests with 'bad_dm' work (2)", {
   )
 })
 
+
+# compound key tests ------------------------------------------------------
+
 verify_output("out/compound-flatten.txt", {
   nyc_comp() %>%
     dm_flatten_to_tbl(flights)

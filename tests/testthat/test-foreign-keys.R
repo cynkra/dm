@@ -218,6 +218,9 @@ test_that("enum_fk_candidates() works properly", {
   )
 })
 
+# tests for compound keys -------------------------------------------------
+
+
 verify_output("out/foreign-keys-compound.txt", {
   dm_nycflights13() %>%
     dm_add_pk(weather, c(origin, time_hour)) %>%
