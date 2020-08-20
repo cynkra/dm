@@ -628,3 +628,92 @@ test_that("unique_prefix()", {
   expect_equal(unique_prefix(c("a", "bcd", "ef")), "...")
   expect_equal(unique_prefix(c("a", "....", "ef")), "....")
 })
+
+
+# compound tests ----------------------------------------------------------
+
+zoomed_comp_dm <- nyc_comp() %>%
+  dm_zoom_to(weather)
+# grouped by one key col and one other col
+grouped_zoomed_comp_dm_1 <- zoomed_comp_dm %>%
+  group_by(time_hour, wind_dir)
+# grouped by the two key cols
+grouped_zoomed_comp_dm_2 <- zoomed_comp_dm %>%
+  group_by(time_hour, origin)
+
+verify_output(
+  "out/compound-dplyr.txt", {
+    # TRANSFORMATION VERBS
+
+    # mutate()
+    grouped_zoomed_comp_dm_1 %>%
+      mutate(count = n()) %>%
+      get_tracked_cols()
+    grouped_zoomed_comp_dm_2 %>%
+      mutate(count = n()) %>%
+      get_tracked_cols()
+    # transmute()
+    grouped_zoomed_comp_dm_1 %>%
+      transmute(count = n()) %>%
+      dm_update_zoomed()
+    grouped_zoomed_comp_dm_2 %>%
+      transmute(count = n()) %>%
+      dm_update_zoomed()
+    # summarize()
+    grouped_zoomed_comp_dm_1 %>%
+      summarize(count = n()) %>%
+      dm_update_zoomed()
+    grouped_zoomed_comp_dm_2 %>%
+      summarize(count = n()) %>%
+      dm_update_zoomed()
+    # select()
+    zoomed_comp_dm %>%
+      select(time_hour, wind_dir) %>%
+      dm_update_zoomed()
+    zoomed_comp_dm %>%
+      select(time_hour, origin, wind_dir) %>%
+      dm_update_zoomed()
+    # rename()
+    zoomed_comp_dm %>%
+      rename(th = time_hour, wd = wind_dir) %>%
+      dm_update_zoomed()
+    # distinct()
+    zoomed_comp_dm %>%
+      distinct(origin, wind_dir) %>%
+      dm_update_zoomed()
+    zoomed_comp_dm %>%
+      distinct(origin, wind_dir, time_hour) %>%
+      dm_update_zoomed()
+    # filter() (cf. #437)
+    zoomed_comp_dm %>%
+      filter(pressure < 1020) %>%
+      dm_update_zoomed()
+    # pull()
+    zoomed_comp_dm %>% pull(origin) %>% unique()
+    # slice()
+    zoomed_comp_dm %>%
+      slice(c(1:3, 5:3))
+    zoomed_comp_dm %>%
+      slice(c(1:3, 5:3), .keep_pk = TRUE) %>%
+      get_tracked_cols()
+    # FIXME: .keep_pk = FALSE cannot deal with compound keys ATM
+    # zoomed_comp_dm %>%
+    #   slice(c(1:3, 5:3), .keep_pk = FALSE) %>%
+    #   get_tracked_cols()
+
+    # JOINS
+
+    # left_join()
+    zoomed_comp_dm %>% left_join(flights) %>% nrow()
+    # right_join()
+    zoomed_comp_dm %>% right_join(flights) %>% nrow()
+    # inner_join()
+    zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+    # full_join()
+    zoomed_comp_dm %>% full_join(flights) %>% nrow()
+    # semi_join()
+    zoomed_comp_dm %>% semi_join(flights) %>% nrow()
+    # anti_join()
+    zoomed_comp_dm %>% anti_join(flights) %>% nrow()
+  }
+)
