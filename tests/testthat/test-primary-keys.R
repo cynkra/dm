@@ -129,6 +129,10 @@ verify_output("out/primary-keys.txt", {
     dm_add_pk(x, a, check = TRUE)
 })
 
+
+# tests for compound keys -------------------------------------------------
+
+
 verify_output("out/primary-keys-compound.txt", {
   dm_nycflights13() %>%
     dm_add_pk(weather, c(origin, time_hour))
