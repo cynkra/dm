@@ -64,3 +64,33 @@ test_that("key tracking works", {
     set_names(c("c", "d", "e", "new_col"))
   )
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+verify_output(
+  "out/compound-tidyr.txt", {
+    unite_weather_dm <- nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      mutate(chr_col = "airport") %>%
+      unite("new_col", origin, chr_col) %>%
+      dm_update_zoomed()
+    unite_weather_dm %>% get_all_keys("flights")
+    unite_weather_dm %>% get_all_keys("weather")
+    unite_flights_dm <- nyc_comp() %>%
+      dm_zoom_to(flights) %>%
+      mutate(chr_col = "airport") %>%
+      unite("new_col", origin, chr_col) %>%
+      dm_update_zoomed()
+    unite_flights_dm %>% get_all_keys("flights")
+    unite_flights_dm %>% get_all_keys("weather")
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      separate(origin, c("o1", "o2"), sep = "^..", remove = TRUE) %>%
+      dm_update_zoomed()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      separate(origin, c("o1", "o2"), sep = "^..", remove = FALSE) %>%
+      dm_update_zoomed()
+  }
+)
