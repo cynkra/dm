@@ -1,4 +1,4 @@
-> dm_nycflights13(compound = TRUE) %>% dm_paste()
+> nyc_comp() %>% dm_paste()
 Message: dm::dm(airlines, airports, flights, planes, weather) %>%
   dm::dm_add_pk(airlines, carrier) %>%
   dm::dm_add_pk(airports, faa) %>%
