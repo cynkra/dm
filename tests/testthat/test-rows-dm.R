@@ -183,3 +183,16 @@ verify_output("out/rows-dm-truncate.txt", {
     dm_get_tables() %>%
     map(arrange_all)
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+# FIXME: composite keys are not yet supported
+# verify_output(
+#   "out/compound-rows-dm.txt", {
+#     target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) %>% dm_apply_filters()
+#     insert_dm <- dm_filter(nyc_comp(), weather, pressure <= 1010) %>% dm_apply_filters() %>% dm_select_tbl(flights, weather)
+#     dm_rows_insert(target_dm, insert_dm, in_place = FALSE)
+#     dm_rows_truncate(nyc_comp(), insert_dm, in_place = FALSE)
+#   }
+# )
