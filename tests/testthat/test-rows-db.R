@@ -49,6 +49,7 @@ verify_output(
     rows_update(weather_1, weather_4,  by = c("origin", "time_hour"), in_place = FALSE)
     # FIXME: this should fail, doesn't for PG
     # rows_update(weather_1, weather_3,  by = c("origin", "time_hour"), in_place = FALSE)
-    rows_upsert(weather_1, weather_3, by = c("origin", "time_hour"), in_place = FALSE)
+    # Not implemented for DB?
+    # rows_upsert(weather_1, weather_3, by = c("origin", "time_hour"), in_place = FALSE)
   }
 )
