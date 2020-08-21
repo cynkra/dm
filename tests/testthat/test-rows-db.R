@@ -31,3 +31,24 @@ verify_output("out/rows-db.txt", {
   rows_truncate(data, in_place = TRUE)
   data %>% arrange(select)
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+skip_if_local_src()
+verify_output(
+  "out/compound-rows-db.txt", {
+    weather_subs <- dm_nycflights_small()$weather %>% mutate(row_num = dplyr::row_number())
+    weather_1 <- filter(weather_subs, row_num %in% 1:100)
+    weather_2 <- filter(weather_subs, row_num %in% 101:200)
+    weather_3 <- filter(weather_subs, row_num %in% 51:150)
+    weather_4 <- filter(weather_subs, row_num %in% 51:100)
+    rows_insert(weather_1, weather_2, by = c("origin", "time_hour"), in_place = FALSE) %>% count()
+    # FIXME: this should fail, doesn't for PG
+    # rows_insert(weather_1, weather_3, by = c("origin", "time_hour"), in_place = FALSE)
+    rows_update(weather_1, weather_4,  by = c("origin", "time_hour"), in_place = FALSE)
+    # FIXME: this should fail, doesn't for PG
+    # rows_update(weather_1, weather_3,  by = c("origin", "time_hour"), in_place = FALSE)
+    rows_upsert(weather_1, weather_3, by = c("origin", "time_hour"), in_place = FALSE)
+  }
+)
