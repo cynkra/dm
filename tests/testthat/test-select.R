@@ -76,3 +76,15 @@ test_that("dm_select() removes fks if not in selection", {
       filter(!child_fk_cols == "d")
   )
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+verify_output(
+  "out/compound-select.txt", {
+    dm_select(nyc_comp(), weather, -origin)
+    dm_select(nyc_comp(), weather, origin, time_hour)
+    dm_select(nyc_comp(), flights, -time_hour)
+    dm_select(nyc_comp(), flights, -origin)
+  }
+)
