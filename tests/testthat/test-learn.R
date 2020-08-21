@@ -96,3 +96,8 @@ test_that("Learning from SQLite works (#288)?", {
     dm(test = tibble(a = 1:3))
   )
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+# test is already done in test-dm-from-src.R
