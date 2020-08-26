@@ -1,5 +1,5 @@
 knitr::opts_chunk$set(
-  error = (Sys.getenv("IN_PKGDOWN") == ""),
+  error = (Sys.getenv("IN_PKGDOWN") == "") && dm_has_financial(),
   message = TRUE,
   collapse = TRUE,
   comment = "#>"
