@@ -73,6 +73,13 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     add_step(step_install_github("cynkra/cynkratemplate"))
 
   do_pkgdown()
+} else if (ci_has_env("TIC_CHECK_FINANCIAL")) {
+  # How to detect scheduled runs?
+  get_stage("install") %>%
+    add_code_step(print(Sys.getenv()))
+
+  get_stage("script") %>%
+    add_code_step(dm::dm_financial())
 } else {
   get_stage("before_script") %>%
     add_code_step({

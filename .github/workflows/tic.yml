@@ -47,6 +47,8 @@ jobs:
           - { os: ubuntu-latest, r: 3.3, id: "default" }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: "release", TIC_ONLY_IMPORTS: true, id: "TIC_ONLY_IMPORTS" }
+          # [Custom matrix env var]
+          - { os: ubuntu-latest, r: "release", TIC_CHECK_FINANCIAL: true, id: "TIC_CHECK_FINANCIAL" }
 
     env:
       # [Custom env var]
@@ -63,6 +65,8 @@ jobs:
       TIC_ONLY_TESTS: ${{ matrix.config.TIC_ONLY_TESTS }}
       # [Custom env var]
       TIC_ONLY_STYLER: ${{ matrix.config.TIC_ONLY_STYLER }}
+      # [Custom env var]
+      TIC_CHECK_FINANCIAL: ${{ matrix.config.TIC_CHECK_FINANCIAL }}
       # [Custom env var]
       MODE: ${{ matrix.config.MODE }}
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
