@@ -51,22 +51,20 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     add_code_step(devtools::test(reporter = c("summary", "fail")))
 } else if (ci_has_env("TIC_ONLY_STYLER")) {
   if (!ci_is_tag()) {
-    # For caching
+    # For caching (and to ensure styler is installed in script stage)
     get_stage("install") %>%
       add_step(step_install_cran("R.cache")) %>%
-      add_code_step(dir.create("~/.Rcache", showWarnings = FALSE))
-
-    # Needs to be at the script stage so that caching works
-    get_stage("script") %>%
-      add_code_step(styler::cache_info()) %>%
-      add_code_step(styler::style_pkg())
+      add_code_step(dir.create("~/.Rcache", showWarnings = FALSE)) %>%
+      add_code_step(styler::cache_info())
 
     if (ci_has_env("id_rsa")) {
       get_stage("deploy") %>%
-        add_code_step(styler::cache_info()) %>%
         add_code_step(styler::style_pkg()) %>%
         add_step(step_setup_ssh()) %>%
         add_step(step_push_deploy())
+    } else {
+      get_stage("script") %>%
+        add_code_step(styler::style_pkg())
     }
   }
 } else if (ci_has_env("TIC_BUILD_PKGDOWN")) {
