@@ -260,7 +260,8 @@ the filter.</p>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
   <span class='fu'>dm_filter</span>(<span class='kw'>airports</span>, <span class='kw'>name</span> <span class='op'>==</span> <span class='st'>"John F Kennedy Intl"</span>)
 
-<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='kw'>dm_nyc_filtered</span>, <span class='kw'>flights</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3,661 x 19</span><span>
+<span class='fu'>dm_apply_filters_to_tbl</span>(<span class='kw'>dm_nyc_filtered</span>, <span class='kw'>flights</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3,661 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
@@ -277,7 +278,8 @@ the filter.</p>
 #&gt; </span><span style='color: #555555;'>#   carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span></div><div class='input'>
 <span class='kw'>dm_nyc_filtered</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_apply_filters</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+  <span class='fu'>dm_apply_filters</span>()
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -288,14 +290,16 @@ the filter.</p>
 <span class='kw'>dm_nyc</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_filter</span>(<span class='kw'>flights</span>, <span class='fl'>1</span> <span class='op'>==</span> <span class='fl'>1</span>) <span class='op'>%&gt;%</span>
   <span class='fu'>dm_apply_filters</span>() <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>()</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
+  <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>()
+</div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16        3    11227     2345      861 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
 <span class='co'># `airports` because the departure airports in `flights` are</span>
 <span class='co'># only the three New York airports.</span>
 
 <span class='kw'>dm_nyc</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_filter</span>(<span class='kw'>planes</span>, <span class='kw'>engine</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Reciprocating"</span>, <span class='st'>"4 Cycle"</span>)) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute</a></span>()
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3

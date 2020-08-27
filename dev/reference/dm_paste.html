@@ -229,9 +229,11 @@ Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm::dm()</span></div><div class='input'>
+  <span class='fu'>dm_paste</span>()
+</div><div class='output co'>#&gt; <span class='message'>dm::dm()</span></div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+  <span class='fu'>dm_paste</span>()
+</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_add_pk(airlines, carrier) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_add_pk(airports, faa) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_add_pk(planes, tailnum) %&gt;%</span>
@@ -244,7 +246,8 @@ Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype
 #&gt; <span class='message'>  dm::dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_set_colors(`#70AD47FF` = weather)</span></div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>(options = <span class='st'>"select"</span>)</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+  <span class='fu'>dm_paste</span>(options = <span class='st'>"select"</span>)
+</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_select(airlines, carrier, name) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>

@@ -221,11 +221,13 @@ Therefore the function may return vectors of length greater than one in the futu
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_get_fk</span>(<span class='kw'>flights</span>, <span class='kw'>airports</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[1]&gt;
+  <span class='fu'>dm_get_fk</span>(<span class='kw'>flights</span>, <span class='kw'>airports</span>)
+</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[1]&gt;
 #&gt; [[1]]
 #&gt; [1] "origin"
 #&gt; </div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(cycle = <span class='fl'>TRUE</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_get_fk</span>(<span class='kw'>flights</span>, <span class='kw'>airports</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[2]&gt;
+  <span class='fu'>dm_get_fk</span>(<span class='kw'>flights</span>, <span class='kw'>airports</span>)
+</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[2]&gt;
 #&gt; [[1]]
 #&gt; [1] "origin"
 #&gt; 

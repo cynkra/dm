@@ -210,7 +210,8 @@ making that column name "unique" as well.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_disambiguate_cols</span>()</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
+  <span class='fu'>dm_disambiguate_cols</span>()
+</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span>
 #&gt; <span class='message'>* year -&gt; flights.year, planes.year, weather.year</span>
 #&gt; <span class='message'>* month -&gt; flights.month, weather.month</span>

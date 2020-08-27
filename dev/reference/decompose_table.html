@@ -236,7 +236,8 @@ when applied to a table in a dm object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>decomposed_table</span> <span class='op'>&lt;-</span> <span class='fu'>decompose_table</span>(<span class='kw'>mtcars</span>, <span class='kw'>new_id</span>, <span class='kw'>am</span>, <span class='kw'>gear</span>, <span class='kw'>carb</span>)
-<span class='kw'>decomposed_table</span><span class='op'>$</span><span class='kw'>child_table</span></div><div class='output co'>#&gt;     mpg cyl  disp  hp drat    wt  qsec vs new_id
+<span class='kw'>decomposed_table</span><span class='op'>$</span><span class='kw'>child_table</span>
+</div><div class='output co'>#&gt;     mpg cyl  disp  hp drat    wt  qsec vs new_id
 #&gt; 1  21.0   6 160.0 110 3.90 2.620 16.46  0      9
 #&gt; 2  21.0   6 160.0 110 3.90 2.875 17.02  0      9
 #&gt; 3  22.8   4 108.0  93 3.85 2.320 18.61  1      7
@@ -268,7 +269,8 @@ when applied to a table in a dm object.</p>
 #&gt; 29 15.8   8 351.0 264 4.22 3.170 14.50  0     11
 #&gt; 30 19.7   6 145.0 175 3.62 2.770 15.50  0     12
 #&gt; 31 15.0   8 301.0 335 3.54 3.570 14.60  0     13
-#&gt; 32 21.4   4 121.0 109 4.11 2.780 18.60  1      8</div><div class='input'><span class='kw'>decomposed_table</span><span class='op'>$</span><span class='kw'>parent_table</span></div><div class='output co'>#&gt;    new_id am gear carb
+#&gt; 32 21.4   4 121.0 109 4.11 2.780 18.60  1      8</div><div class='input'><span class='kw'>decomposed_table</span><span class='op'>$</span><span class='kw'>parent_table</span>
+</div><div class='output co'>#&gt;    new_id am gear carb
 #&gt; 1       1  0    3    1
 #&gt; 2       2  0    3    2
 #&gt; 3       3  0    3    3

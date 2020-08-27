@@ -291,8 +291,10 @@ The arguments are included in the signature to avoid passing them via the
   temporary = <span class='fl'>FALSE</span>,
   table_names = <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"flights_"</span>, <span class='kw'>.x</span>)
 )
-<span class='kw'>dbplyr</span>::<span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span>(<span class='kw'>persistent_dm</span><span class='op'>$</span><span class='kw'>planes</span>)</div><div class='output co'>#&gt; &lt;IDENT&gt; `flights_planes`</div><div class='input'>
-<span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>con</span>)</div></pre>
+<span class='kw'>dbplyr</span>::<span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span>(<span class='kw'>persistent_dm</span><span class='op'>$</span><span class='kw'>planes</span>)
+</div><div class='output co'>#&gt; &lt;IDENT&gt; `flights_planes`</div><div class='input'>
+<span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>con</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
