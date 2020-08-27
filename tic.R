@@ -79,6 +79,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     add_code_step(print(Sys.getenv()))
 
   get_stage("script") %>%
+    add_step(step_install_deps()) %>%
     add_code_step(dm::dm_financial())
 } else {
   get_stage("before_script") %>%
