@@ -140,7 +140,7 @@ verify_output(
     nyc_comp_2
     attr(igraph::E(create_graph_from_dm(nyc_comp_2)), "vnames")
     dm_get_pk(nyc_comp_2, weather_2)
-    # FIXME: dm_insert_zoomed() does not recreate compound FKs
+    # FIXME: COMPOUND:: dm_insert_zoomed() does not recreate compound FKs
     # nyc_comp_3 <- nyc_comp() %>%
     #   dm_zoom_to(flights) %>%
     #   dm_insert_zoomed("flights_2")

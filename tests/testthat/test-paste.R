@@ -63,7 +63,7 @@ if (rlang::is_installed("nycflights13")) verify_output("out/code_from_paste.txt"
 # tests for compound keys -------------------------------------------------
 
 verify_output("out/compound-paste.txt", {
-  # FIXME: `dm_paste()` needs to be tweaked, cf. result
+  # FIXME: COMPOUND:: `dm_paste()` needs to be tweaked, cf. result
   nyc_comp() %>%
     dm_paste()
 })

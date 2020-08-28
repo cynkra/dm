@@ -137,7 +137,7 @@ verify_output("out/primary-keys-compound.txt", {
   dm_nycflights13() %>%
     dm_add_pk(weather, c(origin, time_hour))
 
-  "# FIXME"
+  "# FIXME: COMPOUND:"
   dm_nycflights13() %>%
     dm_add_pk(weather, c(origin, time_hour)) %>%
     dm_get_all_pks()

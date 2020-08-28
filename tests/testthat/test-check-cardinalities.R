@@ -87,4 +87,4 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
   )
 })
 
-# FIXME: needs tests with compound keys
+# FIXME: COMPOUND:: needs tests with compound keys

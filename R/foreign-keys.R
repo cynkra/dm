@@ -60,7 +60,7 @@ dm_add_fk <- function(dm, table, columns, ref_table, check = FALSE) {
     abort_ref_tbl_has_no_pk(ref_table_name)
   }
 
-  # FIXME: Clean check with proper error message
+  # FIXME: COMPOUND:: Clean check with proper error message
   stopifnot(length(ref_col_name) == length(col_name))
 
   if (check) {
@@ -174,7 +174,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 }
 
 dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
-  # FIXME: Replace calls to this function by dm_get_fk2_impl()
+  # FIXME: COMPOUND:: Replace calls to this function by dm_get_fk2_impl()
   fks <- dm_get_data_model_fks(dm)
   fks$column[fks$table == table_name & fks$ref == ref_table_name]
 }
@@ -211,7 +211,7 @@ dm_get_all_fks <- function(dm) {
 }
 
 dm_get_all_fks_impl <- function(dm) {
-  # FIXME: Obliterate
+  # FIXME: COMPOUND:: Obliterate
   dm_get_data_model_fks(dm) %>%
     select(child_table = table, child_fk_cols = column, parent_table = ref) %>%
     arrange(child_table, child_fk_cols)

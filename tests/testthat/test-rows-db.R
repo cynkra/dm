@@ -44,10 +44,10 @@ verify_output(
     weather_3 <- filter(weather_subs, row_num %in% 51:150)
     weather_4 <- filter(weather_subs, row_num %in% 51:100)
     rows_insert(weather_1, weather_2, by = c("origin", "time_hour"), in_place = FALSE) %>% count()
-    # FIXME: this should fail, doesn't for PG
+    # FIXME: COMPOUND:: this should fail, doesn't for PG
     # rows_insert(weather_1, weather_3, by = c("origin", "time_hour"), in_place = FALSE)
     rows_update(weather_1, weather_4,  by = c("origin", "time_hour"), in_place = FALSE)
-    # FIXME: this should fail, doesn't for PG
+    # FIXME: COMPOUND:: this should fail, doesn't for PG
     # rows_update(weather_1, weather_3,  by = c("origin", "time_hour"), in_place = FALSE)
     # Not implemented for DB?
     # rows_upsert(weather_1, weather_3, by = c("origin", "time_hour"), in_place = FALSE)

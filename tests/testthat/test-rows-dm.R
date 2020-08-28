@@ -187,7 +187,7 @@ verify_output("out/rows-dm-truncate.txt", {
 
 # tests for compound keys -------------------------------------------------
 
-# FIXME: composite keys are not yet supported
+# FIXME: COMPOUND:: composite keys are not yet supported
 # verify_output(
 #   "out/compound-rows-dm.txt", {
 #     target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) %>% dm_apply_filters()

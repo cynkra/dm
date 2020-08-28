@@ -47,7 +47,7 @@ test_that("'nest_join_zoomed_dm()' fails for DB-'dm'", {
 
 # tests for compound keys -------------------------------------------------
 
-# FIXME: `nest_join_zoomed_dm()` cannot deal with composite keys yet
+# FIXME: COMPOUND:: `nest_join_zoomed_dm()` cannot deal with composite keys yet
 # verify_output(
 #   "out/compound-nest.txt", {
 #     dm_zoom_to(nyc_comp(), weather) %>%
