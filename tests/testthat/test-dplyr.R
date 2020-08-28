@@ -696,7 +696,7 @@ verify_output(
     zoomed_comp_dm %>%
       slice(c(1:3, 5:3), .keep_pk = TRUE) %>%
       get_tracked_cols()
-    # FIXME: .keep_pk = FALSE cannot deal with compound keys ATM
+    # FIXME: COMPOUND:: .keep_pk = FALSE cannot deal with compound keys ATM
     # zoomed_comp_dm %>%
     #   slice(c(1:3, 5:3), .keep_pk = FALSE) %>%
     #   get_tracked_cols()

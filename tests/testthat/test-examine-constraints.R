@@ -76,7 +76,7 @@ if (rlang::is_installed("nycflights13")) verify_output("out/examine-constraints-
 
 # test compound keys ------------------------------------------------------
 
-# FIXME: currently doesn't work, cause it doesn't realize, 2 columns are involved here
+# FIXME: COMPOUND:: currently doesn't work, cause it doesn't realize, 2 columns are involved here
 # verify_output(
 #   "out/compound-dm_examine_constraints.txt",
 #   nyc_comp() %>%

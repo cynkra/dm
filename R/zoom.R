@@ -298,7 +298,7 @@ dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
     filter(child_table == old_tbl_name) %>%
     select(table = parent_table, column = child_fk_cols)
 
-  # FIXME: Compound keys
+  # FIXME: COMPOUND:: Compound keys
 
   old_and_new_out_keys <-
     old_out_keys %>%
