@@ -23,6 +23,8 @@
 #'   Currently supports `schema` (default: `"public"`)
 #'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
 #'
+#'   For MSSQL databases `schema` (default: `"dbo"`) is supported.
+#'
 #' @return A `dm` object.
 #'
 #' @export

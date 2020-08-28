@@ -68,13 +68,15 @@ Suggests:
     knitr,
     nycflights13,
     odbc,
-    RMariaDB,
+    RMariaDB (>= 1.0.9.9001),
     rmarkdown,
     RPostgres,
     RSQLite,
     testthat (>= 2.1.0),
     tidyverse,
     withr
+Remotes: 
+    r-dbi/RMariaDB
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
