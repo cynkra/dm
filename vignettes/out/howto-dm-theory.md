@@ -1,0 +1,471 @@
+Multiple, linked tables are common within computer science. Because many
+R users have backgrounds in other disciplines, we present **six
+important terms in relational data modeling** to help you to jump-start
+working with {dm}. These terms are:
+
+1.  [Data Frames and Tables](#tables)
+2.  [Data Model](#model)
+3.  [Primary Keys](#pk)
+4.  [Foreign Keys](#fk)
+5.  [Normalization](#normalization)
+6.  [Relational Databases](#relational-databases)
+
+1. Data Frames and Tables
+-------------------------
+
+A data frame is a fundamental data structure in R. Columns represent
+variables, rows represent observations. In more technical terms: a data
+frame is a list of variables of identical length and unique row names.
+If you imagine it visually, the result is a typical table structure.
+That is why working with data from spreadsheets is so convenient and the
+users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for
+data wrangling mainly rely on data frames.
+
+The downside is that data frames and flat file systems like spreadsheets
+can result in bloated tables because they hold many repetitive values.
+In the worst case, a data frame can contain multiple columns with only a
+single value different in each row.
+
+This calls for better data organization by utilizing the resemblance
+between data frames and database tables, which also consist of columns
+and rows. The elements are just named differently:
+
+| Data Frame | Table     |
+|------------|-----------|
+| Column     | Attribute |
+| Row        | Tuple     |
+
+Relational databases, unlike data frames, do not keep all data in one
+large table but instead split it into multiple smaller tables. That
+separation into sub-tables has several advantages:
+
+-   all information is stored only once, avoiding redundancy and
+    conserving memory
+-   all information needs to be updated only once and in one place,
+    improving consistency and avoiding errors that may result from
+    updating the same value in multiple locations
+-   all information is organized by topic and segmented into smaller
+    tables that are easier to handle
+
+It is for these reasons that separation of data helps with data quality,
+and they explain the popularity of relational databases in
+production-level data management.
+
+The downside of this approach is that it is harder to merge together
+information from different data sources and to identify which entities
+refer to the same object, a common task when modeling or plotting data.
+
+Thus, to take full advantage of the relational database approach, an
+associated data model is needed to overcome the challenges that arise
+when working with multiple tables.
+
+Let’s illustrate this challenge with the data from the [`nycflights13`
+dataset](https://github.com/hadley/nycflights13) that contains detailed
+information about the 336776 flights that departed from New York City in
+2013. The information is stored in five tables.
+
+Details like the full name of an airport are not available immediately;
+these can only be obtained by joining or merging the constituent tables,
+which can result in long and inflated pipe chains full of `left_join()`,
+`anti_join()` and other forms of data merging.
+
+In classical {dplyr} notation, you will need three `left_join()` calls
+to merge the `flights` table gradually to `airlines`, `planes` and
+`airports` tables to create one wide data frame.
+
+``` r
+library(tidyverse)
+```
+
+<PRE class="fansi fansi-message"><CODE>#&gt; ── <span style='font-weight: bold;'>Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.0 ──
+</span></CODE></PRE>
+<PRE class="fansi fansi-message"><CODE>#&gt; <span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>ggplot2</span><span> 3.3.2     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>purrr  </span><span> 0.3.4
+#&gt; </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tibble </span><span> 3.0.3     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>dplyr  </span><span> 1.0.0
+#&gt; </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tidyr  </span><span> 1.1.0     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>stringr</span><span> 1.4.0
+#&gt; </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0
+</span></CODE></PRE>
+<PRE class="fansi fansi-message"><CODE>#&gt; ── <span style='font-weight: bold;'>Conflicts</span><span> ───────────────────────────────────── tidyverse_conflicts() ──
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>%@%()</span><span>         masks </span><span style='color: #0000BB;'>dm</span><span>::%@%()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>as_function()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::as_function()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>tidyr</span><span>::</span><span style='color: #00BB00;'>extract()</span><span>     masks </span><span style='color: #0000BB;'>dm</span><span>::extract()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>filter()</span><span>      masks </span><span style='color: #0000BB;'>dm</span><span>::filter(), </span><span style='color: #0000BB;'>stats</span><span>::filter()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten()</span><span>     masks </span><span style='color: #0000BB;'>dm</span><span>::flatten()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_chr()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_chr()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_dbl()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_dbl()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_int()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_int()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_lgl()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_lgl()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_raw()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_raw()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>invoke()</span><span>      masks </span><span style='color: #0000BB;'>dm</span><span>::invoke()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>is_null()</span><span>     masks </span><span style='color: #0000BB;'>dm</span><span>::is_null(), </span><span style='color: #0000BB;'>testthat</span><span>::is_null()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>lag()</span><span>         masks </span><span style='color: #0000BB;'>dm</span><span>::lag(), </span><span style='color: #0000BB;'>stats</span><span>::lag()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>list_along()</span><span>  masks </span><span style='color: #0000BB;'>dm</span><span>::list_along()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>matches()</span><span>     masks </span><span style='color: #0000BB;'>tidyr</span><span>::matches(), </span><span style='color: #0000BB;'>dm</span><span>::matches(), </span><span style='color: #0000BB;'>testthat</span><span>::matches()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>modify()</span><span>      masks </span><span style='color: #0000BB;'>dm</span><span>::modify()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>prepend()</span><span>     masks </span><span style='color: #0000BB;'>dm</span><span>::prepend()
+#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>splice()</span><span>      masks </span><span style='color: #0000BB;'>dm</span><span>::splice()
+</span></CODE></PRE>
+
+``` r
+library(dm)
+library(nycflights13)
+
+flights %>% 
+  left_join(airlines, by = "carrier") %>%
+  left_join(planes, by = "tailnum") %>%
+  left_join(airports, by = c("origin" = "faa"))
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 336,776 x 35</span><span>
+#&gt;    year.x month   day dep_time sched_dep_time dep_delay arr_time
+#&gt;     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      517            515         2      830
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      533            529         4      850
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      542            540         2      923
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      544            545        -</span><span style='color: #BB0000;'>1</span><span>     </span><span style='text-decoration: underline;'>1</span><span>004
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            600        -</span><span style='color: #BB0000;'>6</span><span>      812
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      554            558        -</span><span style='color: #BB0000;'>4</span><span>      740
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      555            600        -</span><span style='color: #BB0000;'>5</span><span>      913
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      709
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      557            600        -</span><span style='color: #BB0000;'>3</span><span>      838
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>   </span><span style='text-decoration: underline;'>2</span><span>013     1     1      558            600        -</span><span style='color: #BB0000;'>2</span><span>      753
+#&gt; </span><span style='color: #949494;'># … with 336,766 more rows, and 28 more variables: sched_arr_time </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   arr_delay </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, carrier </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, flight </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, tailnum </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   origin </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, dest </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, air_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, distance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, hour </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   minute </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, time_hour </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>, name.x </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, year.y </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, manufacturer </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, model </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, engines </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   seats </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, speed </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, engine </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, name.y </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, lat </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   lon </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, alt </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, tz </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, dst </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, tzone </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
+</span></CODE></PRE>
+
+{dm} offers a more elegant and shorter way to combine tables while
+augmenting {dplyr}/{dbplyr} workflows.
+
+It is possible to have the best of both worlds: manage your data with
+{dm} as linked tables, then flatten multiple tables into one for your
+analysis with {dplyr} on an as-needed basis.
+
+The next step is to create a [data model](#model) based on multiple
+tables:
+
+2. Data Model
+-------------
+
+A data model shows the structure between multiple tables that can be
+linked together.
+
+The `nycflights13` relations can be transferred into the following
+graphical representation:
+
+``` r
+dm <- dm_nycflights13(cycle = TRUE) 
+
+dm %>% 
+  dm_draw()
+```
+
+![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-theory_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
+The `flights` table is linked to three other tables: `airlines`,
+`planes` and `airports`. By using directed arrows, the visualization
+shows explicitly the connection between different columns (they are
+called attributes in the relational data sphere).
+
+For example: The column `carrier` in `flights` can be joined with the
+column `carrier` from the `airlines` table.
+
+The links between the tables are established through [primary keys](#pk)
+and [foreign keys](#fk).
+
+Further Reading: The {dm} methods for [visualizing data
+models](https://krlmlr.github.io/dm/articles/tech-dm-draw.html).
+
+3. Primary Keys
+---------------
+
+In a relational data model, every table needs to have **one column or
+attribute that uniquely identifies a row**. This column is called the
+*primary key* (abbreviated with pk). A primary key can be either an
+existing column that satisfies the condition of being unique, or a new
+column that assigns an identifier.
+
+Example: In the `airlines` table of `nycflights13` the column `carrier`
+is the primary key.
+
+You can get all primary keys in a `dm` by calling `dm_get_all_pks()`:
+
+``` r
+dm %>%
+  dm_get_all_pks()
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 3 x 2</span><span>
+#&gt;   table    pk_col 
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> airlines carrier
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> airports faa    
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> planes   tailnum
+</span></CODE></PRE>
+
+If an attribute is suitable as a primary key, it can be checked with
+`dm_enum_pk_candidates()`. Which columns of the `airlines` table can
+serve as a primary key?
+
+``` r
+dm %>% 
+  dm_enum_pk_candidates(airports)
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 8 x 3</span><span>
+#&gt;   columns candidate why                                                    
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                                  
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> faa     TRUE      </span><span style='color: #949494;'>""</span><span>                                                     
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> lon     TRUE      </span><span style='color: #949494;'>""</span><span>                                                     
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> alt     FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 0, 1, 3, 4, 5, …</span><span style='color: #949494;'>"</span><span>               
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> dst     FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: A, N, U</span><span style='color: #949494;'>"</span><span>                        
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> lat     FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 38.88944, 40.63975</span><span style='color: #949494;'>"</span><span>             
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> name    FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: All Airports, Capital City Airp…
+#&gt; </span><span style='color: #BCBCBC;'>7</span><span> tz      FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: -10, -9, -8, -7, -6, …</span><span style='color: #949494;'>"</span><span>         
+#&gt; </span><span style='color: #BCBCBC;'>8</span><span> tzone   FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: America/Anchorage, America/Chic…
+</span></CODE></PRE>
+
+Further Reading: The {dm} package offers several functions for dealing
+with [primary
+keys](https://krlmlr.github.io/dm/articles/tech-dm-class.html#pk).
+
+4. Foreign Keys
+---------------
+
+The **counterpart of a primary key in one table is the foreign key in
+another table**. In order to join two tables, the primary key of the
+first table needs to be available in the second table as well. This
+second column is called the *foreign key* (abbreviated with fk).
+
+For example, if you want to link the `airlines` table to the `flights`
+table, the primary key in `airlines` needs to match the foreign key in
+`flights`. This condition is satisfied because the column `carrier` is
+present as a primary key in the `airlines` table as well as a foreign
+key in the `flights` table. You can find foreign key candidates with the
+function `dm_enum_fk_candidates()`, they are marked with `TRUE` in the
+`candidate` column.
+
+``` r
+dm %>% 
+  dm_enum_fk_candidates(flights, airlines)
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 19 x 3</span><span>
+#&gt;    columns      candidate why                                              
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                            
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> carrier      TRUE      </span><span style='color: #949494;'>""</span><span>                                               
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> tailnum      FALSE     </span><span style='color: #949494;'>"</span><span>11080 entries (98.7%) of `flights$tailnum` not …
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> dest         FALSE     </span><span style='color: #949494;'>"</span><span>11227 entries (100%) of `flights$dest` not in `…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> origin       FALSE     </span><span style='color: #949494;'>"</span><span>11227 entries (100%) of `flights$origin` not in…
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> air_time     FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> arr_delay    FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> arr_time     FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> day          FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> dep_delay    FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> dep_time     FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> distance     FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> flight       FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> hour         FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> minute       FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> month        FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> sched_arr_t… FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>17</span><span> sched_dep_t… FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>18</span><span> time_hour    FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+#&gt; </span><span style='color: #BCBCBC;'>19</span><span> year         FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
+</span></CODE></PRE>
+
+After finding and assigning foreign keys, get the name of the set
+foreign key:
+
+``` r
+dm %>% 
+  dm_get_fk(flights, airlines)
+#> <list_of<character>[1]>
+#> [[1]]
+#> [1] "carrier"
+```
+
+Further Reading: All {dm} functions for working with [foreign
+keys](https://krlmlr.github.io/dm/articles/tech-dm-class.html#foreign-keys).
+
+5. Normalization
+----------------
+
+Normalization is a technical term that describes the **central design
+principle of a relational data model**: splitting data into multiple
+tables.
+
+A normalized data schema consists of several relations (tables) that are
+linked with attributes (columns). The relations can be joined together
+by means of [primary](#pk) and [foreign keys](#fk). The main goal of
+normalization is to keep data organization as clean and simple as
+possible by avoiding redundant data entries.
+
+For example, if you want to change the name of one airport in the
+`nycflights13` dataset, you will only need to update a single data
+value. This principle is sometimes called the *single point of truth*.
+
+``` r
+#  Update in one single location...
+airlines[airlines$carrier == "UA", "name"] <- "United broke my guitar"
+
+airlines %>%
+  filter(carrier == "UA")
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span><span>
+#&gt;   carrier name                  
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> UA      United broke my guitar
+</span></CODE></PRE>
+
+``` r
+
+# ...propagates to all related records
+flights %>%
+  left_join(airlines) %>% 
+  select(flight, name)
+#> Joining, by = "carrier"
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 336,776 x 2</span><span>
+#&gt;    flight name                    
+#&gt;     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                   
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>   </span><span style='text-decoration: underline;'>1</span><span>545 United broke my guitar  
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>   </span><span style='text-decoration: underline;'>1</span><span>714 United broke my guitar  
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>   </span><span style='text-decoration: underline;'>1</span><span>141 American Airlines Inc.  
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>    725 JetBlue Airways         
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>    461 Delta Air Lines Inc.    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>   </span><span style='text-decoration: underline;'>1</span><span>696 United broke my guitar  
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>    507 JetBlue Airways         
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>   </span><span style='text-decoration: underline;'>5</span><span>708 ExpressJet Airlines Inc.
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>     79 JetBlue Airways         
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>    301 American Airlines Inc.  
+#&gt; </span><span style='color: #949494;'># … with 336,766 more rows</span><span>
+</span></CODE></PRE>
+
+Another way to demonstrate normalization is splitting a table into two
+parts.
+
+Let’s look at the `planes` table, which consists of 3322 individual tail
+numbers and corresponding information for the specific airplane, like
+the year it was manufactured or the average cruising speed.
+
+The function `decompose_table()` extracts two new tables and creates a
+new key `model_id`, that links both tables.
+
+This results in a `parent_table` and a `child_table` that differ
+massively in the number of rows:
+
+``` r
+planes %>%
+  decompose_table(model_id, model, manufacturer, type, engines, seats, manufacturer, speed)
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; $child_table
+#&gt; <span style='color: #949494;'># A tibble: 3,322 x 4</span><span>
+#&gt;    tailnum  year engine    model_id
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> N10156   </span><span style='text-decoration: underline;'>2</span><span>004 Turbo-fan      120
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> N102UW   </span><span style='text-decoration: underline;'>1</span><span>998 Turbo-fan       94
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> N103US   </span><span style='text-decoration: underline;'>1</span><span>999 Turbo-fan       94
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> N104UW   </span><span style='text-decoration: underline;'>1</span><span>999 Turbo-fan       94
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> N10575   </span><span style='text-decoration: underline;'>2</span><span>002 Turbo-fan      119
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> N105UW   </span><span style='text-decoration: underline;'>1</span><span>999 Turbo-fan       94
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> N107US   </span><span style='text-decoration: underline;'>1</span><span>999 Turbo-fan       94
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> N108UW   </span><span style='text-decoration: underline;'>1</span><span>999 Turbo-fan       94
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> N109UW   </span><span style='text-decoration: underline;'>1</span><span>999 Turbo-fan       94
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> N110UW   </span><span style='text-decoration: underline;'>1</span><span>999 Turbo-fan       94
+#&gt; </span><span style='color: #949494;'># … with 3,312 more rows</span><span>
+#&gt; 
+#&gt; $parent_table
+#&gt; </span><span style='color: #949494;'># A tibble: 147 x 7</span><span>
+#&gt;    model_id model     manufacturer type                 engines seats speed
+#&gt;       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>        1 150       CESSNA       Fixed wing single e…       1     2    90
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>        2 172E      CESSNA       Fixed wing single e…       1     4   105
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>        3 172M      CESSNA       Fixed wing single e…       1     4   108
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>        4 172N      CESSNA       Fixed wing single e…       1     4   105
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>        5 206B      BELL         Rotorcraft                 1     5   112
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>        6 210-5(20… CESSNA       Fixed wing single e…       1     6    </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>        7 230       BELL         Rotorcraft                 2    11    </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        8 310Q      CESSNA       Fixed wing multi en…       2     6   167
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        9 421C      CESSNA       Fixed wing multi en…       2     8    90
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>       10 550       CESSNA       Fixed wing multi en…       2     8    </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #949494;'># … with 137 more rows</span><span>
+</span></CODE></PRE>
+
+While `child_table` contains 3322 unique `tailnum` rows and therefore
+consists of 3322 rows, just like the original `planes` table, the
+`parent_table` shrunk to just 147 rows, enough to store all relevant
+combinations and avoid storing redundant information.
+
+Further Reading: See the [Simple English Wikipedia article on database
+normalization](https://simple.wikipedia.org/wiki/Database_normalisation)
+for more details.
+
+6. Relational Databases
+-----------------------
+
+{dm} is built upon relational data models but it is not a database
+itself. Databases are systems for data management and many of them are
+constructed as relational databases, e.g. SQLite, MySQL, MSSQL,
+Postgres. As you can guess from the names of the databases, SQL, short
+for Structured Querying Language, plays an important role: it was
+invented for the purpose of querying relational databases.
+
+In production, the data is stored in a relational database and {dm} is
+used to work with the data.
+
+Therefore, {dm} can copy data [from and to
+databases](https://krlmlr.github.io/dm/articles/dm.html#copy), and works
+transparently with both in-memory data and with relational database
+systems.
+
+For example, let’s create a local SQLite database and copy the `dm`
+object to it:
+
+``` r
+con_sqlite <- DBI::dbConnect(RSQLite::SQLite())
+con_sqlite
+#> <SQLiteConnection>
+#>   Path: 
+#>   Extensions: TRUE
+DBI::dbListTables(con_sqlite)
+#> character(0)
+
+copy_dm_to(con_sqlite, dm)
+DBI::dbListTables(con_sqlite)
+#> [1] "airlines_2020_08_28_07_13_03_1" "airports_2020_08_28_07_13_03_1"
+#> [3] "flights_2020_08_28_07_13_03_1"  "planes_2020_08_28_07_13_03_1"  
+#> [5] "sqlite_stat1"                   "sqlite_stat4"                  
+#> [7] "weather_2020_08_28_07_13_03_1"
+```
+
+In the opposite direction, `dm` can also be populated with data from a
+DB. Unfortunately, keys currently can be learned only for MSSQL and
+Postgres, but not for SQLite. Therefore, the dm contains the tables but
+not the keys:
+
+``` r
+dm_from_src(con_sqlite)
+#> Keys could not be queried, use `learn_keys = FALSE` to mute this message.
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.30.1 []
+#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)
+#&gt; Columns: 62
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></CODE></PRE>
+
+Remember to terminate the database connection:
+
+``` r
+DBI::dbDisconnect(con_sqlite)
+```

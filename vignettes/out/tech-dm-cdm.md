@@ -1,0 +1,140 @@
+This vignette describes which changes are necessary to adapt your code
+when updating the {dm} package version from a version `0.0.5` or lower
+to `0.0.6` or higher.
+
+Changes required when updating from version `0.0.5` to `0.0.6`
+--------------------------------------------------------------
+
+### Replace `cdm` with `dm`
+
+During this update the prevalent prefix `cdm` was discarded in favor of
+`dm`. The old prefix would still do its job, but a warning message would
+be issued each time a function beginning with `cdm` was being used,
+informing that the function is soft-deprecated and suggesting the use of
+its newer version.
+
+If you have a script which is based on an older {dm} version, it should
+still work with the newer version, albeit complaining each time an
+outdated function is being used. This can be repaired by:
+
+1.  either going through the script step by step, testing the output of
+    each line of code and use the new function names provided in the
+    generated warnings to update the function calls.
+2.  or just by replacing all occurrences of `cdm` by `dm` in this
+    script. This can e.g. be done in RStudio using “Find” or in the
+    terminal using `sed -e 's/cdm/dm/g' path-to-file` on Windows or
+    `sed -i '' -e 's/cdm/dm/g' path-to-file` on a Mac. If the script
+    errors after this step, you will need to check where exactly the
+    error happens and manually repair the damage.
+
+### Be careful with methods for `dm`: `tbl`, `[[`, `$`
+
+Furthermore, you need to pay attention if you used one of `tbl.dm()`,
+`[[.dm()`, `$.dm()`. During the same update the implementation for those
+methods changed as well, and here you don’t get the convenient warning
+messages. The change was, that before the update, the mentioned methods
+would return the table after “filtering” it to just contain the rows
+with values that relate via foreign key relations to other tables that
+were filtered earlier. After the update just the table as is would be
+returned. If you want to retain the former behavior, you need to replace
+each of the methods with the function `dm_apply_filters_to_tbl()`, which
+was made available with the update.
+
+The methods are of course not to be avoided in general, if no filters
+are set anyway the result will not change after the update.
+
+Here a short example for the different cases:
+
+Formerly you would access the “filtered” tables using the following
+syntax:
+
+``` r
+library(dm)
+flights_dm <- dm_nycflights13()
+tbl(flights_dm, "airports")
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1,458 x 8</span><span>
+#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 06A   Moton Field Municipa…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 06C   Schaumburg Regional    42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 06N   Randall Airport        41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 09J   Jekyll Island Airport  31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 0A9   Elizabethton Municip…  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 0G6   Williams County Airp…  41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 0G7   Finger Lakes Regiona…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 0P2   Shoestring Aviation …  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_…
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_…
+#&gt; </span><span style='color: #949494;'># … with 1,448 more rows</span><span>
+</span></CODE></PRE>
+
+``` r
+flights_dm$planes
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 3,322 x 9</span><span>
+#&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> N10156   </span><span style='text-decoration: underline;'>2</span><span>004 Fixed win… EMBRAER       EMB-1…       2    55    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> N102UW   </span><span style='text-decoration: underline;'>1</span><span>998 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> N103US   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> N104UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> N10575   </span><span style='text-decoration: underline;'>2</span><span>002 Fixed win… EMBRAER       EMB-1…       2    55    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> N105UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> N107US   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> N108UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> N109UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> N110UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
+#&gt; </span><span style='color: #949494;'># … with 3,312 more rows</span><span>
+</span></CODE></PRE>
+
+``` r
+flights_dm[["weather"]]
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 861 x 15</span><span>
+#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     0  41    32    70.1      230       8.06
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     1  39.0  30.0  69.9      210       9.21
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     2  39.0  28.9  66.8      230       6.90
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     3  39.9  27.0  59.5      270       5.75
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     4  41    26.1  55.0      320       6.90
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     5  41    26.1  55.0      300      12.7 
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     6  39.9  25.0  54.8      280       6.90
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     7  41    25.0  52.6      330       6.90
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     8  43.0  25.0  48.7      330       8.06
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     9  45.0  23    41.6      320      17.3 
+#&gt; </span><span style='color: #949494;'># … with 851 more rows, and 5 more variables: wind_gust </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   precip </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, pressure </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, visib </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, time_hour </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>
+</span></CODE></PRE>
+
+After the update the same result is achieved by this type of function
+call:
+
+``` r
+dm_apply_filters_to_tbl(flights_dm, airlines)
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 16 x 2</span><span>
+#&gt;    carrier name                       
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                      
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 9E      Endeavor Air Inc.          
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> AA      American Airlines Inc.     
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> AS      Alaska Airlines Inc.       
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> B6      JetBlue Airways            
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> DL      Delta Air Lines Inc.       
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> EV      ExpressJet Airlines Inc.   
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> F9      Frontier Airlines Inc.     
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> FL      AirTran Airways Corporation
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> HA      Hawaiian Airlines Inc.     
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> MQ      Envoy Air                  
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> OO      SkyWest Airlines Inc.      
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> UA      United Air Lines Inc.      
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> US      US Airways Inc.            
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> VX      Virgin America             
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> WN      Southwest Airlines Co.     
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> YV      Mesa Airlines Inc.
+</span></CODE></PRE>

@@ -1,0 +1,309 @@
+Introduction
+------------
+
+In this article we’re going show you how easy it is to move from
+connecting to the database holding your data to producing the results
+you need. It’s meant to be a quick and friendly introduction to {dm}, so
+it is low on details and caveats. Links to detailed documentation are
+provided at the end. (If your data is in data frames instead of a
+database and you’re in a hurry, jump over to `vignette("howto-dm-df")`.)
+
+Creating a dm object
+--------------------
+
+dm objects can be created from individual tables or loaded directly from
+a relational data model on an RDBMS (relational database management
+system).
+
+For this demonstration we’re going work with a model hosted on a public
+server. The first thing we need is a connection to the RDBMS hosting the
+data.
+
+``` r
+library(RMariaDB)
+
+fin_db <- dbConnect(
+  MariaDB(),
+  username = 'guest',
+  password = 'relational',
+  dbname = 'Financial_ijs',
+  host = 'relational.fit.cvut.cz'
+)
+#> Error: Failed to connect: Lost connection to MySQL server at 'waiting for initial communication packet', system error: 110
+```
+
+We create a dm object from an RDBMS using `dm_from_src()`, passing in
+the connection object we just created as the first argument.
+
+``` r
+library(dm)
+
+fin_dm <- dm_from_src(fin_db)
+#> Error in dm_from_src(fin_db): object 'fin_db' not found
+fin_dm
+#> Error in eval(expr, envir, enclos): object 'fin_dm' not found
+```
+
+The dm object interrogates the RDBMS for table and column information
+and, where implemented, primary and foreign keys. Currently, primary and
+foreign keys are only available from Postgres and SQL Server.
+
+Selecting tables
+----------------
+
+The dm object can be accessed like a named list of tables:
+
+``` r
+names(fin_dm)
+#> Error in eval(expr, envir, enclos): object 'fin_dm' not found
+fin_dm$loans
+#> Error in eval(expr, envir, enclos): object 'fin_dm' not found
+dplyr::count(fin_dm$trans)
+#> Error in dplyr::count(fin_dm$trans): object 'fin_dm' not found
+```
+
+At the same time, most `dm` functions are pipe-friendly and support tidy
+evaluation. We can use `[` or the `dm_select_tbl()` verb to derive a
+smaller dm with the `loans`, `accounts`, `districts` and `trans` tables:
+
+``` r
+fin_dm_small <- fin_dm[c("loans", "accounts", "districts", "trans")]
+#> Error in eval(expr, envir, enclos): object 'fin_dm' not found
+fin_dm_small <-
+  fin_dm %>%
+  dm_select_tbl(loans, accounts, districts, trans)
+#> Error in eval(lhs, parent, parent): object 'fin_dm' not found
+```
+
+Linking tables by adding keys
+-----------------------------
+
+In many cases, `dm_from_src()` already returns a dm with all keys set.
+If not, dm allows us to define primary and foreign keys ourselves.
+
+In our data model, `id` columns uniquely identify records in the
+`accounts` and `loans` table, a primary key is added with `dm_add_pk()`.
+Each loan is linked to one account via the `account_id` column in the
+`loans` table, the relationship is established with `dm_add_fk()`.
+
+``` r
+fin_dm_keys <-
+  fin_dm_small %>%
+  dm_add_pk(accounts, id) %>%
+  dm_add_pk(loans, id) %>%
+  dm_add_fk(loans, account_id, accounts) %>%
+  dm_add_pk(trans, id) %>%
+  dm_add_fk(trans, account_id, accounts) %>%
+  dm_add_pk(districts, id) %>%
+  dm_add_fk(accounts, district_id, districts)
+#> Error in eval(lhs, parent, parent): object 'fin_dm_small' not found
+```
+
+Visualizing a data model
+------------------------
+
+Having a diagram of the data model is the quickest way to verify we’re
+on the right track. We can display a visual summary of the dm at any
+time. The default is to display the table name, any defined keys and
+their links to other tables.
+
+Visualizing the dm in its current state we see the keys we have created
+and how they link the tables together. Color guides the eye.
+
+``` r
+fin_dm_keys %>%
+  dm_set_colors(green = c(loans, accounts), darkblue = trans, grey = districts) %>%
+  dm_draw()
+#> Error in eval(lhs, parent, parent): object 'fin_dm_keys' not found
+```
+
+Accessing a data model as a table
+---------------------------------
+
+If we want to perform modeling or analysis on this relational model we
+need to transform it into a tabular format that R functions can work
+with. `dm_squash_to_tbl()` will automatically follow foreign keys across
+tables to gather all the available columns into a single table.
+
+``` r
+fin_dm_keys %>%
+  dm_squash_to_tbl(loans)
+#> Error in eval(lhs, parent, parent): object 'fin_dm_keys' not found
+```
+
+Apart from the rows printed above, no data has been fetched from the
+database. Use `select()` to reduce the number of columns fetched, and
+`collect()` to retrieve the entire result for local processing.
+
+``` r
+loans_df <-
+  fin_dm_keys %>%
+  dm_squash_to_tbl(loans) %>%
+  select(id, amount, duration, A3) %>%
+  collect()
+#> Error in eval(lhs, parent, parent): object 'fin_dm_keys' not found
+
+model <- lm(amount ~ duration + A3, data = loans_df)
+#> Error in is.data.frame(data): object 'loans_df' not found
+
+model
+#> Error in eval(expr, envir, enclos): object 'model' not found
+```
+
+Operations on table data within a dm
+------------------------------------
+
+We don’t need to take the extra step of exporting the data to work with
+it. Through the dm object we have complete access to dplyr’s data
+manipulation verbs. These operate on the data within individual tables.
+
+To work with a particular table we use `dm_zoom_to()` to set the context
+to our chosen table. Then we can perform any of the operations we want.
+
+``` r
+fin_dm_total <-
+  fin_dm_keys %>%
+  dm_zoom_to(loans) %>%
+  group_by(account_id) %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  dm_insert_zoomed("total_loans")
+#> Error in eval(lhs, parent, parent): object 'fin_dm_keys' not found
+
+fin_dm_total$total_loans
+#> Error in eval(expr, envir, enclos): object 'fin_dm_total' not found
+```
+
+Note that in the above example we use `dm_insert_zoomed()` to add the
+results as a new table to our data model. This table is temporary and
+will be deleted when our session ends. If you want to make permanent
+changes to your data model on an RDBMS please see the “Persisting
+results” section in `vignette("howto-dm-db")`.
+
+Checking constraints
+--------------------
+
+It’s always smart to check that your data model follows its
+specifications. When building our own model or changing existing models
+by adding tables or keys, it is even more important that the new model
+is validated.
+
+`dm_examine_constrains()` checks all primary and foreign keys and
+reports if they violate their expected constraints.
+
+``` r
+fin_dm_total %>%
+  dm_examine_constraints()
+#> Error in eval(lhs, parent, parent): object 'fin_dm_total' not found
+```
+
+For more on constraint checking, including cardinality, finding
+candidate columns for keys, and normalization, see
+`vignette("tech-dm-low-level")`.
+
+Next Steps
+----------
+
+Now that you have been introduced to the basic operation of dm, the next
+step is to learn more about the dm methods that your particular use case
+requires.
+
+Is your data in an RDBMS? Then move on to `vignette("howto-dm-db")` for
+a more detailed looking at working with an existing relational data
+model.
+
+If your data is in data frames, then you want to read
+`vignette("howto-dm-df")` next.
+
+If you feel you need to know more about relational data models in order
+to get the most out of dm, check out `vignette("howto-dm-theory")`.
+
+If you’re familiar with relational data models but want to know how to
+work with them in dm, then any of `vignette("tech-dm-join")`,
+`vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good
+next step.
+
+Further reading
+---------------
+
+`vignette("howto-dm-db")` - This article covers accessing and working
+with RDBMSs within your R session, including manipulating data, filling
+in missing relationships between tables, getting data out of the RDBMS
+and into your model, and deploying your data model to an RDBMS.
+
+`vignette("howto-dm-df")` - Is your data in local data frames? This
+article covers creating a data model from your local data frames,
+including building the relationships in your data model, verifying your
+model, and leveraging the power of dplyr to operate on your data model.
+
+`vignette("howto-dm-theory")` - Do you know all about data frames but
+very little about relational data models? This quick introduction will
+walk you through the key similarities and differences, and show you how
+to move from individual data frames to a relational data model.
+
+`vignette("tech-dm-join")` - Joining is how separate, linked tables are
+virtually combined in order to perform operations, generate summaries,
+or prepare data for extraction. This article covers dm’s methods for
+creating the different kind of joins along with usage examples.
+
+`vignette("tech-dm-zoom")` - Learn how to manipulate the data in the
+tables in your dm using dplyr verbs.
+
+`vignette("tech-dm-filter")` - Need a subset of your data across tables?
+This introduction to dm’s filtering methods will show you how to apply
+them to data that is separated into multiple tables.
+
+`vignette("tech-dm-draw")` - A quick guide to dm’s methods for drawing
+your data model for exploration, verification or documentation purposes.
+Learn how to customize the diagrams.
+
+`vignette("tech-dm-low-level")` - If your data model needs to be rock
+solid, this article covers the dm methods for checking every aspect of
+the model. It covers key constraints, cardinalities between tables, and
+methods for normalization as you construct your data model.
+
+`vignette("tech-dm-class")` - A detailed overview of the `"dm"` class.
+
+`vignette("tech-dm-naming")` - Making sense of dm’s API.
+
+`vignette("tech-dm-cdm")` - If you’re an early adopter, used dm version
+0.0.5 or lower and want to migrate your code, this is for you.
+
+Standing on the shoulders of giants
+-----------------------------------
+
+The {dm} package follows the tidyverse principles:
+
+-   `dm` objects are immutable (your data will never be overwritten in
+    place)
+-   most functions used on `dm` objects are pipeable (i.e., return new
+    `dm` or table objects)
+-   tidy evaluation is used (unquoted function parameters are supported)
+
+The {dm} package builds heavily upon the [{datamodelr}
+package](https://github.com/bergant/datamodelr), and upon the
+[tidyverse](https://www.tidyverse.org/). We’re looking forward to a good
+collaboration!
+
+The [{polyply} package](https://github.com/russHyde/polyply) has a
+similar intent with a slightly different interface.
+
+The [{data.cube} package](https://github.com/jangorecki/data.cube) has
+quite the same intent using `array`-like interface.
+
+Articles in the [{rquery} package](https://github.com/WinVector/rquery)
+discuss [join
+controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md)
+and [join dependency
+sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md),
+with the intent to move the declaration of table relationships from code
+to data.
+
+The [{tidygraph} package](https://github.com/thomasp85/tidygraph) stores
+a network as two related tables of `nodes` and `edges`, compatible with
+{dplyr} workflows.
+
+In object-oriented programming languages, [object-relational
+mapping](https://en.wikipedia.org/wiki/Object-relational_mapping) is a
+similar concept that attempts to map a set of related tables to a class
+hierarchy.

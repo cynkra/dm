@@ -1,0 +1,406 @@
+Working with databases
+======================
+
+A dm object can be created from any database that has a
+{[DBI](https://dbi.r-dbi.org/)} backend ([see
+list](https://github.com/r-dbi/backends)).
+
+When a dm object is created it can either import all the tables in the
+database, the active schema or a limited set. For some RDBMS, such as
+Postgres and SQL Server, primary and foreign keys are also imported and
+do not have to be manually added afterwards.
+
+There is a [financial
+dataset](https://relational.fit.cvut.cz/dataset/Financial) that contains
+loan data along with relevant account information and transactions. We
+chose this dataset because the relationships between `loan`, `account`,
+`transactions` tables are a good representation of databases that record
+real-world business transactions. The repository uses a MariaDB server
+for which {dm} does not currently import primary or foreign keys, so we
+will need to add them.
+
+The dataset is available on database server that is publicly accessible
+without registration. Connection details will vary for your database,
+see `vignette("DBI", package = "DBI")` for further information.
+
+``` r
+library(RMariaDB)
+my_db <- dbConnect(
+  MariaDB(),
+  username = "guest",
+  password = "relational",
+  dbname = "Financial_ijs",
+  host = "relational.fit.cvut.cz"
+)
+#> Error: Failed to connect: Lost connection to MySQL server at 'waiting for initial communication packet', system error: 110
+```
+
+Creating a dm object takes a single call to `dm_from_src()` with the DBI
+connection object as its argument.
+
+``` r
+library(dm)
+
+my_dm <- dm_from_src(my_db)
+#> Error in dm_from_src(my_db): object 'my_db' not found
+my_dm
+#> Error in eval(expr, envir, enclos): object 'my_dm' not found
+```
+
+The components of the `my_dm` object are lazy tables powered by
+{[dbplyr](https://dbplyr.tidyverse.org/)}. {dbplyr} translates the
+{[dplyr](https://dplyr.tidyverse.org/)} grammar of data manipulation
+into queries the database server understands. Lazy tables defer
+downloading of table data until results are required for printing or
+local processing.
+
+Building a dm from a subset of tables
+-------------------------------------
+
+A dm can also be constructed from individual tables or views. This is
+useful for when you want to work with a subset of a database’s tables,
+perhaps from different schemas.
+
+Below we use the `tbl()` function from {dplyr} to extract two tables
+from the financial database. Then we create our dm by passing the tables
+in as arguments. Note that the tables arguments have to all be from the
+same source.
+
+``` r
+dbListTables(my_db)
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'conn' in selecting a method for function 'dbListTables': object 'my_db' not found
+
+library(dbplyr)
+#> 
+#> Attaching package: 'dbplyr'
+#> The following objects are masked from 'package:dm':
+#> 
+#>     ident, sql
+loans <- tbl(my_db, "loans")
+#> Error in tbl(my_db, "loans"): object 'my_db' not found
+accounts <- tbl(my_db, "accounts")
+#> Error in tbl(my_db, "accounts"): object 'my_db' not found
+
+my_manual_dm <- dm(loans, accounts)
+#> Error in .f(.x[[i]], ...): object 'loans' not found
+my_manual_dm
+#> Error in eval(expr, envir, enclos): object 'my_manual_dm' not found
+```
+
+Define Primary and Foreign Keys
+-------------------------------
+
+Primary keys and foreign keys are how relational database tables are
+linked with each other. A primary key is a column that has a unique
+value for each row within a table. A foreign key is a column containing
+the primary key for a row in another table.[1] Foreign keys act as cross
+references between tables. They specify the relationships that gives us
+the *relational* database. For more information on keys and a crash
+course on databases, see `vignette("howto-dm-theory")`.
+
+The [model
+diagram](https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg)
+provided by our test database loosely illustrates the intended
+relationships between tables. In the diagram we can see that the `loans`
+table should be linked to the `accounts` table. Below we create those
+links in 3 steps:
+
+1.  Add a primary key `id` to the `accounts` table
+2.  Add a primary key `id` to the `loans` table
+3.  Add a foreign key `account_id` to the `loans` table referencing the
+    `accounts` table
+
+Then we assign colors to the tables and draw the structure of the dm.
+
+Note that when the foreign key is created the primary key in the
+referenced table does not need to be specified, but the primary key must
+already be defined. And, as mentioned above, primary and foreign key
+constraints on the database are currently only imported for Postgres and
+SQL Server databases, and only when `dm_from_src()` is used. This
+process of key definition needs to be done manually for other databases.
+
+``` r
+my_dm_keys <-
+  my_manual_dm %>%
+  dm_add_pk(accounts, id) %>%
+  dm_add_pk(loans, id) %>%
+  dm_add_fk(loans, account_id, accounts) %>%
+  dm_set_colors(green = loans, orange = accounts)
+#> Error in eval(lhs, parent, parent): object 'my_manual_dm' not found
+
+my_dm_keys %>%
+  dm_draw()
+#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+```
+
+Once you have instantiated a dm object you can continue to add tables to
+it. For tables from the original source for the dm, use `dm_add_tbl()`
+
+``` r
+trans <- tbl(my_db, "trans")
+#> Error in tbl(my_db, "trans"): object 'my_db' not found
+
+my_dm_keys %>%
+  dm_add_tbl(trans)
+#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+```
+
+For tables from other sources or from the local environment
+`dplyr::copy_to()` is used. `copy_to()` is discussed later in this
+article.
+
+Transient nature of operations
+------------------------------
+
+Like other R objects, a dm is immutable and all operations performed on
+it are transient unless stored in a new variable.
+
+``` r
+my_dm_keys
+#> Error in eval(expr, envir, enclos): object 'my_dm_keys' not found
+
+my_dm_trans <-
+  my_dm_keys %>%
+  dm_add_tbl(trans)
+#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+
+my_dm_trans
+#> Error in eval(expr, envir, enclos): object 'my_dm_trans' not found
+```
+
+And, like {dbplyr}, results are never written to a database unless
+explicitly requested.
+
+``` r
+my_dm_keys %>%
+  dm_flatten_to_tbl(loans)
+#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+
+my_dm_keys %>%
+  dm_flatten_to_tbl(loans) %>%
+  sql_render()
+#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+```
+
+Performing operations on tables by “zooming”
+--------------------------------------------
+
+As the dm is a collection of tables, if we wish to perform operations on
+an individual table we set it as the context for those operations using
+`dm_zoom_to()`. See `vignette("tech-dm-zoom")` for more detail on
+zooming.
+
+dm operations are transient unless persistence is explicitly requested.
+To make our chain of manipulations on the selected table permanent we
+assign the result of `dm_insert_zoomed()` to a new object,
+`my_dm_total`. This is a new dm object, derived from `my_dm_keys`, with
+a new lazy table `total_loans` linked to the `accounts` table. The
+subsequent section describes how to materialize the results on the
+database.
+
+``` r
+my_dm_total <-
+  my_dm_keys %>%
+  dm_zoom_to(loans) %>%
+  group_by(account_id) %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  dm_insert_zoomed("total_loans")
+#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+
+my_dm_total$total_loans
+#> Error in eval(expr, envir, enclos): object 'my_dm_total' not found
+
+my_dm_total %>%
+  dm_draw()
+#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
+
+my_dm_total$total_loans %>%
+  sql_render()
+#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
+```
+
+Persisting results
+------------------
+
+After adding columns to link tables or calculate summaries of data, we
+might want these changes to the database to persist.
+
+To force a dm to execute the SQL query generated by the operations it
+has performed, we call the `dplyr::compute()` method on the dm object.
+
+`compute()` forces the computation of a query, in this case the query or
+multiple queries created by the dm to represent all operations that have
+been performed but not yet evaluated. The results of `compute()` are
+stored in temporary tables on the database server and will be deleted
+when your session ends. If you want results to persist across sessions
+in permanent tables, `compute()` must be called with the argument
+`temporary = FALSE` and a table name for the `name` argument. See the
+`compute()` documentation for more details.
+
+Calling `compute()` requires write access, otherwise an error is
+returned. Our example RDBMS, relational.fit.cvut.cz, does not allow
+write access. As a workaround to demonstrate the usage of `compute()`,
+we will use `dm_financial_sqlite()`, a convenience function that handles
+the copying of the dm from the remote RDBMS to a local SQLite database
+we can write to.
+
+``` r
+my_dm_sqlite <- dm_financial_sqlite()
+#> Error: Failed to connect: Lost connection to MySQL server at 'waiting for initial communication packet', system error: 110
+
+my_dm_total <-
+  my_dm_sqlite %>%
+  dm_zoom_to(loans) %>%
+  group_by(account_id) %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  dm_insert_zoomed("total_loans")
+#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
+```
+
+Two {[dplyr](https://dplyr.tidyverse.org/)} verbs have been implemented
+for dm objects. `compute()`, as mentioned above, materializes all tables
+into new (temporary or persistent) tables.
+
+``` r
+my_dm_total_computed <-
+  my_dm_total %>%
+  compute()
+#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
+
+my_dm_total_computed$total_loans
+#> Error in eval(expr, envir, enclos): object 'my_dm_total_computed' not found
+
+my_dm_total_computed$total_loans %>%
+  sql_render()
+#> Error in eval(lhs, parent, parent): object 'my_dm_total_computed' not found
+```
+
+`collect()` downloads all tables to local data frames.
+
+``` r
+my_dm_local <-
+  my_dm_total %>%
+  collect()
+#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
+
+my_dm_local$total_loans
+#> Error in eval(expr, envir, enclos): object 'my_dm_local' not found
+```
+
+There is a third {dbplyr} verb that has not yet been implemented.
+`collapse()` forces generation of the SQL query instead of computation
+([\#304](https://github.com/krlmlr/dm/issues/304)).
+
+`compute()` also works for a zoomed dm. Calling it during a chain of
+operations will execute all relevant SQL queries up to that point.
+Operations after the `compute()` will use the generated results.
+
+``` r
+my_dm_total_inplace <-
+  my_dm_sqlite %>%
+  dm_zoom_to(loans) %>%
+  group_by(account_id) %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  compute() %>%
+  dm_insert_zoomed("total_loans")
+#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
+
+my_dm_total_inplace$total_loans %>%
+  sql_render()
+#> Error in eval(lhs, parent, parent): object 'my_dm_total_inplace' not found
+```
+
+Deploying a dm to a database
+----------------------------
+
+To deploy a dm we must copy it to a RDBMS. This is done using the method
+`copy_dm_to()`, which is used behind the scenes by our
+`dm_financial_sqlite()` function, the code for which appears below.
+
+``` r
+dm_financial_sqlite
+#> Memoised Function:
+#> function() {
+#>   stopifnot(rlang::is_installed("RSQLite"))
+#> 
+#>   my_dm <-
+#>     dm_financial() %>%
+#>     dm_select_tbl(-trans)
+#> 
+#>   sqlite_db <- DBI::dbConnect(RSQLite::SQLite())
+#>   sqlite_dm <- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)
+#> 
+#>   sqlite_dm
+#> }
+#> <environment: namespace:dm>
+```
+
+As demonstrated, `copy_dm_to()` takes as arguments a {DBI} connection
+that is the destination, the dm we wish to deploy, and here the
+`temporary` argument set to FALSE as this is a deployment and we want it
+to be permanent. The dm is copied to the DBI connection and a new dm,
+with the DBI connection as its source, is returned.
+
+The default behavior is to create temporary tables and, where possible
+(currently Postgres and SQL server), to set any key constraints.
+
+Adding local data frames to an RDBMS
+------------------------------------
+
+If you need to add local data frames to an existing database, the
+shortest path is to use `copy_to()`. It takes the same arguments as
+`copy_dm_to()`, except the second argument, instead of expecting a dm,
+expects a data frame.
+
+The example below estimates a linear model from attributes in the
+`loans` and `districts` tables, inserts residuals into the database, and
+links them to the `loans` table.
+
+``` r
+loans_df <-
+  my_dm_sqlite %>%
+  dm_squash_to_tbl(loans) %>%
+  select(id, amount, duration, A3) %>%
+  collect()
+#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
+
+model <- lm(amount ~ duration + A3, data = loans_df)
+#> Error in is.data.frame(data): object 'loans_df' not found
+
+loans_residuals <- tibble::tibble(
+  id = loans_df$id,
+  resid = unname(residuals(model))
+)
+#> Error in eval_tidy(xs[[j]], mask): object 'loans_df' not found
+
+my_dm_sqlite_resid <-
+  copy_to(my_dm_sqlite, loans_residuals, temporary = FALSE) %>%
+  dm_add_pk(loans_residuals, id) %>%
+  dm_add_fk(loans_residuals, id, loans)
+#> Error in copy_to(my_dm_sqlite, loans_residuals, temporary = FALSE): object 'my_dm_sqlite' not found
+
+my_dm_sqlite_resid %>%
+  dm_draw()
+#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite_resid' not found
+my_dm_sqlite_resid %>%
+  dm_examine_constraints()
+#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite_resid' not found
+my_dm_sqlite_resid$loans_residuals
+#> Error in eval(expr, envir, enclos): object 'my_dm_sqlite_resid' not found
+```
+
+Conclusion
+----------
+
+In this tutorial we have demonstrated how to use {dm} to work with
+existing databases and to construct your own from local tables,
+including specifying key constraints, and then deploy them to a RDBMS.
+If you would like more details an overview of all the methods available
+in {dm}, please see the [reference
+documentation](https://krlmlr.github.io/dm/reference/index.html).
+
+[1] Support for compound keys (consisting of multiple columns) is
+[planned](https://github.com/krlmlr/dm/issues/3).
