@@ -104,7 +104,7 @@ flights_dm
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/tmp/Rtmp6olXei/nycflights13.sqlite]
+#&gt; src:  sqlite 3.30.1 [/tmp/Rtmp41BWR6/nycflights13.sqlite]
 #&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -156,7 +156,7 @@ tbl(flights_dm, "airports")
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
-#&gt; </span><span style='color: #949494;'># Database: sqlite 3.30.1 [/tmp/Rtmp6olXei/nycflights13.sqlite]</span><span>
+#&gt; </span><span style='color: #949494;'># Database: sqlite 3.30.1 [/tmp/Rtmp41BWR6/nycflights13.sqlite]</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        
 #&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
@@ -206,7 +206,7 @@ flights_dm_with_key
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/tmp/Rtmp6olXei/nycflights13.sqlite]
+#&gt; src:  sqlite 3.30.1 [/tmp/Rtmp41BWR6/nycflights13.sqlite]
 #&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -317,7 +317,7 @@ flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 ```
 
 <PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/tmp/Rtmp6olXei/nycflights13.sqlite]
+#&gt; src:  sqlite 3.30.1 [/tmp/Rtmp41BWR6/nycflights13.sqlite]
 #&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
