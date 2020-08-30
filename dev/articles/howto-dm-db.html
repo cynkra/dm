@@ -287,7 +287,7 @@
 <p>Calling <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code> requires write access, otherwise an error is returned. Our example RDBMS, relational.fit.cvut.cz, does not allow write access. As a workaround to demonstrate the usage of <code><a href="https://dplyr.tidyverse.org/reference/compute.html">compute()</a></code>, we will use <code><a href="../reference/dm_financial.html">dm_financial_sqlite()</a></code>, a convenience function that handles the copying of the dm from the remote RDBMS to a local SQLite database we can write to.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="kw">my_dm_sqlite</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_financial.html">dm_financial_sqlite</a></span>()
-<span class="co">#&gt; Error: Failed to connect: Can't connect to MySQL server on 'relational.fit.cvut.cz' (60)</span>
+<span class="co">#&gt; Error: Failed to connect: Lost connection to MySQL server at 'handshake: reading initial communication packet', system error: 60</span>
 
 <span class="kw">my_dm_total</span> <span class="op">&lt;-</span>
   <span class="kw">my_dm_sqlite</span> <span class="op">%&gt;%</span>
@@ -355,7 +355,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7fd9ed334a00&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x7ff658e6e9c0&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span>
 </pre></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
