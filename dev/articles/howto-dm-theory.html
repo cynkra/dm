@@ -129,7 +129,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2020-08-29</h4>
+            <h4 class="date">2020-08-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-theory.Rmd"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -438,10 +438,10 @@
 
 <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="kw">con_sqlite</span>, <span class="kw">dm</span>)
 <span class="kw">DBI</span>::<span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span>(<span class="kw">con_sqlite</span>)
-<span class="co">#&gt; [1] "airlines_2020_08_29_04_11_40_1" "airports_2020_08_29_04_11_40_1"</span>
-<span class="co">#&gt; [3] "flights_2020_08_29_04_11_40_1"  "planes_2020_08_29_04_11_40_1"  </span>
+<span class="co">#&gt; [1] "airlines_2020_08_30_04_10_04_1" "airports_2020_08_30_04_10_04_1"</span>
+<span class="co">#&gt; [3] "flights_2020_08_30_04_10_04_1"  "planes_2020_08_30_04_10_04_1"  </span>
 <span class="co">#&gt; [5] "sqlite_stat1"                   "sqlite_stat4"                  </span>
-<span class="co">#&gt; [7] "weather_2020_08_29_04_11_40_1"</span>
+<span class="co">#&gt; [7] "weather_2020_08_30_04_10_04_1"</span>
 </pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
@@ -451,7 +451,7 @@
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  sqlite 3.30.1 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines_2020_08_29_04_11_40_1`, `airports_2020_08_29_04_11_40_1`, `flights_2020_08_29_04_11_40_1`, `planes_2020_08_29_04_11_40_1`, `sqlite_stat1`, … (7 total)
+#&gt; Tables: `airlines_2020_08_30_04_10_04_1`, `airports_2020_08_30_04_10_04_1`, `flights_2020_08_30_04_10_04_1`, `planes_2020_08_30_04_10_04_1`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0
