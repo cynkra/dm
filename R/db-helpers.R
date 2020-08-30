@@ -8,8 +8,12 @@ unique_db_table_name <- local({
 })
 
 systime_convenient <- function() {
-  time <- as.character(Sys.time())
-  gsub("[-: ]", "_", time)
+  if (Sys.getenv("IN_PKGDOWN") != "") {
+    "2020_08_28_07_13_03"
+  } else {
+    time <- as.character(Sys.time())
+    gsub("[-: ]", "_", time)
+  }
 }
 
 # Internal copy helper functions
