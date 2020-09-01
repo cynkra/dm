@@ -33,7 +33,6 @@ my_db <- dbConnect(
   dbname = "Financial_ijs",
   host = "relational.fit.cvut.cz"
 )
-#> Error: Failed to connect: Lost connection to MySQL server at 'waiting for initial communication packet', system error: 110
 ```
 
 Creating a dm object takes a single call to `dm_from_src()` with the DBI
@@ -43,10 +42,17 @@ connection object as its argument.
 library(dm)
 
 my_dm <- dm_from_src(my_db)
-#> Error in dm_from_src(my_db): object 'my_db' not found
 my_dm
-#> Error in eval(expr, envir, enclos): object 'my_dm' not found
 ```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
+#&gt; Columns: 57
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></CODE></PRE>
 
 The components of the `my_dm` object are lazy tables powered by
 {[dbplyr](https://dbplyr.tidyverse.org/)}. {dbplyr} translates the
@@ -68,7 +74,8 @@ same source.
 
 ``` r
 dbListTables(my_db)
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'conn' in selecting a method for function 'dbListTables': object 'my_db' not found
+#> [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    
+#> [7] "orders"    "tkeys"     "trans"
 
 library(dbplyr)
 #> 
@@ -77,15 +84,20 @@ library(dbplyr)
 #> 
 #>     ident, sql
 loans <- tbl(my_db, "loans")
-#> Error in tbl(my_db, "loans"): object 'my_db' not found
 accounts <- tbl(my_db, "accounts")
-#> Error in tbl(my_db, "accounts"): object 'my_db' not found
 
 my_manual_dm <- dm(loans, accounts)
-#> Error in .f(.x[[i]], ...): object 'loans' not found
 my_manual_dm
-#> Error in eval(expr, envir, enclos): object 'my_manual_dm' not found
 ```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `loans`, `accounts`
+#&gt; Columns: 11
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></CODE></PRE>
 
 ## Define Primary and Foreign Keys
 
@@ -125,24 +137,31 @@ my_dm_keys <-
   dm_add_pk(loans, id) %>%
   dm_add_fk(loans, account_id, accounts) %>%
   dm_set_colors(green = loans, orange = accounts)
-#> Error in eval(lhs, parent, parent): object 'my_manual_dm' not found
 
 my_dm_keys %>%
   dm_draw()
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
 ```
+
+![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-db_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 Once you have instantiated a dm object you can continue to add tables to
 it. For tables from the original source for the dm, use `dm_add_tbl()`
 
 ``` r
 trans <- tbl(my_db, "trans")
-#> Error in tbl(my_db, "trans"): object 'my_db' not found
 
 my_dm_keys %>%
   dm_add_tbl(trans)
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
 ```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `loans`, `accounts`, `trans`
+#&gt; Columns: 21
+#&gt; Primary keys: 2
+#&gt; Foreign keys: 1
+</span></CODE></PRE>
 
 For tables from other sources or from the local environment
 `dplyr::copy_to()` is used. `copy_to()` is discussed later in this
@@ -155,16 +174,34 @@ it are transient unless stored in a new variable.
 
 ``` r
 my_dm_keys
-#> Error in eval(expr, envir, enclos): object 'my_dm_keys' not found
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `loans`, `accounts`
+#&gt; Columns: 11
+#&gt; Primary keys: 2
+#&gt; Foreign keys: 1
+</span></CODE></PRE>
+
+``` r
 
 my_dm_trans <-
   my_dm_keys %>%
   dm_add_tbl(trans)
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
 
 my_dm_trans
-#> Error in eval(expr, envir, enclos): object 'my_dm_trans' not found
 ```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `loans`, `accounts`, `trans`
+#&gt; Columns: 21
+#&gt; Primary keys: 2
+#&gt; Foreign keys: 1
+</span></CODE></PRE>
 
 And, like {dbplyr}, results are never written to a database unless
 explicitly requested.
@@ -172,12 +209,41 @@ explicitly requested.
 ``` r
 my_dm_keys %>%
   dm_flatten_to_tbl(loans)
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+#> Renamed columns:
+#> * date -> loans.date, accounts.date
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   lazy query [?? x 10]</span><span>
+#&gt; </span><span style='color: #949494;'># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
+#&gt;       id account_id loans.date amount duration payments status district_id
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>4</span><span>959          2 1994-01-05  </span><span style='text-decoration: underline;'>80</span><span>952       24     </span><span style='text-decoration: underline;'>3</span><span>373 A                1
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>4</span><span>961         19 1996-04-29  </span><span style='text-decoration: underline;'>30</span><span>276       12     </span><span style='text-decoration: underline;'>2</span><span>523 B               21
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>4</span><span>962         25 1997-12-08  </span><span style='text-decoration: underline;'>30</span><span>276       12     </span><span style='text-decoration: underline;'>2</span><span>523 A               68
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>4</span><span>967         37 1998-10-14 </span><span style='text-decoration: underline;'>318</span><span>480       60     </span><span style='text-decoration: underline;'>5</span><span>308 D               20
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>4</span><span>968         38 1998-04-19 </span><span style='text-decoration: underline;'>110</span><span>736       48     </span><span style='text-decoration: underline;'>2</span><span>307 C               19
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>4</span><span>973         67 1996-05-02 </span><span style='text-decoration: underline;'>165</span><span>960       24     </span><span style='text-decoration: underline;'>6</span><span>915 A               16
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>4</span><span>986         97 1997-08-10 </span><span style='text-decoration: underline;'>102</span><span>876       12     </span><span style='text-decoration: underline;'>8</span><span>573 A               74
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>4</span><span>988        103 1997-12-06 </span><span style='text-decoration: underline;'>265</span><span>320       36     </span><span style='text-decoration: underline;'>7</span><span>370 D               44
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>4</span><span>989        105 1998-12-05 </span><span style='text-decoration: underline;'>352</span><span>704       48     </span><span style='text-decoration: underline;'>7</span><span>348 C               21
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>4</span><span>990        110 1997-09-08 </span><span style='text-decoration: underline;'>162</span><span>576       36     </span><span style='text-decoration: underline;'>4</span><span>516 C               36
+#&gt; </span><span style='color: #949494;'># … with more rows, and 2 more variables: frequency </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   accounts.date </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>
+</span></CODE></PRE>
+
+``` r
 
 my_dm_keys %>%
   dm_flatten_to_tbl(loans) %>%
   sql_render()
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+#> Renamed columns:
+#> * date -> loans.date, accounts.date
+#> <SQL> SELECT `LHS`.`id` AS `id`, `LHS`.`account_id` AS `account_id`, `LHS`.`loans.date` AS `loans.date`, `LHS`.`amount` AS `amount`, `LHS`.`duration` AS `duration`, `LHS`.`payments` AS `payments`, `LHS`.`status` AS `status`, `RHS`.`district_id` AS `district_id`, `RHS`.`frequency` AS `frequency`, `RHS`.`accounts.date` AS `accounts.date`
+#> FROM (SELECT `id`, `account_id`, `date` AS `loans.date`, `amount`, `duration`, `payments`, `status`
+#> FROM `loans`) `LHS`
+#> LEFT JOIN (SELECT `id`, `district_id`, `frequency`, `date` AS `accounts.date`
+#> FROM `accounts`) `RHS`
+#> ON (`LHS`.`account_id` = `RHS`.`id`)
 ```
 
 ## Performing operations on tables by “zooming”
@@ -203,18 +269,42 @@ my_dm_total <-
   summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
   ungroup() %>%
   dm_insert_zoomed("total_loans")
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
 
 my_dm_total$total_loans
-#> Error in eval(expr, envir, enclos): object 'my_dm_total' not found
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   lazy query [?? x 2]</span><span>
+#&gt; </span><span style='color: #949494;'># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
+#&gt;    account_id total_amount
+#&gt;         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>          2        </span><span style='text-decoration: underline;'>80</span><span>952
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         19        </span><span style='text-decoration: underline;'>30</span><span>276
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         25        </span><span style='text-decoration: underline;'>30</span><span>276
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         37       </span><span style='text-decoration: underline;'>318</span><span>480
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         38       </span><span style='text-decoration: underline;'>110</span><span>736
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         67       </span><span style='text-decoration: underline;'>165</span><span>960
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         97       </span><span style='text-decoration: underline;'>102</span><span>876
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        103       </span><span style='text-decoration: underline;'>265</span><span>320
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        105       </span><span style='text-decoration: underline;'>352</span><span>704
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        110       </span><span style='text-decoration: underline;'>162</span><span>576
+#&gt; </span><span style='color: #949494;'># … with more rows</span><span>
+</span></CODE></PRE>
+
+``` r
 
 my_dm_total %>%
   dm_draw()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
+```
+
+![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-db_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+``` r
 
 my_dm_total$total_loans %>%
   sql_render()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
+#> <SQL> SELECT `account_id`, SUM(`amount`) AS `total_amount`
+#> FROM `loans`
+#> GROUP BY `account_id`
 ```
 
 ## Persisting results
@@ -243,7 +333,6 @@ we can write to.
 
 ``` r
 my_dm_sqlite <- dm_financial_sqlite()
-#> Error: Failed to connect: Lost connection to MySQL server at 'waiting for initial communication packet', system error: 110
 
 my_dm_total <-
   my_dm_sqlite %>%
@@ -252,7 +341,6 @@ my_dm_total <-
   summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
   ungroup() %>%
   dm_insert_zoomed("total_loans")
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
 ```
 
 Two {[dplyr](https://dplyr.tidyverse.org/)} verbs have been implemented
@@ -263,14 +351,33 @@ into new (temporary or persistent) tables.
 my_dm_total_computed <-
   my_dm_total %>%
   compute()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
 
 my_dm_total_computed$total_loans
-#> Error in eval(expr, envir, enclos): object 'my_dm_total_computed' not found
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   table&lt;dbplyr_010&gt; [?? x 2]</span><span>
+#&gt; </span><span style='color: #949494;'># Database: sqlite 3.30.1 []</span><span>
+#&gt;    account_id total_amount
+#&gt;         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>          2        </span><span style='text-decoration: underline;'>80</span><span>952
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         19        </span><span style='text-decoration: underline;'>30</span><span>276
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         25        </span><span style='text-decoration: underline;'>30</span><span>276
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         37       </span><span style='text-decoration: underline;'>318</span><span>480
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         38       </span><span style='text-decoration: underline;'>110</span><span>736
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         67       </span><span style='text-decoration: underline;'>165</span><span>960
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         97       </span><span style='text-decoration: underline;'>102</span><span>876
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        103       </span><span style='text-decoration: underline;'>265</span><span>320
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        105       </span><span style='text-decoration: underline;'>352</span><span>704
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        110       </span><span style='text-decoration: underline;'>162</span><span>576
+#&gt; </span><span style='color: #949494;'># … with more rows</span><span>
+</span></CODE></PRE>
+
+``` r
 
 my_dm_total_computed$total_loans %>%
   sql_render()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total_computed' not found
+#> <SQL> SELECT *
+#> FROM `dbplyr_010`
 ```
 
 `collect()` downloads all tables to local data frames.
@@ -279,11 +386,25 @@ my_dm_total_computed$total_loans %>%
 my_dm_local <-
   my_dm_total %>%
   collect()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
 
 my_dm_local$total_loans
-#> Error in eval(expr, envir, enclos): object 'my_dm_local' not found
 ```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 682 x 2</span><span>
+#&gt;    account_id total_amount
+#&gt;         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>          2        </span><span style='text-decoration: underline;'>80</span><span>952
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         19        </span><span style='text-decoration: underline;'>30</span><span>276
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         25        </span><span style='text-decoration: underline;'>30</span><span>276
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         37       </span><span style='text-decoration: underline;'>318</span><span>480
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         38       </span><span style='text-decoration: underline;'>110</span><span>736
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         67       </span><span style='text-decoration: underline;'>165</span><span>960
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         97       </span><span style='text-decoration: underline;'>102</span><span>876
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        103       </span><span style='text-decoration: underline;'>265</span><span>320
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        105       </span><span style='text-decoration: underline;'>352</span><span>704
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        110       </span><span style='text-decoration: underline;'>162</span><span>576
+#&gt; </span><span style='color: #949494;'># … with 672 more rows</span><span>
+</span></CODE></PRE>
 
 There is a third {dbplyr} verb that has not yet been implemented.
 `collapse()` forces generation of the SQL query instead of computation
@@ -302,11 +423,11 @@ my_dm_total_inplace <-
   ungroup() %>%
   compute() %>%
   dm_insert_zoomed("total_loans")
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
 
 my_dm_total_inplace$total_loans %>%
   sql_render()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total_inplace' not found
+#> <SQL> SELECT *
+#> FROM `dbplyr_011`
 ```
 
 ## Deploying a dm to a database
@@ -359,32 +480,55 @@ loans_df <-
   dm_squash_to_tbl(loans) %>%
   select(id, amount, duration, A3) %>%
   collect()
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
+#> Renamed columns:
+#> * date -> loans.date, accounts.date
 
 model <- lm(amount ~ duration + A3, data = loans_df)
-#> Error in is.data.frame(data): object 'loans_df' not found
 
 loans_residuals <- tibble::tibble(
   id = loans_df$id,
   resid = unname(residuals(model))
 )
-#> Error in eval_tidy(xs[[j]], mask): object 'loans_df' not found
 
 my_dm_sqlite_resid <-
   copy_to(my_dm_sqlite, loans_residuals, temporary = FALSE) %>%
   dm_add_pk(loans_residuals, id) %>%
   dm_add_fk(loans_residuals, id, loans)
-#> Error in copy_to(my_dm_sqlite, loans_residuals, temporary = FALSE): object 'my_dm_sqlite' not found
 
 my_dm_sqlite_resid %>%
   dm_draw()
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite_resid' not found
+```
+
+![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-db_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+``` r
 my_dm_sqlite_resid %>%
   dm_examine_constraints()
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite_resid' not found
-my_dm_sqlite_resid$loans_residuals
-#> Error in eval(expr, envir, enclos): object 'my_dm_sqlite_resid' not found
 ```
+
+<PRE class="fansi fansi-message"><CODE>#&gt; <span style='color: #00BBBB;'>ℹ</span><span> All constraints satisfied.
+</span></CODE></PRE>
+
+``` r
+my_dm_sqlite_resid$loans_residuals
+```
+
+<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   table&lt;loans_residuals_2020_08_28_07_13_03_1&gt; [?? x 2]</span><span>
+#&gt; </span><span style='color: #949494;'># Database: sqlite 3.30.1 []</span><span>
+#&gt;       id   resid
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>4</span><span>959 -</span><span style='color: #BB0000;text-decoration: underline;'>31</span><span style='color: #BB0000;'>912.</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>4</span><span>961 -</span><span style='color: #BB0000;text-decoration: underline;'>27</span><span style='color: #BB0000;'>336.</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>4</span><span>962 -</span><span style='color: #BB0000;text-decoration: underline;'>30</span><span style='color: #BB0000;'>699.</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>4</span><span>967  </span><span style='text-decoration: underline;'>63</span><span>621.
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>4</span><span>968 -</span><span style='color: #BB0000;text-decoration: underline;'>94</span><span style='color: #BB0000;'>811.</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>4</span><span>973  </span><span style='text-decoration: underline;'>59</span><span>036.
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>4</span><span>986  </span><span style='text-decoration: underline;'>41</span><span>901.
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>4</span><span>988 </span><span style='text-decoration: underline;'>123</span><span>392.
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>4</span><span>989 </span><span style='text-decoration: underline;'>147</span><span>157.
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>4</span><span>990  </span><span style='text-decoration: underline;'>33</span><span>377.
+#&gt; </span><span style='color: #949494;'># … with more rows</span><span>
+</span></CODE></PRE>
 
 ## Conclusion
 
