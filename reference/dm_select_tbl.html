@@ -82,7 +82,7 @@ dm_rename_tbl() renames tables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -180,9 +180,9 @@ optionally renaming them.</p>
 <p><code>dm_rename_tbl()</code> renames tables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_select_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>dm_select_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>)
 
-<span class='fu'>dm_rename_tbl</span>(<span class='no'>dm</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>dm_rename_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,17 +206,15 @@ optionally renaming them.</p>
     <div class='dont-index'><p><code><a href='dm_rm_tbl.html'>dm_rm_tbl()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_select_tbl</span>(<span class='no'>airports</span>, <span class='kw'>fl</span> <span class='kw'>=</span> <span class='no'>flights</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_select_tbl</span>(<span class='kw'>airports</span>, fl = <span class='kw'>flights</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airports`, `fl`
 #&gt; Columns: 27
 #&gt; Primary keys: 1
-#&gt; Foreign keys: 1</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_rename_tbl</span>(<span class='kw'>ap</span> <span class='kw'>=</span> <span class='no'>airports</span>, <span class='kw'>fl</span> <span class='kw'>=</span> <span class='no'>flights</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+#&gt; Foreign keys: 1</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_rename_tbl</span>(ap = <span class='kw'>airports</span>, fl = <span class='kw'>flights</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `ap`, `fl`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -236,7 +234,7 @@ optionally renaming them.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

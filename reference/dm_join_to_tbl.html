@@ -83,7 +83,7 @@ the join will always be a &quot;child table&quot;, i.e. a table referencing the 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -182,7 +182,7 @@ Since this function is a wrapper around <code><a href='dm_flatten_to_tbl.html'>d
 the join will always be a "child table", i.e. a table referencing the other table.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_join_to_tbl</span>(<span class='no'>dm</span>, <span class='no'>table_1</span>, <span class='no'>table_2</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='no'>left_join</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_join_to_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>table_1</span>, <span class='kw'>table_2</span>, join = <span class='kw'>left_join</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,7 +214,9 @@ the join will always be a "child table", i.e. a table referencing the other tabl
 <code><a href='dm_flatten_to_tbl.html'>dm_flatten_to_tbl</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm_join_to_tbl</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>airports</span>, <span class='no'>flights</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 11,227 x 26</span><span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_join_to_tbl</span>(<span class='kw'>airports</span>, <span class='kw'>flights</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 11,227 x 26</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
@@ -233,7 +235,9 @@ the join will always be a "child table", i.e. a table referencing the other tabl
 #&gt; </span><span style='color: #555555;'>#   name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, lat </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lon </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, alt </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, tz </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, dst </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   tzone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># same result is achieved with:</span>
-<span class='fu'>dm_join_to_tbl</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>flights</span>, <span class='no'>airports</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 11,227 x 26</span><span>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_join_to_tbl</span>(<span class='kw'>flights</span>, <span class='kw'>airports</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 11,227 x 26</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
@@ -252,7 +256,11 @@ the join will always be a "child table", i.e. a table referencing the other tabl
 #&gt; </span><span style='color: #555555;'>#   name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, lat </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lon </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, alt </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, tz </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, dst </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   tzone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># this gives an error, because the tables are not directly linked to each other:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>dm_join_to_tbl</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='no'>airlines</span>, <span class='no'>airports</span>))</div><div class='output co'>#&gt; Error : Tables `airlines` and `airports` are not directly linked by a foreign key relation.</div></span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+    <span class='fu'>dm_join_to_tbl</span>(<span class='kw'>airlines</span>, <span class='kw'>airports</span>)
+)
+</div><div class='output co'>#&gt; Error : Tables `airlines` and `airports` are not directly linked by a foreign key relation.</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -268,7 +276,7 @@ the join will always be a "child table", i.e. a table referencing the other tabl
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

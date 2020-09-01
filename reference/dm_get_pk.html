@@ -83,7 +83,7 @@ set for the table, an empty character vector is returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -182,7 +182,7 @@ If no primary key is
 set for the table, an empty character vector is returned.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_get_pk</span>(<span class='no'>dm</span>, <span class='no'>table</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_get_pk</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,9 +222,11 @@ this function returns a slit of character vectors.</p>
 <code><a href='enum_pk_candidates.html'>enum_pk_candidates</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_get_pk</span>(<span class='no'>flights</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[0]&gt;</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_get_pk</span>(<span class='no'>planes</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[1]&gt;
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_get_pk</span>(<span class='kw'>flights</span>)
+</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[0]&gt;</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_get_pk</span>(<span class='kw'>planes</span>)
+</div><div class='output co'>#&gt; &lt;list_of&lt;character&gt;[1]&gt;
 #&gt; [[1]]
 #&gt; [1] "tailnum"
 #&gt; </div></pre>
@@ -243,7 +245,7 @@ this function returns a slit of character vectors.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

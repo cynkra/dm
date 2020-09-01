@@ -86,7 +86,7 @@ examine_cardinality() also checks the first two points and subsequently determin
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -188,15 +188,15 @@ examine_cardinality() also checks the first two points and subsequently determin
 <p><code>examine_cardinality()</code> also checks the first two points and subsequently determines the type of cardinality.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_cardinality_0_n</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
+    <pre class="usage"><span class='fu'>check_cardinality_0_n</span>(<span class='kw'>parent_table</span>, <span class='kw'>pk_column</span>, <span class='kw'>child_table</span>, <span class='kw'>fk_column</span>)
 
-<span class='fu'>check_cardinality_1_n</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
+<span class='fu'>check_cardinality_1_n</span>(<span class='kw'>parent_table</span>, <span class='kw'>pk_column</span>, <span class='kw'>child_table</span>, <span class='kw'>fk_column</span>)
 
-<span class='fu'>check_cardinality_1_1</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
+<span class='fu'>check_cardinality_1_1</span>(<span class='kw'>parent_table</span>, <span class='kw'>pk_column</span>, <span class='kw'>child_table</span>, <span class='kw'>fk_column</span>)
 
-<span class='fu'>check_cardinality_0_1</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)
+<span class='fu'>check_cardinality_0_1</span>(<span class='kw'>parent_table</span>, <span class='kw'>pk_column</span>, <span class='kw'>child_table</span>, <span class='kw'>fk_column</span>)
 
-<span class='fu'>examine_cardinality</span>(<span class='no'>parent_table</span>, <span class='no'>pk_column</span>, <span class='no'>child_table</span>, <span class='no'>fk_column</span>)</pre>
+<span class='fu'>examine_cardinality</span>(<span class='kw'>parent_table</span>, <span class='kw'>pk_column</span>, <span class='kw'>child_table</span>, <span class='kw'>fk_column</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -259,21 +259,24 @@ not a subset of the values in <code>pk_column</code>, the requirements for a car
 the result will contain the information which prerequisite was violated.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>)
-<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>5</span>))
-<span class='no'>d3</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>)
+    <pre class="examples"><div class='input'><span class='kw'>d1</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(a = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>)
+<span class='kw'>d2</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(c = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>5</span>))
+<span class='kw'>d3</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(c = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)
 <span class='co'># This does not pass, `c` is not unique key of d2:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_cardinality_0_n</span>(<span class='no'>d2</span>, <span class='no'>c</span>, <span class='no'>d1</span>, <span class='no'>a</span>))</div><div class='output co'>#&gt; Error : (`c`) not a unique key of `d2`.</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_cardinality_0_n</span>(<span class='kw'>d2</span>, <span class='kw'>c</span>, <span class='kw'>d1</span>, <span class='kw'>a</span>))
+</div><div class='output co'>#&gt; Error : (`c`) not a unique key of `d2`.</div><div class='input'>
 <span class='co'># This passes, multiple values in d2$c are allowed:</span>
-<span class='fu'>check_cardinality_0_n</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)
+<span class='fu'>check_cardinality_0_n</span>(<span class='kw'>d1</span>, <span class='kw'>a</span>, <span class='kw'>d2</span>, <span class='kw'>c</span>)
 
 <span class='co'># This does not pass, injectivity is violated:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_cardinality_1_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>))</div><div class='output co'>#&gt; Error : 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_cardinality_1_1</span>(<span class='kw'>d1</span>, <span class='kw'>a</span>, <span class='kw'>d2</span>, <span class='kw'>c</span>))
+</div><div class='output co'>#&gt; Error : 1..1 cardinality (bijectivity) is not given: Column `c` in table `d2` contains duplicate values.</div><div class='input'>
 <span class='co'># This passes:</span>
-<span class='fu'>check_cardinality_0_1</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d3</span>, <span class='no'>c</span>)
+<span class='fu'>check_cardinality_0_1</span>(<span class='kw'>d1</span>, <span class='kw'>a</span>, <span class='kw'>d3</span>, <span class='kw'>c</span>)
 
 <span class='co'># Returns the kind of cardinality</span>
-<span class='fu'>examine_cardinality</span>(<span class='no'>d1</span>, <span class='no'>a</span>, <span class='no'>d2</span>, <span class='no'>c</span>)</div><div class='output co'>#&gt; [1] "surjective mapping (child: 1 to n -&gt; parent: 1)"</div></pre>
+<span class='fu'>examine_cardinality</span>(<span class='kw'>d1</span>, <span class='kw'>a</span>, <span class='kw'>d2</span>, <span class='kw'>c</span>)
+</div><div class='output co'>#&gt; [1] "surjective mapping (child: 1 to n -&gt; parent: 1)"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -289,7 +292,7 @@ the result will contain the information which prerequisite was violated.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

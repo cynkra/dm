@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -176,7 +176,7 @@
     <p><code>dm_paste()</code> takes an existing <code>dm</code> and emits the code necessary for its creation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_paste</span>(<span class='no'>dm</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>tab_width</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_paste</span>(<span class='kw'>dm</span>, select = <span class='kw'>NULL</span>, <span class='kw'>...</span>, tab_width = <span class='fl'>2</span>, options = <span class='kw'>NULL</span>, path = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,10 +228,12 @@ table definitions.
 Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype()</a></code> for the underlying logic.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm::dm()</span></div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>()</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_paste</span>()
+</div><div class='output co'>#&gt; <span class='message'>dm::dm()</span></div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_paste</span>()
+</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_add_pk(airlines, carrier) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_add_pk(airports, faa) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_add_pk(planes, tailnum) %&gt;%</span>
@@ -243,8 +245,9 @@ Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype
 #&gt; <span class='message'>  dm::dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_set_colors(`#70AD47FF` = weather)</span></div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_paste</span>(<span class='kw'>options</span> <span class='kw'>=</span> <span class='st'>"select"</span>)</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_paste</span>(options = <span class='st'>"select"</span>)
+</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_select(airlines, carrier, name) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%</span>
 #&gt; <span class='message'>  dm::dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>
@@ -265,7 +268,7 @@ Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

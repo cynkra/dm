@@ -81,7 +81,7 @@ of column c2 of data frame t2." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@ of column c2 of data frame t2." />
 of column <code>c2</code> of data frame <code>t2</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_subset</span>(<span class='no'>t1</span>, <span class='no'>c1</span>, <span class='no'>t2</span>, <span class='no'>c2</span>)</pre>
+    <pre class="usage"><span class='fu'>check_subset</span>(<span class='kw'>t1</span>, <span class='kw'>c1</span>, <span class='kw'>t2</span>, <span class='kw'>c2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -207,13 +207,14 @@ of column <code>c2</code> of data frame <code>t2</code>.</p>
 Otherwise an error is thrown and the reason for it is explained.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data_1</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>1</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>))
-<span class='no'>data_2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>))
+    <pre class="examples"><div class='input'><span class='kw'>data_1</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), b = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>1</span>), c = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>))
+<span class='kw'>data_2</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), b = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), c = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>7</span>, <span class='fl'>8</span>, <span class='fl'>9</span>))
 <span class='co'># this is passing:</span>
-<span class='fu'>check_subset</span>(<span class='no'>data_1</span>, <span class='no'>a</span>, <span class='no'>data_2</span>, <span class='no'>a</span>)
+<span class='fu'>check_subset</span>(<span class='kw'>data_1</span>, <span class='kw'>a</span>, <span class='kw'>data_2</span>, <span class='kw'>a</span>)
 
 <span class='co'># this is failing:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_subset</span>(<span class='no'>data_2</span>, <span class='no'>a</span>, <span class='no'>data_1</span>, <span class='no'>a</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 3</span><span>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_subset</span>(<span class='kw'>data_2</span>, <span class='kw'>a</span>, <span class='kw'>data_1</span>, <span class='kw'>a</span>))
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 3</span><span>
 #&gt;       a     b     c
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span>     3     6     9
@@ -233,7 +234,7 @@ Otherwise an error is thrown and the reason for it is explained.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

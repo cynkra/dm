@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -176,7 +176,7 @@
     <p>This function ensures that all columns in a <code>dm</code> have unique names.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_disambiguate_cols</span>(<span class='no'>dm</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_disambiguate_cols</span>(<span class='kw'>dm</span>, sep = <span class='st'>"."</span>, quiet = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,16 +209,16 @@ because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dm_disambiguate_cols</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>())</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_disambiguate_cols</span>()
+</div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span>
 #&gt; <span class='message'>* year -&gt; flights.year, planes.year, weather.year</span>
 #&gt; <span class='message'>* month -&gt; flights.month, weather.month</span>
 #&gt; <span class='message'>* day -&gt; flights.day, weather.day</span>
 #&gt; <span class='message'>* origin -&gt; flights.origin, weather.origin</span>
 #&gt; <span class='message'>* hour -&gt; flights.hour, weather.hour</span>
-#&gt; <span class='message'>* time_hour -&gt; flights.time_hour, weather.time_hour</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+#&gt; <span class='message'>* time_hour -&gt; flights.time_hour, weather.time_hour</span></div><div class='output co'>#&gt; <span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
@@ -238,7 +238,7 @@ making that column name "unique" as well.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

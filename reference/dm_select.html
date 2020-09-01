@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -176,7 +176,7 @@
     <p>Select columns of your <code><a href='dm.html'>dm</a></code> using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_select</span>(<span class='no'>dm</span>, <span class='no'>table</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_select</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,7 +199,7 @@ to select the ranges of variables.</p>
 <p>The arguments in ... are automatically quoted and evaluated in a context where
 column names represent column positions.
 They also support unquoting and splicing.
-See <code><a href='https://dplyr.tidyverse.org/articles/programming.html'>vignette("programming", package = "dplyr")</a></code> for an introduction to those concepts.</p>
+See <code>vignette("programming", package = "dplyr")</code> for an introduction to those concepts.</p>
 <p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></td>
     </tr>
     </table>
@@ -213,10 +213,9 @@ See <code><a href='https://dplyr.tidyverse.org/articles/programming.html'>vignet
 If key columns are removed, then all related relations are dropped as well.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>dm_select</span>(<span class='no'>airports</span>, <span class='kw'>code</span> <span class='kw'>=</span> <span class='no'>faa</span>, <span class='kw'>altitude</span> <span class='kw'>=</span> <span class='no'>alt</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  &lt;environment: R_GlobalEnv&gt;
-#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_select</span>(<span class='kw'>airports</span>, code = <span class='kw'>faa</span>, altitude = <span class='kw'>alt</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 47
 #&gt; Primary keys: 3
@@ -236,7 +235,7 @@ If key columns are removed, then all related relations are dropped as well.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
