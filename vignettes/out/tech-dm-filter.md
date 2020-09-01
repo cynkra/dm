@@ -53,14 +53,12 @@ is colored for clarity:
 
 ``` r
 dm
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 3
+#> Foreign keys: 3
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-</span></CODE></PRE>
 
 Now we know that there are five tables in our `dm` object. But how are
 they connected? These relations are best displayed as a visualization of
@@ -77,23 +75,21 @@ table, call
 
 ``` r
 tbl(dm, "airports")
+#> # A tibble: 1,458 x 8
+#>    faa   name                    lat    lon   alt    tz dst   tzone        
+#>    <chr> <chr>                 <dbl>  <dbl> <dbl> <dbl> <chr> <chr>        
+#>  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…
+#>  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…
+#>  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…
+#>  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…
+#>  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…
+#>  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…
+#>  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…
+#>  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…
+#>  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…
+#> 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…
+#> # … with 1,448 more rows
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1,458 x 8</span><span>
-#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 06A   Moton Field Municipa…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 06C   Schaumburg Regional    42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 06N   Randall Airport        41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 09J   Jekyll Island Airport  31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 0A9   Elizabethton Municip…  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 0G6   Williams County Airp…  41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 0G7   Finger Lakes Regiona…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 0P2   Shoestring Aviation …  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_…
-#&gt; </span><span style='color: #949494;'># … with 1,448 more rows</span><span>
-</span></CODE></PRE>
 
 ## Filtering a `dm` object
 
@@ -151,16 +147,14 @@ filtered_dm <-
   dm %>%
   dm_filter(airports, name == "John F Kennedy Intl")
 filtered_dm
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 3
+#> Foreign keys: 3
+#> ── Filters ────────────────────────────────────────────────────────────────
+#> airports: name == "John F Kennedy Intl"
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-#&gt; </span><span style='color: #FFAF00;'>──</span><span> </span><span style='color: #FFAF00;'>Filters</span><span> </span><span style='color: #FFAF00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; airports: name == "John F Kennedy Intl"
-</span></CODE></PRE>
 
 The filter expression is listed in the print output.
 
@@ -221,20 +215,15 @@ dm_delta_may <- dm %>%
   dm_filter(airports, name != "John F Kennedy Intl") %>%
   dm_filter(flights, month == 5)
 dm_delta_may
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-#&gt; </span><span style='color: #FFAF00;'>──</span><span> </span><span style='color: #FFAF00;'>Filters</span><span> </span><span style='color: #FFAF00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; airlines: name == "Delta Air Lines Inc."
-#&gt; airports: name != "John F Kennedy Intl"
-#&gt; flights: month == 5
-</span></CODE></PRE>
-
-``` r
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 3
+#> Foreign keys: 3
+#> ── Filters ────────────────────────────────────────────────────────────────
+#> airlines: name == "Delta Air Lines Inc."
+#> airports: name != "John F Kennedy Intl"
+#> flights: month == 5
 dm_delta_may %>% 
   dm_apply_filters() %>% 
   dm_nrow()
@@ -249,62 +238,56 @@ In the `airlines` table, Delta is the only remaining carrier:
 ``` r
 dm_delta_may %>% 
   dm_apply_filters_to_tbl("airlines")
+#> # A tibble: 1 x 2
+#>   carrier name                
+#>   <chr>   <chr>               
+#> 1 DL      Delta Air Lines Inc.
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span><span>
-#&gt;   carrier name                
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> DL      Delta Air Lines Inc.
-</span></CODE></PRE>
 
 Which planes were used to service these flights?
 
 ``` r
 dm_delta_may %>% 
   dm_apply_filters_to_tbl("planes")
+#> # A tibble: 61 x 9
+#>    tailnum  year type       manufacturer  model  engines seats speed engine
+#>    <chr>   <int> <chr>      <chr>         <chr>    <int> <int> <int> <chr> 
+#>  1 N305DQ   2008 Fixed win… BOEING        737-7…       2   149    NA Turbo…
+#>  2 N310DE   2009 Fixed win… BOEING        737-7…       2   149    NA Turbo…
+#>  3 N312US   1990 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  4 N313US   1990 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  5 N314US   1991 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  6 N318NB   2000 Fixed win… AIRBUS INDUS… A319-…       2   145    NA Turbo…
+#>  7 N322NB   2001 Fixed win… AIRBUS INDUS… A319-…       2   145    NA Turbo…
+#>  8 N325NB   2001 Fixed win… AIRBUS INDUS… A319-…       2   145    NA Turbo…
+#>  9 N329NW   1992 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#> 10 N332NW   1992 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#> # … with 51 more rows
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 61 x 9</span><span>
-#&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> N305DQ   </span><span style='text-decoration: underline;'>2</span><span>008 Fixed win… BOEING        737-7…       2   149    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> N310DE   </span><span style='text-decoration: underline;'>2</span><span>009 Fixed win… BOEING        737-7…       2   149    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> N312US   </span><span style='text-decoration: underline;'>1</span><span>990 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> N313US   </span><span style='text-decoration: underline;'>1</span><span>990 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> N314US   </span><span style='text-decoration: underline;'>1</span><span>991 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> N318NB   </span><span style='text-decoration: underline;'>2</span><span>000 Fixed win… AIRBUS INDUS… A319-…       2   145    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> N322NB   </span><span style='text-decoration: underline;'>2</span><span>001 Fixed win… AIRBUS INDUS… A319-…       2   145    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> N325NB   </span><span style='text-decoration: underline;'>2</span><span>001 Fixed win… AIRBUS INDUS… A319-…       2   145    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> N329NW   </span><span style='text-decoration: underline;'>1</span><span>992 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> N332NW   </span><span style='text-decoration: underline;'>1</span><span>992 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #949494;'># … with 51 more rows</span><span>
-</span></CODE></PRE>
 
 And indeed, all included flights departed in May (`month == 5`):
 
 ``` r
 dm_delta_may %>% 
   dm_apply_filters_to_tbl("flights")
+#> # A tibble: 79 x 19
+#>     year month   day dep_time sched_dep_time dep_delay arr_time
+#>    <int> <int> <int>    <int>          <int>     <dbl>    <int>
+#>  1  2013     5    10      554            600        -6      739
+#>  2  2013     5    10      556            600        -4      825
+#>  3  2013     5    10      606            610        -4      743
+#>  4  2013     5    10      625            630        -5      843
+#>  5  2013     5    10      653            700        -7      923
+#>  6  2013     5    10      656            700        -4      911
+#>  7  2013     5    10      700            700         0      958
+#>  8  2013     5    10      701            705        -4      952
+#>  9  2013     5    10      714            715        -1      908
+#> 10  2013     5    10      743            745        -2      956
+#> # … with 69 more rows, and 12 more variables: sched_arr_time <int>,
+#> #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+#> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+#> #   minute <dbl>, time_hour <dttm>
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 79 x 19</span><span>
-#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      554            600        -</span><span style='color: #BB0000;'>6</span><span>      739
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      556            600        -</span><span style='color: #BB0000;'>4</span><span>      825
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      606            610        -</span><span style='color: #BB0000;'>4</span><span>      743
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      625            630        -</span><span style='color: #BB0000;'>5</span><span>      843
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      653            700        -</span><span style='color: #BB0000;'>7</span><span>      923
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      656            700        -</span><span style='color: #BB0000;'>4</span><span>      911
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      700            700         0      958
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      701            705        -</span><span style='color: #BB0000;'>4</span><span>      952
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      714            715        -</span><span style='color: #BB0000;'>1</span><span>      908
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5    10      743            745        -</span><span style='color: #BB0000;'>2</span><span>      956
-#&gt; </span><span style='color: #949494;'># … with 69 more rows, and 12 more variables: sched_arr_time </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   arr_delay </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, carrier </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, flight </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, tailnum </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   origin </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, dest </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, air_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, distance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, hour </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   minute </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, time_hour </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>
-</span></CODE></PRE>
 
 For comparison, let’s review the equivalent manual query for `flights`
 in `dplyr` syntax:
@@ -316,26 +299,24 @@ flights %>%
   semi_join(airlines_filtered, by = "carrier") %>%
   semi_join(airports_filtered, by = c("origin" = "faa")) %>%
   filter(month == 5)
+#> # A tibble: 2,340 x 19
+#>     year month   day dep_time sched_dep_time dep_delay arr_time
+#>    <int> <int> <int>    <int>          <int>     <dbl>    <int>
+#>  1  2013     5     1      554            600        -6      731
+#>  2  2013     5     1      555            600        -5      819
+#>  3  2013     5     1      603            610        -7      754
+#>  4  2013     5     1      622            630        -8      848
+#>  5  2013     5     1      654            700        -6      931
+#>  6  2013     5     1      655            700        -5      944
+#>  7  2013     5     1      656            705        -9     1005
+#>  8  2013     5     1      658            700        -2      925
+#>  9  2013     5     1      743            745        -2     1014
+#> 10  2013     5     1      755            800        -5      929
+#> # … with 2,330 more rows, and 12 more variables: sched_arr_time <int>,
+#> #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+#> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+#> #   minute <dbl>, time_hour <dttm>
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 2,340 x 19</span><span>
-#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      554            600        -</span><span style='color: #BB0000;'>6</span><span>      731
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      555            600        -</span><span style='color: #BB0000;'>5</span><span>      819
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      603            610        -</span><span style='color: #BB0000;'>7</span><span>      754
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      622            630        -</span><span style='color: #BB0000;'>8</span><span>      848
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      654            700        -</span><span style='color: #BB0000;'>6</span><span>      931
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      655            700        -</span><span style='color: #BB0000;'>5</span><span>      944
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      656            705        -</span><span style='color: #BB0000;'>9</span><span>     </span><span style='text-decoration: underline;'>1</span><span>005
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      658            700        -</span><span style='color: #BB0000;'>2</span><span>      925
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      743            745        -</span><span style='color: #BB0000;'>2</span><span>     </span><span style='text-decoration: underline;'>1</span><span>014
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     5     1      755            800        -</span><span style='color: #BB0000;'>5</span><span>      929
-#&gt; </span><span style='color: #949494;'># … with 2,330 more rows, and 12 more variables: sched_arr_time </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   arr_delay </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, carrier </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, flight </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, tailnum </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   origin </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, dest </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, air_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, distance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, hour </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   minute </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, time_hour </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>
-</span></CODE></PRE>
 
 The {dm} code is leaner because the foreign key information is encoded
 in the object.

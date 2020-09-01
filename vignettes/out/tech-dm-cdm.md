@@ -53,89 +53,75 @@ syntax:
 library(dm)
 flights_dm <- dm_nycflights13()
 tbl(flights_dm, "airports")
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1,458 x 8</span><span>
-#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 06A   Moton Field Municipa…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 06C   Schaumburg Regional    42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 06N   Randall Airport        41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 09J   Jekyll Island Airport  31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 0A9   Elizabethton Municip…  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 0G6   Williams County Airp…  41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 0G7   Finger Lakes Regiona…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 0P2   Shoestring Aviation …  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_…
-#&gt; </span><span style='color: #949494;'># … with 1,448 more rows</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # A tibble: 1,458 x 8
+#>    faa   name                    lat    lon   alt    tz dst   tzone        
+#>    <chr> <chr>                 <dbl>  <dbl> <dbl> <dbl> <chr> <chr>        
+#>  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…
+#>  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…
+#>  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…
+#>  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…
+#>  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…
+#>  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…
+#>  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…
+#>  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…
+#>  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…
+#> 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…
+#> # … with 1,448 more rows
 flights_dm$planes
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 3,322 x 9</span><span>
-#&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> N10156   </span><span style='text-decoration: underline;'>2</span><span>004 Fixed win… EMBRAER       EMB-1…       2    55    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> N102UW   </span><span style='text-decoration: underline;'>1</span><span>998 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> N103US   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> N104UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> N10575   </span><span style='text-decoration: underline;'>2</span><span>002 Fixed win… EMBRAER       EMB-1…       2    55    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> N105UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> N107US   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> N108UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> N109UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> N110UW   </span><span style='text-decoration: underline;'>1</span><span>999 Fixed win… AIRBUS INDUS… A320-…       2   182    </span><span style='color: #BB0000;'>NA</span><span> Turbo…
-#&gt; </span><span style='color: #949494;'># … with 3,312 more rows</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # A tibble: 3,322 x 9
+#>    tailnum  year type       manufacturer  model  engines seats speed engine
+#>    <chr>   <int> <chr>      <chr>         <chr>    <int> <int> <int> <chr> 
+#>  1 N10156   2004 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…
+#>  2 N102UW   1998 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  3 N103US   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  4 N104UW   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  5 N10575   2002 Fixed win… EMBRAER       EMB-1…       2    55    NA Turbo…
+#>  6 N105UW   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  7 N107US   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  8 N108UW   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#>  9 N109UW   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#> 10 N110UW   1999 Fixed win… AIRBUS INDUS… A320-…       2   182    NA Turbo…
+#> # … with 3,312 more rows
 flights_dm[["weather"]]
+#> # A tibble: 861 x 15
+#>    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
+#>    <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
+#>  1 EWR     2013     1    10     0  41    32    70.1      230       8.06
+#>  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
+#>  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
+#>  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
+#>  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
+#>  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
+#>  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
+#>  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
+#>  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
+#> 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
+#> # … with 851 more rows, and 5 more variables: wind_gust <dbl>,
+#> #   precip <dbl>, pressure <dbl>, visib <dbl>, time_hour <dttm>
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 861 x 15</span><span>
-#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     0  41    32    70.1      230       8.06
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     1  39.0  30.0  69.9      210       9.21
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     2  39.0  28.9  66.8      230       6.90
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     3  39.9  27.0  59.5      270       5.75
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     4  41    26.1  55.0      320       6.90
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     5  41    26.1  55.0      300      12.7 
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     6  39.9  25.0  54.8      280       6.90
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     7  41    25.0  52.6      330       6.90
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     8  43.0  25.0  48.7      330       8.06
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     9  45.0  23    41.6      320      17.3 
-#&gt; </span><span style='color: #949494;'># … with 851 more rows, and 5 more variables: wind_gust </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   precip </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, pressure </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, visib </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, time_hour </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>
-</span></CODE></PRE>
 
 After the update the same result is achieved by this type of function
 call:
 
 ``` r
 dm_apply_filters_to_tbl(flights_dm, airlines)
+#> # A tibble: 16 x 2
+#>    carrier name                       
+#>    <chr>   <chr>                      
+#>  1 9E      Endeavor Air Inc.          
+#>  2 AA      American Airlines Inc.     
+#>  3 AS      Alaska Airlines Inc.       
+#>  4 B6      JetBlue Airways            
+#>  5 DL      Delta Air Lines Inc.       
+#>  6 EV      ExpressJet Airlines Inc.   
+#>  7 F9      Frontier Airlines Inc.     
+#>  8 FL      AirTran Airways Corporation
+#>  9 HA      Hawaiian Airlines Inc.     
+#> 10 MQ      Envoy Air                  
+#> 11 OO      SkyWest Airlines Inc.      
+#> 12 UA      United Air Lines Inc.      
+#> 13 US      US Airways Inc.            
+#> 14 VX      Virgin America             
+#> 15 WN      Southwest Airlines Co.     
+#> 16 YV      Mesa Airlines Inc.
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 16 x 2</span><span>
-#&gt;    carrier name                       
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                      
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 9E      Endeavor Air Inc.          
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> AA      American Airlines Inc.     
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> AS      Alaska Airlines Inc.       
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> B6      JetBlue Airways            
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> DL      Delta Air Lines Inc.       
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> EV      ExpressJet Airlines Inc.   
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> F9      Frontier Airlines Inc.     
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> FL      AirTran Airways Corporation
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> HA      Hawaiian Airlines Inc.     
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> MQ      Envoy Air                  
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> OO      SkyWest Airlines Inc.      
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> UA      United Air Lines Inc.      
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> US      US Airways Inc.            
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> VX      Virgin America             
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> WN      Southwest Airlines Co.     
-#&gt; </span><span style='color: #BCBCBC;'>16</span><span> YV      Mesa Airlines Inc.
-</span></CODE></PRE>

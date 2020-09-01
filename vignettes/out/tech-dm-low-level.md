@@ -7,39 +7,30 @@ and uniting tables.
 
 ``` r
 library(tidyverse)
-```
-
-<PRE class="fansi fansi-message"><CODE>#&gt; ── <span style='font-weight: bold;'>Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.0 ──
-</span></CODE></PRE>
-
-<PRE class="fansi fansi-message"><CODE>#&gt; <span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>ggplot2</span><span> 3.3.2     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>purrr  </span><span> 0.3.4
-#&gt; </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tibble </span><span> 3.0.3     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>dplyr  </span><span> 1.0.0
-#&gt; </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tidyr  </span><span> 1.1.0     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>stringr</span><span> 1.4.0
-#&gt; </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0
-</span></CODE></PRE>
-
-<PRE class="fansi fansi-message"><CODE>#&gt; ── <span style='font-weight: bold;'>Conflicts</span><span> ───────────────────────────────────── tidyverse_conflicts() ──
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>%@%()</span><span>         masks </span><span style='color: #0000BB;'>dm</span><span>::%@%()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>as_function()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::as_function()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>tidyr</span><span>::</span><span style='color: #00BB00;'>extract()</span><span>     masks </span><span style='color: #0000BB;'>dm</span><span>::extract()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>filter()</span><span>      masks </span><span style='color: #0000BB;'>dm</span><span>::filter(), </span><span style='color: #0000BB;'>stats</span><span>::filter()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten()</span><span>     masks </span><span style='color: #0000BB;'>dm</span><span>::flatten()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_chr()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_chr()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_dbl()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_dbl()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_int()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_int()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_lgl()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_lgl()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>flatten_raw()</span><span> masks </span><span style='color: #0000BB;'>dm</span><span>::flatten_raw()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>invoke()</span><span>      masks </span><span style='color: #0000BB;'>dm</span><span>::invoke()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>is_null()</span><span>     masks </span><span style='color: #0000BB;'>dm</span><span>::is_null(), </span><span style='color: #0000BB;'>testthat</span><span>::is_null()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>lag()</span><span>         masks </span><span style='color: #0000BB;'>dm</span><span>::lag(), </span><span style='color: #0000BB;'>stats</span><span>::lag()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>list_along()</span><span>  masks </span><span style='color: #0000BB;'>dm</span><span>::list_along()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>matches()</span><span>     masks </span><span style='color: #0000BB;'>tidyr</span><span>::matches(), </span><span style='color: #0000BB;'>dm</span><span>::matches(), </span><span style='color: #0000BB;'>testthat</span><span>::matches()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>modify()</span><span>      masks </span><span style='color: #0000BB;'>dm</span><span>::modify()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>prepend()</span><span>     masks </span><span style='color: #0000BB;'>dm</span><span>::prepend()
-#&gt; </span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>splice()</span><span>      masks </span><span style='color: #0000BB;'>dm</span><span>::splice()
-</span></CODE></PRE>
-
-``` r
+#> ── Attaching packages ────────────────────────────────── tidyverse 1.3.0 ──
+#> ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+#> ✓ tibble  3.0.3     ✓ dplyr   1.0.0
+#> ✓ tidyr   1.1.0     ✓ stringr 1.4.0
+#> ✓ readr   1.3.1     ✓ forcats 0.5.0
+#> ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+#> x purrr::%@%()         masks dm::%@%()
+#> x purrr::as_function() masks dm::as_function()
+#> x tidyr::extract()     masks dm::extract()
+#> x dplyr::filter()      masks dm::filter(), stats::filter()
+#> x purrr::flatten()     masks dm::flatten()
+#> x purrr::flatten_chr() masks dm::flatten_chr()
+#> x purrr::flatten_dbl() masks dm::flatten_dbl()
+#> x purrr::flatten_int() masks dm::flatten_int()
+#> x purrr::flatten_lgl() masks dm::flatten_lgl()
+#> x purrr::flatten_raw() masks dm::flatten_raw()
+#> x purrr::invoke()      masks dm::invoke()
+#> x purrr::is_null()     masks dm::is_null(), testthat::is_null()
+#> x dplyr::lag()         masks dm::lag(), stats::lag()
+#> x purrr::list_along()  masks dm::list_along()
+#> x dplyr::matches()     masks tidyr::matches(), dm::matches(), testthat::matches()
+#> x purrr::modify()      masks dm::modify()
+#> x purrr::prepend()     masks dm::prepend()
+#> x purrr::splice()      masks dm::splice()
 library(dm)
 ```
 
@@ -91,15 +82,12 @@ to some other table. What about the inverse relation?
 
 ``` r
 check_subset(data_2, a, data_1, a)
+#> # A tibble: 1 x 3
+#>       a     b     c
+#>   <dbl> <dbl> <dbl>
+#> 1     3     6     9
+#> Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`.
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
-#&gt;       a     b     c
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     3     6     9
-</span></CODE></PRE>
-
-    #> Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`.
 
 It should be kept in mind that `check_subset()` does not test if column
 `c2` is a unique key of table `t2`. In order to find out if a (child)
@@ -118,15 +106,12 @@ the function `check_set_equality()`:
 
 ``` r
 check_set_equality(data_1, a, data_2, a)
+#> # A tibble: 1 x 3
+#>       a     b     c
+#>   <dbl> <dbl> <dbl>
+#> 1     3     6     9
+#> Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`..
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
-#&gt;       a     b     c
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     3     6     9
-</span></CODE></PRE>
-
-    #> Error: Column `a` of table `data_2` contains values (see above) that are not present in column `a` of table `data_1`..
 
 Introducing one more table enables us to show how it looks when the test
 is passed:
@@ -263,63 +248,56 @@ be seen in the following example:
 ``` r
 mtcars_tibble <- as_tibble(mtcars)
 mtcars_tibble
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 32 x 11</span><span>
-#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
-#&gt; </span><span style='color: #949494;'># … with 22 more rows</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # A tibble: 32 x 11
+#>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#>  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+#>  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+#>  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+#>  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+#>  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+#>  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+#>  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+#>  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+#>  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+#> 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+#> # … with 22 more rows
 decomposed_table <- decompose_table(mtcars_tibble, am_gear_carb_id, am, gear, carb)
 decomposed_table
+#> $child_table
+#> # A tibble: 32 x 9
+#>      mpg   cyl  disp    hp  drat    wt  qsec    vs am_gear_carb_id
+#>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>           <int>
+#>  1  21       6  160    110  3.9   2.62  16.5     0               9
+#>  2  21       6  160    110  3.9   2.88  17.0     0               9
+#>  3  22.8     4  108     93  3.85  2.32  18.6     1               7
+#>  4  21.4     6  258    110  3.08  3.22  19.4     1               1
+#>  5  18.7     8  360    175  3.15  3.44  17.0     0               2
+#>  6  18.1     6  225    105  2.76  3.46  20.2     1               1
+#>  7  14.3     8  360    245  3.21  3.57  15.8     0               4
+#>  8  24.4     4  147.    62  3.69  3.19  20       1               5
+#>  9  22.8     4  141.    95  3.92  3.15  22.9     1               5
+#> 10  19.2     6  168.   123  3.92  3.44  18.3     1               6
+#> # … with 22 more rows
+#> 
+#> $parent_table
+#> # A tibble: 13 x 4
+#>    am_gear_carb_id    am  gear  carb
+#>              <int> <dbl> <dbl> <dbl>
+#>  1               1     0     3     1
+#>  2               2     0     3     2
+#>  3               3     0     3     3
+#>  4               4     0     3     4
+#>  5               5     0     4     2
+#>  6               6     0     4     4
+#>  7               7     1     4     1
+#>  8               8     1     4     2
+#>  9               9     1     4     4
+#> 10              10     1     5     2
+#> 11              11     1     5     4
+#> 12              12     1     5     6
+#> 13              13     1     5     8
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; $child_table
-#&gt; <span style='color: #949494;'># A tibble: 32 x 9</span><span>
-#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs am_gear_carb_id
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  21       6  160    110  3.9   2.62  16.5     0               9
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  21       6  160    110  3.9   2.88  17.0     0               9
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  22.8     4  108     93  3.85  2.32  18.6     1               7
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  21.4     6  258    110  3.08  3.22  19.4     1               1
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  18.7     8  360    175  3.15  3.44  17.0     0               2
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  18.1     6  225    105  2.76  3.46  20.2     1               1
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  14.3     8  360    245  3.21  3.57  15.8     0               4
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  24.4     4  147.    62  3.69  3.19  20       1               5
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  22.8     4  141.    95  3.92  3.15  22.9     1               5
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  19.2     6  168.   123  3.92  3.44  18.3     1               6
-#&gt; </span><span style='color: #949494;'># … with 22 more rows</span><span>
-#&gt; 
-#&gt; $parent_table
-#&gt; </span><span style='color: #949494;'># A tibble: 13 x 4</span><span>
-#&gt;    am_gear_carb_id    am  gear  carb
-#&gt;              </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>               1     0     3     1
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>               2     0     3     2
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>               3     0     3     3
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>               4     0     3     4
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>               5     0     4     2
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>               6     0     4     4
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>               7     1     4     1
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>               8     1     4     2
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>               9     1     4     4
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>              10     1     5     2
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span>              11     1     5     4
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span>              12     1     5     6
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span>              13     1     5     8
-</span></CODE></PRE>
 
 A new column is created, with which the two tables can be joined again,
 essentially creating the original table.
@@ -335,23 +313,21 @@ unquoted name of the ID column:
 parent_table <- decomposed_table$parent_table
 child_table <- decomposed_table$child_table
 reunite_parent_child(child_table, parent_table, id_column = am_gear_carb_id)
+#> # A tibble: 32 x 11
+#>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#>  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+#>  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+#>  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+#>  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+#>  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+#>  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+#>  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+#>  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+#>  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+#> 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+#> # … with 22 more rows
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 32 x 11</span><span>
-#&gt;      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
-#&gt; </span><span style='color: #949494;'># … with 22 more rows</span><span>
-</span></CODE></PRE>
 
 ``` r
 # Shortcut:

@@ -43,16 +43,14 @@ library(dm)
 
 my_dm <- dm_from_src(my_db)
 my_dm
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
+#> Columns: 57
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
-#&gt; Columns: 57
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 The components of the `my_dm` object are lazy tables powered by
 {[dbplyr](https://dbplyr.tidyverse.org/)}. {dbplyr} translates the
@@ -88,16 +86,14 @@ accounts <- tbl(my_db, "accounts")
 
 my_manual_dm <- dm(loans, accounts)
 my_manual_dm
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`
+#> Columns: 11
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `loans`, `accounts`
-#&gt; Columns: 11
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 ## Define Primary and Foreign Keys
 
@@ -152,16 +148,14 @@ trans <- tbl(my_db, "trans")
 
 my_dm_keys %>%
   dm_add_tbl(trans)
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`, `trans`
+#> Columns: 21
+#> Primary keys: 2
+#> Foreign keys: 1
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `loans`, `accounts`, `trans`
-#&gt; Columns: 21
-#&gt; Primary keys: 2
-#&gt; Foreign keys: 1
-</span></CODE></PRE>
 
 For tables from other sources or from the local environment
 `dplyr::copy_to()` is used. `copy_to()` is discussed later in this
@@ -174,34 +168,27 @@ it are transient unless stored in a new variable.
 
 ``` r
 my_dm_keys
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `loans`, `accounts`
-#&gt; Columns: 11
-#&gt; Primary keys: 2
-#&gt; Foreign keys: 1
-</span></CODE></PRE>
-
-``` r
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`
+#> Columns: 11
+#> Primary keys: 2
+#> Foreign keys: 1
 
 my_dm_trans <-
   my_dm_keys %>%
   dm_add_tbl(trans)
 
 my_dm_trans
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`, `trans`
+#> Columns: 21
+#> Primary keys: 2
+#> Foreign keys: 1
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `loans`, `accounts`, `trans`
-#&gt; Columns: 21
-#&gt; Primary keys: 2
-#&gt; Foreign keys: 1
-</span></CODE></PRE>
 
 And, like {dbplyr}, results are never written to a database unless
 explicitly requested.
@@ -211,27 +198,22 @@ my_dm_keys %>%
   dm_flatten_to_tbl(loans)
 #> Renamed columns:
 #> * date -> loans.date, accounts.date
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   lazy query [?? x 10]</span><span>
-#&gt; </span><span style='color: #949494;'># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
-#&gt;       id account_id loans.date amount duration payments status district_id
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>4</span><span>959          2 1994-01-05  </span><span style='text-decoration: underline;'>80</span><span>952       24     </span><span style='text-decoration: underline;'>3</span><span>373 A                1
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>4</span><span>961         19 1996-04-29  </span><span style='text-decoration: underline;'>30</span><span>276       12     </span><span style='text-decoration: underline;'>2</span><span>523 B               21
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>4</span><span>962         25 1997-12-08  </span><span style='text-decoration: underline;'>30</span><span>276       12     </span><span style='text-decoration: underline;'>2</span><span>523 A               68
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>4</span><span>967         37 1998-10-14 </span><span style='text-decoration: underline;'>318</span><span>480       60     </span><span style='text-decoration: underline;'>5</span><span>308 D               20
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>4</span><span>968         38 1998-04-19 </span><span style='text-decoration: underline;'>110</span><span>736       48     </span><span style='text-decoration: underline;'>2</span><span>307 C               19
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>4</span><span>973         67 1996-05-02 </span><span style='text-decoration: underline;'>165</span><span>960       24     </span><span style='text-decoration: underline;'>6</span><span>915 A               16
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>4</span><span>986         97 1997-08-10 </span><span style='text-decoration: underline;'>102</span><span>876       12     </span><span style='text-decoration: underline;'>8</span><span>573 A               74
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>4</span><span>988        103 1997-12-06 </span><span style='text-decoration: underline;'>265</span><span>320       36     </span><span style='text-decoration: underline;'>7</span><span>370 D               44
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>4</span><span>989        105 1998-12-05 </span><span style='text-decoration: underline;'>352</span><span>704       48     </span><span style='text-decoration: underline;'>7</span><span>348 C               21
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>4</span><span>990        110 1997-09-08 </span><span style='text-decoration: underline;'>162</span><span>576       36     </span><span style='text-decoration: underline;'>4</span><span>516 C               36
-#&gt; </span><span style='color: #949494;'># … with more rows, and 2 more variables: frequency </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   accounts.date </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # Source:   lazy query [?? x 10]
+#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#>       id account_id loans.date amount duration payments status district_id
+#>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr>        <int>
+#>  1  4959          2 1994-01-05  80952       24     3373 A                1
+#>  2  4961         19 1996-04-29  30276       12     2523 B               21
+#>  3  4962         25 1997-12-08  30276       12     2523 A               68
+#>  4  4967         37 1998-10-14 318480       60     5308 D               20
+#>  5  4968         38 1998-04-19 110736       48     2307 C               19
+#>  6  4973         67 1996-05-02 165960       24     6915 A               16
+#>  7  4986         97 1997-08-10 102876       12     8573 A               74
+#>  8  4988        103 1997-12-06 265320       36     7370 D               44
+#>  9  4989        105 1998-12-05 352704       48     7348 C               21
+#> 10  4990        110 1997-09-08 162576       36     4516 C               36
+#> # … with more rows, and 2 more variables: frequency <chr>,
+#> #   accounts.date <date>
 
 my_dm_keys %>%
   dm_flatten_to_tbl(loans) %>%
@@ -271,26 +253,21 @@ my_dm_total <-
   dm_insert_zoomed("total_loans")
 
 my_dm_total$total_loans
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   lazy query [?? x 2]</span><span>
-#&gt; </span><span style='color: #949494;'># Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span><span>
-#&gt;    account_id total_amount
-#&gt;         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>          2        </span><span style='text-decoration: underline;'>80</span><span>952
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         19        </span><span style='text-decoration: underline;'>30</span><span>276
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         25        </span><span style='text-decoration: underline;'>30</span><span>276
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         37       </span><span style='text-decoration: underline;'>318</span><span>480
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         38       </span><span style='text-decoration: underline;'>110</span><span>736
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         67       </span><span style='text-decoration: underline;'>165</span><span>960
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         97       </span><span style='text-decoration: underline;'>102</span><span>876
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        103       </span><span style='text-decoration: underline;'>265</span><span>320
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        105       </span><span style='text-decoration: underline;'>352</span><span>704
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        110       </span><span style='text-decoration: underline;'>162</span><span>576
-#&gt; </span><span style='color: #949494;'># … with more rows</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # Source:   lazy query [?? x 2]
+#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # … with more rows
 
 my_dm_total %>%
   dm_draw()
@@ -353,26 +330,21 @@ my_dm_total_computed <-
   compute()
 
 my_dm_total_computed$total_loans
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   table&lt;dbplyr_010&gt; [?? x 2]</span><span>
-#&gt; </span><span style='color: #949494;'># Database: sqlite 3.30.1 []</span><span>
-#&gt;    account_id total_amount
-#&gt;         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>          2        </span><span style='text-decoration: underline;'>80</span><span>952
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         19        </span><span style='text-decoration: underline;'>30</span><span>276
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         25        </span><span style='text-decoration: underline;'>30</span><span>276
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         37       </span><span style='text-decoration: underline;'>318</span><span>480
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         38       </span><span style='text-decoration: underline;'>110</span><span>736
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         67       </span><span style='text-decoration: underline;'>165</span><span>960
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         97       </span><span style='text-decoration: underline;'>102</span><span>876
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        103       </span><span style='text-decoration: underline;'>265</span><span>320
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        105       </span><span style='text-decoration: underline;'>352</span><span>704
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        110       </span><span style='text-decoration: underline;'>162</span><span>576
-#&gt; </span><span style='color: #949494;'># … with more rows</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # Source:   table<dbplyr_010> [?? x 2]
+#> # Database: sqlite 3.30.1 []
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # … with more rows
 
 my_dm_total_computed$total_loans %>%
   sql_render()
@@ -388,23 +360,21 @@ my_dm_local <-
   collect()
 
 my_dm_local$total_loans
+#> # A tibble: 682 x 2
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # … with 672 more rows
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 682 x 2</span><span>
-#&gt;    account_id total_amount
-#&gt;         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>          2        </span><span style='text-decoration: underline;'>80</span><span>952
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         19        </span><span style='text-decoration: underline;'>30</span><span>276
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         25        </span><span style='text-decoration: underline;'>30</span><span>276
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         37       </span><span style='text-decoration: underline;'>318</span><span>480
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         38       </span><span style='text-decoration: underline;'>110</span><span>736
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         67       </span><span style='text-decoration: underline;'>165</span><span>960
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         97       </span><span style='text-decoration: underline;'>102</span><span>876
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        103       </span><span style='text-decoration: underline;'>265</span><span>320
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        105       </span><span style='text-decoration: underline;'>352</span><span>704
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        110       </span><span style='text-decoration: underline;'>162</span><span>576
-#&gt; </span><span style='color: #949494;'># … with 672 more rows</span><span>
-</span></CODE></PRE>
 
 There is a third {dbplyr} verb that has not yet been implemented.
 `collapse()` forces generation of the SQL query instead of computation
@@ -504,31 +474,24 @@ my_dm_sqlite_resid %>%
 ``` r
 my_dm_sqlite_resid %>%
   dm_examine_constraints()
-```
-
-<PRE class="fansi fansi-message"><CODE>#&gt; <span style='color: #00BBBB;'>ℹ</span><span> All constraints satisfied.
-</span></CODE></PRE>
-
-``` r
+#> ℹ All constraints satisfied.
 my_dm_sqlite_resid$loans_residuals
+#> # Source:   table<loans_residuals_2020_08_28_07_13_03_1> [?? x 2]
+#> # Database: sqlite 3.30.1 []
+#>       id   resid
+#>    <int>   <dbl>
+#>  1  4959 -31912.
+#>  2  4961 -27336.
+#>  3  4962 -30699.
+#>  4  4967  63621.
+#>  5  4968 -94811.
+#>  6  4973  59036.
+#>  7  4986  41901.
+#>  8  4988 123392.
+#>  9  4989 147157.
+#> 10  4990  33377.
+#> # … with more rows
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   table&lt;loans_residuals_2020_08_28_07_13_03_1&gt; [?? x 2]</span><span>
-#&gt; </span><span style='color: #949494;'># Database: sqlite 3.30.1 []</span><span>
-#&gt;       id   resid
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>4</span><span>959 -</span><span style='color: #BB0000;text-decoration: underline;'>31</span><span style='color: #BB0000;'>912.</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>4</span><span>961 -</span><span style='color: #BB0000;text-decoration: underline;'>27</span><span style='color: #BB0000;'>336.</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>4</span><span>962 -</span><span style='color: #BB0000;text-decoration: underline;'>30</span><span style='color: #BB0000;'>699.</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>4</span><span>967  </span><span style='text-decoration: underline;'>63</span><span>621.
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>4</span><span>968 -</span><span style='color: #BB0000;text-decoration: underline;'>94</span><span style='color: #BB0000;'>811.</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>4</span><span>973  </span><span style='text-decoration: underline;'>59</span><span>036.
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>4</span><span>986  </span><span style='text-decoration: underline;'>41</span><span>901.
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>4</span><span>988 </span><span style='text-decoration: underline;'>123</span><span>392.
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>4</span><span>989 </span><span style='text-decoration: underline;'>147</span><span>157.
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>4</span><span>990  </span><span style='text-decoration: underline;'>33</span><span>377.
-#&gt; </span><span style='color: #949494;'># … with more rows</span><span>
-</span></CODE></PRE>
 
 ## Conclusion
 

@@ -66,44 +66,34 @@ library(dplyr)
 #>     intersect, setdiff, setequal, union
 flights_dm <- dm_nycflights13()
 flights_dm
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-</span></CODE></PRE>
-
-``` r
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 3
+#> Foreign keys: 3
 flights_zoomed <- 
   flights_dm %>% 
   dm_zoom_to(flights)
 # The print output for a `zoomed_dm` looks very much like that from a normal `tibble`.
 flights_zoomed
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Zoomed table: flights</span><span>
-#&gt; </span><span style='color: #949494;'># A tibble:     11,227 x 19</span><span>
-#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530         0      824
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600       -</span><span style='color: #BB0000;'>14</span><span>      645
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600       -</span><span style='color: #BB0000;'>11</span><span>      652
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600       -</span><span style='color: #BB0000;'>10</span><span>      649
-#&gt; </span><span style='color: #949494;'># … with 11,217 more rows, and 12 more variables: sched_arr_time </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   arr_delay </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, carrier </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, flight </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, tailnum </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   origin </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, dest </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, air_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, distance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, hour </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   minute </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, time_hour </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # Zoomed table: flights
+#> # A tibble:     11,227 x 19
+#>     year month   day dep_time sched_dep_time dep_delay arr_time
+#>    <int> <int> <int>    <int>          <int>     <dbl>    <int>
+#>  1  2013     1    10        3           2359         4      426
+#>  2  2013     1    10       16           2359        17      447
+#>  3  2013     1    10      450            500       -10      634
+#>  4  2013     1    10      520            525        -5      813
+#>  5  2013     1    10      530            530         0      824
+#>  6  2013     1    10      531            540        -9      832
+#>  7  2013     1    10      535            540        -5     1015
+#>  8  2013     1    10      546            600       -14      645
+#>  9  2013     1    10      549            600       -11      652
+#> 10  2013     1    10      550            600       -10      649
+#> # … with 11,217 more rows, and 12 more variables: sched_arr_time <int>,
+#> #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+#> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+#> #   minute <dbl>, time_hour <dttm>
 
 flights_zoomed_mutate <- 
   flights_zoomed %>% 
@@ -111,29 +101,24 @@ flights_zoomed_mutate <-
   # in order to see our changes in the output we use `select()` for reordering the columns
   select(year:dep_time, am_pm_dep, everything())
 flights_zoomed_mutate
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Zoomed table: flights</span><span>
-#&gt; </span><span style='color: #949494;'># A tibble:     11,227 x 20</span><span>
-#&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3 am                  </span><span style='text-decoration: underline;'>2</span><span>359         4      426
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16 am                  </span><span style='text-decoration: underline;'>2</span><span>359        17      447
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450 am                   500       -</span><span style='color: #BB0000;'>10</span><span>      634
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520 am                   525        -</span><span style='color: #BB0000;'>5</span><span>      813
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530 am                   530         0      824
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531 am                   540        -</span><span style='color: #BB0000;'>9</span><span>      832
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535 am                   540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546 am                   600       -</span><span style='color: #BB0000;'>14</span><span>      645
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549 am                   600       -</span><span style='color: #BB0000;'>11</span><span>      652
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550 am                   600       -</span><span style='color: #BB0000;'>10</span><span>      649
-#&gt; </span><span style='color: #949494;'># … with 11,217 more rows, and 12 more variables: sched_arr_time </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   arr_delay </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, carrier </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, flight </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, tailnum </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   origin </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, dest </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, air_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, distance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, hour </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   minute </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, time_hour </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # Zoomed table: flights
+#> # A tibble:     11,227 x 20
+#>     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
+#>    <int> <int> <int>    <int> <chr>              <int>     <dbl>    <int>
+#>  1  2013     1    10        3 am                  2359         4      426
+#>  2  2013     1    10       16 am                  2359        17      447
+#>  3  2013     1    10      450 am                   500       -10      634
+#>  4  2013     1    10      520 am                   525        -5      813
+#>  5  2013     1    10      530 am                   530         0      824
+#>  6  2013     1    10      531 am                   540        -9      832
+#>  7  2013     1    10      535 am                   540        -5     1015
+#>  8  2013     1    10      546 am                   600       -14      645
+#>  9  2013     1    10      549 am                   600       -11      652
+#> 10  2013     1    10      550 am                   600       -10      649
+#> # … with 11,217 more rows, and 12 more variables: sched_arr_time <int>,
+#> #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+#> #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+#> #   minute <dbl>, time_hour <dttm>
 
 # To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:
 updated_flights_dm <- 
@@ -141,16 +126,11 @@ updated_flights_dm <-
   dm_update_zoomed()
 # The only difference in the `dm` print output is the increased number of columns
 updated_flights_dm
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 54
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-</span></CODE></PRE>
-
-``` r
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 54
+#> Primary keys: 3
+#> Foreign keys: 3
 # The schematic view of the data model remains unchanged
 dm_draw(updated_flights_dm)
 ```
@@ -176,52 +156,42 @@ weather_zoomed <-
   flights_dm %>% 
   dm_zoom_to(weather)
 weather_zoomed
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Zoomed table: weather</span><span>
-#&gt; </span><span style='color: #949494;'># A tibble:     861 x 15</span><span>
-#&gt;    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     0  41    32    70.1      230       8.06
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     1  39.0  30.0  69.9      210       9.21
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     2  39.0  28.9  66.8      230       6.90
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     3  39.9  27.0  59.5      270       5.75
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     4  41    26.1  55.0      320       6.90
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     5  41    26.1  55.0      300      12.7 
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     6  39.9  25.0  54.8      280       6.90
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     7  41    25.0  52.6      330       6.90
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     8  43.0  25.0  48.7      330       8.06
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> EWR     </span><span style='text-decoration: underline;'>2</span><span>013     1    10     9  45.0  23    41.6      320      17.3 
-#&gt; </span><span style='color: #949494;'># … with 851 more rows, and 5 more variables: wind_gust </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   precip </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, pressure </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, visib </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, time_hour </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # Zoomed table: weather
+#> # A tibble:     861 x 15
+#>    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
+#>    <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
+#>  1 EWR     2013     1    10     0  41    32    70.1      230       8.06
+#>  2 EWR     2013     1    10     1  39.0  30.0  69.9      210       9.21
+#>  3 EWR     2013     1    10     2  39.0  28.9  66.8      230       6.90
+#>  4 EWR     2013     1    10     3  39.9  27.0  59.5      270       5.75
+#>  5 EWR     2013     1    10     4  41    26.1  55.0      320       6.90
+#>  6 EWR     2013     1    10     5  41    26.1  55.0      300      12.7 
+#>  7 EWR     2013     1    10     6  39.9  25.0  54.8      280       6.90
+#>  8 EWR     2013     1    10     7  41    25.0  52.6      330       6.90
+#>  9 EWR     2013     1    10     8  43.0  25.0  48.7      330       8.06
+#> 10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
+#> # … with 851 more rows, and 5 more variables: wind_gust <dbl>,
+#> #   precip <dbl>, pressure <dbl>, visib <dbl>, time_hour <dttm>
 # Maybe there is some hidden candidate for a primary key that we overlooked
 enum_pk_candidates(weather_zoomed)
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 15 x 3</span><span>
-#&gt;    columns    candidate why                                                
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                              
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> day        FALSE     has duplicate values: 10                           
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> dewp       FALSE     has duplicate values: 5.00, 6.08, 6.98, 8.06, 8.96…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> hour       FALSE     has duplicate values: 0, 1, 2, 3, 4, …             
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> humid      FALSE     has duplicate values: 32.53, 32.86, 34.41, 36.31, …
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> month      FALSE     has duplicate values: 1, 2, 3, 4, 5, …             
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> origin     FALSE     has duplicate values: EWR, JFK, LGA                
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> precip     FALSE     has duplicate values: 0.00, 0.01, 0.02, 0.03, 0.04…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> pressure   FALSE     has duplicate values: 1009.4, 1009.7, 1009.8, 1009…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> temp       FALSE     has duplicate values: 15.98, 17.06, 17.96, 19.04, …
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00, 2013-01…
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> visib      FALSE     has duplicate values: 0.25, 0.50, 2.00, 2.50, 3.00…
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> wind_dir   FALSE     has duplicate values: 0, 10, 20, 30, 40, …         
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> wind_gust  FALSE     has duplicate values: 16.11092, 17.26170, 18.41248…
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> wind_speed FALSE     has duplicate values: 0.00000, 3.45234, 4.60312, 5…
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> year       FALSE     has duplicate values: 2013
-</span></CODE></PRE>
-
-``` r
+#> # A tibble: 15 x 3
+#>    columns    candidate why                                                
+#>    <keys>     <lgl>     <chr>                                              
+#>  1 day        FALSE     has duplicate values: 10                           
+#>  2 dewp       FALSE     has duplicate values: 5.00, 6.08, 6.98, 8.06, 8.96…
+#>  3 hour       FALSE     has duplicate values: 0, 1, 2, 3, 4, …             
+#>  4 humid      FALSE     has duplicate values: 32.53, 32.86, 34.41, 36.31, …
+#>  5 month      FALSE     has duplicate values: 1, 2, 3, 4, 5, …             
+#>  6 origin     FALSE     has duplicate values: EWR, JFK, LGA                
+#>  7 precip     FALSE     has duplicate values: 0.00, 0.01, 0.02, 0.03, 0.04…
+#>  8 pressure   FALSE     has duplicate values: 1009.4, 1009.7, 1009.8, 1009…
+#>  9 temp       FALSE     has duplicate values: 15.98, 17.06, 17.96, 19.04, …
+#> 10 time_hour  FALSE     has duplicate values: 2013-01-10 00:00:00, 2013-01…
+#> 11 visib      FALSE     has duplicate values: 0.25, 0.50, 2.00, 2.50, 3.00…
+#> 12 wind_dir   FALSE     has duplicate values: 0, 10, 20, 30, 40, …         
+#> 13 wind_gust  FALSE     has duplicate values: 16.11092, 17.26170, 18.41248…
+#> 14 wind_speed FALSE     has duplicate values: 0.00000, 3.45234, 4.60312, 5…
+#> 15 year       FALSE     has duplicate values: 2013
 # Seems we have to construct a column with unique values
 # This can be done by combining column `origin` with `time_hour`, if the latter 
 # is converted to a single time zone first; all within the `dm`:
@@ -234,30 +204,20 @@ weather_zoomed_mutate <-
   select(origin_slot_id, everything())
 # check if we the result is as expected:
 enum_pk_candidates(weather_zoomed_mutate) %>% filter(candidate)
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
-#&gt;   columns        candidate why  
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> origin_slot_id TRUE      </span><span style='color: #949494;'>""</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # A tibble: 1 x 3
+#>   columns        candidate why  
+#>   <keys>         <lgl>     <chr>
+#> 1 origin_slot_id TRUE      ""
 flights_upd_weather_dm <- 
   weather_zoomed_mutate %>% 
   dm_update_zoomed() %>% 
   dm_add_pk(weather, origin_slot_id)
 flights_upd_weather_dm
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 4
-#&gt; Foreign keys: 3
-</span></CODE></PRE>
-
-``` r
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 4
+#> Foreign keys: 3
 # creating the coveted FK relation between `flights` and `weather`
 extended_flights_dm <- 
   flights_upd_weather_dm %>% 
@@ -345,26 +305,21 @@ joined_flights_dm <-
   dm_insert_zoomed("flights_plane_type")
 # this is how the table looks now
 joined_flights_dm$flights_plane_type
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 11,227 x 11</span><span>
-#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359 B6         727 N571JB  JFK   
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359 B6         739 N564JB  JFK   
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500 US        </span><span style='text-decoration: underline;'>1</span><span>117 N171US  EWR   
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525 UA        </span><span style='text-decoration: underline;'>1</span><span>018 N35204  EWR   
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530 UA         404 N815UA  LGA   
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540 AA        </span><span style='text-decoration: underline;'>1</span><span>141 N5EAAA  JFK   
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540 B6         725 N784JB  JFK   
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600 B6         380 N337JB  EWR   
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600 EV        </span><span style='text-decoration: underline;'>6</span><span>055 N19554  LGA   
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600 US        </span><span style='text-decoration: underline;'>2</span><span>114 N740UW  LGA   
-#&gt; </span><span style='color: #949494;'># … with 11,217 more rows, and 2 more variables: dest </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   plane_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # A tibble: 11,227 x 11
+#>     year month   day dep_time sched_dep_time carrier flight tailnum origin
+#>    <int> <int> <int>    <int>          <int> <chr>    <int> <chr>   <chr> 
+#>  1  2013     1    10        3           2359 B6         727 N571JB  JFK   
+#>  2  2013     1    10       16           2359 B6         739 N564JB  JFK   
+#>  3  2013     1    10      450            500 US        1117 N171US  EWR   
+#>  4  2013     1    10      520            525 UA        1018 N35204  EWR   
+#>  5  2013     1    10      530            530 UA         404 N815UA  LGA   
+#>  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   
+#>  7  2013     1    10      535            540 B6         725 N784JB  JFK   
+#>  8  2013     1    10      546            600 B6         380 N337JB  EWR   
+#>  9  2013     1    10      549            600 EV        6055 N19554  LGA   
+#> 10  2013     1    10      550            600 US        2114 N740UW  LGA   
+#> # … with 11,217 more rows, and 2 more variables: dest <chr>,
+#> #   plane_type <chr>
 # also here, the FK-relations are transferred to the new table
 dm_draw(joined_flights_dm)
 ```
@@ -382,24 +337,22 @@ flights_dm %>%
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>% 
   left_join(planes, select = c(tailnum, plane_type = type)) %>% 
   pull_tbl()
+#> # A tibble: 11,227 x 11
+#>     year month   day dep_time sched_dep_time carrier flight tailnum origin
+#>    <int> <int> <int>    <int>          <int> <chr>    <int> <chr>   <chr> 
+#>  1  2013     1    10        3           2359 B6         727 N571JB  JFK   
+#>  2  2013     1    10       16           2359 B6         739 N564JB  JFK   
+#>  3  2013     1    10      450            500 US        1117 N171US  EWR   
+#>  4  2013     1    10      520            525 UA        1018 N35204  EWR   
+#>  5  2013     1    10      530            530 UA         404 N815UA  LGA   
+#>  6  2013     1    10      531            540 AA        1141 N5EAAA  JFK   
+#>  7  2013     1    10      535            540 B6         725 N784JB  JFK   
+#>  8  2013     1    10      546            600 B6         380 N337JB  EWR   
+#>  9  2013     1    10      549            600 EV        6055 N19554  LGA   
+#> 10  2013     1    10      550            600 US        2114 N740UW  LGA   
+#> # … with 11,217 more rows, and 2 more variables: dest <chr>,
+#> #   plane_type <chr>
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 11,227 x 11</span><span>
-#&gt;     year month   day dep_time sched_dep_time carrier flight tailnum origin
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359 B6         727 N571JB  JFK   
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359 B6         739 N564JB  JFK   
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500 US        </span><span style='text-decoration: underline;'>1</span><span>117 N171US  EWR   
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525 UA        </span><span style='text-decoration: underline;'>1</span><span>018 N35204  EWR   
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530 UA         404 N815UA  LGA   
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540 AA        </span><span style='text-decoration: underline;'>1</span><span>141 N5EAAA  JFK   
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540 B6         725 N784JB  JFK   
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600 B6         380 N337JB  EWR   
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600 EV        </span><span style='text-decoration: underline;'>6</span><span>055 N19554  LGA   
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600 US        </span><span style='text-decoration: underline;'>2</span><span>114 N740UW  LGA   
-#&gt; </span><span style='color: #949494;'># … with 11,217 more rows, and 2 more variables: dest </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   plane_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
-</span></CODE></PRE>
 
 ### Possible pitfalls and caveats
 
