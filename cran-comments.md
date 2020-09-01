@@ -9,7 +9,6 @@ dm 0.1.7
 - [x] Checked locally, R 4.0.2
 - [x] Checked on CI system, R 4.0.2
 - [x] Checked on win-builder, R devel
-    - NOTE related to "504 gateway error" will be fixed when an upstream internet resource is operational again. I contacted the maintainer. If I don't hear back by end of September, I will migrate to a self-hosted solution under my control.
 
 ## Current CRAN check results
 
