@@ -72,7 +72,7 @@ if (ci_has_env("TIC_DEV_VERSIONS")) {
     add_step(step_install_github("krlmlr/pkgdown@fix/examples-dontshow")) %>%
     add_step(step_install_github("cynkra/cynkratemplate"))
 
-  do_pkgdown(deploy = ci_can_push() && ci_get_branch() %in% c("master", "main", "docs"))
+  do_pkgdown(deploy = ci_can_push() && grepl("^master$|^main$|^docs$|^cran-", ci_get_branch()))
 } else if (ci_has_env("TIC_CHECK_FINANCIAL")) {
   # How to detect scheduled runs?
   get_stage("install") %>%
