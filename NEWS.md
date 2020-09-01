@@ -1,3 +1,8 @@
+# dm 0.1.7
+
+- Same as previous version.
+
+
 # dm 0.1.6.9001
 
 - Suggest RMariaDB 1.0.10 to work around timeout with `R CMD check`.
