@@ -166,13 +166,11 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The latest stable version of the {dm} package can be obtained from <a href="https://CRAN.R-project.org/package=dm">CRAN</a> with the command</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"dm"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"dm"</span>)</pre></div>
 <p>The latest development version of {dm} can be installed from GitHub.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="co"># install.packages("devtools")</span>
-<span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">"krlmlr/dm"</span>)
-</pre></div>
+<span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">"krlmlr/dm"</span>)</pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -181,8 +179,7 @@
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://krlmlr.github.io/dm">dm</a></span>)
 <span class="kw">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dm_nycflights13.html">dm_nycflights13</a></span>()
-<span class="kw">dm</span>
-</pre></div>
+<span class="kw">dm</span></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  &lt;environment: R_GlobalEnv&gt;
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
@@ -198,8 +195,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">dm</span><span class="op">$</span><span class="kw">airports</span>)
 <span class="co">#&gt; [1] 1458</span>
 <span class="kw">dm</span><span class="op">$</span><span class="kw">flights</span> <span class="op">%&gt;%</span>
-  <span class="fu">count</span>(<span class="kw">origin</span>)
-</pre></div>
+  <span class="fu">count</span>(<span class="kw">origin</span>)</pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
 #&gt;   </span><span style="font-weight: bold;">origin</span><span>     </span><span style="font-weight: bold;">n</span><span>
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
@@ -210,8 +206,7 @@
 <p>Visualize relationships at any time:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">dm</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/dm_draw.html">dm_draw</a></span>()
-</pre></div>
+  <span class="fu"><a href="reference/dm_draw.html">dm_draw</a></span>()</pre></div>
 <p><img src="reference/figures/README-draw.svg"></p>
 <p>Simple joins:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
@@ -219,8 +214,7 @@
   <span class="fu"><a href="reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span>(<span class="kw">flights</span>)
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * year -&gt; flights.year, planes.year</span>
-<span class="co">#&gt; * name -&gt; airlines.name, airports.name</span>
-</pre></div>
+<span class="co">#&gt; * name -&gt; airlines.name, airports.name</span></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 35</span><span>
 #&gt;    </span><span style="font-weight: bold;">flights.year</span><span> </span><span style="font-weight: bold;">month</span><span>   </span><span style="font-weight: bold;">day</span><span> </span><span style="font-weight: bold;">dep_time</span><span> </span><span style="font-weight: bold;">sched_dep_time</span><span> </span><span style="font-weight: bold;">dep_delay</span><span> </span><span style="font-weight: bold;">arr_time</span><span>
 #&gt;           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
@@ -246,8 +240,7 @@
 <p>Check consistency:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="kw">dm</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/dm_examine_constraints.html">dm_examine_constraints</a></span>()
-</pre></div>
+  <span class="fu"><a href="reference/dm_examine_constraints.html">dm_examine_constraints</a></span>()</pre></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #BBBB00;">!</span><span> Unsatisfied constraints:
 </span></code></pre>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #BB0000;">●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …
