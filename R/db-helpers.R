@@ -8,8 +8,12 @@ unique_db_table_name <- local({
 })
 
 systime_convenient <- function() {
-  time <- as.character(Sys.time())
-  gsub("[-: ]", "_", time)
+  if (Sys.getenv("IN_PKGDOWN") != "") {
+    "2020_08_28_07_13_03"
+  } else {
+    time <- as.character(Sys.time())
+    gsub("[-: ]", "_", time)
+  }
 }
 
 # Internal copy helper functions
@@ -117,16 +121,6 @@ class_to_db_class <- function(dest, class_vector) {
   } else {
     return(class_vector)
   }
-}
-
-get_db_table_names <- function(dm) {
-  if (!is_src_db(dm)) {
-    return(tibble(table_name = src_tbls(dm), remote_name = src_tbls(dm)))
-  }
-  tibble(
-    table_name = src_tbls(dm),
-    remote_name = map_chr(dm_get_tables_impl(dm), dbplyr::remote_name)
-  )
 }
 
 is_db <- function(x) {

@@ -30,7 +30,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #r: ['3.3', '3.4', '3.5', '3.6', 'release']
         r: ['release']
 
     env:
@@ -91,6 +90,7 @@ jobs:
           apt-get update
           ACCEPT_EULA=Y apt-get install -y msodbcsql17
           sqlcmd -U SA -P 'Password12' -Q 'CREATE DATABASE test;'
+          ln -s /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.*.so.* /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so
         shell: sudo bash {0}
 
       - name: "[Stage] Install"

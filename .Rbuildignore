@@ -22,3 +22,4 @@
 ^\.github$
 ^example$
 ^vignettes/abstracts$
+^vignettes/out$
