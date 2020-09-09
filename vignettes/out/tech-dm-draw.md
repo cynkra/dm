@@ -28,14 +28,12 @@ library(dplyr)
 #>     intersect, setdiff, setequal, union
 flights_dm_w_many_keys <- dm_nycflights13(color = FALSE)
 flights_dm_w_many_keys
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 3
+#> Foreign keys: 3
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-</span></CODE></PRE>
 
 The schema is drawn with `dm_draw()`.
 

@@ -29,7 +29,6 @@ fin_db <- dbConnect(
   dbname = 'Financial_ijs',
   host = 'relational.fit.cvut.cz'
 )
-#> Error: Failed to connect: Lost connection to MySQL server at 'waiting for initial communication packet', system error: 110
 ```
 
 We create a dm object from an RDBMS using `dm_from_src()`, passing in
@@ -39,9 +38,14 @@ the connection object we just created as the first argument.
 library(dm)
 
 fin_dm <- dm_from_src(fin_db)
-#> Error in dm_from_src(fin_db): object 'fin_db' not found
 fin_dm
-#> Error in eval(expr, envir, enclos): object 'fin_dm' not found
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
+#> Columns: 57
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
 
 The dm object interrogates the RDBMS for table and column information
@@ -54,11 +58,30 @@ The dm object can be accessed like a named list of tables:
 
 ``` r
 names(fin_dm)
-#> Error in eval(expr, envir, enclos): object 'fin_dm' not found
+#> [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    
+#> [7] "orders"    "tkeys"     "trans"
 fin_dm$loans
-#> Error in eval(expr, envir, enclos): object 'fin_dm' not found
+#> # Source:   table<`loans`> [?? x 7]
+#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#>       id account_id date       amount duration payments status
+#>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr> 
+#>  1  4959          2 1994-01-05  80952       24     3373 A     
+#>  2  4961         19 1996-04-29  30276       12     2523 B     
+#>  3  4962         25 1997-12-08  30276       12     2523 A     
+#>  4  4967         37 1998-10-14 318480       60     5308 D     
+#>  5  4968         38 1998-04-19 110736       48     2307 C     
+#>  6  4973         67 1996-05-02 165960       24     6915 A     
+#>  7  4986         97 1997-08-10 102876       12     8573 A     
+#>  8  4988        103 1997-12-06 265320       36     7370 D     
+#>  9  4989        105 1998-12-05 352704       48     7348 C     
+#> 10  4990        110 1997-09-08 162576       36     4516 C     
+#> # … with more rows
 dplyr::count(fin_dm$trans)
-#> Error in dplyr::count(fin_dm$trans): object 'fin_dm' not found
+#> # Source:   lazy query [?? x 1]
+#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#>         n
+#>   <int64>
+#> 1 1056320
 ```
 
 At the same time, most `dm` functions are pipe-friendly and support tidy
@@ -67,11 +90,9 @@ smaller dm with the `loans`, `accounts`, `districts` and `trans` tables:
 
 ``` r
 fin_dm_small <- fin_dm[c("loans", "accounts", "districts", "trans")]
-#> Error in eval(expr, envir, enclos): object 'fin_dm' not found
 fin_dm_small <-
   fin_dm %>%
   dm_select_tbl(loans, accounts, districts, trans)
-#> Error in eval(lhs, parent, parent): object 'fin_dm' not found
 ```
 
 ## Linking tables by adding keys
@@ -94,7 +115,6 @@ fin_dm_keys <-
   dm_add_fk(trans, account_id, accounts) %>%
   dm_add_pk(districts, id) %>%
   dm_add_fk(accounts, district_id, districts)
-#> Error in eval(lhs, parent, parent): object 'fin_dm_small' not found
 ```
 
 ## Visualizing a data model
@@ -111,8 +131,9 @@ and how they link the tables together. Color guides the eye.
 fin_dm_keys %>%
   dm_set_colors(green = c(loans, accounts), darkblue = trans, grey = districts) %>%
   dm_draw()
-#> Error in eval(lhs, parent, parent): object 'fin_dm_keys' not found
 ```
+
+![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/dm_files/figure-gfm/visualize_keys-1.png)<!-- -->
 
 ## Accessing a data model as a table
 
@@ -124,7 +145,26 @@ tables to gather all the available columns into a single table.
 ``` r
 fin_dm_keys %>%
   dm_squash_to_tbl(loans)
-#> Error in eval(lhs, parent, parent): object 'fin_dm_keys' not found
+#> Renamed columns:
+#> * date -> loans.date, accounts.date
+#> # Source:   lazy query [?? x 25]
+#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#>       id account_id loans.date amount duration payments status district_id
+#>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr>        <int>
+#>  1  4959          2 1994-01-05  80952       24     3373 A                1
+#>  2  4961         19 1996-04-29  30276       12     2523 B               21
+#>  3  4962         25 1997-12-08  30276       12     2523 A               68
+#>  4  4967         37 1998-10-14 318480       60     5308 D               20
+#>  5  4968         38 1998-04-19 110736       48     2307 C               19
+#>  6  4973         67 1996-05-02 165960       24     6915 A               16
+#>  7  4986         97 1997-08-10 102876       12     8573 A               74
+#>  8  4988        103 1997-12-06 265320       36     7370 D               44
+#>  9  4989        105 1998-12-05 352704       48     7348 C               21
+#> 10  4990        110 1997-09-08 162576       36     4516 C               36
+#> # … with more rows, and 17 more variables: frequency <chr>,
+#> #   accounts.date <date>, A2 <chr>, A3 <chr>, A4 <int>, A5 <int>,
+#> #   A6 <int>, A7 <int>, A8 <int>, A9 <int>, A10 <dbl>, A11 <int>,
+#> #   A12 <dbl>, A13 <dbl>, A14 <int>, A15 <int>, A16 <int>
 ```
 
 Apart from the rows printed above, no data has been fetched from the
@@ -137,13 +177,23 @@ loans_df <-
   dm_squash_to_tbl(loans) %>%
   select(id, amount, duration, A3) %>%
   collect()
-#> Error in eval(lhs, parent, parent): object 'fin_dm_keys' not found
+#> Renamed columns:
+#> * date -> loans.date, accounts.date
 
 model <- lm(amount ~ duration + A3, data = loans_df)
-#> Error in is.data.frame(data): object 'loans_df' not found
 
 model
-#> Error in eval(expr, envir, enclos): object 'model' not found
+#> 
+#> Call:
+#> lm(formula = amount ~ duration + A3, data = loans_df)
+#> 
+#> Coefficients:
+#>     (Intercept)         duration   A3east Bohemia  A3north Bohemia  
+#>           10196             4109           -16204           -28933  
+#> A3north Moravia         A3Prague  A3south Bohemia  A3south Moravia  
+#>            1467             4044            -1896           -12463  
+#>  A3west Bohemia  
+#>          -28572
 ```
 
 ## Operations on table data within a dm
@@ -163,10 +213,23 @@ fin_dm_total <-
   summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
   ungroup() %>%
   dm_insert_zoomed("total_loans")
-#> Error in eval(lhs, parent, parent): object 'fin_dm_keys' not found
 
 fin_dm_total$total_loans
-#> Error in eval(expr, envir, enclos): object 'fin_dm_total' not found
+#> # Source:   lazy query [?? x 2]
+#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # … with more rows
 ```
 
 Note that in the above example we use `dm_insert_zoomed()` to add the
@@ -188,7 +251,7 @@ reports if they violate their expected constraints.
 ``` r
 fin_dm_total %>%
   dm_examine_constraints()
-#> Error in eval(lhs, parent, parent): object 'fin_dm_total' not found
+#> ℹ All constraints satisfied.
 ```
 
 For more on constraint checking, including cardinality, finding
