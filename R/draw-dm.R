@@ -92,10 +92,11 @@ dm_get_data_model <- function(x) {
     dm_get_data_model_pks(x) %>%
     mutate(key = 1L)
 
+  types <- dm_get_all_column_types(x)
+  
   columns <-
     dm_get_all_columns(x) %>%
-    # Hack: datamodelr requires `type` column
-    mutate(type = "integer") %>%
+    left_join(types, by = c("table", "column")) %>%
     left_join(keys, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
     left_join(references_for_columns, by = c("table", "column")) %>%
@@ -115,6 +116,14 @@ dm_get_all_columns <- function(x) {
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
     unnest(value)
+}
+
+dm_get_all_column_types <- function(x) {
+  first_class <- function(x) class(x)[1]
+  types_tbl <- function(x, y) tibble(table = y, column = colnames(x), type = unname(as_vector(x)))
+  dm_get_tables_impl(x) %>%
+    map(~summarize_all(.x, first_class)) %>%
+    imap_dfr(types_tbl)
 }
 
 #' `dm_set_colors()`
