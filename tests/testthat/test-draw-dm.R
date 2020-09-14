@@ -154,6 +154,28 @@ test_that("helpers", {
       "tf_6", 2L, "o"
     )
   )
+  
+  expect_identical(
+    dm_get_all_column_types(dm_for_filter()),
+    tibble::tribble(
+      ~table, ~column, ~type,
+      "tf_1", "a", "integer",
+      "tf_1", "b", "character",
+      "tf_2", "c", "character",
+      "tf_2", "d", "integer",
+      "tf_2", "e", "character",
+      "tf_3", "f", "character",
+      "tf_3", "g", "character",
+      "tf_4", "h", "character",
+      "tf_4", "i", "character",
+      "tf_4", "j", "character",
+      "tf_5", "k", "integer",
+      "tf_5", "l", "character",
+      "tf_5", "m", "character",
+      "tf_6", "n", "character",
+      "tf_6", "o", "character"
+    )
+  )
 })
 
 test_that("output", {
