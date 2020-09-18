@@ -16,20 +16,19 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-# Working with databases
+{dm} was designed to make connection to and working with an RDBMS as straightforward as possible.
+To this end, a dm object can be created from any database that has a {[DBI](https://dbi.r-dbi.org/)} backend available ([see list](https://github.com/r-dbi/backends)).
 
-A dm object can be created from any database that has a {[DBI](https://dbi.r-dbi.org/)} backend ([see list](https://github.com/r-dbi/backends)).
-
-When a dm object is created it can either import all the tables in the database, the active schema or a limited set.
+When a dm object is created via a DBI connection to an RDBMS it can import all the tables in the database, the active schema or a limited set.
 For some RDBMS, such as Postgres and SQL Server, primary and foreign keys are also imported and do not have to be manually added afterwards.
 
-To demonstrate, we connect to a [relational dataset repository](https://relational.fit.cvut.cz/) with a database server that is publicly accessible without registration.
-There is a [financial dataset](https://relational.fit.cvut.cz/dataset/Financial) that contains loan data along with relevant account information and transactions.
+To demonstrate, we will connect to a [relational dataset repository](https://relational.fit.cvut.cz/) with a database server that is publicly accessible without registration.
+It hosts a [financial dataset](https://relational.fit.cvut.cz/dataset/Financial) that contains loan data along with relevant account information and transactions.
 We chose this dataset because the relationships between `loan`, `account`, and `transactions` tables are a good representation of databases that record real-world business transactions.
 The repository uses a MariaDB server for which {dm} does not currently import primary or foreign keys, so we will need to add them.
 
-The dataset is available on database server that is publicly accessible without registration.
-Connection details will vary for your database, see `vignette("DBI", package = "DBI")` for further information.
+Below we open a connection to the publicly accessible database server using their documented connection parameters.
+Connection details vary from database to database. Before connecting to your own RDBMS you may want to read `vignette("DBI", package = "DBI")` for further information.
 
 
 ``````{r }
@@ -63,7 +62,7 @@ This is useful for when you want to work with a subset of a database's tables, p
 
 Below we use the `tbl()` function from {dplyr} to extract two tables from the financial database.
 Then we create our dm by passing the tables in as arguments.
-Note that the tables arguments have to all be from the same source.
+Note that the tables arguments have to all be from the same source, in this case `my_db`.
 
 ``````{r }
 dbListTables(my_db)
@@ -159,7 +158,6 @@ See `vignette("tech-dm-zoom")` for more detail on zooming.
 dm operations are transient unless persistence is explicitly requested.
 To make our chain of manipulations on the selected table permanent we assign the result of `dm_insert_zoomed()` to a new object, `my_dm_total`.
 This is a new dm object, derived from `my_dm_keys`, with a new lazy table `total_loans` linked to the `accounts` table.
-The subsequent section describes how to materialize the results on the database.
 
 ``````{r }
 my_dm_total <-
@@ -182,9 +180,10 @@ my_dm_total$total_loans %>%
 
 ## Downloading data
 
-FIXME: Reword.
-
-`collect()` downloads all tables to local data frames.
+When it becomes necessary to move data locally for analysis or reporting, the {dm} method `collect()` is used.
+Operations on dm objects are limited to report only the first ten results.
+`collect()` forces the evaluation of all SQL queries and the generation of the complete set of results.
+The resulting tables are transferred from the RDBMS and returned as local tibbles.
 
 ``````{r }
 my_dm_local <-
@@ -194,34 +193,34 @@ my_dm_local <-
 my_dm_local$total_loans
 ``````
 
-There is another {dbplyr} verb that has not yet been implemented.
-`collapse()` forces generation of the SQL query instead of computation ([#304](https://github.com/krlmlr/dm/issues/304)).
-
-
+Use this method with caution.
+If you are not sure of the size of the dataset you will be downloading you can call `dm_nrow()` on your dm for the row count of your data model's tables. 
 
 ## Persisting results {#persist}
 
-
-dm provides many of the {dplyr} methods for making changes you have made to the database permanent.
-For example, `compute()` forces the computation of the query, or multiple queries, created by the dm to represent all operations that have been performed but not yet evaluated.
+dm implments many of the {dplyr} methods for making changes you have made to the database permanent.
+For example, `compute()` forces the computation of the queries created by a dm object to represent operations that have been performed but not yet evaluated.
 The results of `compute()` are stored in materialized tables on the database server.
-
-- FIXME: Integrate shorter version of `copy_dm_to()` text, reconcile
 
 For more details on `compute()` as well as methods and techniques for persisting results please read `vignette("howto-dm-copy")`.
 You may also wish to read the `compute()` documentation for more details.
 
-To deploy a dm we must copy it to a RDBMS.
-This is done using the method `copy_dm_to()`, which is used behind the scenes by our `dm_financial_sqlite()` function, the code for which appears below.
+It is just as simple to move a local relational model into an RDBMS as it using `collect()` to download it.
+The method used is `copy_dm_to()` and it takes as arguments a database connection and a dm object.
+In the example below a local SQLite database is used to demonstrate it, but {dm} is designed to work with any RDBMS supported by {DBI}.
 
-```{r}
-dm_financial_sqlite
-```
+``````{r }
+destination_db <- DBI::dbConnect(RSQLite::SQLite())
 
-As demonstrated, `copy_dm_to()` takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the `temporary` argument set to FALSE as this is a deployment and we want it to be permanent.
-The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.
+deployed_dm <- copy_dm_to(destination_db, my_dm_local)
 
-The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.
+deployed_dm
+my_dm_local
+``````
+
+In the output you can observe that the `src` for `deployed_dm` is the SQLite database, while for `my_dm_local` the source is the local R environment. 
+
+`copy_dm_to()` and `compute()` are covered in more detail in `vignette("howto-dm-copy")`.
 
 ## Conclusion
 
@@ -229,12 +228,10 @@ In this tutorial we have demonstrated how simple it is to load a database into a
 While loading a dm from most RDBMS currently requires you to manually set key relations, dm provides methods to make this straightforward.
 It is planned that future versions of dm will support automatic key creation for more RDBMS.
 
-The next step is to read `vignette("howto-dm-copy")`, where moving your dm into an RDBMS is covered.
-FIXME: reference to howto-dm-rows
+The next step is to read `vignette("howto-dm-copy")`, where moving your dm into an RDBMS is covered. 
+
 
 ## Further reading
-
-`vignette("howto-dm-db")` - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
 
 `vignette("howto-dm-df")` - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
 

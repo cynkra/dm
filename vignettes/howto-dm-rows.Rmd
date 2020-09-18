@@ -54,10 +54,8 @@ These involve constraints on primary key values as they are how rows are identif
 | dm_rows_truncate() | Removes all records, only for tables in dm. Truncation is performed by truncating child tables before parent tables. |
 
 For `dm_rows_delete()` and `dm_rows_truncate()`, tables linked to other tables via foreign keys are processed first. 
-For example, a database of nations with three linked tables, Country <- Province <- City.
-Foreign keys in `City` link rows to a row in `Province` and foreign keys in `Province` link rows to a row in `Country`.
-If it was discovered that Molvania, an imaginary country, was accidentally included in the database, on providing a dm object containing the `Country`, `Province` and `City` tables with all rows associated with it, the entries in the `City` table would be deleted first, followed by entries in the `Province` table, then its row in the `Country` table.
 This is to ensure the integrity of all relations during the deletion or truncation process.
+For more details on this see `vignette("howto-dm-db")`.
 
 ## Usage {#usage}
 
@@ -108,7 +106,10 @@ This is a common use case for {dm} -- building by hand a sequence of operations 
 ## `dm_rows_insert()` {#insert}
 
 To demonstrate `dm_rows_insert()` we create a dm with tables containing the rows to insert and copy it to `sqlite_db`, the same source as `demo_sql`.
-We are going to add `parent` and `child` table entries for the letter "D".
+For all of the `dm_rows_*` methods the source and destination dm objects must be in the same RDBMS.
+You will get an error message if this is not the case.
+
+The code below adds `parent` and `child` table entries for the letter "D".
 
 ``````{r }
 new_parent <- tibble(value = "D", pk = 4)
@@ -225,6 +226,29 @@ dm_trunc_out <-
   demo_sql %>%
   dm_rows_truncate(dm_trunc_in, in_place = FALSE)
 dm_trunc_out$child
+``````
+
+The method `dm_ptype()` returns the prototype of a dm as local object.
+This prototype contains all the tables with column names and types, and also keys, but the tables are empty tibbles.
+This is a good starting point to create a dm object to be passed to `dm_rows_truncate()` or to create an empty copy of a relational data model to populate.
+
+In the example below, an empty copy of `demo_sql` is created.
+Then, rather than selecting the table to truncate, the table that shouldn't be truncated is removed, before copying the dm into the same RDBMS as `demo_sql`.
+
+``````{r }
+
+empty_dm <- dm_ptype(demo_sql)
+empty_dm
+dm_nrow(empty_dm)
+
+dm_trunc_in <- empty_dm %>% dm_rm_tbl(parent) %>% copy_dm_to(sqlite_db, ., temporary = TRUE)
+
+dm_trunc_out <-
+  demo_sql %>%
+  dm_rows_truncate(dm_trunc_in, in_place = FALSE)
+dm_trunc_out$parent
+dm_trunc_out$child
+
 ``````
 
 
