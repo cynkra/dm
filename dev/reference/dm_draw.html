@@ -195,21 +195,21 @@ table color with the name "default".</p>
     </div>
 
     <pre class="usage"><span class='fu'>dm_draw</span>(
-  <span class='kw'>dm</span>,
-  rankdir = <span class='st'>"LR"</span>,
-  col_attr = <span class='st'>"column"</span>,
-  view_type = <span class='st'>"keys_only"</span>,
-  columnArrows = <span class='fl'>TRUE</span>,
-  graph_attrs = <span class='st'>""</span>,
-  node_attrs = <span class='st'>""</span>,
-  edge_attrs = <span class='st'>""</span>,
-  focus = <span class='kw'>NULL</span>,
-  graph_name = <span class='st'>"Data Model"</span>
+  <span class='va'>dm</span>,
+  rankdir <span class='op'>=</span> <span class='st'>"LR"</span>,
+  col_attr <span class='op'>=</span> <span class='st'>"column"</span>,
+  view_type <span class='op'>=</span> <span class='st'>"keys_only"</span>,
+  columnArrows <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  graph_attrs <span class='op'>=</span> <span class='st'>""</span>,
+  node_attrs <span class='op'>=</span> <span class='st'>""</span>,
+  edge_attrs <span class='op'>=</span> <span class='st'>""</span>,
+  focus <span class='op'>=</span> <span class='kw'>NULL</span>,
+  graph_name <span class='op'>=</span> <span class='st'>"Data Model"</span>
 )
 
-<span class='fu'>dm_set_colors</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>)
+<span class='fu'>dm_set_colors</span>(<span class='va'>dm</span>, <span class='va'>...</span>)
 
-<span class='fu'>dm_get_colors</span>(<span class='kw'>dm</span>)
+<span class='fu'>dm_get_colors</span>(<span class='va'>dm</span>)
 
 <span class='fu'>dm_get_available_colors</span>()</pre>
 
@@ -360,8 +360,8 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 </g>
 </svg>
 <div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(cycle = <span class='fl'>TRUE</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_draw</span>(view_type = <span class='st'>"title_only"</span>)
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(cycle <span class='op'>=</span> <span class='cn'>TRUE</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_draw</span>(view_type <span class='op'>=</span> <span class='st'>"title_only"</span>)
 </div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -446,10 +446,10 @@ when printed, produces the output seen in the viewer as a side effect.</p>
   <span class='fu'>dm_get_colors</span>()
 </div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
 #&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(color = <span class='fl'>FALSE</span>) <span class='op'>%&gt;%</span>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(color <span class='op'>=</span> <span class='cn'>FALSE</span>) <span class='op'>%&gt;%</span>
   <span class='fu'>dm_set_colors</span>(
-    darkblue = <span class='fu'>starts_with</span>(<span class='st'>"air"</span>),
-    <span class='st'>"#5986C4"</span> = <span class='kw'>flights</span>
+    darkblue <span class='op'>=</span> <span class='fu'>starts_with</span>(<span class='st'>"air"</span>),
+    <span class='st'>"#5986C4"</span> <span class='op'>=</span> <span class='va'>flights</span>
   ) <span class='op'>%&gt;%</span>
   <span class='fu'>dm_draw</span>()
 </div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -535,14 +535,14 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 </svg>
 <div class='input'>
 <span class='co'># Splicing is supported:</span>
-<span class='kw'>nyc_cols</span> <span class='op'>&lt;-</span>
+<span class='va'>nyc_cols</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
   <span class='fu'>dm_get_colors</span>()
-<span class='kw'>nyc_cols</span>
+<span class='va'>nyc_cols</span>
 </div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
 #&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(color = <span class='fl'>FALSE</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_set_colors</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>nyc_cols</span>) <span class='op'>%&gt;%</span>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(color <span class='op'>=</span> <span class='cn'>FALSE</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_set_colors</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>nyc_cols</span>) <span class='op'>%&gt;%</span>
   <span class='fu'>dm_draw</span>()
 </div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"

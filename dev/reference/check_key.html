@@ -182,7 +182,7 @@ if the specified columns are NOT a unique key of the data frame.
 If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_key</span>(<span class='kw'>.data</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>check_key</span>(<span class='va'>.data</span>, <span class='va'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -211,12 +211,12 @@ See vignette("programming") for an introduction to these concepts.</p>
 Otherwise an error is thrown and the reason for it is explained.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), b = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>1</span>), c = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>))
+    <pre class="examples"><div class='input'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(a <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), b <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>1</span>), c <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>7</span>))
 <span class='co'># this is failing:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_key</span>(<span class='kw'>data</span>, <span class='kw'>a</span>, <span class='kw'>b</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_key</span>(<span class='va'>data</span>, <span class='va'>a</span>, <span class='va'>b</span>))
 </div><div class='output co'>#&gt; Error : (`a`, `b`) not a unique key of `data`.</div><div class='input'>
 <span class='co'># this is passing:</span>
-<span class='fu'>check_key</span>(<span class='kw'>data</span>, <span class='kw'>a</span>, <span class='kw'>c</span>)
+<span class='fu'>check_key</span>(<span class='va'>data</span>, <span class='va'>a</span>, <span class='va'>c</span>)
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

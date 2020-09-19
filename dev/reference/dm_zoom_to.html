@@ -192,13 +192,13 @@ The filter conditions for the zoomed table are added to the original filter cond
 for a more detailed introduction.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_zoom_to</span>(<span class='kw'>dm</span>, <span class='kw'>table</span>)
+    <pre class="usage"><span class='fu'>dm_zoom_to</span>(<span class='va'>dm</span>, <span class='va'>table</span>)
 
-<span class='fu'>dm_insert_zoomed</span>(<span class='kw'>dm</span>, new_tbl_name = <span class='kw'>NULL</span>, repair = <span class='st'>"unique"</span>, quiet = <span class='fl'>FALSE</span>)
+<span class='fu'>dm_insert_zoomed</span>(<span class='va'>dm</span>, new_tbl_name <span class='op'>=</span> <span class='kw'>NULL</span>, repair <span class='op'>=</span> <span class='st'>"unique"</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span>)
 
-<span class='fu'>dm_update_zoomed</span>(<span class='kw'>dm</span>)
+<span class='fu'>dm_update_zoomed</span>(<span class='va'>dm</span>)
 
-<span class='fu'>dm_discard_zoomed</span>(<span class='kw'>dm</span>)</pre>
+<span class='fu'>dm_discard_zoomed</span>(<span class='va'>dm</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -268,9 +268,9 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 <p>And -- last but not least -- also the tidyr-functions <code><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite()</a></code> and <code><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate()</a></code> are supported for <code>zoomed_dm</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>flights_zoomed</span> <span class='op'>&lt;-</span> <span class='fu'>dm_zoom_to</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='kw'>flights</span>)
+    <pre class="examples"><div class='input'><span class='va'>flights_zoomed</span> <span class='op'>&lt;-</span> <span class='fu'>dm_zoom_to</span>(<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(), <span class='va'>flights</span>)
 
-<span class='kw'>flights_zoomed</span>
+<span class='va'>flights_zoomed</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
@@ -288,15 +288,15 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 #&gt; </span><span style='color: #555555;'># … with 11,217 more rows, and 11 more variables: arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span></div><div class='input'>
-<span class='kw'>flights_zoomed_transformed</span> <span class='op'>&lt;-</span>
-  <span class='kw'>flights_zoomed</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(am_pm_dep = <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>dep_time</span> <span class='op'>&lt;</span> <span class='fl'>1200</span>, <span class='st'>"am"</span>, <span class='st'>"pm"</span>)) <span class='op'>%&gt;%</span>
+<span class='va'>flights_zoomed_transformed</span> <span class='op'>&lt;-</span>
+  <span class='va'>flights_zoomed</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(am_pm_dep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='va'>dep_time</span> <span class='op'>&lt;</span> <span class='fl'>1200</span>, <span class='st'>"am"</span>, <span class='st'>"pm"</span>)) <span class='op'>%&gt;%</span>
   <span class='co'># `by`-argument of `left_join()` can be explicitly given</span>
   <span class='co'># otherwise the key-relation is used</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span>(<span class='kw'>airports</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='kw'>year</span><span class='op'>:</span><span class='kw'>dep_time</span>, <span class='kw'>am_pm_dep</span>, <span class='fu'>everything</span>())
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span>(<span class='va'>airports</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='va'>year</span><span class='op'>:</span><span class='va'>dep_time</span>, <span class='va'>am_pm_dep</span>, <span class='fu'>everything</span>())
 
-<span class='kw'>flights_zoomed_transformed</span>
+<span class='va'>flights_zoomed_transformed</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># Zoomed table: flights</span><span>
 #&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 27</span><span>
 #&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
@@ -317,7 +317,7 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 #&gt; </span><span style='color: #555555;'>#   time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, lat </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lon </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, alt </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, tz </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   dst </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, tzone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># replace table `flights` with the zoomed table</span>
-<span class='kw'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
+<span class='va'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_update_zoomed</span>()
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -325,7 +325,7 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 #&gt; Primary keys: 3
 #&gt; Foreign keys: 3</div><div class='input'>
 <span class='co'># insert the zoomed table as a new table</span>
-<span class='kw'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
+<span class='va'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_insert_zoomed</span>(<span class='st'>"extended_flights"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_draw.html'>dm_draw</a></span>()
 </div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -442,7 +442,7 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 </svg>
 <div class='input'>
 <span class='co'># discard the zoomed table</span>
-<span class='kw'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
+<span class='va'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_discard_zoomed</span>()
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`

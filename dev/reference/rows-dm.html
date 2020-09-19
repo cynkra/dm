@@ -234,17 +234,17 @@ only for tables in <code>dm</code>.
 The order in which the tables are processed is reversed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_rows_insert</span>(<span class='kw'>x</span>, <span class='kw'>y</span>, <span class='kw'>...</span>, in_place = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>dm_rows_insert</span>(<span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>dm_rows_update</span>(<span class='kw'>x</span>, <span class='kw'>y</span>, <span class='kw'>...</span>, in_place = <span class='kw'>NULL</span>)
+<span class='fu'>dm_rows_update</span>(<span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>dm_rows_patch</span>(<span class='kw'>x</span>, <span class='kw'>y</span>, <span class='kw'>...</span>, in_place = <span class='kw'>NULL</span>)
+<span class='fu'>dm_rows_patch</span>(<span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>dm_rows_upsert</span>(<span class='kw'>x</span>, <span class='kw'>y</span>, <span class='kw'>...</span>, in_place = <span class='kw'>NULL</span>)
+<span class='fu'>dm_rows_upsert</span>(<span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>dm_rows_delete</span>(<span class='kw'>x</span>, <span class='kw'>y</span>, <span class='kw'>...</span>, in_place = <span class='kw'>NULL</span>)
+<span class='fu'>dm_rows_delete</span>(<span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>dm_rows_truncate</span>(<span class='kw'>x</span>, <span class='kw'>y</span>, <span class='kw'>...</span>, in_place = <span class='kw'>NULL</span>)</pre>
+<span class='fu'>dm_rows_truncate</span>(<span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span>, in_place <span class='op'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -278,91 +278,91 @@ and <code>x</code> is returned, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Establish database connection:</span>
-<span class='kw'>sqlite</span> <span class='op'>&lt;-</span> <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw'>RSQLite</span>::<span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>())
+<span class='va'>sqlite</span> <span class='op'>&lt;-</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>())
 
 <span class='co'># Entire dataset with all dimension tables populated</span>
 <span class='co'># with flights and weather data truncated:</span>
-<span class='kw'>flights_init</span> <span class='op'>&lt;-</span>
+<span class='va'>flights_init</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='kw'>flights</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='fl'>FALSE</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='va'>flights</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='cn'>FALSE</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='kw'>weather</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='fl'>FALSE</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='va'>weather</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='cn'>FALSE</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span>()
 
 <span class='co'># Target database:</span>
-<span class='kw'>flights_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='kw'>sqlite</span>, <span class='kw'>flights_init</span>, temporary = <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='kw'>flights_sqlite</span>))
+<span class='va'>flights_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='va'>sqlite</span>, <span class='va'>flights_init</span>, temporary <span class='op'>=</span> <span class='cn'>FALSE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='va'>flights_sqlite</span>))
 </div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458        0     3322        0 </div><div class='input'>
 <span class='co'># First update:</span>
-<span class='kw'>flights_jan</span> <span class='op'>&lt;-</span>
+<span class='va'>flights_jan</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(<span class='kw'>flights</span>, <span class='kw'>weather</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='kw'>flights</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>month</span> <span class='op'>==</span> <span class='fl'>1</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(<span class='va'>flights</span>, <span class='va'>weather</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='va'>flights</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='kw'>weather</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>month</span> <span class='op'>==</span> <span class='fl'>1</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='va'>weather</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='va'>month</span> <span class='op'>==</span> <span class='fl'>1</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='kw'>flights_jan</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='va'>flights_jan</span>))
 </div><div class='output co'>#&gt; flights weather 
 #&gt;     932      72 </div><div class='input'>
 <span class='co'># Copy to temporary tables on the target database:</span>
-<span class='kw'>flights_jan_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='kw'>sqlite</span>, <span class='kw'>flights_jan</span>)
+<span class='va'>flights_jan_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='va'>sqlite</span>, <span class='va'>flights_jan</span>)
 
 <span class='co'># Dry run by default:</span>
-<span class='fu'>dm_rows_insert</span>(<span class='kw'>flights_sqlite</span>, <span class='kw'>flights_jan_sqlite</span>)
+<span class='fu'>dm_rows_insert</span>(<span class='va'>flights_sqlite</span>, <span class='va'>flights_jan_sqlite</span>)
 </div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
 #&gt; src:  sqlite 3.30.1 []
 #&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
 #&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='kw'>flights_sqlite</span>))
+#&gt; Foreign keys: 3</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='va'>flights_sqlite</span>))
 </div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458        0     3322        0 </div><div class='input'>
 <span class='co'># Explicitly request persistence:</span>
-<span class='fu'>dm_rows_insert</span>(<span class='kw'>flights_sqlite</span>, <span class='kw'>flights_jan_sqlite</span>, in_place = <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='kw'>flights_sqlite</span>))
+<span class='fu'>dm_rows_insert</span>(<span class='va'>flights_sqlite</span>, <span class='va'>flights_jan_sqlite</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='va'>flights_sqlite</span>))
 </div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458      932     3322       72 </div><div class='input'>
 <span class='co'># Second update:</span>
-<span class='kw'>flights_feb</span> <span class='op'>&lt;-</span>
+<span class='va'>flights_feb</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(<span class='kw'>flights</span>, <span class='kw'>weather</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='kw'>flights</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>month</span> <span class='op'>==</span> <span class='fl'>2</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_select_tbl.html'>dm_select_tbl</a></span>(<span class='va'>flights</span>, <span class='va'>weather</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='va'>flights</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='va'>month</span> <span class='op'>==</span> <span class='fl'>2</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='kw'>weather</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>month</span> <span class='op'>==</span> <span class='fl'>2</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span>(<span class='va'>weather</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='va'>month</span> <span class='op'>==</span> <span class='fl'>2</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_zoom_to.html'>dm_update_zoomed</a></span>()
 
 <span class='co'># Copy to temporary tables on the target database:</span>
-<span class='kw'>flights_feb_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='kw'>sqlite</span>, <span class='kw'>flights_feb</span>)
+<span class='va'>flights_feb_sqlite</span> <span class='op'>&lt;-</span> <span class='fu'><a href='copy_dm_to.html'>copy_dm_to</a></span>(<span class='va'>sqlite</span>, <span class='va'>flights_feb</span>)
 
 <span class='co'># Explicit dry run:</span>
-<span class='kw'>flights_new</span> <span class='op'>&lt;-</span> <span class='fu'>dm_rows_insert</span>(
-  <span class='kw'>flights_sqlite</span>,
-  <span class='kw'>flights_feb_sqlite</span>,
-  in_place = <span class='fl'>FALSE</span>
+<span class='va'>flights_new</span> <span class='op'>&lt;-</span> <span class='fu'>dm_rows_insert</span>(
+  <span class='va'>flights_sqlite</span>,
+  <span class='va'>flights_feb_sqlite</span>,
+  in_place <span class='op'>=</span> <span class='cn'>FALSE</span>
 )
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='kw'>flights_new</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='va'>flights_new</span>))
 </div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16     1458     1761     3322      144 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='kw'>flights_sqlite</span>))
+#&gt;       16     1458     1761     3322      144 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='va'>flights_sqlite</span>))
 </div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458      932     3322       72 </div><div class='input'>
 <span class='co'># Check for consistency before applying:</span>
-<span class='kw'>flights_new</span> <span class='op'>%&gt;%</span>
+<span class='va'>flights_new</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_examine_constraints.html'>dm_examine_constraints</a></span>()
 </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</div><div class='input'>
 <span class='co'># Apply:</span>
-<span class='fu'>dm_rows_insert</span>(<span class='kw'>flights_sqlite</span>, <span class='kw'>flights_feb_sqlite</span>, in_place = <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='kw'>flights_sqlite</span>))
+<span class='fu'>dm_rows_insert</span>(<span class='va'>flights_sqlite</span>, <span class='va'>flights_feb_sqlite</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span>(<span class='va'>flights_sqlite</span>))
 </div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
 #&gt;       16     1458     1761     3322      144 </div><div class='input'>
-<span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>sqlite</span>)
+<span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='va'>sqlite</span>)
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
