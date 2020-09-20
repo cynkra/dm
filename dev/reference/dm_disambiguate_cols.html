@@ -176,7 +176,7 @@
     <p>This function ensures that all columns in a <code>dm</code> have unique names.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_disambiguate_cols</span>(<span class='va'>dm</span>, sep <span class='op'>=</span> <span class='st'>"."</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_disambiguate_cols</span><span class='op'>(</span><span class='va'>dm</span>, sep <span class='op'>=</span> <span class='st'>"."</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,8 +209,8 @@ because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_disambiguate_cols</span>()
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_disambiguate_cols</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span>
 #&gt; <span class='message'>* year -&gt; flights.year, planes.year, weather.year</span>

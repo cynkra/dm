@@ -178,7 +178,7 @@ of a table." />
 of a table.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_get_referencing_tables</span>(<span class='va'>dm</span>, <span class='va'>table</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_get_referencing_tables</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,10 +203,10 @@ key of <code>table</code>.</p>
 <code><a href='dm_is_referenced.html'>dm_is_referenced</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_get_referencing_tables</span>(<span class='va'>airports</span>)
-</div><div class='output co'>#&gt; [1] "flights"</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_get_referencing_tables</span>(<span class='va'>flights</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_get_referencing_tables</span><span class='op'>(</span><span class='va'>airports</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "flights"</div><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_get_referencing_tables</span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; character(0)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
