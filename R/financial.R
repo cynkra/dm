@@ -17,29 +17,7 @@
 dm_financial <- function() {
   stopifnot(rlang::is_installed("RMariaDB"))
 
-  my_db <- try(
-    DBI::dbConnect(
-      RMariaDB::MariaDB(),
-      username = "guest",
-      password = "relational",
-      dbname = "Financial_ijs",
-      host = "relational.fit.cvut.cz"
-    ),
-    silent = TRUE
-  )
-
-  if (inherits(my_db, "try-error")) {
-    my_db <- try(
-      DBI::dbConnect(
-        RMariaDB::MariaDB(),
-        username = "student",
-        password = "tx5mvyRQqD",
-        dbname = "loan_application",
-        host = "db-edu.pacha.dev"
-      ),
-      silent = TRUE
-    )
-  }
+  my_db <- financial_db_con()
 
   my_dm <-
     dm_from_src(my_db, learn_keys = FALSE) %>%
