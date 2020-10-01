@@ -112,7 +112,7 @@ test_that("getter", {
 })
 
 test_that("datamodel-code for drawing", {
-  data_model_for_filter <- dm_get_data_model(dm_for_filter())
+  data_model_for_filter <- dm_get_data_model(dm_for_filter(), "column")
 
   expect_s3_class(
     data_model_for_filter,
@@ -154,7 +154,7 @@ test_that("helpers", {
       "tf_6", 2L, "o"
     )
   )
-  
+
   expect_identical(
     dm_get_all_column_types(dm_for_filter()),
     tibble::tribble(
