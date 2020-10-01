@@ -93,7 +93,7 @@ dm_get_data_model <- function(x) {
     mutate(key = 1L)
 
   types <- dm_get_all_column_types(x)
-  
+
   columns <-
     dm_get_all_columns(x) %>%
     left_join(types, by = c("table", "column")) %>%
@@ -118,12 +118,19 @@ dm_get_all_columns <- function(x) {
     unnest(value)
 }
 
-dm_get_all_column_types <- function(x) {
-  first_class <- function(x) class(x)[1]
-  types_tbl <- function(x, y) tibble(table = y, column = colnames(x), type = unname(as_vector(x)))
-  dm_get_tables_impl(x) %>%
-    map(~summarize_all(.x, first_class)) %>%
-    imap_dfr(types_tbl)
+dm_get_all_column_types <- function(dm) {
+  dm %>%
+    dm_get_def() %>%
+    select(table, data) %>%
+    mutate(
+      data = map(
+        data,
+        ~ enframe(as.list(collect(head(.x, 0))), "column")
+      ),
+      .keep = "unused"
+    ) %>%
+    unnest(data) %>%
+    mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
 #' `dm_set_colors()`
