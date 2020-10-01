@@ -85,7 +85,7 @@ dm_create_graph <- function(dm,
                              col_attr = "column",
                              columnArrows = FALSE) {
 
-  data_model <- dm_get_data_model(dm)
+  data_model <- dm_get_data_model(dm, col_attr)
 
   g_list <-
     bdm_create_graph_list(
@@ -433,7 +433,7 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
 #' data model object for drawing.
 #'
 #' @noRd
-dm_get_data_model <- function(x) {
+dm_get_data_model <- function(x, col_attr) {
   def <- dm_get_def(x)
 
   tables <- data.frame(
@@ -453,11 +453,14 @@ dm_get_data_model <- function(x) {
     dm_get_data_model_pks(x) %>%
     mutate(key = 1L)
 
-  types <- dm_get_all_column_types(x)
+  if ("type" %in% col_attr) {
+    types <- dm_get_all_column_types(x)
+  } else {
+    types <- dm_get_all_columns(x)
+  }
 
   columns <-
-    dm_get_all_columns(x) %>%
-    left_join(types, by = c("table", "column")) %>%
+    types %>%
     left_join(keys, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
     left_join(references_for_columns, by = c("table", "column")) %>%
@@ -479,17 +482,15 @@ dm_get_all_columns <- function(x) {
     unnest(value)
 }
 
-dm_get_all_column_types <- function(dm) {
-  dm %>%
-    dm_get_def() %>%
-    select(table, data) %>%
-    mutate(
-      data = map(
-        data,
-        ~ enframe(as.list(collect(head(.x, 0))), "column")
-      ),
-      .keep = "unused"
+dm_get_all_column_types <- function(x) {
+  dm_get_tables_impl(x) %>%
+    map(
+      ~ mutate(
+        enframe(as.list(collect(head(.x, 0))), "column"),
+        id = row_number()
+      )
     ) %>%
-    unnest(data) %>%
+    enframe("table") %>%
+    unnest(value) %>%
     mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
