@@ -39,8 +39,8 @@ messages.}
 The initial \code{dm} with the additional table(s).
 }
 \description{
-\code{dm_add_tbl()} adds one or more tables to a \code{\link{dm}}.
-It uses \code{\link[=mutate]{mutate()}} semantics.
+Adds one or more new tables to a \code{\link{dm}}.
+Existing tables are not overwritten.
 }
 \examples{
 dm() \%>\%
@@ -51,5 +51,5 @@ dm() \%>\%
   dm_add_tbl(new_tbl = mtcars, new_tbl = iris)
 }
 \seealso{
-\code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
+\code{\link[=dm_mutate_tbl]{dm_mutate_tbl()}}, \code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
 }
