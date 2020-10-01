@@ -130,10 +130,10 @@ test_that("dm_mutate_tbl() works", {
       dm_mutate_tbl(
         tf_1 = dm_for_filter_w_cycle()$tf_1,
         tf_7 = dm_for_filter_w_cycle()$tf_7 %>%
-          filter(FALSE)
+          filter(0L == 1L)
       ),
     dm_for_filter_w_cycle() %>%
-      dm_filter(tf_7, FALSE)
+      dm_filter(tf_7, 0L == 1L)
   )
 
   # Table doesn't exist yet
