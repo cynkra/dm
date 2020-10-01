@@ -1,3 +1,8 @@
+# dm 0.1.7.9001
+
+- New `dm_mutate_tbl()` (#448).
+
+
 # dm 0.1.7.9000
 
 - Internal changes only.
