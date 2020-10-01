@@ -49,10 +49,8 @@ dm_draw <- function(dm,
     return(invisible(NULL))
   }
 
-  data_model <- dm_get_data_model(dm)
-
-  graph <- bdm_create_graph(
-    data_model,
+  graph <- dm_create_graph(
+    dm,
     rankdir = rankdir,
     col_attr = col_attr,
     view_type = view_type,
@@ -64,73 +62,6 @@ dm_draw <- function(dm,
     graph_name = graph_name
   )
   bdm_render_graph(graph)
-}
-
-#' Get data_model
-#'
-#' `dm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
-#' data model object for drawing.
-#'
-#' @noRd
-dm_get_data_model <- function(x) {
-  def <- dm_get_def(x)
-
-  tables <- data.frame(
-    table = def$table,
-    segment = def$segment,
-    display = def$display,
-    stringsAsFactors = FALSE
-  )
-
-  references_for_columns <- dm_get_data_model_fks(x)
-
-  references <-
-    references_for_columns %>%
-    mutate(ref_id = row_number(), ref_col_num = 1L)
-
-  keys <-
-    dm_get_data_model_pks(x) %>%
-    mutate(key = 1L)
-
-  types <- dm_get_all_column_types(x)
-
-  columns <-
-    dm_get_all_columns(x) %>%
-    left_join(types, by = c("table", "column")) %>%
-    left_join(keys, by = c("table", "column")) %>%
-    mutate(key = coalesce(key, 0L)) %>%
-    left_join(references_for_columns, by = c("table", "column")) %>%
-    # for compatibility with print method from {datamodelr}
-    as.data.frame()
-
-  new_data_model(
-    tables,
-    columns,
-    references
-  )
-}
-
-dm_get_all_columns <- function(x) {
-  dm_get_tables_impl(x) %>%
-    map(colnames) %>%
-    map(~ enframe(., "id", "column")) %>%
-    enframe("table") %>%
-    unnest(value)
-}
-
-dm_get_all_column_types <- function(dm) {
-  dm %>%
-    dm_get_def() %>%
-    select(table, data) %>%
-    mutate(
-      data = map(
-        data,
-        ~ enframe(as.list(collect(head(.x, 0))), "column")
-      ),
-      .keep = "unused"
-    ) %>%
-    unnest(data) %>%
-    mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
 #' `dm_set_colors()`
