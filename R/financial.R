@@ -10,14 +10,16 @@
 #'
 #' @return A `dm` object.
 #'
+#' @inheritParams financial_db_con
 #' @export
 #' @examplesIf dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")
 #' dm_financial() %>%
 #'   dm_draw()
-dm_financial <- function() {
+dm_financial <- function(source = "relational.fit") {
+  stopifnot(is.character(source))
   stopifnot(rlang::is_installed("RMariaDB"))
 
-  my_db <- financial_db_con()
+  my_db <- financial_db_con(source)
 
   my_dm <-
     dm_from_src(my_db, learn_keys = FALSE) %>%

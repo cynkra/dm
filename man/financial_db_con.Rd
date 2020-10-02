@@ -17,8 +17,3 @@ A \code{MariaDBConnection} object
 Connects to relational.fit.cvut.cz unless the service is
 unavailable, in which case db-edu.pacha.dev is used as a fallback
 }
-\examples{
-\dontshow{if (dm:::dm_has_financial() && rlang::is_installed("RMariaDB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-financial_db_con()
-\dontshow{\}) # examplesIf}
-}

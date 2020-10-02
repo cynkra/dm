@@ -4,9 +4,6 @@
 #' @param source (type: character) which service to use, by default is
 #' "relational.fit" but it can be set to "db-edu" as well
 #' @return A `MariaDBConnection` object
-#' @export
-#' @examplesIf dm:::dm_has_financial() && rlang::is_installed("RMariaDB")
-#' financial_db_con()
 financial_db_con <- function(source = "relational.fit") {
   stopifnot(any(source %in% c("relational.fit","db-edu")))
 
@@ -31,12 +28,12 @@ financial_db_con <- function(source = "relational.fit") {
   }
 
   if (source == "relational.fit") {
-    con <- tryCatch(relational_con(), silent = TRUE)
-    if (inherits(my_db, "try-error")) {
-      con <- tryCatch(dbedu_con(), silent = TRUE)
+    con <- tryCatch(relational_con(), error = identity)
+    if (inherits(con, "error")) {
+      con <- tryCatch(dbedu_con(), error = identity)
     }
   } else {
-    con <- tryCatch(dbedu_con(), silent = TRUE)
+    con <- tryCatch(dbedu_con(), error = identity)
   }
 
   return(con)
