@@ -219,8 +219,8 @@
 <div id="api-draft" class="section level3">
 <h3 class="hasAnchor">
 <a href="#api-draft" class="anchor"></a>API draft</h3>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="va">dm_insert</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm_insert</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, <span class="va">...</span>, <span class="va">dry_run</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu">check_dots_empty</span><span class="op">(</span><span class="op">)</span>
 
   <span class="fu">dm_persist</span><span class="op">(</span><span class="va">target_dm</span>, <span class="va">dm</span>, operation <span class="op">=</span> <span class="va">tbl_insert</span>, top_down <span class="op">=</span> <span class="cn">TRUE</span>, dry_run <span class="op">=</span> <span class="va">dry_run</span><span class="op">)</span>
@@ -286,7 +286,7 @@
   <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>, <span class="va">def</span><span class="op">$</span><span class="va">table</span><span class="op">)</span>
   <span class="va">def</span><span class="op">[</span><span class="va">idx</span>, <span class="st">"data"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html">unname</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>
   <span class="fu">new_dm3</span><span class="op">(</span><span class="va">def</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 </div>
 </div>
   </div>
