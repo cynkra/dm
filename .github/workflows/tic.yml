@@ -35,21 +35,21 @@ jobs:
           # [Custom matrix env var]
           - { os: windows-latest, r: "release", id: "default" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
+          - { os: ubuntu-16.04, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 4.0, id: "default" }
+          - { os: ubuntu-16.04, r: 4.0, id: "default" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.6, id: "default" }
+          - { os: ubuntu-16.04, r: 3.6, id: "default" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.5, id: "default" }
+          - { os: ubuntu-16.04, r: 3.5, id: "default" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.4, id: "default" }
+          - { os: ubuntu-16.04, r: 3.4, id: "default" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: 3.3, id: "default" }
+          - { os: ubuntu-16.04, r: 3.3, id: "default" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", TIC_ONLY_IMPORTS: true, id: "TIC_ONLY_IMPORTS" }
+          - { os: ubuntu-16.04, r: "release", TIC_ONLY_IMPORTS: true, id: "TIC_ONLY_IMPORTS" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "release", TIC_CHECK_FINANCIAL: true, id: "TIC_CHECK_FINANCIAL" }
+          - { os: ubuntu-16.04, r: "release", TIC_CHECK_FINANCIAL: true, id: "TIC_CHECK_FINANCIAL" }
 
     env:
       # [Custom env var]
@@ -116,8 +116,8 @@ jobs:
         uses: pat-s/always-upload-cache@v2.0.0
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-1-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-1-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
+          key: ${{ matrix.config.os }}-r-${{ matrix.config.r }}-2-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
+          restore-keys: ${{ matrix.config.os }}-r-${{ matrix.config.r }}-2-${{ steps.date.outputs.date }}-${{ matrix.config.cache }}-${{ matrix.config.id }}
 
       # install ccache and write config file
       - name: "[Linux] Prepare"
