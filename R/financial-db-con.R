@@ -5,7 +5,7 @@
 #' "relational.fit" but it can be set to "db-edu" as well
 #' @return A `MariaDBConnection` object
 financial_db_con <- function(source = "relational.fit") {
-  stopifnot(any(source %in% c("relational.fit","db-edu")))
+  stopifnot(all(source %in% c("relational.fit", "db-edu")))
 
   relational_con <- function() {
     DBI::dbConnect(
