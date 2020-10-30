@@ -1,4 +1,5 @@
 > dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints() %>% as_tibble()
+# A tibble: 7 x 6
   table   kind  columns ref_table is_key problem                                
   <chr>   <chr> <keys>  <chr>     <lgl>  <chr>                                  
 1 flights FK    dest    airports  FALSE  "242 entries (2.2%) of `flights$dest` ~
