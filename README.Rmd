@@ -1,6 +1,6 @@
 ---
 output:
-  github_document:
+  downlit::readme_document:
     html_preview: false
 ---
 
@@ -15,9 +15,6 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%")
-
-fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
-options(crayon.enabled = TRUE, width = 75, cli.width = 75, pillar.bold = TRUE)
 
 knit_print.grViz <- function(x, ..., options) {
   svg <- DiagrammeRsvg::export_svg(x)

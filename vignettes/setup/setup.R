@@ -1,11 +1,11 @@
 knitr::opts_chunk$set(
-  error = (Sys.getenv("IN_PKGDOWN") == ""),
+  error = (Sys.getenv("IN_PKGDOWN") == "") || !dm:::dm_has_financial(),
   message = TRUE,
   collapse = TRUE,
   comment = "#>"
 )
 fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
-options(crayon.enabled = TRUE, width = 75, cli.width = 75)
+options(crayon.enabled = knitr::is_html_output(excludes = "gfm"), width = 75, cli.width = 75)
 
 knit_print.grViz <- function(x, ...) {
   x %>%

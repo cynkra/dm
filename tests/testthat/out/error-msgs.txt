@@ -11,7 +11,7 @@ Error: (`elves`, `Rudolph`, `mulled_wine`) not a unique key of `Christmas`.
 Error: Table `laziness` not in `dm` object. Available table names: `hard_work`.
 
 > abort_not_subset_of("playing", "game", "hunting", "game")
-Error: Column `game` of table `playing` contains values (see above) that are not present in column `game` of table `hunting`.
+Error: Column `game` of table `playing` contains values (see examples above) that are not present in column `game` of table `hunting`.
 
 > abort_sets_not_equal(c("A problem occurred",
 +   "And another, even worse problem, occurred shortly after"))

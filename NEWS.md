@@ -1,6 +1,17 @@
-# dm 0.1.6.9000
+# dm 0.1.7.9001
+
+- New `dm_mutate_tbl()` (#448).
+
+
+# dm 0.1.7.9000
 
 - Internal changes only.
+
+
+# dm 0.1.7
+
+- Bump RMariaDB required version to 1.0.10 to work around timeout with `R CMD check`.
+- `dm_from_src()` accepts `schema` argument for MSSQL databases (#367).
 
 
 # dm 0.1.6
