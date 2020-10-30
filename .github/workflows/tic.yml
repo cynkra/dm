@@ -37,6 +37,8 @@ jobs:
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: "release", TIC_ONLY_STYLER: true, id: "TIC_ONLY_STYLER" }
           # [Custom matrix env var]
+          - { os: ubuntu-latest, r: 4.0, id: "default" }
+          # [Custom matrix env var]
           - { os: ubuntu-latest, r: 3.6, id: "default" }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: 3.5, id: "default" }
