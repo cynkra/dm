@@ -4,11 +4,7 @@
 \alias{financial_db_con}
 \title{Connection to SQL Financial Database}
 \usage{
-financial_db_con(source = "relational.fit")
-}
-\arguments{
-\item{source}{(type: character) which service to use, by default is
-"relational.fit" but it can be set to "db-edu" as well}
+financial_db_con()
 }
 \value{
 A \code{MariaDBConnection} object

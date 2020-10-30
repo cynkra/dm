@@ -5,13 +5,9 @@
 \alias{dm_financial_sqlite}
 \title{Creates a dm object for the Financial data}
 \usage{
-dm_financial(source = "relational.fit")
+dm_financial()
 
 dm_financial_sqlite()
-}
-\arguments{
-\item{source}{(type: character) which service to use, by default is
-"relational.fit" but it can be set to "db-edu" as well}
 }
 \value{
 A \code{dm} object.

@@ -15,11 +15,10 @@
 #' @examplesIf dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")
 #' dm_financial() %>%
 #'   dm_draw()
-dm_financial <- function(source = "relational.fit") {
-  stopifnot(is.character(source))
+dm_financial <- function() {
   stopifnot(rlang::is_installed("RMariaDB"))
 
-  my_db <- financial_db_con(source)
+  my_db <- financial_db_con()
 
   my_dm <-
     dm_from_src(my_db, learn_keys = FALSE) %>%
