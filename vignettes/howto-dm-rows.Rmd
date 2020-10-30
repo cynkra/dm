@@ -1,11 +1,11 @@
 ---
-title: "Persistent row-level modifications of a dm"
+title: "Insert, update or remove rows in a database dm"
 date: "`r Sys.Date()`"
 author: James Wondrasek
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{How to: Create a dm object from a database}
+  %\VignetteIndexEntry{How to: Insert, update or remove rows in a database dm}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
