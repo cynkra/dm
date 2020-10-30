@@ -108,10 +108,16 @@ my_dm_total$total_loans %>%
   sql_render()
 ``````
 
+```{r include = FALSE}
+table_remote_name <- ""
+try(table_remote_name <- strsplit(remote_name(my_dm_total_computed$total_loans), " ")[[1]])
+```
+
+
 Note the differences in queries returned by `dbplyr::sql_render()`.
 `my_dm_total$total_loans` is still being lazily evaluated and the full query constructed from the chain of operations that generated it, and is required to run to access it, is still in place.
 Contrast that with `my_dm_total_computed$total_loans` where the query has been realized and accessing its rows requires a simple `SELECT *` statement.
-The table name, ` `r strsplit(remote_name(my_dm_total_computed$total_loans), " ")` `, was automatically generated as the `name` argument was not supplied.
+The table name, ` `r table_remote_name` `, was automatically generated as the `name` argument was not supplied.
 
 `compute()` also works for a zoomed dm (see `vignette("tech-dm-zoom")` to learn about zooming).
 Calling it during a chain of operations will execute all relevant SQL queries up to that point.
