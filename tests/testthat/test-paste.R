@@ -8,7 +8,7 @@ test_that("path argument", {
 
 local_options(lifecycle_verbosity = "warning")
 
-if (rlang::is_installed("nycflights13")) verify_output("out/code_from_paste.txt", {
+if (rlang::is_installed("nycflights13") && getRversion() >= "4.0") verify_output("out/code_from_paste.txt", {
   "empty"
   empty_dm() %>% dm_paste()
 
