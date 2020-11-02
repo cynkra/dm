@@ -130,7 +130,7 @@
       <h1 data-toc-skip>Create a dm object from a database</h1>
                         <h4 class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 class="date">2020-11-01</h4>
+            <h4 class="date">2020-11-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-db.Rmd"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-db.Rmd</code></div>
@@ -458,7 +458,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7f80d270ee40&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x7facb6ed6e40&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></code></pre></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
