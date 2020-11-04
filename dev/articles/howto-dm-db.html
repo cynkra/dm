@@ -130,7 +130,7 @@
       <h1 data-toc-skip>Create a dm object from a database</h1>
                         <h4 class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 class="date">2020-11-03</h4>
+            <h4 class="date">2020-11-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-db.Rmd"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-db.Rmd</code></div>
@@ -299,7 +299,7 @@
   <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Renamed columns:</span>
 <span class="co">#&gt; * date -&gt; loans.date, accounts.date</span>
-<span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.`id` AS `id`, `LHS`.`account_id` AS `account_id`, `LHS`.`loans.date` AS `loans.date`, `LHS`.`amount` AS `amount`, `LHS`.`duration` AS `duration`, `LHS`.`payments` AS `payments`, `LHS`.`status` AS `status`, `RHS`.`district_id` AS `district_id`, `RHS`.`frequency` AS `frequency`, `RHS`.`accounts.date` AS `accounts.date`</span>
+<span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.`id` AS `id`, `account_id`, `loans.date`, `amount`, `duration`, `payments`, `status`, `district_id`, `frequency`, `accounts.date`</span>
 <span class="co">#&gt; FROM (SELECT `id`, `account_id`, `date` AS `loans.date`, `amount`, `duration`, `payments`, `status`</span>
 <span class="co">#&gt; FROM `loans`) `LHS`</span>
 <span class="co">#&gt; LEFT JOIN (SELECT `id`, `district_id`, `frequency`, `date` AS `accounts.date`</span>
@@ -382,7 +382,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">my_dm_total_computed</span><span class="op">$</span><span class="va">total_loans</span></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;dbplyr_010&gt; [?? x 2]</span><span>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;dbplyr_009&gt; [?? x 2]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0 []</span><span>
 #&gt;    account_id total_amount
 #&gt;         </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
@@ -403,7 +403,7 @@
 <span class="va">my_dm_total_computed</span><span class="op">$</span><span class="va">total_loans</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT *</span>
-<span class="co">#&gt; FROM `dbplyr_010`</span></code></pre></div>
+<span class="co">#&gt; FROM `dbplyr_009`</span></code></pre></div>
 <p><code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code> downloads all tables to local data frames.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_local</span> <span class="op">&lt;-</span>
@@ -441,7 +441,7 @@
 <span class="va">my_dm_total_inplace</span><span class="op">$</span><span class="va">total_loans</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT *</span>
-<span class="co">#&gt; FROM `dbplyr_011`</span></code></pre></div>
+<span class="co">#&gt; FROM `dbplyr_010`</span></code></pre></div>
 </div>
 <div id="deploying-a-dm-to-a-database" class="section level2">
 <h2 class="hasAnchor">
@@ -458,7 +458,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7ff6894f9e98&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x7ffb2b227898&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></code></pre></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -513,7 +513,49 @@
 <path fill="none" stroke="#555555" d="M194.5,-11C229.6264,-11 200.4948,-75.0149 222.0668,-88.518"></path><polygon fill="#555555" stroke="#555555" points="221.4498,-91.9714 232,-91 223.1467,-85.1802 221.4498,-91.9714"></polygon></g><!-- tkeys --><g id="node9" class="node"><title>tkeys</title>
 <polygon fill="#efebdd" stroke="transparent" points="28,-34 28,-54 61,-54 61,-34 28,-34"></polygon><text text-anchor="start" x="29.7251" y="-39.4" font-family="Times,serif" font-size="14.00" fill="#000000">tkeys</text><polygon fill="none" stroke="#555555" points="26.5,-33 26.5,-55 61.5,-55 61.5,-33 26.5,-33"></polygon></g></g></svg><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span></code></pre></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">

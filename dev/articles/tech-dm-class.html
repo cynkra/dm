@@ -129,7 +129,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 class="date">2020-11-03</h4>
+            <h4 class="date">2020-11-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-class.Rmd"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -226,7 +226,7 @@
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.33.0 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpkaUSz5/nycflights13.sqlite]
+#&gt; src:  sqlite 3.33.0 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpn2nJdR/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -262,7 +262,7 @@
 <code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
 #&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0
-#&gt; #   [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpkaUSz5/nycflights13.sqlite]</span><span>
+#&gt; #   [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpn2nJdR/nycflights13.sqlite]</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
 #&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
@@ -299,7 +299,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.33.0 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpkaUSz5/nycflights13.sqlite]
+#&gt; src:  sqlite 3.33.0 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpn2nJdR/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -373,7 +373,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.33.0 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpkaUSz5/nycflights13.sqlite]
+#&gt; src:  sqlite 3.33.0 [/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpn2nJdR/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -423,7 +423,51 @@
 <p>Since the primary keys are defined in the <code>dm</code> object, you do not need to provide the referenced column name of <code>ref_table</code>. This is always the primary key column of the table.</p>
 <p>Another function for getting to know your data better (cf. <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> in <a href="#pk">“Primary keys of <code>dm</code> objects”</a>) is <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over foreign key candidates that point from one table to another:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">weather</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">weather</span>, <span class="va">airports</span><span class="op">)</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 15 x 3</span><span>
 #&gt;    columns    candidate why                                                
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                              

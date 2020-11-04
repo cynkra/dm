@@ -129,7 +129,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with dm</h1>
             
-            <h4 class="date">2020-11-03</h4>
+            <h4 class="date">2020-11-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm.Rmd"><code>vignettes/dm.Rmd</code></a></small>
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -345,7 +345,31 @@
 <p><code>dm_examine_constrains()</code> checks all primary and foreign keys and reports if they violate their expected constraints.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
+<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
+<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
+<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
+<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span></code></pre></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
 <p>For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see <code><a href="../articles/tech-dm-low-level.html">vignette("tech-dm-low-level")</a></code>.</p>
