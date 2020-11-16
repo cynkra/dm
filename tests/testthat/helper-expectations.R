@@ -43,9 +43,7 @@ arrange_if_no_list <- function(tbl) {
   if (inherits(tbl, "tbl_dbi")) {
     arrange_all(tbl)
   } else {
-    arrange_if(tbl, function(x) {
-      !is_list(x)
-    })
+    arrange(tbl, across(where(~ !is.list(.))))
   }
 }
 
