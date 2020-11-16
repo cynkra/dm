@@ -49,7 +49,7 @@ that result should be a vector of identifiers of the same length
 as the original table names.
 
 Use a variant of
-\code{table_names = ~ DBI::SQL(dbplyr::in_schema("schema_name", .x))}
+\code{table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))}
 to specify the same schema for all tables.
 Use \code{table_names = identity} with \code{temporary = TRUE}
 to avoid giving temporary tables unique names.
