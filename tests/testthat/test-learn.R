@@ -31,7 +31,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     )
   )
 
-  dm_db_learned_all <- dm_from_src(src_db)
+  dm_db_learned_all <- expect_message(dm_from_src(src_db))
 
   # in case there happen to be other tables in schema "dbo" or "public"
   dm_db_learned <-
@@ -74,7 +74,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     }
   )
 
-  dm_db_learned <- dm_from_src(src_db, schema = schema_name) %>%
+  dm_db_learned <-
+    dm_from_src(src_db, schema = schema_name, learn_keys = TRUE) %>%
     dm_select_tbl(!!!order_of_deletion)
 
   expect_equivalent_dm(
