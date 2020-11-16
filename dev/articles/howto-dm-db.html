@@ -458,7 +458,7 @@
 <span class="co">#&gt;     sqlite_dm &lt;- copy_dm_to(sqlite_db, my_dm, temporary = FALSE)</span>
 <span class="co">#&gt;     sqlite_dm</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7febd1dcd2c0&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x7fed08957e08&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:dm&gt;</span></code></pre></div>
 <p>As demonstrated, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> takes as arguments a {DBI} connection that is the destination, the dm we wish to deploy, and here the <code>temporary</code> argument set to FALSE as this is a deployment and we want it to be permanent. The dm is copied to the DBI connection and a new dm, with the DBI connection as its source, is returned.</p>
 <p>The default behavior is to create temporary tables and, where possible (currently Postgres and SQL server), to set any key constraints.</p>
@@ -513,49 +513,7 @@
 <path fill="none" stroke="#555555" d="M194.5,-11C229.6264,-11 200.4948,-75.0149 222.0668,-88.518"></path><polygon fill="#555555" stroke="#555555" points="221.4498,-91.9714 232,-91 223.1467,-85.1802 221.4498,-91.9714"></polygon></g><!-- tkeys --><g id="node9" class="node"><title>tkeys</title>
 <polygon fill="#efebdd" stroke="transparent" points="28,-34 28,-54 61,-54 61,-34 28,-34"></polygon><text text-anchor="start" x="29.7251" y="-39.4" font-family="Times,serif" font-size="14.00" fill="#000000">tkeys</text><polygon fill="none" stroke="#555555" points="26.5,-33 26.5,-55 61.5,-55 61.5,-33 26.5,-33"></polygon></g></g></svg><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
-<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
-<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
-<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
-<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
-<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
-<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
-<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
-<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
-<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
-<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
-<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
-<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; Warning: Problem with `mutate()` input `problem`.</span>
-<span class="co">#&gt; [34mℹ[39m ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span>
-<span class="co">#&gt; [34mℹ[39m Input `problem` is `pmap_chr(fks_tibble, check_fk)`.</span>
-<span class="co">#&gt; Warning: ORDER BY is ignored in subqueries without LIMIT</span>
-<span class="co">#&gt; [34mℹ[39m Do you need to move arrange() later in the pipeline or use window_order() instead?</span></code></pre></div>
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
 </span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">

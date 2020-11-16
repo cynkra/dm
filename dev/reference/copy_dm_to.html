@@ -242,7 +242,7 @@ The output of this function is processed by <code><a href='https://dbi.r-dbi.org
 that result should be a vector of identifiers of the same length
 as the original table names.</p>
 <p>Use a variant of
-<code>table_names = ~ DBI::SQL(dbplyr::in_schema("schema_name", .x))</code>
+<code>table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))</code>
 to specify the same schema for all tables.
 Use <code>table_names = identity</code> with <code>temporary = TRUE</code>
 to avoid giving temporary tables unique names.</p>
