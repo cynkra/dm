@@ -66,6 +66,7 @@ Suggests:
     fansi,
     keyring,
     knitr,
+    mockr,
     nycflights13,
     odbc,
     RMariaDB (>= 1.0.10),
