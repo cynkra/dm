@@ -2,27 +2,31 @@ test_that("decompose_table() decomposes tables nicely on chosen source", {
   out <- decompose_table(data_ts(), aef_id, a, e, f)
   expect_equivalent_tbl(
     out$parent_table,
-    list_of_data_ts_parent_and_child()$parent_table
+    list_of_data_ts_parent_and_child()$parent_table,
+    # https://github.com/tidyverse/dbplyr/pull/496/files#r523986061
+    across(where(is.integer), as.numeric)
   )
   expect_equivalent_tbl(
     out$child_table,
-    list_of_data_ts_parent_and_child()$child_table
+    list_of_data_ts_parent_and_child()$child_table,
+    # https://github.com/tidyverse/dbplyr/pull/496/files#r523986061
+    across(where(is.integer), as.numeric)
   )
 })
 
-test_that("decompose_table() decomposes tables nicely on chosen source", {
+test_that("decompose_table() decomposes everything() to the original", {
+  out <- decompose_table(data_ts(), abcdef_id, everything())$parent_table
   expect_equivalent_tbl(
-    decompose_table(data_ts(), abcdef_id, a, b, c, d, e, f)$parent_table %>%
-      select(-abcdef_id),
+    out %>% select(-abcdef_id),
     data_ts()
   )
 })
 
 test_that("decomposition works with {tidyselect}", {
-  pt_iris <- select(iris, starts_with("Sepal")) %>%
+  pt_iris <- iris %>%
+    select(starts_with("Sepal")) %>%
     distinct() %>%
-    arrange(Sepal.Length, Sepal.Width) %>%
-    mutate(Sepal_id = row_number()) %>%
+    mutate(Sepal_id = row_number(Sepal.Length)) %>%
     select(Sepal_id, everything())
 
   ct_iris <- left_join(iris, pt_iris, by = c("Sepal.Length", "Sepal.Width")) %>%
@@ -31,12 +35,16 @@ test_that("decomposition works with {tidyselect}", {
   reference_flower_object <- list(
     child_table = ct_iris,
     parent_table = pt_iris
-  ) %>%
-    map(arrange_all)
+  )
 
-  expect_equivalent_tbl_lists(
-    decompose_table(iris, Sepal_id, starts_with("Sepal")) %>% map(arrange_all),
-    reference_flower_object
+  out <- decompose_table(iris, Sepal_id, starts_with("Sepal"))
+  expect_equivalent_tbl(
+    out$parent_table,
+    reference_flower_object$parent_table
+  )
+  expect_equivalent_tbl(
+    out$child_table,
+    reference_flower_object$child_table
   )
 })
 
