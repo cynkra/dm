@@ -19,10 +19,10 @@ test_that("decompose_table() decomposes tables nicely on chosen source", {
 })
 
 test_that("decomposition works with {tidyselect}", {
-  pt_iris <- select(iris, starts_with("Sepal")) %>%
+  pt_iris <- iris %>%
+    select(starts_with("Sepal")) %>%
     distinct() %>%
-    arrange(Sepal.Length, Sepal.Width) %>%
-    mutate(Sepal_id = row_number()) %>%
+    mutate(Sepal_id = row_number(Sepal.Length)) %>%
     select(Sepal_id, everything())
 
   ct_iris <- left_join(iris, pt_iris, by = c("Sepal.Length", "Sepal.Width")) %>%
@@ -31,12 +31,16 @@ test_that("decomposition works with {tidyselect}", {
   reference_flower_object <- list(
     child_table = ct_iris,
     parent_table = pt_iris
-  ) %>%
-    map(arrange_all)
+  )
 
-  expect_equivalent_tbl_lists(
-    decompose_table(iris, Sepal_id, starts_with("Sepal")) %>% map(arrange_all),
-    reference_flower_object
+  out <- decompose_table(iris, Sepal_id, starts_with("Sepal"))
+  expect_equivalent_tbl(
+    out$parent_table,
+    reference_flower_object$parent_table
+  )
+  expect_equivalent_tbl(
+    out$child_table,
+    reference_flower_object$child_table
   )
 })
 
