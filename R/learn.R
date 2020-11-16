@@ -298,6 +298,6 @@ nest_compat <- function(.data, ...) {
       mutate(!!new_col := !!nest)
   } else {
     nest(.data, ...) %>%
-      mutate_at(vars(new_col), vctrs::as_list_of)
+      mutate_at(vars(!!!new_col), vctrs::as_list_of)
   }
 }
