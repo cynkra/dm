@@ -8,12 +8,10 @@ test_that("decompose_table() decomposes tables nicely on chosen source", {
     out$child_table,
     list_of_data_ts_parent_and_child()$child_table
   )
-})
 
-test_that("decompose_table() decomposes tables nicely on chosen source", {
+  out <- decompose_table(data_ts(), abcdef_id, a, b, c, d, e, f)$parent_table
   expect_equivalent_tbl(
-    decompose_table(data_ts(), abcdef_id, a, b, c, d, e, f)$parent_table %>%
-      select(-abcdef_id),
+    out %>% select(-abcdef_id),
     data_ts()
   )
 })
