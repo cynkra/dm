@@ -53,22 +53,30 @@ test_that("`dm_examine_constraints()` works", {
   )
 })
 
-if (rlang::is_installed("nycflights13")) verify_output("out/examine-constraints.txt", {
-  dm() %>% dm_examine_constraints()
+test_that("output", {
+  skip_if_not_installed("nycflights13")
 
-  dm_nycflights13() %>% dm_examine_constraints()
-  dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
-  dm_nycflights13(cycle = TRUE) %>%
-    dm_select_tbl(-flights) %>%
-    dm_examine_constraints()
+  expect_snapshot({
+    dm() %>% dm_examine_constraints()
 
-  "n column"
-  dm_for_filter_w_cycle() %>%
-    dm_examine_constraints()
+    dm_nycflights13() %>% dm_examine_constraints()
+    dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
+    dm_nycflights13(cycle = TRUE) %>%
+      dm_select_tbl(-flights) %>%
+      dm_examine_constraints()
+
+    "n column"
+    dm_for_filter_w_cycle() %>%
+      dm_examine_constraints()
+  })
 })
 
-if (rlang::is_installed("nycflights13")) verify_output("out/examine-constraints-as-tibble.txt", {
-  dm_nycflights13(cycle = TRUE) %>%
-    dm_examine_constraints() %>%
-    as_tibble()
+test_that("output as tibble", {
+  skip_if_not_installed("nycflights13")
+
+  expect_snapshot({
+    dm_nycflights13(cycle = TRUE) %>%
+      dm_examine_constraints() %>%
+      as_tibble()
+  })
 })
