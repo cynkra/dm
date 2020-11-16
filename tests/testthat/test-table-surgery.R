@@ -2,14 +2,20 @@ test_that("decompose_table() decomposes tables nicely on chosen source", {
   out <- decompose_table(data_ts(), aef_id, a, e, f)
   expect_equivalent_tbl(
     out$parent_table,
-    list_of_data_ts_parent_and_child()$parent_table
+    list_of_data_ts_parent_and_child()$parent_table,
+    # https://github.com/tidyverse/dbplyr/pull/496/files#r523986061
+    across(where(is.integer), as.numeric)
   )
   expect_equivalent_tbl(
     out$child_table,
-    list_of_data_ts_parent_and_child()$child_table
+    list_of_data_ts_parent_and_child()$child_table,
+    # https://github.com/tidyverse/dbplyr/pull/496/files#r523986061
+    across(where(is.integer), as.numeric)
   )
+})
 
-  out <- decompose_table(data_ts(), abcdef_id, a, b, c, d, e, f)$parent_table
+test_that("decompose_table() decomposes everything() to the original", {
+  out <- decompose_table(data_ts(), abcdef_id, everything())$parent_table
   expect_equivalent_tbl(
     out %>% select(-abcdef_id),
     data_ts()
