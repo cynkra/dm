@@ -1,3 +1,10 @@
+# dm 0.1.7.9002
+
+- New `vignette("howto-dm-copy", package = "dm")` and `vignette("howto-dm-rows", package = "dm")` discuss updating data on the database. In part derived from `vignette("howto-dm-db", package = "dm")` (#411, @jawond).
+- use testthat 3e (#455).
+- `dm_financial()` falls back to db-edu.pacha.dev if relational.fit.cvut.cz is unavailable (#446, @pachamaltese).
+
+
 # dm 0.1.7.9001
 
 - New `dm_mutate_tbl()` (#448).
