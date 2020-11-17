@@ -156,12 +156,16 @@ navbar:
     href: reference/index.html
   - text: Tutorials
     menu:
-    - text: Create a dm object from a database
-      href: articles/howto-dm-db.html
-    - text: Create a dm object from data frames
-      href: articles/howto-dm-df.html
     - text: Introduction to relational data models
       href: articles/howto-dm-theory.html
+    - text: Create a dm object from data frames
+      href: articles/howto-dm-df.html
+    - text: Create a dm object from a database
+      href: articles/howto-dm-db.html
+    - text: Copy data to and from a database
+      href: articles/howto-dm-copy.html
+    - text: Insert, update or remove rows in a database
+      href: articles/howto-dm-rows.html
   - text: Technical articles
     menu:
     - text: Joining in relational data models

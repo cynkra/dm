@@ -1,11 +1,11 @@
 ---
-title: "Copying a dm into an RDBMS"
+title: "Copy tables to and from a database"
 date: "`r Sys.Date()`"
 author: James Wondrasek, Kirill Müller
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{How to: Move a dm object into a database}
+  %\VignetteIndexEntry{How to: Copy data to and from a database}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console

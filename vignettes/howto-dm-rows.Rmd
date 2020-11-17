@@ -5,7 +5,7 @@ author: James Wondrasek
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{How to: Insert, update or remove rows in a database dm}
+  %\VignetteIndexEntry{How to: Insert, update or remove rows in a database}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
