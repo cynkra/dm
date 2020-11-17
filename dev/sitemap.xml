@@ -166,10 +166,16 @@
     <loc>https://krlmlr.github.io/dm/articles/dm.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/articles/howto-dm-copy.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/articles/howto-dm-db.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/howto-dm-df.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/articles/howto-dm-rows.html</loc>
   </url>
   <url>
     <loc>https://krlmlr.github.io/dm/articles/howto-dm-theory.html</loc>

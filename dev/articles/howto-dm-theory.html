@@ -59,13 +59,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
     <li>
       <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
     </li>
   </ul>
 </li>
@@ -145,6 +151,7 @@
 <li><a href="#model">Data Model</a></li>
 <li><a href="#pk">Primary Keys</a></li>
 <li><a href="#fk">Foreign Keys</a></li>
+<li><a href="#referential-integrity">Referential Integrity</a></li>
 <li><a href="#normalization">Normalization</a></li>
 <li><a href="#relational-databases">Relational Databases</a></li>
 </ol>
@@ -330,9 +337,15 @@
 <span class="co">#&gt; [1] "carrier"</span></code></pre></div>
 <p>Further Reading: All {dm} functions for working with <a href="https://krlmlr.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign keys</a>.</p>
 </div>
+<div id="referential-integrity" class="section level2">
+<h2 class="hasAnchor">
+<a href="#referential-integrity" class="anchor"></a>5. Referential Integrity</h2>
+<p>A data set has referential integrity if all relations between tables are valid. That is, every foreign key holds a primary key that is present in the parent table. If a foreign key contains a parent table primary key that has been deleted that row is an orphan row and the database no longer has referential integrity.</p>
+<p>{dm} is designed to maintain referential integrity. It will not let you create a child row or table without first creating the parent. For example, in the <code>nycflights13</code> you can’t create a flight for an airline that does not have an entry in the <code>airlines</code> table. Conversely, you cannot delete the row for an airline from the <code>airlines</code> table until all related flights are deleted. For more information on deleting individual rows and other row-level operations see <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code>.</p>
+</div>
 <div id="normalization" class="section level2">
 <h2 class="hasAnchor">
-<a href="#normalization" class="anchor"></a>5. Normalization</h2>
+<a href="#normalization" class="anchor"></a>6. Normalization</h2>
 <p>Normalization is a technical term that describes the <strong>central design principle of a relational data model</strong>: splitting data into multiple tables.</p>
 <p>A normalized data schema consists of several relations (tables) that are linked with attributes (columns). The relations can be joined together by means of <a href="#pk">primary</a> and <a href="#fk">foreign keys</a>. The main goal of normalization is to keep data organization as clean and simple as possible by avoiding redundant data entries.</p>
 <p>For example, if you want to change the name of one airport in the <code>nycflights13</code> dataset, you will only need to update a single data value. This principle is sometimes called the <em>single point of truth</em>.</p>
@@ -413,7 +426,7 @@
 </div>
 <div id="relational-databases" class="section level2">
 <h2 class="hasAnchor">
-<a href="#relational-databases" class="anchor"></a>6. Relational Databases</h2>
+<a href="#relational-databases" class="anchor"></a>7. Relational Databases</h2>
 <p>{dm} is built upon relational data models but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases, SQL, short for Structured Querying Language, plays an important role: it was invented for the purpose of querying relational databases.</p>
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>
 <p>Therefore, {dm} can copy data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
