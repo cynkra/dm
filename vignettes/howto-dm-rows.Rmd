@@ -45,6 +45,7 @@ The biggest danger is damaging key relations between data spread across multiple
 `dm_examine_constraints()` will catch errors where primary keys are duplicated or foreign keys do not have a matching primary key (unless the foreign key value is `NA`).
 
 With the changes confirmed, you execute the method again, this time with the argument `in_place = TRUE` to make the changes permanent.
+Note that `in_place = FALSE` is the default: you must opt in to actually change data on the database.
 
 Each method has its own requirements in order to maintain database consistency. 
 These involve constraints on primary key values as they are how rows are identified.
@@ -102,7 +103,7 @@ As `demo_sql` will be the destination dm for the examples, the argument `tempora
 
 ``````{r }
 library(DBI)
-sqlite_db <- DBI::dbConnect(RSQLite::SQLite(":memory:"))
+sqlite_db <- DBI::dbConnect(RSQLite::SQLite())
 demo_sql <- copy_dm_to(sqlite_db, demo_dm, temporary = FALSE)
 demo_sql
 ``````

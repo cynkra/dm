@@ -165,6 +165,7 @@ my_dm_sqlite_resid <-
   dm_add_fk(loans_residuals, id, loans)
 
 my_dm_sqlite_resid %>%
+  dm_set_colors(violet = loans_residuals) %>% 
   dm_draw()
 my_dm_sqlite_resid %>%
   dm_examine_constraints()
@@ -176,12 +177,14 @@ my_dm_sqlite_resid$loans_residuals
 
 Persistence, because it is intended to make permanent changes, requires write access to the source RDBMS.
 The code below is a repeat of the code that opened the [Copying and persisting individual tables](#copying-tables) section at the beginning of the tutorial. 
-It uses the {dm} convenience function `dm_financial()` (introduced in the previous tutorial, `vignette("howto-dm-db")`) to create a dm object corresponding to a data model from a public dataset repository. 
+It uses the {dm} convenience function `dm_financial()` to create a dm object corresponding to a data model from a public dataset repository.
 The dm object is downloaded locally first, before deploying it to a local SQLite database.
 
 `dm_select_tbl()` is used to exclude the transaction table `trans` due to its size, then the `collect()` method retrieves the remaining tables and returns them as a local dm object.
 
 ``````{r }
+dm_financial() %>%
+  dm_nrow()
 fin_dm <-
   dm_financial() %>%
   dm_select_tbl(-trans) %>%
@@ -228,7 +231,7 @@ In `dup_dm` the table is backed by the table `dup_accounts` in the RDBMS.
 `dm_deployed$accounts` shows us that this table is still backed by the `accounts` table from the `copy_dm_to()` operation we performed in the preceding example.
 
 Managing tables in the RDBMS is outside the scope of `dm`. 
-If you find you need to remove tables or perform operations directly on the RDBMS, see the {[DBI](https://www.r-dbi.org/)} package.
+If you find you need to remove tables or perform operations directly on the RDBMS, see the {[DBI](https://dbi.r-dbi.org/)} package.
 
 ## Conclusion
 
