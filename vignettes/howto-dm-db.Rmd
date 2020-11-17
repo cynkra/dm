@@ -167,23 +167,48 @@ my_dm_total <-
   summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
   ungroup() %>%
   dm_insert_zoomed("total_loans")
+``````
 
-my_dm_total$total_loans
+Context is set to the table "loans" using `dm_zoom_to(loans)`.
+You can learn more about zooming in the tutorial `vignette("tech-dm-zoom")`.
+We then use {[dplyr](https://dplyr.tidyverse.org/)} functions on the zoomed table to generate a new summary table.
 
-my_dm_total %>%
+`summarize()` returns a temporary table with one row for each group created by the preceding `group_by()` function.
+The columns in the temporary table are constrained to the columns passed as arguments to the `group_by()` function and the column(s) created by the `summarize()` function.  
+
+`dm_insert_zoomed("total_loans")` adds the temporary table created by `summarize()` to the data model under a new name, `total_loans`.
+Because the grouping variable `account_id` is a primary key, the new derived table is automatically linked to the `accounts` table.
+
+```{r}
+my_dm_total %>% 
+  dm_set_colors(violet = total_loans) %>% 
   dm_draw()
+```
 
+The resulting table `total_loans` can be accessed like any other table in the dm object.
+
+``````{r }
+my_dm_total$total_loans
+``````
+
+It is a *lazy table* powered by the {[dbplyr](https://dbplyr.tidyverse.org/)} package: the results are not materialized, instead an SQL query is built and executed each time the data is requested.
+
+``````{r}
 my_dm_total$total_loans %>%
   sql_render()
 ``````
+
+Use `compute()` on a zoomed table to materialize it to a temporary table and avoid recomputing.
+See `vignette("howto-dm-copy")` for more details. 
+
 
 
 ## Downloading data
 
 When it becomes necessary to move data locally for analysis or reporting, the {dm} method `collect()` is used.
-Operations on dm objects are limited to report only the first ten results.
+Operations on dm objects for databases are limited to report only the first ten results.
 `collect()` forces the evaluation of all SQL queries and the generation of the complete set of results.
-The resulting tables are transferred from the RDBMS and returned as local tibbles.
+The resulting tables are transferred from the RDBMS and stored as local tibbles.
 
 ``````{r }
 my_dm_local <-
@@ -194,18 +219,17 @@ my_dm_local$total_loans
 ``````
 
 Use this method with caution.
-If you are not sure of the size of the dataset you will be downloading you can call `dm_nrow()` on your dm for the row count of your data model's tables. 
+If you are not sure of the size of the dataset you will be downloading you can call `dm_nrow()` on your dm for the row count of your data model's tables.
+
+```{r}
+my_dm_total %>%
+  dm_nrow()
+```
+
 
 ## Persisting results {#persist}
 
-dm implments many of the {dplyr} methods for making changes you have made to the database permanent.
-For example, `compute()` forces the computation of the queries created by a dm object to represent operations that have been performed but not yet evaluated.
-The results of `compute()` are stored in materialized tables on the database server.
-
-For more details on `compute()` as well as methods and techniques for persisting results please read `vignette("howto-dm-copy")`.
-You may also wish to read the `compute()` documentation for more details.
-
-It is just as simple to move a local relational model into an RDBMS as it using `collect()` to download it.
+It is just as simple to move a local relational model into an RDBMS as is using `collect()` to download it.
 The method used is `copy_dm_to()` and it takes as arguments a database connection and a dm object.
 In the example below a local SQLite database is used to demonstrate it, but {dm} is designed to work with any RDBMS supported by {DBI}.
 
@@ -220,7 +244,8 @@ my_dm_local
 
 In the output you can observe that the `src` for `deployed_dm` is the SQLite database, while for `my_dm_local` the source is the local R environment. 
 
-`copy_dm_to()` and `compute()` are covered in more detail in `vignette("howto-dm-copy")`.
+Persisting tables are covered in more detail in `vignette("howto-dm-copy")`.
+
 
 ## Conclusion
 
@@ -228,7 +253,8 @@ In this tutorial we have demonstrated how simple it is to load a database into a
 While loading a dm from most RDBMS currently requires you to manually set key relations, dm provides methods to make this straightforward.
 It is planned that future versions of dm will support automatic key creation for more RDBMS.
 
-The next step is to read `vignette("howto-dm-copy")`, where moving your dm into an RDBMS is covered. 
+The next step is to read `vignette("howto-dm-copy")`, where copying your tables to and from an RDBMS is covered.
+`vignette("howto-dm-rows")` discusses manipulation of individual rows in a database. 
 
 
 ## Further reading

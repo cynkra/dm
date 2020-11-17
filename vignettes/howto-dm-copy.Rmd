@@ -34,7 +34,7 @@ These requirements can be handled using the `compute()` and `copy_to()` methods.
 Calling `compute()` or `copy_to()` requires write permission on the RDBMS, otherwise an error is returned.
 Therefore for the following examples we will instantiate a test dm and move it into a local SQLite database with full permissions.
 {dm} and {dbplyr} are designed so there is no difference between the code used to manipulate a local SQLite database and a remote RDBMS.
-The steps for this will be discussed in more detail in the [Copying a relational model](#copy-model) section.
+The steps for this were already introduced in `vignette("howto-dm-db")` and will be discussed in more detail in the [Copying a relational model](#copy-model) section.
 
 ``````{r }
 library(dm)
@@ -54,7 +54,7 @@ deployed_dm <- copy_dm_to(local_db, fin_dm, temporary = FALSE)
 ## Copying and persisting individual tables {#copying-tables}
 
 As part of your data analysis you may combine tables from multiple sources and create links to existing tables via foreign keys, or create new tables holding data summaries.
-The example below computes the total amount of all loans for each account.
+The example below, already discussed in `vignette("howto-dm-db")`, computes the total amount of all loans for each account.
 
 ``````{r}
 my_dm_total <-
@@ -66,26 +66,9 @@ my_dm_total <-
   dm_insert_zoomed("total_loans")
 ``````
 
-Context is set to the table "loans" using `dm_zoom_to(loans)`.
-You can learn more about zooming in the tutorial `vignette("tech-dm-zoom")`.
-We then use {[dplyr](https://dplyr.tidyverse.org/)} functions on the zoomed table to generate a new summary table.
-
-`summarize()` returns a temporary table with one row for each group created by the preceding `group_by()` function.
-The columns in the temporary table are constrained to the columns passed as arguments to the `group_by()` function and the column(s) created by the `summarize()` function.  
-
-`dm_insert_zoomed("total_loans")` adds the temporary table created by `summarize()` to the data model under a new name, `total_loans`.
-Because the grouping variable `account_id` is a primary key, the new derived table is automatically linked to the `accounts` table.
-
-```{r}
-my_dm_total %>% 
-  dm_set_colors(violet = total_loans) %>% 
-  dm_draw()
-```
-
 The derived table `total_loans` is a *lazy table* powered by the {[dbplyr](https://dbplyr.tidyverse.org/)} package: the results are not materialized, instead an SQL query is built and executed each time the data is requested.
 
 ``````{r}
-my_dm_total$total_loans
 my_dm_total$total_loans %>%
   sql_render()
 ``````
@@ -188,15 +171,8 @@ my_dm_sqlite_resid$loans_residuals
 
 Persistence, because it is intended to make permanent changes, requires write access to the source RDBMS.
 The code below is a repeat of the code that opened the [Copying and persisting individual tables](#copying-tables) section at the beginning of the tutorial. 
-It uses the {dm} convenience function `dm_financial()` (introduced in the previous tutorial, `vignette("howto-dm")`) to create a dm object corresponding to a data model from a public dataset repository. 
+It uses the {dm} convenience function `dm_financial()` (introduced in the previous tutorial, `vignette("howto-dm-db")`) to create a dm object corresponding to a data model from a public dataset repository. 
 The dm object is downloaded locally first, before deploying it to a local SQLite database.
-
-Before actually downloading any data, we check the number of rows with the `dm_nrow()` function:
-
-```{r}
-dm_financial() %>% 
-  dm_nrow()
-```
 
 `dm_select_tbl()` is used to exclude the transaction table `trans` due to its size, then the `collect()` method retrieves the remaining tables and returns them as a local dm object.
 
