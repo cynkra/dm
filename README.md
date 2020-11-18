@@ -1,6 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# [dm](https://krlmlr.github.io/dm)
+# [dm](https://krlmlr.github.io/dm/)
 
 <!-- badges: start -->
 
