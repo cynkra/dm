@@ -141,7 +141,7 @@ License: MIT © cynkra GmbH.
 
 Funded by:
 
-[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch)
+[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/)
 <span style="padding-right:50px">
 </span>
 [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
