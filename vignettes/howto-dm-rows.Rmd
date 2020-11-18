@@ -97,7 +97,7 @@ dm_examine_constraints(demo_dm)
 ``````
 
 Then we copy `demo_dm` into an SQLite database.
-Note: the default for the method used, `copy_dm_to()`, is to create temporary tables that will be automatically deleted when your sessions ends.
+Note: the default for the method used, `copy_dm_to()`, is to create temporary tables that will be automatically deleted when your session ends.
 As `demo_sql` will be the destination dm for the examples, the argument `temporary = FALSE` is used to make this distinction apparent.
 
 
