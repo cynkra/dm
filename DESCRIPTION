@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.7.9002
-Date: 2020-11-17
+Version: 0.1.8
+Date: 2020-11-18
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",

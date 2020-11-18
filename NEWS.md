@@ -1,3 +1,8 @@
+# dm 0.1.8
+
+- Internal changes only.
+
+
 # dm 0.1.7.9002
 
 - New `vignette("howto-dm-copy", package = "dm")` and `vignette("howto-dm-rows", package = "dm")` discuss updating data on the database. In part derived from `vignette("howto-dm-db", package = "dm")` (#411, @jawond).
