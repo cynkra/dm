@@ -71,11 +71,12 @@ Suggests:
     odbc,
     RMariaDB (>= 1.0.10),
     rmarkdown,
-    RPostgres,
     RSQLite,
     testthat (>= 2.1.0),
     tidyverse,
     withr
+Enhances: 
+    RPostgres
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
