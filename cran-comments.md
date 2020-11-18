@@ -13,6 +13,4 @@ dm 0.1.8
 ## Current CRAN check results
 
 - [x] Checked on 2020-11-18, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [ ] NOTE: r-patched-solaris-x86
-
-Check results at: https://cran.r-project.org/web/checks/check_results_dm.html
+- [x] NOTE: r-patched-solaris-x86: Suggested package can't be installed.
