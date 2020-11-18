@@ -1,4 +1,4 @@
-dm 0.1.8
+dm 0.1.9
 
 ## Cran Repository Policy
 
@@ -7,10 +7,14 @@ dm 0.1.8
 ## R CMD check results
 
 - [x] Checked locally, R 4.0.3
-- [x] Checked on CI system, R 4.0.3
-- [x] Checked on win-builder, R devel
+- [ ] Checked on CI system, R 4.0.3
+- [ ] Checked on win-builder, R devel
+
+Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
 
 ## Current CRAN check results
 
 - [x] Checked on 2020-11-18, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [x] NOTE: r-patched-solaris-x86: Suggested package can't be installed.
+- [ ] NOTE: r-patched-solaris-x86
+
+Check results at: https://cran.r-project.org/web/checks/check_results_dm.html
