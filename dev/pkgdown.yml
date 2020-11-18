@@ -2,8 +2,8 @@ pandoc: 2.7.3
 pkgdown: 1.5.1.9000
 pkgdown_sha: c37e563eaef054183e04defce8fb01321590fb5e
 articles: []
-last_built: 2020-11-18T04:33Z
+last_built: 2020-11-18T12:42Z
 urls:
-  reference: https://krlmlr.github.io/dm/reference
-  article: https://krlmlr.github.io/dm/articles
+  reference: https://krlmlr.github.io/dm//reference
+  article: https://krlmlr.github.io/dm//articles
 
