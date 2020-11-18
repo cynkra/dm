@@ -1,3 +1,8 @@
+# dm 0.1.9.9000
+
+- Move RPostgres to Enhances to avoid R CMD check NOTE on Solaris (#460).
+
+
 # dm 0.1.9
 
 - Move RPostgres to Enhances to avoid R CMD check NOTE on Solaris (#460).
