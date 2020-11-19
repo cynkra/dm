@@ -2,6 +2,7 @@
 #' @description Connects to relational.fit.cvut.cz unless the service is
 #' unavailable, in which case db-edu.pacha.dev is used as a fallback
 #' @return A `MariaDBConnection` object
+#' @noRd
 financial_db_con <- function() {
   err_relational <- tryCatch(return(relational_con()), error = identity)
   err_dbedu <- tryCatch(return(dbedu_con()), error = identity)
