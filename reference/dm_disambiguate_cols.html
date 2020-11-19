@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -100,13 +100,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
     <li>
       <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
     </li>
   </ul>
 </li>
@@ -176,7 +182,7 @@
     <p>This function ensures that all columns in a <code>dm</code> have unique names.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_disambiguate_cols</span>(<span class='kw'>dm</span>, sep = <span class='st'>"."</span>, quiet = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_disambiguate_cols</span><span class='op'>(</span><span class='va'>dm</span>, sep <span class='op'>=</span> <span class='st'>"."</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,8 +215,8 @@ because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_disambiguate_cols</span>()
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_disambiguate_cols</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Renamed columns:</span>
 #&gt; <span class='message'>* name -&gt; airlines.name, airports.name</span>
 #&gt; <span class='message'>* year -&gt; flights.year, planes.year, weather.year</span>
@@ -234,7 +240,7 @@ making that column name "unique" as well.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
 </div>
 
 <div class="pkgdown">

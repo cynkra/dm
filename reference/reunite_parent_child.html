@@ -88,7 +88,7 @@ of the columns is not retained, and the original row names are lost)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -108,13 +108,19 @@ of the columns is not retained, and the original row names are lost)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
     <li>
       <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
     </li>
   </ul>
 </li>
@@ -192,9 +198,9 @@ by the column <code>id_column</code>, <code>id_column</code> is removed.</p>
 of the columns is not retained, and the original row names are lost).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>reunite_parent_child</span>(<span class='kw'>child_table</span>, <span class='kw'>parent_table</span>, <span class='kw'>id_column</span>)
+    <pre class="usage"><span class='fu'>reunite_parent_child</span><span class='op'>(</span><span class='va'>child_table</span>, <span class='va'>parent_table</span>, <span class='va'>id_column</span><span class='op'>)</span>
 
-<span class='fu'>reunite_parent_child_from_list</span>(<span class='kw'>list_of_parent_child_tables</span>, <span class='kw'>id_column</span>)</pre>
+<span class='fu'>reunite_parent_child_from_list</span><span class='op'>(</span><span class='va'>list_of_parent_child_tables</span>, <span class='va'>id_column</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -233,11 +239,11 @@ when applied to a table in a dm object.</p>
 <code><a href='decompose_table.html'>decompose_table</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>decomposed_table</span> <span class='op'>&lt;-</span> <span class='fu'><a href='decompose_table.html'>decompose_table</a></span>(<span class='kw'>mtcars</span>, <span class='kw'>new_id</span>, <span class='kw'>am</span>, <span class='kw'>gear</span>, <span class='kw'>carb</span>)
-<span class='kw'>ct</span> <span class='op'>&lt;-</span> <span class='kw'>decomposed_table</span><span class='op'>$</span><span class='kw'>child_table</span>
-<span class='kw'>pt</span> <span class='op'>&lt;-</span> <span class='kw'>decomposed_table</span><span class='op'>$</span><span class='kw'>parent_table</span>
+    <pre class="examples"><div class='input'><span class='va'>decomposed_table</span> <span class='op'>&lt;-</span> <span class='fu'><a href='decompose_table.html'>decompose_table</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='va'>new_id</span>, <span class='va'>am</span>, <span class='va'>gear</span>, <span class='va'>carb</span><span class='op'>)</span>
+<span class='va'>ct</span> <span class='op'>&lt;-</span> <span class='va'>decomposed_table</span><span class='op'>$</span><span class='va'>child_table</span>
+<span class='va'>pt</span> <span class='op'>&lt;-</span> <span class='va'>decomposed_table</span><span class='op'>$</span><span class='va'>parent_table</span>
 
-<span class='fu'>reunite_parent_child</span>(<span class='kw'>ct</span>, <span class='kw'>pt</span>, <span class='kw'>new_id</span>)
+<span class='fu'>reunite_parent_child</span><span class='op'>(</span><span class='va'>ct</span>, <span class='va'>pt</span>, <span class='va'>new_id</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 #&gt; 1  21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
 #&gt; 2  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
@@ -270,7 +276,7 @@ when applied to a table in a dm object.</p>
 #&gt; 29 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
 #&gt; 30 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
 #&gt; 31 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
-#&gt; 32 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</div><div class='input'><span class='fu'>reunite_parent_child_from_list</span>(<span class='kw'>decomposed_table</span>, <span class='kw'>new_id</span>)
+#&gt; 32 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</div><div class='input'><span class='fu'>reunite_parent_child_from_list</span><span class='op'>(</span><span class='va'>decomposed_table</span>, <span class='va'>new_id</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 #&gt; 1  21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
 #&gt; 2  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
@@ -315,7 +321,7 @@ when applied to a table in a dm object.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
 </div>
 
 <div class="pkgdown">

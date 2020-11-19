@@ -83,7 +83,7 @@ to print as a regular tibble." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -103,13 +103,19 @@ to print as a regular tibble." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
     <li>
       <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
     </li>
   </ul>
 </li>
@@ -182,7 +188,7 @@ The printing for this object is special, use <code>as_tibble()</code>
 to print as a regular tibble.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_examine_constraints</span>(<span class='kw'>dm</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_examine_constraints</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -212,8 +218,8 @@ For the foreign key constraints, the tests check if for each foreign key constra
 form a subset of the values of the referenced column.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_examine_constraints</span>()
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_examine_constraints</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -226,7 +232,7 @@ form a subset of the values of the referenced column.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -84,7 +84,7 @@ By default, temporary tables will be created and the key constraints will be set
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -104,13 +104,19 @@ By default, temporary tables will be created and the key constraints will be set
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
     <li>
       <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
     </li>
   </ul>
 </li>
@@ -184,19 +190,19 @@ By default, temporary tables will be created and the key constraints will be set
 (currently only on MSSQL and Postgres databases).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>copy_dm_to</span>(
-  <span class='kw'>dest</span>,
-  <span class='kw'>dm</span>,
-  <span class='kw'>...</span>,
-  types = <span class='kw'>NULL</span>,
-  overwrite = <span class='kw'>NULL</span>,
-  indexes = <span class='kw'>NULL</span>,
-  unique_indexes = <span class='kw'>NULL</span>,
-  set_key_constraints = <span class='fl'>TRUE</span>,
-  unique_table_names = <span class='kw'>NULL</span>,
-  table_names = <span class='kw'>NULL</span>,
-  temporary = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>copy_dm_to</span><span class='op'>(</span>
+  <span class='va'>dest</span>,
+  <span class='va'>dm</span>,
+  <span class='va'>...</span>,
+  types <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>NULL</span>,
+  indexes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  unique_indexes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  set_key_constraints <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  unique_table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
+  table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
+  temporary <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -242,7 +248,7 @@ The output of this function is processed by <code><a href='https://dbi.r-dbi.org
 that result should be a vector of identifiers of the same length
 as the original table names.</p>
 <p>Use a variant of
-<code>table_names = ~ DBI::SQL(dbplyr::in_schema("schema_name", .x))</code>
+<code>table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))</code>
 to specify the same schema for all tables.
 Use <code>table_names = identity</code> with <code>temporary = TRUE</code>
 to avoid giving temporary tables unique names.</p>
@@ -275,25 +281,25 @@ The arguments are included in the signature to avoid passing them via the
 <code>...</code> ellipsis.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>con</span> <span class='op'>&lt;-</span> <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw'>RSQLite</span>::<span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>())
+    <pre class="examples"><div class='input'><span class='va'>con</span> <span class='op'>&lt;-</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span><span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Copy to temporary tables, unique table names by default:</span>
-<span class='kw'>temp_dm</span> <span class='op'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
-  <span class='kw'>con</span>,
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
-  set_key_constraints = <span class='fl'>FALSE</span>
-)
+<span class='va'>temp_dm</span> <span class='op'>&lt;-</span> <span class='fu'>copy_dm_to</span><span class='op'>(</span>
+  <span class='va'>con</span>,
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span>,
+  set_key_constraints <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># Persist, explicitly specify table names:</span>
-<span class='kw'>persistent_dm</span> <span class='op'>&lt;-</span> <span class='fu'>copy_dm_to</span>(
-  <span class='kw'>con</span>,
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(),
-  temporary = <span class='fl'>FALSE</span>,
-  table_names = <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"flights_"</span>, <span class='kw'>.x</span>)
-)
-<span class='kw'>dbplyr</span>::<span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span>(<span class='kw'>persistent_dm</span><span class='op'>$</span><span class='kw'>planes</span>)
+<span class='va'>persistent_dm</span> <span class='op'>&lt;-</span> <span class='fu'>copy_dm_to</span><span class='op'>(</span>
+  <span class='va'>con</span>,
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span>,
+  temporary <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  table_names <span class='op'>=</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"flights_"</span>, <span class='va'>.x</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='fu'>dbplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dbplyr.tidyverse.org/reference/remote_name.html'>remote_name</a></span><span class='op'>(</span><span class='va'>persistent_dm</span><span class='op'>$</span><span class='va'>planes</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;IDENT&gt; `flights_planes`</div><div class='input'>
-<span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>con</span>)
+<span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -306,7 +312,7 @@ The arguments are included in the signature to avoid passing them via the
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
 </div>
 
 <div class="pkgdown">

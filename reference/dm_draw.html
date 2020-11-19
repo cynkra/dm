@@ -89,7 +89,7 @@ table color with the name &quot;default&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -109,13 +109,19 @@ table color with the name &quot;default&quot;." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
     <li>
       <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
     </li>
   </ul>
 </li>
@@ -194,24 +200,24 @@ These are the standard colors also returned by <code><a href='https://rdrr.io/r/
 table color with the name "default".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_draw</span>(
-  <span class='kw'>dm</span>,
-  rankdir = <span class='st'>"LR"</span>,
-  col_attr = <span class='st'>"column"</span>,
-  view_type = <span class='st'>"keys_only"</span>,
-  columnArrows = <span class='fl'>TRUE</span>,
-  graph_attrs = <span class='st'>""</span>,
-  node_attrs = <span class='st'>""</span>,
-  edge_attrs = <span class='st'>""</span>,
-  focus = <span class='kw'>NULL</span>,
-  graph_name = <span class='st'>"Data Model"</span>
-)
+    <pre class="usage"><span class='fu'>dm_draw</span><span class='op'>(</span>
+  <span class='va'>dm</span>,
+  rankdir <span class='op'>=</span> <span class='st'>"LR"</span>,
+  col_attr <span class='op'>=</span> <span class='st'>"column"</span>,
+  view_type <span class='op'>=</span> <span class='st'>"keys_only"</span>,
+  columnArrows <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  graph_attrs <span class='op'>=</span> <span class='st'>""</span>,
+  node_attrs <span class='op'>=</span> <span class='st'>""</span>,
+  edge_attrs <span class='op'>=</span> <span class='st'>""</span>,
+  focus <span class='op'>=</span> <span class='cn'>NULL</span>,
+  graph_name <span class='op'>=</span> <span class='st'>"Data Model"</span>
+<span class='op'>)</span>
 
-<span class='fu'>dm_set_colors</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>)
+<span class='fu'>dm_set_colors</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>dm_get_colors</span>(<span class='kw'>dm</span>)
+<span class='fu'>dm_get_colors</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span>
 
-<span class='fu'>dm_get_available_colors</span>()</pre>
+<span class='fu'>dm_get_available_colors</span><span class='op'>(</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -276,8 +282,8 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 <p>For <code>dm_get_available_colors()</code>, a vector with the available colors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_draw</span>()
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_draw</span><span class='op'>(</span><span class='op'>)</span>
 </div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -360,8 +366,8 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 </g>
 </svg>
 <div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(cycle = <span class='fl'>TRUE</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_draw</span>(view_type = <span class='st'>"title_only"</span>)
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_draw</span><span class='op'>(</span>view_type <span class='op'>=</span> <span class='st'>"title_only"</span><span class='op'>)</span>
 </div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -438,20 +444,20 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 </g>
 </svg>
 <div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dm_get_available_colors</span>())
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>dm_get_available_colors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "default"       "white"         "aliceblue"     "antiquewhite" 
-#&gt; [5] "antiquewhite1" "antiquewhite2"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='fu'>dm_get_available_colors</span>())
+#&gt; [5] "antiquewhite1" "antiquewhite2"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='fu'>dm_get_available_colors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 658</div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_get_colors</span>()
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_get_colors</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
 #&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(color = <span class='fl'>FALSE</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_set_colors</span>(
-    darkblue = <span class='fu'>starts_with</span>(<span class='st'>"air"</span>),
-    <span class='st'>"#5986C4"</span> = <span class='kw'>flights</span>
-  ) <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_draw</span>()
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_set_colors</span><span class='op'>(</span>
+    darkblue <span class='op'>=</span> <span class='fu'>starts_with</span><span class='op'>(</span><span class='st'>"air"</span><span class='op'>)</span>,
+    <span class='st'>"#5986C4"</span> <span class='op'>=</span> <span class='va'>flights</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_draw</span><span class='op'>(</span><span class='op'>)</span>
 </div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -535,15 +541,15 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 </svg>
 <div class='input'>
 <span class='co'># Splicing is supported:</span>
-<span class='kw'>nyc_cols</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_get_colors</span>()
-<span class='kw'>nyc_cols</span>
+<span class='va'>nyc_cols</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_get_colors</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>nyc_cols</span>
 </div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
 #&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span>(color = <span class='fl'>FALSE</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_set_colors</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>nyc_cols</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_draw</span>()
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_set_colors</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>nyc_cols</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_draw</span><span class='op'>(</span><span class='op'>)</span>
 </div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -637,7 +643,7 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
 </div>
 
 <div class="pkgdown">

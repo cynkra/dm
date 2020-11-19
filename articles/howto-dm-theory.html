@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -58,13 +58,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
     <li>
       <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
     </li>
   </ul>
 </li>
@@ -122,13 +128,14 @@
 
       
 
-      </header><script src="howto-dm-theory_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="howto-dm-theory_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="howto-dm-theory_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="howto-dm-theory_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2020-09-09</h4>
+            <h4 class="date">2020-11-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-theory.Rmd"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -143,6 +150,7 @@
 <li><a href="#model">Data Model</a></li>
 <li><a href="#pk">Primary Keys</a></li>
 <li><a href="#fk">Foreign Keys</a></li>
+<li><a href="#referential-integrity">Referential Integrity</a></li>
 <li><a href="#normalization">Normalization</a></li>
 <li><a href="#relational-databases">Relational Databases</a></li>
 </ol>
@@ -180,27 +188,27 @@
 <p>Let’s illustrate this challenge with the data from the <a href="https://github.com/hadley/nycflights13"><code>nycflights13</code> dataset</a> that contains detailed information about the 336776 flights that departed from New York City in 2013. The information is stored in five tables.</p>
 <p>Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join()</a></code> and other forms of data merging.</p>
 <p>In classical {dplyr} notation, you will need three <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code> calls to merge the <code>flights</code> table gradually to <code>airlines</code>, <code>planes</code> and <code>airports</code> tables to create one wide data frame.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.0 ──
 </span></code></pre>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">ggplot2</span><span> 3.3.2     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">purrr  </span><span> 0.3.4
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.0.3     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.2
+#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.0.4     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.2
 #&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tidyr  </span><span> 1.1.2     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">stringr</span><span> 1.4.0
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">readr  </span><span> 1.3.1     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">forcats</span><span> 0.5.0
+#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">readr  </span><span> 1.4.0     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">forcats</span><span> 0.5.0
 </span></code></pre>
 <pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Conflicts</span><span> ───────────────────────────────────── tidyverse_conflicts() ──
 #&gt; </span><span style="color: #BB0000;">✖</span><span> </span><span style="color: #0000BB;">dplyr</span><span>::</span><span style="color: #00BB00;">filter()</span><span> masks </span><span style="color: #0000BB;">dm</span><span>::filter(), </span><span style="color: #0000BB;">stats</span><span>::filter()
 #&gt; </span><span style="color: #BB0000;">✖</span><span> </span><span style="color: #0000BB;">dplyr</span><span>::</span><span style="color: #00BB00;">lag()</span><span>    masks </span><span style="color: #0000BB;">stats</span><span>::lag()
 </span></code></pre>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://krlmlr.github.io/dm/">dm</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://github.com/hadley/nycflights13">nycflights13</a></span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
 
-<span class="kw">flights</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">airlines</span>, by = <span class="st">"carrier"</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">planes</span>, by = <span class="st">"tailnum"</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">airports</span>, by = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"origin"</span> = <span class="st">"faa"</span>))</pre></div>
+<span class="va">flights</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">airlines</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">planes</span>, by <span class="op">=</span> <span class="st">"tailnum"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">airports</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"origin"</span> <span class="op">=</span> <span class="st">"faa"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 35</span><span>
 #&gt;    year.x month   day dep_time sched_dep_time dep_delay arr_time
 #&gt;     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
@@ -231,11 +239,11 @@
 <a href="#model" class="anchor"></a>2. Data Model</h2>
 <p>A data model shows the structure between multiple tables that can be linked together.</p>
 <p>The <code>nycflights13</code> relations can be transferred into the following graphical representation:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span>(cycle = <span class="fl">TRUE</span>) 
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span>cycle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
 
-<span class="kw">dm</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span>()</pre></div>
+<span class="va">dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="153pt" height="187pt" viewbox="0.00 0.00 153.00 187.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 183)"><title>%0</title>
 <g id="a_graph0"><a xlink:title="Data Model">
@@ -260,9 +268,9 @@
 <p>In a relational data model, every table needs to have <strong>one column or attribute that uniquely identifies a row</strong>. This column is called the <em>primary key</em> (abbreviated with pk). A primary key can be either an existing column that satisfies the condition of being unique, or a new column that assigns an identifier.</p>
 <p>Example: In the <code>airlines</code> table of <code>nycflights13</code> the column <code>carrier</code> is the primary key.</p>
 <p>You can get all primary keys in a <code>dm</code> by calling <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">dm</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span>()</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
 #&gt;   table    pk_col 
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span> 
@@ -271,9 +279,9 @@
 #&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum
 </span></code></pre>
 <p>If an attribute is suitable as a primary key, it can be checked with <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>. Which columns of the <code>airlines</code> table can serve as a primary key?</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">dm</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span>(<span class="kw">airports</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 8 x 3</span><span>
 #&gt;   columns candidate why                                                    
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                                  
@@ -293,9 +301,9 @@
 <a href="#fk" class="anchor"></a>4. Foreign Keys</h2>
 <p>The <strong>counterpart of a primary key in one table is the foreign key in another table</strong>. In order to join two tables, the primary key of the first table needs to be available in the second table as well. This second column is called the <em>foreign key</em> (abbreviated with fk).</p>
 <p>For example, if you want to link the <code>airlines</code> table to the <code>flights</code> table, the primary key in <code>airlines</code> needs to match the foreign key in <code>flights</code>. This condition is satisfied because the column <code>carrier</code> is present as a primary key in the <code>airlines</code> table as well as a foreign key in the <code>flights</code> table. You can find foreign key candidates with the function <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>, they are marked with <code>TRUE</code> in the <code>candidate</code> column.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">dm</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span>(<span class="kw">flights</span>, <span class="kw">airlines</span>)</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 19 x 3</span><span>
 #&gt;    columns      candidate why                                              
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                            
@@ -320,38 +328,44 @@
 #&gt; </span><span style="color: #555555;">19</span><span> year         FALSE     </span><span style="color: #555555;">"</span><span>Can't join on `x$value` x `y$value` because of …
 </span></code></pre>
 <p>After finding and assigning foreign keys, get the name of the set foreign key:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">dm</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span>(<span class="kw">flights</span>, <span class="kw">airlines</span>)
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span><span class="op">)</span>
 <span class="co">#&gt; &lt;list_of&lt;character&gt;[1]&gt;</span>
 <span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "carrier"</span></pre></div>
+<span class="co">#&gt; [1] "carrier"</span></code></pre></div>
 <p>Further Reading: All {dm} functions for working with <a href="https://krlmlr.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign keys</a>.</p>
+</div>
+<div id="referential-integrity" class="section level2">
+<h2 class="hasAnchor">
+<a href="#referential-integrity" class="anchor"></a>5. Referential Integrity</h2>
+<p>A data set has referential integrity if all relations between tables are valid. That is, every foreign key holds a primary key that is present in the parent table. If a foreign key contains a parent table primary key that has been deleted that row is an orphan row and the database no longer has referential integrity.</p>
+<p>{dm} is designed to maintain referential integrity. It will not let you create a child row or table without first creating the parent. For example, in the <code>nycflights13</code> you can’t create a flight for an airline that does not have an entry in the <code>airlines</code> table. Conversely, you cannot delete the row for an airline from the <code>airlines</code> table until all related flights are deleted. For more information on deleting individual rows and other row-level operations see <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code>.</p>
 </div>
 <div id="normalization" class="section level2">
 <h2 class="hasAnchor">
-<a href="#normalization" class="anchor"></a>5. Normalization</h2>
+<a href="#normalization" class="anchor"></a>6. Normalization</h2>
 <p>Normalization is a technical term that describes the <strong>central design principle of a relational data model</strong>: splitting data into multiple tables.</p>
 <p>A normalized data schema consists of several relations (tables) that are linked with attributes (columns). The relations can be joined together by means of <a href="#pk">primary</a> and <a href="#fk">foreign keys</a>. The main goal of normalization is to keep data organization as clean and simple as possible by avoiding redundant data entries.</p>
 <p>For example, if you want to change the name of one airport in the <code>nycflights13</code> dataset, you will only need to update a single data value. This principle is sometimes called the <em>single point of truth</em>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co">#  Update in one single location...</span>
-<span class="kw">airlines</span>[<span class="kw">airlines</span><span class="op">$</span><span class="kw">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span>] <span class="op">&lt;-</span> <span class="st">"United broke my guitar"</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#  Update in one single location...</span>
+<span class="va">airlines</span><span class="op">[</span><span class="va">airlines</span><span class="op">$</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"United broke my guitar"</span>
 
-<span class="kw">airlines</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>)</pre></div>
+<span class="va">airlines</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
 #&gt;   carrier name                  
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 
 #&gt; </span><span style="color: #555555;">1</span><span> UA      United broke my guitar
 </span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># ...propagates to all related records</span>
-<span class="kw">flights</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">airlines</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">flight</span>, <span class="kw">name</span>)
-<span class="co">#&gt; Joining, by = "carrier"</span></pre></div>
+<span class="va">flights</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">name</span><span class="op">)</span>
+<span class="co">#&gt; Joining, by = "carrier"</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 336,776 x 2</span><span>
 #&gt;    flight name                    
 #&gt;     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                   
@@ -371,39 +385,39 @@
 <p>Let’s look at the <code>planes</code> table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.</p>
 <p>The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> extracts two new tables and creates a new key <code>model_id</code>, that links both tables.</p>
 <p>This results in a <code>parent_table</code> and a <code>child_table</code> that differ massively in the number of rows:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">planes</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span>(<span class="kw">model_id</span>, <span class="kw">model</span>, <span class="kw">manufacturer</span>, <span class="kw">type</span>, <span class="kw">engines</span>, <span class="kw">seats</span>, <span class="kw">manufacturer</span>, <span class="kw">speed</span>)</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">planes</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">manufacturer</span>, <span class="va">speed</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; $child_table
 #&gt; <span style="color: #555555;"># A tibble: 3,322 x 4</span><span>
 #&gt;    tailnum  year engine    model_id
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;"> 1</span><span> N10156   </span><span style="text-decoration: underline;">2</span><span>004 Turbo-fan      120
-#&gt; </span><span style="color: #555555;"> 2</span><span> N102UW   </span><span style="text-decoration: underline;">1</span><span>998 Turbo-fan       94
-#&gt; </span><span style="color: #555555;"> 3</span><span> N103US   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       94
-#&gt; </span><span style="color: #555555;"> 4</span><span> N104UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       94
+#&gt; </span><span style="color: #555555;"> 2</span><span> N102UW   </span><span style="text-decoration: underline;">1</span><span>998 Turbo-fan       93
+#&gt; </span><span style="color: #555555;"> 3</span><span> N103US   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       93
+#&gt; </span><span style="color: #555555;"> 4</span><span> N104UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       93
 #&gt; </span><span style="color: #555555;"> 5</span><span> N10575   </span><span style="text-decoration: underline;">2</span><span>002 Turbo-fan      119
-#&gt; </span><span style="color: #555555;"> 6</span><span> N105UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       94
-#&gt; </span><span style="color: #555555;"> 7</span><span> N107US   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       94
-#&gt; </span><span style="color: #555555;"> 8</span><span> N108UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       94
-#&gt; </span><span style="color: #555555;"> 9</span><span> N109UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       94
-#&gt; </span><span style="color: #555555;">10</span><span> N110UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       94
+#&gt; </span><span style="color: #555555;"> 6</span><span> N105UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       93
+#&gt; </span><span style="color: #555555;"> 7</span><span> N107US   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       93
+#&gt; </span><span style="color: #555555;"> 8</span><span> N108UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       93
+#&gt; </span><span style="color: #555555;"> 9</span><span> N109UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       93
+#&gt; </span><span style="color: #555555;">10</span><span> N110UW   </span><span style="text-decoration: underline;">1</span><span>999 Turbo-fan       93
 #&gt; </span><span style="color: #555555;"># … with 3,312 more rows</span><span>
 #&gt; 
 #&gt; $parent_table
 #&gt; </span><span style="color: #555555;"># A tibble: 147 x 7</span><span>
-#&gt;    model_id model     manufacturer type                 engines seats speed
-#&gt;       </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                  </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;"> 1</span><span>        1 150       CESSNA       Fixed wing single e…       1     2    90
-#&gt; </span><span style="color: #555555;"> 2</span><span>        2 172E      CESSNA       Fixed wing single e…       1     4   105
-#&gt; </span><span style="color: #555555;"> 3</span><span>        3 172M      CESSNA       Fixed wing single e…       1     4   108
-#&gt; </span><span style="color: #555555;"> 4</span><span>        4 172N      CESSNA       Fixed wing single e…       1     4   105
-#&gt; </span><span style="color: #555555;"> 5</span><span>        5 206B      BELL         Rotorcraft                 1     5   112
-#&gt; </span><span style="color: #555555;"> 6</span><span>        6 210-5(20… CESSNA       Fixed wing single e…       1     6    </span><span style="color: #BB0000;">NA</span><span>
-#&gt; </span><span style="color: #555555;"> 7</span><span>        7 230       BELL         Rotorcraft                 2    11    </span><span style="color: #BB0000;">NA</span><span>
-#&gt; </span><span style="color: #555555;"> 8</span><span>        8 310Q      CESSNA       Fixed wing multi en…       2     6   167
-#&gt; </span><span style="color: #555555;"> 9</span><span>        9 421C      CESSNA       Fixed wing multi en…       2     8    90
-#&gt; </span><span style="color: #555555;">10</span><span>       10 550       CESSNA       Fixed wing multi en…       2     8    </span><span style="color: #BB0000;">NA</span><span>
+#&gt;    model_id model      manufacturer   type              engines seats speed
+#&gt;       </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>               </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span>      120 EMB-145XR  EMBRAER        Fixed wing multi…       2    55    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;"> 2</span><span>       93 A320-214   AIRBUS INDUST… Fixed wing multi…       2   182    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;"> 3</span><span>      119 EMB-145LR  EMBRAER        Fixed wing multi…       2    55    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;"> 4</span><span>       39 737-824    BOEING         Fixed wing multi…       2   149    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;"> 5</span><span>       68 767-332    BOEING         Fixed wing multi…       2   330    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;"> 6</span><span>       52 757-224    BOEING         Fixed wing multi…       2   178    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;"> 7</span><span>       94 A320-214   AIRBUS         Fixed wing multi…       2   182    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;"> 8</span><span>      112 CL-600-2D… BOMBARDIER INC Fixed wing multi…       2    95    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;"> 9</span><span>       30 737-724    BOEING         Fixed wing multi…       2   149    </span><span style="color: #BB0000;">NA</span><span>
+#&gt; </span><span style="color: #555555;">10</span><span>       27 737-524    BOEING         Fixed wing multi…       2   149    </span><span style="color: #BB0000;">NA</span><span>
 #&gt; </span><span style="color: #555555;"># … with 137 more rows</span><span>
 </span></code></pre>
 <p>While <code>child_table</code> contains 3322 unique <code>tailnum</code> rows and therefore consists of 3322 rows, just like the original <code>planes</code> table, the <code>parent_table</code> shrunk to just 147 rows, enough to store all relevant combinations and avoid storing redundant information.</p>
@@ -411,32 +425,32 @@
 </div>
 <div id="relational-databases" class="section level2">
 <h2 class="hasAnchor">
-<a href="#relational-databases" class="anchor"></a>6. Relational Databases</h2>
+<a href="#relational-databases" class="anchor"></a>7. Relational Databases</h2>
 <p>{dm} is built upon relational data models but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases, SQL, short for Structured Querying Language, plays an important role: it was invented for the purpose of querying relational databases.</p>
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>
 <p>Therefore, {dm} can copy data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the <code>dm</code> object to it:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">con_sqlite</span> <span class="op">&lt;-</span> <span class="kw">DBI</span>::<span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(<span class="kw">RSQLite</span>::<span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span>())
-<span class="kw">con_sqlite</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">con_sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">con_sqlite</span>
 <span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
 <span class="co">#&gt;   Path: </span>
 <span class="co">#&gt;   Extensions: TRUE</span>
-<span class="kw">DBI</span>::<span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span>(<span class="kw">con_sqlite</span>)
+<span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
 <span class="co">#&gt; character(0)</span>
 
-<span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span>(<span class="kw">con_sqlite</span>, <span class="kw">dm</span>)
-<span class="kw">DBI</span>::<span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span>(<span class="kw">con_sqlite</span>)
+<span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con_sqlite</span>, <span class="va">dm</span><span class="op">)</span>
+<span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
 <span class="co">#&gt; [1] "airlines_2020_08_28_07_13_03_1" "airports_2020_08_28_07_13_03_1"</span>
 <span class="co">#&gt; [3] "flights_2020_08_28_07_13_03_1"  "planes_2020_08_28_07_13_03_1"  </span>
 <span class="co">#&gt; [5] "sqlite_stat1"                   "sqlite_stat4"                  </span>
-<span class="co">#&gt; [7] "weather_2020_08_28_07_13_03_1"</span></pre></div>
+<span class="co">#&gt; [7] "weather_2020_08_28_07_13_03_1"</span></code></pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span>(<span class="kw">con_sqlite</span>)
-<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
+<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 []
+#&gt; src:  sqlite 3.33.0 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -444,8 +458,8 @@
 #&gt; Foreign keys: 0
 </span></code></pre>
 <p>Remember to terminate the database connection:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">DBI</span>::<span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span>(<span class="kw">con_sqlite</span>)</pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
@@ -460,7 +474,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">

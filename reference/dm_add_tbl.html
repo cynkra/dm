@@ -47,8 +47,8 @@
 
 
 <meta property="og:title" content="Add tables to a dm — dm_add_tbl" />
-<meta property="og:description" content="dm_add_tbl() adds one or more tables to a dm.
-It uses mutate() semantics." />
+<meta property="og:description" content="Adds one or more new tables to a dm.
+Existing tables are not overwritten." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 
 
@@ -81,7 +81,7 @@ It uses mutate() semantics." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -101,13 +101,19 @@ It uses mutate() semantics." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
     </li>
     <li>
       <a href="../articles/howto-dm-df.html">Create a dm object from data frames</a>
     </li>
     <li>
-      <a href="../articles/howto-dm-theory.html">Introduction to relational data models</a>
+      <a href="../articles/howto-dm-db.html">Create a dm object from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-copy.html">Copy data to and from a database</a>
+    </li>
+    <li>
+      <a href="../articles/howto-dm-rows.html">Insert, update or remove rows in a database</a>
     </li>
   </ul>
 </li>
@@ -174,11 +180,11 @@ It uses mutate() semantics." />
     </div>
 
     <div class="ref-description">
-    <p><code>dm_add_tbl()</code> adds one or more tables to a <code><a href='dm.html'>dm</a></code>.
-It uses <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate()</a></code> semantics.</p>
+    <p>Adds one or more new tables to a <code><a href='dm.html'>dm</a></code>.
+Existing tables are not overwritten.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_add_tbl</span>(<span class='kw'>dm</span>, <span class='kw'>...</span>, repair = <span class='st'>"unique"</span>, quiet = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dm_add_tbl</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span>, repair <span class='op'>=</span> <span class='st'>"unique"</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -225,19 +231,19 @@ messages.</p></td>
     <p>The initial <code>dm</code> with the additional table(s).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='dm_rm_tbl.html'>dm_rm_tbl()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='dm_mutate_tbl.html'>dm_mutate_tbl()</a></code>, <code><a href='dm_rm_tbl.html'>dm_rm_tbl()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_add_tbl</span>(<span class='kw'>mtcars</span>, flowers = <span class='kw'>iris</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_add_tbl</span><span class='op'>(</span><span class='va'>mtcars</span>, flowers <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `mtcars`, `flowers`
 #&gt; Columns: 16
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0</div><div class='input'>
 <span class='co'># renaming table names if necessary (depending on the `repair` argument)</span>
-<span class='fu'><a href='dm.html'>dm</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_add_tbl</span>(new_tbl = <span class='kw'>mtcars</span>, new_tbl = <span class='kw'>iris</span>)
+<span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_add_tbl</span><span class='op'>(</span>new_tbl <span class='op'>=</span> <span class='va'>mtcars</span>, new_tbl <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* new_tbl -&gt; new_tbl...1</span>
 #&gt; <span class='message'>* new_tbl -&gt; new_tbl...2</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'>──</span><span> </span><span style='color: #555555;'>Metadata</span><span> </span><span style='color: #555555;'>────────────────────────────────────────────────────────────────────</span><span>
@@ -256,7 +262,7 @@ messages.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
 </div>
 
 <div class="pkgdown">
