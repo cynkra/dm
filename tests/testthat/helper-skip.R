@@ -23,3 +23,19 @@ skip_if_src <- function(name) {
 skip_if_src_not <- function(...) {
   if (!(my_test_src_name %in% c(...))) skip(paste0("does not work on ", my_test_src_name))
 }
+
+suppress_mssql_message <- function(code) {
+  if (my_test_src_name == "mssql") {
+    suppressMessages(code)
+  } else {
+    code
+  }
+}
+
+suppress_mssql_warning <- function(code) {
+  if (my_test_src_name == "mssql") {
+    suppressWarnings(code)
+  } else {
+    code
+  }
+}

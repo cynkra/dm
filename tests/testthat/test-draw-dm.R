@@ -160,22 +160,20 @@ test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
 
-  expect_known_output(
+  expect_snapshot(
     dm_nycflights13() %>%
       dm_draw() %>%
       DiagrammeRsvg::export_svg() %>%
-      cli::cat_line(),
-    "out/nycflights13.svg"
+      cli::cat_line()
   )
 
   # Multi-fk (#37)
-  expect_known_output(
+  expect_snapshot(
     dm_nycflights13() %>%
       dm_zoom_to(planes) %>%
       dm_insert_zoomed("planes_copy") %>%
       dm_draw() %>%
       DiagrammeRsvg::export_svg() %>%
-      cli::cat_line(),
-    "out/nycflights13-multi-fk.svg"
+      cli::cat_line()
   )
 })

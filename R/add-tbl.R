@@ -1,12 +1,12 @@
 #' Add tables to a [`dm`]
 #'
 #' @description
-#' `dm_add_tbl()` adds one or more tables to a [`dm`].
-#' It uses [mutate()] semantics.
+#' Adds one or more new tables to a [`dm`].
+#' Existing tables are not overwritten.
 #'
 #' @return The initial `dm` with the additional table(s).
 #'
-#' @seealso [dm_rm_tbl()]
+#' @seealso [dm_mutate_tbl()], [dm_rm_tbl()]
 #'
 #' @param dm A [`dm`] object.
 #' @param ... One or more tables to add to the `dm`.
@@ -100,4 +100,46 @@ check_new_tbls <- function(dm, tbls) {
   if (has_length(orig_tbls) && !all_same_source(c(orig_tbls[1], tbls))) {
     abort_not_same_src()
   }
+}
+
+#' Update tables in a [`dm`]
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' Updates one or more existing tables in a [`dm`].
+#' For now, the column names must be identical.
+#' This restriction may be levied optionally in the future.
+#'
+#' @seealso [dm_add_tbl()], [dm_rm_tbl()]
+#'
+#' @param dm A [`dm`] object.
+#' @param ... One or more tables to update in the `dm`.
+#'   Must be named.
+#'
+#' @examplesIf rlang::is_installed("nycflights13")
+#' dm_nycflights13() %>%
+#'   dm_mutate_tbl(flights = nycflights13::flights[1:3, ])
+#'
+#' @export
+dm_mutate_tbl <- function(dm, ...) {
+  check_not_zoomed(dm)
+
+  old_names <- src_tbls(dm)
+
+  new_tables <- list2(...)
+  stopifnot(is_named(new_tables))
+
+  new_names <- names(new_tables)
+  stopifnot(new_names %in% old_names)
+
+  old_tables <- dm_get_tables_impl(dm)
+
+  stopifnot(identical(map(new_tables, colnames), map(old_tables[new_names], colnames)))
+
+  old_tables[new_names] <- new_tables
+
+  def <- dm_get_def(dm)
+  def$data <- old_tables
+  new_dm3(def)
 }

@@ -89,11 +89,9 @@ Message: dm::dm(tf_1, tf_2, tf_3, tf_4, tf_5, tf_6) %>%
 Message: a <- tibble::tibble(
   `a b` = numeric(0)
 )
-
 `a b` <- tibble::tibble(
   `a b` = numeric(0)
 )
-
 dm::dm(a, `a b`) %>%
   dm::dm_add_pk(a, `a b`) %>%
   dm::dm_add_fk(`a b`, `a b`, a) %>%
@@ -105,7 +103,6 @@ Message: airlines <- tibble::tibble(
   carrier = character(0),
   name = character(0)
 )
-
 airports <- tibble::tibble(
   faa = character(0),
   name = character(0),
@@ -116,7 +113,6 @@ airports <- tibble::tibble(
   dst = character(0),
   tzone = character(0)
 )
-
 flights <- tibble::tibble(
   year = integer(0),
   month = integer(0),
@@ -138,7 +134,6 @@ flights <- tibble::tibble(
   minute = numeric(0),
   time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt"))
 )
-
 planes <- tibble::tibble(
   tailnum = character(0),
   year = integer(0),
@@ -150,7 +145,6 @@ planes <- tibble::tibble(
   speed = integer(0),
   engine = character(0)
 )
-
 weather <- tibble::tibble(
   origin = character(0),
   year = integer(0),
@@ -168,7 +162,6 @@ weather <- tibble::tibble(
   visib = numeric(0),
   time_hour = structure(numeric(0), tzone = "America/New_York", class = c("POSIXct", "POSIXt"))
 )
-
 dm::dm(airlines, airports, flights, planes, weather) %>%
   dm::dm_add_pk(airlines, carrier) %>%
   dm::dm_add_pk(airports, faa) %>%

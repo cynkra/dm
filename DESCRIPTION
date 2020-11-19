@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.7
-Date: 2020-09-01
+Version: 0.1.9
+Date: 2020-11-18
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -66,6 +66,7 @@ Suggests:
     fansi,
     keyring,
     knitr,
+    mockr,
     nycflights13,
     odbc,
     RMariaDB (>= 1.0.10),
@@ -81,4 +82,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
     "namespace", "rd"))
-RoxygenNote: 7.1.1.9000
+RoxygenNote: 7.1.1.9001
+Config/testthat/edition: 3
