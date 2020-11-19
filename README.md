@@ -1,6 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# [dm](https://krlmlr.github.io/dm)
+# [dm](https://krlmlr.github.io/dm/)
 
 <!-- badges: start -->
 
@@ -139,7 +139,7 @@ License: MIT © cynkra GmbH.
 
 Funded by:
 
-[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch) <span style="padding-right:50px"> </span> [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
+[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/) <span style="padding-right:50px"> </span> [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
 
 -----
 
