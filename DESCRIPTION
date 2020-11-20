@@ -39,7 +39,7 @@ Depends:
     R (>= 3.3)
 Imports:
     backports,
-    cli (>= 2.0.0),
+    cli (>= 2.1.0.9001),
     DBI,
     dplyr (>= 1.0.0),
     ellipsis,
@@ -78,6 +78,8 @@ Suggests:
     withr
 VignetteBuilder: 
     knitr
+Remotes: 
+    r-lib/cli
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate",
