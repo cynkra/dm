@@ -135,6 +135,9 @@ jobs:
         run: |
           error_on <- "note"
           # Begin custom: rcmdcheck error_on
+          if (getRversion() < "3.4") {
+            error_on <- "warning"
+          }
           # End custom: rcmdcheck error_on
           rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = error_on, check_dir = "check")
         shell: Rscript {0}
