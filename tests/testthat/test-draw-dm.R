@@ -160,12 +160,14 @@ test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
 
-  expect_snapshot(
-    dm_nycflights13() %>%
-      dm_draw() %>%
-      DiagrammeRsvg::export_svg() %>%
-      cli::cat_line()
-  )
+  path <- tempfile(fileext = ".svg")
+
+  dm_nycflights13() %>%
+    dm_draw() %>%
+    DiagrammeRsvg::export_svg() %>%
+    writeLines(path)
+
+  expect_snapshot_file(path, "nycflight-dm.svg", binary = FALSE)
 
   # Multi-fk (#37)
   expect_snapshot(
