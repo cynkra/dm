@@ -52,6 +52,8 @@ dm_learn_from_db <- function(dest, ...) {
     return()
   }
 
+  dbname <- list(...)$dbname
+
   overview <-
     dbGetQuery(con, sql) %>%
     as_tibble()
@@ -66,7 +68,7 @@ dm_learn_from_db <- function(dest, ...) {
     distinct(schema, table) %>%
     transmute(
       name = table,
-      value = schema_if(schema, table, con)
+      value = schema_if(schema = schema, table = table, con = con, dbname = dbname)
     ) %>%
     deframe()
 
@@ -78,9 +80,11 @@ dm_learn_from_db <- function(dest, ...) {
   legacy_new_dm(tables, data_model)
 }
 
-schema_if <- function(schema, table, con) {
+schema_if <- function(schema, table, con, dbname = NULL) {
   table_sql <- DBI::dbQuoteIdentifier(con, table)
-  if_else(is.na(schema), table_sql, paste0(DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
+  dbname_sql <- if (is_null(dbname)) "" else paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
+  schema_sql <- if (is_na(schema)) "" else paste0(DBI::dbQuoteIdentifier(con, schema), ".")
+  paste0(dbname_sql, schema_sql, table_sql)
 }
 
 db_learn_query <- function(dest, ...) {
@@ -92,8 +96,13 @@ db_learn_query <- function(dest, ...) {
   }
 }
 
-mssql_learn_query <- function(con, schema = "dbo") { # taken directly from {datamodelr} and subsequently tweaked a little
-  sprintf(
+mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken directly from {datamodelr} and subsequently tweaked a little
+  dbname_sql <- if (is_null(dbname)) {
+    ""
+  } else {
+    paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
+  }
+  glue::glue(
   "select
     schema_name(tabs.schema_id) as [schema],
     tabs.name as [table],
@@ -107,26 +116,25 @@ mssql_learn_query <- function(con, schema = "dbo") { # taken directly from {data
     cols.precision,
     cols.scale
   from
-    sys.all_columns cols
-    inner join sys.tables tabs on
+    {dbname_sql}sys.all_columns cols
+    inner join {dbname_sql}sys.tables tabs on
       cols.object_id = tabs.object_id
-    left outer join sys.foreign_key_columns ref on
+    left outer join {dbname_sql}sys.foreign_key_columns ref on
       ref.parent_object_id = tabs.object_id
       and ref.parent_column_id = cols.column_id
-    left outer join sys.indexes ind on
+    left outer join {dbname_sql}sys.indexes ind on
       ind.object_id = tabs.object_id
       and ind.is_primary_key = 1
-    left outer join sys.index_columns ind_col on
+    left outer join {dbname_sql}sys.index_columns ind_col on
       ind_col.object_id = ind.object_id
       and ind_col.index_id = ind.index_id
       and ind_col.column_id = cols.column_id
-    left outer join sys.systypes [types] on
+    left outer join {dbname_sql}sys.systypes [types] on
       types.xusertype = cols.system_type_id
-  where tabs.schema_id = schema_id(%s)
+  where tabs.schema_id = schema_id({DBI::dbQuoteString(con, schema)})
   order by
     tabs.create_date,
-    cols.column_id",
-  DBI::dbQuoteString(con, schema)
+    cols.column_id"
   )
 }
 
