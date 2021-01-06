@@ -38,8 +38,7 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
 
   # expect specific errors and sometimes specific output due to errors ---------------
 
-  verify_output(
-    "out/card-0-n-data_card_1-data_card_2.txt",
+  expect_snapshot({
     expect_dm_error(
       check_cardinality_0_n(
         parent_table = data_card_1(),
@@ -49,40 +48,40 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
       ),
       class = "not_subset_of"
     )
-  )
 
-  expect_dm_error(
-    check_cardinality_1_1(data_card_5(), a, data_card_4(), c),
-    class = "not_bijective"
-  )
+    expect_dm_error(
+      check_cardinality_1_1(data_card_5(), a, data_card_4(), c),
+      class = "not_bijective"
+    )
 
-  expect_dm_error(
-    check_cardinality_1_1(data_card_4(), c, data_card_5(), a),
-    class = "not_unique_key"
-  )
+    expect_dm_error(
+      check_cardinality_1_1(data_card_4(), c, data_card_5(), a),
+      class = "not_unique_key"
+    )
 
-  expect_dm_error(
-    check_cardinality_1_1(data_card_4(), c, data_card_1(), a),
-    class = "not_unique_key"
-  )
+    expect_dm_error(
+      check_cardinality_1_1(data_card_4(), c, data_card_1(), a),
+      class = "not_unique_key"
+    )
 
-  expect_dm_error(
-    check_cardinality_0_1(data_card_1(), a, data_card_4(), c),
-    class = "not_injective"
-  )
+    expect_dm_error(
+      check_cardinality_0_1(data_card_1(), a, data_card_4(), c),
+      class = "not_injective"
+    )
 
-  expect_dm_error(
-    check_cardinality_0_n(data_card_4(), c, data_card_1(), a),
-    class = "not_unique_key"
-  )
+    expect_dm_error(
+      check_cardinality_0_n(data_card_4(), c, data_card_1(), a),
+      class = "not_unique_key"
+    )
 
-  expect_dm_error(
-    check_cardinality_1_1(data_card_4(), c, data_card_1(), a),
-    class = "not_unique_key"
-  )
+    expect_dm_error(
+      check_cardinality_1_1(data_card_4(), c, data_card_1(), a),
+      class = "not_unique_key"
+    )
 
-  expect_dm_error(
-    check_cardinality_1_1(data_card_1(), a, data_card_4(), c),
-    class = "not_bijective"
-  )
+    expect_dm_error(
+      check_cardinality_1_1(data_card_1(), a, data_card_4(), c),
+      class = "not_bijective"
+    )
+  })
 })
