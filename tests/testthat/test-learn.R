@@ -31,7 +31,7 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     )
   )
 
-  dm_db_learned_all <- dm_from_src(src_db)
+  dm_db_learned_all <- expect_message(dm_from_src(src_db))
 
   # in case there happen to be other tables in schema "dbo" or "public"
   dm_db_learned <-
@@ -59,7 +59,7 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     src_db,
     dm_for_disambiguate(),
     temporary = FALSE,
-    table_names = ~ DBI::SQL(dbplyr::in_schema(schema_name_q, .x))
+    table_names = ~ DBI::SQL(paste0(schema_name_q, ".", .x))
   )
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
   remote_tbl_names <- set_names(paste0(schema_name_q, ".", order_of_deletion), order_of_deletion)
@@ -74,7 +74,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     }
   )
 
-  dm_db_learned <- dm_from_src(src_db, schema = schema_name) %>%
+  dm_db_learned <-
+    dm_from_src(src_db, schema = schema_name, learn_keys = TRUE) %>%
     dm_select_tbl(!!!order_of_deletion)
 
   expect_equivalent_dm(

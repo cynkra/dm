@@ -42,14 +42,12 @@ Create a `dm` object directly by providing data frames to `dm()`:
 library(nycflights13)
 library(dm)
 dm(airlines, airports, flights, planes, weather)
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 ### Start with an empty `dm`
 
@@ -63,14 +61,12 @@ empty_dm <- dm()
 empty_dm
 #> dm()
 dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather) 
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 ### Coerce a list of tables
 
@@ -82,14 +78,12 @@ as_dm(list(airlines = airlines,
            flights = flights, 
            planes = planes, 
            weather = weather))
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 ### Turn tables from a `src` into a `dm`
 
@@ -101,16 +95,14 @@ sqlite_src <- dbplyr::nycflights13_sqlite()
 
 flights_dm <- dm_from_src(sqlite_src)
 flights_dm
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
+#> Columns: 62
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
-#&gt; Columns: 62
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 The function `dm_from_src(src, table_names = NULL)` includes all
 available tables on a source in the `dm` object. This means that you can
@@ -127,14 +119,12 @@ Another way of creating a `dm` object is calling `new_dm()` on a list of
 ``` r
 base_dm <- new_dm(list(trees = trees, mtcars = mtcars))
 base_dm
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `trees`, `mtcars`
+#> Columns: 14
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `trees`, `mtcars`
-#&gt; Columns: 14
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 This constructor is optimized for speed and does not perform integrity
 checks. Use with caution, validate using `validate_dm()` if necessary.
@@ -152,24 +142,22 @@ In order to pull a specific table from a `dm`, use:
 
 ``` r
 tbl(flights_dm, "airports")
+#> # Source:   table<`airports`> [?? x 8]
+#> # Database: sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
+#>    faa   name                    lat    lon   alt    tz dst   tzone        
+#>    <chr> <chr>                 <dbl>  <dbl> <dbl> <dbl> <chr> <chr>        
+#>  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…
+#>  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…
+#>  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…
+#>  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…
+#>  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…
+#>  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…
+#>  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…
+#>  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…
+#>  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…
+#> 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…
+#> # … with more rows
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
-#&gt; </span><span style='color: #949494;'># Database: sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]</span><span>
-#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 06A   Moton Field Municipa…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 06C   Schaumburg Regional    42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 06N   Randall Airport        41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 09J   Jekyll Island Airport  31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 0A9   Elizabethton Municip…  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 0G6   Williams County Airp…  41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 0G7   Finger Lakes Regiona…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 0P2   Shoestring Aviation …  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_…
-#&gt; </span><span style='color: #949494;'># … with more rows</span><span>
-</span></CODE></PRE>
 
 But how can we use {dm}-functions to manage the primary keys of the
 tables in a `dm` object?
@@ -201,16 +189,14 @@ dm_has_pk(flights_dm, airports)
 #> [1] FALSE
 flights_dm_with_key <- dm_add_pk(flights_dm, airports, faa)
 flights_dm_with_key
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
+#> Columns: 62
+#> Primary keys: 1
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
-#&gt; Columns: 62
-#&gt; Primary keys: 1
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 The `dm` now has a primary key. Let’s check:
 
@@ -243,47 +229,41 @@ which columns of the table are unique keys:
 
 ``` r
 dm_enum_pk_candidates(flights_dm_with_key, airports)
+#> # A tibble: 8 x 3
+#>   columns candidate why                                                    
+#>   <keys>  <lgl>     <chr>                                                  
+#> 1 faa     TRUE      ""                                                     
+#> 2 lon     TRUE      ""                                                     
+#> 3 alt     FALSE     "has duplicate values: 0, 1, 3, 4, 5, …"               
+#> 4 dst     FALSE     "has duplicate values: A, N, U"                        
+#> 5 lat     FALSE     "has duplicate values: 38.88944, 40.63975"             
+#> 6 name    FALSE     "has duplicate values: All Airports, Capital City Airp…
+#> 7 tz      FALSE     "has duplicate values: -10, -9, -8, -7, -6, …"         
+#> 8 tzone   FALSE     "has duplicate values: NA, America/Anchorage, America/…
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 8 x 3</span><span>
-#&gt;   columns candidate why                                                    
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                                  
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> faa     TRUE      </span><span style='color: #949494;'>""</span><span>                                                     
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> lon     TRUE      </span><span style='color: #949494;'>""</span><span>                                                     
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> alt     FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 0, 1, 3, 4, 5, …</span><span style='color: #949494;'>"</span><span>               
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> dst     FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: A, N, U</span><span style='color: #949494;'>"</span><span>                        
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> lat     FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 38.88944, 40.63975</span><span style='color: #949494;'>"</span><span>             
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> name    FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: All Airports, Capital City Airp…
-#&gt; </span><span style='color: #BCBCBC;'>7</span><span> tz      FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: -10, -9, -8, -7, -6, …</span><span style='color: #949494;'>"</span><span>         
-#&gt; </span><span style='color: #BCBCBC;'>8</span><span> tzone   FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: NA, America/Anchorage, America/…
-</span></CODE></PRE>
 
 The `flights` table does not have any one-column primary key candidates:
 
 ``` r
 dm_enum_pk_candidates(flights_dm_with_key, flights) %>% dplyr::count(candidate)
+#> # A tibble: 1 x 2
+#>   candidate     n
+#>   <lgl>     <int>
+#> 1 FALSE        19
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span><span>
-#&gt;   candidate     n
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> FALSE        19
-</span></CODE></PRE>
 
 To get an overview over all tables with primary keys, use
 `dm_get_all_pks()`:
 
 ``` r
 dm_get_all_pks(dm_nycflights13(cycle = TRUE))
+#> # A tibble: 3 x 2
+#>   table    pk_col 
+#>   <chr>    <keys> 
+#> 1 airlines carrier
+#> 2 airports faa    
+#> 3 planes   tailnum
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 3 x 2</span><span>
-#&gt;   table    pk_col 
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> airlines carrier
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> airports faa    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> planes   tailnum
-</span></CODE></PRE>
 
 Here we used the prepared `dm` object `dm_nycflights13(cycle = TRUE)` as
 an example. This object already has all keys pre-set.
@@ -311,16 +291,14 @@ of the child table point to it.
 
 ``` r
 flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
+#> Columns: 62
+#> Primary keys: 1
+#> Foreign keys: 1
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.30.1 [/tmp/RtmpGalley/nycflights13.sqlite]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
-#&gt; Columns: 62
-#&gt; Primary keys: 1
-#&gt; Foreign keys: 1
-</span></CODE></PRE>
 
 This will throw an error:
 
@@ -401,39 +379,35 @@ another:
 
 ``` r
 dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
+#> # A tibble: 15 x 3
+#>    columns    candidate why                                                
+#>    <keys>     <lgl>     <chr>                                              
+#>  1 origin     TRUE      ""                                                 
+#>  2 wind_gust  FALSE     "5337 entries (20.4%) of `weather$wind_gust` not i…
+#>  3 pressure   FALSE     "23386 entries (89.6%) of `weather$pressure` not i…
+#>  4 wind_dir   FALSE     "25655 entries (98.2%) of `weather$wind_dir` not i…
+#>  5 wind_speed FALSE     "26111 entries (100%) of `weather$wind_speed` not …
+#>  6 dewp       FALSE     "26114 entries (100%) of `weather$dewp` not in `ai…
+#>  7 humid      FALSE     "26114 entries (100%) of `weather$humid` not in `a…
+#>  8 temp       FALSE     "26114 entries (100%) of `weather$temp` not in `ai…
+#>  9 day        FALSE     "26115 entries (100%) of `weather$day` not in `air…
+#> 10 hour       FALSE     "26115 entries (100%) of `weather$hour` not in `ai…
+#> 11 month      FALSE     "26115 entries (100%) of `weather$month` not in `a…
+#> 12 precip     FALSE     "26115 entries (100%) of `weather$precip` not in `…
+#> 13 time_hour  FALSE     "26115 entries (100%) of `weather$time_hour` not i…
+#> 14 visib      FALSE     "26115 entries (100%) of `weather$visib` not in `a…
+#> 15 year       FALSE     "26115 entries (100%) of `weather$year` not in `ai…
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 15 x 3</span><span>
-#&gt;    columns    candidate why                                                
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                              
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> origin     TRUE      </span><span style='color: #949494;'>""</span><span>                                                 
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> wind_gust  FALSE     </span><span style='color: #949494;'>"</span><span>5337 entries (20.4%) of `weather$wind_gust` not i…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> pressure   FALSE     </span><span style='color: #949494;'>"</span><span>23386 entries (89.6%) of `weather$pressure` not i…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> wind_dir   FALSE     </span><span style='color: #949494;'>"</span><span>25655 entries (98.2%) of `weather$wind_dir` not i…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> wind_speed FALSE     </span><span style='color: #949494;'>"</span><span>26111 entries (100%) of `weather$wind_speed` not …
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> dewp       FALSE     </span><span style='color: #949494;'>"</span><span>26114 entries (100%) of `weather$dewp` not in `ai…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> humid      FALSE     </span><span style='color: #949494;'>"</span><span>26114 entries (100%) of `weather$humid` not in `a…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> temp       FALSE     </span><span style='color: #949494;'>"</span><span>26114 entries (100%) of `weather$temp` not in `ai…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> day        FALSE     </span><span style='color: #949494;'>"</span><span>26115 entries (100%) of `weather$day` not in `air…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> hour       FALSE     </span><span style='color: #949494;'>"</span><span>26115 entries (100%) of `weather$hour` not in `ai…
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> month      FALSE     </span><span style='color: #949494;'>"</span><span>26115 entries (100%) of `weather$month` not in `a…
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> precip     FALSE     </span><span style='color: #949494;'>"</span><span>26115 entries (100%) of `weather$precip` not in `…
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> time_hour  FALSE     </span><span style='color: #949494;'>"</span><span>26115 entries (100%) of `weather$time_hour` not i…
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> visib      FALSE     </span><span style='color: #949494;'>"</span><span>26115 entries (100%) of `weather$visib` not in `a…
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> year       FALSE     </span><span style='color: #949494;'>"</span><span>26115 entries (100%) of `weather$year` not in `ai…
-</span></CODE></PRE>
 
 Get an overview of all foreign key relations with`dm_get_all_fks()`:
 
 ``` r
 dm_get_all_fks(dm_nycflights13(cycle = TRUE))
+#> # A tibble: 4 x 3
+#>   child_table child_fk_cols parent_table
+#>   <chr>       <keys>        <chr>       
+#> 1 flights     carrier       airlines    
+#> 2 flights     dest          airports    
+#> 3 flights     origin        airports    
+#> 4 flights     tailnum       planes
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 4 x 3</span><span>
-#&gt;   child_table child_fk_cols parent_table
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> flights     carrier       airlines    
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> flights     dest          airports    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> flights     origin        airports    
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> flights     tailnum       planes
-</span></CODE></PRE>

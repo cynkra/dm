@@ -1,6 +1,6 @@
 ---
 output:
-  github_document:
+  downlit::readme_document:
     html_preview: false
 ---
 
@@ -16,9 +16,6 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%")
 
-fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
-options(crayon.enabled = TRUE, width = 75, cli.width = 75, pillar.bold = TRUE)
-
 knit_print.grViz <- function(x, ..., options) {
   svg <- DiagrammeRsvg::export_svg(x)
   path <- paste0(options$fig.path, options$label, ".svg")
@@ -29,7 +26,7 @@ knit_print.grViz <- function(x, ..., options) {
 vctrs::s3_register("knitr::knit_print", "grViz")
 ```
 
-# [dm](https://krlmlr.github.io/dm)
+# [dm](https://krlmlr.github.io/dm/)
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
@@ -144,7 +141,7 @@ License: MIT © cynkra GmbH.
 
 Funded by:
 
-[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch)
+[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/)
 <span style="padding-right:50px">
 </span>
 [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)

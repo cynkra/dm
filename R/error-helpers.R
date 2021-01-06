@@ -62,7 +62,7 @@ abort_not_subset_of <- function(table_name_1, colname_1,
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
   glue(
-    "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see above) that are not present in column ",
+    "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see examples above) that are not present in column ",
     "{tick(colname_2)} of table {tick(table_name_2)}."
   )
 }

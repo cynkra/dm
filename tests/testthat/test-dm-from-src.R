@@ -1,7 +1,8 @@
 test_that("table identifiers are quoted", {
   skip_if_local_src()
 
-  dm <- dm_from_src(my_test_src())
+  dm <- suppress_mssql_warning(dm_from_src(my_test_src(), learn_keys = FALSE))
+
   remote_names <-
     dm %>%
     dm_get_tables() %>%
@@ -15,7 +16,7 @@ test_that("table identifiers are quoted", {
 test_that("table identifiers are quoted with learn_keys = FALSE", {
   skip_if_local_src()
 
-  dm <- dm_from_src(my_test_src(), learn_keys = FALSE)
+  dm <- suppress_mssql_warning(dm_from_src(my_test_src(), learn_keys = FALSE))
   remote_names <-
     dm %>%
     dm_get_tables() %>%

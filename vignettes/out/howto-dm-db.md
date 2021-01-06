@@ -33,7 +33,6 @@ my_db <- dbConnect(
   dbname = "Financial_ijs",
   host = "relational.fit.cvut.cz"
 )
-#> Error: Failed to connect: Lost connection to MySQL server at 'waiting for initial communication packet', system error: 110
 ```
 
 Creating a dm object takes a single call to `dm_from_src()` with the DBI
@@ -43,9 +42,14 @@ connection object as its argument.
 library(dm)
 
 my_dm <- dm_from_src(my_db)
-#> Error in dm_from_src(my_db): object 'my_db' not found
 my_dm
-#> Error in eval(expr, envir, enclos): object 'my_dm' not found
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
+#> Columns: 57
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
 
 The components of the `my_dm` object are lazy tables powered by
@@ -68,7 +72,8 @@ same source.
 
 ``` r
 dbListTables(my_db)
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'conn' in selecting a method for function 'dbListTables': object 'my_db' not found
+#> [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    
+#> [7] "orders"    "tkeys"     "trans"
 
 library(dbplyr)
 #> 
@@ -77,14 +82,17 @@ library(dbplyr)
 #> 
 #>     ident, sql
 loans <- tbl(my_db, "loans")
-#> Error in tbl(my_db, "loans"): object 'my_db' not found
 accounts <- tbl(my_db, "accounts")
-#> Error in tbl(my_db, "accounts"): object 'my_db' not found
 
 my_manual_dm <- dm(loans, accounts)
-#> Error in .f(.x[[i]], ...): object 'loans' not found
 my_manual_dm
-#> Error in eval(expr, envir, enclos): object 'my_manual_dm' not found
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`
+#> Columns: 11
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
 
 ## Define Primary and Foreign Keys
@@ -125,23 +133,28 @@ my_dm_keys <-
   dm_add_pk(loans, id) %>%
   dm_add_fk(loans, account_id, accounts) %>%
   dm_set_colors(green = loans, orange = accounts)
-#> Error in eval(lhs, parent, parent): object 'my_manual_dm' not found
 
 my_dm_keys %>%
   dm_draw()
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
 ```
+
+![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-db_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 Once you have instantiated a dm object you can continue to add tables to
 it. For tables from the original source for the dm, use `dm_add_tbl()`
 
 ``` r
 trans <- tbl(my_db, "trans")
-#> Error in tbl(my_db, "trans"): object 'my_db' not found
 
 my_dm_keys %>%
   dm_add_tbl(trans)
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`, `trans`
+#> Columns: 21
+#> Primary keys: 2
+#> Foreign keys: 1
 ```
 
 For tables from other sources or from the local environment
@@ -155,15 +168,26 @@ it are transient unless stored in a new variable.
 
 ``` r
 my_dm_keys
-#> Error in eval(expr, envir, enclos): object 'my_dm_keys' not found
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`
+#> Columns: 11
+#> Primary keys: 2
+#> Foreign keys: 1
 
 my_dm_trans <-
   my_dm_keys %>%
   dm_add_tbl(trans)
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
 
 my_dm_trans
-#> Error in eval(expr, envir, enclos): object 'my_dm_trans' not found
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`, `trans`
+#> Columns: 21
+#> Primary keys: 2
+#> Foreign keys: 1
 ```
 
 And, like {dbplyr}, results are never written to a database unless
@@ -172,12 +196,36 @@ explicitly requested.
 ``` r
 my_dm_keys %>%
   dm_flatten_to_tbl(loans)
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+#> Renamed columns:
+#> * date -> loans.date, accounts.date
+#> # Source:   lazy query [?? x 10]
+#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#>       id account_id loans.date amount duration payments status district_id
+#>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr>        <int>
+#>  1  4959          2 1994-01-05  80952       24     3373 A                1
+#>  2  4961         19 1996-04-29  30276       12     2523 B               21
+#>  3  4962         25 1997-12-08  30276       12     2523 A               68
+#>  4  4967         37 1998-10-14 318480       60     5308 D               20
+#>  5  4968         38 1998-04-19 110736       48     2307 C               19
+#>  6  4973         67 1996-05-02 165960       24     6915 A               16
+#>  7  4986         97 1997-08-10 102876       12     8573 A               74
+#>  8  4988        103 1997-12-06 265320       36     7370 D               44
+#>  9  4989        105 1998-12-05 352704       48     7348 C               21
+#> 10  4990        110 1997-09-08 162576       36     4516 C               36
+#> # … with more rows, and 2 more variables: frequency <chr>,
+#> #   accounts.date <date>
 
 my_dm_keys %>%
   dm_flatten_to_tbl(loans) %>%
   sql_render()
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
+#> Renamed columns:
+#> * date -> loans.date, accounts.date
+#> <SQL> SELECT `LHS`.`id` AS `id`, `LHS`.`account_id` AS `account_id`, `LHS`.`loans.date` AS `loans.date`, `LHS`.`amount` AS `amount`, `LHS`.`duration` AS `duration`, `LHS`.`payments` AS `payments`, `LHS`.`status` AS `status`, `RHS`.`district_id` AS `district_id`, `RHS`.`frequency` AS `frequency`, `RHS`.`accounts.date` AS `accounts.date`
+#> FROM (SELECT `id`, `account_id`, `date` AS `loans.date`, `amount`, `duration`, `payments`, `status`
+#> FROM `loans`) `LHS`
+#> LEFT JOIN (SELECT `id`, `district_id`, `frequency`, `date` AS `accounts.date`
+#> FROM `accounts`) `RHS`
+#> ON (`LHS`.`account_id` = `RHS`.`id`)
 ```
 
 ## Performing operations on tables by “zooming”
@@ -203,18 +251,37 @@ my_dm_total <-
   summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
   ungroup() %>%
   dm_insert_zoomed("total_loans")
-#> Error in eval(lhs, parent, parent): object 'my_dm_keys' not found
 
 my_dm_total$total_loans
-#> Error in eval(expr, envir, enclos): object 'my_dm_total' not found
+#> # Source:   lazy query [?? x 2]
+#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # … with more rows
 
 my_dm_total %>%
   dm_draw()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
+```
+
+![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-db_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+``` r
 
 my_dm_total$total_loans %>%
   sql_render()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
+#> <SQL> SELECT `account_id`, SUM(`amount`) AS `total_amount`
+#> FROM `loans`
+#> GROUP BY `account_id`
 ```
 
 ## Persisting results
@@ -243,7 +310,6 @@ we can write to.
 
 ``` r
 my_dm_sqlite <- dm_financial_sqlite()
-#> Error: Failed to connect: Lost connection to MySQL server at 'waiting for initial communication packet', system error: 110
 
 my_dm_total <-
   my_dm_sqlite %>%
@@ -252,7 +318,6 @@ my_dm_total <-
   summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
   ungroup() %>%
   dm_insert_zoomed("total_loans")
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
 ```
 
 Two {[dplyr](https://dplyr.tidyverse.org/)} verbs have been implemented
@@ -263,14 +328,28 @@ into new (temporary or persistent) tables.
 my_dm_total_computed <-
   my_dm_total %>%
   compute()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
 
 my_dm_total_computed$total_loans
-#> Error in eval(expr, envir, enclos): object 'my_dm_total_computed' not found
+#> # Source:   table<dbplyr_010> [?? x 2]
+#> # Database: sqlite 3.30.1 []
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # … with more rows
 
 my_dm_total_computed$total_loans %>%
   sql_render()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total_computed' not found
+#> <SQL> SELECT *
+#> FROM `dbplyr_010`
 ```
 
 `collect()` downloads all tables to local data frames.
@@ -279,10 +358,22 @@ my_dm_total_computed$total_loans %>%
 my_dm_local <-
   my_dm_total %>%
   collect()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total' not found
 
 my_dm_local$total_loans
-#> Error in eval(expr, envir, enclos): object 'my_dm_local' not found
+#> # A tibble: 682 x 2
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # … with 672 more rows
 ```
 
 There is a third {dbplyr} verb that has not yet been implemented.
@@ -302,11 +393,11 @@ my_dm_total_inplace <-
   ungroup() %>%
   compute() %>%
   dm_insert_zoomed("total_loans")
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
 
 my_dm_total_inplace$total_loans %>%
   sql_render()
-#> Error in eval(lhs, parent, parent): object 'my_dm_total_inplace' not found
+#> <SQL> SELECT *
+#> FROM `dbplyr_011`
 ```
 
 ## Deploying a dm to a database
@@ -359,31 +450,47 @@ loans_df <-
   dm_squash_to_tbl(loans) %>%
   select(id, amount, duration, A3) %>%
   collect()
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite' not found
+#> Renamed columns:
+#> * date -> loans.date, accounts.date
 
 model <- lm(amount ~ duration + A3, data = loans_df)
-#> Error in is.data.frame(data): object 'loans_df' not found
 
 loans_residuals <- tibble::tibble(
   id = loans_df$id,
   resid = unname(residuals(model))
 )
-#> Error in eval_tidy(xs[[j]], mask): object 'loans_df' not found
 
 my_dm_sqlite_resid <-
   copy_to(my_dm_sqlite, loans_residuals, temporary = FALSE) %>%
   dm_add_pk(loans_residuals, id) %>%
   dm_add_fk(loans_residuals, id, loans)
-#> Error in copy_to(my_dm_sqlite, loans_residuals, temporary = FALSE): object 'my_dm_sqlite' not found
 
 my_dm_sqlite_resid %>%
   dm_draw()
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite_resid' not found
+```
+
+![](/home/kirill/git/cynkra/cynkra/public/dm/vignettes/out/howto-dm-db_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+``` r
 my_dm_sqlite_resid %>%
   dm_examine_constraints()
-#> Error in eval(lhs, parent, parent): object 'my_dm_sqlite_resid' not found
+#> ℹ All constraints satisfied.
 my_dm_sqlite_resid$loans_residuals
-#> Error in eval(expr, envir, enclos): object 'my_dm_sqlite_resid' not found
+#> # Source:   table<loans_residuals_2020_08_28_07_13_03_1> [?? x 2]
+#> # Database: sqlite 3.30.1 []
+#>       id   resid
+#>    <int>   <dbl>
+#>  1  4959 -31912.
+#>  2  4961 -27336.
+#>  3  4962 -30699.
+#>  4  4967  63621.
+#>  5  4968 -94811.
+#>  6  4973  59036.
+#>  7  4986  41901.
+#>  8  4988 123392.
+#>  9  4989 147157.
+#> 10  4990  33377.
+#> # … with more rows
 ```
 
 ## Conclusion

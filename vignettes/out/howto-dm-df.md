@@ -30,23 +30,21 @@ our work environment, ready to be accessed.
 library(nycflights13)
 
 airports
+#> # A tibble: 1,458 x 8
+#>    faa   name                    lat    lon   alt    tz dst   tzone        
+#>    <chr> <chr>                 <dbl>  <dbl> <dbl> <dbl> <chr> <chr>        
+#>  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…
+#>  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…
+#>  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…
+#>  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…
+#>  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…
+#>  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…
+#>  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…
+#>  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…
+#>  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…
+#> 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…
+#> # … with 1,448 more rows
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1,458 x 8</span><span>
-#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 06A   Moton Field Municipa…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 06C   Schaumburg Regional    42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 06N   Randall Airport        41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 09J   Jekyll Island Airport  31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 0A9   Elizabethton Municip…  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 0G6   Williams County Airp…  41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 0G7   Finger Lakes Regiona…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 0P2   Shoestring Aviation …  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_…
-#&gt; </span><span style='color: #949494;'># … with 1,448 more rows</span><span>
-</span></CODE></PRE>
 
 Your own data will probably not be available as an R package. Whatever
 format it is in, you will need to be able to load it as data frames into
@@ -65,14 +63,12 @@ library(dm)
 
 flights_dm_no_keys <- dm(airlines, airports, flights, planes, weather)
 flights_dm_no_keys
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 The `as_dm()` function is an alternative that works if you already have
 a list of tables.
@@ -91,34 +87,27 @@ manipulation functions work just as you would expect on a dm object.
 names(flights_dm_no_keys)
 #> [1] "airlines" "airports" "flights"  "planes"   "weather"
 flights_dm_no_keys$airports
-```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 1,458 x 8</span><span>
-#&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style='color: #BB0000;'>80.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>044    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 06A   Moton Field Municipa…  32.5  -</span><span style='color: #BB0000;'>85.7</span><span>   264    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 06C   Schaumburg Regional    42.0  -</span><span style='color: #BB0000;'>88.1</span><span>   801    -</span><span style='color: #BB0000;'>6</span><span> A     America/Chic…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 06N   Randall Airport        41.4  -</span><span style='color: #BB0000;'>74.4</span><span>   523    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 09J   Jekyll Island Airport  31.1  -</span><span style='color: #BB0000;'>81.4</span><span>    11    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 0A9   Elizabethton Municip…  36.4  -</span><span style='color: #BB0000;'>82.2</span><span>  </span><span style='text-decoration: underline;'>1</span><span>593    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 0G6   Williams County Airp…  41.5  -</span><span style='color: #BB0000;'>84.5</span><span>   730    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 0G7   Finger Lakes Regiona…  42.9  -</span><span style='color: #BB0000;'>76.8</span><span>   492    -</span><span style='color: #BB0000;'>5</span><span> A     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 0P2   Shoestring Aviation …  39.8  -</span><span style='color: #BB0000;'>76.6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000    -</span><span style='color: #BB0000;'>5</span><span> U     America/New_…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 0S9   Jefferson County Intl  48.1 -</span><span style='color: #BB0000;'>123.</span><span>    108    -</span><span style='color: #BB0000;'>8</span><span> A     America/Los_…
-#&gt; </span><span style='color: #949494;'># … with 1,448 more rows</span><span>
-</span></CODE></PRE>
-
-``` r
+#> # A tibble: 1,458 x 8
+#>    faa   name                    lat    lon   alt    tz dst   tzone        
+#>    <chr> <chr>                 <dbl>  <dbl> <dbl> <dbl> <chr> <chr>        
+#>  1 04G   Lansdowne Airport      41.1  -80.6  1044    -5 A     America/New_…
+#>  2 06A   Moton Field Municipa…  32.5  -85.7   264    -6 A     America/Chic…
+#>  3 06C   Schaumburg Regional    42.0  -88.1   801    -6 A     America/Chic…
+#>  4 06N   Randall Airport        41.4  -74.4   523    -5 A     America/New_…
+#>  5 09J   Jekyll Island Airport  31.1  -81.4    11    -5 A     America/New_…
+#>  6 0A9   Elizabethton Municip…  36.4  -82.2  1593    -5 A     America/New_…
+#>  7 0G6   Williams County Airp…  41.5  -84.5   730    -5 A     America/New_…
+#>  8 0G7   Finger Lakes Regiona…  42.9  -76.8   492    -5 A     America/New_…
+#>  9 0P2   Shoestring Aviation …  39.8  -76.6  1000    -5 U     America/New_…
+#> 10 0S9   Jefferson County Intl  48.1 -123.    108    -8 A     America/Los_…
+#> # … with 1,448 more rows
 flights_dm_no_keys[c("airports", "flights")]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airports`, `flights`
+#> Columns: 27
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airports`, `flights`
-#&gt; Columns: 27
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 ## Defining Keys
 
@@ -144,21 +133,19 @@ dm_enum_pk_candidates(
   dm = flights_dm_no_keys,
   table = planes
 )
+#> # A tibble: 9 x 3
+#>   columns     candidate why                                                
+#>   <keys>      <lgl>     <chr>                                              
+#> 1 tailnum     TRUE      ""                                                 
+#> 2 engine      FALSE     "has duplicate values: 4 Cycle, Reciprocating, Tur…
+#> 3 engines     FALSE     "has duplicate values: 1, 2, 3, 4"                 
+#> 4 manufactur… FALSE     "has duplicate values: AIRBUS, AIRBUS INDUSTRIE, A…
+#> 5 model       FALSE     "has duplicate values: 717-200, 737-301, 737-3G7, …
+#> 6 seats       FALSE     "has duplicate values: 2, 4, 5, 6, 7, …"           
+#> 7 speed       FALSE     "has duplicate values: 90, 105, 162, 432, NA"      
+#> 8 type        FALSE     "has duplicate values: Fixed wing multi engine, Fi…
+#> 9 year        FALSE     "has duplicate values: 1959, 1963, 1975, 1976, 197…
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 9 x 3</span><span>
-#&gt;   columns     candidate why                                                
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                              
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> tailnum     TRUE      </span><span style='color: #949494;'>""</span><span>                                                 
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> engine      FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 4 Cycle, Reciprocating, Tur…
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> engines     FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 1, 2, 3, 4</span><span style='color: #949494;'>"</span><span>                 
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> manufactur… FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: AIRBUS, AIRBUS INDUSTRIE, A…
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> model       FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 717-200, 737-301, 737-3G7, …
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> seats       FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 2, 4, 5, 6, 7, …</span><span style='color: #949494;'>"</span><span>           
-#&gt; </span><span style='color: #BCBCBC;'>7</span><span> speed       FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 90, 105, 162, 432, NA</span><span style='color: #949494;'>"</span><span>      
-#&gt; </span><span style='color: #BCBCBC;'>8</span><span> type        FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: Fixed wing multi engine, Fi…
-#&gt; </span><span style='color: #BCBCBC;'>9</span><span> year        FALSE     </span><span style='color: #949494;'>"</span><span>has duplicate values: 1959, 1963, 1975, 1976, 197…
-</span></CODE></PRE>
 
 Now, we add the primary keys that we have identified:
 
@@ -169,14 +156,12 @@ flights_dm_only_pks <-
   dm_add_pk(airports, faa) %>%
   dm_add_pk(planes, tailnum)
 flights_dm_only_pks
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 3
+#> Foreign keys: 0
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 0
-</span></CODE></PRE>
 
 Note that we demonstrate both named and positional arguments above.
 
@@ -194,31 +179,29 @@ dm_enum_fk_candidates(
   table = flights,
   ref_table = airlines
 )
+#> # A tibble: 19 x 3
+#>    columns      candidate why                                              
+#>    <keys>       <lgl>     <chr>                                            
+#>  1 carrier      TRUE      ""                                               
+#>  2 tailnum      FALSE     "334264 entries (99.3%) of `flights$tailnum` not…
+#>  3 dest         FALSE     "336776 entries (100%) of `flights$dest` not in …
+#>  4 origin       FALSE     "336776 entries (100%) of `flights$origin` not i…
+#>  5 air_time     FALSE     "Can't join on `x$value` x `y$value` because of …
+#>  6 arr_delay    FALSE     "Can't join on `x$value` x `y$value` because of …
+#>  7 arr_time     FALSE     "Can't join on `x$value` x `y$value` because of …
+#>  8 day          FALSE     "Can't join on `x$value` x `y$value` because of …
+#>  9 dep_delay    FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 10 dep_time     FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 11 distance     FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 12 flight       FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 13 hour         FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 14 minute       FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 15 month        FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 16 sched_arr_t… FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 17 sched_dep_t… FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 18 time_hour    FALSE     "Can't join on `x$value` x `y$value` because of …
+#> 19 year         FALSE     "Can't join on `x$value` x `y$value` because of …
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 19 x 3</span><span>
-#&gt;    columns      candidate why                                              
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                            
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> carrier      TRUE      </span><span style='color: #949494;'>""</span><span>                                               
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> tailnum      FALSE     </span><span style='color: #949494;'>"</span><span>334264 entries (99.3%) of `flights$tailnum` not…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> dest         FALSE     </span><span style='color: #949494;'>"</span><span>336776 entries (100%) of `flights$dest` not in …
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> origin       FALSE     </span><span style='color: #949494;'>"</span><span>336776 entries (100%) of `flights$origin` not i…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> air_time     FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> arr_delay    FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> arr_time     FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> day          FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> dep_delay    FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> dep_time     FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> distance     FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> flight       FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> hour         FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> minute       FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> month        FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>16</span><span> sched_arr_t… FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>17</span><span> sched_dep_t… FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>18</span><span> time_hour    FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-#&gt; </span><span style='color: #BCBCBC;'>19</span><span> year         FALSE     </span><span style='color: #949494;'>"</span><span>Can't join on `x$value` x `y$value` because of …
-</span></CODE></PRE>
 
 Having chosen a column from the successful candidates provided by
 `dm_enum_fk_candidates()`, we use the `dm_add_fk()` function to
@@ -234,14 +217,12 @@ flights_dm_all_keys <-
   dm_add_fk(flights, carrier, airlines) %>%
   dm_add_fk(flights, origin, airports)
 flights_dm_all_keys
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#> Columns: 53
+#> Primary keys: 3
+#> Foreign keys: 3
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3
-</span></CODE></PRE>
 
 Having created the required primary and foreign keys to link all the
 tables together, we now have a relational data model we can work with.
@@ -295,31 +276,17 @@ are sensible.
 ``` r
 flights_dm_no_keys %>%
   dm_examine_constraints()
-```
-
-<PRE class="fansi fansi-message"><CODE>#&gt; <span style='color: #00BBBB;'>ℹ</span><span> No constraints defined.
-</span></CODE></PRE>
-
-``` r
+#> ℹ No constraints defined.
 
 flights_dm_only_pks %>%
   dm_examine_constraints()
-```
-
-<PRE class="fansi fansi-message"><CODE>#&gt; <span style='color: #00BBBB;'>ℹ</span><span> All constraints satisfied.
-</span></CODE></PRE>
-
-``` r
+#> ℹ All constraints satisfied.
 
 flights_dm_all_keys %>%
   dm_examine_constraints()
+#> ! Unsatisfied constraints:
+#> ● Table `flights`: foreign key tailnum into table `planes`: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …
 ```
-
-<PRE class="fansi fansi-message"><CODE>#&gt; <span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:
-</span></CODE></PRE>
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …
-</span></CODE></PRE>
 
 The results are presented in a human-readable form, and available as a
 tibble for programmatic inspection.
@@ -334,30 +301,26 @@ results.
 ``` r
 flights_dm_only_pks %>%
   dm_get_all_pks()
+#> # A tibble: 3 x 2
+#>   table    pk_col 
+#>   <chr>    <keys> 
+#> 1 airlines carrier
+#> 2 airports faa    
+#> 3 planes   tailnum
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 3 x 2</span><span>
-#&gt;   table    pk_col 
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> airlines carrier
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> airports faa    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> planes   tailnum
-</span></CODE></PRE>
 
 A data frame of foreign keys is retrieved with `dm_get_all_fks()`:
 
 ``` r
 flights_dm_all_keys %>%
   dm_get_all_pks()
+#> # A tibble: 3 x 2
+#>   table    pk_col 
+#>   <chr>    <keys> 
+#> 1 airlines carrier
+#> 2 airports faa    
+#> 3 planes   tailnum
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 3 x 2</span><span>
-#&gt;   table    pk_col 
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> airlines carrier
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> airports faa    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> planes   tailnum
-</span></CODE></PRE>
 
 We can use `tibble::as_tibble()` on the result of
 `dm_examine_constraints()` to programmatically inspect which constraints
@@ -367,18 +330,16 @@ are not satisfied:
 flights_dm_all_keys %>%
   dm_examine_constraints() %>%
   tibble::as_tibble()
+#> # A tibble: 6 x 6
+#>   table   kind  columns ref_table is_key problem                           
+#>   <chr>   <chr> <keys>  <chr>     <lgl>  <chr>                             
+#> 1 flights FK    tailnum planes    FALSE  "50094 entries (14.9%) of `flight…
+#> 2 airlin… PK    carrier <NA>      TRUE   ""                                
+#> 3 airpor… PK    faa     <NA>      TRUE   ""                                
+#> 4 planes  PK    tailnum <NA>      TRUE   ""                                
+#> 5 flights FK    carrier airlines  TRUE   ""                                
+#> 6 flights FK    origin  airports  TRUE   ""
 ```
-
-<PRE class="fansi fansi-output"><CODE>#&gt; <span style='color: #949494;'># A tibble: 6 x 6</span><span>
-#&gt;   table   kind  columns ref_table is_key problem                           
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;keys&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                             
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> flights FK    tailnum planes    FALSE  </span><span style='color: #949494;'>"</span><span>50094 entries (14.9%) of `flight…
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> airlin… PK    carrier </span><span style='color: #BB0000;'>NA</span><span>        TRUE   </span><span style='color: #949494;'>""</span><span>                                
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> airpor… PK    faa     </span><span style='color: #BB0000;'>NA</span><span>        TRUE   </span><span style='color: #949494;'>""</span><span>                                
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> planes  PK    tailnum </span><span style='color: #BB0000;'>NA</span><span>        TRUE   </span><span style='color: #949494;'>""</span><span>                                
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> flights FK    carrier airlines  TRUE   </span><span style='color: #949494;'>""</span><span>                                
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> flights FK    origin  airports  TRUE   </span><span style='color: #949494;'>""</span><span>
-</span></CODE></PRE>
 
 1.  Support for compound keys (consisting of multiple columns) is
     [planned](https://github.com/krlmlr/dm/issues/3).
