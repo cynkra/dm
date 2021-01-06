@@ -58,6 +58,7 @@ Imports:
     vctrs (>= 0.3.2)
 Suggests: 
     brio,
+    covr,
     crayon,
     dbplyr,
     DiagrammeR,
