@@ -1,5 +1,6 @@
 > nyc_comp() %>% dm_zoom_to(weather)
 # Zoomed table: weather
+# A tibble:     861 x 15
    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
    <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
  1 EWR     2013     1    10     0  41    32    70.1      230       8.06

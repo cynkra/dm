@@ -8,6 +8,7 @@ Message: Renamed columns:
 * time_hour -> flights.time_hour, weather.time_hour
 * name -> airlines.name, airports.name
 
+# A tibble: 11,227 x 48
    flights.year flights.month flights.day dep_time sched_dep_time dep_delay
           <int>         <int>       <int>    <int>          <int>     <dbl>
  1         2013             1          10        3           2359         4
