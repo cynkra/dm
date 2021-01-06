@@ -4,7 +4,9 @@ test_that("output", {
     data <- test_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 + 0:2)
     data
 
-    rows_insert(data, tibble(select = 4, where = "z"))
+    writeLines(conditionMessage(expect_error(
+      rows_insert(data, tibble(select = 4, where = "z"))
+    )))
     rows_insert(data, test_src_frame(select = 4, where = "z"))
     data %>% arrange(select)
 
