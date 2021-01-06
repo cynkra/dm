@@ -15,6 +15,7 @@ utils::globalVariables(c(
   "planes",
   "tailnum",
   "weather",
+  "time_hour",
   #
   # dm
   "arrange_col",
