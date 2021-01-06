@@ -169,6 +169,7 @@ test_that("output", {
 
   expect_snapshot_file(path, "nycflight-dm.svg", binary = FALSE)
 
+  # Multi-fk (#37)
   dm_nycflights13() %>%
     dm_zoom_to(planes) %>%
     dm_insert_zoomed("planes_copy") %>%
@@ -176,6 +177,5 @@ test_that("output", {
     DiagrammeRsvg::export_svg() %>%
     writeLines(path)
 
-  # Multi-fk (#37)
   expect_snapshot_file(path, "nycflight-dm-copy.svg", binary = FALSE)
 })
