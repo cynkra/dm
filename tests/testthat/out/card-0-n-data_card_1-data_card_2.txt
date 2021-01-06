@@ -1,7 +1,0 @@
-> expect_dm_error(check_cardinality_0_n(parent_table = data_card_1(), pk_column = a,
-+ child_table = data_card_2(), fk_column = a), class = "not_subset_of")
-# A tibble: 1 x 2
-      a b    
-  <dbl> <chr>
-1     6 e    
-

@@ -51,7 +51,7 @@ Imports:
     methods,
     pillar,
     purrr,
-    rlang (>= 0.4.0),
+    rlang (>= 0.4.10),
     tibble,
     tidyr (>= 1.0.0),
     tidyselect (>= 1.0.0),
