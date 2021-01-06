@@ -171,12 +171,16 @@ get_src_tbl_names <- function(src, schema = NULL) {
   con <- src$con
 
   if (is_null(schema)) {
-    if (!is_mssql(src)) {
+    if (!is_mssql(src) && !is_postgres(src)) {
       # `src_tbls()` returns system tables and tables in other schemas than default schema only for MSSQL
       return(src_tbls(src))
+    } else if (is_mssql(src)) {
+      # MSSQL
+      schema <- "dbo"
+    } else {
+      # Postgres
+      schema <- "public"
     }
-    # MSSQL
-    schema <- "dbo"
   } else if (!is_mssql(con) && !is_postgres(con)) {
     warn("Argument 'schema' ignored: currently only supports MSSQL and Postgres")
     return(src_tbls(src))

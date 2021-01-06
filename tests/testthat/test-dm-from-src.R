@@ -21,7 +21,8 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
     dm %>%
     dm_get_tables() %>%
     map_chr(dbplyr::remote_name)
+  remote_names_wo_schema <- gsub("(.*?)\\.(.*?)", "\\2", remote_names)
 
   con <- dm_get_con(dm)
-  expect_equal(unname(remote_names), unclass(DBI::dbQuoteIdentifier(con, names(dm))))
+  expect_equal(unname(remote_names_wo_schema), unclass(DBI::dbQuoteIdentifier(con, names(dm))))
 })
