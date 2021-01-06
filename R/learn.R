@@ -80,11 +80,11 @@ dm_learn_from_db <- function(dest, ...) {
 
 schema_if <- function(schema, table, con) {
   table_sql <- DBI::dbQuoteIdentifier(con, table)
-  if_else(
-    is.na(schema) ||
-      (is_mssql(con) && schema == "dbo"),
-    table_sql,
-    paste0(DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
+  if (is.na(schema) || (is_mssql(con) && schema == "dbo")) {
+    table_sql
+  } else {
+    paste0(DBI::dbQuoteIdentifier(con, schema), ".", table_sql)
+  }
 }
 
 db_learn_query <- function(dest, ...) {
