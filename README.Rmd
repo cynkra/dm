@@ -48,7 +48,7 @@ Are you using multiple data frames or database tables in R? Organize them with d
 ## Overview
 
 dm bridges the gap in the data pipeline between individual data frames and relational databases.
-It's a [grammar of joined tables](https://twitter.com/drob/status/1224851726068527106) that provides a consistent set of verbs for consuming, creating, and deploying relational data models.
+It's a grammar of joined tables that provides a consistent set of verbs for consuming, creating, and deploying relational data models.
 For individual researchers, it broadens the scope of datasets they can work with and how they work with them.
 For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.
 
