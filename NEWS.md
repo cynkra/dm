@@ -1,8 +1,10 @@
 # dm 0.1.10
 
+- Columns with missing values are no longer primary keys (#469).
 - Fix `dm_from_src()` for MSSQL when `learn_keys = FALSE` (#427).
 - Tests use `expect_snapshot()` everywhere (#456).
 - Fix compatibility with testthat 3.0.1 (#457).
+
 
 
 # dm 0.1.9
