@@ -134,7 +134,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 class="date">2021-01-06</h4>
+            <h4 class="date">2021-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-class.Rmd"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -228,7 +228,7 @@
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span>
 <span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.33.0 [/tmp/RtmpvyZs5M/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.33.0 [/tmp/Rtmpq5QQ4m/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
@@ -261,7 +261,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0 [/tmp/RtmpvyZs5M/nycflights13.sqlite]</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0 [/tmp/Rtmpq5QQ4m/nycflights13.sqlite]</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
 #&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
@@ -298,7 +298,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span>
 <span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.33.0 [/tmp/RtmpvyZs5M/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.33.0 [/tmp/Rtmpq5QQ4m/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
@@ -332,7 +332,7 @@
 #&gt; </span><span style="color: #555555;">5</span><span> lat     FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: 38.88944, 40.63975</span><span style="color: #555555;">"</span><span>             
 #&gt; </span><span style="color: #555555;">6</span><span> name    FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: All Airports, Capital City Airp…
 #&gt; </span><span style="color: #555555;">7</span><span> tz      FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: -10, -9, -8, -7, -6, …</span><span style="color: #555555;">"</span><span>         
-#&gt; </span><span style="color: #555555;">8</span><span> tzone   FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: NA, America/Anchorage, America/…
+#&gt; </span><span style="color: #555555;">8</span><span> tzone   FALSE     </span><span style="color: #555555;">"</span><span>has missing values, and duplicate values: America/Anc…
 </span></code></pre>
 <p>The <code>flights</code> table does not have any one-column primary key candidates:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -371,7 +371,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.33.0 [/tmp/RtmpvyZs5M/nycflights13.sqlite]</span>
+<span class="co">#&gt; src:  sqlite 3.33.0 [/tmp/Rtmpq5QQ4m/nycflights13.sqlite]</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
 <span class="co">#&gt; Columns: 62</span>
