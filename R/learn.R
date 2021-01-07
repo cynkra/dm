@@ -104,7 +104,7 @@ mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken dire
   }
   glue::glue(
   "select
-    schema_name(tabs.schema_id) as [schema],
+    schemas.name as [schema],
     tabs.name as [table],
     cols.name as [column],
     isnull(ind_col.column_id, 0) as [key],
@@ -119,6 +119,8 @@ mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken dire
     {dbname_sql}sys.all_columns cols
     inner join {dbname_sql}sys.tables tabs on
       cols.object_id = tabs.object_id
+    inner join {dbname_sql}sys.schemas schemas on
+      tabs.schema_id = schemas.schema_id
     left outer join {dbname_sql}sys.foreign_key_columns ref on
       ref.parent_object_id = tabs.object_id
       and ref.parent_column_id = cols.column_id
@@ -131,7 +133,7 @@ mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken dire
       and ind_col.column_id = cols.column_id
     left outer join {dbname_sql}sys.systypes [types] on
       types.xusertype = cols.system_type_id
-  where tabs.schema_id = schema_id({DBI::dbQuoteString(con, schema)})
+  where schemas.name = {DBI::dbQuoteString(con, schema)}
   order by
     tabs.create_date,
     cols.column_id"
