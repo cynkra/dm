@@ -318,8 +318,26 @@ check_pk <- function(table, column) {
   }
 
   fun <- ~ format(.x, trim = TRUE, justify = "none")
-  values <- commas(duplicate_values$data[[1]]$value, capped = TRUE, fun = fun)
-  paste0("has duplicate values: ", values)
+
+  values <- duplicate_values$data[[1]]$value
+  values_na <- is.na(values)
+
+  if (any(values_na)) {
+    missing <- "missing values"
+    values <- values[!values_na]
+  } else {
+    missing <- NULL
+  }
+
+  if (length(values) > 0) {
+    values_text <- commas(values, capped = TRUE, fun = fun)
+    duplicate <- paste0("duplicate values: ", values_text)
+  } else {
+    duplicate <- NULL
+  }
+
+  problem <- glue_collapse(c(missing, duplicate), sep = "", last = ", and ")
+  paste0("has ", problem)
 }
 
 

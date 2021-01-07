@@ -115,6 +115,8 @@ data_card_5 %<-% tibble::tibble(a = 1:5)
 data_card_6 %<-% tibble::tibble(c = 1:4)
 data_card_7 %<-% tibble::tibble(c = c(1:5, 5L, 6L))
 data_card_8 %<-% tibble::tibble(c = c(1:6))
+data_card_9 %<-% tibble::tibble(c = c(1:5, NA))
+data_card_10 %<-% tibble::tibble(c = c(1:3, 4:3, NA))
 
 # for check_key() ---------------------------------------------------------
 
@@ -287,7 +289,9 @@ dm_test_obj %<-% as_dm(list(
   dm_table_1 = data_card_2(),
   dm_table_2 = data_card_4(),
   dm_table_3 = data_card_7(),
-  dm_table_4 = data_card_8()
+  dm_table_4 = data_card_8(),
+  dm_table_5 = data_card_9(),
+  dm_table_6 = data_card_10()
 ))
 
 dm_test_obj_2 %<-% as_dm(list(
@@ -299,7 +303,7 @@ dm_test_obj_2 %<-% as_dm(list(
 
 # for `dm_nrow()` ---------------------------------------------------------
 
-rows_dm_obj <- 24L
+rows_dm_obj <- 36L
 
 # Complicated `dm` --------------------------------------------------------
 
