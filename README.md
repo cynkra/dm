@@ -12,9 +12,9 @@
 
 Are you using multiple data frames or database tables in R? Organize them with dm.
 
-  - Use it today (if only like a list of tables).
-  - Build data models tomorrow.
-  - Deploy the data models to your organization’s RDBMS the day after.
+-   Use it today (if only like a list of tables).
+-   Build data models tomorrow.
+-   Deploy the data models to your organization’s RDBMS the day after.
 
 ## Overview
 
@@ -26,9 +26,9 @@ dm objects encapsulate relational data models constructed from local data frames
 
 dm makes it easy to bring an existing relational data model into your R session. As the dm object behaves like a named list of tables it requires little change to incorporate it within existing workflows. The dm interface and behavior is modeled after dplyr, so you may already be familiar with many of its verbs. dm also offers:
 
-  - visualization to help you understand relationships between entities represented by the tables
-  - simpler joins that “know” how tables are related, including a “flatten” operation that automatically follows keys and performs column name disambiguation
-  - consistency and constraint checks to help you understand (and fix) the limitations of your data
+-   visualization to help you understand relationships between entities represented by the tables
+-   simpler joins that “know” how tables are related, including a “flatten” operation that automatically follows keys and performs column name disambiguation
+-   consistency and constraint checks to help you understand (and fix) the limitations of your data
 
 That’s just the tip of the iceberg. See [Getting started](https://krlmlr.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
 
@@ -37,62 +37,56 @@ That’s just the tip of the iceberg. See [Getting started](https://krlmlr.githu
 The latest stable version of the {dm} package can be obtained from [CRAN](https://CRAN.R-project.org/package=dm) with the command
 
 <pre class='chroma'>
-<span class='nf'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span>(<span class='s'>"dm"</span>)
-</pre>
+<span class='nf'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='o'>(</span><span class='s'>"dm"</span><span class='o'>)</span></pre>
 
 The latest development version of {dm} can be installed from GitHub.
 
 <pre class='chroma'>
 <span class='c'># install.packages("devtools")</span>
-<span class='k'>devtools</span>::<span class='nf'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span>(<span class='s'>"krlmlr/dm"</span>)
-</pre>
+<span class='nf'>devtools</span><span class='nf'>::</span><span class='nf'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span><span class='o'>(</span><span class='s'>"krlmlr/dm"</span><span class='o'>)</span></pre>
 
 ## Usage
 
 Create a dm object (see [Getting started](https://krlmlr.github.io/dm/articles/dm.html) for details).
 
 <pre class='chroma'>
-<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://krlmlr.github.io/dm/'>dm</a></span>)
-<span class='k'>dm</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_nycflights13.html'>dm_nycflights13</a></span>()
-<span class='k'>dm</span>
-<span class='c'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>───────────────────────────────────────</span></span>
+<span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://krlmlr.github.io/dm/'>dm</a></span><span class='o'>)</span>
+<span class='nv'>dm</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_nycflights13.html'>dm_nycflights13</a></span><span class='o'>(</span><span class='o'>)</span>
+<span class='nv'>dm</span>
+<span class='c'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='c'>#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
 <span class='c'>#&gt; Columns: 53</span>
 <span class='c'>#&gt; Primary keys: 3</span>
-<span class='c'>#&gt; Foreign keys: 3</span>
-</pre>
+<span class='c'>#&gt; Foreign keys: 3</span></pre>
 
 dm is a named list of tables:
 
 <pre class='chroma'>
-<span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='k'>dm</span>)
+<span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>dm</span><span class='o'>)</span>
 <span class='c'>#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span>
-<span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='k'>dm</span><span class='o'>$</span><span class='k'>airports</span>)
+<span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='nv'>dm</span><span class='o'>$</span><span class='nv'>airports</span><span class='o'>)</span>
 <span class='c'>#&gt; [1] 1458</span>
-<span class='k'>dm</span><span class='o'>$</span><span class='k'>flights</span> <span class='o'>%&gt;%</span>
-  <span class='nf'>count</span>(<span class='k'>origin</span>)
+<span class='nv'>dm</span><span class='o'>$</span><span class='nv'>flights</span> <span class='o'>%&gt;%</span>
+  <span class='nf'>count</span><span class='o'>(</span><span class='nv'>origin</span><span class='o'>)</span>
 <span class='c'>#&gt; <span style='color: #949494;'># A tibble: 3 x 2</span></span>
 <span class='c'>#&gt;   <span style='font-weight: bold;'>origin</span><span>     </span><span style='font-weight: bold;'>n</span></span>
-<span class='c'>#&gt;   <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span></span>
+<span class='c'>#&gt; <span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span></span>
 <span class='c'>#&gt; <span style='color: #BCBCBC;'>1</span><span> EWR     </span><span style='text-decoration: underline;'>4</span><span>043</span></span>
 <span class='c'>#&gt; <span style='color: #BCBCBC;'>2</span><span> JFK     </span><span style='text-decoration: underline;'>3</span><span>661</span></span>
-<span class='c'>#&gt; <span style='color: #BCBCBC;'>3</span><span> LGA     </span><span style='text-decoration: underline;'>3</span><span>523</span></span>
-</pre>
+<span class='c'>#&gt; <span style='color: #BCBCBC;'>3</span><span> LGA     </span><span style='text-decoration: underline;'>3</span><span>523</span></span></pre>
 
 Visualize relationships at any time:
 
 <pre class='chroma'>
-<span class='k'>dm</span> <span class='o'>%&gt;%</span>
-  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_draw.html'>dm_draw</a></span>()
-</pre>
-
+<span class='nv'>dm</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_draw.html'>dm_draw</a></span><span class='o'>(</span><span class='o'>)</span></pre>
 <img src="man/figures/README-draw.svg" />
 
 Simple joins:
 
 <pre class='chroma'>
-<span class='k'>dm</span> <span class='o'>%&gt;%</span>
-  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_flatten_to_tbl.html'>dm_flatten_to_tbl</a></span>(<span class='k'>flights</span>)
+<span class='nv'>dm</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_flatten_to_tbl.html'>dm_flatten_to_tbl</a></span><span class='o'>(</span><span class='nv'>flights</span><span class='o'>)</span>
 <span class='c'>#&gt; Renamed columns:</span>
 <span class='c'>#&gt; * year -&gt; flights.year, planes.year</span>
 <span class='c'>#&gt; * name -&gt; airlines.name, airports.name</span>
@@ -115,17 +109,15 @@ Simple joins:
 <span class='c'>#&gt; <span style='color: #949494;'>#   </span><span style='color: #949494;font-weight: bold;'>time_hour</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>airlines.name</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>airports.name</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>lat</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span></span>
 <span class='c'>#&gt; <span style='color: #949494;'>#   </span><span style='color: #949494;font-weight: bold;'>lon</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>alt</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>tz</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>dst</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>tzone</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>planes.year</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span></span>
 <span class='c'>#&gt; <span style='color: #949494;'>#   </span><span style='color: #949494;font-weight: bold;'>type</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>manufacturer</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>model</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>engines</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>seats</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span></span>
-<span class='c'>#&gt; <span style='color: #949494;'>#   </span><span style='color: #949494;font-weight: bold;'>speed</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>engine</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span></span>
-</pre>
+<span class='c'>#&gt; <span style='color: #949494;'>#   </span><span style='color: #949494;font-weight: bold;'>speed</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, </span><span style='color: #949494;font-weight: bold;'>engine</span><span style='color: #949494;'> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span></span></pre>
 
 Check consistency:
 
 <pre class='chroma'>
-<span class='k'>dm</span> <span class='o'>%&gt;%</span>
-  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_examine_constraints.html'>dm_examine_constraints</a></span>()
+<span class='nv'>dm</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_examine_constraints.html'>dm_examine_constraints</a></span><span class='o'>(</span><span class='o'>)</span>
 <span class='c'>#&gt; <span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></span>
-<span class='c'>#&gt; <span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …</span></span>
-</pre>
+<span class='c'>#&gt; <span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …</span></span></pre>
 
 Learn more in the [Getting started](https://krlmlr.github.io/dm/articles/dm.html) article.
 
@@ -133,7 +125,7 @@ Learn more in the [Getting started](https://krlmlr.github.io/dm/articles/dm.html
 
 If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/krlmlr/dm/issues). For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
 
------
+------------------------------------------------------------------------
 
 License: MIT © cynkra GmbH.
 
@@ -141,6 +133,6 @@ Funded by:
 
 [![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/) <span style="padding-right:50px"> </span> [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
 
------
+------------------------------------------------------------------------
 
 Please note that the ‘dm’ project is released with a [Contributor Code of Conduct](https://krlmlr.github.io/dm/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
