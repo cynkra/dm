@@ -1,8 +1,26 @@
 pandoc: 2.7.3
-pkgdown: 1.5.1.9000
-pkgdown_sha: c37e563eaef054183e04defce8fb01321590fb5e
-articles: []
-last_built: 2020-11-19T06:06Z
+pkgdown: 1.6.1.9000
+pkgdown_sha: 6094ac3dd80a1f3f1d4e2f47d0ed4716d51362b0
+articles:
+  dm: dm.html
+  howto-dm-copy: howto-dm-copy.html
+  howto-dm-db: howto-dm-db.html
+  howto-dm-df: howto-dm-df.html
+  howto-dm-rows: howto-dm-rows.html
+  howto-dm-theory: howto-dm-theory.html
+  tech-dm-cdm: tech-dm-cdm.html
+  tech-dm-class: tech-dm-class.html
+  tech-dm-draw: tech-dm-draw.html
+  tech-dm-filter: tech-dm-filter.html
+  tech-dm-join: tech-dm-join.html
+  tech-dm-low-level: tech-dm-low-level.html
+  tech-dm-naming: tech-dm-naming.html
+  tech-dm-zoom: tech-dm-zoom.html
+  wip/dm-insert: dm-insert.html
+  wip/dm-readme-old: dm-readme-old.html
+  wip/dm-shiny-dynafilter: dm-shiny-dynafilter.html
+  wip/dm-tips-and-tricks: dm-tips-and-tricks.html
+last_built: 2021-01-07T08:41Z
 urls:
   reference: https://krlmlr.github.io/dm//reference
   article: https://krlmlr.github.io/dm//articles
