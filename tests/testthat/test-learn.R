@@ -10,7 +10,7 @@ random_schema <- function() {
 
 schema_name <- random_schema()
 
-test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') works?", {
+test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
 
   skip_if_src_not(c("mssql", "postgres"))
   # dm_learn_from_mssql() --------------------------------------------------
@@ -29,6 +29,12 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
       dm_get_tables_impl(dm_for_filter_copied)[order_of_deletion],
       ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
     )
+  )
+
+  # test 'get_src_tbl_names()'
+  expect_identical(
+    sort(unname(gsub("^.*\\.", "", get_src_tbl_names(src_db)))),
+    sort(dbQuoteIdentifier(src_db$con, remote_tbl_names))
   )
 
   dm_db_learned_all <- expect_message(dm_from_src(src_db))
@@ -83,7 +89,7 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     table_names = ~ DBI::SQL(paste0(schema_name_q, ".", .x))
   )
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
-  remote_tbl_names <- set_names(paste0(schema_name_q, ".", order_of_deletion), order_of_deletion)
+  remote_tbl_names <- set_names(paste0(schema_name_q, ".\"", order_of_deletion, "\""), order_of_deletion)
 
   withr::defer(
     {
@@ -95,6 +101,13 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     }
   )
 
+  # test 'get_src_tbl_names()'
+  expect_identical(
+    sort(get_src_tbl_names(src_db, schema = schema_name)),
+    SQL(sort(remote_tbl_names))
+  )
+
+  # learning with keys:
   dm_db_learned <-
     dm_from_src(src_db, schema = schema_name, learn_keys = TRUE) %>%
     dm_select_tbl(!!!order_of_deletion)
@@ -132,5 +145,42 @@ test_that("Learning from SQLite works (#288)?", {
       dm_select_tbl(test) %>%
       collect(),
     dm(test = tibble(a = 1:3))
+  )
+})
+
+test_that("'schema_if()' works", {
+  skip_if_local_src()
+
+  con_db <- my_test_src()$con
+
+  # all 3 naming parameters set ('table' is required)
+  expect_length(
+    pluck(strsplit(expect_s4_class(
+      schema_if(schema = "schema", table = "table", con = con_db, dbname = "db"),
+      "SQL"), "\\."),
+      1),
+    3
+  )
+
+  # schema and table set
+  expect_length(
+    pluck(strsplit(expect_s4_class(
+      schema_if(schema = "schema", table = "table", con = con_db),
+      "SQL"), "\\."),
+      1),
+    2
+  )
+
+  # dbname and table set
+  expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
+
+  # only table set
+  expect_length(
+    pluck(strsplit(expect_s4_class(
+      schema_if(schema = NA, table = "table", con = con_db),
+      "SQL"
+      ), "\\."),
+      1),
+    1
   )
 })
