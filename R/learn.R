@@ -82,9 +82,20 @@ dm_learn_from_db <- function(dest, ...) {
 
 schema_if <- function(schema, table, con, dbname = NULL) {
   table_sql <- DBI::dbQuoteIdentifier(con, table)
-  dbname_sql <- if (is_null(dbname)) "" else paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
-  schema_sql <- if (is_na(schema)) "" else paste0(DBI::dbQuoteIdentifier(con, schema), ".")
-  paste0(dbname_sql, schema_sql, table_sql)
+  if (is_null(dbname) || dbname == "") {
+    if_else(
+      are_na(schema),
+        table_sql,
+      # need 'coalesce()' cause in case 'schema' is NA, 'if_else()' also tests
+      # the FALSE option (to see if same class) and then 'dbQuoteIdentifier()' throws an error
+      SQL(paste0(DBI::dbQuoteIdentifier(con, coalesce(schema, "")), ".", table_sql))
+    )
+  } else {
+    # 'schema_if()' only used internally (can e.g. be set to default schema beforehand)
+    # so IMHO we don't need a formal 'dm_error' here
+    if (any(is.na(schema))) abort("`schema` must be given if `dbname` is not NULL`.")
+    SQL(paste0(DBI::dbQuoteIdentifier(con, dbname), ".", DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
+  }
 }
 
 db_learn_query <- function(dest, ...) {
