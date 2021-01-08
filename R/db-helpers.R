@@ -167,43 +167,56 @@ repair_table_names_for_db <- function(table_names, temporary, con) {
   quote_ids(names, con)
 }
 
-get_src_tbl_names <- function(src, schema = NULL) {
+get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   con <- src$con
 
-  if (is_null(schema)) {
-    if (!is_mssql(src) && !is_postgres(src)) {
-      # `src_tbls()` returns system tables and tables in other schemas than default schema only for MSSQL
+  if (!is_mssql(src)) {
+    if (!is_null(dbname)) {
+      warn("Argument 'dbname' ignored: currently only supported for MSSQL")
+      # for Postgres:
+      dbname <- NULL
+    }
+    if (!is_postgres(src)) {
+      # any DBMS different from MSSQL or Postgres
+      if (!is_null(schema)) {
+        warn("Argument 'schema' ignored: currently only supported for MSSQL and Postgres")
+      }
+      # in any case return `src_tbls(src)` if not MSSQL or Postgres
       return(src_tbls(src))
-    } else if (is_mssql(src)) {
-      # MSSQL
-      schema <- "dbo"
     } else {
       # Postgres
-      schema <- "public"
+      if (is_null(schema)) {
+        schema <- "public"
+      }
+      names_table <- DBI::dbGetQuery(
+        con,
+        "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
+      )
     }
-  } else if (!is_mssql(con) && !is_postgres(con)) {
-    warn("Argument 'schema' ignored: currently only supports MSSQL and Postgres")
-    return(src_tbls(src))
-  }
-
-  # src is now either Postgres or MSSQL, schema is not `NULL`
-  if (is_mssql(src)) {
-    # MSSQL
-    names_table <- DBI::dbGetQuery(
-      con,
-      "SELECT name AS table_name, schema_name(schema_id) AS schema_name FROM sys.tables"
-    )
   } else {
-    # Postgres
+    # MSSQL
+    if (is_null(schema)) {
+      schema <- "dbo"
+    }
+    if (is_null(dbname)) {
+      dbname <- ""
+      dbname_sql <- ""
+    } else {
+      dbname_sql <- paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
+    }
     names_table <- DBI::dbGetQuery(
       con,
-      "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
+      glue::glue("SELECT tabs.name AS table_name, schemas.name AS schema_name
+      FROM {dbname_sql}sys.tables tabs
+      INNER JOIN {dbname_sql}sys.schemas schemas ON
+      tabs.schema_id = schemas.schema_id
+       ")
     )
   }
-  tables_in_schema <- names_table %>%
+  names_table %>%
     filter(schema_name == !!schema) %>%
   # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(remote_name = schema_if(schema_name, table_name, con)) %>%
+    mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
     select(-schema_name) %>%
     deframe()
 }
