@@ -23,7 +23,9 @@
 #'   Currently supports `schema` (default: `"public"`)
 #'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
 #'
-#'   For MSSQL databases `schema` (default: `"dbo"`) is supported.
+#'   For MSSQL databases `schema` (default: `"dbo"`) and `dbname`
+#'   (address different databases on the connected MSSQL-server;
+#'   default: database addressed by `src`) are supported.
 #'
 #' @return A `dm` object.
 #'

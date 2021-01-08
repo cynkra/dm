@@ -25,7 +25,9 @@ Additional parameters for the schema learning query.
 Currently supports \code{schema} (default: \code{"public"})
 and \code{table_type} (default: \code{"BASE TABLE"}) for Postgres databases.
 
-For MSSQL databases \code{schema} (default: \code{"dbo"}) is supported.}
+For MSSQL databases \code{schema} (default: \code{"dbo"}) and \code{dbname}
+(address different databases on the connected MSSQL-server;
+default: database addressed by \code{src}) are supported.}
 }
 \value{
 A \code{dm} object.
