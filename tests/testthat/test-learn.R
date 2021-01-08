@@ -32,8 +32,10 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
   )
 
   # test 'get_src_tbl_names()'
+  src_tbl_names <- sort(unname(gsub("^.*\\.", "", get_src_tbl_names(src_db))))
   expect_identical(
-    sort(unname(gsub("^.*\\.", "", get_src_tbl_names(src_db)))),
+    # in case there are other tables in the default schema
+    src_tbl_names[grepl("tf_?_", src_tbl_names)],
     sort(dbQuoteIdentifier(src_db$con, remote_tbl_names))
   )
 
