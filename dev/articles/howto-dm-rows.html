@@ -135,7 +135,7 @@
       <h1 data-toc-skip>Insert, update or remove rows in a database dm</h1>
                         <h4 class="author">James Wondrasek</h4>
             
-            <h4 class="date">2021-01-07</h4>
+            <h4 class="date">2021-01-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-rows.Rmd"><code>vignettes/howto-dm-rows.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-rows.Rmd</code></div>
@@ -279,7 +279,7 @@
 <span class="va">demo_sql</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">sqlite_db</span>, <span class="va">demo_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">demo_sql</span>
 <span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.33.0 []</span>
+<span class="co">#&gt; src:  sqlite 3.34.0 []</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `parent`, `child`</span>
 <span class="co">#&gt; Columns: 5</span>
@@ -323,7 +323,7 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_insert_out</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
 #&gt;   value    pk    fk
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> a         1     1
@@ -334,7 +334,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
 #&gt;   value    pk    fk
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> a         1     1
@@ -349,7 +349,7 @@
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
 #&gt;   value    pk    fk
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> a         1     1
@@ -382,7 +382,7 @@
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
 #&gt;   value    pk    fk
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> a         1     1
@@ -522,7 +522,7 @@
   <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">child</span><span class="op">)</span>
 <span class="va">dm_trunc_in</span>
 <span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.33.0 []</span>
+<span class="co">#&gt; src:  sqlite 3.34.0 []</span>
 <span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; Tables: `child`</span>
 <span class="co">#&gt; Columns: 3</span>
@@ -534,7 +534,7 @@
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.33.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
 #&gt; </span><span style="color: #555555;"># … with 3 variables: value </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, pk </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, fk </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 </span></code></pre>
 </div>
