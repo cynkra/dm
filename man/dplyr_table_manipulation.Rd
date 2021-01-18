@@ -13,6 +13,8 @@
 \alias{group_by.zoomed_dm}
 \alias{ungroup.zoomed_dm}
 \alias{summarise.zoomed_dm}
+\alias{count.zoomed_dm}
+\alias{tally.zoomed_dm}
 \alias{pull.zoomed_dm}
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
@@ -38,6 +40,17 @@
 
 \method{summarise}{zoomed_dm}(.data, ...)
 
+\method{count}{zoomed_dm}(
+  x,
+  ...,
+  wt = NULL,
+  sort = FALSE,
+  name = NULL,
+  .drop = group_by_drop_default(x)
+)
+
+\method{tally}{zoomed_dm}(x, ...)
+
 \method{pull}{zoomed_dm}(.data, var = -1, ...)
 }
 \arguments{
@@ -52,6 +65,24 @@ By default, the value is \code{NULL}, which causes the function to issue a messa
 This argument is specific for the \code{slice.zoomed_dm()} method.}
 
 \item{x}{For \code{ungroup.zoomed_dm}: object of class \code{zoomed_dm}}
+
+\item{wt}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Frequency weights.
+Can be \code{NULL} or a variable:
+\itemize{
+\item If \code{NULL} (the default), counts the number of rows in each group.
+\item If a variable, computes \code{sum(wt)} for each group.
+}}
+
+\item{sort}{If \code{TRUE}, will show the largest groups at the top.}
+
+\item{name}{The name of the new column in the output.
+
+If omitted, it will default to \code{n}. If there's already a column called \code{n},
+it will error, and require you to specify the name.}
+
+\item{.drop}{For \code{count()}: if \code{FALSE} will include counts for empty groups
+(i.e. for levels of factors that don't exist in the data). Deprecated in
+\code{add_count()} since it didn't actually affect the output.}
 
 \item{var}{A variable specified as:
 \itemize{
