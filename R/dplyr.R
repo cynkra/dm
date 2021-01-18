@@ -265,6 +265,59 @@ summarise.zoomed_dm <- function(.data, ...) {
 }
 
 #' @export
+count.dm <- function(x, ...) {
+  check_zoomed(x)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @inheritParams dplyr::count
+#' @export
+count.zoomed_dm <- function(x, ..., wt = NULL, sort = FALSE, name = NULL,
+                            .drop = group_by_drop_default(x)) {
+  tbl <- get_zoomed_tbl(x)
+
+  if (!missing(...)) {
+    out <- group_by(tbl, ..., .add = TRUE, .drop = .drop)
+  } else {
+    out <- tbl
+  }
+
+  groups <- set_names(map_chr(groups(out), as_string))
+
+  out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
+
+  # Ensure grouping is transient
+  if (is.data.frame(tbl)) {
+    out <- dplyr_reconstruct(out, tbl)
+  }
+
+  new_tracked_cols_zoom <- new_tracked_cols(x, groups)
+  replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
+}
+
+#' @export
+tally.dm <- function(x, ...) {
+  check_zoomed(x)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+tally.zoomed_dm <- function(x, ...) {
+  tbl <- get_zoomed_tbl(x)
+  groups <- set_names(map_chr(groups(tbl), as_string))
+
+  out <- tally(tbl, ...)
+
+  # Ensure grouping is transient
+  if (is.data.frame(tbl)) {
+    out <- dplyr_reconstruct(out, tbl)
+  }
+
+  new_tracked_cols_zoom <- new_tracked_cols(x, groups)
+  replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
+}
+
+#' @export
 pull.dm <- function(.data, var = -1, name = NULL) {
   check_zoomed(.data)
 }
