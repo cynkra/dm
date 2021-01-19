@@ -162,11 +162,22 @@ A data set has referential integrity if all relations between tables are valid.
 That is, every foreign key holds a primary key that is present in the parent table.
 If a foreign key contains a parent table primary key that has been deleted that row is an orphan row and the database no longer has referential integrity.
 
-{dm} is designed to maintain referential integrity.
-It will not let you create a child row or table without first creating the parent.
-For example, in the `nycflights13` you can't create a flight for an airline that does not have an entry in the `airlines` table.
-Conversely, you cannot delete the row for an airline from the `airlines` table until all related flights are deleted.
-For more information on deleting individual rows and other row-level operations see `vignette("howto-dm-rows")`.
+{dm} allows checking referential integrity with the `dm_examine_constraints()` function.
+The following conditions are checked:
+
+- All primary key values must be unique.
+- All primary key values must be set, `NA` values are not allowed.
+- Each foreign key value must have a corresponding primary key value.
+
+In the example data model, for a substantial share of the flights, detailed information for the corresponding airplane is not available:
+
+```{r}
+dm %>%
+  dm_examine_constraints()
+```
+
+Establishing referential integrity is important for providing clean data for analysis or downstream users.
+See `vignette("howto-dm-rows")` for more information on adding, deleting or updating individual rows, and `vignette("tech-dm-zoom")` for operations on the data in a data model.
 
 ## 6. Normalization {#normalization}
 
