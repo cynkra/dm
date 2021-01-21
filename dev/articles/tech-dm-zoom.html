@@ -152,7 +152,12 @@
 <h2 class="hasAnchor">
 <a href="#enabling-dplyr-workflow-within-a-dm" class="anchor"></a>Enabling {dplyr}-workflow within a <code>dm</code>
 </h2>
-<p>Some general information about “zooming” to a table of a <code>dm</code>: - all information stored in the original <code>dm</code> is kept, including the originally zoomed table - an object of class <code>zoomed_dm</code> is produced, presenting a view of the table for transformations - you do not need to specify the table when calling <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and other table manipulation functions</p>
+<p>“Zooming” to a table of a <code>dm</code> means:</p>
+<ul>
+<li>all information stored in the original <code>dm</code> is kept, including the originally zoomed table</li>
+<li>an object of class <code>zoomed_dm</code> is produced, presenting a view of the table for transformations</li>
+<li>you do not need to specify the table when calling <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and other table manipulation functions</li>
+</ul>
 <p>{dm} provides methods for many of the {dplyr}-verbs for a <code>zoomed_dm</code> which behave the way you are used to, affecting only the zoomed table and leaving the rest of the <code>dm</code> untouched. When you are finished with transforming the table, there are three options to proceed:</p>
 <ol style="list-style-type: decimal">
 <li>use <code><a href="../reference/dm_zoom_to.html">dm_update_zoomed()</a></code> if you want to replace the originally zoomed table with the new table</li>
