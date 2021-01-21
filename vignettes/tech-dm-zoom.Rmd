@@ -21,7 +21,8 @@ The first approach is rather self-explanatory, so let us have a closer look at t
 
 ## Enabling {dplyr}-workflow within a `dm`
 
-Some general information about "zooming" to a table of a `dm`:
+"Zooming" to a table of a `dm` means:
+
 - all information stored in the original `dm` is kept, including the originally zoomed table
 - an object of class `zoomed_dm` is produced, presenting a view of the table for transformations
 - you do not need to specify the table when calling `select()`, `mutate()` and other table manipulation functions
