@@ -52,7 +52,7 @@ jobs:
             url_fields <- c(desc$URL, desc$BugReports)
 
             if (length(url_fields) == 0) {
-              stop("Could not determine development repository", call. = FALSE)
+              return(FALSE)
             }
 
             pkg_urls <- unlist(strsplit(url_fields, "[[:space:]]*,[[:space:]]*"))
