@@ -134,7 +134,11 @@ jobs:
           deps <- remotes::dev_package_deps(dependencies = TRUE)
           packages <- sort(deps$package)
 
-          valid_dev_dep <- vapply(packages, has_dev_dep, logical(1))
+          valid_dev_dep <- vapply(setNames(nm = packages), has_dev_dep, logical(1))
+
+          # https://github.com/r-lib/remotes/issues/576
+          valid_dev_dep["igraph"] <- FALSE
+          valid_dev_dep["duckdb"] <- FALSE
 
           deps <- packages[valid_dev_dep]
           if (any(!valid_dev_dep)) {
