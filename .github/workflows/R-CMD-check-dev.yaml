@@ -79,6 +79,9 @@ jobs:
             nrow(parts) == 1
           }
 
+          dir.create(".github/lib")
+          .libPaths(".github/lib")
+
           install.packages("remotes")
           deps <- remotes::dev_package_deps(dependencies = TRUE)
           packages <- deps$package
