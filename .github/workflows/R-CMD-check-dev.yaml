@@ -85,7 +85,15 @@ jobs:
 
           valid_dev_dep <- vapply(packages, has_dev_dep, logical(1))
 
-          deps <- packages[valid_dev_dep]
+          deps <- sort(packages[valid_dev_dep])
+          if (any(!valid_dev_dep)) {
+            msg <- paste0(
+              "Could not determine development repository for packages: ",
+              paste(packages[!valid_dev_dep], collaspe = ", ")
+            )
+            writeLines(paste0("::warning::", msg))
+          }
+
           json <- paste0(
             '{"package":[',
             paste0('"', deps, '"', collapse = ","),
