@@ -170,6 +170,8 @@ jobs:
           echo $matrix | json2yaml
 
   R-CMD-check:
+    needs: matrix
+
     runs-on: ubuntu-18.04
 
     name: ${{ matrix.package }}
