@@ -25,50 +25,79 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - rlang
-          - glue
-          - digest
-          - ellipsis
-          - assertthat
-          - vctrs
-          - utf8
-          - lifecycle
-          - fansi
-          - crayon
-          - cli
-          - pkgconfig
-          - pillar
-          - magrittr
-          - tibble
-          - rematch2
-          - diffobj
-          - R6
-          - ps
-          - processx
-          - prettyunits
-          - callr
-          - withr
-          - rstudioapi
-          - rprojroot
-          - pkgbuild
-          - desc
-          - xfun
+          - sys
           - stringi
-          - mime
-          - yaml
+          - glue
+          - askpass
           - stringr
+          - R6
+          - openssl
+          - mime
+          - jsonlite
+          - curl
+          - selectr
+          - magrittr
+          - httr
+          - xml2
+          - ps
           - markdown
           - highr
-          - evaluate
           - base64enc
-          - jsonlite
+          - digest
+          - xfun
+          - tinytex
+          - evaluate
           - htmltools
-          - htmlwidgets
+          - yaml
+          - knitr
+          - processx
+          - withr
+          - whisker
+          - rmarkdown
+          - rlang
+          - fs
+          - clipr
+          - callr
+          - utf8
+          - assertthat
+          - vctrs
+          - pkgconfig
+          - pillar
+          - lifecycle
+          - fansi
+          - ellipsis
+          - cli
+          - crayon
+          - prettyunits
+          - hms
+          - rematch
+          - progress
+          - tibble
+          - Rcpp
+          - cellranger
+          - cpp11
+          - generics
+          - dplyr
+          - backports
+          - tidyselect
+          - tidyr
+          - purrr
+          - broom
+          - BH
+          - readr
+          - forcats
+          - rematch2
+          - diffobj
+          - rstudioapi
+          - pkgbuild
+          - rprojroot
           - waldo
           - praise
           - pkgload
+          - desc
           - brio
           - colorspace
+          - viridisLite
           - RColorBrewer
           - munsell
           - labeling
@@ -77,32 +106,45 @@ jobs:
           - scales
           - isoband
           - gtable
+          - blob
+          - DBI
+          - bit
+          - htmlwidgets
           - gridExtra
           - ggplot2
-          - viridisLite
-          - generics
-          - cpp11
-          - tidyselect
-          - purrr
-          - dplyr
-          - BH
-          - hms
-          - clipr
           - igraph
-          - tinytex
-          - knitr
-          - Rcpp
+          - lazyeval
+          - rvest
+          - reprex
+          - readxl
+          - modelr
+          - lubridate
+          - haven
+          - dbplyr
+          - plogr
+          - memoise
+          - bit64
+          - rappdirs
+          - filelock
+          - sodium
+          - getPass
+          - V8
           - visNetwork
           - viridis
-          - tidyr
-          - readr
           - influenceR
           - downloader
-          - bit
-          - rmarkdown
-          - lubridate
+          - rex
+          - tidyverse
+          - RSQLite
+          - RPostgres
+          - RMariaDB
+          - odbc
+          - nycflights13
+          - mockr
+          - keyring
+          - DiagrammeRsvg
           - DiagrammeR
-          - bit64
+          - covr
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"
