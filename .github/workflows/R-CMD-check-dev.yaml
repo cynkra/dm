@@ -4,9 +4,6 @@ on:
   schedule:
     - cron:  '0 1 * * *'
   push:
-    branches:
-      - main
-      - master
     paths:
       - ".github/workflows/R-CMD-check-dev.yaml"
 
