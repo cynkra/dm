@@ -134,11 +134,10 @@ jobs:
           packages <- sort(deps[[1]])
           packages <- intersect(packages, rownames(available.packages()))
 
-          valid_dev_dep <- vapply(setNames(nm = packages), has_dev_dep, logical(1))
+          valid_dev_dep <- vapply(packages, has_dev_dep, logical(1))
 
           # https://github.com/r-lib/remotes/issues/576
-          valid_dev_dep["igraph"] <- FALSE
-          valid_dev_dep["duckdb"] <- FALSE
+          valid_dev_dep[packages %in% c("igraph", "duckdb")] <- FALSE
 
           deps <- packages[valid_dev_dep]
           if (any(!valid_dev_dep)) {
