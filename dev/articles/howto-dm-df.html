@@ -134,7 +134,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Create a dm object from data frames</h1>
             
-            <h4 class="date">2021-01-24</h4>
+            <h4 class="date">2021-01-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-df.Rmd"><code>vignettes/howto-dm-df.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-df.Rmd</code></div>
@@ -198,12 +198,13 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
 
 <span class="va">flights_dm_no_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span>
-<span class="va">flights_dm_no_keys</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="va">flights_dm_no_keys</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 <p>The <code><a href="../reference/dm.html">as_dm()</a></code> function is an alternative that works if you already have a list of tables.</p>
 </div>
 <div id="a-dm-is-a-list" class="section level2">
@@ -231,12 +232,13 @@
 #&gt; </span><span style="color: #555555;"># … with 1,448 more rows</span><span>
 </span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_no_keys</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"airports"</span>, <span class="st">"flights"</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airports`, `flights`</span>
-<span class="co">#&gt; Columns: 27</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<code class="sourceCode R"><span class="va">flights_dm_no_keys</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"airports"</span>, <span class="st">"flights"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airports`, `flights`
+#&gt; Columns: 27
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 </div>
 <div id="defining-keys" class="section level2">
 <h2 class="hasAnchor">
@@ -273,12 +275,13 @@
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">airlines</span>, columns <span class="op">=</span> <span class="va">carrier</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">planes</span>, <span class="va">tailnum</span><span class="op">)</span>
-<span class="va">flights_dm_only_pks</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 3</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="va">flights_dm_only_pks</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 0
+</span></code></pre>
 <p>Note that we demonstrate both named and positional arguments above.</p>
 </div>
 <div id="foreign-keys" class="section level2">
@@ -321,12 +324,13 @@
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">flights</span>, columns <span class="op">=</span> <span class="va">tailnum</span>, ref_table <span class="op">=</span> <span class="va">planes</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">carrier</span>, <span class="va">airlines</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span>
-<span class="va">flights_dm_all_keys</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 3</span>
-<span class="co">#&gt; Foreign keys: 3</span></code></pre></div>
+<span class="va">flights_dm_all_keys</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 3
+#&gt; Foreign keys: 3
+</span></code></pre>
 <p>Having created the required primary and foreign keys to link all the tables together, we now have a relational data model we can work with.</p>
 </div>
 <div id="visualization" class="section level2">
@@ -398,17 +402,23 @@
 <p>As well as checking our data model visually, dm can examine the constraints we have created by the addition of keys and verify that they are sensible.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_no_keys</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ℹ No constraints defined.</span>
-
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> No constraints defined.
+</span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="va">flights_dm_only_pks</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ℹ All constraints satisfied.</span>
-
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
+</span></code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="va">flights_dm_all_keys</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ! Unsatisfied constraints:</span>
-<span class="co">#&gt; ● Table `flights`: foreign key tailnum into table `planes`: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …</span></code></pre></div>
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #BBBB00;">!</span><span> Unsatisfied constraints:
+</span></code></pre>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BB0000;">●</span><span> Table `flights`: foreign key tailnum into table `planes`: 50094 entries (14.9%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (575), N722MQ (513), N723MQ (507), N713MQ (483), N735MQ (396), …
+</span></code></pre>
 <p>The results are presented in a human-readable form, and available as a tibble for programmatic inspection.</p>
 </div>
 <div id="programming" class="section level2">
@@ -416,7 +426,7 @@
 <a href="#programming" class="anchor"></a>Programming</h2>
 <p>Helper functions are available to access details on keys and check results.</p>
 <p><code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> returns a data frame with our primary keys:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_only_pks</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
@@ -427,7 +437,7 @@
 #&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum
 </span></code></pre>
 <p>A data frame of foreign keys is retrieved with <code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_get_all_pks.html">dm_get_all_pks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 2</span><span>
@@ -438,7 +448,7 @@
 #&gt; </span><span style="color: #555555;">3</span><span> planes   tailnum
 </span></code></pre>
 <p>We can use <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html">tibble::as_tibble()</a></code> on the result of <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> to programmatically inspect which constraints are not satisfied:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_all_keys</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>

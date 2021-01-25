@@ -135,7 +135,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2021-01-24</h4>
+            <h4 class="date">2021-01-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-theory.Rmd"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -349,10 +349,12 @@
 <p>In the example data model, for a substantial share of the flights, detailed information for the corresponding airplane is not available:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ! Unsatisfied constraints:</span>
-<span class="co">#&gt; ● Table `flights`: foreign key dest into table `airports`: 242 entries (2.2%) of `flights$dest` not in `airports$faa`: SJU (187), BQN (28), STT (15), PSE (12)</span>
-<span class="co">#&gt; ● Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …</span></code></pre></div>
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #BBBB00;">!</span><span> Unsatisfied constraints:
+</span></code></pre>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BB0000;">●</span><span> Table `flights`: foreign key dest into table `airports`: 242 entries (2.2%) of `flights$dest` not in `airports$faa`: SJU (187), BQN (28), STT (15), PSE (12)
+#&gt; </span><span style="color: #BB0000;">●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …
+</span></code></pre>
 <p>Establishing referential integrity is important for providing clean data for analysis or downstream users. See <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for more information on adding, deleting or updating individual rows, and <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> for operations on the data in a data model.</p>
 </div>
 <div id="normalization" class="section level2">
@@ -461,14 +463,15 @@
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span>
-<span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.34.0 []</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)</span>
-<span class="co">#&gt; Columns: 62</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.34.1 []
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)
+#&gt; Columns: 62
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 <p>Remember to terminate the database connection:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></code></pre></div>

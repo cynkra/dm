@@ -134,7 +134,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 class="date">2021-01-24</h4>
+            <h4 class="date">2021-01-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-class.Rmd"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -176,12 +176,13 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 </div>
 <div id="start-with-an-empty-dm" class="section level3">
 <h3 class="hasAnchor">
@@ -194,12 +195,13 @@
 <span class="va">empty_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">empty_dm</span>
 <span class="co">#&gt; dm()</span>
-<span class="fu"><a href="../reference/dm_add_tbl.html">dm_add_tbl</a></span><span class="op">(</span><span class="va">empty_dm</span>, <span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span> 
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="fu"><a href="../reference/dm_add_tbl.html">dm_add_tbl</a></span><span class="op">(</span><span class="va">empty_dm</span>, <span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span> </code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 </div>
 <div id="coerce-a-list-of-tables" class="section level3">
 <h3 class="hasAnchor">
@@ -210,12 +212,13 @@
            airports <span class="op">=</span> <span class="va">airports</span>, 
            flights <span class="op">=</span> <span class="va">flights</span>, 
            planes <span class="op">=</span> <span class="va">planes</span>, 
-           weather <span class="op">=</span> <span class="va">weather</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
-<span class="co">#&gt; Columns: 53</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+           weather <span class="op">=</span> <span class="va">weather</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
+#&gt; Columns: 53
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 </div>
 <div id="turn-tables-from-a-src-into-a-dm" class="section level3">
 <h3 class="hasAnchor">
@@ -226,14 +229,15 @@
 <code class="sourceCode R"><span class="va">sqlite_src</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html">nycflights13_sqlite</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
-<span class="va">flights_dm</span>
-<span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.34.0 [/tmp/RtmpAublHW/nycflights13.sqlite]</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
-<span class="co">#&gt; Columns: 62</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="va">flights_dm</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.34.1 [/tmp/RtmpXkdgAq/nycflights13.sqlite]
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
+#&gt; Columns: 62
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 <p>The function <code><a href="../reference/dm_from_src.html">dm_from_src(src, table_names = NULL)</a></code> includes all available tables on a source in the <code>dm</code> object. This means that you can use this, for example, on a postgres database that you access via <code>src_postgres()</code> (with the appropriate arguments <code>dbname</code>, <code>host</code>, <code>port</code>, …), to produce a <code>dm</code> object with all the tables on the database.</p>
 </div>
 <div id="low-level-construction" class="section level3">
@@ -242,12 +246,13 @@
 <p>Another way of creating a <code>dm</code> object is calling <code><a href="../reference/dm.html">new_dm()</a></code> on a list of <code>tbl</code> objects:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">base_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">new_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="va">trees</span>, mtcars <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>
-<span class="va">base_dm</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `trees`, `mtcars`</span>
-<span class="co">#&gt; Columns: 14</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="va">base_dm</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `trees`, `mtcars`
+#&gt; Columns: 14
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 <p>This constructor is optimized for speed and does not perform integrity checks. Use with caution, validate using <code><a href="../reference/dm.html">validate_dm()</a></code> if necessary.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm.html">validate_dm</a></span><span class="op">(</span><span class="va">base_dm</span><span class="op">)</span></code></pre></div>
@@ -261,7 +266,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 [/tmp/RtmpAublHW/nycflights13.sqlite]</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 [/tmp/RtmpXkdgAq/nycflights13.sqlite]</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
 #&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
@@ -296,14 +301,15 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; [1] FALSE</span>
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
-<span class="va">flights_dm_with_key</span>
-<span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.34.0 [/tmp/RtmpAublHW/nycflights13.sqlite]</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
-<span class="co">#&gt; Columns: 62</span>
-<span class="co">#&gt; Primary keys: 1</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="va">flights_dm_with_key</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.34.1 [/tmp/RtmpXkdgAq/nycflights13.sqlite]
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
+#&gt; Columns: 62
+#&gt; Primary keys: 1
+#&gt; Foreign keys: 0
+</span></code></pre>
 <p>The <code>dm</code> now has a primary key. Let’s check:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span>
@@ -369,14 +375,15 @@
 <p>Now it gets (even more) interesting: we want to define relations between different tables. With the <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> function you can define which column of which table points to another table’s column.</p>
 <p>This is done by choosing a foreign key from one table that will point to a primary key of another table. The primary key of the referred table must be set with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span>
-<span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.34.0 [/tmp/RtmpAublHW/nycflights13.sqlite]</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span>
-<span class="co">#&gt; Columns: 62</span>
-<span class="co">#&gt; Primary keys: 1</span>
-<span class="co">#&gt; Foreign keys: 1</span></code></pre></div>
+<code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.34.1 [/tmp/RtmpXkdgAq/nycflights13.sqlite]
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
+#&gt; Columns: 62
+#&gt; Primary keys: 1
+#&gt; Foreign keys: 1
+</span></code></pre>
 <p>This will throw an error:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span>

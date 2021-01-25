@@ -135,7 +135,7 @@
       <h1 data-toc-skip>Insert, update or remove rows in a database dm</h1>
                         <h4 class="author">James Wondrasek</h4>
             
-            <h4 class="date">2021-01-24</h4>
+            <h4 class="date">2021-01-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-rows.Rmd"><code>vignettes/howto-dm-rows.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-rows.Rmd</code></div>
@@ -270,21 +270,23 @@
 <polygon fill="#efebdd" stroke="transparent" points="98,-41 98,-61 136,-61 136,-41 98,-41"></polygon><text text-anchor="start" x="99.5098" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#000000">parent</text><polygon fill="#ffffff" stroke="transparent" points="98,-21 98,-41 136,-41 136,-21 98,-21"></polygon><text text-anchor="start" x="100" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#444444">value</text><polygon fill="#ffffff" stroke="transparent" points="98,-1 98,-21 136,-21 136,-1 98,-1"></polygon><text text-anchor="start" x="100" y="-7.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">pk</text><polygon fill="none" stroke="#555555" points="97,0 97,-62 137,-62 137,0 97,0"></polygon></g><!-- child&#45;&gt;parent --><g id="edge1" class="edge"><title>child:fk-&gt;parent:pk</title>
 <path fill="none" stroke="#555555" d="M44,-11C64.25,-11 71.6855,-11 87.931,-11"></path><polygon fill="#555555" stroke="#555555" points="88,-14.5001 98,-11 88,-7.5001 88,-14.5001"></polygon></g></g></svg><p>{dm} doesn’t check your key values when you create a dm, we add this check:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="va">demo_dm</span><span class="op">)</span>
-<span class="co">#&gt; ℹ All constraints satisfied.</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="va">demo_dm</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
+</span></code></pre>
 <p>Then we copy <code>demo_dm</code> into an SQLite database. Note: the default for the method used, <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>, is to create temporary tables that will be automatically deleted when your session ends. As <code>demo_sql</code> will be the destination dm for the examples, the argument <code>temporary = FALSE</code> is used to make this distinction apparent.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org">DBI</a></span><span class="op">)</span>
 <span class="va">sqlite_db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">demo_sql</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">sqlite_db</span>, <span class="va">demo_dm</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">demo_sql</span>
-<span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.34.0 []</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `parent`, `child`</span>
-<span class="co">#&gt; Columns: 5</span>
-<span class="co">#&gt; Primary keys: 2</span>
-<span class="co">#&gt; Foreign keys: 1</span></code></pre></div>
+<span class="va">demo_sql</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.34.1 []
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `parent`, `child`
+#&gt; Columns: 5
+#&gt; Primary keys: 2
+#&gt; Foreign keys: 1
+</span></code></pre>
 <p>{dm}’s table modification methods can be piped together to create a repeatable sequence of operations that returns a dm incorporating all the changes required. This is a common use case for {dm} – building by hand a sequence of operations using temporary results until it is complete and correct, then committing the result.</p>
 </div>
 <div id="insert" class="section level2">
@@ -323,7 +325,7 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm_insert_out</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   lazy query [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 []</span><span>
 #&gt;   value    pk    fk
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> a         1     1
@@ -334,7 +336,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 []</span><span>
 #&gt;   value    pk    fk
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> a         1     1
@@ -349,7 +351,7 @@
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 []</span><span>
 #&gt;   value    pk    fk
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> a         1     1
@@ -382,7 +384,7 @@
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 []</span><span>
 #&gt;   value    pk    fk
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> a         1     1
@@ -520,21 +522,23 @@
 <code class="sourceCode R"><span class="va">dm_trunc_in</span> <span class="op">&lt;-</span>
   <span class="va">demo_sql</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">child</span><span class="op">)</span>
-<span class="va">dm_trunc_in</span>
-<span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.34.0 []</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `child`</span>
-<span class="co">#&gt; Columns: 3</span>
-<span class="co">#&gt; Primary keys: 1</span>
-<span class="co">#&gt; Foreign keys: 0</span>
-<span class="va">dm_trunc_out</span> <span class="op">&lt;-</span>
+<span class="va">dm_trunc_in</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.34.1 []
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `child`
+#&gt; Columns: 3
+#&gt; Primary keys: 1
+#&gt; Foreign keys: 0
+</span></code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm_trunc_out</span> <span class="op">&lt;-</span>
   <span class="va">demo_sql</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/rows-dm.html">dm_rows_truncate</a></span><span class="op">(</span><span class="va">dm_trunc_in</span>, in_place <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">demo_sql</span><span class="op">$</span><span class="va">child</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`child`&gt; [?? x 3]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.0 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 []</span><span>
 #&gt; </span><span style="color: #555555;"># … with 3 variables: value </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, pk </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, fk </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 </span></code></pre>
 </div>
