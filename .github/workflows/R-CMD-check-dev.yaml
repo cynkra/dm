@@ -186,9 +186,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.matrix.outputs.matrix)}}
+
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/bionic/latest
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       # prevent rgl issues because no X11 display is available
       RGL_USE_NULL: true
@@ -203,7 +204,10 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@v1
+      - name: Use RSPM
+        run: |
+          mkdir -p /home/runner/work/_temp/Library
+          echo 'local({release <- system2("lsb_release", "-sc", stdout = TRUE); options(repos=c(CRAN = paste0("https://packagemanager.rstudio.com/all/__linux__/", release, "/latest")), HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version$platform, R.version$arch, R.version$os)))}); .libPaths("/home/runner/work/_temp/Library")' | sudo tee /etc/R/Rprofile.site
 
       - uses: r-lib/actions/setup-pandoc@v1
 
