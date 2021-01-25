@@ -217,18 +217,9 @@ jobs:
           if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
         shell: Rscript {0}
 
-      - name: Prepare cache keys
-        if: runner.os != 'Windows'
-        id: date
-        run: echo "::set-output name=date::$(date -Ihours)"
-
-      - name: Cache R packages
-        if: runner.os != 'Windows'
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ubuntu-18.04-r-dev-release-${{ matrix.package }}-${{steps.date.outputs.date}}
-          restore-keys: ubuntu-18.04-r-dev-release-${{ matrix.package }}-
+      # Avoid cache:
+      # Don't want to rely on remotes::dev_package_deps()
+      # Can't run utils::update.packages with RSPM if package has been installed from GitHub already
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
@@ -243,7 +234,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          update.packages(.libPaths()[[1]], ask = FALSE)
+          remotes::install_deps(dependencies = TRUE)
           remotes::install_dev("${{ matrix.package }}", upgrade = "always")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
