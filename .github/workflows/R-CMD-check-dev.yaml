@@ -130,7 +130,7 @@ jobs:
           dir.create(".github/lib")
           .libPaths(".github/lib")
 
-          deps <- tools:::package_dependencies(package, which = c("Depends", "Imports", "LinkingTo", "Suggests"))
+          deps <- tools:::package_dependencies(read.dcf("DESCRIPTION")[1, "Package"], which = c("Depends", "Imports", "LinkingTo", "Suggests"))
           packages <- sort(deps[[1]])
 
           valid_dev_dep <- vapply(setNames(nm = packages), has_dev_dep, logical(1))
