@@ -244,7 +244,7 @@ jobs:
       - name: Install dependencies
         run: |
           update.packages(.libPaths()[[1]], ask = FALSE)
-          remotes::install_dev("${{ matrix.package }}", upgrade = "always")
+          remotes::install_dev("${{ matrix.package }}", "https://cloud.r-project.org", upgrade = "always")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
