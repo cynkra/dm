@@ -4,150 +4,22 @@ on:
   schedule:
     - cron:  '0 1 * * *'
   push:
-    branches:
-      - main
-      - master
     paths:
       - ".github/workflows/R-CMD-check-dev.yaml"
 
 name: rcc dev
 
 jobs:
-  R-CMD-check:
+  matrix:
     runs-on: ubuntu-18.04
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
 
-    name: ${{ matrix.package }}
+    name: Collect deps
 
-    # Begin custom: services
-    # End custom: services
-
-    strategy:
-      fail-fast: false
-      matrix:
-        package:
-          - sys
-          - stringi
-          - glue
-          - askpass
-          - stringr
-          - R6
-          - openssl
-          - mime
-          - jsonlite
-          - curl
-          - selectr
-          - magrittr
-          - httr
-          - xml2
-          - ps
-          - markdown
-          - highr
-          - base64enc
-          - digest
-          - xfun
-          - tinytex
-          - evaluate
-          - htmltools
-          - yaml
-          - knitr
-          - processx
-          - withr
-          - whisker
-          - rmarkdown
-          - rlang
-          - fs
-          - clipr
-          - callr
-          - utf8
-          - assertthat
-          - vctrs
-          - pkgconfig
-          - pillar
-          - lifecycle
-          - fansi
-          - ellipsis
-          - cli
-          - crayon
-          - prettyunits
-          - hms
-          - rematch
-          - progress
-          - tibble
-          - Rcpp
-          - cellranger
-          - cpp11
-          - generics
-          - dplyr
-          - backports
-          - tidyselect
-          - tidyr
-          - purrr
-          - broom
-          - BH
-          - readr
-          - forcats
-          - rematch2
-          - diffobj
-          - rstudioapi
-          - pkgbuild
-          - rprojroot
-          - waldo
-          - praise
-          - pkgload
-          - desc
-          - brio
-          - colorspace
-          - viridisLite
-          - RColorBrewer
-          - munsell
-          - labeling
-          - farver
-          - testthat
-          - scales
-          - isoband
-          - gtable
-          - blob
-          - DBI
-          - bit
-          - htmlwidgets
-          - gridExtra
-          - ggplot2
-          - igraph
-          - lazyeval
-          - rvest
-          - reprex
-          - readxl
-          - modelr
-          - lubridate
-          - haven
-          - dbplyr
-          - plogr
-          - memoise
-          - bit64
-          - rappdirs
-          - filelock
-          - sodium
-          - getPass
-          - V8
-          - visNetwork
-          - viridis
-          - influenceR
-          - downloader
-          - rex
-          - tidyverse
-          - RSQLite
-          - RPostgres
-          - RMariaDB
-          - odbc
-          - nycflights13
-          - mockr
-          - keyring
-          - DiagrammeRsvg
-          - DiagrammeR
-          - covr
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/bionic/latest
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       # prevent rgl issues because no X11 display is available
       RGL_USE_NULL: true
@@ -162,7 +34,180 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@v1
+      - id: set-matrix
+        run: |
+          # Determine package dependencies
+          # From remotes
+          read_dcf <- function(path) {
+            fields <- colnames(read.dcf(path))
+            as.list(read.dcf(path, keep.white = fields)[1, ])
+          }
+
+          re_match <- function(text, pattern, perl = TRUE, ...) {
+
+            stopifnot(is.character(pattern), length(pattern) == 1, !is.na(pattern))
+            text <- as.character(text)
+
+            match <- regexpr(pattern, text, perl = perl, ...)
+
+            start  <- as.vector(match)
+            length <- attr(match, "match.length")
+            end    <- start + length - 1L
+
+            matchstr <- substring(text, start, end)
+            matchstr[ start == -1 ] <- NA_character_
+
+            res <- data.frame(
+              stringsAsFactors = FALSE,
+              .text = text,
+              .match = matchstr
+            )
+
+            if (!is.null(attr(match, "capture.start"))) {
+
+              gstart  <- attr(match, "capture.start")
+              glength <- attr(match, "capture.length")
+              gend    <- gstart + glength - 1L
+
+              groupstr <- substring(text, gstart, gend)
+              groupstr[ gstart == -1 ] <- NA_character_
+              dim(groupstr) <- dim(gstart)
+
+              res <- cbind(groupstr, res, stringsAsFactors = FALSE)
+            }
+
+            names(res) <- c(attr(match, "capture.names"), ".text", ".match")
+            class(res) <- c("tbl_df", "tbl", class(res))
+            res
+          }
+
+          dev_split_ref <- function(x) {
+            re_match(x, "^(?<pkg>[^@#]+)(?<ref>[@#].*)?$")
+          }
+
+          has_dev_dep <- function(package) {
+            cran_url <- "https://cloud.r-project.org"
+
+            refs <- dev_split_ref(package)
+            url <- file.path(cran_url, "web", "packages", refs[["pkg"]], "DESCRIPTION")
+
+            f <- tempfile()
+            on.exit(unlink(f))
+
+            utils::download.file(url, f)
+            desc <- read_dcf(f)
+
+            url_fields <- c(desc$URL, desc$BugReports)
+
+            if (length(url_fields) == 0) {
+              return(FALSE)
+            }
+
+            pkg_urls <- unlist(strsplit(url_fields, "[[:space:]]*,[[:space:]]*"))
+
+            # Remove trailing "/issues" from the BugReports URL
+            pkg_urls <- sub("/issues$", "", pkg_urls)
+
+            valid_domains <- c("github[.]com", "gitlab[.]com", "bitbucket[.]org")
+
+            parts <-
+              re_match(pkg_urls,
+                sprintf("^https?://(?<domain>%s)/(?<username>%s)/(?<repo>%s)(?:/(?<subdir>%s))?",
+                  domain = paste0(valid_domains, collapse = "|"),
+                  username = "[^/]+",
+                  repo = "[^/@#]+",
+                  subdir = "[^/@$ ]+"
+                )
+              )[c("domain", "username", "repo", "subdir")]
+
+            # Remove cases which don't match and duplicates
+
+            parts <- unique(stats::na.omit(parts))
+
+            nrow(parts) == 1
+          }
+
+          dir.create(".github/lib")
+          .libPaths(".github/lib")
+
+          deps <- tools:::package_dependencies(read.dcf("DESCRIPTION")[1, "Package"], which = c("Depends", "Imports", "LinkingTo", "Suggests"))
+          packages <- sort(deps[[1]])
+          packages <- intersect(packages, rownames(available.packages()))
+
+          valid_dev_dep <- vapply(packages, has_dev_dep, logical(1))
+
+          # https://github.com/r-lib/remotes/issues/576
+          valid_dev_dep[packages %in% c("igraph", "duckdb")] <- FALSE
+
+          deps <- packages[valid_dev_dep]
+          if (any(!valid_dev_dep)) {
+            msg <- paste0(
+              "Could not determine development repository for packages: ",
+              paste(packages[!valid_dev_dep], collapse = ", ")
+            )
+            writeLines(paste0("::warning::", msg))
+          }
+
+          json <- paste0(
+            '{"package":[',
+            paste0('"', deps, '"', collapse = ","),
+            ']}'
+          )
+          writeLines(json)
+          writeLines(paste0("::set-output name=matrix::", json))
+        shell: Rscript {0}
+
+  check-matrix:
+    runs-on: ubuntu-18.04
+    needs: matrix
+    steps:
+      - name: Install json2yaml
+        run: |
+          sudo npm install -g json2yaml
+
+      - name: Check matrix definition
+        run: |
+          matrix='${{ needs.matrix.outputs.matrix }}'
+          echo $matrix
+          echo $matrix | jq .
+          echo $matrix | json2yaml
+
+  R-CMD-check:
+    needs: matrix
+
+    runs-on: ubuntu-18.04
+
+    name: ${{ matrix.package }}
+
+    # Begin custom: services
+    # End custom: services
+
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.matrix.outputs.matrix)}}
+
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/bionic/latest
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # prevent rgl issues because no X11 display is available
+      RGL_USE_NULL: true
+      R_LIBS_USER: /home/runner/work/_temp/Library
+      # Begin custom: env vars
+      # End custom: env vars
+
+    steps:
+      - name: Check rate limits
+        run: |
+          curl -s --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/rate_limit
+        shell: bash
+
+      - uses: actions/checkout@v2
+
+      - name: Use RSPM
+        run: |
+          mkdir -p ${{ env.R_LIBS_USER }}
+          echo 'local({release <- system2("lsb_release", "-sc", stdout = TRUE); options(repos=c(CRAN = paste0("https://packagemanager.rstudio.com/all/__linux__/", release, "/latest")), HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version$platform, R.version$arch, R.version$os)))})' | sudo tee /etc/R/Rprofile.site
 
       - uses: r-lib/actions/setup-pandoc@v1
 
@@ -193,14 +238,19 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "18.04"))')
 
+      - name: Add fake qpdf
+        if: runner.os == 'Linux'
+        run: |
+          sudo ln -s $(which true) /usr/local/bin/qpdf
+
       # Begin custom: before install
       # End custom: before install
 
       - name: Install dependencies
         run: |
-          deps <- remotes::dev_package_deps(dependencies = TRUE)
-          update(deps)
-          remotes::install_dev("${{ matrix.package }}")
+          remotes::install_deps(dependencies = TRUE)
+          update.packages(.libPaths()[[1]], ask = FALSE)
+          remotes::install_dev("${{ matrix.package }}", "https://cloud.r-project.org", upgrade = "always")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
