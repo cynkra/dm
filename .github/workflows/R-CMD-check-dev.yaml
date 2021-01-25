@@ -132,7 +132,7 @@ jobs:
 
           deps <- tools:::package_dependencies(read.dcf("DESCRIPTION")[1, "Package"], which = c("Depends", "Imports", "LinkingTo", "Suggests"))
           packages <- sort(deps[[1]])
-          packages <- setdiff(packages, rownames(available.packages()))
+          packages <- intersect(packages, rownames(available.packages()))
 
           valid_dev_dep <- vapply(setNames(nm = packages), has_dev_dep, logical(1))
 
