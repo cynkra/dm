@@ -243,7 +243,7 @@ jobs:
       - name: Add fake qpdf
         if: runner.os == 'Linux'
         run: |
-          ln -s $(which true) /usr/local/bin/qpdf
+          sudo ln -s $(which true) /usr/local/bin/qpdf
 
       # Begin custom: before install
       # End custom: before install
