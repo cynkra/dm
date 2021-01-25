@@ -130,9 +130,8 @@ jobs:
           dir.create(".github/lib")
           .libPaths(".github/lib")
 
-          install.packages("remotes")
-          deps <- remotes::dev_package_deps(dependencies = TRUE)
-          packages <- sort(deps$package)
+          deps <- tools:::package_dependencies(package, which = c("Depends", "Imports", "LinkingTo", "Suggests"))
+          packages <- sort(deps[[1]])
 
           valid_dev_dep <- vapply(setNames(nm = packages), has_dev_dep, logical(1))
 
