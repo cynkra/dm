@@ -193,8 +193,6 @@ jobs:
       # prevent rgl issues because no X11 display is available
       RGL_USE_NULL: true
       R_LIBS_USER: /home/runner/work/_temp/Library
-      _R_CHECK_DOC_SIZES_: FALSE
-      _R_CHECK_DOC_SIZES2_: FALSE
       # Begin custom: env vars
       # End custom: env vars
 
