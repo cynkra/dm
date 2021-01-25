@@ -207,7 +207,7 @@ jobs:
       - name: Use RSPM
         run: |
           mkdir -p ${{ env.R_LIBS_USER }}
-          echo 'local({release <- system2("lsb_release", "-sc", stdout = TRUE); options(repos=c(CRAN = paste0("https://packagemanager.rstudio.com/all/__linux__/", release, "/latest")), HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version$platform, R.version$arch, R.version$os)))}); .libPaths("${{ env.R_LIBS_USER }}")' | sudo tee /etc/R/Rprofile.site
+          echo 'local({release <- system2("lsb_release", "-sc", stdout = TRUE); options(repos=c(CRAN = paste0("https://packagemanager.rstudio.com/all/__linux__/", release, "/latest")), HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version$platform, R.version$arch, R.version$os)))})' | sudo tee /etc/R/Rprofile.site
 
       - uses: r-lib/actions/setup-pandoc@v1
 
