@@ -240,6 +240,11 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "18.04"))')
 
+      - name: Add fake qpdf
+        if: runner.os == 'Linux'
+        run: |
+          ln -s $(which true) /usr/local/bin/qpdf
+
       # Begin custom: before install
       # End custom: before install
 
