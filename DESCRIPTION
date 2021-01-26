@@ -41,7 +41,7 @@ Imports:
     backports,
     cli (>= 2.2.0),
     DBI,
-    dplyr (>= 1.0.0),
+    dplyr (>= 1.0.3),
     ellipsis,
     glue,
     igraph,
