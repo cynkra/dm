@@ -208,12 +208,12 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
         FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b])
   )")
   dbAppendTable(
-    con,
+    con_db,
     DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_1"),
     value = tibble(a = c(1, 1, 1, 5, 4), b = 1:5)
   )
   dbAppendTable(
-    con,
+    con_db,
     DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_2"),
     value = tibble(c = c(1, 1, 1, 5, 4), d = c(10,11,10,10,11))
   )
@@ -233,9 +233,9 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     # in case there are other tables in the default schema
     src_tbl_names,
     sort(DBI::SQL(paste0(
-      DBI::dbQuoteIdentifier(con, "test_database_dm"), ".",
-      DBI::dbQuoteIdentifier(con, "dbo"), ".",
-      DBI::dbQuoteIdentifier(con, c("test_1", "test_2")))
+      DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
+      DBI::dbQuoteIdentifier(con_db, "dbo"), ".",
+      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2")))
       )
     )
   )
