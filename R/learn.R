@@ -117,8 +117,8 @@ mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken dire
     tabs.name as [table],
     cols.name as [column],
     isnull(ind_col.column_id, 0) as [key],
-    OBJECT_NAME (ref.referenced_object_id) AS ref,
-    COL_NAME (ref.referenced_object_id, ref.referenced_column_id) AS ref_col,
+    ref_tabs.name AS ref,
+    ref_cols.name AS ref_col,
     1 - cols.is_nullable as mandatory,
     types.name as [type],
     cols.max_length,
@@ -142,6 +142,11 @@ mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken dire
       and ind_col.column_id = cols.column_id
     left outer join {dbname_sql}sys.systypes [types] on
       types.xusertype = cols.system_type_id
+    left outer join {dbname_sql}sys.tables ref_tabs on
+      ref_tabs.object_id = ref.referenced_object_id
+    left outer join {dbname_sql}sys.all_columns ref_cols on
+      ref_cols.object_id = ref.referenced_object_id
+      and ref_cols.column_id = ref.referenced_column_id
   where schemas.name = {DBI::dbQuoteString(con, schema)}
   order by
     tabs.create_date,
