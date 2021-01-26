@@ -172,14 +172,14 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
 
   if (!is_mssql(src)) {
     if (!is_null(dbname)) {
-      warn("Argument 'dbname' ignored: currently only supported for MSSQL")
+      warn("Argument `dbname` ignored: currently only supported for MSSQL")
       # for Postgres:
       dbname <- NULL
     }
     if (!is_postgres(src)) {
       # any DBMS different from MSSQL or Postgres
       if (!is_null(schema)) {
-        warn("Argument 'schema' ignored: currently only supported for MSSQL and Postgres")
+        warn("Argument `schema` ignored: currently only supported for MSSQL and Postgres")
       }
       # in any case return `src_tbls(src)` if not MSSQL or Postgres
       return(src_tbls(src))
