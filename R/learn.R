@@ -93,7 +93,7 @@ schema_if <- function(schema, table, con, dbname = NULL) {
   } else {
     # 'schema_if()' only used internally (can e.g. be set to default schema beforehand)
     # so IMHO we don't need a formal 'dm_error' here
-    if (any(is.na(schema))) abort("`schema` must be given if `dbname` is not NULL`.")
+    if (anyNA(schema)) abort("`schema` must be given if `dbname` is not NULL`.")
     SQL(paste0(DBI::dbQuoteIdentifier(con, dbname), ".", DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
   }
 }
