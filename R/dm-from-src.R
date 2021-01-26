@@ -20,12 +20,12 @@
 #'   `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
-#'   Currently supports `schema` (default: `"public"`)
-#'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
 #'
-#'   For MSSQL databases `schema` (default: `"dbo"`) and `dbname`
-#'   (address different databases on the connected MSSQL-server;
-#'   default: database addressed by `src`) are supported.
+#'   - `schema`: supported for MSSQL (default: `"dbo"`) and Postgres (default: `"public"`).
+#'   Learn the tables in a specific schema.
+#'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
+#'   default: database addressed by `src`.
+#'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type.
 #'
 #' @return A `dm` object.
 #'
