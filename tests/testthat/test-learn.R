@@ -186,3 +186,78 @@ test_that("'schema_if()' works", {
     1
   )
 })
+
+
+# Learning from other DB on MSSQL -----------------------------------------
+test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
+  skip_if_src_not("mssql")
+  # dm_learn_from_mssql() --------------------------------------------------
+  src_db <- my_test_src()
+  con_db <- src_db$con
+
+  # create another DB and 2 connected tables
+  DBI::dbExecute(con_db, "CREATE DATABASE test_database_dm")
+  DBI::dbExecute(con_db, "CREATE TABLE [test_database_dm].[dbo].[test_1] (
+        [a]    FLOAT (53)    NULL,
+        [b]      FLOAT (53)    NOT NULL,
+        PRIMARY KEY CLUSTERED ([b] ASC)
+  )")
+  DBI::dbExecute(con_db, "CREATE TABLE [test_database_dm].[dbo].[test_2] (
+        [c]    FLOAT (53)    NULL,
+        [d]      FLOAT (53)  NULL,
+        FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b])
+  )")
+  dbAppendTable(
+    con,
+    DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_1"),
+    value = tibble(a = c(1, 1, 1, 5, 4), b = 1:5)
+  )
+  dbAppendTable(
+    con,
+    DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_2"),
+    value = tibble(c = c(1, 1, 1, 5, 4), d = c(10,11,10,10,11))
+  )
+
+  # delete database after test
+  withr::defer(
+    {
+      try(dbExecute(con_db, paste0("DROP TABLE [test_database_dm].[dbo].[test_2]")))
+      try(dbExecute(con_db, paste0("DROP TABLE [test_database_dm].[dbo].[test_1]")))
+      try(dbExecute(con_db, paste0("DROP DATABASE test_database_dm")))
+    }
+  )
+
+  # test 'get_src_tbl_names()'
+  src_tbl_names <- sort(unname(gsub("^.*\\.", "", get_src_tbl_names(src_db, dbname = "test_database_dm"))))
+  expect_identical(
+    # in case there are other tables in the default schema
+    src_tbl_names,
+    sort(DBI::SQL(paste0(
+      DBI::dbQuoteIdentifier(con, "test_database_dm"), ".",
+      DBI::dbQuoteIdentifier(con, "dbo"), ".",
+      DBI::dbQuoteIdentifier(con, c("test_1", "test_2")))
+      )
+    )
+  )
+
+  dm_local_no_keys <- dm(
+    test_1 = tibble(a = c(1, 1, 1, 5, 4), b = 1:5),
+    test_2 = tibble(c = c(1, 1, 1, 5, 4), d = c(10,11,10,10,11))
+  )
+
+  dm_db_learned <- expect_message(dm_from_src(src_db, dbname = "test_database_dm"))
+  dm_learned <- dm_db_learned %>% collect()
+  expect_equivalent_dm(
+    dm_learned,
+    dm_local_no_keys %>%
+      dm_add_pk(test_1, b) %>%
+      dm_add_fk(test_2, c, test_1)
+  )
+
+  # learning without keys:
+  dm_learned_no_keys <- expect_silent(dm_from_src(src_db, learn_keys = FALSE)) %>% collect()
+  expect_equivalent_dm(
+    dm_learned_no_keys,
+    dm_local_no_keys
+  )
+})
