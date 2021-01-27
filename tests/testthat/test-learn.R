@@ -197,40 +197,35 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 
   # create another DB and 2 connected tables
   DBI::dbExecute(con_db, "CREATE DATABASE test_database_dm")
-  DBI::dbExecute(con_db, "CREATE TABLE [test_database_dm].[dbo].[test_1] (
-        [a]    FLOAT (53)    NULL,
-        [b]      FLOAT (53)    NOT NULL,
-        PRIMARY KEY CLUSTERED ([b] ASC)
-  )")
-  DBI::dbExecute(con_db, "CREATE TABLE [test_database_dm].[dbo].[test_2] (
-        [c]    FLOAT (53)    NULL,
-        [d]      FLOAT (53)  NULL,
-        FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b])
-  )")
-  dbAppendTable(
+  dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_1"),
-    value = tibble(a = c(1, 1, 1, 5, 4), b = 1:5)
+    value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
   )
-  dbAppendTable(
+  dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_2"),
-    value = tibble(c = c(1, 1, 1, 5, 4), d = c(10,11,10,10,11))
+    value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
   )
+  # set PK
+  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
+  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ADD PRIMARY KEY ([b])")
+  # set FK relation
+  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE CASCADE ON UPDATE CASCADE")
+
 
   # delete database after test
   withr::defer(
     {
-      try(dbExecute(con_db, paste0("DROP TABLE [test_database_dm].[dbo].[test_2]")))
-      try(dbExecute(con_db, paste0("DROP TABLE [test_database_dm].[dbo].[test_1]")))
-      try(dbExecute(con_db, paste0("DROP DATABASE test_database_dm")))
+      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_2]"))
+      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_1]"))
+      try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
     }
   )
 
   # test 'get_src_tbl_names()'
-  src_tbl_names <- sort(unname(gsub("^.*\\.", "", get_src_tbl_names(src_db, dbname = "test_database_dm"))))
+  src_tbl_names <- unname(get_src_tbl_names(src_db, dbname = "test_database_dm"))
   expect_identical(
-    # in case there are other tables in the default schema
     src_tbl_names,
     sort(DBI::SQL(paste0(
       DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
@@ -241,8 +236,8 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   )
 
   dm_local_no_keys <- dm(
-    test_1 = tibble(a = c(1, 1, 1, 5, 4), b = 1:5),
-    test_2 = tibble(c = c(1, 1, 1, 5, 4), d = c(10,11,10,10,11))
+    test_1 = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5),
+    test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
   )
 
   dm_db_learned <- expect_message(dm_from_src(src_db, dbname = "test_database_dm"))
@@ -255,9 +250,16 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   )
 
   # learning without keys:
-  dm_learned_no_keys <- expect_silent(dm_from_src(src_db, learn_keys = FALSE)) %>% collect()
+  dm_learned_no_keys <- expect_silent(
+    dm_from_src(
+      src_db,
+      dbname = "test_database_dm",
+      learn_keys = FALSE
+      ) %>%
+      collect()
+  )
   expect_equivalent_dm(
-    dm_learned_no_keys,
+    dm_learned_no_keys[c("test_1", "test_2")],
     dm_local_no_keys
   )
 })
