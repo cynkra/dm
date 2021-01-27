@@ -280,71 +280,74 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   DBI::dbExecute(con_db, "CREATE SCHEMA dm_test")
   DBI::dbExecute(con_db, paste0("USE ", original_dbname))
 
-  # dbWriteTable(
-  #   con_db,
-  #   DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_1"),
-  #   value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
-  # )
-  # dbWriteTable(
-  #   con_db,
-  #   DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_2"),
-  #   value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
-  # )
-  # # set PK
-  # DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
-  # DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ADD PRIMARY KEY ([b])")
-  # # set FK relation
-  # DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dbo].[test_1] ([b]) ON DELETE CASCADE ON UPDATE CASCADE")
-  #
+  dbWriteTable(
+    con_db,
+    DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_1"),
+    value = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5)
+  )
+  dbWriteTable(
+    con_db,
+    DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_2"),
+    value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
+  )
+  # set PK
+  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
+  DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ADD PRIMARY KEY ([b])")
+  # set FK relation
+  DBI::dbExecute(
+    con_db,
+    "ALTER TABLE [test_database_dm].[dm_test].[test_2] ADD FOREIGN KEY ([c]) REFERENCES [test_database_dm].[dm_test].[test_1] ([b]) ON DELETE CASCADE ON UPDATE CASCADE"
+  )
+
 
   # delete database after test
   withr::defer(
     {
-      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_2]"))
-      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_1]"))
+      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_2]"))
+      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_1]"))
       # dropping schema is unnecessary
       try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
     }
   )
 
-  expect_identical(1, 1)
-  # # test 'get_src_tbl_names()'
-  # src_tbl_names <- unname(get_src_tbl_names(src_db, dbname = "test_database_dm"))
-  # expect_identical(
-  #   src_tbl_names,
-  #   sort(DBI::SQL(paste0(
-  #     DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
-  #     DBI::dbQuoteIdentifier(con_db, "dbo"), ".",
-  #     DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2")))
-  #   )
-  #   )
-  # )
-  #
-  # dm_local_no_keys <- dm(
-  #   test_1 = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5),
-  #   test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
-  # )
-  #
-  # dm_db_learned <- expect_message(dm_from_src(src_db, dbname = "test_database_dm"))
-  # dm_learned <- dm_db_learned %>% collect()
-  # expect_equivalent_dm(
-  #   dm_learned,
-  #   dm_local_no_keys %>%
-  #     dm_add_pk(test_1, b) %>%
-  #     dm_add_fk(test_2, c, test_1)
-  # )
-  #
-  # # learning without keys:
-  # dm_learned_no_keys <- expect_silent(
-  #   dm_from_src(
-  #     src_db,
-  #     dbname = "test_database_dm",
-  #     learn_keys = FALSE
-  #   ) %>%
-  #     collect()
-  # )
-  # expect_equivalent_dm(
-  #   dm_learned_no_keys[c("test_1", "test_2")],
-  #   dm_local_no_keys
-  # )
+  # test 'get_src_tbl_names()'
+  src_tbl_names <- unname(get_src_tbl_names(src_db, schema = "dm_test", dbname = "test_database_dm"))
+  expect_identical(
+    src_tbl_names,
+    sort(DBI::SQL(paste0(
+      DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
+      DBI::dbQuoteIdentifier(con_db, "dm_test"), ".",
+      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2")))
+    )
+    )
+  )
+
+  dm_local_no_keys <- dm(
+    test_1 = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5),
+    test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
+  )
+
+  dm_db_learned <- expect_message(dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))
+  dm_learned <- dm_db_learned %>% collect()
+  expect_equivalent_dm(
+    dm_learned,
+    dm_local_no_keys %>%
+      dm_add_pk(test_1, b) %>%
+      dm_add_fk(test_2, c, test_1)
+  )
+
+  # learning without keys:
+  dm_learned_no_keys <- expect_silent(
+    dm_from_src(
+      src_db,
+      schema = "dm_test",
+      dbname = "test_database_dm",
+      learn_keys = FALSE
+    ) %>%
+      collect()
+  )
+  expect_equivalent_dm(
+    dm_learned_no_keys[c("test_1", "test_2")],
+    dm_local_no_keys
+  )
 })
