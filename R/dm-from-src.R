@@ -24,7 +24,7 @@
 #'   - `schema`: supported for MSSQL (default: `"dbo"`) and Postgres (default: `"public"`).
 #'   Learn the tables in a specific schema.
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
-#'   default: database addressed by `src`.
+#'   default: current database.
 #'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type.
 #'
 #' @return A `dm` object.
