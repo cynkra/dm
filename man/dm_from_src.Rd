@@ -27,7 +27,13 @@ Additional parameters for the schema learning query.
 Learn the tables in a specific schema.
 \item \code{dbname}: supported for MSSQL. Access different databases on the connected MSSQL-server;
 default: database addressed by \code{src}.
-\item \code{table_type}: supported for Postgres (default: \code{"BASE TABLE"}). Specify the table type.
+\item \code{table_type}: supported for Postgres (default: \code{"BASE TABLE"}). Specify the table type. Options are:
+\enumerate{
+\item \code{"BASE TABLE"} for a persistent table (normal table type)
+\item \code{"VIEW"} for a view
+\item \code{"FOREIGN TABLE"} for a foreign table
+\item \code{"LOCAL TEMPORARY"} for a temporary table
+}
 }}
 }
 \value{
