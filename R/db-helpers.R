@@ -168,6 +168,9 @@ repair_table_names_for_db <- function(table_names, temporary, con) {
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
+  check_param_class(schema, "character")
+  check_param_class(dbname, "character")
+
   con <- src$con
 
   if (!is_mssql(src)) {
@@ -219,4 +222,14 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
     mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
     select(-schema_name) %>%
     deframe()
+}
+
+check_param_class <- function(param_value, correct_class, param_name = deparse(substitute(param_value))) {
+  if (!inherits(param_value, correct_class)) {
+    abort_parameter_not_correct_class(
+      parameter = param_name,
+      correct_class = correct_class,
+      class = class(param_value)
+    )
+  }
 }

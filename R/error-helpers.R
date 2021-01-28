@@ -540,3 +540,18 @@ error_txt_temp_table_requested <- function(table_names, tbls_in_dm) {
     "{commas(tick(temp_tables))}."
   )
 }
+
+abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
+  abort(error_txt_parameter_not_correct_class(
+    parameter,
+    correct_class,
+    class),
+    .subclass = dm_error_full("parameter_not_correct_class")
+  )
+}
+
+error_txt_parameter_not_correct_class <- function(parameter, correct_class, class) {
+  glue(
+    "Parameter {tick(parameter)} needs to be of class {tick(correct_class)} but is of class {commas(tick(class))}."
+  )
+}
