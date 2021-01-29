@@ -552,6 +552,17 @@ abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
 
 error_txt_parameter_not_correct_class <- function(parameter, correct_class, class) {
   glue(
-    "Parameter {tick(parameter)} needs to be of class {tick(correct_class)} but is of class {commas(tick(class))}."
+    "Parameter {tick(parameter)} needs to be of class {tick(correct_class)} but is of class {format_classes(class))}."
   )
+}
+
+warn_if_not_null <- function(arg, arg_name = deparse(substitute(arg)), only_on = c("MSSQL", "Postgres")) {
+  if (!is.null(arg)) {
+    dm_warn(
+      glue::glue(
+        "Argument {tick(arg_name)} ignored: currently only supported for {paste0(only_on, collapse = ' and ')}."
+      ), class = "non_null_param"
+    )
+  }
+  NULL
 }

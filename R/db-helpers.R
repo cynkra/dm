@@ -168,43 +168,26 @@ repair_table_names_for_db <- function(table_names, temporary, con) {
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
-  check_param_class(schema, "character")
-  check_param_class(dbname, "character")
+  if (!is_mssql(src) && !is_postgres(src)) {
+    warn_if_not_null(schema)
+    warn_if_not_null(dbname, only_on = "MSSQL")
+    return(src_tbls(src))
+  }
 
   con <- src$con
 
-  if (!is_mssql(src)) {
-    if (!is_null(dbname)) {
-      warn("Argument `dbname` ignored: currently only supported for MSSQL")
-      # for Postgres:
-      dbname <- NULL
-    }
-    if (!is_postgres(src)) {
-      # any DBMS different from MSSQL or Postgres
-      if (!is_null(schema)) {
-        warn("Argument `schema` ignored: currently only supported for MSSQL and Postgres")
-      }
-      # in any case return `src_tbls(src)` if not MSSQL or Postgres
-      return(src_tbls(src))
-    } else {
-      # Postgres
-      if (is_null(schema)) {
-        schema <- "public"
-      }
-      names_table <- DBI::dbGetQuery(
-        con,
-        "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
-      )
-    }
-  } else {
+  if (is_mssql(src)) {
     # MSSQL
     if (is_null(schema)) {
       schema <- "dbo"
+    } else {
+      check_param_class(schema, "character")
     }
     if (is_null(dbname)) {
       dbname <- ""
       dbname_sql <- ""
     } else {
+      check_param_class(dbname, "character")
       dbname_sql <- paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
     }
     names_table <- DBI::dbGetQuery(
@@ -215,21 +198,23 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
       tabs.schema_id = schemas.schema_id
        ")
     )
+  } else {
+    # Postgres
+    dbname <- warn_if_not_null(dbname, only_on = "MSSQL")
+    if (is_null(schema)) {
+      schema <- "public"
+    } else {
+      check_param_class(schema, "character")
+    }
+    names_table <- DBI::dbGetQuery(
+      con,
+      "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
+    )
   }
   names_table %>%
     filter(schema_name == !!schema) %>%
-  # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
+    # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
     mutate(remote_name = schema_if(schema_name, table_name, con, dbname)) %>%
     select(-schema_name) %>%
     deframe()
-}
-
-check_param_class <- function(param_value, correct_class, param_name = deparse(substitute(param_value))) {
-  if (!inherits(param_value, correct_class)) {
-    abort_parameter_not_correct_class(
-      parameter = param_name,
-      correct_class = correct_class,
-      class = class(param_value)
-    )
-  }
 }

@@ -125,6 +125,21 @@ check_one_zoom <- function(def, zoomed) {
   }
 }
 
+
+# more general 'check'-type functions -------------------------------------
+
+
+check_param_class <- function(param_value, correct_class, param_name = deparse(substitute(param_value))) {
+  if (!inherits(param_value, correct_class)) {
+    abort_parameter_not_correct_class(
+      parameter = param_name,
+      correct_class = correct_class,
+      class = class(param_value)
+    )
+  }
+}
+
+
 # general error: table not part of `dm` -----------------------------------
 
 abort_table_missing <- function(arg_name) {
