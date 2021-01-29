@@ -556,6 +556,22 @@ error_txt_parameter_not_correct_class <- function(parameter, correct_class, clas
   )
 }
 
+abort_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
+  abort(error_txt_parameter_not_correct_length(
+    parameter,
+    correct_length,
+    parameter_value),
+    .subclass = dm_error_full("parameter_not_correct_length")
+  )
+}
+
+error_txt_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
+  glue(
+    "Parameter {tick(parameter)} needs to be of length {tick(correct_length)} but is ",
+    "of length {as.character(length(parameter_value))} ({commas(tick(parameter_value))})."
+  )
+}
+
 warn_if_not_null <- function(arg, arg_name = deparse(substitute(arg)), only_on = c("MSSQL", "Postgres")) {
   if (!is.null(arg)) {
     dm_warn(

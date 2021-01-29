@@ -211,6 +211,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
       "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
     )
   }
+  check_param_length(schema)
   names_table %>%
     filter(schema_name == !!schema) %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)

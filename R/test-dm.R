@@ -139,6 +139,15 @@ check_param_class <- function(param_value, correct_class, param_name = deparse(s
   }
 }
 
+check_param_length <- function(param_value, correct_length = 1, param_name = deparse(substitute(param_value))) {
+  if (length(param_value) != correct_length) {
+    abort_parameter_not_correct_length(
+      parameter = param_name,
+      correct_length = correct_length,
+      param_value
+    )
+  }
+}
 
 # general error: table not part of `dm` -----------------------------------
 
