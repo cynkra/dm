@@ -124,6 +124,10 @@ jobs:
         run: find check -name '*.Rout*' -exec head -n 1000000 '{}' \; || true
         shell: bash
 
+      - name: Test coverage
+        run: covr::codecov()
+        shell: Rscript {0}
+
       - name: Check rate limits
         if: always()
         run: |
