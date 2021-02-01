@@ -103,3 +103,30 @@ test_that("DB helpers work for Postgres", {
     DBI::SQL("\"schema_db_helpers\".\"test_db_helpers_2\"")
   )
 })
+
+test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
+  skip_if_local_src()
+  skip_if_src("mssql")
+  skip_if_src("postgres")
+  # for other DBMS than "MSSQL" or "Postgrs", get_src_tbl_names() translates to `src_tbls()`
+  con_db <- my_test_src()$con
+  dbWriteTable(
+    con_db,
+    DBI::Id(table = "test_db_helpers"),
+    value = tibble(a = 1)
+  )
+  withr::defer(
+    {
+      try(dbExecute(con_db, "DROP TABLE test_db_helpers"))
+    }
+  )
+
+  # test for 2 warnings and if the output contains the new table
+  expect_dm_warning(
+    expect_dm_warning(
+      expect_true("test_db_helpers" %in% get_src_tbl_names(my_test_src(), schema = "schema", dbname = "dbname")),
+      class = "non_null_param"
+      ),
+    class = "non_null_param"
+  )
+})

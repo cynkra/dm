@@ -29,6 +29,10 @@ expect_dm_error <- function(expr, class) {
   expect_error(expr, class = dm_error(class))
 }
 
+expect_dm_warning <- function(expr, class) {
+  expect_warning(expr, class = dm_warning(class))
+}
+
 expect_name_repair_message <- function(expr) {
   expect_message(expr)
 }
