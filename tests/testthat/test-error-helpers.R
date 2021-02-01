@@ -59,5 +59,6 @@ test_that("output", {
     abort_only_for_local_src(mtcars)
     abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
     abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
+    warn_if_not_null("NULL", "dbms_dependent_arg")
   })
 })
