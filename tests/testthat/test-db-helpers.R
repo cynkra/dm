@@ -22,29 +22,29 @@ test_that("DB helpers work for MSSQL", {
   # create table on 'dbo' on another DB
   dbExecute(con_mssql, "CREATE DATABASE db_helpers_db")
   dbWriteTable(
-    con_db,
+    con_mssql,
     DBI::Id(db = "db_helpers_db", schema = "dbo", table = "test_db_helpers_3"),
     value = tibble(a = 1)
   )
   # create table in a schema on another DB
   original_dbname <- attributes(con_mssql)$info$dbname
   DBI::dbExecute(con_mssql, "USE db_helpers_db")
-  DBI::dbExecute(con_db, "CREATE SCHEMA schema_db_helpers_2")
-  DBI::dbExecute(con_db, paste0("USE ", original_dbname))
+  DBI::dbExecute(con_mssql, "CREATE SCHEMA schema_db_helpers_2")
+  DBI::dbExecute(con_mssql, paste0("USE ", original_dbname))
   dbWriteTable(
-    con_db,
+    con_mssql,
     DBI::Id(db = "db_helpers_db", schema = "schema_db_helpers_2", table = "test_db_helpers_4"),
     value = tibble(a = 1)
   )
   withr::defer(
     {
-      try(dbExecute(con_db, "DROP TABLE test_db_helpers"))
-      try(dbExecute(con_db, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
-      try(dbExecute(con_db, "DROP SCHEMA schema_db_helpers"))
-      try(dbExecute(con_db, "DROP TABLE [db_helpers_db].[dbo].[test_db_helpers_3]"))
-      try(dbExecute(con_db, "DROP TABLE [db_helpers_db].[schema_db_helpers_2].[test_db_helpers_4]"))
+      try(dbExecute(con_mssql, "DROP TABLE test_db_helpers"))
+      try(dbExecute(con_mssql, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
+      try(dbExecute(con_mssql, "DROP SCHEMA schema_db_helpers"))
+      try(dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[dbo].[test_db_helpers_3]"))
+      try(dbExecute(con_mssql, "DROP TABLE [db_helpers_db].[schema_db_helpers_2].[test_db_helpers_4]"))
       # dropping schema is unnecessary
-      try(dbExecute(con_db, "DROP DATABASE db_helpers_db"))
+      try(dbExecute(con_mssql, "DROP DATABASE db_helpers_db"))
     }
   )
 
@@ -88,9 +88,9 @@ test_that("DB helpers work for Postgres", {
   )
   withr::defer(
     {
-      try(dbExecute(con_db, "DROP TABLE test_db_helpers"))
-      try(dbExecute(con_db, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
-      try(dbExecute(con_db, "DROP SCHEMA schema_db_helpers"))
+      try(dbExecute(con_postgres, "DROP TABLE test_db_helpers"))
+      try(dbExecute(con_postgres, "DROP TABLE schema_db_helpers.test_db_helpers_2"))
+      try(dbExecute(con_postgres, "DROP SCHEMA schema_db_helpers"))
     }
   )
 
