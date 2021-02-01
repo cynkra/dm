@@ -552,7 +552,7 @@ abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
 
 error_txt_parameter_not_correct_class <- function(parameter, correct_class, class) {
   glue(
-    "Parameter {tick(parameter)} needs to be of class {tick(correct_class)} but is of class {format_classes(class))}."
+    "Parameter {tick(parameter)} needs to be of class {tick(correct_class)} but is of class {format_classes(class)}."
   )
 }
 
