@@ -30,6 +30,6 @@ dbedu_con <- function() {
     username = "student",
     password = "tx5mvyRQqD",
     dbname = "loan_application",
-    host = "db-edu.pacha.dev"
+    host = "databases.pacha.dev"
   )
 }
