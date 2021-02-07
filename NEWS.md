@@ -1,3 +1,8 @@
+# dm 0.1.10.9001
+
+- Implement `count()` and `tally()` for dplyr 1.0.3 compatibility (#475).
+
+
 # dm 0.1.10.9000
 
 - Internal changes only.
