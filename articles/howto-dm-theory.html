@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.11</span>
       </span>
     </div>
 
@@ -134,7 +134,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2021-01-07</h4>
+            <h4 class="date">2021-02-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-theory.Rmd"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -192,9 +192,9 @@
 <pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.0 ──
 </span></code></pre>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">ggplot2</span><span> 3.3.3     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">purrr  </span><span> 0.3.4
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.0.4     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.2
+#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.0.6     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.4
 #&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tidyr  </span><span> 1.1.2     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">stringr</span><span> 1.4.0
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">readr  </span><span> 1.4.0     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">forcats</span><span> 0.5.0
+#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">readr  </span><span> 1.4.0     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">forcats</span><span> 0.5.1
 </span></code></pre>
 <pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Conflicts</span><span> ───────────────────────────────────── tidyverse_conflicts() ──
 #&gt; </span><span style="color: #BB0000;">✖</span><span> </span><span style="color: #0000BB;">dplyr</span><span>::</span><span style="color: #00BB00;">filter()</span><span> masks </span><span style="color: #0000BB;">dm</span><span>::filter(), </span><span style="color: #0000BB;">stats</span><span>::filter()
@@ -339,7 +339,22 @@
 <h2 class="hasAnchor">
 <a href="#referential-integrity" class="anchor"></a>5. Referential Integrity</h2>
 <p>A data set has referential integrity if all relations between tables are valid. That is, every foreign key holds a primary key that is present in the parent table. If a foreign key contains a parent table primary key that has been deleted that row is an orphan row and the database no longer has referential integrity.</p>
-<p>{dm} is designed to maintain referential integrity. It will not let you create a child row or table without first creating the parent. For example, in the <code>nycflights13</code> you can’t create a flight for an airline that does not have an entry in the <code>airlines</code> table. Conversely, you cannot delete the row for an airline from the <code>airlines</code> table until all related flights are deleted. For more information on deleting individual rows and other row-level operations see <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code>.</p>
+<p>{dm} allows checking referential integrity with the <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> function. The following conditions are checked:</p>
+<ul>
+<li>All primary key values must be unique.</li>
+<li>All primary key values must be set, <code>NA</code> values are not allowed.</li>
+<li>Each foreign key value must have a corresponding primary key value.</li>
+</ul>
+<p>In the example data model, for a substantial share of the flights, detailed information for the corresponding airplane is not available:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #BBBB00;">!</span><span> Unsatisfied constraints:
+</span></code></pre>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BB0000;">●</span><span> Table `flights`: foreign key dest into table `airports`: 242 entries (2.2%) of `flights$dest` not in `airports$faa`: SJU (187), BQN (28), STT (15), PSE (12)
+#&gt; </span><span style="color: #BB0000;">●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …
+</span></code></pre>
+<p>Establishing referential integrity is important for providing clean data for analysis or downstream users. See <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for more information on adding, deleting or updating individual rows, and <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> for operations on the data in a data model.</p>
 </div>
 <div id="normalization" class="section level2">
 <h2 class="hasAnchor">
@@ -347,7 +362,7 @@
 <p>Normalization is a technical term that describes the <strong>central design principle of a relational data model</strong>: splitting data into multiple tables.</p>
 <p>A normalized data schema consists of several relations (tables) that are linked with attributes (columns). The relations can be joined together by means of <a href="#pk">primary</a> and <a href="#fk">foreign keys</a>. The main goal of normalization is to keep data organization as clean and simple as possible by avoiding redundant data entries.</p>
 <p>For example, if you want to change the name of one airport in the <code>nycflights13</code> dataset, you will only need to update a single data value. This principle is sometimes called the <em>single point of truth</em>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#  Update in one single location...</span>
 <span class="va">airlines</span><span class="op">[</span><span class="va">airlines</span><span class="op">$</span><span class="va">carrier</span> <span class="op">==</span> <span class="st">"UA"</span>, <span class="st">"name"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"United broke my guitar"</span>
 
@@ -358,7 +373,7 @@
 #&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 
 #&gt; </span><span style="color: #555555;">1</span><span> UA      United broke my guitar
 </span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># ...propagates to all related records</span>
 <span class="va">flights</span> <span class="op">%&gt;%</span>
@@ -384,7 +399,7 @@
 <p>Let’s look at the <code>planes</code> table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.</p>
 <p>The function <code><a href="../reference/decompose_table.html">decompose_table()</a></code> extracts two new tables and creates a new key <code>model_id</code>, that links both tables.</p>
 <p>This results in a <code>parent_table</code> and a <code>child_table</code> that differ massively in the number of rows:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">planes</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/decompose_table.html">decompose_table</a></span><span class="op">(</span><span class="va">model_id</span>, <span class="va">model</span>, <span class="va">manufacturer</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span>, <span class="va">manufacturer</span>, <span class="va">speed</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; $child_table
@@ -429,7 +444,7 @@
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>
 <p>Therefore, {dm} can copy data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the <code>dm</code> object to it:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">con_sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">con_sqlite</span>
 <span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
@@ -445,18 +460,19 @@
 <span class="co">#&gt; [5] "sqlite_stat1"                   "sqlite_stat4"                  </span>
 <span class="co">#&gt; [7] "weather_2020_08_28_07_13_03_1"</span></code></pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span>
-<span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  sqlite 3.33.0 []</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)</span>
-<span class="co">#&gt; Columns: 62</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
-<p>Remember to terminate the database connection:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
+<span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  sqlite 3.34.1 []
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)
+#&gt; Columns: 62
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
+<p>Remember to terminate the database connection:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></code></pre></div>
 </div>
   </div>

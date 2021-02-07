@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.11</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with dm</h1>
             
-            <h4 class="date">2021-01-07</h4>
+            <h4 class="date">2021-02-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm.Rmd"><code>vignettes/dm.Rmd</code></a></small>
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -167,14 +167,15 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
 
 <span class="va">fin_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">fin_db</span><span class="op">)</span>
-<span class="va">fin_dm</span>
-<span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]</span>
-<span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)</span>
-<span class="co">#&gt; Columns: 57</span>
-<span class="co">#&gt; Primary keys: 0</span>
-<span class="co">#&gt; Foreign keys: 0</span></code></pre></div>
+<span class="va">fin_dm</span></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
+#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
+#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
+#&gt; Columns: 57
+#&gt; Primary keys: 0
+#&gt; Foreign keys: 0
+</span></code></pre>
 <p>The dm object interrogates the RDBMS for table and column information and, where implemented, primary and foreign keys. Currently, primary and foreign keys are only available from Postgres and SQL Server.</p>
 </div>
 <div id="selecting-tables" class="section level2">
@@ -348,8 +349,9 @@
 <p><code>dm_examine_constrains()</code> checks all primary and foreign keys and reports if they violate their expected constraints.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_total</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ℹ All constraints satisfied.</span></code></pre></div>
+  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BBBB;">ℹ</span><span> All constraints satisfied.
+</span></code></pre>
 <p>For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see <code><a href="../articles/tech-dm-low-level.html">vignette("tech-dm-low-level")</a></code>.</p>
 </div>
 <div id="next-steps" class="section level2">

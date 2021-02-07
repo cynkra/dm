@@ -53,6 +53,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -80,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.11</span>
       </span>
     </div>
 
@@ -216,6 +218,19 @@
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for zoomed_dm</span>
+<span class='fu'>count</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>...</span>,
+  wt <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sort <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  .drop <span class='op'>=</span> <span class='fu'>group_by_drop_default</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for zoomed_dm</span>
+<span class='fu'>tally</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for zoomed_dm</span>
 <span class='fu'>pull</span><span class='op'>(</span><span class='va'>.data</span>, var <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -242,6 +257,30 @@ This argument is specific for the <code>slice.zoomed_dm()</code> method.</p></td
     <tr>
       <th>x</th>
       <td><p>For <code>ungroup.zoomed_dm</code>: object of class <code>zoomed_dm</code></p></td>
+    </tr>
+    <tr>
+      <th>wt</th>
+      <td><p>&lt;<code><a href='https://dplyr.tidyverse.org/reference/dplyr_data_masking.html'>data-masking</a></code>&gt; Frequency weights.
+Can be <code>NULL</code> or a variable:</p><ul>
+<li><p>If <code>NULL</code> (the default), counts the number of rows in each group.</p></li>
+<li><p>If a variable, computes <code><a href='https://rdrr.io/r/base/sum.html'>sum(wt)</a></code> for each group.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>sort</th>
+      <td><p>If <code>TRUE</code>, will show the largest groups at the top.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>The name of the new column in the output.</p>
+<p>If omitted, it will default to <code>n</code>. If there's already a column called <code>n</code>,
+it will error, and require you to specify the name.</p></td>
+    </tr>
+    <tr>
+      <th>.drop</th>
+      <td><p>For <code>count()</code>: if <code>FALSE</code> will include counts for empty groups
+(i.e. for levels of factors that don't exist in the data). Deprecated in
+<code>add_count()</code> since it didn't actually affect the output.</p></td>
     </tr>
     <tr>
       <th>var</th>
