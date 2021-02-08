@@ -57,5 +57,8 @@ test_that("output", {
     abort_temp_table_requested(c("i_am_temporary", "i_am_permanent"), "i_am_permanent")
     abort_pk_not_tracked("house", "house_number")
     abort_only_for_local_src(mtcars)
+    abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
+    abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
+    warn_if_not_null("NULL", "dbms_dependent_arg")
   })
 })

@@ -22,10 +22,19 @@ The default attempts to query and issues an informative message.}
 \item{...}{\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 Additional parameters for the schema learning query.
-Currently supports \code{schema} (default: \code{"public"})
-and \code{table_type} (default: \code{"BASE TABLE"}) for Postgres databases.
-
-For MSSQL databases \code{schema} (default: \code{"dbo"}) is supported.}
+\itemize{
+\item \code{schema}: supported for MSSQL (default: \code{"dbo"}) and Postgres (default: \code{"public"}).
+Learn the tables in a specific schema.
+\item \code{dbname}: supported for MSSQL. Access different databases on the connected MSSQL-server;
+default: database addressed by \code{src}.
+\item \code{table_type}: supported for Postgres (default: \code{"BASE TABLE"}). Specify the table type. Options are:
+\enumerate{
+\item \code{"BASE TABLE"} for a persistent table (normal table type)
+\item \code{"VIEW"} for a view
+\item \code{"FOREIGN TABLE"} for a foreign table
+\item \code{"LOCAL TEMPORARY"} for a temporary table
+}
+}}
 }
 \value{
 A \code{dm} object.

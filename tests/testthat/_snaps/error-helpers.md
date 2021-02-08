@@ -228,4 +228,18 @@
       abort_only_for_local_src(mtcars)
     Error <dm_error_only_for_local_src>
       `nest_join.zoomed_dm()` works only for a local `src`, not on a database with `src`-class: `data.frame`.
+    Code
+      abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
+    Error <dm_error_parameter_not_correct_class>
+      Parameter `number` needs to be of class `numeric` but is of class `logical`.
+    Code
+      abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
+    Error <dm_error_parameter_not_correct_length>
+      Parameter `length_1_parameter` needs to be of length `1` but is of length 26 (`a`, `b`, `c`, `d`, `e`, ... (26 total)).
+    Code
+      warn_if_not_null("NULL", "dbms_dependent_arg")
+    Warning <dm_warning_non_null_param>
+      Argument `dbms_dependent_arg` ignored: currently only supported for MSSQL and Postgres.
+    Output
+      NULL
 
