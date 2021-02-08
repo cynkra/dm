@@ -1,4 +1,4 @@
-dm 0.1.10
+dm 0.1.11
 
 ## Cran Repository Policy
 
@@ -10,6 +10,8 @@ dm 0.1.10
 - [x] Checked on CI system, R 4.0.3
 - [x] Checked on win-builder, R devel
 
+Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
+
 ## Current CRAN check results
 
-- [x] Checked on 2021-01-06, problems found due to incompatibility with testthat 3.0.1. https://cran.r-project.org/web/checks/check_results_dm.html
+- [x] Checked on 2021-02-07, no problems found.
