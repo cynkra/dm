@@ -1,15 +1,6 @@
 # dm 0.1.12
 
 - `dm_from_src()` gains `dbname` argument for MSSQL (#472).
-
-
-# dm 0.1.11.9000
-
-- Internal changes only.
-
-
-# dm 0.1.11
-
 - Implement `count()` and `tally()` for dplyr 1.0.3 compatibility (#475).
 - Use databases.pacha.dev instead of db-edu.pacha.dev (#478, @pachamaltese).
 
