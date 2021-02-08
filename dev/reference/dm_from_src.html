@@ -85,7 +85,7 @@ are imported from the database." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.10.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9000</span>
       </span>
     </div>
 
@@ -215,10 +215,18 @@ The default attempts to query and issues an informative message.</p></td>
     <tr>
       <th>...</th>
       <td><p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
-<p>Additional parameters for the schema learning query.
-Currently supports <code>schema</code> (default: <code>"public"</code>)
-and <code>table_type</code> (default: <code>"BASE TABLE"</code>) for Postgres databases.</p>
-<p>For MSSQL databases <code>schema</code> (default: <code>"dbo"</code>) is supported.</p></td>
+<p>Additional parameters for the schema learning query.</p><ul>
+<li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>) and Postgres (default: <code>"public"</code>).
+Learn the tables in a specific schema.</p></li>
+<li><p><code>dbname</code>: supported for MSSQL. Access different databases on the connected MSSQL-server;
+default: database addressed by <code>src</code>.</p></li>
+<li><p><code>table_type</code>: supported for Postgres (default: <code>"BASE TABLE"</code>). Specify the table type. Options are:</p><ol>
+<li><p><code>"BASE TABLE"</code> for a persistent table (normal table type)</p></li>
+<li><p><code>"VIEW"</code> for a view</p></li>
+<li><p><code>"FOREIGN TABLE"</code> for a foreign table</p></li>
+<li><p><code>"LOCAL TEMPORARY"</code> for a temporary table</p></li>
+</ol></li>
+</ul></td>
     </tr>
     </table>
 
