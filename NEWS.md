@@ -1,3 +1,8 @@
+# dm 0.1.12
+
+- `dm_from_src()` gains `dbname` argument for MSSQL (#472).
+
+
 # dm 0.1.11.9000
 
 - Internal changes only.
