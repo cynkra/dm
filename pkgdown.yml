@@ -1,6 +1,6 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1.9000
-pkgdown_sha: c931fe24c135c6ca704ae9f300470e9c66d8bfe7
+pkgdown_sha: a3116bdc25a2ff881b7d7ba2b094b29349595295
 articles:
   dm: dm.html
   howto-dm-copy: howto-dm-copy.html
@@ -20,7 +20,7 @@ articles:
   wip/dm-readme-old: dm-readme-old.html
   wip/dm-shiny-dynafilter: dm-shiny-dynafilter.html
   wip/dm-tips-and-tricks: dm-tips-and-tricks.html
-last_built: 2021-02-08T16:13Z
+last_built: 2021-02-14T18:42Z
 urls:
   reference: https://krlmlr.github.io/dm/reference
   article: https://krlmlr.github.io/dm/articles
