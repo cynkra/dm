@@ -164,3 +164,78 @@ sql_schema_create.PqConnection <- function(dest, schema, ...) {
   message(glue::glue("Schema {tick(schema)} created{msg_suffix}."))
   invisible(NULL)
 }
+
+# sql_schema_table_list() -------------------------------------------------
+
+#' List the tables in a schema on a database
+#'
+#' @description `sql_schema_table_list()` list the tables in a schema on the database.
+#'
+#' @inheritParams sql_schema_list
+#'
+#' @details Methods are not available for all DBMS.
+#'
+#' An error is thrown if no schema of that name exists.
+#'
+#' Additional arguments are:
+#'
+#'   - `dbname`: supported for MSSQL. Look for tables on a different
+#'   database on the connected MSSQL-server; default: database addressed by `dest`.
+#'
+#' @return A tibble with the following columns:
+#'   \describe{
+#'     \item{`table_name`}{name of the table,}
+#'     \item{`remote_table_name`}{identifier of the table on the DBMS.
+#'     Can be used to access the listed tables with the syntax
+#'     `tbl(dest, remote_table_name).`}
+#'   }
+#'
+#' @family schema handling functions
+#' @export
+sql_schema_table_list <- function(dest, schema = NULL, ...) {
+  if (!is_null(schema)) {
+    check_param_class(schema, "character")
+    check_param_length(schema)
+  }
+  if (!is_null(schema) && !sql_schema_exists(dest, schema, ...)) {abort_no_schema_exists(schema, ...)}
+  UseMethod("sql_schema_table_list")
+}
+
+#' @export
+`sql_schema_table_list.src_Microsoft SQL Server` <- function(dest, schema = NULL, dbname = NULL, ...) {
+  if (!is_null(dbname)) {
+    check_param_class(dbname, "character")
+    check_param_length(dbname)
+  }
+  enframe(
+    get_src_tbl_names(dest, schema = schema, dbname = dbname),
+    name = "table_name",
+    value = "remote_table_name") %>%
+    mutate(remote_table_name = dbplyr::ident_q(remote_table_name))
+}
+
+#' @export
+sql_schema_table_list.src_PqConnection <- function(dest, schema = NULL, ...) {
+  enframe(
+    get_src_tbl_names(dest, schema = schema),
+    name = "table_name",
+    value = "remote_table_name") %>%
+    mutate(remote_table_name = dbplyr::ident_q(remote_table_name))
+}
+
+#' @export
+`sql_schema_table_list.Microsoft SQL Server` <- function(dest, schema = NULL, dbname = NULL, ...) {
+  `sql_schema_table_list.src_Microsoft SQL Server`(
+    dest = dbplyr::src_dbi(dest),
+    schema = schema,
+    dbname = dbname,
+    ...)
+}
+
+#' @export
+sql_schema_table_list.PqConnection <- function(dest, schema = NULL, ...) {
+  sql_schema_table_list.src_PqConnection(
+    dest = dbplyr::src_dbi(dest),
+    schema = schema,
+    ...)
+}
