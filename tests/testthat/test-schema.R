@@ -44,7 +44,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_true("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
 
   remote_table_1 <- filter(sql_schema_table_list(src_db), table_name == "test_schema_1") %>%
-    pull(remote_table_name)
+    pull(remote_name)
   expect_identical(
     tbl(src_db, remote_table_1) %>% collect(),
     tibble(a = 1:5)
@@ -62,7 +62,7 @@ test_that("schema handling on MSSQL and Postgres works", {
     sql_schema_table_list(con_db, schema = "dm_schema_test_schema"),
     tibble(
       table_name = "test_schema_2",
-      remote_table_name = dbplyr::ident_q("\"dm_schema_test_schema\".\"test_schema_2\"")
+      remote_name = dbplyr::ident_q("\"dm_schema_test_schema\".\"test_schema_2\"")
     )
   )
 
@@ -70,7 +70,7 @@ test_that("schema handling on MSSQL and Postgres works", {
     sql_schema_table_list(src_db, schema = "dm_schema_test_schema"),
     table_name == "test_schema_2"
   ) %>%
-    pull(remote_table_name)
+    pull(remote_name)
   expect_identical(
     tbl(src_db, remote_table_2) %>% collect(),
     tibble(b = letters[1:5])
@@ -114,7 +114,7 @@ test_that("schema handling on MSSQL works for different DBs", {
     sql_schema_table_list(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     tibble(
       table_name = character(),
-      remote_table_name = dbplyr::ident_q()
+      remote_name = dbplyr::ident_q()
     )
   )
 
@@ -128,7 +128,7 @@ test_that("schema handling on MSSQL works for different DBs", {
     sql_schema_table_list(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     tibble(
       table_name = "test_1",
-      remote_table_name = dbplyr::ident_q("\"test_db_for_schema_dm\".\"test_schema\".\"test_1\"")
+      remote_name = dbplyr::ident_q("\"test_db_for_schema_dm\".\"test_schema\".\"test_1\"")
     )
   )
 })
