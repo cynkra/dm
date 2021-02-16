@@ -69,3 +69,43 @@ sql_schema_list.PqConnection <- function(dest, include_default = TRUE, ...) {
     as_tibble() %>%
     mutate(schema_name = SQL(schema_name))
 }
+
+# sql_schema_exists() -----------------------------------------------------
+
+#' Check for existence of a schema on a database
+#'
+#' @description `sql_schema_exists()` checks, if a schema exists on the database.
+#'
+#' @inheritParams sql_schema_list
+#'
+#' @details Methods are not available for all DBMS.
+#'
+#' Additional arguments are:
+#'
+#'   - `dbname`: supported for MSSQL. Check if a schema exists on a different
+#'   database on the connected MSSQL-server; default: database addressed by `dest`.
+#' @return A boolean: `TRUE` if schema exists, `FALSE` otherwise.
+#'
+#' @family schema handling functions
+#' @export
+sql_schema_exists <- function(dest, schema, ...) {
+  check_param_class(schema, "character")
+  check_param_length(schema)
+  UseMethod("sql_schema_exists")
+}
+
+#' @export
+sql_schema_exists.src_dbi <- function(dest, schema, ...) {
+  sql_schema_exists(dest$con, schema, ...)
+}
+
+#' @export
+`sql_schema_exists.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
+  schema %in% sql_schema_list(dest, dbname = dbname)$schema_name
+}
+
+
+#' @export
+sql_schema_exists.PqConnection <- function(dest, schema, ...) {
+  schema %in% sql_schema_list(dest)$schema_name
+}
