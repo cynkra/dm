@@ -77,6 +77,7 @@ sql_schema_list.PqConnection <- function(dest, include_default = TRUE, ...) {
 #' @description `sql_schema_exists()` checks, if a schema exists on the database.
 #'
 #' @inheritParams sql_schema_list
+#' @param schema Name of the schema
 #'
 #' @details Methods are not available for all DBMS.
 #'
@@ -116,7 +117,7 @@ sql_schema_exists.PqConnection <- function(dest, schema, ...) {
 #'
 #' @description `sql_schema_create()` creates a schema on the database.
 #'
-#' @inheritParams sql_schema_list
+#' @inheritParams sql_schema_exists
 #'
 #' @details Methods are not available for all DBMS.
 #'
@@ -171,7 +172,7 @@ sql_schema_create.PqConnection <- function(dest, schema, ...) {
 #'
 #' @description `sql_schema_table_list()` list the tables in a schema on the database.
 #'
-#' @inheritParams sql_schema_list
+#' @inheritParams sql_schema_exists
 #'
 #' @details Methods are not available for all DBMS.
 #'
@@ -246,7 +247,7 @@ sql_schema_table_list.PqConnection <- function(dest, schema = NULL, ...) {
 #'
 #' @description `sql_schema_drop()` deletes an empty schema from the database.
 #'
-#' @inheritParams sql_schema_list
+#' @inheritParams sql_schema_exists
 #'
 #' @details Methods are not available for all DBMS.
 #'

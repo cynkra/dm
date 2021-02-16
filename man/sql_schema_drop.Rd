@@ -9,6 +9,8 @@ sql_schema_drop(dest, schema, ...)
 \arguments{
 \item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
+\item{schema}{Name of the schema}
+
 \item{...}{Passed on to the individual methods.}
 }
 \value{
