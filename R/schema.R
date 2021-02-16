@@ -186,9 +186,9 @@ sql_schema_create.PqConnection <- function(dest, schema, ...) {
 #' @return A tibble with the following columns:
 #'   \describe{
 #'     \item{`table_name`}{name of the table,}
-#'     \item{`remote_table_name`}{identifier of the table on the DBMS.
+#'     \item{`remote_name`}{identifier of the table on the DBMS.
 #'     Can be used to access the listed tables with the syntax
-#'     `tbl(dest, remote_table_name).`}
+#'     `tbl(dest, remote_name).`}
 #'   }
 #'
 #' @family schema handling functions
@@ -211,8 +211,8 @@ sql_schema_table_list <- function(dest, schema = NULL, ...) {
   enframe(
     get_src_tbl_names(dest, schema = schema, dbname = dbname),
     name = "table_name",
-    value = "remote_table_name") %>%
-    mutate(remote_table_name = dbplyr::ident_q(remote_table_name))
+    value = "remote_name") %>%
+    mutate(remote_name = dbplyr::ident_q(remote_name))
 }
 
 #' @export
@@ -220,8 +220,8 @@ sql_schema_table_list.src_PqConnection <- function(dest, schema = NULL, ...) {
   enframe(
     get_src_tbl_names(dest, schema = schema),
     name = "table_name",
-    value = "remote_table_name") %>%
-    mutate(remote_table_name = dbplyr::ident_q(remote_table_name))
+    value = "remote_name") %>%
+    mutate(remote_name = dbplyr::ident_q(remote_name))
 }
 
 #' @export

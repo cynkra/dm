@@ -17,9 +17,9 @@ sql_schema_table_list(dest, schema = NULL, ...)
 A tibble with the following columns:
 \describe{
 \item{\code{table_name}}{name of the table,}
-\item{\code{remote_table_name}}{identifier of the table on the DBMS.
+\item{\code{remote_name}}{identifier of the table on the DBMS.
 Can be used to access the listed tables with the syntax
-\verb{tbl(dest, remote_table_name).}}
+\verb{tbl(dest, remote_name).}}
 }
 }
 \description{
