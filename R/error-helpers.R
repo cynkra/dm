@@ -582,3 +582,22 @@ warn_if_not_null <- function(arg, arg_name = deparse(substitute(arg)), only_on =
   }
   NULL
 }
+
+# Errors for schema handling functions ------------------------------------
+
+abort_schema_exists <- function(schema, dbname = NULL) {
+  abort(error_txt_schema_exists(schema, dbname),
+    .subclass = dm_error_full("schema_exists")
+  )
+}
+
+error_txt_schema_exists <- function(schema, dbname) {
+  if (!is_null(dbname)) {
+    msg_suffix <- paste0(" on database ", tick(dbname))
+  } else {
+    msg_suffix <- ""
+  }
+  glue(
+    "A schema named {tick(schema)} already exists{msg_suffix}."
+  )
+}

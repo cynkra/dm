@@ -109,3 +109,58 @@ sql_schema_exists.src_dbi <- function(dest, schema, ...) {
 sql_schema_exists.PqConnection <- function(dest, schema, ...) {
   schema %in% sql_schema_list(dest)$schema_name
 }
+
+# sql_schema_create() -----------------------------------------------------
+
+#' Create a schema on a database
+#'
+#' @description `sql_schema_create()` creates a schema on the database.
+#'
+#' @inheritParams sql_schema_list
+#'
+#' @details Methods are not available for all DBMS.
+#'
+#' An error is thrown if a schema of that name already exists.
+#'
+#' Additional arguments are:
+#'
+#'   - `dbname`: supported for MSSQL. Create a schema in a different
+#'   database on the connected MSSQL-server; default: database addressed by `dest`.
+#'
+#' @return `NULL` invisibly.
+#'
+#' @family schema handling functions
+#' @export
+sql_schema_create <- function(dest, schema, ...) {
+  check_param_class(schema, "character")
+  check_param_length(schema)
+  if (sql_schema_exists(dest, schema, ...)) {abort_schema_exists(schema, ...)}
+  UseMethod("sql_schema_create")
+}
+
+#' @export
+sql_schema_create.src_dbi <- function(dest, schema, ...) {
+  sql_schema_create(dest$con, schema, ...)
+}
+
+#' @export
+sql_schema_create.PqConnection <- function(dest, schema, ...) {
+  DBI::dbExecute(dest, glue::glue("CREATE SCHEMA {schema}"))
+  message(glue::glue("Schema {tick(schema)} created."))
+  invisible(NULL)
+}
+
+#' @export
+`sql_schema_create.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
+  if (!is_null(dbname)) {
+    original_dbname <- attributes(dest)$info$dbname
+    DBI::dbExecute(dest, glue::glue("USE {dbname}"))
+    withr::defer(DBI::dbExecute(dest, glue::glue("USE {original_dbname}")))
+    msg_suffix <- paste0(" on database ", tick(dbname))
+  } else {
+    msg_suffix <- ""
+  }
+  DBI::dbExecute(dest, glue::glue("CREATE SCHEMA {schema}"))
+  message(glue::glue("Schema {tick(schema)} created{msg_suffix}."))
+  invisible(NULL)
+}
