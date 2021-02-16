@@ -76,3 +76,59 @@ test_that("schema handling on MSSQL and Postgres works", {
     tibble(b = letters[1:5])
   )
 })
+
+test_that("schema handling on MSSQL works for different DBs", {
+  skip_if_src_not("mssql")
+
+  withr::defer({
+    try(DBI::dbExecute(con_db, "DROP DATABASE test_db_for_schema_dm"))
+  })
+
+  original_dbname <- attributes(con_db)$info$dbname
+  DBI::dbExecute(con_db, "CREATE DATABASE test_db_for_schema_dm")
+  expect_false(sql_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
+
+  expect_message(
+    sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    "on database `test_db_for_schema_dm`"
+  )
+
+  expect_dm_error(
+    sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    "schema_exists"
+  )
+
+  expect_message(
+    sql_schema_drop(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    "on database `test_db_for_schema_dm`"
+  )
+
+  expect_message(
+    sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    "on database `test_db_for_schema_dm`"
+  )
+
+  expect_true(sql_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
+
+  expect_identical(
+    sql_schema_table_list(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    tibble(
+      table_name = character(),
+      remote_table_name = dbplyr::ident_q()
+    )
+  )
+
+  dbWriteTable(
+    con_db,
+    DBI::Id(db = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"),
+    value = tibble(c = c(5L))
+  )
+
+  expect_identical(
+    sql_schema_table_list(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    tibble(
+      table_name = "test_1",
+      remote_table_name = dbplyr::ident_q("\"test_db_for_schema_dm\".\"test_schema\".\"test_1\"")
+    )
+  )
+})
