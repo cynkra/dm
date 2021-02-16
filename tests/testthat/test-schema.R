@@ -29,8 +29,8 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_false("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
 
   withr::defer({
-      try(dbExecute(con_db, "DROP TABLE [dbo].[test_schema_1]"))
-      try(dbExecute(con_db, "DROP TABLE [dm_schema_test_schema].[test_schema_2]"))
+      try(dbExecute(con_db, "DROP TABLE test_schema_1"))
+      try(dbExecute(con_db, "DROP TABLE dm_schema_test_schema.test_schema_2"))
       try(dbExecute(con_db, "DROP SCHEMA dm_schema_test_schema"))
   })
 
