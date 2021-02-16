@@ -239,3 +239,62 @@ sql_schema_table_list.PqConnection <- function(dest, schema = NULL, ...) {
     schema = schema,
     ...)
 }
+
+# sql_schema_drop() -------------------------------------------------------
+
+#' Remove a schema from a database
+#'
+#' @description `sql_schema_drop()` deletes an empty schema from the database.
+#'
+#' @inheritParams sql_schema_list
+#'
+#' @details Methods are not available for all DBMS.
+#'
+#' An error is thrown if no schema of that name exists.
+#'
+#' Additional arguments are:
+#'
+#'   - `dbname`: supported for MSSQL. Remove a schema from a different
+#'   database on the connected MSSQL-server; default: database addressed by `dest`.
+#'
+#' @return `NULL` invisibly.
+#'
+#' @family schema handling functions
+#' @export
+sql_schema_drop <- function(dest, schema, ...) {
+  check_param_class(schema, "character")
+  check_param_length(schema)
+  if (nrow(sql_schema_table_list(dest, schema, ...)) > 0) {
+    abort_schema_not_empty(schema, ...)
+  }
+  UseMethod("sql_schema_drop")
+}
+
+#' @export
+sql_schema_drop.src_dbi <- function(dest, schema, ...) {
+  sql_schema_drop(dest$con, schema, ...)
+}
+
+#' @export
+sql_schema_drop.PqConnection <- function(dest, schema, ...) {
+  DBI::dbExecute(dest, glue::glue("DROP SCHEMA {schema}"))
+  message(glue::glue("Schema {tick(schema)} dropped."))
+  invisible(NULL)
+}
+
+#' @export
+`sql_schema_drop.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
+  if (!is_null(dbname)) {
+    check_param_class(dbname, "character")
+    check_param_length(dbname)
+    original_dbname <- attributes(dest)$info$dbname
+    DBI::dbExecute(dest, glue::glue("USE {dbname}"))
+    withr::defer(DBI::dbExecute(dest, glue::glue("USE {original_dbname}")))
+    msg_infix <- paste0(" on database ", tick(dbname))
+  } else {
+    msg_infix <- ""
+  }
+  DBI::dbExecute(dest, glue::glue("DROP SCHEMA {schema}"))
+  message(glue::glue("Schema {tick(schema)}{msg_infix} dropped."))
+  invisible(NULL)
+}
