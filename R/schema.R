@@ -54,8 +54,7 @@ sql_schema_list.src_dbi <- function(dest, include_default = TRUE, ...) {
     ON u.uid = s.principal_id
     WHERE u.issqluser = 1
     AND u.name NOT IN ('sys', 'guest', 'INFORMATION_SCHEMA'){default_if_true}")) %>%
-    as_tibble() %>%
-    mutate(schema_name = SQL(schema_name))
+    as_tibble()
 }
 
 #' @export
@@ -66,8 +65,7 @@ sql_schema_list.PqConnection <- function(dest, include_default = TRUE, ...) {
     AND schema_name NOT LIKE 'pg_toast%'
     AND schema_name NOT LIKE 'pg_temp_%'
     ORDER BY schema_name")) %>%
-    as_tibble() %>%
-    mutate(schema_name = SQL(schema_name))
+    as_tibble()
 }
 
 # sql_schema_exists() -----------------------------------------------------
