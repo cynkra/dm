@@ -572,8 +572,8 @@ error_txt_parameter_not_correct_length <- function(parameter, correct_length, pa
   )
 }
 
-warn_if_not_null <- function(arg, arg_name = deparse(substitute(arg)), only_on = c("MSSQL", "Postgres")) {
-  if (!is.null(arg)) {
+warn_if_arg_not <- function(arg, arg_name = deparse(substitute(arg)), only_on = c("MSSQL", "Postgres"), correct = NULL) {
+  if (!identical(arg, correct)) {
     dm_warn(
       glue::glue(
         "Argument {tick(arg_name)} ignored: currently only supported for {paste0(only_on, collapse = ' and ')}."
