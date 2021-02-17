@@ -33,7 +33,7 @@ sql_schema_list <- function(dest, include_default = TRUE, ...) {
 }
 
 #' @export
-`sql_schema_list.src_dbi` <- function(dest, include_default = TRUE, ...) {
+sql_schema_list.src_dbi <- function(dest, include_default = TRUE, ...) {
   sql_schema_list(dest$con, include_default = include_default, ...)
 }
 
