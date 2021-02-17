@@ -242,4 +242,28 @@
       Argument `dbms_dependent_arg` ignored: currently only supported for MSSQL and Postgres.
     Output
       NULL
+    Code
+      abort_schema_exists("silhouette")
+    Error <dm_error_schema_exists>
+      A schema named `silhouette` already exists.
+    Code
+      abort_schema_exists("silhouette", "exhibition")
+    Error <dm_error_schema_exists>
+      A schema named `silhouette` already exists on database `exhibition`.
+    Code
+      abort_no_schema_exists("table_1")
+    Error <dm_error_no_schema_exists>
+      No schema named `table_1` exists.
+    Code
+      abort_no_schema_exists("fastfood", "gala_dinner")
+    Error <dm_error_no_schema_exists>
+      No schema named `fastfood` exists on database `gala_dinner`.
+    Code
+      abort_schema_not_empty("full")
+    Error <dm_error_schema_not_empty>
+      Schema `full` needs to be empty before it can be dropped.
+    Code
+      abort_schema_not_empty("abundant", "cornucopia")
+    Error <dm_error_schema_not_empty>
+      Schema `abundant` on database `cornucopia` needs to be empty before it can be dropped.
 
