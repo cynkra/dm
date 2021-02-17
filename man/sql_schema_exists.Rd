@@ -9,7 +9,7 @@ sql_schema_exists(dest, schema, ...)
 \arguments{
 \item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
-\item{schema}{Name of the schema}
+\item{schema}{Class \code{character} or \code{SQL}, name of the schema}
 
 \item{...}{Passed on to the individual methods.}
 }

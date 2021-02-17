@@ -9,7 +9,7 @@ sql_schema_create(dest, schema, ...)
 \arguments{
 \item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
-\item{schema}{Name of the schema}
+\item{schema}{Class \code{character} or \code{SQL} (cf. Details), name of the schema}
 
 \item{...}{Passed on to the individual methods.}
 }
@@ -23,6 +23,10 @@ sql_schema_create(dest, schema, ...)
 Methods are not available for all DBMS.
 
 An error is thrown if a schema of that name already exists.
+
+The argument \code{schema} (and \code{dbname} for MSSQL) can be provided as \code{SQL} objects.
+Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers
+using \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}}.
 
 Additional arguments are:
 \itemize{

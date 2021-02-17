@@ -75,7 +75,7 @@ sql_schema_list.PqConnection <- function(dest, include_default = TRUE, ...) {
 #' @description `sql_schema_exists()` checks, if a schema exists on the database.
 #'
 #' @inheritParams sql_schema_list
-#' @param schema Name of the schema
+#' @param schema Class `character` or `SQL`, name of the schema
 #'
 #' @details Methods are not available for all DBMS.
 #'
@@ -100,13 +100,13 @@ sql_schema_exists.src_dbi <- function(dest, schema, ...) {
 
 #' @export
 `sql_schema_exists.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
-  schema %in% sql_schema_list(dest, dbname = dbname)$schema_name
+  sql_to_character(dest, schema) %in% sql_schema_list(dest, dbname = dbname)$schema_name
 }
 
 
 #' @export
 sql_schema_exists.PqConnection <- function(dest, schema, ...) {
-  schema %in% sql_schema_list(dest)$schema_name
+  sql_to_character(dest, schema) %in% sql_schema_list(dest)$schema_name
 }
 
 # sql_schema_create() -----------------------------------------------------
@@ -115,11 +115,16 @@ sql_schema_exists.PqConnection <- function(dest, schema, ...) {
 #'
 #' @description `sql_schema_create()` creates a schema on the database.
 #'
-#' @inheritParams sql_schema_exists
+#' @inheritParams sql_schema_list
+#' @param schema Class `character` or `SQL` (cf. Details), name of the schema
 #'
 #' @details Methods are not available for all DBMS.
 #'
 #' An error is thrown if a schema of that name already exists.
+#'
+#' The argument `schema` (and `dbname` for MSSQL) can be provided as `SQL` objects.
+#' Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers
+#' using [`DBI::dbQuoteIdentifier()`].
 #'
 #' Additional arguments are:
 #'
@@ -133,7 +138,7 @@ sql_schema_exists.PqConnection <- function(dest, schema, ...) {
 sql_schema_create <- function(dest, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
-  if (sql_schema_exists(dest, schema, ...)) {abort_schema_exists(schema, ...)}
+  if (sql_schema_exists(dest, schema, ...)) {abort_schema_exists(sql_to_character(dest, schema), ...)}
   UseMethod("sql_schema_create")
 }
 
@@ -144,8 +149,8 @@ sql_schema_create.src_dbi <- function(dest, schema, ...) {
 
 #' @export
 sql_schema_create.PqConnection <- function(dest, schema, ...) {
-  DBI::dbExecute(dest, glue::glue("CREATE SCHEMA {schema}"))
-  message(glue::glue("Schema {tick(schema)} created."))
+  DBI::dbExecute(dest, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
+  message(glue::glue("Schema {tick(sql_to_character(dest, schema))} created."))
   invisible(NULL)
 }
 
@@ -153,12 +158,12 @@ sql_schema_create.PqConnection <- function(dest, schema, ...) {
 `sql_schema_create.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
   if (!is_null(dbname)) {
     original_dbname <- attributes(dest)$info$dbname
-    DBI::dbExecute(dest, glue::glue("USE {dbname}"))
-    withr::defer(DBI::dbExecute(dest, glue::glue("USE {original_dbname}")))
+    DBI::dbExecute(dest, glue::glue("USE {DBI::dbQuoteIdentifier(dest, dbname)}"))
+    withr::defer(DBI::dbExecute(dest, glue::glue("USE {DBI::dbQuoteIdentifier(dest, original_dbname)}")))
   }
-  msg_suffix <- fix_msg(dbname)
-  DBI::dbExecute(dest, glue::glue("CREATE SCHEMA {schema}"))
-  message(glue::glue("Schema {tick(schema)} created{msg_suffix}."))
+  msg_suffix <- fix_msg(sql_to_character(dest, dbname))
+  DBI::dbExecute(dest, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
+  message(glue::glue("Schema {tick(sql_to_character(dest, schema))} created{msg_suffix}."))
   invisible(NULL)
 }
 
@@ -194,7 +199,9 @@ sql_schema_table_list <- function(dest, schema = NULL, ...) {
     check_param_class(schema, "character")
     check_param_length(schema)
   }
-  if (!is_null(schema) && !sql_schema_exists(dest, schema, ...)) {abort_no_schema_exists(schema, ...)}
+  if (!is_null(schema) && !sql_schema_exists(dest, schema, ...)) {
+    abort_no_schema_exists(sql_to_character(con_from_src_or_con(dest), schema), ...)
+  }
   UseMethod("sql_schema_table_list")
 }
 
@@ -205,7 +212,7 @@ sql_schema_table_list <- function(dest, schema = NULL, ...) {
     check_param_length(dbname)
   }
   enframe(
-    get_src_tbl_names(dest, schema = schema, dbname = dbname),
+    get_src_tbl_names(dest, schema = sql_to_character(dest$con, schema), dbname = dbname),
     name = "table_name",
     value = "remote_name") %>%
     mutate(remote_name = dbplyr::ident_q(remote_name))
@@ -214,7 +221,7 @@ sql_schema_table_list <- function(dest, schema = NULL, ...) {
 #' @export
 sql_schema_table_list.src_PqConnection <- function(dest, schema = NULL, ...) {
   enframe(
-    get_src_tbl_names(dest, schema = schema),
+    get_src_tbl_names(dest, schema = sql_to_character(dest$con, schema)),
     name = "table_name",
     value = "remote_name") %>%
     mutate(remote_name = dbplyr::ident_q(remote_name))
@@ -243,11 +250,14 @@ sql_schema_table_list.PqConnection <- function(dest, schema = NULL, ...) {
 #'
 #' @description `sql_schema_drop()` deletes an empty schema from the database.
 #'
-#' @inheritParams sql_schema_exists
+#' @inheritParams sql_schema_create
 #'
 #' @details Methods are not available for all DBMS.
 #'
 #' An error is thrown if no schema of that name exists.
+#'
+#' The argument `schema` (and `dbname` for MSSQL) can be provided as `SQL` objects.
+#' Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers.
 #'
 #' Additional arguments are:
 #'
@@ -287,9 +297,9 @@ sql_schema_drop.PqConnection <- function(dest, schema, ...) {
     DBI::dbExecute(dest, glue::glue("USE {dbname}"))
     withr::defer(DBI::dbExecute(dest, glue::glue("USE {original_dbname}")))
   }
-  msg_infix <- fix_msg(dbname)
-  DBI::dbExecute(dest, glue::glue("DROP SCHEMA {schema}"))
-  message(glue::glue("Schema {tick(schema)}{msg_infix} dropped."))
+  msg_infix <- fix_msg(sql_to_character(dest, dbname))
+  DBI::dbExecute(dest, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
+  message(glue::glue("Schema {tick(sql_to_character(dest, schema))}{msg_infix} dropped."))
   invisible(NULL)
 }
 
@@ -299,4 +309,14 @@ fix_msg <- function(dbname) {
   } else {
     msg_suffix <- ""
   }
+}
+
+sql_to_character <- function(con, sql_or_char) {
+  if (inherits(sql_or_char, "SQL")) {
+    sql_or_char <- map_chr(
+      sql_or_char,
+      ~ DBI::dbUnquoteIdentifier(con, .x)[[1]] %>% pluck("name")
+    )
+  }
+  sql_or_char
 }
