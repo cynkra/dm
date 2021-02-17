@@ -609,29 +609,8 @@ abort_no_schema_exists <- function(schema, dbname = NULL) {
 }
 
 error_txt_no_schema_exists <- function(schema, dbname) {
-  if (!is_null(dbname)) {
-    msg_suffix <- paste0(" on database ", tick(dbname))
-  } else {
-    msg_suffix <- ""
-  }
+  msg_suffix <- fix_msg(dbname)
   glue(
     "No schema named {tick(schema)} exists{msg_suffix}."
-  )
-}
-
-abort_schema_not_empty <- function(schema, dbname = NULL) {
-  abort(error_txt_schema_not_empty(schema, dbname),
-        .subclass = dm_error_full("schema_not_empty")
-  )
-}
-
-error_txt_schema_not_empty <- function(schema, dbname) {
-  if (!is_null(dbname)) {
-    msg_infix <- paste0(" on database ", tick(dbname))
-  } else {
-    msg_infix <- ""
-  }
-  glue(
-    "Schema {tick(schema)}{msg_infix} needs to be empty before it can be dropped."
   )
 }

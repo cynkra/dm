@@ -257,6 +257,8 @@ sql_schema_table_list.PqConnection <- function(dest, schema = NULL, ...) {
 #'
 #'   - `dbname`: supported for MSSQL. Remove a schema from a different
 #'   database on the connected MSSQL-server; default: database addressed by `dest`.
+#'   - `force`: logical (default: `FALSE`), supported for Postgres.
+#'   Remove a non-empty schema.
 #'
 #' @return `NULL` invisibly.
 #'
@@ -265,9 +267,6 @@ sql_schema_table_list.PqConnection <- function(dest, schema = NULL, ...) {
 sql_schema_drop <- function(dest, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
-  if (nrow(sql_schema_table_list(dest, schema, ...)) > 0) {
-    abort_schema_not_empty(schema, ...)
-  }
   UseMethod("sql_schema_drop")
 }
 
