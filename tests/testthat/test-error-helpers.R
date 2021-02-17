@@ -64,7 +64,5 @@ test_that("output", {
     abort_schema_exists("silhouette", "exhibition")
     abort_no_schema_exists("table_1")
     abort_no_schema_exists("fastfood", "gala_dinner")
-    abort_schema_not_empty("full")
-    abort_schema_not_empty("abundant", "cornucopia")
   })
 })
