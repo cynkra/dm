@@ -125,8 +125,8 @@ test_that("DB helpers work for other DBMS than MSSQL or Postgres", {
   expect_dm_warning(
     expect_dm_warning(
       expect_true("test_db_helpers" %in% get_src_tbl_names(my_test_src(), schema = "schema", dbname = "dbname")),
-      class = "non_null_param"
+      class = "arg_not"
       ),
-    class = "non_null_param"
+    class = "arg_not"
   )
 })

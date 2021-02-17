@@ -303,12 +303,12 @@ sql_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
 
 #' @export
 `sql_schema_drop.Microsoft SQL Server` <- function(dest, schema, force = FALSE, dbname = NULL, ...) {
-  warn_if_arg_not(force, only_on = "Postgres", correct = FALSE)
-  if (force) {
-    warning(
-      "Argument `force` ignored: currently only supported for Postgres. ",
-      "Please remove potential objects from the schema manually.")
-  }
+  warn_if_arg_not(
+    force,
+    only_on = "Postgres",
+    correct = FALSE,
+    additional_msg = "Please remove potential objects from the schema manually."
+  )
   if (!is_null(dbname)) {
     check_param_class(dbname, "character")
     check_param_length(dbname)

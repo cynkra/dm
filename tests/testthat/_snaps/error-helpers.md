@@ -238,7 +238,7 @@
       Parameter `length_1_parameter` needs to be of length `1` but is of length 26 (`a`, `b`, `c`, `d`, `e`, ... (26 total)).
     Code
       warn_if_arg_not("NULL", "dbms_dependent_arg")
-    Warning <dm_warning_non_null_param>
+    Warning <dm_warning_arg_not>
       Argument `dbms_dependent_arg` ignored: currently only supported for MSSQL and Postgres.
     Output
       NULL
