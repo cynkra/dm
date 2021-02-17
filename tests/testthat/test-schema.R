@@ -80,6 +80,9 @@ test_that("schema handling on MSSQL and Postgres works", {
 test_that("schema handling on MSSQL works for different DBs", {
   skip_if_src_not("mssql")
 
+  src_db <- my_test_src()
+  con_db <- src_db$con
+
   withr::defer({
     try(DBI::dbExecute(con_db, "DROP DATABASE test_db_for_schema_dm"))
   })
