@@ -157,10 +157,8 @@ sql_schema_create.PqConnection <- function(dest, schema, ...) {
     original_dbname <- attributes(dest)$info$dbname
     DBI::dbExecute(dest, glue::glue("USE {dbname}"))
     withr::defer(DBI::dbExecute(dest, glue::glue("USE {original_dbname}")))
-    msg_suffix <- paste0(" on database ", tick(dbname))
-  } else {
-    msg_suffix <- ""
   }
+  msg_suffix <- fix_msg(dbname)
   DBI::dbExecute(dest, glue::glue("CREATE SCHEMA {schema}"))
   message(glue::glue("Schema {tick(schema)} created{msg_suffix}."))
   invisible(NULL)
@@ -290,11 +288,17 @@ sql_schema_drop.PqConnection <- function(dest, schema, ...) {
     original_dbname <- attributes(dest)$info$dbname
     DBI::dbExecute(dest, glue::glue("USE {dbname}"))
     withr::defer(DBI::dbExecute(dest, glue::glue("USE {original_dbname}")))
-    msg_infix <- paste0(" on database ", tick(dbname))
-  } else {
-    msg_infix <- ""
   }
+  msg_infix <- fix_msg(dbname)
   DBI::dbExecute(dest, glue::glue("DROP SCHEMA {schema}"))
   message(glue::glue("Schema {tick(schema)}{msg_infix} dropped."))
   invisible(NULL)
+}
+
+fix_msg <- function(dbname) {
+  if (!is_null(dbname)) {
+    msg_suffix <- paste0(" on database ", tick(dbname))
+  } else {
+    msg_suffix <- ""
+  }
 }

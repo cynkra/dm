@@ -592,11 +592,7 @@ abort_schema_exists <- function(schema, dbname = NULL) {
 }
 
 error_txt_schema_exists <- function(schema, dbname) {
-  if (!is_null(dbname)) {
-    msg_suffix <- paste0(" on database ", tick(dbname))
-  } else {
-    msg_suffix <- ""
-  }
+  msg_suffix <- fix_msg(dbname)
   glue(
     "A schema named {tick(schema)} already exists{msg_suffix}."
   )
