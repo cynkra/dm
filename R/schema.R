@@ -248,9 +248,12 @@ sql_schema_table_list.PqConnection <- function(dest, schema = NULL, ...) {
 
 #' Remove a schema from a database
 #'
-#' @description `sql_schema_drop()` deletes an empty schema from the database.
+#' @description `sql_schema_drop()` deletes a schema from the database.
+#' For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 #'
 #' @inheritParams sql_schema_create
+#' @param force Boolean, default `FALSE`. Set to `TRUE` to drop a schema and
+#' all objects it contains at once. Currently only supported for Postgres.
 #'
 #' @details Methods are not available for all DBMS.
 #'
@@ -263,33 +266,49 @@ sql_schema_table_list.PqConnection <- function(dest, schema = NULL, ...) {
 #'
 #'   - `dbname`: supported for MSSQL. Remove a schema from a different
 #'   database on the connected MSSQL-server; default: database addressed by `dest`.
-#'   - `force`: logical (default: `FALSE`), supported for Postgres.
-#'   Remove a non-empty schema.
 #'
 #' @return `NULL` invisibly.
 #'
 #' @family schema handling functions
 #' @export
-sql_schema_drop <- function(dest, schema, ...) {
+sql_schema_drop <- function(dest, schema, force = FALSE, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
+  check_param_class(force, "logical")
+  check_param_length(force)
+  if (!sql_schema_exists(dest, schema)) {
+    abort_no_schema_exists(sql_to_character(con_from_src_or_con(dest), schema), ...)
+  }
   UseMethod("sql_schema_drop")
 }
 
 #' @export
-sql_schema_drop.src_dbi <- function(dest, schema, ...) {
+sql_schema_drop.src_dbi <- function(dest, schema, force = FALSE, ...) {
   sql_schema_drop(dest$con, schema, ...)
 }
 
 #' @export
-sql_schema_drop.PqConnection <- function(dest, schema, ...) {
-  DBI::dbExecute(dest, glue::glue("DROP SCHEMA {schema}"))
-  message(glue::glue("Schema {tick(schema)} dropped."))
+sql_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
+  if (force) {
+    force_infix <- " and all objects it contained"
+    force_suffix <- " CASCADE"
+  } else {
+    force_infix <- ""
+    force_suffix <- ""
+  }
+  DBI::dbExecute(dest, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}{force_suffix}")))
+  message(glue::glue("Dropped schema {tick(sql_to_character(dest, schema))}{force_infix}."))
   invisible(NULL)
 }
 
 #' @export
-`sql_schema_drop.Microsoft SQL Server` <- function(dest, schema, dbname = NULL, ...) {
+`sql_schema_drop.Microsoft SQL Server` <- function(dest, schema, force = FALSE, dbname = NULL, ...) {
+  warn_if_arg_not(force, only_on = "Postgres", correct = FALSE)
+  if (force) {
+    warning(
+      "Argument `force` ignored: currently only supported for Postgres. ",
+      "Please remove potential objects from the schema manually.")
+  }
   if (!is_null(dbname)) {
     check_param_class(dbname, "character")
     check_param_length(dbname)

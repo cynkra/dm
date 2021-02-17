@@ -4,12 +4,15 @@
 \alias{sql_schema_drop}
 \title{Remove a schema from a database}
 \usage{
-sql_schema_drop(dest, schema, ...)
+sql_schema_drop(dest, schema, force = FALSE, ...)
 }
 \arguments{
 \item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
 \item{schema}{Class \code{character} or \code{SQL} (cf. Details), name of the schema}
+
+\item{force}{Boolean, default \code{FALSE}. Set to \code{TRUE} to drop a schema and
+all objects it contains at once. Currently only supported for Postgres.}
 
 \item{...}{Passed on to the individual methods.}
 }
@@ -17,7 +20,8 @@ sql_schema_drop(dest, schema, ...)
 \code{NULL} invisibly.
 }
 \description{
-\code{sql_schema_drop()} deletes an empty schema from the database.
+\code{sql_schema_drop()} deletes a schema from the database.
+For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 }
 \details{
 Methods are not available for all DBMS.
