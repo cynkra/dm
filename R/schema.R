@@ -276,7 +276,7 @@ sql_schema_drop <- function(dest, schema, force = FALSE, ...) {
   check_param_length(schema)
   check_param_class(force, "logical")
   check_param_length(force)
-  if (!sql_schema_exists(dest, schema)) {
+  if (!sql_schema_exists(dest, schema, ...)) {
     abort_no_schema_exists(sql_to_character(con_from_src_or_con(dest), schema), ...)
   }
   UseMethod("sql_schema_drop")
