@@ -318,7 +318,7 @@ sql_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
   }
   msg_infix <- fix_msg(sql_to_character(dest, dbname))
   DBI::dbExecute(dest, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
-  message(glue::glue("Schema {tick(sql_to_character(dest, schema))}{msg_infix} dropped."))
+  message(glue::glue("Dropped schema {tick(sql_to_character(dest, schema))}{msg_infix}."))
   invisible(NULL)
 }
 
