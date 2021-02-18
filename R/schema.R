@@ -233,8 +233,8 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
     check_param_class(schema, "character")
     check_param_length(schema)
   }
-  if (!is_null(schema) && !sql_schema_exists(src$con, schema, dbname)) {
-    abort_no_schema_exists(sql_to_character(src$con, schema), dbname)
+  if (!is_null(schema) && !sql_schema_exists(src$con, schema)) {
+    abort_no_schema_exists(sql_to_character(src$con, schema))
   }
   enframe(
     get_src_tbl_names(src, schema = sql_to_character(src$con, schema)),
