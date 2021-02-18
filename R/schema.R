@@ -68,6 +68,12 @@ sql_schema_list.PqConnection <- function(dest, include_default = TRUE, ...) {
     as_tibble()
 }
 
+#' @export
+sql_schema_list.SQLiteConnection <- function(dest, include_default = TRUE, ...) {
+  abort_no_schemas_supported("SQLite")
+}
+
+
 # sql_schema_exists() -----------------------------------------------------
 
 #' Check for existence of a schema on a database
@@ -108,6 +114,12 @@ sql_schema_exists.src_dbi <- function(dest, schema, ...) {
 sql_schema_exists.PqConnection <- function(dest, schema, ...) {
   sql_to_character(dest, schema) %in% sql_schema_list(dest)$schema_name
 }
+
+#' @export
+sql_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
+  abort_no_schemas_supported("SQLite")
+}
+
 
 # sql_schema_create() -----------------------------------------------------
 
@@ -165,6 +177,11 @@ sql_schema_create.PqConnection <- function(dest, schema, ...) {
   DBI::dbExecute(dest, SQL(glue::glue("CREATE SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
   message(glue::glue("Schema {tick(sql_to_character(dest, schema))} created{msg_suffix}."))
   invisible(NULL)
+}
+
+#' @export
+sql_schema_create.SQLiteConnection <- function(dest, schema, ...) {
+  abort_no_schemas_supported("SQLite")
 }
 
 # sql_schema_table_list() -------------------------------------------------
@@ -319,6 +336,11 @@ sql_schema_drop.PqConnection <- function(dest, schema, force = FALSE, ...) {
   DBI::dbExecute(dest, SQL(glue::glue("DROP SCHEMA {DBI::dbQuoteIdentifier(dest, schema)}")))
   message(glue::glue("Dropped schema {tick(sql_to_character(dest, schema))}{msg_infix}."))
   invisible(NULL)
+}
+
+#' @export
+sql_schema_drop.SQLiteConnection <- function(dest, schema, force = FALSE, ...) {
+  abort_no_schemas_supported("SQLite")
 }
 
 fix_msg <- function(dbname) {

@@ -191,3 +191,44 @@ test_that("schema handling on MSSQL works for different DBs", {
     )
   )
 })
+
+test_that("schema handling on SQLite all throw errors", {
+  skip_if_src_not("sqlite")
+
+  src_db <- my_test_src()
+  con_db <- src_db$con
+
+  expect_dm_error(
+    sql_schema_exists(src_db, "test"),
+    "no_schemas_supported"
+  )
+  expect_dm_error(
+    sql_schema_list(src_db),
+    "no_schemas_supported"
+  )
+  expect_dm_error(
+    sql_schema_drop(src_db, "test"),
+    "no_schemas_supported"
+  )
+  expect_dm_error(
+    sql_schema_exists(src_db, "test"),
+    "no_schemas_supported"
+  )
+
+  expect_dm_error(
+    sql_schema_exists(con_db, "test"),
+    "no_schemas_supported"
+  )
+  expect_dm_error(
+    sql_schema_list(con_db),
+    "no_schemas_supported"
+  )
+  expect_dm_error(
+    sql_schema_drop(con_db, "test"),
+    "no_schemas_supported"
+  )
+  expect_dm_error(
+    sql_schema_exists(con_db, "test"),
+    "no_schemas_supported"
+  )
+})

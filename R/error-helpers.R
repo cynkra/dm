@@ -616,3 +616,13 @@ error_txt_no_schema_exists <- function(schema, dbname) {
     "No schema named {tick(schema)} exists{msg_suffix}."
   )
 }
+
+abort_no_schemas_supported <- function(dbms) {
+  abort(
+    error_txt_no_schemas_supported(dbms),
+    .subclass = dm_error_full("no_schemas_supported"))
+}
+
+error_txt_no_schemas_supported <- function(dbms) {
+  glue::glue("The concept of schemas is not supported for DBMS {tick(dbms)}.")
+}
