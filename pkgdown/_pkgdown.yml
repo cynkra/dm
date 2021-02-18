@@ -65,7 +65,6 @@ reference:
   - sql_schema_drop
   - sql_schema_exists
   - sql_schema_list
-  - sql_schema_table_list
 
 - title: Visualization
   contents:

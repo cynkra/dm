@@ -41,7 +41,6 @@ database on the connected MSSQL-server; default: database addressed by \code{des
 Other schema handling functions: 
 \code{\link{sql_schema_create}()},
 \code{\link{sql_schema_exists}()},
-\code{\link{sql_schema_list}()},
-\code{\link{sql_schema_table_list}()}
+\code{\link{sql_schema_list}()}
 }
 \concept{schema handling functions}

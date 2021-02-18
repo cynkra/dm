@@ -1,8 +1,13 @@
 test_that("schema handling on MSSQL and Postgres works", {
   skip_if_src_not(c("mssql", "postgres"))
-  # dm_learn_from_mssql() --------------------------------------------------
+
   src_db <- my_test_src()
   con_db <- src_db$con
+  sql_schema_table_list <- if (is_postgres(src_db)) {
+    sql_schema_table_list_postgres
+  } else if (is_mssql(src_db)) {
+    sql_schema_table_list_mssql
+  }
 
   expect_dm_error(sql_schema_exists(con_db, 1), "parameter_not_correct_class")
   expect_dm_error(sql_schema_exists(con_db, letters[1:2]), "parameter_not_correct_length")
