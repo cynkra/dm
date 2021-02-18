@@ -120,7 +120,7 @@ test_that("schema handling on MSSQL works for different DBs", {
   expect_true(sql_schema_exists(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"))
 
   expect_identical(
-    sql_schema_table_list(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     tibble(
       table_name = character(),
       remote_name = dbplyr::ident_q()
@@ -134,7 +134,7 @@ test_that("schema handling on MSSQL works for different DBs", {
   )
 
   expect_identical(
-    sql_schema_table_list(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
+    sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     tibble(
       table_name = "test_1",
       remote_name = dbplyr::ident_q("\"test_db_for_schema_dm\".\"test_schema\".\"test_1\"")
