@@ -545,8 +545,9 @@ abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
   abort(error_txt_parameter_not_correct_class(
     parameter,
     correct_class,
-    class),
-    .subclass = dm_error_full("parameter_not_correct_class")
+    class
+  ),
+  .subclass = dm_error_full("parameter_not_correct_class")
   )
 }
 
@@ -560,8 +561,9 @@ abort_parameter_not_correct_length <- function(parameter, correct_length, parame
   abort(error_txt_parameter_not_correct_length(
     parameter,
     correct_length,
-    parameter_value),
-    .subclass = dm_error_full("parameter_not_correct_length")
+    parameter_value
+  ),
+  .subclass = dm_error_full("parameter_not_correct_length")
   )
 }
 
@@ -573,17 +575,20 @@ error_txt_parameter_not_correct_length <- function(parameter, correct_length, pa
 }
 
 warn_if_arg_not <- function(
-  arg,
-  arg_name = deparse(substitute(arg)),
-  only_on = c("MSSQL", "Postgres"),
-  correct = NULL,
-  additional_msg = "") {
+                            arg,
+                            arg_name = deparse(substitute(arg)),
+                            only_on = c("MSSQL", "Postgres"),
+                            correct = NULL,
+                            additional_msg = "") {
   if (!identical(arg, correct)) {
     dm_warn(
       glue::glue(
         "Argument {tick(arg_name)} ignored: currently only supported for {paste0(only_on, collapse = ' and ')}.",
-        if (!is.null(additional_msg)) {paste0("\n", additional_msg)}
-      ), class = "arg_not"
+        if (!is.null(additional_msg)) {
+          paste0("\n", additional_msg)
+        }
+      ),
+      class = "arg_not"
     )
   }
   NULL
@@ -606,7 +611,7 @@ error_txt_schema_exists <- function(schema, dbname) {
 
 abort_no_schema_exists <- function(schema, dbname = NULL) {
   abort(error_txt_no_schema_exists(schema, dbname),
-        .subclass = dm_error_full("no_schema_exists")
+    .subclass = dm_error_full("no_schema_exists")
   )
 }
 
@@ -620,7 +625,8 @@ error_txt_no_schema_exists <- function(schema, dbname) {
 abort_no_schemas_supported <- function(dbms) {
   abort(
     error_txt_no_schemas_supported(dbms),
-    .subclass = dm_error_full("no_schemas_supported"))
+    .subclass = dm_error_full("no_schemas_supported")
+  )
 }
 
 error_txt_no_schemas_supported <- function(dbms) {

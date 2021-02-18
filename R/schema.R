@@ -150,7 +150,9 @@ sql_schema_exists.SQLiteConnection <- function(dest, schema, ...) {
 sql_schema_create <- function(dest, schema, ...) {
   check_param_class(schema, "character")
   check_param_length(schema)
-  if (sql_schema_exists(dest, schema, ...)) {abort_schema_exists(sql_to_character(dest, schema), ...)}
+  if (sql_schema_exists(dest, schema, ...)) {
+    abort_schema_exists(sql_to_character(dest, schema), ...)
+  }
   UseMethod("sql_schema_create")
 }
 
@@ -239,7 +241,8 @@ sql_schema_table_list_mssql <- function(dest, schema = NULL, dbname = NULL) {
   enframe(
     get_src_tbl_names(src, schema = sql_to_character(src$con, schema), dbname = dbname),
     name = "table_name",
-    value = "remote_name") %>%
+    value = "remote_name"
+  ) %>%
     mutate(remote_name = dbplyr::ident_q(remote_name))
 }
 
@@ -256,7 +259,8 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
   enframe(
     get_src_tbl_names(src, schema = sql_to_character(src$con, schema)),
     name = "table_name",
-    value = "remote_name") %>%
+    value = "remote_name"
+  ) %>%
     mutate(remote_name = dbplyr::ident_q(remote_name))
 }
 

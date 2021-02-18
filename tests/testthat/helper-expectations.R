@@ -47,8 +47,12 @@ arrange_if_no_list <- function(tbl) {
 
 # are two tables identical minus the `src`
 expect_equivalent_tbl <- function(tbl_1, tbl_2, ...) {
-  tbl_1_lcl <- collect(tbl_1) %>% mutate(...) %>% arrange_if_no_list()
-  tbl_2_lcl <- collect(tbl_2) %>% mutate(...) %>% arrange_if_no_list()
+  tbl_1_lcl <- collect(tbl_1) %>%
+    mutate(...) %>%
+    arrange_if_no_list()
+  tbl_2_lcl <- collect(tbl_2) %>%
+    mutate(...) %>%
+    arrange_if_no_list()
   expect_identical(tbl_1_lcl, tbl_2_lcl)
 }
 

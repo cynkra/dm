@@ -83,7 +83,7 @@ schema_if <- function(schema, table, con, dbname = NULL) {
   if (is_null(dbname) || dbname == "") {
     if_else(
       are_na(schema),
-        table_sql,
+      table_sql,
       # need 'coalesce()' cause in case 'schema' is NA, 'if_else()' also tests
       # the FALSE option (to see if same class) and then 'dbQuoteIdentifier()' throws an error
       SQL(paste0(DBI::dbQuoteIdentifier(con, coalesce(schema, "")), ".", table_sql))
@@ -112,7 +112,7 @@ mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken dire
     paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
   }
   glue::glue(
-  "select
+    "select
     schemas.name as [schema],
     tabs.name as [table],
     cols.name as [column],
