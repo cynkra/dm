@@ -16,25 +16,25 @@ test_that("schema handling on MSSQL and Postgres works", {
 
   withr::defer({
       try(dbExecute(con_db, "DROP TABLE test_schema_1"))
-      try(dbExecute(con_db, "DROP TABLE dm_schema_test_schema.test_schema_2"))
-      try(dbExecute(con_db, "DROP SCHEMA dm_schema_test_schema"))
+      try(dbExecute(con_db, "DROP TABLE 1-dm_schema_TEST.test_schema_2"))
+      try(dbExecute(con_db, "DROP SCHEMA 1-dm_schema_TEST"))
   })
 
-  expect_false(sql_schema_exists(con_db, "dm_schema_test_schema"))
-  expect_false(sql_schema_exists(src_db, "dm_schema_test_schema"))
+  expect_false(sql_schema_exists(con_db, "1-dm_schema_TEST"))
+  expect_false(sql_schema_exists(src_db, "1-dm_schema_TEST"))
 
   # create a table in the default schema
-  expect_message(sql_schema_create(con_db, "dm_schema_test_schema"), "created")
-  expect_dm_error(sql_schema_create(con_db, "dm_schema_test_schema"), "schema_exists")
-  expect_true(sql_schema_exists(con_db, "dm_schema_test_schema"))
-  expect_message(sql_schema_drop(con_db, "dm_schema_test_schema"), "Dropped schema")
-  expect_dm_error(sql_schema_drop(con_db, "dm_schema_test_schema"), "no_schema_exists")
-  expect_false(sql_schema_exists(con_db, "dm_schema_test_schema"))
+  expect_message(sql_schema_create(con_db, "1-dm_schema_TEST"), "created")
+  expect_dm_error(sql_schema_create(con_db, "1-dm_schema_TEST"), "schema_exists")
+  expect_true(sql_schema_exists(con_db, "1-dm_schema_TEST"))
+  expect_message(sql_schema_drop(con_db, "1-dm_schema_TEST"), "Dropped schema")
+  expect_dm_error(sql_schema_drop(con_db, "1-dm_schema_TEST"), "no_schema_exists")
+  expect_false(sql_schema_exists(con_db, "1-dm_schema_TEST"))
 
-  expect_message(sql_schema_create(src_db, "dm_schema_test_schema"), "created")
-  expect_true(sql_schema_exists(src_db, "dm_schema_test_schema"))
-  expect_message(sql_schema_drop(src_db, "dm_schema_test_schema"), "Dropped schema")
-  expect_false(sql_schema_exists(src_db, "dm_schema_test_schema"))
+  expect_message(sql_schema_create(src_db, "1-dm_schema_TEST"), "created")
+  expect_true(sql_schema_exists(src_db, "1-dm_schema_TEST"))
+  expect_message(sql_schema_drop(src_db, "1-dm_schema_TEST"), "Dropped schema")
+  expect_false(sql_schema_exists(src_db, "1-dm_schema_TEST"))
 
   expect_false("test_schema_1" %in% sql_schema_table_list(con_db)$table_name)
   expect_false("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
@@ -56,24 +56,24 @@ test_that("schema handling on MSSQL and Postgres works", {
     tibble(a = 1:5)
   )
 
-  expect_message(sql_schema_create(src_db, "dm_schema_test_schema"), "created")
+  expect_message(sql_schema_create(src_db, "1-dm_schema_TEST"), "created")
 
   dbWriteTable(
     con_db,
-    DBI::Id(schema = "dm_schema_test_schema", table = "test_schema_2"),
+    DBI::Id(schema = "1-dm_schema_TEST", table = "test_schema_2"),
     value = tibble(b = letters[1:5])
   )
 
   expect_identical(
-    sql_schema_table_list(con_db, schema = "dm_schema_test_schema"),
+    sql_schema_table_list(con_db, schema = "1-dm_schema_TEST"),
     tibble(
       table_name = "test_schema_2",
-      remote_name = dbplyr::ident_q("\"dm_schema_test_schema\".\"test_schema_2\"")
+      remote_name = dbplyr::ident_q("\"1-dm_schema_TEST\".\"test_schema_2\"")
     )
   )
 
   remote_table_2 <- filter(
-    sql_schema_table_list(src_db, schema = "dm_schema_test_schema"),
+    sql_schema_table_list(src_db, schema = "1-dm_schema_TEST"),
     table_name == "test_schema_2"
   ) %>%
     pull(remote_name)
