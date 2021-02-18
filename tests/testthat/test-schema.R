@@ -26,6 +26,12 @@ test_that("schema handling on MSSQL and Postgres works", {
   # create a table in the default schema
   expect_message(sql_schema_create(con_db, "1-dm_schema_TEST"), "created")
   expect_dm_error(sql_schema_create(con_db, "1-dm_schema_TEST"), "schema_exists")
+  expect_identical(
+    sql_schema_list(con_db, include_default = FALSE) %>%
+      filter(schema_name == "1-dm_schema_TEST") %>%
+      pull(schema_name),
+    "1-dm_schema_TEST"
+  )
   expect_true(sql_schema_exists(con_db, "1-dm_schema_TEST"))
   expect_message(sql_schema_drop(con_db, "1-dm_schema_TEST"), "Dropped schema")
   expect_dm_error(sql_schema_drop(con_db, "1-dm_schema_TEST"), "no_schema_exists")
@@ -84,6 +90,36 @@ test_that("schema handling on MSSQL and Postgres works", {
 })
 
 test_that("schema handling on MSSQL works for different DBs", {
+  skip_if_src_not("postgres")
+
+  src_db <- my_test_src()
+  con_db <- src_db$con
+
+  sql_schema_create(con_db, "2-dm_schema_TEST")
+  dbWriteTable(
+    con_db,
+    DBI::Id(schema = "2-dm_schema_TEST", table = "test_schema_2"),
+    value = tibble(b = letters[1:5])
+  )
+
+  expect_identical(
+    sort(
+      filter(
+        sql_schema_list(con_db, include_default = TRUE),
+        schema_name == "public" | schema_name == "2-dm_schema_TEST"
+      ) %>%
+        pull(schema_name)
+    ),
+    c("2-dm_schema_TEST", "public")
+  )
+
+  expect_message(
+    sql_schema_drop(con_db, "2-dm_schema_TEST", force = TRUE),
+    "all objects"
+  )
+})
+
+test_that("schema handling on MSSQL works for different DBs", {
   skip_if_src_not("mssql")
 
   src_db <- my_test_src()
@@ -105,6 +141,13 @@ test_that("schema handling on MSSQL works for different DBs", {
   expect_dm_error(
     sql_schema_create(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     "schema_exists"
+  )
+
+  expect_identical(
+    sort(
+      sql_schema_list(con_db, include_default = TRUE, dbname = "test_db_for_schema_dm")$schema_name
+    ),
+    c("dbo", "test_schema")
   )
 
   expect_message(
