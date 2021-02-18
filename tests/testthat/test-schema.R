@@ -176,6 +176,13 @@ test_that("schema handling on MSSQL works for different DBs", {
     value = tibble(c = c(5L))
   )
 
+  expect_error(
+    expect_warning(
+      sql_schema_drop(con_db, "test_schema", dbname = "test_db_for_schema_dm", force = TRUE),
+      "Argument `force` ignored:"
+    )
+  )
+
   expect_identical(
     sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     tibble(
