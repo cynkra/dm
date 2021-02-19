@@ -16,8 +16,8 @@ test_that("schema handling on MSSQL and Postgres works", {
 
   withr::defer({
     try(dbExecute(con_db, "DROP TABLE test_schema_1"))
-    try(dbExecute(con_db, SQL("DROP TABLE \"1-dm_schema_TEST\".\"test_schema_2\"")))
-    try(dbExecute(con_db, SQL("DROP SCHEMA \"1-dm_schema_TEST\"")))
+    try(dbExecute(con_db, SQL('DROP TABLE "1-dm_schema_TEST"."test_schema_2"')))
+    try(dbExecute(con_db, SQL('DROP SCHEMA "1-dm_schema_TEST"')))
   })
 
   expect_false(sql_schema_exists(con_db, "1-dm_schema_TEST"))
@@ -89,7 +89,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   )
 })
 
-test_that("schema handling on MSSQL works for different DBs", {
+test_that("schema handling on Postgres works", {
   skip_if_src_not("postgres")
 
   src_db <- my_test_src()
