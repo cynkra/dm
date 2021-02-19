@@ -27,6 +27,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -114,7 +116,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/krlmlr/dm" class="external-link">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -135,14 +137,14 @@
       <h1 data-toc-skip>Updating tables and dm objects</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/wip/dm-insert.Rmd"><code>vignettes/wip/dm-insert.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/wip/dm-insert.Rmd" class="external-link"><code>vignettes/wip/dm-insert.Rmd</code></a></small>
       <div class="hidden name"><code>dm-insert.Rmd</code></div>
 
     </div>
 
     
     
-<p>This draft describes update operations on tables and dm objects. The generics for the table operations can be private in dm for now and move to dplyr later. Contains parts from <a href="https://github.com/tidyverse/dplyr/issues/4654" class="uri">https://github.com/tidyverse/dplyr/issues/4654</a>.</p>
+<p>This draft describes update operations on tables and dm objects. The generics for the table operations can be private in dm for now and move to dplyr later. Contains parts from <a href="https://github.com/tidyverse/dplyr/issues/4654" class="external-link">https://github.com/tidyverse/dplyr/issues/4654</a>.</p>
 <div id="tables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tables" class="anchor"></a>Tables</h2>
@@ -152,9 +154,9 @@
 <a href="#operations" class="anchor"></a>Operations</h3>
 <p>The operations are modeled after existing database statements, with the exception of the new “patch”.</p>
 <ul>
-<li><p>insert new rows — would error if keys already exist, similar to <code><a href="https://tibble.tidyverse.org/reference/add_row.html">tibble::add_row()</a></code>.</p></li>
-<li><p>update values — overrides existing values. (Similar to <a href="https://github.com/tidyverse/tidyr/issues/183" class="uri">https://github.com/tidyverse/tidyr/issues/183</a>)</p></li>
-<li><p>patch values — like update, but only replaces missing values (Also similar to <a href="https://github.com/tidyverse/tidyr/issues/183" class="uri">https://github.com/tidyverse/tidyr/issues/183</a>)</p></li>
+<li><p>insert new rows — would error if keys already exist, similar to <code><a href="https://tibble.tidyverse.org/reference/add_row.html" class="external-link">tibble::add_row()</a></code>.</p></li>
+<li><p>update values — overrides existing values. (Similar to <a href="https://github.com/tidyverse/tidyr/issues/183" class="external-link">https://github.com/tidyverse/tidyr/issues/183</a>)</p></li>
+<li><p>patch values — like update, but only replaces missing values (Also similar to <a href="https://github.com/tidyverse/tidyr/issues/183" class="external-link">https://github.com/tidyverse/tidyr/issues/183</a>)</p></li>
 <li><p>upsert — update or insert depending on presence/absence of keys</p></li>
 </ul>
 <p>All operations would either take multiple named inputs or a single unnamed data frame. Additional restrictions and options may apply on other backends, these will be specified with arguments that start with a dot. For extensibility, named inputs that start with a dot are silently discarded.</p>
@@ -171,14 +173,14 @@
 <p>Some <em>mutable</em> backends, most notably databases, Google sheets and data.table, permit in-place update of the source data. Update operations on mutable backends should optionally allow updating the source data. Because this is a potentially destructive exception from the dplyr guarantees, in-place updates must be “opt in”. The default result always will be a “lazy” table. This allows previewing the results of an update operation before materializing.</p>
 <p>On these backends, the following additional operations are useful:</p>
 <ul>
-<li><p>delete — remove rows that match keys, a variant of <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join()</a></code></p></li>
+<li><p>delete — remove rows that match keys, a variant of <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code></p></li>
 <li><p>truncate — remove all rows</p></li>
 </ul>
 <p>Databases will require that the data is already on the database or ask the user to supply a <code>copy</code> argument.</p>
 <p>On mutable backends, update operations return the input, invisibly, if the update was carried out in-place.</p>
 <p>Challenges:</p>
 <ul>
-<li>How to make compatible with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html">sql_render()</a></code>?</li>
+<li>How to make compatible with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>?</li>
 </ul>
 </div>
 </div>
@@ -288,8 +290,8 @@
   <span class="co"># FIXME: Better error message for unknown tables</span>
 
   <span class="va">def</span> <span class="op">&lt;-</span> <span class="fu">dm_get_def</span><span class="op">(</span><span class="va">dm</span><span class="op">)</span>
-  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>, <span class="va">def</span><span class="op">$</span><span class="va">table</span><span class="op">)</span>
-  <span class="va">def</span><span class="op">[</span><span class="va">idx</span>, <span class="st">"data"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html">unname</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>
+  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>, <span class="va">def</span><span class="op">$</span><span class="va">table</span><span class="op">)</span>
+  <span class="va">def</span><span class="op">[</span><span class="va">idx</span>, <span class="st">"data"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">new_tables</span><span class="op">)</span>
   <span class="fu">new_dm3</span><span class="op">(</span><span class="va">def</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 </div>
@@ -307,11 +309,11 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
@@ -319,6 +321,8 @@
 
   
 
+
+  
 
   </body>
 </html>

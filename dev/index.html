@@ -30,6 +30,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -171,20 +173,20 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>The latest stable version of the {dm} package can be obtained from <a href="https://CRAN.R-project.org/package=dm">CRAN</a> with the command</p>
+<p>The latest stable version of the {dm} package can be obtained from <a href="https://CRAN.R-project.org/package=dm" class="external-link">CRAN</a> with the command</p>
 <pre class="chroma">
-<span class="nf"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="o">(</span><span class="s">"dm"</span><span class="o">)</span></pre>
+<span class="nf"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="o">(</span><span class="s">"dm"</span><span class="o">)</span></pre>
 <p>The latest development version of {dm} can be installed from GitHub.</p>
 <pre class="chroma">
 <span class="c"># install.packages("devtools")</span>
-<span class="nf">devtools</span><span class="nf">::</span><span class="nf"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="o">(</span><span class="s">"krlmlr/dm"</span><span class="o">)</span></pre>
+<span class="nf">devtools</span><span class="nf">::</span><span class="nf"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="o">(</span><span class="s">"krlmlr/dm"</span><span class="o">)</span></pre>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>Create a dm object (see <a href="https://krlmlr.github.io/dm/articles/dm.html">Getting started</a> for details).</p>
 <pre class="chroma">
-<span class="kr"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="o">(</span><span class="nv"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="o">)</span>
+<span class="kr"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="o">(</span><span class="nv"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="o">)</span>
 <span class="nv">dm</span> <span class="o">&lt;-</span> <span class="nf"><a href="https://krlmlr.github.io/dm/reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="o">(</span><span class="o">)</span>
 <span class="nv">dm</span>
 <span class="c">#&gt; <span style="color: #FFAFFF;">──</span><span> </span><span style="color: #FFAFFF;">Metadata</span><span> </span><span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
@@ -194,9 +196,9 @@
 <span class="c">#&gt; Foreign keys: 3</span></pre>
 <p>dm is a named list of tables:</p>
 <pre class="chroma">
-<span class="nf"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="o">(</span><span class="nv">dm</span><span class="o">)</span>
+<span class="nf"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="o">(</span><span class="nv">dm</span><span class="o">)</span>
 <span class="c">#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span>
-<span class="nf"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="o">(</span><span class="nv">dm</span><span class="o">$</span><span class="nv">airports</span><span class="o">)</span>
+<span class="nf"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="o">(</span><span class="nv">dm</span><span class="o">$</span><span class="nv">airports</span><span class="o">)</span>
 <span class="c">#&gt; [1] 1458</span>
 <span class="nv">dm</span><span class="o">$</span><span class="nv">flights</span> <span class="o">%&gt;%</span>
   <span class="nf">count</span><span class="o">(</span><span class="nv">origin</span><span class="o">)</span>
@@ -249,11 +251,11 @@
 <div id="getting-help" class="section level2">
 <h2 class="hasAnchor">
 <a href="#getting-help" class="anchor"></a>Getting help</h2>
-<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on <a href="https://github.com/krlmlr/dm/issues">GitHub</a>. For questions and other discussion, please use <a href="https://community.rstudio.com/">community.rstudio.com</a>.</p>
+<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on <a href="https://github.com/krlmlr/dm/issues" class="external-link">GitHub</a>. For questions and other discussion, please use <a href="https://community.rstudio.com/" class="external-link">community.rstudio.com</a>.</p>
 <hr>
 <p>License: MIT © cynkra GmbH.</p>
 <p>Funded by:</p>
-<p><a href="https://www.energie360.ch/de/"><img src="reference/figures/energie-72.png" alt="energie360°"></a> <span style="padding-right:50px"> </span> <a href="https://www.cynkra.com/"><img src="reference/figures/cynkra-72.png" alt="cynkra"></a></p>
+<p><a href="https://www.energie360.ch/de/" class="external-link"><img src="reference/figures/energie-72.png" alt="energie360°"></a> <span style="padding-right:50px"> </span> <a href="https://www.cynkra.com/" class="external-link"><img src="reference/figures/cynkra-72.png" alt="cynkra"></a></p>
 <hr>
 <p>Please note that the ‘dm’ project is released with a <a href="https://krlmlr.github.io/dm/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
@@ -262,7 +264,7 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=dm">https://​cloud.r-project.org/​package=dm</a>
 </li>
@@ -272,21 +274,24 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Tobias Schieferdecker <br><small class="roles"> Author </small>  </li>
 <li>
@@ -300,17 +305,18 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-<li><a href="https://github.com/krlmlr/dm/actions"><img src="https://github.com/krlmlr/dm/workflows/tic/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/gh/krlmlr/dm?branch=master"><img src="https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://CRAN.R-project.org/package=dm"><img src="https://www.r-pkg.org/badges/version/dm" alt="CRAN status"></a></li>
-<li><a href="https://rstudio.cloud/project/523482"><img src="https://img.shields.io/badge/rstudio-cloud-blue.svg" alt="Launch rstudio.cloud"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="https://github.com/krlmlr/dm/actions" class="external-link"><img src="https://github.com/krlmlr/dm/workflows/tic/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/gh/krlmlr/dm?branch=master" class="external-link"><img src="https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://CRAN.R-project.org/package=dm" class="external-link"><img src="https://www.r-pkg.org/badges/version/dm" alt="CRAN status"></a></li>
+<li><a href="https://rstudio.cloud/project/523482" class="external-link"><img src="https://img.shields.io/badge/rstudio-cloud-blue.svg" alt="Launch rstudio.cloud"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
@@ -327,6 +333,8 @@
 
   
 
+
+  
 
   </body>
 </html>

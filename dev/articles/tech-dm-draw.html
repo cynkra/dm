@@ -27,6 +27,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -114,7 +116,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/krlmlr/dm" class="external-link">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -134,9 +136,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Visualizing dm objects</h1>
             
-            <h4 class="date">2021-02-08</h4>
+            <h4 data-toc-skip class="date">2021-02-19</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-draw.Rmd"><code>vignettes/tech-dm-draw.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-draw.Rmd" class="external-link"><code>vignettes/tech-dm-draw.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-draw.Rmd</code></div>
 
     </div>
@@ -152,8 +154,8 @@
 </ol>
 <p>We use the prepared example <code>dm</code> object <code><a href="../reference/dm_nycflights13.html">dm_nycflights13(cycle = TRUE)</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -185,7 +187,7 @@
 <path fill="none" stroke="#555555" d="M50,-51C72.2991,-51 69.4778,-22.5234 83.9268,-13.6245"></path><polygon fill="#555555" stroke="#555555" points="85.2055,-16.9083 94,-11 83.4406,-10.1344 85.2055,-16.9083"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#efebdd" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M50,-71C65.5833,-71 71.8532,-71 83.6529,-71"></path><polygon fill="#555555" stroke="#555555" points="84,-74.5001 94,-71 84,-67.5001 84,-74.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#efebdd" stroke="transparent" points="15,-164 15,-184 63,-184 63,-164 15,-164"></polygon><text text-anchor="start" x="16.8492" y="-169.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="14,-163 14,-185 64,-185 64,-163 14,-163"></polygon></g></g></svg><p>You can use colors to visually group your tables into families to reflect their logical grouping. The available colors are either hexcoded colors or the standard R color names. The function <code><a href="../reference/dm_draw.html">dm_get_available_colors()</a></code> forwards to <code><a href="https://rdrr.io/r/grDevices/colors.html">grDevices::colors()</a></code>:</p>
+<polygon fill="#efebdd" stroke="transparent" points="15,-164 15,-184 63,-184 63,-164 15,-164"></polygon><text text-anchor="start" x="16.8492" y="-169.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="14,-163 14,-185 64,-185 64,-163 14,-163"></polygon></g></g></svg><p>You can use colors to visually group your tables into families to reflect their logical grouping. The available colors are either hexcoded colors or the standard R color names. The function <code><a href="../reference/dm_draw.html">dm_get_available_colors()</a></code> forwards to <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_draw.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;   [1] "default"              "white"                "aliceblue"           </span>
@@ -414,7 +416,7 @@
   <span class="va">flights_dm_w_many_keys</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/dm_draw.html">dm_set_colors</a></span><span class="op">(</span>
     maroon4 <span class="op">=</span> <span class="va">flights</span>,
-    orange <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"air"</span><span class="op">)</span>,
+    orange <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"air"</span><span class="op">)</span>,
     <span class="st">"#5986C4"</span> <span class="op">=</span> <span class="va">planes</span>
   <span class="op">)</span></code></pre></div>
 <p>Draw the schema with <code><a href="../reference/dm_draw.html">dm_draw()</a></code>.</p>
@@ -470,7 +472,7 @@
 <path fill="none" stroke="#555555" d="M50,-51C67.4533,-51 71.4111,-64.2031 83.8035,-69.1543"></path><polygon fill="#555555" stroke="#555555" points="83.5365,-72.6628 94,-71 84.7834,-65.7747 83.5365,-72.6628"></polygon></g></g></svg><div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>The code for the functions in this section is borrowed from the <a href="https://github.com/bergant/datamodelr">{datamodelr}</a> package.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>The code for the functions in this section is borrowed from the <a href="https://github.com/bergant/datamodelr" class="external-link">{datamodelr}</a> package.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
@@ -484,11 +486,11 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
@@ -496,6 +498,8 @@
 
   
 
+
+  
 
   </body>
 </html>
