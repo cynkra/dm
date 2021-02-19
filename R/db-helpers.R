@@ -169,8 +169,8 @@ repair_table_names_for_db <- function(table_names, temporary, con) {
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   if (!is_mssql(src) && !is_postgres(src)) {
-    warn_if_not_null(schema)
-    warn_if_not_null(dbname, only_on = "MSSQL")
+    warn_if_arg_not(schema)
+    warn_if_arg_not(dbname, only_on = "MSSQL")
     return(src_tbls(src))
   }
 
@@ -185,7 +185,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
   } else if (is_postgres(src)) {
     # Postgres
     schema <- schema_postgres(con, schema)
-    dbname <- warn_if_not_null(dbname, only_on = "MSSQL")
+    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_postgres(con)
   }
   check_param_class(schema, "character")

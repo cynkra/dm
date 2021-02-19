@@ -11,7 +11,6 @@ random_schema <- function() {
 schema_name <- random_schema()
 
 test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'public') and get_src_tbl_names() works?", {
-
   skip_if_src_not(c("mssql", "postgres"))
   # dm_learn_from_mssql() --------------------------------------------------
   src_db <- my_test_src()
@@ -59,7 +58,8 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
     dm_get_def() %>%
     mutate(
       pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk())) %>%
+      fks = vctrs::list_of(new_fk())
+    ) %>%
     new_dm3()
 
   # in case there happen to be other tables in schema "dbo" or "public"
@@ -75,7 +75,6 @@ test_that("Standard learning from MSSQL (schema 'dbo') or Postgres (schema 'publ
 
 
 test_that("Learning from specific schema on MSSQL or Postgres works?", {
-
   skip_if_src_not(c("mssql", "postgres"))
   src_db <- my_test_src()
   con_db <- src_db$con
@@ -93,15 +92,13 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
   order_of_deletion <- c("iris_3", "iris_2", "iris_1")
   remote_tbl_names <- set_names(paste0(schema_name_q, ".\"", order_of_deletion, "\""), order_of_deletion)
 
-  withr::defer(
-    {
-      walk(
-        remote_tbl_names,
-        ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
-      )
-      try(dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
-    }
-  )
+  withr::defer({
+    walk(
+      remote_tbl_names,
+      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+    )
+    try(dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q)))
+  })
 
   # test 'get_src_tbl_names()'
   expect_identical(
@@ -127,7 +124,8 @@ test_that("Learning from specific schema on MSSQL or Postgres works?", {
     dm_get_def() %>%
     mutate(
       pks = vctrs::list_of(new_pk()),
-      fks = vctrs::list_of(new_fk())) %>%
+      fks = vctrs::list_of(new_fk())
+    ) %>%
     new_dm3()
 
   expect_equivalent_dm(
@@ -156,34 +154,38 @@ test_that("'schema_if()' works", {
   con_db <- my_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
-  expect_length(
-    pluck(strsplit(expect_s4_class(
-      schema_if(schema = "schema", table = "table", con = con_db, dbname = "db"),
-      "SQL"), "\\."),
-      1),
-    3
-  )
+  expect_match(unclass(expect_s4_class(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db,
+      dbname = "db"
+    ),
+    "SQL"
+  )),
+  "\"db\".\"schema\".\"table\"|`db`.`schema`.`table`")
 
   # schema and table set
-  expect_length(
-    pluck(strsplit(expect_s4_class(
-      schema_if(schema = "schema", table = "table", con = con_db),
-      "SQL"), "\\."),
-      1),
-    2
-  )
+  expect_match(unclass(expect_s4_class(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db
+    ),
+    "SQL"
+  )),
+  "\"schema\".\"table\"|`schema`.`table`")
 
   # dbname and table set
   expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
 
   # only table set
-  expect_length(
-    pluck(strsplit(expect_s4_class(
+  expect_match(
+    unclass(expect_s4_class(
       schema_if(schema = NA, table = "table", con = con_db),
-      "SQL"
-      ), "\\."),
-      1),
-    1
+      "SQL")
+      ),
+    "\"table\"|`table`"
   )
 })
 
@@ -205,7 +207,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
   dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dbo", table = "test_2"),
-    value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
+    value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
   # set PK
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dbo].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
@@ -215,13 +217,11 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
 
 
   # delete database after test
-  withr::defer(
-    {
-      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_2]"))
-      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_1]"))
-      try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
-    }
-  )
+  withr::defer({
+    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_2]"))
+    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dbo].[test_1]"))
+    try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
+  })
 
   # test 'get_src_tbl_names()'
   src_tbl_names <- unname(get_src_tbl_names(src_db, dbname = "test_database_dm"))
@@ -230,14 +230,13 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
     sort(DBI::SQL(paste0(
       DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
       DBI::dbQuoteIdentifier(con_db, "dbo"), ".",
-      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2")))
-      )
-    )
+      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2"))
+    )))
   )
 
   dm_local_no_keys <- dm(
     test_1 = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5),
-    test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
+    test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
   dm_db_learned <- expect_message(dm_from_src(src_db, dbname = "test_database_dm"))
@@ -255,7 +254,7 @@ test_that("Learning from MSSQL (schema 'dbo') on other DB works?", {
       src_db,
       dbname = "test_database_dm",
       learn_keys = FALSE
-      ) %>%
+    ) %>%
       collect()
   )
   expect_equivalent_dm(
@@ -288,7 +287,7 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
   dbWriteTable(
     con_db,
     DBI::Id(db = "test_database_dm", schema = "dm_test", table = "test_2"),
-    value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
+    value = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
   # set PK
   DBI::dbExecute(con_db, "ALTER TABLE [test_database_dm].[dm_test].[test_1] ALTER COLUMN [b] INTEGER NOT NULL")
@@ -301,14 +300,12 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
 
 
   # delete database after test
-  withr::defer(
-    {
-      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_2]"))
-      try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_1]"))
-      # dropping schema is unnecessary
-      try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
-    }
-  )
+  withr::defer({
+    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_2]"))
+    try(dbExecute(con_db, "DROP TABLE [test_database_dm].[dm_test].[test_1]"))
+    # dropping schema is unnecessary
+    try(dbExecute(con_db, "DROP DATABASE test_database_dm"))
+  })
 
   # test 'get_src_tbl_names()'
   src_tbl_names <- unname(get_src_tbl_names(src_db, schema = "dm_test", dbname = "test_database_dm"))
@@ -317,14 +314,13 @@ test_that("Learning from a specific schema in another DB for MSSQL works?", {
     sort(DBI::SQL(paste0(
       DBI::dbQuoteIdentifier(con_db, "test_database_dm"), ".",
       DBI::dbQuoteIdentifier(con_db, "dm_test"), ".",
-      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2")))
-    )
-    )
+      DBI::dbQuoteIdentifier(con_db, c("test_1", "test_2"))
+    )))
   )
 
   dm_local_no_keys <- dm(
     test_1 = tibble(a = c(5L, 5L, 4L, 2L, 1L), b = 1:5),
-    test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L,11L,10L,10L,11L))
+    test_2 = tibble(c = c(1L, 1L, 1L, 5L, 4L), d = c(10L, 11L, 10L, 10L, 11L))
   )
 
   dm_db_learned <- expect_message(dm_from_src(src_db, schema = "dm_test", dbname = "test_database_dm"))

@@ -237,9 +237,25 @@
     Error <dm_error_parameter_not_correct_length>
       Parameter `length_1_parameter` needs to be of length `1` but is of length 26 (`a`, `b`, `c`, `d`, `e`, ... (26 total)).
     Code
-      warn_if_not_null("NULL", "dbms_dependent_arg")
-    Warning <dm_warning_non_null_param>
+      warn_if_arg_not("NULL", "dbms_dependent_arg")
+    Warning <dm_warning_arg_not>
       Argument `dbms_dependent_arg` ignored: currently only supported for MSSQL and Postgres.
     Output
       NULL
+    Code
+      abort_schema_exists("silhouette")
+    Error <dm_error_schema_exists>
+      A schema named `silhouette` already exists.
+    Code
+      abort_schema_exists("silhouette", "exhibition")
+    Error <dm_error_schema_exists>
+      A schema named `silhouette` already exists on database `exhibition`.
+    Code
+      abort_no_schema_exists("table_1")
+    Error <dm_error_no_schema_exists>
+      No schema named `table_1` exists.
+    Code
+      abort_no_schema_exists("fastfood", "gala_dinner")
+    Error <dm_error_no_schema_exists>
+      No schema named `fastfood` exists on database `gala_dinner`.
 

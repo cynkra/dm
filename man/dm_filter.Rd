@@ -35,7 +35,7 @@ For \code{dm_apply_filters()}: an updated \code{dm} object (filter effects evalu
 For \code{dm_apply_filters_to_tbl()}, a table.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a>}}{\strong{Questioning}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it
 directly or indirectly via foreign key relations.

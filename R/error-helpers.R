@@ -545,8 +545,9 @@ abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
   abort(error_txt_parameter_not_correct_class(
     parameter,
     correct_class,
-    class),
-    .subclass = dm_error_full("parameter_not_correct_class")
+    class
+  ),
+  .subclass = dm_error_full("parameter_not_correct_class")
   )
 }
 
@@ -560,8 +561,9 @@ abort_parameter_not_correct_length <- function(parameter, correct_length, parame
   abort(error_txt_parameter_not_correct_length(
     parameter,
     correct_length,
-    parameter_value),
-    .subclass = dm_error_full("parameter_not_correct_length")
+    parameter_value
+  ),
+  .subclass = dm_error_full("parameter_not_correct_length")
   )
 }
 
@@ -572,13 +574,61 @@ error_txt_parameter_not_correct_length <- function(parameter, correct_length, pa
   )
 }
 
-warn_if_not_null <- function(arg, arg_name = deparse(substitute(arg)), only_on = c("MSSQL", "Postgres")) {
-  if (!is.null(arg)) {
+warn_if_arg_not <- function(
+                            arg,
+                            arg_name = deparse(substitute(arg)),
+                            only_on = c("MSSQL", "Postgres"),
+                            correct = NULL,
+                            additional_msg = "") {
+  if (!identical(arg, correct)) {
     dm_warn(
       glue::glue(
-        "Argument {tick(arg_name)} ignored: currently only supported for {paste0(only_on, collapse = ' and ')}."
-      ), class = "non_null_param"
+        "Argument {tick(arg_name)} ignored: currently only supported for {paste0(only_on, collapse = ' and ')}.",
+        if (!is.null(additional_msg)) {
+          paste0("\n", additional_msg)
+        }
+      ),
+      class = "arg_not"
     )
   }
   NULL
+}
+
+# Errors for schema handling functions ------------------------------------
+
+abort_schema_exists <- function(schema, dbname = NULL) {
+  abort(error_txt_schema_exists(schema, dbname),
+    .subclass = dm_error_full("schema_exists")
+  )
+}
+
+error_txt_schema_exists <- function(schema, dbname) {
+  msg_suffix <- fix_msg(dbname)
+  glue(
+    "A schema named {tick(schema)} already exists{msg_suffix}."
+  )
+}
+
+abort_no_schema_exists <- function(schema, dbname = NULL) {
+  abort(error_txt_no_schema_exists(schema, dbname),
+    .subclass = dm_error_full("no_schema_exists")
+  )
+}
+
+error_txt_no_schema_exists <- function(schema, dbname) {
+  msg_suffix <- fix_msg(dbname)
+  glue(
+    "No schema named {tick(schema)} exists{msg_suffix}."
+  )
+}
+
+abort_no_schemas_supported <- function(dbms) {
+  abort(
+    error_txt_no_schemas_supported(dbms),
+    .subclass = dm_error_full("no_schemas_supported")
+  )
+}
+
+error_txt_no_schemas_supported <- function(dbms) {
+  glue::glue("The concept of schemas is not supported for DBMS {tick(dbms)}.")
 }

@@ -3,7 +3,6 @@
     Code
       data <- test_src_frame(select = 1:3, where = letters[c(1:2, NA)], exists = 0.5 +
         0:2)
-    Code
       data
     Output
         select where exists
@@ -96,7 +95,6 @@
       3      3 <NA>     2.5
     Code
       rows_insert(data, test_src_frame(select = 4, where = "z"), in_place = TRUE)
-    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -107,7 +105,6 @@
       4      4 z       NA  
     Code
       rows_update(data, test_src_frame(select = 2:3, where = "w"), in_place = TRUE)
-    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -118,7 +115,6 @@
       4      4 z       NA  
     Code
       rows_update(data, test_src_frame(select = 2:3), in_place = TRUE)
-    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -130,7 +126,6 @@
     Code
       rows_update(data, test_src_frame(select = 0L, where = "a"), by = "where",
       in_place = TRUE)
-    Code
       data %>% arrange(select)
     Output
         select where exists
@@ -154,7 +149,6 @@
       4      4 z       NA  
     Code
       rows_truncate(data, in_place = TRUE)
-    Code
       data %>% arrange(select)
     Output
       # ... with 3 variables: select <int>, where <chr>, exists <dbl>

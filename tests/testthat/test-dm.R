@@ -129,7 +129,9 @@ test_that("'compute.dm()' computes tables on DB", {
   def <-
     dm_for_filter() %>%
     dm_filter(tf_1, a > 3) %>%
-    { suppress_mssql_message(compute(.)) } %>%
+    {
+      suppress_mssql_message(compute(.))
+    } %>%
     dm_get_def()
 
   remote_names <- map_chr(def$data, dbplyr::remote_name)

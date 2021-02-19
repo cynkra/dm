@@ -59,6 +59,13 @@ reference:
   - dm_is_referenced
   - dm_get_referencing_tables
 
+- title: Schema handling methods
+  contents:
+  - sql_schema_create
+  - sql_schema_drop
+  - sql_schema_exists
+  - sql_schema_list
+
 - title: Visualization
   contents:
   - dm_draw

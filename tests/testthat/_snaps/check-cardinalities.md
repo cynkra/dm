@@ -11,22 +11,16 @@
     Code
       expect_dm_error(check_cardinality_1_1(data_card_5(), a, data_card_4(), c),
       class = "not_bijective")
-    Code
       expect_dm_error(check_cardinality_1_1(data_card_4(), c, data_card_5(), a),
       class = "not_unique_key")
-    Code
       expect_dm_error(check_cardinality_1_1(data_card_4(), c, data_card_1(), a),
       class = "not_unique_key")
-    Code
       expect_dm_error(check_cardinality_0_1(data_card_1(), a, data_card_4(), c),
       class = "not_injective")
-    Code
       expect_dm_error(check_cardinality_0_n(data_card_4(), c, data_card_1(), a),
       class = "not_unique_key")
-    Code
       expect_dm_error(check_cardinality_1_1(data_card_4(), c, data_card_1(), a),
       class = "not_unique_key")
-    Code
       expect_dm_error(check_cardinality_1_1(data_card_1(), a, data_card_4(), c),
       class = "not_bijective")
 

@@ -24,7 +24,6 @@
       i All constraints satisfied.
     Code
       # n column
-    Code
       dm_for_filter_w_cycle() %>% dm_examine_constraints()
     Message <cliMessage>
       i All constraints satisfied.

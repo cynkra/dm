@@ -6,7 +6,6 @@
       dm()
     Code
       nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
-    Code
       nyc_flights_dm
     Output
       -- Metadata --------------------------------------------------------------------
