@@ -1,4 +1,4 @@
-dm 0.1.11
+dm 0.1.12
 
 ## Cran Repository Policy
 
@@ -14,4 +14,4 @@ Check the boxes above after successful execution and remove this line. Then run 
 
 ## Current CRAN check results
 
-- [x] Checked on 2021-02-07, no problems found.
+- [x] Checked on 2021-02-08, no problems found.
