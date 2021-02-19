@@ -243,6 +243,7 @@ sql_schema_table_list_mssql <- function(dest, schema = NULL, dbname = NULL) {
     name = "table_name",
     value = "remote_name"
   ) %>%
+    # FIXME: maybe better a DBI identifier?
     mutate(remote_name = dbplyr::ident_q(remote_name))
 }
 
@@ -261,6 +262,7 @@ sql_schema_table_list_postgres <- function(dest, schema = NULL) {
     name = "table_name",
     value = "remote_name"
   ) %>%
+    # FIXME: maybe better a DBI identifier?
     mutate(remote_name = dbplyr::ident_q(remote_name))
 }
 
