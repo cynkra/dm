@@ -154,7 +154,7 @@ test_that("'schema_if()' works", {
   con_db <- my_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
-  expect_identical(unclass(expect_s4_class(
+  expect_match(unclass(expect_s4_class(
     schema_if(
       schema = "schema",
       table = "table",
@@ -163,10 +163,10 @@ test_that("'schema_if()' works", {
     ),
     "SQL"
   )),
-  "\"db\".\"schema\".\"table\"")
+  "\"db\".\"schema\".\"table\"|`db`.`schema`.`table`")
 
   # schema and table set
-  expect_identical(unclass(expect_s4_class(
+  expect_match(unclass(expect_s4_class(
     schema_if(
       schema = "schema",
       table = "table",
@@ -174,18 +174,18 @@ test_that("'schema_if()' works", {
     ),
     "SQL"
   )),
-  "\"schema\".\"table\"")
+  "\"schema\".\"table\"|`schema`.`table`")
 
   # dbname and table set
   expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
 
   # only table set
-  expect_identical(
+  expect_match(
     unclass(expect_s4_class(
       schema_if(schema = NA, table = "table", con = con_db),
       "SQL")
       ),
-    "\"table\""
+    "\"table\"|`table`"
   )
 })
 
