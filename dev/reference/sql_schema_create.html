@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load a dm from a remote data source — dm_from_src • dm</title>
+<title>Create a schema on a database — sql_schema_create • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,11 +46,8 @@
 
 
 
-<meta property="og:title" content="Load a dm from a remote data source — dm_from_src" />
-<meta property="og:description" content="dm_from_src() creates a dm from some or all tables in a src
-(a database or an environment) or which are accessible via a DBI-Connection.
-For Postgres and SQL Server databases, primary and foreign keys
-are imported from the database." />
+<meta property="og:title" content="Create a schema on a database — sql_schema_create" />
+<meta property="og:description" content="sql_schema_create() creates a schema on the database." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 
 
@@ -184,81 +181,56 @@ are imported from the database." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load a dm from a remote data source</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/dm-from-src.R'><code>R/dm-from-src.R</code></a></small>
-    <div class="hidden name"><code>dm_from_src.Rd</code></div>
+    <h1>Create a schema on a database</h1>
+    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/schema.R'><code>R/schema.R</code></a></small>
+    <div class="hidden name"><code>sql_schema_create.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>dm_from_src()</code> creates a <a href='dm.html'>dm</a> from some or all tables in a src
-(a database or an environment) or which are accessible via a DBI-Connection.
-For Postgres and SQL Server databases, primary and foreign keys
-are imported from the database.</p>
+    <p><code>sql_schema_create()</code> creates a schema on the database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_from_src</span><span class='op'>(</span>src <span class='op'>=</span> <span class='cn'>NULL</span>, table_names <span class='op'>=</span> <span class='cn'>NULL</span>, learn_keys <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>sql_schema_create</span><span class='op'>(</span><span class='va'>dest</span>, <span class='va'>schema</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>src</th>
-      <td><p>A <span class="pkg">dplyr</span> table source object or a
-<code><a href='https://dbi.r-dbi.org/reference/DBIConnection-class.html'>DBI::DBIConnection</a></code> object is accepted.</p></td>
+      <th>dest</th>
+      <td><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></td>
     </tr>
     <tr>
-      <th>table_names</th>
-      <td><p>A character vector of the names of the tables to include.</p></td>
-    </tr>
-    <tr>
-      <th>learn_keys</th>
-      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
-<p>Set to <code>TRUE</code> to query the definition of primary and
-foreign keys from the database.
-Currently works only for Postgres and SQL Server databases.
-The default attempts to query and issues an informative message.</p></td>
+      <th>schema</th>
+      <td><p>Class <code>character</code> or <code>SQL</code> (cf. Details), name of the schema</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
-<p>Additional parameters for the schema learning query.</p><ul>
-<li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>) and Postgres (default: <code>"public"</code>).
-Learn the tables in a specific schema.</p></li>
-<li><p><code>dbname</code>: supported for MSSQL. Access different databases on the connected MSSQL-server;
-default: database addressed by <code>src</code>.</p></li>
-<li><p><code>table_type</code>: supported for Postgres (default: <code>"BASE TABLE"</code>). Specify the table type. Options are:</p><ol>
-<li><p><code>"BASE TABLE"</code> for a persistent table (normal table type)</p></li>
-<li><p><code>"VIEW"</code> for a view</p></li>
-<li><p><code>"FOREIGN TABLE"</code> for a foreign table</p></li>
-<li><p><code>"LOCAL TEMPORARY"</code> for a temporary table</p></li>
-</ol></li>
-</ul></td>
+      <td><p>Passed on to the individual methods.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>dm</code> object.</p>
+    <p><code>NULL</code> invisibly.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>con</span> <span class='op'>&lt;-</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span>
-  <span class='fu'>RMariaDB</span><span class='fu'>::</span><span class='fu'><a href='https://rmariadb.r-dbi.org/reference/dbConnect-MariaDBDriver-method.html'>MariaDB</a></span><span class='op'>(</span><span class='op'>)</span>,
-  username <span class='op'>=</span> <span class='st'>"guest"</span>,
-  password <span class='op'>=</span> <span class='st'>"relational"</span>,
-  dbname <span class='op'>=</span> <span class='st'>"Financial_ijs"</span>,
-  host <span class='op'>=</span> <span class='st'>"relational.fit.cvut.cz"</span>
-<span class='op'>)</span>
+    <p>Methods are not available for all DBMS.</p>
+<p>An error is thrown if a schema of that name already exists.</p>
+<p>The argument <code>schema</code> (and <code>dbname</code> for MSSQL) can be provided as <code>SQL</code> objects.
+Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers
+using <code><a href='https://dbi.r-dbi.org/reference/dbQuoteIdentifier.html'>DBI::dbQuoteIdentifier()</a></code>.</p>
+<p>Additional arguments are:</p><ul>
+<li><p><code>dbname</code>: supported for MSSQL. Create a schema in a different
+database on the connected MSSQL-server; default: database addressed by <code>dest</code>.</p></li>
+</ul>
 
-<span class='fu'>dm_from_src</span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
-#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
-#&gt; Columns: 57
-#&gt; Primary keys: 0
-#&gt; Foreign keys: 0</div><div class='input'>
-<span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
-</div></span></pre>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other schema handling functions: 
+<code><a href='sql_schema_drop.html'>sql_schema_drop</a>()</code>,
+<code><a href='sql_schema_exists.html'>sql_schema_exists</a>()</code>,
+<code><a href='sql_schema_list.html'>sql_schema_list</a>()</code></p></div>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

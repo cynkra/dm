@@ -154,6 +154,18 @@
     <loc>https://krlmlr.github.io/dm/reference/rows_truncate.html</loc>
   </url>
   <url>
+    <loc>https://krlmlr.github.io/dm/reference/sql_schema_create.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/sql_schema_drop.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/sql_schema_exists.html</loc>
+  </url>
+  <url>
+    <loc>https://krlmlr.github.io/dm/reference/sql_schema_list.html</loc>
+  </url>
+  <url>
     <loc>https://krlmlr.github.io/dm/reference/tidyr_table_manipulation.html</loc>
   </url>
   <url>
