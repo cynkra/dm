@@ -154,42 +154,38 @@ test_that("'schema_if()' works", {
   con_db <- my_test_src()$con
 
   # all 3 naming parameters set ('table' is required)
-  expect_length(
-    pluck(
-      strsplit(expect_s4_class(
-        schema_if(schema = "schema", table = "table", con = con_db, dbname = "db"),
-        "SQL"
-      ), "\\."),
-      1
+  expect_identical(unclass(expect_s4_class(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db,
+      dbname = "db"
     ),
-    3
-  )
+    "SQL"
+  )),
+  "\"db\".\"schema\".\"table\"")
 
   # schema and table set
-  expect_length(
-    pluck(
-      strsplit(expect_s4_class(
-        schema_if(schema = "schema", table = "table", con = con_db),
-        "SQL"
-      ), "\\."),
-      1
+  expect_identical(unclass(expect_s4_class(
+    schema_if(
+      schema = "schema",
+      table = "table",
+      con = con_db
     ),
-    2
-  )
+    "SQL"
+  )),
+  "\"schema\".\"table\"")
 
   # dbname and table set
   expect_error(schema_if(schema = NA, con = con_db, table = "table", dbname = "db"))
 
   # only table set
-  expect_length(
-    pluck(
-      strsplit(expect_s4_class(
-        schema_if(schema = NA, table = "table", con = con_db),
-        "SQL"
-      ), "\\."),
-      1
-    ),
-    1
+  expect_identical(
+    unclass(expect_s4_class(
+      schema_if(schema = NA, table = "table", con = con_db),
+      "SQL")
+      ),
+    "\"table\""
   )
 })
 
