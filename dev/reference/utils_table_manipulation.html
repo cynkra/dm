@@ -237,17 +237,17 @@ The methods for regular <code>dm</code> objects extract the first or last tables
   <span class='fu'><a href='dm_zoom_to.html'>dm_zoom_to</a></span><span class='op'>(</span><span class='va'>flights</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span>
 <span class='va'>zoomed</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
-#&gt; </span><span style='color: #555555;'># A tibble:     4 x 19</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># Zoomed table: flights</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble:     4 x 19</span><span>
 #&gt;    year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
-#&gt; </span><span style='color: #555555;'>2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447            444
-#&gt; </span><span style='color: #555555;'>3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634            648
-#&gt; </span><span style='color: #555555;'>4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813            820
-#&gt; </span><span style='color: #555555;'># … with 11 more variables: arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span></div><div class='input'><span class='fu'><a href='dm_zoom_to.html'>dm_insert_zoomed</a></span><span class='op'>(</span><span class='va'>zoomed</span>, new_tbl_name <span class='op'>=</span> <span class='st'>"head_flights"</span><span class='op'>)</span>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447            444
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634            648
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813            820
+#&gt; </span><span style='color: #949494;'># … with 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span><span></div><div class='input'><span class='fu'><a href='dm_zoom_to.html'>dm_insert_zoomed</a></span><span class='op'>(</span><span class='va'>zoomed</span>, new_tbl_name <span class='op'>=</span> <span class='st'>"head_flights"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `head_flights`
 #&gt; Columns: 72
@@ -264,11 +264,11 @@ The methods for regular <code>dm</code> objects extract the first or last tables
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-02-19</h4>
+            <h4 data-toc-skip class="date">2021-02-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -224,13 +224,13 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      709
 #&gt; </span><span style="color: #555555;"> 9</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      557            600        -</span><span style="color: #BB0000;">3</span><span>      838
 #&gt; </span><span style="color: #555555;">10</span><span>   </span><span style="text-decoration: underline;">2</span><span>013     1     1      558            600        -</span><span style="color: #BB0000;">2</span><span>      753
-#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 28 more variables: sched_arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   arr_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, carrier </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, flight </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, tailnum </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span style="color: #555555;">, name.x </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, year.y </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   type </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, manufacturer </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, model </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, engines </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   seats </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, speed </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, engine </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, name.y </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, lat </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   lon </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, alt </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, tz </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, dst </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, tzone </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 336,766 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name.x &lt;chr&gt;, year.y &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;, name.y &lt;chr&gt;, lat &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;</span><span>
 </span></code></pre>
 <p>{dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.</p>
 <p>It is possible to have the best of both worlds: manage your data with {dm} as linked tables, then flatten multiple tables into one for your analysis with {dplyr} on an as-needed basis.</p>
@@ -491,11 +491,11 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link external-link"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link external-link"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

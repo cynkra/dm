@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Filtering in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-02-19</h4>
+            <h4 data-toc-skip class="date">2021-02-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-filter.Rmd</code></div>
@@ -346,10 +346,10 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      701            705        -</span><span style="color: #BB0000;">4</span><span>      952
 #&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      714            715        -</span><span style="color: #BB0000;">1</span><span>      908
 #&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      743            745        -</span><span style="color: #BB0000;">2</span><span>      956
-#&gt; </span><span style="color: #555555;"># … with 69 more rows, and 12 more variables: sched_arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   arr_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, carrier </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, flight </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, tailnum </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 69 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span><span>
 </span></code></pre>
 <p>For comparison, let’s review the equivalent manual query for <code>flights</code> in <code>dplyr</code> syntax:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -372,10 +372,10 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5     1      658            700        -</span><span style="color: #BB0000;">2</span><span>      925
 #&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5     1      743            745        -</span><span style="color: #BB0000;">2</span><span>     </span><span style="text-decoration: underline;">1</span><span>014
 #&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5     1      755            800        -</span><span style="color: #BB0000;">5</span><span>      929
-#&gt; </span><span style="color: #555555;"># … with 2,330 more rows, and 12 more variables: sched_arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   arr_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, carrier </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, flight </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, tailnum </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 2,330 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span><span>
 </span></code></pre>
 <p>The {dm} code is leaner because the foreign key information is encoded in the object.</p>
 </div>
@@ -458,11 +458,11 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link external-link"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link external-link"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
