@@ -114,7 +114,7 @@ test_that("schema handling on Postgres works", {
   )
 
   expect_message(
-    sql_schema_drop(con_db, "2-dm_schema_TEST", force = TRUE),
+    sql_schema_drop(src_db, "2-dm_schema_TEST", force = TRUE),
     "all objects"
   )
 })

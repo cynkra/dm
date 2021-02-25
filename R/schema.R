@@ -306,7 +306,7 @@ sql_schema_drop <- function(dest, schema, force = FALSE, ...) {
 
 #' @export
 sql_schema_drop.src_dbi <- function(dest, schema, force = FALSE, ...) {
-  sql_schema_drop(dest$con, schema, ...)
+  sql_schema_drop(dest$con, schema, force, ...)
 }
 
 #' @export
