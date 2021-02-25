@@ -622,13 +622,34 @@ error_txt_no_schema_exists <- function(schema, dbname) {
   )
 }
 
-abort_no_schemas_supported <- function(dbms) {
+abort_no_schemas_supported <- function(dbms = NULL, con = NULL) {
   abort(
-    error_txt_no_schemas_supported(dbms),
+    error_txt_no_schemas_supported(dbms, con),
     .subclass = dm_error_full("no_schemas_supported")
   )
 }
 
-error_txt_no_schemas_supported <- function(dbms) {
-  glue::glue("The concept of schemas is not supported for DBMS {tick(dbms)}.")
+error_txt_no_schemas_supported <- function(dbms, con) {
+  if (!is.null(dbms)) {
+    glue::glue("The concept of schemas is not supported for DBMS {tick(dbms)}.")
+  } else {
+    glue::glue(
+      "Currently schemas are not supported for a connection ",
+      "of class {tick(class(con))}.")
+  }
+
+}
+
+abort_temporary_not_in_schema <- function() {
+  abort(
+    "If argument `temporary = TRUE`, argument `schema` has to be `NULL`.",
+    .subclass = dm_error_full("temporary_not_in_schema")
+  )
+}
+
+warn_schema_ignored <- function() {
+  dm_warn(
+    "Ignoring argument `schema` since argument `table_names != NULL`.",
+    class = dm_warning("schema_ignored")
+  )
 }
