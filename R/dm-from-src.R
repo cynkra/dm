@@ -116,7 +116,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   new_dm(tbls)
 }
 
-quote_ids <- function(x, con, schema) {
+quote_ids <- function(x, con, schema = NULL) {
   if (is.null(con)) return(x)
 
   if (is_null(schema)) {
