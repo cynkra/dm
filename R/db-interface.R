@@ -135,7 +135,7 @@ copy_dm_to <- function(dest, dm, ...,
         temporary <- FALSE
       }
     } else {
-      if (!is.null(schema)) warn_schema_ignored()
+      if (!is.null(schema)) abort_one_of_schema_table_names()
       if (is_function(table_names) || is_bare_formula(table_names)) {
         table_name_fun <- as_function(table_names)
         table_names_out <- set_names(table_name_fun(src_names), src_names)

@@ -647,9 +647,9 @@ abort_temporary_not_in_schema <- function() {
   )
 }
 
-warn_schema_ignored <- function() {
-  dm_warn(
-    "Ignoring argument `schema` since argument `table_names != NULL`.",
-    class = dm_warning("schema_ignored")
+abort_one_of_schema_table_names <- function() {
+  abort(
+    "Only one of the arguments `schema` and `table_names` can be different from `NULL`.",
+    .subclass = dm_error_full("one_of_schema_table_names")
   )
 }
