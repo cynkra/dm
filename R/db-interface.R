@@ -19,6 +19,11 @@
 #' @param unique_table_names Deprecated.
 #' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
+#' @param schema Name of schema to copy the `dm` to.
+#' If `schema` is provided, an error will be thrown if `temporary = FALSE` or
+#' `table_names` is not `NULL`.
+#'
+#' Not all DBMS are supported.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
 #'   Can be `NULL`, a named character vector, a function or a one-sided formula.
 #'
