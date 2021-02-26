@@ -632,12 +632,14 @@ abort_no_schemas_supported <- function(dbms = NULL, con = NULL) {
 error_txt_no_schemas_supported <- function(dbms, con) {
   if (!is.null(dbms)) {
     glue::glue("The concept of schemas is not supported for DBMS {tick(dbms)}.")
-  } else {
+  } else if (!is.null(con)) {
     glue::glue(
       "Currently schemas are not supported for a connection ",
       "of class {tick(class(con))}.")
+  } else {
+    # if local src, `con = NULL`
+    "Schemas are not available locally."
   }
-
 }
 
 abort_temporary_not_in_schema <- function() {
