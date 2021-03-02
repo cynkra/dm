@@ -2,7 +2,13 @@ dm_write_csv <- function(dm, csv_directory) {
   if (dir.exists(csv_directory)) {
     abort("Please chose a non-existent directory for the csv-files.")
   }
-  dm_write_csv_impl(dm, csv_directory, zip = FALSE)
+  tryCatch(
+    dm_write_csv_impl(dm, csv_directory, zip = FALSE),
+    error = function(e) {
+      try(unlink(csv_directory, recursive = TRUE))
+      stop(e)
+    }
+  )
 }
 
 dm_write_csv_impl <- function(dm, csv_directory, zip) {
@@ -24,9 +30,13 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
   info_tibble <- dm_get_def(dm) %>% select(table, segment, display)
 
   col_class_tibble <- dm_col_class(dm)
-
-  pk_tibble <- dm_get_all_pks_impl(dm) %>%
+  pk_tibble_prel <- dm_get_all_pks_impl(dm)
+  pk_tibble <- if (nrow(pk_tibble_prel) == 0) {
+    pk_tibble_prel
+  } else {
+    pk_tibble_prel %>%
     unnest(pk_col)
+  }
 
   # not using dm_get_all_fks_impl(), because it will break with introduction of compound keys
   fk_tibble <- dm_get_def(dm) %>%
@@ -186,7 +196,12 @@ dm_col_class <- function(dm) {
     mutate(class = map2_chr(
       table,
       column,
-      function(table, column) {tables[[table]] %>% pull(column) %>% class() %>% pluck(1)})
+      function(table, column) {
+        tables[[table]] %>%
+          pull(column) %>%
+          class() %>%
+          pluck(1)}
+      )
     )
 }
 
@@ -197,11 +212,11 @@ readr_translate <- function(r_class) {
     "integer", "i",
     "double", "d",
     "character", "c",
-    "date", "D",
+    "Date", "D",
     "time", "t",
     "datetime", "T",
-    # "POSIXt", "T",
-    # "POSIXct", "T",
+    "POSIXt", "T",
+    "POSIXct", "T",
     "number", "n"
     )
   map_chr(r_class, ~ filter(translation_tibble, r_class == .x) %>% pull(readr_code))
