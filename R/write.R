@@ -30,15 +30,17 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
   info_tibble <- dm_get_def(dm) %>% select(table, segment, display)
 
   col_class_tibble <- dm_col_class(dm)
-  pk_tibble_prel <- dm_get_all_pks_impl(dm)
-  pk_tibble <- if (nrow(pk_tibble_prel) == 0) {
-    pk_tibble_prel
-  } else {
-    pk_tibble_prel %>%
-    unnest(pk_col)
+  if ("list" %in% col_class_tibble$class) {
+    # FIXME: proper dm error
+    abort("Class `list` is not supported (table X, column Y).")
   }
 
+  # FIXME: might need to revisit for compound keys
+  pk_tibble <- dm_get_all_pks_impl(dm) %>%
+    mutate(pk_col = as_list(pk_col))
+
   # not using dm_get_all_fks_impl(), because it will break with introduction of compound keys
+  # FIXME: might need to revisit for compound keys
   fk_tibble <- dm_get_def(dm) %>%
     select("child_table" = table, fks) %>%
     unnest(fks) %>%
