@@ -5,8 +5,10 @@ dm_write_csv <- function(dm, csv_directory) {
   tryCatch(
     dm_write_csv_impl(dm, csv_directory, zip = FALSE),
     error = function(e) {
+      # remove directory in case it was created but there was an error
       try(unlink(csv_directory, recursive = TRUE))
-      stop(e)
+      # keep error message and class though
+      abort(conditionMessage(e), .subclass = class(e))
     }
   )
 }
