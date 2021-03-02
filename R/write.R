@@ -1,4 +1,12 @@
-dm_write_zip <- function(dm, zip_file_path = "dm.zip") {
+dm_write_csv <- function(dm, csv_directory) {
+  if (dir.exists(csv_directory)) {
+    abort("Please chose a non-existent directory for the csv-files.")
+  }
+  dm_write_csv_impl(dm, csv_directory, zip = FALSE)
+}
+
+dm_write_csv_impl <- function(dm, csv_directory, zip) {
+  dir.create(csv_directory)
   check_param_class(dm, "dm")
   check_not_zoomed(dm)
   check_no_filter(dm)
@@ -7,11 +15,11 @@ dm_write_zip <- function(dm, zip_file_path = "dm.zip") {
     abort_only_for_local_src(dm_get_src(dm))
   }
 
-  csv_info_filename <- file.path(tempdir(), "___info_file_dm.csv")
-  csv_coltypes_filename <- file.path(tempdir(), "___coltypes_file_dm.csv")
-  csv_pk_filename <- file.path(tempdir(), "___pk_file_dm.csv")
-  csv_fk_filename <- file.path(tempdir(), "___fk_file_dm.csv")
-  csv_table_filenames <- file.path(tempdir(), paste0(src_tbls(dm), ".csv"))
+  csv_info_filename <- file.path(csv_directory, "___info_file_dm.csv")
+  csv_coltypes_filename <- file.path(csv_directory, "___coltypes_file_dm.csv")
+  csv_pk_filename <- file.path(csv_directory, "___pk_file_dm.csv")
+  csv_fk_filename <- file.path(csv_directory, "___fk_file_dm.csv")
+  csv_table_filenames <- file.path(csv_directory, paste0(src_tbls(dm), ".csv"))
 
   info_tibble <- dm_get_def(dm) %>% select(table, segment, display)
 
@@ -30,49 +38,31 @@ dm_write_zip <- function(dm, zip_file_path = "dm.zip") {
     mutate(key_nr = row_number()) %>%
     unnest(fk_col)
 
-  withr::defer({
-    try(file.remove(csv_info_filename))
-    try(file.remove(csv_coltypes_filename))
-    try(file.remove(csv_pk_filename))
-    try(file.remove(csv_fk_filename))
-    walk(csv_table_filenames, ~ try(file.remove(.x)))
-  })
-
   readr::write_csv(info_tibble, csv_info_filename)
   readr::write_csv(col_class_tibble, csv_coltypes_filename)
   readr::write_csv(pk_tibble, csv_pk_filename)
   readr::write_csv(fk_tibble, csv_fk_filename)
 
   walk2(dm_get_tables_impl(dm), csv_table_filenames, readr::write_csv)
-
-  # compress the file ("-j" junks the path to the file)
-  zip(zipfile = zip_file_path, files = c(
-    csv_info_filename,
-    csv_coltypes_filename,
-    csv_table_filenames,
-    csv_pk_filename,
-    csv_fk_filename),
-    flags = "-j -q"
-  )
-  message(glue::glue("Written `dm` as zip-file {tick(zip_file_path)}."))
-  invisible(zip_file_path)
+  if (!zip) {
+    message(
+      glue::glue("Written `dm` as csv-files to the directory {tick(csv_directory)}.")
+    )
+  }
+  invisible(csv_directory)
 }
 
-dm_read_zip <- function(zip_file_path) {
-  # FIXME: nicer way for randomized path-name?
-  unzip_directory <- file.path(tempdir(), basename(tempfile(pattern = "dm_unzip_")))
-  withr::defer(unlink(unzip_directory, recursive = TRUE))
-  utils::unzip("dm.zip", exdir = unzip_directory)
+dm_read_csv <- function(csv_directory) {
 
   # FIXME: abort if special files do not exist
 
   def_base <- readr::read_csv(
-    file.path(unzip_directory, "___info_file_dm.csv"),
+    file.path(csv_directory, "___info_file_dm.csv"),
     col_types = "ccc"
   )
   table_names <- def_base$table
   col_class_info <- readr::read_csv(
-    file.path(unzip_directory, "___coltypes_file_dm.csv"),
+    file.path(csv_directory, "___coltypes_file_dm.csv"),
     col_types = "ccc"
   ) %>%
     mutate(readr_class = readr_translate(class)) %>%
@@ -82,17 +72,17 @@ dm_read_zip <- function(zip_file_path) {
   col_class_sorted <- col_class_info$readr_class[order(match(col_class_info$table, table_names))]
 
   pk_info <- readr::read_csv(
-    file.path(unzip_directory, "___pk_file_dm.csv"),
+    file.path(csv_directory, "___pk_file_dm.csv"),
     col_types = "cc"
   )
 
   fk_info <- readr::read_csv(
-    file.path(unzip_directory, "___fk_file_dm.csv"),
+    file.path(csv_directory, "___fk_file_dm.csv"),
     col_types = "ccci"
   )
 
   table_files <- setdiff(
-    list.files(unzip_directory),
+    list.files(csv_directory),
     c("___info_file_dm.csv", "___pk_file_dm.csv", "___fk_file_dm.csv", "___coltypes_file_dm.csv")
   )
   # sort table_files according to column def_base$table
@@ -101,7 +91,7 @@ dm_read_zip <- function(zip_file_path) {
   # guessing column types
   # FIXME: column-types could actually also be stored in another file; is it necessary?
   table_tibble <- map2(
-    file.path(unzip_directory, table_files_sorted),
+    file.path(csv_directory, table_files_sorted),
     col_class_sorted,
     ~ readr::read_csv(file = .x, col_types = .y)
   ) %>%
@@ -123,8 +113,8 @@ dm_read_zip <- function(zip_file_path) {
       tibble(
         table = unique(parent_table),
         column = list(fk_col)
-        )
-      ), .groups = "drop_last"
+      )
+    ), .groups = "drop_last"
     ) %>%
     summarize(
       fks = list(bind_rows(fks)),
@@ -152,7 +142,41 @@ dm_read_zip <- function(zip_file_path) {
     left_join(zoom, by = "table") %>%
     left_join(col_tracker_zoom, by = "table") %>%
     new_dm3()
+}
 
+dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
+  if (file.exists(zip_file_path)) {
+    if (overwrite) {
+      message(glue::glue("Overwriting file {tick(zip_file_path)}."))
+    } else{
+      # FIXME: need proper dm_error
+      abort(glue::glue("File {tick(zip_file_path)} exists and `overwrite = FALSE`."))
+    }
+  }
+
+  csv_directory <- file.path(tempdir(), basename(tempfile(pattern = "dm_zip_")))
+  dm_write_csv_impl(dm, csv_directory, zip = TRUE)
+  withr::defer(try(unlink(csv_directory, recursive = TRUE)))
+
+  csv_files <- list.files(csv_directory)
+  # compress the file ("-j" junks the path to the file)
+
+  zip(
+    zipfile = zip_file_path,
+    files = file.path(csv_directory, csv_files),
+    flags = "-j -q"
+  )
+  message(glue::glue("Written `dm` as zip-file {tick(zip_file_path)}."))
+  invisible(zip_file_path)
+}
+
+dm_read_zip <- function(zip_file_path) {
+  # FIXME: nicer way for randomized path-name?
+  unzip_directory <- file.path(tempdir(), basename(tempfile(pattern = "dm_unzip_")))
+  withr::defer(unlink(unzip_directory, recursive = TRUE))
+  utils::unzip(zip_file_path, exdir = unzip_directory)
+
+  dm_read_csv(unzip_directory)
 }
 
 dm_col_class <- function(dm) {
@@ -162,7 +186,7 @@ dm_col_class <- function(dm) {
     mutate(class = map2_chr(
       table,
       column,
-      function(table, column) {tables[[table]] %>% pull(column) %>% class()})
+      function(table, column) {tables[[table]] %>% pull(column) %>% class() %>% pluck(1)})
     )
 }
 
@@ -176,6 +200,8 @@ readr_translate <- function(r_class) {
     "date", "D",
     "time", "t",
     "datetime", "T",
+    # "POSIXt", "T",
+    # "POSIXct", "T",
     "number", "n"
     )
   map_chr(r_class, ~ filter(translation_tibble, r_class == .x) %>% pull(readr_code))
