@@ -146,6 +146,35 @@ dm_read_zip <- function(zip_file_path) {
   dm_read_csv(unzip_directory)
 }
 
+dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
+
+  if (file.exists(xlsx_file_path)) {
+    if (overwrite) {
+      message(glue::glue("Overwriting file {tick(xlsx_file_path)}."))
+    } else{
+      abort_file_exists(xlsx_file_path)
+    }
+  }
+
+  xlsx_tables <- prepare_tables(dm)
+
+  xl_sheet_list <- c(
+    dm_get_tables_impl(dm),
+    list(
+      "___info_dm" = xlsx_tables$info_tibble,
+      "___coltypes_dm" = xlsx_tables$col_class_tibble,
+      "___pk_dm" = xlsx_tables$pk_tibble,
+      "___fk_dm" = xlsx_tables$fk_tibble
+      )
+    )
+
+  writexl::write_xlsx(xl_sheet_list, path = xlsx_file_path)
+  message(
+    glue::glue("Written `dm` as xlsx-file {tick(xlsx_file_path)}.")
+  )
+  invisible(xlsx_file_path)
+}
+
 prepare_tables <- function(dm) {
   check_param_class(dm, "dm")
   check_not_zoomed(dm, -3)
