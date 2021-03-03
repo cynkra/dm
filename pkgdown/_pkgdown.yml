@@ -146,6 +146,15 @@ reference:
   - check_cardinality_0_1
   - check_cardinality_1_1
 
+- title: Local write/read
+  contents:
+  - dm_read_xlsx
+  - dm_write_xlsx
+  - dm_read_csv
+  - dm_write_csv
+  - dm_read_zip
+  - dm_write_zip
+
 - title: Miscellaneous
   contents:
   - dm_nycflights13
