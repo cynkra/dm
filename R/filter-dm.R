@@ -254,7 +254,7 @@ new_filtered_edges <- function(node, parent = node, distance = 0) {
   tibble(node, parent, distance)
 }
 
-check_no_filter <- function(dm) {
+check_no_filter <- function(dm, levels_up = -1) {
   def <-
     dm_get_def(dm)
 
@@ -262,7 +262,7 @@ check_no_filter <- function(dm) {
     return()
   }
 
-  fun_name <- as_string(sys.call(-1)[[1]])
+  fun_name <- as_string(sys.call(levels_up)[[1]])
   abort_only_possible_wo_filters(fun_name)
 }
 

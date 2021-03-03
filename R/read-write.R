@@ -1,6 +1,6 @@
 dm_write_csv <- function(dm, csv_directory) {
   if (dir.exists(csv_directory) && length(list.files(csv_directory)) > 0) {
-    abort("Please chose a non-existent or empty directory for the csv-files.")
+    abort_dir_not_empty()
   }
   tryCatch(
     dm_write_csv_impl(dm, csv_directory, zip = FALSE),
@@ -18,8 +18,8 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
     dir.create(csv_directory)
   }
   check_param_class(dm, "dm")
-  check_not_zoomed(dm)
-  check_no_filter(dm)
+  check_not_zoomed(dm, -2)
+  check_no_filter(dm, -2)
 
   if (is_db(dm_get_src(dm))) {
     abort_only_for_local_src(dm_get_src(dm))
@@ -165,7 +165,7 @@ dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
       message(glue::glue("Overwriting file {tick(zip_file_path)}."))
     } else{
       # FIXME: need proper dm_error
-      abort(glue::glue("File {tick(zip_file_path)} exists and `overwrite = FALSE`."))
+      abort_file_exists(zip_file_path)
     }
   }
 

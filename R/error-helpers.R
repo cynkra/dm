@@ -632,3 +632,20 @@ abort_no_schemas_supported <- function(dbms) {
 error_txt_no_schemas_supported <- function(dbms) {
   glue::glue("The concept of schemas is not supported for DBMS {tick(dbms)}.")
 }
+
+
+# write or read dm to/from files ------------------------------------------
+
+abort_dir_not_empty <- function() {
+  abort(
+    "Please chose a non-existent or empty directory for the csv-files.",
+    .subclass = dm_error_full("dir_not_empty")
+  )
+}
+
+abort_file_exists <- function(zip_file_path) {
+  abort(
+    glue::glue("File {tick(zip_file_path)} exists and `overwrite = FALSE`."),
+    .subclass = dm_error_full("file_exists")
+  )
+}
