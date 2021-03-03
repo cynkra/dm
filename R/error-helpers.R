@@ -649,3 +649,32 @@ abort_file_exists <- function(zip_file_path) {
     .subclass = dm_error_full("file_exists")
   )
 }
+
+abort_no_list <- function(table_names, column_names) {
+  abort(
+    error_txt_no_list(table_names, column_names),
+    .subclass = dm_error_full("no_list")
+  )
+}
+
+error_txt_no_list <- function(table_names, column_names) {
+  glue::glue(
+    "Class `list` is not supported, problematic column(s):\n",
+    "{paste0('Table: ', table_names, ', column: ', column_names, collapse = '\n')}"
+  )
+}
+
+abort_empty_dm <- function() {
+  abort(
+    "There needs to be at least one table in the `dm`, aborting the operation.",
+    .subclass = dm_error_full("empty_dm")
+  )
+}
+
+abort_files_missing <- function(missing, csv_directory) {
+  abort(
+    glue::glue(
+      "Cannot recreate `dm`: At least the files {commas(tick(missing))} are missing in directory {tick(csv_directory)}."),
+    .subclass = dm_error_full("files_missing")
+  )
+}

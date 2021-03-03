@@ -13,30 +13,38 @@ dm_write_csv <- function(dm, csv_directory) {
   )
 }
 
-dm_write_csv_impl <- function(dm, csv_directory, zip) {
-  if (!dir.exists(csv_directory)) {
-    dir.create(csv_directory)
-  }
+prepare_tables <- function(dm) {
   check_param_class(dm, "dm")
-  check_not_zoomed(dm, -2)
-  check_no_filter(dm, -2)
+  check_not_zoomed(dm, -3)
+  check_no_filter(dm, -3)
+  if (is_empty(dm)) {abort_empty_dm()}
 
   if (is_db(dm_get_src(dm))) {
     abort_only_for_local_src(dm_get_src(dm))
   }
 
-  csv_info_filename <- file.path(csv_directory, "___info_file_dm.csv")
-  csv_coltypes_filename <- file.path(csv_directory, "___coltypes_file_dm.csv")
-  csv_pk_filename <- file.path(csv_directory, "___pk_file_dm.csv")
-  csv_fk_filename <- file.path(csv_directory, "___fk_file_dm.csv")
-  csv_table_filenames <- file.path(csv_directory, paste0(src_tbls(dm), ".csv"))
-
   info_tibble <- dm_get_def(dm) %>% select(table, segment, display)
 
   col_class_tibble <- dm_col_class(dm)
   if ("list" %in% col_class_tibble$class) {
-    # FIXME: proper dm error
-    abort("Class `list` is not supported (table X, column Y).")
+    tbl_col_list <- filter(col_class_tibble, class == "list")
+    abort_no_list(tbl_col_list$table, tbl_col_list$column)
+  }
+  if ("datetime" %in% col_class_tibble$class |
+      "POSIXct" %in% col_class_tibble$class |
+      "POSIXlt" %in% col_class_tibble$class) {
+    tbl_dt_list <- filter(
+      col_class_tibble,
+      class == "datetime" |
+        class == "POSIXct" |
+        class == "POSIXlt"
+    )
+    message(
+      glue::glue(
+        "Columns containing datetimes need to be converted to TZ `UTC` to avoid errors, consider checking columns:\n",
+        "{paste0('Table: ', tick(tbl_dt_list$table), ', column: ', tick(tbl_dt_list$column), collapse = '\n')}"
+      )
+    )
   }
 
   # FIXME: might need to revisit for compound keys
@@ -53,10 +61,31 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
     mutate(key_nr = row_number()) %>%
     unnest(fk_col)
 
-  readr::write_csv(info_tibble, csv_info_filename)
-  readr::write_csv(col_class_tibble, csv_coltypes_filename)
-  readr::write_csv(pk_tibble, csv_pk_filename)
-  readr::write_csv(fk_tibble, csv_fk_filename)
+  list(
+    info_tibble = info_tibble,
+    col_class_tibble = col_class_tibble,
+    pk_tibble = pk_tibble,
+    fk_tibble = fk_tibble
+  )
+}
+
+dm_write_csv_impl <- function(dm, csv_directory, zip) {
+  csv_tables <- prepare_tables(dm)
+
+  if (!dir.exists(csv_directory)) {
+    dir.create(csv_directory)
+  }
+
+  csv_info_filename <- file.path(csv_directory, "___info_file_dm.csv")
+  csv_coltypes_filename <- file.path(csv_directory, "___coltypes_file_dm.csv")
+  csv_pk_filename <- file.path(csv_directory, "___pk_file_dm.csv")
+  csv_fk_filename <- file.path(csv_directory, "___fk_file_dm.csv")
+  csv_table_filenames <- file.path(csv_directory, paste0(src_tbls(dm), ".csv"))
+
+  readr::write_csv(csv_tables$info_tibble, csv_info_filename)
+  readr::write_csv(csv_tables$col_class_tibble, csv_coltypes_filename)
+  readr::write_csv(csv_tables$pk_tibble, csv_pk_filename)
+  readr::write_csv(csv_tables$fk_tibble, csv_fk_filename)
 
   walk2(dm_get_tables_impl(dm), csv_table_filenames, readr::write_csv)
   if (!zip) {
@@ -68,8 +97,16 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
 }
 
 dm_read_csv <- function(csv_directory) {
-
-  # FIXME: abort if special files do not exist
+  file_list <- list.files(csv_directory)
+  special_files <- c(
+    "___info_file_dm.csv",
+    "___coltypes_file_dm.csv",
+    "___pk_file_dm.csv",
+    "___fk_file_dm.csv"
+  )
+  if (!all(special_files %in% file_list)) {
+    abort_files_missing(setdiff(special_files, intersect(file_list, special_files)), csv_directory)
+  }
 
   def_base <- readr::read_csv(
     file.path(csv_directory, "___info_file_dm.csv"),
@@ -103,8 +140,6 @@ dm_read_csv <- function(csv_directory) {
   # sort table_files according to column def_base$table
   table_files_sorted <- table_files[order(match(table_files, paste0(table_names, ".csv")))]
 
-  # guessing column types
-  # FIXME: column-types could actually also be stored in another file; is it necessary?
   table_tibble <- map2(
     file.path(csv_directory, table_files_sorted),
     col_class_sorted,
@@ -164,13 +199,13 @@ dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
     if (overwrite) {
       message(glue::glue("Overwriting file {tick(zip_file_path)}."))
     } else{
-      # FIXME: need proper dm_error
       abort_file_exists(zip_file_path)
     }
   }
 
   csv_directory <- file.path(tempdir(), basename(tempfile(pattern = "dm_zip_")))
   dm_write_csv_impl(dm, csv_directory, zip = TRUE)
+
   withr::defer(try(unlink(csv_directory, recursive = TRUE)))
 
   csv_files <- list.files(csv_directory)
@@ -220,7 +255,7 @@ readr_translate <- function(r_class) {
     "Date", "D",
     "time", "t",
     "datetime", "T",
-    "POSIXt", "T",
+    "POSIXlt", "T",
     "POSIXct", "T",
     "number", "n"
     )
