@@ -358,6 +358,7 @@ readr_translate <- function(r_class) {
     "logical", "l",
     "integer", "i",
     "double", "d",
+    "numeric", "d",
     "character", "c",
     "Date", "D",
     "time", "t",
