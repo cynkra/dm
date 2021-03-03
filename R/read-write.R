@@ -40,8 +40,7 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
   }
 
   # FIXME: might need to revisit for compound keys
-  pk_tibble <- dm_get_all_pks_impl(dm) %>%
-    mutate(pk_col = as_list(pk_col))
+  pk_tibble <- dm_get_all_pks_impl(dm)
 
   # not using dm_get_all_fks_impl(), because it will break with introduction of compound keys
   # FIXME: might need to revisit for compound keys
