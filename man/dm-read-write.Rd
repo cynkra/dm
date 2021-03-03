@@ -63,10 +63,14 @@ Store a local \code{dm} in a file or directory and retrieve it later.
 \code{dm_read_xlsx()}: read a \code{dm} from an \code{xlsx}-file created using \code{dm_write_xlsx()}.
 }
 \examples{
+\dontrun{
 dm_write_csv(dm_nycflights13(), "nyc_dm_as_csv")
 dm_read_csv("nyc_dm_as_csv")
+
 dm_write_zip(dm_nycflights13())
 dm_read_zip("dm.zip")
+
 dm_write_xlsx(dm_nycflights13())
 dm_read_xlsx("dm.xlsx")
+}
 }

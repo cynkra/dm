@@ -19,7 +19,16 @@
 #' @rdname dm-read-write
 #' @export
 #' @examples
+#' \dontrun{
 #' dm_write_csv(dm_nycflights13(), "nyc_dm_as_csv")
+#' dm_read_csv("nyc_dm_as_csv")
+#'
+#' dm_write_zip(dm_nycflights13())
+#' dm_read_zip("dm.zip")
+#'
+#' dm_write_xlsx(dm_nycflights13())
+#' dm_read_xlsx("dm.xlsx")
+#' }
 dm_write_csv <- function(dm, csv_directory) {
   if (dir.exists(csv_directory) && length(list.files(csv_directory)) > 0) {
     abort_dir_not_empty()
@@ -38,8 +47,6 @@ dm_write_csv <- function(dm, csv_directory) {
 #' @details `dm_read_csv()`: read a `dm` from a directory created using `dm_write_csv()`.
 #' @rdname dm-read-write
 #' @export
-#' @examples
-#' dm_read_csv("nyc_dm_as_csv")
 dm_read_csv <- function(csv_directory) {
   file_list <- list.files(csv_directory)
   special_files <- c(
@@ -107,8 +114,6 @@ dm_read_csv <- function(csv_directory) {
 #' @details `dm_write_zip()`: write a `dm` to a `zip`-file containing a collection of `csv`-files.
 #' @rdname dm-read-write
 #' @export
-#' @examples
-#' dm_write_zip(dm_nycflights13())
 dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
   if (file.exists(zip_file_path)) {
     if (overwrite) {
@@ -138,8 +143,6 @@ dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
 #' @details `dm_read_zip()`: read a `dm` from a `zip`-file created using `dm_write_zip()`.
 #' @rdname dm-read-write
 #' @export
-#' @examples
-#' dm_read_zip("dm.zip")
 dm_read_zip <- function(zip_file_path) {
   # FIXME: nicer way for randomized path-name?
   unzip_directory <- file.path(tempdir(), basename(tempfile(pattern = "dm_unzip_")))
@@ -157,8 +160,6 @@ dm_read_zip <- function(zip_file_path) {
 #' @details `dm_write_xlsx()`: write a `dm` to an `xlsx`-file containing several tables defining the `dm`.
 #' @rdname dm-read-write
 #' @export
-#' @examples
-#' dm_write_xlsx(dm_nycflights13())
 dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
 
   if (file.exists(xlsx_file_path)) {
@@ -191,8 +192,6 @@ dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
 #' @details `dm_read_xlsx()`: read a `dm` from an `xlsx`-file created using `dm_write_xlsx()`.
 #' @rdname dm-read-write
 #' @export
-#' @examples
-#' dm_read_xlsx("dm.xlsx")
 dm_read_xlsx <- function(xlsx_file_path) {
   sheet_list <- readxl::excel_sheets(xlsx_file_path)
   special_sheets <- c(
