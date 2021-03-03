@@ -1,6 +1,6 @@
 dm_write_csv <- function(dm, csv_directory) {
-  if (dir.exists(csv_directory)) {
-    abort("Please chose a non-existent directory for the csv-files.")
+  if (dir.exists(csv_directory) && length(list.files(csv_directory)) > 0) {
+    abort("Please chose a non-existent or empty directory for the csv-files.")
   }
   tryCatch(
     dm_write_csv_impl(dm, csv_directory, zip = FALSE),
@@ -14,7 +14,9 @@ dm_write_csv <- function(dm, csv_directory) {
 }
 
 dm_write_csv_impl <- function(dm, csv_directory, zip) {
-  dir.create(csv_directory)
+  if (!dir.exists(csv_directory)) {
+    dir.create(csv_directory)
+  }
   check_param_class(dm, "dm")
   check_not_zoomed(dm)
   check_no_filter(dm)
