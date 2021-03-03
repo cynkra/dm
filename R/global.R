@@ -89,5 +89,12 @@ utils::globalVariables(c(
   "districts",
   "loans",
   "orders",
-  "trans"
+  "trans",
+  #
+  # read/write
+  "readr_class",
+  "zip",
+  "key_nr",
+  "fk_col",
+  "segment"
 ))
