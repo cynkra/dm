@@ -1,3 +1,25 @@
+#' Read/write a local dm from/to files
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' Store a local `dm` in a file or directory and retrieve it later.
+#'
+#' @inheritParams dm_add_pk
+#' @param csv_directory For `dm_write_csv()`: The path to a non-existent or empty
+#' directory to write the `csv`-files defining the `dm` to.
+#'
+#' For `dm_read_csv()`: The path to the directory containing the `dm` as `csv-files`.
+#' @details `dm_write_csv()`: write a `dm` to a collection of `csv`-files to a non-existent or empty directory.
+#'
+#' @return `read`-family: A `dm` object.
+#'
+#' `write`-family: The path to the file/directory containing the stored `dm`, invisibly.
+#'
+#' @rdname dm-read-write
+#' @export
+#' @examples
+#' dm_write_csv(dm_nycflights13(), "nyc_dm_as_csv")
 dm_write_csv <- function(dm, csv_directory) {
   if (dir.exists(csv_directory) && length(list.files(csv_directory)) > 0) {
     abort_dir_not_empty()
@@ -13,6 +35,11 @@ dm_write_csv <- function(dm, csv_directory) {
   )
 }
 
+#' @details `dm_read_csv()`: read a `dm` from a directory created using `dm_write_csv()`.
+#' @rdname dm-read-write
+#' @export
+#' @examples
+#' dm_read_csv("nyc_dm_as_csv")
 dm_read_csv <- function(csv_directory) {
   file_list <- list.files(csv_directory)
   special_files <- c(
@@ -71,6 +98,17 @@ dm_read_csv <- function(csv_directory) {
   make_dm(def_base, table_names, table_tibble, pk_info, fk_info)
 }
 
+#' @inheritParams dm_write_csv
+#' @param zip_file_path
+#' For `dm_write_zip`: The file path to the `zip`-file to write; defaults to `dm.zip`.
+#'
+#' For `dm_read_zip`: The file path to the `zip`-file to read the `dm` from.
+#' @param overwrite Logical, default: `FALSE`. In case the file already exists, should it be overwritten?
+#' @details `dm_write_zip()`: write a `dm` to a `zip`-file containing a collection of `csv`-files.
+#' @rdname dm-read-write
+#' @export
+#' @examples
+#' dm_write_zip(dm_nycflights13())
 dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
   if (file.exists(zip_file_path)) {
     if (overwrite) {
@@ -97,6 +135,11 @@ dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
   invisible(zip_file_path)
 }
 
+#' @details `dm_read_zip()`: read a `dm` from a `zip`-file created using `dm_write_zip()`.
+#' @rdname dm-read-write
+#' @export
+#' @examples
+#' dm_read_zip("dm.zip")
 dm_read_zip <- function(zip_file_path) {
   # FIXME: nicer way for randomized path-name?
   unzip_directory <- file.path(tempdir(), basename(tempfile(pattern = "dm_unzip_")))
@@ -106,6 +149,16 @@ dm_read_zip <- function(zip_file_path) {
   dm_read_csv(unzip_directory)
 }
 
+#' @inheritParams dm_write_zip
+#' @param xlsx_file_path
+#' For `dm_write_xlsx()`: The file path to the `xlsx`-file to write; defaults to `dm.xlsx`.
+#'
+#' For `dm_read_xlsx()`: The file path to the `xlsx`-file to read the `dm` from.
+#' @details `dm_write_xlsx()`: write a `dm` to an `xlsx`-file containing several tables defining the `dm`.
+#' @rdname dm-read-write
+#' @export
+#' @examples
+#' dm_write_xlsx(dm_nycflights13())
 dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
 
   if (file.exists(xlsx_file_path)) {
@@ -135,6 +188,11 @@ dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
   invisible(xlsx_file_path)
 }
 
+#' @details `dm_read_xlsx()`: read a `dm` from an `xlsx`-file created using `dm_write_xlsx()`.
+#' @rdname dm-read-write
+#' @export
+#' @examples
+#' dm_read_xlsx("dm.xlsx")
 dm_read_xlsx <- function(xlsx_file_path) {
   sheet_list <- readxl::excel_sheets(xlsx_file_path)
   special_sheets <- c(
