@@ -70,13 +70,16 @@ Suggests:
     mockr,
     nycflights13,
     odbc,
+    readr,
+    readxl,
     RMariaDB (>= 1.0.10),
     rmarkdown,
     RPostgres,
     RSQLite,
     testthat (>= 2.1.0),
     tidyverse,
-    withr
+    withr,
+    writexl
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
