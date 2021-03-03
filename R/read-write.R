@@ -22,7 +22,7 @@ dm_read_csv <- function(csv_directory) {
     "___fk_file_dm.csv"
   )
   if (!all(special_files %in% file_list)) {
-    abort_files_missing(setdiff(special_files, intersect(file_list, special_files)), csv_directory)
+    abort_files_or_sheets_missing(setdiff(special_files, intersect(file_list, special_files)), csv_directory)
   }
 
   def_base <- readr::read_csv(
@@ -68,47 +68,7 @@ dm_read_csv <- function(csv_directory) {
     # https://www.tidyverse.org/blog/2018/12/readr-1-3-1/#tibble-subclass
     mutate(data = map(data, `[`))
 
-  pk_tibble <- pk_info %>%
-    group_by(table) %>%
-    mutate(pks = list(tibble(column = list(pk_col)))) %>%
-    ungroup() %>%
-    select(-pk_col)
-
-  fk_tibble <- fk_info %>%
-    group_by(child_table, key_nr) %>%
-    summarize(fks = list(
-      tibble(
-        table = unique(parent_table),
-        column = list(fk_col)
-      )
-    ), .groups = "drop_last"
-    ) %>%
-    summarize(
-      fks = list(bind_rows(fks)),
-      .groups = "drop"
-    )
-
-  zoom <- new_zoom()
-  col_tracker_zoom <- new_col_tracker_zoom()
-  filter_tibble <-
-    tibble(
-      table = table_names,
-      filters = vctrs::list_of(new_filter())
-    )
-
-  def_base %>%
-    left_join(table_tibble, by = "table") %>%
-    relocate(data, .after = "table") %>%
-    left_join(pk_tibble, by = "table") %>%
-    mutate(pks = map(pks, ~ if (is_null(.x)) {new_pk()} else {.x})) %>%
-    mutate(pks = vctrs::as_list_of(pks)) %>%
-    left_join(fk_tibble, by = c("table" = "child_table")) %>%
-    mutate(fks = map(fks, ~ if (is_null(.x)) {new_fk()} else {.x})) %>%
-    mutate(fks = vctrs::as_list_of(fks)) %>%
-    left_join(filter_tibble, by = "table") %>%
-    left_join(zoom, by = "table") %>%
-    left_join(col_tracker_zoom, by = "table") %>%
-    new_dm3()
+  make_dm(def_base, table_names, table_tibble, pk_info, fk_info)
 }
 
 dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
@@ -173,6 +133,124 @@ dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
     glue::glue("Written `dm` as xlsx-file {tick(xlsx_file_path)}.")
   )
   invisible(xlsx_file_path)
+}
+
+dm_read_xlsx <- function(xlsx_file_path) {
+  sheet_list <- readxl::excel_sheets(xlsx_file_path)
+  special_sheets <- c(
+    "___info_dm",
+    "___coltypes_dm",
+    "___pk_dm",
+    "___fk_dm"
+  )
+  if (!all(special_sheets %in% sheet_list)) {
+    abort_files_or_sheets_missing(
+      setdiff(special_sheets, intersect(sheet_list[1:3], special_sheets)),
+      xlsx_file_path,
+      csv = FALSE
+    )
+  }
+
+  def_base <- readxl::read_xlsx(
+    xlsx_file_path,
+    sheet = "___info_dm",
+    col_types = "text"
+  )
+  table_names <- def_base$table
+
+  col_class_info <- readxl::read_xlsx(
+    xlsx_file_path,
+    sheet = "___coltypes_dm",
+    col_types = "text"
+  ) %>%
+    group_by(table) %>%
+    summarize(column = list(column), class = list(class))
+  # FIXME: use it wisely
+
+  pk_info <- readxl::read_xlsx(
+      xlsx_file_path,
+      sheet = "___pk_dm",
+    col_types = "text"
+  )
+
+  fk_info <- readxl::read_xlsx(
+    xlsx_file_path,
+    sheet = "___fk_dm",
+    col_types = c("text", "text", "text", "numeric")
+  )
+
+  table_sheets <- setdiff(
+    sheet_list,
+    c("___info_dm", "___pk_dm", "___fk_dm", "___coltypes_dm")
+  )
+  # sort table_files according to column def_base$table
+  table_sheets_sorted <- table_sheets[order(match(table_sheets, table_names))]
+
+  table_tibble <- map(
+    table_sheets_sorted,
+    readxl::read_xlsx, path = xlsx_file_path
+  ) %>%
+    set_names(table_names) %>%
+    enframe(name = "table", value = "data")
+
+  # since reading from xlsx via `readxl::read_xlsx()` does e.g. not support reading as integer
+  # we reclass the columns in retrospect:
+  table_tibble_reclassed <- left_join(table_tibble, col_class_info, by = "table") %>%
+    select(-table) %>%
+    pmap(function(data, column, class) {
+      reduce2(column, class, function(data, column, class) {
+      mutate(data, !!column := get(paste0("as.", class))(!!sym(column)))
+    }, .init = data)
+    }) %>%
+    set_names(table_names) %>%
+    enframe(name = "table", value = "data")
+
+  make_dm(def_base, table_names, table_tibble_reclassed, pk_info, fk_info)
+}
+
+make_dm <- function(def_base, table_names, table_tibble, pk_info, fk_info) {
+
+  pk_tibble <- pk_info %>%
+    group_by(table) %>%
+    mutate(pks = list(tibble(column = list(pk_col)))) %>%
+    ungroup() %>%
+    select(-pk_col)
+
+  fk_tibble <- fk_info %>%
+    group_by(child_table, key_nr) %>%
+    summarize(fks = list(
+      tibble(
+        table = unique(parent_table),
+        column = list(fk_col)
+      )
+    ), .groups = "drop_last"
+    ) %>%
+    summarize(
+      fks = list(bind_rows(fks)),
+      .groups = "drop"
+    )
+
+  zoom <- new_zoom()
+  col_tracker_zoom <- new_col_tracker_zoom()
+  filter_tibble <-
+    tibble(
+      table = table_names,
+      filters = vctrs::list_of(new_filter())
+    )
+
+  def_base %>%
+    left_join(table_tibble, by = "table") %>%
+    relocate(data, .after = "table") %>%
+    left_join(pk_tibble, by = "table") %>%
+    mutate(pks = map(pks, ~ if (is_null(.x)) {new_pk()} else {.x})) %>%
+    mutate(pks = vctrs::as_list_of(pks)) %>%
+    left_join(fk_tibble, by = c("table" = "child_table")) %>%
+    mutate(fks = map(fks, ~ if (is_null(.x)) {new_fk()} else {.x})) %>%
+    mutate(fks = vctrs::as_list_of(fks)) %>%
+    left_join(filter_tibble, by = "table") %>%
+    left_join(zoom, by = "table") %>%
+    left_join(col_tracker_zoom, by = "table") %>%
+    new_dm3()
 }
 
 prepare_tables <- function(dm) {
@@ -252,7 +330,7 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
   walk2(dm_get_tables_impl(dm), csv_table_filenames, readr::write_csv)
   if (!zip) {
     message(
-      glue::glue("Written `dm` as csv-files to the directory {tick(csv_directory)}.")
+      glue::glue("Written `dm` as collection of csv-files to directory {tick(csv_directory)}.")
     )
   }
   invisible(csv_directory)

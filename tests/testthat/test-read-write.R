@@ -1,4 +1,4 @@
-test_that("read and write csv/zip works", {
+test_that("read and write csv/zip/xlsx works", {
   skip_if_remote_src()
 
   test_path <- "___test_path"
@@ -45,7 +45,7 @@ test_that("read and write csv/zip works", {
 
   expect_dm_error(
     dm_read_csv(test_path_2),
-    "files_missing"
+    "files_or_sheets_missing"
   )
 
   expect_message(
@@ -56,8 +56,21 @@ test_that("read and write csv/zip works", {
     "zip-file"
   )
 
+  expect_message(
+    expect_identical(
+      dm_for_filter(),
+      dm_write_xlsx(dm_for_filter(), xlsx_file_path = file.path(test_path, "dm.xlsx")) %>% dm_read_xlsx()
+    ),
+    "xlsx-file"
+  )
+
   expect_dm_error(
     dm_write_zip(dm_for_filter(), zip_file_path = file.path(test_path, "dm.zip")),
+    "file_exists"
+  )
+
+  expect_dm_error(
+    dm_write_xlsx(dm_for_filter(), xlsx_file_path = file.path(test_path, "dm.xlsx")),
     "file_exists"
   )
 
@@ -74,6 +87,21 @@ test_that("read and write csv/zip works", {
       "Overwriting file"
     ),
     "zip-file"
+  )
+
+  expect_message(
+    expect_message(
+      expect_identical(
+        dm_for_filter(),
+        dm_write_xlsx(
+          dm_for_filter(),
+          xlsx_file_path = file.path(test_path, "dm.xlsx"),
+          overwrite = TRUE) %>%
+          dm_read_xlsx()
+      ),
+      "Overwriting file"
+    ),
+    "xlsx-file"
   )
 
   # check for simple errors
@@ -130,9 +158,25 @@ test_that("read and write csv/zip works", {
     "`UTC`"
   )
 
+  expect_message(
+    expect_message(
+      expect_identical(
+        no_key_date_time_dm,
+        dm_write_xlsx(no_key_date_time_dm, xlsx_file_path = file.path(test_path_3, "dm.xlsx")) %>% dm_read_xlsx()
+      ),
+      "xlsx-file"
+    ),
+    "`UTC`"
+  )
+
   # in case of `empty_dm()`
   expect_dm_error(
-    dm_write_zip(empty_dm(), zip_file_path = file.path(test_path_3, "dm.zip", overwrite = TRUE)),
+    dm_write_zip(empty_dm(), zip_file_path = file.path(test_path_3, "dm.zip"), overwrite = TRUE),
+    "empty_dm"
+  )
+
+  expect_dm_error(
+    dm_write_xlsx(empty_dm(), xlsx_file_path = file.path(test_path_3, "dm.xlsx"), overwrite = TRUE),
     "empty_dm"
   )
 })

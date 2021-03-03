@@ -671,10 +671,21 @@ abort_empty_dm <- function() {
   )
 }
 
-abort_files_missing <- function(missing, csv_directory) {
+abort_files_or_sheets_missing <- function(missing, path, csv = TRUE) {
   abort(
-    glue::glue(
-      "Cannot recreate `dm`: At least the files {commas(tick(missing))} are missing in directory {tick(csv_directory)}."),
-    .subclass = dm_error_full("files_missing")
+    error_txt_files_or_sheets_missing(missing, path, csv),
+    .subclass = dm_error_full("files_or_sheets_missing")
   )
+}
+
+error_txt_files_or_sheets_missing <- function(missing, path, csv) {
+  if (csv) {
+    glue::glue(
+      "Cannot recreate `dm`: At least the files {commas(tick(missing))} are missing in directory {tick(path)}."
+    )
+  } else {
+    glue::glue(
+      "Cannot recreate `dm`: At least the worksheets {commas(tick(missing))} are missing in file {tick(path)}."
+    )
+  }
 }
