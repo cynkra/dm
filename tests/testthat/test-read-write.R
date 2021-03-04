@@ -18,7 +18,7 @@ test_that("read and write csv/zip/xlsx works", {
     "csv-files"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     dm_for_filter(),
     dm_read_csv(test_path)
   )
@@ -37,7 +37,7 @@ test_that("read and write csv/zip/xlsx works", {
     "csv-files"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     dm_for_filter(),
     dm_read_csv(test_path_2)
   )
@@ -58,7 +58,7 @@ test_that("read and write csv/zip/xlsx works", {
     "zip-file"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     dm_for_filter(),
     dm_read_zip(file.path(test_path, "dm.zip"))
   )
@@ -69,7 +69,7 @@ test_that("read and write csv/zip/xlsx works", {
     "xlsx-file"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     dm_for_filter(),
     dm_read_xlsx(file.path(test_path, "dm.xlsx"))
   )
@@ -94,7 +94,7 @@ test_that("read and write csv/zip/xlsx works", {
     "zip-file"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     dm_for_filter(),
     dm_read_zip(file.path(test_path, "dm.zip"))
   )
@@ -109,7 +109,7 @@ test_that("read and write csv/zip/xlsx works", {
     "xlsx-file"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     dm_for_filter(),
     dm_read_xlsx(file.path(test_path, "dm.xlsx"))
   )
@@ -154,7 +154,7 @@ test_that("read and write csv/zip/xlsx works", {
     "`UTC`"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     no_key_date_time_dm,
     dm_read_csv(test_path_3)
   )
@@ -167,7 +167,7 @@ test_that("read and write csv/zip/xlsx works", {
     "`UTC`"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     no_key_date_time_dm,
     dm_read_zip(file.path(test_path_3, "dm.zip"))
   )
@@ -180,7 +180,7 @@ test_that("read and write csv/zip/xlsx works", {
     "`UTC`"
   )
 
-  expect_identical(
+  expect_equivalent_dm(
     no_key_date_time_dm,
     dm_read_xlsx(file.path(test_path_3, "dm.xlsx"))
   )
