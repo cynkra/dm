@@ -10,7 +10,15 @@
 #' directory to write the `csv`-files defining the `dm` to.
 #'
 #' For `dm_read_csv()`: The path to the directory containing the `dm` as `csv-files`.
-#' @details `dm_write_csv()`: write a `dm` to a collection of `csv`-files to a non-existent or empty directory.
+#' @details
+#' Not all column types are supported, only: `character`, `Date`, `integer`, `logical`, `numeric`,
+#' `POSIXct`, `POSIXlt`.
+#'
+#' `POSIXct`, `POSIXlt` will be converted to timezone `UTC` to avoid incorrect results
+#' due to not tracking the timezone.
+#' An informative message will be issued when this happens.
+#'
+#' `dm_write_csv()`: write a `dm` to a collection of `csv`-files to a non-existent or empty directory.
 #'
 #' @return `read`-family: A `dm` object.
 #'
@@ -195,6 +203,7 @@ dm_write_xlsx <- function(dm, xlsx_file_path, overwrite = FALSE) {
 }
 
 #' @details `dm_read_xlsx()`: read a `dm` from an `xlsx`-file created using `dm_write_xlsx()`.
+#'
 #' @rdname dm-read-write
 #' @export
 dm_read_xlsx <- function(xlsx_file_path) {

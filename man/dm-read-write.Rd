@@ -50,6 +50,13 @@ For \code{dm_read_xlsx()}: The file path to the \code{xlsx}-file to read the \co
 Store a local \code{dm} in a file or directory and retrieve it later.
 }
 \details{
+Not all column types are supported, only: \code{character}, \code{Date}, \code{integer}, \code{logical}, \code{numeric},
+\code{POSIXct}, \code{POSIXlt}.
+
+\code{POSIXct}, \code{POSIXlt} will be converted to timezone \code{UTC} to avoid incorrect results
+due to not tracking the timezone.
+An informative message will be issued when this happens.
+
 \code{dm_write_csv()}: write a \code{dm} to a collection of \code{csv}-files to a non-existent or empty directory.
 
 \code{dm_read_csv()}: read a \code{dm} from a directory created using \code{dm_write_csv()}.
