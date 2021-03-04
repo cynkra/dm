@@ -638,7 +638,7 @@ error_txt_no_schemas_supported <- function(dbms) {
 
 abort_dir_not_empty <- function() {
   abort(
-    "Please chose a non-existent or empty directory for the csv-files.",
+    "Please choose a non-existent or empty directory for the csv-files.",
     .subclass = dm_error_full("dir_not_empty")
   )
 }
