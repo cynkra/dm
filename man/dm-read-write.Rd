@@ -42,7 +42,7 @@ For \code{dm_read_xlsx()}: The file path to the \code{xlsx}-file to read the \co
 \value{
 \code{read}-family: A \code{dm} object.
 
-\code{write}-family: The path to the file/directory containing the stored \code{dm}, invisibly.
+\code{write}-family: The \code{dm}, invisibly.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

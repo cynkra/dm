@@ -14,12 +14,15 @@ test_that("read and write csv/zip/xlsx works", {
 
   # writing into a non-existing directory
   expect_message(
-    expect_identical(
-      dm_for_filter(),
-      dm_write_csv(dm_for_filter(), csv_directory = test_path) %>% dm_read_csv()
-    ),
+    dm_write_csv(dm_for_filter(), csv_directory = test_path),
     "csv-files"
   )
+
+  expect_identical(
+    dm_for_filter(),
+    dm_read_csv(test_path)
+  )
+
 
   expect_dm_error(
     dm_write_csv(dm_for_filter(), csv_directory = test_path),
@@ -30,11 +33,13 @@ test_that("read and write csv/zip/xlsx works", {
   dir.create(test_path_2)
 
   expect_message(
-    expect_identical(
-      dm_for_filter(),
-      dm_write_csv(dm_for_filter(), csv_directory = test_path_2) %>% dm_read_csv()
-    ),
+    dm_write_csv(dm_for_filter(), csv_directory = test_path_2),
     "csv-files"
+  )
+
+  expect_identical(
+    dm_for_filter(),
+    dm_read_csv(test_path_2)
   )
 
   # error if special files are missing
@@ -49,19 +54,24 @@ test_that("read and write csv/zip/xlsx works", {
   )
 
   expect_message(
-    expect_identical(
-      dm_for_filter(),
-      dm_write_zip(dm_for_filter(), zip_file_path = file.path(test_path, "dm.zip")) %>% dm_read_zip()
-    ),
+    dm_write_zip(dm_for_filter(), zip_file_path = file.path(test_path, "dm.zip")),
     "zip-file"
   )
 
+  expect_identical(
+    dm_for_filter(),
+    dm_read_zip(file.path(test_path, "dm.zip"))
+  )
+
+
   expect_message(
-    expect_identical(
-      dm_for_filter(),
-      dm_write_xlsx(dm_for_filter(), xlsx_file_path = file.path(test_path, "dm.xlsx")) %>% dm_read_xlsx()
-    ),
+    dm_write_xlsx(dm_for_filter(), xlsx_file_path = file.path(test_path, "dm.xlsx")),
     "xlsx-file"
+  )
+
+  expect_identical(
+    dm_for_filter(),
+    dm_read_xlsx(file.path(test_path, "dm.xlsx"))
   )
 
   expect_dm_error(
@@ -76,32 +86,32 @@ test_that("read and write csv/zip/xlsx works", {
 
   expect_message(
     expect_message(
-      expect_identical(
+      dm_write_zip(
         dm_for_filter(),
-        dm_write_zip(
-          dm_for_filter(),
-          zip_file_path = file.path(test_path, "dm.zip"),
-          overwrite = TRUE) %>%
-          dm_read_zip()
-      ),
-      "Overwriting file"
-    ),
+        zip_file_path = file.path(test_path, "dm.zip"),
+        overwrite = TRUE),
+      "Overwriting file"),
     "zip-file"
+  )
+
+  expect_identical(
+    dm_for_filter(),
+    dm_read_zip(file.path(test_path, "dm.zip"))
   )
 
   expect_message(
     expect_message(
-      expect_identical(
+      dm_write_xlsx(
         dm_for_filter(),
-        dm_write_xlsx(
-          dm_for_filter(),
-          xlsx_file_path = file.path(test_path, "dm.xlsx"),
-          overwrite = TRUE) %>%
-          dm_read_xlsx()
-      ),
-      "Overwriting file"
-    ),
+        xlsx_file_path = file.path(test_path, "dm.xlsx"),
+        overwrite = TRUE),
+      "Overwriting file"),
     "xlsx-file"
+  )
+
+  expect_identical(
+    dm_for_filter(),
+    dm_read_xlsx(file.path(test_path, "dm.xlsx"))
   )
 
   # check for simple errors
@@ -138,36 +148,43 @@ test_that("read and write csv/zip/xlsx works", {
 
   expect_message(
     expect_message(
-      expect_identical(
-        no_key_date_time_dm,
-        dm_write_csv(no_key_date_time_dm, csv_directory = test_path_3) %>% dm_read_csv()
-      ),
+      dm_write_csv(no_key_date_time_dm, csv_directory = test_path_3),
       "csv-files"
     ),
     "`UTC`"
   )
 
+  expect_identical(
+    no_key_date_time_dm,
+    dm_read_csv(test_path_3)
+  )
+
   expect_message(
     expect_message(
-      expect_identical(
-        no_key_date_time_dm,
-        dm_write_zip(no_key_date_time_dm, zip_file_path = file.path(test_path_3, "dm.zip")) %>% dm_read_zip()
-      ),
+      dm_write_zip(no_key_date_time_dm, zip_file_path = file.path(test_path_3, "dm.zip")),
       "zip-file"
     ),
     "`UTC`"
   )
 
+  expect_identical(
+    no_key_date_time_dm,
+    dm_read_zip(file.path(test_path_3, "dm.zip"))
+  )
+
   expect_message(
     expect_message(
-      expect_identical(
-        no_key_date_time_dm,
-        dm_write_xlsx(no_key_date_time_dm, xlsx_file_path = file.path(test_path_3, "dm.xlsx")) %>% dm_read_xlsx()
-      ),
+      dm_write_xlsx(no_key_date_time_dm, xlsx_file_path = file.path(test_path_3, "dm.xlsx")),
       "xlsx-file"
-    ),
+      ),
     "`UTC`"
   )
+
+  expect_identical(
+    no_key_date_time_dm,
+    dm_read_xlsx(file.path(test_path_3, "dm.xlsx"))
+  )
+
 
   # in case of `empty_dm()`
   expect_dm_error(

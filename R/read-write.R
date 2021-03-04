@@ -14,7 +14,7 @@
 #'
 #' @return `read`-family: A `dm` object.
 #'
-#' `write`-family: The path to the file/directory containing the stored `dm`, invisibly.
+#' `write`-family: The `dm`, invisibly.
 #'
 #' @rdname dm-read-write
 #' @export
@@ -137,7 +137,7 @@ dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
     flags = "-j -q"
   )
   message(glue::glue("Written `dm` as zip-file {tick(zip_file_path)}."))
-  invisible(zip_file_path)
+  invisible(dm)
 }
 
 #' @details `dm_read_zip()`: read a `dm` from a `zip`-file created using `dm_write_zip()`.
@@ -186,7 +186,7 @@ dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
   message(
     glue::glue("Written `dm` as xlsx-file {tick(xlsx_file_path)}.")
   )
-  invisible(xlsx_file_path)
+  invisible(dm)
 }
 
 #' @details `dm_read_xlsx()`: read a `dm` from an `xlsx`-file created using `dm_write_xlsx()`.
@@ -390,7 +390,7 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
       glue::glue("Written `dm` as collection of csv-files to directory {tick(csv_directory)}.")
     )
   }
-  invisible(csv_directory)
+  invisible(dm)
 }
 
 dm_col_class <- function(dm) {
