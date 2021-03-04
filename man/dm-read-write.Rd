@@ -13,11 +13,11 @@ dm_write_csv(dm, csv_directory)
 
 dm_read_csv(csv_directory)
 
-dm_write_zip(dm, zip_file_path = "dm.zip", overwrite = FALSE)
+dm_write_zip(dm, zip_file_path, overwrite = FALSE)
 
 dm_read_zip(zip_file_path)
 
-dm_write_xlsx(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE)
+dm_write_xlsx(dm, xlsx_file_path, overwrite = FALSE)
 
 dm_read_xlsx(xlsx_file_path)
 }
@@ -29,13 +29,13 @@ directory to write the \code{csv}-files defining the \code{dm} to.
 
 For \code{dm_read_csv()}: The path to the directory containing the \code{dm} as \code{csv-files}.}
 
-\item{zip_file_path}{For \code{dm_write_zip}: The file path to the \code{zip}-file to write; defaults to \code{dm.zip}.
+\item{zip_file_path}{For \code{dm_write_zip}: The file path to the \code{zip}-file to write.
 
 For \code{dm_read_zip}: The file path to the \code{zip}-file to read the \code{dm} from.}
 
 \item{overwrite}{Logical, default: \code{FALSE}. In case the file already exists, should it be overwritten?}
 
-\item{xlsx_file_path}{For \code{dm_write_xlsx()}: The file path to the \code{xlsx}-file to write; defaults to \code{dm.xlsx}.
+\item{xlsx_file_path}{For \code{dm_write_xlsx()}: The file path to the \code{xlsx}-file to write.
 
 For \code{dm_read_xlsx()}: The file path to the \code{xlsx}-file to read the \code{dm} from.}
 }
@@ -67,10 +67,10 @@ Store a local \code{dm} in a file or directory and retrieve it later.
 dm_write_csv(dm_nycflights13(), "nyc_dm_as_csv")
 dm_read_csv("nyc_dm_as_csv")
 
-dm_write_zip(dm_nycflights13())
+dm_write_zip(dm_nycflights13(), "dm.zip")
 dm_read_zip("dm.zip")
 
-dm_write_xlsx(dm_nycflights13())
+dm_write_xlsx(dm_nycflights13(), "dm.xlsx")
 dm_read_xlsx("dm.xlsx")
 }
 }

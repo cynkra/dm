@@ -23,10 +23,10 @@
 #' dm_write_csv(dm_nycflights13(), "nyc_dm_as_csv")
 #' dm_read_csv("nyc_dm_as_csv")
 #'
-#' dm_write_zip(dm_nycflights13())
+#' dm_write_zip(dm_nycflights13(), "dm.zip")
 #' dm_read_zip("dm.zip")
 #'
-#' dm_write_xlsx(dm_nycflights13())
+#' dm_write_xlsx(dm_nycflights13(), "dm.xlsx")
 #' dm_read_xlsx("dm.xlsx")
 #' }
 dm_write_csv <- function(dm, csv_directory) {
@@ -107,14 +107,14 @@ dm_read_csv <- function(csv_directory) {
 
 #' @inheritParams dm_write_csv
 #' @param zip_file_path
-#' For `dm_write_zip`: The file path to the `zip`-file to write; defaults to `dm.zip`.
+#' For `dm_write_zip`: The file path to the `zip`-file to write.
 #'
 #' For `dm_read_zip`: The file path to the `zip`-file to read the `dm` from.
 #' @param overwrite Logical, default: `FALSE`. In case the file already exists, should it be overwritten?
 #' @details `dm_write_zip()`: write a `dm` to a `zip`-file containing a collection of `csv`-files.
 #' @rdname dm-read-write
 #' @export
-dm_write_zip <- function(dm, zip_file_path = "dm.zip", overwrite = FALSE) {
+dm_write_zip <- function(dm, zip_file_path, overwrite = FALSE) {
   if (file.exists(zip_file_path)) {
     if (overwrite) {
       message(glue::glue("Overwriting file {tick(zip_file_path)}."))
@@ -154,13 +154,13 @@ dm_read_zip <- function(zip_file_path) {
 
 #' @inheritParams dm_write_zip
 #' @param xlsx_file_path
-#' For `dm_write_xlsx()`: The file path to the `xlsx`-file to write; defaults to `dm.xlsx`.
+#' For `dm_write_xlsx()`: The file path to the `xlsx`-file to write.
 #'
 #' For `dm_read_xlsx()`: The file path to the `xlsx`-file to read the `dm` from.
 #' @details `dm_write_xlsx()`: write a `dm` to an `xlsx`-file containing several tables defining the `dm`.
 #' @rdname dm-read-write
 #' @export
-dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
+dm_write_xlsx <- function(dm, xlsx_file_path, overwrite = FALSE) {
 
   if (file.exists(xlsx_file_path)) {
     if (overwrite) {
