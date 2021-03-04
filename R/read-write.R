@@ -102,7 +102,7 @@ dm_read_csv <- function(csv_directory) {
     # https://www.tidyverse.org/blog/2018/12/readr-1-3-1/#tibble-subclass
     mutate(data = map(data, `[`))
 
-  make_dm(def_base, table_names, table_tibble, pk_info, fk_info)
+  make_dm(def_base, table_tibble, pk_info, fk_info)
 }
 
 #' @inheritParams dm_write_csv
@@ -262,10 +262,10 @@ dm_read_xlsx <- function(xlsx_file_path) {
     set_names(table_names) %>%
     enframe(name = "table", value = "data")
 
-  make_dm(def_base, table_names, table_tibble_reclassed, pk_info, fk_info)
+  make_dm(def_base, table_tibble_reclassed, pk_info, fk_info)
 }
 
-make_dm <- function(def_base, table_names, table_tibble, pk_info, fk_info) {
+make_dm <- function(def_base, table_tibble, pk_info, fk_info) {
 
   pk_tibble <- pk_info %>%
     group_by(table) %>%
@@ -291,7 +291,7 @@ make_dm <- function(def_base, table_names, table_tibble, pk_info, fk_info) {
   col_tracker_zoom <- new_col_tracker_zoom()
   filter_tibble <-
     tibble(
-      table = table_names,
+      table = def_base$table,
       filters = vctrs::list_of(new_filter())
     )
 
