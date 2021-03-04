@@ -177,7 +177,8 @@ dm_write_xlsx <- function(dm, xlsx_file_path, overwrite = FALSE) {
   xlsx_tables <- prepare_tbls_for_def_and_class(dm, csv = FALSE)
 
   xl_sheet_list <- c(
-    dm_get_tables_impl(dm),
+    dm_get_tables_impl(dm) %>%
+      convert_all_times_to_utc(xlsx_tables$col_class_tibble),
     list(
       "___info_dm" = xlsx_tables$info_tibble,
       "___coltypes_dm" = xlsx_tables$col_class_tibble,
@@ -342,23 +343,6 @@ prepare_tbls_for_def_and_class <- function(dm, csv) {
     }
   }
 
-  if ("datetime" %in% col_class_tibble$class |
-      "POSIXct" %in% col_class_tibble$class |
-      "POSIXlt" %in% col_class_tibble$class) {
-    tbl_dt_list <- filter(
-      col_class_tibble,
-      class == "datetime" |
-        class == "POSIXct" |
-        class == "POSIXlt"
-    )
-    message(
-      glue::glue(
-        "Columns containing datetimes need to be converted to TZ `UTC` to avoid errors, consider checking columns:\n",
-        "{paste0('Table: ', tick(tbl_dt_list$table), ', column: ', tick(tbl_dt_list$column), collapse = '\n')}"
-      )
-    )
-  }
-
   # FIXME: might need to revisit for compound keys
   pk_tibble <- dm_get_all_pks_impl(dm)
 
@@ -399,7 +383,9 @@ dm_write_csv_impl <- function(dm, csv_directory, zip) {
   readr::write_csv(csv_tables$pk_tibble, csv_pk_filename)
   readr::write_csv(csv_tables$fk_tibble, csv_fk_filename)
 
-  walk2(dm_get_tables_impl(dm), csv_table_filenames, readr::write_csv)
+  dm_tables <- dm_get_tables_impl(dm) %>%
+    convert_all_times_to_utc(csv_tables$col_class_tibble)
+  walk2(dm_tables, csv_table_filenames, readr::write_csv)
   if (!zip) {
     message(
       glue::glue("Written `dm` as collection of csv-files to directory {tick(csv_directory)}.")
@@ -448,3 +434,23 @@ xlsx_classes <- c(
   "POSIXlt",
   "POSIXct"
 )
+
+convert_all_times_to_utc <- function(table_list, col_class_table) {
+  if (any(col_class_table$class %in% c("POSIXlt", "POSIXct"))) {
+    to_convert <- filter(col_class_table, class %in% c("POSIXlt", "POSIXct"))
+    message(
+      c("Converting the time for the following column(s) to timezone `UTC`:\n",
+        glue::glue("{paste0(to_convert$table, '$', to_convert$column, collapse = '\n')}"))
+    )
+    table_list <- reduce2(to_convert$table, to_convert$column, function(tables, table, column) {
+      tables[[table]] <- tables[[table]] %>%
+        mutate(
+          !!column := lubridate::with_tz(!!sym(column), tz = "UTC")
+        )
+      tables
+      },
+      .init = table_list
+    )
+  }
+  table_list
+}

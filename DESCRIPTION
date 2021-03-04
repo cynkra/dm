@@ -67,6 +67,7 @@ Suggests:
     fansi,
     keyring,
     knitr,
+    lubridate,
     mockr,
     nycflights13,
     odbc,
