@@ -170,7 +170,7 @@ dm_write_xlsx <- function(dm, xlsx_file_path = "dm.xlsx", overwrite = FALSE) {
     }
   }
 
-  xlsx_tables <- prepare_tables(dm)
+  xlsx_tables <- prepare_tbls_for_def_and_class(dm)
 
   xl_sheet_list <- c(
     dm_get_tables_impl(dm),
@@ -310,7 +310,7 @@ make_dm <- function(def_base, table_tibble, pk_info, fk_info) {
     new_dm3()
 }
 
-prepare_tables <- function(dm) {
+prepare_tbls_for_def_and_class <- function(dm) {
   check_param_class(dm, "dm")
   check_not_zoomed(dm, -3)
   check_no_filter(dm, -3)
@@ -367,7 +367,7 @@ prepare_tables <- function(dm) {
 }
 
 dm_write_csv_impl <- function(dm, csv_directory, zip) {
-  csv_tables <- prepare_tables(dm)
+  csv_tables <- prepare_tbls_for_def_and_class(dm)
 
   if (!dir.exists(csv_directory)) {
     dir.create(csv_directory)
