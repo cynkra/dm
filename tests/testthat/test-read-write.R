@@ -141,47 +141,48 @@ test_that("read and write csv/zip/xlsx works", {
 
   # - case of no keys
   # - case of date or time columns
-  no_key_date_time_dm <- dm(
+  no_key_date_time_bool_dm <- dm(
     date_tbl = tibble(a = as.Date("2021-03-03")),
-    time_tbl = tibble(a = as.POSIXct("2021-03-03 09:16:00", tz = "UTC"))
+    time_tbl = tibble(a = as.POSIXct("2021-03-03 09:16:00", tz = "UTC")),
+    bool_tbl = tibble(l = c(TRUE, FALSE, TRUE))
   )
 
   expect_message(
     expect_message(
-      dm_write_csv(no_key_date_time_dm, csv_directory = test_path_3),
+      dm_write_csv(no_key_date_time_bool_dm, csv_directory = test_path_3),
       "csv-files"
     ),
     "`UTC`"
   )
 
   expect_equivalent_dm(
-    no_key_date_time_dm,
+    no_key_date_time_bool_dm,
     dm_read_csv(test_path_3)
   )
 
   expect_message(
     expect_message(
-      dm_write_zip(no_key_date_time_dm, zip_file_path = file.path(test_path_3, "dm.zip")),
+      dm_write_zip(no_key_date_time_bool_dm, zip_file_path = file.path(test_path_3, "dm.zip")),
       "zip-file"
     ),
     "`UTC`"
   )
 
   expect_equivalent_dm(
-    no_key_date_time_dm,
+    no_key_date_time_bool_dm,
     dm_read_zip(file.path(test_path_3, "dm.zip"))
   )
 
   expect_message(
     expect_message(
-      dm_write_xlsx(no_key_date_time_dm, xlsx_file_path = file.path(test_path_3, "dm.xlsx")),
+      dm_write_xlsx(no_key_date_time_bool_dm, xlsx_file_path = file.path(test_path_3, "dm.xlsx")),
       "xlsx-file"
       ),
     "`UTC`"
   )
 
   expect_equivalent_dm(
-    no_key_date_time_dm,
+    no_key_date_time_bool_dm,
     dm_read_xlsx(file.path(test_path_3, "dm.xlsx"))
   )
 
