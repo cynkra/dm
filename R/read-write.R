@@ -439,7 +439,7 @@ convert_all_times_to_utc <- function(table_list, col_class_table) {
   if (any(col_class_table$class %in% c("POSIXlt", "POSIXct"))) {
     to_convert <- filter(col_class_table, class %in% c("POSIXlt", "POSIXct"))
     message(
-      c("Converting the time for the following column(s) to timezone `UTC`:\n",
+      c("Converting the datetime values for the following column(s) to timezone `UTC`:\n",
         glue::glue("{paste0(to_convert$table, '$', to_convert$column, collapse = '\n')}"))
     )
     table_list <- reduce2(to_convert$table, to_convert$column, function(tables, table, column) {
