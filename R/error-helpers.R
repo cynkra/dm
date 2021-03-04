@@ -660,7 +660,7 @@ abort_no_list <- function(table_names, column_names) {
 error_txt_no_list <- function(table_names, column_names) {
   glue::glue(
     "Class `list` is not supported, problematic column(s):\n",
-    "{paste0('Table: ', table_names, ', column: ', column_names, collapse = '\n')}"
+    "{paste0(table_names, '$', column_names, collapse = '\n')}"
   )
 }
 

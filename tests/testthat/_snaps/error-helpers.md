@@ -258,4 +258,36 @@
       abort_no_schema_exists("fastfood", "gala_dinner")
     Error <dm_error_no_schema_exists>
       No schema named `fastfood` exists on database `gala_dinner`.
+    Code
+      abort_dir_not_empty()
+    Error <dm_error_dir_not_empty>
+      Please choose a non-existent or empty directory for the csv-files.
+    Code
+      abort_file_exists("existing_file")
+    Error <dm_error_file_exists>
+      File `existing_file` exists and `overwrite = FALSE`.
+    Code
+      abort_no_list(c("table_1", "table_2"), c("list_col_1", "list_col_2"))
+    Error <dm_error_no_list>
+      Class `list` is not supported, problematic column(s):
+      table_1$list_col_1
+      table_2$list_col_2
+    Code
+      abort_empty_dm()
+    Error <dm_error_empty_dm>
+      There needs to be at least one table in the `dm`, aborting the operation.
+    Code
+      abort_files_or_sheets_missing("___coltypes_file_dm.csv", "path/", TRUE)
+    Error <dm_error_files_or_sheets_missing>
+      Cannot recreate `dm`: At least the files `___coltypes_file_dm.csv` are missing in directory `path/`.
+    Code
+      abort_files_or_sheets_missing("___coltypes_dm", "path/file.xlsx", FALSE)
+    Error <dm_error_files_or_sheets_missing>
+      Cannot recreate `dm`: At least the worksheets `___coltypes_dm` are missing in file `path/file.xlsx`.
+    Code
+      abort_class_not_supported(c("blobber", "hashmash"))
+    Error <dm_error_class_not_supported>
+      R-class(es) `blobber`, `hashmash` not supported. Please consider one of:
+      * converting the respective columns to a supported class (see `?dm_read_csv()`)
+      * filing an issue and/or PR at https://github.com/krlmlr/dm
 
