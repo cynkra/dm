@@ -64,10 +64,14 @@ dm_read_csv <- function(csv_directory) {
     col_types = "ccc"
   )
   table_names <- def_base$table
-  col_class_info <- readr::read_csv(
+  col_class_info_raw <- readr::read_csv(
     file.path(csv_directory, "___coltypes_file_dm.csv"),
     col_types = "ccc"
-  ) %>%
+  )
+  if (!all(col_class_info_raw$class %in% class_translation_r_readr$r_class)) {
+    abort_class_not_supported(setdiff(col_class_info_raw$class, class_translation_r_readr$r_class))
+  }
+  col_class_info <- col_class_info_raw %>%
     mutate(readr_class = readr_translate(class)) %>%
     group_by(table) %>%
     summarize(readr_class = paste0(readr_class, collapse = ""))
@@ -170,7 +174,7 @@ dm_write_xlsx <- function(dm, xlsx_file_path, overwrite = FALSE) {
     }
   }
 
-  xlsx_tables <- prepare_tbls_for_def_and_class(dm)
+  xlsx_tables <- prepare_tbls_for_def_and_class(dm, csv = FALSE)
 
   xl_sheet_list <- c(
     dm_get_tables_impl(dm),
@@ -222,7 +226,6 @@ dm_read_xlsx <- function(xlsx_file_path) {
   ) %>%
     group_by(table) %>%
     summarize(column = list(column), class = list(class))
-  # FIXME: use it wisely
 
   pk_info <- readxl::read_xlsx(
       xlsx_file_path,
@@ -310,7 +313,7 @@ make_dm <- function(def_base, table_tibble, pk_info, fk_info) {
     new_dm3()
 }
 
-prepare_tbls_for_def_and_class <- function(dm) {
+prepare_tbls_for_def_and_class <- function(dm, csv) {
   check_param_class(dm, "dm")
   check_not_zoomed(dm, -3)
   check_no_filter(dm, -3)
@@ -327,6 +330,18 @@ prepare_tbls_for_def_and_class <- function(dm) {
     tbl_col_list <- filter(col_class_tibble, class == "list")
     abort_no_list(tbl_col_list$table, tbl_col_list$column)
   }
+  if (csv) {
+    # are all classes among the classes we support for csv?
+    if (!all(col_class_tibble$class %in% class_translation_r_readr$r_class)) {
+    abort_class_not_supported(setdiff(col_class_tibble$class, class_translation_r_readr$r_class))
+    }
+  } else {
+    # are all classes among the classes we support for xlsx?
+    if (!all(col_class_tibble$class %in% xlsx_classes)) {
+      abort_class_not_supported(setdiff(col_class_tibble$class, xlsx_classes))
+    }
+  }
+
   if ("datetime" %in% col_class_tibble$class |
       "POSIXct" %in% col_class_tibble$class |
       "POSIXlt" %in% col_class_tibble$class) {
@@ -367,7 +382,7 @@ prepare_tbls_for_def_and_class <- function(dm) {
 }
 
 dm_write_csv_impl <- function(dm, csv_directory, zip) {
-  csv_tables <- prepare_tbls_for_def_and_class(dm)
+  csv_tables <- prepare_tbls_for_def_and_class(dm, csv = TRUE)
 
   if (!dir.exists(csv_directory)) {
     dir.create(csv_directory)
@@ -410,19 +425,26 @@ dm_col_class <- function(dm) {
 }
 
 readr_translate <- function(r_class) {
-  translation_tibble <- tribble(
-    ~r_class, ~readr_code,
-    "logical", "l",
-    "integer", "i",
-    "double", "d",
-    "numeric", "d",
-    "character", "c",
-    "Date", "D",
-    "time", "t",
-    "datetime", "T",
-    "POSIXlt", "T",
-    "POSIXct", "T",
-    "number", "n"
-    )
-  map_chr(r_class, ~ filter(translation_tibble, r_class == .x) %>% pull(readr_code))
+  map_chr(r_class, ~ filter(class_translation_r_readr, r_class == .x) %>% pull(readr_code))
 }
+
+class_translation_r_readr <- tribble(
+  ~r_class, ~readr_code,
+  "logical", "l",
+  "integer", "i",
+  "numeric", "d",
+  "character", "c",
+  "Date", "D",
+  "POSIXlt", "T",
+  "POSIXct", "T"
+)
+
+xlsx_classes <- c(
+  "logical",
+  "integer",
+  "numeric",
+  "character",
+  "Date",
+  "POSIXlt",
+  "POSIXct"
+)

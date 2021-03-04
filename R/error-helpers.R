@@ -689,3 +689,19 @@ error_txt_files_or_sheets_missing <- function(missing, path, csv) {
     )
   }
 }
+
+abort_class_not_supported <- function(unsupported_class) {
+  abort(
+    error_txt_class_not_supported(unsupported_class),
+    .subclass = dm_error_full("class_not_supported")
+  )
+}
+
+error_txt_class_not_supported <- function(unsupported_class) {
+  c(glue::glue(
+    "R-class(es) {commas(tick(unsupported_class))} not supported. Please consider one of:"
+    ),
+    "converting the respective columns to a supported class (see `?dm_read_csv()`)",
+    "filing an issue and/or PR at https://github.com/krlmlr/dm"
+  )
+}
