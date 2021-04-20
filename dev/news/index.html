@@ -65,6 +65,7 @@
 
 
 
+
   
 
   
@@ -413,7 +414,7 @@
 <li>
 <code><a href="../reference/dm_from_src.html">dm_from_src(schema = "...")</a></code> works on Postgres if <code>search_path</code> is not set on the connection.</li>
 <li>
-<code><a href="../reference/tbl.dm.html">compute.zoomed_dm()</a></code> no longer throws an error.</li>
+<code><a href="../reference/dplyr_db.html">compute.zoomed_dm()</a></code> no longer throws an error.</li>
 <li>Remove unused DT import (<a href='https://github.com/krlmlr/dm/issues/295'>#295</a>).</li>
 </ul>
 </div>
@@ -536,7 +537,7 @@
 <li>Add name repair argument for both <code><a href="../reference/deprecated.html">cdm_insert_zoomed_tbl()</a></code> and <code><a href="../reference/deprecated.html">cdm_add_tbl()</a></code>, defaulting to renaming of old and new tables when adding tables with duplicate names (<a href='https://github.com/krlmlr/dm/issues/132'>#132</a>).</li>
 <li>Redesign constructors and validators: <code><a href="../reference/dm.html">dm()</a></code> is akin to <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble()</a></code>, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> works like <code><a href="../reference/dm.html">dm()</a></code> did previously, <code><a href="../reference/dm.html">new_dm()</a></code> only accepts a list of tables and no longer validates, <code><a href="../reference/dm.html">validate_dm()</a></code> checks internal consistency (<a href='https://github.com/krlmlr/dm/issues/69'>#69</a>).</li>
 <li>
-<code><a href="../reference/tbl.dm.html">compute.dm()</a></code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> on all tables (<a href='https://github.com/krlmlr/dm/issues/135'>#135</a>).</li>
+<code><a href="../reference/dplyr_db.html">compute.dm()</a></code> applies filters and calls <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> on all tables (<a href='https://github.com/krlmlr/dm/issues/135'>#135</a>).</li>
 </ul>
 </div>
 <div id="documentation-2" class="section level2">
@@ -874,7 +875,7 @@
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

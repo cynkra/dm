@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Migration guide: ‘cdm’ -&gt; ‘dm’</h1>
             
-            <h4 data-toc-skip class="date">2021-03-18</h4>
+            <h4 data-toc-skip class="date">2021-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-cdm.Rmd</code></div>
@@ -165,7 +165,7 @@
 <h3 class="hasAnchor">
 <a href="#be-careful-with-methods-for-dm-tbl" class="anchor"></a>Be careful with methods for <code>dm</code>: <code>tbl</code>, <code>[[</code>, <code>$</code>
 </h3>
-<p>Furthermore, you need to pay attention if you used one of <code><a href="../reference/tbl.dm.html">tbl.dm()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>. During the same update the implementation for those methods changed as well, and here you don’t get the convenient warning messages. The change was, that before the update, the mentioned methods would return the table after “filtering” it to just contain the rows with values that relate via foreign key relations to other tables that were filtered earlier. After the update just the table as is would be returned. If you want to retain the former behavior, you need to replace each of the methods with the function <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code>, which was made available with the update.</p>
+<p>Furthermore, you need to pay attention if you used one of <code><a href="../reference/dplyr_db.html">tbl.dm()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>. During the same update the implementation for those methods changed as well, and here you don’t get the convenient warning messages. The change was, that before the update, the mentioned methods would return the table after “filtering” it to just contain the rows with values that relate via foreign key relations to other tables that were filtered earlier. After the update just the table as is would be returned. If you want to retain the former behavior, you need to replace each of the methods with the function <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code>, which was made available with the update.</p>
 <p>The methods are of course not to be avoided in general, if no filters are set anyway the result will not change after the update.</p>
 <p>Here a short example for the different cases:</p>
 <p>Formerly you would access the “filtered” tables using the following syntax:</p>
@@ -267,7 +267,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>

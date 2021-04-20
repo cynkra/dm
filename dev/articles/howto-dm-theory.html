@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-03-18</h4>
+            <h4 data-toc-skip class="date">2021-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -191,11 +191,11 @@
 <p>Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code> and other forms of data merging.</p>
 <p>In classical {dplyr} notation, you will need three <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> calls to merge the <code>flights</code> table gradually to <code>airlines</code>, <code>planes</code> and <code>airports</code> tables to create one wide data frame.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.0 ──
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.1 ──
 </span></code></pre>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">ggplot2</span><span> 3.3.3     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">purrr  </span><span> 0.3.4
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.1.0     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.5
+#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.1.1     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.5
 #&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tidyr  </span><span> 1.1.3     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">stringr</span><span> 1.4.0
 #&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">readr  </span><span> 1.4.0     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">forcats</span><span> 0.5.1
 </span></code></pre>
@@ -205,7 +205,7 @@
 </span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 
 <span class="va">flights</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines</span>, by <span class="op">=</span> <span class="st">"carrier"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -467,7 +467,7 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
 <span class="co">#&gt; Keys could not be queried, use `learn_keys = FALSE` to mute this message.</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 []
+#&gt; src:  sqlite 3.35.4 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -497,7 +497,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>

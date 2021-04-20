@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 data-toc-skip class="date">2021-03-18</h4>
+            <h4 data-toc-skip class="date">2021-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
@@ -176,7 +176,7 @@
 <a href="#pass-the-tables-directly" class="anchor"></a>Pass the tables directly</h3>
 <p>Create a <code>dm</code> object directly by providing data frames to <code><a href="../reference/dm.html">dm()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
@@ -192,7 +192,7 @@
 </h3>
 <p>Start with an empty <code>dm</code> object that has been created with <code><a href="../reference/dm.html">dm()</a></code> or <code><a href="../reference/dm.html">new_dm()</a></code>, and add tables to that object:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
 <span class="va">empty_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">empty_dm</span>
@@ -233,7 +233,7 @@
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 [/tmp/Rtmp6ZvhIx/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.4 [/tmp/RtmpWNUbAn/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -268,7 +268,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 [/tmp/Rtmp6ZvhIx/nycflights13.sqlite]</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.4 [/tmp/RtmpWNUbAn/nycflights13.sqlite]</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
 #&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
@@ -305,7 +305,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 [/tmp/Rtmp6ZvhIx/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.4 [/tmp/RtmpWNUbAn/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -379,7 +379,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 [/tmp/Rtmp6ZvhIx/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.4 [/tmp/RtmpWNUbAn/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -480,7 +480,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>

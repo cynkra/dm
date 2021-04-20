@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Copy tables to and from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2021-03-18</h4>
+            <h4 data-toc-skip class="date">2021-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-copy.Rmd" class="external-link"><code>vignettes/howto-dm-copy.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-copy.Rmd</code></div>
@@ -154,11 +154,11 @@
 <p>Calling <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> or <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> requires write permission on the RDBMS, otherwise an error is returned. Therefore for the following examples we will instantiate a test dm and move it into a local SQLite database with full permissions. {dm} and {dbplyr} are designed so there is no difference between the code used to manipulate a local SQLite database and a remote RDBMS. The steps for this were already introduced in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> and will be discussed in more detail in the <a href="#copy-model">Copying a relational model</a> section.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.0 ──
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
+<pre class="fansi fansi-message"><code>#&gt; ── <span style="font-weight: bold;">Attaching packages</span><span> ────────────────────────────────── tidyverse 1.3.1 ──
 </span></code></pre>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">ggplot2</span><span> 3.3.3     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">purrr  </span><span> 0.3.4
-#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.1.0     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.5
+#&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tibble </span><span> 3.1.1     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">dplyr  </span><span> 1.0.5
 #&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">tidyr  </span><span> 1.1.3     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">stringr</span><span> 1.4.0
 #&gt; </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">readr  </span><span> 1.4.0     </span><span style="color: #00BB00;">✔</span><span> </span><span style="color: #0000BB;">forcats</span><span> 0.5.1
 </span></code></pre>
@@ -216,7 +216,7 @@
   <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; &lt;SQL&gt; SELECT *</span>
 <span class="co">#&gt; FROM `dbplyr_001`</span></code></pre></div>
-<p>Note the differences in queries returned by <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>. <code>my_dm_total$total_loans</code> is still being lazily evaluated and the full query constructed from the chain of operations that generated it, and is required to run to access it, is still in place. Contrast that with <code>my_dm_total_computed$total_loans</code> where the query has been realized and accessing its rows requires a simple <code>SELECT *</code> statement. The table name, <code>dbplyr_001</code>, was automatically generated as the <code>name</code> argument was not supplied.</p>
+<p>Note the differences in queries returned by <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>. <code>my_dm_total$total_loans</code> is still being lazily evaluated and the full query constructed from the chain of operations that generated it, and is required to run to access it, is still in place. Contrast that with <code>my_dm_total_computed$total_loans</code> where the query has been realized and accessing its rows requires a simple <code>SELECT *</code> statement. The table name, <code></code>, was automatically generated as the <code>name</code> argument was not supplied.</p>
 <p>The default is to create a temporary table. If you want results to persist across sessions in permanent tables, <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> must be called with the argument <code>temporary = FALSE</code> and a table name for the <code>name</code> argument. See <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">?compute</a></code> for more details.</p>
 <p>When called on a whole dm object (without zoom), <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> materializes all tables into new (temporary or persistent) tables by executing the associated SQL query and storing the full results. Depending on the size of your data this may take considerable time or be infeasible. It may be useful occasionally to create snapshots of data that is subject to change.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -302,7 +302,7 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span><span class="op">$</span><span class="va">loans_residuals</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_08_28_07_13_03_1&gt; [?? x 2]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.4 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;"> 1</span><span>  </span><span style="text-decoration: underline;">4</span><span>959 -</span><span style="color: #BB0000;text-decoration: underline;">31</span><span style="color: #BB0000;">912.</span><span>
@@ -352,7 +352,7 @@
 
 <span class="va">deployed_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 []
+#&gt; src:  sqlite 3.35.4 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)
 #&gt; Columns: 47
@@ -369,7 +369,7 @@
 
 <span class="va">dup_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 []
+#&gt; src:  sqlite 3.35.4 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)
 #&gt; Columns: 47
@@ -415,7 +415,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
