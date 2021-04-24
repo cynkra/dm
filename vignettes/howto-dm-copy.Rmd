@@ -165,7 +165,7 @@ my_dm_sqlite_resid <-
   dm_add_fk(loans_residuals, id, loans)
 
 my_dm_sqlite_resid %>%
-  dm_set_colors(violet = loans_residuals) %>% 
+  dm_set_colors(violet = loans_residuals) %>%
   dm_draw()
 my_dm_sqlite_resid %>%
   dm_examine_constraints()
@@ -176,7 +176,7 @@ my_dm_sqlite_resid$loans_residuals
 ## Persisting a relational model with `copy_dm_to()` {#copy-model}
 
 Persistence, because it is intended to make permanent changes, requires write access to the source RDBMS.
-The code below is a repeat of the code that opened the [Copying and persisting individual tables](#copying-tables) section at the beginning of the tutorial. 
+The code below is a repeat of the code that opened the [Copying and persisting individual tables](#copying-tables) section at the beginning of the tutorial.
 It uses the {dm} convenience function `dm_financial()` to create a dm object corresponding to a data model from a public dataset repository.
 The dm object is downloaded locally first, before deploying it to a local SQLite database.
 
@@ -193,7 +193,7 @@ fin_dm <-
 fin_dm
 ``````
 
-It is just as simple to move a local relational model into an RDBMS. 
+It is just as simple to move a local relational model into an RDBMS.
 
 ``````{r }
 destination_db <- DBI::dbConnect(RSQLite::SQLite())
@@ -204,8 +204,8 @@ deployed_dm <-
 deployed_dm
 ``````
 
-Note that in the call to `copy_dm_to()` the argument `temporary = FALSE` is supplied. 
-Without this argument the model would still be copied into the database, but the argument would default to `temporary = TRUE` and the data would be deleted once your session ends. 
+Note that in the call to `copy_dm_to()` the argument `temporary = FALSE` is supplied.
+Without this argument the model would still be copied into the database, but the argument would default to `temporary = TRUE` and the data would be deleted once your session ends.
 
 In the output you can observe that the `src` for `deployed_dm` is SQLite, while for `fin_dm` the source is not indicated because it is a local data model.
 
@@ -230,7 +230,7 @@ For both, the table name is `accounts` in the dm, but they link to different tab
 In `dup_dm` the table is backed by the table `dup_accounts` in the RDBMS.
 `dm_deployed$accounts` shows us that this table is still backed by the `accounts` table from the `copy_dm_to()` operation we performed in the preceding example.
 
-Managing tables in the RDBMS is outside the scope of `dm`. 
+Managing tables in the RDBMS is outside the scope of `dm`.
 If you find you need to remove tables or perform operations directly on the RDBMS, see the {[DBI](https://dbi.r-dbi.org/)} package.
 
 ## Conclusion

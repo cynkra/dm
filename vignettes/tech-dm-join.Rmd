@@ -65,7 +65,7 @@ The existing links can be inspected in two ways:
 1. Visually, by drawing the data model with `dm_draw()`
 
 ```{r}
-dm %>% 
+dm %>%
   dm_draw()
 ```
 
@@ -74,7 +74,7 @@ The directed arrows show explicitly the relation between different columns.
 2. Printed to the console by calling `dm_get_all_fks()`
 
 ```{r}
-dm %>% 
+dm %>%
   dm_get_all_fks()
 ```
 
@@ -85,7 +85,7 @@ Let's look at some examples:
 **Add a column with airline names from the `airlines` table to the `flights` table.**
 
 ```{r}
-dm_joined <- dm %>% 
+dm_joined <- dm %>%
   dm_join_to_tbl(flights, airlines, join = left_join)
 dm_joined
 ```
@@ -94,22 +94,22 @@ As you can see below, the `dm_joined` dataframe has one more column than the `fl
 The difference is the `name` column from the `airlines` table.
 
 ```{r}
-dm %>% 
-  tbl("flights") %>% 
+dm %>%
+  tbl("flights") %>%
   names()
 
-dm %>% 
-  tbl("airlines") %>% 
+dm %>%
+  tbl("airlines") %>%
   names()
 
-dm_joined %>% 
+dm_joined %>%
   names()
 ```
 
 The result is not a `dm` object anymore, but a conventional dataframe:
 
 ```{r}
-dm_joined %>% 
+dm_joined %>%
   class()
 ```
 
@@ -121,7 +121,7 @@ We expect the flights data from {nycflights13} package to be clean and well orga
 You can check this with an `anti_join`:
 
 ```{r}
-dm %>% 
+dm %>%
   dm_join_to_tbl(flights, airlines, join = anti_join)
 ```
 
@@ -136,8 +136,8 @@ We are working towards removing this inconvenience [#62](https://github.com/krlm
 ```{r}
 dm_nycflights13() %>%
   dm_filter(airlines, name == "Delta Air Lines Inc.") %>%
-  dm_filter(flights, month == 5) %>% 
-  dm_apply_filters() %>% 
+  dm_filter(flights, month == 5) %>%
+  dm_apply_filters() %>%
   dm_join_to_tbl(flights, airports, join = left_join)
 ```
 

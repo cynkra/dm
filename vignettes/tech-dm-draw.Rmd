@@ -6,7 +6,7 @@ vignette: >
   %\VignetteIndexEntry{Techincal: Visualizing dm objects}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -30,7 +30,7 @@ flights_dm_w_many_keys <- dm_nycflights13(color = FALSE)
 flights_dm_w_many_keys
 ```
 
-The schema is drawn with `dm_draw()`. 
+The schema is drawn with `dm_draw()`.
 ```{r}
 dm_draw(flights_dm_w_many_keys)
 ```
@@ -48,7 +48,7 @@ The result of `dm_set_colors()` is a `dm` object.
 The information about the color is stored together with the rest of the metadata.
 ```{r}
 flights_dm_w_many_keys_and_colors <-
-  flights_dm_w_many_keys %>% 
+  flights_dm_w_many_keys %>%
   dm_set_colors(
     maroon4 = flights,
     orange = starts_with("air"),
@@ -56,12 +56,12 @@ flights_dm_w_many_keys_and_colors <-
   )
 ```
 
-Draw the schema with `dm_draw()`. 
+Draw the schema with `dm_draw()`.
 ```{r}
 dm_draw(flights_dm_w_many_keys_and_colors)
 ```
 
-The colors can be queried with `dm_get_colors()`. 
+The colors can be queried with `dm_get_colors()`.
 ```{r}
 dm_get_colors(flights_dm_w_many_keys_and_colors)
 ```
@@ -71,14 +71,14 @@ One important argument is `view_type`.
 Besides the default `"keys_only"`, it accepts `"all"` to display all columns, and `"title_only"` to show only the title of the table.
 
 ```{r}
-flights_dm_w_many_keys_and_colors %>% 
+flights_dm_w_many_keys_and_colors %>%
   dm_draw(view_type = "title_only")
 ```
 
 If you would like to visualize only a some of the tables, use `dm_select_tbl()` before drawing:
 
 ```{r}
-flights_dm_w_many_keys_and_colors %>% 
-  dm_select_tbl(flights, airports, planes) %>% 
+flights_dm_w_many_keys_and_colors %>%
+  dm_select_tbl(flights, airports, planes) %>%
   dm_draw()
 ```

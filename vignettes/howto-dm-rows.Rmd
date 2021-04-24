@@ -47,7 +47,7 @@ The biggest danger is damaging key relations between data spread across multiple
 With the changes confirmed, you execute the method again, this time with the argument `in_place = TRUE` to make the changes permanent.
 Note that `in_place = FALSE` is the default: you must opt in to actually change data on the database.
 
-Each method has its own requirements in order to maintain database consistency. 
+Each method has its own requirements in order to maintain database consistency.
 These involve constraints on primary key values as they are how rows are identified.
 
 | Method | Requirements |
@@ -82,14 +82,14 @@ demo_dm <-
   dm_add_pk(child, pk) %>%
   dm_add_fk(child, fk, parent)
 
-demo_dm %>% 
+demo_dm %>%
   dm_draw(view_type = "full")
 ``````
 
 {dm} doesn't check your key values when you create a dm, we add this check:[^null-fk]
 
-[^null-fk]: Be aware that when using `dm_examine_constraints()` NULL (`NA`) foreign keys are allowed and will be counted as a match. 
-In some cases this doesn't make sense and non-NULL columns should be enforced by the RDBMS. 
+[^null-fk]: Be aware that when using `dm_examine_constraints()` NULL (`NA`) foreign keys are allowed and will be counted as a match.
+In some cases this doesn't make sense and non-NULL columns should be enforced by the RDBMS.
 Currently {dm} does not specify or check non-NULL constraints for columns.
 
 ``````{r }
@@ -182,7 +182,7 @@ demo_sql$child
 
 `dm_rows_delete()` is not currently implemented to work with an RDBMS, so we will shift our demonstrations back to the local R environment.
 We've made changes to `demo_sql` so we use `collect()` to copy the current tables out of SQLite.
-Note that persistence is not a concern with local dm objects. 
+Note that persistence is not a concern with local dm objects.
 Every operation returns a new dm object containing the changes made.
 
 ``````{r }
@@ -232,7 +232,7 @@ dm_upserted$child
 
 ## `dm_rows_truncate()` {#truncate}
 
-`dm_rows_truncate()` deletes all the rows in a table while leaving all other related information intact, including column names, column types, and key relations. 
+`dm_rows_truncate()` deletes all the rows in a table while leaving all other related information intact, including column names, column types, and key relations.
 The function derives its name from the SQL `TRUNCATE TABLE` statement, so we will return to our SQLite database to demonstrate its use.
 The example below truncates only the `child` table.
 Note how a modified version of the destination dm is used as "changeset dm": the rows in the changeset dm do not matter here.
@@ -252,8 +252,8 @@ demo_sql$child
 
 ## Conclusion {#conclusion}
 
-The `dm_rows_*` methods give you row-level granularity over the modifications you need to make to your relational model. 
-By using the `in_place` argument they all share you can construct and verify your modifications before committing them. 
+The `dm_rows_*` methods give you row-level granularity over the modifications you need to make to your relational model.
+By using the `in_place` argument they all share you can construct and verify your modifications before committing them.
 There are a few limitations, as mentioned in the tutorial, but these will be addressed in future updates to {dm}.
 
 ## Next Steps
