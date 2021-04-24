@@ -126,6 +126,8 @@ test_that("'collect.zoomed_dm()' collects tables, with message", {
 
 test_that("'compute.dm()' computes tables on DB", {
   skip_if_local_src()
+  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
+
   def <-
     dm_for_filter() %>%
     dm_filter(tf_1, a > 3) %>%
@@ -140,6 +142,8 @@ test_that("'compute.dm()' computes tables on DB", {
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
   skip_if_local_src()
+  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
+
   zoomed_dm_for_compute <-
     dm_for_filter() %>%
     dm_zoom_to(tf_1) %>%
