@@ -86,6 +86,50 @@ test_that("basic test: 'summarise()'-methods work", {
   )
 })
 
+test_that("basic test: 'count()'-method works", {
+  expect_equivalent_tbl(
+    count(zoomed_dm()) %>% get_zoomed_tbl(),
+    count(tf_2())
+  )
+
+  expect_equivalent_tbl(
+    count(zoomed_dm(), c) %>% get_zoomed_tbl(),
+    count(tf_2(), c)
+  )
+
+  expect_equivalent_tbl(
+    count(zoomed_dm(), wt = d) %>% get_zoomed_tbl(),
+    count(tf_2(), wt = d)
+  )
+
+  expect_equivalent_tbl(
+    count(zoomed_dm(), sort = TRUE) %>% get_zoomed_tbl(),
+    count(tf_2(), sort = TRUE)
+  )
+
+  expect_equivalent_tbl(
+    count(zoomed_dm(), name = "COUNT") %>% get_zoomed_tbl(),
+    count(tf_2(), name = "COUNT")
+  )
+
+  expect_dm_error(
+    count(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})
+
+test_that("basic test: 'tally()'-method works", {
+  expect_equivalent_tbl(
+    tally(zoomed_dm()) %>% get_zoomed_tbl(),
+    tally(tf_2())
+  )
+
+  expect_dm_error(
+    tally(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})
+
 test_that("basic test: 'filter()'-methods work", {
   skip_if_src("maria")
 
@@ -239,7 +283,11 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
   # keys are correctly tracked if selected columns from 'y' have same name as key columns from 'x'
   expect_identical(
-    left_join(zoomed_dm(), tf_3, select = c(d = g, f)) %>% dm_update_zoomed() %>% dm_get_fk(tf_2, tf_1),
+    expect_message(
+      left_join(zoomed_dm(), tf_3, select = c(d = g, f)) %>%
+        dm_update_zoomed() %>%
+        dm_get_fk(tf_2, tf_1)
+    ),
     new_keys("tf_2.d")
   )
 
@@ -251,8 +299,13 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
 
   skip_if_src("maria")
   # multi-column "by" argument
+  out <- expect_message(
+    dm_zoom_to(dm_for_disambiguate(), iris_2) %>%
+      left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>%
+      get_zoomed_tbl()
+  )
   expect_equivalent_tbl(
-    dm_zoom_to(dm_for_disambiguate(), iris_2) %>% left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>% get_zoomed_tbl(),
+    out,
     left_join(
       iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.x.", .)) %>% rename(Sepal.Width = iris_2.x.Sepal.Width),
       iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0("iris_2.y.", .)),
@@ -261,15 +314,15 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   )
 })
 
-test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
+test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   # auto-added RHS-by argument
-  expect_message(
+  expect_message(expect_message(
     dm_zoom_to(dm_for_disambiguate(), iris_2) %>%
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col"), select = -key) %>%
       get_zoomed_tbl(),
     "Using `select = c(-key, key)`.",
     fixed = TRUE
-  )
+  ))
 
   skip_if_src("sqlite")
   # test RHS-by name collision

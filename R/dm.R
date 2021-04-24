@@ -502,12 +502,8 @@ format.dm <- function(x, ...) { # for both dm and zoomed_dm
 
 #' @export
 format.zoomed_dm <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  df <- get_zoomed_tbl(x)
   # so far only 1 table can be zoomed on
-  zoomed_df <- new_zoomed_df(
-    df,
-    name_df = orig_name_zoomed(x)
-  )
+  zoomed_df <- as_zoomed_df(x)
   cat_line(format(zoomed_df, ..., n = n, width = width, n_extra = n_extra))
   invisible(x)
 }
@@ -526,6 +522,14 @@ def_get_n_pks <- function(def) {
 
 def_get_n_fks <- function(def) {
   sum(map_int(def$fks, vctrs::vec_size))
+}
+
+as_zoomed_df <- function(x) {
+  # for tests
+  new_zoomed_df(
+    get_zoomed_tbl(x),
+    name_df = orig_name_zoomed(x)
+  )
 }
 
 new_zoomed_df <- function(x, ...) {

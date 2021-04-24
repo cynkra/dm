@@ -1,7 +1,7 @@
 test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   # for left join test the basic flattening also on all DBs
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact),
+    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact)),
     result_from_flatten()
   )
 
@@ -14,8 +14,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   )
 
   # explicitly choose parent tables
+  out <- expect_message(dm_flatten_to_tbl(
+    dm_for_flatten(), fact, dim_1, dim_2
+  ))
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, dim_1, dim_2),
+    out,
     left_join(
       rename(fact(), fact.something = something),
       rename(dim_1(), dim_1.something = something),
@@ -25,8 +28,11 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
   )
 
   # change order of parent tables
+  out <- expect_message(dm_flatten_to_tbl(
+    dm_for_flatten(), fact, dim_2, dim_1
+  ))
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, dim_2, dim_1),
+    out,
     left_join(
       rename(fact(), fact.something = something), rename(dim_2(), dim_2.something = something),
       by = c("dim_2_key" = "dim_2_pk")
@@ -55,17 +61,22 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
-  expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, join = inner_join),
-    result_from_flatten()
-  )
+  out <- expect_message(dm_flatten_to_tbl(
+    dm_for_flatten(), fact,
+    join = inner_join
+  ))
+  expect_equivalent_tbl(out, result_from_flatten())
 })
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   skip_if_src("sqlite")
   skip_if_src("maria")
+  out <- expect_message(dm_flatten_to_tbl(
+    dm_for_flatten(), fact,
+    join = full_join
+  ))
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, join = full_join),
+    out,
     fact_clean() %>%
       full_join(dim_1_clean(), by = c("dim_1_key" = "dim_1_pk")) %>%
       full_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
@@ -99,10 +110,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'nest_join()'", {
 test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   skip_if_src("sqlite")
   expect_equivalent_tbl(
-    expect_warning(
+    expect_message(expect_warning(
       dm_flatten_to_tbl(dm_for_flatten(), fact, join = right_join),
       "right_join"
-    ),
+    )),
     fact_clean() %>%
       right_join(dim_1_clean(), by = c("dim_1_key" = "dim_1_pk")) %>%
       right_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
@@ -111,8 +122,12 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
   )
 
   # change order of parent tables
+  out <- expect_message(dm_flatten_to_tbl(
+    dm_for_flatten(), fact, dim_2, dim_1,
+    join = right_join
+  ))
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, dim_2, dim_1, join = right_join),
+    out,
     right_join(
       rename(fact(), fact.something = something),
       rename(dim_2(), dim_2.something = something),
@@ -179,8 +194,13 @@ test_that("`dm_squash_to_tbl()` does the right things", {
 
 test_that("prepare_dm_for_flatten() works", {
   # unfiltered with rename
+  out <- expect_message(prepare_dm_for_flatten(
+    dm_for_flatten(),
+    c("fact", "dim_1", "dim_3"),
+    gotta_rename = TRUE
+  ))
   expect_equivalent_dm(
-    prepare_dm_for_flatten(dm_for_flatten(), c("fact", "dim_1", "dim_3"), gotta_rename = TRUE),
+    out,
     dm_select_tbl(dm_for_flatten(), fact, dim_1, dim_3) %>% dm_disambiguate_cols(quiet = TRUE)
   )
 
@@ -195,24 +215,20 @@ test_that("prepare_dm_for_flatten() works", {
   prep_dm <- new_dm3(def)
   prep_dm_renamed <- dm_disambiguate_cols(prep_dm, quiet = TRUE)
 
-  expect_equivalent_dm(
-    prepare_dm_for_flatten(
-      dm_filter(dm_for_flatten(), dim_1, dim_1_pk > 7),
-      c("fact", "dim_1", "dim_3"),
-      gotta_rename = TRUE
-    ),
-    prep_dm_renamed
-  )
+  out <- expect_message(prepare_dm_for_flatten(
+    dm_filter(dm_for_flatten(), dim_1, dim_1_pk > 7),
+    c("fact", "dim_1", "dim_3"),
+    gotta_rename = TRUE
+  ))
+  expect_equivalent_dm(out, prep_dm_renamed)
 
   # filtered without rename
-  expect_equivalent_dm(
-    prepare_dm_for_flatten(
-      dm_filter(dm_for_flatten(), dim_1, dim_1_pk > 7),
-      c("fact", "dim_1", "dim_3"),
-      gotta_rename = FALSE
-    ),
-    prep_dm
+  out <- prepare_dm_for_flatten(
+    dm_filter(dm_for_flatten(), dim_1, dim_1_pk > 7),
+    c("fact", "dim_1", "dim_3"),
+    gotta_rename = FALSE
   )
+  expect_equivalent_dm(out, prep_dm)
 
   # unfiltered without rename
   expect_equivalent_dm(
@@ -224,19 +240,19 @@ test_that("prepare_dm_for_flatten() works", {
 test_that("tidyselect works for flatten", {
   # test if deselecting works
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, -dim_2, dim_3, -dim_4, dim_1),
-    dm_flatten_to_tbl(dm_for_flatten(), fact, dim_1, dim_3)
+    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, -dim_2, dim_3, -dim_4, dim_1)),
+    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, dim_1, dim_3))
   )
 
   # test if select helpers work
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, ends_with("3"), ends_with("1")),
-    dm_flatten_to_tbl(dm_for_flatten(), fact, dim_3, dim_1)
+    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, ends_with("3"), ends_with("1"))),
+    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, dim_3, dim_1))
   )
 
   expect_equivalent_tbl(
-    dm_flatten_to_tbl(dm_for_flatten(), fact, everything()),
-    dm_flatten_to_tbl(dm_for_flatten(), fact)
+    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact, everything())),
+    expect_message(dm_flatten_to_tbl(dm_for_flatten(), fact))
   )
 
   # if only deselecting one potential candidate for flattening, the tables that are not

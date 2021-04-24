@@ -29,30 +29,30 @@ expect_dm_error <- function(expr, class) {
   expect_error(expr, class = dm_error(class))
 }
 
+expect_dm_warning <- function(expr, class) {
+  expect_warning(expr, class = dm_warning(class))
+}
+
 expect_name_repair_message <- function(expr) {
-  # Name repair did not get a message during some time in {vctrs}
-  # https://github.com/r-lib/vctrs/issues/849
-  if (packageVersion("vctrs") < "0.2.99.9006") {
-    expr
-  } else {
-    expect_message(expr)
-  }
+  expect_message(expr)
 }
 
 arrange_if_no_list <- function(tbl) {
   if (inherits(tbl, "tbl_dbi")) {
     arrange_all(tbl)
   } else {
-    arrange_if(tbl, function(x) {
-      !is_list(x)
-    })
+    arrange(tbl, across(where(~ !is.list(.))))
   }
 }
 
 # are two tables identical minus the `src`
-expect_equivalent_tbl <- function(tbl_1, tbl_2) {
-  tbl_1_lcl <- collect(tbl_1) %>% arrange_if_no_list()
-  tbl_2_lcl <- collect(tbl_2) %>% arrange_if_no_list()
+expect_equivalent_tbl <- function(tbl_1, tbl_2, ...) {
+  tbl_1_lcl <- collect(tbl_1) %>%
+    mutate(...) %>%
+    arrange_if_no_list()
+  tbl_2_lcl <- collect(tbl_2) %>%
+    mutate(...) %>%
+    arrange_if_no_list()
   expect_identical(tbl_1_lcl, tbl_2_lcl)
 }
 

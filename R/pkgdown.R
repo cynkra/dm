@@ -13,6 +13,8 @@ register_pkgdown_methods <- function() {
   }
 
   stopifnot(rlang::is_installed(c("DiagrammeR", "DiagrammeRsvg")))
+  # For dev pkgdown
+  vctrs::s3_register("downlit::replay_html", "dm_draw", replay_html_dm_draw)
   vctrs::s3_register("pkgdown::replay_html", "dm_draw", replay_html_dm_draw)
   vctrs::s3_register("base::print", "grViz", print_grViz)
 }

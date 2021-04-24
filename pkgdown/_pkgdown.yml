@@ -22,6 +22,7 @@ reference:
   contents:
   - dm_add_tbl
   - dm_rm_tbl
+  - dm_mutate_tbl
   - dm_select_tbl
   - dm_rename_tbl
   - pull_tbl
@@ -57,6 +58,13 @@ reference:
   - enum_fk_candidates
   - dm_is_referenced
   - dm_get_referencing_tables
+
+- title: Schema handling methods
+  contents:
+  - sql_schema_create
+  - sql_schema_drop
+  - sql_schema_exists
+  - sql_schema_list
 
 - title: Visualization
   contents:
@@ -156,12 +164,16 @@ navbar:
     href: reference/index.html
   - text: Tutorials
     menu:
-    - text: Create a dm object from a database
-      href: articles/howto-dm-db.html
-    - text: Create a dm object from data frames
-      href: articles/howto-dm-df.html
     - text: Introduction to relational data models
       href: articles/howto-dm-theory.html
+    - text: Create a dm object from data frames
+      href: articles/howto-dm-df.html
+    - text: Create a dm object from a database
+      href: articles/howto-dm-db.html
+    - text: Copy data to and from a database
+      href: articles/howto-dm-copy.html
+    - text: Insert, update or remove rows in a database
+      href: articles/howto-dm-rows.html
   - text: Technical articles
     menu:
     - text: Joining in relational data models
@@ -194,7 +206,7 @@ authors:
     href: http://krlmlr.info
   energie360° AG:
     html: '<img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/>'
-    href: https://www.energie360.ch
+    href: https://www.energie360.ch/de/
   cynkra GmbH:
     html: '<img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
     href: https://www.cynkra.com

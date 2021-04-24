@@ -26,10 +26,10 @@ knit_print.grViz <- function(x, ..., options) {
 vctrs::s3_register("knitr::knit_print", "grViz")
 ```
 
-# [dm](https://krlmlr.github.io/dm)
+# [dm](https://krlmlr.github.io/dm/)
 
 <!-- badges: start -->
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R build status](https://github.com/krlmlr/dm/workflows/tic/badge.svg)](https://github.com/krlmlr/dm/actions)
 [![Codecov test coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
@@ -48,7 +48,7 @@ Are you using multiple data frames or database tables in R? Organize them with d
 ## Overview
 
 dm bridges the gap in the data pipeline between individual data frames and relational databases.
-It's a [grammar of joined tables](https://twitter.com/drob/status/1224851726068527106) that provides a consistent set of verbs for consuming, creating, and deploying relational data models.
+It's a grammar of joined tables that provides a consistent set of verbs for consuming, creating, and deploying relational data models.
 For individual researchers, it broadens the scope of datasets they can work with and how they work with them.
 For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.
 
@@ -141,7 +141,7 @@ License: MIT © cynkra GmbH.
 
 Funded by:
 
-[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch)
+[![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/)
 <span style="padding-right:50px">
 </span>
 [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)

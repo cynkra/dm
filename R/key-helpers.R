@@ -64,8 +64,8 @@ is_unique_key <- function(.data, column) {
     .data %>%
     select(value = !!col_expr) %>%
     safe_count(value) %>%
-    filter(n != 1) %>%
-    arrange(value) %>%
+    filter(n != 1 | is.na(value)) %>%
+    arrange(if_else(is.na(value), 0, 1), value) %>%
     utils::head(MAX_COMMAS + 1) %>%
     collect() %>%
     {

@@ -63,7 +63,7 @@ The filter conditions for the zoomed table are added to the original filter cond
 
 \code{dm_discard_zoomed()} discards the zoomed table and returns the \code{dm} as it was before zooming.
 
-Please refer to \code{vignette("dm-zoom-to-table", package = "dm")}
+Please refer to \code{vignette("tech-db-zoom", package = "dm")}
 for a more detailed introduction.
 }
 \details{

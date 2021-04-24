@@ -23,8 +23,9 @@ Because many R users have backgrounds in other disciplines, we present **six imp
 2) [Data Model](#model)
 3) [Primary Keys](#pk)
 4) [Foreign Keys](#fk)
-5) [Normalization](#normalization)
-6) [Relational Databases](#relational-databases)
+5) [Referential Integrity](#referential-integrity)
+6) [Normalization](#normalization)
+7) [Relational Databases](#relational-databases)
 
 ## 1. Data Frames and Tables
 
@@ -155,7 +156,30 @@ dm %>%
 
 Further Reading: All {dm} functions for working with [foreign keys](https://krlmlr.github.io/dm/articles/tech-dm-class.html#foreign-keys).
 
-## 5. Normalization {#normalization}
+## 5. Referential Integrity {#referential-integrity}
+
+A data set has referential integrity if all relations between tables are valid.
+That is, every foreign key holds a primary key that is present in the parent table.
+If a foreign key contains a parent table primary key that has been deleted that row is an orphan row and the database no longer has referential integrity.
+
+{dm} allows checking referential integrity with the `dm_examine_constraints()` function.
+The following conditions are checked:
+
+- All primary key values must be unique.
+- All primary key values must be set, `NA` values are not allowed.
+- Each foreign key value must have a corresponding primary key value.
+
+In the example data model, for a substantial share of the flights, detailed information for the corresponding airplane is not available:
+
+```{r}
+dm %>%
+  dm_examine_constraints()
+```
+
+Establishing referential integrity is important for providing clean data for analysis or downstream users.
+See `vignette("howto-dm-rows")` for more information on adding, deleting or updating individual rows, and `vignette("tech-dm-zoom")` for operations on the data in a data model.
+
+## 6. Normalization {#normalization}
 
 Normalization is a technical term that describes the **central design principle of a relational data model**:
 splitting data into multiple tables.
@@ -197,7 +221,7 @@ While `child_table` contains 3322 unique `tailnum` rows and therefore consists o
 
 Further Reading: See the [Simple English Wikipedia article on database normalization](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
 
-## 6. Relational Databases {#relational-databases}
+## 7. Relational Databases {#relational-databases}
 
 {dm} is built upon relational data models but it is not a database itself.
 Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres.

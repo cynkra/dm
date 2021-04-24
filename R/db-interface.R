@@ -36,7 +36,7 @@
 #'   as the original table names.
 #'
 #'   Use a variant of
-#'   `table_names = ~ DBI::SQL(dbplyr::in_schema("schema_name", .x))`
+#'   `table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))`
 #'   to specify the same schema for all tables.
 #'   Use `table_names = identity` with `temporary = TRUE`
 #'   to avoid giving temporary tables unique names.
