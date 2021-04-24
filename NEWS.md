@@ -1,6 +1,29 @@
-# dm 0.1.7.9000
+# dm 0.1.12.9000
 
-- Internal changes only.
+- `dm_from_src()` gains `dbname` argument for MSSQL (#472).
+
+
+# dm 0.1.12
+
+- `dm_from_src()` gains `dbname` argument for MSSQL (#472).
+- Implement `count()` and `tally()` for dplyr 1.0.3 compatibility (#475).
+- Use databases.pacha.dev instead of db-edu.pacha.dev (#478, @pachamaltese).
+
+
+# dm 0.1.10
+
+- Columns with missing values are no longer primary keys (#469).
+- Fix `dm_from_src()` for MSSQL when `learn_keys = FALSE` (#427).
+- Tests use `expect_snapshot()` everywhere (#456).
+- Fix compatibility with testthat 3.0.1 (#457).
+
+
+# dm 0.1.9
+
+- New `vignette("howto-dm-copy", package = "dm")` and `vignette("howto-dm-rows", package = "dm")` discuss updating data on the database. In part derived from `vignette("howto-dm-db", package = "dm")` (#411, @jawond).
+- New `dm_mutate_tbl()` (#448).
+- `dm_financial()` falls back to db-edu.pacha.dev if relational.fit.cvut.cz is unavailable (#446, @pachamaltese).
+- Use testthat 3e (#455).
 
 
 # dm 0.1.7

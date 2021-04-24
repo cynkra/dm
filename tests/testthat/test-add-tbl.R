@@ -123,3 +123,32 @@ test_that("dm_rm_tbl() works", {
     dm_for_disambiguate()
   )
 })
+
+test_that("dm_mutate_tbl() works", {
+  expect_equivalent_dm(
+    dm_for_filter_w_cycle() %>%
+      dm_mutate_tbl(
+        tf_1 = dm_for_filter_w_cycle()$tf_1,
+        tf_7 = dm_for_filter_w_cycle()$tf_7 %>%
+          filter(0L == 1L)
+      ),
+    dm_for_filter_w_cycle() %>%
+      dm_filter(tf_7, 0L == 1L)
+  )
+
+  # Table doesn't exist yet
+  expect_error(
+    dm_for_filter_w_cycle() %>%
+      dm_mutate_tbl(
+        tf_99 = dm_for_filter_w_cycle()$tf_7
+      )
+  )
+
+  # Wrong column structure
+  expect_error(
+    dm_for_filter_w_cycle() %>%
+      dm_mutate_tbl(
+        tf_1 = dm_for_filter_w_cycle()$tf_7
+      )
+  )
+})

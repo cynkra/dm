@@ -38,7 +38,7 @@
 #'   # the `dm` from the SQLite DB
 #'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
 #' }
-dm_learn_from_db <- function(dest, ...) {
+dm_learn_from_db <- function(dest, dbname = NULL, ...) {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
@@ -47,7 +47,7 @@ dm_learn_from_db <- function(dest, ...) {
     return()
   }
 
-  sql <- db_learn_query(con, ...)
+  sql <- db_learn_query(con, dbname = dbname, ...)
   if (is.null(sql)) {
     return()
   }
@@ -66,7 +66,7 @@ dm_learn_from_db <- function(dest, ...) {
     distinct(schema, table) %>%
     transmute(
       name = table,
-      value = schema_if(schema, table, con)
+      value = schema_if(schema = schema, table = table, con = con, dbname = dbname)
     ) %>%
     deframe()
 
@@ -78,55 +78,79 @@ dm_learn_from_db <- function(dest, ...) {
   legacy_new_dm(tables, data_model)
 }
 
-schema_if <- function(schema, table, con) {
+schema_if <- function(schema, table, con, dbname = NULL) {
   table_sql <- DBI::dbQuoteIdentifier(con, table)
-  if_else(is.na(schema), table_sql, paste0(DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
+  if (is_null(dbname) || dbname == "") {
+    if_else(
+      are_na(schema),
+      table_sql,
+      # need 'coalesce()' cause in case 'schema' is NA, 'if_else()' also tests
+      # the FALSE option (to see if same class) and then 'dbQuoteIdentifier()' throws an error
+      SQL(paste0(DBI::dbQuoteIdentifier(con, coalesce(schema, "")), ".", table_sql))
+    )
+  } else {
+    # 'schema_if()' only used internally (can e.g. be set to default schema beforehand)
+    # so IMHO we don't need a formal 'dm_error' here
+    if (anyNA(schema)) abort("`schema` must be given if `dbname` is not NULL`.")
+    SQL(paste0(DBI::dbQuoteIdentifier(con, dbname), ".", DBI::dbQuoteIdentifier(con, schema), ".", table_sql))
+  }
 }
 
-db_learn_query <- function(dest, ...) {
+db_learn_query <- function(dest, dbname, ...) {
   if (is_mssql(dest)) {
-    return(mssql_learn_query(dest, ...))
+    return(mssql_learn_query(dest, dbname = dbname, ...))
   }
   if (is_postgres(dest)) {
     return(postgres_learn_query(dest, ...))
   }
 }
 
-mssql_learn_query <- function(con, schema = "dbo") { # taken directly from {datamodelr} and subsequently tweaked a little
-  sprintf(
-  "select
-    schema_name(tabs.schema_id) as [schema],
+mssql_learn_query <- function(con, schema = "dbo", dbname = NULL) { # taken directly from {datamodelr} and subsequently tweaked a little
+  dbname_sql <- if (is_null(dbname)) {
+    ""
+  } else {
+    paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
+  }
+  glue::glue(
+    "select
+    schemas.name as [schema],
     tabs.name as [table],
     cols.name as [column],
     isnull(ind_col.column_id, 0) as [key],
-    OBJECT_NAME (ref.referenced_object_id) AS ref,
-    COL_NAME (ref.referenced_object_id, ref.referenced_column_id) AS ref_col,
+    ref_tabs.name AS ref,
+    ref_cols.name AS ref_col,
     1 - cols.is_nullable as mandatory,
     types.name as [type],
     cols.max_length,
     cols.precision,
     cols.scale
   from
-    sys.all_columns cols
-    inner join sys.tables tabs on
+    {dbname_sql}sys.all_columns cols
+    inner join {dbname_sql}sys.tables tabs on
       cols.object_id = tabs.object_id
-    left outer join sys.foreign_key_columns ref on
+    inner join {dbname_sql}sys.schemas schemas on
+      tabs.schema_id = schemas.schema_id
+    left outer join {dbname_sql}sys.foreign_key_columns ref on
       ref.parent_object_id = tabs.object_id
       and ref.parent_column_id = cols.column_id
-    left outer join sys.indexes ind on
+    left outer join {dbname_sql}sys.indexes ind on
       ind.object_id = tabs.object_id
       and ind.is_primary_key = 1
-    left outer join sys.index_columns ind_col on
+    left outer join {dbname_sql}sys.index_columns ind_col on
       ind_col.object_id = ind.object_id
       and ind_col.index_id = ind.index_id
       and ind_col.column_id = cols.column_id
-    left outer join sys.systypes [types] on
+    left outer join {dbname_sql}sys.systypes [types] on
       types.xusertype = cols.system_type_id
-  where tabs.schema_id = schema_id(%s)
+    left outer join {dbname_sql}sys.tables ref_tabs on
+      ref_tabs.object_id = ref.referenced_object_id
+    left outer join {dbname_sql}sys.all_columns ref_cols on
+      ref_cols.object_id = ref.referenced_object_id
+      and ref_cols.column_id = ref.referenced_column_id
+  where schemas.name = {DBI::dbQuoteString(con, schema)}
   order by
     tabs.create_date,
-    cols.column_id",
-  DBI::dbQuoteString(con, schema)
+    cols.column_id"
   )
 }
 
@@ -298,6 +322,6 @@ nest_compat <- function(.data, ...) {
       mutate(!!new_col := !!nest)
   } else {
     nest(.data, ...) %>%
-      mutate_at(vars(new_col), vctrs::as_list_of)
+      mutate_at(vars(!!!new_col), vctrs::as_list_of)
   }
 }

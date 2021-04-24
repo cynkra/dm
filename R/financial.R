@@ -17,13 +17,7 @@
 dm_financial <- function() {
   stopifnot(rlang::is_installed("RMariaDB"))
 
-  my_db <- DBI::dbConnect(
-    RMariaDB::MariaDB(),
-    username = "guest",
-    password = "relational",
-    dbname = "Financial_ijs",
-    host = "relational.fit.cvut.cz"
-  )
+  my_db <- financial_db_con()
 
   my_dm <-
     dm_from_src(my_db, learn_keys = FALSE) %>%

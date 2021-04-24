@@ -64,8 +64,8 @@ is_unique_key <- function(.data, column) {
     .data %>%
     select(value = !!col_expr) %>%
     safe_count(value) %>%
-    filter(n != 1) %>%
-    arrange(value) %>%
+    filter(n != 1 | is.na(value)) %>%
+    arrange(if_else(is.na(value), 0, 1), value) %>%
     utils::head(MAX_COMMAS + 1) %>%
     collect() %>%
     {
@@ -174,7 +174,8 @@ check_subset <- function(t1, c1, t2, c2) {
   v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
 
   setdiff_v1_v2 <- setdiff(v1, v2)
-  print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
+  # collect() for robust test output
+  print(collect(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2)), n = 10)
 
   abort_not_subset_of(as_label(t1q), as_name(c1q), as_label(t2q), as_name(c2q))
 }

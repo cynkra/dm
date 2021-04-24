@@ -380,8 +380,8 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
       ungroup() %>% # dbplyr problem?
       mutate(n_mismatch = sum(if_else(is.na(mismatch_or_null), 0L, n), na.rm = TRUE)) %>%
       mutate(n_total = sum(n, na.rm = TRUE)) %>%
-      arrange(desc(n)) %>%
       filter(!is.na(mismatch_or_null)) %>%
+      arrange(desc(n)) %>%
       head(MAX_COMMAS + 1L) %>%
       collect(),
     error = identity

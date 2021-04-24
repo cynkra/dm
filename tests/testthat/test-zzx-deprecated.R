@@ -37,8 +37,8 @@ test_that("cdm_disambiguate_cols() works as intended", {
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_dm(
-    cdm_disambiguate_cols(dm_for_disambiguate()),
-    dm_disambiguate_cols(dm_for_disambiguate())
+    expect_message(cdm_disambiguate_cols(dm_for_disambiguate())),
+    expect_message(dm_disambiguate_cols(dm_for_disambiguate()))
   )
 })
 
@@ -92,12 +92,12 @@ test_that("`cdm_flatten_to_tbl()`, `cdm_join_to_tbl()` and `dm_squash_to_tbl()` 
   local_options(lifecycle_verbosity = "quiet")
 
   expect_equivalent_tbl(
-    cdm_flatten_to_tbl(dm_for_flatten(), fact),
+    expect_message(cdm_flatten_to_tbl(dm_for_flatten(), fact)),
     result_from_flatten()
   )
 
   expect_equivalent_tbl(
-    cdm_join_to_tbl(dm_for_flatten(), fact, dim_3),
+    expect_message(cdm_join_to_tbl(dm_for_flatten(), fact, dim_3)),
     select(result_from_flatten(), fact:fact.something, dim_3.something)
   )
 

@@ -62,7 +62,7 @@ abort_not_subset_of <- function(table_name_1, colname_1,
 error_txt_not_subset_of <- function(table_name_1, colname_1,
                                     table_name_2, colname_2) {
   glue(
-    "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see above) that are not present in column ",
+    "Column {tick(colname_1)} of table {tick(table_name_1)} contains values (see examples above) that are not present in column ",
     "{tick(colname_2)} of table {tick(table_name_2)}."
   )
 }
@@ -539,4 +539,96 @@ error_txt_temp_table_requested <- function(table_names, tbls_in_dm) {
     "The following requested tables from the DB are temporary tables and can't be included in the result: ",
     "{commas(tick(temp_tables))}."
   )
+}
+
+abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
+  abort(error_txt_parameter_not_correct_class(
+    parameter,
+    correct_class,
+    class
+  ),
+  .subclass = dm_error_full("parameter_not_correct_class")
+  )
+}
+
+error_txt_parameter_not_correct_class <- function(parameter, correct_class, class) {
+  glue(
+    "Parameter {tick(parameter)} needs to be of class {tick(correct_class)} but is of class {format_classes(class)}."
+  )
+}
+
+abort_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
+  abort(error_txt_parameter_not_correct_length(
+    parameter,
+    correct_length,
+    parameter_value
+  ),
+  .subclass = dm_error_full("parameter_not_correct_length")
+  )
+}
+
+error_txt_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
+  glue(
+    "Parameter {tick(parameter)} needs to be of length {tick(correct_length)} but is ",
+    "of length {as.character(length(parameter_value))} ({commas(tick(parameter_value))})."
+  )
+}
+
+warn_if_arg_not <- function(
+                            arg,
+                            arg_name = deparse(substitute(arg)),
+                            only_on = c("MSSQL", "Postgres"),
+                            correct = NULL,
+                            additional_msg = "") {
+  if (!identical(arg, correct)) {
+    dm_warn(
+      glue::glue(
+        "Argument {tick(arg_name)} ignored: currently only supported for {paste0(only_on, collapse = ' and ')}.",
+        if (!is.null(additional_msg)) {
+          paste0("\n", additional_msg)
+        }
+      ),
+      class = "arg_not"
+    )
+  }
+  NULL
+}
+
+# Errors for schema handling functions ------------------------------------
+
+abort_schema_exists <- function(schema, dbname = NULL) {
+  abort(error_txt_schema_exists(schema, dbname),
+    .subclass = dm_error_full("schema_exists")
+  )
+}
+
+error_txt_schema_exists <- function(schema, dbname) {
+  msg_suffix <- fix_msg(dbname)
+  glue(
+    "A schema named {tick(schema)} already exists{msg_suffix}."
+  )
+}
+
+abort_no_schema_exists <- function(schema, dbname = NULL) {
+  abort(error_txt_no_schema_exists(schema, dbname),
+    .subclass = dm_error_full("no_schema_exists")
+  )
+}
+
+error_txt_no_schema_exists <- function(schema, dbname) {
+  msg_suffix <- fix_msg(dbname)
+  glue(
+    "No schema named {tick(schema)} exists{msg_suffix}."
+  )
+}
+
+abort_no_schemas_supported <- function(dbms) {
+  abort(
+    error_txt_no_schemas_supported(dbms),
+    .subclass = dm_error_full("no_schemas_supported")
+  )
+}
+
+error_txt_no_schemas_supported <- function(dbms) {
+  glue::glue("The concept of schemas is not supported for DBMS {tick(dbms)}.")
 }

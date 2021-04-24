@@ -14,7 +14,7 @@
 #'
 #' `dm_discard_zoomed()` discards the zoomed table and returns the `dm` as it was before zooming.
 #'
-#' Please refer to `vignette("dm-zoom-to-table", package = "dm")`
+#' Please refer to `vignette("tech-db-zoom", package = "dm")`
 #' for a more detailed introduction.
 #'
 #' @inheritParams dm_add_pk
