@@ -85,7 +85,7 @@ flights_dm_w_many_keys_and_colors %>%
 
 Finally, for exporting a drawing to `svg` you could use `DiagrammeRsvg::export_svg()`:
 
-```{r}
+```{r eval = rlang::is_installed("DiagrammeRsvg")}
 flights_dm_w_many_keys_and_colors %>% 
   dm_select_tbl(flights, airports, planes) %>% 
   dm_draw() %>% 
