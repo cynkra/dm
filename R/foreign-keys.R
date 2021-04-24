@@ -367,9 +367,13 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
 }
 
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
-  t1_join <- t1 %>% select(value = !!sym(colname))
+  t1_join <-
+    t1 %>%
+    select(value = !!sym(colname)) %>%
+    distinct()
   t2_join <- t2 %>%
     select(value = !!sym(pk)) %>%
+    distinct() %>%
     mutate(match = 1L)
 
   res_tbl <- tryCatch(
