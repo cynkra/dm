@@ -125,7 +125,7 @@ rows_per_table
 sum(rows_per_table)
 ```
 
-```{r}
+```{r echo = FALSE, eval = TRUE}
 sum_nrow <- NA
 sum_nrow_filtered <- NA
 ```
