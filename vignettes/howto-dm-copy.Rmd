@@ -90,7 +90,7 @@ my_dm_total_computed$total_loans %>%
   sql_render()
 ``````
 
-```{r echo = FALSE}
+```{r echo = FALSE, eval = TRUE}
 remote_name_total_loans <- ""
 remote_name_total_loans <- remote_name(my_dm_total_computed$total_loans)
 ```
