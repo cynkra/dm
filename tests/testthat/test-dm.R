@@ -134,8 +134,8 @@ test_that("'compute.dm()' computes tables on DB", {
     } %>%
     dm_get_def()
 
-  remote_names <- map_chr(def$data, dbplyr::remote_name)
-  expect_true(all(remote_names != ""))
+  remote_names <- map(def$data, dbplyr::remote_name)
+  expect_equal(lengths(remote_names), rep_along(remote_names, 1))
 })
 
 test_that("'compute.zoomed_dm()' computes tables on DB", {
@@ -159,8 +159,8 @@ test_that("'compute.zoomed_dm()' computes tables on DB", {
     dm_update_zoomed() %>%
     dm_get_def()
 
-  remote_names <- map_chr(def$data, dbplyr::remote_name)
-  expect_true(all(remote_names != ""))
+  remote_names <- map(def$data, dbplyr::remote_name)
+  expect_equal(lengths(remote_names), rep_along(remote_names, 1))
 })
 
 test_that("some methods/functions for `zoomed_dm` work", {
