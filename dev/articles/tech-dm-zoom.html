@@ -152,7 +152,7 @@
 <p>The first approach is rather self-explanatory, so let us have a closer look at the second way.</p>
 <div id="enabling-dplyr-workflow-within-a-dm" class="section level2">
 <h2 class="hasAnchor">
-<a href="#enabling-dplyr-workflow-within-a-dm" class="anchor"></a>Enabling {dplyr}-workflow within a <code>dm</code>
+<a href="#enabling-dplyr-workflow-within-a-dm" class="anchor" aria-hidden="true"></a>Enabling {dplyr}-workflow within a <code>dm</code>
 </h2>
 <p>“Zooming” to a table of a <code>dm</code> means:</p>
 <ul>
@@ -171,11 +171,11 @@
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h2>
+<a href="#examples" class="anchor" aria-hidden="true"></a>Examples</h2>
 <p>So much for the theory, but how does it look and feel? To explore this, we once more make use of our trusted {nycflights13} data.</p>
 <div id="use-case-1-add-a-new-column-to-an-existing-table" class="section level3">
 <h3 class="hasAnchor">
-<a href="#use-case-1-add-a-new-column-to-an-existing-table" class="anchor"></a>Use case 1: Add a new column to an existing table</h3>
+<a href="#use-case-1-add-a-new-column-to-an-existing-table" class="anchor" aria-hidden="true"></a>Use case 1: Add a new column to an existing table</h3>
 <p>Imagine you want to have a column in <code>flights</code>, specifying if a flight left before noon or after. Just like with {dplyr}, we can tackle this with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>. Let us do this step by step:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
@@ -281,7 +281,7 @@
 </div>
 <div id="use-case-2-creation-of-a-surrogate-key" class="section level3">
 <h3 class="hasAnchor">
-<a href="#use-case-2-creation-of-a-surrogate-key" class="anchor"></a>Use case 2: Creation of a surrogate key</h3>
+<a href="#use-case-2-creation-of-a-surrogate-key" class="anchor" aria-hidden="true"></a>Use case 2: Creation of a surrogate key</h3>
 <p>The same course of action could, for example, be employed to create a surrogate key for a table. We can do this for the <code>weather</code> table.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
@@ -386,7 +386,7 @@
 </div>
 <div id="use-case-3-disentangle-dm" class="section level3">
 <h3 class="hasAnchor">
-<a href="#use-case-3-disentangle-dm" class="anchor"></a>Use case 3: Disentangle <code>dm</code>
+<a href="#use-case-3-disentangle-dm" class="anchor" aria-hidden="true"></a>Use case 3: Disentangle <code>dm</code>
 </h3>
 <p>If you look at the <code>dm</code> created by <code><a href="../reference/dm_nycflights13.html">dm_nycflights13(cycle = TRUE)</a></code>, you see that two columns of <code>flights</code> relate to one and the same table, <code>airports</code>. One column stands for the departure airport and the other for the arrival airport.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -436,7 +436,7 @@
 </div>
 <div id="use-case-4-add-summary-table-to-dm" class="section level3">
 <h3 class="hasAnchor">
-<a href="#use-case-4-add-summary-table-to-dm" class="anchor"></a>Use case 4: Add summary table to <code>dm</code>
+<a href="#use-case-4-add-summary-table-to-dm" class="anchor" aria-hidden="true"></a>Use case 4: Add summary table to <code>dm</code>
 </h3>
 <p>Here is an example for adding a summary of a table as a new table to a <code>dm</code> (FK-relations are taken care of automatically):</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -465,7 +465,7 @@
 </div>
 <div id="use-case-5-joining-tables" class="section level3">
 <h3 class="hasAnchor">
-<a href="#use-case-5-joining-tables" class="anchor"></a>Use case 5: Joining tables</h3>
+<a href="#use-case-5-joining-tables" class="anchor" aria-hidden="true"></a>Use case 5: Joining tables</h3>
 <p>If you would like to join some or all of the columns of one table to another, you can make use of one of the <code>join</code>-methods for a <code>zoomed_dm</code>. In addition to the usual arguments for the {dplyr}-joins, by supplying the <code>select</code> argument you can specify which columns of the RHS-table you want to be included in the join. For the syntax please see the example below. The LHS-table of a join is always the zoomed table.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">joined_flights_dm</span> <span class="op">&lt;-</span> 
@@ -517,7 +517,7 @@
 </div>
 <div id="tip-accessing-the-zoomed-table" class="section level3">
 <h3 class="hasAnchor">
-<a href="#tip-accessing-the-zoomed-table" class="anchor"></a>Tip: Accessing the zoomed table</h3>
+<a href="#tip-accessing-the-zoomed-table" class="anchor" aria-hidden="true"></a>Tip: Accessing the zoomed table</h3>
 <p>At each point you can retrieve the zoomed table by calling <code><a href="../reference/pull_tbl.html">pull_tbl()</a></code> on a <code>zoomed_dm</code>. To use our last example once more:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm</span> <span class="op">%&gt;%</span> 
@@ -544,7 +544,7 @@
 </div>
 <div id="possible-pitfalls-and-caveats" class="section level3">
 <h3 class="hasAnchor">
-<a href="#possible-pitfalls-and-caveats" class="anchor"></a>Possible pitfalls and caveats</h3>
+<a href="#possible-pitfalls-and-caveats" class="anchor" aria-hidden="true"></a>Possible pitfalls and caveats</h3>
 <ol style="list-style-type: decimal">
 <li><p>Currently not all of the {dplyr}-verbs have their own method for a <code>zoomed_dm</code>, so be aware that in some cases it will still be necessary to resort to extracting one or more tables from a <code>dm</code> and reinserting a transformed version of theirs into the <code>dm</code> eventually. The supported functions are: <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code>.</p></li>
 <li><p>The same is true for {tidyr}-functions. Methods are provided for: <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate()</a></code>.</p></li>

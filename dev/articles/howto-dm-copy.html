@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Copy tables to and from a database</h1>
                         <h4 data-toc-skip class="author">James Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2021-04-20</h4>
+            <h4 data-toc-skip class="date">2021-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-copy.Rmd" class="external-link"><code>vignettes/howto-dm-copy.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-copy.Rmd</code></div>
@@ -149,7 +149,7 @@
 <p>In this tutorial we introduce {dm} methods and techniques for copying individual tables and entire relational data models into an RDBMS. This is an integral part of the {dm} workflow. Copying tables to an RDBMS is often a step in the process of building a relational data model from locally hosted data. If your data model is complete, copying it to an RDBMS in a single operation allows you to leverage the power of the database and make it accessible to others. For modifying and persisting changes to your data at the row-level see <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code>.</p>
 <div id="copy-models-or-copy-tables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#copy-models-or-copy-tables" class="anchor"></a>Copy models or copy tables?</h2>
+<a href="#copy-models-or-copy-tables" class="anchor" aria-hidden="true"></a>Copy models or copy tables?</h2>
 <p>Using {dm} you can persist an entire relational data model with a single function call. <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> will move your entire model into a destination RDBMS. This may be all you need to deploy a new model. You may want to add new tables to an existing model on an RDBMS. These requirements can be handled using the <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> methods.</p>
 <p>Calling <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> or <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> requires write permission on the RDBMS, otherwise an error is returned. Therefore for the following examples we will instantiate a test dm and move it into a local SQLite database with full permissions. {dm} and {dbplyr} are designed so there is no difference between the code used to manipulate a local SQLite database and a remote RDBMS. The steps for this were already introduced in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> and will be discussed in more detail in the <a href="#copy-model">Copying a relational model</a> section.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -184,7 +184,7 @@
 </div>
 <div id="copying-tables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#copying-tables" class="anchor"></a>Copying and persisting individual tables</h2>
+<a href="#copying-tables" class="anchor" aria-hidden="true"></a>Copying and persisting individual tables</h2>
 <p>As part of your data analysis you may combine tables from multiple sources and create links to existing tables via foreign keys, or create new tables holding data summaries. The example below, already discussed in <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>, computes the total amount of all loans for each account.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_total</span> <span class="op">&lt;-</span>
@@ -226,7 +226,7 @@
 </div>
 <div id="data-frames" class="section level2">
 <h2 class="hasAnchor">
-<a href="#data-frames" class="anchor"></a>Adding local data frames to an RDBMS</h2>
+<a href="#data-frames" class="anchor" aria-hidden="true"></a>Adding local data frames to an RDBMS</h2>
 <p>If you need to add local data frames to an existing dm object, use the <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> method. It takes the same arguments as <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>, except the second argument takes a data frame rather than a dm. The result is a derived dm object that contains the new table.</p>
 <p>To demonstrate the use of <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> the example below will use {dm} to pull consolidated data from several tables out of an RDBMS, estimate a linear model from the data, then insert the residuals back into the RDBMS and link it to the existing tables. This is all done with a local SQLite database, but the process would work unchanged on any supported RDBMS.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -302,7 +302,7 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_dm_sqlite_resid</span><span class="op">$</span><span class="va">loans_residuals</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;loans_residuals_2020_08_28_07_13_03_1&gt; [?? x 2]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.4 []</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 []</span><span>
 #&gt;       id   resid
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #555555;"> 1</span><span>  </span><span style="text-decoration: underline;">4</span><span>959 -</span><span style="color: #BB0000;text-decoration: underline;">31</span><span style="color: #BB0000;">912.</span><span>
@@ -320,7 +320,7 @@
 </div>
 <div id="copy-model" class="section level2">
 <h2 class="hasAnchor">
-<a href="#copy-model" class="anchor"></a>Persisting a relational model with <code>copy_dm_to()</code>
+<a href="#copy-model" class="anchor" aria-hidden="true"></a>Persisting a relational model with <code>copy_dm_to()</code>
 </h2>
 <p>Persistence, because it is intended to make permanent changes, requires write access to the source RDBMS. The code below is a repeat of the code that opened the <a href="#copying-tables">Copying and persisting individual tables</a> section at the beginning of the tutorial. It uses the {dm} convenience function <code><a href="../reference/dm_financial.html">dm_financial()</a></code> to create a dm object corresponding to a data model from a public dataset repository. The dm object is downloaded locally first, before deploying it to a local SQLite database.</p>
 <p><code><a href="../reference/dm_select_tbl.html">dm_select_tbl()</a></code> is used to exclude the transaction table <code>trans</code> due to its size, then the <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> method retrieves the remaining tables and returns them as a local dm object.</p>
@@ -352,7 +352,7 @@
 
 <span class="va">deployed_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.35.4 []
+#&gt; src:  sqlite 3.35.5 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)
 #&gt; Columns: 47
@@ -369,7 +369,7 @@
 
 <span class="va">dup_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.35.4 []
+#&gt; src:  sqlite 3.35.5 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (8 total)
 #&gt; Columns: 47
@@ -386,12 +386,12 @@
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
-<a href="#conclusion" class="anchor"></a>Conclusion</h2>
+<a href="#conclusion" class="anchor" aria-hidden="true"></a>Conclusion</h2>
 <p><code>dm</code> makes it straightforward to deploy your complete relational model to an RDBMS using the <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> function. For tables that are created from a relational model during analysis or development, <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to()</a></code> can be used to persist them between sessions or to copy local tables to a database dm. The <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> method downloads an entire dm object that fits into memory from the database.</p>
 </div>
 <div id="next-steps" class="section level2">
 <h2 class="hasAnchor">
-<a href="#next-steps" class="anchor"></a>Next steps</h2>
+<a href="#next-steps" class="anchor" aria-hidden="true"></a>Next steps</h2>
 <p>If you need finer-grained control over modifications to your relational model, see <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for an introduction to row level operations, including updates, insertions, deletions and patching.</p>
 <p>If you feel you need to know more about relational data models in order to get the most out of dm, check out <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 <p>If you’re familiar with relational data models but want to know how to work with them in dm, then any of <code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code>, <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code>, or <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> is a good next step.</p>

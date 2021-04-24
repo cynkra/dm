@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Create a dm object from data frames</h1>
             
-            <h4 data-toc-skip class="date">2021-04-20</h4>
+            <h4 data-toc-skip class="date">2021-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-df.Rmd" class="external-link"><code>vignettes/howto-dm-df.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-df.Rmd</code></div>
@@ -147,11 +147,11 @@
     
 <div id="building-data-models-from-data-frames-with-dm" class="section level1">
 <h1 class="hasAnchor">
-<a href="#building-data-models-from-data-frames-with-dm" class="anchor"></a>Building data models from data frames with dm</h1>
+<a href="#building-data-models-from-data-frames-with-dm" class="anchor" aria-hidden="true"></a>Building data models from data frames with dm</h1>
 <p>dm allows you to create your own relational data models from local data frames. Once your data model is complete, you can deploy it to a range of DBMSs using dm.</p>
 <div id="creating-a-dm-object-from-data-frames" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-a-dm-object-from-data-frames" class="anchor"></a>Creating a dm object from data frames</h2>
+<a href="#creating-a-dm-object-from-data-frames" class="anchor" aria-hidden="true"></a>Creating a dm object from data frames</h2>
 <p>The example data set that we will be using is available through the <a href="https://github.com/hadley/nycflights13" class="external-link"><code>nycflights13</code></a> package. The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013:</p>
 <ul>
 <li>
@@ -194,7 +194,7 @@
 </div>
 <div id="adding-tables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#adding-tables" class="anchor"></a>Adding Tables</h2>
+<a href="#adding-tables" class="anchor" aria-hidden="true"></a>Adding Tables</h2>
 <p>Our first step will be to tell <code>dm</code> which tables we want to work with and how they are connected. For that we can use <code><a href="../reference/dm.html">dm()</a></code>, passing in the table names as arguments.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
@@ -211,7 +211,7 @@
 </div>
 <div id="a-dm-is-a-list" class="section level2">
 <h2 class="hasAnchor">
-<a href="#a-dm-is-a-list" class="anchor"></a>A dm is a list</h2>
+<a href="#a-dm-is-a-list" class="anchor" aria-hidden="true"></a>A dm is a list</h2>
 <p>dm objects behave like lists with a user- and console-friendly print format. In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.</p>
 <p>Member referencing, by subscript and by name, and list and slice manipulation functions work just as you would expect on a dm object.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -244,13 +244,13 @@
 </div>
 <div id="defining-keys" class="section level2">
 <h2 class="hasAnchor">
-<a href="#defining-keys" class="anchor"></a>Defining Keys</h2>
+<a href="#defining-keys" class="anchor" aria-hidden="true"></a>Defining Keys</h2>
 <p>Even though we now have a <code>dm</code> object that contains all our data, we have not specified how our five tables are connected. To do this we need to define primary keys and foreign keys on the tables.</p>
 <p>Primary keys and foreign keys are how relational database tables are linked with each other. A primary key is a column that has a unique value for each row within a table. A foreign key is a column containing the primary key for a row in another table.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Foreign keys act as cross references between tables. They specify the relationships that gives us the <em>relational</em> database. For more information on keys and a crash course on databases, see <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p>
 </div>
 <div id="primary-keys" class="section level2">
 <h2 class="hasAnchor">
-<a href="#primary-keys" class="anchor"></a>Primary Keys</h2>
+<a href="#primary-keys" class="anchor" aria-hidden="true"></a>Primary Keys</h2>
 <p><code>dm</code> offers <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> to identify viable primary keys, and <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> to add them.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span>
@@ -288,7 +288,7 @@
 </div>
 <div id="foreign-keys" class="section level2">
 <h2 class="hasAnchor">
-<a href="#foreign-keys" class="anchor"></a>Foreign Keys</h2>
+<a href="#foreign-keys" class="anchor" aria-hidden="true"></a>Foreign Keys</h2>
 <p>To define how our tables are related, we use <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> to add foreign keys. In calling <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> the <code>table</code> argument is the table that needs a foreign key to link it to a second table. <code>ref_table</code> is the table to be linked to and it needs a primary key already defined for it.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span>
@@ -337,7 +337,7 @@
 </div>
 <div id="visualization" class="section level2">
 <h2 class="hasAnchor">
-<a href="#visualization" class="anchor"></a>Visualization</h2>
+<a href="#visualization" class="anchor" aria-hidden="true"></a>Visualization</h2>
 <p>Visualizing a data model is a quick and easy way to verify that we have successfully created the model we were aiming for. We can use <code><a href="../reference/dm_draw.html">dm_draw()</a></code> at any stage of the process to generate a visual representation of the tables and the links between them:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_no_keys</span> <span class="op">%&gt;%</span>
@@ -400,7 +400,7 @@
 </div>
 <div id="integrity-checks" class="section level2">
 <h2 class="hasAnchor">
-<a href="#integrity-checks" class="anchor"></a>Integrity Checks</h2>
+<a href="#integrity-checks" class="anchor" aria-hidden="true"></a>Integrity Checks</h2>
 <p>As well as checking our data model visually, dm can examine the constraints we have created by the addition of keys and verify that they are sensible.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_no_keys</span> <span class="op">%&gt;%</span>
@@ -425,7 +425,7 @@
 </div>
 <div id="programming" class="section level2">
 <h2 class="hasAnchor">
-<a href="#programming" class="anchor"></a>Programming</h2>
+<a href="#programming" class="anchor" aria-hidden="true"></a>Programming</h2>
 <p>Helper functions are available to access details on keys and check results.</p>
 <p><code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code> returns a data frame with our primary keys:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">

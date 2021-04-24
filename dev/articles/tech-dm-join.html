@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Joining in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-04-20</h4>
+            <h4 data-toc-skip class="date">2021-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-join.Rmd" class="external-link"><code>vignettes/tech-dm-join.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-join.Rmd</code></div>
@@ -155,7 +155,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
 <div id="data-nycflights13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#data-nycflights13" class="anchor"></a>Data: nycflights13</h2>
+<a href="#data-nycflights13" class="anchor" aria-hidden="true"></a>Data: nycflights13</h2>
 <p>To explore filtering with {dm}, we’ll use the {nycflights13} data with its tables <code>flights</code>, <code>planes</code>, <code>airlines</code> and <code>airports</code>.</p>
 <p>This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html" class="external-link">?nycflights13</a></code>.</p>
 <p>First, we have to create a <code>dm</code> object from the {nycflights13} data. This is implemented with <code><a href="../reference/dm_nycflights13.html">dm::dm_nycflights13()</a></code>.</p>
@@ -166,11 +166,11 @@
 </div>
 <div id="join" class="section level2">
 <h2 class="hasAnchor">
-<a href="#join" class="anchor"></a>Joining a <code>dm</code> object</h2>
+<a href="#join" class="anchor" aria-hidden="true"></a>Joining a <code>dm</code> object</h2>
 <p>{dm} allows you to join two tables of a <code>dm</code> object based on a shared column. You can use all join functions that you know from the <a href="https://dplyr.tidyverse.org/reference/join.html" class="external-link">{dplyr} package</a>. Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join. See <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">?dplyr::join</a></code> for details.</p>
 <div id="how-it-works" class="section level3">
 <h3 class="hasAnchor">
-<a href="#how-it-works" class="anchor"></a>How it works</h3>
+<a href="#how-it-works" class="anchor" aria-hidden="true"></a>How it works</h3>
 <p>A join is the combination of two tables based on shared information. In technical terms, we merge the tables that need to be directly connected by a <a href="https://krlmlr.github.io/dm/articles/howto-dm-theory#fk">foreign key relation</a>.</p>
 <p>The existing links can be inspected in two ways:</p>
 <ol style="list-style-type: decimal">
@@ -210,7 +210,7 @@
 </div>
 <div id="joining-examples" class="section level3">
 <h3 class="hasAnchor">
-<a href="#joining-examples" class="anchor"></a>Joining Examples</h3>
+<a href="#joining-examples" class="anchor" aria-hidden="true"></a>Joining Examples</h3>
 <p>Let’s look at some examples:</p>
 <p><strong>Add a column with airline names from the <code>airlines</code> table to the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">

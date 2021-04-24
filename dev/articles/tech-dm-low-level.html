@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2021-04-20</h4>
+            <h4 data-toc-skip class="date">2021-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-low-level.Rmd</code></div>
@@ -163,7 +163,7 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span></code></pre></div>
 <div id="testing-key-constraints" class="section level2">
 <h2 class="hasAnchor">
-<a href="#testing-key-constraints" class="anchor"></a>Testing key constraints</h2>
+<a href="#testing-key-constraints" class="anchor" aria-hidden="true"></a>Testing key constraints</h2>
 <p>This section contains information and examples about the following functions:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/check_key.html">check_key(.data, ...)</a></code></li>
@@ -216,7 +216,7 @@
 </div>
 <div id="testing-cardinalities-between-two-tables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#testing-cardinalities-between-two-tables" class="anchor"></a>Testing cardinalities between two tables</h2>
+<a href="#testing-cardinalities-between-two-tables" class="anchor" aria-hidden="true"></a>Testing cardinalities between two tables</h2>
 <p>This section contains information and examples for the functions</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/examine_cardinality.html">check_cardinality_0_n(parent_table, primary_key_column, child_table, foreign_key_column)</a></code></li>
@@ -240,7 +240,7 @@
 <p>Also <code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met. Subsequently, two further checks are made to determine the nature of the relation (surjective, injective, bijective or none of these) between the two columns.</p>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h3>
+<a href="#examples" class="anchor" aria-hidden="true"></a>Examples</h3>
 <p>Given the following three data frames:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
@@ -276,7 +276,7 @@
 </div>
 <div id="table-surgery" class="section level2">
 <h2 class="hasAnchor">
-<a href="#table-surgery" class="anchor"></a>Table surgery</h2>
+<a href="#table-surgery" class="anchor" aria-hidden="true"></a>Table surgery</h2>
 <p>The relevant functions are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/decompose_table.html">decompose_table(.data, new_id_column, ...)</a></code></li>

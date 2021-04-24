@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with dm</h1>
             
-            <h4 data-toc-skip class="date">2021-04-20</h4>
+            <h4 data-toc-skip class="date">2021-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/dm.Rmd" class="external-link"><code>vignettes/dm.Rmd</code></a></small>
       <div class="hidden name"><code>dm.Rmd</code></div>
@@ -147,12 +147,12 @@
     
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
+<a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h2>
 <p>In this article we’re going show you how easy it is to move from connecting to the database holding your data to producing the results you need. It’s meant to be a quick and friendly introduction to {dm}, so it is low on details and caveats. Links to detailed documentation are provided at the end. (If your data is in data frames instead of a database and you’re in a hurry, jump over to <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code>.)</p>
 </div>
 <div id="creating-a-dm-object" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-a-dm-object" class="anchor"></a>Creating a dm object</h2>
+<a href="#creating-a-dm-object" class="anchor" aria-hidden="true"></a>Creating a dm object</h2>
 <p>dm objects can be created from individual tables or loaded directly from a relational data model on an RDBMS (relational database management system).</p>
 <p>For this demonstration we’re going work with a model hosted on a public server. The first thing we need is a connection to the RDBMS hosting the data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -183,7 +183,7 @@
 </div>
 <div id="selecting-tables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#selecting-tables" class="anchor"></a>Selecting tables</h2>
+<a href="#selecting-tables" class="anchor" aria-hidden="true"></a>Selecting tables</h2>
 <p>The dm object can be accessed like a named list of tables:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fin_dm</span><span class="op">)</span>
@@ -223,7 +223,7 @@
 </div>
 <div id="linking-tables-by-adding-keys" class="section level2">
 <h2 class="hasAnchor">
-<a href="#linking-tables-by-adding-keys" class="anchor"></a>Linking tables by adding keys</h2>
+<a href="#linking-tables-by-adding-keys" class="anchor" aria-hidden="true"></a>Linking tables by adding keys</h2>
 <p>In many cases, <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code> already returns a dm with all keys set. If not, dm allows us to define primary and foreign keys ourselves.</p>
 <p>In our data model, <code>id</code> columns uniquely identify records in the <code>accounts</code> and <code>loans</code> table, a primary key is added with <code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code>. Each loan is linked to one account via the <code>account_id</code> column in the <code>loans</code> table, the relationship is established with <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -239,7 +239,7 @@
 </div>
 <div id="visualizing-a-data-model" class="section level2">
 <h2 class="hasAnchor">
-<a href="#visualizing-a-data-model" class="anchor"></a>Visualizing a data model</h2>
+<a href="#visualizing-a-data-model" class="anchor" aria-hidden="true"></a>Visualizing a data model</h2>
 <p>Having a diagram of the data model is the quickest way to verify we’re on the right track. We can display a visual summary of the dm at any time. The default is to display the table name, any defined keys and their links to other tables.</p>
 <p>Visualizing the dm in its current state we see the keys we have created and how they link the tables together. Color guides the eye.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -261,7 +261,7 @@
 </div>
 <div id="accessing-a-data-model-as-a-table" class="section level2">
 <h2 class="hasAnchor">
-<a href="#accessing-a-data-model-as-a-table" class="anchor"></a>Accessing a data model as a table</h2>
+<a href="#accessing-a-data-model-as-a-table" class="anchor" aria-hidden="true"></a>Accessing a data model as a table</h2>
 <p>If we want to perform modeling or analysis on this relational model we need to transform it into a tabular format that R functions can work with. <code><a href="../reference/dm_flatten_to_tbl.html">dm_squash_to_tbl()</a></code> will automatically follow foreign keys across tables to gather all the available columns into a single table.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fin_dm_keys</span> <span class="op">%&gt;%</span>
@@ -314,7 +314,7 @@
 </div>
 <div id="operations-on-table-data-within-a-dm" class="section level2">
 <h2 class="hasAnchor">
-<a href="#operations-on-table-data-within-a-dm" class="anchor"></a>Operations on table data within a dm</h2>
+<a href="#operations-on-table-data-within-a-dm" class="anchor" aria-hidden="true"></a>Operations on table data within a dm</h2>
 <p>We don’t need to take the extra step of exporting the data to work with it. Through the dm object we have complete access to dplyr’s data manipulation verbs. These operate on the data within individual tables.</p>
 <p>To work with a particular table we use <code><a href="../reference/dm_zoom_to.html">dm_zoom_to()</a></code> to set the context to our chosen table. Then we can perform any of the operations we want.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -347,7 +347,7 @@
 </div>
 <div id="checking-constraints" class="section level2">
 <h2 class="hasAnchor">
-<a href="#checking-constraints" class="anchor"></a>Checking constraints</h2>
+<a href="#checking-constraints" class="anchor" aria-hidden="true"></a>Checking constraints</h2>
 <p>It’s always smart to check that your data model follows its specifications. When building our own model or changing existing models by adding tables or keys, it is even more important that the new model is validated.</p>
 <p><code>dm_examine_constrains()</code> checks all primary and foreign keys and reports if they violate their expected constraints.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -359,7 +359,7 @@
 </div>
 <div id="next-steps" class="section level2">
 <h2 class="hasAnchor">
-<a href="#next-steps" class="anchor"></a>Next Steps</h2>
+<a href="#next-steps" class="anchor" aria-hidden="true"></a>Next Steps</h2>
 <p>Now that you have been introduced to the basic operation of dm, the next step is to learn more about the dm methods that your particular use case requires.</p>
 <p>Is your data in an RDBMS? Then move on to <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> for a more detailed looking at working with an existing relational data model.</p>
 <p>If your data is in data frames, then you want to read <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> next.</p>
@@ -368,7 +368,7 @@
 </div>
 <div id="further-reading" class="section level2">
 <h2 class="hasAnchor">
-<a href="#further-reading" class="anchor"></a>Further reading</h2>
+<a href="#further-reading" class="anchor" aria-hidden="true"></a>Further reading</h2>
 <p><code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code> - This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.</p>
 <p><code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code> - Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.</p>
 <p><code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code> - Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.</p>
@@ -383,7 +383,7 @@
 </div>
 <div id="standing-on-the-shoulders-of-giants" class="section level2">
 <h2 class="hasAnchor">
-<a href="#standing-on-the-shoulders-of-giants" class="anchor"></a>Standing on the shoulders of giants</h2>
+<a href="#standing-on-the-shoulders-of-giants" class="anchor" aria-hidden="true"></a>Standing on the shoulders of giants</h2>
 <p>The {dm} package follows the tidyverse principles:</p>
 <ul>
 <li>

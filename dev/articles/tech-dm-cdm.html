@@ -136,7 +136,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Migration guide: ‘cdm’ -&gt; ‘dm’</h1>
             
-            <h4 data-toc-skip class="date">2021-04-20</h4>
+            <h4 data-toc-skip class="date">2021-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-cdm.Rmd</code></div>
@@ -148,11 +148,11 @@
 <p>This vignette describes which changes are necessary to adapt your code when updating the {dm} package version from a version <code>0.0.5</code> or lower to <code>0.0.6</code> or higher.</p>
 <div id="changes-required-when-updating-from-version-0-0-5-to-0-0-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-required-when-updating-from-version-0-0-5-to-0-0-6" class="anchor"></a>Changes required when updating from version <code>0.0.5</code> to <code>0.0.6</code>
+<a href="#changes-required-when-updating-from-version-0-0-5-to-0-0-6" class="anchor" aria-hidden="true"></a>Changes required when updating from version <code>0.0.5</code> to <code>0.0.6</code>
 </h2>
 <div id="replace-cdm-with-dm" class="section level3">
 <h3 class="hasAnchor">
-<a href="#replace-cdm-with-dm" class="anchor"></a>Replace <code>cdm</code> with <code>dm</code>
+<a href="#replace-cdm-with-dm" class="anchor" aria-hidden="true"></a>Replace <code>cdm</code> with <code>dm</code>
 </h3>
 <p>During this update the prevalent prefix <code>cdm</code> was discarded in favor of <code>dm</code>. The old prefix would still do its job, but a warning message would be issued each time a function beginning with <code>cdm</code> was being used, informing that the function is soft-deprecated and suggesting the use of its newer version.</p>
 <p>If you have a script which is based on an older {dm} version, it should still work with the newer version, albeit complaining each time an outdated function is being used. This can be repaired by:</p>
@@ -163,7 +163,7 @@
 </div>
 <div id="be-careful-with-methods-for-dm-tbl" class="section level3">
 <h3 class="hasAnchor">
-<a href="#be-careful-with-methods-for-dm-tbl" class="anchor"></a>Be careful with methods for <code>dm</code>: <code>tbl</code>, <code>[[</code>, <code>$</code>
+<a href="#be-careful-with-methods-for-dm-tbl" class="anchor" aria-hidden="true"></a>Be careful with methods for <code>dm</code>: <code>tbl</code>, <code>[[</code>, <code>$</code>
 </h3>
 <p>Furthermore, you need to pay attention if you used one of <code><a href="../reference/dplyr_db.html">tbl.dm()</a></code>, <code>[[.dm()</code>, <code>$.dm()</code>. During the same update the implementation for those methods changed as well, and here you don’t get the convenient warning messages. The change was, that before the update, the mentioned methods would return the table after “filtering” it to just contain the rows with values that relate via foreign key relations to other tables that were filtered earlier. After the update just the table as is would be returned. If you want to retain the former behavior, you need to replace each of the methods with the function <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code>, which was made available with the update.</p>
 <p>The methods are of course not to be avoided in general, if no filters are set anyway the result will not change after the update.</p>
