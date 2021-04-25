@@ -10,7 +10,6 @@
 #'
 #' @return A `dm` object.
 #'
-#' @inheritParams financial_db_con
 #' @export
 #' @examplesIf dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")
 #' dm_financial() %>%

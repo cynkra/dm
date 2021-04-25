@@ -8,6 +8,7 @@ if (is_this_a_test()) {
     vctrs::s3_register("pillar::tbl_sum", "tbl_sql", tbl_sum.tbl_sql)
   }
   tbl_sum.tbl_df <- function(x, ...) c()
-  vctrs::s3_register("tibble::tbl_sum", "tbl_df", tbl_sum.tbl_df)
-  vctrs::s3_register("pillar::tbl_sum", "tbl_df", tbl_sum.tbl_df)
+  if (packageVersion("pillar") < "1.4.99") {
+    vctrs::s3_register("tibble::tbl_sum", "tbl_df", tbl_sum.tbl_df)
+  }
 }

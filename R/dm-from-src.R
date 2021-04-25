@@ -80,15 +80,22 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   }
 
   if (is_null(table_names)) {
-    src_tbl_names <- unique(src_tbls(src))
+    src_tbl_names <- get_src_tbl_names(src, ...)
   } else {
     src_tbl_names <- table_names
   }
 
-  tbls <-
-    set_names(src_tbl_names) %>%
-    quote_ids(con) %>%
-    map(possibly(tbl, NULL), src = src)
+  if (inherits(src_tbl_names, "SQL")) {
+    tbls <-
+      src_tbl_names %>%
+      map(dbplyr::ident_q) %>%
+      map(possibly(tbl, NULL), src = src)
+  } else {
+    tbls <-
+      set_names(src_tbl_names) %>%
+      quote_ids(con) %>%
+      map(possibly(tbl, NULL), src = src)
+  }
 
   bad <- map_lgl(tbls, is_null)
   if (any(bad)) {

@@ -1,4 +1,4 @@
-dm 0.1.9
+dm 0.1.10
 
 ## Cran Repository Policy
 
@@ -10,9 +10,6 @@ dm 0.1.9
 - [x] Checked on CI system, R 4.0.3
 - [x] Checked on win-builder, R devel
 
-Check the boxes above after successful execution and remove this line. Then run `fledge::release()`.
-
 ## Current CRAN check results
 
-- [x] Checked on 2020-11-18, problems found: https://cran.r-project.org/web/checks/check_results_dm.html
-- [x] NOTE: r-patched-solaris-x86: RPostgres is not available on Solaris.
+- [x] Checked on 2021-01-06, problems found due to incompatibility with testthat 3.0.1. https://cran.r-project.org/web/checks/check_results_dm.html

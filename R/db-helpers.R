@@ -166,3 +166,44 @@ repair_table_names_for_db <- function(table_names, temporary, con) {
   names <- set_names(names, table_names)
   quote_ids(names, con)
 }
+
+get_src_tbl_names <- function(src, schema = NULL) {
+  con <- src$con
+
+  if (is_null(schema)) {
+    if (!is_mssql(src) && !is_postgres(src)) {
+      # `src_tbls()` returns system tables and tables in other schemas than default schema only for MSSQL
+      return(src_tbls(src))
+    } else if (is_mssql(src)) {
+      # MSSQL
+      schema <- "dbo"
+    } else {
+      # Postgres
+      schema <- "public"
+    }
+  } else if (!is_mssql(con) && !is_postgres(con)) {
+    warn("Argument 'schema' ignored: currently only supports MSSQL and Postgres")
+    return(src_tbls(src))
+  }
+
+  # src is now either Postgres or MSSQL, schema is not `NULL`
+  if (is_mssql(src)) {
+    # MSSQL
+    names_table <- DBI::dbGetQuery(
+      con,
+      "SELECT name AS table_name, schema_name(schema_id) AS schema_name FROM sys.tables"
+    )
+  } else {
+    # Postgres
+    names_table <- DBI::dbGetQuery(
+      con,
+      "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
+    )
+  }
+  tables_in_schema <- names_table %>%
+    filter(schema_name == !!schema) %>%
+  # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
+    mutate(remote_name = schema_if(schema_name, table_name, con)) %>%
+    select(-schema_name) %>%
+    deframe()
+}

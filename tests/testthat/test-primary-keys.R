@@ -42,7 +42,7 @@ test_that("dm_rm_pk() works as intended?", {
   expect_dm_error(
     dm_test_obj() %>%
       dm_add_pk(dm_table_1, a) %>%
-      dm_rm_pk(dm_table_5),
+      dm_rm_pk(dm_table_bogus),
     class = "table_not_in_dm"
   )
 
@@ -102,16 +102,33 @@ test_that("dm_enum_pk_candidates() works properly?", {
   candidates_table_1 <- tibble(column = c("a", "b"), candidate = c(TRUE, TRUE), why = c("", "")) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
-  candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE), why = "has duplicate values: 5") %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
   expect_identical(
     dm_enum_pk_candidates(dm_test_obj(), dm_table_1),
     candidates_table_1
   )
+
+  candidates_table_2 <- tibble(column = c("c"), candidate = c(FALSE), why = "has duplicate values: 5") %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
   expect_identical(
     dm_enum_pk_candidates(dm_test_obj(), dm_table_2),
     candidates_table_2
+  )
+
+  candidates_table_3 <- tibble(column = c("c"), candidate = c(FALSE), why = "has missing values") %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
+  expect_identical(
+    dm_enum_pk_candidates(dm_test_obj(), dm_table_5),
+    candidates_table_3
+  )
+
+  candidates_table_4 <- tibble(column = c("c"), candidate = c(FALSE), why = "has missing values, and duplicate values: 3") %>%
+    rename(columns = column) %>%
+    mutate(columns = new_keys(columns))
+  expect_identical(
+    dm_enum_pk_candidates(dm_test_obj(), dm_table_6),
+    candidates_table_4
   )
 })
 
@@ -124,9 +141,11 @@ test_that("enum_pk_candidates() works properly", {
   )
 })
 
-verify_output("out/primary-keys.txt", {
-  dm(x = tibble(a = c(1, 1))) %>%
-    dm_add_pk(x, a, check = TRUE)
+test_that("output", {
+  expect_snapshot(error = TRUE, {
+    dm(x = tibble(a = c(1, 1))) %>%
+      dm_add_pk(x, a, check = TRUE)
+  })
 })
 
 

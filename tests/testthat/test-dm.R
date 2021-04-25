@@ -425,19 +425,22 @@ test_that("dm_get_filters() works", {
   )
 })
 
-skip_if_not_installed("nycflights13")
 
-verify_output("out/output.txt", {
-  print(dm())
+test_that("output", {
+  skip_if_not_installed("nycflights13")
 
-  nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
-  nyc_flights_dm
+  expect_snapshot({
+    print(dm())
 
-  nyc_flights_dm %>%
-    format()
+    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
+    nyc_flights_dm
 
-  nyc_flights_dm %>%
-    dm_filter(flights, origin == "EWR")
+    nyc_flights_dm %>%
+      format()
+
+    nyc_flights_dm %>%
+      dm_filter(flights, origin == "EWR")
+  })
 })
 
 

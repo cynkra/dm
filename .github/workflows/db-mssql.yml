@@ -120,7 +120,7 @@ jobs:
 
       - name: Run tests
         run: |
-          testthat::test_local()
+          testthat::test_local(reporter = testthat::ProgressReporter$new(max_failures = Inf, update_interval = Inf))
         shell: Rscript {0}
 
       - name: Show test output

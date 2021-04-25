@@ -46,18 +46,18 @@ test_that("check_subset() checks if tf_1$c1 column values are subset of tf_2$c2 
   expect_silent(check_subset(data_mcard_1(), a, data_mcard_2(), a))
 })
 
-verify_output(
-  "out/check-if-subset-2a-1a.txt",
-  check_subset(data_mcard_2(), a, data_mcard_1(), a)
-)
+test_that("output", {
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_2(), a, data_mcard_1(), a)
+  })
+})
 
 test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
   expect_silent(check_set_equality(data_mcard_1(), a, data_mcard_3(), a))
 
-  verify_output(
-    "out/check-set-equality-1a-2a.txt",
+  expect_snapshot(error = TRUE, {
     check_set_equality(data_mcard_1(), a, data_mcard_2(), a)
-  )
+  })
 })
 
 # FIXME: COMPOUND:: regarding compound keys: should `check_subset()` and `check_set_equality()`
