@@ -241,7 +241,12 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
 
     "UPDATE ", p$name, "\n",
     "SET\n",
-    paste0("  ", unlist(p$new_columns_qq), " = ", unlist(p$new_columns_qual_qq), collapse = ",\n"), "\n",
+    paste0(
+      "  ", unlist(p$new_columns_qq_list),
+      " = ", unlist(p$new_columns_qual_qq_list),
+      collapse = ",\n"
+    ),
+    "\n",
     "FROM ", p$name, "\n",
     "  INNER JOIN ", p$y_name, "\n",
     "  ON ", p$compare_qual_qq
@@ -298,9 +303,14 @@ sql_rows_update_prep <- function(x, y, by) {
     collapse = ", "
   )
 
-  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by)) 
-  new_columns_qq <- list(as.vector(new_columns_q))
-  new_columns_qual_qq <- list(paste0(y_name, ".", new_columns_q))
+  new_columns_q <- DBI::dbQuoteIdentifier(con, setdiff(colnames(y), by))
+  new_columns_qq <- paste(new_columns_q, collapse = ", ")
+  new_columns_qq_list <- list(new_columns_q)
+  new_columns_qual_qq <- paste0(
+    y_name, ".", new_columns_q,
+    collapse = ", "
+  )
+  new_columns_qual_qq_list <- list(paste0(y_name, ".", new_columns_q))
 
   key_columns_q <- DBI::dbQuoteIdentifier(con, by)
   compare_qual_qq <- paste0(
@@ -313,7 +323,8 @@ sql_rows_update_prep <- function(x, y, by) {
   tibble(
     name, y_name,
     y_columns_qq,
-    new_columns_qq, new_columns_qual_qq,
+    new_columns_qq, new_columns_qq_list,
+    new_columns_qual_qq, new_columns_qual_qq_list,
     compare_qual_qq
   )
 }
