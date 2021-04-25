@@ -54,7 +54,7 @@
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
-      * Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), ...
+      * Table `flights`: foreign key tailnum into table `planes`: 166 values (14.9%) of `flights$tailnum` not in `planes$tailnum`: N0EGMQ, N318AT, N395AA, N3ACAA, N3AEMQ, ...
     Code
       dm_rows_insert(flights_sqlite, flights_feb_sqlite, in_place = TRUE)
       print(dm_nrow(flights_sqlite))
