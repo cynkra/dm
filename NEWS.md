@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.1.13
+
+- Move repository to <https://github.com/cynkra/dm> (#500).
+- Test DuckDB on GitHub Actions (#498).
+
+
 # dm 0.1.12.9002
 
 - Fix description of filtering behavior in `?dm_zoom_to` (#403).
