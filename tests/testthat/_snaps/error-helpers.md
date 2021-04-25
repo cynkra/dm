@@ -258,4 +258,25 @@
       abort_no_schema_exists("fastfood", "gala_dinner")
     Error <dm_error_no_schema_exists>
       No schema named `fastfood` exists on database `gala_dinner`.
+    Code
+      abort_no_schemas_supported("FantasticDatabaseManagementSystem",
+        "hyperconnection")
+    Error <dm_error_no_schemas_supported>
+      The concept of schemas is not supported for DBMS `FantasticDatabaseManagementSystem`.
+    Code
+      abort_no_schemas_supported(con = 1)
+    Error <dm_error_no_schemas_supported>
+      Currently schemas are not supported for a connection of class `numeric`.
+    Code
+      abort_no_schemas_supported()
+    Error <dm_error_no_schemas_supported>
+      Schemas are not available locally.
+    Code
+      abort_temporary_not_in_schema()
+    Error <dm_error_temporary_not_in_schema>
+      If argument `temporary = TRUE`, argument `schema` has to be `NULL`.
+    Code
+      abort_one_of_schema_table_names()
+    Error <dm_error_one_of_schema_table_names>
+      Only one of the arguments `schema` and `table_names` can be different from `NULL`.
 

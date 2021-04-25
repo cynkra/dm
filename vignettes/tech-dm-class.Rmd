@@ -6,7 +6,7 @@ vignette: >
   %\VignetteIndexEntry{Technical: Class dm and basic operations}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -21,7 +21,7 @@ Let's take a look at the `dm` class.
 
 ## Class `dm`
 
-The `dm` class consists of a collection of tables and metadata about the tables, such as 
+The `dm` class consists of a collection of tables and metadata about the tables, such as
 
 - the names of the tables
 - the names of the columns of the tables
@@ -64,17 +64,17 @@ library(nycflights13)
 library(dm)
 empty_dm <- dm()
 empty_dm
-dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather) 
+dm_add_tbl(empty_dm, airlines, airports, flights, planes, weather)
 ```
 
 ### Coerce a list of tables
 
 Turn a named list of tables into a `dm` with `as_dm()`:
 ```{r}
-as_dm(list(airlines = airlines, 
-           airports = airports, 
-           flights = flights, 
-           planes = planes, 
+as_dm(list(airlines = airlines,
+           airports = airports,
+           flights = flights,
+           planes = planes,
            weather = weather))
 ```
 
@@ -90,7 +90,7 @@ flights_dm
 ```
 
 
-The function `dm_from_src(src, table_names = NULL)` includes all available tables on a source in the `dm` object. 
+The function `dm_from_src(src, table_names = NULL)` includes all available tables on a source in the `dm` object.
 This means that you can use this, for example, on a postgres database that you access via `src_postgres()` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
 
 ### Low-level construction
@@ -116,7 +116,7 @@ We can get the list of tables with `dm_get_tables()` and the `src` object with `
 In order to pull a specific table from a `dm`, use:
 ```{r}
 tbl(flights_dm, "airports")
-``` 
+```
 
 But how can we use {dm}-functions to manage the primary keys of the tables in a `dm` object?
 
@@ -131,7 +131,7 @@ Some useful functions for managing primary key settings are:
 5. `dm_enum_pk_candidates()`
 6. `dm_get_all_pks()`
 
-Currently `dm` objects only support one-column primary keys. If your tables have unique compound keys, adding a surrogate key column might be helpful. 
+Currently `dm` objects only support one-column primary keys. If your tables have unique compound keys, adding a surrogate key column might be helpful.
 If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
 So let's add one.
 
@@ -153,7 +153,7 @@ dm_get_pk(flights_dm_with_key, airports)
 ```
 Remove a primary key:
 ```{r}
-dm_rm_pk(flights_dm_with_key, airports) %>% 
+dm_rm_pk(flights_dm_with_key, airports) %>%
   dm_has_pk(airports)
 ```
 
@@ -172,7 +172,7 @@ To get an overview over all tables with primary keys, use `dm_get_all_pks()`:
 dm_get_all_pks(dm_nycflights13(cycle = TRUE))
 ```
 
-Here we used the prepared `dm` object `dm_nycflights13(cycle = TRUE)` as an example. 
+Here we used the prepared `dm` object `dm_nycflights13(cycle = TRUE)` as an example.
 This object already has all keys pre-set.
 
 ## Foreign keys
@@ -224,16 +224,16 @@ flights_dm_with_fk %>% dm_get_fk(flights, airports)
 
 Remove foreign key relations with `dm_rm_fk()` (parameter `column = NULL` means that all relations will be removed):
 ```{r error=TRUE}
-flights_dm_with_fk %>% 
-  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
   dm_get_fk(flights, airports)
-flights_dm_with_fk %>% 
-  dm_rm_fk(flights, origin, airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(flights, origin, airports) %>%
   dm_get_fk(flights, airports)
-flights_dm_with_fk %>% 
-  dm_rm_fk(flights, NULL, airports) %>% 
+flights_dm_with_fk %>%
+  dm_rm_fk(flights, NULL, airports) %>%
   dm_get_fk(flights, airports)
-``` 
+```
 
 Since the primary keys are defined in the `dm` object, you do not need to provide the referenced column name of `ref_table`.
 This is always the primary key column of the table.

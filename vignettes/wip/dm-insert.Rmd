@@ -5,7 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Updating tables dm objects}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 

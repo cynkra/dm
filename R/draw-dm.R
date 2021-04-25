@@ -3,18 +3,20 @@
 #' `dm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
 #'
 #' @param dm A [`dm`] object.
+#' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
+#' @param col_attr Deprecated, use `colummn_types` instead.
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
 #'   It defines the level of details for rendering tables
 #'   (only primary and foreign keys, all columns, or no columns).
-#' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
 #' @param graph_name The name of the graph.
 #' @param graph_attrs Additional graph attributes.
 #' @param node_attrs Additional node attributes.
 #' @param edge_attrs Additional edge attributes.
 #' @param focus A list of parameters for rendering (table filter).
-#' @param col_attr Column atributes to display.
-#'   By default only the column name (\code{"column"}) is displayed.
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
+#' @inheritParams dots_empty
+#' @param column_types Set to `TRUE` to show column types.
+#'
 #' @export
 #'
 #' @return For `dm_draw()`: returns an object of class `grViz` (see also [DiagrammeR::grViz()]), which,
@@ -34,14 +36,16 @@
 #'   dm_get_colors()
 dm_draw <- function(dm,
                     rankdir = "LR",
-                    col_attr = "column",
-                    view_type = "keys_only",
+                    col_attr = NULL,
+                    view_type = c("keys_only", "all", "title_only"),
                     columnArrows = TRUE,
                     graph_attrs = "",
                     node_attrs = "",
                     edge_attrs = "",
                     focus = NULL,
-                    graph_name = "Data Model") {
+                    graph_name = "Data Model",
+                    ...,
+                    column_types = NULL) {
   #
   check_not_zoomed(dm)
   if (is_empty(dm)) {
@@ -49,12 +53,23 @@ dm_draw <- function(dm,
     return(invisible(NULL))
   }
 
-  data_model <- dm_get_data_model(dm)
+  view_type <- arg_match(view_type)
+
+  if (!is.null(col_attr)) {
+    deprecate_soft("0.1.13", "dm::dm_draw(col_attr = )", "dm::dm_draw(column_types = )")
+    if (is.null(column_types) && "type" %in% col_attr) {
+      column_types <- TRUE
+    }
+  }
+
+  column_types <- isTRUE(column_types)
+
+  data_model <- dm_get_data_model(dm, column_types)
 
   graph <- bdm_create_graph(
     data_model,
     rankdir = rankdir,
-    col_attr = col_attr,
+    col_attr = c("column", if (column_types) "type"),
     view_type = view_type,
     columnArrows = columnArrows,
     graph_attrs = graph_attrs,
@@ -72,7 +87,7 @@ dm_draw <- function(dm,
 #' data model object for drawing.
 #'
 #' @noRd
-dm_get_data_model <- function(x) {
+dm_get_data_model <- function(x, column_types) {
   def <- dm_get_def(x)
 
   tables <- data.frame(
@@ -92,10 +107,14 @@ dm_get_data_model <- function(x) {
     dm_get_data_model_pks(x) %>%
     mutate(key = 1L)
 
+  if (column_types) {
+    types <- dm_get_all_column_types(x)
+  } else {
+    types <- dm_get_all_columns(x)
+  }
+
   columns <-
-    dm_get_all_columns(x) %>%
-    # Hack: datamodelr requires `type` column
-    mutate(type = "integer") %>%
+    types %>%
     left_join(keys, by = c("table", "column")) %>%
     mutate(key = coalesce(key, 0L)) %>%
     left_join(references_for_columns, by = c("table", "column")) %>%
@@ -114,7 +133,21 @@ dm_get_all_columns <- function(x) {
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
-    unnest(value)
+    unnest(value) %>%
+    select(table, column, id)
+}
+
+dm_get_all_column_types <- function(x) {
+  dm_get_tables_impl(x) %>%
+    map(
+      ~ mutate(
+        enframe(as.list(collect(head(.x, 0))), "column"),
+        id = row_number()
+      )
+    ) %>%
+    enframe("table") %>%
+    unnest(value) %>%
+    mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
 #' `dm_set_colors()`

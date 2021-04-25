@@ -151,8 +151,11 @@ con_from_src_or_con <- function(dest) {
   if (is.src(dest)) dest$con else dest
 }
 
-repair_table_names_for_db <- function(table_names, temporary, con) {
+repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL) {
   if (temporary) {
+    if (!is.null(schema)) {
+      abort_temporary_not_in_schema()
+    }
     # FIXME: Better logic for temporary table names
     if (is_mssql(con)) {
       names <- paste0("#", table_names)
@@ -161,10 +164,14 @@ repair_table_names_for_db <- function(table_names, temporary, con) {
     }
     names <- unique_db_table_name(names)
   } else {
+    # permanent tables
+    if (!is.null(schema) && !is_mssql(con) && !is_postgres(con)) {
+      abort_no_schemas_supported(con = con)
+    }
     names <- table_names
   }
   names <- set_names(names, table_names)
-  quote_ids(names, con)
+  quote_ids(names, con, schema)
 }
 
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL) {
