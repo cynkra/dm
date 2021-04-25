@@ -62,7 +62,8 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
 
 test_that("`dm_flatten_to_tbl()` does the right things for 'inner_join()'", {
   out <- expect_message(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, join = inner_join
+    dm_for_flatten(), fact,
+    join = inner_join
   ))
   expect_equivalent_tbl(out, result_from_flatten())
 })
@@ -71,7 +72,8 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   skip_if_src("sqlite")
   skip_if_src("maria")
   out <- expect_message(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, join = full_join
+    dm_for_flatten(), fact,
+    join = full_join
   ))
   expect_equivalent_tbl(
     out,
@@ -121,7 +123,8 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
 
   # change order of parent tables
   out <- expect_message(dm_flatten_to_tbl(
-    dm_for_flatten(), fact, dim_2, dim_1, join = right_join
+    dm_for_flatten(), fact, dim_2, dim_1,
+    join = right_join
   ))
   expect_equivalent_tbl(
     out,

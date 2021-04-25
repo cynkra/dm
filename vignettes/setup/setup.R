@@ -1,5 +1,10 @@
 knitr::opts_chunk$set(
   error = (Sys.getenv("IN_PKGDOWN") == "") || !dm:::dm_has_financial(),
+  # Only build vignettes:
+  # - on pkgdown
+  # - if not running in GitHub Actions
+  # - if running in a branch that starts with CRAN in GitHub Actions
+  eval = (Sys.getenv("IN_PKGDOWN") != "") || (Sys.getenv("GITHUB_WORKFLOW") == "") || grepl("^cran-", Sys.getenv("GITHUB_HEAD_REF")),
   message = TRUE,
   collapse = TRUE,
   comment = "#>"

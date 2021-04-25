@@ -1,21 +1,13 @@
-# dm 0.1.11.9000
+# dm 0.1.12.9000
 
-- Internal changes only.
-
-
-# dm 0.1.11
-
-- Same as previous version.
+- `dm_from_src()` gains `dbname` argument for MSSQL (#472).
 
 
-# dm 0.1.10.9001
+# dm 0.1.12
 
+- `dm_from_src()` gains `dbname` argument for MSSQL (#472).
 - Implement `count()` and `tally()` for dplyr 1.0.3 compatibility (#475).
-
-
-# dm 0.1.10.9000
-
-- Internal changes only.
+- Use databases.pacha.dev instead of db-edu.pacha.dev (#478, @pachamaltese).
 
 
 # dm 0.1.10
@@ -24,7 +16,6 @@
 - Fix `dm_from_src()` for MSSQL when `learn_keys = FALSE` (#427).
 - Tests use `expect_snapshot()` everywhere (#456).
 - Fix compatibility with testthat 3.0.1 (#457).
-
 
 
 # dm 0.1.9

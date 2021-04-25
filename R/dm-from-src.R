@@ -20,10 +20,16 @@
 #'   `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
-#'   Currently supports `schema` (default: `"public"`)
-#'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
 #'
-#'   For MSSQL databases `schema` (default: `"dbo"`) is supported.
+#'   - `schema`: supported for MSSQL (default: `"dbo"`) and Postgres (default: `"public"`).
+#'   Learn the tables in a specific schema.
+#'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
+#'   default: database addressed by `src`.
+#'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type. Options are:
+#'     1. `"BASE TABLE"` for a persistent table (normal table type)
+#'     2. `"VIEW"` for a view
+#'     3. `"FOREIGN TABLE"` for a foreign table
+#'     4. `"LOCAL TEMPORARY"` for a temporary table
 #'
 #' @return A `dm` object.
 #'
@@ -110,13 +116,22 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   new_dm(tbls)
 }
 
-quote_ids <- function(x, con) {
+quote_ids <- function(x, con, schema = NULL) {
   if (is.null(con)) return(x)
 
-  map(
-    x,
-    ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
-  )
+  if (is_null(schema)) {
+    map(
+      x,
+      ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
+    )
+  } else {
+    if (!sql_schema_exists(con, schema)) abort_no_schema_exists(schema)
+    map(
+      x,
+      ~ dbplyr::ident_q(schema_if(rep(schema, length(.x)), .x, con))
+    )
+  }
+
 }
 
 # Errors ------------------------------------------------------------------

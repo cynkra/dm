@@ -12,20 +12,29 @@ dm_from_src(src = NULL, table_names = NULL, learn_keys = NULL, ...)
 
 \item{table_names}{A character vector of the names of the tables to include.}
 
-\item{learn_keys}{\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\item{learn_keys}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Set to \code{TRUE} to query the definition of primary and
 foreign keys from the database.
 Currently works only for Postgres and SQL Server databases.
 The default attempts to query and issues an informative message.}
 
-\item{...}{\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Additional parameters for the schema learning query.
-Currently supports \code{schema} (default: \code{"public"})
-and \code{table_type} (default: \code{"BASE TABLE"}) for Postgres databases.
-
-For MSSQL databases \code{schema} (default: \code{"dbo"}) is supported.}
+\itemize{
+\item \code{schema}: supported for MSSQL (default: \code{"dbo"}) and Postgres (default: \code{"public"}).
+Learn the tables in a specific schema.
+\item \code{dbname}: supported for MSSQL. Access different databases on the connected MSSQL-server;
+default: database addressed by \code{src}.
+\item \code{table_type}: supported for Postgres (default: \code{"BASE TABLE"}). Specify the table type. Options are:
+\enumerate{
+\item \code{"BASE TABLE"} for a persistent table (normal table type)
+\item \code{"VIEW"} for a view
+\item \code{"FOREIGN TABLE"} for a foreign table
+\item \code{"LOCAL TEMPORARY"} for a temporary table
+}
+}}
 }
 \value{
 A \code{dm} object.
