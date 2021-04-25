@@ -83,7 +83,7 @@ demo_dm <-
   dm_add_fk(child, fk, parent)
 
 demo_dm %>%
-  dm_draw(view_type = "full")
+  dm_draw(view_type = "all")
 ``````
 
 {dm} doesn't check your key values when you create a dm, we add this check:[^null-fk]
