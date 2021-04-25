@@ -1,9 +1,3 @@
-# NOTE: This workflow is overkill for most R packages
-# check-standard.yaml is likely a better choice
-# usethis::use_github_action("check-standard") will install it.
-#
-# For help debugging build failures open an issue on the RStudio community with the 'github-actions' tag.
-# https://community.rstudio.com/new-topic?category=Package%20development&tags=github-actions
 on:
   push:
     branches:
@@ -16,12 +10,12 @@ on:
       - master
       - "r-*"
   schedule:
-    - cron:  '10 0 * * *'
+    - cron:  '20 2 * * *'
 
-name: rcc
+name: db-duckdb
 
 jobs:
-  R-CMD-check:
+  db-tests:
     runs-on: ${{ matrix.config.os }}${{ matrix.config.os-version }}
 
     name: ${{ matrix.config.os }}${{ matrix.config.os-version }} (${{ matrix.config.r }}) ${{ matrix.config.desc }}
@@ -31,33 +25,10 @@ jobs:
 
     strategy:
       fail-fast: false
-      # Ensure that the "cancel" workflow gets a chance to run quickly, even if we just pushed
-      # Need to figure out how to smoke-test
-      max-parallel: 5
       matrix:
         config:
-          - { os: macOS-latest,                 r: 'release' }
-          - { os: windows-latest,               r: 'release', rspm: "https://packagemanager.rstudio.com/all/latest" }
-          - { os: windows-latest,               r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/all/latest" }
-          - { os: ubuntu-, os-version: 20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - { os: ubuntu-, os-version: 18.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" }
-          - { os: ubuntu-, os-version: 18.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest", http-user-agent: "R/4.0.0 (ubuntu-18.04) R (4.0.0 x86_64-pc-linux-gnu x86_64 linux-gnu) on GitHub Actions" }
-          - { os: ubuntu-, os-version: 18.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" }
 
-          # Begin custom: R 3.5
-          - {os: ubuntu-, os-version: 18.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          # End custom: R 3.5
-
-          # Begin custom: R 3.4
-          - {os: ubuntu-, os-version: 18.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          # End custom: R 3.4
-
-          # Begin custom: R 3.3
-          - {os: ubuntu-, os-version: 18.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          # End custom: R 3.3
-
-          # Begin custom: matrix elements
-          # End custom: matrix elements
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
@@ -65,6 +36,7 @@ jobs:
       # prevent rgl issues because no X11 display is available
       RGL_USE_NULL: true
       # Begin custom: env vars
+      DM_TEST_SRC: test-duckdb
       # End custom: env vars
 
     steps:
@@ -82,8 +54,6 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
-
-      - uses: r-lib/actions/setup-pandoc@v1
 
       - name: Install remotes
         run: |
@@ -114,16 +84,12 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "${{matrix.config.os-version}}"))')
 
-      - name: Add fake qpdf and checkbashisms
-        if: runner.os == 'Linux'
-        run: |
-          sudo ln -s $(which true) /usr/local/bin/qpdf
-          sudo ln -s $(which true) /usr/local/bin/checkbashisms
+      # Begin custom: before install
+      # End custom: before install
 
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE, type = .Platform$pkgType)
-          remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
       - name: Session info
@@ -137,22 +103,9 @@ jobs:
       # Begin custom: after install
       # End custom: after install
 
-      - name: Check
-        env:
-          _R_CHECK_CRAN_INCOMING_: false
-          _R_CHECK_SYSTEM_CLOCK_: false
-          _R_CHECK_FUTURE_FILE_TIMESTAMPS_: false
+      - name: Run tests
         run: |
-          options(crayon.enabled = TRUE)
-          error_on <- "note"
-          # Begin custom: rcmdcheck error_on
-          if (getRversion() < "3.5") {
-            # duckdb
-            Sys.setenv("_R_CHECK_FORCE_SUGGESTS_" = FALSE)
-            error_on <- "warning"
-          }
-          # End custom: rcmdcheck error_on
-          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = error_on, check_dir = "check")
+          testthat::test_local(reporter = testthat::ProgressReporter$new(max_failures = Inf, update_interval = Inf))
         shell: Rscript {0}
 
       - name: Show test output
@@ -161,12 +114,9 @@ jobs:
           find check -name '*.Rout*' -exec head -n 1000000 '{}' \; || true
         shell: bash
 
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@main
-        with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+      - name: Test coverage
+        run: covr::codecov()
+        shell: Rscript {0}
 
       - name: Check rate limits
         if: always()

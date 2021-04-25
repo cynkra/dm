@@ -47,3 +47,6 @@ sql_rows_truncate.tbl_SQLiteConnection <- function(x, ...) {
   name <- dbplyr::remote_name(x)
   paste0("DELETE FROM ", name)
 }
+
+#' @export
+sql_rows_truncate.tbl_duckdb_connection <- sql_rows_truncate.tbl_SQLiteConnection
