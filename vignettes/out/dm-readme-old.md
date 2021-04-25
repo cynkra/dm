@@ -50,4 +50,4 @@ an analysis with {dplyr} or other packages, on an as-needed basis.
 Although {dm} is built upon relational data models, it is not a database
 itself. It can work transparently with both relational database systems
 and in-memory data, and copy data [from and to
-databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
+databases](https://cynkra.github.io/dm/articles/dm.html#copy).

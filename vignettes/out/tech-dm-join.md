@@ -9,12 +9,12 @@ how to apply them using data from the
 [{nycflights13}](https://github.com/hadley/nycflights13) package.
 
 [Relational data
-models](https://krlmlr.github.io/dm/articles/howto-dm-theory#model)
+models](https://cynkra.github.io/dm/articles/howto-dm-theory#model)
 consist of multiple tables that are linked with [foreign
-keys](https://krlmlr.github.io/dm/articles/howto-dm-theory#fk). They are
+keys](https://cynkra.github.io/dm/articles/howto-dm-theory#fk). They are
 the building blocks for joining tables. Read more about relational data
 models in the vignette [“Introduction to Relational Data
-Models”](https://krlmlr.github.io/dm/articles/howto-dm-theory).
+Models”](https://cynkra.github.io/dm/articles/howto-dm-theory).
 
 First, we load the packages that we need:
 
@@ -37,7 +37,7 @@ First, we have to create a `dm` object from the {nycflights13} data.
 This is implemented with `dm::dm_nycflights13()`.
 
 A [data model
-object](https://krlmlr.github.io/dm/articles/tech-dm-class.html#class-dm)
+object](https://cynkra.github.io/dm/articles/tech-dm-class.html#class-dm)
 contains the data as well as metadata.
 
 If you would like to create a `dm` from other tables, please look at
@@ -60,7 +60,7 @@ joins, and a nesting join. See `?dplyr::join` for details.
 A join is the combination of two tables based on shared information. In
 technical terms, we merge the tables that need to be directly connected
 by a [foreign key
-relation](https://krlmlr.github.io/dm/articles/howto-dm-theory#fk).
+relation](https://cynkra.github.io/dm/articles/howto-dm-theory#fk).
 
 The existing links can be inspected in two ways:
 
@@ -188,7 +188,7 @@ Currently, it is important to call `dm_apply_filters()` after piping
 your conditions. Only then the underlying tables and key relations are
 updated and you can perform a join on the filtered data. We are working
 towards removing this inconvenience
-[\#62](https://github.com/krlmlr/dm/issues/62).
+[\#62](https://github.com/cynkra/dm/issues/62).
 
 ``` r
 dm_nycflights13() %>%

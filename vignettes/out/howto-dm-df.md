@@ -342,4 +342,4 @@ flights_dm_all_keys %>%
 ```
 
 1.  Support for compound keys (consisting of multiple columns) is
-    [planned](https://github.com/krlmlr/dm/issues/3).
+    [planned](https://github.com/cynkra/dm/issues/3).

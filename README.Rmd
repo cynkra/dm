@@ -26,12 +26,12 @@ knit_print.grViz <- function(x, ..., options) {
 vctrs::s3_register("knitr::knit_print", "grViz")
 ```
 
-# [dm](https://krlmlr.github.io/dm/)
+# [dm](https://cynkra.github.io/dm/)
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R build status](https://github.com/krlmlr/dm/workflows/tic/badge.svg)](https://github.com/krlmlr/dm/actions)
-[![Codecov test coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master)
+[![R build status](https://github.com/cynkra/dm/workflows/tic/badge.svg)](https://github.com/cynkra/dm/actions)
+[![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/cynkra/dm?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
@@ -69,7 +69,7 @@ dm also offers:
 - consistency and constraint checks to help you understand (and fix) the limitations of your data
 
 That's just the tip of the iceberg.
-See [Getting started](https://krlmlr.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
+See [Getting started](https://cynkra.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
 
 
 ## Installation
@@ -84,12 +84,12 @@ The latest development version of {dm} can be installed from GitHub.
 
 ```r
 # install.packages("devtools")
-devtools::install_github("krlmlr/dm")
+devtools::install_github("cynkra/dm")
 ```
 
 ## Usage
 
-Create a dm object (see [Getting started](https://krlmlr.github.io/dm/articles/dm.html) for details).
+Create a dm object (see [Getting started](https://cynkra.github.io/dm/articles/dm.html) for details).
 
 ```{r}
 library(dm)
@@ -127,11 +127,11 @@ dm %>%
   dm_examine_constraints()
 ```
 
-Learn more in the [Getting started](https://krlmlr.github.io/dm/articles/dm.html) article.
+Learn more in the [Getting started](https://cynkra.github.io/dm/articles/dm.html) article.
 
 ## Getting help
 
-If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/krlmlr/dm/issues).
+If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/cynkra/dm/issues).
 For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
 
 
@@ -148,5 +148,5 @@ Funded by:
 
 ---
 
-Please note that the 'dm' project is released with a [Contributor Code of Conduct](https://krlmlr.github.io/dm/CODE_OF_CONDUCT.html).
+Please note that the 'dm' project is released with a [Contributor Code of Conduct](https://cynkra.github.io/dm/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.

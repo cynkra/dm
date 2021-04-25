@@ -37,7 +37,7 @@ flights on the 10th of each month are considered, reducing the number of
 rows in the `flights` table to 11 227.
 
 A [data model
-object](https://krlmlr.github.io/dm/articles/tech-dm-class.html#class-dm)
+object](https://cynkra.github.io/dm/articles/tech-dm-class.html#class-dm)
 contains data from the source tables, and metadata about the tables.
 
 If you would like to create a `dm` object from tables other than the
@@ -326,7 +326,7 @@ in the object.
 {dm} is meant to work with relational data models, locally as well as on
 databases. In your project, the data is probably not stored locally but
 in a remote [relational
-database](https://krlmlr.github.io/dm/articles/howto-dm-theory.html#relational-databases)
+database](https://cynkra.github.io/dm/articles/howto-dm-theory.html#relational-databases)
 that can be queried with SQL statements.
 
 You can check the queries by using `sql_render()` from the
@@ -403,4 +403,4 @@ dm %>%
 ```
 
 Further reading: {dm}’s function for copying data [from and to
-databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
+databases](https://cynkra.github.io/dm/articles/dm.html#copy).
