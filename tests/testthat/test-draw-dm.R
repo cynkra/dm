@@ -182,22 +182,18 @@ test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
 
-  path <- tempfile(fileext = ".svg")
-
-  dm_nycflights13() %>%
-    dm_draw() %>%
-    DiagrammeRsvg::export_svg() %>%
-    writeLines(path)
-
-  expect_snapshot_file(path, "nycflight-dm.svg", binary = FALSE)
+  expect_snapshot_diagram(
+    dm_nycflights13() %>%
+      dm_draw(),
+    "nycflight-dm.svg"
+  )
 
   # Multi-fk (#37)
-  dm_nycflights13() %>%
-    dm_zoom_to(planes) %>%
-    dm_insert_zoomed("planes_copy") %>%
-    dm_draw() %>%
-    DiagrammeRsvg::export_svg() %>%
-    writeLines(path)
-
-  expect_snapshot_file(path, "nycflight-dm-copy.svg", binary = FALSE)
+  expect_snapshot_diagram(
+    dm_nycflights13() %>%
+      dm_zoom_to(planes) %>%
+      dm_insert_zoomed("planes_copy") %>%
+      dm_draw(),
+    "nycflight-dm-copy.svg"
+  )
 })
