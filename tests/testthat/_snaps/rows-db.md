@@ -114,13 +114,24 @@
       3      3 w        2.5
       4      4 z       NA  
     Code
+      rows_update(data, test_src_frame(select = 2, where = "w", exists = 3.5),
+      in_place = TRUE)
+      data %>% arrange(select)
+    Output
+        select where exists
+         <int> <chr>  <dbl>
+      1      1 a        0.5
+      2      2 w        3.5
+      3      3 w        2.5
+      4      4 z       NA  
+    Code
       rows_update(data, test_src_frame(select = 2:3), in_place = TRUE)
       data %>% arrange(select)
     Output
         select where exists
          <int> <chr>  <dbl>
       1      1 a        0.5
-      2      2 w        1.5
+      2      2 w        3.5
       3      3 w        2.5
       4      4 z       NA  
     Code
@@ -131,7 +142,7 @@
         select where exists
          <int> <chr>  <dbl>
       1      0 a        0.5
-      2      2 w        1.5
+      2      2 w        3.5
       3      3 w        2.5
       4      4 z       NA  
     Code
@@ -144,7 +155,7 @@
         select where exists
          <int> <chr>  <dbl>
       1      0 a        0.5
-      2      2 w        1.5
+      2      2 w        3.5
       3      3 w        2.5
       4      4 z       NA  
     Code
