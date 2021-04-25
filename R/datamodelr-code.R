@@ -479,7 +479,8 @@ dm_get_all_columns <- function(x) {
     map(colnames) %>%
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
-    unnest(value)
+    unnest(value) %>%
+    select(table, column, id)
 }
 
 dm_get_all_column_types <- function(x) {
