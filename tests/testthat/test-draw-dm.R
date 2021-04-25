@@ -112,7 +112,7 @@ test_that("getter", {
 })
 
 test_that("datamodel-code for drawing", {
-  data_model_for_filter <- dm_get_data_model(dm_for_filter(), "column")
+  data_model_for_filter <- dm_get_data_model(dm_for_filter(), column_types = TRUE)
 
   expect_s3_class(
     data_model_for_filter,
