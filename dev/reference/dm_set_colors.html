@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create R code for a dm object — dm_paste • dm</title>
+<title>Color in database diagrams — dm_set_colors • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,16 @@
 
 
 
-<meta property="og:title" content="Create R code for a dm object — dm_paste" />
-<meta property="og:description" content="dm_paste() takes an existing dm and emits the code necessary for its creation." />
+<meta property="og:title" content="Color in database diagrams — dm_set_colors" />
+<meta property="og:description" content="dm_set_colors() allows to define the colors that will be used to display the tables of the data model with dm_draw().
+The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+An overview of the colors corresponding to the standard color names can be found at
+the bottom of
+http://rpubs.com/krlmlr/colors.
+dm_get_colors() returns the colors defined for a data model.
+dm_get_available_colors() returns an overview of the names of the available colors
+These are the standard colors also returned by grDevices::colors() plus a default
+table color with the name &quot;default&quot;." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 
 
@@ -184,92 +192,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create R code for a dm object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/paste.R'><code>R/paste.R</code></a></small>
-    <div class="hidden name"><code>dm_paste.Rd</code></div>
+    <h1>Color in database diagrams</h1>
+    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/draw-dm.R'><code>R/draw-dm.R</code></a></small>
+    <div class="hidden name"><code>dm_set_colors.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>dm_paste()</code> takes an existing <code>dm</code> and emits the code necessary for its creation.</p>
+    <p><code>dm_set_colors()</code> allows to define the colors that will be used to display the tables of the data model with <code><a href='dm_draw.html'>dm_draw()</a></code>.
+The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+An overview of the colors corresponding to the standard color names can be found at
+the bottom of
+<a href='http://rpubs.com/krlmlr/colors'>http://rpubs.com/krlmlr/colors</a>.</p>
+<p><code>dm_get_colors()</code> returns the colors defined for a data model.</p>
+<p><code>dm_get_available_colors()</code> returns an overview of the names of the available colors
+These are the standard colors also returned by <code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code> plus a default
+table color with the name "default".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_paste</span><span class='op'>(</span><span class='va'>dm</span>, select <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, tab_width <span class='op'>=</span> <span class='fl'>2</span>, options <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dm_set_colors</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>dm_get_colors</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span>
+
+<span class='fu'>dm_get_available_colors</span><span class='op'>(</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
-    </tr>
-    <tr>
-      <th>select</th>
-      <td><p>Deprecated, see <code>"select"</code> in the <code>options</code> argument.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>Must be empty.</p></td>
-    </tr>
-    <tr>
-      <th>tab_width</th>
-      <td><p>Indentation width for code from the second line onwards</p></td>
-    </tr>
-    <tr>
-      <th>options</th>
-      <td><p>Formatting options. A character vector containing some of:</p><ul>
-<li><p><code>"tables"</code>: <code>tibble()</code> calls for empty table definitions
-derived from <code><a href='dm_ptype.html'>dm_ptype()</a></code>, overrides <code>"select"</code>.</p></li>
-<li><p><code>"select"</code>: <code><a href='dm_select.html'>dm_select()</a></code> statements for columns that are part
-of the dm.</p></li>
-<li><p><code>"keys"</code>: <code><a href='dm_add_pk.html'>dm_add_pk()</a></code> and <code><a href='dm_add_fk.html'>dm_add_fk()</a></code> statements for adding keys.</p></li>
-<li><p><code>"color"</code>: <code><a href='dm_set_colors.html'>dm_set_colors()</a></code> statements to set color.</p></li>
-<li><p><code>"all"</code>: All options above except <code>"select"</code></p></li>
-</ul>
-
-<p>Default <code>NULL</code> is equivalent to <code><a href='https://rdrr.io/r/base/c.html'>c("keys", "color")</a></code></p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>Output file, if <code>NULL</code> the code is printed to the console.</p></td>
+      <td><p>Colors to set in the form <code>color = table</code>.
+Allowed colors are all hex coded colors (quoted) and the color names from <code>dm_get_available_colors()</code>.
+<code>tidyselect</code> is supported, see <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> for details on the semantics.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Code for producing the prototype of the given <code>dm</code>.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The code emitted by the function reproduces the structure of the <code>dm</code> object.
-The <code>options</code> argument controls the level of detail: keys, colors,
-table definitions.
-Data in the tables is never included, see <code><a href='dm_ptype.html'>dm_ptype()</a></code> for the underlying logic.</p>
+    <p>For <code>dm_set_colors()</code>: the updated data model.</p>
+<p>For <code>dm_get_colors()</code>, a two-column tibble with one row per table.</p>
+<p>For <code>dm_get_available_colors()</code>, a vector with the available colors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm.html'>dm</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_paste</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>dm::dm()</span></div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_paste</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_add_pk(airlines, carrier) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_add_pk(airports, faa) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_add_pk(planes, tailnum) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_add_fk(flights, carrier, airlines) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_add_fk(flights, origin, airports) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_add_fk(flights, tailnum, planes) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_set_colors(`#ED7D31FF` = airlines) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_set_colors(`#ED7D31FF` = airports) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_set_colors(`#5B9BD5FF` = flights) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_set_colors(`#ED7D31FF` = planes) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_set_colors(`#70AD47FF` = weather)</span></div><div class='input'>
-<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_paste</span><span class='op'>(</span>options <span class='op'>=</span> <span class='st'>"select"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>dm::dm(airlines, airports, flights, planes, weather) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_select(airlines, carrier, name) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_select(airports, faa, name, lat, lon, alt, tz, dst, tzone) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_select(flights, year, month, day, dep_time, sched_dep_time, dep_delay, arr_time, sched_arr_time, arr_delay, carrier, flight, tailnum, origin, dest, air_time, distance, hour, minute, time_hour) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_select(planes, tailnum, year, type, manufacturer, model, engines, seats, speed, engine) %&gt;%</span>
-#&gt; <span class='message'>  dm::dm_select(weather, origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour)</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_set_colors</span><span class='op'>(</span>
+    darkblue <span class='op'>=</span> <span class='fu'>starts_with</span><span class='op'>(</span><span class='st'>"air"</span><span class='op'>)</span>,
+    <span class='st'>"#5986C4"</span> <span class='op'>=</span> <span class='va'>flights</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># Splicing is supported:</span>
+<span class='va'>nyc_cols</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_get_colors</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>nyc_cols</span>
+</div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
+#&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_set_colors</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>nyc_cols</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
