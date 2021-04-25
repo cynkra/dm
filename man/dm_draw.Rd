@@ -10,14 +10,16 @@
 dm_draw(
   dm,
   rankdir = "LR",
-  col_attr = "column",
-  view_type = "keys_only",
+  col_attr = NULL,
+  view_type = c("keys_only", "all", "title_only"),
   columnArrows = TRUE,
   graph_attrs = "",
   node_attrs = "",
   edge_attrs = "",
   focus = NULL,
-  graph_name = "Data Model"
+  graph_name = "Data Model",
+  ...,
+  column_types = NULL
 )
 
 dm_set_colors(dm, ...)
@@ -31,8 +33,7 @@ dm_get_available_colors()
 
 \item{rankdir}{Graph attribute for direction (e.g., 'BT' = bottom --> top).}
 
-\item{col_attr}{Column atributes to display.
-By default only the column name (\code{"column"}) is displayed.}
+\item{col_attr}{Deprecated, use \code{types}.}
 
 \item{view_type}{Can be "keys_only" (default), "all" or "title_only".
 It defines the level of details for rendering tables
@@ -53,6 +54,8 @@ It defines the level of details for rendering tables
 \item{...}{Colors to set in the form \code{color = table}.
 Allowed colors are all hex coded colors (quoted) and the color names from \code{dm_get_available_colors()}.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
+
+\item{column_types}{Set to \code{TRUE} to show column types.}
 }
 \value{
 For \code{dm_draw()}: returns an object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,

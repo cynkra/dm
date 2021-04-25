@@ -61,3 +61,14 @@ expect_equivalent_tbl_lists <- function(list_1, list_2) {
   expect_identical(names(list_1), names(list_2))
   walk2(list_1, list_2, expect_equivalent_tbl)
 }
+
+expect_snapshot_diagram <- function(diagram, name) {
+  dir <- withr::local_tempdir()
+  path <- file.path(dir, name)
+
+  diagram %>%
+    DiagrammeRsvg::export_svg() %>%
+    writeLines(path)
+
+  expect_snapshot_file(path, binary = FALSE)
+}
