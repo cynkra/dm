@@ -22,6 +22,8 @@ test_that("output", {
     data %>% arrange(select)
     rows_update(data, test_src_frame(select = 2:3, where = "w"), in_place = TRUE)
     data %>% arrange(select)
+    rows_update(data, test_src_frame(select = 2, where = "w", exists = 3.5), in_place = TRUE)
+    data %>% arrange(select)
     rows_update(data, test_src_frame(select = 2:3), in_place = TRUE)
     data %>% arrange(select)
     rows_update(data, test_src_frame(select = 0L, where = "a"), by = "where", in_place = TRUE)
