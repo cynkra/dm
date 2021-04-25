@@ -1,3 +1,14 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# dm 0.1.12.9001
+
+- Enable more Postgres tests (#497).
+- `enum_fk_candidates()` now only checks distinct values, this improves performance for large tables. As a consequence, only the number of distinct values is reported for mismatches, not the number of mismatching rows/entries (#494).
+- Fix `rows_update()` when multiple columns are updated (#488, @samssann).
+- `dm_draw()` gains `column_types` argument, if `TRUE` the column type is shown for each displayed column (#444, @samssann).
+- `copy_dm_to()` gains `schema` argument (#432).
+
+
 # dm 0.1.12.9000
 
 - `dm_from_src()` gains `dbname` argument for MSSQL (#472).
