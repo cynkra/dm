@@ -99,7 +99,7 @@ for a more detailed introduction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9001</span>
       </span>
     </div>
 
@@ -272,13 +272,16 @@ when using <code>dm_insert_zoomed()</code> or <code>dm_update_zoomed()</code>.</
 <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>.
 You can use these functions just like you would
 with a normal table.</p>
-<p>Calling <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> on a zoomed <code>dm</code> is different from calling <code><a href='dm_filter.html'>dm_filter()</a></code>:
-only with the latter, the filter expression is added to the list of table filters stored in the dm.</p>
-<p>Furthermore, different <code>join()</code>-variants from dplyr are also supported,
-e.g. <code><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>semi_join()</a></code>.
-(Support for <code>nest_join()</code> is planned.)
-The join-methods for <code>zoomed_dm</code> infer the columns to join by from the primary and foreign keys,
-and have an extra argument <code>select</code> that allows choosing the columns of the RHS table.</p>
+<p>In addition to filtering the zoomed table, the filter condition from <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> is also stored in the <code>dm</code>.
+Depending on which function you use to return to a normal <code>dm</code>, one of the following happens:</p><ol>
+<li><p><code>dm_discard_zoomed()</code>: all filter conditions for the zoomed table are discarded</p></li>
+<li><p><code>dm_update_zoomed()</code>: the filter conditions of the original table and those of the zoomed table are combined</p></li>
+<li><p><code>dm_insert_zoomed()</code>: the filter conditions of the original table stay there and those of the zoomed table are
+transferred to the new table of the <code>dm</code></p></li>
+</ol>
+
+<p>Furthermore, the different <code>join()</code>-variants from dplyr are also supported (apart from <code>nest_join()</code>).
+The join-methods for <code>zoomed_dm</code> have an extra argument <code>select</code> that allows choosing the columns of the RHS table.</p>
 <p>And -- last but not least -- also the tidyr-functions <code><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite()</a></code> and <code><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate()</a></code> are supported for <code>zoomed_dm</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

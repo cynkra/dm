@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9001</span>
       </span>
     </div>
 
@@ -185,6 +185,21 @@
       <small>Source: <a href='https://github.com/krlmlr/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-01129001" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.12.9001">
+<a href="#dm-01129001" class="anchor" aria-hidden="true"></a>dm 0.1.12.9001<small> Unreleased </small>
+</h1>
+<ul>
+<li>Enable more Postgres tests (<a href='https://github.com/krlmlr/dm/issues/497'>#497</a>).</li>
+<li>
+<code><a href="../reference/dm_enum_fk_candidates.html">enum_fk_candidates()</a></code> now only checks distinct values, this improves performance for large tables. As a consequence, only the number of distinct values is reported for mismatches, not the number of mismatching rows/entries (<a href='https://github.com/krlmlr/dm/issues/494'>#494</a>).</li>
+<li>Fix <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_update()</a></code> when multiple columns are updated (<a href='https://github.com/krlmlr/dm/issues/488'>#488</a>, <a href='https://github.com/samssann'>@samssann</a>).</li>
+<li>
+<code><a href="../reference/dm_draw.html">dm_draw()</a></code> gains <code>column_types</code> argument, if <code>TRUE</code> the column type is shown for each displayed column (<a href='https://github.com/krlmlr/dm/issues/444'>#444</a>, <a href='https://github.com/samssann'>@samssann</a>).</li>
+<li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> gains <code>schema</code> argument (<a href='https://github.com/krlmlr/dm/issues/432'>#432</a>).</li>
+</ul>
+</div>
     <div id="dm-01129000" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.12.9000">
 <a href="#dm-01129000" class="anchor" aria-hidden="true"></a>dm 0.1.12.9000<small> Unreleased </small>

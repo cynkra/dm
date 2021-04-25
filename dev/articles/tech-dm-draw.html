@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9001</span>
       </span>
     </div>
 
@@ -148,9 +148,9 @@
 <p>Once you have all your primary keys set and all foreign key relations defined, a graphical representation of your data model offers a condensed view of the tables and the relationships between the tables. The following functions can be used to visualize the <code>dm</code> object:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm_draw.html">dm_draw()</a></code></li>
-<li><code><a href="../reference/dm_set_colors.html">dm_set_colors()</a></code></li>
-<li><code><a href="../reference/dm_set_colors.html">dm_get_colors()</a></code></li>
-<li><code><a href="../reference/dm_set_colors.html">dm_get_available_colors()</a></code></li>
+<li><code><a href="../reference/dm_draw.html">dm_set_colors()</a></code></li>
+<li><code><a href="../reference/dm_draw.html">dm_get_colors()</a></code></li>
+<li><code><a href="../reference/dm_draw.html">dm_get_available_colors()</a></code></li>
 </ol>
 <p>We use the prepared example <code>dm</code> object <code><a href="../reference/dm_nycflights13.html">dm_nycflights13(cycle = TRUE)</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -187,9 +187,9 @@
 <path fill="none" stroke="#555555" d="M50,-51C72.2991,-51 69.4778,-22.5234 83.9268,-13.6245"></path><polygon fill="#555555" stroke="#555555" points="85.2055,-16.9083 94,-11 83.4406,-10.1344 85.2055,-16.9083"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#efebdd" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#000000">planes</text><polygon fill="#ffffff" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#555555" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M50,-71C65.5833,-71 71.8532,-71 83.6529,-71"></path><polygon fill="#555555" stroke="#555555" points="84,-74.5001 94,-71 84,-67.5001 84,-74.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#efebdd" stroke="transparent" points="15,-164 15,-184 63,-184 63,-164 15,-164"></polygon><text text-anchor="start" x="16.8492" y="-169.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="14,-163 14,-185 64,-185 64,-163 14,-163"></polygon></g></g></svg><p>You can use colors to visually group your tables into families to reflect their logical grouping. The available colors are either hexcoded colors or the standard R color names. The function <code><a href="../reference/dm_set_colors.html">dm_get_available_colors()</a></code> forwards to <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>:</p>
+<polygon fill="#efebdd" stroke="transparent" points="15,-164 15,-184 63,-184 63,-164 15,-164"></polygon><text text-anchor="start" x="16.8492" y="-169.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="14,-163 14,-185 64,-185 64,-163 14,-163"></polygon></g></g></svg><p>You can use colors to visually group your tables into families to reflect their logical grouping. The available colors are either hexcoded colors or the standard R color names. The function <code><a href="../reference/dm_draw.html">dm_get_available_colors()</a></code> forwards to <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_set_colors.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_draw.html">dm_get_available_colors</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;   [1] "default"              "white"                "aliceblue"           </span>
 <span class="co">#&gt;   [4] "antiquewhite"         "antiquewhite1"        "antiquewhite2"       </span>
 <span class="co">#&gt;   [7] "antiquewhite3"        "antiquewhite4"        "aquamarine"          </span>
@@ -410,11 +410,11 @@
 <span class="co">#&gt; [652] "whitesmoke"           "yellow"               "yellow1"             </span>
 <span class="co">#&gt; [655] "yellow2"              "yellow3"              "yellow4"             </span>
 <span class="co">#&gt; [658] "yellowgreen"</span></code></pre></div>
-<p>Colors are assigned with <code><a href="../reference/dm_set_colors.html">dm_set_colors()</a></code> using syntax known in the {tidyverse} as {tidyselect}-syntax, here in the form: <code>color = table</code>. <code>select_helper</code> functions are supported. The result of <code><a href="../reference/dm_set_colors.html">dm_set_colors()</a></code> is a <code>dm</code> object. The information about the color is stored together with the rest of the metadata.</p>
+<p>Colors are assigned with <code><a href="../reference/dm_draw.html">dm_set_colors()</a></code> using syntax known in the {tidyverse} as {tidyselect}-syntax, here in the form: <code>color = table</code>. <code>select_helper</code> functions are supported. The result of <code><a href="../reference/dm_draw.html">dm_set_colors()</a></code> is a <code>dm</code> object. The information about the color is stored together with the rest of the metadata.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_w_many_keys_and_colors</span> <span class="op">&lt;-</span>
   <span class="va">flights_dm_w_many_keys</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_set_colors.html">dm_set_colors</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/dm_draw.html">dm_set_colors</a></span><span class="op">(</span>
     maroon4 <span class="op">=</span> <span class="va">flights</span>,
     orange <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"air"</span><span class="op">)</span>,
     <span class="st">"#5986C4"</span> <span class="op">=</span> <span class="va">planes</span>
@@ -434,9 +434,9 @@
 <path fill="none" stroke="#555555" d="M50,-51C72.2991,-51 69.4778,-22.5234 83.9268,-13.6245"></path><polygon fill="#555555" stroke="#555555" points="85.2055,-16.9083 94,-11 83.4406,-10.1344 85.2055,-16.9083"></polygon></g><!-- planes --><g id="node4" class="node"><title>planes</title>
 <polygon fill="#5986c4" stroke="transparent" points="94,-81 94,-101 140,-101 140,-81 94,-81"></polygon><text text-anchor="start" x="99.1178" y="-86.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text><polygon fill="#dde6f3" stroke="transparent" points="94,-61 94,-81 140,-81 140,-61 94,-61"></polygon><text text-anchor="start" x="95.6115" y="-67.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text><polygon fill="none" stroke="#3b5982" stroke-opacity="0.666667" points="93,-60 93,-102 141,-102 141,-60 93,-60"></polygon></g><!-- flights&#45;&gt;planes --><g id="edge3" class="edge"><title>flights:tailnum-&gt;planes:tailnum</title>
 <path fill="none" stroke="#555555" d="M50,-71C65.5833,-71 71.8532,-71 83.6529,-71"></path><polygon fill="#555555" stroke="#555555" points="84,-74.5001 94,-71 84,-67.5001 84,-74.5001"></polygon></g><!-- weather --><g id="node5" class="node"><title>weather</title>
-<polygon fill="#efebdd" stroke="transparent" points="15,-164 15,-184 63,-184 63,-164 15,-164"></polygon><text text-anchor="start" x="16.8492" y="-169.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="14,-163 14,-185 64,-185 64,-163 14,-163"></polygon></g></g></svg><p>The colors can be queried with <code><a href="../reference/dm_set_colors.html">dm_get_colors()</a></code>.</p>
+<polygon fill="#efebdd" stroke="transparent" points="15,-164 15,-184 63,-184 63,-164 15,-164"></polygon><text text-anchor="start" x="16.8492" y="-169.4" font-family="Times,serif" font-size="14.00" fill="#000000">weather</text><polygon fill="none" stroke="#555555" points="14,-163 14,-185 64,-185 64,-163 14,-163"></polygon></g></g></svg><p>The colors can be queried with <code><a href="../reference/dm_draw.html">dm_get_colors()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_set_colors.html">dm_get_colors</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys_and_colors</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_draw.html">dm_get_colors</a></span><span class="op">(</span><span class="va">flights_dm_w_many_keys_and_colors</span><span class="op">)</span>
 <span class="co">#&gt;  #FFA500FF  #FFA500FF  #8B1C62FF  #5986C4FF    default </span>
 <span class="co">#&gt; "airlines" "airports"  "flights"   "planes"  "weather"</span></code></pre></div>
 <p>See the documentation for <code><a href="../reference/dm_draw.html">dm_draw()</a></code> for further options. One important argument is <code>view_type</code>. Besides the default <code>"keys_only"</code>, it accepts <code>"all"</code> to display all columns, and <code>"title_only"</code> to show only the title of the table.</p>

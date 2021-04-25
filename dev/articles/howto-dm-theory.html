@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9001</span>
       </span>
     </div>
 
@@ -458,10 +458,13 @@
 
 <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con_sqlite</span>, <span class="va">dm</span><span class="op">)</span>
 <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
-<span class="co">#&gt; [1] "airlines_2020_08_28_07_13_03_1" "airports_2020_08_28_07_13_03_1"</span>
-<span class="co">#&gt; [3] "flights_2020_08_28_07_13_03_1"  "planes_2020_08_28_07_13_03_1"  </span>
-<span class="co">#&gt; [5] "sqlite_stat1"                   "sqlite_stat4"                  </span>
-<span class="co">#&gt; [7] "weather_2020_08_28_07_13_03_1"</span></code></pre></div>
+<span class="co">#&gt; [1] "airlines_2020_08_28_07_13_03_12345_1"</span>
+<span class="co">#&gt; [2] "airports_2020_08_28_07_13_03_12345_1"</span>
+<span class="co">#&gt; [3] "flights_2020_08_28_07_13_03_12345_1" </span>
+<span class="co">#&gt; [4] "planes_2020_08_28_07_13_03_12345_1"  </span>
+<span class="co">#&gt; [5] "sqlite_stat1"                        </span>
+<span class="co">#&gt; [6] "sqlite_stat4"                        </span>
+<span class="co">#&gt; [7] "weather_2020_08_28_07_13_03_12345_1"</span></code></pre></div>
 <p>In the opposite direction, <code>dm</code> can also be populated with data from a DB. Unfortunately, keys currently can be learned only for MSSQL and Postgres, but not for SQLite. Therefore, the dm contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span>
@@ -469,7 +472,7 @@
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
 #&gt; src:  sqlite 3.35.5 []
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines_2020_08_28_07_13_03_1`, `airports_2020_08_28_07_13_03_1`, `flights_2020_08_28_07_13_03_1`, `planes_2020_08_28_07_13_03_1`, `sqlite_stat1`, … (7 total)
+#&gt; Tables: `airlines_2020_08_28_07_13_03_12345_1`, `airports_2020_08_28_07_13_03_12345_1`, `flights_2020_08_28_07_13_03_12345_1`, `planes_2020_08_28_07_13_03_12345_1`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
 #&gt; Primary keys: 0
 #&gt; Foreign keys: 0

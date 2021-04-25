@@ -48,7 +48,15 @@
 
 <meta property="og:title" content="Draw a diagram of the data model — dm_draw" />
 <meta property="og:description" content="dm_draw() uses DiagrammeR to draw diagrams.
-Use DiagrammeRsvg::export_svg() to convert the diagram to an SVG file." />
+dm_set_colors() allows to define the colors that will be used to display the tables of the data model.
+The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+An overview of the colors corresponding to the standard color names can be found at
+the bottom of
+http://rpubs.com/krlmlr/colors.
+dm_get_colors() returns the colors defined for a data model.
+dm_get_available_colors() returns an overview of the names of the available colors
+These are the standard colors also returned by grDevices::colors() plus a default
+table color with the name &quot;default&quot;." />
 <meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
 
 
@@ -92,7 +100,7 @@ Use DiagrammeRsvg::export_svg() to convert the diagram to an SVG file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.12.9001</span>
       </span>
     </div>
 
@@ -191,8 +199,16 @@ Use DiagrammeRsvg::export_svg() to convert the diagram to an SVG file." />
     </div>
 
     <div class="ref-description">
-    <p><code>dm_draw()</code> uses <span class="pkg">DiagrammeR</span> to draw diagrams.
-Use <code><a href='https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html'>DiagrammeRsvg::export_svg()</a></code> to convert the diagram to an SVG file.</p>
+    <p><code>dm_draw()</code> uses <span class="pkg">DiagrammeR</span> to draw diagrams.</p>
+<p><code>dm_set_colors()</code> allows to define the colors that will be used to display the tables of the data model.
+The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+An overview of the colors corresponding to the standard color names can be found at
+the bottom of
+<a href='http://rpubs.com/krlmlr/colors'>http://rpubs.com/krlmlr/colors</a>.</p>
+<p><code>dm_get_colors()</code> returns the colors defined for a data model.</p>
+<p><code>dm_get_available_colors()</code> returns an overview of the names of the available colors
+These are the standard colors also returned by <code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code> plus a default
+table color with the name "default".</p>
     </div>
 
     <pre class="usage"><span class='fu'>dm_draw</span><span class='op'>(</span>
@@ -208,7 +224,13 @@ Use <code><a href='https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html'>Diagra
   graph_name <span class='op'>=</span> <span class='st'>"Data Model"</span>,
   <span class='va'>...</span>,
   column_types <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span>
+
+<span class='fu'>dm_set_colors</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>dm_get_colors</span><span class='op'>(</span><span class='va'>dm</span><span class='op'>)</span>
+
+<span class='fu'>dm_get_available_colors</span><span class='op'>(</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,7 +245,7 @@ Use <code><a href='https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html'>Diagra
     </tr>
     <tr>
       <th>col_attr</th>
-      <td><p>Deprecated, use <code>colummn_types</code> instead.</p></td>
+      <td><p>Deprecated, use <code>types</code>.</p></td>
     </tr>
     <tr>
       <th>view_type</th>
@@ -257,7 +279,9 @@ It defines the level of details for rendering tables
     </tr>
     <tr>
       <th>...</th>
-      <td><p>These dots are for future extensions and must be empty.</p></td>
+      <td><p>Colors to set in the form <code>color = table</code>.
+Allowed colors are all hex coded colors (quoted) and the color names from <code>dm_get_available_colors()</code>.
+<code>tidyselect</code> is supported, see <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> for details on the semantics.</p></td>
     </tr>
     <tr>
       <th>column_types</th>
@@ -267,11 +291,11 @@ It defines the level of details for rendering tables
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>grViz</code> (see also <code><a href='https://rdrr.io/pkg/DiagrammeR/man/grViz.html'>DiagrammeR::grViz()</a></code>), which,
+    <p>For <code>dm_draw()</code>: returns an object of class <code>grViz</code> (see also <code><a href='https://rdrr.io/pkg/DiagrammeR/man/grViz.html'>DiagrammeR::grViz()</a></code>), which,
 when printed, produces the output seen in the viewer as a side effect.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='dm_set_colors.html'>dm_set_colors()</a></code> for defining the table colors.</p></div>
+<p>For <code>dm_set_colors()</code>: the updated data model.</p>
+<p>For <code>dm_get_colors()</code>, a two-column tibble with one row per table.</p>
+<p>For <code>dm_get_available_colors()</code>, a vector with the available colors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -280,14 +304,32 @@ when printed, produces the output seen in the viewer as a side effect.</p>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>cycle <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_draw</span><span class='op'>(</span>view_type <span class='op'>=</span> <span class='st'>"title_only"</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dm_set_colors.html'>dm_get_available_colors</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>dm_get_available_colors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "default"       "white"         "aliceblue"     "antiquewhite" 
-#&gt; [5] "antiquewhite1" "antiquewhite2"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='fu'><a href='dm_set_colors.html'>dm_get_available_colors</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+#&gt; [5] "antiquewhite1" "antiquewhite2"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='fu'>dm_get_available_colors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 658</div><div class='input'>
 <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dm_set_colors.html'>dm_get_colors</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'>dm_get_colors</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
-#&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div></pre>
+#&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_set_colors</span><span class='op'>(</span>
+    darkblue <span class='op'>=</span> <span class='fu'>starts_with</span><span class='op'>(</span><span class='st'>"air"</span><span class='op'>)</span>,
+    <span class='st'>"#5986C4"</span> <span class='op'>=</span> <span class='va'>flights</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_draw</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># Splicing is supported:</span>
+<span class='va'>nyc_cols</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_get_colors</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>nyc_cols</span>
+</div><div class='output co'>#&gt;  #ED7D31FF  #ED7D31FF  #5B9BD5FF  #ED7D31FF  #70AD47FF 
+#&gt; "airlines" "airports"  "flights"   "planes"  "weather" </div><div class='input'>
+<span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_set_colors</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>nyc_cols</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dm_draw</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
