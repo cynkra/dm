@@ -188,6 +188,13 @@ test_that("output", {
     "nycflight-dm.svg"
   )
 
+  # 444: types
+  expect_snapshot_diagram(
+    dm_nycflights13() %>%
+      dm_draw(column_types = TRUE),
+    "nycflight-dm-types.svg"
+  )
+
   # Multi-fk (#37)
   expect_snapshot_diagram(
     dm_nycflights13() %>%
