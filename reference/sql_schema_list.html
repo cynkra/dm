@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select columns — dm_select • dm</title>
+<title>List schemas on a database — sql_schema_list • dm</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Select columns — dm_select" />
-<meta property="og:description" content="Select columns of your dm using syntax that is similar to dplyr::select()." />
+<meta property="og:title" content="List schemas on a database — sql_schema_list" />
+<meta property="og:description" content="sql_schema_list() lists the available schemas on the database." />
 <meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
@@ -65,8 +65,6 @@
 <![endif]-->
 
 
-
-<!-- dependencies from examples -->
 
 
   
@@ -184,59 +182,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select columns</h1>
-    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/select.R'><code>R/select.R</code></a></small>
-    <div class="hidden name"><code>dm_select.Rd</code></div>
+    <h1>List schemas on a database</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/schema.R'><code>R/schema.R</code></a></small>
+    <div class="hidden name"><code>sql_schema_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Select columns of your <code><a href='dm.html'>dm</a></code> using syntax that is similar to <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code>.</p>
+    <p><code>sql_schema_list()</code> lists the available schemas on the database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dm_select</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>table</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>sql_schema_list</span><span class='op'>(</span><span class='va'>dest</span>, include_default <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dm</th>
-      <td><p>A <code>dm</code> object.</p></td>
+      <th>dest</th>
+      <td><p>An object of class <code>"src"</code> or <code>"DBIConnection"</code>.</p></td>
     </tr>
     <tr>
-      <th>table</th>
-      <td><p>A table in the <code>dm</code>.</p></td>
+      <th>include_default</th>
+      <td><p>Boolean, if <code>TRUE</code> (default), also the default schema
+on the database is included in the result</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>One or more unquoted expressions separated by commas.
-You can treat
-variable names as if they were positions, and use expressions like x:y
-to select the ranges of variables.</p>
-<p>Use named arguments, e.g. new_name = old_name, to rename the selected variables.</p>
-<p>The arguments in ... are automatically quoted and evaluated in a context where
-column names represent column positions.
-They also support unquoting and splicing.
-See <code><a href='https://dplyr.tidyverse.org/articles/programming.html'>vignette("programming", package = "dplyr")</a></code> for an introduction to those concepts.</p>
-<p>See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...</p></td>
+      <td><p>Passed on to the individual methods.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An updated <code>dm</code> with the columns of <code>table</code> reduced and/or renamed.</p>
+    <p>A tibble with the following columns:</p><dl>
+<dt><code>schema_name</code></dt><dd><p>the names of the schemas,</p></dd>
+<dt><code>schema_owner</code></dt><dd><p>the schema owner names.</p></dd>
+
+</dl>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If key columns are renamed, then the meta-information of the <code>dm</code> is updated accordingly.
-If key columns are removed, then all related relations are dropped as well.</p>
+    <p>Methods are not available for all DBMS.</p>
+<p>Additional arguments are:</p><ul>
+<li><p><code>dbname</code>: supported for MSSQL. List schemas on a different database on the connected MSSQL-server;
+default: database addressed by <code>dest</code>.</p></li>
+</ul>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dm_select</span><span class='op'>(</span><span class='va'>airports</span>, code <span class='op'>=</span> <span class='va'>faa</span>, altitude <span class='op'>=</span> <span class='va'>alt</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
-#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
-#&gt; Columns: 47
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div></span></pre>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other schema handling functions: 
+<code><a href='sql_schema_create.html'>sql_schema_create</a>()</code>,
+<code><a href='sql_schema_drop.html'>sql_schema_drop</a>()</code>,
+<code><a href='sql_schema_exists.html'>sql_schema_exists</a>()</code></p></div>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

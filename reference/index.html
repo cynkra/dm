@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Function reference" />
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
 
@@ -62,6 +62,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
 
@@ -87,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -162,7 +163,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -391,6 +392,43 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-schema-handling-methods" class="hasAnchor"><a href="#section-schema-handling-methods" class="anchor"></a>Schema handling methods</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="sql_schema_create.html">sql_schema_create()</a></code> </p>
+        </td>
+        <td><p>Create a schema on a database</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sql_schema_drop.html">sql_schema_drop()</a></code> </p>
+        </td>
+        <td><p>Remove a schema from a database</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sql_schema_exists.html">sql_schema_exists()</a></code> </p>
+        </td>
+        <td><p>Check for existence of a schema on a database</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sql_schema_list.html">sql_schema_list()</a></code> </p>
+        </td>
+        <td><p>List schemas on a database</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-visualization" class="hasAnchor"><a href="#section-visualization" class="anchor"></a>Visualization</h2>
           <p class="section-desc"></p>
         </th>
@@ -403,9 +441,15 @@
       <tr>
         
         <td>
-          <p><code><a href="dm_draw.html">dm_draw()</a></code> <code><a href="dm_draw.html">dm_set_colors()</a></code> <code><a href="dm_draw.html">dm_get_colors()</a></code> <code><a href="dm_draw.html">dm_get_available_colors()</a></code> </p>
+          <p><code><a href="dm_draw.html">dm_draw()</a></code> </p>
         </td>
         <td><p>Draw a diagram of the data model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dm_set_colors.html">dm_set_colors()</a></code> <code><a href="dm_set_colors.html">dm_get_colors()</a></code> <code><a href="dm_set_colors.html">dm_get_available_colors()</a></code> </p>
+        </td>
+        <td><p>Color in database diagrams</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -687,11 +731,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p><p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

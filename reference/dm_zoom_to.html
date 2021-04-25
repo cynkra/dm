@@ -56,7 +56,7 @@ dm_insert_zoomed() adds a new table to the dm.
 dm_discard_zoomed() discards the zoomed table and returns the dm as it was before zooming.
 Please refer to vignette(&quot;tech-db-zoom&quot;, package = &quot;dm&quot;)
 for a more detailed introduction." />
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
 
@@ -72,6 +72,9 @@ for a more detailed introduction." />
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+
+<!-- dependencies from examples -->
 
 
   
@@ -96,7 +99,7 @@ for a more detailed introduction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -171,7 +174,7 @@ for a more detailed introduction." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -190,7 +193,7 @@ for a more detailed introduction." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Mark table for manipulation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/zoom.R'><code>R/zoom.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/zoom.R'><code>R/zoom.R</code></a></small>
     <div class="hidden name"><code>dm_zoom_to.Rd</code></div>
     </div>
 
@@ -269,39 +272,36 @@ when using <code>dm_insert_zoomed()</code> or <code>dm_update_zoomed()</code>.</
 <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>select()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup()</a></code>.
 You can use these functions just like you would
 with a normal table.</p>
-<p>In addition to filtering the zoomed table, the filter condition from <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> is also stored in the <code>dm</code>.
-Depending on which function you use to return to a normal <code>dm</code>, one of the following happens:</p><ol>
-<li><p><code>dm_discard_zoomed()</code>: all filter conditions for the zoomed table are discarded</p></li>
-<li><p><code>dm_update_zoomed()</code>: the filter conditions of the original table and those of the zoomed table are combined</p></li>
-<li><p><code>dm_insert_zoomed()</code>: the filter conditions of the original table stay there and those of the zoomed table are
-transferred to the new table of the <code>dm</code></p></li>
-</ol>
-
-<p>Furthermore, the different <code>join()</code>-variants from dplyr are also supported (apart from <code>nest_join()</code>).
-The join-methods for <code>zoomed_dm</code> have an extra argument <code>select</code> that allows choosing the columns of the RHS table.</p>
+<p>Calling <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter()</a></code> on a zoomed <code>dm</code> is different from calling <code><a href='dm_filter.html'>dm_filter()</a></code>:
+only with the latter, the filter expression is added to the list of table filters stored in the dm.</p>
+<p>Furthermore, different <code>join()</code>-variants from dplyr are also supported,
+e.g. <code><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>semi_join()</a></code>.
+(Support for <code>nest_join()</code> is planned.)
+The join-methods for <code>zoomed_dm</code> infer the columns to join by from the primary and foreign keys,
+and have an extra argument <code>select</code> that allows choosing the columns of the RHS table.</p>
 <p>And -- last but not least -- also the tidyr-functions <code><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite()</a></code> and <code><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate()</a></code> are supported for <code>zoomed_dm</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>flights_zoomed</span> <span class='op'>&lt;-</span> <span class='fu'>dm_zoom_to</span><span class='op'>(</span><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>flights</span><span class='op'>)</span>
 
 <span class='va'>flights_zoomed</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># Zoomed table: flights</span><span>
-#&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 19</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># Zoomed table: flights</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble:     11,227 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
-#&gt; </span><span style='color: #555555;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447            444
-#&gt; </span><span style='color: #555555;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634            648
-#&gt; </span><span style='color: #555555;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813            820
-#&gt; </span><span style='color: #555555;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530         0      824            829
-#&gt; </span><span style='color: #555555;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832            850
-#&gt; </span><span style='color: #555555;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015           </span><span style='text-decoration: underline;'>1</span><span>017
-#&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600       -</span><span style='color: #BB0000;'>14</span><span>      645            709
-#&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600       -</span><span style='color: #BB0000;'>11</span><span>      652            724
-#&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600       -</span><span style='color: #BB0000;'>10</span><span>      649            703
-#&gt; </span><span style='color: #555555;'># … with 11,217 more rows, and 11 more variables: arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3           </span><span style='text-decoration: underline;'>2</span><span>359         4      426            437
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16           </span><span style='text-decoration: underline;'>2</span><span>359        17      447            444
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450            500       -</span><span style='color: #BB0000;'>10</span><span>      634            648
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520            525        -</span><span style='color: #BB0000;'>5</span><span>      813            820
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530            530         0      824            829
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531            540        -</span><span style='color: #BB0000;'>9</span><span>      832            850
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535            540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015           </span><span style='text-decoration: underline;'>1</span><span>017
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546            600       -</span><span style='color: #BB0000;'>14</span><span>      645            709
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549            600       -</span><span style='color: #BB0000;'>11</span><span>      652            724
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550            600       -</span><span style='color: #BB0000;'>10</span><span>      649            703
+#&gt; </span><span style='color: #949494;'># … with 11,217 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span><span></div><div class='input'>
 <span class='va'>flights_zoomed_transformed</span> <span class='op'>&lt;-</span>
   <span class='va'>flights_zoomed</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>am_pm_dep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>dep_time</span> <span class='op'>&lt;</span> <span class='fl'>1200</span>, <span class='st'>"am"</span>, <span class='st'>"pm"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -311,25 +311,25 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>year</span><span class='op'>:</span><span class='va'>dep_time</span>, <span class='va'>am_pm_dep</span>, <span class='fu'>everything</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='va'>flights_zoomed_transformed</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># Zoomed table: flights</span><span>
-#&gt; </span><span style='color: #555555;'># A tibble:     11,227 x 27</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># Zoomed table: flights</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble:     11,227 x 27</span><span>
 #&gt;     year month   day dep_time am_pm_dep sched_dep_time dep_delay arr_time
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3 am                  </span><span style='text-decoration: underline;'>2</span><span>359         4      426
-#&gt; </span><span style='color: #555555;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16 am                  </span><span style='text-decoration: underline;'>2</span><span>359        17      447
-#&gt; </span><span style='color: #555555;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450 am                   500       -</span><span style='color: #BB0000;'>10</span><span>      634
-#&gt; </span><span style='color: #555555;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520 am                   525        -</span><span style='color: #BB0000;'>5</span><span>      813
-#&gt; </span><span style='color: #555555;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530 am                   530         0      824
-#&gt; </span><span style='color: #555555;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531 am                   540        -</span><span style='color: #BB0000;'>9</span><span>      832
-#&gt; </span><span style='color: #555555;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535 am                   540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015
-#&gt; </span><span style='color: #555555;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546 am                   600       -</span><span style='color: #BB0000;'>14</span><span>      645
-#&gt; </span><span style='color: #555555;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549 am                   600       -</span><span style='color: #BB0000;'>11</span><span>      652
-#&gt; </span><span style='color: #555555;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550 am                   600       -</span><span style='color: #BB0000;'>10</span><span>      649
-#&gt; </span><span style='color: #555555;'># … with 11,217 more rows, and 19 more variables: sched_arr_time </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   arr_delay </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, carrier </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flight </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, tailnum </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, origin </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   dest </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, air_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, distance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, hour </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, minute </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   time_hour </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, lat </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lon </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, alt </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, tz </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   dst </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, tzone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10        3 am                  </span><span style='text-decoration: underline;'>2</span><span>359         4      426
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10       16 am                  </span><span style='text-decoration: underline;'>2</span><span>359        17      447
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      450 am                   500       -</span><span style='color: #BB0000;'>10</span><span>      634
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      520 am                   525        -</span><span style='color: #BB0000;'>5</span><span>      813
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      530 am                   530         0      824
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      531 am                   540        -</span><span style='color: #BB0000;'>9</span><span>      832
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      535 am                   540        -</span><span style='color: #BB0000;'>5</span><span>     </span><span style='text-decoration: underline;'>1</span><span>015
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      546 am                   600       -</span><span style='color: #BB0000;'>14</span><span>      645
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      549 am                   600       -</span><span style='color: #BB0000;'>11</span><span>      652
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>2</span><span>013     1    10      550 am                   600       -</span><span style='color: #BB0000;'>10</span><span>      649
+#&gt; </span><span style='color: #949494;'># … with 11,217 more rows, and 19 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   time_hour &lt;dttm&gt;, name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   dst &lt;chr&gt;, tzone &lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># replace table `flights` with the zoomed table</span>
 <span class='va'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_update_zoomed</span><span class='op'>(</span><span class='op'>)</span>
@@ -342,119 +342,7 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 <span class='va'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_insert_zoomed</span><span class='op'>(</span><span class='st'>"extended_flights"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_draw.html'>dm_draw</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.40.1 (20161225.0304)
- -->
-<!-- Title: %0 Pages: 1 -->
-<svg width="254pt" height="190pt"
- viewBox="0.00 0.00 254.00 190.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 186)">
-<title>%0</title>
-<g id="a_graph0"><a xlink:title="Data Model">
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-186 250,-186 250,4 -4,4"/>
-</a>
-</g>
-<!-- airlines -->
-<g id="node1" class="node">
-<title>airlines</title>
-<polygon fill="#ed7d31" stroke="transparent" points="197,-151 197,-171 242,-171 242,-151 197,-151"/>
-<text text-anchor="start" x="198.8969" y="-156.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airlines</text>
-<polygon fill="#fbe5d5" stroke="transparent" points="197,-131 197,-151 242,-151 242,-131 197,-131"/>
-<text text-anchor="start" x="199" y="-137.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">carrier</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="195.5,-130 195.5,-172 242.5,-172 242.5,-130 195.5,-130"/>
-</g>
-<!-- airports -->
-<g id="node2" class="node">
-<title>airports</title>
-<polygon fill="#ed7d31" stroke="transparent" points="196,-24 196,-44 242,-44 242,-24 196,-24"/>
-<text text-anchor="start" x="197.6192" y="-29.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">airports</text>
-<polygon fill="#fbe5d5" stroke="transparent" points="196,-4 196,-24 242,-24 242,-4 196,-4"/>
-<text text-anchor="start" x="198" y="-10.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">faa</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="195,-3 195,-45 243,-45 243,-3 195,-3"/>
-</g>
-<!-- extended_flights -->
-<g id="node3" class="node">
-<title>extended_flights</title>
-<polygon fill="#efebdd" stroke="transparent" points="58.5,-161 58.5,-181 155.5,-181 155.5,-161 58.5,-161"/>
-<text text-anchor="start" x="60.3443" y="-166.4" font-family="Times,serif" font-size="14.00" fill="#000000">extended_flights</text>
-<polygon fill="#ffffff" stroke="transparent" points="58.5,-141 58.5,-161 155.5,-161 155.5,-141 58.5,-141"/>
-<text text-anchor="start" x="60.5" y="-146.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text>
-<polygon fill="#ffffff" stroke="transparent" points="58.5,-121 58.5,-141 155.5,-141 155.5,-121 58.5,-121"/>
-<text text-anchor="start" x="60.5" y="-126.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="#ffffff" stroke="transparent" points="58.5,-101 58.5,-121 155.5,-121 155.5,-101 58.5,-101"/>
-<text text-anchor="start" x="60.5" y="-106.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text>
-<polygon fill="none" stroke="#555555" points="57,-100 57,-182 156,-182 156,-100 57,-100"/>
-</g>
-<!-- extended_flights&#45;&gt;airlines -->
-<g id="edge2" class="edge">
-<title>extended_flights:carrier&#45;&gt;airlines:carrier</title>
-<path fill="none" stroke="#555555" d="M155.5,-151C170.4704,-151 175.8418,-144.7738 186.7626,-142.1471"/>
-<polygon fill="#555555" stroke="#555555" points="187.452,-145.5919 197,-141 186.6724,-138.6354 187.452,-145.5919"/>
-</g>
-<!-- extended_flights&#45;&gt;airports -->
-<g id="edge4" class="edge">
-<title>extended_flights:origin&#45;&gt;airports:faa</title>
-<path fill="none" stroke="#555555" d="M155.5,-111C198.2031,-111 157.6444,-29.9555 186.0369,-16.026"/>
-<polygon fill="#555555" stroke="#555555" points="186.898,-19.4226 196,-14 185.5031,-12.563 186.898,-19.4226"/>
-</g>
-<!-- planes -->
-<g id="node5" class="node">
-<title>planes</title>
-<polygon fill="#ed7d31" stroke="transparent" points="196,-86 196,-106 242,-106 242,-86 196,-86"/>
-<text text-anchor="start" x="201.1178" y="-91.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">planes</text>
-<polygon fill="#fbe5d5" stroke="transparent" points="196,-66 196,-86 242,-86 242,-66 196,-66"/>
-<text text-anchor="start" x="197.6115" y="-72.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="none" stroke="#9e5320" stroke-opacity="0.666667" points="195,-65 195,-107 243,-107 243,-65 195,-65"/>
-</g>
-<!-- extended_flights&#45;&gt;planes -->
-<g id="edge6" class="edge">
-<title>extended_flights:tailnum&#45;&gt;planes:tailnum</title>
-<path fill="none" stroke="#555555" d="M155.5,-131C181.825,-131 170.1205,-89.6392 186.3438,-78.6528"/>
-<polygon fill="#555555" stroke="#555555" points="187.2845,-82.0241 196,-76 185.4301,-75.2742 187.2845,-82.0241"/>
-</g>
-<!-- flights -->
-<g id="node4" class="node">
-<title>flights</title>
-<polygon fill="#5b9bd5" stroke="transparent" points="83.5,-61 83.5,-81 129.5,-81 129.5,-61 83.5,-61"/>
-<text text-anchor="start" x="88.6115" y="-66.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">flights</text>
-<polygon fill="#deebf6" stroke="transparent" points="83.5,-41 83.5,-61 129.5,-61 129.5,-41 83.5,-41"/>
-<text text-anchor="start" x="85.5" y="-46.4" font-family="Times,serif" font-size="14.00" fill="#444444">carrier</text>
-<polygon fill="#deebf6" stroke="transparent" points="83.5,-21 83.5,-41 129.5,-41 129.5,-21 83.5,-21"/>
-<text text-anchor="start" x="85.1115" y="-26.4" font-family="Times,serif" font-size="14.00" fill="#444444">tailnum</text>
-<polygon fill="#deebf6" stroke="transparent" points="83.5,-1 83.5,-21 129.5,-21 129.5,-1 83.5,-1"/>
-<text text-anchor="start" x="85.5" y="-6.4" font-family="Times,serif" font-size="14.00" fill="#444444">origin</text>
-<polygon fill="none" stroke="#3c678e" stroke-opacity="0.666667" points="82.5,0 82.5,-82 130.5,-82 130.5,0 82.5,0"/>
-</g>
-<!-- flights&#45;&gt;airlines -->
-<g id="edge1" class="edge">
-<title>flights:carrier&#45;&gt;airlines:carrier</title>
-<path fill="none" stroke="#555555" d="M129.5,-51C175.5938,-51 151.5746,-127.4868 186.7132,-139.4379"/>
-<polygon fill="#555555" stroke="#555555" points="186.5878,-142.9589 197,-141 187.6388,-136.0382 186.5878,-142.9589"/>
-</g>
-<!-- flights&#45;&gt;airports -->
-<g id="edge3" class="edge">
-<title>flights:origin&#45;&gt;airports:faa</title>
-<path fill="none" stroke="#555555" d="M129.5,-11C155.3874,-11 164.2344,-13.2969 185.8617,-13.8711"/>
-<polygon fill="#555555" stroke="#555555" points="185.9563,-17.3725 196,-14 186.0453,-10.373 185.9563,-17.3725"/>
-</g>
-<!-- flights&#45;&gt;planes -->
-<g id="edge5" class="edge">
-<title>flights:tailnum&#45;&gt;planes:tailnum</title>
-<path fill="none" stroke="#555555" d="M129.5,-31C161.4227,-31 160.8902,-67.0084 185.9669,-74.6039"/>
-<polygon fill="#555555" stroke="#555555" points="185.613,-78.0883 196,-76 186.5778,-71.1551 185.613,-78.0883"/>
-</g>
-<!-- weather -->
-<g id="node6" class="node">
-<title>weather</title>
-<polygon fill="#70ad47" stroke="transparent" points="3,-40 3,-60 51,-60 51,-40 3,-40"/>
-<text text-anchor="start" x="4.8492" y="-45.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text>
-<polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="2,-39 2,-61 52,-61 52,-39 2,-39"/>
-</g>
-</g>
-</svg>
-<div class='input'>
+
 <span class='co'># discard the zoomed table</span>
 <span class='va'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_discard_zoomed</span><span class='op'>(</span><span class='op'>)</span>
@@ -474,11 +362,11 @@ The join-methods for <code>zoomed_dm</code> have an extra argument <code>select<
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p><p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

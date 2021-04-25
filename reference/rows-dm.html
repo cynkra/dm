@@ -77,7 +77,7 @@ The order in which the tables are processed is reversed.
 dm_rows_truncate() removes all records via rows_truncate(),
 only for tables in dm.
 The order in which the tables are processed is reversed." />
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
 
@@ -93,6 +93,9 @@ The order in which the tables are processed is reversed." />
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+
+<!-- dependencies from examples -->
 
 
   
@@ -117,7 +120,7 @@ The order in which the tables are processed is reversed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -192,7 +195,7 @@ The order in which the tables are processed is reversed." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -211,12 +214,12 @@ The order in which the tables are processed is reversed." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Modifying rows for multiple tables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/rows-dm.R'><code>R/rows-dm.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/rows-dm.R'><code>R/rows-dm.R</code></a></small>
     <div class="hidden name"><code>rows-dm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
 <p>These functions provide a framework for updating data in existing tables.
 Unlike <code><a href='https://dplyr.tidyverse.org/reference/compute.html'>compute()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to()</a></code> or <code><a href='copy_dm_to.html'>copy_dm_to()</a></code>, no new tables are created
 on the database.
@@ -273,7 +276,7 @@ The order in which the tables are processed is reversed.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Must be empty.</p></td>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
     </tr>
     <tr>
       <th>in_place</th>
@@ -329,7 +332,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='co'># Dry run by default:</span>
 <span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>flights_sqlite</span>, <span class='va'>flights_jan_sqlite</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Not persisting, use `in_place = FALSE` to turn off this message.</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>──</span><span> </span><span style='color: #00BB00;'>Table source</span><span> </span><span style='color: #00BB00;'>────────────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 []
+#&gt; src:  sqlite 3.35.5 []
 #&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
@@ -370,7 +373,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='co'># Check for consistency before applying:</span>
 <span class='va'>flights_new</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_examine_constraints.html'>dm_examine_constraints</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 273 entries (15.5%) of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 166 values (14.9%) of `flights$tailnum` not in `planes$tailnum`: N0EGMQ, N318AT, N395AA, N3ACAA, N3AEMQ, …</div><div class='input'>
 <span class='co'># Apply:</span>
 <span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>flights_sqlite</span>, <span class='va'>flights_feb_sqlite</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span>
@@ -389,11 +392,11 @@ and <code>x</code> is returned, invisibly.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p><p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

@@ -51,7 +51,7 @@
 which key constraints are met (is_key = TRUE) or violated (FALSE).
 The printing for this object is special, use as_tibble()
 to print as a regular tibble." />
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
 
@@ -67,6 +67,9 @@ to print as a regular tibble." />
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+
+<!-- dependencies from examples -->
 
 
   
@@ -91,7 +94,7 @@ to print as a regular tibble." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -166,7 +169,7 @@ to print as a regular tibble." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -185,7 +188,7 @@ to print as a regular tibble." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Validate your data model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/examine-constraints.R'><code>R/examine-constraints.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/examine-constraints.R'><code>R/examine-constraints.R</code></a></small>
     <div class="hidden name"><code>dm_examine_constraints.Rd</code></div>
     </div>
 
@@ -228,7 +231,7 @@ form a subset of the values of the referenced column.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='dm_nycflights13.html'>dm_nycflights13</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_examine_constraints</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …</div></span></pre>
+</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 497 values (17.5%) of `flights$tailnum` not in `planes$tailnum`: N0EGMQ, N1EAMQ, N200AA, N263AV, N267AT, …</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -240,11 +243,11 @@ form a subset of the values of the referenced column.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p><p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

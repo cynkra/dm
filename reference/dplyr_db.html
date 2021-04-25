@@ -48,7 +48,7 @@
 
 <meta property="og:title" content="dplyr table retrieval, table info and DB interaction methods — tbl.dm" />
 <meta property="og:description" content="Use these methods without the '.dm' or '.zoomed_dm' suffix (see examples)." />
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
 
@@ -63,6 +63,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
 
@@ -88,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -163,7 +164,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -182,7 +183,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1><span class="pkg">dplyr</span> table retrieval, table info and DB interaction methods</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/dm.R'><code>R/dm.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/dm.R'><code>R/dm.R</code></a></small>
     <div class="hidden name"><code>dplyr_db.Rd</code></div>
     </div>
 
@@ -234,27 +235,27 @@
     </tr>
     <tr>
       <th>x</th>
-      <td><p>Either a <code>dm</code> or a <code>zoomed_dm</code>; the latter leads to an error for <code>src_tbls.dm()</code></p></td>
+      <td><p>Either a <code>dm</code> or a <code>zoomed_dm</code>; the latter leads to an error for <code><a href='dplyr_db.html'>src_tbls.dm()</a></code></p></td>
     </tr>
     <tr>
       <th>dest</th>
-      <td><p>For <code>copy_to.dm()</code>: The <code>dm</code> object to which a table should be copied.</p></td>
+      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: The <code>dm</code> object to which a table should be copied.</p></td>
     </tr>
     <tr>
       <th>df</th>
-      <td><p>For <code>copy_to.dm()</code>: A table (can be on a different <code>src</code>)</p></td>
+      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: A table (can be on a different <code>src</code>)</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>For <code>copy_to.dm()</code>: See <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to</a></code></p></td>
+      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: See <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to</a></code></p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>For <code>copy_to.dm()</code>: See <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to</a></code>; <code>TRUE</code> leads to an error</p></td>
+      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: See <code><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>dplyr::copy_to</a></code>; <code>TRUE</code> leads to an error</p></td>
     </tr>
     <tr>
       <th>temporary</th>
-      <td><p>For <code>copy_to.dm()</code>: If the <code>dm</code> is on a DB, the copied version of <code>df</code> will only be written temporarily to the DB.
+      <td><p>For <code><a href='dplyr_db.html'>copy_to.dm()</a></code>: If the <code>dm</code> is on a DB, the copied version of <code>df</code> will only be written temporarily to the DB.
 After the connection is reset it will no longer be available.</p></td>
     </tr>
     <tr>
@@ -275,11 +276,11 @@ After the connection is reset it will no longer be available.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p><p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

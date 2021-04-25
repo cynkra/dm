@@ -22,7 +22,7 @@
     tables, stored as data frames or in a relational database.  Multiple
     tables (data and metadata) are stored in a compound object, which can
     then be manipulated with a pipe-friendly syntax.">
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -43,7 +43,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -137,14 +137,14 @@
   <div class="contents col-md-9">
 <div id="dm" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#dm" class="anchor"></a><a href="https://krlmlr.github.io/dm/">dm</a>
+<a href="#dm" class="anchor" aria-hidden="true"></a><a href="https://cynkra.github.io/dm/">dm</a>
 </h1></div>
 <!-- badges: start -->
 
 <!-- badges: end -->
 <div id="tldr" class="section level2">
 <h2 class="hasAnchor">
-<a href="#tldr" class="anchor"></a>TL;DR</h2>
+<a href="#tldr" class="anchor" aria-hidden="true"></a>TL;DR</h2>
 <p>Are you using multiple data frames or database tables in R? Organize them with dm.</p>
 <ul>
 <li>Use it today (if only like a list of tables).</li>
@@ -154,39 +154,39 @@
 </div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
+<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h2>
 <p>dm bridges the gap in the data pipeline between individual data frames and relational databases. It’s a grammar of joined tables that provides a consistent set of verbs for consuming, creating, and deploying relational data models. For individual researchers, it broadens the scope of datasets they can work with and how they work with them. For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.</p>
 <p>dm objects encapsulate relational data models constructed from local data frames or lazy tables connected to an RDBMS. dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking. Once a data model is complete, dm provides methods for deploying it to an RDBMS. This allows it to scale from datasets that fit in memory to databases with billions of rows.</p>
 </div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features" class="anchor"></a>Features</h2>
+<a href="#features" class="anchor" aria-hidden="true"></a>Features</h2>
 <p>dm makes it easy to bring an existing relational data model into your R session. As the dm object behaves like a named list of tables it requires little change to incorporate it within existing workflows. The dm interface and behavior is modeled after dplyr, so you may already be familiar with many of its verbs. dm also offers:</p>
 <ul>
 <li>visualization to help you understand relationships between entities represented by the tables</li>
 <li>simpler joins that “know” how tables are related, including a “flatten” operation that automatically follows keys and performs column name disambiguation</li>
 <li>consistency and constraint checks to help you understand (and fix) the limitations of your data</li>
 </ul>
-<p>That’s just the tip of the iceberg. See <a href="https://krlmlr.github.io/dm/articles/dm.html">Getting started</a> to hit the ground running and explore all the features.</p>
+<p>That’s just the tip of the iceberg. See <a href="https://cynkra.github.io/dm/articles/dm.html">Getting started</a> to hit the ground running and explore all the features.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>The latest stable version of the {dm} package can be obtained from <a href="https://CRAN.R-project.org/package=dm">CRAN</a> with the command</p>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
+<p>The latest stable version of the {dm} package can be obtained from <a href="https://CRAN.R-project.org/package=dm" class="external-link">CRAN</a> with the command</p>
 <pre class="chroma">
-<span class="nf"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="o">(</span><span class="s">"dm"</span><span class="o">)</span></pre>
+<span class="nf"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="o">(</span><span class="s">"dm"</span><span class="o">)</span></pre>
 <p>The latest development version of {dm} can be installed from GitHub.</p>
 <pre class="chroma">
 <span class="c"># install.packages("devtools")</span>
-<span class="nf">devtools</span><span class="nf">::</span><span class="nf"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="o">(</span><span class="s">"krlmlr/dm"</span><span class="o">)</span></pre>
+<span class="nf">devtools</span><span class="nf">::</span><span class="nf"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="o">(</span><span class="s">"cynkra/dm"</span><span class="o">)</span></pre>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
-<p>Create a dm object (see <a href="https://krlmlr.github.io/dm/articles/dm.html">Getting started</a> for details).</p>
+<a href="#usage" class="anchor" aria-hidden="true"></a>Usage</h2>
+<p>Create a dm object (see <a href="https://cynkra.github.io/dm/articles/dm.html">Getting started</a> for details).</p>
 <pre class="chroma">
-<span class="kr"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="o">(</span><span class="nv"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="o">)</span>
-<span class="nv">dm</span> <span class="o">&lt;-</span> <span class="nf"><a href="https://krlmlr.github.io/dm/reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="o">(</span><span class="o">)</span>
+<span class="kr"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="o">(</span><span class="nv"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="o">)</span>
+<span class="nv">dm</span> <span class="o">&lt;-</span> <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="o">(</span><span class="o">)</span>
 <span class="nv">dm</span>
 <span class="c">#&gt; <span style="color: #FFAFFF;">──</span><span> </span><span style="color: #FFAFFF;">Metadata</span><span> </span><span style="color: #FFAFFF;">────────────────────────────────────────────────────────────────────</span></span>
 <span class="c">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
@@ -195,9 +195,9 @@
 <span class="c">#&gt; Foreign keys: 3</span></pre>
 <p>dm is a named list of tables:</p>
 <pre class="chroma">
-<span class="nf"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="o">(</span><span class="nv">dm</span><span class="o">)</span>
+<span class="nf"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="o">(</span><span class="nv">dm</span><span class="o">)</span>
 <span class="c">#&gt; [1] "airlines" "airports" "flights"  "planes"   "weather"</span>
-<span class="nf"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="o">(</span><span class="nv">dm</span><span class="o">$</span><span class="nv">airports</span><span class="o">)</span>
+<span class="nf"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="o">(</span><span class="nv">dm</span><span class="o">$</span><span class="nv">airports</span><span class="o">)</span>
 <span class="c">#&gt; [1] 1458</span>
 <span class="nv">dm</span><span class="o">$</span><span class="nv">flights</span> <span class="o">%&gt;%</span>
   <span class="nf">count</span><span class="o">(</span><span class="nv">origin</span><span class="o">)</span>
@@ -210,12 +210,12 @@
 <p>Visualize relationships at any time:</p>
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o">%&gt;%</span>
-  <span class="nf"><a href="https://krlmlr.github.io/dm/reference/dm_draw.html">dm_draw</a></span><span class="o">(</span><span class="o">)</span></pre>
+  <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_draw.html">dm_draw</a></span><span class="o">(</span><span class="o">)</span></pre>
 <p><img src="reference/figures/README-draw.svg"></p>
 <p>Simple joins:</p>
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o">%&gt;%</span>
-  <span class="nf"><a href="https://krlmlr.github.io/dm/reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="o">(</span><span class="nv">flights</span><span class="o">)</span>
+  <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_flatten_to_tbl.html">dm_flatten_to_tbl</a></span><span class="o">(</span><span class="nv">flights</span><span class="o">)</span>
 <span class="c">#&gt; Renamed columns:</span>
 <span class="c">#&gt; * year -&gt; flights.year, planes.year</span>
 <span class="c">#&gt; * name -&gt; airlines.name, airports.name</span>
@@ -242,40 +242,40 @@
 <p>Check consistency:</p>
 <pre class="chroma">
 <span class="nv">dm</span> <span class="o">%&gt;%</span>
-  <span class="nf"><a href="https://krlmlr.github.io/dm/reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="o">(</span><span class="o">)</span>
+  <span class="nf"><a href="https://cynkra.github.io/dm/reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="o">(</span><span class="o">)</span>
 <span class="c">#&gt; <span style="color: #BBBB00;">!</span><span> Unsatisfied constraints:</span></span>
 <span class="c">#&gt; <span style="color: #BB0000;">●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …</span></span></pre>
-<p>Learn more in the <a href="https://krlmlr.github.io/dm/articles/dm.html">Getting started</a> article.</p>
+<p>Learn more in the <a href="https://cynkra.github.io/dm/articles/dm.html">Getting started</a> article.</p>
 </div>
 <div id="getting-help" class="section level2">
 <h2 class="hasAnchor">
-<a href="#getting-help" class="anchor"></a>Getting help</h2>
-<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on <a href="https://github.com/krlmlr/dm/issues">GitHub</a>. For questions and other discussion, please use <a href="https://community.rstudio.com/">community.rstudio.com</a>.</p>
+<a href="#getting-help" class="anchor" aria-hidden="true"></a>Getting help</h2>
+<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on <a href="https://github.com/cynkra/dm/issues" class="external-link">GitHub</a>. For questions and other discussion, please use <a href="https://community.rstudio.com/" class="external-link">community.rstudio.com</a>.</p>
 <hr>
 <p>License: MIT © cynkra GmbH.</p>
 <p>Funded by:</p>
-<p><a href="https://www.energie360.ch/de/"><img src="reference/figures/energie-72.png" alt="energie360°"></a> <span style="padding-right:50px"> </span> <a href="https://www.cynkra.com/"><img src="reference/figures/cynkra-72.png" alt="cynkra"></a></p>
+<p><a href="https://www.energie360.ch/de/" class="external-link"><img src="reference/figures/energie-72.png" alt="energie360°"></a> <span style="padding-right:50px"> </span> <a href="https://www.cynkra.com/" class="external-link"><img src="reference/figures/cynkra-72.png" alt="cynkra"></a></p>
 <hr>
-<p>Please note that the ‘dm’ project is released with a <a href="https://krlmlr.github.io/dm/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the ‘dm’ project is released with a <a href="https://cynkra.github.io/dm/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=dm">https://​cloud.r-project.org/​package=dm</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/krlmlr/dm/">https://​github.com/​krlmlr/​dm/​</a>
+<li>Browse source code at <br><a href="https://github.com/cynkra/dm/">https://​github.com/​cynkra/​dm/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/krlmlr/dm/issues">https://​github.com/​krlmlr/​dm/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/cynkra/dm/issues">https://​github.com/​cynkra/​dm/​issues</a>
 </li>
 </ul>
 </div>
 
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
@@ -283,35 +283,35 @@
 </div>
 
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
 
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Tobias Schieferdecker <br><small class="roles"> Author </small>  </li>
 <li>
 <a href="http://krlmlr.info">Kirill Müller</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-1416-3412" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Darko Bergant <br><small class="roles"> Author </small>  </li>
 <li>
-<a href="https://www.energie360.ch/de/"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a> <br><small class="roles"> Funder </small>  </li>
+<a href="https://www.energie360.ch/de/"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a> <br><small class="roles"> Funder </small>  </li>
 <li>
-<a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a> <br><small class="roles"> Funder, copyright holder </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<a href="https://www.cynkra.com"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a> <br><small class="roles"> Funder, copyright holder </small>  </li>
+<li><a href="authors.html">More on authors...</a></li>
 </ul>
 </div>
 
 <div class="dev-status">
-<h2>Dev status</h2>
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-<li><a href="https://github.com/krlmlr/dm/actions"><img src="https://github.com/krlmlr/dm/workflows/tic/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/gh/krlmlr/dm?branch=master"><img src="https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://CRAN.R-project.org/package=dm"><img src="https://www.r-pkg.org/badges/version/dm" alt="CRAN status"></a></li>
-<li><a href="https://rstudio.cloud/project/523482"><img src="https://img.shields.io/badge/rstudio-cloud-blue.svg" alt="Launch rstudio.cloud"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="https://github.com/cynkra/dm/actions" class="external-link"><img src="https://github.com/cynkra/dm/workflows/tic/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/gh/cynkra/dm?branch=master" class="external-link"><img src="https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://CRAN.R-project.org/package=dm" class="external-link"><img src="https://www.r-pkg.org/badges/version/dm" alt="CRAN status"></a></li>
+<li><a href="https://rstudio.cloud/project/523482" class="external-link"><img src="https://img.shields.io/badge/rstudio-cloud-blue.svg" alt="Launch rstudio.cloud"></a></li>
 </ul>
 </div>
 
@@ -320,11 +320,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p></p>
+<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>

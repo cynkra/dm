@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Joining in relational data models">
 <meta property="og:description" content="dm">
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -134,11 +134,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Joining in relational data models</h1>
-                        <h4 class="author">Katharina Brunner</h4>
+                        <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 class="date">2021-02-14</h4>
+            <h4 data-toc-skip class="date">2021-04-25</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-join.Rmd"><code>vignettes/tech-dm-join.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-join.Rmd" class="external-link"><code>vignettes/tech-dm-join.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-join.Rmd</code></div>
 
     </div>
@@ -146,38 +146,38 @@
     
     
 <p>The {dm} package offers functions to work with relational data models in R. A common task for multiple, separated tables that have a shared attribute is merging the data.</p>
-<p>This document introduces you to the joining functions of {dm} and shows how to apply them using data from the <a href="https://github.com/hadley/nycflights13">{nycflights13}</a> package.</p>
-<p><a href="https://krlmlr.github.io/dm/articles/howto-dm-theory#model">Relational data models</a> consist of multiple tables that are linked with <a href="https://krlmlr.github.io/dm/articles/howto-dm-theory#fk">foreign keys</a>. They are the building blocks for joining tables. Read more about relational data models in the vignette <a href="https://krlmlr.github.io/dm/articles/howto-dm-theory">“Introduction to Relational Data Models”</a>.</p>
+<p>This document introduces you to the joining functions of {dm} and shows how to apply them using data from the <a href="https://github.com/hadley/nycflights13" class="external-link">{nycflights13}</a> package.</p>
+<p><a href="https://cynkra.github.io/dm/articles/howto-dm-theory#model">Relational data models</a> consist of multiple tables that are linked with <a href="https://cynkra.github.io/dm/articles/howto-dm-theory#fk">foreign keys</a>. They are the building blocks for joining tables. Read more about relational data models in the vignette <a href="https://cynkra.github.io/dm/articles/howto-dm-theory">“Introduction to Relational Data Models”</a>.</p>
 <p>First, we load the packages that we need:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
 <div id="data-nycflights13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#data-nycflights13" class="anchor"></a>Data: nycflights13</h2>
+<a href="#data-nycflights13" class="anchor" aria-hidden="true"></a>Data: nycflights13</h2>
 <p>To explore filtering with {dm}, we’ll use the {nycflights13} data with its tables <code>flights</code>, <code>planes</code>, <code>airlines</code> and <code>airports</code>.</p>
-<p>This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html">?nycflights13</a></code>.</p>
+<p>This dataset contains information about the 336 776 flights that departed from New York City in 2013, with 3322 different planes and 1458 airports involved. The data comes from the US Bureau of Transportation Statistics, and is documented in <code><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html" class="external-link">?nycflights13</a></code>.</p>
 <p>First, we have to create a <code>dm</code> object from the {nycflights13} data. This is implemented with <code><a href="../reference/dm_nycflights13.html">dm::dm_nycflights13()</a></code>.</p>
-<p>A <a href="https://krlmlr.github.io/dm/articles/tech-dm-class.html#class-dm">data model object</a> contains the data as well as metadata.</p>
+<p>A <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#class-dm">data model object</a> contains the data as well as metadata.</p>
 <p>If you would like to create a <code>dm</code> from other tables, please look at <code><a href="../reference/dm.html">?dm</a></code> and the function <code><a href="../reference/dm.html">new_dm()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="join" class="section level2">
 <h2 class="hasAnchor">
-<a href="#join" class="anchor"></a>Joining a <code>dm</code> object</h2>
-<p>{dm} allows you to join two tables of a <code>dm</code> object based on a shared column. You can use all join functions that you know from the <a href="https://dplyr.tidyverse.org/reference/join.html">{dplyr} package</a>. Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join. See <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">?dplyr::join</a></code> for details.</p>
+<a href="#join" class="anchor" aria-hidden="true"></a>Joining a <code>dm</code> object</h2>
+<p>{dm} allows you to join two tables of a <code>dm</code> object based on a shared column. You can use all join functions that you know from the <a href="https://dplyr.tidyverse.org/reference/join.html" class="external-link">{dplyr} package</a>. Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join. See <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">?dplyr::join</a></code> for details.</p>
 <div id="how-it-works" class="section level3">
 <h3 class="hasAnchor">
-<a href="#how-it-works" class="anchor"></a>How it works</h3>
-<p>A join is the combination of two tables based on shared information. In technical terms, we merge the tables that need to be directly connected by a <a href="https://krlmlr.github.io/dm/articles/howto-dm-theory#fk">foreign key relation</a>.</p>
+<a href="#how-it-works" class="anchor" aria-hidden="true"></a>How it works</h3>
+<p>A join is the combination of two tables based on shared information. In technical terms, we merge the tables that need to be directly connected by a <a href="https://cynkra.github.io/dm/articles/howto-dm-theory#fk">foreign key relation</a>.</p>
 <p>The existing links can be inspected in two ways:</p>
 <ol style="list-style-type: decimal">
 <li>Visually, by drawing the data model with <code><a href="../reference/dm_draw.html">dm_draw()</a></code>
 </li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generated by graphviz version 2.40.1 (20161225.0304)
  --><!-- Title: %0 Pages: 1 --><svg width="152pt" height="200pt" viewbox="0.00 0.00 152.00 200.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 196)"><title>%0</title>
@@ -197,7 +197,7 @@
 </li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 3</span><span>
 #&gt;   child_table child_fk_cols parent_table
@@ -209,11 +209,11 @@
 </div>
 <div id="joining-examples" class="section level3">
 <h3 class="hasAnchor">
-<a href="#joining-examples" class="anchor"></a>Joining Examples</h3>
+<a href="#joining-examples" class="anchor" aria-hidden="true"></a>Joining Examples</h3>
 <p>Let’s look at some examples:</p>
 <p><strong>Add a column with airline names from the <code>airlines</code> table to the <code>flights</code> table.</strong></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">&lt;-</span> <span class="va">dm</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">&lt;-</span> <span class="va">dm</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span>
 <span class="va">dm_joined</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 11,227 x 20</span><span>
@@ -229,29 +229,29 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      546            600       -</span><span style="color: #BB0000;">14</span><span>      645
 #&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      549            600       -</span><span style="color: #BB0000;">11</span><span>      652
 #&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     1    10      550            600       -</span><span style="color: #BB0000;">10</span><span>      649
-#&gt; </span><span style="color: #555555;"># … with 11,217 more rows, and 13 more variables: sched_arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   arr_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, carrier </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, flight </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, tailnum </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span style="color: #555555;">, name </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 11,217 more rows, and 13 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name &lt;chr&gt;</span><span>
 </span></code></pre>
 <p>As you can see below, the <code>dm_joined</code> dataframe has one more column than the <code>flights</code> table. The difference is the <code>name</code> column from the <code>airlines</code> table.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="st">"flights"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="st">"flights"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "year"           "month"          "day"            "dep_time"      </span>
 <span class="co">#&gt;  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"</span>
 <span class="co">#&gt;  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       </span>
 <span class="co">#&gt; [13] "origin"         "dest"           "air_time"       "distance"      </span>
 <span class="co">#&gt; [17] "hour"           "minute"         "time_hour"</span>
 
-<span class="va">dm</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="st">"airlines"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">dm</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="st">"airlines"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "carrier" "name"</span>
 
-<span class="va">dm_joined</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">dm_joined</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "year"           "month"          "day"            "dep_time"      </span>
 <span class="co">#&gt;  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"</span>
 <span class="co">#&gt;  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       </span>
@@ -259,30 +259,30 @@
 <span class="co">#&gt; [17] "hour"           "minute"         "time_hour"      "name"</span></code></pre></div>
 <p>The result is not a <code>dm</code> object anymore, but a conventional dataframe:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">dm_joined</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "tbl_df"     "tbl"        "data.frame"</span></code></pre></div>
 <p>Another example:</p>
 <p><strong>Get all flights that can’t be matched with airlines names.</strong></p>
 <p>We expect the flights data from {nycflights13} package to be clean and well organized, so no flights should remain. You can check this with an <code>anti_join</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, join <span class="op">=</span> <span class="va">anti_join</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 0 x 19</span><span>
-#&gt; </span><span style="color: #555555;"># … with 19 variables: year </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, month </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, day </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, dep_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   sched_dep_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, dep_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   sched_arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, arr_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, carrier </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, flight </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   tailnum </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</span><span>
 </span></code></pre>
 <p>An example with filtering on a <code>dm</code> and then merging:</p>
 <p><strong>Get all flights from Delta Air Lines which didn’t depart from John F. Kennedy International Airport in May 2013 - and join all the airports data into the <code>flights</code> table.</strong></p>
-<p>Currently, it is important to call <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> after piping your conditions. Only then the underlying tables and key relations are updated and you can perform a join on the filtered data. We are working towards removing this inconvenience <a href="https://github.com/krlmlr/dm/issues/62">#62</a>.</p>
+<p>Currently, it is important to call <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code> after piping your conditions. Only then the underlying tables and key relations are updated and you can perform a join on the filtered data. We are working towards removing this inconvenience <a href="https://github.com/cynkra/dm/issues/62" class="external-link">#62</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_join_to_tbl.html">dm_join_to_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span>, join <span class="op">=</span> <span class="va">left_join</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 136 x 26</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -297,11 +297,11 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      656            700        -</span><span style="color: #BB0000;">4</span><span>     </span><span style="text-decoration: underline;">1</span><span>008
 #&gt; </span><span style="color: #555555;"> 9</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      656            700        -</span><span style="color: #BB0000;">4</span><span>      911
 #&gt; </span><span style="color: #555555;">10</span><span>  </span><span style="text-decoration: underline;">2</span><span>013     5    10      657            700        -</span><span style="color: #BB0000;">3</span><span>     </span><span style="text-decoration: underline;">1</span><span>006
-#&gt; </span><span style="color: #555555;"># … with 126 more rows, and 19 more variables: sched_arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   arr_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, carrier </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, flight </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, tailnum </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span style="color: #555555;">, name </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, lat </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, lon </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   alt </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, tz </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, dst </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, tzone </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 126 more rows, and 19 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   alt &lt;dbl&gt;, tz &lt;dbl&gt;, dst &lt;chr&gt;, tzone &lt;chr&gt;</span><span>
 </span></code></pre>
 <p>A last example:</p>
 <p><strong>Merge all tables into one big table.</strong></p>
@@ -326,14 +326,14 @@
 #&gt; </span><span style="color: #555555;"> 8</span><span>         </span><span style="text-decoration: underline;">2</span><span>013     1    10      546            600       -</span><span style="color: #BB0000;">14</span><span>      645
 #&gt; </span><span style="color: #555555;"> 9</span><span>         </span><span style="text-decoration: underline;">2</span><span>013     1    10      549            600       -</span><span style="color: #BB0000;">11</span><span>      652
 #&gt; </span><span style="color: #555555;">10</span><span>         </span><span style="text-decoration: underline;">2</span><span>013     1    10      550            600       -</span><span style="color: #BB0000;">10</span><span>      649
-#&gt; </span><span style="color: #555555;"># … with 11,217 more rows, and 28 more variables: sched_arr_time </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   arr_delay </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, carrier </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, flight </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, tailnum </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   origin </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, dest </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, air_time </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, distance </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, hour </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   minute </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, time_hour </span><span style="color: #555555;font-style: italic;">&lt;dttm&gt;</span><span style="color: #555555;">, airlines.name </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   airports.name </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, lat </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, lon </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, alt </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, tz </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   dst </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, tzone </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, planes.year </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, type </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   manufacturer </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, model </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span style="color: #555555;">, engines </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, seats </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">,</span><span>
-#&gt; </span><span style="color: #555555;">#   speed </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span style="color: #555555;">, engine </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>
+#&gt; </span><span style="color: #555555;"># … with 11,217 more rows, and 28 more variables: sched_arr_time &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, airlines.name &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   airports.name &lt;chr&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   dst &lt;chr&gt;, tzone &lt;chr&gt;, planes.year &lt;int&gt;, type &lt;chr&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   manufacturer &lt;chr&gt;, model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;,</span><span>
+#&gt; </span><span style="color: #555555;">#   speed &lt;int&gt;, engine &lt;chr&gt;</span><span>
 </span></code></pre>
 <p>Be aware that all column names need to be unique. The <code>dm_flatten_to_tbl</code> cares about automatically renaming the relevant columns and prints if something was changed, e.g. <code>name -&gt; airlines.name</code>.</p>
 </div>
@@ -351,11 +351,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p></p>
+<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>

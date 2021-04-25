@@ -52,7 +52,7 @@ and a dm object as its second argument.
 The latter is copied to the former.
 By default, temporary tables will be created and the key constraints will be set
 (currently only on MSSQL and Postgres databases)." />
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png" />
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png" />
 
 
 
@@ -68,6 +68,9 @@ By default, temporary tables will be created and the key constraints will be set
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+
+<!-- dependencies from examples -->
 
 
   
@@ -92,7 +95,7 @@ By default, temporary tables will be created and the key constraints will be set
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -167,7 +170,7 @@ By default, temporary tables will be created and the key constraints will be set
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -186,7 +189,7 @@ By default, temporary tables will be created and the key constraints will be set
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Copy data model to data source</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/dm/blob/master/R/db-interface.R'><code>R/db-interface.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/cynkra/dm/blob/master/R/db-interface.R'><code>R/db-interface.R</code></a></small>
     <div class="hidden name"><code>copy_dm_to.Rd</code></div>
     </div>
 
@@ -209,7 +212,8 @@ By default, temporary tables will be created and the key constraints will be set
   set_key_constraints <span class='op'>=</span> <span class='cn'>TRUE</span>,
   unique_table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
   table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
-  temporary <span class='op'>=</span> <span class='cn'>TRUE</span>
+  temporary <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  schema <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -274,6 +278,13 @@ to specify e.g. database and schema for your tables.</p></td>
       <td><p>Boolean variable, if <code>TRUE</code>, only temporary tables will be created.
 These tables will vanish when disconnecting from the database.</p></td>
     </tr>
+    <tr>
+      <th>schema</th>
+      <td><p>Name of schema to copy the <code>dm</code> to.
+If <code>schema</code> is provided, an error will be thrown if <code>temporary = FALSE</code> or
+<code>table_names</code> is not <code>NULL</code>.</p>
+<p>Not all DBMS are supported.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -320,11 +331,11 @@ The arguments are included in the signature to avoid passing them via the
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href='http://krlmlr.info'>Kirill Müller</a>, Darko Bergant, <a href='https://www.energie360.ch/de/'><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/></a>, <a href='https://www.cynkra.com'><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/></a>.</p>
+  <p><p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

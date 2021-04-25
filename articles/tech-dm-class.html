@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Class dm and basic operations">
 <meta property="og:description" content="dm">
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.13</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/krlmlr/dm">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -135,9 +135,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Class dm and basic operations</h1>
             
-            <h4 class="date">2021-02-14</h4>
+            <h4 data-toc-skip class="date">2021-04-25</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-class.Rmd"><code>vignettes/tech-dm-class.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-class.Rmd</code></div>
 
     </div>
@@ -148,7 +148,7 @@
 <p>Let’s take a look at the <code>dm</code> class.</p>
 <div id="class-dm" class="section level2">
 <h2 class="hasAnchor">
-<a href="#class-dm" class="anchor"></a>Class <code>dm</code>
+<a href="#class-dm" class="anchor" aria-hidden="true"></a>Class <code>dm</code>
 </h2>
 <p>The <code>dm</code> class consists of a collection of tables and metadata about the tables, such as</p>
 <ul>
@@ -161,7 +161,7 @@
 </div>
 <div id="ex_dm" class="section level2">
 <h2 class="hasAnchor">
-<a href="#ex_dm" class="anchor"></a>Examples of <code>dm</code> objects</h2>
+<a href="#ex_dm" class="anchor" aria-hidden="true"></a>Examples of <code>dm</code> objects</h2>
 <p>There are currently three options available for creating a <code>dm</code> object. The relevant functions for creating <code>dm</code> objects are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm.html">dm()</a></code></li>
@@ -172,11 +172,11 @@
 <p>To illustrate these options, we will now create the same <code>dm</code> in several different ways. We can use the tables from the well-known {nycflights13} package.</p>
 <div id="pass-the-tables-directly" class="section level3">
 <h3 class="hasAnchor">
-<a href="#pass-the-tables-directly" class="anchor"></a>Pass the tables directly</h3>
+<a href="#pass-the-tables-directly" class="anchor" aria-hidden="true"></a>Pass the tables directly</h3>
 <p>Create a <code>dm</code> object directly by providing data frames to <code><a href="../reference/dm.html">dm()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -187,16 +187,16 @@
 </div>
 <div id="start-with-an-empty-dm" class="section level3">
 <h3 class="hasAnchor">
-<a href="#start-with-an-empty-dm" class="anchor"></a>Start with an empty <code>dm</code>
+<a href="#start-with-an-empty-dm" class="anchor" aria-hidden="true"></a>Start with an empty <code>dm</code>
 </h3>
 <p>Start with an empty <code>dm</code> object that has been created with <code><a href="../reference/dm.html">dm()</a></code> or <code><a href="../reference/dm.html">new_dm()</a></code>, and add tables to that object:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 <span class="va">empty_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">dm</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">empty_dm</span>
 <span class="co">#&gt; dm()</span>
-<span class="fu"><a href="../reference/dm_add_tbl.html">dm_add_tbl</a></span><span class="op">(</span><span class="va">empty_dm</span>, <span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span> </code></pre></div>
+<span class="fu"><a href="../reference/dm_add_tbl.html">dm_add_tbl</a></span><span class="op">(</span><span class="va">empty_dm</span>, <span class="va">airlines</span>, <span class="va">airports</span>, <span class="va">flights</span>, <span class="va">planes</span>, <span class="va">weather</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
@@ -206,13 +206,13 @@
 </div>
 <div id="coerce-a-list-of-tables" class="section level3">
 <h3 class="hasAnchor">
-<a href="#coerce-a-list-of-tables" class="anchor"></a>Coerce a list of tables</h3>
+<a href="#coerce-a-list-of-tables" class="anchor" aria-hidden="true"></a>Coerce a list of tables</h3>
 <p>Turn a named list of tables into a <code>dm</code> with <code><a href="../reference/dm.html">as_dm()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm.html">as_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>airlines <span class="op">=</span> <span class="va">airlines</span>, 
-           airports <span class="op">=</span> <span class="va">airports</span>, 
-           flights <span class="op">=</span> <span class="va">flights</span>, 
-           planes <span class="op">=</span> <span class="va">planes</span>, 
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm.html">as_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>airlines <span class="op">=</span> <span class="va">airlines</span>,
+           airports <span class="op">=</span> <span class="va">airports</span>,
+           flights <span class="op">=</span> <span class="va">flights</span>,
+           planes <span class="op">=</span> <span class="va">planes</span>,
            weather <span class="op">=</span> <span class="va">weather</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
@@ -223,16 +223,16 @@
 </div>
 <div id="turn-tables-from-a-src-into-a-dm" class="section level3">
 <h3 class="hasAnchor">
-<a href="#turn-tables-from-a-src-into-a-dm" class="anchor"></a>Turn tables from a <code>src</code> into a <code>dm</code>
+<a href="#turn-tables-from-a-src-into-a-dm" class="anchor" aria-hidden="true"></a>Turn tables from a <code>src</code> into a <code>dm</code>
 </h3>
 <p>Squeeze all (or a subset of) tables belonging to a <code>src</code> object into a <code>dm</code> using <code><a href="../reference/dm_from_src.html">dm_from_src()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sqlite_src</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html">nycflights13_sqlite</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">sqlite_src</span> <span class="op">&lt;-</span> <span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html" class="external-link">nycflights13_sqlite</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_src.html">dm_from_src</a></span><span class="op">(</span><span class="va">sqlite_src</span><span class="op">)</span>
 <span class="va">flights_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 [/tmp/RtmpD87ibw/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/RtmpV3TZhc/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -243,10 +243,10 @@
 </div>
 <div id="low-level-construction" class="section level3">
 <h3 class="hasAnchor">
-<a href="#low-level-construction" class="anchor"></a>Low-level construction</h3>
+<a href="#low-level-construction" class="anchor" aria-hidden="true"></a>Low-level construction</h3>
 <p>Another way of creating a <code>dm</code> object is calling <code><a href="../reference/dm.html">new_dm()</a></code> on a list of <code>tbl</code> objects:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">base_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">new_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="va">trees</span>, mtcars <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">base_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm.html">new_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="va">trees</span>, mtcars <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>
 <span class="va">base_dm</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `trees`, `mtcars`
@@ -261,13 +261,13 @@
 </div>
 <div id="access-tables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#access-tables" class="anchor"></a>Access tables</h2>
+<a href="#access-tables" class="anchor" aria-hidden="true"></a>Access tables</h2>
 <p>We can get the list of tables with <code><a href="../reference/dm.html">dm_get_tables()</a></code> and the <code>src</code> object with <code><a href="../reference/dm.html">dm_get_src()</a></code>.</p>
 <p>In order to pull a specific table from a <code>dm</code>, use:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># Source:   table&lt;`airports`&gt; [?? x 8]</span><span>
-#&gt; </span><span style="color: #555555;"># Database: sqlite 3.34.1 [/tmp/RtmpD87ibw/nycflights13.sqlite]</span><span>
+#&gt; </span><span style="color: #555555;"># Database: sqlite 3.35.5 [/tmp/RtmpV3TZhc/nycflights13.sqlite]</span><span>
 #&gt;    faa   name                    lat    lon   alt    tz dst   tzone        
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        
 #&gt; </span><span style="color: #555555;"> 1</span><span> 04G   Lansdowne Airport      41.1  -</span><span style="color: #BB0000;">80.6</span><span>  </span><span style="text-decoration: underline;">1</span><span>044    -</span><span style="color: #BB0000;">5</span><span> A     America/New_…
@@ -286,7 +286,7 @@
 </div>
 <div id="pk" class="section level2">
 <h2 class="hasAnchor">
-<a href="#pk" class="anchor"></a>Primary keys of <code>dm</code> objects</h2>
+<a href="#pk" class="anchor" aria-hidden="true"></a>Primary keys of <code>dm</code> objects</h2>
 <p>Some useful functions for managing primary key settings are:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code></li>
@@ -304,7 +304,7 @@
 <span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span>
 <span class="va">flights_dm_with_key</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 [/tmp/RtmpD87ibw/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/RtmpV3TZhc/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -323,7 +323,7 @@
 <span class="co">#&gt; [1] "faa"</span></code></pre></div>
 <p>Remove a primary key:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/dm_add_pk.html">dm_rm_pk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="fu"><a href="../reference/dm_add_pk.html">dm_rm_pk</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_has_pk.html">dm_has_pk</a></span><span class="op">(</span><span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <p>If you still need to get to know your data better, and it is already available in the form of a <code>dm</code> object, you can use the <code><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates()</a></code> function in order to get information about which columns of the table are unique keys:</p>
@@ -343,10 +343,10 @@
 </span></code></pre>
 <p>The <code>flights</code> table does not have any one-column primary key candidates:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">flights</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/enum_pk_candidates.html">dm_enum_pk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">flights</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">candidate</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
 #&gt;   candidate     n
-#&gt; </span><span style="color: #555555;">*</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
 #&gt; </span><span style="color: #555555;">1</span><span> FALSE        19
 </span></code></pre>
 <p>To get an overview over all tables with primary keys, use <code><a href="../reference/dm_get_all_pks.html">dm_get_all_pks()</a></code>:</p>
@@ -363,7 +363,7 @@
 </div>
 <div id="foreign-keys" class="section level2">
 <h2 class="hasAnchor">
-<a href="#foreign-keys" class="anchor"></a>Foreign keys</h2>
+<a href="#foreign-keys" class="anchor" aria-hidden="true"></a>Foreign keys</h2>
 <p>Useful functions for managing foreign key relations include:</p>
 <ol style="list-style-type: decimal">
 <li><code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code></li>
@@ -378,7 +378,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights_dm_with_key</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #00BB00;">──</span><span> </span><span style="color: #00BB00;">Table source</span><span> </span><span style="color: #00BB00;">───────────────────────────────────────────────────────────</span><span>
-#&gt; src:  sqlite 3.34.1 [/tmp/RtmpD87ibw/nycflights13.sqlite]
+#&gt; src:  sqlite 3.35.5 [/tmp/RtmpV3TZhc/nycflights13.sqlite]
 #&gt; </span><span style="color: #555555;">──</span><span> </span><span style="color: #555555;">Metadata</span><span> </span><span style="color: #555555;">───────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)
 #&gt; Columns: 62
@@ -413,16 +413,16 @@
 <span class="co">#&gt; [1] "origin"</span></code></pre></div>
 <p>Remove foreign key relations with <code><a href="../reference/dm_add_fk.html">dm_rm_fk()</a></code> (parameter <code>column = NULL</code> means that all relations will be removed):</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">flights</span>, column <span class="op">=</span> <span class="va">dest</span>, ref_table <span class="op">=</span> <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">flights_dm_with_fk</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">flights</span>, column <span class="op">=</span> <span class="va">dest</span>, ref_table <span class="op">=</span> <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; Error: (`dest`) is not a foreign key of table `flights` into table `airports`.</span>
-<span class="va">flights_dm_with_fk</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">flights_dm_with_fk</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; &lt;list_of&lt;character&gt;[0]&gt;</span>
-<span class="va">flights_dm_with_fk</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="cn">NULL</span>, <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">flights_dm_with_fk</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_add_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="cn">NULL</span>, <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_get_fk.html">dm_get_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span>
 <span class="co">#&gt; &lt;list_of&lt;character&gt;[0]&gt;</span></code></pre></div>
 <p>Since the primary keys are defined in the <code>dm</code> object, you do not need to provide the referenced column name of <code>ref_table</code>. This is always the primary key column of the table.</p>
@@ -433,20 +433,20 @@
 #&gt;    columns    candidate why                                                
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;keys&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                                              
 #&gt; </span><span style="color: #555555;"> 1</span><span> origin     TRUE      </span><span style="color: #555555;">""</span><span>                                                 
-#&gt; </span><span style="color: #555555;"> 2</span><span> wind_gust  FALSE     </span><span style="color: #555555;">"</span><span>5337 entries (20.4%) of `weather$wind_gust` not i…
-#&gt; </span><span style="color: #555555;"> 3</span><span> pressure   FALSE     </span><span style="color: #555555;">"</span><span>23386 entries (89.6%) of `weather$pressure` not i…
-#&gt; </span><span style="color: #555555;"> 4</span><span> wind_dir   FALSE     </span><span style="color: #555555;">"</span><span>25655 entries (98.2%) of `weather$wind_dir` not i…
-#&gt; </span><span style="color: #555555;"> 5</span><span> wind_speed FALSE     </span><span style="color: #555555;">"</span><span>26111 entries (100%) of `weather$wind_speed` not …
-#&gt; </span><span style="color: #555555;"> 6</span><span> dewp       FALSE     </span><span style="color: #555555;">"</span><span>26114 entries (100%) of `weather$dewp` not in `ai…
-#&gt; </span><span style="color: #555555;"> 7</span><span> humid      FALSE     </span><span style="color: #555555;">"</span><span>26114 entries (100%) of `weather$humid` not in `a…
-#&gt; </span><span style="color: #555555;"> 8</span><span> temp       FALSE     </span><span style="color: #555555;">"</span><span>26114 entries (100%) of `weather$temp` not in `ai…
-#&gt; </span><span style="color: #555555;"> 9</span><span> day        FALSE     </span><span style="color: #555555;">"</span><span>26115 entries (100%) of `weather$day` not in `air…
-#&gt; </span><span style="color: #555555;">10</span><span> hour       FALSE     </span><span style="color: #555555;">"</span><span>26115 entries (100%) of `weather$hour` not in `ai…
-#&gt; </span><span style="color: #555555;">11</span><span> month      FALSE     </span><span style="color: #555555;">"</span><span>26115 entries (100%) of `weather$month` not in `a…
-#&gt; </span><span style="color: #555555;">12</span><span> precip     FALSE     </span><span style="color: #555555;">"</span><span>26115 entries (100%) of `weather$precip` not in `…
-#&gt; </span><span style="color: #555555;">13</span><span> time_hour  FALSE     </span><span style="color: #555555;">"</span><span>26115 entries (100%) of `weather$time_hour` not i…
-#&gt; </span><span style="color: #555555;">14</span><span> visib      FALSE     </span><span style="color: #555555;">"</span><span>26115 entries (100%) of `weather$visib` not in `a…
-#&gt; </span><span style="color: #555555;">15</span><span> year       FALSE     </span><span style="color: #555555;">"</span><span>26115 entries (100%) of `weather$year` not in `ai…
+#&gt; </span><span style="color: #555555;"> 2</span><span> year       FALSE     </span><span style="color: #555555;">"</span><span>1 values (100%) of `weather$year` not in `airport…
+#&gt; </span><span style="color: #555555;"> 3</span><span> month      FALSE     </span><span style="color: #555555;">"</span><span>12 values (100%) of `weather$month` not in `airpo…
+#&gt; </span><span style="color: #555555;"> 4</span><span> visib      FALSE     </span><span style="color: #555555;">"</span><span>20 values (100%) of `weather$visib` not in `airpo…
+#&gt; </span><span style="color: #555555;"> 5</span><span> hour       FALSE     </span><span style="color: #555555;">"</span><span>24 values (100%) of `weather$hour` not in `airpor…
+#&gt; </span><span style="color: #555555;"> 6</span><span> day        FALSE     </span><span style="color: #555555;">"</span><span>31 values (100%) of `weather$day` not in `airport…
+#&gt; </span><span style="color: #555555;"> 7</span><span> wind_speed FALSE     </span><span style="color: #555555;">"</span><span>36 values (97.3%) of `weather$wind_speed` not in …
+#&gt; </span><span style="color: #555555;"> 8</span><span> wind_dir   FALSE     </span><span style="color: #555555;">"</span><span>37 values (97.4%) of `weather$wind_dir` not in `a…
+#&gt; </span><span style="color: #555555;"> 9</span><span> wind_gust  FALSE     </span><span style="color: #555555;">"</span><span>37 values (97.4%) of `weather$wind_gust` not in `…
+#&gt; </span><span style="color: #555555;">10</span><span> precip     FALSE     </span><span style="color: #555555;">"</span><span>59 values (100%) of `weather$precip` not in `airp…
+#&gt; </span><span style="color: #555555;">11</span><span> dewp       FALSE     </span><span style="color: #555555;">"</span><span>153 values (99.4%) of `weather$dewp` not in `airp…
+#&gt; </span><span style="color: #555555;">12</span><span> temp       FALSE     </span><span style="color: #555555;">"</span><span>173 values (99.4%) of `weather$temp` not in `airp…
+#&gt; </span><span style="color: #555555;">13</span><span> pressure   FALSE     </span><span style="color: #555555;">"</span><span>468 values (99.8%) of `weather$pressure` not in `…
+#&gt; </span><span style="color: #555555;">14</span><span> humid      FALSE     </span><span style="color: #555555;">"</span><span>2499 values (100%) of `weather$humid` not in `air…
+#&gt; </span><span style="color: #555555;">15</span><span> time_hour  FALSE     </span><span style="color: #555555;">"</span><span>8714 values (100%) of `weather$time_hour` not in …
 </span></code></pre>
 <p>Get an overview of all foreign key relations with<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code>:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -473,11 +473,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+  <p></p>
+<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
