@@ -74,7 +74,7 @@ bdm_create_references <- function(col_table) {
 
 # graph code directly from {datamodelr} -----------------------------------------
 
-dm_create_graph <- function(dm,
+bdm_create_graph <- function(data_model,
                              rankdir = "BT",
                              graph_name = "Data Model",
                              graph_attrs = "",
@@ -84,9 +84,6 @@ dm_create_graph <- function(dm,
                              focus = NULL,
                              col_attr = "column",
                              columnArrows = FALSE) {
-
-  data_model <- dm_get_data_model(dm, col_attr)
-
   g_list <-
     bdm_create_graph_list(
       data_model = data_model, view_type = view_type,

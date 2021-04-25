@@ -49,8 +49,10 @@ dm_draw <- function(dm,
     return(invisible(NULL))
   }
 
-  graph <- dm_create_graph(
-    dm,
+  data_model <- dm_get_data_model(dm)
+
+  graph <- bdm_create_graph(
+    data_model,
     rankdir = rankdir,
     col_attr = col_attr,
     view_type = view_type,
