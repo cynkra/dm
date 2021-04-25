@@ -59,7 +59,7 @@ The downside of this approach is that it is harder to merge together information
 
 Thus, to take full advantage of the relational database approach, an associated data model is needed to overcome the challenges that arise when working with multiple tables.
 
-Let's illustrate this challenge with the data from the [`nycflights13` dataset](https://github.com/hadley/nycflights13) that
+Let's illustrate this challenge with the data from the [`nycflights13` dataset](https://github.com/tidyverse/nycflights13) that
 contains detailed information about the 336776 flights that departed from New York City in 2013.
 The information is stored in five tables.
 
