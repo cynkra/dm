@@ -214,14 +214,16 @@ table color with the name "default".</p>
     <pre class="usage"><span class='fu'>dm_draw</span><span class='op'>(</span>
   <span class='va'>dm</span>,
   rankdir <span class='op'>=</span> <span class='st'>"LR"</span>,
-  col_attr <span class='op'>=</span> <span class='st'>"column"</span>,
-  view_type <span class='op'>=</span> <span class='st'>"keys_only"</span>,
+  col_attr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  view_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keys_only"</span>, <span class='st'>"all"</span>, <span class='st'>"title_only"</span><span class='op'>)</span>,
   columnArrows <span class='op'>=</span> <span class='cn'>TRUE</span>,
   graph_attrs <span class='op'>=</span> <span class='st'>""</span>,
   node_attrs <span class='op'>=</span> <span class='st'>""</span>,
   edge_attrs <span class='op'>=</span> <span class='st'>""</span>,
   focus <span class='op'>=</span> <span class='cn'>NULL</span>,
-  graph_name <span class='op'>=</span> <span class='st'>"Data Model"</span>
+  graph_name <span class='op'>=</span> <span class='st'>"Data Model"</span>,
+  <span class='va'>...</span>,
+  column_types <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
 <span class='fu'>dm_set_colors</span><span class='op'>(</span><span class='va'>dm</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -243,8 +245,7 @@ table color with the name "default".</p>
     </tr>
     <tr>
       <th>col_attr</th>
-      <td><p>Column atributes to display.
-By default only the column name (<code>"column"</code>) is displayed.</p></td>
+      <td><p>Deprecated, use <code>types</code>.</p></td>
     </tr>
     <tr>
       <th>view_type</th>
@@ -281,6 +282,10 @@ It defines the level of details for rendering tables
       <td><p>Colors to set in the form <code>color = table</code>.
 Allowed colors are all hex coded colors (quoted) and the color names from <code>dm_get_available_colors()</code>.
 <code>tidyselect</code> is supported, see <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> for details on the semantics.</p></td>
+    </tr>
+    <tr>
+      <th>column_types</th>
+      <td><p>Set to <code>TRUE</code> to show column types.</p></td>
     </tr>
     </table>
 
