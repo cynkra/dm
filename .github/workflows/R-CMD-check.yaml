@@ -149,8 +149,6 @@ jobs:
           if (getRversion() < "3.5") {
             # duckdb
             Sys.setenv("_R_CHECK_FORCE_SUGGESTS_" = FALSE)
-          }
-          if (getRversion() < "3.4") {
             error_on <- "warning"
           }
           # End custom: rcmdcheck error_on
