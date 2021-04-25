@@ -6,7 +6,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{Technical: Model verification - keys, constraints and normalization}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -26,13 +26,13 @@ library(dm)
 
 ## Testing key constraints
 
-This section contains information and examples about the following functions: 
+This section contains information and examples about the following functions:
 
 1. `check_key(.data, ...)`
 1. `check_subset(t1, c1, t2, c2)`
 1. `check_set_equality(t1, c1, t2, c2)`
 
-When you have tables (data frames) that are connected by key relations, this package can help you to verify the assumed key relations and/or determine the existing key relations between the tables. 
+When you have tables (data frames) that are connected by key relations, this package can help you to verify the assumed key relations and/or determine the existing key relations between the tables.
 For example, if you have tables:
 
 ```{r}
@@ -103,24 +103,24 @@ This section contains information and examples for the functions
 1. `examine_cardinality(parent_table, primary_key_column, child_table, foreign_key_column)`
 
 The four functions for testing for a specific kind of cardinality of the relation all require a parent table and a child table as inputs.
-The functions first test if that requirement is fulfilled by checking if: 
+The functions first test if that requirement is fulfilled by checking if:
 
 1. `primary_key_column` is a unique key for `parent_table`
 1. The set of values of `foreign_key_column` is a subset of the set of values of `primary_key_column`
 
 The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the expected relation that the child table has with the parent table.
-The numbers '0', '1' and 'n' refer to the number of values in the child table's column (`foreign_key_column`) that correspond to each value of the parent table's column (`primary_key_column`). 
+The numbers '0', '1' and 'n' refer to the number of values in the child table's column (`foreign_key_column`) that correspond to each value of the parent table's column (`primary_key_column`).
 'n' means more than one in this context, with no upper limit.
 
 `0_n` means, that for each value of the `parent_key_column`, the number of corresponding records in the child table is unrestricted.
 `1_n` means, that for each value of the `parent_key_column` there is at least one corresponding record in the child table.
 This means that there is a "surjective" relation from the child table to the parent table w.r.t. the specified columns, i.e. for each parent table column value there exists at least one equal child table column value.
 
-`0_1` means, that for each value of the `parent_key_column`, at least zero and at most one value has to correspond to it in the column of the child table. 
-This means that there is an "injective" relation from the child table to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times. 
+`0_1` means, that for each value of the `parent_key_column`, at least zero and at most one value has to correspond to it in the column of the child table.
+This means that there is an "injective" relation from the child table to the parent table w.r.t. the specified columns, i.e. no parent table column value is addressed multiple times.
 But not all of the parent table column values have to be referred to.
 
-`1_1` means, that for each value of the `parent_key_column`, exactly one value has to correspond to it in the child table's column. 
+`1_1` means, that for each value of the `parent_key_column`, exactly one value has to correspond to it in the child table's column.
 This means that there is a "bijective" ("injective" AND "surjective") relation between the child table and the parent table w.r.t. the specified columns, i.e. the set of values of the two columns is equal and there are no duplicates in either of them.
 
 Also `examine_cardinality()` first performs the above mentioned tests to figure out, if the parent-child table relationship criteria are met.

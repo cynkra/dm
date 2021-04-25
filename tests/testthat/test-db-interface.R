@@ -111,3 +111,84 @@ test_that("table identifiers are quoted", {
   pattern <- unclass(DBI::dbQuoteIdentifier(con, "[a-z0-9_#]+"))
   expect_true(all(grepl(pattern, remote_names)))
 })
+
+test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
+  skip_if_src_not(c("mssql", "postgres"))
+
+  src_db <- my_test_src()
+  local_dm <- dm_for_filter() %>% collect()
+
+  expect_dm_error(
+    copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema", temporary = FALSE),
+    "no_schema_exists"
+  )
+
+  sql_schema_create(src_db, "copy_dm_to_schema")
+
+  expect_dm_error(
+    copy_dm_to(src_db, local_dm, schema = "copy_dm_to_schema"),
+    "temporary_not_in_schema"
+  )
+
+  expect_dm_error(
+    copy_dm_to(
+      src_db,
+      local_dm,
+      schema = "copy_dm_to_schema",
+      temporary = FALSE,
+      table_names = set_names(letters[1:6], src_tbls(local_dm))
+    ),
+    "one_of_schema_table_names"
+  )
+
+  expect_silent(
+    remote_dm <- copy_dm_to(
+      src_db,
+      local_dm,
+      schema = "copy_dm_to_schema",
+      temporary = FALSE
+    )
+  )
+
+  withr::defer({
+    order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
+    walk(
+      dm_get_tables_impl(remote_dm)[order_of_deletion],
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+    )
+    try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
+  })
+
+  if (is_postgres(src_db)) {
+    table_tibble <- sql_schema_table_list_postgres(src_db, "copy_dm_to_schema")
+  } else if (is_mssql(src_db)) {
+    table_tibble <- sql_schema_table_list_mssql(src_db, "copy_dm_to_schema")
+  }
+
+  # compare names and remote names
+  expect_identical(
+    sort(deframe(table_tibble)),
+    sort(
+      dm_get_tables(remote_dm) %>%
+        map(dbplyr::remote_name) %>%
+        flatten_chr() %>%
+        dbplyr::ident_q()
+    )
+  )
+
+})
+
+test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
+  skip_if_src("mssql", "postgres")
+
+  local_dm <- dm_for_filter() %>% collect()
+
+  expect_dm_error(
+    copy_dm_to(
+      my_test_src(),
+      local_dm,
+      temporary = FALSE,
+      schema = "test"),
+    "no_schemas_supported"
+  )
+})

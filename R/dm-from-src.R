@@ -116,13 +116,22 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
   new_dm(tbls)
 }
 
-quote_ids <- function(x, con) {
+quote_ids <- function(x, con, schema = NULL) {
   if (is.null(con)) return(x)
 
-  map(
-    x,
-    ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
-  )
+  if (is_null(schema)) {
+    map(
+      x,
+      ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
+    )
+  } else {
+    if (!sql_schema_exists(con, schema)) abort_no_schema_exists(schema)
+    map(
+      x,
+      ~ dbplyr::ident_q(schema_if(rep(schema, length(.x)), .x, con))
+    )
+  }
+
 }
 
 # Errors ------------------------------------------------------------------

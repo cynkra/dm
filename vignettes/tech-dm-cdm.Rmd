@@ -6,7 +6,7 @@ vignette: >
   %\VignetteIndexEntry{Technical: Migration guide: 'cdm' -> 'dm'}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -48,7 +48,7 @@ flights_dm <- dm_nycflights13()
 tbl(flights_dm, "airports")
 flights_dm$planes
 flights_dm[["weather"]]
-``` 
+```
 
 After the update the same result is achieved by this type of function call:
 ```{r}
