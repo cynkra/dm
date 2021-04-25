@@ -8,7 +8,7 @@
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' The syntax of these functions will be extended but will remain compatible
 #' with current semantics.
 #'
@@ -133,7 +133,7 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' Therefore the function may return vectors of length greater than one in the future.
 #'
 #' @inheritParams dm_has_fk
@@ -171,7 +171,7 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' Therefore the `child_fk_cols` column may contain vectors of length greater than one.
 #'
 #' @return A tibble with the following columns:

@@ -33,8 +33,8 @@ Description: Provides tools for working with multiple related
     tables (data and metadata) are stored in a compound object, which can
     then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
-URL: https://krlmlr.github.io/dm/, https://github.com/krlmlr/dm
-BugReports: https://github.com/krlmlr/dm/issues
+URL: https://cynkra.github.io/dm/, https://github.com/cynkra/dm
+BugReports: https://github.com/cynkra/dm/issues
 Depends: 
     R (>= 3.3)
 Imports:

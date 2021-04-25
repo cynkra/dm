@@ -47,7 +47,7 @@ Foreign keys that point to the table from other tables, can be optionally remove
 
 
 Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
 The syntax of these functions will be extended but will remain compatible
 with current semantics.
 }

@@ -1,4 +1,4 @@
-# Cf. https://github.com/krlmlr/dm/issues/144 (Review error messages)
+# Cf. https://github.com/cynkra/dm/issues/144 (Review error messages)
 
 # error class generator ---------------------------------------------------
 

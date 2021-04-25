@@ -25,7 +25,7 @@ set for the table, an empty character vector is returned.
 
 
 Currently, keys consisting of more than one column are not supported.
-\href{https://github.com/krlmlr/dm/issues/3}{This feature} is planned for dm 0.2.0.
+\href{https://github.com/cynkra/dm/issues/3}{This feature} is planned for dm 0.2.0.
 Therefore the function may return vectors of length greater than one in the future.
 
 Similarly, each table currently can have only one primary key.
