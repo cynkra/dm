@@ -13,6 +13,8 @@ dm_get_colors(dm)
 dm_get_available_colors()
 }
 \arguments{
+\item{dm}{A \code{\link{dm}} object.}
+
 \item{...}{Colors to set in the form \code{color = table}.
 Allowed colors are all hex coded colors (quoted) and the color names from \code{dm_get_available_colors()}.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
