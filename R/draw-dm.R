@@ -64,6 +64,75 @@ dm_draw <- function(dm,
   bdm_render_graph(graph)
 }
 
+#' Get data_model
+#'
+#' `dm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
+#' data model object for drawing.
+#'
+#' @noRd
+dm_get_data_model <- function(x, col_attr) {
+  def <- dm_get_def(x)
+
+  tables <- data.frame(
+    table = def$table,
+    segment = def$segment,
+    display = def$display,
+    stringsAsFactors = FALSE
+  )
+
+  references_for_columns <- dm_get_data_model_fks(x)
+
+  references <-
+    references_for_columns %>%
+    mutate(ref_id = row_number(), ref_col_num = 1L)
+
+  keys <-
+    dm_get_data_model_pks(x) %>%
+    mutate(key = 1L)
+
+  if ("type" %in% col_attr) {
+    types <- dm_get_all_column_types(x)
+  } else {
+    types <- dm_get_all_columns(x)
+  }
+
+  columns <-
+    types %>%
+    left_join(keys, by = c("table", "column")) %>%
+    mutate(key = coalesce(key, 0L)) %>%
+    left_join(references_for_columns, by = c("table", "column")) %>%
+    # for compatibility with print method from {datamodelr}
+    as.data.frame()
+
+  new_data_model(
+    tables,
+    columns,
+    references
+  )
+}
+
+dm_get_all_columns <- function(x) {
+  dm_get_tables_impl(x) %>%
+    map(colnames) %>%
+    map(~ enframe(., "id", "column")) %>%
+    enframe("table") %>%
+    unnest(value) %>%
+    select(table, column, id)
+}
+
+dm_get_all_column_types <- function(x) {
+  dm_get_tables_impl(x) %>%
+    map(
+      ~ mutate(
+        enframe(as.list(collect(head(.x, 0))), "column"),
+        id = row_number()
+      )
+    ) %>%
+    enframe("table") %>%
+    unnest(value) %>%
+    mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
+}
+
 #' `dm_set_colors()`
 #'
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
