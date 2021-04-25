@@ -15,7 +15,8 @@ copy_dm_to(
   set_key_constraints = TRUE,
   unique_table_names = NULL,
   table_names = NULL,
-  temporary = TRUE
+  temporary = TRUE,
+  schema = NULL
 )
 }
 \arguments{
@@ -66,6 +67,12 @@ to specify e.g. database and schema for your tables.}
 
 \item{temporary}{Boolean variable, if \code{TRUE}, only temporary tables will be created.
 These tables will vanish when disconnecting from the database.}
+
+\item{schema}{Name of schema to copy the \code{dm} to.
+If \code{schema} is provided, an error will be thrown if \code{temporary = FALSE} or
+\code{table_names} is not \code{NULL}.
+
+Not all DBMS are supported.}
 }
 \value{
 A \code{dm} object on the given \code{src} with the same table names
