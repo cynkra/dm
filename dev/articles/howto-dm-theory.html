@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to relational data models">
 <meta property="og:description" content="dm">
-<meta property="og:image" content="https://krlmlr.github.io/dm/logo.png">
+<meta property="og:image" content="https://cynkra.github.io/dm/logo.png">
 <meta name="robots" content="noindex">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -116,7 +116,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/krlmlr/dm" class="external-link">
+  <a href="https://github.com/cynkra/dm" class="external-link">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -139,7 +139,7 @@
             
             <h4 data-toc-skip class="date">2021-04-25</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
 
     </div>
@@ -204,7 +204,7 @@
 #&gt; </span><span style="color: #BB0000;">✖</span><span> </span><span style="color: #0000BB;">dplyr</span><span>::</span><span style="color: #00BB00;">lag()</span><span>    masks </span><span style="color: #0000BB;">stats</span><span>::lag()
 </span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://krlmlr.github.io/dm/">dm</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cynkra.github.io/dm/">dm</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 
 <span class="va">flights</span> <span class="op">%&gt;%</span>
@@ -262,7 +262,7 @@
 <polygon fill="#70ad47" stroke="transparent" points="3,-151 3,-171 51,-171 51,-151 3,-151"></polygon><text text-anchor="start" x="4.8492" y="-156.4" font-family="Times,serif" font-size="14.00" fill="#ffffff">weather</text><polygon fill="none" stroke="#4a732f" stroke-opacity="0.666667" points="2,-150 2,-172 52,-172 52,-150 2,-150"></polygon></g></g></svg><p>The <code>flights</code> table is linked to three other tables: <code>airlines</code>, <code>planes</code> and <code>airports</code>. By using directed arrows, the visualization shows explicitly the connection between different columns (they are called attributes in the relational data sphere).</p>
 <p>For example: The column <code>carrier</code> in <code>flights</code> can be joined with the column <code>carrier</code> from the <code>airlines</code> table.</p>
 <p>The links between the tables are established through <a href="#pk">primary keys</a> and <a href="#fk">foreign keys</a>.</p>
-<p>Further Reading: The {dm} methods for <a href="https://krlmlr.github.io/dm/articles/tech-dm-draw.html">visualizing data models</a>.</p>
+<p>Further Reading: The {dm} methods for <a href="https://cynkra.github.io/dm/articles/tech-dm-draw.html">visualizing data models</a>.</p>
 </div>
 <div id="pk" class="section level2">
 <h2 class="hasAnchor">
@@ -296,7 +296,7 @@
 #&gt; </span><span style="color: #555555;">7</span><span> tz      FALSE     </span><span style="color: #555555;">"</span><span>has duplicate values: -10, -9, -8, -7, -6, …</span><span style="color: #555555;">"</span><span>         
 #&gt; </span><span style="color: #555555;">8</span><span> tzone   FALSE     </span><span style="color: #555555;">"</span><span>has missing values, and duplicate values: America/Anc…
 </span></code></pre>
-<p>Further Reading: The {dm} package offers several functions for dealing with <a href="https://krlmlr.github.io/dm/articles/tech-dm-class.html#pk">primary keys</a>.</p>
+<p>Further Reading: The {dm} package offers several functions for dealing with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#pk">primary keys</a>.</p>
 </div>
 <div id="fk" class="section level2">
 <h2 class="hasAnchor">
@@ -336,7 +336,7 @@
 <span class="co">#&gt; &lt;list_of&lt;character&gt;[1]&gt;</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [1] "carrier"</span></code></pre></div>
-<p>Further Reading: All {dm} functions for working with <a href="https://krlmlr.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign keys</a>.</p>
+<p>Further Reading: All {dm} functions for working with <a href="https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys">foreign keys</a>.</p>
 </div>
 <div id="referential-integrity" class="section level2">
 <h2 class="hasAnchor">
@@ -445,7 +445,7 @@
 <a href="#relational-databases" class="anchor" aria-hidden="true"></a>7. Relational Databases</h2>
 <p>{dm} is built upon relational data models but it is not a database itself. Databases are systems for data management and many of them are constructed as relational databases, e.g. SQLite, MySQL, MSSQL, Postgres. As you can guess from the names of the databases, SQL, short for Structured Querying Language, plays an important role: it was invented for the purpose of querying relational databases.</p>
 <p>In production, the data is stored in a relational database and {dm} is used to work with the data.</p>
-<p>Therefore, {dm} can copy data <a href="https://krlmlr.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
+<p>Therefore, {dm} can copy data <a href="https://cynkra.github.io/dm/articles/dm.html#copy">from and to databases</a>, and works transparently with both in-memory data and with relational database systems.</p>
 <p>For example, let’s create a local SQLite database and copy the <code>dm</code> object to it:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">con_sqlite</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
@@ -495,7 +495,7 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link external-link"><img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link external-link"><img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
+<p>Developed by Tobias Schieferdecker, <a href="http://krlmlr.info" class="external-link external-link">Kirill Müller</a>, Darko Bergant, <a href="https://www.energie360.ch/de/" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/energie-72.png" height="16"></a>, <a href="https://www.cynkra.com" class="external-link external-link"><img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png" height="16"></a>.</p>
 </div>
 
 <div class="pkgdown">
