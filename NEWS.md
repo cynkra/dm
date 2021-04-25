@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.1.12.9002
+
+- Fix description of filtering behavior in `?dm_zoom_to` (#403).
+
+
 # dm 0.1.12.9001
 
 - Enable more Postgres tests (#497).
