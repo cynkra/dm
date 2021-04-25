@@ -170,6 +170,13 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     tbl_tf_4_tf_3
   )
 
+  expect_dm_error(
+    dm_enum_fk_candidates(dm_test_obj(), dm_table_1, dm_table_4),
+    class = "ref_tbl_has_no_pk"
+  )
+
+  skip_if_not_installed("nycflights13")
+
   nycflights_example <- tibble::tribble(
     ~column,     ~candidate,       ~why,
     "origin",          TRUE,         "",
@@ -194,13 +201,6 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
-
-  expect_dm_error(
-    dm_enum_fk_candidates(dm_test_obj(), dm_table_1, dm_table_4),
-    class = "ref_tbl_has_no_pk"
-  )
-
-  skip_if_not_installed("nycflights13")
 
   expect_identical(
     dm_enum_fk_candidates(dm_nycflights13(), flights, airports) %>%
