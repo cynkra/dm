@@ -2,9 +2,6 @@
 % Please edit documentation in R/draw-dm.R
 \name{dm_draw}
 \alias{dm_draw}
-\alias{dm_set_colors}
-\alias{dm_get_colors}
-\alias{dm_get_available_colors}
 \title{Draw a diagram of the data model}
 \usage{
 dm_draw(
@@ -21,12 +18,6 @@ dm_draw(
   ...,
   column_types = NULL
 )
-
-dm_set_colors(dm, ...)
-
-dm_get_colors(dm)
-
-dm_get_available_colors()
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
@@ -51,36 +42,17 @@ It defines the level of details for rendering tables
 
 \item{graph_name}{The name of the graph.}
 
-\item{...}{Colors to set in the form \code{color = table}.
-Allowed colors are all hex coded colors (quoted) and the color names from \code{dm_get_available_colors()}.
-\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{column_types}{Set to \code{TRUE} to show column types.}
 }
 \value{
-For \code{dm_draw()}: returns an object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,
+An object of class \code{grViz} (see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), which,
 when printed, produces the output seen in the viewer as a side effect.
-
-For \code{dm_set_colors()}: the updated data model.
-
-For \code{dm_get_colors()}, a two-column tibble with one row per table.
-
-For \code{dm_get_available_colors()}, a vector with the available colors.
 }
 \description{
 \code{dm_draw()} uses \pkg{DiagrammeR} to draw diagrams.
-
-\code{dm_set_colors()} allows to define the colors that will be used to display the tables of the data model.
-The colors can either be either specified with hex color codes or using the names of the built-in R colors.
-An overview of the colors corresponding to the standard color names can be found at
-the bottom of
-\url{http://rpubs.com/krlmlr/colors}.
-
-\code{dm_get_colors()} returns the colors defined for a data model.
-
-\code{dm_get_available_colors()} returns an overview of the names of the available colors
-These are the standard colors also returned by \code{grDevices::colors()} plus a default
-table color with the name "default".
+Use \code{\link[DiagrammeRsvg:export_svg]{DiagrammeRsvg::export_svg()}} to convert the diagram to an SVG file.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -96,23 +68,7 @@ length(dm_get_available_colors())
 dm_nycflights13() \%>\%
   dm_get_colors()
 \dontshow{\}) # examplesIf}
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-
-dm_nycflights13(color = FALSE) \%>\%
-  dm_set_colors(
-    darkblue = starts_with("air"),
-    "#5986C4" = flights
-  ) \%>\%
-  dm_draw()
-
-# Splicing is supported:
-nyc_cols <-
-  dm_nycflights13() \%>\%
-  dm_get_colors()
-nyc_cols
-
-dm_nycflights13(color = FALSE) \%>\%
-  dm_set_colors(!!!nyc_cols) \%>\%
-  dm_draw()
-\dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link[=dm_set_colors]{dm_set_colors()}} for defining the table colors.
 }

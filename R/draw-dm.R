@@ -1,6 +1,7 @@
 #' Draw a diagram of the data model
 #'
 #' `dm_draw()` uses \pkg{DiagrammeR} to draw diagrams.
+#' Use [DiagrammeRsvg::export_svg()] to convert the diagram to an SVG file.
 #'
 #' @param dm A [`dm`] object.
 #' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
@@ -14,12 +15,14 @@
 #' @param edge_attrs Additional edge attributes.
 #' @param focus A list of parameters for rendering (table filter).
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
-#' @inheritParams dots_empty
+#' @inheritParams ellipsis::dots_empty
 #' @param column_types Set to `TRUE` to show column types.
+#'
+#' @seealso [dm_set_colors()] for defining the table colors.
 #'
 #' @export
 #'
-#' @return For `dm_draw()`: returns an object of class `grViz` (see also [DiagrammeR::grViz()]), which,
+#' @return An object of class `grViz` (see also [DiagrammeR::grViz()]), which,
 #' when printed, produces the output seen in the viewer as a side effect.
 #'
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
@@ -150,9 +153,9 @@ dm_get_all_column_types <- function(x) {
     mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
-#' `dm_set_colors()`
+#' Color in database diagrams
 #'
-#' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model.
+#' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
 #' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
 #' the bottom of
@@ -163,11 +166,8 @@ dm_get_all_column_types <- function(x) {
 #' `tidyselect` is supported, see [`dplyr::select()`] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
-#' @rdname dm_draw
-#'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
-#'
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
 #'     darkblue = starts_with("air"),
@@ -234,7 +234,7 @@ color_quos_to_display <- function(...) {
 #'
 #' @return For `dm_get_colors()`, a two-column tibble with one row per table.
 #'
-#' @rdname dm_draw
+#' @rdname dm_set_colors
 #' @export
 dm_get_colors <- function(dm) {
   dm_get_def(dm) %>%
@@ -247,12 +247,12 @@ dm_get_colors <- function(dm) {
 #' dm_get_available_colors()
 #'
 #' `dm_get_available_colors()` returns an overview of the names of the available colors
-#' These are the standard colors also returned by `grDevices::colors()` plus a default
+#' These are the standard colors also returned by [grDevices::colors()] plus a default
 #' table color with the name "default".
 #'
 #' @return For `dm_get_available_colors()`, a vector with the available colors.
 #'
-#' @rdname dm_draw
+#' @rdname dm_set_colors
 #' @export
 dm_get_available_colors <- function() {
   c("default", colors())
