@@ -255,7 +255,7 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
 }
 
 #' @export
-`sql_rows_update.tbl_MariaDBConnection` <- function(x, y, by, ...) {
+sql_rows_update.tbl_MariaDBConnection <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -272,7 +272,7 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
 }
 
 #' @export
-`sql_rows_update.tbl_PqConnection` <- function(x, y, by, ...) {
+sql_rows_update.tbl_PqConnection <- function(x, y, by, ...) {
   con <- dbplyr::remote_con(x)
 
   p <- sql_rows_update_prep(x, y, by)
@@ -295,6 +295,9 @@ sql_rows_update.tbl_SQLiteConnection <- function(x, y, by, ...) {
   )
   glue::as_glue(sql)
 }
+
+#' @export
+sql_rows_update.tbl_duckdb_connection <- sql_rows_update.tbl_SQLiteConnection
 
 sql_rows_update_prep <- function(x, y, by) {
   con <- dbplyr::remote_con(x)

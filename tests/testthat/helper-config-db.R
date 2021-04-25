@@ -6,6 +6,10 @@ test_src_sqlite <- function() {
   dbplyr::src_dbi(DBI::dbConnect(RSQLite::SQLite(), ":memory:"), auto_disconnect = TRUE)
 }
 
+test_src_duckdb <- function() {
+  dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
+}
+
 test_src_postgres <- function() {
   if (Sys.getenv("CI") != "") {
     con <- DBI::dbConnect(
