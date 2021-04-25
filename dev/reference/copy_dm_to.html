@@ -212,7 +212,8 @@ By default, temporary tables will be created and the key constraints will be set
   set_key_constraints <span class='op'>=</span> <span class='cn'>TRUE</span>,
   unique_table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
   table_names <span class='op'>=</span> <span class='cn'>NULL</span>,
-  temporary <span class='op'>=</span> <span class='cn'>TRUE</span>
+  temporary <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  schema <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -276,6 +277,13 @@ to specify e.g. database and schema for your tables.</p></td>
       <th>temporary</th>
       <td><p>Boolean variable, if <code>TRUE</code>, only temporary tables will be created.
 These tables will vanish when disconnecting from the database.</p></td>
+    </tr>
+    <tr>
+      <th>schema</th>
+      <td><p>Name of schema to copy the <code>dm</code> to.
+If <code>schema</code> is provided, an error will be thrown if <code>temporary = FALSE</code> or
+<code>table_names</code> is not <code>NULL</code>.</p>
+<p>Not all DBMS are supported.</p></td>
     </tr>
     </table>
 

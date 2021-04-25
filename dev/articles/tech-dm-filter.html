@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Filtering in relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-04-24</h4>
+            <h4 data-toc-skip class="date">2021-04-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/krlmlr/dm/blob/master/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="hidden name"><code>tech-dm-filter.Rmd</code></div>
@@ -235,7 +235,7 @@
 <p>Let’s see filtering in action:</p>
 <p><strong>We only want the data that is related to John F. Kennedy International Airport.</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">filtered_dm</span> <span class="op">&lt;-</span> 
+<code class="sourceCode R"><span class="va">filtered_dm</span> <span class="op">&lt;-</span>
   <span class="va">dm</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span>
 <span class="va">filtered_dm</span></code></pre></div>
@@ -250,9 +250,9 @@
 <p>The filter expression is listed in the print output.</p>
 <p>You can get the numbers of rows of each table with <code><a href="../reference/dm_nrow.html">dm_nrow()</a></code>. Before doing that, you will need to apply the filters using <code><a href="../reference/dm_filter.html">dm_apply_filters()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rows_per_table</span> <span class="op">&lt;-</span> 
-  <span class="va">filtered_dm</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">rows_per_table</span> <span class="op">&lt;-</span>
+  <span class="va">filtered_dm</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">rows_per_table</span>
 <span class="co">#&gt; airlines airports  flights   planes  weather </span>
@@ -266,9 +266,9 @@
 <p>Next example:</p>
 <p><strong>Get a <code>dm</code> object containing data for flights from New York to the Dulles International Airport in Washington D.C., abbreviated with <code>IAD</code>.</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span> <span class="op">==</span> <span class="st">"IAD"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span> <span class="op">==</span> <span class="st">"IAD"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; airlines airports  flights   planes  weather </span>
 <span class="co">#&gt;        4        3      191       95      861</span></code></pre></div>
@@ -292,15 +292,15 @@
 #&gt; flights: month == 5
 </span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; airlines airports  flights   planes  weather </span>
 <span class="co">#&gt;        1        2       79       61      861</span></code></pre></div>
 <p>You can inspect the filtered tables with <code><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl()</a></code>.</p>
 <p>In the <code>airlines</code> table, Delta is the only remaining carrier:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"airlines"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 2</span><span>
 #&gt;   carrier name                
@@ -309,7 +309,7 @@
 </span></code></pre>
 <p>Which planes were used to service these flights?</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"planes"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 61 x 9</span><span>
 #&gt;    tailnum  year type       manufacturer  model  engines seats speed engine
@@ -328,7 +328,7 @@
 </span></code></pre>
 <p>And indeed, all included flights departed in May (<code>month == 5</code>):</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dm_delta_may</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="st">"flights"</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 79 x 19</span><span>
 #&gt;     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -389,11 +389,11 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dm</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, <span class="va">airports</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">src_memdb</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airlines</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dm_filter.html">dm_apply_filters</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/dm.html">dm_get_tables</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">map</span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="va"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">)</span>
 <span class="co">#&gt; $flights</span>
