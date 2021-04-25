@@ -5,6 +5,7 @@
 #' `...` is ignored.
 #'
 #' @inheritParams dplyr::rows_insert
+#' @inheritParams ellipsis::dots_used
 #' @param x A data frame or data frame extension (e.g. a tibble).
 #' @export
 rows_truncate <- function(x, ..., in_place = FALSE) {

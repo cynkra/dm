@@ -27,7 +27,7 @@ dm_rows_truncate(x, y, ..., in_place = NULL)
 
 \item{y}{\code{dm} object with new data.}
 
-\item{...}{Must be empty.}
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{in_place}{Should \code{x} be modified in place? This argument is only
 relevant for mutable backends (e.g. databases, data.tables).
