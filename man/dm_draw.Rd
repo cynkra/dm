@@ -33,7 +33,7 @@ dm_get_available_colors()
 
 \item{rankdir}{Graph attribute for direction (e.g., 'BT' = bottom --> top).}
 
-\item{col_attr}{Deprecated, use \code{types}.}
+\item{col_attr}{Deprecated, use \code{colummn_types} instead.}
 
 \item{view_type}{Can be "keys_only" (default), "all" or "title_only".
 It defines the level of details for rendering tables
