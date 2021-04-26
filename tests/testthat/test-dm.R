@@ -454,7 +454,7 @@ test_that("output", {
 
 
 test_that("output for compound tables", {
-  expect_snapshot{
+  expect_snapshot({
     car_table <- test_src_frame(!!!mtcars)
     copy_to(nyc_comp(), mtcars, "car_table")
     dm_add_tbl(nyc_comp(), car_table)
