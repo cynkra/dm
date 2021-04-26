@@ -345,9 +345,9 @@ dm_get_data_model_fks <- function(x, flatten) {
     mutate(parent_pk_cols = my_flatten_key(column)) %>%
     select(-column) %>%
     unnest(fks) %>%
-    mutate(column = my_flatten_key(column)) %>%
-    select(table, column, ref, parent_pk_cols) %>%
-    rename(child_table = table, child_fk_cols = column, parent_table = ref)
+    mutate(child_fk_cols = my_flatten_key(column)) %>%
+    select(table, child_fk_cols, ref, parent_pk_cols) %>%
+    rename(child_table = table, parent_table = ref)
 }
 
 flatten_key <- function(x) {
