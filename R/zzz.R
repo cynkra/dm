@@ -12,4 +12,6 @@
   dm_has_financial <<- memoise::memoise(dm_has_financial, cache = cache_attach())
 
   register_pkgdown_methods()
+
+  #dm_insert_zoomed_outgoing_fks <<- boomer::rig(dm_insert_zoomed_outgoing_fks)
 }
