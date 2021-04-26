@@ -60,6 +60,10 @@ is_unique_key <- function(.data, column) {
   col_expr <- ensym(column)
   col_name <- as_name(col_expr)
 
+  is_unique_key_se(.data, col_expr, col_name)
+}
+
+is_unique_key_se <- function(.data, col_expr, col_name) {
   duplicate_rows <-
     .data %>%
     select(value = !!col_expr) %>%
