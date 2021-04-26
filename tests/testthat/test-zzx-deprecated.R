@@ -304,7 +304,8 @@ test_that("other PK functions work", {
 
   expect_identical(
     cdm_get_all_pks(dm_for_filter()),
-    dm_get_all_pks_impl(dm_for_filter())
+    dm_get_all_pks2_impl(dm_for_filter()) %>%
+      mutate(pk_col = as.character(unclass(pk_col)))
   )
 
   expect_equivalent_dm(
