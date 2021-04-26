@@ -107,7 +107,8 @@ dm_get_data_model <- function(x, column_types) {
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys <-
-    dm_get_data_model_pks(x) %>%
+    dm_get_all_pks_impl(x) %>%
+    rename(column = pk_col) %>%
     mutate(key = 1L)
 
   if (column_types) {
