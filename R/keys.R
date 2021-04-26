@@ -1,7 +1,7 @@
 new_keys <- function(x) {
   # both c("a", "b") and list("a", "b") is accepted
-  if (is.character(x)) {
-    x <- as.list(x)
+  if (!is.list(x)) {
+    x <- as.list(as.character(x))
   }
   vctrs::new_list_of(x, character(), class = "dm_keys")
 }
