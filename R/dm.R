@@ -319,7 +319,7 @@ unnest_pks <- function(def, flatten) {
   pk_df
 }
 
-dm_get_data_model_fks <- function(x) {
+dm_get_data_model_fks <- function(x, flatten) {
   # FIXME: COMPOUND: Inline
 
   fk_df <-
@@ -335,11 +335,17 @@ dm_get_data_model_fks <- function(x) {
     ))
   }
 
+  if (flatten) {
+    my_flatten_key <- flatten_key
+  } else {
+    my_flatten_key <- identity
+  }
+
   fk_df %>%
-    mutate(ref_col = flatten_key(column)) %>%
+    mutate(ref_col = my_flatten_key(column)) %>%
     select(-column) %>%
     unnest(fks) %>%
-    mutate(column = flatten_key(column)) %>%
+    mutate(column = my_flatten_key(column)) %>%
     select(ref, column, table, ref_col)
 }
 
