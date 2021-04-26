@@ -207,7 +207,7 @@ dm_get_all_fks <- function(dm) {
 dm_get_all_fks_impl <- function(dm) {
   # FIXME: COMPOUND:: Obliterate
   dm_get_data_model_fks(dm) %>%
-    select(child_table = table, child_fk_cols = column, parent_table = ref) %>%
+    select(child_table = table, child_fk_cols = column, parent_table = ref, parent_pk_cols = ref_col) %>%
     arrange(child_table, child_fk_cols)
 }
 

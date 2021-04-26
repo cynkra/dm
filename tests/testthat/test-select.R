@@ -19,12 +19,12 @@ test_that("dm_rename() works for replacing fks", {
     dm_rename(dm_for_filter(), tf_2, new_d = d, new_e = e) %>%
       dm_get_all_fks_impl(),
     tribble(
-      ~child_table, ~child_fk_cols, ~parent_table,
-      "tf_2", "new_d", "tf_1",
-      "tf_2", "new_e", "tf_3",
-      "tf_4", "j", "tf_3",
-      "tf_5", "l", "tf_4",
-      "tf_5", "m", "tf_6"
+      ~child_table, ~child_fk_cols, ~parent_table, ~parent_pk_cols,
+      "tf_2",       "new_d",        "tf_1",        "a",
+      "tf_2",       "new_e",        "tf_3",        "f",
+      "tf_4",       "j",            "tf_3",        "f",
+      "tf_5",       "l",            "tf_4",        "h",
+      "tf_5",       "m",            "tf_6",        "n",
     )
   )
 })
@@ -59,11 +59,11 @@ test_that("dm_select() works for replacing fks, and removes missing ones", {
     dm_select(dm_for_filter(), tf_2, new_d = d) %>%
       dm_get_all_fks_impl(),
     tribble(
-      ~child_table, ~child_fk_cols, ~parent_table,
-      "tf_2", "new_d", "tf_1",
-      "tf_4", "j", "tf_3",
-      "tf_5", "l", "tf_4",
-      "tf_5", "m", "tf_6"
+      ~child_table, ~child_fk_cols, ~parent_table, ~parent_pk_cols,
+      "tf_2",       "new_d",        "tf_1",        "a",
+      "tf_4",       "j",            "tf_3",        "f",
+      "tf_5",       "l",            "tf_4",        "h",
+      "tf_5",       "m",            "tf_6",        "n",
     )
   )
 })

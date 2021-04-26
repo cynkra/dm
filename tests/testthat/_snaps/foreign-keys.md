@@ -11,11 +11,11 @@
     Code
       nyc_comp() %>% dm_get_all_fks()
     Output
-      # A tibble: 4 x 3
-        child_table child_fk_cols       parent_table
-        <chr>       <keys>              <chr>       
-      1 flights     (origin, time_hour) weather     
-      2 flights     carrier             airlines    
-      3 flights     origin              airports    
-      4 flights     tailnum             planes      
+      # A tibble: 4 x 4
+        child_table child_fk_cols       parent_table parent_pk_cols     
+        <chr>       <keys>              <chr>        <chr>              
+      1 flights     (origin, time_hour) weather      (origin, time_hour)
+      2 flights     carrier             airlines     carrier            
+      3 flights     origin              airports     faa                
+      4 flights     tailnum             planes       tailnum            
 
