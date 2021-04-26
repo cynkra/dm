@@ -1,3 +1,5 @@
 options(testthat.progress.verbose_skips = FALSE)
 options(Ncpus = parallel::detectCores())
 options(tidyselect_verbosity = "verbose")
+# Remove when removing verify_output()
+dir.create("out")
