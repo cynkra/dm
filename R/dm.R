@@ -302,7 +302,7 @@ dm_get_def <- function(x) {
 }
 
 dm_get_data_model_pks <- function(x) {
-  # FIXME: Obliterate
+  # FIXME: COMPOUND: Obliterate
 
   dm_get_def(x) %>%
     select(table, pks) %>%
@@ -328,7 +328,7 @@ unnest_pks <- function(def) {
 }
 
 dm_get_data_model_fks <- function(x) {
-  # FIXME: Obliterate
+  # FIXME: COMPOUND: Obliterate
 
   fk_df <-
     dm_get_def(x) %>%
