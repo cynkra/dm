@@ -23,4 +23,3 @@
 ^example$
 ^vignettes/abstracts$
 ^vignettes/out$
-^./.*\.R$
