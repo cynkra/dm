@@ -210,6 +210,12 @@ dm_get_all_fks_impl <- function(dm) {
     arrange(child_table, child_fk_cols)
 }
 
+dm_get_all_fks2_impl <- function(dm) {
+  dm_get_data_model_fks(dm, flatten = FALSE) %>%
+    mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols)) %>%
+    arrange(child_table, child_fk_cols)
+}
+
 #' Remove the reference(s) from one [`dm`] table to another
 #'
 #' @description `dm_rm_fk()` can remove either one reference between two tables, or all references at once, if argument `columns = NULL`.
