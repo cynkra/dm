@@ -1,9 +1,13 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.1.99.9001
+
+- Same as previous version.
+
+
 # dm 0.1.13.9000
 
-- Move repository to <https://github.com/cynkra/dm> (#500).
-- Test DuckDB on GitHub Actions (#498).
+- Same as previous version.
 
 
 # dm 0.1.13
