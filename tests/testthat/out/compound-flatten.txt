@@ -3,9 +3,7 @@ Message: Renamed columns:
 * year -> flights.year, planes.year, weather.year
 * month -> flights.month, weather.month
 * day -> flights.day, weather.day
-* origin -> flights.origin, weather.origin
 * hour -> flights.hour, weather.hour
-* time_hour -> flights.time_hour, weather.time_hour
 * name -> airlines.name, airports.name
 
 # A tibble: 11,227 x 48
@@ -23,12 +21,12 @@ Message: Renamed columns:
 10         2013             1          10      550            600       -10
 # ... with 11,217 more rows, and 42 more variables: arr_time <int>,
 #   sched_arr_time <int>, arr_delay <dbl>, carrier <chr>, flight <int>,
-#   tailnum <chr>, flights.origin <chr>, dest <chr>, air_time <dbl>,
-#   distance <dbl>, flights.hour <dbl>, minute <dbl>, flights.time_hour <dttm>,
-#   airlines.name <chr>, airports.name <chr>, lat <dbl>, lon <dbl>, alt <dbl>,
-#   tz <dbl>, dst <chr>, tzone <chr>, planes.year <int>, type <chr>,
-#   manufacturer <chr>, model <chr>, engines <int>, seats <int>, speed <int>,
-#   engine <chr>, weather.year <int>, weather.month <int>, weather.day <int>,
+#   tailnum <chr>, origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>,
+#   flights.hour <dbl>, minute <dbl>, time_hour <dttm>, airlines.name <chr>,
+#   airports.name <chr>, lat <dbl>, lon <dbl>, alt <dbl>, tz <dbl>, dst <chr>,
+#   tzone <chr>, planes.year <int>, type <chr>, manufacturer <chr>,
+#   model <chr>, engines <int>, seats <int>, speed <int>, engine <chr>,
+#   weather.year <int>, weather.month <int>, weather.day <int>,
 #   weather.hour <int>, temp <dbl>, dewp <dbl>, humid <dbl>, wind_dir <dbl>,
 #   wind_speed <dbl>, wind_gust <dbl>, precip <dbl>, pressure <dbl>,
 #   visib <dbl>
