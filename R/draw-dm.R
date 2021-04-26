@@ -101,8 +101,8 @@ dm_get_data_model <- function(x, column_types) {
   )
 
   references_for_columns <-
-    dm_get_all_fks_impl(x) %>%
-    rename(table = child_table, column = child_fk_cols, ref = parent_table, ref_col = parent_pk_cols)
+    dm_get_all_fks2_impl(x) %>%
+    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_pk_cols))
 
   references <-
     references_for_columns %>%
