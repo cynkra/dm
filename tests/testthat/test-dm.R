@@ -457,7 +457,7 @@ test_that("output for compound tables", {
   # Can't be inside the snapshot
   car_table <- test_src_frame(!!!mtcars)
 
-  expect_snapshot(error = TRUE, {
+  expect_snapshot({
     copy_to(nyc_comp(), mtcars, "car_table")
     dm_add_tbl(nyc_comp(), car_table)
     nyc_comp() %>%
