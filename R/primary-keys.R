@@ -197,7 +197,9 @@ dm_get_all_pks <- function(dm) {
 }
 
 dm_get_all_pks_impl <- function(dm) {
-  dm_get_data_model_pks(dm) %>%
+  dm_get_def(dm) %>%
+    select(table, pks) %>%
+    unnest_pks(flatten = TRUE) %>%
     select(table = table, pk_col = column)
 }
 

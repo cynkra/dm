@@ -301,20 +301,6 @@ dm_get_def <- function(x) {
   unclass(x)$def
 }
 
-dm_get_data_model_pk2s <- function(x) {
-  dm_get_def(x) %>%
-    select(table, pks) %>%
-    unnest_pks(flatten = FALSE)
-}
-
-dm_get_data_model_pks <- function(x) {
-  # FIXME: COMPOUND: Obliterate
-
-  dm_get_def(x) %>%
-    select(table, pks) %>%
-    unnest_pks(flatten = TRUE)
-}
-
 unnest_pks <- function(def, flatten) {
   # Optimized
   pk_df <- tibble(
