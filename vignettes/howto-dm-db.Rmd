@@ -84,7 +84,7 @@ Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
 For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
 
-[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/krlmlr/dm/issues/3).
+[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/cynkra/dm/issues/3).
 
 The [model diagram](https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg) provided by our test database loosely illustrates the intended relationships between tables.
 In the diagram we can see that the `loans` table should be linked to the `accounts` table.

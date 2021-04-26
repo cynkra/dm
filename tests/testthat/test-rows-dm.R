@@ -79,6 +79,8 @@ test_that("dm_rows_insert()", {
 
 test_that("dm_rows_update()", {
   skip_if_local_src()
+  # https://github.com/duckdb/duckdb/issues/1187
+  skip_if_src("duckdb")
   expect_snapshot({
     # Test bad column order
     dm_filter_rearranged <-

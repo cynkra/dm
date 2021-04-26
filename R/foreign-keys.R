@@ -8,7 +8,7 @@
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' The syntax of these functions will be extended but will remain compatible
 #' with current semantics.
 #'
@@ -137,7 +137,7 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' Therefore the function may return vectors of length greater than one in the future.
 #'
 #' @inheritParams dm_has_fk
@@ -186,7 +186,7 @@ dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @section Compound keys:
 #'
 #' Currently, keys consisting of more than one column are not supported.
-#' [This feature](https://github.com/krlmlr/dm/issues/3) is planned for dm 0.2.0.
+#' [This feature](https://github.com/cynkra/dm/issues/3) is planned for dm 0.2.0.
 #' Therefore the `child_fk_cols` column may contain vectors of length greater than one.
 #'
 #' @return A tibble with the following columns:
@@ -380,9 +380,13 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
 }
 
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
-  t1_join <- t1 %>% select(value = !!sym(colname))
+  t1_join <-
+    t1 %>%
+    select(value = !!sym(colname)) %>%
+    distinct()
   t2_join <- t2 %>%
     select(value = !!sym(pk)) %>%
+    distinct() %>%
     mutate(match = 1L)
 
   res_tbl <- tryCatch(
@@ -413,14 +417,9 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   n_total <- pull(head(res_tbl, 1), n_total)
 
   percentage_missing <- as.character(round((n_mismatch / n_total) * 100, 1))
-  vals_extended <- res_tbl %>%
-    mutate(num_mismatch = paste0(mismatch_or_null, " (", n, ")")) %>%
-    # FIXME: this fails on SQLite, why?
-    # mutate(num_mismatch = glue("{as.character(mismatch_or_null)} ({as.character(n)})")) %>%
-    pull()
-  vals_formatted <- commas(format(vals_extended, trim = TRUE, justify = "none"), capped = TRUE)
+  vals_formatted <- commas(format(res_tbl$mismatch_or_null, trim = TRUE, justify = "none"), capped = TRUE)
   glue(
-    "{as.character(n_mismatch)} entries ({percentage_missing}%) of ",
+    "{as.character(n_mismatch)} values ({percentage_missing}%) of ",
     "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}"
   )
 }

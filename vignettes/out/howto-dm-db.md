@@ -378,7 +378,7 @@ my_dm_local$total_loans
 
 There is a third {dbplyr} verb that has not yet been implemented.
 `collapse()` forces generation of the SQL query instead of computation
-([\#304](https://github.com/krlmlr/dm/issues/304)).
+([\#304](https://github.com/cynkra/dm/issues/304)).
 
 `compute()` also works for a zoomed dm. Calling it during a chain of
 operations will execute all relevant SQL queries up to that point.
@@ -500,7 +500,7 @@ existing databases and to construct your own from local tables,
 including specifying key constraints, and then deploy them to a RDBMS.
 If you would like more details an overview of all the methods available
 in {dm}, please see the [reference
-documentation](https://krlmlr.github.io/dm/reference/index.html).
+documentation](https://cynkra.github.io/dm/reference/index.html).
 
 1.  Support for compound keys (consisting of multiple columns) is
-    [planned](https://github.com/krlmlr/dm/issues/3).
+    [planned](https://github.com/cynkra/dm/issues/3).

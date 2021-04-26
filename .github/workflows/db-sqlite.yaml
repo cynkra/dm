@@ -37,7 +37,6 @@ jobs:
       RGL_USE_NULL: true
       # Begin custom: env vars
       DM_TEST_SRC: test-sqlite
-      ODBCSYSINI: ${{ github.workspace }}/.github/odbc
       # End custom: env vars
 
     steps:

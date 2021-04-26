@@ -26,4 +26,4 @@ The goal of the {dm} package is to simplify the data management processes in R w
 In this way, you can have the best of both worlds: manage your data as a collection of linked tables, then flatten multiple tables into one for an analysis with {dplyr} or other packages, on an as-needed basis.
 
 Although {dm} is built upon relational data models, it is not a database itself.
-It can work transparently with both relational database systems and in-memory data, and copy data [from and to databases](https://krlmlr.github.io/dm/articles/dm.html#copy).
+It can work transparently with both relational database systems and in-memory data, and copy data [from and to databases](https://cynkra.github.io/dm/articles/dm.html#copy).

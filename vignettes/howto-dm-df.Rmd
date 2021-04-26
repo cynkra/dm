@@ -23,7 +23,7 @@ Once your data model is complete, you can deploy it to a range of DBMSs using dm
 
 ## Creating a dm object from data frames
 
-The example data set that we will be using is available through the [`nycflights13`](https://github.com/hadley/nycflights13) package.
+The example data set that we will be using is available through the [`nycflights13`](https://github.com/tidyverse/nycflights13) package.
 The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013:
 
 - `flights` represents the trips taken by planes
@@ -86,7 +86,7 @@ Foreign keys act as cross references between tables.
 They specify the relationships that gives us the *relational* database.
 For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
 
-[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/krlmlr/dm/issues/3).
+[^compound]: Support for compound keys (consisting of multiple columns) is [planned](https://github.com/cynkra/dm/issues/3).
 
 ## Primary Keys
 

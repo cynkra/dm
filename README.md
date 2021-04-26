@@ -1,10 +1,10 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# [dm](https://krlmlr.github.io/dm/)
+# [dm](https://cynkra.github.io/dm/)
 
 <!-- badges: start -->
 
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) [![R build status](https://github.com/krlmlr/dm/workflows/tic/badge.svg)](https://github.com/krlmlr/dm/actions) [![Codecov test coverage](https://codecov.io/gh/krlmlr/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/dm?branch=master) [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm) [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) [![R build status](https://github.com/cynkra/dm/workflows/tic/badge.svg)](https://github.com/cynkra/dm/actions) [![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg)](https://codecov.io/gh/cynkra/dm?branch=master) [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm) [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 
 <!-- badges: end -->
 
@@ -30,7 +30,7 @@ dm makes it easy to bring an existing relational data model into your R session.
 -   simpler joins that “know” how tables are related, including a “flatten” operation that automatically follows keys and performs column name disambiguation
 -   consistency and constraint checks to help you understand (and fix) the limitations of your data
 
-That’s just the tip of the iceberg. See [Getting started](https://krlmlr.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
+That’s just the tip of the iceberg. See [Getting started](https://cynkra.github.io/dm/articles/dm.html) to hit the ground running and explore all the features.
 
 ## Installation
 
@@ -43,15 +43,15 @@ The latest development version of {dm} can be installed from GitHub.
 
 <pre class='chroma'>
 <span class='c'># install.packages("devtools")</span>
-<span class='nf'>devtools</span><span class='nf'>::</span><span class='nf'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span><span class='o'>(</span><span class='s'>"krlmlr/dm"</span><span class='o'>)</span></pre>
+<span class='nf'>devtools</span><span class='nf'>::</span><span class='nf'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span><span class='o'>(</span><span class='s'>"cynkra/dm"</span><span class='o'>)</span></pre>
 
 ## Usage
 
-Create a dm object (see [Getting started](https://krlmlr.github.io/dm/articles/dm.html) for details).
+Create a dm object (see [Getting started](https://cynkra.github.io/dm/articles/dm.html) for details).
 
 <pre class='chroma'>
-<span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://krlmlr.github.io/dm/'>dm</a></span><span class='o'>)</span>
-<span class='nv'>dm</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_nycflights13.html'>dm_nycflights13</a></span><span class='o'>(</span><span class='o'>)</span>
+<span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://cynkra.github.io/dm/'>dm</a></span><span class='o'>)</span>
+<span class='nv'>dm</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://cynkra.github.io/dm/reference/dm_nycflights13.html'>dm_nycflights13</a></span><span class='o'>(</span><span class='o'>)</span>
 <span class='nv'>dm</span>
 <span class='c'>#&gt; <span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span></span>
 <span class='c'>#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span>
@@ -79,14 +79,14 @@ Visualize relationships at any time:
 
 <pre class='chroma'>
 <span class='nv'>dm</span> <span class='o'>%&gt;%</span>
-  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_draw.html'>dm_draw</a></span><span class='o'>(</span><span class='o'>)</span></pre>
+  <span class='nf'><a href='https://cynkra.github.io/dm/reference/dm_draw.html'>dm_draw</a></span><span class='o'>(</span><span class='o'>)</span></pre>
 <img src="man/figures/README-draw.svg" />
 
 Simple joins:
 
 <pre class='chroma'>
 <span class='nv'>dm</span> <span class='o'>%&gt;%</span>
-  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_flatten_to_tbl.html'>dm_flatten_to_tbl</a></span><span class='o'>(</span><span class='nv'>flights</span><span class='o'>)</span>
+  <span class='nf'><a href='https://cynkra.github.io/dm/reference/dm_flatten_to_tbl.html'>dm_flatten_to_tbl</a></span><span class='o'>(</span><span class='nv'>flights</span><span class='o'>)</span>
 <span class='c'>#&gt; Renamed columns:</span>
 <span class='c'>#&gt; * year -&gt; flights.year, planes.year</span>
 <span class='c'>#&gt; * name -&gt; airlines.name, airports.name</span>
@@ -115,15 +115,15 @@ Check consistency:
 
 <pre class='chroma'>
 <span class='nv'>dm</span> <span class='o'>%&gt;%</span>
-  <span class='nf'><a href='https://krlmlr.github.io/dm/reference/dm_examine_constraints.html'>dm_examine_constraints</a></span><span class='o'>(</span><span class='o'>)</span>
+  <span class='nf'><a href='https://cynkra.github.io/dm/reference/dm_examine_constraints.html'>dm_examine_constraints</a></span><span class='o'>(</span><span class='o'>)</span>
 <span class='c'>#&gt; <span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></span>
 <span class='c'>#&gt; <span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 1640 entries (14.6%) of `flights$tailnum` not in `planes$tailnum`: N722MQ (27), N725MQ (20), N520MQ (19), N723MQ (19), N508MQ (16), …</span></span></pre>
 
-Learn more in the [Getting started](https://krlmlr.github.io/dm/articles/dm.html) article.
+Learn more in the [Getting started](https://cynkra.github.io/dm/articles/dm.html) article.
 
 ## Getting help
 
-If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/krlmlr/dm/issues). For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
+If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/cynkra/dm/issues). For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
 
 ------------------------------------------------------------------------
 
@@ -135,4 +135,4 @@ Funded by:
 
 ------------------------------------------------------------------------
 
-Please note that the ‘dm’ project is released with a [Contributor Code of Conduct](https://krlmlr.github.io/dm/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the ‘dm’ project is released with a [Contributor Code of Conduct](https://cynkra.github.io/dm/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
