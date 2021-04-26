@@ -53,6 +53,10 @@ test_that("output", {
     dm_nycflights13() %>%
       dm_paste(options = "all")
 
+    "compound keys"
+    nyc_comp() %>%
+      dm_paste()
+
     "deprecation warning for select argument"
     dm() %>%
       dm_paste(select = TRUE)
@@ -61,13 +65,4 @@ test_that("output", {
     writeLines(conditionMessage(expect_error(dm() %>%
       dm_paste(options = c("bogus", "all", "mad")))))
   })
-})
-
-
-# tests for compound keys -------------------------------------------------
-
-verify_output("out/compound-paste.txt", {
-  # FIXME: COMPOUND:: `dm_paste()` needs to be tweaked, cf. result
-  nyc_comp() %>%
-    dm_paste()
 })
