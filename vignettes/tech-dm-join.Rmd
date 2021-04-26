@@ -19,7 +19,7 @@ source("setup/setup.R")
 The {dm} package offers functions to work with relational data models in R.
 A common task for multiple, separated tables that have a shared attribute is merging the data.
 
-This document introduces you to the joining functions of {dm} and shows how to apply them using data from the [{nycflights13}](https://github.com/hadley/nycflights13) package.
+This document introduces you to the joining functions of {dm} and shows how to apply them using data from the [{nycflights13}](https://github.com/tidyverse/nycflights13) package.
 
 [Relational data models](https://cynkra.github.io/dm/articles/howto-dm-theory#model) consist of multiple tables that are linked with [foreign keys](https://cynkra.github.io/dm/articles/howto-dm-theory#fk). They are the building blocks for joining tables.
 Read more about relational data models in the vignette ["Introduction to Relational Data Models"](https://cynkra.github.io/dm/articles/howto-dm-theory).
