@@ -173,12 +173,6 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
     pull(column)
 }
 
-dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
-  # FIXME: COMPOUND:: Replace calls to this function by dm_get_fk2_impl()
-  fks <- dm_get_data_model_fks(dm)
-  fks$column[fks$table == table_name & fks$ref == ref_table_name]
-}
-
 #' Get foreign key constraints
 #'
 #' Get a summary of all foreign key relations in a [`dm`].
