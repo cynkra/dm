@@ -320,7 +320,7 @@ unnest_pks <- function(def, flatten) {
 }
 
 dm_get_data_model_fks <- function(x) {
-  # FIXME: COMPOUND: Obliterate
+  # FIXME: COMPOUND: Inline
 
   fk_df <-
     dm_get_def(x) %>%

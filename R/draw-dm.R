@@ -100,7 +100,9 @@ dm_get_data_model <- function(x, column_types) {
     stringsAsFactors = FALSE
   )
 
-  references_for_columns <- dm_get_data_model_fks(x)
+  references_for_columns <-
+    dm_get_all_fks_impl(x) %>%
+    rename(table = child_table, column = child_fk_cols, ref = parent_table, ref_col = parent_pk_cols)
 
   references <-
     references_for_columns %>%
