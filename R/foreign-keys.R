@@ -201,7 +201,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 dm_get_all_fks <- function(dm) {
   check_not_zoomed(dm)
   dm_get_all_fks_impl(dm) %>%
-    mutate(child_fk_cols = new_keys(child_fk_cols))
+    mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols))
 }
 
 dm_get_all_fks_impl <- function(dm) {
