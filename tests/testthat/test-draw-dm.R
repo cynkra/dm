@@ -205,9 +205,7 @@ test_that("output", {
   # Compound (#3)
   expect_snapshot_diagram(
     nyc_comp() %>%
-      dm_draw() %>%
-      DiagrammeRsvg::export_svg() %>%
-      writeLines(path),
+      dm_draw(),
     "nycflight-dm-compound.svg"
   )
 })
