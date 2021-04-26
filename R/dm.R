@@ -301,15 +301,21 @@ dm_get_def <- function(x) {
   unclass(x)$def
 }
 
+dm_get_data_model_pk2s <- function(x) {
+  dm_get_def(x) %>%
+    select(table, pks) %>%
+    unnest_pks(flatten = FALSE)
+}
+
 dm_get_data_model_pks <- function(x) {
   # FIXME: COMPOUND: Obliterate
 
   dm_get_def(x) %>%
     select(table, pks) %>%
-    unnest_pks()
+    unnest_pks(flatten = TRUE)
 }
 
-unnest_pks <- function(def) {
+unnest_pks <- function(def, flatten) {
   # Optimized
   pk_df <- tibble(
     table = rep(def$table, map_int(def$pks, nrow))
@@ -320,7 +326,7 @@ unnest_pks <- function(def) {
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
     pk_df$column <- character()
-  } else {
+  } else if (flatten) {
     pk_df$column <- flatten_key(pk_df$column)
   }
 
