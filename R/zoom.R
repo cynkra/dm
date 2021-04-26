@@ -293,14 +293,14 @@ dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
   old_out_keys <- dm_get_all_fks_impl(dm) %>%
-    filter(child_table == old_tbl_name) %>%
+    filter(child_table == !!old_tbl_name) %>%
     select(table = parent_table, column = child_fk_cols)
 
   # FIXME: COMPOUND:: Compound keys
 
   old_and_new_out_keys <-
     old_out_keys %>%
-    filter(column %in% tracked_cols) %>%
+    filter(identity(column) %in% !!tracked_cols) %>%
     distinct() %>%
     mutate(new_column = names(tracked_cols[match(column, tracked_cols, nomatch = 0L)]))
 
