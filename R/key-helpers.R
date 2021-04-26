@@ -5,19 +5,8 @@
 #' if the specified columns are NOT a unique key of the data frame.
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 #'
+#' @inheritParams dplyr::select
 #' @param .data The data frame whose columns should be tested for key properties.
-#' @param ... The names of the columns to be checked.
-#'
-#'   One or more unquoted expressions separated by commas.
-#'   Variable names can be treated as if they were positions, so you
-#'   can use expressions like x:y to select ranges of variables.
-#'
-#'   The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
-#'   They also support
-#'   unquoting and splicing.
-#'   See vignette("programming") for an introduction to these concepts.
-#'
-#'   See select helpers for more details and examples about tidyselect helpers such as starts_with(), everything(), ...
 #'
 #' @return Returns `.data`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
@@ -84,9 +73,9 @@ is_unique_key <- function(.data, column) {
 #' If not, it throws an error.
 #'
 #' @param t1 The data frame that contains column `c1`.
-#' @param c1 The column of `t1` that should only contain values that are also present in column `c2` of data frame `t2`.
+#' @param c1 The column(s) of `t1` that should only contain values that are also present in column(s) `c2` of data frame `t2`.
 #' @param t2 The data frame that contains column `c2`.
-#' @param c2 The column of `t2` that should only contain values that are also present in column `c1` of data frame `t1`.
+#' @param c2 The column(s) of `t2` that should only contain values that are also present in column(s) `c1` of data frame `t1`.
 #'
 #' @return Returns `t1`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.
@@ -139,9 +128,9 @@ check_set_equality <- function(t1, c1, t2, c2) {
 #' of column `c2` of data frame `t2`.
 #'
 #' @param t1 The data frame that contains column `c1`.
-#' @param c1 The column of `t1` that should only contain the values that are also present in column `c2` of data frame `t2`.
+#' @param c1 The column(s) of `t1` that should only contain the values that are also present in column(s) `c2` of data frame `t2`.
 #' @param t2 The data frame that contains column `c2`.
-#' @param c2 The column of the second data frame that has to contain all values of `c1` to avoid an error.
+#' @param c2 The column(s) of the second data frame that has to contain all values of `c1` to avoid an error.
 #'
 #' @return Returns `t1`, invisibly, if the check is passed.
 #'   Otherwise an error is thrown and the reason for it is explained.

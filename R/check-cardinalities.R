@@ -45,9 +45,11 @@
 #' not a subset of the values in `pk_column`, the requirements for a cardinality test is not fulfilled. No error will be thrown, but
 #' the result will contain the information which prerequisite was violated.
 #' @param parent_table Data frame.
-#' @param pk_column Column of `parent_table` that has to be one of its unique keys.
+#' @param pk_column Column or columns of `parent_table`, must be a unique key.
+#'   Passed to [tidyselect::eval_select()].
 #' @param child_table Data frame.
-#' @param fk_column Column of `child_table` that has to be a foreign key to `pk_column` in `parent_table`.
+#' @param fk_column Column or columns of `child_table`, must be a foreign key into `parent_table`.
+#'   Passed to [tidyselect::eval_select()].
 #'
 #' @name examine_cardinality
 #'
@@ -74,13 +76,11 @@
 #' check_cardinality_0_1(d1, a, d3, c)
 check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
 
-  check_key(!!pt, !!pkc)
+  check_key(!!pt, {{ pk_column }})
 
-  check_subset(!!ct, !!fkc, !!pt, !!pkc)
+  check_subset(!!ct, {{ fk_column }}, !!pt, {{ pk_column }})
 
   invisible(parent_table)
 }
@@ -89,13 +89,11 @@ check_cardinality_0_n <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
 
-  check_key(!!pt, !!pkc)
+  check_key(!!pt, {{ pk_column }})
 
-  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  check_set_equality(!!ct, {{ fk_column }}, !!pt, {{ pk_column }})
 
   invisible(parent_table)
 }
@@ -104,20 +102,18 @@ check_cardinality_1_n <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
 
-  check_key(!!pt, !!pkc)
+  check_key(!!pt, {{ pk_column }})
 
-  check_set_equality(!!ct, !!fkc, !!pt, !!pkc)
+  check_set_equality(!!ct, {{ fk_column }}, !!pt, {{ pk_column }})
 
   tryCatch(
     {
-      check_key(!!ct, !!fkc)
+      check_key(!!ct, {{ fk_column }})
       NULL
     },
-    error = function(e) abort_not_bijective(as_label(ct), as_label(fkc))
+    error = function(e) abort_not_bijective(as_label(ct), as_label(enexpr(fk_column)))
   )
 
   invisible(parent_table)
@@ -127,20 +123,18 @@ check_cardinality_1_1 <- function(parent_table, pk_column, child_table, fk_colum
 #' @export
 check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- ensym(pk_column)
   ct <- enquo(child_table)
-  fkc <- ensym(fk_column)
 
-  check_key(!!pt, !!pkc)
+  check_key(!!pt, {{ pk_column }})
 
-  check_subset(!!ct, !!fkc, !!pt, !!pkc)
+  check_subset(!!ct, {{ fk_column }}, !!pt, {{ pk_column }})
 
   tryCatch(
     {
-      check_key(!!ct, !!fkc)
+      check_key(!!ct, {{ fk_column }})
       NULL
     },
-    error = function(e) abort_not_injective(as_label(ct), as_label(fkc))
+    error = function(e) abort_not_injective(as_label(ct), as_label(enexpr(fk_column)))
   )
 
   invisible(parent_table)
@@ -154,20 +148,18 @@ check_cardinality_0_1 <- function(parent_table, pk_column, child_table, fk_colum
 #' examine_cardinality(d1, a, d2, c)
 examine_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
   pt <- enquo(parent_table)
-  pkc <- enexpr(pk_column)
   ct <- enquo(child_table)
-  fkc <- enexpr(fk_column)
 
-  if (!is_unique_key(eval_tidy(pt), !!pkc)$unique) {
+  if (!is_unique_key(eval_tidy(pt), {{ pk_column }})$unique) {
     return(
       glue(
-        "Column(s) {tick(commas(as_string(pkc)))} not ",
+        "Column(s) {tick(commas(as_label(enexpr(fk_column))))} not ",
         "a unique key of {tick('parent_table')}."
       )
     )
   }
 
-  if (!is_subset(!!ct, !!fkc, !!pt, !!pkc)) {
+  if (!is_subset(!!ct, {{ fk_column }}, !!pt, {{ pk_column }})) {
     return(
       glue(
         "Column(s) {tick(commas(as_string(fkc)))} of {tick('child_table')} not ",
@@ -176,8 +168,8 @@ examine_cardinality <- function(parent_table, pk_column, child_table, fk_column)
     )
   }
 
-  min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
-  max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
+  min_1 <- is_subset(!!pt, {{ pk_column }}, !!ct, {{ fk_column }})
+  max_1 <- pull(is_unique_key(eval_tidy(ct), {{ fk_column }}), unique)
 
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
