@@ -13,5 +13,10 @@
 
   register_pkgdown_methods()
 
-  #dm_insert_zoomed_outgoing_fks <<- boomer::rig(dm_insert_zoomed_outgoing_fks)
+  #rigg(check_pk_constraints)
+}
+
+rigg <- function(fun) {
+  name <- deparse(substitute(fun))
+  assign(name, boomer::rig(fun), getNamespace("dm"))
 }
