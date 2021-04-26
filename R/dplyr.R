@@ -566,3 +566,17 @@ safe_count <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = gro
   }
   ungroup(out)
 }
+
+new_tracked_cols <- function(dm, selected) {
+  tracked_cols <- get_tracked_cols(dm)
+  old_tracked_names <- names(tracked_cols)
+  # the new tracked keys need to be the remaining original column names
+  # and their name needs to be the newest one (tidyselect-syntax)
+  # `intersect(selected, old_tracked_names)` is empty, return `NULL`
+
+  selected_match <- selected[selected %in% old_tracked_names]
+  set_names(
+    tracked_cols[selected_match],
+    names(selected_match)
+  )
+}
