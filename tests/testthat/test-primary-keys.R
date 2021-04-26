@@ -151,13 +151,11 @@ test_that("output", {
 
 # tests for compound keys -------------------------------------------------
 
+test_that("dm_get_all_fks() with compound keys", {
+  expect_snapshot({
+    nyc_comp()
 
-verify_output("out/primary-keys-compound.txt", {
-  dm_nycflights13() %>%
-    dm_add_pk(weather, c(origin, time_hour))
-
-  "# FIXME: COMPOUND:"
-  dm_nycflights13() %>%
-    dm_add_pk(weather, c(origin, time_hour)) %>%
-    dm_get_all_pks()
+    nyc_comp() %>%
+      dm_get_all_pks()
+  })
 })

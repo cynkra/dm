@@ -220,15 +220,11 @@ test_that("enum_fk_candidates() works properly", {
 
 # tests for compound keys -------------------------------------------------
 
+test_that("dm_get_all_fks() with compound keys", {
+  expect_snapshot({
+    nyc_comp()
 
-verify_output("out/foreign-keys-compound.txt", {
-  dm_nycflights13() %>%
-    dm_add_pk(weather, c(origin, time_hour)) %>%
-    dm_add_fk(flights, c(origin, time_hour), weather)
-
-  "# FIXME: COMPOUND:"
-  dm_nycflights13() %>%
-    dm_add_pk(weather, c(origin, time_hour)) %>%
-    dm_add_fk(flights, c(origin, time_hour), weather) %>%
-    dm_get_all_fks()
+    nyc_comp() %>%
+      dm_get_all_fks()
+  })
 })
