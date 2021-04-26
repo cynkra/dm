@@ -1,7 +1,7 @@
 test_that("dm_rename() works for replacing pk", {
   expect_identical(
     dm_rename(dm_for_filter(), tf_3, new_f = f) %>%
-      dm_get_all_pks_impl(),
+      dm_get_all_pks2_impl(),
     tribble(
       ~table, ~pk_col,
       "tf_1",     "a",
@@ -10,7 +10,8 @@ test_that("dm_rename() works for replacing pk", {
       "tf_4",     "h",
       "tf_5",     "k",
       "tf_6",     "n"
-    )
+    ) %>%
+      mutate(pk_col = new_keys(pk_col))
   )
 })
 
@@ -32,7 +33,7 @@ test_that("dm_rename() works for replacing fks", {
 test_that("dm_select() works for replacing pk", {
   expect_identical(
     dm_select(dm_for_filter(), tf_3, new_f = f) %>%
-      dm_get_all_pks_impl(),
+      dm_get_all_pks2_impl(),
     tribble(
       ~table, ~pk_col,
       "tf_1",     "a",
@@ -41,16 +42,19 @@ test_that("dm_select() works for replacing pk", {
       "tf_4",     "h",
       "tf_5",     "k",
       "tf_6",     "n"
-    )
+    ) %>%
+      mutate(pk_col = new_keys(pk_col))
   )
 })
 
 test_that("dm_select() keeps pks up to date", {
   expect_identical(
     dm_select(dm_for_filter(), tf_3, new_f = f) %>%
-      dm_get_all_pks_impl(),
-    dm_get_all_pks_impl(dm_for_filter()) %>%
-      mutate(pk_col = if_else(table == "tf_3", "new_f", pk_col))
+      dm_get_all_pks2_impl(),
+    dm_for_filter() %>%
+      dm_get_all_pks2_impl() %>%
+      # https://github.com/r-lib/vctrs/issues/1371
+      mutate(pk_col = new_keys(if_else(table == "tf_3", list("new_f"), unclass(pk_col))))
   )
 })
 
