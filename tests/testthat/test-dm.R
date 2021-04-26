@@ -452,10 +452,10 @@ test_that("output", {
 
 # Compound tests ----------------------------------------------------------
 
-car_table <- test_src_frame(!!!mtcars)
 
-verify_output(
-  "out/compound-dm.txt", {
+test_that("output for compound tables", {
+  expect_snapshot{
+    car_table <- test_src_frame(!!!mtcars)
     copy_to(nyc_comp(), mtcars, "car_table")
     dm_add_tbl(nyc_comp(), car_table)
     nyc_comp() %>%
@@ -478,5 +478,5 @@ verify_output(
     pull_tbl(nyc_comp(), weather)
     dm_zoom_to(nyc_comp(), weather) %>%
       pull_tbl()
-  }
-)
+  })
+})

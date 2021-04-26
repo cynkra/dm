@@ -56,3 +56,38 @@
     Output
       Each new table needs to have a unique name. Duplicate new name(s): `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`.
 
+# output for compound keys
+
+    Code
+      dm_bind(nyc_comp(), nyc_comp(), repair = "unique")
+    Message <simpleMessage>
+      New names:
+      * airlines -> airlines...1
+      * airports -> airports...2
+      * flights -> flights...3
+      * planes -> planes...4
+      * weather -> weather...5
+      * ...
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `airlines...1`, `airports...2`, `flights...3`, `planes...4`, `weather...5`, ... (10 total)
+      Columns: 106
+      Primary keys: 8
+      Foreign keys: 8
+    Code
+      dm_bind(dm_for_filter(), nyc_comp())
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, ... (11 total)
+      Columns: 68
+      Primary keys: 10
+      Foreign keys: 9
+    Code
+      dm_bind(nyc_comp(), dm_for_filter())
+    Output
+      -- Metadata --------------------------------------------------------------------
+      Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, ... (11 total)
+      Columns: 68
+      Primary keys: 10
+      Foreign keys: 9
+

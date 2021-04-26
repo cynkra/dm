@@ -72,22 +72,24 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
   expect_equal(gsub("^.*\\.", "", unname(remote_names)), unclass(DBI::dbQuoteIdentifier(con, names(dm))))
 })
 
-# FIXME: COMPOUND:: both copy_dm_to() and dm_from_src() cannot deal with compound keys yet
-# skip_if_local_src()
-# src_db <- my_test_src()
-# nyc_comp_permanent <- copy_dm_to(src_db, dm_nycflights13(compound = TRUE), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
-# withr::defer({
-#   walk(
-#     dm_get_tables_impl(nyc_comp_permanent)[c("flights", "airlines", "planes", "airports", "weather")],
-#     ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x)))))
-#   }
-# )
-# verify_output(
-#   "out/compound-dm_from_src.txt", {
-#     learned_dm <- dm_from_src(src_db)[c("flights", "airlines", "planes", "airports", "weather")]
-#     learned_dm
-#     dm_get_all_pks(learned_dm)
-#     dm_get_all_fks(learned_dm)
-#   }
-# )
-# withr::deferred_run()
+test_that("copy_dm_to() and dm_from_src() output for compound keys", {
+  # FIXME: COMPOUND:: both copy_dm_to() and dm_from_src() cannot deal with compound keys yet
+  skip_if_local_src()
+  src_db <- my_test_src()
+  skip("FIXME")
+
+  nyc_comp_permanent <- copy_dm_to(src_db, dm_nycflights13(compound = TRUE), temporary = FALSE, table_names = ~ DBI::SQL(unique_db_table_name(.x)))
+  withr::defer({
+    walk(
+      dm_get_tables_impl(nyc_comp_permanent)[c("flights", "airlines", "planes", "airports", "weather")],
+      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", dbplyr::remote_name(.x)))))
+    }
+  )
+
+  expect_snapshot({
+    learned_dm <- dm_from_src(src_db)[c("flights", "airlines", "planes", "airports", "weather")]
+    learned_dm
+    dm_get_all_pks(learned_dm)
+    dm_get_all_fks(learned_dm)
+  })
+})

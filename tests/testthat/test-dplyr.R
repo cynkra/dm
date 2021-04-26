@@ -685,17 +685,17 @@ test_that("unique_prefix()", {
 
 # compound tests ----------------------------------------------------------
 
-zoomed_comp_dm <- nyc_comp() %>%
-  dm_zoom_to(weather)
-# grouped by one key col and one other col
-grouped_zoomed_comp_dm_1 <- zoomed_comp_dm %>%
-  group_by(time_hour, wind_dir)
-# grouped by the two key cols
-grouped_zoomed_comp_dm_2 <- zoomed_comp_dm %>%
-  group_by(time_hour, origin)
+test_that("output for compound tables", {
+  zoomed_comp_dm <- nyc_comp() %>%
+    dm_zoom_to(weather)
+  # grouped by one key col and one other col
+  grouped_zoomed_comp_dm_1 <- zoomed_comp_dm %>%
+    group_by(time_hour, wind_dir)
+  # grouped by the two key cols
+  grouped_zoomed_comp_dm_2 <- zoomed_comp_dm %>%
+    group_by(time_hour, origin)
 
-verify_output(
-  "out/compound-dplyr.txt", {
+  expect_snapshot({
     # TRANSFORMATION VERBS
 
     # mutate()
@@ -768,5 +768,5 @@ verify_output(
     zoomed_comp_dm %>% semi_join(flights) %>% nrow()
     # anti_join()
     zoomed_comp_dm %>% anti_join(flights) %>% nrow()
-  }
-)
+  })
+})

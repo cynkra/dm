@@ -5,6 +5,8 @@ test_that("dm_disambiguate_cols() works as intended", {
   )
 })
 
-verify_output("out/compound-disambiguate.txt", {
-  dm_disambiguate_cols(nyc_comp())
+test_that("dm_disambiguate_cols() output for compound keys", {
+  expect_snapshot({
+    dm_disambiguate_cols(nyc_comp())
+  })
 })

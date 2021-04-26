@@ -97,8 +97,10 @@ test_that("output", {
   })
 })
 
-verify_output("out/compound-bind.txt", {
-  dm_bind(nyc_comp(), nyc_comp(), repair = "unique")
-  dm_bind(dm_for_filter(), nyc_comp())
-  dm_bind(nyc_comp(), dm_for_filter())
+test_that("output for compound keys", {
+  expect_snapshot({
+    dm_bind(nyc_comp(), nyc_comp(), repair = "unique")
+    dm_bind(dm_for_filter(), nyc_comp())
+    dm_bind(nyc_comp(), dm_for_filter())
+  })
 })

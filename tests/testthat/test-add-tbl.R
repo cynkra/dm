@@ -124,13 +124,13 @@ test_that("dm_rm_tbl() works", {
   )
 })
 
-verify_output(
-  "out/compound-add-tbl.txt", {
+test_that("dm_add_tbl() and dm_rm_tbl() for compound keys", {
+  expect_snapshot({
     dm_add_tbl(nyc_comp(), res_flat = result_from_flatten())
     dm_rm_tbl(nyc_comp(), planes)
     dm_rm_tbl(nyc_comp(), weather)
-  }
-)
+  })
+})
 
 test_that("dm_mutate_tbl() works", {
   expect_equivalent_dm(
