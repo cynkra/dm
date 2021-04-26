@@ -321,9 +321,9 @@ dm_enum_pk_candidates <- function(dm, table) {
     mutate(columns = new_keys(columns))
 }
 
-enum_pk_candidates_impl <- function(table, columns = colnames(table)) {
-  map_chr(set_names(columns), function(x) check_pk(table, {{ x }})) %>%
-    enframe("column", "why") %>%
+enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
+    tibble(column = new_keys(columns)) %>%
+    mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
     mutate(candidate = (why == "")) %>%
     select(column, candidate, why) %>%
     arrange(desc(candidate), column)

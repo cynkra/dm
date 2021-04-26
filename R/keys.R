@@ -18,6 +18,21 @@ vec_ptype_abbr.dm_keys <- function(x) {
 }
 
 #' @export
+vec_proxy_compare.dm_keys <- function(x, ...) {
+  # Not called: https://github.com/r-lib/vctrs/issues/1373
+  x_raw <- vec_data(x)
+
+  # First figure out the maximum length
+  n <- max(vapply(x_raw, length, integer(1)))
+
+  # Then expand all vectors to this length by filling in with zeros
+  full <- lapply(x_raw, function(x) c(x, rep("", n - length(x))))
+
+  # Then turn into a data frame
+  as.data.frame(do.call(rbind, full))
+}
+
+#' @export
 pillar_shaft.dm_keys <- function(x) {
   x <- map_chr(x, commas, max_commas = 3)
   pillar::pillar_shaft(x)

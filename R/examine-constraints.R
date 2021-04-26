@@ -87,23 +87,26 @@ kind_to_long <- function(kind) {
 }
 
 check_pk_constraints <- function(dm) {
-  pks <- dm_get_all_pks_impl(dm)
+  pks <- dm_get_all_pks2_impl(dm)
   if (nrow(pks) == 0) {
     return(tibble(
-      table = character(0),
-      kind = character(0),
-      column = character(0),
-      ref_table = NA_character_,
-      is_key = logical(0),
-      problem = character(0)
+      table = character(),
+      kind = character(),
+      column = new_keys(),
+      ref_table = character(),
+      is_key = logical(),
+      problem = character()
     ))
   }
   table_names <- pull(pks, table)
 
   tbls <- map(set_names(table_names), ~ tbl(dm, .))
 
-  tbl_is_pk <- map2_dfr(tbls, pks$pk_col, enum_pk_candidates_impl) %>%
-    mutate(table = table_names) %>%
+  tbl_is_pk <-
+    tibble(table = table_names, tbls, column = pks$pk_col) %>%
+    mutate(candidates = map2(tbls, column, enum_pk_candidates_impl)) %>%
+    select(-column, -tbls) %>%
+    unnest(candidates) %>%
     rename(is_key = candidate, problem = why)
 
   tibble(
@@ -116,7 +119,7 @@ check_pk_constraints <- function(dm) {
 }
 
 check_fk_constraints <- function(dm) {
-  fks <- left_join(dm_get_all_fks_impl(dm), dm_get_all_pks_impl(dm), by = c("parent_table" = "table"))
+  fks <- left_join(dm_get_all_fks2_impl(dm), dm_get_all_pks2_impl(dm), by = c("parent_table" = "table"))
   pts <- pull(fks, parent_table) %>% map(tbl, src = dm)
   cts <- pull(fks, child_table) %>% map(tbl, src = dm)
   fks_tibble <- mutate(fks, t1 = cts, t2 = pts) %>%
