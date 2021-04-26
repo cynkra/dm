@@ -455,7 +455,8 @@ cdm_get_pk <- function(dm, table) {
 #' @export
 cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
-  dm_get_all_pks_impl(dm = dm)
+  dm_get_all_pks2_impl(dm = dm) %>%
+    mutate(pk_col = as.character(unclass(pk_col)))
 }
 
 #' @rdname deprecated
