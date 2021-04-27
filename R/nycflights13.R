@@ -16,8 +16,8 @@
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will have
 #'   colors assigned to different tables for visualization with `dm_draw()`.
 #' @param subset Boolean, if `TRUE` (default), the `flights` table is reduced to flights with column `day` equal to 10.
-#' @param compound Boolean, if `FALSE` (default), no link will be established between tables `flights` and `weather`.
-#' If `TRUE`, a foreign key relation using two columns (`origin`, `time_hour`) will be established.
+#' @param compound Boolean, if `FALSE`, no link will be established between tables `flights` and `weather`,
+#'   because this requires compound keys.
 #'
 #' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
@@ -25,7 +25,7 @@
 #' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
 #' dm_nycflights13() %>%
 #'   dm_draw()
-dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound = FALSE) {
+dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound = TRUE) {
   airlines <- nycflights13::airlines
   airports <- nycflights13::airports
   planes <- nycflights13::planes

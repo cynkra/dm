@@ -11,20 +11,20 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
-      Primary keys: 3
-      Foreign keys: 4
+      Primary keys: 4
+      Foreign keys: 5
     Code
       nyc_flights_dm %>% format()
     Output
-      dm: 5 tables, 53 columns, 3 primary keys, 4 foreign keys
+      dm: 5 tables, 53 columns, 4 primary keys, 5 foreign keys
     Code
       nyc_flights_dm %>% dm_filter(flights, origin == "EWR")
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
-      Primary keys: 3
-      Foreign keys: 4
+      Primary keys: 4
+      Foreign keys: 5
       -- Filters ---------------------------------------------------------------------
       flights: origin == "EWR"
 

@@ -181,7 +181,7 @@ test_that("output", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot_diagram(
-    dm_nycflights13() %>%
+    dm_nycflights13(compound = FALSE) %>%
       dm_draw(),
     "nycflight-dm.svg"
   )
