@@ -328,13 +328,6 @@ dm_get_data_model_fks <- function(x, flatten) {
     filter(map_lgl(fks, has_length)) %>%
     unnest(pks)
 
-  if (nrow(fk_df) == 0) {
-    return(tibble(
-      child_table = character(), child_fk_cols = character(),
-      parent_table = character(), parent_pk_cols = character()
-    ))
-  }
-
   if (flatten) {
     my_flatten_key <- flatten_key
   } else {
