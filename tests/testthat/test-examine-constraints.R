@@ -85,11 +85,8 @@ test_that("output as tibble", {
 # test compound keys ------------------------------------------------------
 
 test_that("output for compound keys", {
-  # FIXME: COMPOUND:: currently doesn't work, cause it doesn't realize, 2 columns are involved here
-  skip("FIXME")
-
   expect_snapshot({
-    nyc_comp() %>%
+    bad_dm() %>%
       dm_examine_constraints()
   })
 })
