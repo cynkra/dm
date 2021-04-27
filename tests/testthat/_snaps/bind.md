@@ -38,7 +38,7 @@
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
-      Columns: 44
+      Columns: 46
       Primary keys: 16
       Foreign keys: 14
     Code
@@ -47,7 +47,7 @@
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1...1`, `tf_2...2`, `tf_3...3`, `tf_4...4`, `tf_5...5`, ... (17 total)
-      Columns: 44
+      Columns: 46
       Primary keys: 16
       Foreign keys: 14
     Code

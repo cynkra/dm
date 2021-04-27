@@ -5,7 +5,7 @@
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `res_flat`
-      Columns: 63
+      Columns: 64
       Primary keys: 4
       Foreign keys: 4
     Code
