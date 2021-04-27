@@ -384,12 +384,12 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   res_tbl <- tryCatch(
     left_join(t1_join, t2_join, by = "value") %>%
       # if value is NULL, this also counts as a match -- consistent with fk semantics
-      mutate(mismatch_or_null = if_else(is.na(match), value, NULL)) %>%
-      safe_count(mismatch_or_null) %>%
+      mutate(value = if_else(is.na(match), value, NULL)) %>%
+      safe_count(value) %>%
       ungroup() %>% # dbplyr problem?
-      mutate(n_mismatch = sum(if_else(is.na(mismatch_or_null), 0L, n), na.rm = TRUE)) %>%
+      mutate(n_mismatch = sum(if_else(is.na(value), 0L, n), na.rm = TRUE)) %>%
       mutate(n_total = sum(n, na.rm = TRUE)) %>%
-      filter(!is.na(mismatch_or_null)) %>%
+      filter(!is.na(value)) %>%
       arrange(desc(n)) %>%
       head(MAX_COMMAS + 1L) %>%
       collect(),
@@ -409,7 +409,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   n_total <- pull(head(res_tbl, 1), n_total)
 
   percentage_missing <- as.character(round((n_mismatch / n_total) * 100, 1))
-  vals_formatted <- commas(format(res_tbl$mismatch_or_null, trim = TRUE, justify = "none"), capped = TRUE)
+  vals_formatted <- commas(format(res_tbl$value, trim = TRUE, justify = "none"), capped = TRUE)
   glue(
     "{as.character(n_mismatch)} values ({percentage_missing}%) of ",
     "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}"
