@@ -292,17 +292,15 @@ update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
 dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
-  old_out_keys <- dm_get_all_fks_impl(dm) %>%
+  old_out_keys <- dm_get_all_fks2_impl(dm) %>%
     filter(child_table == !!old_tbl_name) %>%
     select(table = parent_table, column = child_fk_cols)
 
-  # FIXME: COMPOUND:: Compound keys
-
   old_and_new_out_keys <-
     old_out_keys %>%
-    filter(identity(column) %in% !!tracked_cols) %>%
+    filter(map_lgl(column, ~ all(.x %in% !!tracked_cols))) %>%
     distinct() %>%
-    mutate(new_column = names(tracked_cols[match(column, tracked_cols, nomatch = 0L)]))
+    mutate(new_column = new_keys(map(column, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
 
   structure(
     reduce2(old_and_new_out_keys$new_column, old_and_new_out_keys$table, ~ dm_add_fk_impl(..1, new_tbl_name, ..2, ..3), .init = dm),

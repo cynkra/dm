@@ -66,7 +66,6 @@
       [1] "origin"    "time_hour"
       
     Code
-      # FIXME: COMPOUND:: dm_insert_zoomed() does not recreate compound FKs
       nyc_comp_3 <- nyc_comp() %>% dm_zoom_to(flights) %>% dm_insert_zoomed(
         "flights_2")
       nyc_comp_3
@@ -75,15 +74,18 @@
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `flights_2`
       Columns: 72
       Primary keys: 4
-      Foreign keys: 7
+      Foreign keys: 8
     Code
       attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")
     Output
       [1] "airlines|flights"   "airlines|flights_2" "airports|flights"  
       [4] "airports|flights_2" "flights|planes"     "planes|flights_2"  
-      [7] "flights|weather"   
+      [7] "flights|weather"    "weather|flights_2" 
     Code
       dm_get_fk(nyc_comp_3, flights_2, weather)
     Output
-      <list_of<character>[0]>
+      <list_of<character>[1]>
+      [[1]]
+      [1] "origin"    "time_hour"
+      
 
