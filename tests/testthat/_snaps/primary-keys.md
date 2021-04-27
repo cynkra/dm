@@ -5,7 +5,7 @@
     Error <dm_error_not_unique_key>
       (`a`) not a unique key of `x`.
 
-# dm_get_all_fks() with compound keys
+# dm_get_all_pks() with compound keys
 
     Code
       nyc_comp()
@@ -19,10 +19,10 @@
       nyc_comp() %>% dm_get_all_pks()
     Output
       # A tibble: 4 x 2
-        table    pk_col             
-        <chr>    <keys>             
-      1 airlines carrier            
-      2 airports faa                
-      3 planes   tailnum            
-      4 weather  (origin, time_hour)
+        table    pk_col           
+        <chr>    <keys>           
+      1 airlines carrier          
+      2 airports faa              
+      3 planes   tailnum          
+      4 weather  origin, time_hour
 

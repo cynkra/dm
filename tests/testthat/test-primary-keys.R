@@ -151,7 +151,7 @@ test_that("output", {
 
 # tests for compound keys -------------------------------------------------
 
-test_that("dm_get_all_fks() with compound keys", {
+test_that("dm_get_all_pks() with compound keys", {
   expect_snapshot({
     nyc_comp()
 

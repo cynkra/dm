@@ -192,17 +192,7 @@ dm_get_pk2_impl <- function(dm, table_name) {
 #'   dm_get_all_pks()
 dm_get_all_pks <- function(dm) {
   check_not_zoomed(dm)
-  dm_get_all_pks_impl(dm) %>%
-    mutate(pk_col = new_keys(pk_col))
-}
-
-dm_get_all_pks_impl <- function(dm) {
-  # FIXME: COMPOUND: Obliterate
-
-  dm_get_def(dm) %>%
-    select(table, pks) %>%
-    unnest_pks(flatten = TRUE) %>%
-    select(table = table, pk_col = column)
+  dm_get_all_pks2_impl(dm)
 }
 
 dm_get_all_pks2_impl <- function(dm) {
