@@ -51,6 +51,7 @@
     Message <cliMessage>
       ! Unsatisfied constraints:
     Output
+      * Table `tbl_3`: primary key id: has duplicate values: 4
       * Table `tbl_1`: foreign key a into table `tbl_2`: values of `tbl_1$a` not in `tbl_2$id`: 4 (1), 5 (1)
       * Table `tbl_1`: foreign key b into table `tbl_3`: values of `tbl_1$b` not in `tbl_3$id`: 1 (1), 5 (1)
 
