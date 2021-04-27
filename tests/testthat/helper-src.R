@@ -492,7 +492,7 @@ result_from_flatten %<-% {
 
 tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5)), b = a)
 tbl_2 %<-% tibble(id = 1:2, c = letters[1:2])
-tbl_3 %<-% tibble(id = 2:4, d = letters[2:4])
+tbl_3 %<-% tibble(id = c(2:4, 4), d = letters[2:5])
 
 bad_dm %<-% {
   as_dm(list(tbl_1 = tbl_1(), tbl_2 = tbl_2(), tbl_3 = tbl_3())) %>%
