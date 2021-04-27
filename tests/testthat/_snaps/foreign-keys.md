@@ -12,10 +12,10 @@
       nyc_comp() %>% dm_get_all_fks()
     Output
       # A tibble: 4 x 4
-        child_table child_fk_cols       parent_table parent_pk_cols     
-        <chr>       <keys>              <chr>        <keys>             
-      1 flights     (origin, time_hour) weather      (origin, time_hour)
-      2 flights     carrier             airlines     carrier            
-      3 flights     origin              airports     faa                
-      4 flights     tailnum             planes       tailnum            
+        child_table child_fk_cols     parent_table parent_pk_cols   
+        <chr>       <keys>            <chr>        <keys>           
+      1 flights     carrier           airlines     carrier          
+      2 flights     origin            airports     faa              
+      3 flights     tailnum           planes       tailnum          
+      4 flights     origin, time_hour weather      origin, time_hour
 

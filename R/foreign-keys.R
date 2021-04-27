@@ -200,14 +200,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #' @export
 dm_get_all_fks <- function(dm) {
   check_not_zoomed(dm)
-  dm_get_all_fks_impl(dm) %>%
-    mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols))
-}
-
-dm_get_all_fks_impl <- function(dm) {
-  # FIXME: COMPOUND: Replace calls by dm_get_all_fks2_impl()
-  dm_get_data_model_fks(dm, flatten = TRUE) %>%
-    arrange(child_table, child_fk_cols)
+  dm_get_all_fks2_impl(dm)
 }
 
 dm_get_all_fks2_impl <- function(dm) {
