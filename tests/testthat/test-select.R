@@ -18,7 +18,7 @@ test_that("dm_rename() works for replacing pk", {
 test_that("dm_rename() works for replacing fks", {
   expect_identical(
     dm_rename(dm_for_filter(), tf_2, new_d = d, new_e = e) %>%
-      dm_get_all_fks_impl(),
+      dm_get_all_fks2_impl(),
     tribble(
       ~child_table, ~child_fk_cols, ~parent_table, ~parent_pk_cols,
       "tf_2",       "new_d",        "tf_1",        "a",
@@ -26,7 +26,8 @@ test_that("dm_rename() works for replacing fks", {
       "tf_4",       "j",            "tf_3",        "f",
       "tf_5",       "l",            "tf_4",        "h",
       "tf_5",       "m",            "tf_6",        "n",
-    )
+    ) %>%
+      mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols))
   )
 })
 
@@ -61,23 +62,26 @@ test_that("dm_select() keeps pks up to date", {
 test_that("dm_select() works for replacing fks, and removes missing ones", {
   expect_identical(
     dm_select(dm_for_filter(), tf_2, new_d = d) %>%
-      dm_get_all_fks_impl(),
+      dm_get_all_fks2_impl(),
     tribble(
       ~child_table, ~child_fk_cols, ~parent_table, ~parent_pk_cols,
       "tf_2",       "new_d",        "tf_1",        "a",
       "tf_4",       "j",            "tf_3",        "f",
       "tf_5",       "l",            "tf_4",        "h",
       "tf_5",       "m",            "tf_6",        "n",
-    )
+    ) %>%
+      mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols))
   )
 })
 
 test_that("dm_select() removes fks if not in selection", {
   expect_equal(
-    dm_select(dm_for_filter(), tf_2, c, e) %>%
-      dm_get_all_fks_impl(),
-    dm_get_all_fks_impl(dm_for_filter()) %>%
-      filter(!child_fk_cols == "d")
+    dm_for_filter() %>%
+      dm_select(tf_2, c, e) %>%
+      dm_get_all_fks2_impl(),
+    dm_for_filter() %>%
+      dm_get_all_fks2_impl() %>%
+      filter(child_fk_cols != new_keys("d"))
   )
 })
 
