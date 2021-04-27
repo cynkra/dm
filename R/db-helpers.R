@@ -39,11 +39,18 @@ build_copy_data <- function(dm, dest, table_names) {
     dest_con <- con_from_src_or_con(dest)
 
     pks <-
-      dm_get_all_pks_impl(dm) %>%
+      dm_get_all_pks2_impl(dm) %>%
       transmute(source_name = table, column = pk_col, pk = TRUE)
 
+    # FIXME: Need support for multiple primary keys, https://github.com/r-dbi/DBI/pull/351
+    # Discard primary keys of length > 1 for now
+    pks_flat <-
+      pks %>%
+      filter(lengths(column) == 1) %>%
+      mutate(column = as.character(column))
+
     fks <-
-      dm_get_all_fks_impl(dm) %>%
+      dm_get_all_fks2_impl(dm) %>%
       transmute(source_name = child_table, column = child_fk_cols, fk = TRUE)
 
     # Need to supply NOT NULL modifiers for primary keys
@@ -55,20 +62,22 @@ build_copy_data <- function(dm, dest, table_names) {
       mutate(type = map(df, ~ map_chr(., ~ DBI::dbDataType(dest_con, .)))) %>%
       select(-df) %>%
       unnest(c(column, type)) %>%
-      left_join(pks, by = c("source_name", "column")) %>%
+      left_join(pks_flat, by = c("source_name", "column")) %>%
       mutate(full_type = paste0(type, if_else(pk, " NOT NULL PRIMARY KEY", "", ""))) %>%
       group_by(source_name) %>%
       summarize(types = list(deframe(tibble(column, full_type))))
 
     copy_data_unique_indexes <-
       pks %>%
-      transmute(source_name, unique_indexes = map(as.list(column), list))
+      group_by(source_name) %>%
+      summarize(unique_indexes = list(column)) %>%
+      ungroup()
 
     copy_data_indexes <-
       fks %>%
       select(source_name, column) %>%
       group_by(source_name) %>%
-      summarize(indexes = map(list(column), as.list))
+      summarize(indexes = list(column))
 
     copy_data <-
       copy_data_base %>%
