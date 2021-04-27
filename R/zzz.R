@@ -14,10 +14,13 @@
   register_pkgdown_methods()
 
   #rigg(enum_pk_candidates_impl)
-  #rigg(check_pk_constraints)
+  rigg(build_copy_data)
 }
 
 rigg <- function(fun) {
   name <- deparse(substitute(fun))
-  assign(name, boomer::rig(fun, ignore = c("~", "{", "(", "<-", "<<-")), getNamespace("dm"))
+
+  rig <- get("rig", asNamespace("boomer"), mode = "function")
+
+  assign(name, rig(fun, ignore = c("~", "{", "(", "<-", "<<-")), getNamespace("dm"))
 }
