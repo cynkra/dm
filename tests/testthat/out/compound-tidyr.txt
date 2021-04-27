@@ -1,21 +1,39 @@
 > unite_weather_dm <- nyc_comp() %>% dm_zoom_to(weather) %>% mutate(chr_col = "airport") %>%
 +   unite("new_col", origin, chr_col) %>% dm_update_zoomed()
 > unite_weather_dm %>% get_all_keys("flights")
-  carrier    origin   tailnum 
-"carrier"  "origin" "tailnum" 
+<list_of<character>[3]>
+[[1]]
+[1] "carrier"
+
+[[2]]
+[1] "origin"
+
+[[3]]
+[1] "tailnum"
+
 
 > unite_weather_dm %>% get_all_keys("weather")
-named character(0)
+<list_of<character>[0]>
 
 > unite_flights_dm <- nyc_comp() %>% dm_zoom_to(flights) %>% mutate(chr_col = "airport") %>%
 +   unite("new_col", origin, chr_col) %>% dm_update_zoomed()
 > unite_flights_dm %>% get_all_keys("flights")
-  carrier   tailnum 
-"carrier" "tailnum" 
+<list_of<character>[2]>
+[[1]]
+[1] "carrier"
+
+[[2]]
+[1] "tailnum"
+
 
 > unite_flights_dm %>% get_all_keys("weather")
-     origin   time_hour 
-   "origin" "time_hour" 
+<list_of<character>[2]>
+[[1]]
+[1] "origin"
+
+[[2]]
+[1] "time_hour"
+
 
 > nyc_comp() %>% dm_zoom_to(weather) %>% separate(origin, c("o1", "o2"), sep = "^..",
 + remove = TRUE) %>% dm_update_zoomed()

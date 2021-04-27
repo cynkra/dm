@@ -32,14 +32,14 @@ test_that("key tracking works", {
   skip_if_remote_src()
   expect_identical(
     unite(zoomed_dm(), "new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys("tf_2"),
-    set_names("d")
+    new_keys("d")
   )
 
   expect_identical(
     unite(zoomed_dm(), "new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
-    set_names(c("c", "d", "e"))
+    new_keys(c("c", "d", "e"))
   )
 
   expect_identical(
@@ -50,7 +50,7 @@ test_that("key tracking works", {
       separate(new_col, c("c", "e"), remove = TRUE) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
-    set_names(c("c", "d", "e"))
+    new_keys(c("c", "d", "e"))
   )
 
   expect_identical(
@@ -61,7 +61,7 @@ test_that("key tracking works", {
       separate(new_col, c("c", "e"), remove = FALSE) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
-    set_names(c("c", "d", "e", "new_col"))
+    new_keys(c("c", "d", "e", "new_col"))
   )
 })
 

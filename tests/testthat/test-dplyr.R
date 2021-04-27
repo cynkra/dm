@@ -438,7 +438,7 @@ test_that("key tracking works", {
       summarize(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(c("c", "e"))
+    new_keys(c("c", "e"))
   )
 
   expect_identical(
@@ -447,7 +447,7 @@ test_that("key tracking works", {
       summarize(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(character())
+    new_keys(character())
   )
 
   # transmute()
@@ -458,7 +458,7 @@ test_that("key tracking works", {
       transmute(d_mean = mean(d)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(c("c", "e"))
+    new_keys(c("c", "e"))
   )
 
   expect_identical(
@@ -478,7 +478,7 @@ test_that("key tracking works", {
       mutate(d_mean = mean(d), d = d * 2) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(c("c", "e"))
+    new_keys(c("c", "e"))
   )
 
   expect_identical(
@@ -496,7 +496,7 @@ test_that("key tracking works", {
       mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names("f")
+    new_keys(set_names"f")
   )
 
   # chain of renames & other transformations
@@ -510,7 +510,7 @@ test_that("key tracking works", {
       transmute(c = paste0(c, "_animal")) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names("e_new")
+    new_keys(set_names"e_new")
   )
 
   # FKs that point to a PK that vanished, should also vanish
