@@ -355,7 +355,7 @@ check_not_zoomed <- function(dm) {
 # For `nest.zoomed_dm()`, we need the incoming foreign keys of the originally zoomed table
 get_orig_in_fks <- function(zoomed_dm, orig_table) {
   # FIXME: maybe there is a more efficient implementation possible?
-  dm_get_all_fks_impl(zoomed_dm) %>%
+  dm_get_all_fks2_impl(zoomed_dm) %>%
     filter(parent_table == orig_table) %>%
     select(-parent_table)
 }
