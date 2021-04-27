@@ -366,9 +366,7 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
   ) %>%
     mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
     select(column, candidate, why) %>%
-    mutate(arrange_col = as.integer(gsub("(^[0-9]*).*$", "\\1", why))) %>%
-    arrange(desc(candidate), arrange_col, column) %>%
-    select(-arrange_col)
+    arrange(desc(candidate))
 }
 
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
