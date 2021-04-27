@@ -490,15 +490,15 @@ result_from_flatten %<-% {
 
 # 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
-tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5)), b = a)
-tbl_2 %<-% tibble(id = 1:2, c = letters[1:2])
+tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5, NA)), x = LETTERS[3:7], b = a)
+tbl_2 %<-% tibble(id = 1:3, x = LETTERS[3:5], c = letters[1:3])
 tbl_3 %<-% tibble(id = c(2:4, 4), d = letters[2:5])
 
 bad_dm %<-% {
   as_dm(list(tbl_1 = tbl_1(), tbl_2 = tbl_2(), tbl_3 = tbl_3())) %>%
-    dm_add_pk(tbl_2, id) %>%
+    dm_add_pk(tbl_2, c(id, x)) %>%
     dm_add_pk(tbl_3, id) %>%
-    dm_add_fk(tbl_1, a, tbl_2) %>%
+    dm_add_fk(tbl_1, c(a, x), tbl_2) %>%
     dm_add_fk(tbl_1, b, tbl_3)
 }
 

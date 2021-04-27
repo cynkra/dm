@@ -300,7 +300,7 @@ test_that("tests with 'bad_dm' work", {
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3),
     tbl_1() %>%
-      left_join(tbl_2(), by = c("a" = "id")) %>%
+      left_join(tbl_2(), by = c("a" = "id", "x")) %>%
       left_join(tbl_3(), by = c("b" = "id"))
   )
 
@@ -343,7 +343,7 @@ test_that("tests with 'bad_dm' work (2)", {
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, join = full_join),
     tbl_1() %>%
-      full_join(tbl_2(), by = c("a" = "id")) %>%
+      full_join(tbl_2(), by = c("a" = "id", "x")) %>%
       full_join(tbl_3(), by = c("b" = "id"))
   )
 
@@ -357,7 +357,7 @@ test_that("tests with 'bad_dm' work (2)", {
   expect_equivalent_tbl(
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_2, tbl_3, join = right_join),
     tbl_1() %>%
-      right_join(tbl_2(), by = c("a" = "id")) %>%
+      right_join(tbl_2(), by = c("a" = "id", "x")) %>%
       right_join(tbl_3(), by = c("b" = "id"))
   )
 
@@ -366,7 +366,7 @@ test_that("tests with 'bad_dm' work (2)", {
     dm_flatten_to_tbl(bad_dm(), tbl_1, tbl_3, tbl_2, join = right_join),
     tbl_1() %>%
       right_join(tbl_3(), by = c("b" = "id")) %>%
-      right_join(tbl_2(), by = c("a" = "id"))
+      right_join(tbl_2(), by = c("a" = "id", "x"))
   )
 
   # filtered `dm`
