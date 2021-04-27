@@ -372,24 +372,31 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
 }
 
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
+  stopifnot(length(colname) == length(pk))
+
+  val_names <- paste0("value", seq_along(colname))
+  t1_vals <- syms(colname)
+  names(t1_vals) <- val_names
+  t2_vals <- syms(pk)
+  names(t2_vals) <- val_names
+
   t1_join <-
     t1 %>%
-    select(value = !!sym(colname)) %>%
-    distinct()
-  t2_join <- t2 %>%
-    select(value = !!sym(pk)) %>%
-    distinct() %>%
-    mutate(match = 1L)
+    count(!!!t1_vals) %>%
+    ungroup()
+  t2_join <-
+    t2 %>%
+    count(!!!t2_vals) %>%
+    ungroup()
+
+  res_tbl_prep <-
+    t1_join %>%
+      # if value1 is NULL, this also counts as a match -- consistent with fk semantics
+      filter(!is.na(value1)) %>%
+      anti_join(t2_join, by = "value1")
 
   res_tbl <- tryCatch(
-    left_join(t1_join, t2_join, by = "value") %>%
-      # if value is NULL, this also counts as a match -- consistent with fk semantics
-      mutate(value = if_else(is.na(match), value, NULL)) %>%
-      safe_count(value) %>%
-      ungroup() %>% # dbplyr problem?
-      mutate(n_mismatch = sum(if_else(is.na(value), 0L, n), na.rm = TRUE)) %>%
-      mutate(n_total = sum(n, na.rm = TRUE)) %>%
-      filter(!is.na(value)) %>%
+    res_tbl_prep %>%
       arrange(desc(n)) %>%
       head(MAX_COMMAS + 1L) %>%
       collect(),
@@ -400,19 +407,19 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   if (is_condition(res_tbl)) {
     return(conditionMessage(res_tbl))
   }
-  n_mismatch <- pull(head(res_tbl, 1), n_mismatch)
+
   # return empty character if candidate
-  if (is_empty(n_mismatch)) {
+  if (nrow(res_tbl) == 0) {
     return("")
   }
-  # calculate percentage and compose detailed description for missing values
-  n_total <- pull(head(res_tbl, 1), n_total)
 
-  percentage_missing <- as.character(round((n_mismatch / n_total) * 100, 1))
-  vals_formatted <- commas(format(res_tbl$value, trim = TRUE, justify = "none"), capped = TRUE)
+  vals_formatted <- commas(
+    glue('{format(res_tbl$value1, trim = TRUE, justify = "none")} ({res_tbl$n})'),
+    capped = TRUE
+  )
   glue(
-    "{as.character(n_mismatch)} values ({percentage_missing}%) of ",
-    "{tick(glue('{t1_name}${colname}'))} not in {tick(glue('{t2_name}${pk}'))}: {vals_formatted}"
+    "values of ",
+    "{commas(tick(glue('{t1_name}${colname}')), Inf)} not in {commas(tick(glue('{t2_name}${pk}')), Inf)}: {vals_formatted}"
   )
 }
 
