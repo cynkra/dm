@@ -491,7 +491,7 @@ result_from_flatten %<-% {
 # 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
 tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5, NA)), x = LETTERS[3:7], b = a)
-tbl_2 %<-% tibble(id = 1:3, x = LETTERS[3:5], c = letters[1:3])
+tbl_2 %<-% tibble(id = c(1:3, 3), x = LETTERS[c(3:5, 5)], c = letters[1:4])
 tbl_3 %<-% tibble(id = c(2:4, 4), d = letters[2:5])
 
 bad_dm %<-% {

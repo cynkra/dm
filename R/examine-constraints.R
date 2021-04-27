@@ -104,7 +104,7 @@ check_pk_constraints <- function(dm) {
 
   tbl_is_pk <-
     tibble(table = table_names, tbls, column = pks$pk_col) %>%
-    mutate(candidate = map2(tbls, column, enum_pk_candidates_impl)) %>%
+    mutate(candidate = map2(tbls, column, ~ enum_pk_candidates_impl(.x, list(.y)))) %>%
     select(-column, -tbls) %>%
     unnest(candidate) %>%
     rename(is_key = candidate, problem = why)

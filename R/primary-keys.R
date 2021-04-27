@@ -325,25 +325,30 @@ enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) 
 }
 
 check_pk <- function(table, columns) {
-  duplicate_values <- is_unique_key_se(table, commas(columns))
+  duplicate_values <- is_unique_key_se(table, columns)
   if (duplicate_values$unique) {
     return("")
   }
 
+  dup_data <- duplicate_values$data[[1]]
+
   fun <- ~ format(.x, trim = TRUE, justify = "none")
 
-  values <- duplicate_values$data[[1]]$value
+  values <- dup_data$value
+  n <- dup_data$n
   values_na <- is.na(values)
 
   if (any(values_na)) {
-    missing <- "missing values"
+    missing <- paste0(sum(n[values_na]), " missing values")
     values <- values[!values_na]
+    n <- n[!values_na]
   } else {
     missing <- NULL
   }
 
   if (length(values) > 0) {
-    values_text <- commas(values, capped = TRUE, fun = fun)
+    values_count <- paste0(values, " (", n[!values_na], ")")
+    values_text <- commas(values_count, capped = TRUE, fun = fun)
     duplicate <- paste0("duplicate values: ", values_text)
   } else {
     duplicate <- NULL
