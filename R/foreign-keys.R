@@ -389,14 +389,11 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     count(!!!t2_vals) %>%
     ungroup()
 
-  res_tbl_prep <-
+  res_tbl <- tryCatch(
     t1_join %>%
       # if value1 is NULL, this also counts as a match -- consistent with fk semantics
       filter(!is.na(value1)) %>%
-      anti_join(t2_join, by = "value1")
-
-  res_tbl <- tryCatch(
-    res_tbl_prep %>%
+      anti_join(t2_join, by = "value1") %>%
       arrange(desc(n)) %>%
       head(MAX_COMMAS + 1L) %>%
       collect(),
@@ -413,8 +410,12 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     return("")
   }
 
+  formatted <-
+    res_tbl %>%
+    transmute(value = format(res_tbl$value1, trim = TRUE, justify = "none"), n)
+
   vals_formatted <- commas(
-    glue('{format(res_tbl$value1, trim = TRUE, justify = "none")} ({res_tbl$n})'),
+    glue('{formatted$value} ({formatted$n})'),
     capped = TRUE
   )
   glue(
