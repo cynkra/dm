@@ -325,7 +325,7 @@ enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) 
 }
 
 check_pk <- function(table, columns) {
-  duplicate_values <- is_unique_key_se(table, key_to_expr(columns), commas(columns))
+  duplicate_values <- is_unique_key_se(table, commas(columns))
   if (duplicate_values$unique) {
     return("")
   }

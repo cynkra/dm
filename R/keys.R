@@ -42,11 +42,3 @@ pillar_shaft.dm_keys <- function(x) {
 format.dm_keys <- function(x, ...) {
   map_chr(x, commas, max_commas = Inf)
 }
-
-key_to_expr <- function(x) {
-  if (length(x) == 1) {
-    sym(x)
-  } else {
-    expr(c(!!!syms(x)))
-  }
-}

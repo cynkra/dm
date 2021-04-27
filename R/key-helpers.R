@@ -60,18 +60,32 @@ is_unique_key <- function(.data, column) {
   col_expr <- ensym(column)
   col_name <- as_name(col_expr)
 
-  is_unique_key_se(.data, col_expr, col_name)
+  is_unique_key_se(.data, col_name)
 }
 
-is_unique_key_se <- function(.data, col_expr, col_name) {
-  duplicate_rows <-
+is_unique_key_se <- function(.data, colname) {
+  val_names <- paste0("value", seq_along(colname))
+  col_syms <- syms(colname)
+  names(col_syms) <- val_names
+
+  # FIXME: Build expression instead of paste() + parse()
+  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+
+  res_tbl <-
     .data %>%
-    select(value = !!col_expr) %>%
-    safe_count(value) %>%
-    filter(n != 1 | is.na(value)) %>%
-    arrange(if_else(is.na(value), 0L, 1L), value) %>%
+    safe_count(!!!col_syms) %>%
+    mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
+    filter(n != 1 | any_na != 0L) %>%
+    arrange(desc(n)) %>%
     utils::head(MAX_COMMAS + 1) %>%
-    collect() %>%
+    collect()
+
+  res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
+  res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
+  res_tbl$value <- if_else(res_tbl$any_na != 0, NA_character_, exec(paste0, !!!res_tbl[val_names]))
+
+  duplicate_rows <-
+    res_tbl %>%
     {
       # https://github.com/tidyverse/tidyr/issues/734
       tibble(data = list(.))
