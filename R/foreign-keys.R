@@ -391,7 +391,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     t1_join %>%
       # if value1 is NULL, this also counts as a match -- consistent with fk semantics
       filter(!is.na(value1)) %>%
-      anti_join(t2_join, by = "value1") %>%
+      anti_join(t2_join, by = val_names) %>%
       arrange(desc(n)) %>%
       head(MAX_COMMAS + 1L) %>%
       collect(),
@@ -408,12 +408,12 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     return("")
   }
 
-  formatted <-
-    res_tbl %>%
-    transmute(value = format(res_tbl$value1, trim = TRUE, justify = "none"), n)
+  res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
+  res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
+  res_tbl$value <- exec(paste0, !!!res_tbl[val_names])
 
   vals_formatted <- commas(
-    glue('{formatted$value} ({formatted$n})'),
+    glue('{res_tbl$value} ({res_tbl$n})'),
     capped = TRUE
   )
   glue(
