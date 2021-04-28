@@ -579,8 +579,8 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   new_filters <- all_filters %>%
     filter(zoomed) %>%
     mutate(zoomed = FALSE)
-  upd_pk <- update_zoomed_pk(dm)
-  upd_inc_fks <- update_zoomed_incoming_fks(dm)
+  upd_pk <- vctrs::list_of(update_zoomed_pk(dm))
+  upd_inc_fks <- vctrs::list_of(update_zoomed_incoming_fks(dm))
   dm_wo_outgoing_fks <-
     dm %>%
     update_filter(old_tbl_name, vctrs::list_of(old_filters)) %>%

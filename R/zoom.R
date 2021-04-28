@@ -133,12 +133,12 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
     mutate(zoomed = FALSE)
 
   # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
-  upd_pk <- update_zoomed_pk(dm)
+  upd_pk <- vctrs::list_of(update_zoomed_pk(dm))
 
   # incoming FKs: in the new row, based on the old table;
   # if PK available, foreign key relations can be copied from the old table
   # if PK vanished, the entry will be empty
-  upd_inc_fks <- update_zoomed_incoming_fks(dm)
+  upd_inc_fks <- vctrs::list_of(update_zoomed_incoming_fks(dm))
 
   dm_wo_outgoing_fks <-
     dm %>%
@@ -180,8 +180,8 @@ dm_update_zoomed <- function(dm) {
     new_def <-
       new_def %>%
       mutate(
-        pks = if_else(table == table_name, !!update_zoomed_pk(dm), pks),
-        fks = if_else(table == table_name, !!update_zoomed_incoming_fks(dm), fks)
+        pks = if_else(table == table_name, !!vctrs::list_of(update_zoomed_pk(dm)), pks),
+        fks = if_else(table == table_name, !!vctrs::list_of(update_zoomed_incoming_fks(dm)), fks)
       )
 
     new_dm3(new_def, zoomed = TRUE) %>%
@@ -242,7 +242,7 @@ update_zoomed_pk <- function(dm) {
     upd_pk <- new_pk()
   }
 
-  vctrs::list_of(upd_pk)
+  upd_pk
 }
 
 update_zoomed_incoming_fks <- function(dm) {
@@ -253,9 +253,9 @@ update_zoomed_incoming_fks <- function(dm) {
   if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
     def <- dm_get_def(dm)
     # Nothing to recode here -- updating zoomed table
-    def$fks[def$table == old_tbl_name]
+    def$fks[[which(def$table == old_tbl_name)]]
   } else {
-    vctrs::list_of(new_fk())
+    new_fk()
   }
 }
 
