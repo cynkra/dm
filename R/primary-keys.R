@@ -203,7 +203,7 @@ dm_get_all_pks_impl <- function(dm) {
 dm_get_all_pks2_def_impl <- function(def) {
   def %>%
     select(table, pks) %>%
-    unnest_pks(flatten = FALSE) %>%
+    unnest_pks() %>%
     select(table = table, pk_col = column) %>%
     mutate(pk_col = new_keys(pk_col))
 }

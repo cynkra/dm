@@ -204,7 +204,7 @@ dm_get_all_fks <- function(dm) {
 }
 
 dm_get_all_fks_impl <- function(dm) {
-  dm_get_data_model_fks(dm, flatten = FALSE) %>%
+  dm_get_data_model_fks(dm) %>%
     mutate(child_fk_cols = new_keys(child_fk_cols), parent_pk_cols = new_keys(parent_pk_cols)) %>%
     arrange(child_table, child_fk_cols)
 }

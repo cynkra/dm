@@ -301,7 +301,7 @@ dm_get_def <- function(x) {
   unclass(x)$def
 }
 
-unnest_pks <- function(def, flatten) {
+unnest_pks <- function(def) {
   # Optimized
   pk_df <- tibble(
     table = rep(def$table, map_int(def$pks, nrow))
@@ -312,14 +312,12 @@ unnest_pks <- function(def, flatten) {
   # FIXME: Should work better with dplyr 0.9.0
   if (!("column" %in% names(pk_df))) {
     pk_df$column <- character()
-  } else if (flatten) {
-    pk_df$column <- flatten_key(pk_df$column)
   }
 
   pk_df
 }
 
-dm_get_data_model_fks <- function(x, flatten) {
+dm_get_data_model_fks <- function(x) {
   # FIXME: COMPOUND: Inline
 
   fk_df <-
@@ -328,18 +326,10 @@ dm_get_data_model_fks <- function(x, flatten) {
     filter(map_lgl(fks, has_length)) %>%
     unnest(pks)
 
-  if (flatten) {
-    my_flatten_key <- flatten_key
-  } else {
-    my_flatten_key <- identity
-  }
-
   fk_df %>%
-    mutate(parent_pk_cols = my_flatten_key(column)) %>%
-    select(-column) %>%
+    rename(parent_pk_cols = column) %>%
     unnest(fks) %>%
-    mutate(child_fk_cols = my_flatten_key(column)) %>%
-    select(child_table = table, child_fk_cols, parent_table = ref, parent_pk_cols)
+    select(child_table = table, child_fk_cols = column, parent_table = ref, parent_pk_cols)
 }
 
 flatten_key <- function(x) {
