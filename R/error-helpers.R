@@ -162,7 +162,7 @@ error_txt_tables_not_reachable_from_start <- function() {
 
 abort_wrong_col_names <- function(table_name, actual_colnames, wrong_colnames) {
   abort(error_txt_wrong_col_names(table_name, actual_colnames, wrong_colnames),
-        .subclass = dm_error_full("wrong_col_names")
+    .subclass = dm_error_full("wrong_col_names")
   )
 }
 
