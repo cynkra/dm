@@ -25,12 +25,8 @@ test_that("functions working with graphs do the right thing?", {
     ),
     create_graph_from_dm(dm_for_filter_w_cycle())
   )
+
+  expect_snapshot({
+    attr(igraph::E(create_graph_from_dm(nyc_comp())), "vnames")
+  })
 })
-
-
-# tests for compound keys -------------------------------------------------
-
-verify_output(
-  "out/compound-graph.txt",
-  attr(igraph::E(create_graph_from_dm(nyc_comp())), "vnames")
-)
