@@ -697,6 +697,9 @@ test_that("unique_prefix()", {
 # compound tests ----------------------------------------------------------
 
 test_that("output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
   zoomed_comp_dm <- nyc_comp() %>%
     dm_zoom_to(weather)
   # grouped by one key col and one other col
