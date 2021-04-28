@@ -341,7 +341,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
       )
     }
   }
-  dm_rm_fk_impl(dm, table_name, list(cols), ref_table_name)
+  dm_rm_fk_impl(dm, table_name, new_keys(cols), ref_table_name)
 }
 
 #' @rdname deprecated
