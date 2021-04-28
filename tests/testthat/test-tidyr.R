@@ -2,7 +2,7 @@ test_that("basic test: 'unite()'-methods work", {
   # see issue #361
   skip_if_remote_src()
   expect_equivalent_tbl(
-    unite(zoomed_dm(), "new_col", c, e) %>% get_zoomed_tbl(),
+    unite(zoomed_dm(), "new_col", c, e) %>% tbl_zoomed(),
     unite(tf_2(), "new_col", c, e)
   )
 
@@ -18,7 +18,7 @@ test_that("basic test: 'separate()'-methods work", {
     unite(zoomed_dm(), "new_col", c, e) %>%
       separate("new_col", c("c", "e")) %>%
       select(c, d, e) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     tf_2()
   )
 

@@ -91,12 +91,6 @@ is_zoomed <- function(dm) {
   inherits(dm, "zoomed_dm")
 }
 
-get_zoomed_tbl <- function(dm) {
-  dm_get_zoomed_tbl(dm) %>%
-    pull(zoom) %>%
-    pluck(1)
-}
-
 #' @rdname dm_zoom_to
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
@@ -124,7 +118,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   dm <- dm_select_tbl_impl(dm, names_list$new_old_names)
   new_tbl_name_chr <- names_list$new_names
   old_tbl_name <- orig_name_zoomed(dm)
-  new_tbl <- list(get_zoomed_tbl(dm))
+  new_tbl <- list(tbl_zoomed(dm))
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
   all_filters <- get_filter_for_table(dm, old_tbl_name)
   old_filters <- all_filters %>% filter(!zoomed)
@@ -314,8 +308,12 @@ get_tracked_cols <- function(dm) {
   def$col_tracker_zoom[[which(def$table == orig_name_zoomed(dm))]]
 }
 
+tbl_zoomed <- function(dm) {
+  dm_get_zoom(dm)$zoom[[1]]
+}
+
 orig_name_zoomed <- function(dm) {
-  dm_get_zoomed_tbl(dm) %>% pull(table)
+  dm_get_zoom(dm)$table
 }
 
 replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_cols = NULL) {

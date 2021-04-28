@@ -38,18 +38,18 @@ test_that("print() and format() methods for subclass `zoomed_dm` work", {
 })
 
 
-test_that("dm_get_zoomed_tbl() works", {
+test_that("dm_get_zoom() and tbl_zoomed() works", {
   expect_identical(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
-      dm_get_zoomed_tbl() %>%
+      dm_get_zoom() %>%
       pluck("table"),
     "tf_2"
   )
   expect_equivalent_tbl(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
-      dm_get_zoomed_tbl() %>%
+      dm_get_zoom() %>%
       pluck("zoom") %>%
       pluck(1),
     tf_2()
@@ -57,7 +57,7 @@ test_that("dm_get_zoomed_tbl() works", {
 
   # function for getting only the tibble itself works
   expect_equivalent_tbl(
-    dm_for_filter() %>% dm_zoom_to(tf_3) %>% get_zoomed_tbl(),
+    dm_for_filter() %>% dm_zoom_to(tf_3) %>% tbl_zoomed(),
     tf_3()
   )
 })

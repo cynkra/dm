@@ -269,11 +269,13 @@ dm_rm_pk_impl <- function(dm, table_name) {
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")
-#' nycflights13::flights %>%
+#' nycflights13::flights %>%tbl_zoomed
 #'   enum_pk_candidates()
 enum_pk_candidates <- function(table) {
   # a list of ayes and noes:
-  if (is_dm(table) && is_zoomed(table)) table <- get_zoomed_tbl(table)
+  if (is_dm(table) && is_zoomed(table)) {
+    table <- tbl_zoomed(table)
+  }
 
   enum_pk_candidates_impl(table) %>%
     rename(columns = column) %>%

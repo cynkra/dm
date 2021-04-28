@@ -34,7 +34,7 @@ mutate.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 mutate.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   quos <- enquos(..., .named = TRUE)
   mutated_tbl <- mutate(tbl, !!!quos)
   # all columns that are not touched count as "selected"; names of "selected" are identical to "selected"
@@ -52,7 +52,7 @@ transmute.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 transmute.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
   transmuted_tbl <- transmute(tbl, ...)
@@ -69,7 +69,7 @@ select.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 select.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
 
   selected <- eval_select_both(quo(c(...)), colnames(tbl))
   selected_tbl <- select(tbl, !!!selected$indices)
@@ -86,7 +86,7 @@ rename.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 rename.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
 
   renamed <- eval_rename_both(quo(c(...)), colnames(tbl))
   renamed_tbl <- rename(tbl, !!!renamed$indices)
@@ -104,7 +104,7 @@ distinct.dm <- function(.data, ...) {
 #' @param .keep_all For `distinct.zoomed_dm()`: see [`dplyr::distinct`]
 #' @export
 distinct.zoomed_dm <- function(.data, ..., .keep_all = FALSE) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
   # when keeping all columns or empty ellipsis
   # (use all columns for distinct)
@@ -127,7 +127,7 @@ arrange.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 arrange.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   arranged_tbl <- arrange(tbl, ...)
   replace_zoomed_tbl(.data, arranged_tbl)
 }
@@ -143,7 +143,7 @@ slice.dm <- function(.data, ...) {
 #' This argument is specific for the `slice.zoomed_dm()` method.
 #' @export
 slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
-  sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
+  sliced_tbl <- slice(tbl_zoomed(.data), ...)
   orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
   tracked_cols <- get_tracked_cols(.data)
   if (is_null(.keep_pk)) {
@@ -169,7 +169,7 @@ group_by.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 group_by.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   grouped_tbl <- group_by(tbl, ...)
 
   replace_zoomed_tbl(.data, grouped_tbl)
@@ -182,7 +182,7 @@ group_data.dm <- function(.data) {
 
 #' @export
 group_data.zoomed_dm <- function(.data) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   group_data(tbl)
 }
 
@@ -194,7 +194,7 @@ group_keys.dm <- function(.tbl, ...) {
 #' @export
 group_keys.zoomed_dm <- function(.tbl, ...) {
   .data <- .tbl
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   group_keys(tbl, ...)
 }
 
@@ -205,7 +205,7 @@ group_indices.dm <- function(.data, ...) {
 
 #' @export
 group_indices.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   group_indices(tbl, ...)
 }
 
@@ -217,7 +217,7 @@ group_vars.dm <- function(x) {
 #' @export
 group_vars.zoomed_dm <- function(x) {
   .data <- x
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   group_vars(tbl)
 }
 
@@ -229,7 +229,7 @@ groups.dm <- function(x) {
 #' @export
 groups.zoomed_dm <- function(x) {
   .data <- x
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   groups(tbl)
 }
 
@@ -242,7 +242,7 @@ ungroup.dm <- function(x, ...) {
 #' @param x For `ungroup.zoomed_dm`: object of class `zoomed_dm`
 #' @export
 ungroup.zoomed_dm <- function(x, ...) {
-  tbl <- get_zoomed_tbl(x)
+  tbl <- tbl_zoomed(x)
   ungrouped_tbl <- ungroup(tbl, ...)
 
   replace_zoomed_tbl(x, ungrouped_tbl)
@@ -256,7 +256,7 @@ summarise.dm <- function(.data, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 summarise.zoomed_dm <- function(.data, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
   groups <- set_names(map_chr(groups(tbl), as_string))
   summarized_tbl <- summarize(tbl, ...)
@@ -274,7 +274,7 @@ count.dm <- function(x, ...) {
 #' @export
 count.zoomed_dm <- function(x, ..., wt = NULL, sort = FALSE, name = NULL,
                             .drop = group_by_drop_default(x)) {
-  tbl <- get_zoomed_tbl(x)
+  tbl <- tbl_zoomed(x)
 
   if (!missing(...)) {
     out <- group_by(tbl, ..., .add = TRUE, .drop = .drop)
@@ -303,7 +303,7 @@ tally.dm <- function(x, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 tally.zoomed_dm <- function(x, ...) {
-  tbl <- get_zoomed_tbl(x)
+  tbl <- tbl_zoomed(x)
   groups <- set_names(map_chr(groups(tbl), as_string))
 
   out <- tally(tbl, ...)
@@ -326,7 +326,7 @@ pull.dm <- function(.data, var = -1, name = NULL) {
 #' @inheritParams dplyr::pull
 #' @export
 pull.zoomed_dm <- function(.data, var = -1, ...) {
-  tbl <- get_zoomed_tbl(.data)
+  tbl <- tbl_zoomed(.data)
   pull(tbl, var = {{ var }}, ...)
 }
 
@@ -445,7 +445,7 @@ prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE) 
   if (!is_null(suffix)) message("Column names are disambiguated if necessary, `suffix` ignored.")
   if (!is_null(copy)) message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
 
-  x_tbl <- get_zoomed_tbl(x)
+  x_tbl <- tbl_zoomed(x)
   x_orig_name <- orig_name_zoomed(x)
   y_tbl <- dm_get_tables_impl(x)[[y_name]]
   all_cols_y <- colnames(y_tbl)

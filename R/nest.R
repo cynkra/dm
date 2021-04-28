@@ -28,7 +28,7 @@ nest_join_zoomed_dm <- function(x, ...) {
     filter(child_table %in% selected) %>%
     # perform joins in the order given in the ellipsis
     arrange(match(child_table, selected))
-  x <- get_zoomed_tbl(zoomed_dm)
+  x <- tbl_zoomed(zoomed_dm)
 
   for (i in seq_len(nrow(child_tables))) {
     x <- nest_join(

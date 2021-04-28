@@ -3,7 +3,7 @@
 
 test_that("basic test: 'group_by()'-methods work", {
   expect_equivalent_tbl(
-    group_by(zoomed_dm(), e) %>% get_zoomed_tbl(),
+    group_by(zoomed_dm(), e) %>% tbl_zoomed(),
     group_by(tf_2(), e)
   )
 
@@ -15,7 +15,7 @@ test_that("basic test: 'group_by()'-methods work", {
 
 test_that("basic test: 'select()'-methods work", {
   expect_equivalent_tbl(
-    select(zoomed_dm(), e, a = c) %>% get_zoomed_tbl(),
+    select(zoomed_dm(), e, a = c) %>% tbl_zoomed(),
     select(tf_2(), e, a = c)
   )
 
@@ -27,7 +27,7 @@ test_that("basic test: 'select()'-methods work", {
 
 test_that("basic test: 'rename()'-methods work", {
   expect_equivalent_tbl(
-    rename(zoomed_dm(), a = c) %>% get_zoomed_tbl(),
+    rename(zoomed_dm(), a = c) %>% tbl_zoomed(),
     rename(tf_2(), a = c)
   )
 
@@ -39,7 +39,7 @@ test_that("basic test: 'rename()'-methods work", {
 
 test_that("basic test: 'mutate()'-methods work", {
   expect_equivalent_tbl(
-    mutate(zoomed_dm(), d_2 = d * 2) %>% get_zoomed_tbl(),
+    mutate(zoomed_dm(), d_2 = d * 2) %>% tbl_zoomed(),
     mutate(tf_2(), d_2 = d * 2)
   )
 
@@ -52,7 +52,7 @@ test_that("basic test: 'mutate()'-methods work", {
 
 test_that("basic test: 'transmute()'-methods work", {
   expect_equivalent_tbl(
-    transmute(zoomed_dm(), d_2 = d * 2) %>% get_zoomed_tbl(),
+    transmute(zoomed_dm(), d_2 = d * 2) %>% tbl_zoomed(),
     transmute(tf_2(), d_2 = d * 2)
   )
 
@@ -64,7 +64,7 @@ test_that("basic test: 'transmute()'-methods work", {
 
 test_that("basic test: 'ungroup()'-methods work", {
   expect_equivalent_tbl(
-    group_by(zoomed_dm(), e) %>% ungroup() %>% get_zoomed_tbl(),
+    group_by(zoomed_dm(), e) %>% ungroup() %>% tbl_zoomed(),
     group_by(tf_2(), e) %>% ungroup()
   )
 
@@ -76,7 +76,7 @@ test_that("basic test: 'ungroup()'-methods work", {
 
 test_that("basic test: 'summarise()'-methods work", {
   expect_equivalent_tbl(
-    summarise(zoomed_dm(), d_2 = mean(d, na.rm = TRUE)) %>% get_zoomed_tbl(),
+    summarise(zoomed_dm(), d_2 = mean(d, na.rm = TRUE)) %>% tbl_zoomed(),
     summarise(tf_2(), d_2 = mean(d, na.rm = TRUE))
   )
 
@@ -88,27 +88,27 @@ test_that("basic test: 'summarise()'-methods work", {
 
 test_that("basic test: 'count()'-method works", {
   expect_equivalent_tbl(
-    count(zoomed_dm()) %>% get_zoomed_tbl(),
+    count(zoomed_dm()) %>% tbl_zoomed(),
     count(tf_2())
   )
 
   expect_equivalent_tbl(
-    count(zoomed_dm(), c) %>% get_zoomed_tbl(),
+    count(zoomed_dm(), c) %>% tbl_zoomed(),
     count(tf_2(), c)
   )
 
   expect_equivalent_tbl(
-    count(zoomed_dm(), wt = d) %>% get_zoomed_tbl(),
+    count(zoomed_dm(), wt = d) %>% tbl_zoomed(),
     count(tf_2(), wt = d)
   )
 
   expect_equivalent_tbl(
-    count(zoomed_dm(), sort = TRUE) %>% get_zoomed_tbl(),
+    count(zoomed_dm(), sort = TRUE) %>% tbl_zoomed(),
     count(tf_2(), sort = TRUE)
   )
 
   expect_equivalent_tbl(
-    count(zoomed_dm(), name = "COUNT") %>% get_zoomed_tbl(),
+    count(zoomed_dm(), name = "COUNT") %>% tbl_zoomed(),
     count(tf_2(), name = "COUNT")
   )
 
@@ -120,7 +120,7 @@ test_that("basic test: 'count()'-method works", {
 
 test_that("basic test: 'tally()'-method works", {
   expect_equivalent_tbl(
-    tally(zoomed_dm()) %>% get_zoomed_tbl(),
+    tally(zoomed_dm()) %>% tbl_zoomed(),
     tally(tf_2())
   )
 
@@ -165,13 +165,13 @@ test_that("basic test: 'distinct()'-methods work", {
 test_that("basic test: 'arrange()'-methods work", {
   # standard arrange
   expect_equivalent_tbl(
-    arrange(zoomed_dm(), e) %>% get_zoomed_tbl(),
+    arrange(zoomed_dm(), e) %>% tbl_zoomed(),
     arrange(tf_2(), e)
   )
 
   # arrange within groups
   expect_equivalent_tbl(
-    group_by(zoomed_dm(), e) %>% arrange(desc(d), .by_group = TRUE) %>% get_zoomed_tbl(),
+    group_by(zoomed_dm(), e) %>% arrange(desc(d), .by_group = TRUE) %>% tbl_zoomed(),
     arrange(group_by(tf_2(), e), desc(d), .by_group = TRUE)
   )
 
@@ -184,7 +184,7 @@ test_that("basic test: 'arrange()'-methods work", {
 test_that("basic test: 'slice()'-methods work", {
   skip_if_remote_src()
   expect_message(
-    expect_equivalent_tbl(slice(zoomed_dm(), 3:6) %>% get_zoomed_tbl(), slice(tf_2(), 3:6)),
+    expect_equivalent_tbl(slice(zoomed_dm(), 3:6) %>% tbl_zoomed(), slice(tf_2(), 3:6)),
     "`slice.zoomed_dm\\(\\)` can potentially"
   )
 
@@ -194,7 +194,7 @@ test_that("basic test: 'slice()'-methods work", {
       dm_for_disambiguate() %>%
         dm_zoom_to(iris_3) %>%
         slice(1:3) %>%
-        get_zoomed_tbl(),
+        tbl_zoomed(),
       iris_3() %>%
         slice(1:3)
     )
@@ -207,7 +207,7 @@ test_that("basic test: 'slice()'-methods work", {
 
   expect_silent(
     expect_equivalent_tbl(
-      slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% get_zoomed_tbl(),
+      slice(zoomed_dm(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% tbl_zoomed(),
       slice(tf_2(), if_else(d < 5, 1:6, 7:2))
     )
   )
@@ -306,7 +306,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   out <- expect_message(
     dm_zoom_to(dm_for_disambiguate(), iris_2) %>%
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col")) %>%
-      get_zoomed_tbl()
+      tbl_zoomed()
   )
   expect_equivalent_tbl(
     out,
@@ -323,7 +323,7 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   expect_message(expect_message(
     dm_zoom_to(dm_for_disambiguate(), iris_2) %>%
       left_join(iris_2, by = c("key", "Sepal.Width", "other_col"), select = -key) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     "Using `select = c(-key, key)`.",
     fixed = TRUE
   ))
@@ -582,28 +582,28 @@ test_that("key tracking works", {
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     tbl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       transmute(celsius_temp = (temp - 32) * 5 / 9) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     tbl(dm_nycflights_small(), "weather") %>% transmute(celsius_temp = (temp - 32) * 5 / 9)
   )
 
@@ -614,7 +614,7 @@ test_that("key tracking works", {
   expect_equivalent_tbl(
     dm_zoom_to(dm_nycflights_small(), weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     tbl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 })
@@ -656,7 +656,7 @@ test_that("'summarize_at()' etc. work", {
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
       summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     dm_nycflights_small() %>%
       pull_tbl(airports) %>%
       summarize_at(vars(lat, lon), list(mean = mean, min = min, max = max), na.rm = TRUE)
@@ -667,7 +667,7 @@ test_that("'summarize_at()' etc. work", {
       dm_zoom_to(airports) %>%
       select(3:6) %>%
       summarize_all(list(mean = mean, sum = sum), na.rm = TRUE) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     dm_nycflights_small() %>%
       pull_tbl(airports) %>%
       select(3:6) %>%
@@ -679,7 +679,7 @@ test_that("'summarize_at()' etc. work", {
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
       summarize_if(is_double, list(mean = mean, sum = sum), na.rm = TRUE) %>%
-      get_zoomed_tbl(),
+      tbl_zoomed(),
     dm_nycflights_small() %>%
       pull_tbl(airports) %>%
       summarize_if(is_double, list(mean = mean, sum = sum), na.rm = TRUE)
