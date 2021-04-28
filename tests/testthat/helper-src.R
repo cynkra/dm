@@ -44,7 +44,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
     # We want all dm operations to work with key constraints on the database
     # (except for bad_dm)
     # message(name)
-    suppressMessages(copy_dm_to(src, rhs, set_key_constraints = (name != "bad_dm")))
+    suppressMessages(copy_dm_to(src, rhs))
   } else if (inherits(rhs, "list")) {
     suppressMessages(
       map(rhs, ~ copy_to(src, .x, name = unique_db_table_name(name), temporary = TRUE))
@@ -489,8 +489,13 @@ tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5, NA)), x = LETTERS[3:7], b = a)
 tbl_2 %<-% tibble(id = c(1:3, 3), x = LETTERS[c(3:5, 5)], c = letters[1:4])
 tbl_3 %<-% tibble(id = c(2:4, 4), d = letters[2:5])
 
-bad_dm %<-% {
-  as_dm(list(tbl_1 = tbl_1(), tbl_2 = tbl_2(), tbl_3 = tbl_3())) %>%
+bad_dm_base %<-% {
+  as_dm(list(tbl_1 = tbl_1(), tbl_2 = tbl_2(), tbl_3 = tbl_3()))
+}
+
+# avoid copying constraints for invalid dm
+bad_dm %<--% {
+  bad_dm_base() %>%
     dm_add_pk(tbl_2, c(id, x)) %>%
     dm_add_pk(tbl_3, id) %>%
     dm_add_fk(tbl_1, c(a, x), tbl_2) %>%
