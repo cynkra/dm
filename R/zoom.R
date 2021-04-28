@@ -161,9 +161,8 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
 #' @rdname dm_zoom_to
 #' @export
 dm_update_zoomed <- function(dm) {
-  if (!is_zoomed(dm)) {
-    return(dm)
-  }
+  check_zoomed(dm)
+
   table_name <- orig_name_zoomed(dm)
   orig_colnames <- colnames(dm_get_tables_impl(dm)[[table_name]])
   tracked_cols <- get_tracked_cols(dm)
@@ -307,10 +306,9 @@ dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
 }
 
 get_tracked_cols <- function(dm) {
-  dm_get_def(dm) %>%
-    filter(table == orig_name_zoomed(dm)) %>%
-    pull(col_tracker_zoom) %>%
-    pluck(1)
+  def <- dm_get_def(dm)
+
+  def$col_tracker_zoom[[which(def$table == orig_name_zoomed(dm))]]
 }
 
 orig_name_zoomed <- function(dm) {
@@ -320,9 +318,12 @@ orig_name_zoomed <- function(dm) {
 replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_cols = NULL) {
   table <- orig_name_zoomed(dm)
   def <- dm_get_def(dm)
-  def$zoom[def$table == table] <- list(new_zoomed_tbl)
+  where <- which(def$table == table)
+  def$zoom[[where]] <- new_zoomed_tbl
   # the tracked columns are only replaced if they changed, otherwise this function is called with default `NULL`
-  if (!is_null(tracked_cols)) def$col_tracker_zoom[def$table == table] <- list(tracked_cols)
+  if (!is_null(tracked_cols)) {
+    def$col_tracker_zoom[[where]] <- tracked_cols
+  }
   new_dm3(def, zoomed = TRUE)
 }
 
