@@ -54,7 +54,7 @@ dm_add_fk <- function(dm, table, columns, ref_table, check = FALSE) {
   col_expr <- enexpr(columns)
   col_name <- names(eval_select_indices(col_expr, colnames(table)))
 
-  ref_key <- dm_get_pk2_impl(dm, ref_table_name)
+  ref_key <- dm_get_pk_impl(dm, ref_table_name)
 
   if (is_empty(ref_key)) {
     abort_ref_tbl_has_no_pk(ref_table_name)
@@ -327,7 +327,7 @@ dm_enum_fk_candidates <- function(dm, table, ref_table) {
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
-  ref_tbl_pk <- dm_get_pk2_impl(dm, ref_table_name)
+  ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
 
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)
@@ -349,7 +349,7 @@ enum_fk_candidates <- function(zoomed_dm, ref_table) {
   table_name <- orig_name_zoomed(zoomed_dm)
   ref_table_name <- dm_tbl_name(zoomed_dm, {{ ref_table }})
 
-  ref_tbl_pk <- dm_get_pk2_impl(zoomed_dm, ref_table_name)
+  ref_tbl_pk <- dm_get_pk_impl(zoomed_dm, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(zoomed_dm)[[ref_table_name]]
   enum_fk_candidates_impl(table_name, get_zoomed_tbl(zoomed_dm), ref_table_name, ref_tbl, ref_tbl_pk) %>%

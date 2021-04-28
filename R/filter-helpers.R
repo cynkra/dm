@@ -23,9 +23,9 @@ dm_nrow <- function(dm) {
 get_by <- function(dm, lhs_name, rhs_name) {
   if (dm_has_fk_impl(dm, lhs_name, rhs_name)) {
     lhs_col <- dm_get_fk_impl(dm, lhs_name, rhs_name)
-    rhs_col <- dm_get_pk2_impl(dm, rhs_name)
+    rhs_col <- dm_get_pk_impl(dm, rhs_name)
   } else if (dm_has_fk_impl(dm, rhs_name, lhs_name)) {
-    lhs_col <- dm_get_pk2_impl(dm, lhs_name)
+    lhs_col <- dm_get_pk_impl(dm, lhs_name)
     rhs_col <- dm_get_fk_impl(dm, rhs_name, lhs_name)
   } else {
     abort_tables_not_neighbors(lhs_name, rhs_name)

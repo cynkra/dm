@@ -144,7 +144,7 @@ slice.dm <- function(.data, ...) {
 #' @export
 slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
   sliced_tbl <- slice(get_zoomed_tbl(.data), ...)
-  orig_pk <- dm_get_pk2_impl(.data, orig_name_zoomed(.data))
+  orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
   tracked_cols <- get_tracked_cols(.data)
   if (is_null(.keep_pk)) {
     if (has_length(orig_pk) && any(unlist(orig_pk) %in% tracked_cols)) {

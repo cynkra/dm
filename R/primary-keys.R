@@ -109,7 +109,7 @@ dm_has_pk <- function(dm, table) {
 }
 
 dm_has_pk_impl <- function(dm, table) {
-  has_length(dm_get_pk2_impl(dm, table))
+  has_length(dm_get_pk_impl(dm, table))
 }
 
 #' Primary key column names
@@ -146,10 +146,10 @@ dm_has_pk_impl <- function(dm, table) {
 dm_get_pk <- function(dm, table) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
-  new_keys(dm_get_pk2_impl(dm, table_name))
+  new_keys(dm_get_pk_impl(dm, table_name))
 }
 
-dm_get_pk2_impl <- function(dm, table_name) {
+dm_get_pk_impl <- function(dm, table_name) {
   # Optimized
   def <- dm_get_def(dm)
   pks <- def$pks[[which(def$table == table_name)]]

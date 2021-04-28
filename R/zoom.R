@@ -235,7 +235,7 @@ clean_zoom <- function(def) {
 update_zoomed_pk <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
-  orig_pk <- dm_get_pk2_impl(dm, old_tbl_name)
+  orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
 
   stopifnot(length(orig_pk) <= 1)
   if (has_length(orig_pk) && all(orig_pk[[1]] %in% tracked_cols)) {
@@ -250,7 +250,7 @@ update_zoomed_pk <- function(dm) {
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
-  orig_pk <- dm_get_pk2_impl(dm, old_tbl_name)
+  orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
 
   stopifnot(length(orig_pk) <= 1)
   if (has_length(orig_pk) && all(orig_pk[[1]] %in% tracked_cols)) {
