@@ -510,7 +510,7 @@ test_that("key tracking works", {
       transmute(c = paste0(c, "_animal")) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    new_keys(set_names"e_new")
+    new_keys("e_new")
   )
 
   # FKs that point to a PK that vanished, should also vanish
