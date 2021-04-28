@@ -436,7 +436,7 @@ test_that("output", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    print(collect(dm()))
+    print(dm())
 
     nyc_flights_dm <- dm_nycflights_small()
     collect(nyc_flights_dm)

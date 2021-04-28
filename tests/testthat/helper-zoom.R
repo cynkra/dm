@@ -1,7 +1,6 @@
 
 # helper to check if key tracking works
 get_all_keys <- function(dm, table_name) {
-  # FIXME: Efficiency
   fks <- dm_get_all_fks_impl(dm) %>%
     filter(child_table == table_name) %>%
     pull(child_fk_cols)

@@ -31,7 +31,9 @@ test_that("basic test: 'separate()'-methods work", {
 test_that("key tracking works", {
   skip_if_remote_src()
   expect_identical(
-    unite(zoomed_dm(), "new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys("tf_2"),
+    unite(zoomed_dm(), "new_col", c, e) %>%
+      dm_update_zoomed() %>%
+      get_all_keys("tf_2"),
     new_keys("d")
   )
 

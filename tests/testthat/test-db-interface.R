@@ -112,10 +112,6 @@ test_that("table identifiers are quoted", {
   expect_true(all(grepl(pattern, remote_names)))
 })
 
-# FIXME: COMPOUND:: Testing `copy_dm_to()` of a dm with compound keys is pretty much redundant,
-# since `%<-%`() already uses this function for the `nyc_comp`, which is used for a lot of
-# other tests, which would all fail, should the copying part not work
-
 test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
   skip_if_src_not(c("mssql", "postgres"))
 

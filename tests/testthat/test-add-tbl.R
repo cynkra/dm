@@ -127,8 +127,8 @@ test_that("dm_rm_tbl() works", {
 test_that("dm_add_tbl() and dm_rm_tbl() for compound keys", {
   expect_snapshot({
     dm_add_tbl(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
-    dm_rm_tbl(dm_for_flatten(), dim_1) %>% collect() %>% dm_paste(options = c("select", "keys"))
-    dm_rm_tbl(dm_for_flatten(), fact) %>% collect() %>% dm_paste(options = c("select", "keys"))
+    dm_rm_tbl(dm_for_flatten(), dim_1) %>% dm_paste(options = c("select", "keys"))
+    dm_rm_tbl(dm_for_flatten(), fact) %>% dm_paste(options = c("select", "keys"))
   })
 })
 

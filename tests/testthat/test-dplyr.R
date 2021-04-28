@@ -448,7 +448,7 @@ test_that("key tracking works", {
       summarize(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    new_keys(character())
+    new_keys()
   )
 
   # transmute()

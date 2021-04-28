@@ -1,7 +1,7 @@
 # output
 
     Code
-      print(collect(dm()))
+      print(dm())
     Output
       dm()
     Code
