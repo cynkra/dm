@@ -76,7 +76,7 @@ is_unique_key_se <- function(.data, colname) {
     safe_count(!!!col_syms) %>%
     mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
     filter(n != 1 | any_na != 0L) %>%
-    arrange(desc(n)) %>%
+    arrange(desc(n), !!!syms(val_names)) %>%
     utils::head(MAX_COMMAS + 1) %>%
     collect()
 

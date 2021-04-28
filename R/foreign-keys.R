@@ -395,7 +395,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
       filter(!(!!any_value_na_expr)) %>%
       anti_join(t2_join, by = val_names) %>%
-      arrange(desc(n)) %>%
+      arrange(desc(n), !!!syms(val_names)) %>%
       head(MAX_COMMAS + 1L) %>%
       collect(),
     error = identity
