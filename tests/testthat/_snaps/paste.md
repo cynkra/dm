@@ -188,19 +188,6 @@
         dm::dm_set_colors(`#ED7D31FF` = planes) %>%
         dm::dm_set_colors(`#70AD47FF` = weather)
     Code
-      # compound keys
-      nyc_comp() %>% dm_paste()
-    Message <cliMessage>
-      dm::dm(airlines, airports, flights, planes, weather) %>%
-        dm::dm_add_pk(airlines, carrier) %>%
-        dm::dm_add_pk(airports, faa) %>%
-        dm::dm_add_pk(planes, tailnum) %>%
-        dm::dm_add_pk(weather, c(origin, time_hour)) %>%
-        dm::dm_add_fk(flights, carrier, airlines) %>%
-        dm::dm_add_fk(flights, dest, airports) %>%
-        dm::dm_add_fk(flights, tailnum, planes) %>%
-        dm::dm_add_fk(flights, c(origin, time_hour), weather)
-    Code
       # deprecation warning for select argument
       dm() %>% dm_paste(select = TRUE)
     Warning <lifecycle_warning_deprecated>
