@@ -15,7 +15,7 @@
         child_table child_fk_cols     parent_table parent_pk_cols   
         <chr>       <keys>            <chr>        <keys>           
       1 flights     carrier           airlines     carrier          
-      2 flights     origin            airports     faa              
+      2 flights     dest              airports     faa              
       3 flights     tailnum           planes       tailnum          
       4 flights     origin, time_hour weather      origin, time_hour
 

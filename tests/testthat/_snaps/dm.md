@@ -5,26 +5,26 @@
     Output
       dm()
     Code
-      nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
+      nyc_flights_dm <- dm_nycflights_small_cycle()
       nyc_flights_dm
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
-      Primary keys: 4
-      Foreign keys: 5
+      Primary keys: 3
+      Foreign keys: 4
     Code
       nyc_flights_dm %>% format()
     Output
-      dm: 5 tables, 53 columns, 4 primary keys, 5 foreign keys
+      dm: 5 tables, 53 columns, 3 primary keys, 4 foreign keys
     Code
       nyc_flights_dm %>% dm_filter(flights, origin == "EWR")
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
-      Primary keys: 4
-      Foreign keys: 5
+      Primary keys: 3
+      Foreign keys: 4
       -- Filters ---------------------------------------------------------------------
       flights: origin == "EWR"
 
@@ -60,12 +60,12 @@
     Output
       # A tibble: 5 x 9
         table  data    segment display      pks     fks filters zoom  col_tracker_zoom
-        <chr>  <list>  <chr>   <chr>    <list<> <list<> <list<> <lis> <list>          
-      1 airli~ <tibbl~ <NA>    #ED7D31~ [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      2 airpo~ <tibbl~ <NA>    #ED7D31~ [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      3 fligh~ <tibbl~ <NA>    #5B9BD5~ [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
-      4 planes <tibbl~ <NA>    #ED7D31~ [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      5 weath~ <tibbl~ <NA>    #70AD47~ [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+        <chr>  <list>  <chr>   <chr>   <list<t> <list<> <list<> <lis> <list>          
+      1 airli~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+      2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+      3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
+      4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
@@ -73,12 +73,12 @@
     Output
       # A tibble: 5 x 9
         table  data    segment display      pks     fks filters zoom  col_tracker_zoom
-        <chr>  <list>  <chr>   <chr>    <list<> <list<> <list<> <lis> <list>          
-      1 airli~ <tibbl~ <NA>    #ED7D31~ [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      2 airpo~ <tibbl~ <NA>    #ED7D31~ [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      3 fligh~ <tibbl~ <NA>    #5B9BD5~ [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
-      4 planes <tibbl~ <NA>    #ED7D31~ [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      5 weath~ <tibbl~ <NA>    #70AD47~ [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+        <chr>  <list>  <chr>   <chr>   <list<t> <list<> <list<> <lis> <list>          
+      1 airli~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+      2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+      3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
+      4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
+      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message <simpleMessage>

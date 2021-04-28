@@ -438,7 +438,7 @@ test_that("output", {
   expect_snapshot({
     print(dm())
 
-    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
+    nyc_flights_dm <- dm_nycflights_small_cycle()
     nyc_flights_dm
 
     nyc_flights_dm %>%

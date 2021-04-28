@@ -10,7 +10,7 @@
       [1] "carrier"
       
       [[2]]
-      [1] "origin"
+      [1] "dest"
       
       [[3]]
       [1] "tailnum"
@@ -24,11 +24,14 @@
         unite("new_col", origin, chr_col) %>% dm_update_zoomed()
       unite_flights_dm %>% get_all_keys("flights")
     Output
-      <list_of<character>[2]>
+      <list_of<character>[3]>
       [[1]]
       [1] "carrier"
       
       [[2]]
+      [1] "dest"
+      
+      [[3]]
       [1] "tailnum"
       
     Code

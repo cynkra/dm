@@ -16,33 +16,23 @@ test_that("API", {
 test_that("`dm_set_colors()` works", {
   skip_if_not_installed("nycflights13")
 
-  expect_identical(
-    dm_set_colors(
-      dm_nycflights_small(),
-      blue = starts_with("air"),
-      green = contains("h")
-    ) %>%
-      dm_get_colors(),
-    set_names(
-      src_tbls(dm_nycflights_small()),
-      c("#00FF00FF", "default", "#0000FFFF", "#0000FFFF", "#00FF00FF")
-    )
-  )
+  expect_snapshot({
+    dm_nycflights_small() %>%
+      dm_set_colors(
+        blue = starts_with("air"),
+        green = contains("h")
+      ) %>%
+        dm_get_colors()
+  })
 
-  # test splicing
   colset <- c(blue = "flights", green = "airports")
 
-  expect_identical(
-    dm_set_colors(
-      dm_nycflights_small(),
-      !!!colset
-    ) %>%
-      dm_get_colors(),
-    set_names(
-      src_tbls(dm_nycflights_small()),
-      c("#0000FFFF", "default", "default", "#00FF00FF", "default")
-    )
-  )
+  # test splicing
+  expect_snapshot({
+    dm_nycflights_small() %>%
+      dm_set_colors(!!!colset) %>%
+      dm_get_colors()
+  })
 })
 
 test_that("`dm_set_colors()` errors if old syntax used", {

@@ -197,14 +197,9 @@
         dm::dm_add_pk(planes, tailnum) %>%
         dm::dm_add_pk(weather, c(origin, time_hour)) %>%
         dm::dm_add_fk(flights, carrier, airlines) %>%
-        dm::dm_add_fk(flights, origin, airports) %>%
+        dm::dm_add_fk(flights, dest, airports) %>%
         dm::dm_add_fk(flights, tailnum, planes) %>%
-        dm::dm_add_fk(flights, c(origin, time_hour), weather) %>%
-        dm::dm_set_colors(`#ED7D31FF` = airlines) %>%
-        dm::dm_set_colors(`#ED7D31FF` = airports) %>%
-        dm::dm_set_colors(`#5B9BD5FF` = flights) %>%
-        dm::dm_set_colors(`#ED7D31FF` = planes) %>%
-        dm::dm_set_colors(`#70AD47FF` = weather)
+        dm::dm_add_fk(flights, c(origin, time_hour), weather)
     Code
       # deprecation warning for select argument
       dm() %>% dm_paste(select = TRUE)

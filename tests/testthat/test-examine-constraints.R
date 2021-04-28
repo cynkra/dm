@@ -1,16 +1,3 @@
-# https://github.com/r-lib/vctrs/issues/1373
-nyc_check <- tibble::tribble(
-  ~table,     ~kind, ~columns,  ~ref_table, ~is_key, ~problem,
-  "flights",  "FK",  "tailnum", "planes",   FALSE,   "<reason>",
-  "flights",  "FK",  "dest",    "airports", FALSE,   "<reason>",
-  "airlines", "PK",  "carrier", NA,         TRUE,    "",
-  "airports", "PK",  "faa",     NA,         TRUE,    "",
-  "planes",   "PK",  "tailnum", NA,         TRUE,    "",
-  "flights",  "FK",  "carrier", "airlines", TRUE,    "",
-) %>%
-  mutate(columns = new_keys(columns)) %>%
-  new_dm_examine_constraints()
-
 test_that("`dm_examine_constraints()` works", {
 
   # case of no constraints:
@@ -42,15 +29,6 @@ test_that("`dm_examine_constraints()` works", {
     ) %>%
       new_dm_examine_constraints()
   )
-
-  skip_if_not_installed("nycflights13")
-
-  # case of some constraints, some violated:
-  expect_identical(
-    dm_examine_constraints(dm_nycflights_small()) %>%
-      mutate(problem = if_else(problem == "", "", "<reason>")),
-    nyc_check
-  )
 })
 
 test_that("output", {
@@ -59,9 +37,9 @@ test_that("output", {
   expect_snapshot({
     dm() %>% dm_examine_constraints()
 
-    dm_nycflights13() %>% dm_examine_constraints()
-    dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
-    dm_nycflights13(cycle = TRUE) %>%
+    dm_nycflights_small() %>% dm_examine_constraints()
+    dm_nycflights_small_cycle() %>% dm_examine_constraints()
+    dm_nycflights_small_cycle() %>%
       dm_select_tbl(-flights) %>%
       dm_examine_constraints()
 
@@ -75,7 +53,7 @@ test_that("output as tibble", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    dm_nycflights13(cycle = TRUE) %>%
+    dm_nycflights_small_cycle() %>%
       dm_examine_constraints() %>%
       as_tibble()
   })

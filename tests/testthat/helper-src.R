@@ -498,17 +498,13 @@ bad_dm %<-% {
 }
 
 dm_nycflights_small_base %<-% {
-  dm(
-    flights =
-      nycflights13::flights %>%
-        slice(1:800),
-    planes = nycflights13::planes,
-    airlines = nycflights13::airlines,
-    airports = nycflights13::airports,
-    weather =
-      nycflights13::weather %>%
-        slice(1:800)
-  )
+  airlines <- nycflights13::airlines
+  airports <- nycflights13::airports
+  planes <- nycflights13::planes
+  flights <- flights_subset()
+  weather <- weather_subset()
+
+  dm(airlines, airports, flights, planes, weather)
 }
 
 # Do not add PK and FK constraints to the database
@@ -522,7 +518,16 @@ dm_nycflights_small %<--% {
     dm_add_fk(flights, dest, airports)
 }
 
-nyc_comp %<-% dm_nycflights13(compound = TRUE)
+dm_nycflights_small_cycle %<--% {
+  dm_nycflights_small() %>%
+    dm_add_fk(flights, origin, airports)
+}
+
+nyc_comp %<--% {
+  dm_nycflights_small() %>%
+    dm_add_pk(weather, c(origin, time_hour)) %>%
+    dm_add_fk(flights, c(origin, time_hour), weather)
+}
 
 zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)
 zoomed_dm_2 <- function() dm_zoom_to(dm_for_filter(), tf_3)

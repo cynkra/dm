@@ -43,7 +43,7 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE, compound
     dm_add_pk(planes, tailnum) %>%
     dm_add_pk(airlines, carrier) %>%
     dm_add_pk(airports, faa) %>%
-    dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+    dm_add_fk(flights, tailnum, planes) %>%
     dm_add_fk(flights, carrier, airlines) %>%
     dm_add_fk(flights, origin, airports)
 
