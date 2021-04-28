@@ -306,10 +306,9 @@ dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
 }
 
 get_tracked_cols <- function(dm) {
-  dm_get_def(dm) %>%
-    filter(table == orig_name_zoomed(dm)) %>%
-    pull(col_tracker_zoom) %>%
-    pluck(1)
+  def <- dm_get_def(dm)
+
+  def$col_tracker_zoom[[which(def$table == orig_name_zoomed(dm))]]
 }
 
 orig_name_zoomed <- function(dm) {
