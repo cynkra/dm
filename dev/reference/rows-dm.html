@@ -373,7 +373,7 @@ and <code>x</code> is returned, invisibly.</p>
 <span class='co'># Check for consistency before applying:</span>
 <span class='va'>flights_new</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_examine_constraints.html'>dm_examine_constraints</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>●</span><span> Table `flights`: foreign key tailnum into table `planes`: 166 values (14.9%) of `flights$tailnum` not in `planes$tailnum`: N0EGMQ, N318AT, N395AA, N3ACAA, N3AEMQ, …</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Unsatisfied constraints:</span></div><div class='output co'>#&gt; </span><span style='color: #BB0000;'>•</span><span> Table `flights`: foreign key tailnum into table `planes`: 166 values (14.9%) of `flights$tailnum` not in `planes$tailnum`: N0EGMQ, N318AT, N395AA, N3ACAA, N3AEMQ, …</div><div class='input'>
 <span class='co'># Apply:</span>
 <span class='fu'>dm_rows_insert</span><span class='op'>(</span><span class='va'>flights_sqlite</span>, <span class='va'>flights_feb_sqlite</span>, in_place <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='va'>flights_sqlite</span><span class='op'>)</span><span class='op'>)</span>

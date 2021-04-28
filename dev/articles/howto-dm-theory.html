@@ -137,7 +137,7 @@
       <h1 data-toc-skip>Introduction to relational data models</h1>
                         <h4 data-toc-skip class="author">Katharina Brunner</h4>
             
-            <h4 data-toc-skip class="date">2021-04-26</h4>
+            <h4 data-toc-skip class="date">2021-04-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/master/vignettes/howto-dm-theory.Rmd" class="external-link"><code>vignettes/howto-dm-theory.Rmd</code></a></small>
       <div class="hidden name"><code>howto-dm-theory.Rmd</code></div>
@@ -354,8 +354,8 @@
   <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre class="fansi fansi-message"><code>#&gt; <span style="color: #BBBB00;">!</span><span> Unsatisfied constraints:
 </span></code></pre>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BB0000;">●</span><span> Table `flights`: foreign key dest into table `airports`: 4 values (4.1%) of `flights$dest` not in `airports$faa`: BQN, PSE, SJU, STT
-#&gt; </span><span style="color: #BB0000;">●</span><span> Table `flights`: foreign key tailnum into table `planes`: 497 values (17.5%) of `flights$tailnum` not in `planes$tailnum`: N0EGMQ, N1EAMQ, N200AA, N263AV, N267AT, …
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BB0000;">•</span><span> Table `flights`: foreign key dest into table `airports`: 4 values (4.1%) of `flights$dest` not in `airports$faa`: BQN, PSE, SJU, STT
+#&gt; </span><span style="color: #BB0000;">•</span><span> Table `flights`: foreign key tailnum into table `planes`: 497 values (17.5%) of `flights$tailnum` not in `planes$tailnum`: N0EGMQ, N1EAMQ, N200AA, N263AV, N267AT, …
 </span></code></pre>
 <p>Establishing referential integrity is important for providing clean data for analysis or downstream users. See <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code> for more information on adding, deleting or updating individual rows, and <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code> for operations on the data in a data model.</p>
 </div>
