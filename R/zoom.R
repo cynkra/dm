@@ -184,13 +184,16 @@ dm_update_zoomed <- function(dm) {
     new_def$pks[[where]] <- update_zoomed_pk(dm)
     new_def$fks[[where]] <- update_zoomed_incoming_fks(dm)
 
-    new_dm3(new_def, zoomed = TRUE) %>%
-      dm_update_zoomed_outgoing_fks() %>%
-      dm_clean_zoomed()
+    out <-
+      new_def %>%
+      new_dm3(zoomed = TRUE) %>%
+      dm_update_zoomed_outgoing_fks()
   } else {
-    new_dm3(new_def, zoomed = TRUE) %>%
-      dm_clean_zoomed()
+    out <- new_dm3(new_def, zoomed = TRUE)
   }
+
+  out %>%
+    dm_clean_zoomed()
 }
 
 #' @rdname dm_zoom_to
