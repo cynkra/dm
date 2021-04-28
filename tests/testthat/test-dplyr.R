@@ -496,7 +496,7 @@ test_that("key tracking works", {
       mutate(g_new = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    new_keys(set_names"f")
+    new_keys("f")
   )
 
   # chain of renames & other transformations

@@ -180,7 +180,7 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   nycflights_example <- tibble::tribble(
     ~column,     ~candidate,       ~why,
     "origin",          TRUE,         "",
-    "year",           FALSE, "<reason>"
+    "year",           FALSE, "<reason>",
     "month",          FALSE, "<reason>",
     "day",            FALSE, "<reason>",
     "dep_time",       FALSE, "<reason>",
