@@ -123,3 +123,29 @@ test_that("all cols are tracked in zoomed table", {
     set_names(colnames(tbl(dm_nycflights_small(), "flights")))
   )
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+test_that("zoom output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  expect_snapshot({
+    nyc_comp() %>% dm_zoom_to(weather)
+    nyc_comp() %>% dm_zoom_to(weather) %>% dm_update_zoomed()
+    nyc_comp_2 <- nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      dm_insert_zoomed("weather_2")
+    nyc_comp_2
+    attr(igraph::E(create_graph_from_dm(nyc_comp_2)), "vnames")
+    dm_get_pk(nyc_comp_2, weather_2)
+
+    nyc_comp_3 <- nyc_comp() %>%
+      dm_zoom_to(flights) %>%
+      dm_insert_zoomed("flights_2")
+    nyc_comp_3
+    attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")
+    dm_get_fk(nyc_comp_3, flights_2, weather)
+  })
+})

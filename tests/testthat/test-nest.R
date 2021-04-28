@@ -1,4 +1,5 @@
 test_that("'nest_join_zoomed_dm()'-method for `zoomed_dm` works", {
+  skip("FIXME")
   skip_if_remote_src()
   expect_equivalent_tbl(
     zoomed_dm_2() %>%
@@ -43,3 +44,14 @@ test_that("'nest_join_zoomed_dm()' fails for DB-'dm'", {
     "only_for_local_src"
   )
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+# FIXME: COMPOUND:: `nest_join_zoomed_dm()` cannot deal with composite keys yet
+# verify_output(
+#   "out/compound-nest.txt", {
+#     dm_zoom_to(nyc_comp(), weather) %>%
+#       nest_join_zoomed_dm()
+#   }
+# )

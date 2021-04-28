@@ -438,13 +438,51 @@ test_that("output", {
   expect_snapshot({
     print(dm())
 
-    nyc_flights_dm <- dm_nycflights13(cycle = TRUE)
-    nyc_flights_dm
+    nyc_flights_dm <- dm_nycflights_small()
+    collect(nyc_flights_dm)
 
     nyc_flights_dm %>%
       format()
 
     nyc_flights_dm %>%
-      dm_filter(flights, origin == "EWR")
+      dm_filter(flights, origin == "EWR") %>%
+      collect()
+  })
+})
+
+
+# Compound tests ----------------------------------------------------------
+
+
+test_that("output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  # Can't be inside the snapshot
+  car_table <- test_src_frame(!!!mtcars)
+
+  expect_snapshot({
+    copy_to(nyc_comp(), mtcars, "car_table")
+    dm_add_tbl(nyc_comp(), car_table)
+    nyc_comp() %>%
+      collect()
+    nyc_comp() %>%
+      dm_filter(flights, day == 10) %>%
+      compute() %>%
+      collect() %>%
+      dm_get_def()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      mutate(origin_new = paste0(origin, " airport")) %>%
+      compute() %>%
+      dm_update_zoomed() %>%
+      collect() %>%
+      dm_get_def()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      collect()
+    pull_tbl(nyc_comp(), weather)
+    dm_zoom_to(nyc_comp(), weather) %>%
+      pull_tbl()
   })
 })

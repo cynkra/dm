@@ -192,3 +192,17 @@ test_that("dm_rows_truncate()", {
       map(arrange_all)
   })
 })
+
+
+# tests for compound keys -------------------------------------------------
+
+test_that("output for compound keys", {
+  skip("COMPOUND")
+
+  expect_snapshot({
+    target_dm <- dm_filter(nyc_comp(), weather, pressure > 1010) %>% dm_apply_filters()
+    insert_dm <- dm_filter(nyc_comp(), weather, pressure <= 1010) %>% dm_apply_filters() %>% dm_select_tbl(flights, weather)
+    dm_rows_insert(target_dm, insert_dm, in_place = FALSE)
+    dm_rows_truncate(nyc_comp(), insert_dm, in_place = FALSE)
+  })
+})

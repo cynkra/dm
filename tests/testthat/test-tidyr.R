@@ -31,15 +31,17 @@ test_that("basic test: 'separate()'-methods work", {
 test_that("key tracking works", {
   skip_if_remote_src()
   expect_identical(
-    unite(zoomed_dm(), "new_col", c, e) %>% dm_update_zoomed() %>% get_all_keys("tf_2"),
-    set_names("d")
+    unite(zoomed_dm(), "new_col", c, e) %>%
+      dm_update_zoomed() %>%
+      get_all_keys("tf_2"),
+    new_keys("d")
   )
 
   expect_identical(
     unite(zoomed_dm(), "new_col", c, e, remove = FALSE) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
-    set_names(c("c", "d", "e"))
+    new_keys(c("c", "d", "e"))
   )
 
   expect_identical(
@@ -50,7 +52,7 @@ test_that("key tracking works", {
       separate(new_col, c("c", "e"), remove = TRUE) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
-    set_names(c("c", "d", "e"))
+    new_keys(c("c", "d", "e"))
   )
 
   expect_identical(
@@ -61,6 +63,39 @@ test_that("key tracking works", {
       separate(new_col, c("c", "e"), remove = FALSE) %>%
       dm_update_zoomed() %>%
       get_all_keys("tf_2"),
-    set_names(c("c", "d", "e", "new_col"))
+    new_keys(c("c", "d", "e", "new_col"))
   )
+})
+
+
+# tests for compound keys -------------------------------------------------
+
+test_that("output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  expect_snapshot({
+    unite_weather_dm <- nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      mutate(chr_col = "airport") %>%
+      unite("new_col", origin, chr_col) %>%
+      dm_update_zoomed()
+    unite_weather_dm %>% get_all_keys("flights")
+    unite_weather_dm %>% get_all_keys("weather")
+    unite_flights_dm <- nyc_comp() %>%
+      dm_zoom_to(flights) %>%
+      mutate(chr_col = "airport") %>%
+      unite("new_col", origin, chr_col) %>%
+      dm_update_zoomed()
+    unite_flights_dm %>% get_all_keys("flights")
+    unite_flights_dm %>% get_all_keys("weather")
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      separate(origin, c("o1", "o2"), sep = "^..", remove = TRUE) %>%
+      dm_update_zoomed()
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      separate(origin, c("o1", "o2"), sep = "^..", remove = FALSE) %>%
+      dm_update_zoomed()
+  })
 })

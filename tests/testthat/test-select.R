@@ -70,9 +70,11 @@ test_that("dm_select() works for replacing fks, and removes missing ones", {
 
 test_that("dm_select() removes fks if not in selection", {
   expect_equal(
-    dm_select(dm_for_filter(), tf_2, c, e) %>%
+    dm_for_filter() %>%
+      dm_select(tf_2, c, e) %>%
       dm_get_all_fks_impl(),
-    dm_get_all_fks_impl(dm_for_filter()) %>%
-      filter(!child_fk_cols == "d")
+    dm_for_filter() %>%
+      dm_get_all_fks_impl() %>%
+      filter(child_fk_cols != "d")
   )
 })
