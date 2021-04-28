@@ -494,10 +494,12 @@ def_get_n_fks <- function(def) {
 }
 
 as_zoomed_df <- function(x) {
+  zoom <- dm_get_zoom(x)
+
   # for tests
   new_zoomed_df(
-    tbl_zoomed(x),
-    name_df = orig_name_zoomed(x)
+    zoom$zoom[[1]],
+    name_df = zoom$table
   )
 }
 
