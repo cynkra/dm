@@ -34,24 +34,24 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `car_table`
       Columns: 64
-      Primary keys: 3
-      Foreign keys: 3
+      Primary keys: 4
+      Foreign keys: 4
     Code
       dm_add_tbl(nyc_comp(), car_table)
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `car_table`
       Columns: 64
-      Primary keys: 3
-      Foreign keys: 3
+      Primary keys: 4
+      Foreign keys: 4
     Code
       nyc_comp() %>% collect()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
-      Primary keys: 3
-      Foreign keys: 3
+      Primary keys: 4
+      Foreign keys: 4
     Code
       nyc_comp() %>% dm_filter(flights, day == 10) %>% compute() %>% collect() %>%
         dm_get_def()
@@ -63,7 +63,7 @@
       2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
       3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
       4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      5 weath~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
+      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% mutate(origin_new = paste0(origin,
         " airport")) %>% compute() %>% dm_update_zoomed() %>% collect() %>%
@@ -76,7 +76,7 @@
       2 airpo~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
       3 fligh~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
       4 planes <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
-      5 weath~ <tibbl~ <NA>    <NA>     [0 x 1] [0 x 2] [0 x 2] <NUL~ <NULL>          
+      5 weath~ <tibbl~ <NA>    <NA>     [1 x 1] [1 x 2] [0 x 2] <NUL~ <NULL>          
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message <simpleMessage>

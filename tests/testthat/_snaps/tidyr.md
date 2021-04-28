@@ -37,7 +37,10 @@
     Code
       unite_flights_dm %>% get_all_keys("weather")
     Output
-      <list_of<character>[0]>
+      <list_of<character>[1]>
+      [[1]]
+      [1] "origin"    "time_hour"
+      
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% separate(origin, c("o1", "o2"), sep = "^..",
       remove = TRUE) %>% dm_update_zoomed()
@@ -54,6 +57,6 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 55
-      Primary keys: 3
-      Foreign keys: 3
+      Primary keys: 4
+      Foreign keys: 4
 

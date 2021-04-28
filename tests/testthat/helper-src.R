@@ -405,7 +405,8 @@ fact %<-% tibble(
     "ill-advised",
     "jitter"
   ),
-  dim_1_key = 14:5,
+  dim_1_key_1 = 14:5,
+  dim_1_key_2 = LETTERS[14:5],
   dim_2_key = letters[3:12],
   dim_3_key = LETTERS[24:15],
   dim_4_key = 7:16,
@@ -420,7 +421,8 @@ fact_clean %<-% {
 }
 
 dim_1 %<-% tibble(
-  dim_1_pk = 1:20,
+  dim_1_pk_1 = 1:20,
+  dim_1_pk_2 = LETTERS[1:20],
   something = letters[3:22]
 )
 dim_1_clean %<-% {
@@ -463,11 +465,11 @@ dm_for_flatten %<-% {
     dim_3 = dim_3(),
     dim_4 = dim_4()
   )) %>%
-    dm_add_pk(dim_1, dim_1_pk) %>%
+    dm_add_pk(dim_1, c(dim_1_pk_1, dim_1_pk_2)) %>%
     dm_add_pk(dim_2, dim_2_pk) %>%
     dm_add_pk(dim_3, dim_3_pk) %>%
     dm_add_pk(dim_4, dim_4_pk) %>%
-    dm_add_fk(fact, dim_1_key, dim_1) %>%
+    dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
     dm_add_fk(fact, dim_2_key, dim_2) %>%
     dm_add_fk(fact, dim_3_key, dim_3) %>%
     dm_add_fk(fact, dim_4_key, dim_4)
@@ -475,7 +477,7 @@ dm_for_flatten %<-% {
 
 result_from_flatten %<-% {
   fact_clean() %>%
-    left_join(dim_1_clean(), by = c("dim_1_key" = "dim_1_pk")) %>%
+    left_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
     left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
     left_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
     left_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
@@ -483,8 +485,8 @@ result_from_flatten %<-% {
 
 # 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
-tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5, NA)), b = a)
-tbl_2 %<-% tibble(id = c(1:3, 3), c = letters[1:4])
+tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5, NA)), x = LETTERS[3:7], b = a)
+tbl_2 %<-% tibble(id = c(1:3, 3), x = LETTERS[c(3:5, 5)], c = letters[1:4])
 tbl_3 %<-% tibble(id = c(2:4, 4), d = letters[2:5])
 
 bad_dm_base %<-% {
@@ -494,9 +496,9 @@ bad_dm_base %<-% {
 # avoid copying constraints for invalid dm
 bad_dm %<--% {
   bad_dm_base() %>%
-    dm_add_pk(tbl_2, id) %>%
+    dm_add_pk(tbl_2, c(id, x)) %>%
     dm_add_pk(tbl_3, id) %>%
-    dm_add_fk(tbl_1, a, tbl_2) %>%
+    dm_add_fk(tbl_1, c(a, x), tbl_2) %>%
     dm_add_fk(tbl_1, b, tbl_3)
 }
 
@@ -527,7 +529,9 @@ dm_nycflights_small_cycle %<--% {
 }
 
 nyc_comp %<--% {
-  dm_nycflights_small()
+  dm_nycflights_small() %>%
+    dm_add_pk(weather, c(origin, time_hour)) %>%
+    dm_add_fk(flights, c(origin, time_hour), weather)
 }
 
 zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)

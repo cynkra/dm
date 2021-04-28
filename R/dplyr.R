@@ -147,7 +147,7 @@ slice.zoomed_dm <- function(.data, ..., .keep_pk = NULL) {
   orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
   tracked_cols <- get_tracked_cols(.data)
   if (is_null(.keep_pk)) {
-    if (has_length(orig_pk) && orig_pk %in% tracked_cols) {
+    if (has_length(orig_pk) && any(unlist(orig_pk) %in% tracked_cols)) {
       message(
         paste(
           "Keeping PK column, but `slice.zoomed_dm()` can potentially damage the uniqueness of PK columns (duplicated indices).",
@@ -565,4 +565,18 @@ safe_count <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = gro
     out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
   }
   ungroup(out)
+}
+
+new_tracked_cols <- function(dm, selected) {
+  tracked_cols <- get_tracked_cols(dm)
+  old_tracked_names <- names(tracked_cols)
+  # the new tracked keys need to be the remaining original column names
+  # and their name needs to be the newest one (tidyselect-syntax)
+  # `intersect(selected, old_tracked_names)` is empty, return `NULL`
+
+  selected_match <- selected[selected %in% old_tracked_names]
+  set_names(
+    tracked_cols[selected_match],
+    names(selected_match)
+  )
 }

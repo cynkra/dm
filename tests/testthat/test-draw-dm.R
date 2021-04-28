@@ -170,6 +170,20 @@ test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
 
+  # Loose table
+  expect_snapshot_diagram(
+    dm_nycflights13(compound = FALSE) %>%
+      dm_draw(),
+    "nycflight-dm-loose.svg"
+  )
+
+  # Default view
+  expect_snapshot_diagram(
+    dm_nycflights13() %>%
+      dm_draw(),
+    "nycflight-dm.svg"
+  )
+
   # 444: types
   expect_snapshot_diagram(
     dm_nycflights13() %>%

@@ -15,9 +15,11 @@
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
 #' @param overwrite,types,indexes,unique_indexes Must remain `NULL`.
-#' @param set_key_constraints Boolean variable, if `TRUE` will mirror `dm` key constraints on a database.
+#' @param set_key_constraints If `TRUE` will mirror `dm` primary and foreign key constraints on a database
+#'   and create unique indexes.
+#'   Set to `FALSE` if your data model currently does not satisfy primary or foreign key constraints.
 #' @param unique_table_names Deprecated.
-#' @param temporary Boolean variable, if `TRUE`, only temporary tables will be created.
+#' @param temporary If `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param schema Name of schema to copy the `dm` to.
 #' If `schema` is provided, an error will be thrown if `temporary = FALSE` or
@@ -181,7 +183,7 @@ copy_dm_to <- function(dest, dm, ...,
     return(dm)
   }
 
-  copy_data <- build_copy_data(dm, dest, table_names_out)
+  copy_data <- build_copy_data(dm, dest, table_names_out, set_key_constraints)
 
   new_tables <- copy_list_of_tables_to(
     dest,

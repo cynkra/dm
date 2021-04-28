@@ -102,13 +102,13 @@ test_that("dm_rm_fk() works as intended?", {
     class = "rm_fk_col_missing"
   )
 
-  expect_dm_error(
+  expect_error(
     dm_test_obj() %>%
       dm_add_pk(dm_table_4, c) %>%
       dm_add_fk(dm_table_1, a, dm_table_4) %>%
       dm_add_fk(dm_table_2, c, dm_table_4) %>%
       dm_rm_fk(dm_table_2, z, dm_table_4),
-    class = "is_not_fkc"
+    class = "vctrs_error_subscript_oob"
   )
 
   expect_dm_error(
@@ -180,24 +180,24 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   nycflights_example <- tibble::tribble(
     ~column,     ~candidate,       ~why,
     "origin",          TRUE,         "",
-    "dest",           FALSE, "<reason>",
-    "carrier",        FALSE, "<reason>",
-    "tailnum",        FALSE, "<reason>",
-    "air_time",       FALSE, "<reason>",
-    "arr_delay",      FALSE, "<reason>",
-    "arr_time",       FALSE, "<reason>",
+    "year",           FALSE, "<reason>",
+    "month",          FALSE, "<reason>",
     "day",            FALSE, "<reason>",
-    "dep_delay",      FALSE, "<reason>",
     "dep_time",       FALSE, "<reason>",
-    "distance",       FALSE, "<reason>",
+    "sched_dep_time", FALSE, "<reason>",
+    "dep_delay",      FALSE, "<reason>",
+    "arr_time",       FALSE, "<reason>",
+    "sched_arr_time", FALSE, "<reason>",
+    "arr_delay",      FALSE, "<reason>",
+    "carrier",        FALSE, "<reason>",
     "flight",         FALSE, "<reason>",
+    "tailnum",        FALSE, "<reason>",
+    "dest",           FALSE, "<reason>",
+    "air_time",       FALSE, "<reason>",
+    "distance",       FALSE, "<reason>",
     "hour",           FALSE, "<reason>",
     "minute",         FALSE, "<reason>",
-    "month",          FALSE, "<reason>",
-    "sched_arr_time", FALSE, "<reason>",
-    "sched_dep_time", FALSE, "<reason>",
     "time_hour",      FALSE, "<reason>",
-    "year",           FALSE, "<reason>"
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))

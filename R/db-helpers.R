@@ -25,7 +25,7 @@ get_pid <- function() {
 }
 
 # Internal copy helper functions
-build_copy_data <- function(dm, dest, table_names) {
+build_copy_data <- function(dm, dest, table_names, set_key_constraints) {
   source <-
     dm %>%
     dm_apply_filters() %>%
@@ -42,6 +42,13 @@ build_copy_data <- function(dm, dest, table_names) {
       dm_get_all_pks_impl(dm) %>%
       transmute(source_name = table, column = pk_col, pk = TRUE)
 
+    # FIXME: COMPOUND: Need support for multiple primary keys, https://github.com/r-dbi/DBI/pull/351
+    # Discard primary keys of length > 1 for now
+    pks_flat <-
+      pks %>%
+      filter(lengths(column) == 1) %>%
+      mutate(column = as.character(column))
+
     fks <-
       dm_get_all_fks_impl(dm) %>%
       transmute(source_name = child_table, column = child_fk_cols, fk = TRUE)
@@ -55,27 +62,39 @@ build_copy_data <- function(dm, dest, table_names) {
       mutate(type = map(df, ~ map_chr(., ~ DBI::dbDataType(dest_con, .)))) %>%
       select(-df) %>%
       unnest(c(column, type)) %>%
-      left_join(pks, by = c("source_name", "column")) %>%
+      left_join(pks_flat, by = c("source_name", "column")) %>%
       mutate(full_type = paste0(type, if_else(pk, " NOT NULL PRIMARY KEY", "", ""))) %>%
       group_by(source_name) %>%
       summarize(types = list(deframe(tibble(column, full_type))))
 
     copy_data_unique_indexes <-
       pks %>%
-      transmute(source_name, unique_indexes = map(as.list(column), list))
+      group_by(source_name) %>%
+      summarize(unique_indexes = list(column)) %>%
+      ungroup()
 
-    copy_data_indexes <-
+    copy_data_non_unique_indexes <-
       fks %>%
       select(source_name, column) %>%
       group_by(source_name) %>%
-      summarize(indexes = map(list(column), as.list))
+      summarize(indexes = list(column))
+
+    copy_data_indexes <-
+      full_join(copy_data_unique_indexes, copy_data_non_unique_indexes, by = "source_name") %>%
+      mutate(indexes = map2(indexes, unique_indexes, setdiff))
+
+    # Downgrade unique indexes to non-unique indexes
+    if (!set_key_constraints) {
+      copy_data_indexes <-
+        copy_data_indexes %>%
+        mutate(indexes = map2(indexes, unique_indexes, c)) %>%
+        mutate(unique_indexes = list(new_keys()))
+    }
 
     copy_data <-
       copy_data_base %>%
       inner_join(copy_data_types, by = "source_name") %>%
-      left_join(copy_data_unique_indexes, by = "source_name") %>%
-      left_join(copy_data_indexes, by = "source_name") %>%
-      mutate(indexes = map2(indexes, unique_indexes, setdiff))
+      left_join(copy_data_indexes, by = "source_name")
   } else {
     copy_data <-
       copy_data_base

@@ -309,7 +309,9 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @export
 cdm_get_all_fks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
-  dm_get_all_fks_impl(dm = dm)
+  dm_get_all_fks_impl(dm = dm) %>%
+    mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
+    mutate(parent_pk_cols = as.character(unclass(parent_pk_cols)))
 }
 
 #' @rdname deprecated
@@ -329,7 +331,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
     return(dm)
   }
   if (quo_is_null(column_quo)) {
-    cols <- fk_cols
+    cols <- get_key_cols(fk_cols)
   }
   else {
     cols <- as_name(ensym(columns))
@@ -339,7 +341,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
       )
     }
   }
-  dm_rm_fk_impl(dm, table_name, cols, ref_table_name)
+  dm_rm_fk_impl(dm, table_name, new_keys(cols), ref_table_name)
 }
 
 #' @rdname deprecated
@@ -455,7 +457,8 @@ cdm_get_pk <- function(dm, table) {
 #' @export
 cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
-  dm_get_all_pks_impl(dm = dm)
+  dm_get_all_pks_impl(dm = dm) %>%
+    mutate(pk_col = as.character(unclass(pk_col)))
 }
 
 #' @rdname deprecated
@@ -590,7 +593,7 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     new_dm3(zoomed = TRUE)
 
   dm_wo_outgoing_fks %>%
-    dm_update_zoomed_outgoing_fks(new_tbl_name_chr, is_upd = FALSE) %>%
+    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr) %>%
     dm_clean_zoomed()
 }
 

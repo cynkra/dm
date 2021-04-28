@@ -47,14 +47,21 @@ get_table_colnames <- function(dm, tables = NULL) {
     select(table, column) %>%
     unnest(column)
 
-  pks <-
-    dm_get_all_pks_impl(dm) %>%
-    rename(column = pk_col)
+  pks <- dm_get_all_pks_def_impl(def)
+
+  if (nrow(pks) == 0) {
+    return(table_colnames)
+  }
+
+  keep_colnames <-
+    pks %>%
+    rename(column = pk_col) %>%
+    unnest(column)
 
   table_colnames %>%
     # in case of flattening, the primary key columns will never be responsible for the name
     # of the resulting column in the end, so they do not need to be disambiguated
-    anti_join(pks, by = c("table", "column"))
+    anti_join(keep_colnames, by = c("table", "column"))
 }
 
 compute_disambiguate_cols_recipe <- function(table_colnames, sep) {

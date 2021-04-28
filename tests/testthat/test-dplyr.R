@@ -416,7 +416,7 @@ test_that("key tracking works", {
       dm_get_all_fks_impl() %>%
       filter(child_table == "tf_2", parent_table == "tf_3") %>%
       pull(child_fk_cols),
-    "e_new"
+    new_keys("e_new")
   )
 
   expect_identical(
@@ -426,7 +426,9 @@ test_that("key tracking works", {
       dm_update_zoomed() %>%
       dm_get_all_fks_impl(),
     dm_for_filter() %>%
-      dm_get_all_fks_impl()
+      dm_get_all_fks_impl() %>%
+      # https://github.com/r-lib/vctrs/issues/1371
+      mutate(parent_pk_cols = new_keys(if_else(parent_pk_cols == new_keys("f"), list("f_new"), unclass(parent_pk_cols))))
   )
 
   # summarize()
@@ -536,8 +538,9 @@ test_that("key tracking works", {
       dm_get_all_fks_impl(),
     dm_for_filter() %>%
       dm_get_all_fks_impl() %>%
-      filter(child_fk_cols != "e") %>%
-      mutate(child_fk_cols = if_else(child_fk_cols == "d", "d_new", unclass(child_fk_cols)))
+      filter(child_fk_cols != new_keys("e")) %>%
+      # https://github.com/r-lib/vctrs/issues/1371
+      mutate(child_fk_cols = new_keys(if_else(child_fk_cols == new_keys("d"), list("d_new"), unclass(child_fk_cols))))
   )
 
   expect_identical(
@@ -552,12 +555,12 @@ test_that("key tracking works", {
   expect_identical(
     dm_for_flatten() %>%
       dm_zoom_to(fact) %>%
-      select(dim_1_key, dim_3_key, dim_2_key) %>%
+      select(dim_1_key_1, dim_1_key_2, dim_3_key, dim_2_key) %>%
       dm_update_zoomed() %>%
       dm_get_all_fks_impl(),
     dm_for_flatten() %>%
       dm_get_all_fks_impl() %>%
-      filter(child_fk_cols != "dim_4_key")
+      filter(child_fk_cols != new_keys("dim_4_key"))
   )
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'
@@ -764,5 +767,20 @@ test_that("output for compound keys", {
     # zoomed_comp_dm %>%
     #   slice(c(1:3, 5:3), .keep_pk = FALSE) %>%
     #   get_tracked_cols()
+
+    # JOINS
+
+    # left_join()
+    zoomed_comp_dm %>% left_join(flights) %>% nrow()
+    # right_join()
+    zoomed_comp_dm %>% right_join(flights) %>% nrow()
+    # inner_join()
+    zoomed_comp_dm %>% inner_join(flights) %>% nrow()
+    # full_join()
+    zoomed_comp_dm %>% full_join(flights) %>% nrow()
+    # semi_join()
+    zoomed_comp_dm %>% semi_join(flights) %>% nrow()
+    # anti_join()
+    zoomed_comp_dm %>% anti_join(flights) %>% nrow()
   })
 })
