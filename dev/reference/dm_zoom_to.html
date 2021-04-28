@@ -99,7 +99,7 @@ for a more detailed introduction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9002</span>
       </span>
     </div>
 
@@ -336,8 +336,8 @@ and have an extra argument <code>select</code> that allows choosing the columns 
 </div><div class='output co'>#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 61
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'>
+#&gt; Primary keys: 4
+#&gt; Foreign keys: 4</div><div class='input'>
 <span class='co'># insert the zoomed table as a new table</span>
 <span class='va'>flights_zoomed_transformed</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dm_insert_zoomed</span><span class='op'>(</span><span class='st'>"extended_flights"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -349,8 +349,8 @@ and have an extra argument <code>select</code> that allows choosing the columns 
 </div><div class='output co'>#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div></span></pre>
+#&gt; Primary keys: 4
+#&gt; Foreign keys: 4</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

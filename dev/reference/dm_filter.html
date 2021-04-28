@@ -97,7 +97,7 @@ dm_apply_filters_to_tbl() retrieves one specific table of the dm that is updated
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9002</span>
       </span>
     </div>
 
@@ -299,8 +299,8 @@ the filter.</p>
 </div><div class='output co'>#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div><div class='input'>
+#&gt; Primary keys: 4
+#&gt; Foreign keys: 4</div><div class='input'>
 <span class='co'># If you want to keep only those rows in the parent tables</span>
 <span class='co'># whose primary key values appear as foreign key values in</span>
 <span class='co'># `flights`, you can set a `TRUE` filter in `flights`:</span>
@@ -309,7 +309,7 @@ the filter.</p>
   <span class='fu'>dm_apply_filters</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dm_nrow.html'>dm_nrow</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; airlines airports  flights   planes  weather 
-#&gt;       16        3    11227     2345      861 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
+#&gt;       16        3    11227     2345      640 </div><div class='input'><span class='co'># note that in this example, the only affected table is</span>
 <span class='co'># `airports` because the departure airports in `flights` are</span>
 <span class='co'># only the three New York airports.</span>
 
@@ -319,8 +319,8 @@ the filter.</p>
 </div><div class='output co'>#&gt; </span><span style='color: #FFAFFF;'>──</span><span> </span><span style='color: #FFAFFF;'>Metadata</span><span> </span><span style='color: #FFAFFF;'>────────────────────────────────────────────────────────────────────</span><span>
 #&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #&gt; Columns: 53
-#&gt; Primary keys: 3
-#&gt; Foreign keys: 3</div></span></pre>
+#&gt; Primary keys: 4
+#&gt; Foreign keys: 4</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

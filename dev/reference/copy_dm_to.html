@@ -95,7 +95,7 @@ By default, temporary tables will be created and the key constraints will be set
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9002</span>
       </span>
     </div>
 
@@ -237,7 +237,9 @@ By default, temporary tables will be created and the key constraints will be set
     </tr>
     <tr>
       <th>set_key_constraints</th>
-      <td><p>Boolean variable, if <code>TRUE</code> will mirror <code>dm</code> key constraints on a database.</p></td>
+      <td><p>If <code>TRUE</code> will mirror <code>dm</code> primary and foreign key constraints on a database
+and create unique indexes.
+Set to <code>FALSE</code> if your data model currently does not satisfy primary or foreign key constraints.</p></td>
     </tr>
     <tr>
       <th>unique_table_names</th>
@@ -275,7 +277,7 @@ to specify e.g. database and schema for your tables.</p></td>
     </tr>
     <tr>
       <th>temporary</th>
-      <td><p>Boolean variable, if <code>TRUE</code>, only temporary tables will be created.
+      <td><p>If <code>TRUE</code>, only temporary tables will be created.
 These tables will vanish when disconnecting from the database.</p></td>
     </tr>
     <tr>

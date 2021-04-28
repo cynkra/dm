@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dm</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.99.9002</span>
       </span>
     </div>
 
@@ -185,6 +185,25 @@
       <small>Source: <a href='https://github.com/cynkra/dm/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="dm-01999002" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.99.9002">
+<a href="#dm-01999002" class="anchor" aria-hidden="true"></a>dm 0.1.99.9002<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/dm_add_pk.html">dm_add_pk()</a></code> and <code><a href="../reference/dm_add_fk.html">dm_add_fk()</a></code> support compound keys via the <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> notation, e.g. <code><a href="../reference/dm_add_pk.html">dm_add_pk(dm, table, c(col1, col2))</a></code>. <code><a href="../reference/dm_nycflights13.html">dm_nycflights13()</a></code> returns a data model with compound keys by default. Use <code>compound = FALSE</code> to return the data model from dm v0.1.13 or earlier (<a href='https://github.com/cynkra/dm/issues/3'>#3</a>).</li>
+<li>
+<code><a href="../reference/dm_get_all_fks.html">dm_get_all_fks()</a></code> includes <code>parent_pk_cols</code> column that describes the primary key columns of the parent table (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
+<li>
+<code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> and other check functions count the number of rows that violate constraints for primary and foreign keys (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
+<li>
+<code><a href="../reference/copy_dm_to.html">copy_dm_to(set_key_constraints = FALSE)</a></code> downgrades unique indexes to regular indexes (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
+<li>
+<code><a href="../reference/rows_truncate.html">rows_truncate()</a></code> implemented for data frames (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
+<li>
+<code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> enumerates column in the order they apper in the table (<a href='https://github.com/cynkra/dm/issues/335'>#335</a>).</li>
+</ul>
+</div>
     <div id="dm-01999001" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.99.9001">
 <a href="#dm-01999001" class="anchor" aria-hidden="true"></a>dm 0.1.99.9001<small> Unreleased </small>
