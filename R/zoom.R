@@ -172,12 +172,13 @@ dm_update_zoomed <- function(dm) {
   # Test if keys need to be updated (TRUE, if at least one column was renamed or lost)
   upd_keys <- !all(orig_colnames %in% tracked_cols) || !all(names(tracked_cols) == tracked_cols)
 
-  upd_filter <- vctrs::list_of(get_filter_for_table(dm, table_name) %>% mutate(zoomed = FALSE))
-  new_def <- dm_get_def(dm) %>%
-    mutate(
-      data = if_else(table == table_name, zoom, data),
-      filters = if_else(table == table_name, !!upd_filter, filters)
-    )
+  upd_filter <-
+    get_filter_for_table(dm, table_name) %>%
+    mutate(zoomed = FALSE)
+
+  new_def <- def
+  new_def$data[[where]] <- new_def$zoom[[where]]
+  new_def$filters[[where]] <- upd_filter
 
   if (upd_keys) {
     new_def <-
