@@ -170,8 +170,16 @@ test_that("output", {
   skip_if_not_installed("DiagrammeRsvg")
   skip_if_not_installed("nycflights13")
 
+  # Loose table
   expect_snapshot_diagram(
     dm_nycflights13(compound = FALSE) %>%
+      dm_draw(),
+    "nycflight-dm-loose.svg"
+  )
+
+  # Default view
+  expect_snapshot_diagram(
+    dm_nycflights13() %>%
       dm_draw(),
     "nycflight-dm.svg"
   )
@@ -190,12 +198,5 @@ test_that("output", {
       dm_insert_zoomed("planes_copy") %>%
       dm_draw(),
     "nycflight-dm-copy.svg"
-  )
-
-  # Compound (#3)
-  expect_snapshot_diagram(
-    nyc_comp() %>%
-      dm_draw(),
-    "nycflight-dm-compound.svg"
   )
 })
