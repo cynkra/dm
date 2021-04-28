@@ -387,10 +387,13 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
     count(!!!t2_vals) %>%
     ungroup()
 
+  # FIXME: Build expression instead of paste() + parse()
+  any_value_na_expr <- parse(text = paste0("is.na(", val_names, ")", collapse = " | "))[[1]]
+
   res_tbl <- tryCatch(
     t1_join %>%
-      # if value1 is NULL, this also counts as a match -- consistent with fk semantics
-      filter(!is.na(value1)) %>%
+      # if value* is NULL, this also counts as a match -- consistent with fk semantics
+      filter(!(!!any_value_na_expr)) %>%
       anti_join(t2_join, by = val_names) %>%
       arrange(desc(n)) %>%
       head(MAX_COMMAS + 1L) %>%
