@@ -352,9 +352,14 @@ dm_get_filters <- function(x) {
 }
 
 dm_get_zoom <- function(x) {
-  dm_get_def(x) %>%
-    filter(!map_lgl(zoom, is_null)) %>%
-    select(table, zoom)
+  # Performance
+  def <- dm_get_def(x)
+  zoom <- def$zoom
+  where <- which(lengths(zoom) != 0)
+  if (length(where) != 1) {
+    abort("Internal error: ")
+  }
+  new_tibble(list(table = def$table[where], zoom = zoom[where]), nrow = 1)
 }
 
 #' Check class
