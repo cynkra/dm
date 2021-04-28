@@ -125,7 +125,7 @@ dm_has_fk <- function(dm, table, ref_table) {
 }
 
 dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
-  has_length(dm_get_fk2_impl(dm, table_name, ref_table_name))
+  has_length(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
 #' Foreign key column names
@@ -160,10 +160,10 @@ dm_get_fk <- function(dm, table, ref_table) {
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
-  new_keys(dm_get_fk2_impl(dm, table_name, ref_table_name))
+  new_keys(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
-dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
+dm_get_fk_impl <- function(dm, table_name, ref_table_name) {
   def <- dm_get_def(dm)
   i <- which(def$table == ref_table_name)
 
@@ -236,7 +236,7 @@ dm_rm_fk <- function(dm, table, columns, ref_table) {
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
-  fk_cols <- dm_get_fk2_impl(dm, table_name, ref_table_name)
+  fk_cols <- dm_get_fk_impl(dm, table_name, ref_table_name)
   if (is_empty(fk_cols)) {
     # FIXME: Simplify, check is already done in dm_rm_fk_impl()
     abort_is_not_fkc(table_name, fk_cols, ref_table_name)

@@ -301,7 +301,7 @@ cdm_get_fk <- function(dm, table, ref_table) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
-  new_keys(dm_get_fk2_impl(dm, table_name, ref_table_name))
+  new_keys(dm_get_fk_impl(dm, table_name, ref_table_name))
 }
 
 #' @rdname deprecated
@@ -326,7 +326,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
   }
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
-  fk_cols <- dm_get_fk2_impl(dm, table_name, ref_table_name)
+  fk_cols <- dm_get_fk_impl(dm, table_name, ref_table_name)
   if (is_empty(fk_cols)) {
     return(dm)
   }
