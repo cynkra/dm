@@ -28,7 +28,7 @@
       -- Filters ---------------------------------------------------------------------
       flights: origin == "EWR"
 
-# output for compound tables
+# output for compound keys
 
     Code
       copy_to(nyc_comp(), mtcars, "car_table")

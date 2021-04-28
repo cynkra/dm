@@ -210,17 +210,17 @@ test_that("prepare_dm_for_flatten() works", {
     dm_select_tbl(fact, dim_1, dim_3) %>%
 
     dm_zoom_to(fact) %>%
-    filter(dim_1_key_1 > 7, dim_1_key_2 > LETTERS[7]) %>%
+    filter(dim_1_key_1 > 7, dim_1_key_2 > !!LETTERS[7]) %>%
     dm_update_zoomed() %>%
 
     dm_zoom_to(dim_1) %>%
-    filter(dim_1_pk_1 > 7, dim_1_pk_2 > LETTERS[7]) %>%
+    filter(dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]) %>%
     dm_update_zoomed()
 
   prep_dm_renamed <- dm_disambiguate_cols(prep_dm, quiet = TRUE)
 
   out <- expect_message(prepare_dm_for_flatten(
-    dm_filter(dm_for_flatten(), dim_1, dim_1_pk_1 > 7, dim_1_pk_2 > LETTERS[7]),
+    dm_filter(dm_for_flatten(), dim_1, dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]),
     c("fact", "dim_1", "dim_3"),
     gotta_rename = TRUE
   ))
@@ -228,7 +228,7 @@ test_that("prepare_dm_for_flatten() works", {
 
   # filtered without rename
   out <- prepare_dm_for_flatten(
-    dm_filter(dm_for_flatten(), dim_1, dim_1_pk_1 > 7, dim_1_pk_2 > LETTERS[7]),
+    dm_filter(dm_for_flatten(), dim_1, dim_1_pk_1 > 7, dim_1_pk_2 > !!LETTERS[7]),
     c("fact", "dim_1", "dim_3"),
     gotta_rename = FALSE
   )

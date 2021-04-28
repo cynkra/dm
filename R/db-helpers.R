@@ -25,7 +25,7 @@ get_pid <- function() {
 }
 
 # Internal copy helper functions
-build_copy_data <- function(dm, dest, table_names) {
+build_copy_data <- function(dm, dest, table_names, set_key_constraints) {
   source <-
     dm %>%
     dm_apply_filters() %>%
@@ -42,7 +42,7 @@ build_copy_data <- function(dm, dest, table_names) {
       dm_get_all_pks2_impl(dm) %>%
       transmute(source_name = table, column = pk_col, pk = TRUE)
 
-    # FIXME: Need support for multiple primary keys, https://github.com/r-dbi/DBI/pull/351
+    # FIXME: COMPOUND: Need support for multiple primary keys, https://github.com/r-dbi/DBI/pull/351
     # Discard primary keys of length > 1 for now
     pks_flat <-
       pks %>%
@@ -73,18 +73,28 @@ build_copy_data <- function(dm, dest, table_names) {
       summarize(unique_indexes = list(column)) %>%
       ungroup()
 
-    copy_data_indexes <-
+    copy_data_non_unique_indexes <-
       fks %>%
       select(source_name, column) %>%
       group_by(source_name) %>%
       summarize(indexes = list(column))
 
+    copy_data_indexes <-
+      full_join(copy_data_unique_indexes, copy_data_non_unique_indexes, by = "source_name") %>%
+      mutate(indexes = map2(indexes, unique_indexes, setdiff))
+
+    # Downgrade unique indexes to non-unique indexes
+    if (!set_key_constraints) {
+      copy_data_indexes <-
+        copy_data_indexes %>%
+        mutate(indexes = map2(indexes, unique_indexes, c)) %>%
+        mutate(unique_indexes = list(new_keys()))
+    }
+
     copy_data <-
       copy_data_base %>%
       inner_join(copy_data_types, by = "source_name") %>%
-      left_join(copy_data_unique_indexes, by = "source_name") %>%
-      left_join(copy_data_indexes, by = "source_name") %>%
-      mutate(indexes = map2(indexes, unique_indexes, setdiff))
+      left_join(copy_data_indexes, by = "source_name")
   } else {
     copy_data <-
       copy_data_base

@@ -42,8 +42,9 @@ copy_to_my_test_src <- function(rhs, lhs) {
     rhs
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
+    # (except for bad_dm)
     # message(name)
-    suppressMessages(copy_dm_to(src, rhs))
+    suppressMessages(copy_dm_to(src, rhs, set_key_constraints = (name != "bad_dm")))
   } else if (inherits(rhs, "list")) {
     suppressMessages(
       map(rhs, ~ copy_to(src, .x, name = unique_db_table_name(name), temporary = TRUE))
@@ -387,12 +388,6 @@ dm_for_disambiguate %<-% {
   as_dm(list(iris_1 = iris_1(), iris_2 = iris_2(), iris_3 = iris_3())) %>%
     dm_add_pk(iris_1, key) %>%
     dm_add_fk(iris_2, key, iris_1)
-}
-
-dm_for_disambiguate_2 %<-% {
-  as_dm(list(iris_1 = iris_1_dis(), iris_2 = iris_2_dis(), iris_3 = iris_3_dis())) %>%
-    dm_add_pk(iris_1, key) %>%
-    dm_add_fk(iris_2, iris_2.key, iris_1)
 }
 
 # star schema data model for testing `dm_flatten_to_tbl()` ------

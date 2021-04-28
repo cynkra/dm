@@ -127,6 +127,9 @@ test_that("output", {
 # tests for compound keys -------------------------------------------------
 
 test_that("dm_get_all_pks() with compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
   expect_snapshot({
     nyc_comp()
 

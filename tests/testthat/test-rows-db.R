@@ -49,9 +49,12 @@ test_that("update", {
 
 # tests for compound keys -------------------------------------------------
 
-skip_if_local_src()
-verify_output(
-  "out/compound-rows-db.txt", {
+test_that("output for compound keys", {
+  skip_if_local_src()
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  expect_snapshot({
     weather_subs <- dm_nycflights_small()$weather %>% mutate(row_num = dplyr::row_number())
     weather_1 <- filter(weather_subs, row_num %in% 1:100)
     weather_2 <- filter(weather_subs, row_num %in% 101:200)
@@ -65,5 +68,5 @@ verify_output(
     # rows_update(weather_1, weather_3,  by = c("origin", "time_hour"), in_place = FALSE)
     # Not implemented for DB?
     # rows_upsert(weather_1, weather_3, by = c("origin", "time_hour"), in_place = FALSE)
-  }
-)
+  })
+})

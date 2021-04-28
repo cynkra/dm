@@ -88,11 +88,11 @@ test_that("dm_select() removes fks if not in selection", {
 
 # tests for compound keys -------------------------------------------------
 
-verify_output(
-  "out/compound-select.txt", {
-    dm_select(nyc_comp(), weather, -origin)
-    dm_select(nyc_comp(), weather, origin, time_hour)
-    dm_select(nyc_comp(), flights, -time_hour)
-    dm_select(nyc_comp(), flights, -origin)
-  }
-)
+test_that("output for compound keys", {
+  expect_snapshot({
+    dm_select(dm_for_flatten(), fact, dim_1_key_1, dim_1_key_2) %>% dm_paste(options = c("select", "keys"))
+    dm_select(dm_for_flatten(), dim_1, dim_1_pk_1, dim_1_pk_2) %>% dm_paste(options = c("select", "keys"))
+    dm_select(dm_for_flatten(), fact, -dim_1_key_1) %>% dm_paste(options = c("select", "keys"))
+    dm_select(dm_for_flatten(), dim_1, -dim_1_pk_1) %>% dm_paste(options = c("select", "keys"))
+  })
+})

@@ -68,8 +68,11 @@ test_that("key tracking works", {
 
 # tests for compound keys -------------------------------------------------
 
-verify_output(
-  "out/compound-tidyr.txt", {
+test_that("output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  expect_snapshot({
     unite_weather_dm <- nyc_comp() %>%
       dm_zoom_to(weather) %>%
       mutate(chr_col = "airport") %>%
@@ -92,5 +95,5 @@ verify_output(
       dm_zoom_to(weather) %>%
       separate(origin, c("o1", "o2"), sep = "^..", remove = FALSE) %>%
       dm_update_zoomed()
-  }
-)
+  })
+})

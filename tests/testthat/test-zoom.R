@@ -128,6 +128,9 @@ test_that("all cols are tracked in zoomed table", {
 # tests for compound keys -------------------------------------------------
 
 test_that("zoom output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
   expect_snapshot({
     nyc_comp() %>% dm_zoom_to(weather)
     nyc_comp() %>% dm_zoom_to(weather) %>% dm_update_zoomed()

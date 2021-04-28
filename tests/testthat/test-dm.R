@@ -453,7 +453,10 @@ test_that("output", {
 # Compound tests ----------------------------------------------------------
 
 
-test_that("output for compound tables", {
+test_that("output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
   # Can't be inside the snapshot
   car_table <- test_src_frame(!!!mtcars)
 
