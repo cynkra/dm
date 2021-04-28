@@ -18,6 +18,7 @@ utils::globalVariables(c(
   "time_hour",
   #
   # dm
+  "any_na",
   "arrange_col",
   "candidate",
   "child_fk_cols",
