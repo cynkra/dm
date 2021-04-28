@@ -39,7 +39,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints) {
     dest_con <- con_from_src_or_con(dest)
 
     pks <-
-      dm_get_all_pks2_impl(dm) %>%
+      dm_get_all_pks_impl(dm) %>%
       transmute(source_name = table, column = pk_col, pk = TRUE)
 
     # FIXME: COMPOUND: Need support for multiple primary keys, https://github.com/r-dbi/DBI/pull/351
@@ -50,7 +50,7 @@ build_copy_data <- function(dm, dest, table_names, set_key_constraints) {
       mutate(column = as.character(column))
 
     fks <-
-      dm_get_all_fks2_impl(dm) %>%
+      dm_get_all_fks_impl(dm) %>%
       transmute(source_name = child_table, column = child_fk_cols, fk = TRUE)
 
     # Need to supply NOT NULL modifiers for primary keys

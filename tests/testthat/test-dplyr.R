@@ -413,7 +413,7 @@ test_that("key tracking works", {
     zoomed_grouped_out_dm %>%
       rename(e_new = e) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks2_impl() %>%
+      dm_get_all_fks_impl() %>%
       filter(child_table == "tf_2", parent_table == "tf_3") %>%
       pull(child_fk_cols),
     new_keys("e_new")
@@ -424,9 +424,9 @@ test_that("key tracking works", {
     zoomed_grouped_in_dm %>%
       rename(f_new = f) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks2_impl(),
+      dm_get_all_fks_impl(),
     dm_for_filter() %>%
-      dm_get_all_fks2_impl() %>%
+      dm_get_all_fks_impl() %>%
       # https://github.com/r-lib/vctrs/issues/1371
       mutate(parent_pk_cols = new_keys(if_else(parent_pk_cols == new_keys("f"), list("f_new"), unclass(parent_pk_cols))))
   )
@@ -535,9 +535,9 @@ test_that("key tracking works", {
     zoomed_dm() %>%
       distinct(d_new = d) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks2_impl(),
+      dm_get_all_fks_impl(),
     dm_for_filter() %>%
-      dm_get_all_fks2_impl() %>%
+      dm_get_all_fks_impl() %>%
       filter(child_fk_cols != new_keys("e")) %>%
       # https://github.com/r-lib/vctrs/issues/1371
       mutate(child_fk_cols = new_keys(if_else(child_fk_cols == new_keys("d"), list("d_new"), unclass(child_fk_cols))))
@@ -547,9 +547,9 @@ test_that("key tracking works", {
     zoomed_dm() %>%
       arrange(e) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks2_impl(),
+      dm_get_all_fks_impl(),
     dm_for_filter() %>%
-      dm_get_all_fks2_impl()
+      dm_get_all_fks_impl()
   )
 
   expect_identical(
@@ -557,9 +557,9 @@ test_that("key tracking works", {
       dm_zoom_to(fact) %>%
       select(dim_1_key_1, dim_1_key_2, dim_3_key, dim_2_key) %>%
       dm_update_zoomed() %>%
-      dm_get_all_fks2_impl(),
+      dm_get_all_fks_impl(),
     dm_for_flatten() %>%
-      dm_get_all_fks2_impl() %>%
+      dm_get_all_fks_impl() %>%
       filter(child_fk_cols != new_keys("dim_4_key"))
   )
 

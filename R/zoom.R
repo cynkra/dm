@@ -292,7 +292,7 @@ update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
 dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- get_tracked_cols(dm)
-  old_out_keys <- dm_get_all_fks2_impl(dm) %>%
+  old_out_keys <- dm_get_all_fks_impl(dm) %>%
     filter(child_table == !!old_tbl_name) %>%
     select(table = parent_table, column = child_fk_cols)
 
@@ -355,7 +355,7 @@ check_not_zoomed <- function(dm) {
 # For `nest.zoomed_dm()`, we need the incoming foreign keys of the originally zoomed table
 get_orig_in_fks <- function(zoomed_dm, orig_table) {
   # FIXME: maybe there is a more efficient implementation possible?
-  dm_get_all_fks2_impl(zoomed_dm) %>%
+  dm_get_all_fks_impl(zoomed_dm) %>%
     filter(parent_table == orig_table) %>%
     select(-parent_table)
 }

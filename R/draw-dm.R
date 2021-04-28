@@ -101,7 +101,7 @@ dm_get_data_model <- function(x, column_types) {
   )
 
   references_for_columns <-
-    dm_get_all_fks2_impl(x) %>%
+    dm_get_all_fks_impl(x) %>%
     transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_pk_cols))
 
   references <-
@@ -109,7 +109,7 @@ dm_get_data_model <- function(x, column_types) {
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys <-
-    dm_get_all_pks2_impl(x) %>%
+    dm_get_all_pks_impl(x) %>%
     mutate(column = format(pk_col)) %>%
     select(-pk_col) %>%
     mutate(key = 1L)

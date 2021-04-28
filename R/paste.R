@@ -153,13 +153,13 @@ dm_paste_select <- function(dm) {
 }
 
 dm_paste_pks <- function(dm) {
-  dm_get_all_pks2_impl(dm) %>%
+  dm_get_all_pks_impl(dm) %>%
     mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")) %>%
     pull()
 }
 
 dm_paste_fks <- function(dm) {
-  dm_get_all_fks2_impl(dm) %>%
+  dm_get_all_fks_impl(dm) %>%
     mutate(code = glue("dm::dm_add_fk({tick_if_needed(child_table)}, {deparse_keys(child_fk_cols)}, {tick_if_needed(parent_table)})")) %>%
     pull()
 }

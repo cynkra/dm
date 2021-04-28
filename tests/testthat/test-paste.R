@@ -53,10 +53,6 @@ test_that("output", {
     dm_nycflights13() %>%
       dm_paste(options = "all")
 
-    "compound keys"
-    nyc_comp() %>%
-      dm_paste()
-
     "deprecation warning for select argument"
     dm() %>%
       dm_paste(select = TRUE)

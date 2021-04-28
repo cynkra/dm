@@ -196,6 +196,8 @@ test_that("dm_rows_truncate()", {
 
 # tests for compound keys -------------------------------------------------
 
+# TODO: #335 ASAP mergen, tweeten, bumpen, Mattias vorbereiten, Cleanup
+
 test_that("output for compound keys", {
   skip("COMPOUND")
 

@@ -309,7 +309,7 @@ cdm_get_fk <- function(dm, table, ref_table) {
 #' @export
 cdm_get_all_fks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
-  dm_get_all_fks2_impl(dm = dm) %>%
+  dm_get_all_fks_impl(dm = dm) %>%
     mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
     mutate(parent_pk_cols = as.character(unclass(parent_pk_cols)))
 }
@@ -457,7 +457,7 @@ cdm_get_pk <- function(dm, table) {
 #' @export
 cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
-  dm_get_all_pks2_impl(dm = dm) %>%
+  dm_get_all_pks_impl(dm = dm) %>%
     mutate(pk_col = as.character(unclass(pk_col)))
 }
 

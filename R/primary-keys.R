@@ -192,10 +192,10 @@ dm_get_pk2_impl <- function(dm, table_name) {
 #'   dm_get_all_pks()
 dm_get_all_pks <- function(dm) {
   check_not_zoomed(dm)
-  dm_get_all_pks2_impl(dm)
+  dm_get_all_pks_impl(dm)
 }
 
-dm_get_all_pks2_impl <- function(dm) {
+dm_get_all_pks_impl <- function(dm) {
   dm_get_def(dm) %>%
     dm_get_all_pks2_def_impl()
 }
