@@ -150,6 +150,7 @@ dm_get_pk <- function(dm, table) {
 }
 
 dm_get_pk_impl <- function(dm, table_name) {
+  # FIXME: COMPOUND: Obliterate
   out <- dm_get_pk2_impl(dm, table_name)
   if (is_empty(out)) {
     character()
