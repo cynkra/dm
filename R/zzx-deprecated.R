@@ -331,7 +331,7 @@ cdm_rm_fk <- function(dm, table, columns, ref_table) {
     return(dm)
   }
   if (quo_is_null(column_quo)) {
-    cols <- fk_cols[[1]]
+    cols <- get_key_cols(fk_cols)
   }
   else {
     cols <- as_name(ensym(columns))

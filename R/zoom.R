@@ -237,9 +237,8 @@ update_zoomed_pk <- function(dm) {
   tracked_cols <- get_tracked_cols(dm)
   orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
 
-  stopifnot(length(orig_pk) <= 1)
-  if (has_length(orig_pk) && all(orig_pk[[1]] %in% tracked_cols)) {
-    upd_pk <- new_pk(list(recode2(orig_pk[[1]], tracked_cols)))
+  if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
+    upd_pk <- new_pk(list(recode2(get_key_cols(orig_pk), tracked_cols)))
   } else {
     upd_pk <- new_pk()
   }
@@ -252,8 +251,7 @@ update_zoomed_incoming_fks <- function(dm) {
   tracked_cols <- get_tracked_cols(dm)
   orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
 
-  stopifnot(length(orig_pk) <= 1)
-  if (has_length(orig_pk) && all(orig_pk[[1]] %in% tracked_cols)) {
+  if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
     def <- dm_get_def(dm)
     # Nothing to recode here -- updating zoomed table
     def$fks[def$table == old_tbl_name]
