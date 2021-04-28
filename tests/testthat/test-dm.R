@@ -436,16 +436,17 @@ test_that("output", {
   skip_if_not_installed("nycflights13")
 
   expect_snapshot({
-    print(dm())
+    print(collect(dm()))
 
-    nyc_flights_dm <- dm_nycflights_small_cycle()
-    nyc_flights_dm
+    nyc_flights_dm <- dm_nycflights_small()
+    collect(nyc_flights_dm)
 
     nyc_flights_dm %>%
       format()
 
     nyc_flights_dm %>%
-      dm_filter(flights, origin == "EWR")
+      dm_filter(flights, origin == "EWR") %>%
+      collect()
   })
 })
 

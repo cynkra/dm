@@ -1,32 +1,30 @@
 # output
 
     Code
-      print(dm())
+      print(collect(dm()))
     Output
       dm()
     Code
-      nyc_flights_dm <- dm_nycflights_small_cycle()
-      nyc_flights_dm
+      nyc_flights_dm <- dm_nycflights_small()
+      collect(nyc_flights_dm)
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
       Primary keys: 3
-      Foreign keys: 4
+      Foreign keys: 3
     Code
       nyc_flights_dm %>% format()
     Output
-      dm: 5 tables, 53 columns, 3 primary keys, 4 foreign keys
+      dm: 5 tables, 53 columns, 3 primary keys, 3 foreign keys
     Code
-      nyc_flights_dm %>% dm_filter(flights, origin == "EWR")
+      nyc_flights_dm %>% dm_filter(flights, origin == "EWR") %>% collect()
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 53
       Primary keys: 3
-      Foreign keys: 4
-      -- Filters ---------------------------------------------------------------------
-      flights: origin == "EWR"
+      Foreign keys: 3
 
 # output for compound keys
 
