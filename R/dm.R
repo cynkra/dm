@@ -317,18 +317,6 @@ unnest_pks <- function(def) {
   pk_df
 }
 
-flatten_key <- function(x) {
-  map_chr(x, format_draw_key)
-}
-
-format_draw_key <- function(x) {
-  if (length(x) == 1) {
-    x
-  } else {
-    paste0("(", paste(x, collapse = ", "), ")")
-  }
-}
-
 #' Get filter expressions
 #'
 #' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
