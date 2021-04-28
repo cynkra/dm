@@ -176,7 +176,7 @@ dm_update_zoomed <- function(dm) {
   new_def <- dm_get_def(dm) %>%
     mutate(
       data = if_else(table == table_name, zoom, data),
-      filters = if_else(table == table_name, upd_filter, filters)
+      filters = if_else(table == table_name, !!upd_filter, filters)
     )
 
   if (upd_keys) {
