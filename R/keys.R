@@ -1,4 +1,4 @@
-new_keys <- function(x) {
+new_keys <- function(x = list()) {
   # both c("a", "b") and list("a", "b") is accepted
   if (is.character(x)) {
     x <- as.list(x)

@@ -217,3 +217,12 @@ test_that("enum_fk_candidates() works properly", {
     )
   )
 })
+
+# tests for compound keys -------------------------------------------------
+
+test_that("dm_get_all_fks() with compound keys", {
+  expect_snapshot({
+    nyc_comp() %>%
+      dm_get_all_fks()
+  })
+})

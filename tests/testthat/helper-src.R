@@ -42,6 +42,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
     rhs
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
+    # (except for bad_dm)
     # message(name)
     suppressMessages(copy_dm_to(src, rhs))
   } else if (inherits(rhs, "list")) {
@@ -389,12 +390,6 @@ dm_for_disambiguate %<-% {
     dm_add_fk(iris_2, key, iris_1)
 }
 
-dm_for_disambiguate_2 %<-% {
-  as_dm(list(iris_1 = iris_1_dis(), iris_2 = iris_2_dis(), iris_3 = iris_3_dis())) %>%
-    dm_add_pk(iris_1, key) %>%
-    dm_add_fk(iris_2, iris_2.key, iris_1)
-}
-
 # star schema data model for testing `dm_flatten_to_tbl()` ------
 
 fact %<-% tibble(
@@ -488,12 +483,17 @@ result_from_flatten %<-% {
 
 # 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
 
-tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5)), b = a)
-tbl_2 %<-% tibble(id = 1:2, c = letters[1:2])
-tbl_3 %<-% tibble(id = 2:4, d = letters[2:4])
+tbl_1 %<-% tibble(a = as.integer(c(1, 2, 4, 5, NA)), b = a)
+tbl_2 %<-% tibble(id = c(1:3, 3), c = letters[1:4])
+tbl_3 %<-% tibble(id = c(2:4, 4), d = letters[2:5])
 
-bad_dm %<-% {
-  as_dm(list(tbl_1 = tbl_1(), tbl_2 = tbl_2(), tbl_3 = tbl_3())) %>%
+bad_dm_base %<-% {
+  as_dm(list(tbl_1 = tbl_1(), tbl_2 = tbl_2(), tbl_3 = tbl_3()))
+}
+
+# avoid copying constraints for invalid dm
+bad_dm %<--% {
+  bad_dm_base() %>%
     dm_add_pk(tbl_2, id) %>%
     dm_add_pk(tbl_3, id) %>%
     dm_add_fk(tbl_1, a, tbl_2) %>%
@@ -501,17 +501,13 @@ bad_dm %<-% {
 }
 
 dm_nycflights_small_base %<-% {
-  dm(
-    flights =
-      nycflights13::flights %>%
-        slice(1:800),
-    planes = nycflights13::planes,
-    airlines = nycflights13::airlines,
-    airports = nycflights13::airports,
-    weather =
-      nycflights13::weather %>%
-        slice(1:800)
-  )
+  airlines <- nycflights13::airlines
+  airports <- nycflights13::airports
+  planes <- nycflights13::planes
+  flights <- flights_subset()
+  weather <- weather_subset()
+
+  dm(airlines, airports, flights, planes, weather)
 }
 
 # Do not add PK and FK constraints to the database
@@ -523,6 +519,15 @@ dm_nycflights_small %<--% {
     dm_add_fk(flights, tailnum, planes) %>%
     dm_add_fk(flights, carrier, airlines) %>%
     dm_add_fk(flights, dest, airports)
+}
+
+dm_nycflights_small_cycle %<--% {
+  dm_nycflights_small() %>%
+    dm_add_fk(flights, origin, airports)
+}
+
+nyc_comp %<--% {
+  dm_nycflights_small()
 }
 
 zoomed_dm <- function() dm_zoom_to(dm_for_filter(), tf_2)
