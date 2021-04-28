@@ -181,12 +181,8 @@ dm_update_zoomed <- function(dm) {
   new_def$filters[[where]] <- upd_filter
 
   if (upd_keys) {
-    new_def <-
-      new_def %>%
-      mutate(
-        pks = if_else(table == table_name, !!vctrs::list_of(update_zoomed_pk(dm)), pks),
-        fks = if_else(table == table_name, !!vctrs::list_of(update_zoomed_incoming_fks(dm)), fks)
-      )
+    new_def$pks[[where]] <- update_zoomed_pk(dm)
+    new_def$fks[[where]] <- update_zoomed_incoming_fks(dm)
 
     new_dm3(new_def, zoomed = TRUE) %>%
       dm_update_zoomed_outgoing_fks() %>%
