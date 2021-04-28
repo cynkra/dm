@@ -354,7 +354,7 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) {
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
 
-  ref_tbl_pk <- dm_get_pk_impl(dm, ref_table_name)
+  ref_tbl_pk <- dm_get_pk2_impl(dm, ref_table_name)
   ref_tbl <- tbl(dm, ref_table_name)
   tbl <- tbl(dm, table_name)
   enum_fk_candidates_impl(
@@ -449,7 +449,7 @@ cdm_get_pk <- function(dm, table) {
   deprecate_soft("0.1.0", "dm::cdm_get_pk()", "dm::dm_get_pk()")
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
-  new_keys(dm_get_pk_impl(dm, table_name))
+  new_keys(dm_get_pk2_impl(dm, table_name))
 }
 
 #' @rdname deprecated

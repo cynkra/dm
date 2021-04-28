@@ -149,16 +149,6 @@ dm_get_pk <- function(dm, table) {
   new_keys(dm_get_pk2_impl(dm, table_name))
 }
 
-dm_get_pk_impl <- function(dm, table_name) {
-  # FIXME: COMPOUND: Obliterate
-  out <- dm_get_pk2_impl(dm, table_name)
-  if (is_empty(out)) {
-    character()
-  } else {
-    out[[1]]
-  }
-}
-
 dm_get_pk2_impl <- function(dm, table_name) {
   # Optimized
   def <- dm_get_def(dm)

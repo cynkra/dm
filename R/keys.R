@@ -42,3 +42,8 @@ pillar_shaft.dm_keys <- function(x) {
 format.dm_keys <- function(x, ...) {
   map_chr(x, commas, max_commas = Inf)
 }
+
+get_key_cols <- function(x) {
+  stopifnot(length(x) == 1)
+  x[[1]]
+}

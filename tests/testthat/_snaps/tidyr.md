@@ -37,12 +37,9 @@
     Code
       unite_flights_dm %>% get_all_keys("weather")
     Output
-      <list_of<character>[2]>
+      <list_of<character>[1]>
       [[1]]
-      [1] "origin"
-      
-      [[2]]
-      [1] "time_hour"
+      [1] "origin"    "time_hour"
       
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% separate(origin, c("o1", "o2"), sep = "^..",
