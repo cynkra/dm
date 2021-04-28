@@ -1,5 +1,15 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# dm 0.1.99.9002
+
+- `dm_add_pk()` and `dm_add_fk()` support compound keys via the `c()` notation, e.g. `dm_add_pk(dm, table, c(col1, col2))`. `dm_nycflights13()` returns a data model with compound keys by default. Use `compound = FALSE` to return the data model from dm v0.1.13 or earlier (#3).
+- `dm_get_all_fks()` includes `parent_pk_cols` column that describes the primary key columns of the parent table (#335).
+- `dm_examine_constraints()` and other check functions count the number of rows that violate constraints for primary and foreign keys (#335).
+- `copy_dm_to(set_key_constraints = FALSE)` downgrades unique indexes to regular indexes (#335).
+- `rows_truncate()` implemented for data frames (#335).
+- `dm_enum_fk_candidates()` enumerates column in the order they apper in the table (#335).
+
+
 # dm 0.1.99.9001
 
 - Same as previous version.
