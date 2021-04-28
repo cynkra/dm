@@ -161,9 +161,8 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
 #' @rdname dm_zoom_to
 #' @export
 dm_update_zoomed <- function(dm) {
-  if (!is_zoomed(dm)) {
-    return(dm)
-  }
+  check_zoomed(dm)
+
   table_name <- orig_name_zoomed(dm)
   orig_colnames <- colnames(dm_get_tables_impl(dm)[[table_name]])
   tracked_cols <- get_tracked_cols(dm)
