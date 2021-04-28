@@ -163,8 +163,11 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
 dm_update_zoomed <- function(dm) {
   check_zoomed(dm)
 
+  def <- dm_get_def(dm)
   table_name <- orig_name_zoomed(dm)
-  orig_colnames <- colnames(dm_get_tables_impl(dm)[[table_name]])
+  where <- which(def$table == table_name)
+
+  orig_colnames <- colnames(def$data[[where]])
   tracked_cols <- get_tracked_cols(dm)
   # Test if keys need to be updated (TRUE, if at least one column was renamed or lost)
   upd_keys <- !all(orig_colnames %in% tracked_cols) || !all(names(tracked_cols) == tracked_cols)
