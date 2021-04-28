@@ -427,7 +427,8 @@ test_that("key tracking works", {
       dm_get_all_fks2_impl(),
     dm_for_filter() %>%
       dm_get_all_fks2_impl() %>%
-      mutate(parent_pk_cols = if_else(parent_pk_cols == "f", "f_new", parent_pk_cols))
+      # https://github.com/r-lib/vctrs/issues/1371
+      mutate(parent_pk_cols = new_keys(if_else(parent_pk_cols == new_keys("f"), list("f_new"), unclass(parent_pk_cols))))
   )
 
   # summarize()
@@ -467,7 +468,7 @@ test_that("key tracking works", {
       transmute(g_list = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(character())
+    new_keys()
   )
 
   # mutate()
@@ -487,7 +488,7 @@ test_that("key tracking works", {
       mutate(f = list(g)) %>%
       dm_insert_zoomed("new_tbl") %>%
       get_all_keys("new_tbl"),
-    set_names(character())
+    new_keys()
   )
 
   expect_identical(
@@ -533,12 +534,13 @@ test_that("key tracking works", {
   expect_identical(
     zoomed_dm() %>%
       distinct(d_new = d) %>%
-       dm_update_zoomed() %>%
+      dm_update_zoomed() %>%
       dm_get_all_fks2_impl(),
     dm_for_filter() %>%
       dm_get_all_fks2_impl() %>%
-      filter(child_fk_cols != "e") %>%
-      mutate(child_fk_cols = if_else(child_fk_cols == "d", "d_new", child_fk_cols))
+      filter(child_fk_cols != new_keys("e")) %>%
+      # https://github.com/r-lib/vctrs/issues/1371
+      mutate(child_fk_cols = new_keys(if_else(child_fk_cols == new_keys("d"), list("d_new"), unclass(child_fk_cols))))
   )
 
   expect_identical(
@@ -553,12 +555,12 @@ test_that("key tracking works", {
   expect_identical(
     dm_for_flatten() %>%
       dm_zoom_to(fact) %>%
-      select(dim_1_key, dim_3_key, dim_2_key) %>%
+      select(dim_1_key_1, dim_1_key_2, dim_3_key, dim_2_key) %>%
       dm_update_zoomed() %>%
       dm_get_all_fks2_impl(),
     dm_for_flatten() %>%
       dm_get_all_fks2_impl() %>%
-      filter(child_fk_cols != "dim_4_key")
+      filter(child_fk_cols != new_keys("dim_4_key"))
   )
 
   # it should be possible to combine 'filter' on a zoomed_dm with all other dplyr-methods; example: 'rename'

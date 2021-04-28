@@ -1,4 +1,4 @@
-# output for compound tables
+# output for compound keys
 
     Code
       grouped_zoomed_comp_dm_1 %>% mutate(count = n()) %>% get_tracked_cols()
